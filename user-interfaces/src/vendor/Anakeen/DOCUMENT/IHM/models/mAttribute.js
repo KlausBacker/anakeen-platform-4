@@ -151,7 +151,7 @@ define(["underscore", "jquery", "backbone"], function require_mAttribute(
     _computeMode: function mAttribute_computeMode() {
       var visibility = this.get("visibility"),
         documentMode = this.collection.renderMode;
-      if (visibility === "H" || visibility === "I") {
+      if (visibility === "H") {
         this.set("mode", "hidden");
         return;
       }

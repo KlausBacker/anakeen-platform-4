@@ -7,15 +7,15 @@
     >
       <template slot="left">
         <div class="left-pane">
-          <div><h1>Hello</h1></div>
+          <div><h1>Configuration</h1></div>
           <v-jsoneditor class="json-editor" v-model="json" :options="options" :plus="false" height="400px" @error="onError"/>
         </div>
       </template>
       <template slot="right">
-        <div>
-          <h1>World</h1>
+        <div class="right-pane">
+          <div><h1>Smart Form</h1></div>
           <div class="smart-form">
-            <ank-smart-form ref="smartFormRef" initid="9" />
+            <ank-smart-form ref="smartFormRef" :config="json" />
           </div>
         </div>
       </template>

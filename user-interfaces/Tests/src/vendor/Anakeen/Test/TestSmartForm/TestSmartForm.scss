@@ -9,16 +9,29 @@
     height:100%;
   }
 
-  .smart-form {
-    border: 2px blue solid;
-  }
+
 
   .left-pane {
     display:flex;
     flex-direction: column;
+    height: 100%;
 
     .json-editor {
       flex:1;
+      .jsoneditor {
+        border-color:#f2f2f2;
+      }
+    }
+  }
+
+  .right-pane {
+    display:flex;
+    flex-direction: column;
+    height: 100%;
+
+    .smart-form {
+      flex:1;
+      overflow: auto;
     }
   }
 }

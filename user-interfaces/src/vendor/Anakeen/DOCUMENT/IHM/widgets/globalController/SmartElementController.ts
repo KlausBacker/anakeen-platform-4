@@ -44,9 +44,7 @@ const DEFAULT_OPTIONS: IControllerOptions = {
 class ErrorModelNonInitialized extends Error {
   constructor(message?) {
     super();
-    this.message =
-      message ||
-      "The model is not initialized, use fetchSmartElement to initialise it.";
+    this.message = message || "The model is not initialized, use fetchSmartElement to initialise it.";
     this.name = "ErrorModelNonInitialized";
     this.stack = new Error().stack;
   }
@@ -54,6 +52,7 @@ class ErrorModelNonInitialized extends Error {
 
 interface ISmartElementModel extends Backbone.Model {
   _customClientData: {};
+  _formConfiguration: null;
   _customRequestData: {};
   getModelProperties(): SmartElementProperties;
   fetchDocument(viewData?: ViewData, options?: any): Promise<any>;
@@ -69,11 +68,7 @@ interface ISmartElementModel extends Backbone.Model {
 }
 
 // tslint:disable-next-line:max-classes-per-file
-export default class SmartElementController extends AnakeenController.BusEvents
-  .Listenable implements ISmartElementAPI {
-  private static CONSTRAINT_PREFIX = "constraint::";
-  private static EVENT_PREFIX = "hook::";
-
+export default class SmartElementController extends AnakeenController.BusEvents.Listenable implements ISmartElementAPI {
   public uid: string;
   protected _registeredListeners: { [key: string]: ListenableEvents } = {};
   protected _element: JQuery<DOMReference>;
@@ -99,12 +94,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
   protected $loading: JQuery & { dcpLoading(...args): JQuery };
   protected $notification: JQuery & { dcpNotification(...args): JQuery };
 
-  constructor(
-    dom: DOMReference,
-    viewData: ViewData,
-    options?: IControllerOptions,
-    events?
-  ) {
+  constructor(dom: DOMReference, viewData: ViewData, options?: IControllerOptions, events?) {
     super();
     this.uid = _.uniqueId("smart-element-controller-");
     this._options = _.defaults(options, DEFAULT_OPTIONS);
@@ -112,14 +102,11 @@ export default class SmartElementController extends AnakeenController.BusEvents
       this._internalViewData.initid = viewData.initid;
       this._internalViewData.viewId = viewData.viewId;
       this._internalViewData.revision = viewData.revision;
-      this._requestData = _.defaults(
-        Object.assign({}, this._internalViewData),
-        {
-          initid: 0,
-          revision: -1,
-          viewId: "!defaultConsultation"
-        }
-      );
+      this._requestData = _.defaults(Object.assign({}, this._internalViewData), {
+        initid: 0,
+        revision: -1,
+        viewId: "!defaultConsultation"
+      });
     }
     // @ts-ignore
     this._element = $(dom);
@@ -137,7 +124,8 @@ export default class SmartElementController extends AnakeenController.BusEvents
         this.addEventListener(eventType, events[eventType].bind(this));
       });
     }
-    this._initializeSmartElement({}, this._options.customClientData);
+    // noinspection JSIgnoredPromiseFromCall
+    this._initializeSmartElement({}, this._options);
   }
 
   /***************************************************************************************************************
@@ -174,9 +162,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
     values = _.isUndefined(values) ? {} : values;
     options = options || {};
     if (!_.isObject(values)) {
-      throw new Error(
-        'Fetch argument must be an object {"initid":, "revision": , "viewId": }'
-      );
+      throw new Error('Fetch argument must be an object {"initid":, "revision": , "viewId": }');
     }
 
     if (!values.initid) {
@@ -198,18 +184,21 @@ export default class SmartElementController extends AnakeenController.BusEvents
     });
 
     if (!this._model) {
-      documentPromise = this._initializeSmartElement(
-        options,
-        values.customClientData
-      );
+      const config: any = {
+        customClientData: values.customClientData
+      };
+      if (options.formConfiguration) {
+        config.formConfiguration = options.formConfiguration;
+      }
+      documentPromise = this._initializeSmartElement(options, config);
     } else {
       if (values.customClientData) {
         this._model._customClientData = values.customClientData;
       }
-      documentPromise = this._model.fetchDocument(
-        this._getModelValue(),
-        options
-      );
+      if (options.formConfiguration) {
+        this._model._formConfiguration = options.formConfiguration;
+      }
+      documentPromise = this._model.fetchDocument(this._getModelValue(), options);
     }
     return this._registerOutputPromise(documentPromise, options);
   }
@@ -246,10 +235,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
         'changeStateDocument first argument must be an object {"nextState":, "transition": , "values":, "unattended":, "" }'
       );
     }
-    if (
-      !_.isString(parameters.nextState) ||
-      !_.isString(parameters.transition)
-    ) {
+    if (!_.isString(parameters.nextState) || !_.isString(parameters.transition)) {
       throw new Error("nextState and transition arguments are mandatory");
     }
     documentPromise = this._initAndDisplayTransition(
@@ -605,9 +591,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
         let defaultValue = aModel.get("defaultValue");
 
         if (!defaultValue) {
-          defaultValue = aModel.hasMultipleOption()
-            ? []
-            : { value: null, displayValue: "" };
+          defaultValue = aModel.hasMultipleOption() ? [] : { value: null, displayValue: "" };
         }
 
         for (i = currentValueLength; i <= index; i++) {
@@ -644,26 +628,17 @@ export default class SmartElementController extends AnakeenController.BusEvents
     }
 
     if (attribute.get("type") !== "array") {
-      throw new Error(
-        "Attribute " + attributeId + " must be an attribute of type array"
-      );
+      throw new Error("Attribute " + attributeId + " must be an attribute of type array");
     }
     if (!_.isObject(values)) {
-      throw new Error(
-        "Values must be an object where each properties is an attribute of the array for " +
-          attributeId
-      );
+      throw new Error("Values must be an object where each properties is an attribute of the array for " + attributeId);
     }
     attribute.get("content").each(currentAttribute => {
       let newValue = values[currentAttribute.id];
       const currentValue = currentAttribute.getValue();
       if (_.isUndefined(newValue)) {
         // Set default value if no value defined
-        currentAttribute.createIndexedValue(
-          currentValue.length,
-          false,
-          _.isEmpty(values)
-        );
+        currentAttribute.createIndexedValue(currentValue.length, false, _.isEmpty(values));
       } else {
         newValue = _.defaults(newValue, {
           displayValue: newValue.value,
@@ -689,15 +664,10 @@ export default class SmartElementController extends AnakeenController.BusEvents
       throw new Error("Unable to find attribute " + attributeId);
     }
     if (attribute.get("type") !== "array") {
-      throw new Error(
-        "Attribute " + attributeId + " must be an attribute of type array"
-      );
+      throw new Error("Attribute " + attributeId + " must be an attribute of type array");
     }
     if (!_.isObject(values)) {
-      throw new Error(
-        "Values must be an object where each properties is an attribute of the array for " +
-          attributeId
-      );
+      throw new Error("Values must be an object where each properties is an attribute of the array for " + attributeId);
     }
     maxValue = this._getMaxIndex(attribute);
     if (index < 0 || index > maxValue) {
@@ -733,15 +703,11 @@ export default class SmartElementController extends AnakeenController.BusEvents
       throw new Error("Unable to find attribute " + attributeId);
     }
     if (attribute.get("type") !== "array") {
-      throw Error(
-        "Attribute " + attributeId + " must be an attribute of type array"
-      );
+      throw Error("Attribute " + attributeId + " must be an attribute of type array");
     }
     maxIndex = this._getMaxIndex(attribute) - 1;
     if (index < 0 || index > maxIndex) {
-      throw Error(
-        "Index must be between 0 and " + maxIndex + " for " + attributeId
-      );
+      throw Error("Index must be between 0 and " + maxIndex + " for " + attributeId);
     }
     attribute.get("content").each(currentAttribute => {
       currentAttribute.removeIndexValue(index);
@@ -796,16 +762,11 @@ export default class SmartElementController extends AnakeenController.BusEvents
           } catch (e) {
             console.error(e);
           }
-          currentWidget.removeConstraint(
-            currentConstraint.name,
-            currentConstraint.externalConstraint
-          );
+          currentWidget.removeConstraint(currentConstraint.name, currentConstraint.externalConstraint);
         }
       );
     }
-    uniqueName =
-      (currentConstraint.externalConstraint ? "external_" : "internal_") +
-      currentConstraint.name;
+    uniqueName = (currentConstraint.externalConstraint ? "external_" : "internal_") + currentConstraint.name;
     this._constraintList[uniqueName] = currentConstraint;
     this._initActivatedConstraint();
     return currentConstraint.name;
@@ -835,25 +796,19 @@ export default class SmartElementController extends AnakeenController.BusEvents
     // jscs:disable disallowImplicitTypeConversion
     allKind = !!allKind;
     // jscs:enable disallowImplicitTypeConversion
-    newConstraintList = _.filter(
-      this.listConstraints(),
-      (currentConstraint: any) => {
-        if (
-          (allKind || !currentConstraint.externalConstraint) &&
-          (currentConstraint.name === constraintName ||
-            testRegExp.test(currentConstraint.name))
-        ) {
-          removed.push(currentConstraint);
-          return false;
-        }
-        return true;
+    newConstraintList = _.filter(this.listConstraints(), (currentConstraint: any) => {
+      if (
+        (allKind || !currentConstraint.externalConstraint) &&
+        (currentConstraint.name === constraintName || testRegExp.test(currentConstraint.name))
+      ) {
+        removed.push(currentConstraint);
+        return false;
       }
-    );
+      return true;
+    });
     constraintList = {};
     _.each(newConstraintList, (currentConstraint: any) => {
-      const uniqueName =
-        (currentConstraint.externalConstraint ? "external_" : "internal_") +
-        currentConstraint.name;
+      const uniqueName = (currentConstraint.externalConstraint ? "external_" : "internal_") + currentConstraint.name;
       constraintList[uniqueName] = currentConstraint;
     });
     this._constraintList = constraintList;
@@ -884,11 +839,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
     }
 
     // the first parameters can be the final object (chain removeEvent and addEvent)
-    if (
-      _.isObject(eventType) &&
-      _.isUndefined(eventOptions) &&
-      _.isUndefined(eventCallback)
-    ) {
+    if (_.isObject(eventType) && _.isUndefined(eventOptions) && _.isUndefined(eventCallback)) {
       currentEvent = eventType;
       if (!currentEvent.name) {
         throw new Error(
@@ -941,8 +892,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
         this.getEventsList()[eventType].filter(currentEvent => {
           return (
             (allKind || !currentEvent.externalEvent) &&
-            (currentEvent.name === eventName ||
-              testRegExp.test(currentEvent.name))
+            (currentEvent.name === eventName || testRegExp.test(currentEvent.name))
           );
         })
       );
@@ -1102,7 +1052,6 @@ export default class SmartElementController extends AnakeenController.BusEvents
    */
   public tryToDestroy() {
     return new Promise((resolve, reject) => {
-      const event = { prevent: false };
       if (!this._model) {
         resolve();
         return;
@@ -1113,10 +1062,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
         !window.confirm(
           this._model.get("properties").get("title") +
             "\n" +
-            i18n.___(
-              "The form has been modified without saving, do you want to close it ?",
-              "ddui"
-            )
+            i18n.___("The form has been modified without saving, do you want to close it ?", "ddui")
         )
       ) {
         reject("Unable to destroy because user refuses it");
@@ -1132,11 +1078,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
       //   return;
       // }
       // resolve();
-      this._triggerControllerEvent(
-        "beforeClose",
-        null,
-        this._model.getModelProperties()
-      )
+      this._triggerControllerEvent("beforeClose", null, this._model.getModelProperties())
         .then(() => {
           resolve();
         })
@@ -1153,11 +1095,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
     return Promise.all(
       this._events[eventName].map(cb => {
         const callbackReturn: any = cb.eventCallback(...args);
-        if (
-          callbackReturn &&
-          callbackReturn instanceof Promise &&
-          eventName.indexOf("before") === 0
-        ) {
+        if (callbackReturn && callbackReturn instanceof Promise && eventName.indexOf("before") === 0) {
           return callbackReturn;
         } else {
           return Promise.resolve(callbackReturn);
@@ -1170,7 +1108,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
     return this.offAll();
   }
 
-  private _initializeSmartElement(options, customClientData) {
+  private _initializeSmartElement(options, config) {
     const onInitializeSuccess = () => {
       this._initialized.model = true;
     };
@@ -1184,13 +1122,13 @@ export default class SmartElementController extends AnakeenController.BusEvents
         return success.apply(this, args);
       });
     }
-    if (customClientData) {
-      this._model._customClientData = customClientData;
+    if (config.customClientData) {
+      this._model._customClientData = config.customClientData;
     }
-    const resultPromise = this._model.fetchDocument(
-      this._getModelValue(),
-      options
-    );
+    if (config.formConfiguration) {
+      this._model._formConfiguration = config.formConfiguration;
+    }
+    const resultPromise = this._model.fetchDocument(this._getModelValue(), options);
     if (!options.success) {
       resultPromise.then(onInitializeSuccess);
     }
@@ -1286,9 +1224,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
     const $se = this._element.find(".dcpDocument");
     if (!this._smartElement || $se.length === 0) {
       this._element.attr("data-controller", this.uid);
-      this._element.append(
-        '<div class="document"><div class="dcpDocument"></div></div>'
-      );
+      this._element.append('<div class="document"><div class="dcpDocument"></div></div>');
       this._smartElement = this._element.find(".dcpDocument");
     }
   }
@@ -1302,34 +1238,19 @@ export default class SmartElementController extends AnakeenController.BusEvents
    */
   private _initModelEvents() {
     this._model.listenTo(this._model, "invalid", (model, error) => {
-      const result = this._triggerControllerEvent(
-        "displayError",
-        null,
-        this.getProperties(),
-        error
-      );
+      const result = this._triggerControllerEvent("displayError", null, this.getProperties(), error);
       if (result) {
         this.$notification.dcpNotification("showError", error);
       }
     });
     this._model.listenTo(this._model, "showError", error => {
-      const result = this._triggerControllerEvent(
-        "displayError",
-        null,
-        this.getProperties(),
-        error
-      );
+      const result = this._triggerControllerEvent("displayError", null, this.getProperties(), error);
       if (result) {
         this.$notification.dcpNotification("showError", error);
       }
     });
     this._model.listenTo(this._model, "showMessage", msg => {
-      const result = this._triggerControllerEvent(
-        "displayMessage",
-        null,
-        this.getProperties(),
-        msg
-      );
+      const result = this._triggerControllerEvent("displayMessage", null, this.getProperties(), msg);
       if (result) {
         this.$notification.dcpNotification("show", msg.type, msg);
       }
@@ -1353,30 +1274,21 @@ export default class SmartElementController extends AnakeenController.BusEvents
         this._model.getModelProperties()
       );
     });
-    this._model.listenTo(
-      this._model,
-      "beforeClose",
-      (event, nextDocument, customClientData) => {
-        if (this._initialized.view) {
-          event.promise = this._triggerControllerEvent(
-            "beforeClose",
-            event,
-            this.getProperties(),
-            nextDocument,
-            customClientData
-          );
-        }
-        this._reinitListeners();
+    this._model.listenTo(this._model, "beforeClose", (event, nextDocument, customClientData) => {
+      if (this._initialized.view) {
+        event.promise = this._triggerControllerEvent(
+          "beforeClose",
+          event,
+          this.getProperties(),
+          nextDocument,
+          customClientData
+        );
       }
-    );
+      this._reinitListeners();
+    });
     this._model.listenTo(this._model, "close", oldProperties => {
       if (this._initialized.view) {
-        this._triggerControllerEvent(
-          "close",
-          null,
-          this.getProperties(),
-          oldProperties
-        );
+        this._triggerControllerEvent("close", null, this.getProperties(), oldProperties);
       }
       this._initialized.view = false;
     });
@@ -1387,77 +1299,46 @@ export default class SmartElementController extends AnakeenController.BusEvents
         // no test here
       }
     });
-    this._model.listenTo(
-      this._model,
-      "beforeSave",
-      (event, customClientData) => {
-        const requestOptions = {
-          getRequestData: () => {
-            return this._model.toJSON();
-          },
-          setRequestData: data => {
-            this._model._customRequestData = data;
-          }
-        };
-        event.promise = this._triggerControllerEvent(
-          "beforeSave",
-          event,
-          this.getProperties(),
-          requestOptions,
-          customClientData
-        );
-      }
-    );
-    this._model.listenTo(this._model, "afterSave", oldProperties => {
-      this._triggerControllerEvent(
-        "afterSave",
-        null,
+    this._model.listenTo(this._model, "beforeSave", (event, customClientData) => {
+      const requestOptions = {
+        getRequestData: () => {
+          return this._model.toJSON();
+        },
+        setRequestData: data => {
+          this._model._customRequestData = data;
+        }
+      };
+      event.promise = this._triggerControllerEvent(
+        "beforeSave",
+        event,
         this.getProperties(),
-        oldProperties
+        requestOptions,
+        customClientData
       );
+    });
+    this._model.listenTo(this._model, "afterSave", oldProperties => {
+      this._triggerControllerEvent("afterSave", null, this.getProperties(), oldProperties);
     });
     this._model.listenTo(this._model, "beforeRestore", event => {
-      event.prevent = !this._triggerControllerEvent(
-        "beforeRestore",
-        event,
-        this.getProperties()
-      );
+      event.prevent = !this._triggerControllerEvent("beforeRestore", event, this.getProperties());
     });
     this._model.listenTo(this._model, "afterRestore", oldProperties => {
-      this._triggerControllerEvent(
-        "afterRestore",
-        null,
+      this._triggerControllerEvent("afterRestore", null, this.getProperties(), oldProperties);
+    });
+    this._model.listenTo(this._model, "beforeDelete", (event, customClientData) => {
+      event.prevent = !this._triggerControllerEvent(
+        "beforeDelete",
+        event,
         this.getProperties(),
-        oldProperties
+        this._model.getModelProperties(),
+        customClientData
       );
     });
-    this._model.listenTo(
-      this._model,
-      "beforeDelete",
-      (event, customClientData) => {
-        event.prevent = !this._triggerControllerEvent(
-          "beforeDelete",
-          event,
-          this.getProperties(),
-          this._model.getModelProperties(),
-          customClientData
-        );
-      }
-    );
     this._model.listenTo(this._model, "afterDelete", oldProperties => {
-      this._triggerControllerEvent(
-        "afterDelete",
-        null,
-        this.getProperties(),
-        oldProperties
-      );
+      this._triggerControllerEvent("afterDelete", null, this.getProperties(), oldProperties);
     });
     this._model.listenTo(this._model, "validate", event => {
-      event.prevent = !this._triggerControllerEvent(
-        "validate",
-        event,
-        this.getProperties()
-      );
+      event.prevent = !this._triggerControllerEvent("validate", event, this.getProperties());
     });
     this._model.listenTo(this._model, "changeValue", options => {
       try {
@@ -1477,9 +1358,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
               if (_.isArray(currentValue)) {
                 currentValue = currentValue.join(",");
               }
-              currentValue = _.has(currentValue, "value")
-                ? currentValue.value
-                : currentValue;
+              currentValue = _.has(currentValue, "value") ? currentValue.value : currentValue;
               if (_.isArray(previous)) {
                 previous = previous.join(",");
               }
@@ -1507,50 +1386,42 @@ export default class SmartElementController extends AnakeenController.BusEvents
         }
       }
     });
-    this._model.listenTo(
-      this._model,
-      "beforeAttributeRender",
-      (event, attributeId, $el, index) => {
-        try {
-          const currentAttribute = this.getAttribute(attributeId);
-          event.prevent = !this._triggerAttributeControllerEvent(
-            "attributeBeforeRender",
-            event,
-            currentAttribute,
-            this.getProperties(),
-            currentAttribute,
-            $el,
-            index
-          );
-        } catch (error) {
-          if (!(error instanceof ErrorModelNonInitialized)) {
-            console.error(error);
-          }
+    this._model.listenTo(this._model, "beforeAttributeRender", (event, attributeId, $el, index) => {
+      try {
+        const currentAttribute = this.getAttribute(attributeId);
+        event.prevent = !this._triggerAttributeControllerEvent(
+          "attributeBeforeRender",
+          event,
+          currentAttribute,
+          this.getProperties(),
+          currentAttribute,
+          $el,
+          index
+        );
+      } catch (error) {
+        if (!(error instanceof ErrorModelNonInitialized)) {
+          console.error(error);
         }
       }
-    );
-    this._model.listenTo(
-      this._model,
-      "attributeRender",
-      (attributeId, $el, index) => {
-        try {
-          const currentAttribute = this.getAttribute(attributeId);
-          this._triggerAttributeControllerEvent(
-            "attributeReady",
-            null,
-            currentAttribute,
-            this.getProperties(),
-            currentAttribute,
-            $el,
-            index
-          );
-        } catch (error) {
-          if (!(error instanceof ErrorModelNonInitialized)) {
-            console.error(error);
-          }
+    });
+    this._model.listenTo(this._model, "attributeRender", (attributeId, $el, index) => {
+      try {
+        const currentAttribute = this.getAttribute(attributeId);
+        this._triggerAttributeControllerEvent(
+          "attributeReady",
+          null,
+          currentAttribute,
+          this.getProperties(),
+          currentAttribute,
+          $el,
+          index
+        );
+      } catch (error) {
+        if (!(error instanceof ErrorModelNonInitialized)) {
+          console.error(error);
         }
       }
-    );
+    });
     this._model.listenTo(this._model, "arrayModified", options => {
       try {
         const currentAttribute = this.getAttribute(options.attributeId);
@@ -1569,323 +1440,248 @@ export default class SmartElementController extends AnakeenController.BusEvents
         }
       }
     });
-    this._model.listenTo(
-      this._model,
-      "internalLinkSelected",
-      (event, options) => {
-        event.prevent = !this._triggerControllerEvent(
-          "actionClick",
+    this._model.listenTo(this._model, "internalLinkSelected", (event, options) => {
+      event.prevent = !this._triggerControllerEvent("actionClick", event, this.getProperties(), options);
+    });
+    this._model.listenTo(this._model, "downloadFile", (event, attrid, options) => {
+      try {
+        const currentAttribute = this.getAttribute(attrid);
+        event.prevent = !this._triggerAttributeControllerEvent(
+          "attributeDownloadFile",
           event,
+          currentAttribute,
           this.getProperties(),
+          currentAttribute,
+          options.$el,
+          options.index
+        );
+      } catch (error) {
+        if (!(error instanceof ErrorModelNonInitialized)) {
+          console.error(error);
+        }
+      }
+    });
+    this._model.listenTo(this._model, "uploadFile", (event, attrid, options) => {
+      try {
+        const currentAttribute = this.getAttribute(attrid);
+        event.prevent = !this._triggerAttributeControllerEvent(
+          "attributeUploadFile",
+          event,
+          currentAttribute,
+          this.getProperties(),
+          currentAttribute,
+          options.$el,
+          options.index,
+          {
+            file: options.file,
+            hasUploadingFiles: this._model.hasUploadingFile()
+          }
+        );
+      } catch (error) {
+        if (!(error instanceof ErrorModelNonInitialized)) {
+          console.error(error);
+        }
+      }
+    });
+    this._model.listenTo(this._model, "uploadFileDone", (event, attrid, options) => {
+      try {
+        const currentAttribute = this.getAttribute(attrid);
+        event.prevent = !this._triggerAttributeControllerEvent(
+          "attributeUploadFileDone",
+          event,
+          currentAttribute,
+          this.getProperties(),
+          currentAttribute,
+          options.$el,
+          options.index,
+          {
+            file: options.file,
+            hasUploadingFiles: this._model.hasUploadingFile()
+          }
+        );
+      } catch (error) {
+        if (!(error instanceof ErrorModelNonInitialized)) {
+          console.error(error);
+        }
+      }
+    });
+
+    this._model.listenTo(this._model, "attributeBeforeTabSelect", (event, attrid) => {
+      const currentAttribute = this.getAttribute(attrid);
+      let prevent;
+
+      prevent = !this._triggerAttributeControllerEvent(
+        "attributeBeforeTabSelect",
+        event,
+        currentAttribute,
+        this.getProperties(),
+        currentAttribute,
+        $(event.item)
+      );
+      if (prevent) {
+        event.preventDefault();
+      }
+    });
+    this._model.listenTo(this._model, "attributeTabChange", (event, attrid, $el, data) => {
+      const currentAttribute = this.getAttribute(attrid);
+
+      this._triggerAttributeControllerEvent(
+        "attributeTabChange",
+        event,
+        currentAttribute,
+        this.getProperties(),
+        currentAttribute,
+        $el,
+        data
+      );
+    });
+    this._model.listenTo(this._model, "attributeAfterTabSelect", (event, attrid) => {
+      const currentAttribute = this.getAttribute(attrid);
+
+      this._triggerAttributeControllerEvent(
+        "attributeAfterTabSelect",
+        event,
+        currentAttribute,
+        this.getProperties(),
+        currentAttribute,
+        $(event.item)
+      );
+    });
+    this._model.listenTo(this._model, "helperSearch", (event, attrid, options) => {
+      try {
+        const currentAttribute = this.getAttribute(attrid);
+        event.prevent = !this._triggerAttributeControllerEvent(
+          "attributeHelperSearch",
+          event,
+          currentAttribute,
+          this.getProperties(),
+          currentAttribute,
           options
         );
-      }
-    );
-    this._model.listenTo(
-      this._model,
-      "downloadFile",
-      (event, attrid, options) => {
-        try {
-          const currentAttribute = this.getAttribute(attrid);
-          event.prevent = !this._triggerAttributeControllerEvent(
-            "attributeDownloadFile",
-            event,
-            currentAttribute,
-            this.getProperties(),
-            currentAttribute,
-            options.$el,
-            options.index
-          );
-        } catch (error) {
-          if (!(error instanceof ErrorModelNonInitialized)) {
-            console.error(error);
-          }
+      } catch (error) {
+        if (!(error instanceof ErrorModelNonInitialized)) {
+          console.error(error);
         }
       }
-    );
-    this._model.listenTo(
-      this._model,
-      "uploadFile",
-      (event, attrid, options) => {
-        try {
-          const currentAttribute = this.getAttribute(attrid);
-          event.prevent = !this._triggerAttributeControllerEvent(
-            "attributeUploadFile",
-            event,
-            currentAttribute,
-            this.getProperties(),
-            currentAttribute,
-            options.$el,
-            options.index,
-            {
-              file: options.file,
-              hasUploadingFiles: this._model.hasUploadingFile()
-            }
-          );
-        } catch (error) {
-          if (!(error instanceof ErrorModelNonInitialized)) {
-            console.error(error);
-          }
-        }
-      }
-    );
-    this._model.listenTo(
-      this._model,
-      "uploadFileDone",
-      (event, attrid, options) => {
-        try {
-          const currentAttribute = this.getAttribute(attrid);
-          event.prevent = !this._triggerAttributeControllerEvent(
-            "attributeUploadFileDone",
-            event,
-            currentAttribute,
-            this.getProperties(),
-            currentAttribute,
-            options.$el,
-            options.index,
-            {
-              file: options.file,
-              hasUploadingFiles: this._model.hasUploadingFile()
-            }
-          );
-        } catch (error) {
-          if (!(error instanceof ErrorModelNonInitialized)) {
-            console.error(error);
-          }
-        }
-      }
-    );
-
-    this._model.listenTo(
-      this._model,
-      "attributeBeforeTabSelect",
-      (event, attrid) => {
+    });
+    this._model.listenTo(this._model, "helperResponse", (event, attrid, options) => {
+      try {
         const currentAttribute = this.getAttribute(attrid);
-        let prevent;
-
-        prevent = !this._triggerAttributeControllerEvent(
-          "attributeBeforeTabSelect",
+        event.prevent = !this._triggerAttributeControllerEvent(
+          "attributeHelperResponse",
           event,
           currentAttribute,
           this.getProperties(),
           currentAttribute,
-          $(event.item)
+          options
         );
-        if (prevent) {
-          event.preventDefault();
+      } catch (error) {
+        if (!(error instanceof ErrorModelNonInitialized)) {
+          console.error(error);
         }
       }
-    );
-    this._model.listenTo(
-      this._model,
-      "attributeTabChange",
-      (event, attrid, $el, data) => {
+    });
+    this._model.listenTo(this._model, "helperSelect", (event, attrid, options) => {
+      try {
         const currentAttribute = this.getAttribute(attrid);
-
-        this._triggerAttributeControllerEvent(
-          "attributeTabChange",
+        event.prevent = !this._triggerAttributeControllerEvent(
+          "attributeHelperSelect",
           event,
           currentAttribute,
           this.getProperties(),
           currentAttribute,
-          $el,
-          data
+          options
         );
-      }
-    );
-    this._model.listenTo(
-      this._model,
-      "attributeAfterTabSelect",
-      (event, attrid) => {
-        const currentAttribute = this.getAttribute(attrid);
-
-        this._triggerAttributeControllerEvent(
-          "attributeAfterTabSelect",
-          event,
-          currentAttribute,
-          this.getProperties(),
-          currentAttribute,
-          $(event.item)
-        );
-      }
-    );
-    this._model.listenTo(
-      this._model,
-      "helperSearch",
-      (event, attrid, options) => {
-        try {
-          const currentAttribute = this.getAttribute(attrid);
-          event.prevent = !this._triggerAttributeControllerEvent(
-            "attributeHelperSearch",
-            event,
-            currentAttribute,
-            this.getProperties(),
-            currentAttribute,
-            options
-          );
-        } catch (error) {
-          if (!(error instanceof ErrorModelNonInitialized)) {
-            console.error(error);
-          }
+      } catch (error) {
+        if (!(error instanceof ErrorModelNonInitialized)) {
+          console.error(error);
         }
       }
-    );
-    this._model.listenTo(
-      this._model,
-      "helperResponse",
-      (event, attrid, options) => {
-        try {
-          const currentAttribute = this.getAttribute(attrid);
-          event.prevent = !this._triggerAttributeControllerEvent(
-            "attributeHelperResponse",
-            event,
-            currentAttribute,
-            this.getProperties(),
-            currentAttribute,
-            options
-          );
-        } catch (error) {
-          if (!(error instanceof ErrorModelNonInitialized)) {
-            console.error(error);
-          }
-        }
-      }
-    );
-    this._model.listenTo(
-      this._model,
-      "helperSelect",
-      (event, attrid, options) => {
-        try {
-          const currentAttribute = this.getAttribute(attrid);
-          event.prevent = !this._triggerAttributeControllerEvent(
-            "attributeHelperSelect",
-            event,
-            currentAttribute,
-            this.getProperties(),
-            currentAttribute,
-            options
-          );
-        } catch (error) {
-          if (!(error instanceof ErrorModelNonInitialized)) {
-            console.error(error);
-          }
-        }
-      }
-    );
+    });
 
     // listener to prevent default actions when anchorClick is triggered
-    this._model.listenTo(
-      this._model,
-      "anchorClick",
-      (event, attrid, options) => {
-        try {
-          const currentAttribute = this.getAttribute(attrid);
-          event.prevent = !this._triggerAttributeControllerEvent(
-            "attributeAnchorClick",
-            event,
-            currentAttribute,
-            this.getProperties(),
-            currentAttribute,
-            options.$el,
-            options.index,
-            options.options
-          );
-        } catch (error) {
-          if (!(error instanceof ErrorModelNonInitialized)) {
-            console.error(error);
-          }
+    this._model.listenTo(this._model, "anchorClick", (event, attrid, options) => {
+      try {
+        const currentAttribute = this.getAttribute(attrid);
+        event.prevent = !this._triggerAttributeControllerEvent(
+          "attributeAnchorClick",
+          event,
+          currentAttribute,
+          this.getProperties(),
+          currentAttribute,
+          options.$el,
+          options.index,
+          options.options
+        );
+      } catch (error) {
+        if (!(error instanceof ErrorModelNonInitialized)) {
+          console.error(error);
         }
       }
-    );
+    });
 
     // Generic listener for addCreateDocumentButton docid render option
-    this._model.listenTo(
-      this._model,
-      "createDialogListener",
-      (event, attrid, options) => {
-        try {
-          const currentAttribute = this.getAttribute(attrid);
-          let triggername = "attributeCreateDialogDocument";
-          // Uppercase first letter
-          triggername +=
-            options.triggerId.charAt(0).toUpperCase() +
-            options.triggerId.slice(1);
+    this._model.listenTo(this._model, "createDialogListener", (event, attrid, options) => {
+      try {
+        const currentAttribute = this.getAttribute(attrid);
+        let triggername = "attributeCreateDialogDocument";
+        // Uppercase first letter
+        triggername += options.triggerId.charAt(0).toUpperCase() + options.triggerId.slice(1);
 
-          event.prevent = !this._triggerAttributeControllerEvent(
-            triggername,
-            event,
-            currentAttribute,
-            this.getProperties(),
-            currentAttribute,
-            options
-          );
-        } catch (error) {
-          if (!(error instanceof ErrorModelNonInitialized)) {
-            console.error(error);
-          }
+        event.prevent = !this._triggerAttributeControllerEvent(
+          triggername,
+          event,
+          currentAttribute,
+          this.getProperties(),
+          currentAttribute,
+          options
+        );
+      } catch (error) {
+        if (!(error instanceof ErrorModelNonInitialized)) {
+          console.error(error);
         }
       }
-    );
-    this._model.listenTo(
-      this._model,
-      "constraint",
-      (attribute, constraintController) => {
-        try {
-          const currentAttribute = this.getAttribute(attribute);
-          const currentModel = this.getProperties();
-          const $element = $(this._element);
-          const addConstraint = currentConstraint => {
-            if (_.isString(currentConstraint)) {
-              constraintController.addConstraintMessage(currentConstraint);
-            }
-            if (
-              _.isObject(currentConstraint) &&
-              currentConstraint.message &&
-              _.isNumber(currentConstraint.index)
-            ) {
-              constraintController.addConstraintMessage(
-                currentConstraint.message,
-                currentConstraint.index
+    });
+    this._model.listenTo(this._model, "constraint", (attribute, constraintController) => {
+      try {
+        const currentAttribute = this.getAttribute(attribute);
+        const currentModel = this.getProperties();
+        const $element = $(this._element);
+        const addConstraint = currentConstraint => {
+          if (_.isString(currentConstraint)) {
+            constraintController.addConstraintMessage(currentConstraint);
+          }
+          if (_.isObject(currentConstraint) && currentConstraint.message && _.isNumber(currentConstraint.index)) {
+            constraintController.addConstraintMessage(currentConstraint.message, currentConstraint.index);
+          }
+        };
+        Object.keys(this._activatedConstraint).forEach(key => {
+          const currentConstraint = this._activatedConstraint[key];
+          try {
+            if (currentConstraint.attributeCheck.apply($element, [currentAttribute, currentModel])) {
+              const response = currentConstraint.constraintCheck.call(
+                $element,
+                currentModel,
+                currentAttribute,
+                currentAttribute.getValue("all")
               );
-            }
-          };
-          Object.keys(this._activatedConstraint).forEach(key => {
-            const currentConstraint = this._activatedConstraint[key];
-            try {
-              if (
-                currentConstraint.attributeCheck.apply($element, [
-                  currentAttribute,
-                  currentModel
-                ])
-              ) {
-                const response = currentConstraint.constraintCheck.call(
-                  $element,
-                  currentModel,
-                  currentAttribute,
-                  currentAttribute.getValue("all")
-                );
-                if (_.isArray(response)) {
-                  _.each(response, addConstraint);
-                } else {
-                  addConstraint(response);
-                }
+              if (_.isArray(response)) {
+                _.each(response, addConstraint);
+              } else {
+                addConstraint(response);
               }
-            } catch (e) {
-              console.error(e);
             }
-          });
-        } catch (error) {
-          if (!(error instanceof ErrorModelNonInitialized)) {
-            console.error(error);
+          } catch (e) {
+            console.error(e);
           }
+        });
+      } catch (error) {
+        if (!(error instanceof ErrorModelNonInitialized)) {
+          console.error(error);
         }
       }
-    );
-    this._model.listenTo(
-      this._model,
-      "showTransition",
-      _.bind(this._initAndDisplayTransition, this)
-    );
+    });
+    this._model.listenTo(this._model, "showTransition", _.bind(this._initAndDisplayTransition, this));
     this._model.listenTo(
       this._model,
       "beforeParse",
@@ -1901,12 +1697,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
 
     this._model.listenTo(this._model, "injectCurrentSmartElementJS", event => {
       event.controller = this;
-      this._triggerControllerEvent(
-        "injectCurrentSmartElementJS",
-        null,
-        this.getProperties(),
-        event
-      );
+      this._triggerControllerEvent("injectCurrentSmartElementJS", null, this.getProperties(), event);
     });
   }
 
@@ -1948,12 +1739,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
       });
     });
     this._view.on("showMessage", message => {
-      const result = this._triggerControllerEvent(
-        "displayMessage",
-        null,
-        this.getProperties(),
-        message
-      );
+      const result = this._triggerControllerEvent("displayMessage", null, this.getProperties(), message);
       if (result) {
         this.$notification.dcpNotification("show", message.type, message);
       }
@@ -1962,12 +1748,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
       if (message) {
         message.type = message.type ? message.type : "success";
       }
-      const result = this._triggerControllerEvent(
-        "displayMessage",
-        null,
-        this.getProperties(),
-        message
-      );
+      const result = this._triggerControllerEvent("displayMessage", null, this.getProperties(), message);
       if (result) {
         this.$notification.dcpNotification("showSuccess", message);
       }
@@ -2059,115 +1840,74 @@ export default class SmartElementController extends AnakeenController.BusEvents
         });
       }
 
-      transitionInterface = new TransitionInterface(
-        transitionElements.model,
-        $target,
-        nextState,
-        transition
-      );
+      transitionInterface = new TransitionInterface(transitionElements.model, $target, nextState, transition);
 
       if (transitionElements.view) {
         // Propagate afterDisplayChange on renderDone
         transitionElements.view.once("renderTransitionWindowDone", () => {
-          this._triggerControllerEvent(
-            "afterDisplayTransition",
-            null,
-            this.getProperties(),
-            transitionInterface
-          );
+          this._triggerControllerEvent("afterDisplayTransition", null, this.getProperties(), transitionInterface);
         });
       }
 
       // Propagate the beforeTransition
-      transitionElements.model.listenTo(
-        transitionElements.model,
-        "beforeChangeState",
-        event => {
-          event.prevent = !this._triggerControllerEvent(
-            "beforeTransition",
-            null,
-            this.getProperties(),
-            transitionInterface
-          );
-        }
-      );
+      transitionElements.model.listenTo(transitionElements.model, "beforeChangeState", event => {
+        event.prevent = !this._triggerControllerEvent(
+          "beforeTransition",
+          null,
+          this.getProperties(),
+          transitionInterface
+        );
+      });
 
       // Propagate the beforeTransitionClose
-      transitionElements.model.listenTo(
-        transitionElements.model,
-        "beforeChangeStateClose",
-        event => {
-          event.prevent = !this._triggerControllerEvent(
-            "beforeTransitionClose",
-            null,
-            this.getProperties(),
-            transitionInterface
-          );
-        }
-      );
+      transitionElements.model.listenTo(transitionElements.model, "beforeChangeStateClose", event => {
+        event.prevent = !this._triggerControllerEvent(
+          "beforeTransitionClose",
+          null,
+          this.getProperties(),
+          transitionInterface
+        );
+      });
 
-      transitionElements.model.listenTo(
-        transitionElements.model,
-        "showError",
-        error => {
-          this._triggerControllerEvent(
-            "failTransition",
-            null,
-            this.getProperties(),
-            transitionInterface,
-            error
-          );
-          reject({ documentProperties: documentServerProperties });
-        }
-      );
+      transitionElements.model.listenTo(transitionElements.model, "showError", error => {
+        this._triggerControllerEvent("failTransition", null, this.getProperties(), transitionInterface, error);
+        reject({ documentProperties: documentServerProperties });
+      });
 
-      transitionElements.model.listenTo(
-        transitionElements.model,
-        "success",
-        messages => {
-          if (transitionElements.view) {
-            transitionElements.view.$el.hide();
-            this._view.once("renderDone", () => {
-              transitionElements.view.remove();
-              _.each(messages, message => {
-                this._view.trigger("showMessage", message);
-              });
+      transitionElements.model.listenTo(transitionElements.model, "success", messages => {
+        if (transitionElements.view) {
+          transitionElements.view.$el.hide();
+          this._view.once("renderDone", () => {
+            transitionElements.view.remove();
+            _.each(messages, message => {
+              this._view.trigger("showMessage", message);
             });
-          }
-
-          // delete the pop up when the render of the pop up is done
-          this._triggerControllerEvent(
-            "successTransition",
-            null,
-            this.getProperties(),
-            transitionInterface
-          );
-
-          reinitOptions = reinitOptions || { revision: -1 };
-          if (!_.has(reinitOptions, "revision")) {
-            reinitOptions.revision = -1;
-          }
-
-          // Reinit the main model with last revision
-          this.reinitSmartElement(reinitOptions).then(
-            () => {
-              resolve({ documentProperties: documentServerProperties });
-            },
-            () => {
-              reject({ documentProperties: documentServerProperties });
-            }
-          );
+          });
         }
-      );
 
-      transitionElements.model.listenTo(
-        this._model,
-        "sync",
-        function documentController_TransitionClose() {
-          // @ts-ignore
-          this.trigger("close");
+        // delete the pop up when the render of the pop up is done
+        this._triggerControllerEvent("successTransition", null, this.getProperties(), transitionInterface);
+
+        reinitOptions = reinitOptions || { revision: -1 };
+        if (!_.has(reinitOptions, "revision")) {
+          reinitOptions.revision = -1;
         }
-      );
+
+        // Reinit the main model with last revision
+        this.reinitSmartElement(reinitOptions).then(
+          () => {
+            resolve({ documentProperties: documentServerProperties });
+          },
+          () => {
+            reject({ documentProperties: documentServerProperties });
+          }
+        );
+      });
+
+      transitionElements.model.listenTo(this._model, "sync", function documentController_TransitionClose() {
+        // @ts-ignore
+        this.trigger("close");
+      });
 
       transitionElements.model.fetch({
         error: (theModel, response, options) => {
@@ -2254,11 +1994,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
     const attributes = this._model.get("attributes");
     let attribute;
     if (!attributes) {
-      throw new Error(
-        'Attribute models not initialized yet : The attribute "' +
-          attributeId +
-          '" cannot be found.'
-      );
+      throw new Error('Attribute models not initialized yet : The attribute "' + attributeId + '" cannot be found.');
     }
     attribute = this._model.get("attributes").get(attributeId);
     if (!attribute) {
@@ -2332,12 +2068,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
     const currentDocumentProperties = this.getProperties();
     this._activatedConstraint = {};
     _.each(this.listConstraints(), (currentConstraint: any) => {
-      if (
-        currentConstraint.documentCheck.call(
-          $(this._element),
-          currentDocumentProperties
-        )
-      ) {
+      if (currentConstraint.documentCheck.call($(this._element), currentDocumentProperties)) {
         this._activatedConstraint[currentConstraint.name] = currentConstraint;
       }
     });
@@ -2351,14 +2082,10 @@ export default class SmartElementController extends AnakeenController.BusEvents
    * @param eventName
    * @param originalEvent
    * @param attributeInternalElement
+   * @param args
    * @returns {boolean}
    */
-  private _triggerAttributeControllerEvent(
-    eventName,
-    originalEvent,
-    attributeInternalElement,
-    ...args
-  ) {
+  private _triggerAttributeControllerEvent(eventName, originalEvent, attributeInternalElement, ...args) {
     const event: any = $.Event(eventName);
     let externalEventArgument;
     const $element = $(this._element);
@@ -2376,10 +2103,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
           if (!_.isFunction(currentEvent.attributeCheck)) {
             return true;
           }
-          return currentEvent.attributeCheck.apply($element, [
-            attributeInternalElement,
-            this.getProperties()
-          ]);
+          return currentEvent.attributeCheck.apply($element, [attributeInternalElement, this.getProperties()]);
         }
         return false;
       })
@@ -2441,6 +2165,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
     // return !event.isDefaultPrevented();
   }
 
+  // noinspection JSMethodCanBeStatic
   /**
    * Trigger event as jQuery standard events (all events are prefixed by document)
    *
@@ -2448,16 +2173,16 @@ export default class SmartElementController extends AnakeenController.BusEvents
    * @param args
    */
   private _triggerExternalEvent(type, ...args) {
-    const event = $.Event(type);
+    // const event = $.Event(type);
     // prepare argument for widget event trigger (we want type, event, data)
     // add the eventObject
-    args.unshift(event);
+    // args.unshift(event);
     // add the type
-    args.unshift(type);
+    // args.unshift(type);
     // concatenate other argument in one element (to respect widget pattern)
-    args[2] = args.slice(2);
+    // args[2] = args.slice(2);
     // suppress other arguments (since they have been concatened)
-    args = args.slice(0, 3);
+    // args = args.slice(0, 3);
     // trigger external event
     // TODO Trigger external event
     // this._trigger.apply(this, args);
@@ -2494,9 +2219,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
    */
   private checkInitialisedView() {
     if (!this._initialized.view) {
-      throw new ErrorModelNonInitialized(
-        "The view is not initialized, use fetchSmartElement to initialise it."
-      );
+      throw new ErrorModelNonInitialized("The view is not initialized, use fetchSmartElement to initialise it.");
     }
   }
 
@@ -2518,15 +2241,9 @@ export default class SmartElementController extends AnakeenController.BusEvents
           if (options && _.isFunction(options.success)) {
             try {
               if (window.console.warn) {
-                window.console.warn(
-                  'Callback "success" is deprecated use promise instead'
-                );
+                window.console.warn('Callback "success" is deprecated use promise instead');
               }
-              options.success.call(
-                $(this._element),
-                values.documentProperties || {},
-                this.getProperties()
-              );
+              options.success.call($(this._element), values.documentProperties || {}, this.getProperties());
             } catch (exception) {
               // @ts-ignore
               if (window.dcp.logger) {
@@ -2549,44 +2266,25 @@ export default class SmartElementController extends AnakeenController.BusEvents
 
           if (values.arguments) {
             try {
-              if (
-                errorArguments &&
-                errorArguments[1] &&
-                errorArguments[1].responseJSON
-              ) {
+              if (errorArguments && errorArguments[1] && errorArguments[1].responseJSON) {
                 errorMessage = errorArguments[1].responseJSON.messages[0];
               }
             } catch (e) {
               // no error here
             }
-            if (
-              errorArguments &&
-              errorArguments[0] &&
-              errorArguments[0].eventPrevented
-            ) {
+            if (errorArguments && errorArguments[0] && errorArguments[0].eventPrevented) {
               errorMessage = { contentText: "Event prevented" };
             }
-            if (
-              errorArguments &&
-              errorArguments[0] &&
-              errorArguments[0].errorMessage
-            ) {
+            if (errorArguments && errorArguments[0] && errorArguments[0].errorMessage) {
               errorMessage = errorArguments[0].errorMessage;
             }
           }
           if (options && _.isFunction(options.error)) {
             try {
               if (window.console.warn) {
-                window.console.warn(
-                  'Callback "error" is deprecated use promise instead'
-                );
+                window.console.warn('Callback "error" is deprecated use promise instead');
               }
-              options.error.call(
-                $(this._element),
-                values.documentProperties || {},
-                null,
-                errorMessage
-              );
+              options.error.call($(this._element), values.documentProperties || {}, null, errorMessage);
             } catch (exception) {
               // @ts-ignore
               window.dcp.logger(exception);
@@ -2609,8 +2307,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
   }
 
   private _registerListener(event) {
-    this._registeredListeners[this._getModelUID()] =
-      this._registeredListeners[this._getModelUID()] || {};
+    this._registeredListeners[this._getModelUID()] = this._registeredListeners[this._getModelUID()] || {};
     this._registeredListeners[this._getModelUID()][event.eventType] =
       this._registeredListeners[this._getModelUID()][event.eventType] || [];
     this._registeredListeners[this._getModelUID()][event.eventType].push(event);
@@ -2628,10 +2325,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
     }
 
     // Check if the event is for the current document
-    if (
-      !_.isFunction(newEvent.check) ||
-      newEvent.check.call($element, currentElementProperties)
-    ) {
+    if (!_.isFunction(newEvent.check) || newEvent.check.call($element, currentElementProperties)) {
       if (newEvent.once) {
         this.once(newEvent.eventType, newEvent);
       } else {
@@ -2644,11 +2338,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
           event.target = this._element;
           try {
             // add element as function context
-            newEvent.eventCallback.call(
-              $element,
-              event,
-              currentElementProperties
-            );
+            newEvent.eventCallback.call($element, event, currentElementProperties);
           } catch (e) {
             console.error(e);
           }
@@ -2659,10 +2349,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
           event.target = this._element;
           _.each(this._getRenderedAttributes(), (currentAttribute: any) => {
             const objectAttribute = this.getAttribute(currentAttribute.id);
-            if (
-              !_.isFunction(newEvent.attributeCheck) ||
-              newEvent.attributeCheck.apply($element, [objectAttribute])
-            ) {
+            if (!_.isFunction(newEvent.attributeCheck) || newEvent.attributeCheck.apply($element, [objectAttribute])) {
               try {
                 // add element as function context
                 newEvent.eventCallback.call(
@@ -2697,9 +2384,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
           } else {
             this.on(currentEvent.eventType, currentEvent);
           }
-        } else if (
-          currentEvent.check.call($(this._element), currentProperties)
-        ) {
+        } else if (currentEvent.check.call($(this._element), currentProperties)) {
           if (currentEvent.once) {
             this.once(currentEvent.eventType, currentEvent);
           } else {
@@ -2711,20 +2396,17 @@ export default class SmartElementController extends AnakeenController.BusEvents
     // Trigger new added ready event
     if (this._initialized.view && initOptions.launchReady) {
       this._triggerControllerEvent("ready", null, currentProperties);
-      _.each(
-        this._getRenderedAttributes(),
-        (currentAttribute: AttributeInterface) => {
-          const objectAttribute = this.getAttribute(currentAttribute.id);
-          this._triggerAttributeControllerEvent(
-            "attributeReady",
-            null,
-            currentAttribute,
-            currentProperties,
-            objectAttribute,
-            currentAttribute.view.elements
-          );
-        }
-      );
+      _.each(this._getRenderedAttributes(), (currentAttribute: AttributeInterface) => {
+        const objectAttribute = this.getAttribute(currentAttribute.id);
+        this._triggerAttributeControllerEvent(
+          "attributeReady",
+          null,
+          currentAttribute,
+          currentProperties,
+          objectAttribute,
+          currentAttribute.view.elements
+        );
+      });
     }
   }
 }

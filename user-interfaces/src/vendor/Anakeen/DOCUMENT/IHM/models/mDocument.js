@@ -3,6 +3,7 @@ define([
   "jquery",
   "underscore",
   "backbone",
+  "./libSmartForm",
   "little-loader",
   "dcpDocument/models/mDocumentProperties",
   "dcpDocument/models/mDocumentLock",
@@ -14,6 +15,7 @@ define([
   $,
   _,
   Backbone,
+  LibSmartForm,
   load,
   DocumentProperties,
   DocumentLock,
@@ -24,11 +26,7 @@ define([
 ) {
   "use strict";
 
-  var flattenAttributes = function mDocumentflattenAttributes(
-    currentAttributes,
-    attributes,
-    parent
-  ) {
+  var flattenAttributes = function mDocumentflattenAttributes(currentAttributes, attributes, parent) {
     if (!_.isArray(attributes)) {
       attributes = _.values(attributes);
     }
@@ -42,11 +40,7 @@ define([
       if (currentAttr.content) {
         currentAttributes = _.union(
           currentAttributes,
-          flattenAttributes(
-            currentAttributes,
-            currentAttr.content,
-            currentAttr.id
-          )
+          flattenAttributes(currentAttributes, currentAttr.content, currentAttr.id)
         );
       }
     });
@@ -84,17 +78,13 @@ define([
       var revision = this.get("revision");
 
       if (this.get("creationFamid") && this.id === null) {
-        urlData +=
-          "smart-structures/" +
-          encodeURIComponent(this.get("creationFamid")) +
-          "/documentsViews/";
+        urlData += "smart-structures/" + encodeURIComponent(this.get("creationFamid")) + "/documentsViews/";
       } else {
         urlData += "smart-elements/" + encodeURIComponent(this.id);
         //Don't add revision for the deletion of a alive document
         if (revision !== null && currentMethod !== "delete") {
           if (_.isObject(revision) && revision.state) {
-            urlData +=
-              "/revisions/" + encodeURIComponent("state:" + revision.state);
+            urlData += "/revisions/" + encodeURIComponent("state:" + revision.state);
           } else if (revision >= 0) {
             urlData += "/revisions/" + encodeURIComponent(revision);
           }
@@ -114,13 +104,8 @@ define([
         urlData += "/views/" + encodeURIComponent(viewId);
       }
 
-      if (
-        !_.isEmpty(customClientData) &&
-        (currentMethod === "read" || currentMethod === "delete")
-      ) {
-        urlData +=
-          "?customClientData=" +
-          encodeURIComponent(JSON.stringify(customClientData));
+      if (!_.isEmpty(customClientData) && (currentMethod === "read" || currentMethod === "delete")) {
+        urlData += "?customClientData=" + encodeURIComponent(JSON.stringify(customClientData));
       }
       return urlData;
     },
@@ -133,9 +118,13 @@ define([
      * @returns {*}
      */
     sync: function mDocumentSync(method, model, options) {
-      this.set("currentHttpMethod", method); // record for url method
-      options.attrs = this._customRequestData;
-      return Backbone.Model.prototype.sync.apply(this, arguments);
+      if (this._formConfiguration) {
+        LibSmartForm.smartFormSync(method, model, options);
+      } else {
+        this.set("currentHttpMethod", method); // record for url method
+        options.attrs = this._customRequestData;
+        return Backbone.Model.prototype.sync.apply(this, arguments);
+      }
     },
     /**
      * Initialize event handling
@@ -147,63 +136,35 @@ define([
       this.listenTo(this, "dduiDocumentFail", this.propagateSynchroError);
       this.listenTo(this, "destroy", this.destroySubcollection);
       this.listenTo(this, "destroy", this.unbindLoadEvent);
-      $(window).on(
-        "beforeunload." + this.cid,
-        function mDocumentBeforeUnload() {
-          var security = theModel.get("properties")
-              ? theModel.get("properties").get("security")
-              : null,
-            event = { prevent: false };
-          if (theModel.hasAttributesChanged()) {
-            return i18n.___(
-              "The form has been modified and is is not saved",
-              "ddui"
-            );
-          }
-
-          theModel.trigger(
-            "beforeClose",
-            event,
-            theModel.getServerProperties(),
-            this._customClientData
-          );
-
-          if (event.prevent) {
-            return i18n.___("Unable to close the document", "ddui");
-          }
-
-          if (
-            theModel.get("renderMode") === "edit" &&
-            security &&
-            security.lock &&
-            security.lock.temporary
-          ) {
-            // No use model destroy : page is destroyed before request is some case
-            $.ajax({
-              url:
-                "/api/v2/smart-elements/" +
-                theModel.get("initid") +
-                "/locks/temporary",
-              type: "DELETE",
-              async: false
-            });
-            theModel.set("unlocking", true);
-          }
+      $(window).on("beforeunload." + this.cid, function mDocumentBeforeUnload() {
+        var security = theModel.get("properties") ? theModel.get("properties").get("security") : null,
+          event = { prevent: false };
+        if (theModel.hasAttributesChanged()) {
+          return i18n.___("The form has been modified and is is not saved", "ddui");
         }
-      );
+
+        theModel.trigger("beforeClose", event, theModel.getServerProperties(), this._customClientData);
+
+        if (event.prevent) {
+          return i18n.___("Unable to close the document", "ddui");
+        }
+
+        if (theModel.get("renderMode") === "edit" && security && security.lock && security.lock.temporary) {
+          // No use model destroy : page is destroyed before request is some case
+          $.ajax({
+            url: "/api/v2/smart-elements/" + theModel.get("initid") + "/locks/temporary",
+            type: "DELETE",
+            async: false
+          });
+          theModel.set("unlocking", true);
+        }
+      });
 
       $(window).on("pagehide." + this.cid, function mDocumentPageHide(event) {
-        var security = theModel.get("properties")
-          ? theModel.get("properties").get("security")
-          : null;
+        var security = theModel.get("properties") ? theModel.get("properties").get("security") : null;
         var unlocking = theModel.get("unlocking");
 
-        theModel.trigger(
-          "close",
-          event,
-          theModel.getServerProperties(),
-          this._customClientData
-        );
+        theModel.trigger("close", event, theModel.getServerProperties(), this._customClientData);
 
         if (
           !unlocking &&
@@ -213,10 +174,7 @@ define([
           security.lock.temporary
         ) {
           $.ajax({
-            url:
-              "/api/v2/smart-elements/" +
-              theModel.get("initid") +
-              "/locks/temporary",
+            url: "/api/v2/smart-elements/" + theModel.get("initid") + "/locks/temporary",
             type: "DELETE",
             async: false
           });
@@ -253,16 +211,10 @@ define([
         var currentValue = currentAttribute.get("attributeValue"),
           i,
           arrayValues = [];
-        if (
-          currentValue === null ||
-          !currentAttribute.get("isValueAttribute")
-        ) {
+        if (currentValue === null || !currentAttribute.get("isValueAttribute")) {
           return;
         }
-        if (
-          onlyModified === true &&
-          currentAttribute.hasValueChanged() === false
-        ) {
+        if (onlyModified === true && currentAttribute.hasValueChanged() === false) {
           return;
         }
         if (currentAttribute.get("multiple")) {
@@ -288,11 +240,7 @@ define([
     setValues: function mDocumentdocumentSetValues(values) {
       this.get("attributes").each(function mDocumentSetValue(currentAttribute) {
         var newValue = values[currentAttribute.id];
-        if (
-          !newValue ||
-          !newValue.value ||
-          !currentAttribute.get("isValueAttribute")
-        ) {
+        if (!newValue || !newValue.value || !currentAttribute.get("isValueAttribute")) {
           return;
         }
         currentAttribute.set("attributeValue", newValue);
@@ -425,12 +373,8 @@ define([
           return this.id;
         }
       };
-      this.get("attributes").each(function mDocumentGetDocumentDataEach(
-        currentAttribute
-      ) {
-        documentData.attributeLabels[
-          currentAttribute.id
-        ] = currentAttribute.get("label");
+      this.get("attributes").each(function mDocumentGetDocumentDataEach(currentAttribute) {
+        documentData.attributeLabels[currentAttribute.id] = currentAttribute.get("label");
       });
       return documentData;
     },
@@ -443,11 +387,9 @@ define([
       if (!this.get("attributes")) {
         return false;
       }
-      return this.get("attributes").some(
-        function mDocumenthasAttributesChangedSome(currentAttr) {
-          return currentAttr.hasValueChanged();
-        }
-      );
+      return this.get("attributes").some(function mDocumenthasAttributesChangedSome(currentAttr) {
+        return currentAttr.hasValueChanged();
+      });
     },
 
     hasUploadingFile: function mdocumenthasUploadingFile() {
@@ -534,121 +476,95 @@ define([
         currentModel.trigger("showError", {
           errorCode: errorCode,
           title: i18n.___("Unexpected error ", "ddui") + " : " + title,
-          message:
-            parsedReturn.messages.length === 0
-              ? parsedReturn.responseText
-              : parsedReturn.messages.join(" ")
+          message: parsedReturn.messages.length === 0 ? parsedReturn.responseText : parsedReturn.messages.join(" ")
         });
       }
-      _.each(
-        parsedReturn.messages,
-        function mDocumentpropagateSynchroErrorMessages(message) {
-          switch (message.code) {
-            case "ROUTES0107": // Syntax Error
-              if (message.data && message.data.id) {
-                attrModel = currentModel.get("attributes").get(message.data.id);
+      _.each(parsedReturn.messages, function mDocumentpropagateSynchroErrorMessages(message) {
+        switch (message.code) {
+          case "ROUTES0107": // Syntax Error
+            if (message.data && message.data.id) {
+              attrModel = currentModel.get("attributes").get(message.data.id);
+              if (attrModel) {
+                attrModel.setErrorMessage(message.data.err, message.data.index);
+                currentModel.trigger("showError", {
+                  title: message.contentText,
+                  htmlMessage: message.contentHtml,
+                  message: attrModel.attributes.label + " : " + message.data.err,
+                  errorCode: message.code
+                });
+              } else {
+                currentModel.trigger("showError", {
+                  title: message.contentText,
+                  htmlMessage: message.contentHtml,
+                  message: message.data.err,
+                  errorCode: message.code
+                });
+              }
+            }
+            break;
+          case "ROUTES0109": // Constraint Error
+            if (message.data && message.data.constraint) {
+              _.each(message.data.constraint, function mDocumentpropagateSynchroError0212(constraint) {
+                attrModel = currentModel.get("attributes").get(constraint.id);
                 if (attrModel) {
-                  attrModel.setErrorMessage(
-                    message.data.err,
-                    message.data.index
-                  );
+                  attrModel.setErrorMessage(constraint.err, constraint.index);
                   currentModel.trigger("showError", {
                     title: message.contentText,
                     htmlMessage: message.contentHtml,
-                    message:
-                      attrModel.attributes.label + " : " + message.data.err,
+                    message: attrModel.attributes.label + " : " + constraint.err,
                     errorCode: message.code
                   });
                 } else {
                   currentModel.trigger("showError", {
                     title: message.contentText,
                     htmlMessage: message.contentHtml,
-                    message: message.data.err,
+                    message: constraint.err,
                     errorCode: message.code
                   });
                 }
-              }
-              break;
-            case "ROUTES0109": // Constraint Error
-              if (message.data && message.data.constraint) {
-                _.each(
-                  message.data.constraint,
-                  function mDocumentpropagateSynchroError0212(constraint) {
-                    attrModel = currentModel
-                      .get("attributes")
-                      .get(constraint.id);
-                    if (attrModel) {
-                      attrModel.setErrorMessage(
-                        constraint.err,
-                        constraint.index
-                      );
-                      currentModel.trigger("showError", {
-                        title: message.contentText,
-                        htmlMessage: message.contentHtml,
-                        message:
-                          attrModel.attributes.label + " : " + constraint.err,
-                        errorCode: message.code
-                      });
-                    } else {
-                      currentModel.trigger("showError", {
-                        title: message.contentText,
-                        htmlMessage: message.contentHtml,
-                        message: constraint.err,
-                        errorCode: message.code
-                      });
-                    }
-                  }
-                );
-              }
-              if (message.data && message.data.preStore) {
-                currentModel.trigger("showError", {
-                  title: message.contentText,
-                  htmlMessage: message.contentHtml,
-                  message: message.data.preStore,
-                  errorCode: message.code
-                });
-              }
-              break;
+              });
+            }
+            if (message.data && message.data.preStore) {
+              currentModel.trigger("showError", {
+                title: message.contentText,
+                htmlMessage: message.contentHtml,
+                message: message.data.preStore,
+                errorCode: message.code
+              });
+            }
+            break;
 
-            default:
-              if (message.exceptionMessage) {
+          default:
+            if (message.exceptionMessage) {
+              currentModel.trigger("showError", {
+                title: message.message + " " + (message.code ? message.code : ""),
+                errorCode: message.code
+              });
+            } else {
+              if (message.type === "error" && message.contentText) {
                 currentModel.trigger("showError", {
-                  title:
-                    message.message + " " + (message.code ? message.code : ""),
+                  title: message.contentText + " " + (message.code ? message.code : ""),
+                  type: message.type,
+                  message: message.contentText,
+                  htmlMessage: message.contentHtml,
                   errorCode: message.code
                 });
               } else {
-                if (message.type === "error" && message.contentText) {
-                  currentModel.trigger("showError", {
-                    title:
-                      message.contentText +
-                      " " +
-                      (message.code ? message.code : ""),
+                if (message.type && message.contentText) {
+                  currentModel.trigger("showMessage", {
+                    title: message.contentText + " " + (message.code ? message.code : ""),
                     type: message.type,
                     message: message.contentText,
                     htmlMessage: message.contentHtml,
                     errorCode: message.code
                   });
                 } else {
-                  if (message.type && message.contentText) {
-                    currentModel.trigger("showMessage", {
-                      title:
-                        message.contentText +
-                        " " +
-                        (message.code ? message.code : ""),
-                      type: message.type,
-                      message: message.contentText,
-                      htmlMessage: message.contentHtml,
-                      errorCode: message.code
-                    });
-                  } else {
-                    console.error("Error", message);
-                  }
+                  console.error("Error", message);
                 }
               }
-          }
+            }
         }
-      );
+      });
       this.trigger("dduiDocumentDisplayView");
     },
 
@@ -670,18 +586,12 @@ define([
           };
         }
 
-        this.get("attributes").each(function mDocumentvalidateClearErrorEach(
-          currentAttribute
-        ) {
+        this.get("attributes").each(function mDocumentvalidateClearErrorEach(currentAttribute) {
           currentAttribute.setErrorMessage(null);
         });
 
-        this.get("attributes").each(function mDocumentvalidateEach(
-          currentAttribute
-        ) {
-          var parentAttribute = currentDocument
-            .get("attributes")
-            .get(currentAttribute.get("parent"));
+        this.get("attributes").each(function mDocumentvalidateEach(currentAttribute) {
+          var parentAttribute = currentDocument.get("attributes").get(currentAttribute.get("parent"));
 
           if (currentAttribute.get("needed") === true) {
             var currentValue = currentAttribute.get("attributeValue"),
@@ -690,28 +600,16 @@ define([
             if (currentAttribute.get("multiple")) {
               if (parentAttribute.get("type") === "array") {
                 // Verify each index
-                _.each(currentValue, function mDocumentvalidateArray(
-                  attributeValue,
-                  index
-                ) {
+                _.each(currentValue, function mDocumentvalidateArray(attributeValue, index) {
                   //If the attribute is multiple we check if the array has a size superior to 0
                   if (_.isArray(attributeValue) && attributeValue.length > 0) {
                     return;
                   }
-                  if (
-                    (!attributeValue || !attributeValue.value) &&
-                    attributeValue.value !== 0
-                  ) {
-                    currentAttribute.setErrorMessage(
-                      i18n.___("Empty value not allowed", "ddui"),
-                      index
-                    );
+                  if ((!attributeValue || !attributeValue.value) && attributeValue.value !== 0) {
+                    currentAttribute.setErrorMessage(i18n.___("Empty value not allowed", "ddui"), index);
 
                     templateMessage = _.template(
-                      i18n.___(
-                        "{{parentLabel}} / {{label}} (row # {{index}}) is needed",
-                        "ddui"
-                      ),
+                      i18n.___("{{parentLabel}} / {{label}} (row # {{index}}) is needed", "ddui"),
                       { escape: /\{\{(.+?)\}\}/g }
                     );
                     errorMessage.push(
@@ -730,27 +628,21 @@ define([
                 }
               }
             } else {
-              if (
-                (!currentValue || !currentValue.value) &&
-                currentValue.value !== 0
-              ) {
+              if ((!currentValue || !currentValue.value) && currentValue.value !== 0) {
                 oneSuccess = false;
               }
             }
             if (!oneSuccess) {
-              templateMessage = _.template(
-                i18n.___("{{parentLabel}} / {{label}} is needed", "ddui"),
-                { escape: /\{\{(.+?)\}\}/g }
-              );
+              templateMessage = _.template(i18n.___("{{parentLabel}} / {{label}} is needed", "ddui"), {
+                escape: /\{\{(.+?)\}\}/g
+              });
               errorMessage.push(
                 templateMessage({
                   parentLabel: parentAttribute.get("label"),
                   label: currentAttribute.get("label")
                 })
               );
-              currentAttribute.setErrorMessage(
-                i18n.___("The field must not be empty", "ddui")
-              );
+              currentAttribute.setErrorMessage(i18n.___("The field must not be empty", "ddui"));
               success = false;
             }
           }
@@ -764,9 +656,7 @@ define([
                   "\n<%- rowText %> <%= errorMessage[msg].index + 1 %> : <%= errorMessage[msg].message %>\n <% } %> "
               );
             } else {
-              templateMessage = _.template(
-                "<%= parentLabel %> / <%= label %> <%= errorMessage %>"
-              );
+              templateMessage = _.template("<%= parentLabel %> / <%= label %> <%= errorMessage %>");
             }
             errorMessage.push(
               templateMessage({
@@ -802,9 +692,7 @@ define([
      */
     cleanErrorMessages: function mDocumentCleanErrorMessages() {
       var attrModels = this.get("attributes") || [];
-      _.each(attrModels.models, function mDocumentCleanErrorMessagesEach(
-        attrModel
-      ) {
+      _.each(attrModels.models, function mDocumentCleanErrorMessagesEach(attrModel) {
         attrModel.setErrorMessage(null);
       });
     },
@@ -834,10 +722,7 @@ define([
 
       this.initialProperties = _.defaults(
         {
-          initid:
-            response.data.properties.creationView === true
-              ? null
-              : view.documentData.document.properties.initid,
+          initid: response.data.properties.creationView === true ? null : view.documentData.document.properties.initid,
           renderMode: renderMode || "view",
           viewId: response.data.properties.requestIdentifier
         },
@@ -850,10 +735,7 @@ define([
       }
 
       values = {
-        initid:
-          response.data.properties.creationView === true
-            ? null
-            : view.documentData.document.properties.initid,
+        initid: response.data.properties.creationView === true ? null : view.documentData.document.properties.initid,
         properties: view.documentData.document.properties,
         menus: view.menu,
         viewId: response.data.properties.requestIdentifier,
@@ -872,8 +754,7 @@ define([
       this._customClientData = {};
       this._customRequestData = null;
       if (response.data.properties.creationView === true) {
-        values.creationFamid =
-          view.documentData.document.properties.family.name;
+        values.creationFamid = view.documentData.document.properties.family.name;
       } else {
         values.creationFamid = false;
       }
@@ -903,249 +784,168 @@ define([
         keyOrValues.menus = new CollectionMenus(keyOrValues.menus);
       }
       if (keyOrValues === "attributes") {
-        value = new CollectionAttributes(value, {
-          documentModel: currentModel,
-          renderOptions: currentModel.get("renderOptions"),
-          renderMode: currentModel.get("renderMode")
-        });
+        try {
+          value = new CollectionAttributes(value, {
+            documentModel: currentModel,
+            renderOptions: currentModel.get("renderOptions"),
+            renderMode: currentModel.get("renderMode")
+          });
+        } catch (e) {
+          console.error(e);
+        }
         //Set the internal content collection (for structure attributes)
-        value.each(function mDocumentsetValuesEachAttributes(
-          currentAttributeModel
-        ) {
+        value.each(function mDocumentsetValuesEachAttributes(currentAttributeModel) {
           if (currentAttributeModel.get("isValueAttribute")) {
             return;
           }
-          var childAttributes = value.filter(
-            function mDocumentsetValuesEachAttributesFilter(
-              candidateChildModel
-            ) {
-              return (
-                candidateChildModel.get("parent") === currentAttributeModel.id
-              );
-            }
-          );
+          var childAttributes = value.filter(function mDocumentsetValuesEachAttributesFilter(candidateChildModel) {
+            return candidateChildModel.get("parent") === currentAttributeModel.id;
+          });
           if (childAttributes.length > 0) {
             currentAttributeModel.setContentCollection(childAttributes);
           }
         });
         //Propagate the change event to the model
-        currentModel.listenTo(
-          value,
-          "change:attributeValue",
-          function mDocumentsetValuesListenChange(model) {
-            _.defer(function mDocumentAttributeChangerTrigger() {
-              currentModel.trigger("changeValue", {
-                attributeId: model.id
-              });
+        currentModel.listenTo(value, "change:attributeValue", function mDocumentsetValuesListenChange(model) {
+          _.defer(function mDocumentAttributeChangerTrigger() {
+            currentModel.trigger("changeValue", {
+              attributeId: model.id
             });
-          }
-        );
+          });
+        });
         //Propagate the validate event to the model
-        currentModel.listenTo(
-          value,
-          "constraint",
-          function mDocumentsetValuesListenConstraint(options) {
-            currentModel.trigger(
-              "constraint",
-              options.model.id,
-              options.response
-            );
-          }
-        );
+        currentModel.listenTo(value, "constraint", function mDocumentsetValuesListenConstraint(options) {
+          currentModel.trigger("constraint", options.model.id, options.response);
+        });
         //Propagate the renderDone event of the attributes to the model
-        currentModel.listenTo(
-          value,
-          "renderDone",
-          function mDocumentsetValuesListenRenderDone(options) {
-            currentModel.trigger(
-              "attributeRender",
-              options.model.id,
-              options.$el,
-              options.index
-            );
-          }
-        );
+        currentModel.listenTo(value, "renderDone", function mDocumentsetValuesListenRenderDone(options) {
+          currentModel.trigger("attributeRender", options.model.id, options.$el, options.index);
+        });
         //Propagate the beforeRender event of the attributes to the model
-        currentModel.listenTo(
-          value,
-          "beforeRender",
-          function mDocumentsetValuesListenBeforeRender(event, options) {
-            currentModel.trigger(
-              "beforeAttributeRender",
-              event,
-              options.model.id,
-              options.$el,
-              options.index
-            );
-          }
-        );
+        currentModel.listenTo(value, "beforeRender", function mDocumentsetValuesListenBeforeRender(event, options) {
+          currentModel.trigger("beforeAttributeRender", event, options.model.id, options.$el, options.index);
+        });
         //Propagate the array event modified to the model
-        currentModel.listenTo(
-          value,
-          "array",
-          function mDocumentsetValuesListenArray(type, model, options) {
-            currentModel.trigger("arrayModified", {
-              attributeId: model.id,
-              type: type,
-              options: options
-            });
-          }
-        );
+        currentModel.listenTo(value, "array", function mDocumentsetValuesListenArray(type, model, options) {
+          currentModel.trigger("arrayModified", {
+            attributeId: model.id,
+            type: type,
+            options: options
+          });
+        });
         //Propagate the event externalLinkSelected to the model
-        currentModel.listenTo(
-          value,
-          "internalLinkSelected",
-          function mDocumentsetValuesListenLinkSelected(event, options) {
-            currentModel.trigger("internalLinkSelected", event, options);
-          }
-        );
+        currentModel.listenTo(value, "internalLinkSelected", function mDocumentsetValuesListenLinkSelected(
+          event,
+          options
+        ) {
+          currentModel.trigger("internalLinkSelected", event, options);
+        });
         //Propagate the event downloadFile to the model
-        currentModel.listenTo(
-          value,
-          "downloadFile",
-          function mDocumentsetValuesListenDownloadfile(
-            event,
-            attrid,
-            options
-          ) {
-            currentModel.trigger("downloadFile", event, attrid, options);
-          }
-        );
+        currentModel.listenTo(value, "downloadFile", function mDocumentsetValuesListenDownloadfile(
+          event,
+          attrid,
+          options
+        ) {
+          currentModel.trigger("downloadFile", event, attrid, options);
+        });
 
         //Propagate the event uploadFile to the model
-        currentModel.listenTo(
-          value,
-          "uploadFile",
-          function mDocumentListenUploadfileStart(event, attrid, options) {
-            var attr, attrValue;
-            currentModel.trigger("uploadFile", event, attrid, options);
+        currentModel.listenTo(value, "uploadFile", function mDocumentListenUploadfileStart(event, attrid, options) {
+          var attr, attrValue;
+          currentModel.trigger("uploadFile", event, attrid, options);
 
-            if (!event.prevent) {
-              attr = currentModel.get("attributes").get(attrid);
+          if (!event.prevent) {
+            attr = currentModel.get("attributes").get(attrid);
 
-              currentModel._uploadingFile++;
+            currentModel._uploadingFile++;
 
-              if (attr) {
-                attrValue = attr.get("attributeValue");
-                if (options.index >= 0) {
-                  attrValue = _.clone(attrValue);
-                  attrValue[options.index] = {
-                    value: "-^-",
-                    displayValue: "Uploading"
-                  };
-                } else {
-                  attrValue = { value: "--", displayValue: "Uploading" };
-                }
-                // Use Silent to not redraw widget - it will be redraw at the end of uploading
-                attr.set("attributeValue", attrValue, { silent: true });
-                currentModel.trigger("changeValue", {
-                  attributeId: attrid
-                });
+            if (attr) {
+              attrValue = attr.get("attributeValue");
+              if (options.index >= 0) {
+                attrValue = _.clone(attrValue);
+                attrValue[options.index] = {
+                  value: "-^-",
+                  displayValue: "Uploading"
+                };
+              } else {
+                attrValue = { value: "--", displayValue: "Uploading" };
               }
+              // Use Silent to not redraw widget - it will be redraw at the end of uploading
+              attr.set("attributeValue", attrValue, { silent: true });
+              currentModel.trigger("changeValue", {
+                attributeId: attrid
+              });
             }
           }
-        );
+        });
 
         //Propagate the event uploadFile to the model
-        currentModel.listenTo(
-          value,
-          "uploadFileDone",
-          function mDocumentListenuploadFileDone(event, attrid, options) {
-            currentModel._uploadingFile--;
-            currentModel.trigger("uploadFileDone", event, attrid, options);
+        currentModel.listenTo(value, "uploadFileDone", function mDocumentListenuploadFileDone(event, attrid, options) {
+          currentModel._uploadingFile--;
+          currentModel.trigger("uploadFileDone", event, attrid, options);
 
-            if (currentModel._uploadingFile <= 0) {
-              currentModel.trigger("uploadFileFinished");
-            }
+          if (currentModel._uploadingFile <= 0) {
+            currentModel.trigger("uploadFileFinished");
           }
-        );
+        });
 
         //Propagate the event helperSearch to the model
-        currentModel.listenTo(
-          value,
-          "helperSearch",
-          function mDocumentsetValuesListenHelperSearch(
-            event,
-            attrid,
-            options,
-            index
-          ) {
-            currentModel.trigger("helperSearch", event, attrid, options, index);
-          }
-        );
+        currentModel.listenTo(value, "helperSearch", function mDocumentsetValuesListenHelperSearch(
+          event,
+          attrid,
+          options,
+          index
+        ) {
+          currentModel.trigger("helperSearch", event, attrid, options, index);
+        });
         //Propagate the event helperResponse to the model
-        currentModel.listenTo(
-          value,
-          "helperResponse",
-          function mDocumentsetValuesListenHelperResponse(
-            event,
-            attrid,
-            options,
-            index
-          ) {
-            currentModel.trigger(
-              "helperResponse",
-              event,
-              attrid,
-              options,
-              index
-            );
-          }
-        );
+        currentModel.listenTo(value, "helperResponse", function mDocumentsetValuesListenHelperResponse(
+          event,
+          attrid,
+          options,
+          index
+        ) {
+          currentModel.trigger("helperResponse", event, attrid, options, index);
+        });
         //Propagate the event helperResponse to the model
-        currentModel.listenTo(
-          value,
-          "helperSelect",
-          function mDocumentsetValuesListenHelperSelect(
-            event,
-            attrid,
-            options,
-            index
-          ) {
-            currentModel.trigger("helperSelect", event, attrid, options, index);
-          }
-        );
+        currentModel.listenTo(value, "helperSelect", function mDocumentsetValuesListenHelperSelect(
+          event,
+          attrid,
+          options,
+          index
+        ) {
+          currentModel.trigger("helperSelect", event, attrid, options, index);
+        });
         //Propagate the click on an anchor to the model
-        currentModel.listenTo(
-          value,
-          "anchorClick",
-          function mDocumentsetValuesListenAnchorClicked(
-            event,
-            attrid,
-            options
-          ) {
-            currentModel.trigger("anchorClick", event, attrid, options);
-          }
-        );
+        currentModel.listenTo(value, "anchorClick", function mDocumentsetValuesListenAnchorClicked(
+          event,
+          attrid,
+          options
+        ) {
+          currentModel.trigger("anchorClick", event, attrid, options);
+        });
         //Propagate attributeBeforeTabSelect
-        currentModel.listenTo(
-          value,
-          "attributeBeforeTabSelect",
-          function mDocumentattributeBeforeTabSelect(event, attrid) {
-            currentModel.trigger("attributeBeforeTabSelect", event, attrid);
-          }
-        );
+        currentModel.listenTo(value, "attributeBeforeTabSelect", function mDocumentattributeBeforeTabSelect(
+          event,
+          attrid
+        ) {
+          currentModel.trigger("attributeBeforeTabSelect", event, attrid);
+        });
         //Propagate attributeAfterTabSelect
-        currentModel.listenTo(
-          value,
-          "attributeAfterTabSelect",
-          function mDocumentattributeAfterTabSelect(event, attrid) {
-            currentModel.trigger("attributeAfterTabSelect", event, attrid);
-          }
-        );
-        currentModel.listenTo(
-          value,
-          "attributeTabChange",
-          function mDocumentattributeTabChange(event, attrid, $el, data) {
-            currentModel.trigger(
-              "attributeTabChange",
-              event,
-              attrid,
-              $el,
-              data
-            );
-          }
-        );
+        currentModel.listenTo(value, "attributeAfterTabSelect", function mDocumentattributeAfterTabSelect(
+          event,
+          attrid
+        ) {
+          currentModel.trigger("attributeAfterTabSelect", event, attrid);
+        });
+        currentModel.listenTo(value, "attributeTabChange", function mDocumentattributeTabChange(
+          event,
+          attrid,
+          $el,
+          data
+        ) {
+          currentModel.trigger("attributeTabChange", event, attrid, $el, data);
+        });
       }
       return Backbone.Model.prototype.set.call(this, keyOrValues, value);
     },
@@ -1222,8 +1022,7 @@ define([
       // add custom css style
       var $head = $("head"),
         cssLinkTemplate = _.template(
-          '<link rel="stylesheet" type="text/css" ' +
-            'href="<%= path %>" data-injected="true">'
+          '<link rel="stylesheet" type="text/css" ' + 'href="<%= path %>" data-injected="true">'
         );
       if (!_.isArray(customCss)) {
         throw new Error("The css to inject must be an array of string path");
@@ -1272,10 +1071,7 @@ define([
         error,
         properties = this.getServerProperties();
 
-      promise = new Promise(function mDocument_promiseInternObject(
-        resolve,
-        reject
-      ) {
+      promise = new Promise(function mDocument_promiseInternObject(resolve, reject) {
         success = function onSuccess(values) {
           var successArguments = values;
           if (values && successArguments["promiseArguments"]) {
@@ -1325,10 +1121,7 @@ define([
     _loadDocument: function mDocumentLoadDocument(currentModel) {
       var properties = this.getServerProperties();
 
-      return new Promise(function mDocument_promiseLoadDocument(
-        resolve,
-        reject
-      ) {
+      return new Promise(function mDocument_promiseLoadDocument(resolve, reject) {
         //Complete the structure after
         currentModel._completeStructure().then(
           function onGetStructureDone() {
@@ -1340,10 +1133,7 @@ define([
                 });
               },
               function mDocument_injectJSFail() {
-                currentModel.message = i18n.___(
-                  "JS resources could not be loaded",
-                  "ddui"
-                );
+                currentModel.message = i18n.___("JS resources could not be loaded", "ddui");
                 reject({
                   documentProperties: properties,
                   promiseArguments: arguments
@@ -1356,10 +1146,7 @@ define([
               documentProperties: properties,
               promiseArguments: arguments
             });
-            currentModel.trigger.apply(
-              currentModel,
-              _.union(["dduiDocumentFail"], values.promiseArguments)
-            );
+            currentModel.trigger.apply(currentModel, _.union(["dduiDocumentFail"], values.promiseArguments));
           }
         );
       });
@@ -1385,17 +1172,10 @@ define([
         //***********Lock Part*********************************************************************************
 
         // Verify if current document need to be unlocked before fetch another
-        security = currentModel.get("properties")
-          ? currentModel.get("properties").get("security")
-          : null;
+        security = currentModel.get("properties") ? currentModel.get("properties").get("security") : null;
         previousMode = currentModel.get("renderMode");
 
-        if (
-          previousMode === "edit" &&
-          security &&
-          security.lock &&
-          security.lock.temporary
-        ) {
+        if (previousMode === "edit" && security && security.lock && security.lock.temporary) {
           needToUnlock = {
             initid: serverProperties.initid
           };
@@ -1404,10 +1184,7 @@ define([
         nextView = values.viewId;
 
         if (!nextView) {
-          nextView =
-            currentModel.get("renderMode") === "edit"
-              ? "!defaultEdition"
-              : "!defaultConsultation";
+          nextView = currentModel.get("renderMode") === "edit" ? "!defaultEdition" : "!defaultConsultation";
         }
 
         if (
@@ -1445,10 +1222,7 @@ define([
                 },
                 error: function() {
                   currentModel.trigger("showMessage", {
-                    title: i18n.___(
-                      "Document has been locked by someone else.",
-                      "ddui"
-                    ),
+                    title: i18n.___("Document has been locked by someone else.", "ddui"),
                     type: "info"
                   });
                   lockCallback.success();
@@ -1472,12 +1246,9 @@ define([
         lockCallback.promise.then(
           function mdocument_lockSucess() {
             //save the new options in the currentDocument for the fetch
-            _.each(
-              _.pick(values, "initid", "revision", "viewId"),
-              function mDocument_SetNewOptions(value, key) {
-                currentModel.set(key, value);
-              }
-            );
+            _.each(_.pick(values, "initid", "revision", "viewId"), function mDocument_SetNewOptions(value, key) {
+              currentModel.set(key, value);
+            });
             currentModel.fetch(documentCallback);
           },
           function mDocument_lockFail() {
@@ -1503,9 +1274,7 @@ define([
             function mDocument_loadDocumentFail(values) {
               globalCallback.error.apply(
                 currentModelProperties,
-                values && values.promiseArguments
-                  ? values.promiseArguments
-                  : values
+                values && values.promiseArguments ? values.promiseArguments : values
               );
             }
           );
@@ -1524,28 +1293,16 @@ define([
             options.success(values);
           }
           currentModel.trigger("close", serverProperties);
-          currentModel.trigger.apply(
-            currentModel,
-            _.union(["dduiDocumentReady"], values.promiseArguments)
-          );
+          currentModel.trigger.apply(currentModel, _.union(["dduiDocumentReady"], values.promiseArguments));
         },
         function onPrepareDocumentFail(values) {
           if (_.isFunction(options.error)) {
             options.error(values);
           }
-          if (
-            !(
-              values.promiseArguments &&
-              values.promiseArguments[0] &&
-              values.promiseArguments[0].eventPrevented
-            )
-          ) {
+          if (!(values.promiseArguments && values.promiseArguments[0] && values.promiseArguments[0].eventPrevented)) {
             currentModel.trigger.apply(
               currentModel,
-              _.union(
-                ["dduiDocumentFail", currentModel],
-                values.promiseArguments[0]
-              )
+              _.union(["dduiDocumentFail", currentModel], values.promiseArguments[0])
             );
             currentModel.trigger("displayNetworkError");
           }
@@ -1560,12 +1317,7 @@ define([
       });
 
       //Trigger (synchronous) before close event
-      this.trigger(
-        "beforeClose",
-        beforeCloseReturn,
-        values,
-        this._customClientData
-      );
+      this.trigger("beforeClose", beforeCloseReturn, values, this._customClientData);
 
       const beforeClosePromise = this._getBeforeEventPromise(
         beforeCloseReturn,
@@ -1573,16 +1325,12 @@ define([
           if (options.force === true) {
             changeDocument();
           } else {
-            this.trigger(
-              "displayCloseDocument",
-              changeDocument,
-              function mDocumentFetchUserCancel(error) {
-                //Reinit properties
-                currentModel.set(serverProperties);
-                //Indicate success to the promise object
-                globalCallback.error(error);
-              }
-            );
+            this.trigger("displayCloseDocument", changeDocument, function mDocumentFetchUserCancel(error) {
+              //Reinit properties
+              currentModel.set(serverProperties);
+              //Indicate success to the promise object
+              globalCallback.error(error);
+            });
           }
         },
         () => {
@@ -1637,13 +1385,10 @@ define([
               title: i18n.___("Waiting uploads in progress", "ddui"),
               type: "info"
             });
-            currentModel.once(
-              "uploadFileFinished",
-              function mDocumentsetValuesListenUploadUntilTheEnd(/*event*/) {
-                currentModel.trigger("displayLoading", { isSaving: true });
-                currentModel.save(attributes, saveCallback);
-              }
-            );
+            currentModel.once("uploadFileFinished", function mDocumentsetValuesListenUploadUntilTheEnd(/*event*/) {
+              currentModel.trigger("displayLoading", { isSaving: true });
+              currentModel.save(attributes, saveCallback);
+            });
           } else {
             this.trigger("displayLoading", { isSaving: true });
             currentModel.save(attributes, saveCallback);
@@ -1661,26 +1406,14 @@ define([
           if (_.isFunction(options.success)) {
             options.success();
           }
-          currentModel.trigger.apply(
-            currentModel,
-            _.union(["dduiDocumentReady"], values.promiseArguments)
-          );
+          currentModel.trigger.apply(currentModel, _.union(["dduiDocumentReady"], values.promiseArguments));
         },
         function onSaveFail(values) {
           if (_.isFunction(options.error)) {
             options.error();
           }
-          if (
-            !(
-              values.promiseArguments &&
-              values.promiseArguments[0] &&
-              values.promiseArguments[0].eventPrevented
-            )
-          ) {
-            currentModel.trigger.apply(
-              currentModel,
-              _.union(["dduiDocumentFail"], values.promiseArguments)
-            );
+          if (!(values.promiseArguments && values.promiseArguments[0] && values.promiseArguments[0].eventPrevented)) {
+            currentModel.trigger.apply(currentModel, _.union(["dduiDocumentFail"], values.promiseArguments));
           }
         }
       );
@@ -1708,16 +1441,14 @@ define([
         this.trigger("displayLoading");
         deleteCallback.promise.then(
           function mDocument_deleteDone() {
-            currentModel
-              .fetchDocument({ initid: currentModel.get("initid") })
-              .then(
-                function mDocument_afterDeleteLoadDone() {
-                  globalCallback.success();
-                },
-                function mDocument_afterDeleteLoadFail() {
-                  globalCallback.error.apply(currentModel, arguments);
-                }
-              );
+            currentModel.fetchDocument({ initid: currentModel.get("initid") }).then(
+              function mDocument_afterDeleteLoadDone() {
+                globalCallback.success();
+              },
+              function mDocument_afterDeleteLoadFail() {
+                globalCallback.error.apply(currentModel, arguments);
+              }
+            );
           },
           function mDocument_deleteFail() {
             globalCallback.error.apply(currentModel, arguments);
@@ -1734,28 +1465,16 @@ define([
           if (_.isFunction(options.success)) {
             options.success();
           }
-          currentModel.trigger.apply(
-            currentModel,
-            _.union(["dduiDocumentReady"], values.promiseArguments)
-          );
+          currentModel.trigger.apply(currentModel, _.union(["dduiDocumentReady"], values.promiseArguments));
         },
         function onDeleteFail(values) {
           if (_.isFunction(options.error)) {
             options.error();
           }
-          if (
-            !(
-              values.promiseArguments &&
-              values.promiseArguments[0] &&
-              values.promiseArguments[0].eventPrevented
-            )
-          ) {
+          if (!(values.promiseArguments && values.promiseArguments[0] && values.promiseArguments[0].eventPrevented)) {
             currentModel.trigger.apply(
               currentModel,
-              _.union(
-                ["dduiDocumentFail", currentModel],
-                values.promiseArguments
-              )
+              _.union(["dduiDocumentFail", currentModel], values.promiseArguments)
             );
           }
         }
@@ -1777,11 +1496,7 @@ define([
         if (_.isEmpty(this._customClientData)) {
           this.trigger("getCustomClientData");
         }
-        this.trigger(
-          "beforeRestore",
-          beforeRestoreEvent,
-          this._customClientData
-        );
+        this.trigger("beforeRestore", beforeRestoreEvent, this._customClientData);
 
         if (beforeRestoreEvent.prevent !== false) {
           globalCallback.error({ eventPrevented: true });
@@ -1821,10 +1536,7 @@ define([
           if (_.isFunction(options.success)) {
             options.success();
           }
-          currentModel.trigger.apply(
-            currentModel,
-            _.union(["dduiDocumentReady"], values.promiseArguments)
-          );
+          currentModel.trigger.apply(currentModel, _.union(["dduiDocumentReady"], values.promiseArguments));
         },
         function mDocument_restoreDocument_onFail(values) {
           if (_.isFunction(options.error)) {
@@ -1834,14 +1546,10 @@ define([
             !(
               values.promiseArguments &&
               values.promiseArguments[0] &&
-              (values.promiseArguments[0].eventPrevented ||
-                values.promiseArguments[0].systemError)
+              (values.promiseArguments[0].eventPrevented || values.promiseArguments[0].systemError)
             )
           ) {
-            currentModel.trigger.apply(
-              currentModel,
-              _.union(["dduiDocumentFail"], values.promiseArguments)
-            );
+            currentModel.trigger.apply(currentModel, _.union(["dduiDocumentFail"], values.promiseArguments));
           }
         }
       );
@@ -1852,19 +1560,10 @@ define([
     /**
      *
      */
-    _getBeforeEventPromise: function mDocumentBeforeEventPromise(
-      event,
-      onBeforeContinue,
-      onBeforePrevent
-    ) {
+    _getBeforeEventPromise: function mDocumentBeforeEventPromise(event, onBeforeContinue, onBeforePrevent) {
       let beforePromise = Promise.resolve();
       // Promise based prevent event
-      if (
-        event &&
-        event.promise &&
-        (event.promise instanceof Promise ||
-          typeof event.promise.then === "function")
-      ) {
+      if (event && event.promise && (event.promise instanceof Promise || typeof event.promise.then === "function")) {
         beforePromise = event.promise
           .then(() => {
             if (typeof onBeforeContinue === "function") {
@@ -1902,6 +1601,13 @@ define([
       var visibilityAttributes = this.get("renderOptions").visibilities;
       var valueAttributes = this.get("originalValues");
 
+      if (this._formConfiguration) {
+        // Family has no attributes
+        documentModel.set("attributes", LibSmartForm.getSmartFields(this._formConfiguration));
+        structurePromise.success();
+        return structurePromise.promise;
+      }
+
       if (this.get("properties").get("type") === "family") {
         // Family has no attributes
         this.set("attributes", []);
@@ -1925,10 +1631,7 @@ define([
       });
 
       mStructure.fetch({
-        success: function mDocumentCompleteStructureSuccess(
-          structureModel,
-          response
-        ) {
+        success: function mDocumentCompleteStructureSuccess(structureModel, response) {
           if (
             _.isEqual(structureModel.get("referencedocument"), {
               initid: documentModel.get("initid"),
@@ -1936,28 +1639,14 @@ define([
               revision: documentModel.get("revision")
             })
           ) {
-            var attributes = flattenAttributes(
-              attributes,
-              response.data.family.structure
-            );
-            _.each(attributes, function mDocumentCompleteStructureSuccessEach(
-              currentAttributeStructure
-            ) {
-              if (
-                currentAttributeStructure.id &&
-                valueAttributes[currentAttributeStructure.id]
-              ) {
-                currentAttributeStructure.attributeValue =
-                  valueAttributes[currentAttributeStructure.id];
-                currentAttributeStructure.needed =
-                  neededAttributes[currentAttributeStructure.id] === true;
+            var attributes = flattenAttributes(attributes, response.data.family.structure);
+            _.each(attributes, function mDocumentCompleteStructureSuccessEach(currentAttributeStructure) {
+              if (currentAttributeStructure.id && valueAttributes[currentAttributeStructure.id]) {
+                currentAttributeStructure.attributeValue = valueAttributes[currentAttributeStructure.id];
+                currentAttributeStructure.needed = neededAttributes[currentAttributeStructure.id] === true;
               }
-              if (
-                currentAttributeStructure.id &&
-                visibilityAttributes[currentAttributeStructure.id]
-              ) {
-                currentAttributeStructure.visibility =
-                  visibilityAttributes[currentAttributeStructure.id];
+              if (currentAttributeStructure.id && visibilityAttributes[currentAttributeStructure.id]) {
+                currentAttributeStructure.visibility = visibilityAttributes[currentAttributeStructure.id];
               }
             });
             documentModel.set("attributes", attributes);

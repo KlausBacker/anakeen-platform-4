@@ -4,7 +4,7 @@
  * @package FDL
 */
 
-class ErrorCodeCrudUI
+class ErrorCodeCRUDUI
 {
     /**
      * @errorCode To access to a view, document must have an associated view control

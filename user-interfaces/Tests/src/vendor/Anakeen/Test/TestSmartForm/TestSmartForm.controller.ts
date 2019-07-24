@@ -1,3 +1,4 @@
+/* tslint:disable:object-literal-sort-keys */
 import AnkSplitter from "@anakeen/internal-components/lib/Splitter";
 import AnkSmartForm from "@anakeen/user-interfaces/components/lib/AnkSmartForm";
 
@@ -16,24 +17,59 @@ import Component from "vue-class-component";
 })
 export default class TestSmartFormController extends Vue {
   public json: object = {
-    renderOptions: {},
-    structure: {
-      smartSet: {
-        childs: [
+    title:"Mon formulaire préféré",
+    type:"Invitation",
+    renderOptions: {
+      fields: {
+        my_title: {
+          description: {
+            collapsed: false,
+            htmlContent: "<p>Description du titre</p>",
+            htmlTitle: "<h3>Ceci est le titre</h3>",
+            position: "top"
+          }
+        },
+        my_firstframe: {
+          responsiveColumns: [
+            { number: 2, minWidth: "70rem", maxWidth: "100rem", grow: false },
+            { number: 3, minWidth: "100rem", maxWidth: "130rem", grow: false },
+            { number: 4, minWidth: "130rem", maxWidth: null, grow: false }
+          ]
+        }
+      }
+    },
+    structure: [
+      {
+        content: [
           {
-            smartText: {
-              label: "Title",
-              name: "my_title",
-            }
+            label: "Title",
+            name: "my_title",
+            type: "text"
+          },
+          {
+            label: "Date de rédaction",
+            name: "my_date",
+            type: "date"
+          },
+          {
+            label: "Remarques",
+            name: "my_comment",
+            type: "htmltext"
           }
         ],
         label: "My first frame",
-        name: "my_firstframe"
+        name: "my_firstframe",
+        type: "frame"
       }
-    },
-
+    ],
+    values: {
+      my_date: "2019-07-24",
+      my_title: "Hello world"
+    }
   };
-  public options: object = {};
+  public options: object = {
+    mode: "text"
+  };
 
   public panes: object[] = [
     {
