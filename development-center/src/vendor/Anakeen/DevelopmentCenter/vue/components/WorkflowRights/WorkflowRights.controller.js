@@ -361,22 +361,22 @@ export default {
         treeList.bind("dataBound", () => {
           treeList.autoFitColumn("account");
         });
-        treeList.dataSource.sort({
-          field: "accountLabel",
-          dir: "asc",
-          compare: (a, b) => {
-            const labelA = a.accountLabel;
-            const labelB = b.accountLabel;
-            if (labelA === labelB) {
-              return 0;
-            }
-            if (labelA === "Fields") return -1;
-            if (labelB === "Fields") return 1;
-            if (labelA === "Groups") return 1;
-            if (labelB === "Groups") return -1;
-            return 0;
-          }
-        });
+        // treeList.dataSource.sort({
+        //   field: "accountLabel",
+        //   dir: "asc",
+        //   compare: (a, b) => {
+        //     const labelA = a.accountLabel;
+        //     const labelB = b.accountLabel;
+        //     if (labelA === labelB) {
+        //       return 0;
+        //     }
+        //     if (labelA === "Fields") return -1;
+        //     if (labelB === "Fields") return 1;
+        //     if (labelA === "Groups") return 1;
+        //     if (labelB === "Groups") return -1;
+        //     return 0;
+        //   }
+        // });
       },
       fetchColumns: () => {
         this.$http
@@ -462,6 +462,22 @@ export default {
         id: "virtualId",
         parentId: "parentId",
         expanded: true
+      },
+      sortOptions: {
+        field: "accountLabel",
+        dir: "asc",
+        compare: (a, b) => {
+          const labelA = a.accountLabel;
+          const labelB = b.accountLabel;
+          if (labelA === labelB) {
+            return 0;
+          }
+          if (labelA === "Fields") return -1;
+          if (labelB === "Fields") return 1;
+          if (labelA === "Groups") return 1;
+          if (labelB === "Groups") return -1;
+          return 0;
+        }
       },
       profilAcls: {},
       completeList: false,
