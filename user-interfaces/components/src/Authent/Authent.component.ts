@@ -1,8 +1,12 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
+import axios from "axios";
 const a4Password = () => import("./AuthentPassword/AuthentPassword.vue");
 import { IAuthent } from "./IAuthent";
-import { _enableReady } from "../../mixins/AnkVueComponentMixin/IeventUtilsMixin";
+import {
+  $createComponentEvent,
+  _enableReady
+} from "../../mixins/AnkVueComponentMixin/IeventUtilsMixin";
 import VueSetup from "../setup.js";
 Vue.use(VueSetup);
 
@@ -14,8 +18,6 @@ Vue.use(VueSetup);
   name: "ank-authent"
 })
 export default class AuthentComponent extends Vue {
-  @Prop({ type: String, default: "authent/{login3}/?lang={lang}" })
-  public loginUrl;
   @Prop({ type: String, default: "fr_FR, en_US" }) public authentLanguages;
   @Prop({ type: String, default: "fr_FR" }) public defaultLanguage;
   public login: string = "";
@@ -219,36 +221,73 @@ export default class AuthentComponent extends Vue {
 
     let login = encodeURIComponent(this.login);
     event.preventDefault();
-    this.$http
-      .post(`/api/v2/authent/sessions/${login}`, {
-        password: this.pwd,
-        language: this.$language.current
-      })
-      .then(() => {
-        window.location.href = this.redirectUri;
-        this.wrongPassword = false;
-      })
-      .catch(e => {
-        console.error("Error", e);
-        if (e.response && e.response.data && e.response.data.exceptionMessage) {
-          let info = e.response.data;
-          if (info.code === "AUTH0001") {
-            // Normal authentication error
-            this.authentError = this.translations.authentError;
-          } else {
-            this.authentError = info.userMessage || info.exceptionMessage;
-          }
-        } else {
-          this.authentError = this.translations.authentError;
+
+    const beforeEvent = $createComponentEvent("beforeLogin", {
+      cancelable: true,
+      detail: [
+        {
+          language: this.$language.current,
+          login: this.login,
+          redirect: this.redirectUri
         }
+      ]
+    });
+    this.$emit("beforeLogin", beforeEvent);
 
-        this.wrongPassword = true;
+    if (!beforeEvent.defaultPrevented) {
+      const data = beforeEvent.detail[0];
+      this.$language.current = data.language;
+      this.login = data.login;
+      const redirectURI =
+        data.redirect === this.redirectUri ? this.redirectUri : data.redirect;
+      this.$http
+        .post(`/api/v2/authent/sessions/${login}`, {
+          language: this.$language.current,
+          password: this.pwd
+        })
+        .then(() => {
+          const afterEvent = $createComponentEvent("afterLogin", {
+            detail: [
+              {
+                language: this.$language.current,
+                login: this.login,
+                redirect: redirectURI
+              }
+            ]
+          });
+          this.$emit("afterLogin", afterEvent);
 
-        kendo.ui.progress($(this.$refs.authentForm), false);
-        $(this.$refs.loginButton).prop("disabled", false);
-      });
+          window.location.href = redirectURI;
+          this.wrongPassword = false;
+        })
+        .catch(e => {
+          console.error("Error", e);
+          if (
+            e.response &&
+            e.response.data &&
+            e.response.data.exceptionMessage
+          ) {
+            let info = e.response.data;
+            if (info.code === "AUTH0001") {
+              // Normal authentication error
+              this.authentError = this.translations.authentError;
+            } else {
+              this.authentError = info.userMessage || info.exceptionMessage;
+            }
+          } else {
+            this.authentError = this.translations.authentError;
+          }
 
-    $(this.$refs.loginButton).prop("disabled", true);
+          this.wrongPassword = true;
+
+          kendo.ui.progress($(this.$refs.authentForm), false);
+          $(this.$refs.loginButton).prop("disabled", false);
+        });
+
+      $(this.$refs.loginButton).prop("disabled", true);
+    } else {
+      kendo.ui.progress($(this.$refs.authentForm), false);
+    }
   }
 
   public forgetPassword(event) {
@@ -256,40 +295,78 @@ export default class AuthentComponent extends Vue {
 
     kendo.ui.progress($(this.$refs.authentForgetForm), true);
 
-    let login = encodeURIComponent(this.login);
+    const login = encodeURIComponent(this.login);
     event.preventDefault();
-    this.$http
-      .post(`/api/v2/authent/mailPassword/${login}`, {
-        password: this.pwd,
-        language: this.$language.current
-      })
-      .then(response => {
-        this.forgetStatusFailed = false;
-        kendo.ui.progress($(this.$refs.authentForgetForm), false);
-        this.forgetSuccess = response.data.data.message;
-        $(this.$refs.authentForgetSubmit)
-          .prop("disabled", true)
-          .hide();
-      })
-      .catch(e => {
-        console.error("Error", e);
-        if (e.response && e.response.data && e.response.data.exceptionMessage) {
-          let info = e.response.data;
 
-          if (info.messages && info.messages.length > 0) {
-            this.forgetError = info.messages[0].contentText;
-          } else {
-            this.forgetError = info.userMessage || info.exceptionMessage;
-          }
-        } else {
-          this.forgetError = this.translations.unexpectedError;
+    const beforeEvent = $createComponentEvent("beforeRequestResetPassword", {
+      cancelable: true,
+      detail: [
+        {
+          language: this.$language.current,
+          login: this.login
         }
+      ]
+    });
+    this.$emit("beforeRequestResetPassword", beforeEvent);
 
-        this.forgetStatusFailed = true;
+    if (!beforeEvent.defaultPrevented) {
+      const data = beforeEvent.detail[0];
+      this.$language.current = data.language;
+      this.login = data.login;
 
-        kendo.ui.progress($(this.$refs.authentForgetForm), false);
-        $(this.$refs.authentForgetSubmit).prop("disabled", false);
-      });
+      this.$http
+        .post(`/api/v2/authent/mailPassword/${login}`, {
+          language: this.$language.current,
+          password: this.pwd
+        })
+        .then(response => {
+          const afterEvent = $createComponentEvent(
+            "afterRequestResetPassword",
+            {
+              detail: [
+                {
+                  language: this.$language.current,
+                  login: this.login
+                }
+              ]
+            }
+          );
+          this.$emit("afterRequestResetPassword", afterEvent);
+
+          this.forgetStatusFailed = false;
+          kendo.ui.progress($(this.$refs.authentForgetForm), false);
+          this.forgetSuccess = response.data.data.message;
+          $(this.$refs.authentForgetSubmit)
+            .prop("disabled", true)
+            .hide();
+        })
+        .catch(e => {
+          console.error("Error", e);
+          if (
+            e.response &&
+            e.response.data &&
+            e.response.data.exceptionMessage
+          ) {
+            let info = e.response.data;
+
+            if (info.messages && info.messages.length > 0) {
+              this.forgetError = info.messages[0].contentText;
+            } else {
+              this.forgetError = info.userMessage || info.exceptionMessage;
+            }
+          } else {
+            this.forgetError = this.translations.unexpectedError;
+          }
+
+          this.forgetStatusFailed = true;
+
+          kendo.ui.progress($(this.$refs.authentForgetForm), false);
+          $(this.$refs.authentForgetSubmit).prop("disabled", false);
+        });
+    } else {
+      this.forgetStatusFailed = false;
+      kendo.ui.progress($(this.$refs.authentForgetForm), false);
+    }
   }
 
   public applyResetPassword(event) {
@@ -303,55 +380,81 @@ export default class AuthentComponent extends Vue {
       return;
     }
 
-    let httpAuth = this.$axios.create({
-      baseURL: "/api/v2",
-      headers: {
-        Authorization: "Token " + this.authent.authToken
-      }
-    });
-
-    kendo.ui.progress($(this.$refs.authentResetPasswordForm), true);
-
-    let login = encodeURIComponent(this.login);
-    httpAuth
-      .put(`/authent/password/${login}`, {
-        password: this.resetPwd1,
-        language: this.$language.current
-      })
-      .then(response => {
-        this.resetStatusFailed = false;
-        kendo.ui.progress($(this.$refs.authentResetPasswordForm), false);
-        this.resetSuccess = response.data.data.message;
-        window.setTimeout(() => {
-          $(this.$refs.authentGoHome).kendoButton({
-            click: () => {
-              window.location.href = "../";
-            }
-          });
-        }, 10);
-      })
-      .catch(e => {
-        if (e.response && e.response.data && e.response.data.exceptionMessage) {
-          let info = e.response.data;
-
-          if (info.messages && info.messages.length > 0) {
-            this.resetError = info.messages[0].contentText;
-          } else {
-            this.resetError =
-              e.response.data.userMessage || e.response.data.exceptionMessage;
-          }
-        } else {
-          this.resetError = this.translations.unexpectedError;
+    const beforeEvent = $createComponentEvent("beforeApplyResetPassword", {
+      cancelable: true,
+      detail: [
+        {
+          language: this.$language.current,
+          login: this.login
         }
+      ]
+    });
+    this.$emit("beforeApplyResetPassword", beforeEvent);
 
-        this.resetStatusFailed = true;
-
-        kendo.ui.progress($(this.$refs.authentResetPasswordForm), false);
-        $(this.$refs.authentForgetSubmit).prop("disabled", false);
+    if (!beforeEvent.defaultPrevented) {
+      let httpAuth = axios.create({
+        baseURL: "/api/v2",
+        headers: {
+          Authorization: "Token " + this.authent.authToken
+        }
       });
 
-    $(this.$refs.authentForgetSubmit)
-      .prop("disabled", true)
-      .hide();
+      kendo.ui.progress($(this.$refs.authentResetPasswordForm), true);
+
+      let login = encodeURIComponent(this.login);
+      httpAuth
+        .put(`/authent/password/${login}`, {
+          password: this.resetPwd1,
+          language: this.$language.current
+        })
+        .then(response => {
+          const afterEvent = $createComponentEvent("afterApplyResetPassword", {
+            detail: [
+              {
+                language: this.$language.current,
+                login: this.login
+              }
+            ]
+          });
+          this.$emit("afterApplyResetPassword", afterEvent);
+          this.resetStatusFailed = false;
+          kendo.ui.progress($(this.$refs.authentResetPasswordForm), false);
+          this.resetSuccess = response.data.data.message;
+          window.setTimeout(() => {
+            $(this.$refs.authentGoHome).kendoButton({
+              click: () => {
+                window.location.href = "../";
+              }
+            });
+          }, 10);
+        })
+        .catch(e => {
+          if (
+            e.response &&
+            e.response.data &&
+            e.response.data.exceptionMessage
+          ) {
+            let info = e.response.data;
+
+            if (info.messages && info.messages.length > 0) {
+              this.resetError = info.messages[0].contentText;
+            } else {
+              this.resetError =
+                e.response.data.userMessage || e.response.data.exceptionMessage;
+            }
+          } else {
+            this.resetError = this.translations.unexpectedError;
+          }
+
+          this.resetStatusFailed = true;
+
+          kendo.ui.progress($(this.$refs.authentResetPasswordForm), false);
+          $(this.$refs.authentForgetSubmit).prop("disabled", false);
+        });
+
+      $(this.$refs.authentForgetSubmit)
+        .prop("disabled", true)
+        .hide();
+    }
   }
 }
