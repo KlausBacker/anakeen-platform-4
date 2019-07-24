@@ -81,11 +81,9 @@ export default {
   },
   methods: {
     initHub(id) {
-      return this.$http
-        .get(`/api/v2/smart-elements/${id}.json`)
-        .then(response => {
-          this.hubElement = response.data.data.document;
-        });
+      return this.$http.get(`/api/v2/smart-elements/${id}.json`).then(response => {
+        this.hubElement = response.data.data.document;
+      });
     },
     openElement() {
       this.openDetailConfig(this.hubId);
@@ -175,12 +173,8 @@ export default {
       });
 
       data.sort((a, b) => {
-        const idxa = positionKey.indexOf(
-          a.attributes.hub_docker_position.value
-        );
-        const idxb = positionKey.indexOf(
-          b.attributes.hub_docker_position.value
-        );
+        const idxa = positionKey.indexOf(a.attributes.hub_docker_position.value);
+        const idxb = positionKey.indexOf(b.attributes.hub_docker_position.value);
         const posa = a.attributes.hub_order.value || 0;
         const posb = b.attributes.hub_order.value || 0;
 
@@ -192,9 +186,7 @@ export default {
         } else if (pa < pb) {
           return -1;
         } else if (pa === pb) {
-          const sortTitle = a.properties.title.value.localeCompare(
-            b.properties.title.value
-          );
+          const sortTitle = a.properties.title.value.localeCompare(b.properties.title.value);
           if (sortTitle > 0) {
             return 1;
           } else if (sortTitle < 0) {
