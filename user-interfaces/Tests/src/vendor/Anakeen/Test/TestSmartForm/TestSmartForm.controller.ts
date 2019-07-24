@@ -86,6 +86,11 @@ export default class TestSmartFormController extends Vue {
     }
   ];
 
+  public $refs!: {
+    smartFormRef: any;
+    smartFormSplitter: any;
+  };
+
   // noinspection JSMethodCanBeStatic
   public onError(e) {
     console.error(e);
@@ -94,5 +99,13 @@ export default class TestSmartFormController extends Vue {
   public mounted() {
     // @ts-ignore
     this.$refs.smartFormSplitter.disableEmptyContent();
+    this.$nextTick(() => {
+      this.$refs.smartFormRef.addEventListener("ready", (event, data) => {
+        console.log("ready", event, data);
+      });
+      this.$refs.smartFormRef.addEventListener("change", (event, data) => {
+        console.log("change", event, data);
+      });
+    });
   }
 }

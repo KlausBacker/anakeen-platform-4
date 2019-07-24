@@ -28,7 +28,7 @@ export default class AnkSmartForm extends Mixins(AnkSmartElement) {
 
   @Watch("config", { immediate: false, deep: true })
   public onConfigChanged(newConfig: ISmartForm) {
-    console.log("chaneg config");
+    // noinspection JSIgnoredPromiseFromCall
     this.fetchSmartElement(this.initialConfig, {
       formConfiguration: newConfig
     });
@@ -44,10 +44,6 @@ export default class AnkSmartForm extends Mixins(AnkSmartElement) {
     data.revision = this.revision;
     data.viewId = this.viewId;
     return data;
-  }
-
-  public updated() {
-    console.log("uiparte");
   }
 
   public mounted() {

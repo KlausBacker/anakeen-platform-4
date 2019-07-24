@@ -34,28 +34,20 @@ define(["jquery", "underscore"], function libSmartForm($, _) {
 
   return {
     smartFormSync: function smartFormSync(method, model, options) {
-      const formConfig = model._formConfiguration;
-      if (!defaultRenderConfig) {
-        $.getJSON("/api/v2/smart-forms/0/views/!defaultEdition")
-          .then(response => {
-            /*  response.data.view.documentData.document.properties.initid = model.get("initid");
-            response.data.view.documentData.document.properties.id = model.get("initid");
-            response.data.view.documentData.document.attributes = {};
-
-            defaultRenderConfig = response;
-            if (formConfig.renderOptions.fields) {
-              response.data.view.renderOptions.attributes = formConfig.renderOptions.fields;
-            }*/
-
-            _completeResponse(response, model);
-            options.success(response);
-          })
-          .fail(response => {
-            options.error(response);
-          });
-      } else {
-        _completeResponse(defaultRenderConfig, model);
-        options.success(defaultRenderConfig);
+      if (method === "read") {
+        if (!defaultRenderConfig) {
+          $.getJSON("/api/v2/smart-forms/0/views/!defaultEdition")
+            .then(response => {
+              _completeResponse(response, model);
+              options.success(response);
+            })
+            .fail(response => {
+              options.error(response);
+            });
+        } else {
+          _completeResponse(defaultRenderConfig, model);
+          options.success(defaultRenderConfig);
+        }
       }
     },
 
@@ -63,7 +55,6 @@ define(["jquery", "underscore"], function libSmartForm($, _) {
       let fields;
       const values = config.values || {};
       fields = _flatTheStructure(config.structure);
-      console.log("field", fields);
 
       fields.forEach(item => {
         item.visibility = item.visibility || "W";
