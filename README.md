@@ -30,7 +30,7 @@ Ensuite quelques commandes :
 
 Pour mettre en place pimp-my-log
 
-1. Lancer `make -C .devtools/docker install-pimp-my-log`
-2. Décommenter le contenu du fichier [001-anakeen-logs.conf](.devtool/docker/Docker/Volumes/php/etc/apache2/sites-enabled/custom-vhost/001-anakeen-logs.conf)
+1. Lancer `make -C .devtool/docker install-pimp-my-log`
+2. Copier le contenu du fichier [001-anakeen-logs.conf.default](.devtool/docker/Docker/Volumes/php/etc/apache2/sites-enabled/custom-vhost/001-anakeen-logs.conf.default) en `001-anakeen-logs.conf`
 3. `make start-env`
 

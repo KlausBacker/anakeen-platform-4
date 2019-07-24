@@ -12,3 +12,5 @@ node_modules
 .anakeen-cli.xml
 /control/src/.htaccess
 /control/src/.htpasswd
+.devtool/docker/.env
+.devtool/docker/Docker/Volumes/php/etc/apache2/sites-enabled/custom-vhost/001-anakeen-logs.conf
