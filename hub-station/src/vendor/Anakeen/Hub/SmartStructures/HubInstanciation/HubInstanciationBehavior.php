@@ -22,6 +22,11 @@ class HubInstanciationBehavior extends \Anakeen\SmartElement
             function () {
                 $this->affectLogicalName();
             }
+        )->addListener(
+            SmartHooks::PREIMPORT,
+            function () {
+                $this->getFavIcon();
+            }
         );
     }
 
