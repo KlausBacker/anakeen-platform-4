@@ -302,6 +302,7 @@ export default class GridKendoUtils extends AbstractGridUtil {
   prepareCheckableColumn() {
     this.vueComponent.kendoGridOptions.columns.push({
       selectable: true,
+      title: "",
       width: "50px",
       attributes: {
         class: "checkable-grid-cell grid-cell-align-center"
@@ -412,7 +413,9 @@ export default class GridKendoUtils extends AbstractGridUtil {
       this.vueComponent.gridFilter.onfilterMenuInit(e);
     };
 
-    this.vueComponent.collectionProperties = config.collection;
+    if (config.collection) {
+      this.vueComponent.collectionProperties = config.collection;
+    }
 
     this.vueComponent.kendoGridOptions.filter = e => {
       GridFilter.beforeFilterGrid(e);
@@ -526,12 +529,6 @@ export default class GridKendoUtils extends AbstractGridUtil {
       }
       this.vueComponent.dataSource = new this.vueComponent.$kendo.data.DataSource(
         this.vueComponent.kendoDataSourceOptions
-      );
-    } else if (this.vueComponent.data && this.vueComponent.data.length) {
-      this.vueComponent.dataSource = new this.vueComponent.$kendo.data.DataSource(
-        {
-          data: this.vueComponent.gridDataUtils.parseData(this.data)
-        }
       );
     }
   }

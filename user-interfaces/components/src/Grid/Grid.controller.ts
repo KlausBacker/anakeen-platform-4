@@ -84,11 +84,6 @@ export default class GridController extends Vue {
   public emptyCell;
   @Prop({
     type: String,
-    default: "N/A"
-  })
-  public notExistValue;
-  @Prop({
-    type: String,
     default: "multiple"
   })
   public sortable;
@@ -132,11 +127,6 @@ export default class GridController extends Vue {
     default: true
   })
   public resizable;
-  @Prop({
-    type: Array,
-    default: () => []
-  })
-  public data;
   @Prop({
     type: [Boolean, String],
     default: false
@@ -292,27 +282,30 @@ export default class GridController extends Vue {
                 url: this.resolveConfigUrl
               },
               null,
-              false
+              true // Cancelable
             );
             this.$emit("before-config-request", event);
-            this.$http
-              .get(event.data.url)
-              .then(response => {
-                const config = response.data.data;
-                const responseEvent = new GridEvent(
-                  {
-                    config
-                  },
-                  null,
-                  false
-                );
-                this.$emit("after-config-response", responseEvent);
-                resolve(responseEvent.data.config);
-              })
-              .catch(err => {
-                this.gridError.error(err);
-                reject(err);
-              });
+
+            if (!event.isDefaultPrevented()) {
+              this.$http
+                .get(event.data.url)
+                .then(response => {
+                  const config = response.data.data;
+                  const responseEvent = new GridEvent(
+                    {
+                      config
+                    },
+                    null,
+                    false
+                  );
+                  this.$emit("after-config-response", responseEvent);
+                  resolve(responseEvent.data.config);
+                })
+                .catch(err => {
+                  this.gridError.error(err);
+                  reject(err);
+                });
+            }
           } else {
             reject("Grid config: no config is provided");
           }
@@ -549,7 +542,7 @@ export default class GridController extends Vue {
     reorderable: this.reorderable,
     pageable: this.pageable
       ? {
-          pageSizes: this.pageSizes,
+          pageSizes: this.pageSizes === true ? [10, 20, 50] : this.pageSizes,
           numeric: false
         }
       : this.pageable,

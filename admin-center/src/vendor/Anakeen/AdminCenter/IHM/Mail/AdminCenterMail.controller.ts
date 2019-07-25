@@ -34,9 +34,6 @@ export default class AdminCenterMailController extends Vue {
         const mailId = e.data.row.name || e.data.row.id.toString();
         // @ts-ignore
         this.$refs.mailSplitter.disableEmptyContent();
-        const cb = () => {
-
-        };
         this.$nextTick(() => {
           // @ts-ignore
           this.$refs.mailSmartElement.fetchSmartElement({
