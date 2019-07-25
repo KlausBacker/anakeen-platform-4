@@ -90,6 +90,7 @@ app: install-deps buildJS
 	${ANAKEEN_CLI_BIN} build -t ${APP_OUTPUT_PATH}
 
 app-test:
+app-test-autorelease:
 
 app-all: app
 

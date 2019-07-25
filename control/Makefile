@@ -31,7 +31,7 @@ app-autorelease: tmp install compute-version
 	cd ${APP_OUTPUT_PATH} && ln -sf ./anakeen-control-$(AUTO_VERSION).zip ./anakeen-control-latest.zip
 	cp ./src/version.json ${APP_OUTPUT_PATH}
 
-app-test: app
+app-test:
 app-all: app
 deploy: app
 deploy-test: app
@@ -41,6 +41,8 @@ po:
 stub:
 	mkdir ./stubs
 checkXML:
+app-test-autorelease:
+
 clean:
 	rm -rf ${APP_OUTPUT_PATH}
 	rm -fr node_modules
