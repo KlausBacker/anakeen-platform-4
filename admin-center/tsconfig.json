@@ -7,7 +7,7 @@
     "importHelpers": true,
     "noImplicitAny": false,
     "moduleResolution": "node",
-    "types": ["node", "jquery"],
+    "types": ["node", "jquery", "kendo-ui"],
     "strictNullChecks": false,
     "sourceMap": true,
     "lib": ["dom", "esnext", "es6"]
@@ -16,5 +16,5 @@
     "./src/**/*.vue",
     "./src/**/*.ts"
   ],
-  "files": ["./vue-shims.d.ts", "./vue-type-shims.d.ts"]
+  "files": ["./vue-shims.d.ts", "./vue-type-shims.d.ts", "./kendo-shims.d.ts"]
 }

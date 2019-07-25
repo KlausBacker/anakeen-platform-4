@@ -3,8 +3,12 @@ import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
 
 Vue.use(DataSourceInstaller);
-declare var kendo;
-@Component
+@Component({
+  model: {
+    event: "workflow-selected",
+    prop: "selected"
+  }
+})
 export default class WorkflowListController extends Vue {
   @Prop({
     default: true,
@@ -31,6 +35,7 @@ export default class WorkflowListController extends Vue {
     }
   }
   public onListItemClicked(tab) {
+    this.$emit("workflow-selected", tab.id);
     this.$emit("workflow-clicked", tab);
   }
 
@@ -63,14 +68,14 @@ export default class WorkflowListController extends Vue {
   }
 
   public readData(options) {
-    kendo.ui.progress($(this.$refs.ssWflList), true);
+    kendo.ui.progress($(this.$refs.ssWflList as HTMLElement), true);
     this.$http
       .get(`/api/v2/admin/workflow/list/`, {
         params: options.data,
         paramsSerializer: kendo.jQuery.param
       })
       .then(response => {
-        kendo.ui.progress($(this.$refs.ssWflList), false);
+        kendo.ui.progress($(this.$refs.ssWflList as HTMLElement), false);
         options.success(response);
         this.$nextTick(() => {
           this.autoScrollOnSelected();
@@ -78,7 +83,7 @@ export default class WorkflowListController extends Vue {
         });
       })
       .catch(error => {
-        kendo.ui.progress($(this.$refs.ssWflList), false);
+        kendo.ui.progress($(this.$refs.ssWflList as HTMLElement), false);
         options.error(error);
       });
   }

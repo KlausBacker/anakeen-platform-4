@@ -7,21 +7,24 @@ import "@progress/kendo-ui/js/kendo.grid.js";
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
 
-declare var kendo;
-
 Vue.use(GridInstaller);
 Vue.use(DataSourceInstaller);
 @Component
 export default class WorkflowDataController extends Vue {
-  public tabData = [];
+  public gridWidget: kendo.ui.Grid = null;
   public language: string = "";
+
+  public $refs!: {
+    wflGridContent: Grid;
+  };
+
   @Prop({ type: String, default: "" }) public wflName;
   @Watch("wflName")
   public watchWflName() {
-    const grid = $(".wfl-grid-content");
-    grid.data("kendoGrid").dataSource.read();
+    this.gridWidget.dataSource.read();
   }
   public mounted() {
+    this.gridWidget = this.$refs.wflGridContent.kendoWidget() as kendo.ui.Grid;
     this.$http
       .get(`/api/v2/ui/users/current`)
       .then(
@@ -72,17 +75,17 @@ export default class WorkflowDataController extends Vue {
     return [];
   }
   public parseWflData(response) {
-    this.tabData = [];
+    const result = [];
     if (response && response.data && response.data.data) {
       response.data.data.steps.forEach(item => {
         item.type = "steps";
-        this.tabData.push(item);
+        result.push(item);
       });
       response.data.data.transitions.forEach(item => {
         item.type = "transitions";
-        this.tabData.push(item);
+        result.push(item);
       });
-      return this.tabData;
+      return result;
     }
     return [];
   }

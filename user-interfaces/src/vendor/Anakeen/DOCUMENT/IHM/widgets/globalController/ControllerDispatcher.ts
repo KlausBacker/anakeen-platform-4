@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* tslint:disable:variable-name */
 import * as $ from "jquery";
 import SmartElementController from "./SmartElementController";
@@ -10,8 +11,7 @@ import EVENTS_LIST = AnakeenController.SmartElement.EVENTS_LIST;
 interface IControllersMap {
   [key: string]: SmartElementController;
 }
-export default class ControllerDispatcher extends AnakeenController.BusEvents
-  .Listenable {
+export default class ControllerDispatcher extends AnakeenController.BusEvents.Listenable {
   protected _controllers: IControllersMap = {};
 
   public dispatch(scopeId: ControllerUniqueID, action: string, ...args: any[]) {
@@ -24,15 +24,13 @@ export default class ControllerDispatcher extends AnakeenController.BusEvents
   }
 
   public initController(dom: DOMReference, viewData: ViewData, options?) {
-    const eventsHandlerPropagation =  {};
     const _dispatcher = this;
-    EVENTS_LIST.forEach(eventType => {
-      eventsHandlerPropagation[eventType] = function(...args) {
-        // this is the controller instance
-        _dispatcher.emit(eventType,  this, ...args);
-      }
-    });
-    const controller = new SmartElementController(dom, viewData, options, eventsHandlerPropagation);
+    const globalEventHandler = function(eventType, ...args) {
+      // @ts-ignore
+      _dispatcher.emit(eventType, this, ...args);
+    };
+
+    const controller = new SmartElementController(dom, viewData, options, globalEventHandler);
     this._controllers[controller.uid] = controller;
     return controller;
   }
@@ -55,9 +53,7 @@ export default class ControllerDispatcher extends AnakeenController.BusEvents
     }
   }
 
-  public getControllers(
-    asObject?: boolean
-  ): SmartElementController[] | IControllersMap {
+  public getControllers(asObject?: boolean): SmartElementController[] | IControllersMap {
     if (asObject) {
       return this._controllers;
     }
