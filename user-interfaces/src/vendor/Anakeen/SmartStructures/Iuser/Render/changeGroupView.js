@@ -51,9 +51,7 @@ import "./changeGroupView.css";
                 groups = [];
               }
               const addUniqId = (currentElement, id = "") => {
-                currentElement.hierarchicalId = id
-                  ? id + "/" + currentElement.documentId
-                  : currentElement.documentId;
+                currentElement.hierarchicalId = id ? id + "/" + currentElement.documentId : currentElement.documentId;
                 if (currentElement.items) {
                   currentElement.items.forEach(childrenElement => {
                     addUniqId(childrenElement, currentElement.hierarchicalId);
@@ -113,12 +111,8 @@ import "./changeGroupView.css";
     {
       name: "changeGroupBeforeRender.changeGroup",
       documentCheck: documentObject => {
-        const serverData = window.dcp.document.documentController(
-          "getCustomServerData"
-        );
-        return (
-          documentObject.renderMode === "edit" && serverData["GROUP_ANALYZE"]
-        );
+        const serverData = window.dcp.document.documentController("getCustomServerData");
+        return documentObject.renderMode === "edit" && serverData["GROUP_ANALYZE"];
       }
     },
     () => {
@@ -141,28 +135,20 @@ import "./changeGroupView.css";
     {
       name: "changeGroupReady.changeGroup",
       documentCheck: documentObject => {
-        const serverData = window.dcp.document.documentController(
-          "getCustomServerData"
-        );
+        const serverData = window.dcp.document.documentController("getCustomServerData");
         currentDoc = documentObject.id;
-        return (
-          documentObject.renderMode === "edit" && serverData["GROUP_ANALYZE"]
-        );
+        return documentObject.renderMode === "edit" && serverData["GROUP_ANALYZE"];
       }
     },
     () => {
-      const serverData = window.dcp.document.documentController(
-        "getCustomServerData"
-      );
+      const serverData = window.dcp.document.documentController("getCustomServerData");
       checkedGroups = serverData.groups;
       let filterTitle = null;
 
       const updateTreeSource = kendoTree => {
         return (force = false) => {
           let groupTreeSource = kendoTree.dataSource;
-          const filter = filterTitle
-            ? { field: "title", operator: "contains", value: filterTitle }
-            : {};
+          const filter = filterTitle ? { field: "title", operator: "contains", value: filterTitle } : {};
           if (force) {
             const newTreeSource = getGroupTreeSource();
             newTreeSource.read().then(() => {
@@ -177,9 +163,7 @@ import "./changeGroupView.css";
 
       const getChecked = checked => currentEventNode => {
         return function analyzeChecked(dataSource) {
-          const data =
-            dataSource instanceof kendo.data.HierarchicalDataSource &&
-            dataSource.data();
+          const data = dataSource instanceof kendo.data.HierarchicalDataSource && dataSource.data();
           if (data === false) {
             return;
           }
@@ -188,11 +172,7 @@ import "./changeGroupView.css";
             if (currentEventNode.accountId === currentNode.accountId) {
               isChecked = currentEventNode.checked;
             }
-            if (
-              isChecked === null &&
-              currentNode.accountId &&
-              currentNode.checked
-            ) {
+            if (isChecked === null && currentNode.accountId && currentNode.checked) {
               isChecked = true;
             }
             if (isChecked) {
@@ -217,10 +197,7 @@ import "./changeGroupView.css";
         check: function onTreeCheck(event) {
           const eventNode = this.dataItem(event.node);
           const checked = {};
-          if (
-            eventNode.documentId !== currentDoc.toString() &&
-            !eventNode.id.includes(currentDoc.toString())
-          ) {
+          if (eventNode.documentId !== currentDoc.toString() && !eventNode.id.includes(currentDoc.toString())) {
             getChecked(checked)(eventNode)(event.sender.dataSource);
             checkedGroups = checked;
             window.dcp.document.documentController("addCustomClientData", {
@@ -250,9 +227,7 @@ import "./changeGroupView.css";
         updateListOfGroup();
       });
 
-      updateListOfGroup = updateTreeSource(
-        $("#listOfGroups").data("kendoTreeView")
-      );
+      updateListOfGroup = updateTreeSource($("#listOfGroups").data("kendoTreeView"));
     }
   );
 }

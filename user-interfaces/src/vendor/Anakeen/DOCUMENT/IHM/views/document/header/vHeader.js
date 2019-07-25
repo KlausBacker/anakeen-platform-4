@@ -1,10 +1,5 @@
 /*global define*/
-define([
-  "jquery",
-  "underscore",
-  "backbone",
-  "mustache"
-], function require_vheader($, _, Backbone, Mustache) {
+define(["jquery", "underscore", "backbone", "mustache"], function require_vheader($, _, Backbone, Mustache) {
   "use strict";
 
   return Backbone.View.extend({
@@ -43,12 +38,9 @@ define([
               lock: { lockedBy: null }
             };
             data.document.properties.security.lock.isLocked =
-              data.document.properties.security.lock.lockedBy &&
-              data.document.properties.security.lock.lockedBy.id > 0;
+              data.document.properties.security.lock.lockedBy && data.document.properties.security.lock.lockedBy.id > 0;
             data.href = currentView.model.url() + ".html";
-            var headerRender = $(
-              Mustache.render(currentView.headerTemplate || "", data)
-            );
+            var headerRender = $(Mustache.render(currentView.headerTemplate || "", data));
             var $header = currentView.$el;
             $header.empty();
             _.each(headerRender.children(), function eachChildren(elt) {
@@ -56,9 +48,7 @@ define([
             });
 
             $header
-              .find(
-                ".dcpDocument__header__lock, .dcpDocument__header__readonly, .dcpDocument__header__modified"
-              )
+              .find(".dcpDocument__header__lock, .dcpDocument__header__readonly, .dcpDocument__header__modified")
               .tooltip({
                 placement: "bottom",
                 html: true

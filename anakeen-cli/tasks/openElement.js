@@ -8,9 +8,7 @@ const sax = require("sax");
 exports.openElement = ({ filePath, lineNumber, columnNumber, contextUrl }) => {
   return gulp.task("openElement", async () => {
     const a = fs.readFileSync(filePath).toString();
-    const rules = JSON.parse(
-      fs.readFileSync(__dirname + "/rules/openElementRules.json")
-    );
+    const rules = JSON.parse(fs.readFileSync(__dirname + "/rules/openElementRules.json"));
     parseXML(a, lineNumber, columnNumber, contextUrl, rules);
   });
 };

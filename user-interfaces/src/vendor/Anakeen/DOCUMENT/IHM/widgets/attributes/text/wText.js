@@ -2,12 +2,7 @@
   "use strict";
 
   if (typeof define === "function" && define.amd) {
-    define([
-      "jquery",
-      "underscore",
-      "mustache",
-      "dcpDocument/widgets/attributes/wAttribute"
-    ], factory);
+    define(["jquery", "underscore", "mustache", "dcpDocument/widgets/attributes/wAttribute"], factory);
   } else {
     //noinspection JSUnresolvedVariable
     factory(window.jQuery, window._, window.Mustache);
@@ -68,15 +63,12 @@
     _initChangeEvent: function wTextInitChangeEvent() {
       var currentWidget = this;
       if (this.getMode() === "write") {
-        this.getContentElements().on(
-          "change" + this.eventNamespace,
-          function wTextChangeElement() {
-            var newValue = _.clone(currentWidget.options.attributeValue);
-            newValue.value = $(this).val();
-            newValue.displayValue = newValue.value;
-            currentWidget.setValue(newValue);
-          }
-        );
+        this.getContentElements().on("change" + this.eventNamespace, function wTextChangeElement() {
+          var newValue = _.clone(currentWidget.options.attributeValue);
+          newValue.value = $(this).val();
+          newValue.displayValue = newValue.value;
+          currentWidget.setValue(newValue);
+        });
       }
     },
 
@@ -95,10 +87,7 @@
           transport: {
             read: function mapAutoActivated(options) {
               options.data.index = currentWidget._getIndex();
-              return currentWidget.options.autocompleteRequest.call(
-                null,
-                options
-              );
+              return currentWidget.options.autocompleteRequest.call(null, options);
             }
           }
         },
@@ -124,11 +113,7 @@
       };
 
       inputValue.kendoAutoComplete(
-        _.extend(
-          {},
-          this.options.renderOptions.kendoAutoCompleteConfiguration,
-          systemOption
-        )
+        _.extend({}, this.options.renderOptions.kendoAutoCompleteConfiguration, systemOption)
       );
       this.element.on(
         "click" + this.eventNamespace,
@@ -181,9 +166,7 @@
       } else if (this.getMode() === "read") {
         this.redraw();
       } else {
-        throw new Error(
-          "Attribute " + this.options.id + " unkown mode " + this.getMode()
-        );
+        throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
       }
     },
 

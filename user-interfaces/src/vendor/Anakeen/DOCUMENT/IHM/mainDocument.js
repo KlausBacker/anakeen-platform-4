@@ -30,14 +30,10 @@ $.get("/api/v2/i18n/DOCUMENT").done(function translationLoaded(catalog) {
     }
     if (currentValues.indexOf(varWidgetValue) === 0) {
       try {
-        window.dcp.viewData = JSON.parse(
-          currentValues.slice(varWidgetValue.length)
-        );
+        window.dcp.viewData = JSON.parse(currentValues.slice(varWidgetValue.length));
       } catch (ex1) {
         try {
-          window.dcp.viewData = JSON.parse(
-            decodeURI(currentValues.slice(varWidgetValue.length))
-          );
+          window.dcp.viewData = JSON.parse(decodeURI(currentValues.slice(varWidgetValue.length)));
         } catch (ex2) {
           $document.documentController("showMessage", {
             type: "error",
@@ -50,25 +46,18 @@ $.get("/api/v2/i18n/DOCUMENT").done(function translationLoaded(catalog) {
 
   window.dcp.triggerReload = function triggerReload() {
     // Init bind events in case of use extern document controller
-    if (
-      window.documentLoaded &&
-      _.isFunction(window.documentLoaded) &&
-      !window.dcp.documentReady
-    ) {
+    if (window.documentLoaded && _.isFunction(window.documentLoaded) && !window.dcp.documentReady) {
       window.documentLoaded($document, window.dcp.viewData);
       window.dcp.documentReady = true;
     }
   };
 
   if (window.dcp.viewData !== false && window.dcp.viewData.initid) {
-    window.ank.smartElement.globalController.on(
-      "controllerReady",
-      controller => {
-        controller.addSmartElement(".document", window.dcp.viewData, {
-          router: true
-        });
-      }
-    );
+    window.ank.smartElement.globalController.on("controllerReady", controller => {
+      controller.addSmartElement(".document", window.dcp.viewData, {
+        router: true
+      });
+    });
     // $document.documentController(window.dcp.viewData);
     $document.one("documentready", function launchReady() {
       window.dcp.triggerReload();
@@ -91,12 +80,9 @@ $.get("/api/v2/i18n/DOCUMENT").done(function translationLoaded(catalog) {
       }
     );
   } else {
-    window.ank.smartElement.globalController.on(
-      "controllerReady",
-      controller => {
-        controller.addSmartElement();
-      }
-    );
+    window.ank.smartElement.globalController.on("controllerReady", controller => {
+      controller.addSmartElement();
+    });
     // $document.documentController();
     window.dcp.triggerReload();
   }

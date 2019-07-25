@@ -6,8 +6,7 @@ export const checksum = (str, seed) => {
 
   for (i = 0, l = str.length; i < l; i++) {
     hval ^= str.charCodeAt(i);
-    hval +=
-      (hval << 1) + (hval << 4) + (hval << 7) + (hval << 8) + (hval << 24);
+    hval += (hval << 1) + (hval << 4) + (hval << 7) + (hval << 8) + (hval << 24);
   }
   return hval >>> 0;
 };
@@ -27,10 +26,7 @@ const cleanNonGroupParent = indexedAcls => {
       ...{
         parents: currentValue.parents.filter(currentParentId => {
           //Keep only parent of group type
-          return (
-            indexedAcls[currentParentId] &&
-            indexedAcls[currentParentId].account.type === "group"
-          );
+          return indexedAcls[currentParentId] && indexedAcls[currentParentId].account.type === "group";
         })
       }
     };
@@ -44,8 +40,7 @@ const addChildrenToParent = indexedAcls => {
     currentAcl.parents = currentAcl.parents || [];
     currentAcl.children = currentAcl.children || [];
     currentAcl.parents.forEach(currentParentId => {
-      internalAcls[currentParentId].children =
-        internalAcls[currentParentId].children || [];
+      internalAcls[currentParentId].children = internalAcls[currentParentId].children || [];
       internalAcls[currentParentId].children.push(currentAcl);
     });
   });
@@ -84,9 +79,7 @@ const getAncestors = indexedList => {
 const reindexAndCleanList = flatList => {
   return flatList.map(currentElement => {
     currentElement.accountId = currentElement.id;
-    currentElement.id = checksum(
-      currentElement.hierarchicalId || currentElement.id
-    );
+    currentElement.id = checksum(currentElement.hierarchicalId || currentElement.id);
     if (currentElement.parentId) {
       currentElement.parentId = checksum(currentElement.parentId);
     }

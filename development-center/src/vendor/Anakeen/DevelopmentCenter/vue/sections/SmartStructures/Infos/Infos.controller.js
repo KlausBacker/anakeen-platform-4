@@ -43,8 +43,7 @@ export default {
         if (this.structureDetails && this.structureDetails.workflow) {
           this.otherInfoSections.push({
             label: "Workflow",
-            path: `/devel/wfl/${this.structureDetails.workflow.name ||
-              this.structureDetails.workflow.id}/infos`
+            path: `/devel/wfl/${this.structureDetails.workflow.name || this.structureDetails.workflow.id}/infos`
           });
         }
       }
@@ -62,9 +61,7 @@ export default {
       return `/api/v2/devel/smart/structures/${this.ssName}/info/`;
     },
     structureProperties() {
-      return this.structureDetails
-        ? this.structureDetails.properties || {}
-        : {};
+      return this.structureDetails ? this.structureDetails.properties || {} : {};
     },
     structureInfo() {
       return this.structureDetails ? this.structureDetails.info || {} : {};
@@ -77,10 +74,7 @@ export default {
         data.reduce((acc, curr, index, array) => {
           const element = { name: curr, children: [] };
           if (index === array.length - 1) {
-            element.children = formatChildrenList(
-              this.ssName,
-              this.structureProperties.childs
-            );
+            element.children = formatChildrenList(this.ssName, this.structureProperties.childs);
           }
           acc.push(element);
           return element.children;
@@ -92,8 +86,7 @@ export default {
       return (
         !this.structureHierarchy ||
         !this.structureHierarchy.length ||
-        (this.structureHierarchy.length === 1 &&
-          !this.structureHierarchy[0].children.length)
+        (this.structureHierarchy.length === 1 && !this.structureHierarchy[0].children.length)
       );
     }
   },

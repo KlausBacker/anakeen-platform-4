@@ -10,8 +10,5 @@ if (
   window.ank.hub["ank-dev-breadcrumb"]
 ) {
   // @ts-ignore
-  window.ank.hub["ank-dev-breadcrumb"].resolve(
-    Breadcrumb,
-    "ank-dev-breadcrumb"
-  );
+  window.ank.hub["ank-dev-breadcrumb"].resolve(Breadcrumb, "ank-dev-breadcrumb");
 }

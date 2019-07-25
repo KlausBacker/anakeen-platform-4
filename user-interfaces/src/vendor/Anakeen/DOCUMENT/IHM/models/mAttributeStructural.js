@@ -1,8 +1,8 @@
-define([
-  "underscore",
-  "dcpDocument/models/mAttribute",
-  "dcpDocument/collections/contentAttributes"
-], function(_, AttributeModel, CollectionContentAttributes) {
+define(["underscore", "dcpDocument/models/mAttribute", "dcpDocument/collections/contentAttributes"], function(
+  _,
+  AttributeModel,
+  CollectionContentAttributes
+) {
   "use strict";
 
   return AttributeModel.extend({

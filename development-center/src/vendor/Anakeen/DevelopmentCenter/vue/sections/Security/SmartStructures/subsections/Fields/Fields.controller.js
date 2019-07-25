@@ -65,16 +65,14 @@ export default {
             this.cfallid = cfallidValue;
           } else {
             this.empty = true;
-            this.profilWaitingLabel =
-              "No default field access for " + this.ssName;
+            this.profilWaitingLabel = "No default field access for " + this.ssName;
           }
           kendo.ui.progress(this.$(this.$el), false);
         })
         .catch(err => {
           console.error(err);
           this.empty = true;
-          this.profilWaitingLabel =
-            "No default field access for " + this.ssName;
+          this.profilWaitingLabel = "No default field access for " + this.ssName;
           kendo.ui.progress(this.$(this.$el), false);
         });
     }

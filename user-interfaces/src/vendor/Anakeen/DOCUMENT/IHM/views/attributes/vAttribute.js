@@ -33,23 +33,18 @@ define([
     // If you add an event here, you probably want to add it in vColumn.js and test it in an array
     //********************************************************************************************
     attributeEvents: {
-      "dcpattributechange .dcpAttribute__content,[data-dcpattribute_content]":
-        "updateValue",
+      "dcpattributechange .dcpAttribute__content,[data-dcpattribute_content]": "updateValue",
       "dcpattributedelete .dcpAttribute__content": "deleteValue",
-      "dcpattributechangeattrmenuvisibility .dcpAttribute__content":
-        "changeMenuVisibility",
-      "dcpattributechangeattrsvalue .dcpAttribute__content":
-        "changeAttributesValue",
+      "dcpattributechangeattrmenuvisibility .dcpAttribute__content": "changeMenuVisibility",
+      "dcpattributechangeattrsvalue .dcpAttribute__content": "changeAttributesValue",
       "dcpattributefetchdocument .dcpAttribute__content": "loadDocument",
-      "dcpattributeexternallinkselected .dcpAttribute__content":
-        "externalLinkSelected",
+      "dcpattributeexternallinkselected .dcpAttribute__content": "externalLinkSelected",
       dcplabelexternallinkselected: "externalLinkSelected",
       "dcpattributedownloadfile  .dcpAttribute__content": "downloadFileSelect",
       "dcpattributeuploadfile  .dcpAttribute__content": "uploadFileSelect",
       "dcpattributeuploadfileerror  .dcpAttribute__content": "uploadFileError",
       "dcpattributeuploadfiledone  .dcpAttribute__content": "uploadFileDone",
-      "dcpattributedisplaynetworkerror  .dcpAttribute__content":
-        "displayNetworkError",
+      "dcpattributedisplaynetworkerror  .dcpAttribute__content": "displayNetworkError",
       "dcpattributeanchorclick .dcpAttribute__content": "anchorClick",
       "dcpattributewidgetready .dcpAttribute__content": "setWidgetReady"
     },
@@ -70,10 +65,7 @@ define([
 
       options = options || {};
 
-      if (
-        options.displayLabel === false ||
-        this.model.getOption("labelPosition") === "none"
-      ) {
+      if (options.displayLabel === false || this.model.getOption("labelPosition") === "none") {
         this.displayLabel = false;
       }
 
@@ -133,20 +125,14 @@ define([
           //We fetch data after beforeRender, if some data is modified by beforeRender we get it
           data = currentView.getData();
 
-          currentView.$el.addClass(
-            "dcpAttribute--type--" + currentView.model.get("type")
-          );
-          currentView.$el.addClass(
-            "dcpAttribute--visibility--" + currentView.model.get("visibility")
-          );
+          currentView.$el.addClass("dcpAttribute--type--" + currentView.model.get("type"));
+          currentView.$el.addClass("dcpAttribute--visibility--" + currentView.model.get("visibility"));
           currentView.$el.attr("data-attrid", currentView.model.get("id"));
           if (currentView.model.get("needed")) {
             currentView.$el.addClass("dcpAttribute--needed");
           }
 
-          currentView.$el.append(
-            $(Mustache.render(currentView.templateWrapper || "", data))
-          );
+          currentView.$el.append($(Mustache.render(currentView.templateWrapper || "", data)));
 
           attributeTemplate.insertDescription(currentView);
 
@@ -154,9 +140,7 @@ define([
           if (currentView.displayLabel === false) {
             currentView.$el.find(".dcpAttribute__label").remove();
             // set to 100% width
-            currentView.$el
-              .find(".dcpAttribute__right")
-              .addClass("dcpAttribute__right--full");
+            currentView.$el.find(".dcpAttribute__right").addClass("dcpAttribute__right--full");
           } else {
             if (currentView.model.getOption("labelPosition") === "left") {
               currentView.$el.addClass("dcpAttribute__labelPosition--left");
@@ -182,28 +166,17 @@ define([
             }
             if (currentView.model.getOption("labelPosition") === "auto") {
               currentView.$el.addClass("dcpAttribute__labelPosition--auto");
-              currentView.$el
-                .find(".dcpAttribute__right")
-                .addClass("dcpAttribute__labelPosition--auto");
-              currentView.$el
-                .find(".dcpAttribute__left")
-                .addClass("dcpAttribute__labelPosition--auto");
+              currentView.$el.find(".dcpAttribute__right").addClass("dcpAttribute__labelPosition--auto");
+              currentView.$el.find(".dcpAttribute__left").addClass("dcpAttribute__labelPosition--auto");
             }
             currentView.$el.find(".dcpAttribute__label").dcpLabel(data);
           }
 
           //If there is a template render it
-          if (
-            currentView.options.originalView !== true &&
-            currentView.model.getOption("template")
-          ) {
-            customRender = attributeTemplate.renderCustomView(
-              currentView.model
-            );
+          if (currentView.options.originalView !== true && currentView.model.getOption("template")) {
+            customRender = attributeTemplate.renderCustomView(currentView.model);
             currentView.customView = customRender.$el;
-            currentView.$el
-              .find(".dcpAttribute__content")
-              .append(currentView.customView);
+            currentView.$el.find(".dcpAttribute__content").append(currentView.customView);
             customRender.promise.then(resolve);
             customRender.promise["catch"](reject);
           } else {
@@ -214,10 +187,7 @@ define([
                 resolve();
               }
             );
-            currentView.currentDcpWidget = currentView.widgetInit(
-              currentView.$el.find(".dcpAttribute__content"),
-              data
-            );
+            currentView.currentDcpWidget = currentView.widgetInit(currentView.$el.find(".dcpAttribute__content"), data);
           }
 
           currentView.renderDone = true;
@@ -270,10 +240,7 @@ define([
                 if (_.isUndefined(currentValue)) {
                   return;
                 }
-                var cssIndex =
-                  '.dcpAttribute__content--widget[data-attrid="' +
-                  model.id +
-                  '"]';
+                var cssIndex = '.dcpAttribute__content--widget[data-attrid="' + model.id + '"]';
                 $(allWrapper[index])
                   .find(cssIndex)
                   .addBack(cssIndex)
@@ -286,9 +253,7 @@ define([
         );
       } else {
         this.widgetApply(
-          allWrapper.find(
-            '.dcpAttribute__content--widget[data-attrid="' + model.id + '"]'
-          ),
+          allWrapper.find('.dcpAttribute__content--widget[data-attrid="' + model.id + '"]'),
           "setValue",
           values
         );
@@ -300,9 +265,7 @@ define([
      * @param event
      */
     refreshError: function vAttributeRefreshError() {
-      this.$el
-        .find(".dcpAttribute__label")
-        .dcpLabel("setError", this.model.get("errorMessage"));
+      this.$el.find(".dcpAttribute__label").dcpLabel("setError", this.model.get("errorMessage"));
       // andSelf method was removed from jQuery 3.0.0+ use addBack instead
       var jqueryVersion = +$().jquery.split(".")[0];
       if (jqueryVersion >= 3) {
@@ -332,30 +295,17 @@ define([
      * @param index the value rank in case of multiple
      * @param options object {dataItem :, valueIndex :}
      */
-    changeAttributesValue: function vAttributeChangeAttributesValue(
-      event,
-      options,
-      index
-    ) {
+    changeAttributesValue: function vAttributeChangeAttributesValue(event, options, index) {
       var externalEvent = { prevent: false },
         currentView = this,
         dataItem = options.dataItem,
         valueIndex = options.valueIndex,
         currentValue;
-      this.model.trigger(
-        "helperSelect",
-        externalEvent,
-        this.model.id,
-        dataItem,
-        index
-      );
+      this.model.trigger("helperSelect", externalEvent, this.model.id, dataItem, index);
       if (externalEvent.prevent) {
         return this;
       }
-      _.each(dataItem.values, function vAttributeChangeAttributeValue(
-        attributeValue,
-        attributeId
-      ) {
+      _.each(dataItem.values, function vAttributeChangeAttributeValue(attributeValue, attributeId) {
         if (typeof attributeValue === "object") {
           if (attributeValue.value === null) {
             //Value not completed by helper so don't use it
@@ -443,11 +393,7 @@ define([
     /**
      * Create dialog window to create and insert document
      */
-    displayFormDocument: function vAttributedisplayFormDocument(
-      event,
-      buttonConfig,
-      index
-    ) {
+    displayFormDocument: function vAttributedisplayFormDocument(event, buttonConfig, index) {
       var attrid = this.model.id;
       if (buttonConfig.createLabel) {
         var documentModel = this.model.getDocumentModel();
@@ -463,19 +409,10 @@ define([
                   originDocumentModel: documentModel,
                   attributeId: attrid,
                   index: index,
-                  listener: function vDocumentCreateListener(
-                    event,
-                    triggerId,
-                    options
-                  ) {
+                  listener: function vDocumentCreateListener(event, triggerId, options) {
                     options.dialogDocument = this;
                     options.triggerId = triggerId;
-                    documentModel.trigger(
-                      "createDialogListener",
-                      event,
-                      attrid,
-                      options
-                    );
+                    documentModel.trigger("createDialogListener", event, attrid, options);
                   }
                 })
               )
@@ -487,10 +424,7 @@ define([
       }
     },
 
-    externalLinkSelected: function vAttributeExternalLinkSelected(
-      event,
-      options
-    ) {
+    externalLinkSelected: function vAttributeExternalLinkSelected(event, options) {
       var documentModel = this.model.getDocumentModel();
       options.attrid = this.model.id;
       this.model.trigger("internalLinkSelected", event, options);
@@ -503,16 +437,10 @@ define([
         documentModel.trigger("actionAttributeLink", event, options);
       }
     },
-    downloadFileSelect: function vAttributedownloadFileSelect(
-      widgetEvent,
-      options
-    ) {
+    downloadFileSelect: function vAttributedownloadFileSelect(widgetEvent, options) {
       this.model.trigger("downloadFile", widgetEvent, this.model.id, options);
     },
-    uploadFileSelect: function vAttributeuploadFileSelect(
-      widgetEvent,
-      options
-    ) {
+    uploadFileSelect: function vAttributeuploadFileSelect(widgetEvent, options) {
       this.model.trigger("uploadFile", widgetEvent, this.model.id, options);
     },
     uploadFileError: function vAttributeuploadFileError(event, params) {
@@ -583,9 +511,7 @@ define([
       } else {
         attrToClear = _.toArray(attrToClear);
       }
-      attrLabels = _.map(attrToClear, function vAttributeGetAssociatedLabel(
-        aid
-      ) {
+      attrLabels = _.map(attrToClear, function vAttributeGetAssociatedLabel(aid) {
         var attr = scope.getAttributeModel(aid);
         if (attr) {
           return attr.attributes.label;
@@ -608,10 +534,7 @@ define([
      * @param index the row index of autocomplete when it is in array
      * @param options
      */
-    autocompleteRequestRead: function vAttributeAutocompleteRequestRead(
-      options,
-      index
-    ) {
+    autocompleteRequestRead: function vAttributeAutocompleteRequestRead(options, index) {
       var currentView = this,
         documentModel = this.model.getDocumentModel(),
         success = options.success,
@@ -638,20 +561,11 @@ define([
         autocompleteUrl,
         event = { prevent: false };
       //Add helperResonse event (can be used to reprocess the content of the request)
-      success = _.wrap(success, function vAttributeAutoCompleteSuccess(
-        success,
-        content
-      ) {
+      success = _.wrap(success, function vAttributeAutoCompleteSuccess(success, content) {
         var options = {},
           event = { prevent: false };
         options.data = content;
-        currentView.model.trigger(
-          "helperResponse",
-          event,
-          currentView.model.id,
-          options,
-          index
-        );
+        currentView.model.trigger("helperResponse", event, currentView.model.id, options, index);
         if (event.prevent) {
           return success([]);
         }
@@ -660,21 +574,11 @@ define([
 
       //Add helperSearch event (can prevent default ajax request)
       options.data.attributes = documentModel.getValues();
-      this.model.trigger(
-        "helperSearch",
-        event,
-        this.model.id,
-        externalOptions,
-        index
-      );
+      this.model.trigger("helperSearch", event, this.model.id, externalOptions, index);
       if (event.prevent) {
         return this;
       }
-      autocompleteUrl =
-        "/api/v2/smart-elements/" +
-        (documentModel.id || "0") +
-        "/autocomplete/" +
-        this.model.id;
+      autocompleteUrl = "/api/v2/smart-elements/" + (documentModel.id || "0") + "/autocomplete/" + this.model.id;
 
       options.data.fromid = documentModel.get("properties").get("family").id;
 
@@ -697,16 +601,10 @@ define([
             if (response.status === 0) {
               return {
                 success: false,
-                error: i18n.___(
-                  "Your navigator seems offline, try later",
-                  "ddui"
-                )
+                error: i18n.___("Your navigator seems offline, try later", "ddui")
               };
             }
-            if (
-              response.responseJSON &&
-              response.responseJSON.exceptionMessage
-            ) {
+            if (response.responseJSON && response.responseJSON.exceptionMessage) {
               return {
                 success: false,
                 error: response.responseJSON.exceptionMessage
@@ -714,11 +612,7 @@ define([
             }
             return {
               success: false,
-              error:
-                "Unexpected error: " +
-                response.status +
-                " " +
-                response.statusText
+              error: "Unexpected error: " + response.status + " " + response.statusText
             };
           }
         )
@@ -808,28 +702,20 @@ define([
     getWidgetClass: function vAttributeGetWidgetClass($element) {
       $element = $element || this.$el;
       if (!$element.data("currentWidgetClass")) {
-        $element.data(
-          "currentWidgetClass",
-          this.getTypedWidgetClass(this.model.get("type"))
-        );
+        $element.data("currentWidgetClass", this.getTypedWidgetClass(this.model.get("type")));
       }
       return $element.data("currentWidgetClass");
     },
 
     getTypedWidgetClass: function vAttributeGetTypedWidgetClass(type) {
       var error = "",
-        customWidgetClass = this.model.getOption(
-          "customWidgetAttributeFunction"
-        );
+        customWidgetClass = this.model.getOption("customWidgetAttributeFunction");
       if (customWidgetClass) {
         if (_.isFunction($.fn[customWidgetClass])) {
           return $.fn[customWidgetClass];
         }
         error =
-          "Custom Widget Function : $.fn." +
-          customWidgetClass +
-          " is not a function. Attribute : " +
-          this.model.id;
+          "Custom Widget Function : $.fn." + customWidgetClass + " is not a function. Attribute : " + this.model.id;
         console.error(error);
         throw new Error(error);
       }
@@ -879,12 +765,7 @@ define([
     },
 
     triggerRenderDone: function vAttribute_triggerRenderDone() {
-      if (
-        this.noRenderEvent !== false &&
-        this.renderDone &&
-        this.widgetReady &&
-        !this.triggerRender
-      ) {
+      if (this.noRenderEvent !== false && this.renderDone && this.widgetReady && !this.triggerRender) {
         this.model.trigger("renderDone", { model: this.model, $el: this.$el });
         this.triggerRender = true;
       }
@@ -892,11 +773,7 @@ define([
 
     remove: function vAttributeRemove() {
       try {
-        if (
-          this.currentDcpWidget &&
-          this.getWidgetClass(this.currentDcpWidget) &&
-          this._findWidgetName(this.$el)
-        ) {
+        if (this.currentDcpWidget && this.getWidgetClass(this.currentDcpWidget) && this._findWidgetName(this.$el)) {
           this.getWidgetClass(this.currentDcpWidget).call(this.$el, "destroy");
         }
       } catch (e) {
@@ -928,10 +805,7 @@ define([
           this.getWidgetClass(this.currentDcpWidget) &&
           this._findWidgetName(this.currentDcpWidget)
         ) {
-          this.getWidgetClass(this.currentDcpWidget).call(
-            this.currentDcpWidget,
-            "close"
-          );
+          this.getWidgetClass(this.currentDcpWidget).call(this.currentDcpWidget, "close");
         }
       } catch (e) {
         if (window.dcp.logger) {
@@ -943,12 +817,9 @@ define([
     },
 
     _findWidgetName: function vAttribute_findWidgetName($element) {
-      return _.find(
-        _.keys($element.data()),
-        function vAttribute_findWidgetNameFind(currentKey) {
-          return currentKey.indexOf("dcpDcp") !== -1;
-        }
-      );
+      return _.find(_.keys($element.data()), function vAttribute_findWidgetNameFind(currentKey) {
+        return currentKey.indexOf("dcpDcp") !== -1;
+      });
     },
 
     _identifyView: function vAttribute_identifyView(event) {

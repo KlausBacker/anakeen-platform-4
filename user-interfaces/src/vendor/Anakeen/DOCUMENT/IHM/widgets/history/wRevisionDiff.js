@@ -35,8 +35,7 @@ define([
         second: "Second document",
         attributeId: "Attribute id",
         attributeLabel: "Attribute label",
-        documentHeader:
-          '"{{title}}"  (Revision : {{revision}}). <br/>Created on <em>{{mdate}}</em>',
+        documentHeader: '"{{title}}"  (Revision : {{revision}}). <br/>Created on <em>{{mdate}}</em>',
         filterMessages: "Filter data",
         showOnlyDiff: "Show only differences",
         showAll: "Show all"
@@ -162,28 +161,16 @@ define([
               revisionDiffWidget._getDocHeader(revisionDiffWidget.firstDocument)
             );
             $(api.columns("second:name").header()).html(
-              revisionDiffWidget._getDocHeader(
-                revisionDiffWidget.secondDocument
-              )
+              revisionDiffWidget._getDocHeader(revisionDiffWidget.secondDocument)
             );
             revisionDiffWidget.element
               .find(".dataTables_filter input")
-              .attr(
-                "placeholder",
-                revisionDiffWidget.options.labels.filterMessages
-              );
+              .attr("placeholder", revisionDiffWidget.options.labels.filterMessages);
 
-            revisionDiffWidget.element
-              .find(".dataTables_filter input")
-              .addClass("form-control form-control-sm");
+            revisionDiffWidget.element.find(".dataTables_filter input").addClass("form-control form-control-sm");
 
-            var firstHeadCell = revisionDiffWidget.element.find(
-              ".revision-diff-buttons"
-            );
-            if (
-              firstHeadCell.find(".revision-diff-button-showonlydiff")
-                .length === 0
-            ) {
+            var firstHeadCell = revisionDiffWidget.element.find(".revision-diff-buttons");
+            if (firstHeadCell.find(".revision-diff-button-showonlydiff").length === 0) {
               firstHeadCell.append(
                 $(
                   '<button class="revision-diff-button-showonlydiff btn btn-secondary btn-sm" >' +
@@ -215,30 +202,21 @@ define([
                 )
                   .done(function dcpRevisionDiff_getRevisionDone(data2) {
                     revisionDiffWidget.secondDocument = data2.data.revision;
-                    _.each(
-                      data1.data.revision.attributes,
-                      function dcpRevisionDiff_analyzeAttribute(
-                        firstValue,
-                        index
-                      ) {
-                        var secondValue = data2.data.revision.attributes[index];
-                        myData.push({
-                          attributeId: index,
-                          attributeLabel: revisionDiffWidget._findAttributeLabel(
-                            data1.data.family.structure,
-                            index
-                          ),
-                          first: firstValue,
-                          second: secondValue,
-                          DT_RowClass: revisionDiffWidget.isEqualAttributeValue(
-                            firstValue,
-                            secondValue
-                          )
-                            ? "revision-diff-equal"
-                            : "revision-diff-not-equal"
-                        });
-                      }
-                    );
+                    _.each(data1.data.revision.attributes, function dcpRevisionDiff_analyzeAttribute(
+                      firstValue,
+                      index
+                    ) {
+                      var secondValue = data2.data.revision.attributes[index];
+                      myData.push({
+                        attributeId: index,
+                        attributeLabel: revisionDiffWidget._findAttributeLabel(data1.data.family.structure, index),
+                        first: firstValue,
+                        second: secondValue,
+                        DT_RowClass: revisionDiffWidget.isEqualAttributeValue(firstValue, secondValue)
+                          ? "revision-diff-equal"
+                          : "revision-diff-not-equal"
+                      });
+                    });
                     callback({ data: myData });
                   })
                   .fail(function dcpRevisionDiff_getRevisionFail(xhr) {
@@ -255,10 +233,7 @@ define([
         .addClass("table table-condensed table-bordered table-hover");
     },
 
-    isEqualAttributeValue: function dcpRevisionDiff_isEqualAttributeValue(
-      v1,
-      v2
-    ) {
+    isEqualAttributeValue: function dcpRevisionDiff_isEqualAttributeValue(v1, v2) {
       if (_.isEqual(v1, v2)) {
         return true;
       }
@@ -271,25 +246,16 @@ define([
       return false;
     },
 
-    _findAttributeLabel: function wRevisionDiffFindAttributeLabel(
-      structure,
-      aid
-    ) {
+    _findAttributeLabel: function wRevisionDiffFindAttributeLabel(structure, aid) {
       var scope = this;
       var label = null;
-      _.some(structure, function dcpRevisionDiff_analyzeAttribute(
-        attributInfo,
-        attributId
-      ) {
+      _.some(structure, function dcpRevisionDiff_analyzeAttribute(attributInfo, attributId) {
         if (attributId === aid) {
           label = attributInfo.label;
           return true;
         }
         if (_.isObject(attributInfo.content)) {
-          var contentLabel = scope._findAttributeLabel(
-            attributInfo.content,
-            aid
-          );
+          var contentLabel = scope._findAttributeLabel(attributInfo.content, aid);
 
           if (contentLabel !== null) {
             label = contentLabel;
@@ -303,10 +269,7 @@ define([
 
     _getDocHeader: function wRevisionDiffGetDocHeader(documentStructure) {
       var documentHeader = this.options.labels.documentHeader;
-      return Mustache.render(
-        documentHeader || "",
-        documentStructure.properties
-      );
+      return Mustache.render(documentHeader || "", documentStructure.properties);
     },
 
     _destroy: function _destroy() {

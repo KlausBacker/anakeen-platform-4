@@ -1,9 +1,4 @@
-define([
-  "jquery",
-  "underscore",
-  "mustache",
-  "dcpDocument/widgets/window/wWindow"
-], function wConfirm($, _, Mustache) {
+define(["jquery", "underscore", "mustache", "dcpDocument/widgets/window/wWindow"], function wConfirm($, _, Mustache) {
   "use strict";
 
   $.widget("dcp.dcpConfirm", $.dcp.dcpWindow, {
@@ -35,12 +30,7 @@ define([
       var scoppedCancel = _.bind(this.options.cancel, this);
       this.options.close = scoppedCancel;
       this.options.templateData.messages = this.options.messages || [];
-      this.currentWidget = $(
-        Mustache.render(
-          this._getWindowTemplate("confirm") || "",
-          this.options.templateData
-        )
-      );
+      this.currentWidget = $(Mustache.render(this._getWindowTemplate("confirm") || "", this.options.templateData));
       this.element.append(this.currentWidget);
       this.currentWidget.kendoWindow(this.options);
       this.currentWidget.data("kendoWindow").center();

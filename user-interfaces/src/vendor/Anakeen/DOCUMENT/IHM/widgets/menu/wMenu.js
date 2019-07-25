@@ -24,12 +24,7 @@ define([
         $mainElement,
         scopeWidget = this;
       //InitDom
-      $mainElement = $(
-        Mustache.render(
-          this._getTemplate("menu") || "",
-          _.extend({ uuid: this.uuid }, this.options)
-        )
-      );
+      $mainElement = $(Mustache.render(this._getTemplate("menu") || "", _.extend({ uuid: this.uuid }, this.options)));
       $content = $mainElement.find(".menu__content");
       this._insertMenuContent(this.options.menus, $content);
       this.element.append($mainElement);
@@ -68,29 +63,17 @@ define([
           if (href != "") {
             //Display confirm message
             if ($elementA.hasClass("menu--confirm")) {
-              confirmText = Mustache.render(
-                $elementA.data("confirm-message") || "",
-                scopeWidget.options
-              );
+              confirmText = Mustache.render($elementA.data("confirm-message") || "", scopeWidget.options);
 
               configMenu = $menuElement.data("menuConfiguration");
               confirmOptions = configMenu.confirmationOptions || {};
               confirmDcpWindow = $("body").dcpConfirm({
-                title: Mustache.render(
-                  confirmOptions.title || "",
-                  scopeWidget.options
-                ),
+                title: Mustache.render(confirmOptions.title || "", scopeWidget.options),
                 width: confirmOptions.windowWidth,
                 height: confirmOptions.windowHeight,
                 messages: {
-                  okMessage: Mustache.render(
-                    confirmOptions.confirmButton || "",
-                    scopeWidget.options
-                  ),
-                  cancelMessage: Mustache.render(
-                    confirmOptions.cancelButton || "",
-                    scopeWidget.options
-                  ),
+                  okMessage: Mustache.render(confirmOptions.confirmButton || "", scopeWidget.options),
+                  cancelMessage: Mustache.render(confirmOptions.cancelButton || "", scopeWidget.options),
                   htmlMessage: confirmText,
                   textMessage: ""
                 },
@@ -122,18 +105,13 @@ define([
               } else {
                 target = $elementA.attr("target") || "_self";
 
-                if (
-                  $elementA.attr("href") &&
-                  $elementA.attr("href").substring(0, 1) === "#"
-                ) {
+                if ($elementA.attr("href") && $elementA.attr("href").substring(0, 1) === "#") {
                   href =
                     window.location.protocol +
                     "//" +
                     window.location.hostname +
                     (window.location.port ? ":" + window.location.port : "") +
-                    (window.location.pathname
-                      ? window.location.pathname
-                      : "/") +
+                    (window.location.pathname ? window.location.pathname : "/") +
                     (window.location.search ? window.location.search : "") +
                     $elementA.attr("href");
                 }
@@ -147,10 +125,7 @@ define([
                     $bodyDiv = $("<div/>");
                     $("body").append($bodyDiv);
                     dcpWindow = $bodyDiv.dcpWindow({
-                      title: Mustache.render(
-                        targetOptions.title || "",
-                        window.dcp.documentData
-                      ),
+                      title: Mustache.render(targetOptions.title || "", window.dcp.documentData),
                       width: targetOptions.windowWidth,
                       height: targetOptions.windowHeight,
                       modal: targetOptions.modal,
@@ -165,21 +140,12 @@ define([
                       .center();
                     dcpWindow.data("dcpWindow").open();
                   } else {
-                    if (
-                      targetOptions &&
-                      (targetOptions.windowWidth || targetOptions.windowHeight)
-                    ) {
+                    if (targetOptions && (targetOptions.windowWidth || targetOptions.windowHeight)) {
                       if (targetOptions.windowWidth) {
-                        wFeature +=
-                          "width=" +
-                          parseInt(targetOptions.windowWidth, 10) +
-                          ",";
+                        wFeature += "width=" + parseInt(targetOptions.windowWidth, 10) + ",";
                       }
                       if (targetOptions.windowHeight) {
-                        wFeature +=
-                          "height=" +
-                          parseInt(targetOptions.windowHeight, 10) +
-                          ",";
+                        wFeature += "height=" + parseInt(targetOptions.windowHeight, 10) + ",";
                       }
                       wFeature += "resizable=yes,scrollbars=yes";
                     }
@@ -244,12 +210,8 @@ define([
                   });
 
                   if (
-                    parseInt(
-                      $menuElement.find(".k-animation-container").css("left")
-                    ) !== 0 &&
-                    parseInt(
-                      $menuElement.find(".k-animation-container").css("right")
-                    ) !== 0
+                    parseInt($menuElement.find(".k-animation-container").css("left")) !== 0 &&
+                    parseInt($menuElement.find(".k-animation-container").css("right")) !== 0
                   ) {
                     // Need to close and reopen to adjust position menu because content has changed
                     $menuElement.data("menu-openAgain", true);
@@ -290,14 +252,11 @@ define([
           // The first condition is for iOS because no scroll window exists
           if (
             $("body").width() > bodyWidth ||
-            window.document.documentElement.scrollHeight >
-              window.document.documentElement.clientHeight
+            window.document.documentElement.scrollHeight > window.document.documentElement.clientHeight
           ) {
             // If the list menu is out of the body box, need to move it to the right
             if (listLeft + listWidth > bodyWidth) {
-              $container
-                .css("left", "auto")
-                .css("right", menuLeft - bodyWidth + menuWidth + "px");
+              $container.css("left", "auto").css("right", menuLeft - bodyWidth + menuWidth + "px");
             }
           }
 
@@ -347,10 +306,7 @@ define([
         }
       ]);
       $(window).on("resize.dcpMenu", _.bind(this.inhibitBarMenu, this));
-      $(window).on(
-        "resize.dcpMenu",
-        _.debounce(_.bind(this.updateResponsiveMenu, this), 100, false)
-      );
+      $(window).on("resize.dcpMenu", _.debounce(_.bind(this.updateResponsiveMenu, this), 100, false));
     },
 
     callMenu: function callMenu($menuItem) {
@@ -383,23 +339,17 @@ define([
         .catch(function(info) {
           scopeWidget._trigger("showMessage", event, {
             type: "error",
-            message:
-              info.responseJSON.error || info.responseJSON.exceptionMessage
+            message: info.responseJSON.error || info.responseJSON.exceptionMessage
           });
         });
     },
 
     inhibitBarMenu: function wMenuInhibitBarMenu() {
       var widgetMenu = this;
-      if (
-        !widgetMenu.element.data("menu-opening") &&
-        this.element.css("overflow") !== "hidden"
-      ) {
-        this.element
-          .find("li.k-state-border-down")
-          .each(function wMenuInhibitBarMenuClose() {
-            widgetMenu.kendoMenuWidget.close($(this));
-          });
+      if (!widgetMenu.element.data("menu-opening") && this.element.css("overflow") !== "hidden") {
+        this.element.find("li.k-state-border-down").each(function wMenuInhibitBarMenuClose() {
+          widgetMenu.kendoMenuWidget.close($(this));
+        });
       }
     },
 
@@ -443,12 +393,8 @@ define([
      */
     updateResponsiveMenu: function wMenuHideResponsiveMenu() {
       var barMenu = this.element;
-      var $itemMenu = barMenu.find(
-        "ul.k-menu > .menu__element:not(.menu--important,.menu_element--hamburger)"
-      );
-      var $importantItemMenu = barMenu.find(
-        "ul.k-menu > .menu__element.menu--important"
-      );
+      var $itemMenu = barMenu.find("ul.k-menu > .menu__element:not(.menu--important,.menu_element--hamburger)");
+      var $importantItemMenu = barMenu.find("ul.k-menu > .menu__element.menu--important");
       var newHiddens = [];
       var currentWidth = 0;
       var visibleWidth = 0;
@@ -476,10 +422,7 @@ define([
       }
 
       // When no scrollbar need to add hypothetic scrollbar width because no event to refresh when scrollbar appear
-      if (
-        window.document.documentElement.scrollHeight <=
-        window.document.documentElement.clientHeight
-      ) {
+      if (window.document.documentElement.scrollHeight <= window.document.documentElement.clientHeight) {
         barmenuWidth -= this.getScrollBarWidth(); // Supposed that scrollbar width is max 20px
       }
 
@@ -498,10 +441,7 @@ define([
 
       if (hiddenLeft === 0 && newHiddens.length === 1) {
         // Special case for the last hidden may visible if hamburger is hide
-        if (
-          $(newHiddens[0]).outerWidth() <
-          freeWidth + $hamburger.outerWidth()
-        ) {
+        if ($(newHiddens[0]).outerWidth() < freeWidth + $hamburger.outerWidth()) {
           newHiddens = [];
         }
       }
@@ -512,10 +452,7 @@ define([
         if ($hamburger.find("li.k-item").length === 0) {
           kendoMenu.append($(item), $hamburger);
         } else {
-          kendoMenu.insertBefore(
-            $(item),
-            $($hamburger.find("li.k-item").get(0))
-          );
+          kendoMenu.insertBefore($(item), $($hamburger.find("li.k-item").get(0)));
         }
       });
       // No new hidden menu so ...
@@ -542,8 +479,7 @@ define([
       }
 
       // Number of items in hamburger
-      hiddenItemsCount = $($hamburger.find("ul").get(0)).find("> li.k-item")
-        .length;
+      hiddenItemsCount = $($hamburger.find("ul").get(0)).find("> li.k-item").length;
 
       // No view hamburger if empty
       if (hiddenItemsCount === 0) {
@@ -562,12 +498,7 @@ define([
       barMenu.css("overflow", "").css("max-height", "");
     },
 
-    _insertMenuContent: function wMenuInsertMenuContent(
-      menus,
-      $content,
-      currentWidget,
-      scopeMenu
-    ) {
+    _insertMenuContent: function wMenuInsertMenuContent(menus, $content, currentWidget, scopeMenu) {
       var subMenu;
       var hasBeforeContent = false;
       currentWidget = currentWidget || this;
@@ -580,9 +511,7 @@ define([
           }
         });
         if (hasBeforeContent) {
-          _.each(menus, function wMenuInsertMenuContentBeforeContent(
-            currentMenu
-          ) {
+          _.each(menus, function wMenuInsertMenuContentBeforeContent(currentMenu) {
             if (!currentMenu.iconUrl && !currentMenu.beforeContent) {
               if (currentMenu.type !== "separatorMenu") {
                 currentMenu.beforeContent = " ";
@@ -598,51 +527,41 @@ define([
           return;
         }
         currentMenu.htmlAttr = [];
-        _.each(
-          currentMenu.htmlAttributes,
-          function wMenuInsertMenuContentSetHtml(attrValue, attrId) {
-            if (attrId === "class") {
-              currentMenu.cssClass = attrValue;
-            } else {
-              currentMenu.htmlAttr.push({
-                attrId: attrId,
-                attrValue: attrValue
-              });
-            }
-            if (currentMenu.htmlLabel) {
-              // reRender for variable labels
-              currentMenu.htmlLabel = Mustache.render(
-                currentMenu.htmlLabel || "",
-                { document: currentWidget.options.document }
-              );
-            }
-            if (currentMenu.label) {
-              // reRender for variable labels
-              currentMenu.label = Mustache.render(currentMenu.label || "", {
-                document: currentWidget.options.document
-              });
-            }
-            if (currentMenu.tooltipLabel) {
-              // reRender for variable labels
-              currentMenu.tooltipLabel = Mustache.render(
-                currentMenu.tooltipLabel || "",
-                { document: currentWidget.options.document }
-              );
-            }
+        _.each(currentMenu.htmlAttributes, function wMenuInsertMenuContentSetHtml(attrValue, attrId) {
+          if (attrId === "class") {
+            currentMenu.cssClass = attrValue;
+          } else {
+            currentMenu.htmlAttr.push({
+              attrId: attrId,
+              attrValue: attrValue
+            });
           }
-        );
+          if (currentMenu.htmlLabel) {
+            // reRender for variable labels
+            currentMenu.htmlLabel = Mustache.render(currentMenu.htmlLabel || "", {
+              document: currentWidget.options.document
+            });
+          }
+          if (currentMenu.label) {
+            // reRender for variable labels
+            currentMenu.label = Mustache.render(currentMenu.label || "", {
+              document: currentWidget.options.document
+            });
+          }
+          if (currentMenu.tooltipLabel) {
+            // reRender for variable labels
+            currentMenu.tooltipLabel = Mustache.render(currentMenu.tooltipLabel || "", {
+              document: currentWidget.options.document
+            });
+          }
+        });
 
         currentMenu.contentLabel = currentMenu.htmlLabel || currentMenu.label;
         currentMenu.disabled = currentMenu.visibility === "disabled";
         if (currentMenu.type === "listMenu") {
           subMenu = "listMenu";
 
-          $currentMenu = $(
-            Mustache.render(
-              currentWidget._getTemplate(subMenu) || "",
-              currentMenu
-            )
-          );
+          $currentMenu = $(Mustache.render(currentWidget._getTemplate(subMenu) || "", currentMenu));
           currentWidget._insertMenuContent(
             currentMenu.content || "",
             $currentMenu.find(".listmenu__content"),
@@ -654,31 +573,15 @@ define([
             subMenu = "dynamicMenu";
             if (currentMenu.url) {
               currentMenu.document = currentWidget.options.document;
-              currentMenu.url = Mustache.render(
-                currentMenu.url || "",
-                currentMenu
-              );
+              currentMenu.url = Mustache.render(currentMenu.url || "", currentMenu);
             }
-            $currentMenu = $(
-              Mustache.render(
-                currentWidget._getTemplate(subMenu) || "",
-                currentMenu
-              )
-            );
+            $currentMenu = $(Mustache.render(currentWidget._getTemplate(subMenu) || "", currentMenu));
           } else {
             currentMenu.document = currentWidget.options.document;
             if (currentMenu.url) {
-              currentMenu.url = Mustache.render(
-                currentMenu.url || "",
-                currentMenu
-              );
+              currentMenu.url = Mustache.render(currentMenu.url || "", currentMenu);
             }
-            $currentMenu = $(
-              Mustache.render(
-                currentWidget._getTemplate(currentMenu.type) || "",
-                currentMenu
-              )
-            );
+            $currentMenu = $(Mustache.render(currentWidget._getTemplate(currentMenu.type) || "", currentMenu));
           }
         }
         if (currentMenu.tooltipLabel) {
@@ -686,9 +589,7 @@ define([
             $currentMenu.tooltip({
               trigger: "hover",
               html: currentMenu.tooltipHtml,
-              placement: currentMenu.tooltipPlacement
-                ? currentMenu.tooltipPlacement
-                : "bottom",
+              placement: currentMenu.tooltipPlacement ? currentMenu.tooltipPlacement : "bottom",
               container: ".dcpDocument__menu"
             })
           );
@@ -702,18 +603,10 @@ define([
     },
 
     _getTemplate: function wMenuTemplate(name) {
-      if (
-        this.options.templates &&
-        this.options.templates.menu &&
-        this.options.templates.menu[name]
-      ) {
+      if (this.options.templates && this.options.templates.menu && this.options.templates.menu[name]) {
         return this.options.templates.menu[name];
       }
-      if (
-        window.dcp.templates &&
-        window.dcp.templates.menu &&
-        window.dcp.templates.menu[name]
-      ) {
+      if (window.dcp.templates && window.dcp.templates.menu && window.dcp.templates.menu[name]) {
         return window.dcp.templates.menu[name];
       }
       throw new Error("Menu unknown template " + name);

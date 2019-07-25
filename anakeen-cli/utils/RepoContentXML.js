@@ -18,15 +18,9 @@ class RepoContentXML extends XMLLoader {
   }
 
   repoContentXMLTemplate() {
-    const format = this.options.hasOwnProperty("format")
-      ? this.options.format
-      : "control";
-    const label = this.options.hasOwnProperty("label")
-      ? this.options.label
-      : "";
-    const status = this.options.hasOwnProperty("status")
-      ? this.options.status
-      : "";
+    const format = this.options.hasOwnProperty("format") ? this.options.format : "control";
+    const label = this.options.hasOwnProperty("label") ? this.options.label : "";
+    const status = this.options.hasOwnProperty("status") ? this.options.status : "";
     return {
       repo: {
         $: { format, label, status },
@@ -65,9 +59,7 @@ class RepoContentXML extends XMLLoader {
 
   checkStructure() {
     if (!this.data.hasOwnProperty("repo")) {
-      throw new RepoContentXMLError(
-        `Could not find /compose-lock node in '${this.filename}'`
-      );
+      throw new RepoContentXMLError(`Could not find /compose-lock node in '${this.filename}'`);
     }
     if (!this.data["repo"].hasOwnProperty("$")) {
       throw new RepoContentXMLError(`/compose-lock is not a valid root node`);
@@ -101,16 +93,7 @@ class RepoContentXML extends XMLLoader {
     /* Remove xmlns declaration and unused child nodes */
     delete rootNode.$.xmlns;
     for (let prop of Object.keys(rootNode)) {
-      if (
-        ![
-          "$",
-          "description",
-          "requires",
-          "replaces",
-          "changelog",
-          "parameters"
-        ].includes(prop)
-      ) {
+      if (!["$", "description", "requires", "replaces", "changelog", "parameters"].includes(prop)) {
         delete rootNode[prop];
       }
     }

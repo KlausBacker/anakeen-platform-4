@@ -97,14 +97,11 @@ export default {
             <div class="fall-layer-header">
                 <span class="fall-layer-header-aclName">${column.label}</span>
                 <a data-role="develRouterLink"
-                href="/devel/smartElements/${column.refName ||
-                  column.id}/view/?name=${column.refName}"
+                href="/devel/smartElements/${column.refName || column.id}/view/?name=${column.refName}"
                 class="fall-layer-header-label">${column.refName}</a>
                 <div class="show-all-switch switch-container">
                     <label class="switch">
-                        <input class="switch-button" ${checked} type="checkbox" data-layer="${
-            column.id
-          }">
+                        <input class="switch-button" ${checked} type="checkbox" data-layer="${column.id}">
                         <span class="slider round"></span>
                     </label>
                     <label class="switch-label" for="extendedView">
@@ -150,9 +147,7 @@ export default {
                 this.appliedLayers = data.request.layers.map(l => l.id);
               }
               this.fallData = data;
-              this.treeColumns = this.privateMethods.getColumns(
-                this.fallData.layers
-              );
+              this.treeColumns = this.privateMethods.getColumns(this.fallData.layers);
               this.$emit("fieldaccess-config-ready");
               kendo.ui.progress(this.$(this.$refs.fallConfigTree), false);
             }
@@ -164,10 +159,7 @@ export default {
           });
       },
       parseData: data => {
-        return getTreeListData(
-          data.fields,
-          this.privateMethods.onInvalidFieldFound
-        );
+        return getTreeListData(data.fields, this.privateMethods.onInvalidFieldFound);
       },
       onInvalidFieldFound: fieldId => {
         const errorMessage = `Field with field id : ${fieldId} is unknown`;
@@ -183,23 +175,19 @@ export default {
       },
       customizeTree: () => {
         const treeList = this.$refs.ankTreeList.$refs.ssTreelist.kendoWidget();
-        this.$(treeList.thead).on(
-          "change",
-          "input.switch-button[type=checkbox]",
-          event => {
-            const layer = this.$(event.currentTarget).data("layer");
-            const indexOf = this.appliedLayers.indexOf(layer);
-            if (event.currentTarget.checked) {
-              if (indexOf === -1) {
-                this.appliedLayers.push(layer);
-              }
-            } else {
-              if (indexOf >= -1) {
-                this.appliedLayers.splice(indexOf, 1);
-              }
+        this.$(treeList.thead).on("change", "input.switch-button[type=checkbox]", event => {
+          const layer = this.$(event.currentTarget).data("layer");
+          const indexOf = this.appliedLayers.indexOf(layer);
+          if (event.currentTarget.checked) {
+            if (indexOf === -1) {
+              this.appliedLayers.push(layer);
+            }
+          } else {
+            if (indexOf >= -1) {
+              this.appliedLayers.splice(indexOf, 1);
             }
           }
-        );
+        });
       }
     };
   },

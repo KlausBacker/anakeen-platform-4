@@ -78,6 +78,7 @@ class AnkMailError
      */
     public function autosend()
     {
+        $from='';
         if (\Anakeen\Core\ContextManager::isAuthenticated()) {
             $user = \Anakeen\Core\ContextManager::getCurrentUser();
             $from = (!empty($user) ? $user->getMail() : '');

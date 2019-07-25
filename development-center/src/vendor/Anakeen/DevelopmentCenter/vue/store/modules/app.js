@@ -1,8 +1,4 @@
-import {
-  SET_ERROR,
-  SELECT_VENDOR_CATEGORY,
-  SET_CURRENT_ROUTE
-} from "../mutation-types";
+import { SET_ERROR, SELECT_VENDOR_CATEGORY, SET_CURRENT_ROUTE } from "../mutation-types";
 
 const mutations = {
   [SET_ERROR](state, error) {

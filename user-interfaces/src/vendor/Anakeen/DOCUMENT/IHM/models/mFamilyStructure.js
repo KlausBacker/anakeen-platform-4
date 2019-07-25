@@ -6,9 +6,7 @@ define(["underscore", "backbone"], function require_structure(_, Backbone) {
     idAttribute: "familyId",
 
     url: function mFamilyStructure_url() {
-      var urlStructure = _.template(
-        "/api/v2/smart-structures/<%- familyId %>/views/structure"
-      );
+      var urlStructure = _.template("/api/v2/smart-structures/<%- familyId %>/views/structure");
 
       return urlStructure({
         familyId: this.get("familyId")

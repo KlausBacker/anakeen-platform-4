@@ -1,8 +1,5 @@
 import { warn } from "../util/warn";
-import {
-  activateChildComponent,
-  deactivateChildComponent
-} from "../util/lifecycle";
+import { activateChildComponent, deactivateChildComponent } from "../util/lifecycle";
 
 function updateActive(isCurrent, cached, vm) {
   if (cached.active !== isCurrent) {
@@ -27,10 +24,7 @@ function getEffectiveRoute(key, currentRoute) {
   queryParamsName = queryParamsName.map(k => k.replace(":", ""));
   queryParamsName.forEach(paramName => {
     if (currentRoute.params && currentRoute.params[paramName]) {
-      effectiveRoute = effectiveRoute.replace(
-        new RegExp(`:${paramName}`, "g"),
-        currentRoute.params[paramName]
-      );
+      effectiveRoute = effectiveRoute.replace(new RegExp(`:${paramName}`, "g"), currentRoute.params[paramName]);
     }
   });
   return effectiveRoute;
@@ -144,10 +138,7 @@ export default {
           };
 
           // resolve props
-          let propsToPass = (data.props = resolveProps(
-            route,
-            matched.props && matched.props[name]
-          ));
+          let propsToPass = (data.props = resolveProps(route, matched.props && matched.props[name]));
           if (propsToPass) {
             // clone to prevent mutation
             propsToPass = data.props = extend({}, propsToPass);
@@ -203,11 +194,7 @@ function resolveProps(route, config) {
       return config ? route.params : undefined;
     default:
       if (process.env.NODE_ENV !== "production") {
-        warn(
-          false,
-          `props in '${route.path}' is a ${typeof config}, ` +
-            `expecting an object, function or boolean.`
-        );
+        warn(false, `props in '${route.path}' is a ${typeof config}, ` + `expecting an object, function or boolean.`);
       }
   }
 }

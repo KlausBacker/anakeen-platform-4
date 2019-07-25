@@ -22,9 +22,7 @@ const bindNetworkCommonsErrors = axiosInstance => {
           try {
             JSON.parse(response.request.responseText);
           } catch (err) {
-            console.error(
-              `JSON parsing response error for request : ${response.request.responseURL}`
-            );
+            console.error(`JSON parsing response error for request : ${response.request.responseURL}`);
             throw err;
           }
         }
@@ -36,10 +34,7 @@ const bindNetworkCommonsErrors = axiosInstance => {
         // The request was made but no response was received
         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
         // http.ClientRequest in node.js
-        console.error(
-          "Looks like there are some network troubles",
-          error.request
-        );
+        console.error("Looks like there are some network troubles", error.request);
       }
       return Promise.reject(error);
     }

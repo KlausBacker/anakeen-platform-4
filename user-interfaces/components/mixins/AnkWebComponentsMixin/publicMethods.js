@@ -18,9 +18,10 @@ const ERROR_CODES = {
 };
 
 const error = (errorCode, ...args) => {
-  const displayErrorMsg = `Ank Component Mixin error (${
-    ERROR_CODES[errorCode].code
-  }) : ${sprintf(ERROR_CODES[errorCode].message, args)}`;
+  const displayErrorMsg = `Ank Component Mixin error (${ERROR_CODES[errorCode].code}) : ${sprintf(
+    ERROR_CODES[errorCode].message,
+    args
+  )}`;
   console.error(displayErrorMsg);
   throw displayErrorMsg;
 };

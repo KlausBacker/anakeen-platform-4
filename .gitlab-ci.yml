@@ -556,7 +556,7 @@ control-integration-build:
     - a4ppm
   script:
     - npx npm-cli-login -u ${CIBUILD_INTEGRATION_ANAKEEN_NPM_LOGIN} -p ${CIBUILD_INTEGRATION_ANAKEEN_NPM_PASSWORD} -e ${CIBUILD_ANAKEEN_NPM_EMAIL} -r ${CIBUILD_INTEGRATION_ANAKEEN_NPM_REGISTRY} -s "@anakeen"
-    - node ./.devtool/ci/utils/autorelease.js ${PACKAGE_PATH} $(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/${ANK_CI_APP_NAME} ${ANK_CI_APP_NAME})
+    - node ./.devtool/ci/utils/autorelease.js ${PACKAGE_PATH} $(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH} ${ANK_CI_APP_NAME})
     - cd ${PACKAGE_PATH} && npm publish
 
 anakeen-cli-integration-publish:

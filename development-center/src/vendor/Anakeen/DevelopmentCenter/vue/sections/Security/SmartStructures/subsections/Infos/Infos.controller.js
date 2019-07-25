@@ -17,8 +17,7 @@ export default {
         if (this.structureDetails && this.structureDetails.workflow) {
           this.infoSections.push({
             label: "Workflow",
-            path: `/devel/wfl/${this.structureDetails.workflow.name ||
-              this.structureDetails.workflow.id}/infos`
+            path: `/devel/wfl/${this.structureDetails.workflow.name || this.structureDetails.workflow.id}/infos`
           });
         }
       }
@@ -39,9 +38,7 @@ export default {
       return this.structureDetails ? this.structureDetails.security || {} : {};
     },
     structureProperties() {
-      return this.structureDetails
-        ? this.structureDetails.properties || {}
-        : {};
+      return this.structureDetails ? this.structureDetails.properties || {} : {};
     },
     structureInfo() {
       return this.structureDetails ? this.structureDetails.info || {} : {};

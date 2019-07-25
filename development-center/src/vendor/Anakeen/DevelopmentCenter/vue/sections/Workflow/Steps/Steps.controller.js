@@ -76,21 +76,17 @@ export default {
           case "UI":
             return `<ul><li><b>View control :&nbsp</b><a data-role="develRouterLink" href="/devel/ui/${
               this.ssName
-            }/views/?cvId=${this.checkIsValid(
-              dataItem["viewcontrol"]
-            )}">${this.checkIsValid(
+            }/views/?cvId=${this.checkIsValid(dataItem["viewcontrol"])}">${this.checkIsValid(
               dataItem["viewcontrol"]
             )}</a></li><li><b>Mask :&nbsp</b><a data-role="develRouterLink" href="/devel/ui/${
               this.ssName
-            }/views/?maskId=${this.checkIsValid(
+            }/views/?maskId=${this.checkIsValid(dataItem["mask"])})}">${this.checkIsValid(
               dataItem["mask"]
-            )})}">${this.checkIsValid(dataItem["mask"])}</a></li></ul>`;
+            )}</a></li></ul>`;
           case "security":
             return `<ul><li><b>Profil&nbsp:&nbsp</b><a data-role="develRouterLink" href="/devel/security/profiles/${this.checkIsValid(
               dataItem["profil"]
-            )}/?name=${this.checkIsValid(
-              dataItem["profil"]
-            )}">${this.checkIsValid(
+            )}/?name=${this.checkIsValid(dataItem["profil"])}">${this.checkIsValid(
               dataItem["profil"]
             )}</a></li><li><b>Smart field access&nbsp:&nbsp</b><a data-role="develRouterLink" href="/devel/security/fieldAccess/${this.checkIsValid(
               dataItem["fall"]
@@ -100,9 +96,9 @@ export default {
               dataItem["mailtemplates"]
             )}</div><ul><li><b>Timer&nbsp:&nbsp</b><a data-role="develRouterLink" href="/devel/smartElements/${this.checkIsValid(
               dataItem["timer"]
-            )}/view/?name=${this.checkIsValid(
+            )}/view/?name=${this.checkIsValid(dataItem["timer"])}">${this.checkIsValid(
               dataItem["timer"]
-            )}">${this.checkIsValid(dataItem["timer"])}</a></li></ul></div>`;
+            )}</a></li></ul></div>`;
           default:
             return this.checkIsValid(dataItem[colId]);
         }
@@ -121,9 +117,7 @@ export default {
               dataItem["color"]
             )}'></div><span>&nbsp${this.checkIsValid(
               dataItem["color"]
-            )}</span></li><li><b>Activity :&nbsp</b>${this.checkIsValid(
-              dataItem["activity"]
-            )}</li></ul>`;
+            )}</span></li><li><b>Activity :&nbsp</b>${this.checkIsValid(dataItem["activity"])}</li></ul>`;
             return str;
         }
       };

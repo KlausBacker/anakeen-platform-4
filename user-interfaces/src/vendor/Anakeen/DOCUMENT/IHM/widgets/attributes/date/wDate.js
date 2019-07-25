@@ -37,9 +37,7 @@
 
     _initDom: function wDateInitDom() {
       if (this.options.renderOptions.kendoDateConfiguration.format) {
-        this.options.attributeValue.displayValue = this.formatDate(
-          this.parseDate(this.options.attributeValue.value)
-        );
+        this.options.attributeValue.displayValue = this.formatDate(this.parseDate(this.options.attributeValue.value));
       }
       if (this.getMode() === "read") {
         if (this.options.renderOptions.format) {
@@ -65,12 +63,8 @@
         }
       }
 
-      if (
-        this.element.find(".dcpAttribute__content__buttons button").length === 0
-      ) {
-        this.element
-          .find(".k-picker-wrap")
-          .addClass("dcpAttribute__content__nobutton");
+      if (this.element.find(".dcpAttribute__content__buttons button").length === 0) {
+        this.element.find(".k-picker-wrap").addClass("dcpAttribute__content__nobutton");
       }
     },
 
@@ -99,9 +93,7 @@
       $.dcp.dcpAttribute.prototype.setValue.call(this, value);
 
       if (this.getMode() === "write") {
-        originalValue = this.convertDateToPseudoIsoString(
-          this.kendoWidget.data(this.kendoWidgetClass).value()
-        );
+        originalValue = this.convertDateToPseudoIsoString(this.kendoWidget.data(this.kendoWidgetClass).value());
         // : explicit lazy equal
         //noinspection JSHint, EqualityComparisonWithCoercionJS
         if (originalValue != value.value) {
@@ -121,9 +113,7 @@
       } else if (this.getMode() === "read") {
         this.getContentElements().text(value.displayValue);
       } else {
-        throw new Error(
-          "Attribute " + this.options.id + " unkown mode " + this.getMode()
-        );
+        throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
       }
     },
 
@@ -135,9 +125,7 @@
         if (this.value() !== null) {
           // only valid date are setted
           // wrong date are set by blur event
-          var isoDate = currentWidget.convertDateToPseudoIsoString(
-            this.value()
-          );
+          var isoDate = currentWidget.convertDateToPseudoIsoString(this.value());
           // Need to set by widget to use raw date
           currentWidget.setValue({
             value: isoDate,
@@ -166,62 +154,51 @@
 
     _controlDate: function wDateControlDate(inputValue) {
       var currentWidget = this;
-      inputValue.on(
-        "blur" + this.eventNamespace,
-        function validateDate(/*event*/) {
-          var dateValue = $(this)
-            .val()
-            .trim();
+      inputValue.on("blur" + this.eventNamespace, function validateDate(/*event*/) {
+        var dateValue = $(this)
+          .val()
+          .trim();
 
-          if (currentWidget.invalidDate) {
-            currentWidget.setError(null); // clear Error before
-            currentWidget.invalidDate = false;
-          }
+        if (currentWidget.invalidDate) {
+          currentWidget.setError(null); // clear Error before
+          currentWidget.invalidDate = false;
+        }
 
-          currentWidget._setVisibilitySavingMenu("visible");
+        currentWidget._setVisibilitySavingMenu("visible");
 
-          if (dateValue) {
-            if (!currentWidget.parseDate(dateValue)) {
-              currentWidget._setVisibilitySavingMenu("disabled");
-              _.defer(function wDateFocus() {
-                currentWidget._getFocusInput().focus();
-              });
-              currentWidget.invalidDate = true;
-              currentWidget.setError(currentWidget.options.labels.invalidDate);
-            }
+        if (dateValue) {
+          if (!currentWidget.parseDate(dateValue)) {
+            currentWidget._setVisibilitySavingMenu("disabled");
+            _.defer(function wDateFocus() {
+              currentWidget._getFocusInput().focus();
+            });
+            currentWidget.invalidDate = true;
+            currentWidget.setError(currentWidget.options.labels.invalidDate);
           }
         }
-      );
+      });
     },
 
     formatDate: function wDateFormatDate(value) {
       if (this.options.renderOptions.kendoDateConfiguration.format) {
-        return kendo.toString(
-          value,
-          this.options.renderOptions.kendoDateConfiguration.format
-        );
+        return kendo.toString(value, this.options.renderOptions.kendoDateConfiguration.format);
       }
       return kendo.toString(value, "d");
     },
 
     parseDate: function wDateParseDate(value) {
-      var parseFormat = this.options.renderOptions.kendoDateConfiguration
-        .parseFormats;
+      var parseFormat = this.options.renderOptions.kendoDateConfiguration.parseFormats;
       var goodDate = kendo.parseDate(value);
       if (goodDate) {
         return goodDate;
       }
       if (this.options.renderOptions.kendoDateConfiguration.format) {
-        parseFormat.push(
-          this.options.renderOptions.kendoDateConfiguration.format
-        );
+        parseFormat.push(this.options.renderOptions.kendoDateConfiguration.format);
       }
       return kendo.parseDate(value, parseFormat);
     },
 
-    convertDateToPseudoIsoString: function wDateconvertDateToPseudoIsoString(
-      dateObject
-    ) {
+    convertDateToPseudoIsoString: function wDateconvertDateToPseudoIsoString(dateObject) {
       if (dateObject && _.isDate(dateObject)) {
         return (
           dateObject.getFullYear() +
@@ -252,11 +229,8 @@
           min: this.options.minDate
         };
 
-      if (
-        _.isObject(currentWidget.options.renderOptions.kendoDateConfiguration)
-      ) {
-        kendoOptions =
-          currentWidget.options.renderOptions.kendoDateConfiguration;
+      if (_.isObject(currentWidget.options.renderOptions.kendoDateConfiguration)) {
+        kendoOptions = currentWidget.options.renderOptions.kendoDateConfiguration;
       }
 
       return _.extend(defaultOptions, kendoOptions);

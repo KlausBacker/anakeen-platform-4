@@ -7,15 +7,7 @@ define([
   "dcpDocument/views/attributes/vAttribute",
   "dcpDocument/views/attributes/array/vArray",
   "dcpDocument/views/document/attributeTemplate"
-], function require_vFrame(
-  $,
-  _,
-  Backbone,
-  Mustache,
-  ViewAttribute,
-  ViewAttributeArray,
-  attributeTemplate
-) {
+], function require_vFrame($, _, Backbone, Mustache, ViewAttribute, ViewAttributeArray, attributeTemplate) {
   "use strict";
 
   return Backbone.View.extend({
@@ -25,15 +17,11 @@ define([
 
     events: {
       "click > .dcpFrame--collapsable": "toggle",
-      'click a[href^="#action/"], a[data-action], button[data-action]':
-        "externalLinkSelected"
+      'click a[href^="#action/"], a[data-action], button[data-action]': "externalLinkSelected"
     },
 
     initialize: function vFrame_initialize(options) {
-      if (
-        options.displayLabel === false ||
-        this.model.getOption("labelPosition") === "none"
-      ) {
+      if (options.displayLabel === false || this.model.getOption("labelPosition") === "none") {
         this.displayLabel = false;
       }
       this.listenTo(this.model, "change:label", this.updateLabel);
@@ -76,9 +64,7 @@ define([
 
           if (currentView.options.originalView !== true) {
             if (currentView.model.getOption("template")) {
-              customRender = attributeTemplate.renderCustomView(
-                currentView.model
-              );
+              customRender = attributeTemplate.renderCustomView(currentView.model);
               currentView.customView = customRender.$el;
               promiseAttributes.push(customRender.promise);
             }
@@ -88,24 +74,17 @@ define([
           if (currentView.model.getOption("attributeLabel")) {
             contentData.label = currentView.model.getOption("attributeLabel");
           }
-          contentData.collapsable =
-            contentData.renderOptions.collapse !== "none";
+          contentData.collapsable = contentData.renderOptions.collapse !== "none";
 
           currentView.templateLabel = currentView.model.getTemplates().attribute.frame.label;
-          labelElement = $(
-            Mustache.render(currentView.templateLabel || "", contentData)
-          );
+          labelElement = $(Mustache.render(currentView.templateLabel || "", contentData));
 
           if (currentView.customView) {
             contentElement = currentView.customView;
-            contentElement.addClass(
-              "dcpFrame__content dcpFrame__content--open"
-            );
+            contentElement.addClass("dcpFrame__content dcpFrame__content--open");
           } else {
             currentView.templateContent = currentView.model.getTemplates().attribute.frame.content;
-            contentElement = $(
-              Mustache.render(currentView.templateContent || "", contentData)
-            );
+            contentElement = $(Mustache.render(currentView.templateContent || "", contentData));
           }
           currentView.$el.empty();
           if (currentView.displayLabel === true) {
@@ -115,54 +94,50 @@ define([
           currentView.$el.attr("data-attrid", currentView.model.id);
 
           $content = currentView.$el.find(".dcpFrame__content");
-          var hasOneContent = currentView.model
-            .get("content")
-            .some(function vFrame_getDisplayable(value) {
-              return value.isDisplayable();
-            });
+          var hasOneContent = currentView.model.get("content").some(function vFrame_getDisplayable(value) {
+            return value.isDisplayable();
+          });
 
           if (!currentView.customView) {
             if (!hasOneContent) {
               $content.append(currentView.model.getOption("showEmptyContent"));
             } else {
-              currentView.model
-                .get("content")
-                .each(function vFrame_AnalyzeContent(currentAttr) {
-                  var attributeView;
-                  if (!currentAttr.isDisplayable()) {
+              currentView.model.get("content").each(function vFrame_AnalyzeContent(currentAttr) {
+                var attributeView;
+                if (!currentAttr.isDisplayable()) {
+                  return;
+                }
+                try {
+                  customView = null;
+                  if (currentAttr.get("isValueAttribute")) {
+                    attributeView = new ViewAttribute({
+                      model: currentAttr,
+                      customView: customView
+                    });
+                    promiseAttributes.push(attributeView.render());
+                    $content.append(attributeView.$el);
                     return;
                   }
-                  try {
-                    customView = null;
-                    if (currentAttr.get("isValueAttribute")) {
-                      attributeView = new ViewAttribute({
-                        model: currentAttr,
-                        customView: customView
-                      });
-                      promiseAttributes.push(attributeView.render());
-                      $content.append(attributeView.$el);
-                      return;
-                    }
-                    if (currentAttr.get("type") === "array") {
-                      attributeView = new ViewAttributeArray({
-                        model: currentAttr
-                      });
-                      promiseAttributes.push(attributeView.render());
-                      $content.append(attributeView.$el);
-                    }
-                  } catch (e) {
-                    $content.append(
-                      '<h1 class="bg-danger"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>Unable to render ' +
-                        currentAttr.id +
-                        "</h1>"
-                    );
-                    if (window.dcp.logger) {
-                      window.dcp.logger(e);
-                    } else {
-                      console.error(e);
-                    }
+                  if (currentAttr.get("type") === "array") {
+                    attributeView = new ViewAttributeArray({
+                      model: currentAttr
+                    });
+                    promiseAttributes.push(attributeView.render());
+                    $content.append(attributeView.$el);
                   }
-                });
+                } catch (e) {
+                  $content.append(
+                    '<h1 class="bg-danger"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>Unable to render ' +
+                      currentAttr.id +
+                      "</h1>"
+                  );
+                  if (window.dcp.logger) {
+                    window.dcp.logger(e);
+                  } else {
+                    console.error(e);
+                  }
+                }
+              });
             }
 
             attributeTemplate.insertDescription(currentView);
@@ -204,13 +179,8 @@ define([
         }
         var $vattrs = this.$el.find("> .dcpFrame__content > .row");
 
-        _.each(responseColumnsDefs, function vFrame_setResponsiveClasses(
-          responseColumnsInfo
-        ) {
-          if (
-            fWidth >= responseColumnsInfo.minAbsWidth &&
-            fWidth < responseColumnsInfo.maxAbsWidth
-          ) {
+        _.each(responseColumnsDefs, function vFrame_setResponsiveClasses(responseColumnsInfo) {
+          if (fWidth >= responseColumnsInfo.minAbsWidth && fWidth < responseColumnsInfo.maxAbsWidth) {
             matchesResponsive = responseColumnsInfo.number;
             if (responseColumnsInfo.grow === true) {
               _this.$el.addClass("dcp-column--grow");
@@ -278,9 +248,7 @@ define([
       $("body").append($fake.append($fakeWidth));
 
       // Compute absolute width
-      _.each(responseColumnsDefs, function vFrame_computeResponsiveWidth(
-        responseColumnsInfo
-      ) {
+      _.each(responseColumnsDefs, function vFrame_computeResponsiveWidth(responseColumnsInfo) {
         if (!responseColumnsInfo.minWidth) {
           responseColumnsInfo.minAbsWidth = 0;
         } else {
@@ -297,10 +265,7 @@ define([
       });
 
       $fake.remove();
-      $(window).on(
-        "resize.v" + this.model.cid,
-        _.bind(this.setResponsiveClasse, this)
-      );
+      $(window).on("resize.v" + this.model.cid, _.bind(this.setResponsiveClasse, this));
       _.defer(_.bind(this.setResponsiveClasse, this));
     },
 
@@ -324,9 +289,7 @@ define([
     toggle: function vFrame_toggle(event, hideNow) {
       var $contentElement = this.$(".dcpFrame__content");
       this.$(".dcp__frame__caret").toggleClass("fa-caret-right fa-caret-down");
-      $contentElement.toggleClass(
-        "dcpFrame__content--open dcpFrame__content--close"
-      );
+      $contentElement.toggleClass("dcpFrame__content--open dcpFrame__content--close");
       if (hideNow) {
         $contentElement.hide();
       } else {

@@ -34,8 +34,7 @@ exports.createSetting = ({
       let basePath = path.join("vendor", vendorName, moduleName, "Settings");
       if (associatedSmartStructure) {
         const StructureName =
-          associatedSmartStructure.charAt(0).toUpperCase() +
-          associatedSmartStructure.slice(1).toLowerCase();
+          associatedSmartStructure.charAt(0).toUpperCase() + associatedSmartStructure.slice(1).toLowerCase();
         basePath = path.join(
           "vendor",
           vendorName,

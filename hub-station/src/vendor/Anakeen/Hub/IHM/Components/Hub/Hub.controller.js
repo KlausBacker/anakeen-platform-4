@@ -58,23 +58,11 @@ export default {
         },
         error => {
           let errorMsg = "";
-          if (
-            error.response &&
-            error.response.data &&
-            error.response.data.error
-          ) {
+          if (error.response && error.response.data && error.response.data.error) {
             errorMsg = error.response.data.error;
-          } else if (
-            error.response &&
-            error.response.data &&
-            error.response.data.message
-          ) {
+          } else if (error.response && error.response.data && error.response.data.message) {
             errorMsg = error.response.data.message;
-          } else if (
-            error.response &&
-            error.response.data &&
-            error.response.data.exceptionMessage
-          ) {
+          } else if (error.response && error.response.data && error.response.data.exceptionMessage) {
             errorMsg = error.response.data.exceptionMessage;
           } else if (error.message) {
             errorMsg = error.message;
@@ -92,12 +80,7 @@ export default {
       );
     },
 
-    sendNotif({
-      title = "",
-      displayTime = 10000,
-      type = "info",
-      textContent = ""
-    }) {
+    sendNotif({ title = "", displayTime = 10000, type = "info", textContent = "" }) {
       this.$refs.ankNotifier.publishNotification(
         new CustomEvent("ankNotification", {
           detail: [

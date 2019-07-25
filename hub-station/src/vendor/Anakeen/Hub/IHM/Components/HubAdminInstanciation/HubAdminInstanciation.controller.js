@@ -116,16 +116,13 @@ export default {
           });
         } else {
           this.$refs.instanceConfig.$once("documentLoaded", () => {
-            this.$refs.instanceConfig.addEventListener(
-              "afterSave",
-              (e, doc) => {
-                if (this.$refs.hubInstanciationList) {
-                  this.$refs.hubInstanciationList.refreshList();
-                  this.displayConfig = true;
-                  this.selectedHub = doc.id;
-                }
+            this.$refs.instanceConfig.addEventListener("afterSave", (e, doc) => {
+              if (this.$refs.hubInstanciationList) {
+                this.$refs.hubInstanciationList.refreshList();
+                this.displayConfig = true;
+                this.selectedHub = doc.id;
               }
-            );
+            });
             this.$refs.instanceConfig.fetchSmartElement({
               initid: initid,
               viewId: viewId

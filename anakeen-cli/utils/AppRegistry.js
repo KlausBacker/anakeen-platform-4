@@ -28,17 +28,13 @@ class AppRegistry {
     const agent = new HTTPAgent();
     const response = await agent.fetch(url);
     if (!response.ok) {
-      throw new AppRegistryError(
-        `Could not get content from registry at URL '${url}'`
-      );
+      throw new AppRegistryError(`Could not get content from registry at URL '${url}'`);
     }
     const data = await response.text();
     const index = JSON.parse(data);
     if (!Array.isArray(index)) {
       throw new AppRegistryError(
-        `Malformed response from registry at URL '${url}': ` +
-          `${response.status} ${response.statusText}\n` +
-          data
+        `Malformed response from registry at URL '${url}': ` + `${response.status} ${response.statusText}\n` + data
       );
     }
     this._index = index;
@@ -63,11 +59,7 @@ class AppRegistry {
   }
 
   getModuleVersionURL(moduleName, moduleVersion) {
-    return [
-      this.getURL(),
-      encodeURI(moduleName),
-      encodeURI(moduleVersion)
-    ].join("/");
+    return [this.getURL(), encodeURI(moduleName), encodeURI(moduleVersion)].join("/");
   }
 
   /**
@@ -150,9 +142,7 @@ class AppRegistry {
     const info = JSON.parse(data);
     if (typeof info !== "object") {
       throw new AppRegistryError(
-        `Malformed response from URL '${infoUrl}': ` +
-          `${response.status} ${response.statusText}\n` +
-          data
+        `Malformed response from URL '${infoUrl}': ` + `${response.status} ${response.statusText}\n` + data
       );
     }
     return info;

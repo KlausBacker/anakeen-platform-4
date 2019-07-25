@@ -51,21 +51,13 @@ exports.createSmartStructure = ({
       moduleName = moduleInfo.moduleInfo.name;
     }
     if (!smartStructurePath && !vendorName) {
-      throw new Error(
-        "You need to specify a vendor name or smartStructurePath"
-      );
+      throw new Error("You need to specify a vendor name or smartStructurePath");
     }
     if (!smartStructurePath && vendorName && moduleName) {
       //Compute and test the smartStructurePath for the vendor name
       srcPath = moduleInfo.buildInfo.buildPath.find(currentPath => {
         //Check current path
-        const smartPath = path.join(
-          currentPath,
-          "vendor",
-          vendorName,
-          moduleName,
-          "SmartStructures"
-        );
+        const smartPath = path.join(currentPath, "vendor", vendorName, moduleName, "SmartStructures");
         try {
           return fs.statSync(smartPath).isDirectory();
         } catch (e) {
@@ -77,13 +69,7 @@ exports.createSmartStructure = ({
           `Unable to find a smartStructure path for this vendor (${vendorName}), you should create it or indicate the smartStructurePath`
         );
       }
-      smartStructurePath = path.join(
-        srcPath,
-        "vendor",
-        vendorName,
-        moduleName,
-        "SmartStructures"
-      );
+      smartStructurePath = path.join(srcPath, "vendor", vendorName, moduleName, "SmartStructures");
       vendorPath = path.join(srcPath, "vendor");
     }
     //Create the directory if needed
@@ -187,10 +173,7 @@ exports.createSmartStructure = ({
             name,
             namespace: convertPathInPhpNamespace({
               vendorPath,
-              smartStructurePath: path.join(
-                currentPath,
-                `${Name}Autocompletion`
-              )
+              smartStructurePath: path.join(currentPath, `${Name}Autocompletion`)
             })
           });
         }
@@ -229,13 +212,9 @@ exports.createSmartStructure = ({
                   }
                 }
 
-                postInstall[0].process.push(
-                  ...ssInstallCmd.map(c => getProcessXml(c))
-                );
+                postInstall[0].process.push(...ssInstallCmd.map(c => getProcessXml(c)));
 
-                postUpgrade[0].process.push(
-                  ...ssUpgradeCmd.map(c => getProcessXml(c))
-                );
+                postUpgrade[0].process.push(...ssUpgradeCmd.map(c => getProcessXml(c)));
                 const builder = new xml2js.Builder();
                 fs.writeFile(infoXMLPath, builder.buildObject(data), err => {
                   if (err) {

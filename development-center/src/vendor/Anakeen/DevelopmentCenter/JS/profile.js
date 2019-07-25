@@ -11,7 +11,7 @@ new Vue({
   components: {
     "ank-dev-profile": Profil
   },
-  template: `<ank-dev-profile v-bind:profileId="${
-    window.profileId
-  }" v-bind='${JSON.stringify(window.profileOptions)}'></ank-dev-profile>`
+  template: `<ank-dev-profile v-bind:profileId="${window.profileId}" v-bind='${JSON.stringify(
+    window.profileOptions
+  )}'></ank-dev-profile>`
 });

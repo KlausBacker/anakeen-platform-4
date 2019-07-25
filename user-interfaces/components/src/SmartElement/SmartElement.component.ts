@@ -5,15 +5,8 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import SmartElementController from "../../../src/vendor/Anakeen/DOCUMENT/IHM/widgets/globalController/SmartElementController";
 import VueSetup from "../setup.js";
+import { ISmartElementValue } from "./ISmartElementValue";
 import { SmartElementEvents } from "./SmartElementEvents";
-
-interface ISmartElementValue {
-  initid?: number | string;
-  viewId?: string;
-  revision?: number;
-  customClientData?: object;
-  noRouter?: boolean;
-}
 
 Vue.use(VueSetup);
 @Component({
@@ -26,10 +19,8 @@ export default class AnkSmartElement extends Vue {
     };
 
     data.initid = this.value.initid || this.initid;
-    data.customClientData =
-      this.value.customClientData || this.customClientData;
-    data.revision =
-      this.value.revision !== -1 ? this.value.revision : this.revision;
+    data.customClientData = this.value.customClientData || this.customClientData;
+    data.revision = this.value.revision !== -1 ? this.value.revision : this.revision;
     data.viewId = this.value.viewId || this.viewId;
     return data;
   }
@@ -108,9 +99,7 @@ export default class AnkSmartElement extends Vue {
         key !== "internalComponentError"
       ) {
         /* eslint-disable no-console */
-        console.error(
-          `Cannot listen to "${key}". It is not a defined listener for ank-smart-element component`
-        );
+        console.error(`Cannot listen to "${key}". It is not a defined listener for ank-smart-element component`);
       }
     });
 
@@ -123,10 +112,7 @@ export default class AnkSmartElement extends Vue {
         name: "v-on-dcpready-listen"
       },
       (event, documentObject) => {
-        if (
-          this.initid &&
-          documentObject.initid.toString() !== this.initid.toString()
-        ) {
+        if (this.initid && documentObject.initid.toString() !== this.initid.toString()) {
           // @ts-ignore
           this.documentIsReady = true;
           this.$emit("update:props", documentObject);
@@ -136,36 +122,25 @@ export default class AnkSmartElement extends Vue {
   }
 
   public addEventListener(eventType, options, callback) {
-    return this.smartElementWidget.addEventListener(
-      eventType,
-      options,
-      callback
-    );
+    return this.smartElementWidget.addEventListener(eventType, options, callback);
   }
 
   public fetchSmartElement(value, options?) {
-    this._initController(value);
-    return this.smartElementWidget
-      .fetchSmartElement(value, options)
-      .catch(error => {
-        let errorMessage = "Undefined error";
-        if (error && error.errorMessage && error.errorMessage.contentText) {
-          console.error(error.errorMessage.contentText);
-          errorMessage = error.errorMessage.contentText;
-        } else {
-          console.error(error);
-        }
-        // @ts-ignore
-        if (!this.documentIsReady) {
-          this.$emit(
-            "internalComponentError",
-            {},
-            {},
-            { message: errorMessage }
-          );
-        }
-        throw error;
-      });
+    this._initController(value, options);
+    return this.smartElementWidget.fetchSmartElement(value, options).catch(error => {
+      let errorMessage = "Undefined error";
+      if (error && error.errorMessage && error.errorMessage.contentText) {
+        console.error(error.errorMessage.contentText);
+        errorMessage = error.errorMessage.contentText;
+      } else {
+        console.error(error);
+      }
+      // @ts-ignore
+      if (!this.documentIsReady) {
+        this.$emit("internalComponentError", {}, {}, { message: errorMessage });
+      }
+      throw error;
+    });
   }
 
   public saveSmartElement(options) {
@@ -201,11 +176,7 @@ export default class AnkSmartElement extends Vue {
   }
 
   public changeStateSmartElement(parameters, reinitOptions, options) {
-    return this.smartElementWidget.changeStateSmartElement(
-      parameters,
-      reinitOptions,
-      options
-    );
+    return this.smartElementWidget.changeStateSmartElement(parameters, reinitOptions, options);
   }
 
   public deleteSmartElement(options) {
@@ -273,11 +244,7 @@ export default class AnkSmartElement extends Vue {
   }
 
   public insertBeforeArrayRow(attributeId, values, index) {
-    return this.smartElementWidget.insertBeforeArrayRow(
-      attributeId,
-      values,
-      index
-    );
+    return this.smartElementWidget.insertBeforeArrayRow(attributeId, values, index);
   }
 
   public removeArrayRow(attributeId, index) {
@@ -336,21 +303,16 @@ export default class AnkSmartElement extends Vue {
     return this.smartElementWidget.injectCSS(cssToInject);
   }
 
-  protected _initController(viewData) {
+  protected _initController(viewData, options = null) {
     if (!this.isLoaded() && viewData && viewData.initid !== 0) {
-      if (
-        window.ank &&
-        window.ank.smartElement &&
-        window.ank.smartElement.globalController
-      ) {
+      if (window.ank && window.ank.smartElement && window.ank.smartElement.globalController) {
         const scopeId = window.ank.smartElement.globalController.addSmartElement(
           // @ts-ignore
           this.$refs.ankSEWrapper,
-          viewData
+          viewData,
+          options
         );
-        this.smartElementWidget = window.ank.smartElement.globalController.scope(
-          scopeId
-        ) as SmartElementController;
+        this.smartElementWidget = window.ank.smartElement.globalController.scope(scopeId) as SmartElementController;
         this.$emit("documentLoaded");
         this.listenAttributes();
       }

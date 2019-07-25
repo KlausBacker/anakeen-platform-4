@@ -36,9 +36,7 @@ define([
 
   var ErrorModelNonInitialized = function ErrorModelNonInitialized(message) {
     this.name = "ErrorModelNonInitialized";
-    this.message =
-      message ||
-      "The widget model is not initialized, use fetchDocument to initialise it.";
+    this.message = message || "The widget model is not initialized, use fetchDocument to initialise it.";
     this.stack = new Error().stack;
   };
   ErrorModelNonInitialized.prototype = Object.create(Error.prototype);
@@ -151,10 +149,7 @@ define([
      *
      * @private
      */
-    _initializeWidget: function documentController_initializeWidget(
-      options,
-      customClientData
-    ) {
+    _initializeWidget: function documentController_initializeWidget(options, customClientData) {
       var promise,
         currentWidget = this,
         initializeSuccess = function documentController_initializeSuccess() {
@@ -165,13 +160,10 @@ define([
       this._initModel(this._getModelValue());
       this._initView();
       if (options.success) {
-        options.success = _.wrap(
-          options.success,
-          function documentController_fetchSuccess(success) {
-            initializeSuccess.apply(this, _.rest(arguments));
-            return success.apply(this, _.rest(arguments));
-          }
-        );
+        options.success = _.wrap(options.success, function documentController_fetchSuccess(success) {
+          initializeSuccess.apply(this, _.rest(arguments));
+          return success.apply(this, _.rest(arguments));
+        });
       }
       if (customClientData) {
         this._model._customClientData = customClientData;
@@ -277,642 +269,468 @@ define([
      */
     _initModelEvents: function documentController_initEvents() {
       var currentWidget = this;
-      this._model.listenTo(
-        this._model,
-        "invalid",
-        function documentController_triggerShowInvalid(model, error) {
-          var result = currentWidget._triggerControllerEvent(
-            "displayError",
-            null,
-            currentWidget.getProperties(),
-            error
-          );
-          if (result) {
-            currentWidget.$notification.dcpNotification("showError", error);
-          }
+      this._model.listenTo(this._model, "invalid", function documentController_triggerShowInvalid(model, error) {
+        var result = currentWidget._triggerControllerEvent("displayError", null, currentWidget.getProperties(), error);
+        if (result) {
+          currentWidget.$notification.dcpNotification("showError", error);
         }
-      );
-      this._model.listenTo(
-        this._model,
-        "showError",
-        function documentController_triggerShowError(error) {
-          var result = currentWidget._triggerControllerEvent(
-            "displayError",
-            null,
-            currentWidget.getProperties(),
-            error
-          );
-          if (result) {
-            currentWidget.$notification.dcpNotification("showError", error);
-          }
+      });
+      this._model.listenTo(this._model, "showError", function documentController_triggerShowError(error) {
+        var result = currentWidget._triggerControllerEvent("displayError", null, currentWidget.getProperties(), error);
+        if (result) {
+          currentWidget.$notification.dcpNotification("showError", error);
         }
-      );
-      this._model.listenTo(
-        this._model,
-        "showMessage",
-        function documentController_triggerShowMessage(msg) {
-          var result = currentWidget._triggerControllerEvent(
-            "displayMessage",
-            null,
-            currentWidget.getProperties(),
-            msg
-          );
-          if (result) {
-            currentWidget.$notification.dcpNotification("show", msg.type, msg);
-          }
+      });
+      this._model.listenTo(this._model, "showMessage", function documentController_triggerShowMessage(msg) {
+        var result = currentWidget._triggerControllerEvent("displayMessage", null, currentWidget.getProperties(), msg);
+        if (result) {
+          currentWidget.$notification.dcpNotification("show", msg.type, msg);
         }
-      );
-      this._model.listenTo(
-        this._model,
-        "reload",
-        function documentController_triggerReinit() {
-          // currentWidget._initModel(currentWidget._getModelValue());
-          // currentWidget._initView();
-          currentWidget._model.fetchDocument();
-        }
-      );
-      this._model.listenTo(
-        this._model,
-        "sync",
-        function documentController_triggerSync() {
-          currentWidget._initializedModel = true;
-          currentWidget.options.initid = currentWidget._model.id;
-          currentWidget.options.viewId = currentWidget._model.get("viewId");
-          currentWidget.options.revision = currentWidget._model.get("revision");
-          currentWidget.element.data(
-            "document",
-            currentWidget._getModelValue()
-          );
-          currentWidget._initActivatedConstraint();
-          currentWidget._initActivatedEventListeners({ launchReady: false });
-        }
-      );
-      this._model.listenTo(
-        this._model,
-        "beforeRender",
-        function documentController_triggerBeforeRender(event) {
-          event.prevent = !currentWidget._triggerControllerEvent(
-            "beforeRender",
-            event,
-            currentWidget.getProperties(),
-            currentWidget._model.getModelProperties()
-          );
-        }
-      );
-      this._model.listenTo(
-        this._model,
-        "beforeClose",
-        function documentController_triggerBeforeClose(
+      });
+      this._model.listenTo(this._model, "reload", function documentController_triggerReinit() {
+        // currentWidget._initModel(currentWidget._getModelValue());
+        // currentWidget._initView();
+        currentWidget._model.fetchDocument();
+      });
+      this._model.listenTo(this._model, "sync", function documentController_triggerSync() {
+        currentWidget._initializedModel = true;
+        currentWidget.options.initid = currentWidget._model.id;
+        currentWidget.options.viewId = currentWidget._model.get("viewId");
+        currentWidget.options.revision = currentWidget._model.get("revision");
+        currentWidget.element.data("document", currentWidget._getModelValue());
+        currentWidget._initActivatedConstraint();
+        currentWidget._initActivatedEventListeners({ launchReady: false });
+      });
+      this._model.listenTo(this._model, "beforeRender", function documentController_triggerBeforeRender(event) {
+        event.prevent = !currentWidget._triggerControllerEvent(
+          "beforeRender",
           event,
-          nextDocument,
-          customClientData
-        ) {
-          if (currentWidget._initializedView !== false) {
-            event.prevent = !currentWidget._triggerControllerEvent(
-              "beforeClose",
-              event,
-              currentWidget.getProperties(),
-              nextDocument,
-              customClientData
-            );
-          }
-        }
-      );
-      this._model.listenTo(
-        this._model,
-        "close",
-        function documentController_triggerClose(oldProperties) {
-          if (currentWidget._initializedView !== false) {
-            currentWidget._triggerControllerEvent(
-              "close",
-              null,
-              currentWidget.getProperties(),
-              oldProperties
-            );
-          }
-          currentWidget._initializedView = false;
-        }
-      );
-      this._model.listenTo(
-        this._model,
-        "getCustomClientData",
-        function documentController_triggerAddCustomData() {
-          try {
-            currentWidget._model._customClientData = currentWidget.getCustomClientData(
-              false
-            );
-          } catch (e) {
-            //no test here
-          }
-        }
-      );
-      this._model.listenTo(
-        this._model,
-        "beforeSave",
-        function documentController_triggerBeforeSave(event, customClientData) {
-          var _model = this;
-          var requestOptions = {
-            getRequestData: function getRequestData() {
-              return _model.toJSON();
-            },
-            setRequestData: function documentControllerSetRequestData(data) {
-              _model._customRequestData = data;
-            }
-          };
+          currentWidget.getProperties(),
+          currentWidget._model.getModelProperties()
+        );
+      });
+      this._model.listenTo(this._model, "beforeClose", function documentController_triggerBeforeClose(
+        event,
+        nextDocument,
+        customClientData
+      ) {
+        if (currentWidget._initializedView !== false) {
           event.prevent = !currentWidget._triggerControllerEvent(
-            "beforeSave",
+            "beforeClose",
             event,
             currentWidget.getProperties(),
-            requestOptions,
+            nextDocument,
             customClientData
           );
         }
-      );
-      this._model.listenTo(
-        this._model,
-        "afterSave",
-        function documentController_triggerAfterSave(oldProperties) {
-          currentWidget._triggerControllerEvent(
-            "afterSave",
-            null,
-            currentWidget.getProperties(),
-            oldProperties
-          );
+      });
+      this._model.listenTo(this._model, "close", function documentController_triggerClose(oldProperties) {
+        if (currentWidget._initializedView !== false) {
+          currentWidget._triggerControllerEvent("close", null, currentWidget.getProperties(), oldProperties);
         }
-      );
-      this._model.listenTo(
-        this._model,
-        "beforeRestore",
-        function documentController_triggerBeforeRestore(event) {
-          event.prevent = !currentWidget._triggerControllerEvent(
-            "beforeRestore",
-            event,
-            currentWidget.getProperties()
-          );
+        currentWidget._initializedView = false;
+      });
+      this._model.listenTo(this._model, "getCustomClientData", function documentController_triggerAddCustomData() {
+        try {
+          currentWidget._model._customClientData = currentWidget.getCustomClientData(false);
+        } catch (e) {
+          //no test here
         }
-      );
-      this._model.listenTo(
-        this._model,
-        "afterRestore",
-        function documentController_triggerAfterRestore(oldProperties) {
-          currentWidget._triggerControllerEvent(
-            "afterRestore",
-            null,
-            currentWidget.getProperties(),
-            oldProperties
-          );
-        }
-      );
-      this._model.listenTo(
-        this._model,
-        "beforeDelete",
-        function documentController_triggerBeforeDelete(
+      });
+      this._model.listenTo(this._model, "beforeSave", function documentController_triggerBeforeSave(
+        event,
+        customClientData
+      ) {
+        var _model = this;
+        var requestOptions = {
+          getRequestData: function getRequestData() {
+            return _model.toJSON();
+          },
+          setRequestData: function documentControllerSetRequestData(data) {
+            _model._customRequestData = data;
+          }
+        };
+        event.prevent = !currentWidget._triggerControllerEvent(
+          "beforeSave",
           event,
+          currentWidget.getProperties(),
+          requestOptions,
           customClientData
-        ) {
-          event.prevent = !currentWidget._triggerControllerEvent(
-            "beforeDelete",
-            event,
-            currentWidget.getProperties(),
-            currentWidget._model.getModelProperties(),
-            customClientData
-          );
-        }
-      );
-      this._model.listenTo(
-        this._model,
-        "afterDelete",
-        function documentController_triggerAfterDelete(oldProperties) {
-          currentWidget._triggerControllerEvent(
-            "afterDelete",
-            null,
-            currentWidget.getProperties(),
-            oldProperties
-          );
-        }
-      );
-      this._model.listenTo(
-        this._model,
-        "validate",
-        function documentController_triggerValidate(event) {
-          event.prevent = !currentWidget._triggerControllerEvent(
-            "validate",
-            event,
-            currentWidget.getProperties()
-          );
-        }
-      );
-      this._model.listenTo(
-        this._model,
-        "changeValue",
-        function documentController_triggerChangeValue(options) {
-          try {
-            var currentAttribute = currentWidget.getAttribute(
-                options.attributeId
-              ),
-              index = 0,
-              values = currentAttribute.getValue("all"),
-              mAttribute = currentWidget._getAttributeModel(
-                options.attributeId
-              );
-            if (mAttribute.getParent().get("type") !== "array") {
-              index = -1;
-            } else {
-              var changesIndex = [];
-              _.each(
-                values.current,
-                function documentController_valueIsModified(currentValue) {
-                  var previous = values.previous[index];
-                  if (!previous) {
-                    changesIndex.push(index);
-                  } else {
-                    if (_.isArray(currentValue)) {
-                      currentValue = currentValue.join(",");
-                    }
-                    currentValue = _.has(currentValue, "value")
-                      ? currentValue.value
-                      : currentValue;
-                    if (_.isArray(previous)) {
-                      previous = previous.join(",");
-                    }
-                    previous = _.has(previous, "value")
-                      ? previous.value
-                      : previous;
-                    if (previous !== currentValue) {
-                      changesIndex.push(index);
-                    }
-                  }
-                  index++;
+        );
+      });
+      this._model.listenTo(this._model, "afterSave", function documentController_triggerAfterSave(oldProperties) {
+        currentWidget._triggerControllerEvent("afterSave", null, currentWidget.getProperties(), oldProperties);
+      });
+      this._model.listenTo(this._model, "beforeRestore", function documentController_triggerBeforeRestore(event) {
+        event.prevent = !currentWidget._triggerControllerEvent("beforeRestore", event, currentWidget.getProperties());
+      });
+      this._model.listenTo(this._model, "afterRestore", function documentController_triggerAfterRestore(oldProperties) {
+        currentWidget._triggerControllerEvent("afterRestore", null, currentWidget.getProperties(), oldProperties);
+      });
+      this._model.listenTo(this._model, "beforeDelete", function documentController_triggerBeforeDelete(
+        event,
+        customClientData
+      ) {
+        event.prevent = !currentWidget._triggerControllerEvent(
+          "beforeDelete",
+          event,
+          currentWidget.getProperties(),
+          currentWidget._model.getModelProperties(),
+          customClientData
+        );
+      });
+      this._model.listenTo(this._model, "afterDelete", function documentController_triggerAfterDelete(oldProperties) {
+        currentWidget._triggerControllerEvent("afterDelete", null, currentWidget.getProperties(), oldProperties);
+      });
+      this._model.listenTo(this._model, "validate", function documentController_triggerValidate(event) {
+        event.prevent = !currentWidget._triggerControllerEvent("validate", event, currentWidget.getProperties());
+      });
+      this._model.listenTo(this._model, "changeValue", function documentController_triggerChangeValue(options) {
+        try {
+          var currentAttribute = currentWidget.getAttribute(options.attributeId),
+            index = 0,
+            values = currentAttribute.getValue("all"),
+            mAttribute = currentWidget._getAttributeModel(options.attributeId);
+          if (mAttribute.getParent().get("type") !== "array") {
+            index = -1;
+          } else {
+            var changesIndex = [];
+            _.each(values.current, function documentController_valueIsModified(currentValue) {
+              var previous = values.previous[index];
+              if (!previous) {
+                changesIndex.push(index);
+              } else {
+                if (_.isArray(currentValue)) {
+                  currentValue = currentValue.join(",");
                 }
-              );
-              index = changesIndex.length === 1 ? changesIndex[0] : -1;
-            }
-            currentWidget._triggerAttributeControllerEvent(
-              "change",
-              null,
-              currentAttribute,
-              currentWidget.getProperties(),
-              currentAttribute,
-              currentAttribute.getValue("all"),
-              index
-            );
-          } catch (error) {
-            if (!(error instanceof ErrorModelNonInitialized)) {
-              console.error(error);
-            }
-          }
-        }
-      );
-      this._model.listenTo(
-        this._model,
-        "beforeAttributeRender",
-        function documentController_triggerAttributeRender(
-          event,
-          attributeId,
-          $el,
-          index
-        ) {
-          try {
-            var currentAttribute = currentWidget.getAttribute(attributeId);
-            event.prevent = !currentWidget._triggerAttributeControllerEvent(
-              "attributeBeforeRender",
-              event,
-              currentAttribute,
-              currentWidget.getProperties(),
-              currentAttribute,
-              $el,
-              index
-            );
-          } catch (error) {
-            if (!(error instanceof ErrorModelNonInitialized)) {
-              console.error(error);
-            }
-          }
-        }
-      );
-      this._model.listenTo(
-        this._model,
-        "attributeRender",
-        function documentController_triggerAttributeRender(
-          attributeId,
-          $el,
-          index
-        ) {
-          try {
-            var currentAttribute = currentWidget.getAttribute(attributeId);
-            currentWidget._triggerAttributeControllerEvent(
-              "attributeReady",
-              null,
-              currentAttribute,
-              currentWidget.getProperties(),
-              currentAttribute,
-              $el,
-              index
-            );
-          } catch (error) {
-            if (!(error instanceof ErrorModelNonInitialized)) {
-              console.error(error);
-            }
-          }
-        }
-      );
-      this._model.listenTo(
-        this._model,
-        "arrayModified",
-        function documentController_triggerArrayModified(options) {
-          try {
-            var currentAttribute = currentWidget.getAttribute(
-              options.attributeId
-            );
-            currentWidget._triggerAttributeControllerEvent(
-              "attributeArrayChange",
-              null,
-              currentAttribute,
-              currentWidget.getProperties(),
-              currentAttribute,
-              options.type,
-              options.options
-            );
-          } catch (error) {
-            if (!(error instanceof ErrorModelNonInitialized)) {
-              console.error(error);
-            }
-          }
-        }
-      );
-      this._model.listenTo(
-        this._model,
-        "internalLinkSelected",
-        function documentController_triggerInternalLinkSelected(
-          event,
-          options
-        ) {
-          event.prevent = !currentWidget._triggerControllerEvent(
-            "actionClick",
-            event,
-            currentWidget.getProperties(),
-            options
-          );
-        }
-      );
-      this._model.listenTo(
-        this._model,
-        "downloadFile",
-        function documentController_triggerDownloadFile(
-          event,
-          attrid,
-          options
-        ) {
-          try {
-            var currentAttribute = currentWidget.getAttribute(attrid);
-            event.prevent = !currentWidget._triggerAttributeControllerEvent(
-              "attributeDownloadFile",
-              event,
-              currentAttribute,
-              currentWidget.getProperties(),
-              currentAttribute,
-              options.$el,
-              options.index
-            );
-          } catch (error) {
-            if (!(error instanceof ErrorModelNonInitialized)) {
-              console.error(error);
-            }
-          }
-        }
-      );
-      this._model.listenTo(
-        this._model,
-        "uploadFile",
-        function documentController_triggerUploadFile(event, attrid, options) {
-          try {
-            var currentAttribute = currentWidget.getAttribute(attrid);
-            event.prevent = !currentWidget._triggerAttributeControllerEvent(
-              "attributeUploadFile",
-              event,
-              currentAttribute,
-              currentWidget.getProperties(),
-              currentAttribute,
-              options.$el,
-              options.index,
-              {
-                file: options.file,
-                hasUploadingFiles: currentWidget._model.hasUploadingFile()
+                currentValue = _.has(currentValue, "value") ? currentValue.value : currentValue;
+                if (_.isArray(previous)) {
+                  previous = previous.join(",");
+                }
+                previous = _.has(previous, "value") ? previous.value : previous;
+                if (previous !== currentValue) {
+                  changesIndex.push(index);
+                }
               }
-            );
-          } catch (error) {
-            if (!(error instanceof ErrorModelNonInitialized)) {
-              console.error(error);
-            }
+              index++;
+            });
+            index = changesIndex.length === 1 ? changesIndex[0] : -1;
           }
-        }
-      );
-      this._model.listenTo(
-        this._model,
-        "uploadFileDone",
-        function documentController_triggerUploadFile(event, attrid, options) {
-          try {
-            var currentAttribute = currentWidget.getAttribute(attrid);
-            event.prevent = !currentWidget._triggerAttributeControllerEvent(
-              "attributeUploadFileDone",
-              event,
-              currentAttribute,
-              currentWidget.getProperties(),
-              currentAttribute,
-              options.$el,
-              options.index,
-              {
-                file: options.file,
-                hasUploadingFiles: currentWidget._model.hasUploadingFile()
-              }
-            );
-          } catch (error) {
-            if (!(error instanceof ErrorModelNonInitialized)) {
-              console.error(error);
-            }
-          }
-        }
-      );
-
-      this._model.listenTo(
-        this._model,
-        "attributeBeforeTabSelect",
-        function documentController_triggerBeforeSelectTab(event, attrid) {
-          var currentAttribute = currentWidget.getAttribute(attrid);
-          var prevent;
-
-          prevent = !currentWidget._triggerAttributeControllerEvent(
-            "attributeBeforeTabSelect",
-            event,
-            currentAttribute,
-            currentWidget.getProperties(),
-            currentAttribute,
-            $(event.item)
-          );
-          if (prevent) {
-            event.preventDefault();
-          }
-        }
-      );
-      this._model.listenTo(
-        this._model,
-        "attributeTabChange",
-        function documentController_triggerAfterSelectTab(
-          event,
-          attrid,
-          $el,
-          data
-        ) {
-          var currentAttribute = currentWidget.getAttribute(attrid);
-
           currentWidget._triggerAttributeControllerEvent(
-            "attributeTabChange",
+            "change",
+            null,
+            currentAttribute,
+            currentWidget.getProperties(),
+            currentAttribute,
+            currentAttribute.getValue("all"),
+            index
+          );
+        } catch (error) {
+          if (!(error instanceof ErrorModelNonInitialized)) {
+            console.error(error);
+          }
+        }
+      });
+      this._model.listenTo(this._model, "beforeAttributeRender", function documentController_triggerAttributeRender(
+        event,
+        attributeId,
+        $el,
+        index
+      ) {
+        try {
+          var currentAttribute = currentWidget.getAttribute(attributeId);
+          event.prevent = !currentWidget._triggerAttributeControllerEvent(
+            "attributeBeforeRender",
             event,
             currentAttribute,
             currentWidget.getProperties(),
             currentAttribute,
             $el,
-            data
+            index
           );
+        } catch (error) {
+          if (!(error instanceof ErrorModelNonInitialized)) {
+            console.error(error);
+          }
         }
-      );
-      this._model.listenTo(
-        this._model,
-        "attributeAfterTabSelect",
-        function documentController_triggerAfterSelectTab(event, attrid) {
-          var currentAttribute = currentWidget.getAttribute(attrid);
-
+      });
+      this._model.listenTo(this._model, "attributeRender", function documentController_triggerAttributeRender(
+        attributeId,
+        $el,
+        index
+      ) {
+        try {
+          var currentAttribute = currentWidget.getAttribute(attributeId);
           currentWidget._triggerAttributeControllerEvent(
-            "attributeAfterTabSelect",
+            "attributeReady",
+            null,
+            currentAttribute,
+            currentWidget.getProperties(),
+            currentAttribute,
+            $el,
+            index
+          );
+        } catch (error) {
+          if (!(error instanceof ErrorModelNonInitialized)) {
+            console.error(error);
+          }
+        }
+      });
+      this._model.listenTo(this._model, "arrayModified", function documentController_triggerArrayModified(options) {
+        try {
+          var currentAttribute = currentWidget.getAttribute(options.attributeId);
+          currentWidget._triggerAttributeControllerEvent(
+            "attributeArrayChange",
+            null,
+            currentAttribute,
+            currentWidget.getProperties(),
+            currentAttribute,
+            options.type,
+            options.options
+          );
+        } catch (error) {
+          if (!(error instanceof ErrorModelNonInitialized)) {
+            console.error(error);
+          }
+        }
+      });
+      this._model.listenTo(this._model, "internalLinkSelected", function documentController_triggerInternalLinkSelected(
+        event,
+        options
+      ) {
+        event.prevent = !currentWidget._triggerControllerEvent(
+          "actionClick",
+          event,
+          currentWidget.getProperties(),
+          options
+        );
+      });
+      this._model.listenTo(this._model, "downloadFile", function documentController_triggerDownloadFile(
+        event,
+        attrid,
+        options
+      ) {
+        try {
+          var currentAttribute = currentWidget.getAttribute(attrid);
+          event.prevent = !currentWidget._triggerAttributeControllerEvent(
+            "attributeDownloadFile",
             event,
             currentAttribute,
             currentWidget.getProperties(),
             currentAttribute,
-            $(event.item)
+            options.$el,
+            options.index
           );
-        }
-      );
-      this._model.listenTo(
-        this._model,
-        "helperSearch",
-        function documentController_triggerHelperSearch(
-          event,
-          attrid,
-          options
-        ) {
-          try {
-            var currentAttribute = currentWidget.getAttribute(attrid);
-            event.prevent = !currentWidget._triggerAttributeControllerEvent(
-              "attributeHelperSearch",
-              event,
-              currentAttribute,
-              currentWidget.getProperties(),
-              currentAttribute,
-              options
-            );
-          } catch (error) {
-            if (!(error instanceof ErrorModelNonInitialized)) {
-              console.error(error);
-            }
+        } catch (error) {
+          if (!(error instanceof ErrorModelNonInitialized)) {
+            console.error(error);
           }
         }
-      );
-      this._model.listenTo(
-        this._model,
-        "helperResponse",
-        function documentController_triggerHelperResponse(
-          event,
-          attrid,
-          options
-        ) {
-          try {
-            var currentAttribute = currentWidget.getAttribute(attrid);
-            event.prevent = !currentWidget._triggerAttributeControllerEvent(
-              "attributeHelperResponse",
-              event,
-              currentAttribute,
-              currentWidget.getProperties(),
-              currentAttribute,
-              options
-            );
-          } catch (error) {
-            if (!(error instanceof ErrorModelNonInitialized)) {
-              console.error(error);
+      });
+      this._model.listenTo(this._model, "uploadFile", function documentController_triggerUploadFile(
+        event,
+        attrid,
+        options
+      ) {
+        try {
+          var currentAttribute = currentWidget.getAttribute(attrid);
+          event.prevent = !currentWidget._triggerAttributeControllerEvent(
+            "attributeUploadFile",
+            event,
+            currentAttribute,
+            currentWidget.getProperties(),
+            currentAttribute,
+            options.$el,
+            options.index,
+            {
+              file: options.file,
+              hasUploadingFiles: currentWidget._model.hasUploadingFile()
             }
+          );
+        } catch (error) {
+          if (!(error instanceof ErrorModelNonInitialized)) {
+            console.error(error);
           }
         }
-      );
-      this._model.listenTo(
-        this._model,
-        "helperSelect",
-        function documentController_triggerHelperSelect(
-          event,
-          attrid,
-          options
-        ) {
-          try {
-            var currentAttribute = currentWidget.getAttribute(attrid);
-            event.prevent = !currentWidget._triggerAttributeControllerEvent(
-              "attributeHelperSelect",
-              event,
-              currentAttribute,
-              currentWidget.getProperties(),
-              currentAttribute,
-              options
-            );
-          } catch (error) {
-            if (!(error instanceof ErrorModelNonInitialized)) {
-              console.error(error);
+      });
+      this._model.listenTo(this._model, "uploadFileDone", function documentController_triggerUploadFile(
+        event,
+        attrid,
+        options
+      ) {
+        try {
+          var currentAttribute = currentWidget.getAttribute(attrid);
+          event.prevent = !currentWidget._triggerAttributeControllerEvent(
+            "attributeUploadFileDone",
+            event,
+            currentAttribute,
+            currentWidget.getProperties(),
+            currentAttribute,
+            options.$el,
+            options.index,
+            {
+              file: options.file,
+              hasUploadingFiles: currentWidget._model.hasUploadingFile()
             }
+          );
+        } catch (error) {
+          if (!(error instanceof ErrorModelNonInitialized)) {
+            console.error(error);
           }
         }
-      );
+      });
+
+      this._model.listenTo(this._model, "attributeBeforeTabSelect", function documentController_triggerBeforeSelectTab(
+        event,
+        attrid
+      ) {
+        var currentAttribute = currentWidget.getAttribute(attrid);
+        var prevent;
+
+        prevent = !currentWidget._triggerAttributeControllerEvent(
+          "attributeBeforeTabSelect",
+          event,
+          currentAttribute,
+          currentWidget.getProperties(),
+          currentAttribute,
+          $(event.item)
+        );
+        if (prevent) {
+          event.preventDefault();
+        }
+      });
+      this._model.listenTo(this._model, "attributeTabChange", function documentController_triggerAfterSelectTab(
+        event,
+        attrid,
+        $el,
+        data
+      ) {
+        var currentAttribute = currentWidget.getAttribute(attrid);
+
+        currentWidget._triggerAttributeControllerEvent(
+          "attributeTabChange",
+          event,
+          currentAttribute,
+          currentWidget.getProperties(),
+          currentAttribute,
+          $el,
+          data
+        );
+      });
+      this._model.listenTo(this._model, "attributeAfterTabSelect", function documentController_triggerAfterSelectTab(
+        event,
+        attrid
+      ) {
+        var currentAttribute = currentWidget.getAttribute(attrid);
+
+        currentWidget._triggerAttributeControllerEvent(
+          "attributeAfterTabSelect",
+          event,
+          currentAttribute,
+          currentWidget.getProperties(),
+          currentAttribute,
+          $(event.item)
+        );
+      });
+      this._model.listenTo(this._model, "helperSearch", function documentController_triggerHelperSearch(
+        event,
+        attrid,
+        options
+      ) {
+        try {
+          var currentAttribute = currentWidget.getAttribute(attrid);
+          event.prevent = !currentWidget._triggerAttributeControllerEvent(
+            "attributeHelperSearch",
+            event,
+            currentAttribute,
+            currentWidget.getProperties(),
+            currentAttribute,
+            options
+          );
+        } catch (error) {
+          if (!(error instanceof ErrorModelNonInitialized)) {
+            console.error(error);
+          }
+        }
+      });
+      this._model.listenTo(this._model, "helperResponse", function documentController_triggerHelperResponse(
+        event,
+        attrid,
+        options
+      ) {
+        try {
+          var currentAttribute = currentWidget.getAttribute(attrid);
+          event.prevent = !currentWidget._triggerAttributeControllerEvent(
+            "attributeHelperResponse",
+            event,
+            currentAttribute,
+            currentWidget.getProperties(),
+            currentAttribute,
+            options
+          );
+        } catch (error) {
+          if (!(error instanceof ErrorModelNonInitialized)) {
+            console.error(error);
+          }
+        }
+      });
+      this._model.listenTo(this._model, "helperSelect", function documentController_triggerHelperSelect(
+        event,
+        attrid,
+        options
+      ) {
+        try {
+          var currentAttribute = currentWidget.getAttribute(attrid);
+          event.prevent = !currentWidget._triggerAttributeControllerEvent(
+            "attributeHelperSelect",
+            event,
+            currentAttribute,
+            currentWidget.getProperties(),
+            currentAttribute,
+            options
+          );
+        } catch (error) {
+          if (!(error instanceof ErrorModelNonInitialized)) {
+            console.error(error);
+          }
+        }
+      });
 
       // listener to prevent default actions when anchorClick is triggered
-      this._model.listenTo(
-        this._model,
-        "anchorClick",
-        function documentController_triggerHelperSelect(
-          event,
-          attrid,
-          options
-        ) {
-          try {
-            var currentAttribute = currentWidget.getAttribute(attrid);
-            event.prevent = !currentWidget._triggerAttributeControllerEvent(
-              "attributeAnchorClick",
-              event,
-              currentAttribute,
-              currentWidget.getProperties(),
-              currentAttribute,
-              options.$el,
-              options.index,
-              options.options
-            );
-          } catch (error) {
-            if (!(error instanceof ErrorModelNonInitialized)) {
-              console.error(error);
-            }
+      this._model.listenTo(this._model, "anchorClick", function documentController_triggerHelperSelect(
+        event,
+        attrid,
+        options
+      ) {
+        try {
+          var currentAttribute = currentWidget.getAttribute(attrid);
+          event.prevent = !currentWidget._triggerAttributeControllerEvent(
+            "attributeAnchorClick",
+            event,
+            currentAttribute,
+            currentWidget.getProperties(),
+            currentAttribute,
+            options.$el,
+            options.index,
+            options.options
+          );
+        } catch (error) {
+          if (!(error instanceof ErrorModelNonInitialized)) {
+            console.error(error);
           }
         }
-      );
+      });
 
       // Generic listener for addCreateDocumentButton docid render option
       this._model.listenTo(
         this._model,
         "createDialogListener",
-        function documentController_triggercreateDialogDocumentOpen(
-          event,
-          attrid,
-          options
-        ) {
+        function documentController_triggercreateDialogDocumentOpen(event, attrid, options) {
           try {
             var currentAttribute = currentWidget.getAttribute(attrid);
             var triggername = "attributeCreateDialogDocument";
             // Uppercase first letter
-            triggername +=
-              options.triggerId.charAt(0).toUpperCase() +
-              options.triggerId.slice(1);
+            triggername += options.triggerId.charAt(0).toUpperCase() + options.triggerId.slice(1);
 
             event.prevent = !currentWidget._triggerAttributeControllerEvent(
               triggername,
@@ -929,73 +747,48 @@ define([
           }
         }
       );
-      this._model.listenTo(
-        this._model,
-        "constraint",
-        function documentController_triggerConstraint(
-          attribute,
-          constraintController
-        ) {
-          try {
-            var currentAttribute = currentWidget.getAttribute(attribute),
-              currentModel = currentWidget.getProperties(),
-              $element = $(currentWidget.element),
-              addConstraint = function documentController_addConstraint(
-                currentConstraint
-              ) {
-                if (_.isString(currentConstraint)) {
-                  constraintController.addConstraintMessage(currentConstraint);
-                }
-                if (
-                  _.isObject(currentConstraint) &&
-                  currentConstraint.message &&
-                  _.isNumber(currentConstraint.index)
-                ) {
-                  constraintController.addConstraintMessage(
-                    currentConstraint.message,
-                    currentConstraint.index
-                  );
-                }
-              };
-            _.each(
-              currentWidget.activatedConstraint,
-              function triggerCurrentConstraint(currentConstraint) {
-                try {
-                  if (
-                    currentConstraint.attributeCheck.apply($element, [
-                      currentAttribute,
-                      currentModel
-                    ])
-                  ) {
-                    var response = currentConstraint.constraintCheck.call(
-                      $element,
-                      currentModel,
-                      currentAttribute,
-                      currentAttribute.getValue("all")
-                    );
-                    if (_.isArray(response)) {
-                      _.each(response, addConstraint);
-                    } else {
-                      addConstraint(response);
-                    }
-                  }
-                } catch (e) {
-                  console.error(e);
+      this._model.listenTo(this._model, "constraint", function documentController_triggerConstraint(
+        attribute,
+        constraintController
+      ) {
+        try {
+          var currentAttribute = currentWidget.getAttribute(attribute),
+            currentModel = currentWidget.getProperties(),
+            $element = $(currentWidget.element),
+            addConstraint = function documentController_addConstraint(currentConstraint) {
+              if (_.isString(currentConstraint)) {
+                constraintController.addConstraintMessage(currentConstraint);
+              }
+              if (_.isObject(currentConstraint) && currentConstraint.message && _.isNumber(currentConstraint.index)) {
+                constraintController.addConstraintMessage(currentConstraint.message, currentConstraint.index);
+              }
+            };
+          _.each(currentWidget.activatedConstraint, function triggerCurrentConstraint(currentConstraint) {
+            try {
+              if (currentConstraint.attributeCheck.apply($element, [currentAttribute, currentModel])) {
+                var response = currentConstraint.constraintCheck.call(
+                  $element,
+                  currentModel,
+                  currentAttribute,
+                  currentAttribute.getValue("all")
+                );
+                if (_.isArray(response)) {
+                  _.each(response, addConstraint);
+                } else {
+                  addConstraint(response);
                 }
               }
-            );
-          } catch (error) {
-            if (!(error instanceof ErrorModelNonInitialized)) {
-              console.error(error);
+            } catch (e) {
+              console.error(e);
             }
+          });
+        } catch (error) {
+          if (!(error instanceof ErrorModelNonInitialized)) {
+            console.error(error);
           }
         }
-      );
-      this._model.listenTo(
-        this._model,
-        "showTransition",
-        _.bind(currentWidget._initAndDisplayTransition, this)
-      );
+      });
+      this._model.listenTo(this._model, "showTransition", _.bind(currentWidget._initAndDisplayTransition, this));
       this._model.listenTo(
         this._model,
         "beforeParse",
@@ -1018,90 +811,61 @@ define([
      */
     _initViewEvents: function documentController_initViewEvents() {
       var currentWidget = this;
-      this.view.on(
-        "cleanNotification",
-        function documentController_triggerCleanNotification() {
-          currentWidget.$notification.dcpNotification("clear");
-        }
-      );
-      this.view.on("loading", function documentController_triggerLoading(
-        data,
-        nbItem
-      ) {
+      this.view.on("cleanNotification", function documentController_triggerCleanNotification() {
+        currentWidget.$notification.dcpNotification("clear");
+      });
+      this.view.on("loading", function documentController_triggerLoading(data, nbItem) {
         currentWidget.$loading.dcpLoading("setPercent", data);
         if (nbItem) {
           currentWidget.$loading.dcpLoading("setNbItem", nbItem);
         }
       });
-      this.view.on("loaderShow", function documentController_triggerLoaderShow(
-        text,
-        pc
-      ) {
+      this.view.on("loaderShow", function documentController_triggerLoaderShow(text, pc) {
         console.time("xhr+render document view");
         currentWidget.$loading.dcpLoading("show", text, pc);
       });
       this.view.on("loaderHide", function documentController_triggerHide() {
         currentWidget.$loading.dcpLoading("hide");
       });
-      this.view.on(
-        "partRender",
-        function documentController_triggerPartRender() {
-          currentWidget.$loading.dcpLoading("addItem");
+      this.view.on("partRender", function documentController_triggerPartRender() {
+        currentWidget.$loading.dcpLoading("addItem");
+      });
+      this.view.on("renderDone", function documentController_triggerRenderDone() {
+        console.timeEnd("xhr+render document view");
+        currentWidget.$loading.dcpLoading("setPercent", 100);
+        currentWidget.$loading.dcpLoading("setLabel", null);
+        currentWidget._initializedView = true;
+        currentWidget._triggerControllerEvent("ready", null, currentWidget.getProperties());
+        _.delay(function documentController_endRender() {
+          currentWidget.$loading.dcpLoading("hide", true);
+          console.timeEnd("main");
+        });
+      });
+      this.view.on("showMessage", function documentController_triggerShowMessage(message) {
+        var result = currentWidget._triggerControllerEvent(
+          "displayMessage",
+          null,
+          currentWidget.getProperties(),
+          message
+        );
+        if (result) {
+          currentWidget.$notification.dcpNotification("show", message.type, message);
         }
-      );
-      this.view.on(
-        "renderDone",
-        function documentController_triggerRenderDone() {
-          console.timeEnd("xhr+render document view");
-          currentWidget.$loading.dcpLoading("setPercent", 100);
-          currentWidget.$loading.dcpLoading("setLabel", null);
-          currentWidget._initializedView = true;
-          currentWidget._triggerControllerEvent(
-            "ready",
-            null,
-            currentWidget.getProperties()
-          );
-          _.delay(function documentController_endRender() {
-            currentWidget.$loading.dcpLoading("hide", true);
-            console.timeEnd("main");
-          });
+      });
+      this.view.on("showSuccess", function documentController_triggerShowSuccess(message) {
+        if (message) {
+          message.type = message.type ? message.type : "success";
         }
-      );
-      this.view.on(
-        "showMessage",
-        function documentController_triggerShowMessage(message) {
-          var result = currentWidget._triggerControllerEvent(
-            "displayMessage",
-            null,
-            currentWidget.getProperties(),
-            message
-          );
-          if (result) {
-            currentWidget.$notification.dcpNotification(
-              "show",
-              message.type,
-              message
-            );
-          }
+        var result = currentWidget._triggerControllerEvent(
+          "displayMessage",
+          null,
+          currentWidget.getProperties(),
+          message
+        );
+        if (result) {
+          currentWidget.$notification.dcpNotification("showSuccess", message);
         }
-      );
-      this.view.on(
-        "showSuccess",
-        function documentController_triggerShowSuccess(message) {
-          if (message) {
-            message.type = message.type ? message.type : "success";
-          }
-          var result = currentWidget._triggerControllerEvent(
-            "displayMessage",
-            null,
-            currentWidget.getProperties(),
-            message
-          );
-          if (result) {
-            currentWidget.$notification.dcpNotification("showSuccess", message);
-          }
-        }
-      );
+      });
       this.view.on("reinit", function documentController_triggerReinit() {
         currentWidget._initModel(currentWidget._getModelValue());
         currentWidget._initView();
@@ -1158,10 +922,7 @@ define([
         transitionInterface,
         documentServerProperties = this.getProperties();
 
-      return new Promise(function documentController_changeStatePromise(
-        resolve,
-        reject
-      ) {
+      return new Promise(function documentController_changeStatePromise(resolve, reject) {
         result = !currentWidget._triggerControllerEvent(
           "beforeDisplayChangeState",
           null,
@@ -1189,26 +950,18 @@ define([
           });
         }
 
-        transitionInterface = new TransitionInterface(
-          transitionElements.model,
-          $target,
-          nextState,
-          transition
-        );
+        transitionInterface = new TransitionInterface(transitionElements.model, $target, nextState, transition);
 
         if (transitionElements.view) {
           //Propagate afterDisplayChange on renderDone
-          transitionElements.view.once(
-            "renderTransitionWindowDone",
-            function documentController_propagateAfter() {
-              currentWidget._triggerControllerEvent(
-                "afterDisplayTransition",
-                null,
-                currentWidget.getProperties(),
-                transitionInterface
-              );
-            }
-          );
+          transitionElements.view.once("renderTransitionWindowDone", function documentController_propagateAfter() {
+            currentWidget._triggerControllerEvent(
+              "afterDisplayTransition",
+              null,
+              currentWidget.getProperties(),
+              transitionInterface
+            );
+          });
         }
 
         //Propagate the beforeTransition
@@ -1260,17 +1013,12 @@ define([
           function documentController_TransitionSuccess(messages) {
             if (transitionElements.view) {
               transitionElements.view.$el.hide();
-              currentWidget.view.once(
-                "renderDone",
-                function documentController_transitionRender() {
-                  transitionElements.view.remove();
-                  _.each(messages, function documentController_parseMessage(
-                    message
-                  ) {
-                    currentWidget.view.trigger("showMessage", message);
-                  });
-                }
-              );
+              currentWidget.view.once("renderDone", function documentController_transitionRender() {
+                transitionElements.view.remove();
+                _.each(messages, function documentController_parseMessage(message) {
+                  currentWidget.view.trigger("showMessage", message);
+                });
+              });
             }
 
             //delete the pop up when the render of the pop up is done
@@ -1298,13 +1046,9 @@ define([
           }
         );
 
-        transitionElements.model.listenTo(
-          currentWidget._model,
-          "sync",
-          function documentController_TransitionClose() {
-            this.trigger("close");
-          }
-        );
+        transitionElements.model.listenTo(currentWidget._model, "sync", function documentController_TransitionClose() {
+          this.trigger("close");
+        });
 
         transitionElements.model.fetch({
           success: function transitionModel_setDefaultValues() {
@@ -1385,17 +1129,11 @@ define([
      * @param attributeId
      * @returns {*}
      */
-    _getAttributeModel: function documentController_getAttributeModel(
-      attributeId
-    ) {
+    _getAttributeModel: function documentController_getAttributeModel(attributeId) {
       var attributes = this._model.get("attributes");
       var attribute;
       if (!attributes) {
-        throw new Error(
-          'Attribute models not initialized yet : The attribute "' +
-            attributeId +
-            '" cannot be found.'
-        );
+        throw new Error('Attribute models not initialized yet : The attribute "' + attributeId + '" cannot be found.');
       }
       attribute = this._model.get("attributes").get(attributeId);
       if (!attribute) {
@@ -1411,14 +1149,11 @@ define([
       if (!menu && menus) {
         menus.each(function documentControllerGetMenuIterate(itemMenu) {
           if (itemMenu.get("content")) {
-            _.each(
-              itemMenu.get("content"),
-              function documentControllerGetSubMenuIterate(subMenu) {
-                if (subMenu.id === menuId) {
-                  menu = new MenuModel(subMenu);
-                }
+            _.each(itemMenu.get("content"), function documentControllerGetSubMenuIterate(subMenu) {
+              if (subMenu.id === menuId) {
+                menu = new MenuModel(subMenu);
               }
-            );
+            });
           }
         });
       }
@@ -1434,9 +1169,7 @@ define([
       return this._model
         .get("attributes")
         .chain()
-        .map(function documentController_getRenderedAttribute(
-          currentAttribute
-        ) {
+        .map(function documentController_getRenderedAttribute(currentAttribute) {
           return {
             view: currentAttribute.haveView(),
             id: currentAttribute.id
@@ -1474,76 +1207,45 @@ define([
       var currentDocumentProperties = this.getProperties(),
         currentWidget = this;
       this.activatedConstraint = {};
-      _.each(
-        this.options.constraintList,
-        function documentController_getActivatedConstraint(currentConstraint) {
-          if (
-            currentConstraint.documentCheck.call(
-              $(currentWidget.element),
-              currentDocumentProperties
-            )
-          ) {
-            currentWidget.activatedConstraint[
-              currentConstraint.name
-            ] = currentConstraint;
-          }
+      _.each(this.options.constraintList, function documentController_getActivatedConstraint(currentConstraint) {
+        if (currentConstraint.documentCheck.call($(currentWidget.element), currentDocumentProperties)) {
+          currentWidget.activatedConstraint[currentConstraint.name] = currentConstraint;
         }
-      );
+      });
     },
 
     /**
      * Activate events on the current document
      * Used on the fetch of a new document
      */
-    _initActivatedEventListeners: function documentController_initActivatedEvents(
-      options
-    ) {
+    _initActivatedEventListeners: function documentController_initActivatedEvents(options) {
       var currentDocumentProperties = this.getProperties(),
         currentWidget = this;
       options = options || {};
       this.activatedEventListener = {};
-      _.each(
-        this.options.eventListener,
-        function documentController_getActivatedEvent(currentEvent) {
-          if (!_.isFunction(currentEvent.documentCheck)) {
-            currentWidget.activatedEventListener[
-              currentEvent.name
-            ] = currentEvent;
-            return;
-          }
-          if (
-            currentEvent.documentCheck.call(
-              $(currentWidget.element),
-              currentDocumentProperties
-            )
-          ) {
-            currentWidget.activatedEventListener[
-              currentEvent.name
-            ] = currentEvent;
-          }
+      _.each(this.options.eventListener, function documentController_getActivatedEvent(currentEvent) {
+        if (!_.isFunction(currentEvent.documentCheck)) {
+          currentWidget.activatedEventListener[currentEvent.name] = currentEvent;
+          return;
         }
-      );
+        if (currentEvent.documentCheck.call($(currentWidget.element), currentDocumentProperties)) {
+          currentWidget.activatedEventListener[currentEvent.name] = currentEvent;
+        }
+      });
       //Trigger new added ready event
       if (this._initializedView !== false && options.launchReady !== false) {
         this._triggerControllerEvent("ready", null, currentDocumentProperties);
-        _.each(
-          this._getRenderedAttributes(),
-          function documentController_triggerRenderedAttributes(
-            currentAttribute
-          ) {
-            var objectAttribute = currentWidget.getAttribute(
-              currentAttribute.id
-            );
-            currentWidget._triggerAttributeControllerEvent(
-              "attributeReady",
-              null,
-              currentAttribute,
-              currentDocumentProperties,
-              objectAttribute,
-              currentAttribute.view.elements
-            );
-          }
-        );
+        _.each(this._getRenderedAttributes(), function documentController_triggerRenderedAttributes(currentAttribute) {
+          var objectAttribute = currentWidget.getAttribute(currentAttribute.id);
+          currentWidget._triggerAttributeControllerEvent(
+            "attributeReady",
+            null,
+            currentAttribute,
+            currentDocumentProperties,
+            objectAttribute,
+            currentAttribute.view.elements
+          );
+        });
       }
     },
 
@@ -1552,16 +1254,13 @@ define([
      *
      * @param newEvent
      */
-    _addAndInitNewEvents: function documentController_addAndInitNewEvents(
-      newEvent
-    ) {
+    _addAndInitNewEvents: function documentController_addAndInitNewEvents(newEvent) {
       var currentDocumentProperties,
         currentWidget = this,
         event,
         uniqueName,
         $element = $(currentWidget.element);
-      uniqueName =
-        (newEvent.externalEvent ? "external_" : "internal_") + newEvent.name;
+      uniqueName = (newEvent.externalEvent ? "external_" : "internal_") + newEvent.name;
       this.options.eventListener[uniqueName] = newEvent;
 
       if (!this._initializedModel) {
@@ -1570,10 +1269,7 @@ define([
       }
       currentDocumentProperties = this.getProperties();
       // Check if the event is for the current document
-      if (
-        !_.isFunction(newEvent.documentCheck) ||
-        newEvent.documentCheck.call($element, currentDocumentProperties)
-      ) {
+      if (!_.isFunction(newEvent.documentCheck) || newEvent.documentCheck.call($element, currentDocumentProperties)) {
         this.activatedEventListener[newEvent.name] = newEvent;
         // Check if we need to manually trigger this callback (late registered : only for ready events)
         if (this._initializedView !== false) {
@@ -1582,11 +1278,7 @@ define([
             event.target = currentWidget.element;
             try {
               // add element as function context
-              newEvent.eventCallback.call(
-                $element,
-                event,
-                currentDocumentProperties
-              );
+              newEvent.eventCallback.call($element, event, currentDocumentProperties);
             } catch (e) {
               console.error(e);
             }
@@ -1594,33 +1286,28 @@ define([
           if (newEvent.eventType === "attributeReady") {
             event = $.Event(newEvent.eventType);
             event.target = currentWidget.element;
-            _.each(
-              this._getRenderedAttributes(),
-              function documentController_triggerRenderedAttributes(
-                currentAttribute
+            _.each(this._getRenderedAttributes(), function documentController_triggerRenderedAttributes(
+              currentAttribute
+            ) {
+              var objectAttribute = currentWidget.getAttribute(currentAttribute.id);
+              if (
+                !_.isFunction(newEvent.attributeCheck) ||
+                newEvent.attributeCheck.apply($element, [objectAttribute])
               ) {
-                var objectAttribute = currentWidget.getAttribute(
-                  currentAttribute.id
-                );
-                if (
-                  !_.isFunction(newEvent.attributeCheck) ||
-                  newEvent.attributeCheck.apply($element, [objectAttribute])
-                ) {
-                  try {
-                    // add element as function context
-                    newEvent.eventCallback.call(
-                      $element,
-                      event,
-                      currentDocumentProperties,
-                      objectAttribute,
-                      currentAttribute.view.elements
-                    );
-                  } catch (e) {
-                    console.error(e);
-                  }
+                try {
+                  // add element as function context
+                  newEvent.eventCallback.call(
+                    $element,
+                    event,
+                    currentDocumentProperties,
+                    objectAttribute,
+                    currentAttribute.view.elements
+                  );
+                } catch (e) {
+                  console.error(e);
                 }
               }
-            );
+            });
           }
         }
       }
@@ -1680,10 +1367,7 @@ define([
         });
       externalEventArgument = Array.prototype.slice.call(arguments, 0);
       externalEventArgument.splice(1, 1);
-      currentWidget._triggerExternalEvent.apply(
-        currentWidget,
-        externalEventArgument
-      );
+      currentWidget._triggerExternalEvent.apply(currentWidget, externalEventArgument);
       return !event.isDefaultPrevented();
     },
 
@@ -1695,10 +1379,7 @@ define([
      * @param originalEvent
      * @returns {boolean}
      */
-    _triggerControllerEvent: function documentController_triggerControllerEvent(
-      eventName,
-      originalEvent
-    ) {
+    _triggerControllerEvent: function documentController_triggerControllerEvent(eventName, originalEvent) {
       var currentWidget = this,
         args = Array.prototype.slice.call(arguments, 2),
         event = $.Event(eventName);
@@ -1732,9 +1413,7 @@ define([
      *
      * @param type
      */
-    _triggerExternalEvent: function documentController_triggerExternalEvent(
-      type
-    ) {
+    _triggerExternalEvent: function documentController_triggerExternalEvent(type) {
       var currentWidget = this,
         args = Array.prototype.slice.call(arguments, 1),
         event = $.Event(type);
@@ -1761,19 +1440,14 @@ define([
       if (
         _.isString(eventName) &&
         (eventName.indexOf("custom:") === 0 ||
-          _.find(eventList, function documentController_CheckEventType(
-            currentEventType
-          ) {
+          _.find(eventList, function documentController_CheckEventType(currentEventType) {
             return currentEventType === eventName;
           }))
       ) {
         return true;
       }
       throw new Error(
-        "The event type " +
-          eventName +
-          " is not known. It must be one of " +
-          eventList.sort().join(" ,")
+        "The event type " + eventName + " is not known. It must be one of " + eventList.sort().join(" ,")
       );
     },
 
@@ -1784,9 +1458,7 @@ define([
      */
     _checkInitialisedView: function documentController_checkInitialised() {
       if (!this._initializedView) {
-        throw new ErrorModelNonInitialized(
-          "The widget view is not initialized, use fetchDocument to initialise it."
-        );
+        throw new ErrorModelNonInitialized("The widget view is not initialized, use fetchDocument to initialise it.");
       }
     },
 
@@ -1801,23 +1473,15 @@ define([
       }
     },
 
-    _registerOutputPromise: function documentController_registerOutputPromise(
-      documentPromise,
-      options
-    ) {
+    _registerOutputPromise: function documentController_registerOutputPromise(documentPromise, options) {
       var currentWidget = this;
-      return new Promise(function documentController_reinitPromise(
-        resolve,
-        reject
-      ) {
+      return new Promise(function documentController_reinitPromise(resolve, reject) {
         documentPromise.then(
           function documentController_reinitDone(values) {
             if (options && _.isFunction(options.success)) {
               try {
                 if (window.console.warn) {
-                  window.console.warn(
-                    'Callback "success" is deprecated use promise instead'
-                  );
+                  window.console.warn('Callback "success" is deprecated use promise instead');
                 }
                 options.success.call(
                   $(currentWidget.element),
@@ -1844,44 +1508,25 @@ define([
 
             if (values.arguments) {
               try {
-                if (
-                  errorArguments &&
-                  errorArguments[1] &&
-                  errorArguments[1].responseJSON
-                ) {
+                if (errorArguments && errorArguments[1] && errorArguments[1].responseJSON) {
                   errorMessage = errorArguments[1].responseJSON.messages[0];
                 }
               } catch (e) {
                 //no error here
               }
-              if (
-                errorArguments &&
-                errorArguments[0] &&
-                errorArguments[0].eventPrevented
-              ) {
+              if (errorArguments && errorArguments[0] && errorArguments[0].eventPrevented) {
                 errorMessage = { contentText: "Event prevented" };
               }
-              if (
-                errorArguments &&
-                errorArguments[0] &&
-                errorArguments[0].errorMessage
-              ) {
+              if (errorArguments && errorArguments[0] && errorArguments[0].errorMessage) {
                 errorMessage = errorArguments[0].errorMessage;
               }
             }
             if (options && _.isFunction(options.error)) {
               try {
                 if (window.console.warn) {
-                  window.console.warn(
-                    'Callback "error" is deprecated use promise instead'
-                  );
+                  window.console.warn('Callback "error" is deprecated use promise instead');
                 }
-                options.error.call(
-                  $(currentWidget.element),
-                  values.documentProperties || {},
-                  null,
-                  errorMessage
-                );
+                options.error.call($(currentWidget.element), values.documentProperties || {}, null, errorMessage);
               } catch (exception) {
                 window.dcp.logger(exception);
               }
@@ -1933,9 +1578,7 @@ define([
       options = options || {};
 
       if (!_.isObject(values)) {
-        throw new Error(
-          'Fetch argument must be an object {"initid":, "revision": , "viewId": }'
-        );
+        throw new Error('Fetch argument must be an object {"initid":, "revision": , "viewId": }');
       }
 
       if (!values.initid) {
@@ -1951,26 +1594,17 @@ define([
       _.defaults(values, { revision: -1, viewId: "!defaultConsultation" });
       _.defaults(options, { force: false });
 
-      _.each(
-        _.pick(values, "initid", "revision", "viewId"),
-        function dcpDocument_setNewOptions(value, key) {
-          currentWidget.options[key] = value;
-        }
-      );
+      _.each(_.pick(values, "initid", "revision", "viewId"), function dcpDocument_setNewOptions(value, key) {
+        currentWidget.options[key] = value;
+      });
 
       if (!this._model) {
-        documentPromise = this._initializeWidget(
-          options,
-          values.customClientData
-        );
+        documentPromise = this._initializeWidget(options, values.customClientData);
       } else {
         if (values.customClientData) {
           this._model._customClientData = values.customClientData;
         }
-        documentPromise = this._model.fetchDocument(
-          this._getModelValue(),
-          options
-        );
+        documentPromise = this._model.fetchDocument(this._getModelValue(), options);
       }
       return this._registerOutputPromise(documentPromise, options);
     },
@@ -1999,11 +1633,7 @@ define([
      * @param reinitOptions
      * @param options
      */
-    changeStateDocument: function documentController_changeStateDocument(
-      parameters,
-      reinitOptions,
-      options
-    ) {
+    changeStateDocument: function documentController_changeStateDocument(parameters, reinitOptions, options) {
       var documentPromise;
       this._checkInitialisedModel();
       if (!_.isObject(parameters)) {
@@ -2011,10 +1641,7 @@ define([
           'changeStateDocument first argument must be an object {"nextState":, "transition": , "values":, "unattended":, "" }'
         );
       }
-      if (
-        !_.isString(parameters.nextState) ||
-        !_.isString(parameters.transition)
-      ) {
+      if (!_.isString(parameters.nextState) || !_.isString(parameters.transition)) {
         throw new Error("nextState and transition arguments are mandatory");
       }
       documentPromise = this._initAndDisplayTransition(
@@ -2132,11 +1759,9 @@ define([
      */
     getAttributes: function documentControllerGetAttributes() {
       this._checkInitialisedModel();
-      return this._model
-        .get("attributes")
-        .map(function documentController_mapAttribute(currentAttribute) {
-          return new AttributeInterface(currentAttribute);
-        });
+      return this._model.get("attributes").map(function documentController_mapAttribute(currentAttribute) {
+        return new AttributeInterface(currentAttribute);
+      });
     },
 
     /**
@@ -2173,11 +1798,9 @@ define([
      */
     getMenus: function documentControllerGetMenus() {
       this._checkInitialisedModel();
-      return this._model
-        .get("menus")
-        .map(function documentController_mapMenu(currentMenu) {
-          return new MenuInterface(currentMenu);
-        });
+      return this._model.get("menus").map(function documentController_mapMenu(currentMenu) {
+        return new MenuInterface(currentMenu);
+      });
     },
 
     /**
@@ -2258,10 +1881,7 @@ define([
      * Add customData from render view model
      * @returns {*}
      */
-    addCustomClientData: function documentControllerAddCustomClientData(
-      documentCheck,
-      value
-    ) {
+    addCustomClientData: function documentControllerAddCustomClientData(documentCheck, value) {
       var currentWidget = this;
       this._checkInitialisedModel();
       //First case no data, so documentCheck is data
@@ -2282,15 +1902,10 @@ define([
           once: true
         });
       } else {
-        throw new Error(
-          "Constraint must be an value or a function and a value"
-        );
+        throw new Error("Constraint must be an value or a function and a value");
       }
       //Register the customClientData
-      _.each(value, function documentControllerAddCustomClientDataEach(
-        currentValue,
-        currentKey
-      ) {
+      _.each(value, function documentControllerAddCustomClientDataEach(currentValue, currentKey) {
         currentWidget._customClientData[currentKey] = {
           value: currentValue,
           documentCheck: documentCheck.documentCheck,
@@ -2302,10 +1917,7 @@ define([
      * Get customData from render view model
      * @returns {*}
      */
-    setCustomClientData: function documentControllerSetCustomClientData(
-      documentCheck,
-      value
-    ) {
+    setCustomClientData: function documentControllerSetCustomClientData(documentCheck, value) {
       console.error("this function (setCustomClientData) is deprecated");
       return this.addCustomClientData(documentCheck, value);
     },
@@ -2313,9 +1925,7 @@ define([
      * Get customData from render view model
      * @returns {*}
      */
-    getCustomClientData: function documentControllerSetCustomClientData(
-      deleteOnce
-    ) {
+    getCustomClientData: function documentControllerSetCustomClientData(deleteOnce) {
       var values = {},
         currentWidget = this,
         $element,
@@ -2324,10 +1934,7 @@ define([
       this._checkInitialisedModel();
       properties = this.getProperties();
       $element = $(currentWidget.element);
-      _.each(currentWidget._customClientData, function analyzeCustomClient(
-        currentCustom,
-        key
-      ) {
+      _.each(currentWidget._customClientData, function analyzeCustomClient(currentCustom, key) {
         if (currentCustom.documentCheck.call($element, properties)) {
           values[key] = currentCustom.value;
           if (deleteOnce === true && !currentCustom.once) {
@@ -2349,9 +1956,7 @@ define([
      * Delete a custom data
      * @returns {*}
      */
-    removeCustomClientData: function documentControllerRemoveCustomClientData(
-      key
-    ) {
+    removeCustomClientData: function documentControllerRemoveCustomClientData(key) {
       if (this._customClientData[key]) {
         delete this._customClientData[key];
       }
@@ -2394,9 +1999,7 @@ define([
           var defaultValue = aModel.get("defaultValue");
 
           if (!defaultValue) {
-            defaultValue = aModel.hasMultipleOption()
-              ? []
-              : { value: null, displayValue: "" };
+            defaultValue = aModel.hasMultipleOption() ? [] : { value: null, displayValue: "" };
           }
 
           for (i = currentValueLength; i <= index; i++) {
@@ -2424,10 +2027,7 @@ define([
      * @param attributeId string attribute array
      * @param values object { "attributeId" : { "value" : *, "displayValue" : * }, ...}
      */
-    appendArrayRow: function documentControllerAddArrayRow(
-      attributeId,
-      values
-    ) {
+    appendArrayRow: function documentControllerAddArrayRow(attributeId, values) {
       this._checkInitialisedModel();
       var attribute = this._getAttributeModel(attributeId);
 
@@ -2436,36 +2036,27 @@ define([
       }
 
       if (attribute.get("type") !== "array") {
-        throw new Error(
-          "Attribute " + attributeId + " must be an attribute of type array"
-        );
+        throw new Error("Attribute " + attributeId + " must be an attribute of type array");
       }
       if (!_.isObject(values)) {
         throw new Error(
-          "Values must be an object where each properties is an attribute of the array for " +
-            attributeId
+          "Values must be an object where each properties is an attribute of the array for " + attributeId
         );
       }
-      attribute
-        .get("content")
-        .each(function documentController_addACell(currentAttribute) {
-          var newValue = values[currentAttribute.id];
-          var currentValue = currentAttribute.getValue();
-          if (_.isUndefined(newValue)) {
-            // Set default value if no value defined
-            currentAttribute.createIndexedValue(
-              currentValue.length,
-              false,
-              _.isEmpty(values)
-            );
-          } else {
-            newValue = _.defaults(newValue, {
-              value: "",
-              displayValue: newValue.value
-            });
-            currentAttribute.addValue(newValue);
-          }
-        });
+      attribute.get("content").each(function documentController_addACell(currentAttribute) {
+        var newValue = values[currentAttribute.id];
+        var currentValue = currentAttribute.getValue();
+        if (_.isUndefined(newValue)) {
+          // Set default value if no value defined
+          currentAttribute.createIndexedValue(currentValue.length, false, _.isEmpty(values));
+        } else {
+          newValue = _.defaults(newValue, {
+            value: "",
+            displayValue: newValue.value
+          });
+          currentAttribute.addValue(newValue);
+        }
+      });
     },
 
     /**
@@ -2475,11 +2066,7 @@ define([
      * @param values object { "attributeId" : { "value" : *, "displayValue" : * }, ...}
      * @param index int index of the row
      */
-    insertBeforeArrayRow: function documentControllerInsertBeforeArrayRow(
-      attributeId,
-      values,
-      index
-    ) {
+    insertBeforeArrayRow: function documentControllerInsertBeforeArrayRow(attributeId, values, index) {
       this._checkInitialisedModel();
       var attribute = this._getAttributeModel(attributeId),
         maxValue;
@@ -2487,37 +2074,32 @@ define([
         throw new Error("Unable to find attribute " + attributeId);
       }
       if (attribute.get("type") !== "array") {
-        throw new Error(
-          "Attribute " + attributeId + " must be an attribute of type array"
-        );
+        throw new Error("Attribute " + attributeId + " must be an attribute of type array");
       }
       if (!_.isObject(values)) {
         throw new Error(
-          "Values must be an object where each properties is an attribute of the array for " +
-            attributeId
+          "Values must be an object where each properties is an attribute of the array for " + attributeId
         );
       }
       maxValue = this._getMaxIndex(attribute);
       if (index < 0 || index > maxValue) {
         throw new Error("Index must be between 0 and " + maxValue);
       }
-      attribute
-        .get("content")
-        .each(function documentController_addACell(currentAttribute) {
-          var currentValue = values[currentAttribute.id];
-          if (!_.isUndefined(currentValue)) {
-            currentValue = _.defaults(currentValue, {
-              value: "",
-              displayValue: currentValue.value
-            });
-          } else {
-            currentValue = currentAttribute.attributes.defaultValue;
-            if (!currentValue) {
-              currentValue = { value: "", displayValue: "" };
-            }
+      attribute.get("content").each(function documentController_addACell(currentAttribute) {
+        var currentValue = values[currentAttribute.id];
+        if (!_.isUndefined(currentValue)) {
+          currentValue = _.defaults(currentValue, {
+            value: "",
+            displayValue: currentValue.value
+          });
+        } else {
+          currentValue = currentAttribute.attributes.defaultValue;
+          if (!currentValue) {
+            currentValue = { value: "", displayValue: "" };
           }
-          currentAttribute.addIndexedValue(currentValue, index);
-        });
+        }
+        currentAttribute.addIndexedValue(currentValue, index);
+      });
     },
 
     /**
@@ -2525,10 +2107,7 @@ define([
      * @param attributeId string attribute array
      * @param index int index of the row
      */
-    removeArrayRow: function documentControllerRemoveArrayRow(
-      attributeId,
-      index
-    ) {
+    removeArrayRow: function documentControllerRemoveArrayRow(attributeId, index) {
       this._checkInitialisedModel();
       var attribute = this._getAttributeModel(attributeId),
         maxIndex;
@@ -2536,21 +2115,15 @@ define([
         throw new Error("Unable to find attribute " + attributeId);
       }
       if (attribute.get("type") !== "array") {
-        throw Error(
-          "Attribute " + attributeId + " must be an attribute of type array"
-        );
+        throw Error("Attribute " + attributeId + " must be an attribute of type array");
       }
       maxIndex = this._getMaxIndex(attribute) - 1;
       if (index < 0 || index > maxIndex) {
-        throw Error(
-          "Index must be between 0 and " + maxIndex + " for " + attributeId
-        );
+        throw Error("Index must be between 0 and " + maxIndex + " for " + attributeId);
       }
-      attribute
-        .get("content")
-        .each(function documentController_removeACell(currentAttribute) {
-          currentAttribute.removeIndexValue(index);
-        });
+      attribute.get("content").each(function documentController_removeACell(currentAttribute) {
+        currentAttribute.removeIndexValue(index);
+      });
       attribute.removeIndexedLine(index);
     },
 
@@ -2605,16 +2178,11 @@ define([
             } catch (e) {
               console.error(e);
             }
-            currentWidget.removeConstraint(
-              currentConstraint.name,
-              currentConstraint.externalConstraint
-            );
+            currentWidget.removeConstraint(currentConstraint.name, currentConstraint.externalConstraint);
           }
         );
       }
-      uniqueName =
-        (currentConstraint.externalConstraint ? "external_" : "internal_") +
-        currentConstraint.name;
+      uniqueName = (currentConstraint.externalConstraint ? "external_" : "internal_") + currentConstraint.name;
       this.options.constraintList[uniqueName] = currentConstraint;
       this._initActivatedConstraint();
       return currentConstraint.name;
@@ -2636,10 +2204,7 @@ define([
      * @param allKind
      * @returns {*}
      */
-    removeConstraint: function documentControllerRemoveConstraint(
-      constraintName,
-      allKind
-    ) {
+    removeConstraint: function documentControllerRemoveConstraint(constraintName, allKind) {
       var removed = [],
         newConstraintList,
         constraintList,
@@ -2647,30 +2212,23 @@ define([
       // jscs:disable disallowImplicitTypeConversion
       allKind = !!allKind;
       // jscs:enable disallowImplicitTypeConversion
-      newConstraintList = _.filter(
-        this.options.constraintList,
-        function documentController_removeConstraint(currentConstrait) {
-          if (
-            (allKind || !currentConstrait.externalConstraint) &&
-            (currentConstrait.name === constraintName ||
-              testRegExp.test(currentConstrait.name))
-          ) {
-            removed.push(currentConstrait);
-            return false;
-          }
-          return true;
+      newConstraintList = _.filter(this.options.constraintList, function documentController_removeConstraint(
+        currentConstrait
+      ) {
+        if (
+          (allKind || !currentConstrait.externalConstraint) &&
+          (currentConstrait.name === constraintName || testRegExp.test(currentConstrait.name))
+        ) {
+          removed.push(currentConstrait);
+          return false;
         }
-      );
+        return true;
+      });
       constraintList = {};
-      _.each(
-        newConstraintList,
-        function documentController_rebuildConstraintList(currentConstraint) {
-          var uniqueName =
-            (currentConstraint.externalConstraint ? "external_" : "internal_") +
-            currentConstraint.name;
-          constraintList[uniqueName] = currentConstraint;
-        }
-      );
+      _.each(newConstraintList, function documentController_rebuildConstraintList(currentConstraint) {
+        var uniqueName = (currentConstraint.externalConstraint ? "external_" : "internal_") + currentConstraint.name;
+        constraintList[uniqueName] = currentConstraint;
+      });
       this.options.constraintList = constraintList;
       this._initActivatedConstraint();
       return removed;
@@ -2684,11 +2242,7 @@ define([
      * @param callback function callback called when the event is triggered
      * @returns {*|Window.options.name}
      */
-    addEventListener: function documentControllerAddEvent(
-      eventType,
-      options,
-      callback
-    ) {
+    addEventListener: function documentControllerAddEvent(eventType, options, callback) {
       var currentEvent,
         currentWidget = this;
       //options is not mandatory and the callback can be the second parameters
@@ -2697,11 +2251,7 @@ define([
         options = {};
       }
       // the first parameters can be the final object (chain removeEvent and addEvent)
-      if (
-        _.isObject(eventType) &&
-        _.isUndefined(options) &&
-        _.isUndefined(callback)
-      ) {
+      if (_.isObject(eventType) && _.isUndefined(options) && _.isUndefined(callback)) {
         currentEvent = eventType;
         if (!currentEvent.name) {
           throw new Error(
@@ -2726,20 +2276,16 @@ define([
       }
       //If event is once : wrap it an callback that execute event and delete it
       if (currentEvent.once === true) {
-        currentEvent.eventCallback = _.wrap(
-          currentEvent.eventCallback,
-          function documentController_onceWrapper(callback) {
-            currentWidget.removeEventListener(
-              currentEvent.name,
-              currentEvent.externalEvent
-            );
-            try {
-              callback.apply(this, _.rest(arguments));
-            } catch (e) {
-              console.error(e);
-            }
+        currentEvent.eventCallback = _.wrap(currentEvent.eventCallback, function documentController_onceWrapper(
+          callback
+        ) {
+          currentWidget.removeEventListener(currentEvent.name, currentEvent.externalEvent);
+          try {
+            callback.apply(this, _.rest(arguments));
+          } catch (e) {
+            console.error(e);
           }
-        );
+        });
       }
       this._addAndInitNewEvents(currentEvent);
       // return the name of the event
@@ -2762,10 +2308,7 @@ define([
      * @param allKind remove internal/external events
      * @returns {*}
      */
-    removeEventListener: function documentControllerRemoveEvent(
-      eventName,
-      allKind
-    ) {
+    removeEventListener: function documentControllerRemoveEvent(eventName, allKind) {
       var removed = [],
         testRegExp = new RegExp("\\" + eventName + "$"),
         newList,
@@ -2773,27 +2316,19 @@ define([
       // jscs:disable
       allKind = !!allKind;
       // jscs:enable
-      newList = _.filter(
-        this.options.eventListener,
-        function documentController_removeCurrentEvent(currentEvent) {
-          if (
-            (allKind || !currentEvent.externalEvent) &&
-            (currentEvent.name === eventName ||
-              testRegExp.test(currentEvent.name))
-          ) {
-            removed.push(currentEvent);
-            return false;
-          }
-          return true;
+      newList = _.filter(this.options.eventListener, function documentController_removeCurrentEvent(currentEvent) {
+        if (
+          (allKind || !currentEvent.externalEvent) &&
+          (currentEvent.name === eventName || testRegExp.test(currentEvent.name))
+        ) {
+          removed.push(currentEvent);
+          return false;
         }
-      );
+        return true;
+      });
       eventList = {};
-      _.each(newList, function documentController__rebuildEventList(
-        currentEvent
-      ) {
-        var uniqueName =
-          (currentEvent.externalEvent ? "external_" : "internal_") +
-          currentEvent.name;
+      _.each(newList, function documentController__rebuildEventList(currentEvent) {
+        var uniqueName = (currentEvent.externalEvent ? "external_" : "internal_") + currentEvent.name;
         eventList[uniqueName] = currentEvent;
       });
       this.options.eventListener = eventList;
@@ -2895,11 +2430,7 @@ define([
      * @param message
      * @param index
      */
-    setAttributeErrorMessage: function documentControllersetAttributeErrorMessage(
-      attributeId,
-      message,
-      index
-    ) {
+    setAttributeErrorMessage: function documentControllersetAttributeErrorMessage(attributeId, message, index) {
       this._checkInitialisedView();
       var attributeModel = this._getAttributeModel(attributeId);
       if (!attributeModel) {
@@ -2915,10 +2446,7 @@ define([
      * @param attributeId
      * @param index
      */
-    cleanAttributeErrorMessage: function documentControllercleanAttributeErrorMessage(
-      attributeId,
-      index
-    ) {
+    cleanAttributeErrorMessage: function documentControllercleanAttributeErrorMessage(attributeId, index) {
       this._checkInitialisedView();
       var attributeModel = this._getAttributeModel(attributeId);
       if (!attributeModel) {
@@ -2931,9 +2459,7 @@ define([
     injectCSS: function documentController_injectCSS(cssToInject) {
       this._checkInitialisedView();
       if (!_.isArray(cssToInject) && !_.isString(cssToInject)) {
-        throw new Error(
-          "The css to inject must be an array string or a string"
-        );
+        throw new Error("The css to inject must be an array string or a string");
       }
       if (_.isString(cssToInject)) {
         cssToInject = [cssToInject];
@@ -2960,10 +2486,7 @@ define([
      */
     tryToDestroy: function documentController_tryToDestroy() {
       var currentWidget = this;
-      return new Promise(function documentController_promiseDestroy(
-        resolve,
-        reject
-      ) {
+      return new Promise(function documentController_promiseDestroy(resolve, reject) {
         var event = { prevent: false };
         if (!currentWidget._model) {
           resolve();
@@ -2975,10 +2498,7 @@ define([
           !window.confirm(
             currentWidget._model.get("properties").get("title") +
               "\n" +
-              i18n.___(
-                "The form has been modified without saving, do you want to close it ?",
-                "ddui"
-              )
+              i18n.___("The form has been modified without saving, do you want to close it ?", "ddui")
           )
         ) {
           reject("Unable to destroy because user refuses it");

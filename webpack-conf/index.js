@@ -109,11 +109,7 @@ const analyzeAndReturnWebpackConf = ({
   if (deps) {
     elements.push(
       parts.dllPlugin({
-        path: path.resolve(
-          buildPath,
-          relativeOutputPath,
-          "[name]-manifest.json"
-        ),
+        path: path.resolve(buildPath, relativeOutputPath, "[name]-manifest.json"),
         name: conf.output.library
       })
     );
@@ -178,15 +174,7 @@ module.exports = {
       customParts
     });
   },
-  dev: ({
-    vendorName,
-    moduleName,
-    manifestPath,
-    entry,
-    relativeOutputPath,
-    buildPath,
-    customParts = []
-  }) => {
+  dev: ({ vendorName, moduleName, manifestPath, entry, relativeOutputPath, buildPath, customParts = [] }) => {
     return analyzeAndReturnWebpackConf({
       vendorName,
       mode: "dev",

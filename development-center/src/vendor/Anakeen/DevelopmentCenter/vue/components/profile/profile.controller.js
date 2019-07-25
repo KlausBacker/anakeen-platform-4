@@ -15,10 +15,7 @@ export default {
     onRefProfileClickCallback: {
       type: Function,
       default: refProfile => {
-        window.open(
-          `/api/v2/devels/security/profile/${refProfile.name ||
-            refProfile.id}.html`
-        );
+        window.open(`/api/v2/devels/security/profile/${refProfile.name || refProfile.id}.html`);
       }
     },
     labelRotate: {
@@ -83,8 +80,7 @@ export default {
         return ctx.measureText(text).width;
       },
       computeHeaderHeight: (longestStringWidth, labelRotation = 300) => {
-        const result =
-          Math.sin((labelRotation * Math.PI) / 180) * longestStringWidth;
+        const result = Math.sin((labelRotation * Math.PI) / 180) * longestStringWidth;
         if (result < 0) {
           return -1 * result;
         }
@@ -111,8 +107,7 @@ export default {
                   //Count entry by cat
                   const nbElementsByCat = data.accesses.reduce(
                     (acc, currentAccess) => {
-                      acc[currentAccess.account.type] =
-                        acc[currentAccess.account.type] + 1;
+                      acc[currentAccess.account.type] = acc[currentAccess.account.type] + 1;
                       return acc;
                     },
                     {
@@ -127,9 +122,7 @@ export default {
                     {
                       id: checksum("field"),
                       title: `Fields : <span class="badge ${
-                        nbElementsByCat.field === 0
-                          ? "badge-light"
-                          : "badge-primary"
+                        nbElementsByCat.field === 0 ? "badge-light" : "badge-primary"
                       }">${nbElementsByCat.field}</span>`,
                       parentId: null,
                       expanded: true
@@ -137,9 +130,7 @@ export default {
                     {
                       id: checksum("role"),
                       title: `Roles : <span class="badge ${
-                        nbElementsByCat.role === 0
-                          ? "badge-light"
-                          : "badge-primary"
+                        nbElementsByCat.role === 0 ? "badge-light" : "badge-primary"
                       }">${nbElementsByCat.role}</span>`,
                       parentId: null,
                       expanded: true
@@ -147,9 +138,7 @@ export default {
                     {
                       id: checksum("group"),
                       title: `Groups : <span class="groupElement badge account-type-group ${
-                        nbElementsByCat.group === 0
-                          ? "badge-light"
-                          : "badge-primary"
+                        nbElementsByCat.group === 0 ? "badge-light" : "badge-primary"
                       }">${nbElementsByCat.group}</span> 
 <button class="k-button k-button-icon foldGroups"><span class="k-icon k-i-minus"></span></button> 
 <button class="k-button k-button-icon unfoldGroups"><span class="k-icon k-i-plus"></span></button>`,
@@ -158,9 +147,7 @@ export default {
                     {
                       id: checksum("user"),
                       title: `Users : <span class="badge ${
-                        nbElementsByCat.user === 0
-                          ? "badge-light"
-                          : "badge-primary"
+                        nbElementsByCat.user === 0 ? "badge-light" : "badge-primary"
                       }">${nbElementsByCat.user}</span>`,
                       parentId: null
                     }
@@ -172,9 +159,7 @@ export default {
                       return {
                         ...currentElement,
                         ...{
-                          parentId:
-                            currentElement.parentId ||
-                            checksum(currentElement.account.type)
+                          parentId: currentElement.parentId || checksum(currentElement.account.type)
                         }
                       };
                     })
@@ -202,9 +187,7 @@ export default {
       fetchTreeConfig: () => {
         if (parseInt(this.profileId)) {
           this.$http
-            .get(
-              `/api/v2/devel/security/profile/${this.profileId}/accesses/?acls=only`
-            )
+            .get(`/api/v2/devel/security/profile/${this.profileId}/accesses/?acls=only`)
             .then(content => {
               if (!content.data.success) {
                 return this.$emit("error", content.data.messages.join(" "));
@@ -237,13 +220,8 @@ export default {
         };
         let maxLabelSize = 0;
         const columns = data.properties.acls.map(currentElement => {
-          const label = this.showLabels
-            ? currentElement.label
-            : currentElement.name;
-          const textWidth = this.privateScope.computeTextWidth(
-            label,
-            $(this.$el).css("font")
-          );
+          const label = this.showLabels ? currentElement.label : currentElement.name;
+          const textWidth = this.privateScope.computeTextWidth(label, $(this.$el).css("font"));
           if (textWidth > maxLabelSize) {
             maxLabelSize = textWidth;
           }
@@ -255,35 +233,28 @@ export default {
           }
           return {
             field: `acls.${currentElement.name}`,
-            title: this.showLabels
-              ? `${currentElement.label}`
-              : `${currentElement.name}`,
+            title: this.showLabels ? `${currentElement.label}` : `${currentElement.name}`,
             attributes: {
               class: "rightColumn"
             },
             headerAttributes,
             headerTemplate: `<div class="header-acl-label">
                        <span class="acl-label">${
-                         this.showLabels
-                           ? currentElement.label
-                           : currentElement.name
+                         this.showLabels ? currentElement.label : currentElement.name
                        }</span></div>`,
             width: this.columnWidth,
-            hidden: !this.defaultColumns.reduce(
-              (accumulator, currentColumn) => {
-                if (accumulator) {
-                  return true;
-                }
-                if (this.onlyExtendedAcls && currentElement.extended) {
-                  return true;
-                }
-                if (this.onlyExtendedAcls) {
-                  return false;
-                }
-                return currentColumn === currentElement.name;
-              },
-              false
-            ),
+            hidden: !this.defaultColumns.reduce((accumulator, currentColumn) => {
+              if (accumulator) {
+                return true;
+              }
+              if (this.onlyExtendedAcls && currentElement.extended) {
+                return true;
+              }
+              if (this.onlyExtendedAcls) {
+                return false;
+              }
+              return currentColumn === currentElement.name;
+            }, false),
             template: lineRender(currentElement.name, (column, currentLine) => {
               if (!currentLine.acls) {
                 return "";
@@ -336,9 +307,7 @@ export default {
             .find(".account-type-group")
             .toArray()
             .forEach(currentElement => {
-              treeList
-                .data("kendoTreeList")
-                .collapse($(currentElement).closest(`[role="row"]`));
+              treeList.data("kendoTreeList").collapse($(currentElement).closest(`[role="row"]`));
             });
           treeList.data("kendoTreeList").autoFitColumn("title");
         });
@@ -347,24 +316,16 @@ export default {
             .find(".account-type-group")
             .toArray()
             .forEach(currentElement => {
-              treeList
-                .data("kendoTreeList")
-                .expand($(currentElement).closest(`[role="row"]`));
+              treeList.data("kendoTreeList").expand($(currentElement).closest(`[role="row"]`));
             });
           treeList.data("kendoTreeList").autoFitColumn("title");
         });
         if (this.labelRotate) {
           $(".k-header[data-transformation=header-rotate]", this.$el).css(
             "height",
-            `${this.privateScope.computeHeaderHeight(
-              maxLabelSize,
-              this.labelRotation
-            ) + 15}px`
+            `${this.privateScope.computeHeaderHeight(maxLabelSize, this.labelRotation) + 15}px`
           );
-          $(
-            ".k-header[data-transformation=header-rotate] > .header-acl-label",
-            this.$el
-          ).css(
+          $(".k-header[data-transformation=header-rotate] > .header-acl-label", this.$el).css(
             "transform",
             `translateX(calc(${this.columnWidth} - 2.25rem)) rotate(${this.labelRotation}deg)`
           );

@@ -61,13 +61,7 @@ const deployPipe = (exports.deployPipe = async ({
   }
 });
 
-exports.deploy = ({
-  appPath = "./",
-  controlUrl,
-  controlUsername,
-  controlPassword,
-  parameterValues
-}) => {
+exports.deploy = ({ appPath = "./", controlUrl, controlUsername, controlPassword, parameterValues }) => {
   return gulp.task("deploy", () => {
     return new Promise((resolve, reject) => {
       const interactive = new Signale({ scope: "deploy" });
@@ -96,13 +90,7 @@ exports.deploy = ({
   });
 };
 
-exports.buildAndDeploy = ({
-  sourcePath = ".",
-  controlUrl,
-  controlUsername,
-  controlPassword,
-  autoRelease = false
-}) => {
+exports.buildAndDeploy = ({ sourcePath = ".", controlUrl, controlUsername, controlPassword, autoRelease = false }) => {
   return gulp.task("buildAndDeploy", () => {
     // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve, reject) => {

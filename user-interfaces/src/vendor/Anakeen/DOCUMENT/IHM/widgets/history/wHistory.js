@@ -76,119 +76,96 @@ define([
 
       this._super();
 
-      this.element.on(
-        "click" + this.eventNamespace,
-        ".history-button-showdetail",
-        function whistoryShowDetail() {
-          var noticeButton = widget.element.find(".history-button-shownotice");
-          var noticeShowed = noticeButton.data("showNotice");
-          if ($widget.data("showDetail")) {
-            $widget.data("showDetail", false);
-            $widget.data("showNotice", false);
-            $(this)
-              .text(widget.options.labels.showDetail)
-              .removeClass("btn-primary");
-            widget.element.find(".history-comment").hide();
+      this.element.on("click" + this.eventNamespace, ".history-button-showdetail", function whistoryShowDetail() {
+        var noticeButton = widget.element.find(".history-button-shownotice");
+        var noticeShowed = noticeButton.data("showNotice");
+        if ($widget.data("showDetail")) {
+          $widget.data("showDetail", false);
+          $widget.data("showNotice", false);
+          $(this)
+            .text(widget.options.labels.showDetail)
+            .removeClass("btn-primary");
+          widget.element.find(".history-comment").hide();
 
-            noticeButton
-              .attr("disabled", "disabled")
-              .removeClass("btn-primary")
-              .text(widget.options.labels.showNotice);
-          } else {
-            $widget.data("showDetail", true);
-            widget.element.find(".history-comment").show();
-            if (!noticeShowed) {
-              widget.element.find(".history-level--notice").hide();
-            }
-            $(this)
-              .text(widget.options.labels.hideDetail)
-              .addClass("btn-primary");
-            noticeButton.removeAttr("disabled");
-          }
-        }
-      );
-      this.element.on(
-        "click" + this.eventNamespace,
-        ".history-button-shownotice",
-        function whistoryShowNotice() {
-          var $notices = widget.element.find(".history-level--notice");
-          if ($widget.data("showNotice")) {
-            $widget.data("showNotice", false);
-            $(this)
-              .text(widget.options.labels.showNotice)
-              .removeClass("btn-primary");
+          noticeButton
+            .attr("disabled", "disabled")
+            .removeClass("btn-primary")
+            .text(widget.options.labels.showNotice);
+        } else {
+          $widget.data("showDetail", true);
+          widget.element.find(".history-comment").show();
+          if (!noticeShowed) {
             widget.element.find(".history-level--notice").hide();
+          }
+          $(this)
+            .text(widget.options.labels.hideDetail)
+            .addClass("btn-primary");
+          noticeButton.removeAttr("disabled");
+        }
+      });
+      this.element.on("click" + this.eventNamespace, ".history-button-shownotice", function whistoryShowNotice() {
+        var $notices = widget.element.find(".history-level--notice");
+        if ($widget.data("showNotice")) {
+          $widget.data("showNotice", false);
+          $(this)
+            .text(widget.options.labels.showNotice)
+            .removeClass("btn-primary");
+          widget.element.find(".history-level--notice").hide();
+        } else {
+          $widget.data("showNotice", true);
+          if ($notices.length > 0) {
+            $notices.show();
+            $(this)
+              .text(widget.options.labels.hideNotice)
+              .addClass("btn-primary");
           } else {
-            $widget.data("showNotice", true);
-            if ($notices.length > 0) {
-              $notices.show();
-              $(this)
-                .text(widget.options.labels.hideNotice)
-                .addClass("btn-primary");
-            } else {
-              $(this).text(widget.options.labels.noOneNotice);
-            }
+            $(this).text(widget.options.labels.noOneNotice);
           }
         }
-      );
-      this.element.on(
-        "click" + this.eventNamespace,
-        ".history-diff-input",
-        function whistoryShowDiff() {
-          var selectedDiff = widget.element.find(".history-diff-input:checked");
+      });
+      this.element.on("click" + this.eventNamespace, ".history-diff-input", function whistoryShowDiff() {
+        var selectedDiff = widget.element.find(".history-diff-input:checked");
 
-          if (selectedDiff.length === 2) {
-            widget.element
-              .find(".history-diff-input:not(:checked)")
-              .attr("disabled", "disabled");
-            var $diffTarget = $('<div class="revision-diff"/>');
-            var diffWidget = $diffTarget
-              .dcpRevisionDiff({
-                documentId: widget.options.documentId,
-                firstRevision: $(selectedDiff.get(1)).data("revision"),
-                secondRevision: $(selectedDiff.get(0)).data("revision"),
-                window: {
-                  width: "70%",
-                  height: "70%",
-                  title: widget.options.labels.revisionDiffLabels.title
-                },
-                labels: widget.options.labels.revisionDiffLabels
-              })
-              .data("dcpRevisionDiff");
+        if (selectedDiff.length === 2) {
+          widget.element.find(".history-diff-input:not(:checked)").attr("disabled", "disabled");
+          var $diffTarget = $('<div class="revision-diff"/>');
+          var diffWidget = $diffTarget
+            .dcpRevisionDiff({
+              documentId: widget.options.documentId,
+              firstRevision: $(selectedDiff.get(1)).data("revision"),
+              secondRevision: $(selectedDiff.get(0)).data("revision"),
+              window: {
+                width: "70%",
+                height: "70%",
+                title: widget.options.labels.revisionDiffLabels.title
+              },
+              labels: widget.options.labels.revisionDiffLabels
+            })
+            .data("dcpRevisionDiff");
 
-            diffWidget.open();
-          } else if (selectedDiff.length < 2) {
-            widget.element
-              .find(".history-diff-input")
-              .removeAttr("disabled", "disabled");
-          }
+          diffWidget.open();
+        } else if (selectedDiff.length < 2) {
+          widget.element.find(".history-diff-input").removeAttr("disabled", "disabled");
         }
-      );
+      });
 
-      this.element.on(
-        "click" + this.eventNamespace,
-        "a[data-document-id]",
-        function whistoryShowDocument(event) {
-          var docid = $widget.data("document-id");
-          if (docid) {
-            event.preventDefault();
-            widget.element.trigger("viewRevision", {
-              initid: docid,
-              revision: parseInt($widget.data("revision"))
-            });
-          }
+      this.element.on("click" + this.eventNamespace, "a[data-document-id]", function whistoryShowDocument(event) {
+        var docid = $widget.data("document-id");
+        if (docid) {
+          event.preventDefault();
+          widget.element.trigger("viewRevision", {
+            initid: docid,
+            revision: parseInt($widget.data("revision"))
+          });
         }
-      );
+      });
     },
 
     _fillDataTable: function dcpDocumentHistory_fillDataTable(data) {
       var myData = [];
 
       this.dialogWindow.setOptions({
-        title: Mustache.render(
-          this.options.labels.historyTitle,
-          data.data.history[0].properties
-        )
+        title: Mustache.render(this.options.labels.historyTitle, data.data.history[0].properties)
       });
 
       _.each(data.data.history, function whistoryFillRevision(revisionInfo) {
@@ -217,9 +194,7 @@ define([
             DT_RowClass:
               "history-comment history-level--" +
               message.level +
-              (revisionInfo.properties.status === "fixed"
-                ? " history-comment--fixed"
-                : "")
+              (revisionInfo.properties.status === "fixed" ? " history-comment--fixed" : "")
           });
         });
       });
@@ -268,9 +243,7 @@ define([
                       data.state.color +
                       '" >&nbsp;</span>' +
                       '<span class="history-state-label">' +
-                      (data.status === "fixed"
-                        ? data.state.stateLabel
-                        : data.state.activity) +
+                      (data.status === "fixed" ? data.state.stateLabel : data.state.activity) +
                       "</span></div>"
                     );
                   }
@@ -327,10 +300,7 @@ define([
                     data +
                     '"' +
                     ">" +
-                    historyWidget.options.labels.linkRevision.replace(
-                      "#",
-                      data
-                    ) +
+                    historyWidget.options.labels.linkRevision.replace("#", data) +
                     "</a>"
                   );
                 } else {
@@ -369,11 +339,7 @@ define([
               className: "history-diff",
               render: function whistoryRenderDiff(data, renderType, allData) {
                 if (data === 1) {
-                  return (
-                    '<input class="history-diff-input" data-revision="' +
-                    allData.revision +
-                    '" type="checkbox"/>'
-                  );
+                  return '<input class="history-diff-input" data-revision="' + allData.revision + '" type="checkbox"/>';
                 } else {
                   return "";
                 }
@@ -382,12 +348,8 @@ define([
           ],
 
           drawCallback: function whistorydrawCallback() {
-            var noticeShowed = historyWidget.element
-              .find(".history-button-shownotice")
-              .data("showNotice");
-            var detailShowed = historyWidget.element
-              .find(".history-button-showdetail")
-              .data("showDetail");
+            var noticeShowed = historyWidget.element.find(".history-button-shownotice").data("showNotice");
+            var detailShowed = historyWidget.element.find(".history-button-showdetail").data("showDetail");
 
             if (detailShowed) {
               historyWidget.element.find(".history-comment").show();
@@ -415,19 +377,13 @@ define([
               if (data[i].revision > 0) {
                 onlyOneRevision = false;
               }
-              if (
-                data[i].message &&
-                data[i].message.state &&
-                data[i].message.state.reference
-              ) {
+              if (data[i].message && data[i].message.state && data[i].message.state.reference) {
                 showState = true;
               }
             }
             if (onlyOneRevision) {
               //api.column("revision:name").visible(!onlyOneRevision);
-              historyWidget.element
-                .find(".history-diff-input")
-                .attr("disabled", "disabled");
+              historyWidget.element.find(".history-diff-input").attr("disabled", "disabled");
             }
 
             if (showVersion) {
@@ -435,17 +391,11 @@ define([
             }
             if (showState) {
               // Change Label
-              historyWidget.element
-                .find(".history-header--message")
-                .html(historyWidget.options.labels.activity);
+              historyWidget.element.find(".history-header--message").html(historyWidget.options.labels.activity);
             }
-            var fixedRevisionRow = historyWidget.element
-              .find(".history-level--revision")
-              .get(1);
+            var fixedRevisionRow = historyWidget.element.find(".history-level--revision").get(1);
             if (fixedRevisionRow) {
-              var trHead = historyWidget.element
-                .find(".history-header")
-                .clone();
+              var trHead = historyWidget.element.find(".history-header").clone();
               $(
                 '<tr class="history-separator"><td class="history-separator-cell" colspan="' +
                   $(trHead).find("th").length +
@@ -456,22 +406,15 @@ define([
               ).insertBefore(fixedRevisionRow);
               $(trHead).insertBefore(fixedRevisionRow);
               if (showState) {
-                $($(".history-header--message").get(1)).html(
-                  historyWidget.options.labels.state
-                );
+                $($(".history-header--message").get(1)).html(historyWidget.options.labels.state);
               }
             }
             historyWidget.element.find(".history-comment").hide();
             historyWidget.element.find(".odd").removeClass("odd");
             historyWidget.element.find(".even").removeClass("even");
-            historyWidget.element
-              .find(".dataTables_filter input")
-              .addClass("form-control form-control-sm");
+            historyWidget.element.find(".dataTables_filter input").addClass("form-control form-control-sm");
 
-            if (
-              historyWidget.element.find(".history-button-shownotice")
-                .length === 0
-            ) {
+            if (historyWidget.element.find(".history-button-shownotice").length === 0) {
               var $buttons = historyWidget.element.find(".history-buttons");
 
               $buttons.append(
@@ -491,28 +434,19 @@ define([
 
               historyWidget.element
                 .find(".dataTables_filter input")
-                .attr(
-                  "placeholder",
-                  historyWidget.options.labels.filterMessages
-                );
+                .attr("placeholder", historyWidget.options.labels.filterMessages);
             }
           },
 
           ajax: function whistory_getData(data, callback) {
-            $.getJSON(
-              "/api/v2/smart-elements/" +
-                historyWidget.options.documentId +
-                "/history/"
-            )
+            $.getJSON("/api/v2/smart-elements/" + historyWidget.options.documentId + "/history/")
               .done(function whistory_getDataDone(response) {
                 var tableData = historyWidget._fillDataTable(response);
                 callback({ data: tableData });
               })
               .fail(function whistory_getDataFail(response) {
                 var result = JSON.parse(response.responseText);
-                _.each(result.messages, function whistory_getDataParseMessage(
-                  error
-                ) {
+                _.each(result.messages, function whistory_getDataParseMessage(error) {
                   if (error.type === "error") {
                     $("body").trigger("notification", {
                       type: error.type,

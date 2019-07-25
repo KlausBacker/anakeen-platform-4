@@ -3,11 +3,7 @@
   "use strict";
 
   if (typeof define === "function" && define.amd) {
-    define([
-      "jquery",
-      "underscore",
-      "dcpDocument/widgets/attributes/text/wText"
-    ], factory);
+    define(["jquery", "underscore", "dcpDocument/widgets/attributes/text/wText"], factory);
   } else {
     //noinspection JSUnresolvedVariable
     factory(window.jQuery, window._);
@@ -43,17 +39,12 @@
         var scope = this;
         _.defer(function dcpLongtext_deferComputeSize() {
           var $element = scope.getContentElements();
-          var delta =
-            parseFloat($element.css("padding-top")) +
-            parseFloat($element.css("padding-bottom"));
+          var delta = parseFloat($element.css("padding-top")) + parseFloat($element.css("padding-bottom"));
           var lineH = $element.css("line-height");
           // In IE9 , the result is just a number without unit
           if (lineH) {
             if (lineH.indexOf("px") > 0) {
-              $element.css(
-                "max-height",
-                lineNumber * parseFloat(lineH) + delta + "px"
-              );
+              $element.css("max-height", lineNumber * parseFloat(lineH) + delta + "px");
             } else {
               $element.css("max-height", lineNumber * 1.1 + "em");
             }
@@ -70,9 +61,7 @@
     },
 
     _fitToContent: function dcpLongtext_fitToContent($element) {
-      var delta =
-          parseFloat($element.css("padding-top")) +
-          parseFloat($element.css("padding-bottom")),
+      var delta = parseFloat($element.css("padding-top")) + parseFloat($element.css("padding-bottom")),
         element = $element.get(0),
         maxHeight = parseFloat($element.css("max-height"));
       if (element && element.scrollHeight > element.clientHeight) {
@@ -93,25 +82,16 @@
         scope._fitToContent(scope.getContentElements());
       });
       this.getContentElements()
-        .on(
-          "keyup" + this.eventNamespace,
-          function dcpLongtext_keyUpUpdateSize() {
-            scope._fitToContent($(this));
-          }
-        )
-        .on(
-          "focus" + this.eventNamespace,
-          function dcpLongtext_focusUpdateSize() {
-            scope._fitToContent($(this));
-          }
-        );
+        .on("keyup" + this.eventNamespace, function dcpLongtext_keyUpUpdateSize() {
+          scope._fitToContent($(this));
+        })
+        .on("focus" + this.eventNamespace, function dcpLongtext_focusUpdateSize() {
+          scope._fitToContent($(this));
+        });
 
-      this.element.on(
-        "show" + this.eventNamespace,
-        function dcpLongtext_showUpdateSize() {
-          scope._fitToContent(scope.getContentElements());
-        }
-      );
+      this.element.on("show" + this.eventNamespace, function dcpLongtext_showUpdateSize() {
+        scope._fitToContent(scope.getContentElements());
+      });
     },
 
     getType: function dcpLongtext_getType() {

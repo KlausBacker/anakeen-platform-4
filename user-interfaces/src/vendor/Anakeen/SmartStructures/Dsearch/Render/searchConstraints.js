@@ -63,24 +63,20 @@ import i18n from "./searchCatalog";
         function checkNotEmptyFunc() {
           var $documentController = $(this),
             result = [];
-          $(".dcpAttribute__value[name=se_funcs]").each(
-            function eachFuncsCheckNotEmptyFunc(index, myOperator) {
-              var myAttribute = $documentController.documentController(
-                "getValues"
-              ).se_attrids[index];
-              if (!itemEmpty(myAttribute)) {
-                if (itemEmpty(myOperator)) {
-                  inhibFunc[index] = false;
-                  result.push({
-                    message: i18n.___("Select operator", "dsearch"),
-                    index: index
-                  });
-                } else {
-                  inhibFunc[index] = true;
-                }
+          $(".dcpAttribute__value[name=se_funcs]").each(function eachFuncsCheckNotEmptyFunc(index, myOperator) {
+            var myAttribute = $documentController.documentController("getValues").se_attrids[index];
+            if (!itemEmpty(myAttribute)) {
+              if (itemEmpty(myOperator)) {
+                inhibFunc[index] = false;
+                result.push({
+                  message: i18n.___("Select operator", "dsearch"),
+                  index: index
+                });
+              } else {
+                inhibFunc[index] = true;
               }
             }
-          );
+          });
           inhibMenu();
           return result;
         }
@@ -100,22 +96,18 @@ import i18n from "./searchCatalog";
         function checkNotEmptyAttributes() {
           var $documentController = $(this),
             result = [];
-          $(".dcpAttribute__value[name=se_attrids]").each(
-            function eachKeysCheckNotEmptyAttributes(index) {
-              var myAttribute = $documentController.documentController(
-                "getValues"
-              ).se_attrids[index];
-              if (itemEmpty(myAttribute)) {
-                inhibAttr[index] = false;
-                result.push({
-                  message: i18n.___("Empty attribute", "dsearch"),
-                  index: index
-                });
-              } else {
-                inhibAttr[index] = true;
-              }
+          $(".dcpAttribute__value[name=se_attrids]").each(function eachKeysCheckNotEmptyAttributes(index) {
+            var myAttribute = $documentController.documentController("getValues").se_attrids[index];
+            if (itemEmpty(myAttribute)) {
+              inhibAttr[index] = false;
+              result.push({
+                message: i18n.___("Empty attribute", "dsearch"),
+                index: index
+              });
+            } else {
+              inhibAttr[index] = true;
             }
-          );
+          });
           inhibMenu();
           return result;
         }
@@ -139,40 +131,28 @@ import i18n from "./searchCatalog";
         function checkNotEmptyKeys() {
           var $documentController = $(this),
             result = [];
-          $(".dcpAttribute__value[name=se_keys]").each(
-            function eachKeysCheckNotEmptyKeys(index) {
-              var myAttribute = $documentController.documentController(
-                "getValues"
-              ).se_attrids[index];
-              var myOperator = $documentController.documentController(
-                "getValues"
-              ).se_funcs[index];
-              var myKeyword = $documentController.documentController(
-                "getValues"
-              ).se_keys[index];
-              if (!itemEmpty(myAttribute)) {
-                if (!itemEmpty(myOperator)) {
-                  if (
-                    myOperator.value !== "is null" &&
-                    myOperator.value !== "is not null" &&
-                    myOperator.value !== "><"
-                  ) {
-                    if (itemEmpty(myKeyword)) {
-                      inhibKeys[index] = false;
-                      result.push({
-                        message: i18n.___("Select keys", "dsearch"),
-                        index: index
-                      });
-                    } else {
-                      inhibKeys[index] = true;
-                    }
+          $(".dcpAttribute__value[name=se_keys]").each(function eachKeysCheckNotEmptyKeys(index) {
+            var myAttribute = $documentController.documentController("getValues").se_attrids[index];
+            var myOperator = $documentController.documentController("getValues").se_funcs[index];
+            var myKeyword = $documentController.documentController("getValues").se_keys[index];
+            if (!itemEmpty(myAttribute)) {
+              if (!itemEmpty(myOperator)) {
+                if (myOperator.value !== "is null" && myOperator.value !== "is not null" && myOperator.value !== "><") {
+                  if (itemEmpty(myKeyword)) {
+                    inhibKeys[index] = false;
+                    result.push({
+                      message: i18n.___("Select keys", "dsearch"),
+                      index: index
+                    });
                   } else {
                     inhibKeys[index] = true;
                   }
+                } else {
+                  inhibKeys[index] = true;
                 }
               }
             }
-          );
+          });
           inhibMenu();
           return result;
         }
@@ -231,28 +211,17 @@ import i18n from "./searchCatalog";
    * @returns {boolean}
    */
   function itemEmpty(myItem) {
-    return (
-      myItem === undefined ||
-      myItem === null ||
-      myItem.value === null ||
-      myItem.value === ""
-    );
+    return myItem === undefined || myItem === null || myItem.value === null || myItem.value === "";
   }
 
   function inhibMenu() {
     var boolInhib = true;
 
-    $(".dcpAttribute__value[name=se_attrids]").each(
-      function eachKeysCheckNotEmptyAttributes(index) {
-        if (
-          inhibAttr[index] === false ||
-          inhibFunc[index] === false ||
-          inhibKeys[index] === false
-        ) {
-          boolInhib = false;
-        }
+    $(".dcpAttribute__value[name=se_attrids]").each(function eachKeysCheckNotEmptyAttributes(index) {
+      if (inhibAttr[index] === false || inhibFunc[index] === false || inhibKeys[index] === false) {
+        boolInhib = false;
       }
-    );
+    });
 
     if (!itemEmpty($("ul.menu__content").data("kendoMenu"))) {
       if (inhibCond === true && boolInhib === true) {

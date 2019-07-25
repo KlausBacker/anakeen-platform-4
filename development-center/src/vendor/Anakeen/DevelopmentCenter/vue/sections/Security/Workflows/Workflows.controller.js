@@ -4,8 +4,7 @@ export default {
   components: {
     "ss-list": List,
     RouterTabs,
-    "security-wfl-rights": resolve =>
-      import("./Rights/Rights.vue").then(module => resolve(module.default))
+    "security-wfl-rights": resolve => import("./Rights/Rights.vue").then(module => resolve(module.default))
   },
   computed: {
     listContent() {

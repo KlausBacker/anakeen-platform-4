@@ -45,30 +45,16 @@ const createConfigParametersXML = namespace => {
   };
 };
 
-exports.writeTemplate = (
-  packagePath,
-  { sourcePath, vendorName, moduleName, namespace }
-) => {
-  const configPath = path.join(
-    packagePath,
-    "src",
-    "vendor",
-    vendorName,
-    moduleName,
-    "Config"
-  );
+exports.writeTemplate = (packagePath, { sourcePath, vendorName, moduleName, namespace }) => {
+  const configPath = path.join(packagePath, "src", "vendor", vendorName, moduleName, "Config");
   return new Promise((resolve, reject) => {
     fs.mkdir(configPath, err => {
       if (err) {
         return reject(err);
       }
       const builder = new xml2js.Builder();
-      const routesXml = builder.buildObject(
-        createRouteXML({ sourcePath, vendorName, moduleName, namespace })
-      );
-      const parametersXML = builder.buildObject(
-        createConfigParametersXML(namespace)
-      );
+      const routesXml = builder.buildObject(createRouteXML({ sourcePath, vendorName, moduleName, namespace }));
+      const parametersXML = builder.buildObject(createConfigParametersXML(namespace));
       fsUtils
         .writeFiles(
           {

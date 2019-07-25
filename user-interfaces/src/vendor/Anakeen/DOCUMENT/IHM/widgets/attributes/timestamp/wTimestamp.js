@@ -17,11 +17,7 @@
       renderOptions: {
         kendoDateConfiguration: {
           timeFormat: "HH:mm", //24 hours format
-          parseFormats: [
-            "yyyy-MM-dd HH:mm:ss",
-            "yyyy-MM-ddTHH:mm:ss",
-            "yyyy-MM-ddTHH:mm"
-          ],
+          parseFormats: ["yyyy-MM-dd HH:mm:ss", "yyyy-MM-ddTHH:mm:ss", "yyyy-MM-ddTHH:mm"],
           format: null
         }
       }
@@ -33,11 +29,7 @@
       if (this.options.attributeValue.value) {
         // Add T (iso date) if not set
 
-        this.options.attributeValue.value = this.replaceAt(
-          this.options.attributeValue.value,
-          10,
-          "T"
-        );
+        this.options.attributeValue.value = this.replaceAt(this.options.attributeValue.value, 10, "T");
       }
       this._super();
     },
@@ -61,9 +53,7 @@
         if (this.value() !== null) {
           // only valid date are setted
           // wrong date are set by blur event
-          var isoDate = currentWidget.convertDateToPseudoIsoString(
-            this.value()
-          );
+          var isoDate = currentWidget.convertDateToPseudoIsoString(this.value());
           // Need to set by widget to use raw date
           currentWidget.setValue({
             value: isoDate,
@@ -79,9 +69,7 @@
       this._controlDate(inputValue);
     },
 
-    convertDateToPseudoIsoString: function wTimeStamp_convertDateToPseudoIsoString(
-      dateObject
-    ) {
+    convertDateToPseudoIsoString: function wTimeStamp_convertDateToPseudoIsoString(dateObject) {
       if (dateObject && typeof dateObject === "object") {
         return (
           dateObject.getFullYear() +
@@ -102,10 +90,7 @@
 
     formatDate: function wTimeStamp_formatDate(value) {
       if (this.options.renderOptions.kendoDateConfiguration.format) {
-        return kendo.toString(
-          value,
-          this.options.renderOptions.kendoDateConfiguration.format
-        );
+        return kendo.toString(value, this.options.renderOptions.kendoDateConfiguration.format);
       }
       return kendo.toString(value, "g");
     },

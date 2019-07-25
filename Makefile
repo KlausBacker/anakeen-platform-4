@@ -7,7 +7,7 @@ NPX_BIN=npx
 
 TOPTARGETS := deploy deploy-test deploy-all lint po stub checkXML clean
 
-BUILDTARGETS := app app-autorelease app-test app-all
+BUILDTARGETS := app app-autorelease app-test app-test-autorelease app-all
 
 SUBDIRS := control smart-data-engine security workflow internal-components user-interfaces hub-station admin-center business-app development-center transformation migration-tools dev-data
 

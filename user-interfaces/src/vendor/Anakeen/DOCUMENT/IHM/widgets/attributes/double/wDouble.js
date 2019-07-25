@@ -20,17 +20,10 @@
     },
 
     _initDom: function wDoubleInitDom() {
-      if (
-        this.options.renderOptions.decimalPrecision !== null &&
-        this.options.renderOptions.decimalPrecision >= 0
-      ) {
+      if (this.options.renderOptions.decimalPrecision !== null && this.options.renderOptions.decimalPrecision >= 0) {
         // view decimal precision
         this.options.renderOptions.numberFormat = "#,#.";
-        for (
-          var idx = 0;
-          idx < this.options.renderOptions.decimalPrecision;
-          idx++
-        ) {
+        for (var idx = 0; idx < this.options.renderOptions.decimalPrecision; idx++) {
           this.options.renderOptions.numberFormat += "0";
         }
       }

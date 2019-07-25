@@ -131,15 +131,9 @@ export default {
     getSelected(e) {
       if (e !== "") {
         if (this.$refs.roleContent.kendoGrid) {
-          this.$("tr[role=row]", this.$el).removeClass(
-            "control-view-is-opened"
-          );
+          this.$("tr[role=row]", this.$el).removeClass("control-view-is-opened");
           this.$(
-            "tr[data-uid=" +
-              this.$refs.roleContent.kendoGrid.dataSource
-                .view()
-                .find(d => d.rowData.id === e).uid +
-              "]",
+            "tr[data-uid=" + this.$refs.roleContent.kendoGrid.dataSource.view().find(d => d.rowData.id === e).uid + "]",
             this.$el
           ).addClass("control-view-is-opened");
         }

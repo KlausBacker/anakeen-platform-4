@@ -10,8 +10,5 @@ if (
   window.ank.hub["ank-dev-refresh-data"]
 ) {
   // @ts-ignore
-  window.ank.hub["ank-dev-refresh-data"].resolve(
-    RefreshData,
-    "ank-dev-refresh-data"
-  );
+  window.ank.hub["ank-dev-refresh-data"].resolve(RefreshData, "ank-dev-refresh-data");
 }

@@ -4,12 +4,7 @@
   "use strict";
 
   if (typeof define === "function" && define.amd) {
-    define([
-      "jquery",
-      "underscore",
-      "mustache",
-      "dcpDocument/widgets/attributes/wAttribute"
-    ], factory);
+    define(["jquery", "underscore", "mustache", "dcpDocument/widgets/attributes/wAttribute"], factory);
   } else {
     //noinspection JSUnresolvedVariable
     factory(window.jQuery, window._, window.Mustache);
@@ -60,13 +55,8 @@
       if (this.getMode() === "read") {
         if (this.options.renderOptions.format) {
           if (this._isMultiple()) {
-            _.each(this.options.attributeValues, function wDocidinitDomFormat(
-              singleValue
-            ) {
-              singleValue.formatValue = Mustache.render(
-                scope.options.renderOptions.format,
-                singleValue
-              );
+            _.each(this.options.attributeValues, function wDocidinitDomFormat(singleValue) {
+              singleValue.formatValue = Mustache.render(scope.options.renderOptions.format, singleValue);
             });
           } else {
             this.options.attributeValue.formatValue = Mustache.render(
@@ -77,14 +67,9 @@
         }
         if (this.options.renderOptions.documentIconSize) {
           var reSize = /sizes\/([0-9xcfs]+)/;
-          var noIcon =
-            ["0", "0x0", "x0"].indexOf(
-              this.options.renderOptions.documentIconSize
-            ) !== -1;
+          var noIcon = ["0", "0x0", "x0"].indexOf(this.options.renderOptions.documentIconSize) !== -1;
           if (this._isMultiple()) {
-            _.each(this.options.attributeValues, function wDocidResizeIcons(
-              singleValue
-            ) {
+            _.each(this.options.attributeValues, function wDocidResizeIcons(singleValue) {
               if (noIcon) {
                 singleValue.icon = null;
               } else if (singleValue.icon) {
@@ -140,30 +125,24 @@
       var currentValue = this.options.attributeValue;
       var buttonsConfig = this.options.renderOptions.buttons;
 
-      this.element
-        .find(".dcpAttribute__content__button--create")
-        .each(function wDocid_updateCreateButtonEach() {
-          var $button = $(this);
-          var buttonIndex = $button.data("index");
-          var buttonConfig = buttonsConfig[buttonIndex];
+      this.element.find(".dcpAttribute__content__button--create").each(function wDocid_updateCreateButtonEach() {
+        var $button = $(this);
+        var buttonIndex = $button.data("index");
+        var buttonConfig = buttonsConfig[buttonIndex];
 
-          $button.prop("disabled", false);
-          if (currentValue.value) {
-            $button.html(
-              buttonConfig.renderHtmlContent + buttonConfig.htmlEditContent
-            );
-            // @TODO Find an efficient way to verify edit access of target
-            /*
+        $button.prop("disabled", false);
+        if (currentValue.value) {
+          $button.html(buttonConfig.renderHtmlContent + buttonConfig.htmlEditContent);
+          // @TODO Find an efficient way to verify edit access of target
+          /*
                      if (!currentValue.value) {
                      $button.prop("disabled", true);
                      }*/
-          } else {
-            // also when mutiple always create
-            $button.html(
-              buttonConfig.renderHtmlContent + buttonConfig.htmlCreateContent
-            );
-          }
-        });
+        } else {
+          // also when mutiple always create
+          $button.html(buttonConfig.renderHtmlContent + buttonConfig.htmlCreateContent);
+        }
+      });
     },
 
     /**
@@ -176,22 +155,18 @@
       var htmlLink = this.getLink();
       var currentWidget = this;
       if (htmlLink) {
-        this.element.on(
-          "click." + this.eventNamespace,
-          ".dcpAttribute__content__link",
-          function wDocidInitLinkOnClick(event) {
-            var $this = $(this);
-            if (htmlLink.target === "_render") {
-              event.preventDefault();
-              currentWidget._trigger("fetchdocument", event, {
-                index: $this.data("index"),
-                tableLine: $this
-                  .closest(".dcpArray__content__line")
-                  .data("line")
-              });
-            }
+        this.element.on("click." + this.eventNamespace, ".dcpAttribute__content__link", function wDocidInitLinkOnClick(
+          event
+        ) {
+          var $this = $(this);
+          if (htmlLink.target === "_render") {
+            event.preventDefault();
+            currentWidget._trigger("fetchdocument", event, {
+              index: $this.data("index"),
+              tableLine: $this.closest(".dcpArray__content__line").data("line")
+            });
           }
-        );
+        });
       }
       return this;
     },
@@ -259,11 +234,7 @@
             read: function wDocidSelectRead(options) {
               currentWidget._hasBeenRequested = true;
               options.data.index = currentWidget._getIndex();
-              return currentWidget.options.autocompleteRequest.call(
-                null,
-                options,
-                currentWidget._getIndex()
-              );
+              return currentWidget.options.autocompleteRequest.call(null, options, currentWidget._getIndex());
             }
           },
           schema: {
@@ -271,14 +242,9 @@
             data: function wDocidSelectSchema(items) {
               //Add new elements
               _.each(items, function wDocidDataCompose(currentItem) {
-                if (
-                  currentItem.values &&
-                  currentItem.values[currentWidget.options.id]
-                ) {
-                  currentItem.docId =
-                    currentItem.values[currentWidget.options.id].value;
-                  currentItem.docTitle =
-                    currentItem.values[currentWidget.options.id].displayValue;
+                if (currentItem.values && currentItem.values[currentWidget.options.id]) {
+                  currentItem.docId = currentItem.values[currentWidget.options.id].value;
+                  currentItem.docTitle = currentItem.values[currentWidget.options.id].displayValue;
                 }
               });
 
@@ -392,10 +358,7 @@
           currentWidget.setValue(newValues, event);
         },
         open: function wDocidSelectOpen(event) {
-          if (
-            currentWidget._hasBeenRequested !== true &&
-            currentWidget._pendingRequest !== true
-          ) {
+          if (currentWidget._hasBeenRequested !== true && currentWidget._pendingRequest !== true) {
             //If the widget has not been clicked and not searching for results yet
             event.preventDefault(); //Prevent the popup from opening
             currentWidget.kendoWidgetObject.search(""); //Forces new server request to get up-to-date data
@@ -404,10 +367,7 @@
             window.setTimeout(() => {
               currentWidget._pendingRequest = false;
             }, 5000);
-          } else if (
-            currentWidget._hasBeenRequested === true &&
-            currentWidget._pendingRequest === true
-          ) {
+          } else if (currentWidget._hasBeenRequested === true && currentWidget._pendingRequest === true) {
             //Else if a request is already in process
             event.preventDefault(); //Prevent the popup from opening
           }
@@ -435,9 +395,9 @@
               var $noOne = $('<li class="k-item"/>')
                 .append('<span class="k-state-default"/>')
                 .append(
-                  $(
-                    '<span class="k-state-error dcpAttribute__select--docid-none"/>'
-                  ).text(currentWidget.options.labels.allSelectedDocument)
+                  $('<span class="k-state-error dcpAttribute__select--docid-none"/>').text(
+                    currentWidget.options.labels.allSelectedDocument
+                  )
                 );
               this.ul.append($noOne);
             }
@@ -450,10 +410,7 @@
         options = _.extend(options, extraOptions);
       }
       if (this.options.renderOptions.kendoComboBoxConfiguration) {
-        options = _.extend(
-          this.options.renderOptions.kendoComboBoxConfiguration,
-          options
-        );
+        options = _.extend(this.options.renderOptions.kendoComboBoxConfiguration, options);
       }
 
       return options;
@@ -473,28 +430,18 @@
         maxSelectedItems: 1
       });
 
-      if (
-        this.options.attributeValue &&
-        this.options.attributeValue.value !== null
-      ) {
-        this.element
-          .find(".dcpAttribute__value--docid--button")
-          .attr("disabled", "disabled");
+      if (this.options.attributeValue && this.options.attributeValue.value !== null) {
+        this.element.find(".dcpAttribute__value--docid--button").attr("disabled", "disabled");
         this.element.find("input.k-input").attr("disabled", "disabled");
       }
     },
 
-    _decorateMultipleValue: function wDocidDecorateMultipleValue(
-      inputValue,
-      extraOptions
-    ) {
+    _decorateMultipleValue: function wDocidDecorateMultipleValue(inputValue, extraOptions) {
       var options = this.getKendoOptions(inputValue, {
         filter: "contains"
       });
       var currentWidget = this,
-        values = _.map(this.options.attributeValues, function wDocidSelectMap(
-          val
-        ) {
+        values = _.map(this.options.attributeValues, function wDocidSelectMap(val) {
           var info = {};
           info.docTitle = val.displayValue;
           info.docId = val.value;
@@ -506,10 +453,7 @@
       }
 
       if (this.options.renderOptions.kendoMultiSelectConfiguration) {
-        options = _.extend(
-          this.options.renderOptions.kendoMultiSelectConfiguration,
-          options
-        );
+        options = _.extend(this.options.renderOptions.kendoMultiSelectConfiguration, options);
       }
       //noinspection JSUnresolvedFunction
       inputValue.kendoMultiSelect(options);
@@ -529,14 +473,12 @@
           )
         );
       }
-      this.element.on(
-        "click" + this.eventNamespace,
-        ".dcpAttribute__value--docid--button",
-        function wDocidSelectClick(event) {
-          event.preventDefault();
-          currentWidget.kendoWidgetObject.search("");
-        }
-      );
+      this.element.on("click" + this.eventNamespace, ".dcpAttribute__value--docid--button", function wDocidSelectClick(
+        event
+      ) {
+        event.preventDefault();
+        currentWidget.kendoWidgetObject.search("");
+      });
 
       this.element.find(".dcpAttribute__value--docid--button[title]").tooltip({
         html: true
@@ -546,13 +488,9 @@
     singleDropdown: function wDocidSingleDropdown(inputValue) {
       var kendoOptions = this.getKendoOptions(inputValue);
 
-      this.kendoWidgetObject = inputValue
-        .kendoDropDownList(kendoOptions)
-        .data("kendoDropDownList");
+      this.kendoWidgetObject = inputValue.kendoDropDownList(kendoOptions).data("kendoDropDownList");
 
-      this.kendoWidgetObject.list
-        .find(".k-list-optionlabel")
-        .addClass("placeholder--clear");
+      this.kendoWidgetObject.list.find(".k-list-optionlabel").addClass("placeholder--clear");
       this.kendoWidgetObject.value(this.options.attributeValue.value);
       this.element
         .find(".dcpAttribute__value--docid--button")
@@ -566,13 +504,9 @@
       });
       var kendoSelect;
 
-      this.kendoWidgetObject = inputValue
-        .kendoComboBox(kendoOptions)
-        .data("kendoComboBox");
+      this.kendoWidgetObject = inputValue.kendoComboBox(kendoOptions).data("kendoComboBox");
       kendoSelect = this.kendoWidgetObject;
-      this.kendoWidgetObject.list
-        .find(".k-list-optionlabel")
-        .addClass("placeholder--clear");
+      this.kendoWidgetObject.list.find(".k-list-optionlabel").addClass("placeholder--clear");
 
       if (this.options.attributeValue && this.options.attributeValue.value) {
         kendoSelect.dataSource.add({
@@ -603,10 +537,7 @@
       var newValues;
       this._super(value, event);
       if (this.getMode() === "write") {
-        if (
-          !this.hasMultipleOption() &&
-          this.options.renderOptions.editDisplay === "singleMultiple"
-        ) {
+        if (!this.hasMultipleOption() && this.options.renderOptions.editDisplay === "singleMultiple") {
           if (!_.isArray(value)) {
             if (value.value !== null) {
               value = [value];
@@ -617,22 +548,15 @@
             value = [];
           }
           if (value.length === 0) {
-            this.element
-              .find(".dcpAttribute__value--docid--button")
-              .removeAttr("disabled");
+            this.element.find(".dcpAttribute__value--docid--button").removeAttr("disabled");
             this.element.find("input.k-input").removeAttr("disabled");
           } else {
-            this.element
-              .find(".dcpAttribute__value--docid--button")
-              .attr("disabled", "disabled");
+            this.element.find(".dcpAttribute__value--docid--button").attr("disabled", "disabled");
             this.element.find("input.k-input").attr("disabled", "disabled");
           }
         }
 
-        if (
-          this.hasMultipleOption() ||
-          this.options.renderOptions.editDisplay === "singleMultiple"
-        ) {
+        if (this.hasMultipleOption() || this.options.renderOptions.editDisplay === "singleMultiple") {
           newValues = _.map(value, function wDocidMapValue(val) {
             return val.value;
           });
@@ -683,9 +607,7 @@
       } else if (this.getMode() === "read") {
         this.redraw();
       } else {
-        throw new Error(
-          "Attribute " + this.options.id + " unkown mode " + this.getMode()
-        );
+        throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
       }
     },
 
@@ -702,14 +624,10 @@
       if (!_.isArray(values2)) {
         values2 = [values2];
       }
-      values1 = _.filter(_.uniq(_.map(values1, convertToString)), function(
-        value
-      ) {
+      values1 = _.filter(_.uniq(_.map(values1, convertToString)), function(value) {
         return !!value;
       });
-      values2 = _.filter(_.uniq(_.map(values2, convertToString)), function(
-        value
-      ) {
+      values2 = _.filter(_.uniq(_.map(values2, convertToString)), function(value) {
         return !!value;
       });
       return _.isEqual(values1, values2);

@@ -13,15 +13,8 @@ window.dcp = window.dcp || {};
 
   var knownTranslations = {};
 
-  window.dcp.getTranslator = function getTranslator(
-    applicationName,
-    success,
-    error
-  ) {
-    var translatePromise = new Promise(function promiseInternalFunction(
-      resolve,
-      reject
-    ) {
+  window.dcp.getTranslator = function getTranslator(applicationName, success, error) {
+    var translatePromise = new Promise(function promiseInternalFunction(resolve, reject) {
       if (knownTranslations[applicationName]) {
         resolve(knownTranslations[applicationName]);
       }

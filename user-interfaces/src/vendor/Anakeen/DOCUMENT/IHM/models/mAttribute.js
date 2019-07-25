@@ -1,9 +1,5 @@
 /*global define*/
-define(["underscore", "jquery", "backbone"], function require_mAttribute(
-  _,
-  $,
-  Backbone
-) {
+define(["underscore", "jquery", "backbone"], function require_mAttribute(_, $, Backbone) {
   "use strict";
 
   return Backbone.Model.extend({
@@ -27,17 +23,11 @@ define(["underscore", "jquery", "backbone"], function require_mAttribute(
 
     toData: function mAttributetoData(index, extended) {
       var content = this.toJSON();
-      if (
-        typeof index !== "undefined" &&
-        index !== null &&
-        this.get("multiple") === false
-      ) {
+      if (typeof index !== "undefined" && index !== null && this.get("multiple") === false) {
         throw new Error("You need to be multiple");
       }
       if (_.isNumber(index)) {
-        content.attributeValue = content.attributeValue
-          ? content.attributeValue[index]
-          : null;
+        content.attributeValue = content.attributeValue ? content.attributeValue[index] : null;
         content.index = index;
       }
       content.isDisplayable = this.isDisplayable();
@@ -78,20 +68,13 @@ define(["underscore", "jquery", "backbone"], function require_mAttribute(
           if (this.getOption("showEmptyContent") !== null) {
             return true;
           }
-          if (
-            this.get("visibility") === "S" &&
-            this.getDocumentModel().get("renderMode") === "edit"
-          ) {
+          if (this.get("visibility") === "S" && this.getDocumentModel().get("renderMode") === "edit") {
             return true;
           }
 
-          canBeDisplayable =
-            this.get("attributeValue") &&
-            this.get("attributeValue").value !== null;
+          canBeDisplayable = this.get("attributeValue") && this.get("attributeValue").value !== null;
           if (_.isArray(this.get("attributeValue"))) {
-            canBeDisplayable =
-              _.isArray(this.get("attributeValue")) &&
-              this.get("attributeValue").length > 0;
+            canBeDisplayable = _.isArray(this.get("attributeValue")) && this.get("attributeValue").length > 0;
           }
           return canBeDisplayable;
         } else if (this.get("mode") === "write") {
@@ -103,9 +86,7 @@ define(["underscore", "jquery", "backbone"], function require_mAttribute(
       }
       if (this.getOption("showEmptyContent") === null) {
         if (this.get("content").some) {
-          return this.get("content").some(function mAttribute_checkDisplayable(
-            value
-          ) {
+          return this.get("content").some(function mAttribute_checkDisplayable(value) {
             return value.isDisplayable();
           });
         }
@@ -115,15 +96,11 @@ define(["underscore", "jquery", "backbone"], function require_mAttribute(
     },
 
     hasMultipleOption: function mAttributehasMultipleOption() {
-      return (
-        this.attributes.options && this.attributes.options.multiple === "yes"
-      );
+      return this.attributes.options && this.attributes.options.multiple === "yes";
     },
 
     isDoubleMultiple: function mAttributehasMultipleOption() {
-      return (
-        this.hasMultipleOption() && this.getParent().get("type") === "array"
-      );
+      return this.hasMultipleOption() && this.getParent().get("type") === "array";
     },
 
     getParent: function mAttributegetParent() {
@@ -139,8 +116,7 @@ define(["underscore", "jquery", "backbone"], function require_mAttribute(
       return (
         this.get("attributeValue") &&
         ((this.get("attributeValue").value !== undefined &&
-          ((this._initialAttributeValue || {}).value || "") !==
-            (this.get("attributeValue").value || "")) ||
+          ((this._initialAttributeValue || {}).value || "") !== (this.get("attributeValue").value || "")) ||
           !_.isEqual(
             _.pluck(_.flatten(this._initialAttributeValue), "value"),
             _.pluck(_.flatten(this.get("attributeValue")), "value")
@@ -151,7 +127,7 @@ define(["underscore", "jquery", "backbone"], function require_mAttribute(
     _computeMode: function mAttribute_computeMode() {
       var visibility = this.get("visibility"),
         documentMode = this.collection.renderMode;
-      if (visibility === "H" || visibility === "I") {
+      if (visibility === "H") {
         this.set("mode", "hidden");
         return;
       }
@@ -163,10 +139,7 @@ define(["underscore", "jquery", "backbone"], function require_mAttribute(
         if (
           this.get("isValueAttribute") &&
           (_.isEmpty(this.get("attributeValue")) ||
-            _.isUndefined(
-              this.get("attributeValue") ||
-                this.get("attributeValue").value === null
-            ))
+            _.isUndefined(this.get("attributeValue") || this.get("attributeValue").value === null))
         ) {
           if (this.getOption("showEmptyContent") === null) {
             this.set("mode", "hidden");
@@ -195,25 +168,13 @@ define(["underscore", "jquery", "backbone"], function require_mAttribute(
           return;
         }
       }
-      throw new Error(
-        "unkown mode " +
-          documentMode +
-          " or visibility " +
-          visibility +
-          " " +
-          this.get("id")
-      );
+      throw new Error("unkown mode " + documentMode + " or visibility " + visibility + " " + this.get("id"));
     },
 
     _computeValueMode: function mAttribute_computeValueMode() {
       var type = this.get("type"),
         visibility = this.get("visibility");
-      if (
-        type === "frame" ||
-        type === "array" ||
-        type === "tab" ||
-        visibility === "I"
-      ) {
+      if (type === "frame" || type === "array" || type === "tab" || visibility === "I") {
         this.set("isValueAttribute", false);
       }
     },
@@ -245,10 +206,7 @@ define(["underscore", "jquery", "backbone"], function require_mAttribute(
           optionsAttribute = renderOptions.attributes[this.id] || {};
         }
         // labels must be merged
-        optionsAttribute.labels = _.extend(
-          labels,
-          optionsAttribute.translatedLabels
-        );
+        optionsAttribute.labels = _.extend(labels, optionsAttribute.translatedLabels);
         this._options = {};
       }
 
@@ -306,10 +264,7 @@ define(["underscore", "jquery", "backbone"], function require_mAttribute(
         _.reject(errorMessage, function mAttribute_reindex(indexMessage) {
           return indexMessage.index === index;
         });
-        this.set(
-          "errorMessage",
-          [{ message: message, index: index }].concat(errorMessage)
-        );
+        this.set("errorMessage", [{ message: message, index: index }].concat(errorMessage));
       } else {
         this.set("errorMessage", message);
       }

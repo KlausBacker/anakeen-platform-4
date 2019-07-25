@@ -11,11 +11,7 @@ const { Signale } = require("signale");
 
 const interactiveLog = new Signale({ scope: "build" });
 
-const buildPipe = (exports.buildPipe = async ({
-  sourcePath,
-  autoRelease = false,
-  localName = false
-}) => {
+const buildPipe = (exports.buildPipe = async ({ sourcePath, autoRelease = false, localName = false }) => {
   const moduleInfo = await getModuleInfo(sourcePath);
   let version = moduleInfo.moduleInfo.version;
   let release = "";
@@ -28,8 +24,7 @@ const buildPipe = (exports.buildPipe = async ({
       .toISOString()
       .replace(/[^0-9]/g, "")
       .substr(0, 14);
-    version =
-      moduleInfo.moduleInfo.version + `-${autoRelease}${release}${dNow}`;
+    version = moduleInfo.moduleInfo.version + `-${autoRelease}${release}${dNow}`;
   }
   let moduleFileName = `${moduleInfo.moduleInfo.name}-${version}`;
   if (localName) {
@@ -61,25 +56,15 @@ const buildPipe = (exports.buildPipe = async ({
 
   let gulpElements = streamqueue({ objectMode: true }, mainFiles, infoXML);
   if (fs.existsSync(path.join(sourcePath, appConst.license))) {
-    gulpElements = streamqueue(
-      { objectMode: true },
-      gulpElements,
-      gulp.src(path.join(sourcePath, appConst.license))
-    );
+    gulpElements = streamqueue({ objectMode: true }, gulpElements, gulp.src(path.join(sourcePath, appConst.license)));
   }
 
   interactiveLog.info(`Generate  ${moduleInfo.moduleInfo.name}-${version}.app`);
   interactiveLog.info("Version " + version);
-  return gulpElements
-    .pipe(tar(moduleFileName))
-    .pipe(gzip({ extension: "app" }));
+  return gulpElements.pipe(tar(moduleFileName)).pipe(gzip({ extension: "app" }));
 });
 
-exports.build = ({
-  sourcePath = ".",
-  targetPath = ".",
-  autoRelease = false
-}) => {
+exports.build = ({ sourcePath = ".", targetPath = ".", autoRelease = false }) => {
   return gulp.task("build", async () => {
     // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve, reject) => {

@@ -42,12 +42,8 @@
         }
       }
       if (this.options.attributeValue.thumbnail) {
-        this.options.attributeValue.hash = this.options.attributeValue.creationDate.replace(
-          /[ :-]/g,
-          ""
-        );
-        this.options.attributeValue.thumbnail +=
-          "?c=" + this.options.attributeValue.hash;
+        this.options.attributeValue.hash = this.options.attributeValue.creationDate.replace(/[ :-]/g, "");
+        this.options.attributeValue.thumbnail += "?c=" + this.options.attributeValue.hash;
       }
       this._super();
     },
@@ -63,33 +59,27 @@
       var scope = this;
       var htmlLink = this.getLink();
       this.element.off("click");
-      this.element.on(
-        "click" + this.eventNamespace,
-        ".dcpAttribute__content__link",
-        function wImageClick(event) {
-          if (htmlLink.target === "_dialog") {
-            event.preventDefault();
-            var bdw = $(
-              '<div class="dcpImage-window"><img class="img-responsive" src="' +
-                $(this).attr("href") +
-                '"/></div>'
-            );
-            $("body").append(bdw);
-            // $(this).attr("href"),
-            var dw = bdw.kendoWindow({
-              title: scope.options.attributeValue.displayValue,
-              width: htmlLink.windowWidth,
-              height: htmlLink.windowHeight,
-              iframe: false,
-              actions: ["Maximize", "Close"]
-            });
+      this.element.on("click" + this.eventNamespace, ".dcpAttribute__content__link", function wImageClick(event) {
+        if (htmlLink.target === "_dialog") {
+          event.preventDefault();
+          var bdw = $(
+            '<div class="dcpImage-window"><img class="img-responsive" src="' + $(this).attr("href") + '"/></div>'
+          );
+          $("body").append(bdw);
+          // $(this).attr("href"),
+          var dw = bdw.kendoWindow({
+            title: scope.options.attributeValue.displayValue,
+            width: htmlLink.windowWidth,
+            height: htmlLink.windowHeight,
+            iframe: false,
+            actions: ["Maximize", "Close"]
+          });
 
-            dw.data("kendoWindow")
-              .center()
-              .open();
-          }
+          dw.data("kendoWindow")
+            .center()
+            .open();
         }
-      );
+      });
     },
 
     /**

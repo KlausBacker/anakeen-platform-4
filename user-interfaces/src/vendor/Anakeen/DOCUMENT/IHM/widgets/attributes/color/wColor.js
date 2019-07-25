@@ -4,11 +4,7 @@
   "use strict";
 
   if (typeof define === "function" && define.amd) {
-    define([
-      "jquery",
-      "underscore",
-      "dcpDocument/widgets/attributes/text/wText"
-    ], factory);
+    define(["jquery", "underscore", "dcpDocument/widgets/attributes/text/wText"], factory);
   } else {
     //noinspection JSUnresolvedVariable
     factory(window.jQuery, window._);
@@ -36,13 +32,8 @@
       this.element.addClass("dcpAttribute__content");
       this.element.attr("data-type", this.getType());
       this.element.attr("data-attrid", this.options.id);
-      if (
-        parseFloat(this.options.attributeValue.displayValue) ===
-        parseFloat(this.options.attributeValue.value)
-      ) {
-        this.options.attributeValue.displayValue = this.formatNumber(
-          this.options.attributeValue.value
-        );
+      if (parseFloat(this.options.attributeValue.displayValue) === parseFloat(this.options.attributeValue.value)) {
+        this.options.attributeValue.displayValue = this.formatNumber(this.options.attributeValue.value);
       }
 
       //noinspection JSPotentiallyInvalidConstructorUsage,JSAccessibilityCheck
@@ -60,12 +51,8 @@
           }
         }
       }
-      if (
-        this.element.find(".dcpAttribute__content__buttons button").length === 0
-      ) {
-        this.element
-          .find(".k-picker-wrap")
-          .addClass("dcpAttribute__content__nobutton");
+      if (this.element.find(".dcpAttribute__content__buttons button").length === 0) {
+        this.element.find(".k-picker-wrap").addClass("dcpAttribute__content__nobutton");
       }
       var colorTag = $("<div></div>", {
         class: "dcpAttribute__content__color__tag"
@@ -104,13 +91,9 @@
         }
       } else if (this.getMode() === "read") {
         this.getContentElements().text(value.displayValue);
-        this.element
-          .find(".dcpAttribute__value--read")
-          .css("border-color", value.value);
+        this.element.find(".dcpAttribute__value--read").css("border-color", value.value);
       } else {
-        throw new Error(
-          "Attribute " + this.options.id + " unkown mode " + this.getMode()
-        );
+        throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
       }
     },
 
@@ -149,9 +132,7 @@
     testValue: function wcolTestValue(value) {
       this._super(value);
       if (!_.isNumber(value.value)) {
-        throw new Error(
-          "The value must be a number for (attrid : " + this.options.id + ")"
-        );
+        throw new Error("The value must be a number for (attrid : " + this.options.id + ")");
       }
     },
 

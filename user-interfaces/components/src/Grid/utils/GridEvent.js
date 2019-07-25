@@ -9,12 +9,7 @@ class GridEvent {
    * @param cancelable - if the event is cancelable
    * @param type - Type of the event
    */
-  constructor(
-    data = null,
-    target = null,
-    cancelable = true,
-    type = "GridEvent"
-  ) {
+  constructor(data = null, target = null, cancelable = true, type = "GridEvent") {
     this.type = type;
     this.cancelable = cancelable;
     this.target = target;

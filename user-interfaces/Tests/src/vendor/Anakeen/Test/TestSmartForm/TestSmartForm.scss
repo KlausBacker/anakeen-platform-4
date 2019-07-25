@@ -1,0 +1,41 @@
+
+
+.test-smart-form {
+  height: 100%;
+  width: 100%;
+  position:relative;
+
+  .pane > header {
+    background-color:var(--primary);
+    color:var(--white);
+  }
+  .ank-splitter {
+    height:100%;
+  }
+
+
+
+  .left-pane {
+    display:flex;
+    flex-direction: column;
+    height: 100%;
+
+    .json-editor {
+      flex:1;
+      .jsoneditor {
+        border-color:#f2f2f2;
+      }
+    }
+  }
+
+  .right-pane {
+    display:flex;
+    flex-direction: column;
+    height: 100%;
+
+    .smart-form {
+      flex:1;
+      overflow: auto;
+    }
+  }
+}

@@ -13,17 +13,7 @@ const convertPathInPhpNamespace = callable => {
   path.pop();
   return path.join("\\");
 };
-const middlewareConf = (
-  namespace,
-  name,
-  callable,
-  method,
-  pattern,
-  description,
-  access,
-  accessNameSpace,
-  priority
-) => {
+const middlewareConf = (namespace, name, callable, method, pattern, description, access, accessNameSpace, priority) => {
   let accesses = `<sde:requiredAccess>
                     <sde:access ns="${accessNameSpace}">${access}</sde:access>
                 </sde:requiredAccess>`;
@@ -43,14 +33,7 @@ const middlewareConf = (
   </sde:config>`;
 };
 
-const overridesConf = (
-  namespace,
-  name,
-  callable,
-  description,
-  access,
-  accessNameSpace
-) => {
+const overridesConf = (namespace, name, callable, description, access, accessNameSpace) => {
   let accesses = `<sde:requiredAccess>
                     <sde:access ns="${accessNameSpace}">${access}</sde:access>
                 </sde:requiredAccess>`;
@@ -67,16 +50,7 @@ const overridesConf = (
   </sde:config>`;
 };
 
-const routesConf = (
-  namespace,
-  name,
-  callable,
-  method,
-  pattern,
-  description,
-  access,
-  accessNameSpace
-) => {
+const routesConf = (namespace, name, callable, method, pattern, description, access, accessNameSpace) => {
   let accesses = `<sde:requiredAccess>
                     <sde:access ns="${accessNameSpace}">${access}</sde:access>
                 </sde:requiredAccess>`;
@@ -157,9 +131,7 @@ exports.createRoute = ({
 }) => {
   return gulp.task("createRoute", async () => {
     let moduleData = await getModuleInfo(sourcePath);
-    const namespace = moduleData.moduleInfo
-      ? moduleData.moduleInfo.vendor
-      : undefined;
+    const namespace = moduleData.moduleInfo ? moduleData.moduleInfo.vendor : undefined;
     //Get xml content
     const parser = new xml2js.Parser();
     return new Promise((resolve, reject) => {
@@ -186,26 +158,10 @@ exports.createRoute = ({
             );
             break;
           case "routes":
-            myData = routesConf(
-              namespace,
-              name,
-              callable,
-              method,
-              pattern,
-              description,
-              access,
-              accessNameSpace
-            );
+            myData = routesConf(namespace, name, callable, method, pattern, description, access, accessNameSpace);
             break;
           case "overrides":
-            myData = overridesConf(
-              namespace,
-              name,
-              callable,
-              description,
-              access,
-              accessNameSpace
-            );
+            myData = overridesConf(namespace, name, callable, description, access, accessNameSpace);
             break;
         }
         fs.writeFile(routeConfigPath, myData, err => {
@@ -248,10 +204,7 @@ exports.createRoute = ({
                   if (!myRoute[prefix + ":middleware"]) {
                     myRoute[prefix + ":middleware"] = [];
                   }
-                  let tag =
-                    myRoute !== null
-                      ? myRoute[prefix + ":middleware"]
-                      : configTag[prefix + ":middlewares"];
+                  let tag = myRoute !== null ? myRoute[prefix + ":middleware"] : configTag[prefix + ":middlewares"];
                   tag.push({
                     $: { name: name },
                     [prefix + ":priority"]: priority,
@@ -301,10 +254,7 @@ exports.createRoute = ({
                   if (!myRoute[prefix + ":route"]) {
                     myRoute[prefix + ":route"] = [];
                   }
-                  let tag =
-                    myRoute !== null
-                      ? myRoute[prefix + ":route"]
-                      : configTag[prefix + ":routes"];
+                  let tag = myRoute !== null ? myRoute[prefix + ":route"] : configTag[prefix + ":routes"];
                   tag.push({
                     $: { name: name },
                     [prefix + ":callable"]: callable,
@@ -352,10 +302,7 @@ exports.createRoute = ({
                   if (!myRoute[prefix + ":route-override"]) {
                     myRoute[prefix + ":route-override"] = [];
                   }
-                  let tag =
-                    myRoute !== null
-                      ? myRoute[prefix + ":route-override"]
-                      : configTag[prefix + ":routes"];
+                  let tag = myRoute !== null ? myRoute[prefix + ":route-override"] : configTag[prefix + ":routes"];
                   tag.push({
                     $: { name: name },
                     [prefix + ":callable"]: callable,
@@ -415,16 +362,12 @@ exports.createRoute = ({
           name,
           namespace: convertPathInPhpNamespace(callable)
         });
-        fs.writeFile(
-          moduleData.buildInfo.buildPath[0] + "/vendor/" + callable + ".php",
-          phpStruct,
-          err => {
-            if (err) {
-              return reject(err);
-            }
-            resolve(currentPath);
+        fs.writeFile(moduleData.buildInfo.buildPath[0] + "/vendor/" + callable + ".php", phpStruct, err => {
+          if (err) {
+            return reject(err);
           }
-        );
+          resolve(currentPath);
+        });
       });
     });
   });

@@ -81,10 +81,7 @@ export default {
               return acc;
             }, {});
           }
-          this.$emit(
-            "filter",
-            Object.assign({}, nextFilter, { [filter.field]: filter.value })
-          );
+          this.$emit("filter", Object.assign({}, nextFilter, { [filter.field]: filter.value }));
         } else {
           const currentFilter = event.sender.dataSource.filter();
           let nextFilter = {};

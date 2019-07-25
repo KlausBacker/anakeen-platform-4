@@ -8,15 +8,7 @@ define([
   "dcpDocument/views/attributes/array/vColumn",
   "dcpDocument/views/document/attributeTemplate",
   "dcpDocument/widgets/attributes/array/wArray"
-], function vArray(
-  $,
-  _,
-  Backbone,
-  Mustache,
-  ViewAttribute,
-  ViewColumn,
-  attributeTemplate
-) {
+], function vArray($, _, Backbone, Mustache, ViewAttribute, ViewColumn, attributeTemplate) {
   "use strict";
 
   return Backbone.View.extend({
@@ -35,10 +27,7 @@ define([
     columnViews: {},
 
     initialize: function vArray_initialize(options) {
-      if (
-        options.displayLabel === false ||
-        this.model.getOption("labelPosition") === "none"
-      ) {
+      if (options.displayLabel === false || this.model.getOption("labelPosition") === "none") {
         this.displayLabel = false;
       }
       this.listenTo(this.model, "change:label", this.updateLabel);
@@ -76,16 +65,10 @@ define([
 
             if (currentView.options.originalView !== true) {
               if (currentView.model.getOption("template")) {
-                customRender = attributeTemplate.renderCustomView(
-                  currentView.model
-                );
+                customRender = attributeTemplate.renderCustomView(currentView.model);
                 currentView.customView = customRender.$el;
                 customRender.promise.then(resolve);
-                if (
-                  currentView.model
-                    .getOption("template")
-                    .match("dcpArray__table")
-                ) {
+                if (currentView.model.getOption("template").match("dcpArray__table")) {
                   // Two case of custom : custom line or global custom array
                   currentView.customRowView = true;
                 }
@@ -93,84 +76,62 @@ define([
             }
 
             //Extract only the displayable lines
-            data.content = _.filter(
-              data.content,
-              function vArray_filterCurrentElement(currentContent) {
-                return currentContent.isDisplayable;
-              }
-            );
+            data.content = _.filter(data.content, function vArray_filterCurrentElement(currentContent) {
+              return currentContent.isDisplayable;
+            });
             data.nbLines = currentView.getNbLines();
             currentView.padValues(data.nbLines);
             data.renderOptions = currentView.model.getOptions();
             data.templates = {};
             data.displayLabel = currentView.displayLabel;
-            if (
-              currentView.model.getTemplates().attribute[
-                currentView.model.get("type")
-              ]
-            ) {
-              data.templates = currentView.model.getTemplates().attribute[
-                currentView.model.get("type")
-              ];
+            if (currentView.model.getTemplates().attribute[currentView.model.get("type")]) {
+              data.templates = currentView.model.getTemplates().attribute[currentView.model.get("type")];
             }
             if (data.nbLines === 0 && data.mode === "read") {
               data.showEmpty = currentView.model.getOption("showEmptyContent");
             } else {
               if (!currentView.customView || currentView.customRowView) {
                 currentView.columnViews = [];
-                currentView.model
-                  .get("content")
-                  .each(function vArray_analyzeContent(currentAttr) {
-                    if (!currentAttr.isDisplayable()) {
-                      return;
+                currentView.model.get("content").each(function vArray_analyzeContent(currentAttr) {
+                  if (!currentAttr.isDisplayable()) {
+                    return;
+                  }
+                  try {
+                    if (currentAttr.getOption("attributeLabel")) {
+                      data.content = _.map(data.content, function vArray_changeLabelCurrentElement(currentContent) {
+                        if (currentContent.id === currentAttr.id) {
+                          currentContent.label = currentAttr.getOption("attributeLabel");
+                        }
+                        return currentContent;
+                      });
                     }
-                    try {
-                      if (currentAttr.getOption("attributeLabel")) {
-                        data.content = _.map(
-                          data.content,
-                          function vArray_changeLabelCurrentElement(
-                            currentContent
-                          ) {
-                            if (currentContent.id === currentAttr.id) {
-                              currentContent.label = currentAttr.getOption(
-                                "attributeLabel"
-                              );
-                            }
-                            return currentContent;
-                          }
-                        );
-                      }
-                      if (currentAttr.get("isValueAttribute")) {
-                        currentView.columnViews[
-                          currentAttr.id
-                        ] = new ViewColumn({
-                          el: currentView.el,
-                          els: function vArray_findScope() {
-                            return currentView.$el.find(
-                              '.dcpArray__cell[data-attrid="' +
-                                currentAttr.id +
-                                '"],' +
-                                '.dcpCustomTemplate--row[data-attrid="' +
-                                currentAttr.id +
-                                '"]'
-                            );
-                          },
-                          originalView: true,
-                          model: currentAttr,
-                          parentElement: currentView.$el
-                        });
-                        promisesColumn.push(
-                          currentView.columnViews[currentAttr.id].render()
-                        );
-                      }
-                    } catch (e) {
-                      if (window.dcp.logger) {
-                        window.dcp.logger(e);
-                      } else {
-                        console.error(e);
-                      }
+                    if (currentAttr.get("isValueAttribute")) {
+                      currentView.columnViews[currentAttr.id] = new ViewColumn({
+                        el: currentView.el,
+                        els: function vArray_findScope() {
+                          return currentView.$el.find(
+                            '.dcpArray__cell[data-attrid="' +
+                              currentAttr.id +
+                              '"],' +
+                              '.dcpCustomTemplate--row[data-attrid="' +
+                              currentAttr.id +
+                              '"]'
+                          );
+                        },
+                        originalView: true,
+                        model: currentAttr,
+                        parentElement: currentView.$el
+                      });
+                      promisesColumn.push(currentView.columnViews[currentAttr.id].render());
                     }
-                  });
+                  } catch (e) {
+                    if (window.dcp.logger) {
+                      window.dcp.logger(e);
+                    } else {
+                      console.error(e);
+                    }
+                  }
+                });
               }
             }
           } catch (e) {
@@ -180,11 +141,7 @@ define([
           if (currentView.customView) {
             data.customTemplate = currentView.customView;
             data.customLineCallback = function vArray_callCustomLine(index) {
-              return attributeTemplate.customArrayRowView(
-                index,
-                currentView.model,
-                currentView
-              );
+              return attributeTemplate.customArrayRowView(index, currentView.model, currentView);
             };
           }
 
@@ -193,9 +150,7 @@ define([
               new Promise(
                 _.bind(function onArrayReady(resolve, reject) {
                   try {
-                    currentView.$el
-                      .dcpArray(data)
-                      .one("dcparraywidgetready", resolve);
+                    currentView.$el.dcpArray(data).one("dcparraywidgetready", resolve);
                     attributeTemplate.insertDescription(currentView);
                   } catch (e) {
                     reject(e);
@@ -241,35 +196,24 @@ define([
 
     getNbLines: function vArraygetNbLines() {
       var nbLigne = this.nbLines || 0;
-      this.model
-        .get("content")
-        .each(function vArray_getCurrentLine(currentAttr) {
-          if (
-            currentAttr.get("attributeValue") &&
-            nbLigne < _.size(currentAttr.get("attributeValue"))
-          ) {
-            nbLigne = _.size(currentAttr.get("attributeValue"));
-          }
-        });
+      this.model.get("content").each(function vArray_getCurrentLine(currentAttr) {
+        if (currentAttr.get("attributeValue") && nbLigne < _.size(currentAttr.get("attributeValue"))) {
+          nbLigne = _.size(currentAttr.get("attributeValue"));
+        }
+      });
       return nbLigne;
     },
 
     padValues: function vArrayPadValues(lineNumber) {
       if (lineNumber > 0) {
-        this.model
-          .get("content")
-          .each(function vArray_padCurrentLine(currentAttr) {
-            var currentValue = currentAttr.get("attributeValue");
-            if (
-              currentValue !== null &&
-              currentValue !== undefined &&
-              _.size(currentValue) < lineNumber
-            ) {
-              for (var idx = currentValue.length; idx < lineNumber; idx++) {
-                currentValue.push({ value: null, displayValue: "" });
-              }
+        this.model.get("content").each(function vArray_padCurrentLine(currentAttr) {
+          var currentValue = currentAttr.get("attributeValue");
+          if (currentValue !== null && currentValue !== undefined && _.size(currentValue) < lineNumber) {
+            for (var idx = currentValue.length; idx < lineNumber; idx++) {
+              currentValue.push({ value: null, displayValue: "" });
             }
-          });
+          }
+        });
       }
     },
 
@@ -309,11 +253,9 @@ define([
     },
 
     removeLine: function vArray_removeLine(event, options) {
-      this.model
-        .get("content")
-        .each(function vArray_removeLine(currentContent) {
-          currentContent.removeIndexValue(options.line);
-        });
+      this.model.get("content").each(function vArray_removeLine(currentContent) {
+        currentContent.removeIndexValue(options.line);
+      });
       this.model.trigger("array", "removeLine", this.model, options.line);
     },
 
@@ -329,56 +271,46 @@ define([
       var currentArrayView = this,
         customView = null;
       var allPromiseAttributes = [];
-      this.model
-        .get("content")
-        .each(function vArray_addLineGetContent(currentContent) {
-          var currentViewColumn;
-          if (options.needAddValue || options.copyValue) {
-            currentContent.createIndexedValue(options.line, options.copyValue);
-          }
-          currentViewColumn = currentArrayView.columnViews[currentContent.id];
-          if (currentViewColumn) {
-            customView = null;
-            if (currentContent.getOption("template")) {
-              customView = attributeTemplate.renderCustomView(
-                currentContent,
-                function vArray_customViewInit() {
-                  var $this = $(this),
-                    currentWidgetOption = currentViewColumn.getData(
-                      options.line
-                    );
-                  //Check if the asked attribute is the current attribute
-                  if ($this.data("attrid") !== currentContent.id) {
-                    throw Error(
-                      "An attribute template in an array cannot asked" +
-                        " for another attribute than the current (" +
-                        $this.data("attrid") +
-                        " asked instead of " +
-                        currentContent.id +
-                        ")"
-                    );
-                  }
-                  currentWidgetOption.viewCid = _.uniqueId(
-                    currentWidgetOption.viewCid
+      this.model.get("content").each(function vArray_addLineGetContent(currentContent) {
+        var currentViewColumn;
+        if (options.needAddValue || options.copyValue) {
+          currentContent.createIndexedValue(options.line, options.copyValue);
+        }
+        currentViewColumn = currentArrayView.columnViews[currentContent.id];
+        if (currentViewColumn) {
+          customView = null;
+          if (currentContent.getOption("template")) {
+            customView = attributeTemplate.renderCustomView(
+              currentContent,
+              function vArray_customViewInit() {
+                var $this = $(this),
+                  currentWidgetOption = currentViewColumn.getData(options.line);
+                //Check if the asked attribute is the current attribute
+                if ($this.data("attrid") !== currentContent.id) {
+                  throw Error(
+                    "An attribute template in an array cannot asked" +
+                      " for another attribute than the current (" +
+                      $this.data("attrid") +
+                      " asked instead of " +
+                      currentContent.id +
+                      ")"
                   );
-                  currentViewColumn.widgetInit($this, currentWidgetOption);
-                  currentViewColumn.moveValueIndex({});
-                },
-                { index: options.line }
-              );
-              allPromiseAttributes.push(customView.promise);
-            }
-            if (customView && customView.$el) {
-              allPromiseAttributes.push(
-                currentViewColumn.addNewWidget(options.line, customView.$el)
-              );
-            } else {
-              allPromiseAttributes.push(
-                currentViewColumn.addNewWidget(options.line)
-              );
-            }
+                }
+                currentWidgetOption.viewCid = _.uniqueId(currentWidgetOption.viewCid);
+                currentViewColumn.widgetInit($this, currentWidgetOption);
+                currentViewColumn.moveValueIndex({});
+              },
+              { index: options.line }
+            );
+            allPromiseAttributes.push(customView.promise);
           }
-        });
+          if (customView && customView.$el) {
+            allPromiseAttributes.push(currentViewColumn.addNewWidget(options.line, customView.$el));
+          } else {
+            allPromiseAttributes.push(currentViewColumn.addNewWidget(options.line));
+          }
+        }
+      });
       Promise.all(allPromiseAttributes)
         .then(
           _.bind(function addlinePromiseAllDone() {
@@ -390,11 +322,9 @@ define([
     },
 
     moveLine: function vArray_moveLine(event, options) {
-      this.model
-        .get("content")
-        .each(function vArray_getMoveLineContent(currentContent) {
-          currentContent.moveIndexValue(options.fromLine, options.toLine);
-        });
+      this.model.get("content").each(function vArray_getMoveLineContent(currentContent) {
+        currentContent.moveIndexValue(options.fromLine, options.toLine);
+      });
       this.model.trigger("array", "moveLine", this.model, options);
     },
     getAttributeModel: function vArray_getAttributeModel(attributeId) {

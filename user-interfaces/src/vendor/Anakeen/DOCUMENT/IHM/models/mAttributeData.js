@@ -27,9 +27,7 @@ define([
     setValue: function mAttributesetValue(value, index) {
       var currentValue, idx;
       if (this.get("multiple") && !_.isNumber(index) && !_.isArray(value)) {
-        throw new Error(
-          "You need to add an index to set value for a multiple id " + this.id
-        );
+        throw new Error("You need to add an index to set value for a multiple id " + this.id);
       }
       if (this.get("multiple") && index >= 0) {
         currentValue = _.clone(this.get("attributeValue"));
@@ -48,10 +46,7 @@ define([
     addValue: function mAttributeaddValue(value, index, options) {
       var currentValue;
       if (this.hasMultipleOption() && !_.isNumber(index) && !_.isArray(value)) {
-        throw new Error(
-          "You need to add an index or use array to set value for a multiple id " +
-            this.id
-        );
+        throw new Error("You need to add an index or use array to set value for a multiple id " + this.id);
       }
       // clone array references
       currentValue = _.toArray(_.map(this.get("attributeValue"), _.clone));
@@ -72,9 +67,7 @@ define([
     removeIndexValue: function mAttributeremoveIndexValue(index) {
       var currentValue, oldValue;
       if (!this.get("multiple") || !_.isNumber(index)) {
-        throw new Error(
-          "You need to add an index to set value for a multiple id " + this.id
-        );
+        throw new Error("You need to add an index to set value for a multiple id " + this.id);
       }
       oldValue = this.get("attributeValue");
       currentValue = _.clone(this.get("attributeValue"));
@@ -88,9 +81,7 @@ define([
           currentValue[currentIndex - 1] = oldValue[currentIndex];
         }
       });
-      currentValue = _.filter(currentValue, function removeUndefined(
-        currentValue
-      ) {
+      currentValue = _.filter(currentValue, function removeUndefined(currentValue) {
         return !_.isUndefined(currentValue);
       });
       this.set("attributeValue", currentValue, { notUpdateArray: true });
@@ -104,17 +95,11 @@ define([
      * @param copy
      * @param updateArray set to true to resize array widget
      */
-    createIndexedValue: function mAttributeCreateIndexedValue(
-      index,
-      copy,
-      updateArray
-    ) {
+    createIndexedValue: function mAttributeCreateIndexedValue(index, copy, updateArray) {
       var currentValue, defaultValue;
       var newValue;
       if (!this.get("multiple") || !_.isNumber(index)) {
-        throw new Error(
-          "You need to add an index to set value for a multiple id " + this.id
-        );
+        throw new Error("You need to add an index to set value for a multiple id " + this.id);
       }
       currentValue = _.toArray(_.map(this.get("attributeValue"), _.clone));
       defaultValue = this.attributes.defaultValue;
@@ -148,9 +133,7 @@ define([
     addIndexedValue: function mAttributeAddIndexedValue(newValue, index) {
       var currentValue;
       if (!_.isNumber(index)) {
-        throw new Error(
-          "You need to add an index to set value indexed value " + this.id
-        );
+        throw new Error("You need to add an index to set value indexed value " + this.id);
       }
       currentValue = _.toArray(_.map(this.get("attributeValue"), _.clone));
 
@@ -187,10 +170,7 @@ define([
       if (!this.get("multiple")) {
         return -1;
       }
-      _.each(this.get("attributeValue"), function mAttributeGetMaxLine(
-        value,
-        index
-      ) {
+      _.each(this.get("attributeValue"), function mAttributeGetMaxLine(value, index) {
         if (index > nbLines) {
           nbLines = index;
         }
@@ -200,43 +180,30 @@ define([
 
     isInArray: function mAttributeisInArray() {
       var aparent = this.getParent();
-      return (
-        aparent && aparent.attributes && aparent.attributes.type === "array"
-      );
+      return aparent && aparent.attributes && aparent.attributes.type === "array";
     },
 
     checkConstraint: function mAttributecheckConstraint(config) {
       var response = new ConstraintHandler(),
         responseText = {};
       var scope = this;
-      config = _.extend(
-        { clearError: this.hasInternalError, displayError: true },
-        config
-      );
+      config = _.extend({ clearError: this.hasInternalError, displayError: true }, config);
       this.trigger("constraint", {
         model: this,
         response: response,
         value: this.get("attributeValue")
       });
       if (response.hasConstraintMessages()) {
-        _.each(
-          response.getConstraintMessages(),
-          function mAttributeData_checkConstraintElement(currentResponse) {
-            responseText[currentResponse.index] =
-              responseText[currentResponse.index] || "";
-            responseText[currentResponse.index] +=
-              currentResponse.message + " ";
-          }
-        );
+        _.each(response.getConstraintMessages(), function mAttributeData_checkConstraintElement(currentResponse) {
+          responseText[currentResponse.index] = responseText[currentResponse.index] || "";
+          responseText[currentResponse.index] += currentResponse.message + " ";
+        });
         if (config.displayError) {
           this.hasInternalError = true;
           // Force redraw
           scope.setErrorMessage(null); // jshint ignore:line
 
-          _.each(responseText, function mAttributeData_checkErrorMessage(
-            text,
-            index
-          ) {
+          _.each(responseText, function mAttributeData_checkErrorMessage(text, index) {
             index = parseInt(index);
             scope.setErrorMessage(text, index);
           });

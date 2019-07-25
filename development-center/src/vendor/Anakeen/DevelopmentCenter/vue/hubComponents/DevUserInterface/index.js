@@ -10,8 +10,5 @@ if (
   window.ank.hub["ank-dev-user-interface"]
 ) {
   // @ts-ignore
-  window.ank.hub["ank-dev-user-interface"].resolve(
-    UserInterface,
-    "ank-dev-user-interface"
-  );
+  window.ank.hub["ank-dev-user-interface"].resolve(UserInterface, "ank-dev-user-interface");
 }

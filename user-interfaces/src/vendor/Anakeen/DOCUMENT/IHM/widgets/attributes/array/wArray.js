@@ -2,12 +2,7 @@
   "use strict";
 
   if (typeof define === "function" && define.amd) {
-    define([
-      "jquery",
-      "underscore",
-      "mustache",
-      "dcpDocument/widgets/widget"
-    ], factory);
+    define(["jquery", "underscore", "mustache", "dcpDocument/widgets/widget"], factory);
   } else {
     //noinspection JSUnresolvedVariable
     factory(window.jQuery, window._, window.Mustache);
@@ -65,8 +60,7 @@
      * @private
      */
     _create: function dcpArray_create() {
-      this.options.tools =
-        this.options.mode === "write" && this.options.visibility !== "U";
+      this.options.tools = this.options.mode === "write" && this.options.visibility !== "U";
       if (
         this.options.renderOptions.rowAddDisable === true &&
         this.options.renderOptions.rowDelDisable === true &&
@@ -124,25 +118,14 @@
         _.bind(function dcpArray_initDom_initDom(resolve, reject) {
           var scope = this,
             $table;
-          if (
-            this.options.mode === "read" &&
-            this.options.nbLines === 0 &&
-            this.options.showEmpty !== true
-          ) {
+          if (this.options.mode === "read" && this.options.nbLines === 0 && this.options.showEmpty !== true) {
             if (this.options.showEmpty) {
               this.element.addClass("card card-default");
               // showEmptyCOntent option
               if (this.options.displayLabel !== false) {
-                this.element.append(
-                  Mustache.render(
-                    this._getTemplate("label") || "",
-                    this.options
-                  )
-                );
+                this.element.append(Mustache.render(this._getTemplate("label") || "", this.options));
                 if (this.options.renderOptions.labelPosition === "left") {
-                  this.element
-                    .find(".dcpLabel")
-                    .addClass("dcpArray__label--left");
+                  this.element.find(".dcpLabel").addClass("dcpArray__label--left");
                 }
               }
 
@@ -158,8 +141,7 @@
                     collapsable: this.options.renderOptions.collapse !== "none",
                     displayCount:
                       this.options.renderOptions.rowCountThreshold >= 0 &&
-                      this.options.nbLines >=
-                        this.options.renderOptions.rowCountThreshold
+                      this.options.nbLines >= this.options.renderOptions.rowCountThreshold
                   })
                 )
               );
@@ -172,30 +154,17 @@
                 .find(".dcpCustomTemplate table.dcpArray__table > tbody > tr")
                 .addClass("dcpArray__content__line");
               this._indexLine();
-              this.element
-                .find(".dcpArray__content__line")
-                .attr("data-attrid", this.options.id);
-              this.element
-                .find(".dcpCustomTemplate")
-                .addClass("dcpArray__content dcpArray__content--open");
+              this.element.find(".dcpArray__content__line").attr("data-attrid", this.options.id);
+              this.element.find(".dcpCustomTemplate").addClass("dcpArray__content dcpArray__content--open");
             } else {
-              _.each(this.options.content, function wArrayCopyRenderContent(
-                anOption
-              ) {
+              _.each(this.options.content, function wArrayCopyRenderContent(anOption) {
                 // Need duplicate because Mustache is confused when 2 attributes has same name
                 anOption.contentRenderOptions = anOption.renderOptions;
               });
-              this.element.append(
-                Mustache.render(
-                  this._getTemplate("content") || "",
-                  this.options
-                )
-              );
+              this.element.append(Mustache.render(this._getTemplate("content") || "", this.options));
 
               if (this.options.mode === "write") {
-                this.element
-                  .find(".dcpArray__content")
-                  .addClass("dcpArray--tooltips");
+                this.element.find(".dcpArray__content").addClass("dcpArray--tooltips");
                 this.element.tooltip({
                   selector:
                     ".dcpArray--tooltips .dcpArray__content__toolCell span, .dcpArray--tooltips .dcpArray__tools .dcpArray__button",
@@ -221,37 +190,23 @@
             if (this.options.displayLabel !== false) {
               var labelPosition = this.options.renderOptions.labelPosition;
               if (labelPosition === "auto" || labelPosition === "left") {
-                this.element
-                  .find(".dcpArray__label")
-                  .addClass("dcpAttribute__left");
-                this.element
-                  .find(".dcpArray__content")
-                  .addClass("dcpAttribute__right");
+                this.element.find(".dcpArray__label").addClass("dcpAttribute__left");
+                this.element.find(".dcpArray__content").addClass("dcpAttribute__right");
                 this.element.addClass("dcpArray--left");
               }
 
-              this.element
-                .find(".dcpAttribute__right")
-                .addClass("dcpAttribute__labelPosition--" + labelPosition);
-              this.element
-                .find(".dcpAttribute__left")
-                .addClass("dcpAttribute__labelPosition--" + labelPosition);
-              this.element.addClass(
-                "dcpAttribute__labelPosition--" + labelPosition
-              );
+              this.element.find(".dcpAttribute__right").addClass("dcpAttribute__labelPosition--" + labelPosition);
+              this.element.find(".dcpAttribute__left").addClass("dcpAttribute__labelPosition--" + labelPosition);
+              this.element.addClass("dcpAttribute__labelPosition--" + labelPosition);
             }
 
             if (this.options.renderOptions.rowAddDisable === true) {
-              this.element
-                .find(".dcpArray__button--add, .dcpArray__button--copy")
-                .hide();
+              this.element.find(".dcpArray__button--add, .dcpArray__button--copy").hide();
             }
 
             // Set system css classes
             $table = this.element.find(".dcpArray__table");
-            $table.addClass(
-              "table table-condensed table-hover table-bordered responsive"
-            );
+            $table.addClass("table table-condensed table-hover table-bordered responsive");
             $table
               .find("> tbody")
               .addClass("dcpArray__body")
@@ -263,10 +218,7 @@
               .addClass("dcpArray__head")
               .attr("data-attrid", this.options.id);
 
-            if (
-              this.options.mode === "write" &&
-              this.options.renderOptions.rowMoveDisable !== true
-            ) {
+            if (this.options.mode === "write" && this.options.renderOptions.rowMoveDisable !== true) {
               //Initiate drag drop events
               this.element.find("tbody").kendoDraggable({
                 axis: "y",
@@ -283,12 +235,7 @@
                   return $("<table/>")
                     .addClass("dcpArray__dragLine " + classTable)
                     .css("width", lineWidth)
-                    .css(
-                      "margin-left",
-                      "-" +
-                        (element.offset().left - dragLine.offset().left) +
-                        "px"
-                    )
+                    .css("margin-left", "-" + (element.offset().left - dragLine.offset().left) + "px")
                     .append(dragLine.clone());
                 },
                 dragstart: function dcpArraydragstart(event) {
@@ -317,10 +264,7 @@
               });
 
               this.element.find("tbody").kendoDropTargetArea({
-                filter:
-                  '.dcpArray__content__line[data-attrid="' +
-                  this.options.id +
-                  '"]',
+                filter: '.dcpArray__content__line[data-attrid="' + this.options.id + '"]',
                 dragenter: function dragenter(event) {
                   if (event.currentTarget) {
                     var drap = event.draggable.currentTarget.closest("tr");
@@ -337,15 +281,9 @@
                 }
               });
             }
-            this.element.on(
-              "click" + this.eventNamespace,
-              ".button-close-error",
-              function destroyTable(/*event*/) {
-                scope.element
-                  .find(".dcpArray__content table.table")
-                  .tooltip("destroy");
-              }
-            );
+            this.element.on("click" + this.eventNamespace, ".button-close-error", function destroyTable(/*event*/) {
+              scope.element.find(".dcpArray__content table.table").tooltip("destroy");
+            });
           }
           _.delay(_.bind(this._initCSSResponsive, this), 10);
 
@@ -409,29 +347,26 @@
         this.element.find("table.dcpArray__table").addClass("responsive");
         var cssString,
           cssTemplate,
-          headers = _.map(
-            this.element.find("table.responsive > thead th"),
-            function addResponsiveKey(currentElement, index) {
-              var $currentElement = $(currentElement);
-              var $label = $currentElement.find(".dcpArray__head__label");
+          headers = _.map(this.element.find("table.responsive > thead th"), function addResponsiveKey(
+            currentElement,
+            index
+          ) {
+            var $currentElement = $(currentElement);
+            var $label = $currentElement.find(".dcpArray__head__label");
 
-              if ($label.length === 0) {
-                $label = $currentElement;
-              }
-              $label.attr("data-responsiveKey", "rk" + index);
-              return {
-                key: $label.attr("data-responsiveKey"),
-                attrid: $label.data("attrid"),
-                label: $label.text().trim()
-              };
+            if ($label.length === 0) {
+              $label = $currentElement;
             }
-          );
+            $label.attr("data-responsiveKey", "rk" + index);
+            return {
+              key: $label.attr("data-responsiveKey"),
+              attrid: $label.data("attrid"),
+              label: $label.text().trim()
+            };
+          });
 
         // Generate CSS string
-        cssString =
-          "<style>" +
-          this.options.renderOptions.arrayBreakPoints.transpositionRule +
-          " { ";
+        cssString = "<style>" + this.options.renderOptions.arrayBreakPoints.transpositionRule + " { ";
 
         cssTemplate = _.template(
           ".dcpArray__content[data-attrid=" +
@@ -440,9 +375,7 @@
         );
 
         _.each(headers, function initCssHeader(currentHeader) {
-          currentHeader.label = currentHeader.label
-            .replace(/([\\"])/g, "\\$1")
-            .replace(/\n/g, " ");
+          currentHeader.label = currentHeader.label.replace(/([\\"])/g, "\\$1").replace(/\n/g, " ");
           cssString += cssTemplate(currentHeader);
         });
         cssString += " }</style>";
@@ -479,73 +412,57 @@
           currentWidget._hideTooltips();
           currentWidget._unSelectLines();
           if (isAlreadyChecked) {
-            currentWidget.element
-              .find(".dcpArray__copy")
-              .prop("disabled", true);
+            currentWidget.element.find(".dcpArray__copy").prop("disabled", true);
             $(this)
               .prop("checked", false)
               .removeAttr("checked");
           } else {
             $this.find(".fa-check").show();
-            $this
-              .closest(".dcpArray__content__line")
-              .addClass("dcpArray__content__line--selected active");
-            currentWidget.element
-              .find(".dcpArray__copy")
-              .prop("disabled", false);
+            $this.closest(".dcpArray__content__line").addClass("dcpArray__content__line--selected active");
+            currentWidget.element.find(".dcpArray__copy").prop("disabled", false);
             $(this)
               .prop("checked", true)
               .attr("checked", "checked");
           }
         }
       );
-      this.element.on(
-        "click" + this.eventNamespace,
-        ".dcpArray__add",
-        function addLineEvent() {
-          var selectedLine = currentWidget.getSelectedLineIndex();
-          currentWidget._hideTooltips();
-          if (
-            currentWidget.options.renderOptions.rowMaxLimit < 0 ||
-            currentWidget.options.nbLines <
-              currentWidget.options.renderOptions.rowMaxLimit
-          ) {
-            if (selectedLine === null || _.isUndefined(selectedLine)) {
-              currentWidget.options.nbLines += 1;
-              currentWidget.addLine(currentWidget.options.nbLines - 1, {
-                needAddValue: true,
-                useSelectedLine: true
-              });
-            } else {
-              currentWidget.options.nbLines += 1;
-              currentWidget.addLine(selectedLine, {
-                needAddValue: true,
-                useSelectedLine: true
-              });
-            }
-          }
-        }
-      );
-      this.element.on(
-        "click" + this.eventNamespace,
-        ".dcpArray__copy",
-        function copyLineEvent() {
-          var selectedLine = currentWidget.getSelectedLineIndex();
-
-          currentWidget._hideTooltips();
-          if (
-            currentWidget.options.renderOptions.rowMaxLimit < 0 ||
-            currentWidget.options.nbLines <
-              currentWidget.options.renderOptions.rowMaxLimit
-          ) {
+      this.element.on("click" + this.eventNamespace, ".dcpArray__add", function addLineEvent() {
+        var selectedLine = currentWidget.getSelectedLineIndex();
+        currentWidget._hideTooltips();
+        if (
+          currentWidget.options.renderOptions.rowMaxLimit < 0 ||
+          currentWidget.options.nbLines < currentWidget.options.renderOptions.rowMaxLimit
+        ) {
+          if (selectedLine === null || _.isUndefined(selectedLine)) {
             currentWidget.options.nbLines += 1;
-            currentWidget.copyLine(selectedLine, {
+            currentWidget.addLine(currentWidget.options.nbLines - 1, {
+              needAddValue: true,
+              useSelectedLine: true
+            });
+          } else {
+            currentWidget.options.nbLines += 1;
+            currentWidget.addLine(selectedLine, {
               needAddValue: true,
               useSelectedLine: true
             });
           }
         }
-      );
+      });
+      this.element.on("click" + this.eventNamespace, ".dcpArray__copy", function copyLineEvent() {
+        var selectedLine = currentWidget.getSelectedLineIndex();
+
+        currentWidget._hideTooltips();
+        if (
+          currentWidget.options.renderOptions.rowMaxLimit < 0 ||
+          currentWidget.options.nbLines < currentWidget.options.renderOptions.rowMaxLimit
+        ) {
+          currentWidget.options.nbLines += 1;
+          currentWidget.copyLine(selectedLine, {
+            needAddValue: true,
+            useSelectedLine: true
+          });
+        }
+      });
       this.element.on(
         "click" + this.eventNamespace,
         ".dcpArray__content__toolCell__delete button",
@@ -564,12 +481,8 @@
     toggleCollapse: function toggleCollapse(event, hideNow) {
       this._hideTooltips();
       var $contentElement = this.element.find(".dcpArray__content");
-      this.element
-        .find(".dcp__array__caret")
-        .toggleClass("fa-caret-right fa-caret-down");
-      $contentElement.toggleClass(
-        "dcpArray__content--open dcpArray__content--close"
-      );
+      this.element.find(".dcp__array__caret").toggleClass("fa-caret-right fa-caret-down");
+      $contentElement.toggleClass("dcpArray__content--open dcpArray__content--close");
       if (hideNow) {
         $contentElement.hide();
       } else {
@@ -588,8 +501,7 @@
             _.extend(this.options, {
               displayCount:
                 this.options.renderOptions.rowCountThreshold >= 0 &&
-                this.options.nbLines >=
-                  this.options.renderOptions.rowCountThreshold
+                this.options.nbLines >= this.options.renderOptions.rowCountThreshold
             })
           )
         ).html()
@@ -636,10 +548,7 @@
         this.addLine(i);
       }
 
-      min = Math.max(
-        this.options.renderOptions.rowMinLimit,
-        this.options.renderOptions.rowMinDefault
-      );
+      min = Math.max(this.options.renderOptions.rowMinLimit, this.options.renderOptions.rowMinDefault);
       if (min > 0) {
         if (this.options.nbLines < min) {
           for (i = this.options.nbLines; i < min; i += 1) {
@@ -664,12 +573,7 @@
         $content.addClass("dcpArray__content__line");
         $content.attr("data-attrid", this.options.id);
       } else {
-        $content = $(
-          Mustache.render(
-            this._getTemplate("line") || "",
-            _.extend({ lineNumber: index }, this.options)
-          )
-        );
+        $content = $(Mustache.render(this._getTemplate("line") || "", _.extend({ lineNumber: index }, this.options)));
       }
       $content
         .find(".dcpArray__content__toolCell")
@@ -682,10 +586,7 @@
       if (this.options.renderOptions.rowMoveDisable === true) {
         $content.find(".dcpArray__content__toolCell__dragDrop").hide();
       }
-      _.each($content.find(">td"), function dcpArray_addCssClass(
-        currentCell,
-        index
-      ) {
+      _.each($content.find(">td"), function dcpArray_addCssClass(currentCell, index) {
         $(currentCell)
           .find(".dcpArray__content__cell")
           .attr("data-responsiveKey", "rk" + index)
@@ -726,80 +627,62 @@
       var currentWidget = this;
       if (this.options.renderOptions.rowMaxLimit >= 0) {
         if (this.options.nbLines >= this.options.renderOptions.rowMaxLimit) {
-          this.element
-            .find(".dcpArray__add, .dcpArray__copy")
-            .prop("disabled", true);
-          this.element
-            .find(".dcpArray__button--add, .dcpArray__button--copy")
-            .each(function dcpArray_initLine() {
-              var $this = $(this);
-              if (!$this.data("originalTitle")) {
-                $this.data("originalTitle", $this.attr("title"));
-              }
-              // reset tooltip
-              $this.tooltip("hide").data("bs.tooltip", null);
+          this.element.find(".dcpArray__add, .dcpArray__copy").prop("disabled", true);
+          this.element.find(".dcpArray__button--add, .dcpArray__button--copy").each(function dcpArray_initLine() {
+            var $this = $(this);
+            if (!$this.data("originalTitle")) {
+              $this.data("originalTitle", $this.attr("title"));
+            }
+            // reset tooltip
+            $this.tooltip("hide").data("bs.tooltip", null);
 
-              $this.attr(
-                "title",
-                Mustache.render(
-                  currentWidget.options.labels.limitMaxMessage || "",
-                  { limit: currentWidget.options.renderOptions.rowMaxLimit }
-                )
-              );
-            });
+            $this.attr(
+              "title",
+              Mustache.render(currentWidget.options.labels.limitMaxMessage || "", {
+                limit: currentWidget.options.renderOptions.rowMaxLimit
+              })
+            );
+          });
         } else {
-          this.element
-            .find(".dcpArray__add, .dcpArray__copy")
-            .prop("disabled", false);
-          this.element
-            .find(".dcpArray__button--add, .dcpArray__button--copy")
-            .each(function dcpArray_initLine() {
-              // reset tooltip
-              $(this)
-                .tooltip("hide")
-                .data("bs.tooltip", null);
-              $(this).attr("title", $(this).data("originalTitle"));
-            });
+          this.element.find(".dcpArray__add, .dcpArray__copy").prop("disabled", false);
+          this.element.find(".dcpArray__button--add, .dcpArray__button--copy").each(function dcpArray_initLine() {
+            // reset tooltip
+            $(this)
+              .tooltip("hide")
+              .data("bs.tooltip", null);
+            $(this).attr("title", $(this).data("originalTitle"));
+          });
         }
       }
 
       if (this.options.renderOptions.rowMinLimit >= 0) {
         if (this.options.nbLines <= this.options.renderOptions.rowMinLimit) {
-          this.element
-            .find(".dcpArray__content__toolCell__delete button")
-            .prop("disabled", true);
-          this.element
-            .find(".dcpArray__content__toolCell__delete")
-            .each(function dcpArray_initLine() {
-              if (!$(this).data("originalTitle")) {
-                $(this).data("originalTitle", $(this).attr("title"));
-              }
-              // reset tooltip
-              $(this)
-                .tooltip("hide")
-                .data("bs.tooltip", null);
+          this.element.find(".dcpArray__content__toolCell__delete button").prop("disabled", true);
+          this.element.find(".dcpArray__content__toolCell__delete").each(function dcpArray_initLine() {
+            if (!$(this).data("originalTitle")) {
+              $(this).data("originalTitle", $(this).attr("title"));
+            }
+            // reset tooltip
+            $(this)
+              .tooltip("hide")
+              .data("bs.tooltip", null);
 
-              $(this).attr(
-                "title",
-                Mustache.render(
-                  currentWidget.options.labels.limitMinMessage || "",
-                  { limit: currentWidget.options.renderOptions.rowMinLimit }
-                )
-              );
-            });
+            $(this).attr(
+              "title",
+              Mustache.render(currentWidget.options.labels.limitMinMessage || "", {
+                limit: currentWidget.options.renderOptions.rowMinLimit
+              })
+            );
+          });
         } else {
-          this.element
-            .find(".dcpArray__content__toolCell__delete button")
-            .prop("disabled", false);
-          this.element
-            .find(".dcpArray__content__toolCell__delete")
-            .each(function dcpArray_initLine() {
-              // reset tooltip
-              $(this)
-                .tooltip("hide")
-                .data("bs.tooltip", null);
-              $(this).attr("title", $(this).data("originalTitle"));
-            });
+          this.element.find(".dcpArray__content__toolCell__delete button").prop("disabled", false);
+          this.element.find(".dcpArray__content__toolCell__delete").each(function dcpArray_initLine() {
+            // reset tooltip
+            $(this)
+              .tooltip("hide")
+              .data("bs.tooltip", null);
+            $(this).attr("title", $(this).data("originalTitle"));
+          });
         }
       }
     },
@@ -836,11 +719,7 @@
         _.bind(function dcpArrayaddLine() {
           var $content = this._addNewLine(lineNumber, options);
           if ($content) {
-            this._trigger(
-              "lineAdded",
-              {},
-              { line: lineNumber, element: $content, copyValue: true }
-            );
+            this._trigger("lineAdded", {}, { line: lineNumber, element: $content, copyValue: true });
           }
         }, this)
       );
@@ -871,22 +750,18 @@
 
     _indexLine: function dcpArray_indexLine() {
       var i = 0;
-      this.element
-        .find(".dcpArray__content__line")
-        .each(function numeroteLine() {
-          $(this)
-            .attr("data-line", i)
-            .data("line", i);
-          i += 1;
-        });
+      this.element.find(".dcpArray__content__line").each(function numeroteLine() {
+        $(this)
+          .attr("data-line", i)
+          .data("line", i);
+        i += 1;
+      });
       this.options.nbLines = i;
     },
 
     _unSelectLines: function dcpArray_unSelectLines() {
       this.element.find(".dcpArray__content__toolCell__check .fa-check").hide();
-      this.element
-        .find(".dcpArray__content__line--selected")
-        .removeClass("dcpArray__content__line--selected active");
+      this.element.find(".dcpArray__content__line--selected").removeClass("dcpArray__content__line--selected active");
     },
     /**
      * Display tooltip an error message

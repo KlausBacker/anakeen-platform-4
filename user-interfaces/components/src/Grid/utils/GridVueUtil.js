@@ -20,11 +20,7 @@ export default class GridVueUtil extends AbstractGridUtil {
     if (this.hasDefaultSlots()) {
       const defaultSlots = this.vueComponent.$slots.default;
       return defaultSlots
-        .filter(
-          defSlot =>
-            defSlot.tag &&
-            defSlot.tag.toLocaleLowerCase() === this.getColumnTag()
-        )
+        .filter(defSlot => defSlot.tag && defSlot.tag.toLocaleLowerCase() === this.getColumnTag())
         .map(vnode => (vnode.data ? vnode.data.attrs : {}));
     }
     return [];
@@ -33,23 +29,16 @@ export default class GridVueUtil extends AbstractGridUtil {
   getActionsSlotConfig() {
     if (this.hasDefaultSlots()) {
       const actionsSlots = this.vueComponent.$slots.default.filter(
-        slot =>
-          slot.tag && slot.tag.toLocaleLowerCase() === this.getActionsTag()
+        slot => slot.tag && slot.tag.toLocaleLowerCase() === this.getActionsTag()
       );
       if (!actionsSlots.length) {
         return {};
       }
-      const actionsConfig = actionsSlots.map(vnode =>
-        vnode.data ? vnode.data.attrs : {}
-      );
+      const actionsConfig = actionsSlots.map(vnode => (vnode.data ? vnode.data.attrs : {}));
       const allActionConfigs = actionsSlots.reduce((acc, currItem) => {
         if (currItem.children) {
           const actionConfig = currItem.children
-            .filter(
-              defSlot =>
-                defSlot.tag &&
-                defSlot.tag.toLocaleLowerCase() === this.getActionTag()
-            )
+            .filter(defSlot => defSlot.tag && defSlot.tag.toLocaleLowerCase() === this.getActionTag())
             .map(vnode => (vnode.data ? vnode.data.attrs : {}));
           return acc.concat(actionConfig);
         }
@@ -66,23 +55,16 @@ export default class GridVueUtil extends AbstractGridUtil {
   getToolbarSlotConfig() {
     if (this.hasDefaultSlots()) {
       const toolbarSlots = this.vueComponent.$slots.default.filter(
-        slot =>
-          slot.tag && slot.tag.toLocaleLowerCase() === this.getToolbarTag()
+        slot => slot.tag && slot.tag.toLocaleLowerCase() === this.getToolbarTag()
       );
       if (!toolbarSlots.length) {
         return {};
       }
-      const toolbarConfig = toolbarSlots.map(vnode =>
-        vnode.data ? vnode.data.attrs : {}
-      );
+      const toolbarConfig = toolbarSlots.map(vnode => (vnode.data ? vnode.data.attrs : {}));
       const allToolbarActionConfigs = toolbarSlots.reduce((acc, currItem) => {
         if (currItem.children) {
           const actionConfig = currItem.children
-            .filter(
-              defSlot =>
-                defSlot.tag &&
-                defSlot.tag.toLocaleLowerCase() === this.getToolbarActionTag()
-            )
+            .filter(defSlot => defSlot.tag && defSlot.tag.toLocaleLowerCase() === this.getToolbarActionTag())
             .map(vnode => (vnode.data ? vnode.data.attrs : {}));
           return acc.concat(actionConfig);
         }
@@ -98,10 +80,7 @@ export default class GridVueUtil extends AbstractGridUtil {
 
   getGridTag() {
     let tagName = "ank-se-grid";
-    if (
-      this.vueComponent.$options &&
-      this.vueComponent.$options._componentTag
-    ) {
+    if (this.vueComponent.$options && this.vueComponent.$options._componentTag) {
       tagName = this.vueComponent.$options._componentTag.toLocaleLowerCase();
     }
     return tagName;

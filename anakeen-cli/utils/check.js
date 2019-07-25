@@ -12,11 +12,7 @@ exports.checkGlobElements = ({ globFile, srcPath, verbose, log }) => {
       return files.filesToAnalyze.reduce((acc, currentFile) => {
         const checkResult = checkFile(currentFile);
         if (verbose) {
-          const result = checkResult.ok
-            ? "✓"
-            : checkResult.ignore
-            ? "ignored"
-            : checkResult.error;
+          const result = checkResult.ok ? "✓" : checkResult.ignore ? "ignored" : checkResult.error;
           log(`Analyze : ${currentFile} : ${result}`);
         }
         if (checkResult.error) {

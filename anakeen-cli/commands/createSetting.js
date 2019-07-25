@@ -27,16 +27,10 @@ const capitalize = (str, force = false) => {
 
 const defaultPath = () => {
   let srcPath = "";
-  let basePath = path.join(
-    "vendor",
-    settingOptions.vendorName,
-    settingOptions.moduleName,
-    "Settings"
-  );
+  let basePath = path.join("vendor", settingOptions.vendorName, settingOptions.moduleName, "Settings");
   if (settingOptions.associatedSS) {
     const StructureName =
-      settingOptions.associatedSS.charAt(0).toUpperCase() +
-      settingOptions.associatedSS.slice(1).toLowerCase();
+      settingOptions.associatedSS.charAt(0).toUpperCase() + settingOptions.associatedSS.slice(1).toLowerCase();
     basePath = path.join(
       "vendor",
       settingOptions.vendorName,
@@ -135,9 +129,7 @@ const builder = {
       }
       let error = "";
       if (!SETTING_TYPES[arg]) {
-        error = `Invalid type ${arg}. Setting type must be one of those : [${Object.values(
-          SETTING_TYPES
-        )
+        error = `Invalid type ${arg}. Setting type must be one of those : [${Object.values(SETTING_TYPES)
           .map(t => t.name)
           .join(", ")}]`;
       }
@@ -149,8 +141,7 @@ const builder = {
     }
   },
   associatedSmartStructure: {
-    description:
-      "name of the associated smart structure (empty if setting is global)",
+    description: "name of the associated smart structure (empty if setting is global)",
     type: "string",
     alias: "S",
     conflicts: "associatedWorkflow",
@@ -159,13 +150,8 @@ const builder = {
         settingOptions.associatedSS = arg;
       } else {
         if (settingOptions.type) {
-          if (
-            SETTING_TYPES[settingOptions.type] &&
-            SETTING_TYPES[settingOptions.type].onlySS
-          ) {
-            throw new Error(
-              `Setting type ${settingOptions.type} must be associated to a smart structure`
-            );
+          if (SETTING_TYPES[settingOptions.type] && SETTING_TYPES[settingOptions.type].onlySS) {
+            throw new Error(`Setting type ${settingOptions.type} must be associated to a smart structure`);
           }
         }
       }
@@ -197,10 +183,7 @@ const builder = {
     type: "string",
     coerce: arg => {
       if (!checkVendorName(arg)) {
-        throw new Error(
-          "Vendor name must be only a-zA-Z0-9_ , the current value is not valid : " +
-            arg
-        );
+        throw new Error("Vendor name must be only a-zA-Z0-9_ , the current value is not valid : " + arg);
       }
       settingOptions.vendorName = arg;
       return arg;
@@ -219,10 +202,7 @@ const builder = {
     },
     coerce: arg => {
       if (!checkModuleName(arg)) {
-        throw new Error(
-          "Module name must be only a-zA-Z0-9_ , the current value is not valid : " +
-            arg
-        );
+        throw new Error("Module name must be only a-zA-Z0-9_ , the current value is not valid : " + arg);
       }
       settingOptions.moduleName = arg;
       return arg;
@@ -264,8 +244,7 @@ const builder = {
     }
   },
   inSelfDirectory: {
-    description:
-      "add a directory for the new setting (not compatible with settingPath)",
+    description: "add a directory for the new setting (not compatible with settingPath)",
     default: true,
     type: "boolean"
   }

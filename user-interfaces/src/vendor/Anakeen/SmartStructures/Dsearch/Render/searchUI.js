@@ -32,10 +32,7 @@ import searchAttributes from "./searchAttributes";
           }
         },
         function initDivResultEdit(event, document) {
-          if (
-            document.renderMode === "edit" ||
-            document.renderMode === "create"
-          ) {
+          if (document.renderMode === "edit" || document.renderMode === "create") {
             var $result = $(".result--content");
             if ($result.length === 0) {
               var $div = $('<div class="result--content"/>');
@@ -115,30 +112,19 @@ import searchAttributes from "./searchAttributes";
               testWorkflow = findIfWorkflow(myAttributes, $documentController);
             })
             .then(function doneFirstSReady() {
-              $.getJSON(
-                "/api/v2/smartstructures/dsearch/operators/",
-                function requestOperatorsSReady(data) {
-                  myOperators = [];
-                  $.each(data.data, function eachDataOperatorsSReady(
-                    key,
-                    value
-                  ) {
-                    myOperators.push(value);
-                  });
-                }
-              ).done(function doneSecondSReady() {
+              $.getJSON("/api/v2/smartstructures/dsearch/operators/", function requestOperatorsSReady(data) {
+                myOperators = [];
+                $.each(data.data, function eachDataOperatorsSReady(key, value) {
+                  myOperators.push(value);
+                });
+              }).done(function doneSecondSReady() {
                 var $r = $.Deferred();
                 if (testWorkflow) {
                   $.getJSON(
-                    "/api/v2/smart-elements/" +
-                      famid +
-                      "/workflows/states/?allStates=1",
+                    "/api/v2/smart-elements/" + famid + "/workflows/states/?allStates=1",
                     function requestWorkflows(data) {
                       myWorkflows = [];
-                      $.each(data.data.states, function eachStatesSReady(
-                        key,
-                        value
-                      ) {
+                      $.each(data.data.states, function eachStatesSReady(key, value) {
                         myWorkflows.push(value);
                       });
                       $r.resolve();
@@ -149,203 +135,140 @@ import searchAttributes from "./searchAttributes";
                 }
 
                 $r.done(function() {
-                  $.each(
-                    $documentController.documentController("getValues")
-                      .se_attrids,
-                    function eachDocAttridsSReady($index, myAttribute) {
-                      var myChangedAttribute;
-                      if (myAttribute !== undefined) {
-                        if (!itemEmpty(myAttribute)) {
-                          if (
-                            myAttribute.value === "activity" ||
-                            myAttribute.value === "fixstate"
-                          ) {
-                            myAttribute.value = "state";
-                          }
-                          $.each(
-                            myAttributes,
-                            function eachPersoAttributesSReady(key, value) {
-                              if (myAttribute.value === value.id) {
-                                myChangedAttribute = {
-                                  id: value.id,
-                                  label: value.label,
-                                  type: value.type
-                                };
-                                if (myAttribute.value === "state") {
-                                  myAttribute.displayValue = value.label;
-                                }
-                              }
-                            }
-                          );
-                          if (
-                            myAttribute.value === "state" &&
-                            myChangedAttribute
-                          ) {
-                            myChangedAttribute.type = "wid";
-                          }
-                        } else {
-                          myChangedAttribute = null;
+                  $.each($documentController.documentController("getValues").se_attrids, function eachDocAttridsSReady(
+                    $index,
+                    myAttribute
+                  ) {
+                    var myChangedAttribute;
+                    if (myAttribute !== undefined) {
+                      if (!itemEmpty(myAttribute)) {
+                        if (myAttribute.value === "activity" || myAttribute.value === "fixstate") {
+                          myAttribute.value = "state";
                         }
-                        thisOperators = [];
-                        initOperators(
-                          myOperators,
-                          myChangedAttribute,
-                          thisOperators
-                        );
-                        defineDropDown($index, thisOperators);
+                        $.each(myAttributes, function eachPersoAttributesSReady(key, value) {
+                          if (myAttribute.value === value.id) {
+                            myChangedAttribute = {
+                              id: value.id,
+                              label: value.label,
+                              type: value.type
+                            };
+                            if (myAttribute.value === "state") {
+                              myAttribute.displayValue = value.label;
+                            }
+                          }
+                        });
+                        if (myAttribute.value === "state" && myChangedAttribute) {
+                          myChangedAttribute.type = "wid";
+                        }
+                      } else {
+                        myChangedAttribute = null;
                       }
+                      thisOperators = [];
+                      initOperators(myOperators, myChangedAttribute, thisOperators);
+                      defineDropDown($index, thisOperators);
                     }
-                  );
-                  $(".dcpAttribute__value[name=se_keys]").each(
-                    function eachKeysSReady(index) {
-                      var $environment = $(this);
-                      var $methods = [];
-                      var myAttribute = $documentController.documentController(
-                        "getValues"
-                      ).se_attrids[index];
-                      var myOperator = $documentController.documentController(
-                        "getValues"
-                      ).se_funcs[index];
-                      var $type = defineTypeIdAttribute(
-                        myAttribute,
-                        myAttributes
-                      );
+                  });
+                  $(".dcpAttribute__value[name=se_keys]").each(function eachKeysSReady(index) {
+                    var $environment = $(this);
+                    var $methods = [];
+                    var myAttribute = $documentController.documentController("getValues").se_attrids[index];
+                    var myOperator = $documentController.documentController("getValues").se_funcs[index];
+                    var $type = defineTypeIdAttribute(myAttribute, myAttributes);
 
-                      deleteButton($environment);
+                    deleteButton($environment);
 
-                      if (
-                        myAttribute !== undefined &&
-                        myOperator !== undefined
-                      ) {
-                        /*
+                    if (myAttribute !== undefined && myOperator !== undefined) {
+                      /*
                                      if the widget is a comboBox, the current input is saved in the place where it should be
                                      */
-                        if (
-                          !itemEmpty(myOperator) &&
-                          (myOperator.value === "=" ||
-                            myOperator.value === "!=" ||
-                            myOperator.value === "~y")
-                        ) {
-                          if ($type === "enum[]" || $type === "enum") {
-                            if ($(this).data("kendoComboBox") === undefined) {
-                              $environment[0].aNode = $environment.parent()[0].firstElementChild;
-                              initKendoComboBox(famid, $environment, $attrid);
-                            }
-                          } else if ($type === "docid" || $type === "docid[]") {
-                            if ($(this).data("kendoComboBox") === undefined) {
-                              $environment[0].aNode = $environment.parent()[0].firstElementChild;
-                              initKendoComboBoxRelation(
-                                famid,
-                                $environment,
-                                $attrid
-                              );
-                            }
-                          } else if (
-                            !itemEmpty(myOperator) &&
-                            $type === "wid"
-                          ) {
-                            if ($(this).data("kendoComboBox") === undefined) {
-                              $environment[0].aNode = $environment.parent()[0].firstElementChild;
-                              initKendoComboBoxWorkflow(
-                                $environment,
-                                $documentController
-                              );
-                            }
+                      if (
+                        !itemEmpty(myOperator) &&
+                        (myOperator.value === "=" || myOperator.value === "!=" || myOperator.value === "~y")
+                      ) {
+                        if ($type === "enum[]" || $type === "enum") {
+                          if ($(this).data("kendoComboBox") === undefined) {
+                            $environment[0].aNode = $environment.parent()[0].firstElementChild;
+                            initKendoComboBox(famid, $environment, $attrid);
                           }
-                        }
-                        /**
-                         * If the widget is a datePicker, an another input is created to link the datePicker with
-                         */
-                        if (
-                          !itemEmpty(myOperator) &&
-                          ($type === "date" ||
-                            $type === "timestamp" ||
-                            $type === "time")
-                        ) {
-                          if ($environment.parent()[0].children.length === 1) {
-                            var $input = $("<input />").attr({ type: "text" });
-                            $input.insertBefore($environment[0]);
-                            $environment.hide();
-                            var date = $($environment).val();
-
-                            if (date && date.indexOf("(") === -1) {
-                              $($input).val(date);
-                            }
-
-                            if ($type === "date") {
-                              initDatePicker($input, index);
-                            } else if ($type === "timestamp") {
-                              initDateTimePicker($input, index);
-                            } else if ($type === "time") {
-                              initTimePicker($input, index);
-                            }
-
-                            if (date.indexOf("(") !== -1) {
-                              $($input).val(date);
-                            }
-                            // $input[0].disabled = "true";
+                        } else if ($type === "docid" || $type === "docid[]") {
+                          if ($(this).data("kendoComboBox") === undefined) {
+                            $environment[0].aNode = $environment.parent()[0].firstElementChild;
+                            initKendoComboBoxRelation(famid, $environment, $attrid);
                           }
-                        }
-
-                        /**
-                         * If attribute has a method, define associated dropdown and button
-                         */
-                        $.each(
-                          myAttributes,
-                          function eachAttributesSReadyMethods(key, value) {
-                            if (myAttribute.value === value.id) {
-                              $methods = value.methods;
-                            }
+                        } else if (!itemEmpty(myOperator) && $type === "wid") {
+                          if ($(this).data("kendoComboBox") === undefined) {
+                            $environment[0].aNode = $environment.parent()[0].firstElementChild;
+                            initKendoComboBoxWorkflow($environment, $documentController);
                           }
-                        );
-
-                        if ($methods && $methods.length !== 0) {
-                          $(
-                            $(".dcpAttribute__content[data-attrid=se_keys]")[
-                              index
-                            ]
-                          )
-                            .find("span:first")
-                            .addClass("button--on")
-                            .removeClass("button--off");
-                          $(
-                            $(".dcpAttribute__content[data-attrid=se_keys]")[
-                              index
-                            ]
-                          )
-                            .find("input:first")
-                            .addClass("button--on")
-                            .removeClass("button--off");
-                          createButtonMethods($environment, $methods);
-                        } else {
-                          $(
-                            $(".dcpAttribute__content[data-attrid=se_keys]")[
-                              index
-                            ]
-                          )
-                            .find("span:first")
-                            .removeClass("button--on")
-                            .addClass("button--off");
-                          $(
-                            $(".dcpAttribute__content[data-attrid=se_keys]")[
-                              index
-                            ]
-                          )
-                            .find("input:first")
-                            .removeClass("button--on")
-                            .addClass("button--off");
-                          deleteButtonMethods($environment);
                         }
                       }
+                      /**
+                       * If the widget is a datePicker, an another input is created to link the datePicker with
+                       */
+                      if (!itemEmpty(myOperator) && ($type === "date" || $type === "timestamp" || $type === "time")) {
+                        if ($environment.parent()[0].children.length === 1) {
+                          var $input = $("<input />").attr({ type: "text" });
+                          $input.insertBefore($environment[0]);
+                          $environment.hide();
+                          var date = $($environment).val();
+
+                          if (date && date.indexOf("(") === -1) {
+                            $($input).val(date);
+                          }
+
+                          if ($type === "date") {
+                            initDatePicker($input, index);
+                          } else if ($type === "timestamp") {
+                            initDateTimePicker($input, index);
+                          } else if ($type === "time") {
+                            initTimePicker($input, index);
+                          }
+
+                          if (date.indexOf("(") !== -1) {
+                            $($input).val(date);
+                          }
+                          // $input[0].disabled = "true";
+                        }
+                      }
+
+                      /**
+                       * If attribute has a method, define associated dropdown and button
+                       */
+                      $.each(myAttributes, function eachAttributesSReadyMethods(key, value) {
+                        if (myAttribute.value === value.id) {
+                          $methods = value.methods;
+                        }
+                      });
+
+                      if ($methods && $methods.length !== 0) {
+                        $($(".dcpAttribute__content[data-attrid=se_keys]")[index])
+                          .find("span:first")
+                          .addClass("button--on")
+                          .removeClass("button--off");
+                        $($(".dcpAttribute__content[data-attrid=se_keys]")[index])
+                          .find("input:first")
+                          .addClass("button--on")
+                          .removeClass("button--off");
+                        createButtonMethods($environment, $methods);
+                      } else {
+                        $($(".dcpAttribute__content[data-attrid=se_keys]")[index])
+                          .find("span:first")
+                          .removeClass("button--on")
+                          .addClass("button--off");
+                        $($(".dcpAttribute__content[data-attrid=se_keys]")[index])
+                          .find("input:first")
+                          .removeClass("button--on")
+                          .addClass("button--off");
+                        deleteButtonMethods($environment);
+                      }
                     }
-                  );
-                  $.each(
-                    $documentController.documentController("getValues")
-                      .se_funcs,
-                    function eachDocFuncsSReady($index, myOperator) {
-                      setVisibility(myOperator, $index, $documentController);
-                    }
-                  );
+                  });
+                  $.each($documentController.documentController("getValues").se_funcs, function eachDocFuncsSReady(
+                    $index,
+                    myOperator
+                  ) {
+                    setVisibility(myOperator, $index, $documentController);
+                  });
 
                   kendo.ui.progress($(".dcpTab--loading"), false);
                   $(".dcpTab__content").removeClass("dcpTab--loading");
@@ -377,16 +300,11 @@ import searchAttributes from "./searchAttributes";
           var $documentController = $(this);
           findIfWorkflow(myAttributes, $documentController);
 
-          var typeRevision = $(this).documentController("getValues").se_latest
-            .value;
+          var typeRevision = $(this).documentController("getValues").se_latest.value;
           var myObject;
           var dataWorkflow = [];
           _.each(myWorkflows, function eachPersoWorkflowsLatestChanged(item) {
-            if (
-              typeRevision === "fixed" ||
-              typeRevision === "allfixed" ||
-              typeRevision === "lastfixed"
-            ) {
+            if (typeRevision === "fixed" || typeRevision === "allfixed" || typeRevision === "lastfixed") {
               myObject = {
                 id: item.id,
                 label: item.label
@@ -419,20 +337,18 @@ import searchAttributes from "./searchAttributes";
             dataWorkflow.push(myObject);
           });
 
-          $(".dcpAttribute__value[name=se_keys]").each(
-            function eachKeysLatestChanged() {
-              if ($(this).data("kendoComboBox") !== undefined) {
-                var $dataSource = new kendo.data.DataSource({
-                  data: dataWorkflow,
-                  dataValueField: "id",
-                  dataTextField: "label"
-                });
-                $(this)
-                  .data("kendoComboBox")
-                  .setDataSource($dataSource);
-              }
+          $(".dcpAttribute__value[name=se_keys]").each(function eachKeysLatestChanged() {
+            if ($(this).data("kendoComboBox") !== undefined) {
+              var $dataSource = new kendo.data.DataSource({
+                data: dataWorkflow,
+                dataValueField: "id",
+                dataTextField: "label"
+              });
+              $(this)
+                .data("kendoComboBox")
+                .setDataSource($dataSource);
             }
-          );
+          });
         }
       );
 
@@ -481,25 +397,19 @@ import searchAttributes from "./searchAttributes";
             }
           });
 
-          $(".dcpAttribute__value[name=se_funcs]").each(
-            function eachFuncsAttridsChanged(key, value) {
-              if (key === $index) {
-                $environment = $(this);
-                $funcEl = value;
-              }
+          $(".dcpAttribute__value[name=se_funcs]").each(function eachFuncsAttridsChanged(key, value) {
+            if (key === $index) {
+              $environment = $(this);
+              $funcEl = value;
             }
-          );
-          $(".dcpAttribute__value[name=se_attrids]").each(
-            function eachAttridsAttridsChanged(key) {
-              if (key === $index) {
-                $displayAttribute = $(this);
-              }
+          });
+          $(".dcpAttribute__value[name=se_attrids]").each(function eachAttridsAttridsChanged(key) {
+            if (key === $index) {
+              $displayAttribute = $(this);
             }
-          );
-          var myAttribute = $documentController.documentController("getValues")
-            .se_attrids[$index];
-          var myOperator = $documentController.documentController("getValues")
-            .se_funcs[$index];
+          });
+          var myAttribute = $documentController.documentController("getValues").se_attrids[$index];
+          var myOperator = $documentController.documentController("getValues").se_funcs[$index];
           var myChangedAttribute;
           var attributeExists = false;
           var $type;
@@ -507,11 +417,7 @@ import searchAttributes from "./searchAttributes";
 
           // key values reloaded
           if (!itemEmpty(myOperator) && !itemEmpty(myAttribute)) {
-            if (
-              myOperator.value !== "is null" &&
-              myOperator.value !== "is not null" &&
-              myOperator.value !== "><"
-            ) {
+            if (myOperator.value !== "is null" && myOperator.value !== "is not null" && myOperator.value !== "><") {
               $documentController.documentController("setValue", "se_keys", {
                 value: "",
                 index: $index
@@ -534,10 +440,7 @@ import searchAttributes from "./searchAttributes";
 
           $seKeys = $(".dcpAttribute__value[name=se_keys]");
           if (!itemEmpty(myAttribute) && attributeExists) {
-            $documentController.documentController(
-              "cleanAttributeErrorMessage",
-              "se_attrids"
-            );
+            $documentController.documentController("cleanAttributeErrorMessage", "se_attrids");
 
             $.each(
               $documentController.documentController("getValues").se_attrids,
@@ -545,17 +448,11 @@ import searchAttributes from "./searchAttributes";
                 var attrId = val.value;
                 var $controle = 0;
 
-                $.each(
-                  myAttributes,
-                  function eachNewDataattributesAttributesFamilychanged(
-                    mkey,
-                    mval
-                  ) {
-                    if (attrId === mval.id) {
-                      $controle = 1;
-                    }
+                $.each(myAttributes, function eachNewDataattributesAttributesFamilychanged(mkey, mval) {
+                  if (attrId === mval.id) {
+                    $controle = 1;
                   }
-                );
+                });
                 if ($controle === 0 && !itemEmpty(attrId)) {
                   $documentController.documentController(
                     "setAttributeErrorMessage",
@@ -576,10 +473,7 @@ import searchAttributes from "./searchAttributes";
               }
             }
             if (myAttribute.value !== null) {
-              $.each(myAttributes, function eachPersoAttributesAttridsChanged(
-                key,
-                value
-              ) {
+              $.each(myAttributes, function eachPersoAttributesAttridsChanged(key, value) {
                 if (myAttribute.value === value.id) {
                   myChangedAttribute = {
                     id: value.id,
@@ -630,16 +524,10 @@ import searchAttributes from "./searchAttributes";
               }
             }
             deleteButtonMethods($environment);
-            if (
-              $environment.parent()[0].children.length === 2 ||
-              $environment.parent()[0].children.length === 3
-            ) {
+            if ($environment.parent()[0].children.length === 2 || $environment.parent()[0].children.length === 3) {
               destroyDatePicker($environment);
             }
-            if (
-              $environment.data("kendoComboBox") !== undefined &&
-              $environment[0].aNode !== undefined
-            ) {
+            if ($environment.data("kendoComboBox") !== undefined && $environment[0].aNode !== undefined) {
               $environment.data("kendoComboBox").destroy();
               $nodeToSave = $environment[0].aNode;
               $parent = $environment.parent()[0].parentElement;
@@ -654,9 +542,7 @@ import searchAttributes from "./searchAttributes";
                          */
               if (
                 !itemEmpty(myOperator) &&
-                (myOperator.value === "=" ||
-                  myOperator.value === "!=" ||
-                  myOperator.value === "~y")
+                (myOperator.value === "=" || myOperator.value === "!=" || myOperator.value === "~y")
               ) {
                 if ($type === "enum[]" || $type === "enum") {
                   if ($environment.data("kendoComboBox") === undefined) {
@@ -681,10 +567,7 @@ import searchAttributes from "./searchAttributes";
                     $seKeys.each(function eachKeysIWorklowAttridsChanged(key) {
                       if (key === $index) {
                         $environment[0].aNode = $environment.parent()[0].firstElementChild;
-                        initKendoComboBoxWorkflow(
-                          $environment,
-                          $documentController
-                        );
+                        initKendoComboBoxWorkflow($environment, $documentController);
                       }
                     });
                   }
@@ -693,10 +576,7 @@ import searchAttributes from "./searchAttributes";
               /**
                * If the widget is a datePicker, an another input is created to link the datePicker with
                */
-              if (
-                !itemEmpty(myOperator) &&
-                ($type === "date" || $type === "timestamp" || $type === "time")
-              ) {
+              if (!itemEmpty(myOperator) && ($type === "date" || $type === "timestamp" || $type === "time")) {
                 if ($environment.parent()[0].children.length === 1) {
                   var $input = $("<input />").attr({ type: "text" }); // create a second input to separate value and display value
                   $input.insertBefore($environment[0]);
@@ -715,10 +595,7 @@ import searchAttributes from "./searchAttributes";
               /**
                * If attribute has a method, define associated dropdown and button
                */
-              $.each(myAttributes, function eachAttributesSReadyMethods(
-                key,
-                value
-              ) {
+              $.each(myAttributes, function eachAttributesSReadyMethods(key, value) {
                 if (myAttribute.value === value.id) {
                   $methods = value.methods;
                 }
@@ -782,8 +659,7 @@ import searchAttributes from "./searchAttributes";
               });
               if (
                 !itemEmpty($environment) &&
-                ($environment.parent()[0].children.length === 3 ||
-                  $environment.parent()[0].children.length === 4)
+                ($environment.parent()[0].children.length === 3 || $environment.parent()[0].children.length === 4)
               ) {
                 destroyDatePicker($environment);
               }
@@ -834,10 +710,7 @@ import searchAttributes from "./searchAttributes";
           searchAttributes(famid)
             .then(function requestAttributesFamidChanged(data) {
               myAttributes = [];
-              $.each(data.data, function eachDataAttributesFamidChanged(
-                key,
-                value
-              ) {
+              $.each(data.data, function eachDataAttributesFamidChanged(key, value) {
                 myAttributes.push(value);
               });
               /**
@@ -853,17 +726,12 @@ import searchAttributes from "./searchAttributes";
             .then(function doneFamidChanged() {
               if (testWorkflow) {
                 $.getJSON(
-                  "/api/v2/smart-elements/" +
-                    famid +
-                    "/workflows/states/?allStates=1",
+                  "/api/v2/smart-elements/" + famid + "/workflows/states/?allStates=1",
                   function requestWorkflowsFamidChanged(data) {
                     myWorkflows = [];
-                    $.each(
-                      data.data.states,
-                      function eachDataStatesFamidChanged(key, value) {
-                        myWorkflows.push(value);
-                      }
-                    );
+                    $.each(data.data.states, function eachDataStatesFamidChanged(key, value) {
+                      myWorkflows.push(value);
+                    });
                   }
                 );
               }
@@ -897,36 +765,19 @@ import searchAttributes from "./searchAttributes";
           var $documentController = $(this);
           var $tabOperands = [];
           conditionVisibility($documentController);
-          if (
-            (values.current.value === "perso" &&
-              values.previous.value === "and") ||
-            values.current.value === "and"
-          ) {
-            $(".dcpAttribute__value[name=se_ols]").each(
-              function eachOperandsOlChangedAnd() {
-                $tabOperands.push({ value: "and", displayValue: "et" });
-              }
-            );
-            $documentController.documentController(
-              "setValue",
-              "se_ols",
-              $tabOperands
-            );
+          if ((values.current.value === "perso" && values.previous.value === "and") || values.current.value === "and") {
+            $(".dcpAttribute__value[name=se_ols]").each(function eachOperandsOlChangedAnd() {
+              $tabOperands.push({ value: "and", displayValue: "et" });
+            });
+            $documentController.documentController("setValue", "se_ols", $tabOperands);
           } else if (
-            (values.current.value === "perso" &&
-              values.previous.value === "or") ||
+            (values.current.value === "perso" && values.previous.value === "or") ||
             values.current.value === "or"
           ) {
-            $(".dcpAttribute__value[name=se_ols]").each(
-              function eachOperandOlChangedOr() {
-                $tabOperands.push({ value: "or", displayValue: "ou" });
-              }
-            );
-            $documentController.documentController(
-              "setValue",
-              "se_ols",
-              $tabOperands
-            );
+            $(".dcpAttribute__value[name=se_ols]").each(function eachOperandOlChangedOr() {
+              $tabOperands.push({ value: "or", displayValue: "ou" });
+            });
+            $documentController.documentController("setValue", "se_ols", $tabOperands);
           }
         }
       );
@@ -965,10 +816,8 @@ import searchAttributes from "./searchAttributes";
               $index = key;
             }
           });
-          var myOperator = $documentController.documentController("getValues")
-            .se_funcs[$index];
-          var myAttribute = $documentController.documentController("getValues")
-            .se_attrids[$index];
+          var myOperator = $documentController.documentController("getValues").se_funcs[$index];
+          var myAttribute = $documentController.documentController("getValues").se_attrids[$index];
           var famid = $(this).documentController("getValues").se_famid.value;
           var $environment = null;
           var $seKeys = $(".dcpAttribute__value[name=se_keys]");
@@ -979,10 +828,7 @@ import searchAttributes from "./searchAttributes";
               $environment = $(this);
             }
           });
-          if (
-            !itemEmpty($environment) &&
-            $environment.closest("div").find("button").length !== 0
-          ) {
+          if (!itemEmpty($environment) && $environment.closest("div").find("button").length !== 0) {
             if ($checkMeth) {
               $environment
                 .closest("div")
@@ -994,11 +840,7 @@ import searchAttributes from "./searchAttributes";
           $type = defineTypeIdAttribute(myAttribute, myAttributes);
           // key values reloaded
           if (!itemEmpty(myOperator)) {
-            if (
-              myOperator.value !== "is null" &&
-              myOperator.value !== "is not null" &&
-              myOperator.value !== "><"
-            ) {
+            if (myOperator.value !== "is null" && myOperator.value !== "is not null" && myOperator.value !== "><") {
               // $documentController.documentController("setValue", "se_keys", {value: "", index: $index});
             } else {
               $documentController.documentController("setValue", "se_keys", {
@@ -1021,11 +863,7 @@ import searchAttributes from "./searchAttributes";
             if (
               !itemEmpty(myOperator) &&
               !$checkMeth &&
-              ($type === "enum[]" ||
-                $type === "enum" ||
-                $type === "docid" ||
-                $type === "docid[]" ||
-                $type === "wid")
+              ($type === "enum[]" || $type === "enum" || $type === "docid" || $type === "docid[]" || $type === "wid")
             ) {
               if (
                 !itemEmpty($environment) &&
@@ -1042,9 +880,7 @@ import searchAttributes from "./searchAttributes";
             }
             if (
               !itemEmpty(myOperator) &&
-              (myOperator.value === "=" ||
-                myOperator.value === "!=" ||
-                myOperator.value === "~y") &&
+              (myOperator.value === "=" || myOperator.value === "!=" || myOperator.value === "~y") &&
               ($type === "enum[]" || $type === "enum")
             ) {
               if ($environment.data("kendoComboBox") === undefined) {
@@ -1058,9 +894,7 @@ import searchAttributes from "./searchAttributes";
             } else if (
               !itemEmpty(myOperator) &&
               ($type === "docid" || $type === "docid[]") &&
-              (myOperator.value === "=" ||
-                myOperator.value === "!=" ||
-                myOperator.value === "~y")
+              (myOperator.value === "=" || myOperator.value === "!=" || myOperator.value === "~y")
             ) {
               if ($environment.data("kendoComboBox") === undefined) {
                 $seKeys.each(function eachKeysIRelationFuncsChanged(key) {
@@ -1079,10 +913,7 @@ import searchAttributes from "./searchAttributes";
                 $seKeys.each(function eachKeysIWorkflowsFuncsChanged(key) {
                   if (key === $index) {
                     $environment[0].aNode = $environment.parent()[0].firstElementChild;
-                    initKendoComboBoxWorkflow(
-                      $environment,
-                      $documentController
-                    );
+                    initKendoComboBoxWorkflow($environment, $documentController);
                   }
                 });
               }
@@ -1090,9 +921,7 @@ import searchAttributes from "./searchAttributes";
             if (
               !itemEmpty(myOperator) &&
               ($type === "date" || $type === "timestamp" || $type === "time") &&
-              (myOperator.value !== "is null" &&
-                myOperator.value !== "is not null" &&
-                myOperator.value !== "><")
+              (myOperator.value !== "is null" && myOperator.value !== "is not null" && myOperator.value !== "><")
             ) {
               if ($environment.parent()[0].children.length === 1) {
                 var $input = $("<input />").attr({ type: "text" }); // create a second input to separate value and display value
@@ -1115,8 +944,7 @@ import searchAttributes from "./searchAttributes";
             if (
               !$init &&
               !itemEmpty($environment) &&
-              ($environment.parent()[0].children.length === 2 ||
-                $environment.parent()[0].children.length === 3)
+              ($environment.parent()[0].children.length === 2 || $environment.parent()[0].children.length === 3)
             ) {
               destroyDatePicker($environment);
             }
@@ -1168,29 +996,23 @@ import searchAttributes from "./searchAttributes";
           var $environment = null;
           if (type === "addLine") {
             var $funcEl;
-            var $funcInput = $documentController.documentController("getValues")
-              .se_funcs[options];
-            $(".dcpAttribute__value[name=se_funcs]").each(
-              function eachFuncsArrayModified(key, val) {
-                if (key === options) {
-                  $funcEl = val;
-                }
+            var $funcInput = $documentController.documentController("getValues").se_funcs[options];
+            $(".dcpAttribute__value[name=se_funcs]").each(function eachFuncsArrayModified(key, val) {
+              if (key === options) {
+                $funcEl = val;
               }
-            );
+            });
             if ($funcEl !== undefined) {
               $funcEl.offsetParent.style.visibility = "hidden";
               $funcEl.value = null;
               $funcInput.value = null;
             }
-            $(".dcpAttribute__value[name=se_keys]").each(
-              function eachKeysArrayModified(key) {
-                if (key === options) {
-                  $environment = $(this);
-                }
+            $(".dcpAttribute__value[name=se_keys]").each(function eachKeysArrayModified(key) {
+              if (key === options) {
+                $environment = $(this);
               }
-            );
-            var myOperator = $documentController.documentController("getValues")
-              .se_funcs[options];
+            });
+            var myOperator = $documentController.documentController("getValues").se_funcs[options];
             setVisibility(myOperator, options, $documentController);
             deleteButton($environment);
           }
@@ -1278,13 +1100,11 @@ import searchAttributes from "./searchAttributes";
              */
       change: function changeDatePickerValure() {
         var keywordObj = null;
-        $(".dcpAttribute__value[name=se_keys]").each(
-          function eachKeysChangeDatePicker(key, value) {
-            if (key === $index) {
-              keywordObj = value;
-            }
+        $(".dcpAttribute__value[name=se_keys]").each(function eachKeysChangeDatePicker(key, value) {
+          if (key === $index) {
+            keywordObj = value;
           }
-        );
+        });
         var date = this.value();
         if (date) {
           var jour;
@@ -1312,11 +1132,7 @@ import searchAttributes from "./searchAttributes";
    */
   function initDateTimePicker($environment, $index) {
     $environment.kendoDateTimePicker({
-      parseFormats: [
-        "yyyy-MM-dd HH:mm:ss",
-        "yyyy-MM-ddTHH:mm:ss",
-        "yyyy-MM-ddTHH:mm"
-      ],
+      parseFormats: ["yyyy-MM-dd HH:mm:ss", "yyyy-MM-ddTHH:mm:ss", "yyyy-MM-ddTHH:mm"],
       timeFormat: "HH:mm",
       format: null, // standard format depends of the user's langage
       /*
@@ -1324,13 +1140,11 @@ import searchAttributes from "./searchAttributes";
              */
       change: function changeDatePickerValure() {
         var keywordObj = null;
-        $(".dcpAttribute__value[name=se_keys]").each(
-          function eachKeysChangeDatePicker(key, value) {
-            if (key === $index) {
-              keywordObj = value;
-            }
+        $(".dcpAttribute__value[name=se_keys]").each(function eachKeysChangeDatePicker(key, value) {
+          if (key === $index) {
+            keywordObj = value;
           }
-        );
+        });
 
         var timeDate = this.value();
         var sTimeDate = "";
@@ -1368,20 +1182,15 @@ import searchAttributes from "./searchAttributes";
              */
       change: function changeDatePickerValure() {
         var keywordObj = null;
-        $(".dcpAttribute__value[name=se_keys]").each(
-          function eachKeysChangeDatePicker(key, value) {
-            if (key === $index) {
-              keywordObj = value;
-            }
+        $(".dcpAttribute__value[name=se_keys]").each(function eachKeysChangeDatePicker(key, value) {
+          if (key === $index) {
+            keywordObj = value;
           }
-        );
+        });
         var timeDate = this.value();
         var time = "";
         if (timeDate) {
-          time =
-            searchPadNumber(timeDate.getHours()) +
-            ":" +
-            searchPadNumber(timeDate.getMinutes());
+          time = searchPadNumber(timeDate.getHours()) + ":" + searchPadNumber(timeDate.getMinutes());
         }
         $(keywordObj).val(time);
         $(keywordObj).trigger("change");
@@ -1437,19 +1246,14 @@ import searchAttributes from "./searchAttributes";
    * @param $documentController of current document
    */
   function initKendoComboBoxWorkflow($environment, $documentController) {
-    var typeRevision = $documentController.documentController("getValues")
-      .se_latest.value;
+    var typeRevision = $documentController.documentController("getValues").se_latest.value;
     var myObject;
     var dataWorkflow = [];
     /*
          initialize the workflows keys list, depending on the revision value
          */
     _.each(myWorkflows, function eachWorkflowsIWorkflow(item) {
-      if (
-        typeRevision === "fixed" ||
-        typeRevision === "allfixed" ||
-        typeRevision === "lastfixed"
-      ) {
+      if (typeRevision === "fixed" || typeRevision === "allfixed" || typeRevision === "lastfixed") {
         myObject = {
           id: item.id,
           label: item.label
@@ -1499,9 +1303,7 @@ import searchAttributes from "./searchAttributes";
    * @param myOperators list  of operators
    */
   function defineDropDown($index, myOperators) {
-    $(".dcpAttribute__value[name=se_funcs]").each(function eachFuncsDefineDD(
-      key
-    ) {
+    $(".dcpAttribute__value[name=se_funcs]").each(function eachFuncsDefineDD(key) {
       if (key === $index) {
         /*
                  update or create the widget
@@ -1576,9 +1378,7 @@ import searchAttributes from "./searchAttributes";
               dataType: "json",
               success: function succesRequestRelationsIRelation(result) {
                 var info = [];
-                _.each(result.data, function eachResultRelationsIRelation(
-                  item
-                ) {
+                _.each(result.data, function eachResultRelationsIRelation(item) {
                   info.push({
                     id: item.id,
                     htmlTitle: item.htmlTitle
@@ -1620,10 +1420,7 @@ import searchAttributes from "./searchAttributes";
            */
           read: function readDatasIEnum(options) {
             var filter = "";
-            if (
-              options.data.filter !== undefined &&
-              options.data.filter.filters[0] !== undefined
-            ) {
+            if (options.data.filter !== undefined && options.data.filter.filters[0] !== undefined) {
               filter = {
                 keyword: options.data.filter.filters[0].value,
                 operator: options.data.filter.filters[0].operator
@@ -1631,15 +1428,12 @@ import searchAttributes from "./searchAttributes";
             }
             $.ajax({
               type: "GET",
-              url:
-                "/api/v2/smart-structures/" + famid + "/enumerates/" + attrid,
+              url: "/api/v2/smart-structures/" + famid + "/enumerates/" + attrid,
               data: filter,
               dataType: "json",
               success: function succesRequestEnumsIEnum(result) {
                 var info = [];
-                _.each(result.data.enumItems, function eachResultEnumsIEnum(
-                  enumItem
-                ) {
+                _.each(result.data.enumItems, function eachResultEnumsIEnum(enumItem) {
                   info.push({
                     value: enumItem.key,
                     displayValue: enumItem.label
@@ -1702,12 +1496,7 @@ import searchAttributes from "./searchAttributes";
    * @returns {boolean}
    */
   function itemEmpty(myItem) {
-    return (
-      myItem === undefined ||
-      myItem === null ||
-      myItem.value === null ||
-      myItem.value === ""
-    );
+    return myItem === undefined || myItem === null || myItem.value === null || myItem.value === "";
   }
 
   /**
@@ -1719,8 +1508,7 @@ import searchAttributes from "./searchAttributes";
    */
   function findIfWorkflow($data, $documentController) {
     var $lastAttribute = $data[$data.length - 1];
-    var $revAttribute = $documentController.documentController("getValues")
-      .se_latest;
+    var $revAttribute = $documentController.documentController("getValues").se_latest;
     var myObject;
     if ($lastAttribute.type === "wid" && !itemEmpty($revAttribute)) {
       $data.pop();
@@ -1765,18 +1553,13 @@ import searchAttributes from "./searchAttributes";
     var minorKeyword;
     var visible = false;
     var $environment = null;
-    $(".dcpAttribute__value[name=se_keys]").each(function eachKeysSetVisibility(
-      key,
-      value
-    ) {
+    $(".dcpAttribute__value[name=se_keys]").each(function eachKeysSetVisibility(key, value) {
       if (key === $index) {
         $environment = $(this);
         myKeyword = value;
       }
     });
-    minorKeyword = $documentController.documentController("getValues").se_keys[
-      $index
-    ];
+    minorKeyword = $documentController.documentController("getValues").se_keys[$index];
     if (myKeyword !== undefined) {
       var $label = null;
 

@@ -33,10 +33,7 @@ define(["underscore", "backbone"], function define_router(_, Backbone) {
           options = {
             path: window.location.pathname,
             initid: currentRouter.document.get("initid"),
-            revision:
-              currentRouter.document.get("revision") >= 0
-                ? currentRouter.document.get("revision")
-                : undefined,
+            revision: currentRouter.document.get("revision") >= 0 ? currentRouter.document.get("revision") : undefined,
             viewId: undefined
           };
         var docProperties = currentRouter.document.getServerProperties();
@@ -69,22 +66,18 @@ define(["underscore", "backbone"], function define_router(_, Backbone) {
         locationHash = window.location.hash;
       var noRecordHistory;
       if (options.initid) {
-        parsePath = window.location.pathname.match(
-          "(.*)api\\/v2\\/smart-elements\\/(.*)"
-        );
+        parsePath = window.location.pathname.match("(.*)api\\/v2\\/smart-elements\\/(.*)");
         if (parsePath) {
           beginPath = parsePath[1];
 
           if (options.viewId !== "!defaultConsultation") {
             urlSecondPart = "/views/" + encodeURIComponent(options.viewId);
             if (options.revision >= 0) {
-              urlSecondPart +=
-                "/revisions/" + encodeURIComponent(options.revision);
+              urlSecondPart += "/revisions/" + encodeURIComponent(options.revision);
             }
           } else {
             if (options.revision >= 0) {
-              urlSecondPart =
-                "/revisions/" + encodeURIComponent(options.revision);
+              urlSecondPart = "/revisions/" + encodeURIComponent(options.revision);
             }
           }
 
@@ -102,9 +95,7 @@ define(["underscore", "backbone"], function define_router(_, Backbone) {
               if (hashData.customClientData) {
                 locationSearch += locationSearch ? "&" : "?";
                 locationSearch += "customClientData=";
-                locationSearch += encodeURIComponent(
-                  JSON.stringify(hashData.customClientData)
-                );
+                locationSearch += encodeURIComponent(JSON.stringify(hashData.customClientData));
                 delete hashData.customClientData;
               }
               if (noRecordHistory) {
@@ -151,11 +142,7 @@ define(["underscore", "backbone"], function define_router(_, Backbone) {
       });
     },
 
-    viewRevisionView: function router_viewRevisionView(
-      initid,
-      revision,
-      viewId
-    ) {
+    viewRevisionView: function router_viewRevisionView(initid, revision, viewId) {
       this.document.fetchDocument({
         initid: initid,
         revision: revision,

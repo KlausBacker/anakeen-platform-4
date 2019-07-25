@@ -4,9 +4,7 @@ const fsUtils = require("../../plugins/files");
 
 exports.writeTemplate = (installPath, argv) => {
   return new Promise((resolve, reject) => {
-    const Name =
-      argv.instanceName.charAt(0).toUpperCase() +
-      argv.instanceName.slice(1).toLowerCase();
+    const Name = argv.instanceName.charAt(0).toUpperCase() + argv.instanceName.slice(1).toLowerCase();
     const NAME = argv.instanceName.toUpperCase();
     const name = argv.instanceName.toLowerCase();
     if (!fs.existsSync(installPath)) {

@@ -4,8 +4,7 @@ const fsUtils = require("../../plugins/files");
 
 exports.writeTemplate = (installPath, argv) => {
   return new Promise((resolve, reject) => {
-    const Name =
-      argv.name.charAt(0).toUpperCase() + argv.name.slice(1).toLowerCase();
+    const Name = argv.name.charAt(0).toUpperCase() + argv.name.slice(1).toLowerCase();
     const NAME = argv.name.toUpperCase();
     const name = argv.name.toLowerCase();
     if (!fs.existsSync(installPath)) {
@@ -20,15 +19,8 @@ exports.writeTemplate = (installPath, argv) => {
       fsUtils
         .writeTemplates(
           {
-            destinationPath: path.resolve(
-              installPath,
-              `100-${Name}Structure.xml`
-            ),
-            templateFile: path.resolve(
-              __dirname,
-              "xml",
-              "Structure.xml.mustache"
-            ),
+            destinationPath: path.resolve(installPath, `100-${Name}Structure.xml`),
+            templateFile: path.resolve(__dirname, "xml", "Structure.xml.mustache"),
             templateData
           },
           {

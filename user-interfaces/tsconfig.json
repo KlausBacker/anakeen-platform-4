@@ -7,6 +7,7 @@
     "importHelpers": true,
     "noImplicitAny": false,
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "types": ["node", "jquery", "kendo-ui", "backbone"],
     "strictNullChecks": false,
     "sourceMap": true,
@@ -15,6 +16,7 @@
   "include": [
     "./components/src/**/*.vue",
     "./components/src/**/*.ts",
+    "./Tests/src/**/*.ts",
     "./src/vendor/Anakeen/DOCUMENT/IHM/widgets/globalController/**/*.ts"
   ],
   "files": [

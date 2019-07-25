@@ -10,8 +10,5 @@ if (
   window.ank.hub["ank-dev-localization"]
 ) {
   // @ts-ignore
-  window.ank.hub["ank-dev-localization"].resolve(
-    Localization,
-    "ank-dev-localization"
-  );
+  window.ank.hub["ank-dev-localization"].resolve(Localization, "ank-dev-localization");
 }

@@ -4,13 +4,11 @@ const fsUtils = require("../../plugins/files");
 
 exports.writeTemplate = (installPath, argv) => {
   return new Promise((resolve, reject) => {
-    const Name =
-      argv.name.charAt(0).toUpperCase() + argv.name.slice(1).toLowerCase();
+    const Name = argv.name.charAt(0).toUpperCase() + argv.name.slice(1).toLowerCase();
     const NAME = argv.name.toUpperCase();
     const name = argv.name.toLowerCase();
     const Parentname = argv.parentName
-      ? argv.parentName.charAt(0).toUpperCase() +
-        argv.parentName.slice(1).toLowerCase()
+      ? argv.parentName.charAt(0).toUpperCase() + argv.parentName.slice(1).toLowerCase()
       : undefined;
     if (!fs.existsSync(installPath)) {
       reject(`The path ${installPath} does not exist`);

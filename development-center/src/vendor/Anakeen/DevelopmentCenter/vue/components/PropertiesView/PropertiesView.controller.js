@@ -92,14 +92,10 @@ export default {
   methods: {
     fetchProperties(eId) {
       this.$http
-        .get(
-          `/api/v2/smart-elements/${eId}.json?fields=document.properties.all`
-        )
+        .get(`/api/v2/smart-elements/${eId}.json?fields=document.properties.all`)
         .then(response => {
           if (response && response.data && response.data.data) {
-            this.propertiesList = this.parseProperties(
-              response.data.data.document.properties
-            );
+            this.propertiesList = this.parseProperties(response.data.data.document.properties);
           }
         })
         .catch(err => {
@@ -154,9 +150,7 @@ export default {
         }
         if (typeof propValue === "object") {
           if (propValue.id) {
-            return `<router-link><img src="${
-              propValue.icon
-            }"/> ${propValue.title ||
+            return `<router-link><img src="${propValue.icon}"/> ${propValue.title ||
               propValue.name ||
               propValue.id}</router-link>`;
           }

@@ -7,15 +7,7 @@ define([
   "dcpDocument/views/attributes/frame/vFrame",
   "dcpDocument/views/document/attributeTemplate",
   "dcpDocument/i18n/documentCatalog"
-], function vTabContent(
-  $,
-  _,
-  Backbone,
-  Mustache,
-  ViewAttributeFrame,
-  attributeTemplate,
-  i18n
-) {
+], function vTabContent($, _, Backbone, Mustache, ViewAttributeFrame, attributeTemplate, i18n) {
   "use strict";
 
   return Backbone.View.extend({
@@ -58,16 +50,12 @@ define([
             currentView.$el.attr("id", currentView.model.id);
             currentView.$el.attr("data-attrid", currentView.model.id);
 
-            hasOneContent = currentView.model
-              .get("content")
-              .some(function vTabContentIsDisplayable(value) {
-                return value.isDisplayable();
-              });
+            hasOneContent = currentView.model.get("content").some(function vTabContentIsDisplayable(value) {
+              return value.isDisplayable();
+            });
 
             if (!hasOneContent) {
-              currentView.$el.append(
-                currentView.model.getOption("showEmptyContent")
-              );
+              currentView.$el.append(currentView.model.getOption("showEmptyContent"));
               currentView.$el.removeClass("dcpTab__content--loading");
               currentView.model.trigger("renderDone", {
                 model: currentView.model,
@@ -107,9 +95,7 @@ define([
             currentView.$el.empty();
             if (currentView.originalView !== true) {
               if (currentView.model.getOption("template")) {
-                customRender = attributeTemplate.renderCustomView(
-                  currentView.model
-                );
+                customRender = attributeTemplate.renderCustomView(currentView.model);
                 currentView.customView = customRender.$el;
                 promisesFrame.push(customRender.promise);
               }
@@ -117,37 +103,30 @@ define([
             if (currentView.customView) {
               $content.append(currentView.customView);
             } else {
-              currentView.model
-                .get("content")
-                .each(function vTabContentRenderContent(currentAttr) {
-                  var view;
-                  try {
-                    if (!currentAttr.isDisplayable()) {
-                      return;
-                    }
-                    if (currentAttr.get("type") === "frame") {
-                      view = new ViewAttributeFrame({ model: currentAttr });
-                      promisesFrame.push(view.render());
-                      $content.append(view.$el);
-                    } else {
-                      //noinspection ExceptionCaughtLocallyJS
-                      throw new Error(
-                        "unkown type " +
-                          currentAttr.get("type") +
-                          " for id " +
-                          currentAttr.id +
-                          " for tab " +
-                          model.id
-                      );
-                    }
-                  } catch (e) {
-                    if (window.dcp.logger) {
-                      window.dcp.logger(e);
-                    } else {
-                      console.error(e);
-                    }
+              currentView.model.get("content").each(function vTabContentRenderContent(currentAttr) {
+                var view;
+                try {
+                  if (!currentAttr.isDisplayable()) {
+                    return;
                   }
-                });
+                  if (currentAttr.get("type") === "frame") {
+                    view = new ViewAttributeFrame({ model: currentAttr });
+                    promisesFrame.push(view.render());
+                    $content.append(view.$el);
+                  } else {
+                    //noinspection ExceptionCaughtLocallyJS
+                    throw new Error(
+                      "unkown type " + currentAttr.get("type") + " for id " + currentAttr.id + " for tab " + model.id
+                    );
+                  }
+                } catch (e) {
+                  if (window.dcp.logger) {
+                    window.dcp.logger(e);
+                  } else {
+                    console.error(e);
+                  }
+                }
+              });
               attributeTemplate.insertDescription(this);
               if (currentView.model.getOption("responsiveColumns")) {
                 currentView.responsiveColumns();
@@ -175,11 +154,7 @@ define([
 
       pTabRenderPromise.then(function() {
         if (currentView.model.isRealSelected) {
-          currentView.model.trigger(
-            "attributeAfterTabSelect",
-            event,
-            currentView.model.id
-          );
+          currentView.model.trigger("attributeAfterTabSelect", event, currentView.model.id);
           currentView.model.isRealSelected = false;
         }
       });
@@ -203,13 +178,8 @@ define([
         var fWidth = $(_this.$el).width();
         var matchesResponsive = 0;
 
-        _.each(responseColumnsDefs, function vTab_setResponsiveClasses(
-          responseColumnsInfo
-        ) {
-          if (
-            fWidth >= responseColumnsInfo.minAbsWidth &&
-            fWidth < responseColumnsInfo.maxAbsWidth
-          ) {
+        _.each(responseColumnsDefs, function vTab_setResponsiveClasses(responseColumnsInfo) {
+          if (fWidth >= responseColumnsInfo.minAbsWidth && fWidth < responseColumnsInfo.maxAbsWidth) {
             _this.$el.addClass("dcp-column--" + responseColumnsInfo.number);
             matchesResponsive = responseColumnsInfo.number;
             if (responseColumnsInfo.grow === true) {
@@ -237,9 +207,7 @@ define([
       $("body").append($fake.append($fakeWidth));
 
       // Compute absolute width
-      _.each(responseColumnsDefs, function vTab_computeResponsiveWidth(
-        responseColumnsInfo
-      ) {
+      _.each(responseColumnsDefs, function vTab_computeResponsiveWidth(responseColumnsInfo) {
         if (!responseColumnsInfo.minWidth) {
           responseColumnsInfo.minAbsWidth = 0;
         } else {

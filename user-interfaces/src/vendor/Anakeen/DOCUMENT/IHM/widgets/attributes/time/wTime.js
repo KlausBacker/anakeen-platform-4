@@ -2,11 +2,7 @@
   "use strict";
 
   if (typeof define === "function" && define.amd) {
-    define([
-      "jquery",
-      "underscore",
-      "dcpDocument/widgets/attributes/date/wDate"
-    ], factory);
+    define(["jquery", "underscore", "dcpDocument/widgets/attributes/date/wDate"], factory);
   } else {
     //noinspection JSUnresolvedVariable
     factory(window.jQuery, window._);
@@ -28,9 +24,7 @@
 
     _initDom: function wTimeInitDom() {
       if (this.options.renderOptions.kendoTimeConfiguration.format) {
-        this.options.attributeValue.displayValue = this.formatDate(
-          this.parseDate(this.options.attributeValue.value)
-        );
+        this.options.attributeValue.displayValue = this.formatDate(this.parseDate(this.options.attributeValue.value));
       }
       this._super();
     },
@@ -69,9 +63,7 @@
       $.dcp.dcpAttribute.prototype.setValue.call(this, value);
 
       if (this.getMode() === "write") {
-        originalValue = this.convertDateToPseudoIsoString(
-          this.kendoWidget.data(this.kendoWidgetClass).value()
-        );
+        originalValue = this.convertDateToPseudoIsoString(this.kendoWidget.data(this.kendoWidgetClass).value());
         // : explicit lazy equal
         //noinspection JSHint
         if (originalValue != value.value) {
@@ -86,9 +78,7 @@
       } else if (this.getMode() === "read") {
         this.getContentElements().text(value.displayValue);
       } else {
-        throw new Error(
-          "Attribute " + this.options.id + " unkown mode " + this.getMode()
-        );
+        throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
       }
     },
 
@@ -100,34 +90,22 @@
       return value;
     },
 
-    convertDateToPseudoIsoString: function wTimeConvertDateToPseudoIsoString(
-      date
-    ) {
+    convertDateToPseudoIsoString: function wTimeConvertDateToPseudoIsoString(date) {
       if (_.isDate(date)) {
-        return (
-          this.padNumber(date.getHours()) +
-          ":" +
-          this.padNumber(date.getMinutes())
-        );
+        return this.padNumber(date.getHours()) + ":" + this.padNumber(date.getMinutes());
       }
       return "";
     },
 
     formatDate: function wTimeFormatDate(value) {
       if (this.options.renderOptions.kendoTimeConfiguration.format) {
-        return kendo.toString(
-          value,
-          this.options.renderOptions.kendoTimeConfiguration.format
-        );
+        return kendo.toString(value, this.options.renderOptions.kendoTimeConfiguration.format);
       }
       return kendo.toString(value, "T");
     },
 
     parseDate: function wTimeParseDate(value) {
-      return kendo.parseDate(
-        value,
-        this.options.renderOptions.kendoTimeConfiguration.timeDataFormat
-      );
+      return kendo.parseDate(value, this.options.renderOptions.kendoTimeConfiguration.timeDataFormat);
     },
 
     /**

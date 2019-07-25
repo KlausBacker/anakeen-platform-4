@@ -6,17 +6,9 @@ const xml2js = require("xml2js");
 const fsUtils = require("./plugins/files");
 const createTemplates = require("./create/index.js");
 
-const {
-  checkModuleName,
-  checkVendorName,
-  checkNamespace
-} = require("../utils/checkName");
+const { checkModuleName, checkVendorName, checkNamespace } = require("../utils/checkName");
 
-const createInfoXML = (
-  { moduleName, vendorName },
-  postInstall = {},
-  postUpgrade = {}
-) => {
+const createInfoXML = ({ moduleName, vendorName }, postInstall = {}, postUpgrade = {}) => {
   return {
     module: {
       $: {
@@ -86,13 +78,7 @@ exports.create = options => {
       if (!checkNamespace(namespace)) {
         reject("The namespace is invalid " + namespace);
       }
-      let completePath = path.join(
-        sourcePath,
-        "src",
-        "vendor",
-        vendorName,
-        moduleName
-      );
+      let completePath = path.join(sourcePath, "src", "vendor", vendorName, moduleName);
 
       if (withSmartStructure) {
         completePath = path.join(completePath, "SmartStructures");
@@ -112,55 +98,40 @@ exports.create = options => {
       })
       .then(() => {
         if (withConfig) {
-          return createTemplates.config
-            .writeTemplate(sourcePath, options)
-            .then(toImport => {
-              postInstall.process.push(
-                createCommand(
-                  `./ank.php --script=registerConfigDir --path=./${toImport}`
-                ).process
-              );
-              return Promise.resolve();
-            });
+          return createTemplates.config.writeTemplate(sourcePath, options).then(toImport => {
+            postInstall.process.push(
+              createCommand(`./ank.php --script=registerConfigDir --path=./${toImport}`).process
+            );
+            return Promise.resolve();
+          });
         }
         return Promise.resolve();
       })
       .then(() => {
         if (withAccount) {
-          return createTemplates.accounts
-            .writeTemplate(sourcePath, options)
-            .then(toImport => {
-              const command = createCommand(
-                `./ank.php --script=importConfiguration --glob=./${toImport}`
-              );
-              postInstall.process.push(command.process);
-              postUpgrade.process.push(command.process);
-              return Promise.resolve();
-            });
+          return createTemplates.accounts.writeTemplate(sourcePath, options).then(toImport => {
+            const command = createCommand(`./ank.php --script=importConfiguration --glob=./${toImport}`);
+            postInstall.process.push(command.process);
+            postUpgrade.process.push(command.process);
+            return Promise.resolve();
+          });
         }
         return Promise.resolve();
       })
       .then(() => {
         if (withAutocompletion) {
-          return createTemplates.autocompletion.writeTemplate(
-            sourcePath,
-            options
-          );
+          return createTemplates.autocompletion.writeTemplate(sourcePath, options);
         }
         return Promise.resolve();
       })
       .then(() => {
         if (withEnumerates) {
-          return createTemplates.enumerates
-            .writeTemplate(sourcePath, options)
-            .then(toImport => {
-              const command = createCommand(
-                `./ank.php --script=importConfiguration --glob=./${toImport}`
-              );
-              postInstall.process.push(command.process);
-              postUpgrade.process.push(command.process);
-              return Promise.resolve();
-            });
+          return createTemplates.enumerates.writeTemplate(sourcePath, options).then(toImport => {
+            const command = createCommand(`./ank.php --script=importConfiguration --glob=./${toImport}`);
+            postInstall.process.push(command.process);
+            postUpgrade.process.push(command.process);
+            return Promise.resolve();
+          });
         }
         return Promise.resolve();
       })
@@ -179,9 +150,7 @@ exports.create = options => {
       .then(() => {
         return new Promise((resolve, reject) => {
           const builder = new xml2js.Builder();
-          const xml = builder.buildObject(
-            createInfoXML({ moduleName, vendorName }, postInstall, postUpgrade)
-          );
+          const xml = builder.buildObject(createInfoXML({ moduleName, vendorName }, postInstall, postUpgrade));
           fs.writeFile(path.join(sourcePath, "info.xml"), xml, err => {
             if (err) {
               return reject(err);

@@ -4,13 +4,7 @@
   "use strict";
 
   if (typeof define === "function" && define.amd) {
-    define([
-      "jquery",
-      "underscore",
-      "mustache",
-      "dcpDocument/widgets/widget",
-      "tooltip"
-    ], factory);
+    define(["jquery", "underscore", "mustache", "dcpDocument/widgets/widget", "tooltip"], factory);
   } else {
     //noinspection JSUnresolvedVariable
     factory(window.jQuery, window._, window.Mustache);
@@ -57,9 +51,7 @@
      */
     hasLink: function hasLink() {
       return Boolean(
-        this.options.renderOptions &&
-          this.options.renderOptions.htmlLink &&
-          this.options.renderOptions.htmlLink.url
+        this.options.renderOptions && this.options.renderOptions.htmlLink && this.options.renderOptions.htmlLink.url
       );
     },
     /**
@@ -84,9 +76,7 @@
       }
       currentElement.addClass("dcpAttribute__value--flash");
       _.delay(function wAttributeFlashDelay() {
-        currentElement
-          .removeClass("dcpAttribute__value--flash")
-          .addClass("dcpAttribute__value--endflash");
+        currentElement.removeClass("dcpAttribute__value--flash").addClass("dcpAttribute__value--endflash");
         _.delay(function wAttributeFlashSecondDelay() {
           currentElement.removeClass("dcpAttribute__value--endflash");
         }, 600);
@@ -109,10 +99,7 @@
           messages = _.toArray(message);
         }
         _.each(messages, function wAttributeSetErrorMsg(indexMessage) {
-          if (
-            indexMessage.index === -1 ||
-            scope.element.closest("tr").data("line") === indexMessage.index
-          ) {
+          if (indexMessage.index === -1 || scope.element.closest("tr").data("line") === indexMessage.index) {
             scope.element.addClass("has-error");
             // need to use sub element because tooltip add a div after element
             scope.element
@@ -173,17 +160,8 @@
      * @returns {string} Read|Write
      */
     getMode: function getMode() {
-      if (
-        this.options.mode !== "read" &&
-        this.options.mode !== "write" &&
-        this.options.mode !== "hidden"
-      ) {
-        throw new Error(
-          "Attribute " +
-            this.option.id +
-            " have unknown mode " +
-            this.options.mode
-        );
+      if (this.options.mode !== "read" && this.options.mode !== "write" && this.options.mode !== "hidden") {
+        throw new Error("Attribute " + this.option.id + " have unknown mode " + this.options.mode);
       }
       return this.options.mode;
     },
@@ -204,14 +182,10 @@
     getContentElements: function wAttributeGetContentElements() {
       if (this.getMode() === "read") {
         return this.element.find(
-          '.dcpAttribute__value[data-attrid="' +
-            this.options.id +
-            '"] .dcpAttribute__content__value'
+          '.dcpAttribute__value[data-attrid="' + this.options.id + '"] .dcpAttribute__content__value'
         );
       } else {
-        return this.element.find(
-          '.dcpAttribute__value[name="' + this.options.id + '"]'
-        );
+        return this.element.find('.dcpAttribute__value[name="' + this.options.id + '"]');
       }
     },
 
@@ -236,8 +210,7 @@
       var isEqual = false;
 
       if (this._isMultiple()) {
-        isEqual =
-          _.toArray(this.options.attributeValue).length === value.length;
+        isEqual = _.toArray(this.options.attributeValue).length === value.length;
         if (isEqual) {
           isEqual = _.isEqual(this.options.attributeValue, value);
         }
@@ -323,10 +296,7 @@
         this.options.id = _.uniqueId("widget_" + this.getType());
       }
 
-      if (
-        _.isUndefined(this.options.attributeValue) ||
-        this.options.attributeValue === null
-      ) {
+      if (_.isUndefined(this.options.attributeValue) || this.options.attributeValue === null) {
         if (this._isMultiple()) {
           this.options.attributeValue = [];
         } else {
@@ -342,31 +312,22 @@
 
       if (this.options.renderOptions && this.options.renderOptions.buttons) {
         // Add index for template to identify buttons
-        this.options.renderOptions.buttons = _.map(
-          this.options.renderOptions.buttons,
-          function wAttributeOptionMap(val, index) {
-            val.renderHtmlContent = Mustache.render(
-              val.htmlContent || "",
-              scope.options.attributeValue
-            );
-            val.index = index;
-            return val;
-          }
-        );
+        this.options.renderOptions.buttons = _.map(this.options.renderOptions.buttons, function wAttributeOptionMap(
+          val,
+          index
+        ) {
+          val.renderHtmlContent = Mustache.render(val.htmlContent || "", scope.options.attributeValue);
+          val.index = index;
+          return val;
+        });
       }
       this.options.emptyValue = _.bind(this._getEmptyValue, this);
       this.options.hadButtons = this._hasButtons();
       if (this.options.renderOptions && this.options.renderOptions.labels) {
-        this.options.labels = _.extend(
-          this.options.labels,
-          this.options.renderOptions.labels
-        );
+        this.options.labels = _.extend(this.options.labels, this.options.renderOptions.labels);
       }
 
-      if (
-        this.options.renderOptions &&
-        this.options.renderOptions.displayDeleteButton === false
-      ) {
+      if (this.options.renderOptions && this.options.renderOptions.displayDeleteButton === false) {
         this.options.deleteButton = false;
       }
       if (this.getMode() !== "hidden") {
@@ -407,28 +368,28 @@
         var originalEscape = Mustache.escape;
 
         if (this._isMultiple()) {
-          this.options.attributeValues = _.map(
-            this.options.attributeValue,
-            function wAttributeLinkMultiple(val, index) {
-              var urlIndex = index;
-              Mustache.escape = encodeURIComponent;
-              scopeWidget._completeRevisionData(val);
-              if (scopeWidget.options.index >= 0) {
-                // Use index of row prior to index of multiple value
-                urlIndex = scopeWidget.options.index;
-              }
-
-              if (htmlLink.urls && htmlLink.urls[urlIndex]) {
-                val.renderUrl = Mustache.render(htmlLink.urls[urlIndex], val);
-              } else {
-                val.renderUrl = Mustache.render(htmlLink.url || "", val);
-              }
-              Mustache.escape = originalEscape;
-              val.renderTitle = Mustache.render(htmlLink.title || "", val);
-              val.index = index;
-              return val;
+          this.options.attributeValues = _.map(this.options.attributeValue, function wAttributeLinkMultiple(
+            val,
+            index
+          ) {
+            var urlIndex = index;
+            Mustache.escape = encodeURIComponent;
+            scopeWidget._completeRevisionData(val);
+            if (scopeWidget.options.index >= 0) {
+              // Use index of row prior to index of multiple value
+              urlIndex = scopeWidget.options.index;
             }
-          );
+
+            if (htmlLink.urls && htmlLink.urls[urlIndex]) {
+              val.renderUrl = Mustache.render(htmlLink.urls[urlIndex], val);
+            } else {
+              val.renderUrl = Mustache.render(htmlLink.url || "", val);
+            }
+            Mustache.escape = originalEscape;
+            val.renderTitle = Mustache.render(htmlLink.title || "", val);
+            val.index = index;
+            return val;
+          });
         } else {
           Mustache.escape = encodeURIComponent;
           this._completeRevisionData(this.options.attributeValue);
@@ -450,20 +411,11 @@
           );
         }
       }
-      this.element.append(
-        Mustache.render(
-          this._getTemplate(this.options.mode) || "",
-          this.options
-        )
-      );
+      this.element.append(Mustache.render(this._getTemplate(this.options.mode) || "", this.options));
 
-      if (
-        this.element.find(".dcpAttribute__content__buttons button").length === 0
-      ) {
+      if (this.element.find(".dcpAttribute__content__buttons button").length === 0) {
         this.element.find(".dcpAttribute__content__buttons").hide();
-        this.element
-          .find(".dcpAttribute__value")
-          .addClass("dcpAttribute__content__nobutton");
+        this.element.find(".dcpAttribute__value").addClass("dcpAttribute__content__nobutton");
       }
     },
 
@@ -473,10 +425,7 @@
      * @private
      */
     _completeRevisionData: function wAttribute_completeRevisionData(data) {
-      var isRevision =
-        data.revision !== -1 &&
-        data.revision !== null &&
-        !_.isUndefined(data.revision);
+      var isRevision = data.revision !== -1 && data.revision !== null && !_.isUndefined(data.revision);
 
       if (isRevision) {
         data.isRevision = isRevision;
@@ -525,46 +474,27 @@
      * @protected
      */
     _initFocusEvent: function wAttributeInitFocusEvent() {
-      if (
-        this.options.renderOptions &&
-        this.options.renderOptions.inputHtmlTooltip
-      ) {
+      if (this.options.renderOptions && this.options.renderOptions.inputHtmlTooltip) {
         var scope = this;
 
         var inputTargetFilter = ".dcpAttribute__value";
-        this._getFocusInput().on(
-          "focus" + this.eventNamespace,
-          function wAttributeFocus(event) {
-            var ktTarget = $(event.currentTarget).closest(inputTargetFilter);
-            scope.showInputTooltip(ktTarget);
-          }
-        );
-        this._getFocusInput().on(
-          "blur." + this.eventNamespace,
-          function wAttributeBlur(event) {
-            var ktTarget = $(event.currentTarget).closest(inputTargetFilter);
-            scope.hideInputTooltip(ktTarget);
-          }
-        );
+        this._getFocusInput().on("focus" + this.eventNamespace, function wAttributeFocus(event) {
+          var ktTarget = $(event.currentTarget).closest(inputTargetFilter);
+          scope.showInputTooltip(ktTarget);
+        });
+        this._getFocusInput().on("blur." + this.eventNamespace, function wAttributeBlur(event) {
+          var ktTarget = $(event.currentTarget).closest(inputTargetFilter);
+          scope.hideInputTooltip(ktTarget);
+        });
       }
-      this._getFocusInput().on(
-        "focus" + this.eventNamespace,
-        function wAttributeFocus(event) {
-          var $content = $(event.currentTarget).closest(
-            ".dcpAttribute__content"
-          );
-          $content.addClass("dcpAttribute--focus");
-        }
-      );
-      this._getFocusInput().on(
-        "blur" + this.eventNamespace,
-        function wAttributeFocus(event) {
-          var $content = $(event.currentTarget).closest(
-            ".dcpAttribute__content"
-          );
-          $content.removeClass("dcpAttribute--focus");
-        }
-      );
+      this._getFocusInput().on("focus" + this.eventNamespace, function wAttributeFocus(event) {
+        var $content = $(event.currentTarget).closest(".dcpAttribute__content");
+        $content.addClass("dcpAttribute--focus");
+      });
+      this._getFocusInput().on("blur" + this.eventNamespace, function wAttributeFocus(event) {
+        var $content = $(event.currentTarget).closest(".dcpAttribute__content");
+        $content.removeClass("dcpAttribute--focus");
+      });
 
       return this;
     },
@@ -576,15 +506,12 @@
     _initMoveEvent: function wAttributeInitFocusEvent() {
       var scope = this;
       if (this.options.index !== -1) {
-        this.element.on(
-          "postMoved" + this.eventNamespace,
-          function wAttributeinitMoveEvent() {
-            var domLine = scope.element.closest("tr").data("line");
-            if (!_.isUndefined(domLine)) {
-              scope.options.index = domLine;
-            }
+        this.element.on("postMoved" + this.eventNamespace, function wAttributeinitMoveEvent() {
+          var domLine = scope.element.closest("tr").data("line");
+          if (!_.isUndefined(domLine)) {
+            scope.options.index = domLine;
           }
-        );
+        });
       }
       return this;
     },
@@ -608,24 +535,16 @@
           if (buttonConfig && buttonConfig.url) {
             var originalEscape = Mustache.escape;
             Mustache.escape = encodeURIComponent;
-            var url = Mustache.render(
-              buttonConfig.url || "",
-              currentWidget.options.attributeValue
-            );
+            var url = Mustache.render(buttonConfig.url || "", currentWidget.options.attributeValue);
             Mustache.escape = originalEscape;
 
             if (buttonConfig.target !== "_dialog") {
-              if (
-                buttonConfig &&
-                (buttonConfig.windowWidth || buttonConfig.windowHeight)
-              ) {
+              if (buttonConfig && (buttonConfig.windowWidth || buttonConfig.windowHeight)) {
                 if (buttonConfig.windowWidth) {
-                  wFeature +=
-                    "width=" + parseInt(buttonConfig.windowWidth, 10) + ",";
+                  wFeature += "width=" + parseInt(buttonConfig.windowWidth, 10) + ",";
                 }
                 if (buttonConfig.windowHeight) {
-                  wFeature +=
-                    "height=" + parseInt(buttonConfig.windowHeight, 10) + ",";
+                  wFeature += "height=" + parseInt(buttonConfig.windowHeight, 10) + ",";
                 }
                 wFeature += "resizable=yes,scrollbars=yes";
               }
@@ -633,10 +552,7 @@
             } else {
               var $bdw = $("<div/>");
               $("body").append($bdw);
-              var renderTitle = Mustache.render(
-                buttonConfig.windowTitle || "",
-                currentWidget.options.attributeValue
-              );
+              var renderTitle = Mustache.render(buttonConfig.windowTitle || "", currentWidget.options.attributeValue);
               var dw = $bdw
                 .dcpWindow({
                   title: renderTitle,
@@ -682,18 +598,12 @@
     _initErrorEvent: function wAttributeInitErrotEvent() {
       var scope = this;
       // tooltip is created in same parent
-      this.element
-        .parent()
-        .on(
-          "click" + this.eventNamespace,
-          ".button-close-error",
-          function closeError(/*event*/) {
-            if (scope.element.data("hasErrorTooltip")) {
-              scope.element.find(".input-group").tooltip("hide");
-              scope.element.data("hasErrorTooltip", false);
-            }
-          }
-        );
+      this.element.parent().on("click" + this.eventNamespace, ".button-close-error", function closeError(/*event*/) {
+        if (scope.element.data("hasErrorTooltip")) {
+          scope.element.find(".input-group").tooltip("hide");
+          scope.element.data("hasErrorTooltip", false);
+        }
+      });
     },
     /**
      * Init events for delete button (only for write attributes)
@@ -704,9 +614,7 @@
       var currentWidget = this;
 
       // Compose delete button title
-      var $deleteButton = this.element.find(
-        ".dcpAttribute__content__button--delete"
-      );
+      var $deleteButton = this.element.find(".dcpAttribute__content__button--delete");
       var titleDelete;
       if (this.options.labels.deleteLabel) {
         titleDelete = this.options.labels.deleteLabel;
@@ -716,20 +624,18 @@
       }
       $deleteButton.attr("title", titleDelete);
 
-      this.element.on(
-        "click" + this.eventNamespace,
-        ".dcpAttribute__content__button--delete",
-        function destroyTable(event) {
-          currentWidget._trigger("delete", event, {
-            index: currentWidget._getIndex(),
-            id: currentWidget.options.id
-          });
-          // main input is focuses after deletion
-          _.defer(function wAttributeDeferDelete() {
-            currentWidget.element.find("input").focus();
-          });
-        }
-      );
+      this.element.on("click" + this.eventNamespace, ".dcpAttribute__content__button--delete", function destroyTable(
+        event
+      ) {
+        currentWidget._trigger("delete", event, {
+          index: currentWidget._getIndex(),
+          id: currentWidget.options.id
+        });
+        // main input is focuses after deletion
+        _.defer(function wAttributeDeferDelete() {
+          currentWidget.element.find("input").focus();
+        });
+      });
       return this;
     },
     /**
@@ -795,15 +701,9 @@
 
                 index = $(this).data("index");
                 if (typeof index !== "undefined" && index !== null) {
-                  renderTitle = Mustache.render(
-                    htmlLink.windowTitle || "",
-                    scopeWidget.options.attributeValue[index]
-                  );
+                  renderTitle = Mustache.render(htmlLink.windowTitle || "", scopeWidget.options.attributeValue[index]);
                 } else {
-                  renderTitle = Mustache.render(
-                    htmlLink.windowTitle || "",
-                    scopeWidget.options.attributeValue
-                  );
+                  renderTitle = Mustache.render(htmlLink.windowTitle || "", scopeWidget.options.attributeValue);
                 }
 
                 $dialogDiv = $("<div/>");
@@ -868,9 +768,7 @@
      */
     _getIndex: function _getIndex() {
       if (this.options.index !== -1) {
-        this.options.index = this.element
-          .closest(".dcpArray__content__line")
-          .data("line");
+        this.options.index = this.element.closest(".dcpArray__content__line").data("line");
       }
       return this.options.index;
     },
@@ -882,14 +780,8 @@
      * @private
      */
     _getEmptyValue: function _getEmptyValue() {
-      if (
-        _.isEmpty(this.options.attributeValue) ||
-        this.options.attributeValue.value === null
-      ) {
-        if (
-          this.options.renderOptions &&
-          this.options.renderOptions.showEmptyContent
-        ) {
+      if (_.isEmpty(this.options.attributeValue) || this.options.attributeValue.value === null) {
+        if (this.options.renderOptions && this.options.renderOptions.showEmptyContent) {
           return this.options.renderOptions.showEmptyContent === true
             ? " "
             : this.options.renderOptions.showEmptyContent;
@@ -928,14 +820,7 @@
       ) {
         return window.dcp.templates["default"][key];
       }
-      throw new Error(
-        "Unknown template  " +
-          key +
-          "/" +
-          this.options.type +
-          " for " +
-          this.options.id
-      );
+      throw new Error("Unknown template  " + key + "/" + this.options.type + " for " + this.options.id);
     },
 
     /**
@@ -952,15 +837,9 @@
         // jscs:disable disallowEmptyBlocks
       } else {
         // jscs:enable disallowEmptyBlocks
-        if (
-          !_.isObject(value) ||
-          !_.has(value, "value") ||
-          !_.has(value, "displayValue")
-        ) {
+        if (!_.isObject(value) || !_.has(value, "value") || !_.has(value, "displayValue")) {
           throw new Error(
-            "The value must be an object with value and displayValue properties (attrid id :" +
-              this.options.id +
-              ")"
+            "The value must be an object with value and displayValue properties (attrid id :" + this.options.id + ")"
           );
         }
       }
@@ -988,16 +867,10 @@
         return (
           this.options.hasAutocomplete ||
           this.options.deleteButton ||
-          (this.options.renderOptions &&
-            this.options.renderOptions.buttons &&
-            true)
+          (this.options.renderOptions && this.options.renderOptions.buttons && true)
         );
       } else {
-        return (
-          this.options.renderOptions &&
-          this.options.renderOptions.buttons &&
-          true
-        );
+        return this.options.renderOptions && this.options.renderOptions.buttons && true;
       }
     },
     /**
@@ -1013,9 +886,7 @@
      * @param visibility
      * @private
      */
-    _setVisibilitySavingMenu: function wAttribute_DisableSavingMenu(
-      visibility
-    ) {
+    _setVisibilitySavingMenu: function wAttribute_DisableSavingMenu(visibility) {
       var event = { prevent: false };
       this._trigger("changeattrmenuvisibility", event, {
         id: "save",

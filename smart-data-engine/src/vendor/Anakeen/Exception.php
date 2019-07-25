@@ -24,9 +24,9 @@ class Exception extends \Exception implements \JsonSerializable
      *
      * @param string $message error message or code error
      * @param int $argCode
-     * @param \Throwable|null $previous
+     * @param \Throwable|mixed $previous
      */
-    public function __construct($message, $argCode = 0, \Throwable $previous = null)
+    public function __construct($message, $argCode = 0, $previous = null)
     {
         $code = $message;
         if ($code && (preg_match('/^([A-Z]+)([0-9]+)$/u', $code, $reg))) {
@@ -49,8 +49,11 @@ class Exception extends \Exception implements \JsonSerializable
         } else {
             $intcode = 0;
         }
-
-        parent::__construct($message, $intcode, $previous);
+        if (is_a($previous, \Throwable::class)) {
+            parent::__construct($message, $intcode, $previous);
+        } else {
+            parent::__construct($message, $intcode);
+        }
     }
 
     /**

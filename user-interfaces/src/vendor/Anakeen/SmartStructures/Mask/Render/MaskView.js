@@ -38,9 +38,7 @@ import "@progress/kendo-ui/js/kendo.columnmenu";
     "ready",
     {
       name: "maskReady",
-      documentCheck: documentObject =>
-        documentObject.renderMode === "view" &&
-        documentObject.family.name === "MASK"
+      documentCheck: documentObject => documentObject.renderMode === "view" && documentObject.family.name === "MASK"
     },
     function maskViewReady(event, documentObject) {
       let $tree = $("#maskGrid");

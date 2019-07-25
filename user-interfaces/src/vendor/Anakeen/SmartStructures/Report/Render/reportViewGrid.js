@@ -7,11 +7,7 @@ window.dcp.document.documentController(
   {
     name: "report:view:grid",
     documentCheck: document => {
-      return (
-        document.family.name === "REPORT" &&
-        document.renderMode === "view" &&
-        document.type === "search"
-      );
+      return document.family.name === "REPORT" && document.renderMode === "view" && document.type === "search";
     }
   },
   () => {

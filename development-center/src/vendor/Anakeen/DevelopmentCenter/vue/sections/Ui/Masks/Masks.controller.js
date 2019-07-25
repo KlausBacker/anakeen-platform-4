@@ -97,26 +97,16 @@ export default {
       if (e !== "") {
         if (this.$refs.masksGrid.kendoGrid) {
           if (col === "id") {
-            this.$("[role=row]", this.$el).removeClass(
-              "control-view-is-opened"
-            );
+            this.$("[role=row]", this.$el).removeClass("control-view-is-opened");
             this.$(
-              "[data-uid=" +
-                this.$refs.masksGrid.kendoGrid.dataSource
-                  .view()
-                  .find(d => d.rowData.id === e).uid +
-                "]",
+              "[data-uid=" + this.$refs.masksGrid.kendoGrid.dataSource.view().find(d => d.rowData.id === e).uid + "]",
               this.$el
             ).addClass("control-view-is-opened");
           }
         } else if (col === "name") {
           this.$("[role=row]", this.$el).removeClass("control-view-is-opened");
           this.$(
-            "[data-uid=" +
-              this.$refs.masksGrid.kendoGrid.dataSource
-                .view()
-                .find(d => d.rowData.name === e).uid +
-              "]",
+            "[data-uid=" + this.$refs.masksGrid.kendoGrid.dataSource.view().find(d => d.rowData.name === e).uid + "]",
             this.$el
           ).addClass("control-view-is-opened");
         }

@@ -10,8 +10,5 @@ if (
   window.ank.hub["ank-admin-vault-manager"]
 ) {
   // @ts-ignore
-  window.ank.hub["ank-admin-vault-manager"].resolve(
-    VaultManager,
-    "ank-admin-vault-manager"
-  );
+  window.ank.hub["ank-admin-vault-manager"].resolve(VaultManager, "ank-admin-vault-manager");
 }

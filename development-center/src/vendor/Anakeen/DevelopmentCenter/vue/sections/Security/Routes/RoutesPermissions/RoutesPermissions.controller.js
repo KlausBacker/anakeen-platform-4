@@ -64,13 +64,8 @@ export default {
       });
     },
     getFilter() {
-      if (
-        this.$refs.routesPermissions &&
-        this.$refs.routesPermissions.kendoWidget()
-      ) {
-        const currentFilter = this.$refs.routesPermissions
-          .kendoWidget()
-          .filter();
+      if (this.$refs.routesPermissions && this.$refs.routesPermissions.kendoWidget()) {
+        const currentFilter = this.$refs.routesPermissions.kendoWidget().filter();
         if (currentFilter) {
           const filters = currentFilter.filters;
           return filters.reduce((acc, curr) => {
@@ -117,9 +112,9 @@ export default {
         }
         switch (colId) {
           case "accessName":
-            return `<a data-role="develRouterLink" href="/devel/security/routes/access?${this.$.param(
-              { requiredAccess: dataItem[colId] }
-            )}">${dataItem[colId]}</a>`;
+            return `<a data-role="develRouterLink" href="/devel/security/routes/access?${this.$.param({
+              requiredAccess: dataItem[colId]
+            })}">${dataItem[colId]}</a>`;
           case "account":
             if (dataItem[colId].type === "role") {
               return `<a data-role="develRouterLink" href="/devel/security/roles/?role_login=${dataItem[colId].reference}">${dataItem[colId].reference}</a>`;

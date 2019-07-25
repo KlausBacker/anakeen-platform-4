@@ -10,8 +10,5 @@ if (
   window.ank.hub["ank-dev-enumerates"]
 ) {
   // @ts-ignore
-  window.ank.hub["ank-dev-enumerates"].resolve(
-    SmartStructures,
-    "ank-dev-enumerates"
-  );
+  window.ank.hub["ank-dev-enumerates"].resolve(SmartStructures, "ank-dev-enumerates");
 }

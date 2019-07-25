@@ -18,11 +18,8 @@ export default class GridActions extends AbstractGridUtil {
   getAction(actionName) {
     const actionMethod = `${actionName}Action`;
     const actionObject = {};
-    actionObject.title =
-      this.vueComponent.translations[actionName] || actionName;
-    actionObject.iconClass = DEFAULT_ACTION_PROPS[actionName]
-      ? DEFAULT_ACTION_PROPS[actionName].iconClass
-      : "";
+    actionObject.title = this.vueComponent.translations[actionName] || actionName;
+    actionObject.iconClass = DEFAULT_ACTION_PROPS[actionName] ? DEFAULT_ACTION_PROPS[actionName].iconClass : "";
     if (typeof this[actionMethod] === "function") {
       actionObject.click = this[actionMethod].bind(this);
     } else {
@@ -34,8 +31,7 @@ export default class GridActions extends AbstractGridUtil {
   getToolbarAction(toolbarActionName) {
     const actionMethod = `${toolbarActionName}ToolbarAction`;
     const actionObject = {};
-    actionObject.title =
-      this.vueComponent.translations[toolbarActionName] || "";
+    actionObject.title = this.vueComponent.translations[toolbarActionName] || "";
     actionObject.iconClass = DEFAULT_ACTION_PROPS[toolbarActionName]
       ? DEFAULT_ACTION_PROPS[toolbarActionName].iconClass
       : "";
@@ -50,9 +46,7 @@ export default class GridActions extends AbstractGridUtil {
   editAction(e) {
     e.preventDefault();
     const target = e.currentTarget || e.item || e.target;
-    const item = this.vueComponent.kendoGrid.dataItem(
-      this.vueComponent.$(target).closest("tr")
-    ).rowData;
+    const item = this.vueComponent.kendoGrid.dataItem(this.vueComponent.$(target).closest("tr")).rowData;
     const event = new GridEvent(
       {
         type: "edit",
@@ -65,10 +59,7 @@ export default class GridActions extends AbstractGridUtil {
     const id = item.initid || item.id;
     this.vueComponent.$emit("action-click", event);
     if (!event.isDefaultPrevented()) {
-      window.open(
-        `/api/v2/smart-elements/${id}/views/!defaultEdition.html`,
-        "_blank"
-      );
+      window.open(`/api/v2/smart-elements/${id}/views/!defaultEdition.html`, "_blank");
     }
   }
 
@@ -77,9 +68,7 @@ export default class GridActions extends AbstractGridUtil {
       e.preventDefault();
     }
     const target = e.currentTarget || e.item || e.target;
-    const item = this.vueComponent.kendoGrid.dataItem(
-      this.vueComponent.$(target).closest("tr")
-    ).rowData;
+    const item = this.vueComponent.kendoGrid.dataItem(this.vueComponent.$(target).closest("tr")).rowData;
     const event = new GridEvent(
       {
         type: "consult",
@@ -92,10 +81,7 @@ export default class GridActions extends AbstractGridUtil {
     this.vueComponent.$emit("action-click", event);
     const id = item.initid || item.id;
     if (!event.isDefaultPrevented()) {
-      window.open(
-        `/api/v2/smart-elements/${id}/views/!defaultConsultation.html`,
-        "_blank"
-      );
+      window.open(`/api/v2/smart-elements/${id}/views/!defaultConsultation.html`, "_blank");
     }
   }
 
@@ -103,15 +89,8 @@ export default class GridActions extends AbstractGridUtil {
     e.preventDefault();
     const target = e.currentTarget || e.item || e.target;
     if (actionType) {
-      const item = this.vueComponent.kendoGrid.dataItem(
-        this.vueComponent.$(target).closest("tr")
-      ).rowData;
-      const event = new GridEvent(
-        { type: actionType, row: item },
-        target,
-        false,
-        "GridActionEvent"
-      );
+      const item = this.vueComponent.kendoGrid.dataItem(this.vueComponent.$(target).closest("tr")).rowData;
+      const event = new GridEvent({ type: actionType, row: item }, target, false, "GridActionEvent");
       this.vueComponent.$emit("action-click", event);
     }
   }
@@ -119,9 +98,7 @@ export default class GridActions extends AbstractGridUtil {
   displayExportMenu() {
     const menu = this.vueComponent.kendoGrid.element;
     menu.find("ul.grid-export-action-menu").css("display", "");
-    menu
-      .find("ul.grid-export-action-menu .k-animation-container")
-      .css("display", "none");
+    menu.find("ul.grid-export-action-menu .k-animation-container").css("display", "none");
     menu.find(".grid-export-status--error").css("display", "none");
     menu.find(".grid-export-status--pending").css("display", "none");
     menu.find(".grid-export-status--success").css("display", "none");
@@ -166,9 +143,7 @@ export default class GridActions extends AbstractGridUtil {
   displayExportErrorStatus() {
     const menu = this.vueComponent.kendoGrid.element;
     menu.find("ul.grid-export-action-menu").css("display", "none");
-    menu
-      .find(".grid-export-status--error .grid-export-status-text")
-      .text(this.vueComponent.translations.uploadError);
+    menu.find(".grid-export-status--error .grid-export-status-text").text(this.vueComponent.translations.uploadError);
     menu.find(".grid-export-status--error").css("display", "inline-flex");
     menu.find(".grid-export-status--pending").css("display", "none");
     menu.find(".grid-export-status--success").css("display", "none");
@@ -181,14 +156,8 @@ export default class GridActions extends AbstractGridUtil {
         .get(`/api/v2/ui/transaction/${transactionId}/status`)
         .then(response => {
           const responseData = response.data.data;
-          const progressBar = this.vueComponent.$(
-            ".grid-export-status--pending",
-            this.vueComponent.$el
-          );
-          if (
-            responseData.transactionStatus === "PENDING" ||
-            responseData.transactionStatus === "CREATED"
-          ) {
+          const progressBar = this.vueComponent.$(".grid-export-status--pending", this.vueComponent.$el);
+          if (responseData.transactionStatus === "PENDING" || responseData.transactionStatus === "CREATED") {
             if (typeof pollingCb === "function") {
               pollingCb(responseData, progressBar);
             }
@@ -226,9 +195,7 @@ export default class GridActions extends AbstractGridUtil {
     }
     link.setAttribute(
       "download",
-      `${this.vueComponent.collectionProperties.title ||
-        this.vueComponent.collection ||
-        "data"}.xlsx`
+      `${this.vueComponent.collectionProperties.title || this.vueComponent.collection || "data"}.xlsx`
     );
     link.href = url;
     link.click();
@@ -236,15 +203,9 @@ export default class GridActions extends AbstractGridUtil {
 
   updateProgressBar(element, exported, total) {
     const percent = (exported / total) * 100;
-    element
-      .find(".grid-export-status-progress-bar")
-      .css("width", `${percent}%`);
-    element
-      .find(".grid-export-status-progress-details-text")
-      .text(`${exported} lignes exportées`);
-    element
-      .find(".grid-export-status-progress-bar-text .exported")
-      .text(exported);
+    element.find(".grid-export-status-progress-bar").css("width", `${percent}%`);
+    element.find(".grid-export-status-progress-details-text").text(`${exported} lignes exportées`);
+    element.find(".grid-export-status-progress-bar-text .exported").text(exported);
     element.find(".grid-export-status-progress-bar-text .total").text(total);
   }
 
@@ -299,27 +260,17 @@ export default class GridActions extends AbstractGridUtil {
       this.pollTransaction(transactionId, pollingRequest);
     } else {
       this.displayExportErrorStatus();
-      this.vueComponent.gridError.error(
-        "Export failed: no export function are provided"
-      );
+      this.vueComponent.gridError.error("Export failed: no export function are provided");
     }
   }
 
   getExportQueryParams(exportAll) {
     const gridOptions = this.vueComponent.kendoGrid.getOptions();
-    const gridColumns = gridOptions.columns.filter(
-      c => c.field && !c.hidden && c.field !== "icon"
-    );
-    const dataOptions = Object.assign(
-      {},
-      this.vueComponent.kendoReadOptionsData
-    );
+    const gridColumns = gridOptions.columns.filter(c => c.field && !c.hidden && c.field !== "icon");
+    const dataOptions = Object.assign({}, this.vueComponent.kendoReadOptionsData);
     dataOptions.take = "all";
     delete dataOptions.pageSize;
-    const queryParams = this.vueComponent.privateScope.getQueryParamsData(
-      gridColumns,
-      dataOptions
-    );
+    const queryParams = this.vueComponent.privateScope.getQueryParamsData(gridColumns, dataOptions);
     queryParams.columnsConfig = gridColumns.map(c => {
       return {
         title: c.title,
@@ -367,44 +318,29 @@ export default class GridActions extends AbstractGridUtil {
             });
         } else {
           this.displayExportErrorStatus();
-          this.vueComponent.gridError.error(
-            "Export failed: the export function must return a Promise"
-          );
+          this.vueComponent.gridError.error("Export failed: the export function must return a Promise");
         }
       } else {
         this.displayExportErrorStatus();
-        this.vueComponent.gridError.error(
-          "Export failed: no export function are provided"
-        );
+        this.vueComponent.gridError.error("Export failed: no export function are provided");
       }
     }
   }
 
   doDefaultExport(transaction, queryParams) {
     const transactionId = transaction.transactionId;
-    const exportUrl = this.vueComponent.resolveExportUrl.replace(
-      "<transaction>",
-      transactionId
-    );
+    const exportUrl = this.vueComponent.resolveExportUrl.replace("<transaction>", transactionId);
     if (!exportUrl) {
       this.displayExportErrorStatus();
-      this.vueComponent.gridError.error(
-        "Export failed: the default export url cannot be used"
-      );
+      this.vueComponent.gridError.error("Export failed: the default export url cannot be used");
     } else {
       this.vueComponent.$http
-        .get(
-          this.vueComponent.resolveExportUrl.replace(
-            "<transaction>",
-            transactionId
-          ),
-          {
-            timeout: 0,
-            responseType: "blob",
-            params: queryParams,
-            paramsSerializer: params => this.vueComponent.$.param(params)
-          }
-        )
+        .get(this.vueComponent.resolveExportUrl.replace("<transaction>", transactionId), {
+          timeout: 0,
+          responseType: "blob",
+          params: queryParams,
+          paramsSerializer: params => this.vueComponent.$.param(params)
+        })
         .then(response => this.downloadExportFile(response.data))
         .catch(err => {
           this.displayExportErrorStatus();
@@ -558,10 +494,7 @@ export default class GridActions extends AbstractGridUtil {
         "data-export-action": "all"
       }
     });
-    exportMenu.append(
-      submenus,
-      exportMenu.element.find(".k-item.k-first[data-export-menu=root]")
-    );
+    exportMenu.append(submenus, exportMenu.element.find(".k-item.k-first[data-export-menu=root]"));
   }
 
   initToolbarExportTemplate(exportElement) {

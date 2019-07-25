@@ -57,9 +57,7 @@ class RepoLockXML extends XMLLoader {
 
   checkStructure() {
     if (!this.data.hasOwnProperty("compose-lock")) {
-      throw new RepoLockXMLError(
-        `Could not find /compose-lock node in '${this.filename}'`
-      );
+      throw new RepoLockXMLError(`Could not find /compose-lock node in '${this.filename}'`);
     }
     if (!this.data["compose-lock"].hasOwnProperty("$")) {
       throw new RepoLockXMLError(`/compose-lock is not a valid root node`);
@@ -80,20 +78,14 @@ class RepoLockXML extends XMLLoader {
     let foundIndex = -1;
     for (let i = 0; i < moduleList.length; i++) {
       let module = moduleList[i];
-      if (
-        module.hasOwnProperty("$") &&
-        module.$.hasOwnProperty("name") &&
-        module.$.name === name
-      ) {
+      if (module.hasOwnProperty("$") && module.$.hasOwnProperty("name") && module.$.name === name) {
         foundIndex = i;
         break;
       }
     }
 
     if (foundIndex < 0 && throwErrorIfNotFound) {
-      throw new RepoLockXMLError(
-        `Module '${name}' not found in locked dependencies`
-      );
+      throw new RepoLockXMLError(`Module '${name}' not found in locked dependencies`);
     }
     if (foundIndex >= 0) {
       moduleList.splice(foundIndex, 1);
@@ -131,9 +123,7 @@ class RepoLockXML extends XMLLoader {
    */
   addModule({ name, version, resources }) {
     if (this.getModuleByName(name)) {
-      throw new RepoLockXMLError(
-        `Module '${name}' already exists in locked dependencies`
-      );
+      throw new RepoLockXMLError(`Module '${name}' already exists in locked dependencies`);
     }
 
     let newModule = {

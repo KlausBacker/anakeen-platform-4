@@ -4,10 +4,7 @@ import { publicMethods } from "../mixins/AnkWebComponentsMixin";
 import PackageInfo from "../../package.json";
 
 // Declare install function executed by Vue.use()
-export function install(
-  Vue,
-  opts = { globalVueComponents: false, webComponents: false }
-) {
+export function install(Vue, opts = { globalVueComponents: false, webComponents: false }) {
   if (install.installed === true) return;
   install.installed = true;
   Vue.use(VueSetup, opts);

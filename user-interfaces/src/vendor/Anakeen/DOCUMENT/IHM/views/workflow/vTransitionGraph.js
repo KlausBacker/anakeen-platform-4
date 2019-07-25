@@ -27,12 +27,7 @@ define([
     render: function vTransitionGraph_render() {
       var currentView = this;
 
-      this.$el.append(
-        $(
-          '<div class="dcpTransitionGraph--from"/>' +
-            '<div class="dcpTransitionGraph--to"/>'
-        )
-      );
+      this.$el.append($('<div class="dcpTransitionGraph--from"/>' + '<div class="dcpTransitionGraph--to"/>'));
 
       this.displayCurrentState();
 
@@ -43,9 +38,7 @@ define([
         function vTransitionGraph_renderMouseOver() {
           var to = $(this).data("to");
           if (!$(this).hasClass("dcpTransitionGraph_state--error")) {
-            currentView.$el
-              .find(".dcpTransitionGraph__arrow--" + to)
-              .addClass("dcpTransitionGraph__arrow--selected");
+            currentView.$el.find(".dcpTransitionGraph__arrow--" + to).addClass("dcpTransitionGraph__arrow--selected");
           }
         }
       );
@@ -53,9 +46,7 @@ define([
         "mouseout",
         ".dcpTransitionGraph--to .dcpTransitionGraph_state",
         function vTransitionGraph_renderMouseOut() {
-          currentView.$el
-            .find(".dcpTransitionGraph__arrow")
-            .removeClass("dcpTransitionGraph__arrow--selected");
+          currentView.$el.find(".dcpTransitionGraph__arrow").removeClass("dcpTransitionGraph__arrow--selected");
         }
       );
 
@@ -90,16 +81,11 @@ define([
                 currentView.previousHeight = currentView.$el.height();
               },
               resize: function vTransitionGraph_windowResize() {
-                var isMaximized = currentView.$el.data("kendoWindow").options
-                  .isMaximized;
+                var isMaximized = currentView.$el.data("kendoWindow").options.isMaximized;
 
                 if (!isMaximized && currentView.isMaximizedNow) {
-                  currentView.$el
-                    .find(".dcpTransitionGraph--to")
-                    .height(currentView.previousHeight);
-                  currentView.$el
-                    .find(".dcpTransitionGraph--from")
-                    .height(currentView.previousHeight);
+                  currentView.$el.find(".dcpTransitionGraph--to").height(currentView.previousHeight);
+                  currentView.$el.find(".dcpTransitionGraph--from").height(currentView.previousHeight);
                   currentView.isMaximizedNow = false;
                 }
                 currentView.displayArrows();
@@ -139,13 +125,10 @@ define([
 
       _.each(states, function vTransitionGraphdisplayCurrentStateEach(item) {
         if (item.transition && item.transition.authorized !== false) {
-          item.title = Mustache.render(
-            i18n.___("Next step. Apply transition {{label}}", "ddui"),
-            { label: item.transition.label }
-          );
-          currentView.$el
-            .find(".dcpTransitionGraph--to")
-            .append(Mustache.render(tpl, item));
+          item.title = Mustache.render(i18n.___("Next step. Apply transition {{label}}", "ddui"), {
+            label: item.transition.label
+          });
+          currentView.$el.find(".dcpTransitionGraph--to").append(Mustache.render(tpl, item));
         }
       });
     },
@@ -154,9 +137,7 @@ define([
       var states = this.model.get("workflowStates");
       var currentView = this;
 
-      var $from = this.$el.find(
-        ".dcpTransitionGraph--from .dcpTransitionGraph_state"
-      );
+      var $from = this.$el.find(".dcpTransitionGraph--from .dcpTransitionGraph_state");
       var $to;
 
       this.$el.find(".dcpTransitionGraph__arrow").remove();
@@ -165,11 +146,7 @@ define([
       this.$el.find(".dcpTransitionGraph--from").height(this.$el.height());
       _.each(states, function vTransitionGraph_connectStates(item) {
         if (item.transition && item.transition.authorized !== false) {
-          $to = currentView.$el.find(
-            ".dcpTransitionGraph--to .dcpTransitionGraph_state[data-to=" +
-              item.id +
-              "]"
-          );
+          $to = currentView.$el.find(".dcpTransitionGraph--to .dcpTransitionGraph_state[data-to=" + item.id + "]");
           currentView.connect($from.get(0), $to.get(0), 2, item);
         }
       });

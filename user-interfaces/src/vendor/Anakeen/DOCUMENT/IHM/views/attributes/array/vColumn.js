@@ -6,14 +6,7 @@ define([
   "mustache",
   "dcpDocument/views/attributes/vAttribute",
   "dcpDocument/views/document/attributeTemplate"
-], function vColumn(
-  $,
-  _,
-  Backbone,
-  Mustache,
-  ViewAttribute,
-  attributeTemplate
-) {
+], function vColumn($, _, Backbone, Mustache, ViewAttribute, attributeTemplate) {
   "use strict";
 
   return ViewAttribute.extend({
@@ -23,11 +16,7 @@ define([
     attributeEvents: function vColumnEvents() {
       var events = {};
       this._mergeEvent(events, "delete", "deleteValue");
-      this._mergeEvent(
-        events,
-        "changeattrmenuvisibility",
-        "changeMenuVisibility"
-      );
+      this._mergeEvent(events, "changeattrmenuvisibility", "changeMenuVisibility");
       this._mergeEvent(events, "changeattrsvalue", "changeAttributesValue");
       this._mergeEvent(events, "fetchdocument", "loadDocument");
       this._mergeEvent(events, "externallinkselected", "externalLinkSelected");
@@ -41,13 +30,7 @@ define([
     },
 
     _mergeEvent: function vColumn_addEvent(events, name, method) {
-      events[
-        "dcpattribute" +
-          name +
-          ' .dcpArray__content__cell[data-attrid="' +
-          this.model.id +
-          '"]'
-      ] = method;
+      events["dcpattribute" + name + ' .dcpArray__content__cell[data-attrid="' + this.model.id + '"]'] = method;
     },
 
     render: function vColumnRender() {
@@ -55,17 +38,13 @@ define([
       if (this.displayLabel === false) {
         // Need to defer because thead is not construct yet
         _.defer(function vColumnHideHead() {
-          var $head = scope.$el.find(
-            '.dcpArray__head__cell[data-attrid="' + scope.model.id + '"]'
-          );
+          var $head = scope.$el.find('.dcpArray__head__cell[data-attrid="' + scope.model.id + '"]');
           $head.hide();
         });
       } else {
         // Need to defer because thead is not construct yet
         _.defer(function vColumnDescriptionHead() {
-          var $head = scope.$el.find(
-            '.dcpArray__head__cell[data-attrid="' + scope.model.id + '"]'
-          );
+          var $head = scope.$el.find('.dcpArray__head__cell[data-attrid="' + scope.model.id + '"]');
           attributeTemplate.insertDescription(scope, $head);
         });
       }
@@ -80,9 +59,7 @@ define([
      * Change the label of the column
      */
     changeLabel: function vColumnChangeLabel() {
-      this.$el
-        .find('.dcpArray__head__cell[data-attrid="' + this.model.id + '"]')
-        .text(this.model.get("label"));
+      this.$el.find('.dcpArray__head__cell[data-attrid="' + this.model.id + '"]').text(this.model.get("label"));
     },
 
     /**
@@ -96,9 +73,7 @@ define([
           try {
             if (this.options) {
               var cells = this.options.parentElement.find(
-                  '.dcpArray__content__cell[data-attrid="' +
-                    this.model.id +
-                    '"]'
+                  '.dcpArray__content__cell[data-attrid="' + this.model.id + '"]'
                 ),
                 $el,
                 data = this.getData(index),

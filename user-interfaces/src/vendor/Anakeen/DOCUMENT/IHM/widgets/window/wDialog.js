@@ -1,7 +1,4 @@
-define(["jquery", "underscore", "dcpDocument/widgets/widget"], function wDialog(
-  $,
-  _
-) {
+define(["jquery", "underscore", "dcpDocument/widgets/widget"], function wDialog($, _) {
   "use strict";
 
   $.widget("dcp.dcpDialog", {
@@ -27,25 +24,20 @@ define(["jquery", "underscore", "dcpDocument/widgets/widget"], function wDialog(
           _.defer(_.bind(currentWidget.destroy, currentWidget));
         };
       } else {
-        this.options.window.close = _.wrap(
-          this.options.window.close,
-          function dcpDialog_closeWrap(close) {
-            var event = arguments[1];
-            close.apply(this, _.rest(arguments));
-            if (!event.isDefaultPrevented()) {
-              _.defer(_.bind(currentWidget.destroy, currentWidget));
-            }
+        this.options.window.close = _.wrap(this.options.window.close, function dcpDialog_closeWrap(close) {
+          var event = arguments[1];
+          close.apply(this, _.rest(arguments));
+          if (!event.isDefaultPrevented()) {
+            _.defer(_.bind(currentWidget.destroy, currentWidget));
           }
-        );
+        });
       }
 
       if ($(window).width() <= this.options.maximizeWidth) {
         this.options.window.width = "auto";
         this.options.window.heigth = "auto";
       }
-      this.dialogWindow = this.element
-        .kendoWindow(this.options.window)
-        .data("kendoWindow");
+      this.dialogWindow = this.element.kendoWindow(this.options.window).data("kendoWindow");
     },
 
     open: function dcpDialog_Open() {
@@ -77,11 +69,7 @@ define(["jquery", "underscore", "dcpDocument/widgets/widget"], function wDialog(
     },
 
     _destroy: function dcpDialog_destroy() {
-      if (
-        this.element &&
-        this.dialogWindow &&
-        this.element.data("kendoWindow")
-      ) {
+      if (this.element && this.dialogWindow && this.element.data("kendoWindow")) {
         this.dialogWindow.destroy();
         this.dialogWindow = null;
       } else {

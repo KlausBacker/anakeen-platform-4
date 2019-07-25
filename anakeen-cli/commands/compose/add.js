@@ -17,8 +17,7 @@ exports.builder = {
     default: "latest"
   },
   registry: {
-    description:
-      "Registry's unique name/identifier from which the Module is to be downloaded",
+    description: "Registry's unique name/identifier from which the Module is to be downloaded",
     type: "string",
     requiresArg: true
   },
@@ -31,8 +30,7 @@ exports.builder = {
 
 exports.handler = async argv => {
   signale.start(
-    `Adding 'app' module '${argv.name}' with version '${argv.version}' ` +
-      `from registry '${argv.registry}'...`
+    `Adding 'app' module '${argv.name}' with version '${argv.version}' ` + `from registry '${argv.registry}'...`
   );
   try {
     await new Compose({ debug: argv.debug }).addModule(argv);

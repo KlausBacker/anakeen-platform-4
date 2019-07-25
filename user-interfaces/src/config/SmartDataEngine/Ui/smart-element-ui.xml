@@ -9,6 +9,14 @@
             <sde:description>Get translation catalog</sde:description>
             <sde:requiredAccess/>
         </sde:route>
+        <sde:route name="SmartForm:View">
+            <sde:priority>1</sde:priority>
+            <sde:callable>Anakeen\Routes\Ui\SmartFormView</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/smart-forms/{docid}/views/{view}</sde:pattern>
+            <sde:description>Get standard view form data configuration</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
         <sde:route name="Document:View">
             <sde:priority>1</sde:priority>
             <sde:callable>Anakeen\Routes\Ui\DocumentView</sde:callable>

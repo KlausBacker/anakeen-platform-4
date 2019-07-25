@@ -21,9 +21,7 @@ export default {
         const validValues = ["left", "right", "top", "bottom"];
         const valid = validValues.indexOf(value) >= 0;
         if (!valid) {
-          console.error(
-            `Property "position" must be in ${JSON.stringify(validValues)}`
-          );
+          console.error(`Property "position" must be in ${JSON.stringify(validValues)}`);
         }
         return valid;
       }
@@ -39,11 +37,7 @@ export default {
         const validValues = ["auto", "all", "vendor"];
         const valid = validValues.indexOf(value) >= 0;
         if (!valid) {
-          console.error(
-            `Property "vendorCategory" must be in ${JSON.stringify(
-              validValues
-            )}`
-          );
+          console.error(`Property "vendorCategory" must be in ${JSON.stringify(validValues)}`);
         }
         return valid;
       }
@@ -110,9 +104,7 @@ export default {
     },
     filterPlaceholder() {
       if (this.hasFilter && typeof this.filter === "object") {
-        return (
-          this.filter.placeholder || this.translations.listFilterPlaceholder
-        );
+        return this.filter.placeholder || this.translations.listFilterPlaceholder;
       }
       return this.translations.listFilterPlaceholder;
     },
@@ -171,11 +163,7 @@ export default {
         };
         if (this.hasFilter && typeof this.filter === "object") {
           if (typeof this.filter.doFilter === "function") {
-            filterObject = this.filter.doFilter.call(
-              null,
-              filterValue,
-              filterObject
-            );
+            filterObject = this.filter.doFilter.call(null, filterValue, filterObject);
           }
         }
         this.dataSource.filter(filterObject);

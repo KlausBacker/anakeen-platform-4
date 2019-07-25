@@ -86,12 +86,7 @@ export const createEvent = (eventName, params = {}, originalEvent) => {
     event = new CustomEvent(eventName, options);
   } else {
     event = document.createEvent("CustomEvent");
-    event.initCustomEvent(
-      eventName,
-      options.bubbles,
-      options.cancelable,
-      options.detail
-    );
+    event.initCustomEvent(eventName, options.bubbles, options.cancelable, options.detail);
   }
 
   if (originalEvent !== undefined) {

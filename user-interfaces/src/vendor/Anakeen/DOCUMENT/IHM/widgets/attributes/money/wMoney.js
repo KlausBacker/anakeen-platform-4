@@ -2,10 +2,7 @@
   "use strict";
 
   if (typeof define === "function" && define.amd) {
-    define([
-      "jquery",
-      "dcpDocument/widgets/attributes/double/wDouble"
-    ], factory);
+    define(["jquery", "dcpDocument/widgets/attributes/double/wDouble"], factory);
   } else {
     //noinspection JSUnresolvedVariable
     factory(window.jQuery);
@@ -34,13 +31,10 @@
           case "en":
           case "ga": // Ireland Irish
             // currency before
-            options.format =
-              this.options.renderOptions.currency.replace("$", "\\$") +
-              options.format;
+            options.format = this.options.renderOptions.currency.replace("$", "\\$") + options.format;
             break;
           default:
-            options.format +=
-              " " + this.options.renderOptions.currency.replace("$", "\\$");
+            options.format += " " + this.options.renderOptions.currency.replace("$", "\\$");
         }
       }
 

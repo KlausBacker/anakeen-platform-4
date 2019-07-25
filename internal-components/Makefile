@@ -6,7 +6,7 @@ YARN_BIN=yarn
 
 app:
 	$(YARN_BIN) build
-
+app-test-autorelease:
 app-autorelease: app
 app-test: app
 app-all: app
