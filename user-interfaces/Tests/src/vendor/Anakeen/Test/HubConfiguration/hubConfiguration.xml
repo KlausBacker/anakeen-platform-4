@@ -4,7 +4,7 @@
     <hub_instance_config>
       <hub_instance>
         <instance_logical_name>UI_TEST</instance_logical_name>
-        <hub_instanciation_icone mime="" title="" xsi:nil="true"/>
+        <hub_instanciation_icone vid="" mime="image/png" title="uitest.png">iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4gIODQkWIImpMQAAAvJJREFUWMO9102IHUUQB/DfJoZlkZBVCQY/EZUhIiiLRMkhC7KgBBXFPQmSeFNzicMEyUVECIo2syF41WQhR2VvXgyoh4iihgRF7ECICIpswETiB3E166WejM/3fPN2X7YuU91T1fXvqurq6jGrpDqnWcxhEbNlUZ0dRn+d1dMcbsIUymGVRwFgsQ/fiq4aAYDZ2PkiXhtWeaxlnDfghiHX/qEsqqVReeAunBwSwL04tRY5sCpq64HvsRevYgIfYaFL5glM43fsD53R5EAjF85jEgfLonqh699cgLxQFtU1a3IM65yuXasQdNNEndOn2FbndAwPrzWAB3Fn8DPYtlIAKw3BN7gU/C84s9YAzmA7XsT9ZVEtXvEQ1DltxHhnXBbVCZzoITpe57SxLKqLI/NAndM6HI0aAF/2EOvMTeBo6IwsBIfwWPAf4EgPmSPxT8geGgmAOqf92BPD09F0XO6Wi7nZkIE9obvySljntAuHQ+5HbB/U8dQ53YaPsQXLeKYsqvmhAdQ5zeA9bMDFqPPfYkcLz07hpeCXsLMsqmOtAdQ5Ffgk6v4feKQsqvfrnBbwOP7EX81TMYAu4IGyqPLAHKhzujpuusmYei6MPxXGj0dzsglvtQQwiYVYe2ASvomtnYazLKq365yuw8GYO1AW1bmyqC6hGqLmbI21+wOoc3oIu2N4HPuCfx2bg7+xoXJrgz+MJ6M/PNcHxO6w8d8cqHMaw1fRfv2Gu8uiOlvnNIXPGmB/xsv4KRLt9vBU2VjrHnyB9T1AfB1rL3d7YCaMwxuN43agS25TvAXmw3hn982acKpPme70lzO9QjAd3+VOrGL3be76Xo3J/3VF070AdC6my/i1cwJaJtgrdU4TjRA8izvaXILN27DTdq9HqnPai0dbAtiBXOf0IW5p7rAPnezlgXcbdfx5fIfrhzhmN+PpFsZPh61/A4hXzE50qtWWK/AMyFGWl/qW4jqnceyKm+2+AcnUhs7jc7yD+Shg/9Dfeb3cHT3dexkAAAAASUVORK5CYII=</hub_instanciation_icone>
       </hub_instance>
       <hub_instance_label_frame>
         <hub_instance_titles>
