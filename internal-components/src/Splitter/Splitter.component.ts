@@ -25,17 +25,16 @@ export default class SplitterComponent extends Vue {
       if (savedSize) {
         this.$refs.ankSplitter.kendoWidget().size(".k-pane:first", savedSize);
       }
-      this.$refs.ankSplitter
-        .kendoWidget()
-        .bind("resize", this.onSplitterResize);
     }
+
+    this.$refs.ankSplitter.kendoWidget().bind("resize", this.onSplitterResize);
   }
 
   public onSplitterResize() {
-    window.localStorage.setItem(
-      this.localStorageKey,
-      this.$refs.ankSplitter.kendoWidget().size(".k-pane:first")
-    );
+    if (this.localStorageKey) {
+      window.localStorage.setItem(this.localStorageKey, this.$refs.ankSplitter.kendoWidget().size(".k-pane:first"));
+    }
+    window.dispatchEvent(new Event("resize"));
   }
   public disableEmptyContent() {
     this.splitterEmpty = false;

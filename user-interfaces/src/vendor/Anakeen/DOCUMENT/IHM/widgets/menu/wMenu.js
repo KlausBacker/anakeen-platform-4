@@ -16,7 +16,9 @@ define([
     _create: function wMenuCreate() {
       this._tooltips = [];
       this.popupWindows = [];
-      this._initStructure();
+      if (this.options.menus && this.options.menus.length > 0) {
+        this._initStructure();
+      }
     },
 
     _initStructure: function wMenuInitStructure() {

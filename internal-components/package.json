@@ -37,6 +37,7 @@
     "@progress/kendo-layout-vue-wrapper": "^2019.2.621",
     "axios": "^0.19.0",
     "core-js": "3.1.4",
+    "splitpanes": "^1.14.2",
     "vue-class-component": "^7.0.2",
     "vue-property-decorator": "^8.2.1"
   }

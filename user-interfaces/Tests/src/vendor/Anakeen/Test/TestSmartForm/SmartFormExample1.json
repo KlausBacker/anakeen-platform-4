@@ -1,25 +1,49 @@
 {
   "title": "Mon formulaire préféré",
   "type": "Invitation",
+  "icon": "/api/v2/images/assets/sizes/24x24c/se-image.png",
+  "structure": [
+    {
+      "content": [
+        {
+          "label": "Title",
+          "name": "my_title",
+          "type": "text"
+        },
+        {
+          "label": "Date de rédaction",
+          "name": "my_date",
+          "type": "date"
+        },
+        {
+          "label": "Remarques",
+          "name": "my_comment",
+          "type": "htmltext"
+        },
+        {
+          "label": "Criticité",
+          "name": "my_level",
+          "type": "enum",
+          "enumItems": [
+            { "key": "low", "label": "Faible" },
+            { "key": "medium", "label": "Moyen" },
+            { "key": "hight", "label": "Élevé" }
+          ]
+        }
+      ],
+      "label": "My first frame",
+      "name": "my_firstframe",
+      "type": "frame"
+    }
+  ],
   "menu": [
     {
       "beforeContent": "<div class=\"fa fa-superpowers\" />",
-      "confirmationOptions": null,
-      "confirmationText": null,
       "htmlAttributes": { "class": "menu--left" },
-      "htmlLabel": "",
-      "iconUrl": "",
       "id": "special",
-      "important": false,
       "label": "Special",
-      "target": "_self",
-      "targetOptions": null,
-      "tooltipHtml": false,
-      "tooltipLabel": "",
-      "tooltipPlacement": "",
       "type": "itemMenu",
-      "url": "#action/superpower",
-      "visibility": "visible"
+      "url": "#action/superpower"
     },
     {
       "beforeContent": "<div class=\"fa fa-save\" />",
@@ -56,35 +80,15 @@
           { "number": 2, "minWidth": "70rem", "maxWidth": "100rem", "grow": true },
           { "number": 3, "minWidth": "100rem", "maxWidth": null, "grow": true }
         ]
+      },
+      "my_level": {
+        "editDisplay": "horizontal"
       }
     }
   },
-  "structure": [
-    {
-      "content": [
-        {
-          "label": "Title",
-          "name": "my_title",
-          "type": "text"
-        },
-        {
-          "label": "Date de rédaction",
-          "name": "my_date",
-          "type": "date"
-        },
-        {
-          "label": "Remarques",
-          "name": "my_comment",
-          "type": "htmltext"
-        }
-      ],
-      "label": "My first frame",
-      "name": "my_firstframe",
-      "type": "frame"
-    }
-  ],
   "values": {
     "my_date": "2019-07-24",
-    "my_title": "Hello world"
+    "my_title": "Hello world",
+    "my_comment": "<p>Ursidae</p><p><a data-cke-saved-href=\"https://commons.wikimedia.org/wiki/File:Ursus_arctos_Dessin_ours_brun_grand.jpg?uselang=fr\" href=\"https://commons.wikimedia.org/wiki/File:Ursus_arctos_Dessin_ours_brun_grand.jpg?uselang=fr\"><img alt=\"Description de cette image, également commentée ci-après\" data-cke-saved-src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Ursus_arctos_Dessin_ours_brun_grand.jpg/290px-Ursus_arctos_Dessin_ours_brun_grand.jpg\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Ursus_arctos_Dessin_ours_brun_grand.jpg/290px-Ursus_arctos_Dessin_ours_brun_grand.jpg\" style=\"height: 182px; width: 290px; float: right;\"></a></p><p><a data-cke-saved-href=\"https://fr.wikipedia.org/wiki/Ours_brun\" href=\"https://fr.wikipedia.org/wiki/Ours_brun\">Ours brun</a>&nbsp;(<em>Ursus arctos</em>)</p><p>Les&nbsp;<strong>ours</strong>&nbsp;forment la&nbsp;<a data-cke-saved-href=\"https://fr.wikipedia.org/wiki/Famille_(biologie)\" href=\"https://fr.wikipedia.org/wiki/Famille_(biologie)\">famille</a>&nbsp;de&nbsp;<a data-cke-saved-href=\"https://fr.wikipedia.org/wiki/Mammif%C3%A8res\" href=\"https://fr.wikipedia.org/wiki/Mammif%C3%A8res\">mammifères</a>&nbsp;des&nbsp;<strong>ursidés</strong>&nbsp;(<strong>Ursidae</strong>), de l'ordre des&nbsp;<a data-cke-saved-href=\"https://fr.wikipedia.org/wiki/Carnivora\" href=\"https://fr.wikipedia.org/wiki/Carnivora\">carnivores</a>&nbsp;(<a data-cke-saved-href=\"https://fr.wikipedia.org/wiki/Carnivora\" href=\"https://fr.wikipedia.org/wiki/Carnivora\">Carnivora</a>). Le&nbsp;<a data-cke-saved-href=\"https://fr.wikipedia.org/wiki/Grand_panda\" href=\"https://fr.wikipedia.org/wiki/Grand_panda\">Grand panda</a>, dont la classification a longtemps prêté à débat, est aujourd'hui considéré comme un&nbsp;<strong>ours</strong>&nbsp;<a data-cke-saved-href=\"https://fr.wikipedia.org/wiki/Herbivore\" href=\"https://fr.wikipedia.org/wiki/Herbivore\">herbivore</a>&nbsp;au sein de cette famille<a data-cke-saved-href=\"https://fr.wikipedia.org/wiki/Ursidae#cite_note-1\" href=\"https://fr.wikipedia.org/wiki/Ursidae#cite_note-1\">1</a>,<a data-cke-saved-href=\"https://fr.wikipedia.org/wiki/Ursidae#cite_note-2\" href=\"https://fr.wikipedia.org/wiki/Ursidae#cite_note-2\">2</a>. Il n'existe que huit espèces d'ours vivantes réparties dans une grande variété d'<a data-cke-saved-href=\"https://fr.wikipedia.org/wiki/Habitat_(%C3%A9cologie)\" href=\"https://fr.wikipedia.org/wiki/Habitat_(%C3%A9cologie)\">habitats</a>, à la fois dans l'hémisphère Nord et dans une partie de l'hémisphère Sud. Les ours vivent sur les continents d'<a data-cke-saved-href=\"https://fr.wikipedia.org/wiki/Europe\" href=\"https://fr.wikipedia.org/wiki/Europe\">Europe</a>, d'<a data-cke-saved-href=\"https://fr.wikipedia.org/wiki/Am%C3%A9rique_du_Nord\" href=\"https://fr.wikipedia.org/wiki/Am%C3%A9rique_du_Nord\">Amérique du Nord</a>, d'<a data-cke-saved-href=\"https://fr.wikipedia.org/wiki/Am%C3%A9rique_du_Sud\" href=\"https://fr.wikipedia.org/wiki/Am%C3%A9rique_du_Sud\">Amérique du Sud</a>, et en&nbsp;<a data-cke-saved-href=\"https://fr.wikipedia.org/wiki/Asie\" href=\"https://fr.wikipedia.org/wiki/Asie\">Asie</a>.</p>"
   }
 }
