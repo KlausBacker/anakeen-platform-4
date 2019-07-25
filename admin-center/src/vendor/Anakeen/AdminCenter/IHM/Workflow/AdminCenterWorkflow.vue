@@ -4,9 +4,7 @@
       ref="wflSSList"
       position="left"
       :filter="{ placeholder: 'Search a workflow' }"
-      :selected="selectedWfl"
-      @workflow-clicked="onItemClicked"
-      @wfl-list-ready="onListReady"
+      v-model="selectedWfl"
     >
     </wfl-list>
     <div class="workflow-content">
@@ -22,10 +20,10 @@
         ref="wflSplitter"
       >
         <template slot="left">
-          <div class="wfl-graph" v-html="wflGraph"></div>
+          <img class="wfl-graph" :src="getGraphUrl"></img>
         </template>
         <template slot="right">
-          <wfl-data :wflName="wflName" @EditStepColorSuccess="reloadGraph"></wfl-data>
+          <wfl-data :wflName="selectedWfl" @EditStepColorSuccess="force=Math.random()"></wfl-data>
         </template>
       </ank-splitter>
     </div>
