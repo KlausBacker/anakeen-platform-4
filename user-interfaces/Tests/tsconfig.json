@@ -14,14 +14,6 @@
     "lib": ["dom", "esnext", "es6"]
   },
   "include": [
-    "./components/src/**/*.vue",
-    "./components/src/**/*.ts",
-    "./src/vendor/Anakeen/DOCUMENT/IHM/widgets/globalController/**/*.ts"
-  ],
-  "files": [
-    "./vue-shims.d.ts",
-    "./vue-type-shims.d.ts",
-    "./kendo-shims.d.ts",
-    "./template-shims.d.ts"
+    "./src/**/*.ts"
   ]
 }

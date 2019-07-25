@@ -1,4 +1,4 @@
-/* tslint:disable:object-literal-sort-keys */
+/* tslint:disable:object-literal-sort-keys no-console */
 import AnkSplitter from "@anakeen/internal-components/lib/Splitter";
 import AnkSmartForm from "@anakeen/user-interfaces/components/lib/AnkSmartForm";
 import * as example from "./SmartFormExample1.json";
