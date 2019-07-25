@@ -19,7 +19,8 @@ import Component from "vue-class-component";
 export default class TestSmartFormController extends Vue {
   public json: object = example;
   public options: any = {
-    mode: "text"
+    mode: "code",
+    plus:false
   };
 
   public panes: object[] = [

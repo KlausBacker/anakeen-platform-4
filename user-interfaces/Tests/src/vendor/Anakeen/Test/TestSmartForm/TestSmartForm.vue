@@ -7,9 +7,7 @@
     >
       <template slot="left">
         <div class="pane left-pane">
-          <header><h1>Configuration </h1>
-            <input type="checkbox" @click="toggleMode"/>
-          </header>
+          <header><h1>Configuration </h1></header>
           <v-jsoneditor class="json-editor" v-model="json" :options="options" :plus="false" height="400px" @error="onError"/>
         </div>
       </template>

@@ -23,9 +23,11 @@ define(["jquery", "underscore"], function libSmartForm($, _) {
     response.data.view.documentData.document.properties.initid = model.get("initid");
     response.data.view.documentData.document.properties.id = model.get("initid");
     response.data.view.documentData.document.attributes = {};
-
-    if (formConfig.renderOptions.fields) {
-      response.data.view.renderOptions.attributes = formConfig.renderOptions.fields;
+    response.data.view.renderOptions.attributes = {};
+    if (formConfig.renderOptions) {
+      if (formConfig.renderOptions.fields) {
+        response.data.view.renderOptions.attributes = formConfig.renderOptions.fields;
+      }
     }
 
     response.data.view.menu = formConfig.menu || [];

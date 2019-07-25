@@ -4,22 +4,11 @@
   "menu": [
     {
       "beforeContent": "<div class=\"fa fa-superpowers\" />",
-      "confirmationOptions": null,
-      "confirmationText": null,
       "htmlAttributes": { "class": "menu--left" },
-      "htmlLabel": "",
-      "iconUrl": "",
       "id": "special",
-      "important": false,
       "label": "Special",
-      "target": "_self",
-      "targetOptions": null,
-      "tooltipHtml": false,
-      "tooltipLabel": "",
-      "tooltipPlacement": "",
       "type": "itemMenu",
-      "url": "#action/superpower",
-      "visibility": "visible"
+      "url": "#action/superpower"
     },
     {
       "beforeContent": "<div class=\"fa fa-save\" />",
@@ -56,6 +45,9 @@
           { "number": 2, "minWidth": "70rem", "maxWidth": "100rem", "grow": true },
           { "number": 3, "minWidth": "100rem", "maxWidth": null, "grow": true }
         ]
+      },
+      "my_level": {
+        "editDisplay": "horizontal"
       }
     }
   },
@@ -76,6 +68,16 @@
           "label": "Remarques",
           "name": "my_comment",
           "type": "htmltext"
+        },
+        {
+          "label": "Criticité",
+          "name": "my_level",
+          "type": "enum",
+          "enumItems": [
+            { "key": "low", "label": "Faible" },
+            { "key": "medium", "label": "Moyen" },
+            { "key": "hight", "label": "Élevé" }
+          ]
         }
       ],
       "label": "My first frame",
