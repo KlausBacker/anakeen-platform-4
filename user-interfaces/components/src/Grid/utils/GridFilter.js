@@ -12,9 +12,7 @@ class FilterTemplate {
     e.element.hide();
     $inputDate.kendoDatePicker({
       change: function() {
-        e.element.val(
-          FilterTemplate.convertDateToPseudoIsoString(this.value())
-        );
+        e.element.val(FilterTemplate.convertDateToPseudoIsoString(this.value()));
         e.element.trigger("change");
       }
     });
@@ -110,10 +108,7 @@ class FilterTemplate {
   }
 
   smartEltFilterTemplate(e, structureid) {
-    let $selectEle = this.$("<select/>").attr(
-      "data-field",
-      e.element.data("field")
-    );
+    let $selectEle = this.$("<select/>").attr("data-field", e.element.data("field"));
     $selectEle.insertBefore(e.element);
     $selectEle.addClass("filter-input--user");
     e.element.addClass("filter-input--data");
@@ -173,11 +168,7 @@ class FilterTemplate {
 
     if (options.date === true) {
       sDate =
-        dateObject.getFullYear() +
-        "-" +
-        padNumber(dateObject.getMonth() + 1) +
-        "-" +
-        padNumber(dateObject.getDate());
+        dateObject.getFullYear() + "-" + padNumber(dateObject.getMonth() + 1) + "-" + padNumber(dateObject.getDate());
     }
     if (options.date === true && options.time === true) {
       sDate += "T";
@@ -235,9 +226,7 @@ export default class GridFilter {
   }
 
   bindFilterEvents() {
-    let $dropDownOperator = this.grid
-      .$(this.grid.$refs.kendoGrid)
-      .find("input.k-dropdown-operator");
+    let $dropDownOperator = this.grid.$(this.grid.$refs.kendoGrid).find("input.k-dropdown-operator");
     if ($dropDownOperator.length) {
       $dropDownOperator.data("kendoDropDownList").list.width("auto");
 
@@ -278,10 +267,7 @@ export default class GridFilter {
             let $input = $cellInput.find(".filter-input");
             $label.text(this.grid.$(e.item).text());
 
-            if (
-              e.dataItem.value === "isempty" ||
-              e.dataItem.value === "isnotempty"
-            ) {
+            if (e.dataItem.value === "isempty" || e.dataItem.value === "isnotempty") {
               $cellInput.addClass("filter-no-input");
               $input.prop("disabled", true);
             } else if (e.dataItem.value === "extra") {
@@ -352,9 +338,7 @@ export default class GridFilter {
             fieldId = aFilter.filters[0].field;
           }
         }
-        let $th = this.grid
-          .$(this.grid.$refs.kendoGrid)
-          .find("th[data-field=" + fieldId + "]");
+        let $th = this.grid.$(this.grid.$refs.kendoGrid).find("th[data-field=" + fieldId + "]");
         let $input = $th.find(".filter-input--data");
         let $label = $th.find(".operator-label");
         let filterLabel = this.getFilterOperatorLabel(fieldId);
@@ -365,10 +349,7 @@ export default class GridFilter {
         $label.text(filterLabel);
         if (!this.isExtraOperator(fieldId)) {
           $th.removeClass("filter-no-input");
-          if (
-            aFilter.operator === "isempty" ||
-            aFilter.operator === "isnotempty"
-          ) {
+          if (aFilter.operator === "isempty" || aFilter.operator === "isnotempty") {
             $th.addClass("filter-no-input");
           }
         } else {
@@ -435,10 +416,7 @@ export default class GridFilter {
       additionalDropdown.text(this.grid.translations.selectOperator);
     }
 
-    if (
-      $container.data("type") === "docid" ||
-      $container.data("type") === "account"
-    ) {
+    if ($container.data("type") === "docid" || $container.data("type") === "account") {
       // Special toogle to switch to class keyword and autocomplete
       // when operator = titleContains
       if ($($selects.get(0)).val() === "titleContains") {
@@ -450,9 +428,7 @@ export default class GridFilter {
         const kSelect = $select.data("kendoDropDownList");
         kSelect.bind("select", event => {
           const $simpleInput = $container.find(".filter-input--data");
-          const $autocompleteInput = $container.find(
-            ".k-widget.filter-input--user"
-          );
+          const $autocompleteInput = $container.find(".k-widget.filter-input--user");
 
           if (event.dataItem.value === "titleContains") {
             $simpleInput.show();
@@ -470,9 +446,7 @@ export default class GridFilter {
     let $container = e.container;
     $container.find(".filter-input--data").each((k, item) => {
       let field = this.grid.$(item).data("field");
-      let $origin = this.grid.$(
-        ".k-filter-active .filter-input--user[data-field=" + field + "]"
-      );
+      let $origin = this.grid.$(".k-filter-active .filter-input--user[data-field=" + field + "]");
       let kOrigin = $origin.data("kendoComboBox");
       let kTarget = this.grid.$(item).data("kendoTarget");
 
@@ -496,9 +470,7 @@ export default class GridFilter {
 
   static beforeFilterGrid(e) {
     let field = e.field;
-    let $filterButton = e.sender.element.find(
-      ".k-filter-row th[data-field=" + field + "]"
-    );
+    let $filterButton = e.sender.element.find(".k-filter-row th[data-field=" + field + "]");
 
     if (e.filter && e.filter.filters[0].operator === "extra") {
       e.preventDefault();

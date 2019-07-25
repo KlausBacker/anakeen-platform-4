@@ -89,15 +89,11 @@ define([
       this.reactiveWidget();
       if (_.isObject(error)) {
         if (error.errorCode === "offline") {
-          errorMessage =
-            '<div class="dcpTransition--error">{{{htmlMessage}}}</div>';
+          errorMessage = '<div class="dcpTransition--error">{{{htmlMessage}}}</div>';
         } else {
-          errorMessage =
-            '<div class="dcpTransition--error">{{title}} {{{htmlMessage}}}</div>';
+          errorMessage = '<div class="dcpTransition--error">{{title}} {{{htmlMessage}}}</div>';
         }
-        $(Mustache.render(errorMessage || "", error)).insertBefore(
-          this.$el.find(".dcpTransition--buttons")
-        );
+        $(Mustache.render(errorMessage || "", error)).insertBefore(this.$el.find(".dcpTransition--buttons"));
       }
       if (attributes.length === 0) {
         $okButton.hide();
@@ -208,15 +204,9 @@ define([
       workflow.hasAttributes = attributes.length > 0;
       if (transition) {
         // Transition ask
-        this.$el
-          .find(".dcpTransition--header")
-          .append(Mustache.render(this.templates.htmlContent || "", workflow));
-        this.$el
-          .find(".dcpTransition--messages")
-          .append(Mustache.render(this.templates.htmlLoading || "", workflow));
-        this.$el
-          .find(".dcpTransition--buttons")
-          .append(Mustache.render(this.templates.htmlButtons || "", workflow));
+        this.$el.find(".dcpTransition--header").append(Mustache.render(this.templates.htmlContent || "", workflow));
+        this.$el.find(".dcpTransition--messages").append(Mustache.render(this.templates.htmlLoading || "", workflow));
+        this.$el.find(".dcpTransition--buttons").append(Mustache.render(this.templates.htmlButtons || "", workflow));
         this.$el.find(".dcpTransition-button-ok").tooltip();
 
         if (attributes.length === 0) {
@@ -230,32 +220,21 @@ define([
               if (saveXhr) {
                 saveXhr
                   .then(function vTransition_direct_afterSave() {
-                    currentView.model.trigger(
-                      "success",
-                      currentView.getMessages()
-                    );
+                    currentView.model.trigger("success", currentView.getMessages());
                   })
-                  .fail(function vTransition_direct_error(
-                    response,
-                    statusTxt,
-                    errorTxt
-                  ) {
+                  .fail(function vTransition_direct_error(response, statusTxt, errorTxt) {
                     if (response.responseJSON) {
                       let userMessage = response.responseJSON.userMessage;
 
-                      response.responseJSON.messages =
-                        response.responseJSON.messages || [];
+                      response.responseJSON.messages = response.responseJSON.messages || [];
                       response.responseJSON.messages.push({
                         contentText: userMessage
                       });
-                      _.each(
-                        response.responseJSON.messages,
-                        function vTransition_clickOnOk_displayError(aMessage) {
-                          currentView.displayError({
-                            title: aMessage.contentText
-                          });
-                        }
-                      );
+                      _.each(response.responseJSON.messages, function vTransition_clickOnOk_displayError(aMessage) {
+                        currentView.displayError({
+                          title: aMessage.contentText
+                        });
+                      });
                     } else {
                       if (errorTxt && !errorTxt.title && errorTxt.message) {
                         errorTxt.title = errorTxt.message;
@@ -276,29 +255,20 @@ define([
 
         // No use border color if same as background
         _.defer(function vTransition_renderWhiteOnWhite() {
-          currentView.$el
-            .find(".dcpTransition--activity")
-            .each(function vTransition_renderBorderColor() {
-              if (
-                currentView.$el.css("background-color") ===
-                $(this).css("border-color")
-              ) {
-                $(this).css("border-color", "");
-              }
-            });
+          currentView.$el.find(".dcpTransition--activity").each(function vTransition_renderBorderColor() {
+            if (currentView.$el.css("background-color") === $(this).css("border-color")) {
+              $(this).css("border-color", "");
+            }
+          });
         });
       } else if (state) {
         // Transition success
         this.$el
           .find(".dcpTransition--header")
-          .append(
-            Mustache.render(this.templates.htmlStateContent || "", workflow)
-          );
+          .append(Mustache.render(this.templates.htmlStateContent || "", workflow));
         this.$el
           .find(".dcpTransition--buttons")
-          .append(
-            Mustache.render(this.templates.htmlStateButtons || "", workflow)
-          );
+          .append(Mustache.render(this.templates.htmlStateButtons || "", workflow));
         this.$el.find(".dcpTransition-button-close").tooltip();
       }
 
@@ -338,29 +308,19 @@ define([
             .then(function vTransition_clickOnOk_afterSave() {
               currentView.model.trigger("success", currentView.getMessages());
             })
-            .fail(function vTransition_clickOnOk_error(
-              response,
-              statusTxt,
-              errorTxt
-            ) {
+            .fail(function vTransition_clickOnOk_error(response, statusTxt, errorTxt) {
               if (response.responseJSON) {
-                let userMessage =
-                  response.responseJSON.userMessage ||
-                  response.responseJSON.message;
+                let userMessage = response.responseJSON.userMessage || response.responseJSON.message;
 
-                response.responseJSON.messages =
-                  response.responseJSON.messages || [];
+                response.responseJSON.messages = response.responseJSON.messages || [];
                 response.responseJSON.messages.push({
                   contentText: userMessage
                 });
-                _.each(
-                  response.responseJSON.messages,
-                  function vTransition_clickOnOk_displayError(aMessage) {
-                    currentView.displayError({
-                      title: aMessage.contentText
-                    });
-                  }
-                );
+                _.each(response.responseJSON.messages, function vTransition_clickOnOk_displayError(aMessage) {
+                  currentView.displayError({
+                    title: aMessage.contentText
+                  });
+                });
               } else {
                 if (errorTxt && !errorTxt.title && errorTxt.message) {
                   errorTxt.title = errorTxt.message;
@@ -384,16 +344,13 @@ define([
 
     getMessages: function vTransition_getMessages() {
       var messages = [];
-      _.each(
-        this.model.get("messages"),
-        function vTransition_getMessagesAMessage(aMessage) {
-          messages.push({
-            type: aMessage.type,
-            title: aMessage.contentText,
-            htmlMessage: aMessage.contentHtml
-          });
-        }
-      );
+      _.each(this.model.get("messages"), function vTransition_getMessagesAMessage(aMessage) {
+        messages.push({
+          type: aMessage.type,
+          title: aMessage.contentText,
+          htmlMessage: aMessage.contentHtml
+        });
+      });
       return messages;
     }
   });

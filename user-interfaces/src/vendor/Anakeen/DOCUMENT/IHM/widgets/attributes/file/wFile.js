@@ -44,19 +44,12 @@
         if (this.options.attributeValue.url) {
           if (!this.options.renderOptions.htmlLink.url) {
             if (this.options.attributeValue.url) {
-              urlSep =
-                this.options.attributeValue.url.indexOf("?") >= 0 ? "&" : "?";
+              urlSep = this.options.attributeValue.url.indexOf("?") >= 0 ? "&" : "?";
               if (this.options.renderOptions.contentDisposition === "inline") {
-                this.options.attributeValue.url = this.options.attributeValue.url.replace(
-                  "&inline=no",
-                  ""
-                );
+                this.options.attributeValue.url = this.options.attributeValue.url.replace("&inline=no", "");
                 this.options.attributeValue.url += urlSep + "inline=yes";
               } else {
-                this.options.attributeValue.url = this.options.attributeValue.url.replace(
-                  "&inline=yes",
-                  ""
-                );
+                this.options.attributeValue.url = this.options.attributeValue.url.replace("&inline=yes", "");
                 this.options.attributeValue.url += urlSep + "inline=no";
               }
             }
@@ -73,22 +66,14 @@
                   ")";
               } else {
                 this.options.renderOptions.htmlLink.title +=
-                  "<br/>(" +
-                  this.options.attributeValue.size +
-                  " " +
-                  this.options.labels.byte +
-                  ")";
+                  "<br/>(" + this.options.attributeValue.size + " " + this.options.labels.byte + ")";
               }
             }
           }
         }
       }
       if (this.options.renderOptions.mimeIconSize) {
-        if (
-          ["0", "0x0", "x0"].indexOf(
-            this.options.renderOptions.mimeIconSize
-          ) !== -1
-        ) {
+        if (["0", "0x0", "x0"].indexOf(this.options.renderOptions.mimeIconSize) !== -1) {
           this.options.attributeValue.icon = null;
         } else {
           var reSize = /sizes\/([^/]+)/;
@@ -102,22 +87,15 @@
       if (this.getMode() === "write") {
         visibleInput = this.element.find("input[type=text]");
         visibleInput.attr("title", this.options.labels.tooltipLabel);
-        visibleInput.attr(
-          "placeholder",
-          this.options.renderOptions.placeHolder
-        );
-        this.element
-          .find(".dcpAttribute__content__button--file")
-          .attr("title", this.options.labels.downloadLabel);
+        visibleInput.attr("placeholder", this.options.renderOptions.placeHolder);
+        this.element.find(".dcpAttribute__content__button--file").attr("title", this.options.labels.downloadLabel);
 
         visibleInput.tooltip({
           trigger: "hover",
           placement: "bottom",
           container: ".dcpDocument"
         });
-        this.element
-          .find("input[type=file]")
-          .attr("fileValue", this.options.attributeValue.value || null);
+        this.element.find("input[type=file]").attr("fileValue", this.options.attributeValue.value || null);
       }
     },
 
@@ -128,16 +106,14 @@
       }
 
       // Add trigger when try to download file
-      this.element.on(
-        "click." + this.eventNamespace,
-        ".dcpAttribute__content__link",
-        function wFileClickDownload(event) {
-          currentWidget._trigger("downloadFile", event, {
-            $el: currentWidget.element,
-            index: currentWidget._getIndex()
-          });
-        }
-      );
+      this.element.on("click." + this.eventNamespace, ".dcpAttribute__content__link", function wFileClickDownload(
+        event
+      ) {
+        currentWidget._trigger("downloadFile", event, {
+          $el: currentWidget.element,
+          index: currentWidget._getIndex()
+        });
+      });
 
       this._super();
     },
@@ -174,102 +150,66 @@
           }
         );
       } else {
-        this.element
-          .find(".dcpAttribute__content__button--file")
-          .attr("disabled", "disabled");
+        this.element.find(".dcpAttribute__content__button--file").attr("disabled", "disabled");
       }
 
       if (!_.isUndefined(window.FormData)) {
-        this.element.on(
-          "dragenter" + this.eventNamespace,
-          ".dcpAttribute__dragTarget",
-          function wFileOnDragEnter(event) {
-            inputText.val(currentWidget.options.attributeValue.displayValue);
-            event.stopPropagation();
+        this.element.on("dragenter" + this.eventNamespace, ".dcpAttribute__dragTarget", function wFileOnDragEnter(
+          event
+        ) {
+          inputText.val(currentWidget.options.attributeValue.displayValue);
+          event.stopPropagation();
+          event.preventDefault();
+        });
+        this.element.on("dragover" + this.eventNamespace, ".dcpAttribute__dragTarget", function wFileOnDragOver(event) {
+          inputText.val(currentWidget.options.labels.dropFileHere);
+          event.stopPropagation();
+          event.preventDefault();
+          currentWidget.element.addClass("dcpAttribute__value--dropzone");
+        });
+        this.element.on("dragleave" + this.eventNamespace, ".dcpAttribute__dragTarget", function wFileOnLeave(event) {
+          inputText.val(currentWidget.options.attributeValue.displayValue);
+          event.stopPropagation();
+          event.preventDefault();
+          currentWidget.element.removeClass("dcpAttribute__value--dropzone");
+        });
+
+        this.element.on("drop" + this.eventNamespace, ".dcpAttribute__dragTarget", function wFileOnDrop(event) {
+          inputText.val(currentWidget.options.attributeValue.displayValue);
+          currentWidget.element.removeClass("dcpAttribute__value--dropzone");
+          event.stopPropagation();
+          event.preventDefault();
+
+          var dt = event.originalEvent.dataTransfer;
+          var files = dt.files;
+          if (files.length > 0) {
+            currentWidget.uploadFile(files[0]);
+          }
+        });
+
+        this.element.on("click" + this.eventNamespace, "input.dcpAttribute__value", function wFileOnClick() {
+          inputFile.trigger("click");
+        });
+
+        this.element.on("keydown" + this.eventNamespace, ".dcpAttribute__value", function wFileFilterKeys(event) {
+          if (event.keyCode !== 9 && event.keyCode !== 32 && event.keyCode !== 13) {
             event.preventDefault();
           }
-        );
-        this.element.on(
-          "dragover" + this.eventNamespace,
-          ".dcpAttribute__dragTarget",
-          function wFileOnDragOver(event) {
-            inputText.val(currentWidget.options.labels.dropFileHere);
-            event.stopPropagation();
+        });
+        this.element.on("keyup" + this.eventNamespace, ".dcpAttribute__value", function wFileSelectKeys(event) {
+          if (event.keyCode !== 9) {
             event.preventDefault();
-            currentWidget.element.addClass("dcpAttribute__value--dropzone");
-          }
-        );
-        this.element.on(
-          "dragleave" + this.eventNamespace,
-          ".dcpAttribute__dragTarget",
-          function wFileOnLeave(event) {
-            inputText.val(currentWidget.options.attributeValue.displayValue);
-            event.stopPropagation();
-            event.preventDefault();
-            currentWidget.element.removeClass("dcpAttribute__value--dropzone");
-          }
-        );
-
-        this.element.on(
-          "drop" + this.eventNamespace,
-          ".dcpAttribute__dragTarget",
-          function wFileOnDrop(event) {
-            inputText.val(currentWidget.options.attributeValue.displayValue);
-            currentWidget.element.removeClass("dcpAttribute__value--dropzone");
-            event.stopPropagation();
-            event.preventDefault();
-
-            var dt = event.originalEvent.dataTransfer;
-            var files = dt.files;
-            if (files.length > 0) {
-              currentWidget.uploadFile(files[0]);
+            if (event.keyCode === 32 || event.keyCode === 13) {
+              inputFile.trigger("click");
             }
           }
-        );
+        });
 
-        this.element.on(
-          "click" + this.eventNamespace,
-          "input.dcpAttribute__value",
-          function wFileOnClick() {
-            inputFile.trigger("click");
+        this.element.on("change" + this.eventNamespace, "input[type=file]", function wFileChange(/*event*/) {
+          if (this.files && this.files.length > 0) {
+            currentWidget.uploadFile(this.files[0]);
           }
-        );
-
-        this.element.on(
-          "keydown" + this.eventNamespace,
-          ".dcpAttribute__value",
-          function wFileFilterKeys(event) {
-            if (
-              event.keyCode !== 9 &&
-              event.keyCode !== 32 &&
-              event.keyCode !== 13
-            ) {
-              event.preventDefault();
-            }
-          }
-        );
-        this.element.on(
-          "keyup" + this.eventNamespace,
-          ".dcpAttribute__value",
-          function wFileSelectKeys(event) {
-            if (event.keyCode !== 9) {
-              event.preventDefault();
-              if (event.keyCode === 32 || event.keyCode === 13) {
-                inputFile.trigger("click");
-              }
-            }
-          }
-        );
-
-        this.element.on(
-          "change" + this.eventNamespace,
-          "input[type=file]",
-          function wFileChange(/*event*/) {
-            if (this.files && this.files.length > 0) {
-              currentWidget.uploadFile(this.files[0]);
-            }
-          }
-        );
+        });
       } else {
         alert("Your browser not support FormData");
       }
@@ -356,22 +296,14 @@
                   percent = Math.ceil((position / total) * 100);
                 }
                 if (percent >= 100) {
-                  inputText.val(
-                    currentWidget.options.labels.recording + " " + newFileName
-                  );
+                  inputText.val(currentWidget.options.labels.recording + " " + newFileName);
                   inputText.removeClass("dcpAttribute__value--transferring");
-                  inputText.addClass(
-                    "dcpAttribute__value--recording progress-bar active progress-bar-striped"
-                  );
+                  inputText.addClass("dcpAttribute__value--recording progress-bar active progress-bar-striped");
                   inputText.css("background", "");
                   inputText.css("background-image", "");
                 } else {
                   inputText.addClass("dcpAttribute__value--transferring");
-                  inputText.val(
-                    currentWidget.options.labels.transferring +
-                      " " +
-                      newFileName
-                  );
+                  inputText.val(currentWidget.options.labels.transferring + " " + newFileName);
                   inputText.css("background-color", "red");
                   inputText.css(
                     "background",
@@ -434,10 +366,7 @@
             displayValue: "",
             value: ""
           });
-          inputText.css(
-            "background-image",
-            "url(" + currentWidget.options.attributeValue.icon + ")"
-          );
+          inputText.css("background-image", "url(" + currentWidget.options.attributeValue.icon + ")");
           var result = JSON.parse(data.responseText);
           if (result) {
             _.each(result.messages, function wFileErrorMessages(errorMessage) {
@@ -451,8 +380,7 @@
           } else {
             inputText.css("background", "");
             $("body").trigger("notification", {
-              htmlMessage:
-                "File <b>" + firstFile.name + "</b> cannot be uploaded",
+              htmlMessage: "File <b>" + firstFile.name + "</b> cannot be uploaded",
               message: event.statusText,
               type: "error"
             });

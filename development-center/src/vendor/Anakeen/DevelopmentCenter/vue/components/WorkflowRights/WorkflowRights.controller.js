@@ -59,8 +59,7 @@ export default {
       return baseUrl.replace("<workflow>", this.wid);
     },
     resolvedWorkflowContent() {
-      const baseUrl =
-        this.workflowContentUrl + (this.completeList ? "?complete=true" : "");
+      const baseUrl = this.workflowContentUrl + (this.completeList ? "?complete=true" : "");
       if (baseUrl.indexOf("<workflow>") === -1) {
         return baseUrl;
       }
@@ -138,12 +137,8 @@ export default {
         if (column.name !== "account") {
           let stepColor = column.color;
           return `<div class="step-header step--${column.name}">
-                    <span class="step-header-color" style="background: ${escapeColor(
-                      stepColor
-                    )}"></span>
-                    <span class="step-header-label">${this.getLabel(
-                      column
-                    )}</span>
+                    <span class="step-header-color" style="background: ${escapeColor(stepColor)}"></span>
+                    <span class="step-header-label">${this.getLabel(column)}</span>
                 </div>`;
         } else {
           return `<div class="account-header">
@@ -199,8 +194,7 @@ export default {
                   <i class="material-icons filter-clear">close</i>
                 </div>
               </th>
-              <th class="k-header acls-checkbox-header" colspan="${treeList
-                .columns.length - 1}">
+              <th class="k-header acls-checkbox-header" colspan="${treeList.columns.length - 1}">
                 <span>Rights to display :</span>
                 <div class="acls-checkbox">
                     <div class="primary-acls">
@@ -217,11 +211,7 @@ export default {
                             this.wid
                           }-${c}" class="k-checkbox check-acl check-acl--${c}" data-acl="${c}" ${checked}/><label class="k-checkbox-label" for="${
                             this.wid
-                          }-${c}">${this.getLabel(
-                            this.acls[c],
-                            true,
-                            true
-                          )}</label>`;
+                          }-${c}">${this.getLabel(this.acls[c], true, true)}</label>`;
                         })
                         .join("")}
                     </div>
@@ -235,13 +225,13 @@ export default {
                           }
                           return `<input type="checkbox" id="${this.wid}-${
                             c.name
-                          }" class="k-checkbox check-acl check-acl--${
+                          }" class="k-checkbox check-acl check-acl--${c.name}" data-acl="${
                             c.name
-                          }" data-acl="${
-                            c.name
-                          }" ${checked}/><label class="k-checkbox-label" for="${
-                            this.wid
-                          }-${c.name}">${this.getLabel(c, true, true)}</label>`;
+                          }" ${checked}/><label class="k-checkbox-label" for="${this.wid}-${c.name}">${this.getLabel(
+                            c,
+                            true,
+                            true
+                          )}</label>`;
                         })
                         .join("")}
                     </div>
@@ -271,18 +261,14 @@ export default {
             .find(".secondary-acls")
             .toggleClass("all-acls-visible");
         });
-        this.$(treeList.thead).on(
-          "change",
-          ".show-all-switch input[type=checkbox]",
-          event => {
-            const checked = event.currentTarget.checked;
-            if (checked) {
-              this.completeList = true;
-            } else {
-              this.completeList = false;
-            }
+        this.$(treeList.thead).on("change", ".show-all-switch input[type=checkbox]", event => {
+          const checked = event.currentTarget.checked;
+          if (checked) {
+            this.completeList = true;
+          } else {
+            this.completeList = false;
           }
-        );
+        });
         this.$(treeList.thead).on("change", "input.filter", event => {
           const value = event.currentTarget.value;
           const dataSource = treeList.dataSource;
@@ -319,9 +305,8 @@ export default {
               ${columns
                 .map(c => {
                   return `<th class="k-header profile-header">
-                        <a data-role="develRouterLink" href="/devel/security/profiles/${
-                          c.profil
-                        }" >${c.profil || ""}</a>
+                        <a data-role="develRouterLink" href="/devel/security/profiles/${c.profil}" >${c.profil ||
+                    ""}</a>
                         </th>`;
                 })
                 .join("")}
@@ -338,9 +323,8 @@ export default {
               ${columns
                 .map(c => {
                   return `<th class="k-header fall-header">
-                        <a data-role="develRouterLink" href="/devel/security/fieldAccess/${
-                          c.fall
-                        }/config" >${c.fall || ""}</a>
+                        <a data-role="develRouterLink" href="/devel/security/fieldAccess/${c.fall}/config" >${c.fall ||
+                    ""}</a>
                         </th>`;
                 })
                 .join("")}

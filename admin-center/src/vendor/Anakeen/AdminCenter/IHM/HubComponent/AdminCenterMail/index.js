@@ -10,8 +10,5 @@ if (
   window.ank.hub["ank-admin-mail-manager"]
 ) {
   // @ts-ignore
-  window.ank.hub["ank-admin-mail-manager"].resolve(
-    Mail,
-    "ank-admin-mail-manager"
-  );
+  window.ank.hub["ank-admin-mail-manager"].resolve(Mail, "ank-admin-mail-manager");
 }

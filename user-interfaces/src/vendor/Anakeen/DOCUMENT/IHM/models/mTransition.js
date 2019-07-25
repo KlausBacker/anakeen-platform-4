@@ -1,9 +1,9 @@
 /*global define*/
-define([
-  "underscore",
-  "backbone",
-  "dcpDocument/models/mDocument"
-], function requireModelTransition(_, Backbone, mDocument) {
+define(["underscore", "backbone", "dcpDocument/models/mDocument"], function requireModelTransition(
+  _,
+  Backbone,
+  mDocument
+) {
   "use strict";
 
   return mDocument.extend({
@@ -23,17 +23,10 @@ define([
      * @returns {string}
      */
     url: function mTransition_url() {
-      var urlData =
-        "/api/v2/smart-elements/<%= documentId %>/views/states/<%= state %>";
+      var urlData = "/api/v2/smart-elements/<%= documentId %>/views/states/<%= state %>";
 
-      urlData = urlData.replace(
-        "<%= documentId %>",
-        encodeURIComponent(this.get("documentId"))
-      );
-      urlData = urlData.replace(
-        "<%= state %>",
-        encodeURIComponent(this.get("state"))
-      );
+      urlData = urlData.replace("<%= documentId %>", encodeURIComponent(this.get("documentId")));
+      urlData = urlData.replace("<%= state %>", encodeURIComponent(this.get("state")));
 
       return urlData;
     },
@@ -55,27 +48,18 @@ define([
       if (!renderOptions) {
         renderOptions = documentModel.get("renderOptions");
       }
-      if (
-        response.data.transition &&
-        response.data.transition.askAttributes.length > 0
-      ) {
-        _.each(
-          response.data.transition.askAttributes,
-          function mTransition_parseAsk(ask) {
-            attributes.push(ask);
-          }
-        );
+      if (response.data.transition && response.data.transition.askAttributes.length > 0) {
+        _.each(response.data.transition.askAttributes, function mTransition_parseAsk(ask) {
+          attributes.push(ask);
+        });
       }
       templates = documentModel.get("templates");
 
       if (response.data.templates) {
         templates.body = response.data.templates.body;
-        _.each(
-          response.data.templates.sections,
-          function mTransition_parseTemplate(templateContent, templateIndex) {
-            templates.sections[templateIndex] = templateContent;
-          }
-        );
+        _.each(response.data.templates.sections, function mTransition_parseTemplate(templateContent, templateIndex) {
+          templates.sections[templateIndex] = templateContent;
+        });
       }
 
       this.initialProperties = {
@@ -120,12 +104,9 @@ define([
           if (_.isArray(value)) {
             if (value.length > 0 && _.isArray(value[0])) {
               // double multiple
-              returnValues.parameters[aid] = _.map(
-                value,
-                function mTransition_getParameter(aValue) {
-                  return _.pluck(aValue, "value");
-                }
-              );
+              returnValues.parameters[aid] = _.map(value, function mTransition_getParameter(aValue) {
+                return _.pluck(aValue, "value");
+              });
             } else {
               returnValues.parameters[aid] = _.pluck(value, "value");
             }

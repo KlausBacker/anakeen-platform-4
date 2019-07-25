@@ -3,14 +3,7 @@ const path = require("path");
 
 exports.writeTemplate = (packagePath, { vendorName, moduleName }) => {
   return new Promise((resolve, reject) => {
-    const settingsDir = path.join(
-      packagePath,
-      "src",
-      "vendor",
-      vendorName,
-      moduleName,
-      "Settings"
-    );
+    const settingsDir = path.join(packagePath, "src", "vendor", vendorName, moduleName, "Settings");
     fs.mkdir(settingsDir, err => {
       if (err) {
         reject(err);

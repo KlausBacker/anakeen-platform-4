@@ -27,8 +27,9 @@ const getPoEntry = (attr, info, currentFilePath) => {
   if (!currentFilePath && attr.fileName) {
     currentFilePath = attr.fileName;
   }
-  return `\n#: ${currentFilePath}\n#, fuzzy\nmsgctxt "${attr.context ||
-    info.name}"\nmsgid "${attr.name}"\nmsgstr "${label}"\n`;
+  return `\n#: ${currentFilePath}\n#, fuzzy\nmsgctxt "${attr.context || info.name}"\nmsgid "${
+    attr.name
+  }"\nmsgstr "${label}"\n`;
 };
 
 /**
@@ -102,19 +103,9 @@ const convertKeysToPot = ({ fieldKey, filePrefix, potPath }) => {
     //Generate files from keys
     const filesCreated = [];
     Object.keys(elements).forEach(currentKey => {
-      const poEntries = Object.values(elements[currentKey]).reduce(
-        (acc, currentEntry) => {
-          return (
-            acc +
-            getPoEntry(
-              currentEntry[fieldKey],
-              { name: currentKey },
-              currentEntry.fileName
-            )
-          );
-        },
-        ""
-      );
+      const poEntries = Object.values(elements[currentKey]).reduce((acc, currentEntry) => {
+        return acc + getPoEntry(currentEntry[fieldKey], { name: currentKey }, currentEntry.fileName);
+      }, "");
       let now = new Date().toISOString();
       let content = `msgid ""
 msgstr ""
@@ -211,63 +202,40 @@ exports.xmlStructure2Pot = ({ globFile, info, potPath, verbose, log }) => {
               }
               //Analyze structure configuration
               if (result.config && result.config.structureconfiguration) {
-                values = result.config.structureconfiguration.reduce(
-                  (acc, currentConf) => {
-                    const name = currentConf.$.name;
-                    let elements = {};
-                    if (
-                      currentConf.fields &&
-                      currentConf.fields.length &&
-                      currentConf.fields.length > 0
-                    ) {
-                      elements = currentConf.fields.reduce(
-                        (acc, currentField) => {
-                          const fields = extractSmartField(
-                            currentField,
-                            path.relative(srcPath, currentFilePath)
-                          );
-                          return {
-                            ...acc,
-                            ...fields
-                          };
-                        },
-                        {}
-                      );
-                    }
-                    if (
-                      currentConf.parameters &&
-                      currentConf.parameters.length &&
-                      currentConf.parameters.length > 0
-                    ) {
-                      elements = currentConf.parameters.reduce(
-                        (acc, currentField) => {
-                          const fields = extractSmartField(
-                            currentField,
-                            path.relative(srcPath, currentFilePath)
-                          );
-                          return {
-                            ...acc,
-                            ...fields
-                          };
-                        },
-                        elements
-                      );
-                    }
-                    if (acc[name]) {
-                      acc[name] = { ...acc[name], ...elements };
-                    } else {
-                      acc[name] = elements;
-                    }
-                    if (!acc[name].title) {
-                      acc[name].title = {
-                        field: { label: "", name: "title" },
-                        fileName: path.relative(srcPath, currentFilePath)
+                values = result.config.structureconfiguration.reduce((acc, currentConf) => {
+                  const name = currentConf.$.name;
+                  let elements = {};
+                  if (currentConf.fields && currentConf.fields.length && currentConf.fields.length > 0) {
+                    elements = currentConf.fields.reduce((acc, currentField) => {
+                      const fields = extractSmartField(currentField, path.relative(srcPath, currentFilePath));
+                      return {
+                        ...acc,
+                        ...fields
                       };
-                    }
-                    return acc;
-                  },
-                  values
-                );
+                    }, {});
+                  }
+                  if (currentConf.parameters && currentConf.parameters.length && currentConf.parameters.length > 0) {
+                    elements = currentConf.parameters.reduce((acc, currentField) => {
+                      const fields = extractSmartField(currentField, path.relative(srcPath, currentFilePath));
+                      return {
+                        ...acc,
+                        ...fields
+                      };
+                    }, elements);
+                  }
+                  if (acc[name]) {
+                    acc[name] = { ...acc[name], ...elements };
+                  } else {
+                    acc[name] = elements;
+                  }
+                  if (!acc[name].title) {
+                    acc[name].title = {
+                      field: { label: "", name: "title" },
+                      fileName: path.relative(srcPath, currentFilePath)
+                    };
+                  }
+                  return acc;
+                }, values);
               }
               resolve(values);
             }
@@ -276,9 +244,7 @@ exports.xmlStructure2Pot = ({ globFile, info, potPath, verbose, log }) => {
       })
     )
       .then(mergeAllKeysFound)
-      .then(
-        convertKeysToPot({ fieldKey: "field", filePrefix: "smart", potPath })
-      );
+      .then(convertKeysToPot({ fieldKey: "field", filePrefix: "smart", potPath }));
   });
 };
 
@@ -329,31 +295,25 @@ exports.xmlEnum2Pot = ({ globFile, info, potPath, verbose, log }) => {
                   if (!enumMainTag.enumconfiguration) {
                     return acc;
                   }
-                  return enumMainTag.enumconfiguration.reduce(
-                    (acc, currentConf) => {
-                      const enumName = currentConf.$.name;
-                      if (!currentConf.enum) {
-                        return acc;
-                      }
-                      const enums = currentConf.enum.reduce(
-                        (acc, currentField) => {
-                          acc[currentField.$.name] = {
-                            enumItem: currentField.$,
-                            fileName: path.relative(srcPath, currentFilePath)
-                          };
-                          return acc;
-                        },
-                        {}
-                      );
-                      if (acc[enumName]) {
-                        acc[enumName] = { ...acc[enumName], ...enums };
-                      } else {
-                        acc[enumName] = enums;
-                      }
+                  return enumMainTag.enumconfiguration.reduce((acc, currentConf) => {
+                    const enumName = currentConf.$.name;
+                    if (!currentConf.enum) {
                       return acc;
-                    },
-                    acc
-                  );
+                    }
+                    const enums = currentConf.enum.reduce((acc, currentField) => {
+                      acc[currentField.$.name] = {
+                        enumItem: currentField.$,
+                        fileName: path.relative(srcPath, currentFilePath)
+                      };
+                      return acc;
+                    }, {});
+                    if (acc[enumName]) {
+                      acc[enumName] = { ...acc[enumName], ...enums };
+                    } else {
+                      acc[enumName] = enums;
+                    }
+                    return acc;
+                  }, acc);
                 }, enums);
               }
 
@@ -364,9 +324,7 @@ exports.xmlEnum2Pot = ({ globFile, info, potPath, verbose, log }) => {
       })
     )
       .then(mergeAllKeysFound)
-      .then(
-        convertKeysToPot({ fieldKey: "enumItem", filePrefix: "enum", potPath })
-      );
+      .then(convertKeysToPot({ fieldKey: "enumItem", filePrefix: "enum", potPath }));
   });
 };
 
@@ -419,28 +377,25 @@ exports.xmlCVDOC2Pot = ({ globFile, info, potPath, verbose, log }) => {
                     return acc;
                   }
                   //Reduce view list
-                  const views = mainTag.viewlist[0].view.reduce(
-                    (acc, currentView) => {
-                      acc[currentView.$.name] = {
+                  const views = mainTag.viewlist[0].view.reduce((acc, currentView) => {
+                    acc[currentView.$.name] = {
+                      view: {
+                        name: currentView.$.name,
+                        label: currentView.$.label,
+                        fileName: path.relative(srcPath, currentFilePath)
+                      }
+                    };
+                    if (currentView.$["parent-menu-id"]) {
+                      acc[`${viewName}${currentView.$["parent-menu-id"]}`] = {
                         view: {
-                          name: currentView.$.name,
-                          label: currentView.$.label,
+                          name: currentView.$["parent-menu-id"],
+                          label: "",
                           fileName: path.relative(srcPath, currentFilePath)
                         }
                       };
-                      if (currentView.$["parent-menu-id"]) {
-                        acc[`${viewName}${currentView.$["parent-menu-id"]}`] = {
-                          view: {
-                            name: currentView.$["parent-menu-id"],
-                            label: "",
-                            fileName: path.relative(srcPath, currentFilePath)
-                          }
-                        };
-                      }
-                      return acc;
-                    },
-                    {}
-                  );
+                    }
+                    return acc;
+                  }, {});
                   if (acc[viewName]) {
                     acc[viewName] = { ...acc[viewName], ...views };
                   } else {
@@ -456,9 +411,7 @@ exports.xmlCVDOC2Pot = ({ globFile, info, potPath, verbose, log }) => {
       })
     )
       .then(mergeAllKeysFound)
-      .then(
-        convertKeysToPot({ fieldKey: "view", filePrefix: "cvdoc", potPath })
-      );
+      .then(convertKeysToPot({ fieldKey: "view", filePrefix: "cvdoc", potPath }));
   });
 };
 
@@ -511,53 +464,44 @@ exports.xmlWorkflow2Pot = ({ globFile, info, potPath, verbose, log }) => {
                     return acc;
                   }
                   //Reduce step list
-                  let elements = mainTag.steps[0].step.reduce(
-                    (acc, currentView) => {
-                      if (currentView.$["state-label"]) {
-                        acc[`state-${currentView.$.name}`] = {
-                          elements: {
-                            name: `${currentView.$.name}`,
-                            context: `${graphName}:state`,
-                            label: currentView.$["state-label"],
-                            fileName: path.relative(srcPath, currentFilePath)
-                          }
-                        };
-                      }
-                      if (currentView.$["activity-label"]) {
-                        acc[`activity-${currentView.$.name}`] = {
-                          elements: {
-                            name: `${currentView.$.name}`,
-                            context: `${graphName}:activity`,
-                            label: currentView.$["activity-label"],
-                            fileName: path.relative(srcPath, currentFilePath)
-                          }
-                        };
-                      }
-                      return acc;
-                    },
-                    {}
-                  );
-                  if (
-                    !mainTag.transitions ||
-                    !mainTag.transitions[0].transition
-                  ) {
-                    return acc;
-                  }
-                  //Reduce transition list
-                  elements = mainTag.transitions[0].transition.reduce(
-                    (acc, currentView) => {
-                      acc[currentView.$.name] = {
+                  let elements = mainTag.steps[0].step.reduce((acc, currentView) => {
+                    if (currentView.$["state-label"]) {
+                      acc[`state-${currentView.$.name}`] = {
                         elements: {
-                          name: currentView.$.name,
-                          label: currentView.$.label,
-                          context: `${graphName}:transition`,
+                          name: `${currentView.$.name}`,
+                          context: `${graphName}:state`,
+                          label: currentView.$["state-label"],
                           fileName: path.relative(srcPath, currentFilePath)
                         }
                       };
-                      return acc;
-                    },
-                    elements
-                  );
+                    }
+                    if (currentView.$["activity-label"]) {
+                      acc[`activity-${currentView.$.name}`] = {
+                        elements: {
+                          name: `${currentView.$.name}`,
+                          context: `${graphName}:activity`,
+                          label: currentView.$["activity-label"],
+                          fileName: path.relative(srcPath, currentFilePath)
+                        }
+                      };
+                    }
+                    return acc;
+                  }, {});
+                  if (!mainTag.transitions || !mainTag.transitions[0].transition) {
+                    return acc;
+                  }
+                  //Reduce transition list
+                  elements = mainTag.transitions[0].transition.reduce((acc, currentView) => {
+                    acc[currentView.$.name] = {
+                      elements: {
+                        name: currentView.$.name,
+                        label: currentView.$.label,
+                        context: `${graphName}:transition`,
+                        fileName: path.relative(srcPath, currentFilePath)
+                      }
+                    };
+                    return acc;
+                  }, elements);
                   if (acc[graphName]) {
                     acc[graphName] = { ...acc[graphName], ...elements };
                   } else {
@@ -659,9 +603,7 @@ exports.php2Po = ({ globFile, targetName, info, potPath, verbose, log }) => {
       PO_LANGS.map(lang => {
         return new Promise((resolve, reject) => {
           const basePo = path.resolve(
-            `${
-              info.buildInfo.buildPath[0]
-            }/locale/${lang}/LC_MESSAGES/src/${targetName}_${lang}.po`
+            `${info.buildInfo.buildPath[0]}/locale/${lang}/LC_MESSAGES/src/${targetName}_${lang}.po`
           );
           const tmpPot = path.resolve(`${potPath}/${targetName}_${lang}.pot`);
           const tmpPo = path.resolve(`${potPath}/${targetName}_${lang}.po`);
@@ -690,26 +632,20 @@ exports.php2Po = ({ globFile, targetName, info, potPath, verbose, log }) => {
                 resolve();
               }
               if (!fs.existsSync(basePo)) {
-                cp.exec(
-                  `msginit  -o "${basePo}" -i "${tmpPot}" --no-translator --locale=${lang}`,
-                  err => {
-                    if (err) {
-                      return reject(err);
-                    }
-                    resolve();
+                cp.exec(`msginit  -o "${basePo}" -i "${tmpPot}" --no-translator --locale=${lang}`, err => {
+                  if (err) {
+                    return reject(err);
                   }
-                );
+                  resolve();
+                });
               } else {
-                cp.exec(
-                  `msgmerge  --sort-output -o "${tmpPo}"  "${basePo}" "${tmpPot}"`,
-                  err => {
-                    if (err) {
-                      return reject(err);
-                    }
-                    fs.copyFileSync(tmpPo, basePo);
-                    resolve();
+                cp.exec(`msgmerge  --sort-output -o "${tmpPo}"  "${basePo}" "${tmpPot}"`, err => {
+                  if (err) {
+                    return reject(err);
                   }
-                );
+                  fs.copyFileSync(tmpPo, basePo);
+                  resolve();
+                });
               }
             }
           );
@@ -734,9 +670,7 @@ exports.js2Po = ({ globFile, targetName, info, potPath, verbose, log }) => {
     return Promise.all(
       PO_LANGS.map(lang => {
         return new Promise((resolve, reject) => {
-          const basePo = `${
-            info.buildInfo.buildPath[0]
-          }/locale/${lang}/js/src/js_${targetName}_${lang}.po`;
+          const basePo = `${info.buildInfo.buildPath[0]}/locale/${lang}/js/src/js_${targetName}_${lang}.po`;
           const tmpPot = `${potPath}/js_${targetName}_${lang}.pot`;
           const tmpPo = `${potPath}/js_${targetName}_${lang}.po`;
           if (verbose) {
@@ -764,26 +698,20 @@ exports.js2Po = ({ globFile, targetName, info, potPath, verbose, log }) => {
                 resolve();
               }
               if (!fs.existsSync(basePo)) {
-                cp.exec(
-                  `msginit  -o "${basePo}" -i "${tmpPot}" --no-translator --locale=${lang}`,
-                  err => {
-                    if (err) {
-                      return reject(err);
-                    }
-                    resolve();
+                cp.exec(`msginit  -o "${basePo}" -i "${tmpPot}" --no-translator --locale=${lang}`, err => {
+                  if (err) {
+                    return reject(err);
                   }
-                );
+                  resolve();
+                });
               } else {
-                cp.exec(
-                  `msgmerge  --sort-output -o "${tmpPo}"  "${basePo}" "${tmpPot}"`,
-                  err => {
-                    if (err) {
-                      return reject(err);
-                    }
-                    fs.copyFileSync(tmpPo, basePo);
-                    resolve();
+                cp.exec(`msgmerge  --sort-output -o "${tmpPo}"  "${basePo}" "${tmpPot}"`, err => {
+                  if (err) {
+                    return reject(err);
                   }
-                );
+                  fs.copyFileSync(tmpPo, basePo);
+                  resolve();
+                });
               }
             }
           );

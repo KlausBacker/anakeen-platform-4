@@ -14,17 +14,13 @@ define([
     className: "dcpTab__label dcpLabel",
 
     events: {
-      'click a[href^="#action/"], a[data-action], button[data-action]':
-        "externalLinkSelected"
+      'click a[href^="#action/"], a[data-action], button[data-action]': "externalLinkSelected"
     },
 
     displayLabel: true,
 
     initialize: function vTabLabel_initialize(options) {
-      if (
-        options.displayLabel === false ||
-        this.model.getOption("labelPosition") === "none"
-      ) {
+      if (options.displayLabel === false || this.model.getOption("labelPosition") === "none") {
         this.displayLabel = false;
       }
       this.listenTo(this.model, "change:label", this.updateLabel);
@@ -75,10 +71,7 @@ define([
               .text(tooltipLabel)
               .html();
           }
-          this.$el.data(
-            "tooltipLabel",
-            Mustache.render(tooltipLabel || "", attrData)
-          );
+          this.$el.data("tooltipLabel", Mustache.render(tooltipLabel || "", attrData));
           this.$el.tooltip({
             placement: "top",
             container: ".dcpDocument",
@@ -114,13 +107,7 @@ define([
     },
 
     updateLabel: function vTabLabel_updateLabel() {
-      this.model.trigger(
-        "attributeTabChange",
-        event,
-        this.model.id,
-        this.$el,
-        {}
-      );
+      this.model.trigger("attributeTabChange", event, this.model.id, this.$el, {});
       this.$el.text(this.model.get("label"));
     },
 

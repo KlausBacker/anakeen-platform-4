@@ -29,9 +29,7 @@ hubConf
             delay: 100
           };
           if (window.ank.hub[currentKey].timeout) {
-            componentConfig["timeout"] = parseInt(
-              window.ank.hub[currentKey].timeout
-            );
+            componentConfig["timeout"] = parseInt(window.ank.hub[currentKey].timeout);
           }
           return componentConfig;
         });

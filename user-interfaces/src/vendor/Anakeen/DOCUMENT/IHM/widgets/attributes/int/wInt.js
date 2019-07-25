@@ -42,12 +42,9 @@
       this.element.attr("data-type", this.getType());
       this.element.attr("data-attrid", this.options.id);
       if (
-        this._stringToFloat(this.options.attributeValue.displayValue) ===
-        parseFloat(this.options.attributeValue.value)
+        this._stringToFloat(this.options.attributeValue.displayValue) === parseFloat(this.options.attributeValue.value)
       ) {
-        this.options.attributeValue.displayValue = this.formatNumber(
-          this.options.attributeValue.value
-        );
+        this.options.attributeValue.displayValue = this.formatNumber(this.options.attributeValue.value);
       }
 
       if (this.getMode() === "read") {
@@ -71,12 +68,8 @@
         }
       }
 
-      if (
-        this.element.find(".dcpAttribute__content__buttons button").length === 0
-      ) {
-        this.element
-          .find(".k-numeric-wrap")
-          .addClass("dcpAttribute__content__nobutton");
+      if (this.element.find(".dcpAttribute__content__buttons button").length === 0) {
+        this.element.find(".k-numeric-wrap").addClass("dcpAttribute__content__nobutton");
       }
     },
 
@@ -103,9 +96,7 @@
       if (_.has(value, "value") && !_.has(value, "displayValue")) {
         value.displayValue = this.formatNumber(value.value);
       } else {
-        if (
-          this._stringToFloat(value.displayValue) === parseFloat(value.value)
-        ) {
+        if (this._stringToFloat(value.displayValue) === parseFloat(value.value)) {
           value.displayValue = this.formatNumber(value.value);
         }
       }
@@ -131,9 +122,7 @@
         if (this.getMode() === "read") {
           this.getContentElements().text(value.displayValue);
         } else {
-          throw new Error(
-            "Attribute " + this.options.id + " unkown mode " + this.getMode()
-          );
+          throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
         }
       }
     },
@@ -144,28 +133,15 @@
       inputValue.removeClass(currentCSSClass);
       //force display inline-block for work with kendo
       inputValue.css("display", "inline-block");
-      kendoWidget = inputValue.kendoNumericTextBox(
-        this.getKendoNumericOptions()
-      );
+      kendoWidget = inputValue.kendoNumericTextBox(this.getKendoNumericOptions());
       kendoWidget.closest(".k-widget").addClass(currentCSSClass);
 
-      if (
-        this.options.renderOptions.max !== undefined ||
-        this.options.renderOptions.min !== undefined
-      ) {
-        if (
-          this.options.attributeValue.value > this.options.renderOptions.max
-        ) {
-          this.element
-            .find(".k-formatted-value.k-input")
-            .val(this.formatNumber(this.options.attributeValue.value));
+      if (this.options.renderOptions.max !== undefined || this.options.renderOptions.min !== undefined) {
+        if (this.options.attributeValue.value > this.options.renderOptions.max) {
+          this.element.find(".k-formatted-value.k-input").val(this.formatNumber(this.options.attributeValue.value));
         }
-        if (
-          this.options.attributeValue.value < this.options.renderOptions.min
-        ) {
-          this.element
-            .find(".k-formatted-value.k-input")
-            .val(this.formatNumber(this.options.attributeValue.value));
+        if (this.options.attributeValue.value < this.options.renderOptions.min) {
+          this.element.find(".k-formatted-value.k-input").val(this.formatNumber(this.options.attributeValue.value));
         }
       }
       return kendoWidget;
@@ -218,9 +194,7 @@
     testValue: function wIntTestValue(value) {
       this._super(value);
       if (!_.isNumber(value.value)) {
-        throw new Error(
-          "The value must be a number for (attrid : " + this.options.id + ")"
-        );
+        throw new Error("The value must be a number for (attrid : " + this.options.id + ")");
       }
     },
 

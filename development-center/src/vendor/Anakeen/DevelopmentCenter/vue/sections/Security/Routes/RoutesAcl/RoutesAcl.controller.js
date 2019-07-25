@@ -119,9 +119,7 @@ export default {
           });
         });
       }
-      return this.tabMultiple
-        .toString()
-        .replace(new RegExp(",", "g"), " <b>and</b> ");
+      return this.tabMultiple.toString().replace(new RegExp(",", "g"), " <b>and</b> ");
     }
   }
 };

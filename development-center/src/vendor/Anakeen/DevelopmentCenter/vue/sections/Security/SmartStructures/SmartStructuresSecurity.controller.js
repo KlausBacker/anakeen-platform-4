@@ -1,27 +1,15 @@
 import RouterTabs from "devComponents/RouterTabs/RouterTabs.vue";
 export default {
   components: {
-    "ss-list": resolve =>
-      import("devComponents/SSList/SSList.vue").then(module =>
-        resolve(module.default)
-      ),
+    "ss-list": resolve => import("devComponents/SSList/SSList.vue").then(module => resolve(module.default)),
     RouterTabs,
-    "security-ss-infos": resolve =>
-      import("./subsections/Infos/Infos.vue").then(module =>
-        resolve(module.default)
-      ),
+    "security-ss-infos": resolve => import("./subsections/Infos/Infos.vue").then(module => resolve(module.default)),
     "security-ss-access": resolve =>
-      import("./subsections/Structures/Structures.vue").then(module =>
-        resolve(module.default)
-      ),
+      import("./subsections/Structures/Structures.vue").then(module => resolve(module.default)),
     "security-ss-element-access": resolve =>
-      import("./subsections/Elements/Elements.vue").then(module =>
-        resolve(module.default)
-      ),
+      import("./subsections/Elements/Elements.vue").then(module => resolve(module.default)),
     "security-ss-field-access": resolve =>
-      import("./subsections/Fields/Fields.vue").then(module =>
-        resolve(module.default)
-      )
+      import("./subsections/Fields/Fields.vue").then(module => resolve(module.default))
   },
   props: ["ssName", "ssSection"],
   computed: {

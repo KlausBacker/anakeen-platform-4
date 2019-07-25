@@ -14,12 +14,8 @@ exports.writeTemplate = (installPath, argv) => {
           Object.assign({}, argv, {
             nameLabel: argv.name.replace(/([A-Z])/g, " $1").trim(),
             NAME: argv.name.toUpperCase(),
-            SS: argv.associatedSmartStructure
-              ? argv.associatedSmartStructure.toUpperCase()
-              : "",
-            WFL: argv.associatedWorkflow
-              ? argv.associatedWorkflow.toUpperCase()
-              : ""
+            SS: argv.associatedSmartStructure ? argv.associatedSmartStructure.toUpperCase() : "",
+            WFL: argv.associatedWorkflow ? argv.associatedWorkflow.toUpperCase() : ""
           })
         )
         .then(result => {

@@ -200,16 +200,14 @@ exports.po = ({ sourcePath, verbose }) => {
     log("Extract enum");
     const globFile = analyzeXML(globXML);
 
-    return xmlEnum2Pot({ globFile, info, potPath, verbose, log }).then(
-      files => {
-        //Concat files
-        return Promise.all(
-          files.map(element => {
-            return msgmerge({ element, srcPath, potPath, prefix: "enum" });
-          })
-        );
-      }
-    );
+    return xmlEnum2Pot({ globFile, info, potPath, verbose, log }).then(files => {
+      //Concat files
+      return Promise.all(
+        files.map(element => {
+          return msgmerge({ element, srcPath, potPath, prefix: "enum" });
+        })
+      );
+    });
   });
   /**
    * Extract the smart structure part
@@ -231,15 +229,13 @@ exports.po = ({ sourcePath, verbose }) => {
     log("Extract smart element");
     const globFile = analyzeXML(globXML);
 
-    return xmlStructure2Pot({ globFile, info, potPath, verbose, log }).then(
-      files => {
-        return Promise.all(
-          files.map(element => {
-            return msgmerge({ element, srcPath, potPath, prefix: "" });
-          })
-        );
-      }
-    );
+    return xmlStructure2Pot({ globFile, info, potPath, verbose, log }).then(files => {
+      return Promise.all(
+        files.map(element => {
+          return msgmerge({ element, srcPath, potPath, prefix: "" });
+        })
+      );
+    });
   });
 
   /**
@@ -262,15 +258,13 @@ exports.po = ({ sourcePath, verbose }) => {
     log("Extract view control element");
     const globFile = analyzeXML(globXML);
 
-    return xmlCVDOC2Pot({ globFile, info, potPath, verbose, log }).then(
-      files => {
-        return Promise.all(
-          files.map(element => {
-            return msgmerge({ element, srcPath, potPath, prefix: "cvdoc_" });
-          })
-        );
-      }
-    );
+    return xmlCVDOC2Pot({ globFile, info, potPath, verbose, log }).then(files => {
+      return Promise.all(
+        files.map(element => {
+          return msgmerge({ element, srcPath, potPath, prefix: "cvdoc_" });
+        })
+      );
+    });
   });
 
   /**
@@ -293,15 +287,13 @@ exports.po = ({ sourcePath, verbose }) => {
     log("Extract workflow element");
     const globFile = analyzeXML(globXML);
 
-    return xmlWorkflow2Pot({ globFile, info, potPath, verbose, log }).then(
-      files => {
-        return Promise.all(
-          files.map(element => {
-            return msgmerge({ element, srcPath, potPath, prefix: "workflow_" });
-          })
-        );
-      }
-    );
+    return xmlWorkflow2Pot({ globFile, info, potPath, verbose, log }).then(files => {
+      return Promise.all(
+        files.map(element => {
+          return msgmerge({ element, srcPath, potPath, prefix: "workflow_" });
+        })
+      );
+    });
   });
 
   gulp.task("extractPo", async () => {

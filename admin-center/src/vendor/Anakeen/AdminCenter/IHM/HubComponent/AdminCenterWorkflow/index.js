@@ -10,8 +10,5 @@ if (
   window.ank.hub["ank-admin-workflow-manager"]
 ) {
   // @ts-ignore
-  window.ank.hub["ank-admin-workflow-manager"].resolve(
-    WorkflowManager,
-    "ank-admin-workflow-manager"
-  );
+  window.ank.hub["ank-admin-workflow-manager"].resolve(WorkflowManager, "ank-admin-workflow-manager");
 }

@@ -2,10 +2,7 @@ import VueSetup from "../src/setup";
 import publicMethods from "../mixins/AnkWebComponentsMixin/publicMethods";
 
 const vueComponentInstall = vueComponent =>
-  function componentInstall(
-    Vue,
-    options = { globalVueComponent: false, webComponent: false }
-  ) {
+  function componentInstall(Vue, options = { globalVueComponent: false, webComponent: false }) {
     if (componentInstall.installed === true) return;
     componentInstall.installed = true;
     Vue.use(VueSetup, options);

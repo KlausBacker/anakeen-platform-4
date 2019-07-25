@@ -18,10 +18,7 @@ const setLocale = (Vue, kendo, locale = "fr_FR") => {
   Vue.config.language = locale;
 };
 
-export default function install(
-  Vue,
-  opts = { globalVueComponent: false, webComponents: false }
-) {
+export default function install(Vue, opts = { globalVueComponent: false, webComponents: false }) {
   if (Vue.__ank_components_setup__ === true) return;
   Vue.__ank_components_setup__ = true;
   // jscs:ignore disallowFunctionDeclarations
@@ -52,14 +49,7 @@ export default function install(
   Vue.http
     .get("/api/v2/ui/users/current")
     .then(response => {
-      if (
-        !(
-          response &&
-          response.data &&
-          response.data.data &&
-          response.data.data.locale
-        )
-      ) {
+      if (!(response && response.data && response.data.data && response.data.data.locale)) {
         throw "[src setup] Invalid locale server response";
       }
       const locale = response.data.data.locale;

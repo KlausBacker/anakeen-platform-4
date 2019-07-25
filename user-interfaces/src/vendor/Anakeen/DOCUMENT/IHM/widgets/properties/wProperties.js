@@ -91,25 +91,19 @@ define([
       this._super();
 
       this.element.data("dcpDocumentProperties", this);
-      this.element.on(
-        "click" + this.eventNamespace,
-        "a[data-document-id]",
-        function wProperties_bindClick(event) {
-          var docid = $(this).data("document-id");
-          if (docid) {
-            event.preventDefault();
-            scope.element.trigger("viewDocument", docid);
-          }
+      this.element.on("click" + this.eventNamespace, "a[data-document-id]", function wProperties_bindClick(event) {
+        var docid = $(this).data("document-id");
+        if (docid) {
+          event.preventDefault();
+          scope.element.trigger("viewDocument", docid);
         }
-      );
+      });
     },
 
     _displayProperties: function wPropertiesGetProperties() {
       var scope = this;
       $.getJSON(
-        "/api/v2/smart-elements/" +
-          this.options.documentId +
-          ".json?fields=document.properties.all&useTrash=true"
+        "/api/v2/smart-elements/" + this.options.documentId + ".json?fields=document.properties.all&useTrash=true"
       )
         .done(function wProperties_done(data) {
           var info;
@@ -119,20 +113,14 @@ define([
           });
           info.formatDate = function wProperties_formatDate() {
             return function wProperties_formatDate2(text, render) {
-              return kendo.toString(
-                new Date(render(text).replace(" ", "T")),
-                "G"
-              );
+              return kendo.toString(new Date(render(text).replace(" ", "T")), "G");
             };
           };
           scope.element.html(Mustache.render(scope.htmlCaneva() || "", info));
           //scope.dialogWindow.center();
 
           scope.dialogWindow.setOptions({
-            title: Mustache.render(
-              scope.options.labels.propertiesTitle,
-              data.data.document.properties
-            )
+            title: Mustache.render(scope.options.labels.propertiesTitle, data.data.document.properties)
           });
         })
         .fail(function wProperties_fail(xhr) {

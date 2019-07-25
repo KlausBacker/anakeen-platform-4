@@ -24,24 +24,15 @@ window.dcp.document.documentController(
       return documentObject.renderMode === "edit";
     },
     attributeCheck: attribute => {
-      return (
-        attribute.id === "hub_instance_jsasset" ||
-        attribute.id === "hub_instance_cssasset"
-      );
+      return attribute.id === "hub_instance_jsasset" || attribute.id === "hub_instance_cssasset";
     }
   },
   function assetsTypeSelect(event, doc, attribute, $el) {
-    const $container = $el.closest(
-      `tr[data-attrid=${attribute.id}s].dcpArray__content__line`
+    const $container = $el.closest(`tr[data-attrid=${attribute.id}s].dcpArray__content__line`);
+    const assetType = $(`[data-attrid=${attribute.id}_type] [data-role=dropdownlist]`, $container).data(
+      "kendoDropDownList"
     );
-    const assetType = $(
-      `[data-attrid=${attribute.id}_type] [data-role=dropdownlist]`,
-      $container
-    ).data("kendoDropDownList");
-    const kautocomplete = $(
-      `.k-autocomplete [data-role=autocomplete]`,
-      $el
-    ).data("kendoAutoComplete");
+    const kautocomplete = $(`.k-autocomplete [data-role=autocomplete]`, $el).data("kendoAutoComplete");
     // Enable/Disable autocomplete following the asset type
     assetType.bind("select", event => {
       switch (event.dataItem.value) {

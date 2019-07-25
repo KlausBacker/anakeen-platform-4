@@ -70,18 +70,13 @@
       // $.expr[ ":" ][ fullName.toLowerCase() ] = function widget_createSelector(elem) {
       //     return Boolean($(elem).data(fullName));
       // };
-      $.expr.pseudos[fullName.toLowerCase()] = function widget_createSelector(
-        elem
-      ) {
+      $.expr.pseudos[fullName.toLowerCase()] = function widget_createSelector(elem) {
         return Boolean($(elem).data(fullName));
       };
 
       $[namespace] = $[namespace] || {};
       existingConstructor = $[namespace][name];
-      Constructor = $[namespace][name] = function widget_Constructor(
-        options,
-        element
-      ) {
+      Constructor = $[namespace][name] = function widget_Constructor(options, element) {
         // allow instantiation without "new" keyword
         if (!this._createWidget) {
           return new Constructor(options, element);
@@ -138,37 +133,25 @@
           };
         })();
       });
-      Constructor.prototype = $.widget.extend(
-        basePrototype,
-        {},
-        proxiedPrototype,
-        {
-          constructor: Constructor,
-          namespace: namespace,
-          widgetName: name,
-          widgetFullName: fullName
-        }
-      );
+      Constructor.prototype = $.widget.extend(basePrototype, {}, proxiedPrototype, {
+        constructor: Constructor,
+        namespace: namespace,
+        widgetName: name,
+        widgetFullName: fullName
+      });
 
       // If this widget is being redefined then we need to find all widgets that
       // are inheriting from it and redefine all of them so that they inherit from
       // the new version of this widget. We're essentially trying to replace one
       // level in the prototype chain.
       if (existingConstructor) {
-        $.each(
-          existingConstructor._childConstructors,
-          function widget_existingConstructor(i, child) {
-            var childPrototype = child.prototype;
+        $.each(existingConstructor._childConstructors, function widget_existingConstructor(i, child) {
+          var childPrototype = child.prototype;
 
-            // redefine the child widget using the same prototype that was
-            // originally used, but inherit from the new version of the base
-            $.widget(
-              childPrototype.namespace + "." + childPrototype.widgetName,
-              Constructor,
-              child._proto
-            );
-          }
-        );
+          // redefine the child widget using the same prototype that was
+          // originally used, but inherit from the new version of the base
+          $.widget(childPrototype.namespace + "." + childPrototype.widgetName, Constructor, child._proto);
+        });
         // remove the list of existing child constructors from the old constructor
         // so the old child constructors can be garbage collected
         delete existingConstructor._childConstructors;
@@ -217,10 +200,7 @@
           returnValue = this;
 
         // allow multiple hashes to be passed on init
-        options =
-          !isMethodCall && args.length
-            ? $.widget.extend.apply(null, [options].concat(args))
-            : options;
+        options = !isMethodCall && args.length ? $.widget.extend.apply(null, [options].concat(args)) : options;
 
         if (isMethodCall) {
           this.each(function widget_eachMethodCall() {
@@ -241,20 +221,11 @@
               );
             }
             if (!$.isFunction(instance[options]) || options.charAt(0) === "_") {
-              throw new ErrorNoSuchMethod(
-                "no such method '" +
-                  options +
-                  "' for " +
-                  name +
-                  " widget instance"
-              );
+              throw new ErrorNoSuchMethod("no such method '" + options + "' for " + name + " widget instance");
             }
             methodValue = instance[options].apply(instance, args);
             if (methodValue !== instance && methodValue !== undefined) {
-              returnValue =
-                methodValue && methodValue.jquery
-                  ? returnValue.pushStack(methodValue.get())
-                  : methodValue;
+              returnValue = methodValue && methodValue.jquery ? returnValue.pushStack(methodValue.get()) : methodValue;
               return false;
             }
           });
@@ -296,12 +267,7 @@
         this.element = $(element);
         this.uuid = widgetUuid++;
         this.eventNamespace = "." + this.widgetName + this.uuid;
-        this.options = $.widget.extend(
-          {},
-          this.options,
-          this._getCreateOptions(),
-          options
-        );
+        this.options = $.widget.extend({}, this.options, this._getCreateOptions(), options);
 
         this.bindings = $();
         this.classesElementLookup = {};
@@ -325,16 +291,9 @@
               : // element is window or document
                 element.document || element
           );
-          this.window = $(
-            this.document[0].defaultView || this.document[0].parentWindow
-          );
+          this.window = $(this.document[0].defaultView || this.document[0].parentWindow);
         }
-        this.options = $.widget.extend(
-          {},
-          this.options,
-          this._getCreateOptions(),
-          options
-        );
+        this.options = $.widget.extend({}, this.options, this._getCreateOptions(), options);
 
         this._create();
 
@@ -356,10 +315,7 @@
         var that = this;
 
         this._destroy();
-        $.each(this.classesElementLookup, function widget_destroyClass(
-          key,
-          value
-        ) {
+        $.each(this.classesElementLookup, function widget_destroyClass(key, value) {
           that._removeClass(value, key);
         });
 
@@ -443,11 +399,7 @@
           //noinspection JSUnfilteredForInLoop
           currentElements = this.classesElementLookup[classKey];
           //noinspection JSUnfilteredForInLoop
-          if (
-            value[classKey] === this.options.classes[classKey] ||
-            !currentElements ||
-            !currentElements.length
-          ) {
+          if (value[classKey] === this.options.classes[classKey] || !currentElements || !currentElements.length) {
             continue;
           }
 
@@ -488,10 +440,7 @@
           options
         );
 
-        processClassString = function widget_processClassString(
-          classes,
-          checkOption
-        ) {
+        processClassString = function widget_processClassString(classes, checkOption) {
           var current, i;
           for (i = 0; i < classes.length; i++) {
             current = that.classesElementLookup[classes[i]] || $();
@@ -499,13 +448,9 @@
               // unique is deprecated in jQuery 3.0.0+ renamed to uniqueSort
               var jqueryVersion = +$().jquery.split(".")[0];
               if (jqueryVersion >= 3) {
-                current = $(
-                  $.uniqueSort(current.get().concat(options.element.get()))
-                );
+                current = $($.uniqueSort(current.get().concat(options.element.get())));
               } else {
-                current = $(
-                  $.unique(current.get().concat(options.element.get()))
-                );
+                current = $($.unique(current.get().concat(options.element.get())));
               }
             } else {
               current = $(current.not(options.element).get());
@@ -576,16 +521,12 @@
             // allow widgets to customize the disabled handling
             // - disabled as an array instead of boolean
             // - disabled class as method for disabling individual parts
-            return (typeof handler === "string"
-              ? instance[handler]
-              : handler
-            ).apply(instance, arguments);
+            return (typeof handler === "string" ? instance[handler] : handler).apply(instance, arguments);
           };
 
           // copy the guid so direct unbinding works
           if (typeof handler !== "string") {
-            handlerProxy.guid = handler.guid =
-              handler.guid || handlerProxy.guid || $.guid++;
+            handlerProxy.guid = handler.guid = handler.guid || handlerProxy.guid || $.guid++;
           }
 
           var match = event.match(/^(\w+)\s*(.*)$/),
@@ -611,18 +552,13 @@
       },
 
       _off: function widget__off(element, eventName) {
-        eventName =
-          (eventName || "").split(" ").join(this.eventNamespace + " ") +
-          this.eventNamespace;
+        eventName = (eventName || "").split(" ").join(this.eventNamespace + " ") + this.eventNamespace;
         element.unbind(eventName).undelegate(eventName);
       },
 
       _delay: function widget__delay(handler, delay) {
         var handlerProxy = function handlerProxy() {
-          return (typeof handler === "string"
-            ? instance[handler]
-            : handler
-          ).apply(instance, arguments);
+          return (typeof handler === "string" ? instance[handler] : handler).apply(instance, arguments);
         };
 
         var instance = this;
@@ -636,9 +572,7 @@
 
         data = data || {};
         event = $.Event(event);
-        event.type = this.options.eventPrefix
-          ? this.options.eventPrefix + type
-          : type;
+        event.type = this.options.eventPrefix ? this.options.eventPrefix + type : type;
         event.type = event.type.toLocaleLowerCase();
         // the original event may come from any element
         // so we need to reset the target on the new event
@@ -658,8 +592,7 @@
 
         this.element.trigger(event, data);
         return !(
-          ($.isFunction(callback) &&
-            callback.apply(this.element[0], [event].concat(data)) === false) ||
+          ($.isFunction(callback) && callback.apply(this.element[0], [event].concat(data)) === false) ||
           event.isDefaultPrevented()
         );
       }

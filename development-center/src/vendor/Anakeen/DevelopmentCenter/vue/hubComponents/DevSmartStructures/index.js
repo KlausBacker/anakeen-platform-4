@@ -10,8 +10,5 @@ if (
   window.ank.hub["ank-dev-structures"]
 ) {
   // @ts-ignore
-  window.ank.hub["ank-dev-structures"].resolve(
-    SmartStructures,
-    "ank-dev-structures"
-  );
+  window.ank.hub["ank-dev-structures"].resolve(SmartStructures, "ank-dev-structures");
 }

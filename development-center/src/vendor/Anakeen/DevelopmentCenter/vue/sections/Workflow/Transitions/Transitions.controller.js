@@ -87,9 +87,7 @@ export default {
           case "transition":
             str = `<div class="transitions-infos"><ul><li><b>Name :&nbsp</b>${this.checkIsValid(
               dataItem["id"]
-            )}</li><li><b>Label :&nbsp</b>${this.checkIsValid(
-              dataItem["label"]
-            )}</li></ul></div>`;
+            )}</li><li><b>Label :&nbsp</b>${this.checkIsValid(dataItem["label"])}</li></ul></div>`;
             return str;
         }
       };
@@ -116,10 +114,7 @@ export default {
               "unAttachTimers"
             )}</div>`;
           case "mailtemplates":
-            return `${this.displayMultiple(
-              this.checkIsValid(dataItem["mailtemplates"]),
-              "mailtemplates"
-            )}`;
+            return `${this.displayMultiple(this.checkIsValid(dataItem["mailtemplates"]), "mailtemplates")}`;
         }
       };
     }

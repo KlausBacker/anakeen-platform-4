@@ -10,8 +10,5 @@ if (
   window.ank.hub["ank-dev-workflow"]
 ) {
   // @ts-ignore
-  window.ank.hub["ank-dev-workflow"].resolve(
-    SmartStructures,
-    "ank-dev-workflow"
-  );
+  window.ank.hub["ank-dev-workflow"].resolve(SmartStructures, "ank-dev-workflow");
 }

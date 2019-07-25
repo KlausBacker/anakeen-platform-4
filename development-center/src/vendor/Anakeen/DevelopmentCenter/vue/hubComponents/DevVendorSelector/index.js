@@ -10,8 +10,5 @@ if (
   window.ank.hub["ank-dev-vendor-selector"]
 ) {
   // @ts-ignore
-  window.ank.hub["ank-dev-vendor-selector"].resolve(
-    VendorSelector,
-    "ank-dev-vendor-selector"
-  );
+  window.ank.hub["ank-dev-vendor-selector"].resolve(VendorSelector, "ank-dev-vendor-selector");
 }

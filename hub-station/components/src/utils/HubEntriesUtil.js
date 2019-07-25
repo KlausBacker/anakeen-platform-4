@@ -30,10 +30,7 @@ class HubEntriesUtil {
       })
     })
       .then(response => {
-        if (
-          !response.ok &&
-          response.headers.get("Content-Type").indexOf("text/html") > -1
-        ) {
+        if (!response.ok && response.headers.get("Content-Type").indexOf("text/html") > -1) {
           return response.text().then(htmlContent => {
             document.write(htmlContent);
             let errorMsg = `${response.status}`;
@@ -51,13 +48,9 @@ class HubEntriesUtil {
           const data = response.data;
           this.data = data;
           const globalAssets = data.globalAssets || [];
-          currentConf.contents = [{ assets: globalAssets }].concat(
-            data.hubElements
-          );
+          currentConf.contents = [{ assets: globalAssets }].concat(data.hubElements);
         } else {
-          throw response.message ||
-            response.exceptionMessage ||
-            "An error has occurred";
+          throw response.message || response.exceptionMessage || "An error has occurred";
         }
       })
       .catch(error => {

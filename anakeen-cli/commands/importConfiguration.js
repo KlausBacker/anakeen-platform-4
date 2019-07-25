@@ -1,8 +1,5 @@
 const gulp = require("gulp");
-const {
-  deployConfiguration,
-  deployGlobConfiguration
-} = require("../tasks/deployConfiguration");
+const { deployConfiguration, deployGlobConfiguration } = require("../tasks/deployConfiguration");
 const signale = require("signale");
 const fs = require("fs");
 const checkConfigFile = require("./checkConfigFile");

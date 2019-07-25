@@ -1,8 +1,5 @@
 /*global define*/
-define(["underscore", "backbone", "dcpDocument/models/mDocument"], function(
-  _,
-  Backbone
-) {
+define(["underscore", "backbone", "dcpDocument/models/mDocument"], function(_, Backbone) {
   "use strict";
 
   return Backbone.Model.extend({
@@ -20,13 +17,9 @@ define(["underscore", "backbone", "dcpDocument/models/mDocument"], function(
      * @returns {string}
      */
     url: function mTransition_url() {
-      var urlData =
-        "/api/v2/smart-elements/<%= documentId %>/workflows/states/?allStates=1";
+      var urlData = "/api/v2/smart-elements/<%= documentId %>/workflows/states/?allStates=1";
 
-      urlData = urlData.replace(
-        "<%= documentId %>",
-        encodeURIComponent(this.get("documentId"))
-      );
+      urlData = urlData.replace("<%= documentId %>", encodeURIComponent(this.get("documentId")));
 
       return urlData;
     },

@@ -10,8 +10,5 @@ if (
   window.ank.hub["ank-admin-account"]
 ) {
   // @ts-ignore
-  window.ank.hub["ank-admin-account"].resolve(
-    AccountManager,
-    "ank-admin-account"
-  );
+  window.ank.hub["ank-admin-account"].resolve(AccountManager, "ank-admin-account");
 }

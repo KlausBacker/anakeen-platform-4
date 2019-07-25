@@ -58,10 +58,7 @@ import i18n from "dcpDocument/i18n/documentCatalog";
     $(".helppage--select").removeClass("helppage--select");
     if ($(chapter).length === 1) {
       $(chapter).addClass("helppage--select");
-      window.scrollTo(
-        0,
-        $(chapter).offset().top - $(".dcpDocument__menu").height() - 40
-      );
+      window.scrollTo(0, $(chapter).offset().top - $(".dcpDocument__menu").height() - 40);
     }
   };
 
@@ -70,13 +67,10 @@ import i18n from "dcpDocument/i18n/documentCatalog";
     "ready",
     {
       name: "helppageReady",
-      documentCheck: documentObject =>
-        documentObject.renderMode === "view" &&
-        documentObject.family.name === "HELPPAGE"
+      documentCheck: documentObject => documentObject.renderMode === "view" && documentObject.family.name === "HELPPAGE"
     },
     function helppageReady(/*event, documentObject*/) {
-      const currentLocale =
-        i18n.getLocale().culture.replace("-", "_") || "fr_FR";
+      const currentLocale = i18n.getLocale().culture.replace("-", "_") || "fr_FR";
 
       if (window.frameElement) {
         // if document is in dialog window
@@ -88,9 +82,7 @@ import i18n from "dcpDocument/i18n/documentCatalog";
             if (itemMenu.id !== "helppage-langMenu") {
               this.documentController("getMenu", itemMenu.id).hide();
             } else {
-              this.documentController("getMenu", itemMenu.id).setCssClass(
-                "menu--right"
-              );
+              this.documentController("getMenu", itemMenu.id).setCssClass("menu--right");
             }
           });
 
@@ -123,9 +115,7 @@ import i18n from "dcpDocument/i18n/documentCatalog";
     "custom:helppageSelect",
     {
       name: "helppage-selectchapter",
-      documentCheck: documentObject =>
-        documentObject.renderMode === "view" &&
-        documentObject.family.name === "HELPPAGE"
+      documentCheck: documentObject => documentObject.renderMode === "view" && documentObject.family.name === "HELPPAGE"
     },
     function helppageDoSelectChapter(event, chapter) {
       helpPageSelectChapter("#CHAP-" + chapter);
@@ -140,9 +130,7 @@ import i18n from "dcpDocument/i18n/documentCatalog";
     "actionClick",
     {
       name: "helppage-changelang",
-      documentCheck: documentObject =>
-        documentObject.renderMode === "view" &&
-        documentObject.family.name === "HELPPAGE"
+      documentCheck: documentObject => documentObject.renderMode === "view" && documentObject.family.name === "HELPPAGE"
     },
     function helppageClickChangeLocale(event, documentObject, options) {
       let culture;
@@ -154,13 +142,8 @@ import i18n from "dcpDocument/i18n/documentCatalog";
         selectedChapter = $(".helppage--select").attr("id");
         helppageDisplayLocale(culture, this);
         helpPageSelectChapter("#" + selectedChapter);
-        langMenu = this.documentController(
-          "getMenu",
-          $(options.target).data("menu-id")
-        );
-        this.documentController("getMenu", "helppage-langMenu").setIconUrl(
-          langMenu.getProperties().iconUrl
-        );
+        langMenu = this.documentController("getMenu", $(options.target).data("menu-id"));
+        this.documentController("getMenu", "helppage-langMenu").setIconUrl(langMenu.getProperties().iconUrl);
         this.documentController("getMenu", "helppage-langMenu").setHtmlLabel(
           "(" + langMenu.getProperties().id.substr(-5, 2) + ") "
         );

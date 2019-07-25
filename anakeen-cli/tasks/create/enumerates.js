@@ -17,43 +17,22 @@ const createEnumeratesXML = namespace => {
   };
 };
 
-exports.writeTemplate = (
-  packagePath,
-  { vendorName, moduleName, namespace }
-) => {
+exports.writeTemplate = (packagePath, { vendorName, moduleName, namespace }) => {
   return new Promise((resolve, reject) => {
-    const enumeratesDir = path.join(
-      packagePath,
-      "src",
-      "vendor",
-      vendorName,
-      moduleName,
-      "Enumerates"
-    );
+    const enumeratesDir = path.join(packagePath, "src", "vendor", vendorName, moduleName, "Enumerates");
     fs.mkdir(enumeratesDir, err => {
       if (err) {
         reject(err);
       } else {
         const builder = new xml2js.Builder();
-        const enumeratesXml = builder.buildObject(
-          createEnumeratesXML(namespace)
-        );
-        fs.writeFile(
-          path.join(enumeratesDir, `100-${moduleName}Enumerates.xml`),
-          enumeratesXml,
-          err => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve(
-                path.relative(
-                  path.join(packagePath, "src"),
-                  path.join(enumeratesDir, "**", "*.xml")
-                )
-              );
-            }
+        const enumeratesXml = builder.buildObject(createEnumeratesXML(namespace));
+        fs.writeFile(path.join(enumeratesDir, `100-${moduleName}Enumerates.xml`), enumeratesXml, err => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(path.relative(path.join(packagePath, "src"), path.join(enumeratesDir, "**", "*.xml")));
           }
-        );
+        });
       }
     });
   });

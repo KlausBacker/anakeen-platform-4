@@ -1,7 +1,4 @@
-define(["underscore", "jquery", "dcpDocument/widgets/widget"], function wWindow(
-  _,
-  $
-) {
+define(["underscore", "jquery", "dcpDocument/widgets/widget"], function wWindow(_, $) {
   "use strict";
 
   $.widget("dcp.dcpWindow", {
@@ -37,52 +34,44 @@ define(["underscore", "jquery", "dcpDocument/widgets/widget"], function wWindow(
               _.defer(function wWindowOpenSetTitle() {
                 var currentTitle = "";
                 var $content = kendoWindow.element.find("iframe").contents();
-                kendoWindow.element
-                  .find("iframe")
-                  .on("load", function wWindowOpenSetTitleNow() {
-                    try {
-                      var $scopeWindow = $(this);
-                      var $content = $scopeWindow.contents();
+                kendoWindow.element.find("iframe").on("load", function wWindowOpenSetTitleNow() {
+                  try {
+                    var $scopeWindow = $(this);
+                    var $content = $scopeWindow.contents();
 
-                      kendoWindow.setOptions({
-                        title: currentTitle
-                      });
-                      $content.find("body").addClass("window-dialog");
-                    } catch (exp) {
-                      //no test here
-                    }
-                  });
+                    kendoWindow.setOptions({
+                      title: currentTitle
+                    });
+                    $content.find("body").addClass("window-dialog");
+                  } catch (exp) {
+                    //no test here
+                  }
+                });
 
                 // Verify if need to change title every seconds
-                kendoWindow.intervalId = window.setInterval(
-                  function wWindowOpenSetTitleIsChanged() {
-                    try {
-                      $content = kendoWindow.element.find("iframe").contents();
-                      var newTitle = $content.find("title").html();
-                      var currentIcon = $content
-                        .find('link[rel="shortcut icon"]')
-                        .attr("href");
+                kendoWindow.intervalId = window.setInterval(function wWindowOpenSetTitleIsChanged() {
+                  try {
+                    $content = kendoWindow.element.find("iframe").contents();
+                    var newTitle = $content.find("title").html();
+                    var currentIcon = $content.find('link[rel="shortcut icon"]').attr("href");
 
-                      if (newTitle) {
-                        $content.find("body").addClass("window-dialog");
-                        if (currentIcon) {
-                          newTitle =
-                            '<img src="' + currentIcon + '" /> ' + newTitle;
-                        }
-                        if (newTitle !== currentTitle) {
-                          currentTitle = newTitle;
-                          $(kendoWindow.element)
-                            .closest(".k-window")
-                            .find(".k-window-title")
-                            .html(newTitle);
-                        }
+                    if (newTitle) {
+                      $content.find("body").addClass("window-dialog");
+                      if (currentIcon) {
+                        newTitle = '<img src="' + currentIcon + '" /> ' + newTitle;
                       }
-                    } catch (exp) {
-                      //no test here
+                      if (newTitle !== currentTitle) {
+                        currentTitle = newTitle;
+                        $(kendoWindow.element)
+                          .closest(".k-window")
+                          .find(".k-window-title")
+                          .html(newTitle);
+                      }
                     }
-                  },
-                  1000
-                );
+                  } catch (exp) {
+                    //no test here
+                  }
+                }, 1000);
               });
             } else {
               kendoWindow.setOptions({

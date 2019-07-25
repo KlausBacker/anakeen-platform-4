@@ -12,10 +12,7 @@ const GenericError = require(path.resolve(__dirname, "GenericError.js"));
 const { RepoXML } = require(path.resolve(__dirname, "RepoXML.js"));
 const { RepoLockXML } = require(path.resolve(__dirname, "RepoLockXML.js"));
 const { HTTPAgent } = require(path.resolve(__dirname, "HTTPAgent.js"));
-const { RepoContentXML } = require(path.resolve(
-  __dirname,
-  "RepoContentXML.js"
-));
+const { RepoContentXML } = require(path.resolve(__dirname, "RepoContentXML.js"));
 const SHA256Digest = require(path.resolve(__dirname, "SHA256Digest"));
 
 const fs_stat = util.promisify(fs.stat);
@@ -31,9 +28,7 @@ class Compose {
     }
     this.$ = {
       debug: options.hasOwnProperty("debug") && options.debug === true,
-      frozenLockfile:
-        options.hasOwnProperty("frozenLockfile") &&
-        options["frozenLockfile"] === true,
+      frozenLockfile: options.hasOwnProperty("frozenLockfile") && options["frozenLockfile"] === true,
       latest: options.hasOwnProperty("latest") && options.latest === true
     };
   }
@@ -152,9 +147,7 @@ class Compose {
         await fs_mkdir(localRepo, { recursive: true });
         stats = await fs_stat(localRepo);
       } catch (e) {
-        throw new Error(
-          `Could not create localRepo directory '${localRepo}': ${e}`
-        );
+        throw new Error(`Could not create localRepo directory '${localRepo}': ${e}`);
       }
     }
     if (!stats.isDirectory()) {
@@ -168,9 +161,7 @@ class Compose {
         await fs_mkdir(localSrc, { recursive: true });
         stats = await fs_stat(localSrc);
       } catch (e) {
-        throw new Error(
-          `Could not create localRepo directory '${localSrc}': ${e}`
-        );
+        throw new Error(`Could not create localRepo directory '${localSrc}': ${e}`);
       }
     }
     if (!stats.isDirectory()) {
@@ -200,11 +191,7 @@ class Compose {
    * @param {string} moduleVersion Module's semver version
    * @param {string} registryName Registry's unique name/identifier from which the module is to be downloaded.
    */
-  async addModule({
-    name: moduleName,
-    version: moduleVersion,
-    registry: registryName
-  }) {
+  async addModule({ name: moduleName, version: moduleVersion, registry: registryName }) {
     await this.loadContext();
 
     await this.repoXML.addModule({
@@ -231,29 +218,18 @@ class Compose {
    * @returns {Promise<void>}
    * @private
    */
-  async _installSemverModule({
-    name: moduleName,
-    version: moduleVersion,
-    registry: registryName
-  }) {
+  async _installSemverModule({ name: moduleName, version: moduleVersion, registry: registryName }) {
     const lockExists = Compose.fileExists("repo.lock.xml");
     if (lockExists === true && this.$.frozenLockfile) {
-      throw new ComposeError(
-        `Cannot install module '${moduleName}' while using '--frozen-lock' option`
-      );
+      throw new ComposeError(`Cannot install module '${moduleName}' while using '--frozen-lock' option`);
     }
 
     const appRegistry = this.repoXML.getRegistryByName(registryName);
     const ping = await appRegistry.ping();
     if (!ping) {
-      throw new ComposeError(
-        `Registry '${registryName}' does not seems to be valid`
-      );
+      throw new ComposeError(`Registry '${registryName}' does not seems to be valid`);
     }
-    const moduleList = await appRegistry.getModuleList(
-      moduleName,
-      moduleVersion
-    );
+    const moduleList = await appRegistry.getModuleList(moduleName, moduleVersion);
     if (moduleList.length <= 0) {
       throw new ComposeError(
         `No module '${moduleName}' found satisfying version '${moduleVersion}' on registry '${registryName}'`
@@ -268,11 +244,7 @@ class Compose {
     });
   }
 
-  async _installAndLockModuleVersion({
-    name: moduleName,
-    version: moduleVersion,
-    registry: registryName
-  }) {
+  async _installAndLockModuleVersion({ name: moduleName, version: moduleVersion, registry: registryName }) {
     const localRepo = await this.repoXML.getConfigLocalRepo();
     const localSrc = await this.repoXML.getConfigLocalSrc();
 
@@ -282,19 +254,14 @@ class Compose {
     const lockedModule = this.repoLockXML.getModuleByName(moduleName);
     if (lockedModule) {
       if (lockedModule.$.version === moduleVersion) {
-        signale.note(
-          `Module '${moduleName}' with version '${moduleVersion}' is up-to-date`
-        );
+        signale.note(`Module '${moduleName}' with version '${moduleVersion}' is up-to-date`);
         return;
       } else {
         await this.deleteModuleResources(lockedModule);
       }
     }
 
-    const moduleInfo = await appRegistry.getModuleVersionInfo(
-      moduleName,
-      moduleVersion
-    );
+    const moduleInfo = await appRegistry.getModuleVersionInfo(moduleName, moduleVersion);
     this.debug({ moduleInfo });
 
     const resources = {
@@ -305,11 +272,7 @@ class Compose {
       if (!moduleInfo.hasOwnProperty(type)) {
         continue;
       }
-      const url = [
-        appRegistry.getModuleVersionURL(moduleName, moduleVersion),
-        type,
-        moduleInfo[type]
-      ].join("/");
+      const url = [appRegistry.getModuleVersionURL(moduleName, moduleVersion), type, moduleInfo[type]].join("/");
       let pathname;
       if (type === "app") {
         pathname = [localRepo, moduleInfo[type]].join("/");
@@ -432,9 +395,7 @@ class Compose {
   }
 
   async genRepoContentXML(repoDir) {
-    const repoContentXML = new RepoContentXML(
-      [repoDir, "content.xml"].join("/")
-    );
+    const repoContentXML = new RepoContentXML([repoDir, "content.xml"].join("/"));
     repoContentXML.reset();
 
     let moduleFileList = await fs_readdir(repoDir);
@@ -458,9 +419,7 @@ class Compose {
     await this.loadContext();
 
     if (this.$.frozenLockfile) {
-      signale.note(
-        "Frozen lock file option activated : removing .app and source files from repository"
-      );
+      signale.note("Frozen lock file option activated : removing .app and source files from repository");
       const localRepo = this.repoXML.getConfigLocalRepo();
       const localSrc = this.repoXML.getConfigLocalSrc();
 
@@ -514,12 +473,7 @@ class Compose {
       signale.note(`Found ${count} locked module(s) to install`);
       for (let i = 0; i < triage.lockedList.length; i++) {
         const bimod = triage.lockedList[i];
-        if (
-          semver.satisfies(
-            semver.coerce(bimod.locked.$.version),
-            bimod.required.$.version
-          )
-        ) {
+        if (semver.satisfies(semver.coerce(bimod.locked.$.version), bimod.required.$.version)) {
           signale.note(
             `Installing module '${bimod.locked.$.name}' with version '${bimod.locked.$.version}' from lock file`
           );
@@ -532,9 +486,7 @@ class Compose {
               `Locked version '${bimod.locked.$.version}' does not satisfies requested semver version '${bimod.required.$.version}'`
             );
           }
-          signale.note(
-            `Installing module '${bimod.required.$.name}' with version '${bimod.required.$.version}'`
-          );
+          signale.note(`Installing module '${bimod.required.$.name}' with version '${bimod.required.$.version}'`);
           await this._installSemverModule({
             name: bimod.required.$.name,
             version: bimod.required.$.version,
@@ -598,18 +550,12 @@ class Compose {
         localIsOutdated = localSha256 !== sha256;
       }
 
-      if (
-        !localIsOutdated &&
-        type === "src" &&
-        !Compose._srcUnpackDirExists(pathname)
-      ) {
+      if (!localIsOutdated && type === "src" && !Compose._srcUnpackDirExists(pathname)) {
         localIsOutdated = true;
       }
 
       if (localIsOutdated) {
-        signale.note(
-          `Updating outdated resource '${pathname}' from lock src '${src}'`
-        );
+        signale.note(`Updating outdated resource '${pathname}' from lock src '${src}'`);
         await this._updateLocalResource({
           type,
           src,
@@ -655,10 +601,7 @@ class Compose {
 
     for (let i = 0; i < moduleList.length; i++) {
       const module = moduleList[i];
-      const lockedModule = Compose.isModuleInList(
-        module.$.name,
-        moduleLockList
-      );
+      const lockedModule = Compose.isModuleInList(module.$.name, moduleLockList);
       if (lockedModule) {
         lockedList.push({
           required: module,
@@ -708,11 +651,7 @@ class Compose {
         const module = this.repoXML.getModuleByName(moduleAtVersion.name);
         moduleList[i] = {
           name: module.name,
-          version: this.$.latest
-            ? "latest"
-            : moduleAtVersion.version !== ""
-            ? moduleAtVersion.version
-            : module.version,
+          version: this.$.latest ? "latest" : moduleAtVersion.version !== "" ? moduleAtVersion.version : module.version,
           registry: module.registry
         };
       }
@@ -722,9 +661,7 @@ class Compose {
 
     for (let i = 0; i < moduleList.length; i++) {
       const module = moduleList[i];
-      signale.note(
-        `Installing '${module.name}' with version '${module.version}'`
-      );
+      signale.note(`Installing '${module.name}' with version '${module.version}'`);
       await this._installSemverModule({
         name: module.name,
         version: module.version,

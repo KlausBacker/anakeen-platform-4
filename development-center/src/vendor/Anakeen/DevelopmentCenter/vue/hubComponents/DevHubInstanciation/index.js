@@ -10,8 +10,5 @@ if (
   window.ank.hub["ank-dev-hub-instanciation"]
 ) {
   // @ts-ignore
-  window.ank.hub["ank-dev-hub-instanciation"].resolve(
-    HubInstanciation,
-    "ank-dev-hub-instanciation"
-  );
+  window.ank.hub["ank-dev-hub-instanciation"].resolve(HubInstanciation, "ank-dev-hub-instanciation");
 }

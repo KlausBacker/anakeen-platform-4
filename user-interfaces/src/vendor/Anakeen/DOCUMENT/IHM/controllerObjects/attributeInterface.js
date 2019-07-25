@@ -13,18 +13,10 @@ define(["underscore"], function attributeInterface(_) {
   AttributPrototype.prototype.getProperties = function AttributeInterfaceGetProperties() {
     var properties = _.clone(this._attributeModel.attributes),
       content = properties.content;
-    properties = _.omit(
-      properties,
-      "isValueAttribute",
-      "title",
-      "attributeValue",
-      "content"
-    );
+    properties = _.omit(properties, "isValueAttribute", "title", "attributeValue", "content");
     properties.content = [];
     if (content && content.length) {
-      properties.content = content.map(function attributeInterface_convertChild(
-        currentAttribute
-      ) {
+      properties.content = content.map(function attributeInterface_convertChild(currentAttribute) {
         return new AttributeInterface(currentAttribute);
       });
     }
@@ -36,9 +28,7 @@ define(["underscore"], function attributeInterface(_) {
    *
    * @returns {*}
    */
-  AttributPrototype.prototype.setLabel = function AttributeInterfaceSetLabel(
-    label
-  ) {
+  AttributPrototype.prototype.setLabel = function AttributeInterfaceSetLabel(label) {
     this._attributeModel.set("label", label);
   };
 
@@ -47,9 +37,7 @@ define(["underscore"], function attributeInterface(_) {
    *
    * @returns {*}
    */
-  AttributPrototype.prototype.getWidgetData = function AttributeInterfaceGetWidgetData(
-    index
-  ) {
+  AttributPrototype.prototype.getWidgetData = function AttributeInterfaceGetWidgetData(index) {
     return _.clone(this._attributeModel.toData(index, true));
   };
 
@@ -77,9 +65,7 @@ define(["underscore"], function attributeInterface(_) {
    * @param name
    * @returns {*}
    */
-  AttributPrototype.prototype.getOption = function AttributeInterfaceGetOption(
-    name
-  ) {
+  AttributPrototype.prototype.getOption = function AttributeInterfaceGetOption(name) {
     return this._attributeModel.getOption(name);
   };
 
@@ -99,16 +85,11 @@ define(["underscore"], function attributeInterface(_) {
    * @param value
    * @constructor
    */
-  AttributPrototype.prototype.setOption = function AttributeInterfaceSetOption(
-    name,
-    value
-  ) {
+  AttributPrototype.prototype.setOption = function AttributeInterfaceSetOption(name, value) {
     this._attributeModel.setOption(name, value);
   };
 
-  AttributPrototype.prototype.getValue = function AttributeInterfaceGetValue(
-    type
-  ) {
+  AttributPrototype.prototype.getValue = function AttributeInterfaceGetValue(type) {
     if (_.isUndefined(type) || type === "current") {
       return this._attributeModel.get("attributeValue");
     }
@@ -125,40 +106,25 @@ define(["underscore"], function attributeInterface(_) {
         initial: this._attributeModel._initialAttributeValue
       };
     }
-    throw new Error(
-      "Unknown type of getValue (current, previous, initial, all"
-    );
+    throw new Error("Unknown type of getValue (current, previous, initial, all");
   };
 
-  AttributPrototype.prototype.setValue = function AttributeInterfaceSetValue(
-    value,
-    dryRun
-  ) {
+  AttributPrototype.prototype.setValue = function AttributeInterfaceSetValue(value, dryRun) {
     var index;
     var currentValue;
     if (this._attributeModel.get("multiple")) {
       if (_.isArray(value)) {
         _.each(value, function AttributeInterfaceSetValueVerify(singleValue) {
           if (!_.isObject(singleValue) || _.isUndefined(singleValue.value)) {
-            throw new Error(
-              "Each values must be an object with at least value properties"
-            );
+            throw new Error("Each values must be an object with at least value properties");
           }
           if (_.isUndefined(singleValue.displayValue)) {
-            singleValue.displayValue =
-              singleValue.value !== null ? String(singleValue.value) : "";
+            singleValue.displayValue = singleValue.value !== null ? String(singleValue.value) : "";
           }
         });
       } else {
-        if (
-          !_.isObject(value) ||
-          _.isUndefined(value.value) ||
-          _.isUndefined(value.index) ||
-          value.index === null
-        ) {
-          throw new Error(
-            "Value must be an object with at least value and index properties"
-          );
+        if (!_.isObject(value) || _.isUndefined(value.value) || _.isUndefined(value.index) || value.index === null) {
+          throw new Error("Value must be an object with at least value and index properties");
         }
 
         index = parseInt(value.index);
@@ -183,9 +149,7 @@ define(["underscore"], function attributeInterface(_) {
       }
     } else {
       if (!_.isObject(value) || _.isUndefined(value.value)) {
-        throw new Error(
-          "Value must be an object with at least value properties"
-        );
+        throw new Error("Value must be an object with at least value properties");
       }
 
       value = _.defaults(value, {
@@ -200,13 +164,7 @@ define(["underscore"], function attributeInterface(_) {
   AttributPrototype.prototype.toJSON = function AttributeInterfacetoJSON() {
     return {
       id: this._attributeModel.id,
-      properties: _.omit(
-        this._attributeModel.attributes,
-        "isValueAttribute",
-        "title",
-        "options",
-        "attributeValue"
-      ),
+      properties: _.omit(this._attributeModel.attributes, "isValueAttribute", "title", "options", "attributeValue"),
       options: this._attributeModel.getOptions()
     };
   };

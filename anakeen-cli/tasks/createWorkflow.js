@@ -46,15 +46,8 @@ exports.createWorkflowModel = ({
       let basePath = path.join("vendor", vendorName, moduleName);
       if (associatedSmartStructure) {
         const StructureName =
-          associatedSmartStructure.charAt(0).toUpperCase() +
-          associatedSmartStructure.slice(1).toLowerCase();
-        basePath = path.join(
-          "vendor",
-          vendorName,
-          moduleName,
-          "SmartStructures",
-          StructureName
-        );
+          associatedSmartStructure.charAt(0).toUpperCase() + associatedSmartStructure.slice(1).toLowerCase();
+        basePath = path.join("vendor", vendorName, moduleName, "SmartStructures", StructureName);
       }
       //Compute and test the workflowPath for the vendor name
       srcPath = moduleInfo.buildInfo.buildPath.find(currentPath => {
@@ -75,8 +68,7 @@ exports.createWorkflowModel = ({
       }
       if (associatedSmartStructure) {
         const StructureName =
-          associatedSmartStructure.charAt(0).toUpperCase() +
-          associatedSmartStructure.slice(1).toLowerCase();
+          associatedSmartStructure.charAt(0).toUpperCase() + associatedSmartStructure.slice(1).toLowerCase();
         basePath = path.join(basePath, `${StructureName}Workflows`);
       } else {
         basePath = path.join(basePath, "Workflows");
@@ -86,15 +78,11 @@ exports.createWorkflowModel = ({
     //Create the directory if needed
     let workflowDirectory = workflowPath;
     if (inSelfDirectory) {
-      const Name =
-        modelName.charAt(0).toUpperCase() + modelName.slice(1).toLowerCase();
+      const Name = modelName.charAt(0).toUpperCase() + modelName.slice(1).toLowerCase();
       workflowDirectory = path.join(workflowPath, `${Name}Workflow`);
     }
     let directoryPromise = Promise.resolve(workflowDirectory);
-    if (
-      !fs.existsSync(workflowDirectory) ||
-      !fs.statSync(workflowDirectory).isDirectory()
-    ) {
+    if (!fs.existsSync(workflowDirectory) || !fs.statSync(workflowDirectory).isDirectory()) {
       directoryPromise = new Promise((resolve, reject) => {
         fsUtils.mkpdir(workflowDirectory, err => {
           if (err) {
@@ -185,22 +173,13 @@ exports.createWorkflowInstance = ({
     }
 
     if (!associatedSmartStructure) {
-      throw new Error(
-        "You need to specify an associated smart structure to create a workflow instance"
-      );
+      throw new Error("You need to specify an associated smart structure to create a workflow instance");
     }
     if (!workflowPath && vendorName && moduleName) {
       //Compute and test the workflowPath for the vendor name
       const StructureName =
-        associatedSmartStructure.charAt(0).toUpperCase() +
-        associatedSmartStructure.slice(1).toLowerCase();
-      let basePath = path.join(
-        "vendor",
-        vendorName,
-        moduleName,
-        "SmartStructures",
-        StructureName
-      );
+        associatedSmartStructure.charAt(0).toUpperCase() + associatedSmartStructure.slice(1).toLowerCase();
+      let basePath = path.join("vendor", vendorName, moduleName, "SmartStructures", StructureName);
 
       //Compute and test the workflowPath for the vendor name
       srcPath = moduleInfo.buildInfo.buildPath.find(currentPath => {
@@ -219,18 +198,13 @@ exports.createWorkflowInstance = ({
       workflowPath = path.join(srcPath, basePath, `${StructureName}Workflows`);
     }
     if (inSelfDirectory) {
-      const InstanceName =
-        instanceName.charAt(0).toUpperCase() +
-        instanceName.slice(1).toLowerCase();
+      const InstanceName = instanceName.charAt(0).toUpperCase() + instanceName.slice(1).toLowerCase();
       workflowPath = path.join(workflowPath, `${InstanceName}Workflow`);
     }
     //Create the directory if needed
     let directoryPromise = Promise.resolve(workflowPath);
 
-    if (
-      !fs.existsSync(workflowPath) ||
-      !fs.statSync(workflowPath).isDirectory()
-    ) {
+    if (!fs.existsSync(workflowPath) || !fs.statSync(workflowPath).isDirectory()) {
       directoryPromise = new Promise((resolve, reject) => {
         fsUtils.mkpdir(workflowPath, err => {
           if (err) {

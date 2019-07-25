@@ -5,8 +5,7 @@ const fsUtils = require("../../plugins/files");
 exports.writeTemplate = (installPath, argv) => {
   return new Promise((resolve, reject) => {
     const renderPath = path.join(installPath, "Render");
-    const Name =
-      argv.name.charAt(0).toUpperCase() + argv.name.slice(1).toLowerCase();
+    const Name = argv.name.charAt(0).toUpperCase() + argv.name.slice(1).toLowerCase();
     const NAME = argv.name.toUpperCase();
     const name = argv.name.toLowerCase();
     if (!fs.existsSync(installPath)) {
@@ -26,35 +25,17 @@ exports.writeTemplate = (installPath, argv) => {
             .writeTemplates(
               {
                 destinationPath: path.resolve(renderPath, `${Name}Access.php`),
-                templateFile: path.resolve(
-                  __dirname,
-                  "php",
-                  "Access.php.mustache"
-                ),
+                templateFile: path.resolve(__dirname, "php", "Access.php.mustache"),
                 templateData
               },
               {
-                destinationPath: path.resolve(
-                  renderPath,
-                  `${Name}EditRender.php`
-                ),
-                templateFile: path.resolve(
-                  __dirname,
-                  "php",
-                  "Edit.php.mustache"
-                ),
+                destinationPath: path.resolve(renderPath, `${Name}EditRender.php`),
+                templateFile: path.resolve(__dirname, "php", "Edit.php.mustache"),
                 templateData
               },
               {
-                destinationPath: path.resolve(
-                  renderPath,
-                  `${Name}ViewRender.php`
-                ),
-                templateFile: path.resolve(
-                  __dirname,
-                  "php",
-                  "View.php.mustache"
-                ),
+                destinationPath: path.resolve(renderPath, `${Name}ViewRender.php`),
+                templateFile: path.resolve(__dirname, "php", "View.php.mustache"),
                 templateData
               }
             )

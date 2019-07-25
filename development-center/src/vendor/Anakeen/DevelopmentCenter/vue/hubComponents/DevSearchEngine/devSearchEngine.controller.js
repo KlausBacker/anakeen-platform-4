@@ -6,11 +6,9 @@ export default {
   components: {
     "dev-search-engine-panel": () =>
       new Promise(resolve => {
-        import("../../sections/SearchEngine/DevSearchEnginePanel").then(
-          Component => {
-            resolve(Component.default);
-          }
-        );
+        import("../../sections/SearchEngine/DevSearchEnginePanel").then(Component => {
+          resolve(Component.default);
+        });
       })
   },
   created() {

@@ -5,22 +5,13 @@ const fs = require("fs");
 const path = require("path");
 const inquirer = require("inquirer");
 const { createSmartStructure } = require("../tasks/createSmartStructure");
-const {
-  checkVendorName,
-  checkSmartStructureName,
-  checkModuleName
-} = require("../utils/checkName");
+const { checkVendorName, checkSmartStructureName, checkModuleName } = require("../utils/checkName");
 
 let moduleData = {};
 const structureOptions = {};
 const defaultPath = () => {
   let srcPath = "";
-  let basePath = path.join(
-    "vendor",
-    structureOptions.vendorName,
-    structureOptions.moduleName,
-    "SmartStructures"
-  );
+  let basePath = path.join("vendor", structureOptions.vendorName, structureOptions.moduleName, "SmartStructures");
   if (moduleData.buildInfo) {
     //Compute and test the settingPath for the vendor name
     srcPath = moduleData.buildInfo.buildPath.find(currentPath => {
@@ -84,10 +75,7 @@ const builder = {
     type: "string",
     coerce: arg => {
       if (!checkVendorName(arg)) {
-        throw new Error(
-          "Vendor name must be only a-zA-Z0-9_ , the current value is not valid : " +
-            arg
-        );
+        throw new Error("Vendor name must be only a-zA-Z0-9_ , the current value is not valid : " + arg);
       }
       structureOptions.vendorName = arg;
       return arg;
@@ -106,10 +94,7 @@ const builder = {
     },
     coerce: arg => {
       if (!checkModuleName(arg)) {
-        throw new Error(
-          "Module name must be only a-zA-Z0-9_ , the current value is not valid : " +
-            arg
-        );
+        throw new Error("Module name must be only a-zA-Z0-9_ , the current value is not valid : " + arg);
       }
       structureOptions.moduleName = arg;
       return arg;
@@ -125,10 +110,7 @@ const builder = {
         if (!arg) {
           return arg;
         }
-        throw new Error(
-          "parent name must be only a-zA-Z0-9_ , the current value is not valid : " +
-            arg
-        );
+        throw new Error("parent name must be only a-zA-Z0-9_ , the current value is not valid : " + arg);
       }
       return arg;
     }
@@ -153,8 +135,7 @@ const builder = {
     }
   },
   inSelfDirectory: {
-    description:
-      "add a directory for the new smart structure (not compatible with smartStructurePath)",
+    description: "add a directory for the new smart structure (not compatible with smartStructurePath)",
     default: true,
     type: "boolean"
   },
@@ -192,10 +173,7 @@ const builder = {
 exports.builder = builder;
 
 exports.handler = async argv => {
-  if (
-    process.argv.indexOf("createSmartStructure") ===
-    process.argv.length - 1
-  ) {
+  if (process.argv.indexOf("createSmartStructure") === process.argv.length - 1) {
     // Mode question
     argv = await inquirer.prompt(
       Object.keys(builder).map(currentKey => {

@@ -1,7 +1,4 @@
-define(["underscore", "dcpDocument/models/mAttributeStructural"], function(
-  _,
-  AttributeStructuralModel
-) {
+define(["underscore", "dcpDocument/models/mAttributeStructural"], function(_, AttributeStructuralModel) {
   "use strict";
 
   return AttributeStructuralModel.extend({

@@ -61,11 +61,7 @@ exports.checkConfigFile = ({ sourcePath, verbose, glob, sourceDir }) => {
           if (sourcePath) {
             const checkResult = checkFile(sourcePath);
             if (verbose) {
-              result = checkResult.ok
-                ? "✓"
-                : checkResult.ignore
-                ? "ignored"
-                : checkResult.error;
+              result = checkResult.ok ? "✓" : checkResult.ignore ? "ignored" : checkResult.error;
               log(`Analyze : ${sourcePath} : ${result}`);
             }
             if (checkResult.error) {
@@ -85,11 +81,7 @@ exports.checkConfigFile = ({ sourcePath, verbose, glob, sourceDir }) => {
                   const filepath = path.resolve(globOpts.cwd, file);
                   const checkResult = checkFile(filepath);
                   if (verbose) {
-                    result = checkResult.ok
-                      ? "✓"
-                      : checkResult.ignore
-                      ? "ignored"
-                      : checkResult.error;
+                    result = checkResult.ok ? "✓" : checkResult.ignore ? "ignored" : checkResult.error;
                     log(`Analyze : ${filepath} : ${result}`);
                   }
                 });

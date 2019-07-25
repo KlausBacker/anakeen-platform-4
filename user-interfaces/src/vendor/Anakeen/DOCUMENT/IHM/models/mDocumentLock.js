@@ -1,12 +1,8 @@
 define(["underscore", "backbone"], function require_lock(_, Backbone) {
   "use strict";
 
-  var urlCore = _.template(
-    "/api/v2/smart-elements/<%- initid %>/locks/<%- type %>"
-  );
-  var urlView = _.template(
-    "/api/v2/smart-elements/<%- initid %>/views/<%- viewId %>/locks/<%- type %>"
-  );
+  var urlCore = _.template("/api/v2/smart-elements/<%- initid %>/locks/<%- type %>");
+  var urlView = _.template("/api/v2/smart-elements/<%- initid %>/views/<%- viewId %>/locks/<%- type %>");
 
   return Backbone.Model.extend({
     typeModel: "ddui:lock",

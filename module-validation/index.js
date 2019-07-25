@@ -50,12 +50,7 @@ module.exports.checkFile = filePath => {
     if (buildXML.validate(cacheXSD.xsd) === false) {
       return {
         error: buildXML.validationErrors.reduce((acc, currentError) => {
-          return (
-            acc +
-            `${filePath} line :${
-              currentError.line
-            } : ${currentError.toString()}`
-          );
+          return acc + `${filePath} line :${currentError.line} : ${currentError.toString()}`;
         }, "\n")
       };
     }

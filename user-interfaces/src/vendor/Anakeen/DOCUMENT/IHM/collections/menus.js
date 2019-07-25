@@ -1,9 +1,5 @@
 /*global define*/
-define(["underscore", "backbone", "dcpDocument/models/mMenu"], function(
-  _,
-  Backbone,
-  ModelMenu
-) {
+define(["underscore", "backbone", "dcpDocument/models/mMenu"], function(_, Backbone, ModelMenu) {
   "use strict";
 
   return Backbone.Collection.extend({
@@ -17,12 +13,7 @@ define(["underscore", "backbone", "dcpDocument/models/mMenu"], function(
       }
     },
 
-    _deepSearchMenu: function CollectionMenu__deepSearchMenu(
-      contents,
-      id,
-      key,
-      value
-    ) {
+    _deepSearchMenu: function CollectionMenu__deepSearchMenu(contents, id, key, value) {
       var scope = this,
         subMenu,
         i,
@@ -80,12 +71,7 @@ define(["underscore", "backbone", "dcpDocument/models/mMenu"], function(
       } else {
         this.each(function(oneMenu) {
           if (oneMenu.get("content")) {
-            menuInfoItem = scope._deepSearchMenu(
-              oneMenu.get("content"),
-              id,
-              key,
-              value
-            );
+            menuInfoItem = scope._deepSearchMenu(oneMenu.get("content"), id, key, value);
             if (menuInfoItem) {
               newContent = oneMenu.get("content");
               oneMenu.set("content", newContent);

@@ -7,10 +7,7 @@ export default {
     // Position of notification on screen
     position: {
       type: String,
-      validator: value =>
-        ["top-right", "top-left", "bottom-right", "bottom-left"].indexOf(
-          value.toLowerCase()
-        ) !== -1
+      validator: value => ["top-right", "top-left", "bottom-right", "bottom-left"].indexOf(value.toLowerCase()) !== -1
     },
 
     // Types of notifications hidden to the user
@@ -24,11 +21,7 @@ export default {
               if (typeof str !== "string") {
                 return false;
               }
-              if (
-                ["error", "warning", "success", "info", "notice"].indexOf(
-                  str.toLowerCase()
-                ) === -1
-              ) {
+              if (["error", "warning", "success", "info", "notice"].indexOf(str.toLowerCase()) === -1) {
                 return false;
               }
             }
@@ -50,11 +43,7 @@ export default {
           let object = JSON.parse(value);
           for (let property in object) {
             if (object.hasOwnProperty(property)) {
-              if (
-                ["error", "warning", "success", "info", "notice"].indexOf(
-                  property.toLowerCase()
-                ) !== -1
-              ) {
+              if (["error", "warning", "success", "info", "notice"].indexOf(property.toLowerCase()) !== -1) {
                 if (typeof object[property] !== "string") {
                   return false;
                 }
@@ -78,11 +67,7 @@ export default {
           let object = JSON.parse(value);
           for (let property in object) {
             if (object.hasOwnProperty(property)) {
-              if (
-                ["error", "warning", "success", "info", "notice"].indexOf(
-                  property.toLowerCase()
-                ) !== -1
-              ) {
+              if (["error", "warning", "success", "info", "notice"].indexOf(property.toLowerCase()) !== -1) {
                 if (!Number.isInteger(object[property])) {
                   return false;
                 }
@@ -101,10 +86,7 @@ export default {
     // Default type if not defined in the notification event
     defaultType: {
       type: String,
-      validator: value =>
-        ["error", "warning", "success", "info", "notice"].indexOf(
-          value.toLowerCase()
-        ) !== -1
+      validator: value => ["error", "warning", "success", "info", "notice"].indexOf(value.toLowerCase()) !== -1
     },
 
     // Default value for property closable, if not defined in the notification event
@@ -115,11 +97,7 @@ export default {
           let object = JSON.parse(value);
           for (let property in object) {
             if (object.hasOwnProperty(property)) {
-              if (
-                ["error", "warning", "success", "info", "notice"].indexOf(
-                  property.toLowerCase()
-                ) !== -1
-              ) {
+              if (["error", "warning", "success", "info", "notice"].indexOf(property.toLowerCase()) !== -1) {
                 if (typeof object[property] !== "boolean") {
                   return false;
                 }
@@ -188,9 +166,7 @@ export default {
       if (
         eventData &&
         eventData.type &&
-        ["error", "warning", "success", "info", "notice"].indexOf(
-          eventData.type.toLowerCase()
-        ) !== -1
+        ["error", "warning", "success", "info", "notice"].indexOf(eventData.type.toLowerCase()) !== -1
       ) {
         type = eventData.type.toLowerCase();
       }
@@ -198,11 +174,7 @@ export default {
       // Get displayTime from event or default
 
       let displayTime;
-      if (
-        eventData &&
-        eventData.options &&
-        typeof eventData.options.displayTime === "number"
-      ) {
+      if (eventData && eventData.options && typeof eventData.options.displayTime === "number") {
         displayTime = eventData.options.displayTime;
       } else {
         switch (type) {
@@ -293,11 +265,7 @@ export default {
       if (eventData && eventData.content && eventData.content.htmlContent) {
         message = eventData.content.htmlContent;
         isHtml = true;
-      } else if (
-        eventData &&
-        eventData.content &&
-        eventData.content.textContent
-      ) {
+      } else if (eventData && eventData.content && eventData.content.textContent) {
         message = eventData.content.textContent;
       }
 
@@ -319,14 +287,7 @@ export default {
 
       if (notCanceled) {
         if (this.hiddenTypes.indexOf(type) === -1) {
-          this.showNotification(
-            type,
-            title,
-            message,
-            isHtml,
-            displayTime,
-            closable
-          );
+          this.showNotification(type, title, message, isHtml, displayTime, closable);
         }
       }
     },

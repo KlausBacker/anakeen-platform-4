@@ -3,19 +3,11 @@ const fetch = require("node-fetch");
 const urlJoin = require("url-join");
 const signale = require("signale");
 //Generate the basic header for control connexion
-const getBaseAutorisation = (exports.getBaseAutorisation = (
-  username,
-  password
-) => {
+const getBaseAutorisation = (exports.getBaseAutorisation = (username, password) => {
   return "Basic " + Buffer.from(username + ":" + password).toString("base64");
 });
 
-exports.deleteSmartStructure = ({
-  name,
-  contextUsername,
-  contextPassword,
-  contextUrl
-}) => {
+exports.deleteSmartStructure = ({ name, contextUsername, contextPassword, contextUrl }) => {
   return gulp.task("deleteSmartStructure", async () => {
     const DELETE_SMARTSTRUCTURE_API = `/api/v2/devel/smart/structures/${name}`;
     const url = `${urlJoin(contextUrl, DELETE_SMARTSTRUCTURE_API)}`;
@@ -38,9 +30,7 @@ exports.deleteSmartStructure = ({
                   contentText
               );
             }
-            throw new Error(
-              response.status + " " + response.statusText + contentText
-            );
+            throw new Error(response.status + " " + response.statusText + contentText);
           });
         }
         return response.json();

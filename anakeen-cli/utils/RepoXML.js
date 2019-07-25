@@ -38,9 +38,7 @@ class RepoXML extends XMLLoader {
 
   checkStructure() {
     if (!this.data.hasOwnProperty("compose")) {
-      throw new RepoXMLError(
-        `Could not find /compose node in '${this.filename}'`
-      );
+      throw new RepoXMLError(`Could not find /compose node in '${this.filename}'`);
     }
     if (!this.data.compose.hasOwnProperty("registries")) {
       this.data.compose.registries = [];
@@ -78,9 +76,7 @@ class RepoXML extends XMLLoader {
    */
   addAppRegistry({ name, url, authUser, authPassword }) {
     if (this.registryExists(name)) {
-      throw new RepoXMLError(
-        `Registry with name/identifier '${name}' already exists`
-      );
+      throw new RepoXMLError(`Registry with name/identifier '${name}' already exists`);
     }
 
     url = normalizeUrl(url);
@@ -136,9 +132,7 @@ class RepoXML extends XMLLoader {
     }
     const appRegistry = this.getRegistryByName(registry);
     if (!appRegistry.getModuleVersionInfo(name, version)) {
-      throw new RepoXMLError(
-        `Version '${version}' of module '${name}' does not exists`
-      );
+      throw new RepoXMLError(`Version '${version}' of module '${name}' does not exists`);
     }
 
     const moduleList = this.getModuleList();
@@ -192,9 +186,7 @@ class RepoXML extends XMLLoader {
         return module.$;
       }
     }
-    throw new RepoXMLModuleNotFoundError(
-      `Found no module with name '${name} in 'repo.xml'`
-    );
+    throw new RepoXMLModuleNotFoundError(`Found no module with name '${name} in 'repo.xml'`);
   }
 
   /**
@@ -237,9 +229,7 @@ class RepoXML extends XMLLoader {
         return new AppRegistry(registry.$);
       }
     }
-    throw new RepoXMLRegistryNotFoundError(
-      `Registry with name '${name}' not found in 'repo.xml'`
-    );
+    throw new RepoXMLRegistryNotFoundError(`Registry with name '${name}' not found in 'repo.xml'`);
   }
 }
 

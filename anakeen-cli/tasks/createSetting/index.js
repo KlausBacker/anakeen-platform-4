@@ -23,9 +23,7 @@ if (files && files.length) {
 exports.generateSetting = (settingPath, argv) => {
   if (argv.type) {
     if (!exportObject[argv.type] || !exportObject[argv.type].writeTemplate) {
-      return Promise.reject(
-        `The type ${argv.type} is unknown or must be implemented`
-      );
+      return Promise.reject(`The type ${argv.type} is unknown or must be implemented`);
     }
     return exportObject[argv.type].writeTemplate(settingPath, argv);
   } else {

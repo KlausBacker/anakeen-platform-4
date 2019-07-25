@@ -22,9 +22,7 @@ class HTTPAgentError extends GenericError {}
 class HTTPAgent {
   constructor(options = {}) {
     if (typeof options !== "object") {
-      throw new HTTPAgentError(
-        `'options' is not an object (found ${typeof options} instead)`
-      );
+      throw new HTTPAgentError(`'options' is not an object (found ${typeof options} instead)`);
     }
     this._debug = options.hasOwnProperty("debug") && options.debug === true;
   }
@@ -52,9 +50,7 @@ class HTTPAgent {
       keep: true
     });
 
-    this.debug(
-      `[HTTPAgent] Downloading '${url}' to temporary file '${tmpName}'`
-    );
+    this.debug(`[HTTPAgent] Downloading '${url}' to temporary file '${tmpName}'`);
 
     const response = await fetch(url);
     const outputStream = fs.createWriteStream(tmpName);

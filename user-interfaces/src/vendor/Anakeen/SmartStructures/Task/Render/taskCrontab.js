@@ -6,10 +6,7 @@ window.dcp.document.documentController(
   {
     name: "task:crontab:render",
     documentCheck: documentObject => {
-      return (
-        documentObject.renderMode === "edit" &&
-        documentObject.family.name === "TASK"
-      );
+      return documentObject.renderMode === "edit" && documentObject.family.name === "TASK";
     },
     attributeCheck: attributeObject => {
       return attributeObject.id === "task_crontab";
@@ -37,10 +34,7 @@ window.dcp.document.documentController(
   {
     name: "task:crontab:ready",
     documentCheck: documentObject => {
-      return (
-        documentObject.renderMode === "edit" &&
-        documentObject.family.name === "TASK"
-      );
+      return documentObject.renderMode === "edit" && documentObject.family.name === "TASK";
     },
     attributeCheck: attributeObject => {
       return attributeObject.id === "task_crontab";

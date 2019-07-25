@@ -16,8 +16,7 @@ const ERROR_CODES = {
   },
   UICOMPONENT0004: {
     code: "UICOMPONENT0004",
-    message:
-      'Incorrect bindEvent format "%s", it should be : eventName:jquerySelector.functionName'
+    message: 'Incorrect bindEvent format "%s", it should be : eventName:jquerySelector.functionName'
   },
   UICOMPONENT0005: {
     code: "UICOMPONENT0005",
@@ -26,9 +25,10 @@ const ERROR_CODES = {
 };
 
 const error = (errorCode, ...args) => {
-  const displayErrorMsg = `Ank Component Mixin error (${
-    ERROR_CODES[errorCode].code
-  }) : ${sprintf(ERROR_CODES[errorCode].message, args)}`;
+  const displayErrorMsg = `Ank Component Mixin error (${ERROR_CODES[errorCode].code}) : ${sprintf(
+    ERROR_CODES[errorCode].message,
+    args
+  )}`;
   console.error(displayErrorMsg);
   throw displayErrorMsg;
 };

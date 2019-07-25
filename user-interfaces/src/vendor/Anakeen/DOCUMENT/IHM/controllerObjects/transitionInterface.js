@@ -32,12 +32,7 @@ define([], function require_transitionInterface() {
     return this._TransitionModel.trigger("close");
   };
 
-  var TransitionInterface = function TransitionInterface(
-    transitionModel,
-    $el,
-    nextState,
-    transition
-  ) {
+  var TransitionInterface = function TransitionInterface(transitionModel, $el, nextState, transition) {
     this._TransitionModel = transitionModel;
     this.$el = $el;
     this.nextState = nextState;
@@ -45,9 +40,7 @@ define([], function require_transitionInterface() {
     TransitionInterfacePrototype.call(this);
   };
 
-  TransitionInterface.prototype = Object.create(
-    TransitionInterfacePrototype.prototype
-  );
+  TransitionInterface.prototype = Object.create(TransitionInterfacePrototype.prototype);
   TransitionInterface.prototype.constructor = TransitionInterfacePrototype;
 
   return TransitionInterface;

@@ -4,10 +4,7 @@ window.dcp = window.dcp || {};
   "use strict";
 
   if (typeof define === "function" && define.amd) {
-    define([
-      "dcpDocument/i18n/translatorFactory",
-      "dcpDocument/i18n/catalogStorage"
-    ], factory);
+    define(["dcpDocument/i18n/translatorFactory", "dcpDocument/i18n/catalogStorage"], factory);
   } else {
     //Load translation and load i18n handler for non require project
     $.get("/api/v2/i18n/DOCUMENT").done(function translationLoaded(catalog) {

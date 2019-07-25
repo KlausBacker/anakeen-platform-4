@@ -74,9 +74,7 @@ export default {
   },
   mounted() {
     this.$(window).on("resize", () => {
-      const kendoGrid = this.$refs.localizationGrid
-        ? this.$refs.localizationGrid.kendoWidget()
-        : null;
+      const kendoGrid = this.$refs.localizationGrid ? this.$refs.localizationGrid.kendoWidget() : null;
       if (kendoGrid) {
         kendoGrid.resize();
       }
@@ -121,9 +119,7 @@ export default {
       filterTemplate: colId => args => {
         args.element
           .parent()
-          .html(
-            `<input data-bind="value: value" data-field="${colId}" class="k-textbox filter-input">`
-          );
+          .html(`<input data-bind="value: value" data-field="${colId}" class="k-textbox filter-input">`);
       },
       filesTemplate: () => args => {
         let cellData = "";
@@ -165,10 +161,7 @@ export default {
               return acc;
             }, {});
           }
-          this.$emit(
-            "filter",
-            Object.assign({}, nextFilter, { [filter.field]: filter.value })
-          );
+          this.$emit("filter", Object.assign({}, nextFilter, { [filter.field]: filter.value }));
         } else {
           const currentFilter = event.sender.dataSource.filter();
           let nextFilter = {};

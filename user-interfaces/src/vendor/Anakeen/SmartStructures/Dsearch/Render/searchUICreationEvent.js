@@ -22,9 +22,7 @@ Ask for a document title in creation mode
         {
           name: "confirmCreation.createEvent",
           documentCheck: function isDSearch(document) {
-            return (
-              document.type === "search" && document.viewId === "!coreCreation"
-            );
+            return document.type === "search" && document.viewId === "!coreCreation";
           }
         },
         function eventButtonView(event, document, data) {
@@ -45,9 +43,7 @@ Ask for a document title in creation mode
                 $(".closeBtn").remove();
               }
             });
-            var windowContent = $(
-              ".dcpCustomTemplate--content[data-attrid='ba_title']"
-            );
+            var windowContent = $(".dcpCustomTemplate--content[data-attrid='ba_title']");
             windowContent.show();
             var nameTitle = $(".dcpAttribute__left[data-attrid='ba_title']");
             nameTitle.hide();
@@ -75,9 +71,7 @@ Ask for a document title in creation mode
         {
           name: "confirmCreation&Close.createEvent",
           documentCheck: function isDSearch(document) {
-            return (
-              document.type === "search" && document.viewId === "!coreCreation"
-            );
+            return document.type === "search" && document.viewId === "!coreCreation";
           }
         },
         function eventButtonView(event, document, data) {
@@ -98,9 +92,7 @@ Ask for a document title in creation mode
                 $(".closeBtn").remove();
               }
             });
-            var windowContent = $(
-              ".dcpCustomTemplate--content[data-attrid='ba_title']"
-            );
+            var windowContent = $(".dcpCustomTemplate--content[data-attrid='ba_title']");
             windowContent.show();
             var nameTitle = $(".dcpAttribute__left[data-attrid='ba_title']");
             nameTitle.hide();

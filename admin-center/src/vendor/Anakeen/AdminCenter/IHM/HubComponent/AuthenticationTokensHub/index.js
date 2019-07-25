@@ -10,8 +10,5 @@ if (
   window.ank.hub["ank-hub-authentication-tokens"]
 ) {
   // @ts-ignore
-  window.ank.hub["ank-hub-authentication-tokens"].resolve(
-    TokenManager,
-    "ank-hub-authentication-tokens"
-  );
+  window.ank.hub["ank-hub-authentication-tokens"].resolve(TokenManager, "ank-hub-authentication-tokens");
 }

@@ -10,11 +10,7 @@ window.dcp.document.documentController(
   (event, documentObject, data) => {
     if (data.eventId === "task") {
       if (data.options.length > 0 && data.options[0] === "executeNow") {
-        let $waiting = $(
-          '<div class="fa-3x task-waiting">' +
-            '  <i class="fa fa-cog fa-spin"></i>' +
-            "</div>"
-        );
+        let $waiting = $('<div class="fa-3x task-waiting">' + '  <i class="fa fa-cog fa-spin"></i>' + "</div>");
 
         let wWaiting = $waiting
           .kendoWindow({
@@ -42,8 +38,7 @@ window.dcp.document.documentController(
           .fail(response => {
             let errorMsg = "";
             if (response.responseJSON) {
-              errorMsg =
-                response.responseJSON.message || response.responseJSON.error;
+              errorMsg = response.responseJSON.message || response.responseJSON.error;
             }
             if (!errorMsg) {
               errorMsg = response.responseText;

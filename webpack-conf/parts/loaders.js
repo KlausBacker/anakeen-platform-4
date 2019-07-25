@@ -30,12 +30,7 @@ exports.cssLoader = exclude => ({
  * @param includePaths
  * @returns {{plugins: MiniCssExtractPlugin[], module: {rules: *[]}}}
  */
-exports.scssLoader = ({
-  filename,
-  minify = false,
-  removeJS = false,
-  includePaths = []
-}) => {
+exports.scssLoader = ({ filename, minify = false, removeJS = false, includePaths = [] }) => {
   const plugins = [
     new MiniCssExtractPlugin({
       // define where to save the file
@@ -182,11 +177,7 @@ exports.vueLoader = exclude => {
  * @param useBuiltIns
  * @returns {{test: RegExp, use: {loader: string, options: {presets: *[][], babelrc: boolean, plugins: string[], exclude: RegExp[], cacheDirectory: boolean}}}}
  */
-const configureBabelLoader = ({
-  browserlist,
-  exclude = [],
-  useBuiltIns = "usage"
-}) => {
+const configureBabelLoader = ({ browserlist, exclude = [], useBuiltIns = "usage" }) => {
   const conf = {
     test: /\.js$/,
     use: {

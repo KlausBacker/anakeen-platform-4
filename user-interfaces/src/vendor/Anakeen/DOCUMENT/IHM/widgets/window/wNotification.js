@@ -1,8 +1,4 @@
-define([
-  "jquery",
-  "underscore",
-  "dcpDocument/widgets/widget"
-], function wNotification($, _) {
+define(["jquery", "underscore", "dcpDocument/widgets/widget"], function wNotification($, _) {
   "use strict";
 
   $.widget("dcp.dcpNotification", {
@@ -68,9 +64,7 @@ define([
       var scope = this;
       this.notificationElement = $('<div class="dcpNotification--widget" />');
 
-      this.element.append(
-        $('<div id="dcpNotificationContainer" class="dcpNotifications"/>')
-      );
+      this.element.append($('<div id="dcpNotificationContainer" class="dcpNotifications"/>'));
       this.element.append(this.notificationElement);
 
       this.options.show = _.bind(this.showMore, this);
@@ -88,9 +82,7 @@ define([
       var widgetNotification = this;
 
       if ($message.prop("scrollHeight") > $message.height()) {
-        $more = $('<div class="dcpNotification--more"/>').text(
-          this.options.labels.moreButton
-        );
+        $more = $('<div class="dcpNotification--more"/>').text(this.options.labels.moreButton);
         $boxMessage.append($more);
         $more.on("click", function wNotificationClickMode(event) {
           var $clone = $boxMessage.clone();
@@ -102,9 +94,7 @@ define([
           }
           $boxMessage.append($clone);
           $clone.find(".dcpNotification--more").remove();
-          $clone
-            .find(".dcpNotification--message")
-            .prepend($clone.find(".dcpNotification--symbol"));
+          $clone.find(".dcpNotification--message").prepend($clone.find(".dcpNotification--symbol"));
           event.stopPropagation();
           cloneWindow = $clone
             .kendoWindow({
@@ -122,10 +112,7 @@ define([
       options.title = options.title || "";
       options.message = options.message || "";
       options.htmlMessage = options.htmlMessage || "";
-      if (
-        $.inArray(type, ["error", "info", "warning", "success", "notice"]) ===
-        -1
-      ) {
+      if ($.inArray(type, ["error", "info", "warning", "success", "notice"]) === -1) {
         type = "info";
       }
       this.notificationElement.data("kendoNotification").show(

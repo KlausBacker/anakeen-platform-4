@@ -20,8 +20,7 @@ const formatItem = item => {
   return {
     fieldId: item.id,
     virtualId: typeof item.id === "string" ? checksum(item.id) : item.id,
-    parentId:
-      typeof item.parent === "string" ? checksum(item.parent) : item.parent,
+    parentId: typeof item.parent === "string" ? checksum(item.parent) : item.parent,
     parent: item.parent,
     type: item.type,
     ...(item.access || {})

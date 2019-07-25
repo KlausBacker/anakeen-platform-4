@@ -50,12 +50,8 @@
   );
 
   function showTmpGrid(event, $documentController) {
-    const $dataJSON = $documentController
-      .data("dcpDocumentController")
-      ._model.toJSON();
-    $dataJSON.document.attributes = $documentController
-      .data("dcpDocumentController")
-      ._model.getValues(false);
+    const $dataJSON = $documentController.data("dcpDocumentController")._model.toJSON();
+    $dataJSON.document.attributes = $documentController.data("dcpDocumentController")._model.getValues(false);
     $.ajax({
       method: "POST",
       url:
@@ -67,16 +63,11 @@
       contentType: "application/json; charset=utf-8"
     })
       .done(function creation(docCreated) {
-        var continueDefault = $documentController.documentController(
-          "triggerEvent",
-          "custom:content",
-          {
-            familyName: $documentController.documentController("getProperties")
-              .family.name,
-            id: docCreated.data.document.properties.id,
-            title: $documentController.documentController("getProperties").title
-          }
-        );
+        var continueDefault = $documentController.documentController("triggerEvent", "custom:content", {
+          familyName: $documentController.documentController("getProperties").family.name,
+          id: docCreated.data.document.properties.id,
+          title: $documentController.documentController("getProperties").title
+        });
         if (!continueDefault) {
           event.preventDefault();
         }

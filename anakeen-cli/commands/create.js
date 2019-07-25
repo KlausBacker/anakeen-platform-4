@@ -4,11 +4,7 @@ const signale = require("signale");
 const fs = require("fs");
 const inquirer = require("inquirer");
 
-const {
-  checkModuleName,
-  checkVendorName,
-  checkNamespace
-} = require("../utils/checkName");
+const { checkModuleName, checkVendorName, checkNamespace } = require("../utils/checkName");
 
 const moduleOptions = {};
 signale.config({
@@ -35,10 +31,7 @@ const builder = {
     type: "string",
     coerce: arg => {
       if (!checkVendorName(arg)) {
-        throw new Error(
-          "Vendor name must be only a-zA-Z0-9_ , the current value is not valid : " +
-            arg
-        );
+        throw new Error("Vendor name must be only a-zA-Z0-9_ , the current value is not valid : " + arg);
       }
       moduleOptions.vendorName = arg;
       return arg;
@@ -50,10 +43,7 @@ const builder = {
     type: "string",
     coerce: arg => {
       if (arg && !checkNamespace(arg)) {
-        throw new Error(
-          "Namespace name must be only a-zA-Z0-9_ , the current value is not valid : " +
-            arg
-        );
+        throw new Error("Namespace name must be only a-zA-Z0-9_ , the current value is not valid : " + arg);
       }
       return arg;
     }
@@ -64,10 +54,7 @@ const builder = {
     type: "string",
     coerce: arg => {
       if (!checkModuleName(arg)) {
-        throw new Error(
-          "Module name must be only a-zA-Z0-9_ , the current value is not valid : " +
-            arg
-        );
+        throw new Error("Module name must be only a-zA-Z0-9_ , the current value is not valid : " + arg);
       }
       moduleOptions.moduleName = arg;
       return arg;

@@ -42,10 +42,7 @@ export default class GridKendoUtils extends AbstractGridUtil {
     const menuOffset = $menu.offset();
     const gridContentOffset = $gridContent.offset();
     const threshold = 85;
-    const remainingSpace =
-      gridContentOffset.top +
-      $gridContent.height() -
-      (menuOffset.top + $menu.height());
+    const remainingSpace = gridContentOffset.top + $gridContent.height() - (menuOffset.top + $menu.height());
 
     if (remainingSpace < threshold) {
       kendoMenu.setOptions({
@@ -83,9 +80,7 @@ export default class GridKendoUtils extends AbstractGridUtil {
     this.resizeKendoWidgets();
 
     if (!gridOptions.height) {
-      this.vueComponent
-        .$(this.vueComponent.$refs.gridWrapper)
-        .addClass("smart--fit");
+      this.vueComponent.$(this.vueComponent.$refs.gridWrapper).addClass("smart--fit");
     }
 
     this.vueComponent.$once("grid-ready", () => {
@@ -108,22 +103,15 @@ export default class GridKendoUtils extends AbstractGridUtil {
   addCollapseRowColumn() {
     this.vueComponent.$once("grid-ready", () => {
       if (this.vueComponent.kendoGrid.pager) {
-        const pagerSizes = this.vueComponent.kendoGrid.pager.element.find(
-          ".k-pager-sizes"
-        );
+        const pagerSizes = this.vueComponent.kendoGrid.pager.element.find(".k-pager-sizes");
         const $collapseButton = $(
           '<a class="grid-collapse-button k-button"> <span class="k-icon k-i-arrows-resizing"></span></a>'
         );
-        $collapseButton.attr(
-          "title",
-          this.vueComponent.translations.rowCollapse
-        );
+        $collapseButton.attr("title", this.vueComponent.translations.rowCollapse);
         $collapseButton.insertAfter($(pagerSizes));
         $collapseButton.on("click", event => {
           event.preventDefault();
-          $(this.vueComponent.kendoGrid.element).toggleClass(
-            "grid-row-collapsed"
-          );
+          $(this.vueComponent.kendoGrid.element).toggleClass("grid-row-collapsed");
         });
       }
     });
@@ -142,23 +130,18 @@ export default class GridKendoUtils extends AbstractGridUtil {
       if (config.toolbar.actionConfigs && config.toolbar.actionConfigs.length) {
         this.vueComponent.kendoGridOptions.toolbar = [];
         config.toolbar.actionConfigs.forEach(a => {
-          const toolbarAction = this.vueComponent.gridActions.getToolbarAction(
-            a.action
-          );
+          const toolbarAction = this.vueComponent.gridActions.getToolbarAction(a.action);
           const toolbarActionConfig = {
             name: a.action,
             text: a.title || toolbarAction.title,
             iconClass: a.iconClass || toolbarAction.iconClass,
-            className:
-              "grid-toolbar-action grid-toolbar-" + a.action + "-action",
+            className: "grid-toolbar-action grid-toolbar-" + a.action + "-action",
             attributes: { "data-action-id": a.action }
           };
           if (a.action === "export") {
             toolbarActionConfig.template = ExportActionTemplate;
             this.vueComponent.$once("grid-ready", () => {
-              const $exportMenu = this.vueComponent.kendoGrid.element.find(
-                ".grid-toolbar-export-action"
-              );
+              const $exportMenu = this.vueComponent.kendoGrid.element.find(".grid-toolbar-export-action");
               $exportMenu.each((index, item) => {
                 this.vueComponent.gridActions.initToolbarExportTemplate(item);
               });
@@ -218,11 +201,7 @@ export default class GridKendoUtils extends AbstractGridUtil {
       }
       col.attributes.class += " grid-cell-align-center";
     }
-    if (
-      col.filterable &&
-      col.filterable.cell &&
-      col.filterable.cell.enable === true
-    ) {
+    if (col.filterable && col.filterable.cell && col.filterable.cell.enable === true) {
       col.filterable.ui = element => {
         col.filterable.cell.template({
           element: element
@@ -235,12 +214,7 @@ export default class GridKendoUtils extends AbstractGridUtil {
       };
     }
     col.subTitle = "";
-    if (
-      this.vueComponent.contextTitles &&
-      col.withContext &&
-      col.context &&
-      col.context.length
-    ) {
+    if (this.vueComponent.contextTitles && col.withContext && col.context && col.context.length) {
       const title = col.title || col.field;
       const titleWords = col.context
         .filter((value, index, self) => {
@@ -251,9 +225,7 @@ export default class GridKendoUtils extends AbstractGridUtil {
       col.subTitle = titleWords;
     }
     if (!col.template) {
-      col.template = this.vueComponent.gridDataUtils.formatAnkAttributesValue(
-        col
-      );
+      col.template = this.vueComponent.gridDataUtils.formatAnkAttributesValue(col);
     }
 
     if (!col.headerTemplate) {
@@ -290,9 +262,7 @@ export default class GridKendoUtils extends AbstractGridUtil {
       this.vueComponent.kendoGridOptions.columns = this.vueComponent.kendoGridOptions.columns.concat(
         config.smartFields
       );
-      this.vueComponent.kendoGridOptions.columns.forEach(col =>
-        this.formatKendoGridColumn(col, config)
-      );
+      this.vueComponent.kendoGridOptions.columns.forEach(col => this.formatKendoGridColumn(col, config));
     }
   }
 
@@ -314,34 +284,21 @@ export default class GridKendoUtils extends AbstractGridUtil {
     });
 
     this.vueComponent.$once("grid-ready", () => {
-      this.vueComponent.kendoGrid.thead.on(
-        "click",
-        ".toggle-all-rows input",
-        e => {
-          this.vueComponent.allRowsSelectable = e.currentTarget
-            ? !!e.currentTarget.checked
-            : false;
-          if (!this.vueComponent.allRowsSelectable) {
-            this.vueComponent.kendoGrid._selectedIds = {};
-            this.vueComponent.uncheckRows = {};
-            this.vueComponent.kendoGrid.clearSelection();
-          }
+      this.vueComponent.kendoGrid.thead.on("click", ".toggle-all-rows input", e => {
+        this.vueComponent.allRowsSelectable = e.currentTarget ? !!e.currentTarget.checked : false;
+        if (!this.vueComponent.allRowsSelectable) {
+          this.vueComponent.kendoGrid._selectedIds = {};
+          this.vueComponent.uncheckRows = {};
+          this.vueComponent.kendoGrid.clearSelection();
         }
-      );
-      this.vueComponent.kendoGrid.content.on(
-        "click",
-        ".checkable-grid-cell input",
-        e => {
-          const item = this.vueComponent.kendoGrid.dataItem(
-            this.vueComponent.$(e.currentTarget).closest("tr")
-          ).rowData;
+      });
+      this.vueComponent.kendoGrid.content.on("click", ".checkable-grid-cell input", e => {
+        const item = this.vueComponent.kendoGrid.dataItem(this.vueComponent.$(e.currentTarget).closest("tr")).rowData;
 
-          if (this.vueComponent.isFullSelectionState) {
-            this.vueComponent.uncheckRows[item.initid.toString()] = !e
-              .currentTarget.checked;
-          }
+        if (this.vueComponent.isFullSelectionState) {
+          this.vueComponent.uncheckRows[item.initid.toString()] = !e.currentTarget.checked;
         }
-      );
+      });
     });
   }
 
@@ -359,13 +316,10 @@ export default class GridKendoUtils extends AbstractGridUtil {
 
   prepareKendoGridPaging(config) {
     if (config.pageable && config.pageable.pageSize) {
-      this.vueComponent.kendoGridOptions.pageable.pageSize =
-        config.pageable.pageSize;
-      this.vueComponent.kendoDataSourceOptions.pageSize =
-        config.pageable.pageSize;
+      this.vueComponent.kendoGridOptions.pageable.pageSize = config.pageable.pageSize;
+      this.vueComponent.kendoDataSourceOptions.pageSize = config.pageable.pageSize;
       if (typeof config.pageable.pageSizes !== "undefined") {
-        this.vueComponent.kendoGridOptions.pageable.pageSizes =
-          config.pageable.pageSizes;
+        this.vueComponent.kendoGridOptions.pageable.pageSizes = config.pageable.pageSizes;
       }
     }
   }
@@ -383,12 +337,10 @@ export default class GridKendoUtils extends AbstractGridUtil {
         this.vueComponent.kendoGridOptions.pageable &&
         typeof this.vueComponent.kendoGridOptions.pageable === "object"
       ) {
-        this.vueComponent.kendoGridOptions.pageable.messages =
-          config.locales.pageable.messages;
+        this.vueComponent.kendoGridOptions.pageable.messages = config.locales.pageable.messages;
       }
       if (this.vueComponent.kendoGridOptions.filterable) {
-        this.vueComponent.kendoGridOptions.filterable.messages =
-          config.locales.filterable.messages;
+        this.vueComponent.kendoGridOptions.filterable.messages = config.locales.filterable.messages;
       }
     }
   }
@@ -427,11 +379,7 @@ export default class GridKendoUtils extends AbstractGridUtil {
     this.prepareKendoGridColumns(config);
     this.prepareKendoGridActions(config);
 
-    if (
-      savedColsOpts &&
-      savedColsOpts.columns &&
-      savedColsOpts.columns.length
-    ) {
+    if (savedColsOpts && savedColsOpts.columns && savedColsOpts.columns.length) {
       this.vueComponent.kendoGridOptions.columns.forEach(col => {
         savedColsOpts.columns.forEach(savedCol => {
           if (col.field && savedCol.field && col.field === savedCol.field) {
@@ -474,18 +422,12 @@ export default class GridKendoUtils extends AbstractGridUtil {
   onGridSelectionChange(event) {
     this.vueComponent.gridDataUtils.computeTotalExport(event.sender);
     if (
-      (!this.vueComponent.isFullSelectionState &&
-        this.vueComponent.kendoGrid.selectedKeyNames().length) ||
-      (this.vueComponent.isFullSelectionState &&
-        this.vueComponent.gridDataUtils.getUncheckRowsList().length)
+      (!this.vueComponent.isFullSelectionState && this.vueComponent.kendoGrid.selectedKeyNames().length) ||
+      (this.vueComponent.isFullSelectionState && this.vueComponent.gridDataUtils.getUncheckRowsList().length)
     ) {
-      this.vueComponent.kendoGrid.thead
-        .find(".toggle-all-rows")
-        .addClass("check-partial");
+      this.vueComponent.kendoGrid.thead.find(".toggle-all-rows").addClass("check-partial");
     } else {
-      this.vueComponent.kendoGrid.thead
-        .find(".toggle-all-rows")
-        .removeClass("check-partial");
+      this.vueComponent.kendoGrid.thead.find(".toggle-all-rows").removeClass("check-partial");
     }
   }
 
@@ -511,12 +453,7 @@ export default class GridKendoUtils extends AbstractGridUtil {
         );
       }
       this.vueComponent.kendoDataSourceOptions.schema.parse = response => {
-        if (
-          response &&
-          response.data &&
-          response.data.data &&
-          response.data.data.smartElements
-        ) {
+        if (response && response.data && response.data.data && response.data.data.smartElements) {
           response.data.data.smartElements = this.vueComponent.gridDataUtils.parseData(
             response.data.data.smartElements
           );
@@ -524,8 +461,7 @@ export default class GridKendoUtils extends AbstractGridUtil {
         return response;
       };
       if (savedConfig && savedConfig.pageSize) {
-        this.vueComponent.kendoDataSourceOptions.pageSize =
-          savedConfig.pageSize;
+        this.vueComponent.kendoDataSourceOptions.pageSize = savedConfig.pageSize;
       }
       this.vueComponent.dataSource = new this.vueComponent.$kendo.data.DataSource(
         this.vueComponent.kendoDataSourceOptions
@@ -545,10 +481,7 @@ export default class GridKendoUtils extends AbstractGridUtil {
       const event = new GridEvent(
         {
           url: contentURL,
-          queryParams: this.vueComponent.privateScope.getQueryParamsData(
-            config.smartFields,
-            kendoOptions.data
-          )
+          queryParams: this.vueComponent.privateScope.getQueryParamsData(config.smartFields, kendoOptions.data)
         },
         null,
         false
@@ -569,11 +502,7 @@ export default class GridKendoUtils extends AbstractGridUtil {
             response.data.data.requestParameters.pager
           ) {
             const pagerInfo = response.data.data.requestParameters.pager;
-            if (
-              pagerInfo &&
-              pagerInfo.pageSize &&
-              pagerInfo.pageSize !== this.vueComponent.dataSource.pageSize()
-            ) {
+            if (pagerInfo && pagerInfo.pageSize && pagerInfo.pageSize !== this.vueComponent.dataSource.pageSize()) {
               this.vueComponent.dataSource.pageSize(pagerInfo.pageSize);
             }
           }
@@ -589,11 +518,7 @@ export default class GridKendoUtils extends AbstractGridUtil {
           kendoOptions.success(response);
         })
         .catch(err => {
-          if (
-            err.response &&
-            err.response.data &&
-            err.response.data.exceptionMessage
-          ) {
+          if (err.response && err.response.data && err.response.data.exceptionMessage) {
             alert(err.response.data.exceptionMessage);
           }
 

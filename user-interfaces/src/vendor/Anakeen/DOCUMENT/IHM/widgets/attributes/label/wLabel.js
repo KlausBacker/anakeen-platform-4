@@ -2,12 +2,7 @@
   "use strict";
 
   if (typeof define === "function" && define.amd) {
-    define([
-      "jquery",
-      "underscore",
-      "mustache",
-      "dcpDocument/widgets/widget"
-    ], factory);
+    define(["jquery", "underscore", "mustache", "dcpDocument/widgets/widget"], factory);
   } else {
     //noinspection JSUnresolvedVariable
     factory(window.jQuery, window._, window.Mustache);
@@ -31,13 +26,8 @@
 
     _initDom: function wLabel_initDom() {
       this.element.addClass("dcpAttribute__label control-label dcpLabel");
-      this.element.append(
-        Mustache.render(this._getTemplate() || "", this.options)
-      );
-      if (
-        this.options.renderOptions &&
-        this.options.renderOptions.attributeLabel
-      ) {
+      this.element.append(Mustache.render(this._getTemplate() || "", this.options));
+      if (this.options.renderOptions && this.options.renderOptions.attributeLabel) {
         this.setLabel(this.options.renderOptions.attributeLabel);
       }
     },

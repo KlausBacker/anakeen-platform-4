@@ -1,8 +1,5 @@
 /*global define*/
-define(["underscore", "backbone", "dcpDocument/widgets/menu/wMenu"], function(
-  _,
-  Backbone
-) {
+define(["underscore", "backbone", "dcpDocument/widgets/menu/wMenu"], function(_, Backbone) {
   "use strict";
 
   return Backbone.View.extend({
@@ -24,11 +21,7 @@ define(["underscore", "backbone", "dcpDocument/widgets/menu/wMenu"], function(
       this.listenTo(this.model.get("properties"), "change", this.updateWidget);
       this.listenTo(this.model.get("menus"), "change", this.updateWidget);
       this.listenTo(this.model.get("menus"), "reload", this.updateWidget);
-      this.listenTo(
-        this.model.get("attributes"),
-        "changeMenuVisibility",
-        this.changeVisibility
-      );
+      this.listenTo(this.model.get("attributes"), "changeMenuVisibility", this.changeVisibility);
       this.listenTo(this.model, "destroy", this.remove);
       this.listenTo(this.model, "cleanView", this.remove);
       this.menuModel = this.model.get("menus");

@@ -53,9 +53,7 @@ export default {
   methods: {
     displayRawContent() {
       kendo.ui.progress(this.$(this.$el), true);
-      let url =
-        this.urls[this.formatType][this.elementType] ||
-        this.urls[this.formatType].default;
+      let url = this.urls[this.formatType][this.elementType] || this.urls[this.formatType].default;
       url = url.replace("<identifier>", this.elementId);
       this.$http
         .get(url)

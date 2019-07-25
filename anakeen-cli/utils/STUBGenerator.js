@@ -47,11 +47,7 @@ const extractSmartField = (fields, currentFilePath, kind = null) => {
     //If the current element is a fieldset, we iterate on sub element
     if (currentKey === "fieldset") {
       const subFields = fields[currentKey].reduce((acc, currentSubField) => {
-        const subElement = extractSmartField(
-          currentSubField,
-          currentFilePath,
-          kind
-        );
+        const subElement = extractSmartField(currentSubField, currentFilePath, kind);
         return {
           ...acc,
           ...subElement
@@ -128,87 +124,62 @@ exports.parseStub = ({ globFile, info, targetPath, log, verbose }) => {
               }
               //Analyze structure configuration
               if (result.config && result.config.structureconfiguration) {
-                values = result.config.structureconfiguration.reduce(
-                  (acc, currentConf) => {
-                    const name = currentConf.$.name;
-                    if (
-                      (!currentConf.fields ||
-                        !currentConf.fields.length ||
-                        currentConf.fields.length === 0) &&
-                      (!currentConf.parameters ||
-                        !currentConf.parameters.length ||
-                        currentConf.parameters.length === 0)
-                    ) {
-                      return acc;
-                    }
-                    let elements = {};
-                    if (currentConf.fields) {
-                      elements = currentConf.fields.reduce(
-                        (acc, currentField) => {
-                          const fields = extractSmartField(
-                            currentField,
-                            currentFilePath
-                          );
-                          return {
-                            ...acc,
-                            ...fields
-                          };
-                        },
-                        elements
-                      );
-                    }
-                    if (currentConf.parameters) {
-                      elements = currentConf.parameters.reduce(
-                        (acc, currentField) => {
-                          const fields = extractSmartField(
-                            currentField,
-                            currentFilePath,
-                            "Parameter"
-                          );
-                          return {
-                            ...acc,
-                            ...fields
-                          };
-                        },
-                        elements
-                      );
-                    }
-                    //Enhance elements with missing properties
-                    const extend = currentConf.extends
-                      ? currentConf.extends[0].$.ref
-                      : false;
-
-                    let currentClass =
-                      currentConf.class !== undefined
-                        ? currentConf.class[0]
-                        : false;
-
-                    if (currentClass && currentClass._) {
-                      currentClass = currentClass._;
-                    }
-
-                    const smartStructure = {
-                      name,
-                      fields: elements
-                    };
-
-                    if (extend) {
-                      smartStructure.extend = extend;
-                    }
-
-                    if (currentClass) {
-                      smartStructure.currentClass = currentClass;
-                    }
-
-                    if (acc[name]) {
-                      acc[name] = { ...acc[name], ...smartStructure };
-                    } else {
-                      acc[name] = smartStructure;
-                    }
+                values = result.config.structureconfiguration.reduce((acc, currentConf) => {
+                  const name = currentConf.$.name;
+                  if (
+                    (!currentConf.fields || !currentConf.fields.length || currentConf.fields.length === 0) &&
+                    (!currentConf.parameters || !currentConf.parameters.length || currentConf.parameters.length === 0)
+                  ) {
                     return acc;
-                  },
-                  values
-                );
+                  }
+                  let elements = {};
+                  if (currentConf.fields) {
+                    elements = currentConf.fields.reduce((acc, currentField) => {
+                      const fields = extractSmartField(currentField, currentFilePath);
+                      return {
+                        ...acc,
+                        ...fields
+                      };
+                    }, elements);
+                  }
+                  if (currentConf.parameters) {
+                    elements = currentConf.parameters.reduce((acc, currentField) => {
+                      const fields = extractSmartField(currentField, currentFilePath, "Parameter");
+                      return {
+                        ...acc,
+                        ...fields
+                      };
+                    }, elements);
+                  }
+                  //Enhance elements with missing properties
+                  const extend = currentConf.extends ? currentConf.extends[0].$.ref : false;
+
+                  let currentClass = currentConf.class !== undefined ? currentConf.class[0] : false;
+
+                  if (currentClass && currentClass._) {
+                    currentClass = currentClass._;
+                  }
+
+                  const smartStructure = {
+                    name,
+                    fields: elements
+                  };
+
+                  if (extend) {
+                    smartStructure.extend = extend;
+                  }
+
+                  if (currentClass) {
+                    smartStructure.currentClass = currentClass;
+                  }
+
+                  if (acc[name]) {
+                    acc[name] = { ...acc[name], ...smartStructure };
+                  } else {
+                    acc[name] = smartStructure;
+                  }
+                  return acc;
+                }, values);
               }
               resolve(values);
             }
@@ -237,17 +208,12 @@ exports.parseStub = ({ globFile, info, targetPath, log, verbose }) => {
       .then(allSmartStructures => {
         return Promise.all(
           Object.values(allSmartStructures).map(currentSS => {
-            const fieldsString = Object.values(currentSS.fields).reduce(
-              (acc, fieldset) => {
-                return acc + generateDescription(fieldset);
-              },
-              ""
-            );
+            const fieldsString = Object.values(currentSS.fields).reduce((acc, fieldset) => {
+              return acc + generateDescription(fieldset);
+            }, "");
 
             //Extends for field part
-            const extendsPart = currentSS.extend
-              ? ` extends ${upperCaseFirstLetter(currentSS.extend)}`
-              : "";
+            const extendsPart = currentSS.extend ? ` extends ${upperCaseFirstLetter(currentSS.extend)}` : "";
 
             //Extend for class part
             let extendsSSPart = "";
@@ -269,8 +235,7 @@ exports.parseStub = ({ globFile, info, targetPath, log, verbose }) => {
 
 namespace SmartStructure {
 
-    class ${upperCaseFirstLetter(currentSS.name)} extends ${extendsSSPart ||
-              "\\Anakeen\\SmartElement"}
+    class ${upperCaseFirstLetter(currentSS.name)} extends ${extendsSSPart || "\\Anakeen\\SmartElement"}
     {
         const familyName = "${currentSS.name}";
     }
@@ -283,10 +248,7 @@ namespace SmartStructure\\Fields {
 ${fieldsString}
     }
 }`;
-            fs.writeFileSync(
-              path.join(targetPath, currentSS.name + "__STUB.php"),
-              content
-            );
+            fs.writeFileSync(path.join(targetPath, currentSS.name + "__STUB.php"), content);
           })
         );
       });

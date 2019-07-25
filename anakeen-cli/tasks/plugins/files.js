@@ -103,17 +103,13 @@ const writeTemplate = (destinationPath, templateFile, templateData = {}) => {
         if (err) {
           reject(err);
         } else {
-          fs.writeFile(
-            destinationPath,
-            mustache.render(content, templateData),
-            err => {
-              if (err) {
-                reject(err);
-              } else {
-                resolve(destinationPath);
-              }
+          fs.writeFile(destinationPath, mustache.render(content, templateData), err => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(destinationPath);
             }
-          );
+          });
         }
       });
     }
@@ -128,19 +124,9 @@ exports.writeTemplates = (...configs) => {
   const promises = [];
   configs.forEach(config => {
     if (!(config.destinationPath && config.templateFile)) {
-      promises.push(
-        Promise.reject(
-          "The given configuration for writing the template is invalid"
-        )
-      );
+      promises.push(Promise.reject("The given configuration for writing the template is invalid"));
     } else {
-      promises.push(
-        writeTemplate(
-          config.destinationPath,
-          config.templateFile,
-          config.templateData || {}
-        )
-      );
+      promises.push(writeTemplate(config.destinationPath, config.templateFile, config.templateData || {}));
     }
   });
   return Promise.all(promises);

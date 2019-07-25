@@ -18,11 +18,7 @@ define(["underscore"], function menuInterface(_) {
     }
   };
   MenuPrototope.prototype._menuModel = null;
-  MenuPrototope.prototype._set = function MenuPrototope_set(
-    key,
-    value,
-    options
-  ) {
+  MenuPrototope.prototype._set = function MenuPrototope_set(key, value, options) {
     if (options && options.strict === true && !this.id) {
       throw new MenuError("This menu doesn't exist");
     }
@@ -35,9 +31,7 @@ define(["underscore"], function menuInterface(_) {
    *
    * @returns {*}
    */
-  MenuPrototope.prototype.getProperties = function menuInterfaceGetProperties(
-    options
-  ) {
+  MenuPrototope.prototype.getProperties = function menuInterfaceGetProperties(options) {
     if (options && options.strict === true && !this.id) {
       throw new MenuError("This menu doesn't exist");
     }
@@ -80,10 +74,7 @@ define(["underscore"], function menuInterface(_) {
    * @returns {*}
    * @param options
    */
-  MenuPrototope.prototype.setLabel = function menuInterfaceSetLabel(
-    label,
-    options
-  ) {
+  MenuPrototope.prototype.setLabel = function menuInterfaceSetLabel(label, options) {
     this._set("label", label, options);
   };
 
@@ -94,10 +85,7 @@ define(["underscore"], function menuInterface(_) {
    * @returns {*}
    * @param options
    */
-  MenuPrototope.prototype.setHtmlLabel = function menuInterfaceSetHtmlLabel(
-    label,
-    options
-  ) {
+  MenuPrototope.prototype.setHtmlLabel = function menuInterfaceSetHtmlLabel(label, options) {
     this._set("htmlLabel", label, options);
   };
 
@@ -108,10 +96,7 @@ define(["underscore"], function menuInterface(_) {
    * @returns {*}
    * @param options
    */
-  MenuPrototope.prototype.setIconUrl = function menuInterfaceSetIconUrl(
-    url,
-    options
-  ) {
+  MenuPrototope.prototype.setIconUrl = function menuInterfaceSetIconUrl(url, options) {
     this._set("iconUrl", url, options);
   };
   /**
@@ -121,10 +106,7 @@ define(["underscore"], function menuInterface(_) {
    * @returns {*}
    * @param options
    */
-  MenuPrototope.prototype.setCssClass = function menuInterfaceSetCssClass(
-    cssClass,
-    options
-  ) {
+  MenuPrototope.prototype.setCssClass = function menuInterfaceSetCssClass(cssClass, options) {
     this._set("cssClass", cssClass, options);
   };
 

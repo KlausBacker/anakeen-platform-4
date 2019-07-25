@@ -5,13 +5,7 @@ define([
   "dcpDocument/models/mAttributeData",
   "dcpDocument/models/mAttributeStructural",
   "dcpDocument/models/mAttributeArray"
-], function(
-  _,
-  Backbone,
-  ModelAttributeData,
-  ModelAttributeStructural,
-  ModelAttributeArray
-) {
+], function(_, Backbone, ModelAttributeData, ModelAttributeStructural, ModelAttributeArray) {
   "use strict";
 
   return Backbone.Collection.extend({

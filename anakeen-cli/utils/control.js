@@ -29,10 +29,7 @@ exports.controlArguments = parameters => {
 };
 
 //Generate the basic header for control connexion
-const getBaseAutorisation = (exports.getBaseAutorisation = (
-  username,
-  password
-) => {
+const getBaseAutorisation = (exports.getBaseAutorisation = (username, password) => {
   return "Basic " + Buffer.from(username + ":" + password).toString("base64");
 });
 
@@ -40,11 +37,7 @@ const getBaseAutorisation = (exports.getBaseAutorisation = (
  * Check if login, password and url are OK
  * @param {*} param0
  */
-exports.getControlStatus = async ({
-  controlUrl,
-  controlUsername,
-  controlPassword
-}) => {
+exports.getControlStatus = async ({ controlUrl, controlUsername, controlPassword }) => {
   const setupUrl = urljoin(controlUrl, "api/status");
 
   return fetch(setupUrl, {
@@ -57,11 +50,7 @@ exports.getControlStatus = async ({
       return response.text().then(contentText => {
         if (response.status === 401) {
           throw new Error(
-            response.status +
-              " " +
-              response.statusText +
-              " : you should check the login and password " +
-              contentText
+            response.status + " " + response.statusText + " : you should check the login and password " + contentText
           );
         }
         throw new Error(
@@ -83,12 +72,7 @@ exports.getControlStatus = async ({
  * Send the generated or gived module for upload
  * @param {*} param0
  */
-exports.postModule = ({
-  controlUrl,
-  controlUsername,
-  controlPassword,
-  fileName
-}) => {
+exports.postModule = ({ controlUrl, controlUsername, controlPassword, fileName }) => {
   const stats = fs.statSync(fileName);
   const fileSizeInBytes = stats.size;
 

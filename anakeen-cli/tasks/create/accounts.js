@@ -39,19 +39,9 @@ const createUsersXML = namespace => {
   };
 };
 
-exports.writeTemplate = (
-  packagePath,
-  { vendorName, moduleName, namespace }
-) => {
+exports.writeTemplate = (packagePath, { vendorName, moduleName, namespace }) => {
   return new Promise((resolve, reject) => {
-    const accountsDir = path.join(
-      packagePath,
-      "src",
-      "vendor",
-      vendorName,
-      moduleName,
-      "Accounts"
-    );
+    const accountsDir = path.join(packagePath, "src", "vendor", vendorName, moduleName, "Accounts");
     fs.mkdir(accountsDir, err => {
       if (err) {
         return reject(err);
@@ -76,13 +66,7 @@ exports.writeTemplate = (
           }
         )
         .then(() => {
-          resolve(
-            path.join(
-              path.relative(path.join(packagePath, "src"), accountsDir),
-              "**",
-              "*.xml"
-            )
-          );
+          resolve(path.join(path.relative(path.join(packagePath, "src"), accountsDir), "**", "*.xml"));
         })
         .catch(reject);
     });

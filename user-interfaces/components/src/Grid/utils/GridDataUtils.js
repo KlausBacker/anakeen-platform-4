@@ -86,16 +86,10 @@ export default class GridDataUtils extends AbstractGridUtil {
           });
           currentValue = currentMultipleValue;
         }
-        if (
-          empty(currentValue) ||
-          (typeof currentValue === "object" && currentValue.value === null)
-        ) {
+        if (empty(currentValue) || (typeof currentValue === "object" && currentValue.value === null)) {
           // Empty value case
           resultRender = emptyValue;
-        } else if (
-          colConfig.template &&
-          typeof colConfig.template !== "function"
-        ) {
+        } else if (colConfig.template && typeof colConfig.template !== "function") {
           // Execute template if already provided
           resultRender = kendo.template(colConfig.template)(dataItem);
         } else {
@@ -128,23 +122,16 @@ export default class GridDataUtils extends AbstractGridUtil {
               unitValueTemplate = `#= kendo.toString(parseFloat(data.value), 'c2') #`;
               break;
             case "date":
-              unitValueTemplate =
-                "#= kendo.toString(new Date(data.value), 'd') #";
+              unitValueTemplate = "#= kendo.toString(new Date(data.value), 'd') #";
               break;
             case "time":
-              unitValueTemplate =
-                "#= kendo.toString(new Date(data.value), 'T') #";
+              unitValueTemplate = "#= kendo.toString(new Date(data.value), 'T') #";
               break;
             case "timestamp":
-              unitValueTemplate =
-                "#= kendo.toString(new Date(data.value), 'G') #";
+              unitValueTemplate = "#= kendo.toString(new Date(data.value), 'G') #";
               break;
             case "text":
-              if (
-                colConfig.property &&
-                colConfig.field === "title" &&
-                currentValue.iconUrl
-              ) {
+              if (colConfig.property && colConfig.field === "title" && currentValue.iconUrl) {
                 unitValueTemplate = `<span> <img src="#: iconUrl#" alt="#: value# icon" class="grid-cell-icon" />#: displayValue#</span>`;
               } else {
                 unitValueTemplate = `#= data.displayValue || data.value || data #`;
@@ -164,10 +151,7 @@ export default class GridDataUtils extends AbstractGridUtil {
                   // Second level of multiplicity
                   const secondLevelRender = elem
                     .map(subElem => {
-                      if (
-                        empty(subElem) ||
-                        (typeof subElem === "object" && subElem.value === null)
-                      ) {
+                      if (empty(subElem) || (typeof subElem === "object" && subElem.value === null)) {
                         // Empty value case
                         return emptyValue;
                       }
@@ -176,10 +160,7 @@ export default class GridDataUtils extends AbstractGridUtil {
                     .join("<div class='grid-cell-content-br'></div>");
                   return `<div class="grid-cell-multiple-value">${secondLevelRender}</div>`;
                 }
-                if (
-                  empty(elem) ||
-                  (typeof elem === "object" && elem.value === null)
-                ) {
+                if (empty(elem) || (typeof elem === "object" && elem.value === null)) {
                   // Empty value case
                   return emptyValue;
                 }
@@ -269,10 +250,7 @@ export default class GridDataUtils extends AbstractGridUtil {
         actionsColumn.command.push({
           name: config.action,
           text: config.title || action.title,
-          iconClass:
-            config.iconClass !== undefined
-              ? config.iconClass
-              : action.iconClass,
+          iconClass: config.iconClass !== undefined ? config.iconClass : action.iconClass,
           template: ActionTemplate,
           click: e => action.click(e, config.action)
         });
@@ -280,10 +258,7 @@ export default class GridDataUtils extends AbstractGridUtil {
         subCommands.push({
           name: config.action,
           text: config.title || action.title,
-          iconClass:
-            config.iconClass !== undefined
-              ? config.iconClass
-              : action.iconClass,
+          iconClass: config.iconClass !== undefined ? config.iconClass : action.iconClass,
           click: e => action.click(e, config.action)
         });
       }
@@ -330,9 +305,7 @@ export default class GridDataUtils extends AbstractGridUtil {
       $exportSelectionButton.append(template(countRows));
     }
 
-    const kendoMenu = this.vueComponent
-      .$(".grid-export-action-menu", this.vueComponent.$el)
-      .data("kendoMenu");
+    const kendoMenu = this.vueComponent.$(".grid-export-action-menu", this.vueComponent.$el).data("kendoMenu");
     if (kendoMenu) {
       if (countRows === 0) {
         kendoMenu.enable($exportSelectionButton, false);

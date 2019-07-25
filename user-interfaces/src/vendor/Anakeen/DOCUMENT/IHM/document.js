@@ -56,9 +56,7 @@
   //Create a new kind of event
   var ErrorNotLoaded = function dcpDocument_ErrorNotLoaded(message) {
     this.name = "WidgetDocumentNotLoaded";
-    this.message =
-      message ||
-      "The document widget is not loaded, wait for the documentloaded event";
+    this.message = message || "The document widget is not loaded, wait for the documentloaded event";
   };
   ErrorNotLoaded.prototype = Object.create(Error.prototype);
   ErrorNotLoaded.prototype.constructor = ErrorNotLoaded;
@@ -134,31 +132,17 @@
         // This event is used when use a hard link (aka href anchor) to change document
         // It is load also the first time
         $iframe.on("load", function dcpDocument_setReadyEvent() {
-          documentWindow.documentLoaded = function dcpDocument_loadedCallback(
-            domNode,
-            viewData
-          ) {
+          documentWindow.documentLoaded = function dcpDocument_loadedCallback(domNode, viewData) {
             // Re Bind the internalController function to the current widget
-            currentWidget._bindInternalWidget.call(
-              currentWidget,
-              domNode.data("dcpDocumentController"),
-              viewData
-            );
+            currentWidget._bindInternalWidget.call(currentWidget, domNode.data("dcpDocumentController"), viewData);
             // voidLoaded is true when document 0 is loaded
-            currentWidget.element.data(
-              "voidLoaded",
-              !viewData || !viewData.initid
-            );
+            currentWidget.element.data("voidLoaded", !viewData || !viewData.initid);
           };
 
           $(documentWindow).on("unload", function dcpDocument_setUnloadEvent() {
             currentWidget._unbindInternalWidget.call(currentWidget);
           });
-          if (
-            documentWindow.dcp &&
-            documentWindow.dcp.triggerReload &&
-            documentWindow.dcp.documentReady === false
-          ) {
+          if (documentWindow.dcp && documentWindow.dcp.triggerReload && documentWindow.dcp.documentReady === false) {
             documentWindow.dcp.triggerReload();
           }
         });
@@ -180,15 +164,11 @@
       var internalController = this.element.data("internalWidget");
       if (internalController) {
         //Rebind event
-        _.each(this.options.eventListener, function dcpDocument_bindEvent(
-          currentEvent
-        ) {
+        _.each(this.options.eventListener, function dcpDocument_bindEvent(currentEvent) {
           internalController.addEventListener(currentEvent);
         });
         //Rebind constraint
-        _.each(this.options.constraintList, function dcpDocument_bindEvent(
-          currentConstaint
-        ) {
+        _.each(this.options.constraintList, function dcpDocument_bindEvent(currentConstaint) {
           internalController.addConstraint(currentConstaint);
         });
       }
@@ -213,10 +193,7 @@
      * @param internalController
      * @param voidLoaded
      */
-    _bindInternalWidget: function dcpDocument_bindInternalWidget(
-      internalController,
-      voidLoaded
-    ) {
+    _bindInternalWidget: function dcpDocument_bindInternalWidget(internalController, voidLoaded) {
       this.element.data("internalWidget", internalController);
       if (!voidLoaded) {
         this.rebindEvents();
@@ -238,10 +215,7 @@
       if (!this.options.withoutResize) {
         $(window).on(
           "resize" + this.eventNamespace,
-          _.debounce(
-            _.bind(this._resize, this),
-            parseInt(this.options.resizeDebounceTime, 10)
-          )
+          _.debounce(_.bind(this._resize, this), parseInt(this.options.resizeDebounceTime, 10))
         );
         this._resize();
       }
@@ -259,32 +233,20 @@
       if (!this.options.withoutResize && event) {
         //compute two times height (one for disapear horizontal scrollbar, two to get the actual size)
         //noinspection JSValidateTypes
-        $documentWrapper.height(
-          element.innerHeight() -
-            parseInt(currentWidget.options.resizeMarginHeight, 10)
-        );
+        $documentWrapper.height(element.innerHeight() - parseInt(currentWidget.options.resizeMarginHeight, 10));
         //noinspection JSValidateTypes
-        $documentWrapper.width(
-          element.innerWidth() -
-            parseInt(currentWidget.options.resizeMarginWidth, 10)
-        );
+        $documentWrapper.width(element.innerWidth() - parseInt(currentWidget.options.resizeMarginWidth, 10));
         //defer height computation to let the time to scrollbar disapear
         _.defer(function dcpDocument_computeHeight() {
           //noinspection JSValidateTypes
-          $documentWrapper.height(
-            element.innerHeight() -
-              parseInt(currentWidget.options.resizeMarginHeight, 10)
-          );
+          $documentWrapper.height(element.innerHeight() - parseInt(currentWidget.options.resizeMarginHeight, 10));
         });
       }
     },
 
     tryToDestroy: function dcpDocument_tryToDestroy() {
       var currentWidget = this;
-      return new Promise(function dcpDocument_tryToDestroy_promise(
-        resolve,
-        reject
-      ) {
+      return new Promise(function dcpDocument_tryToDestroy_promise(resolve, reject) {
         var internalWidget;
         if (currentWidget.isLoaded()) {
           internalWidget = currentWidget.element.data("internalWidget");
@@ -325,29 +287,20 @@
       if (
         _.isString(eventName) &&
         (eventName.indexOf("custom:") === 0 ||
-          _.find(eventList, function documentController_CheckEventType(
-            currentEventType
-          ) {
+          _.find(eventList, function documentController_CheckEventType(currentEventType) {
             return currentEventType === eventName;
           }))
       ) {
         return true;
       }
-      throw new Error(
-        "The event type " +
-          eventName +
-          " is not known. It must be one of " +
-          eventList.join(" ,")
-      );
+      throw new Error("The event type " + eventName + " is not known. It must be one of " + eventList.join(" ,"));
     },
 
     /**
      * Update options
      */
     options: function dcpDocument_options() {
-      throw new Error(
-        "You cannot modify the options, you need to suppress the widget"
-      );
+      throw new Error("You cannot modify the options, you need to suppress the widget");
     },
 
     /**
@@ -372,40 +325,31 @@
       if (!values.initid) {
         throw new Error("You need to set the initid to fetch the document");
       }
-      _.each(
-        _.pick(values, "initid", "revision", "viewId", "customClientData"),
-        function dcpDocument_setNewOptions(value, key) {
-          currentWidget.options[key] = value;
-        }
-      );
+      _.each(_.pick(values, "initid", "revision", "viewId", "customClientData"), function dcpDocument_setNewOptions(
+        value,
+        key
+      ) {
+        currentWidget.options[key] = value;
+      });
 
       if (this.element.data("internalWidgetInitialised")) {
         internalWidget = this.element.data("internalWidget");
 
         if (options.success) {
           // @deprecated : use promise instead
-          options.success = _.wrap(
-            options.success,
-            function dcpDocument_success(success) {
-              initWidget.apply(this, _.rest(arguments));
-              return success.apply(this, _.rest(arguments));
-            }
-          );
+          options.success = _.wrap(options.success, function dcpDocument_success(success) {
+            initWidget.apply(this, _.rest(arguments));
+            return success.apply(this, _.rest(arguments));
+          });
         }
         if (options.error) {
           // @deprecated : use promise instead
-          options.error = _.wrap(options.error, function dcpDocument_error(
-            error
-          ) {
+          options.error = _.wrap(options.error, function dcpDocument_error(error) {
             initWidget.apply(this, _.rest(arguments));
             return error.apply(this, _.rest(arguments));
           });
         }
-        fetchPromise = internalWidget.fetchDocument.call(
-          internalWidget,
-          values,
-          options
-        );
+        fetchPromise = internalWidget.fetchDocument.call(internalWidget, values, options);
 
         if (!options.success) {
           fetchPromise.then(initWidget);
@@ -428,11 +372,7 @@
      * @param callback function callback
      * @returns {*}
      */
-    addEventListener: function dcpDocument_addEventListener(
-      eventType,
-      options,
-      callback
-    ) {
+    addEventListener: function dcpDocument_addEventListener(eventType, options, callback) {
       var currentEvent,
         currentWidget = this;
       if (_.isUndefined(callback) && _.isFunction(options)) {
@@ -440,11 +380,7 @@
         options = {};
       }
       // the first parameters can be the final object (chain removeEvent and addEvent)
-      if (
-        _.isObject(eventType) &&
-        _.isUndefined(options) &&
-        _.isUndefined(callback)
-      ) {
+      if (_.isObject(eventType) && _.isUndefined(options) && _.isUndefined(callback)) {
         currentEvent = eventType;
         if (!currentEvent.name) {
           throw new Error(
@@ -465,25 +401,19 @@
       // the eventType must be one the list
       this._checkEventName(currentEvent.eventType);
       if (currentEvent.once === true) {
-        currentEvent.eventCallback = _.wrap(
-          currentEvent.eventCallback,
-          function dcpDocument_onceWrapper(callback) {
-            try {
-              callback.apply(this, _.rest(arguments));
-            } catch (e) {
-              console.error(e);
-            }
-            currentWidget.removeEventListener(currentEvent.name);
+        currentEvent.eventCallback = _.wrap(currentEvent.eventCallback, function dcpDocument_onceWrapper(callback) {
+          try {
+            callback.apply(this, _.rest(arguments));
+          } catch (e) {
+            console.error(e);
           }
-        );
+          currentWidget.removeEventListener(currentEvent.name);
+        });
       }
       //Remove once property because already wrapped
       currentEvent.once = false;
       this.options.eventListener[currentEvent.name] = currentEvent;
-      if (
-        this.element.data("internalWidgetInitialised") &&
-        !this.element.data("voidLoaded")
-      ) {
+      if (this.element.data("internalWidgetInitialised") && !this.element.data("voidLoaded")) {
         this.element.data("internalWidget").addEventListener(currentEvent);
       }
       return currentEvent.name;
@@ -495,10 +425,7 @@
      * @returns {*}
      */
     listEventListeners: function documentControllerListEvents() {
-      if (
-        this.element.data("internalWidgetInitialised") &&
-        !this.element.data("voidLoaded")
-      ) {
+      if (this.element.data("internalWidgetInitialised") && !this.element.data("voidLoaded")) {
         return this.element.data("internalWidget").listEventListeners();
       } else {
         return this.options.eventListener;
@@ -516,31 +443,20 @@
         testRegExp = new RegExp("\\" + eventName + "$"),
         newList,
         eventList;
-      newList = _.filter(
-        this.options.eventListener,
-        function dcpDocument_removeCurrentEvent(currentEvent) {
-          if (
-            currentEvent.name === eventName ||
-            testRegExp.test(currentEvent.name)
-          ) {
-            removed.push(currentEvent);
-            return false;
-          }
-          return true;
+      newList = _.filter(this.options.eventListener, function dcpDocument_removeCurrentEvent(currentEvent) {
+        if (currentEvent.name === eventName || testRegExp.test(currentEvent.name)) {
+          removed.push(currentEvent);
+          return false;
         }
-      );
+        return true;
+      });
       eventList = {};
       _.each(newList, function dcp_documentIterateEach(currentEvent) {
         eventList[currentEvent.name] = currentEvent;
       });
       this.options.eventListener = eventList;
-      if (
-        this.element.data("internalWidgetInitialised") &&
-        !this.element.data("voidLoaded")
-      ) {
-        this.element
-          .data("internalWidget")
-          .removeEventListener(eventName, true);
+      if (this.element.data("internalWidgetInitialised") && !this.element.data("voidLoaded")) {
+        this.element.data("internalWidget").removeEventListener(eventName, true);
       }
       return removed;
     },
@@ -586,26 +502,17 @@
         throw new Error("An event need a callback");
       }
       if (parameters.once === true) {
-        parameters.eventCallback = _.wrap(
-          parameters.constraintCheck,
-          function dcpDocument_onceWrapper(callback) {
-            try {
-              callback.apply(this, _.rest(arguments));
-            } catch (e) {
-              console.error(e);
-            }
-            currentWidget.removeConstraint(
-              parameters.name,
-              parameters.externalConstraint
-            );
+        parameters.eventCallback = _.wrap(parameters.constraintCheck, function dcpDocument_onceWrapper(callback) {
+          try {
+            callback.apply(this, _.rest(arguments));
+          } catch (e) {
+            console.error(e);
           }
-        );
+          currentWidget.removeConstraint(parameters.name, parameters.externalConstraint);
+        });
       }
       this.options.constraintList[parameters.name] = parameters;
-      if (
-        this.element.data("internalWidgetInitialised") &&
-        !this.element.data("voidLoaded")
-      ) {
+      if (this.element.data("internalWidgetInitialised") && !this.element.data("voidLoaded")) {
         this.element.data("internalWidget").addConstraint(parameters);
       }
       return parameters.name;
@@ -616,10 +523,7 @@
      * @returns {*}
      */
     listConstraints: function documentControllerListConstraint() {
-      if (
-        this.element.data("internalWidgetInitialised") &&
-        !this.element.data("voidLoaded")
-      ) {
+      if (this.element.data("internalWidgetInitialised") && !this.element.data("voidLoaded")) {
         return this.element.data("internalWidget").listConstraints();
       } else {
         return this.options.constraintList;
@@ -636,49 +540,33 @@
         newConstraintList,
         constraintList,
         testRegExp = new RegExp("\\" + constraintName + "$");
-      newConstraintList = _.filter(
-        this.options.constraintList,
-        function dcpDocument_removeConstraint(currentConstraint) {
-          if (
-            currentConstraint.name === constraintName ||
-            testRegExp.test(currentConstraint.name)
-          ) {
-            removed.push(currentConstraint);
-            return false;
-          }
-          return true;
-        }
-      );
-      constraintList = {};
-      _.each(newConstraintList, function dcpDocument_reinitConstraint(
+      newConstraintList = _.filter(this.options.constraintList, function dcpDocument_removeConstraint(
         currentConstraint
       ) {
+        if (currentConstraint.name === constraintName || testRegExp.test(currentConstraint.name)) {
+          removed.push(currentConstraint);
+          return false;
+        }
+        return true;
+      });
+      constraintList = {};
+      _.each(newConstraintList, function dcpDocument_reinitConstraint(currentConstraint) {
         constraintList[currentConstraint.name] = currentConstraint;
       });
       this.options.constraintList = constraintList;
-      if (
-        this.element.data("internalWidgetInitialised") &&
-        !this.element.data("voidLoaded")
-      ) {
-        this.element
-          .data("internalWidget")
-          .removeConstraint(constraintName, true);
+      if (this.element.data("internalWidgetInitialised") && !this.element.data("voidLoaded")) {
+        this.element.data("internalWidget").removeConstraint(constraintName, true);
       }
       return removed;
     },
 
     isLoaded: function dcpDocument_isLoaded() {
-      return (
-        this.element.data("internalWidgetInitialised") &&
-        !this.element.data("voidLoaded")
-      );
+      return this.element.data("internalWidgetInitialised") && !this.element.data("voidLoaded");
     },
 
     injectCSS: function documentController_injectCSS(cssToInject) {
       if (!_.isArray(cssToInject) && !_.isString(cssToInject)) {
-        throw new Error(
-          "The css to inject must be an array string or a string"
-        );
+        throw new Error("The css to inject must be an array string or a string");
       }
       if (_.isString(cssToInject)) {
         cssToInject = [cssToInject];
@@ -686,10 +574,7 @@
 
       this.options.cssToInject = _.union(this.options.cssToInject, cssToInject);
 
-      if (
-        this.element.data("internalWidgetInitialised") &&
-        !this.element.data("voidLoaded")
-      ) {
+      if (this.element.data("internalWidgetInitialised") && !this.element.data("voidLoaded")) {
         this.element.data("internalWidget").injectCSS(cssToInject);
       }
     },
@@ -704,10 +589,7 @@
 
       this.options.jsToInject = _.union(this.options.jsToInject, jsToInject);
 
-      if (
-        this.element.data("internalWidgetInitialised") &&
-        !this.element.data("voidLoaded")
-      ) {
+      if (this.element.data("internalWidgetInitialised") && !this.element.data("voidLoaded")) {
         this.element.data("internalWidget").injectJS(jsToInject);
       }
     }
@@ -722,10 +604,7 @@
    * @type {Function|function(): Function|function(): _Chain<T>|*}
    */
   //noinspection JSUnresolvedVariable
-  $.fn.document = _.wrap($.fn.document, function dcpDocument_wrap(
-    initialDocumentBridge,
-    methodName
-  ) {
+  $.fn.document = _.wrap($.fn.document, function dcpDocument_wrap(initialDocumentBridge, methodName) {
     // jshint ignore:line
     var isMethodCall, internalWidget;
     try {
@@ -737,14 +616,8 @@
           throw new ErrorNotLoaded();
         }
         internalWidget = this.data("internalWidget");
-        if (
-          _.isFunction(internalWidget[methodName]) &&
-          methodName.charAt(0) !== "_"
-        ) {
-          return internalWidget[methodName].apply(
-            internalWidget,
-            _.rest(arguments, 2)
-          );
+        if (_.isFunction(internalWidget[methodName]) && methodName.charAt(0) !== "_") {
+          return internalWidget[methodName].apply(internalWidget, _.rest(arguments, 2));
         }
       }
       throw error;

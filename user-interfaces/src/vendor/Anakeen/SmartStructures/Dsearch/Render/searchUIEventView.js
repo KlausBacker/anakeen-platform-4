@@ -25,26 +25,18 @@ Research result in consult mode
         function eventButtonView(event, document, data) {
           var $documentController = $(this);
           if (data.eventId === "previewConsult") {
-            var continueDefault = $documentController.documentController(
-              "triggerEvent",
-              "custom:content",
-              {
-                familyName: $documentController.documentController(
-                  "getProperties"
-                ).family.name,
-                id: $documentController.documentController("getProperties").id,
-                title: $documentController.documentController("getProperties")
-                  .title
-              }
-            );
+            var continueDefault = $documentController.documentController("triggerEvent", "custom:content", {
+              familyName: $documentController.documentController("getProperties").family.name,
+              id: $documentController.documentController("getProperties").id,
+              title: $documentController.documentController("getProperties").title
+            });
             if (!continueDefault) {
               event.preventDefault();
             } else {
               var $window = $("<div />");
               $("body").append($window);
               $window.kendoWindow({
-                title: $documentController.documentController("getProperties")
-                  .title,
+                title: $documentController.documentController("getProperties").title,
                 content: {
                   url: `/api/v2/smartstructures/dsearch/preview/${$documentController
                     .documentController("getProperties")

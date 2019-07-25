@@ -3,11 +3,7 @@
   "use strict";
 
   if (typeof define === "function" && define.amd) {
-    define([
-      "jquery",
-      "underscore",
-      "dcpDocument/widgets/attributes/text/wText"
-    ], factory);
+    define(["jquery", "underscore", "dcpDocument/widgets/attributes/text/wText"], factory);
   } else {
     //noinspection JSUnresolvedVariable
     factory(window.jQuery, window._);
@@ -91,9 +87,7 @@
               options.disallowedContent = "script; *[on*]";
             }
 
-            currentWidget.ckEditorInstance = currentWidget
-              .getContentElements()
-              .ckeditor(options).editor;
+            currentWidget.ckEditorInstance = currentWidget.getContentElements().ckeditor(options).editor;
             currentWidget.options.attributeValue.value = currentWidget.ckEditorInstance.getData();
             bindInitEvent();
           });
@@ -137,29 +131,11 @@
         toolbar_Full: [
           {
             name: "document",
-            items: [
-              "Sourcedialog",
-              "-",
-              "NewPage",
-              "DocProps",
-              "Preview",
-              "Print",
-              "-",
-              "Templates"
-            ]
+            items: ["Sourcedialog", "-", "NewPage", "DocProps", "Preview", "Print", "-", "Templates"]
           },
           {
             name: "clipboard",
-            items: [
-              "Cut",
-              "Copy",
-              "Paste",
-              "PasteText",
-              "PasteFromWord",
-              "-",
-              "Undo",
-              "Redo"
-            ]
+            items: ["Cut", "Copy", "Paste", "PasteText", "PasteFromWord", "-", "Undo", "Redo"]
           },
           {
             name: "editing",
@@ -182,16 +158,7 @@
           "/",
           {
             name: "basicstyles",
-            items: [
-              "Bold",
-              "Italic",
-              "Underline",
-              "Strike",
-              "Subscript",
-              "Superscript",
-              "-",
-              "RemoveFormat"
-            ]
+            items: ["Bold", "Italic", "Underline", "Strike", "Subscript", "Superscript", "-", "RemoveFormat"]
           },
           {
             name: "paragraph",
@@ -217,15 +184,7 @@
           { name: "links", items: ["Link", "Unlink"] },
           {
             name: "insert",
-            items: [
-              "Image",
-              "Table",
-              "HorizontalRule",
-              "Smiley",
-              "SpecialChar",
-              "PageBreak",
-              "Iframe"
-            ]
+            items: ["Image", "Table", "HorizontalRule", "Smiley", "SpecialChar", "PageBreak", "Iframe"]
           },
           "/",
           { name: "styles", items: ["Styles", "Format", "Font", "FontSize"] },
@@ -236,30 +195,12 @@
           { name: "document", items: ["Sourcedialog"] },
           {
             name: "clipboard",
-            items: [
-              "Cut",
-              "Copy",
-              "Paste",
-              "PasteText",
-              "PasteFromWord",
-              "-",
-              "Undo",
-              "Redo"
-            ]
+            items: ["Cut", "Copy", "Paste", "PasteText", "PasteFromWord", "-", "Undo", "Redo"]
           },
           { name: "editing", items: ["Find", "Replace", "-", "SelectAll"] },
           {
             name: "basicstyles",
-            items: [
-              "Bold",
-              "Italic",
-              "Underline",
-              "Strike",
-              "Subscript",
-              "Superscript",
-              "-",
-              "RemoveFormat"
-            ]
+            items: ["Bold", "Italic", "Underline", "Strike", "Subscript", "Superscript", "-", "RemoveFormat"]
           },
           {
             name: "paragraph",
@@ -285,14 +226,7 @@
           { name: "links", items: ["Link", "Unlink"] },
           {
             name: "insert",
-            items: [
-              "Image",
-              "Table",
-              "HorizontalRule",
-              "SpecialChar",
-              "PageBreak",
-              "Iframe"
-            ]
+            items: ["Image", "Table", "HorizontalRule", "SpecialChar", "PageBreak", "Iframe"]
           },
           { name: "styles", items: ["Styles", "Format", "Font", "FontSize"] },
           { name: "colors", items: ["TextColor", "BGColor"] },
@@ -302,14 +236,7 @@
           { name: "document", items: [] },
           {
             name: "basicstyles",
-            items: [
-              "Bold",
-              "Italic",
-              "Underline",
-              "Strike",
-              "-",
-              "RemoveFormat"
-            ]
+            items: ["Bold", "Italic", "Underline", "Strike", "-", "RemoveFormat"]
           },
           {
             name: "paragraph",
@@ -367,32 +294,25 @@
           var ktTarget = currentWidget.element.find(".input-group");
           currentWidget.showInputTooltip(ktTarget);
           currentWidget.element.find(".cke").addClass("k-state-focused");
-          currentWidget.element
-            .closest(".dcpAttribute__content")
-            .addClass("dcpAttribute--focus");
+          currentWidget.element.closest(".dcpAttribute__content").addClass("dcpAttribute--focus");
         });
 
         this.ckEditorInstance.on("blur", function wHtmltext_blur() {
           var ktTarget = currentWidget.element.find(".input-group");
           currentWidget.hideInputTooltip(ktTarget);
           currentWidget.element.find(".cke").removeClass("k-state-focused");
-          currentWidget.element
-            .closest(".dcpAttribute__content")
-            .removeClass("dcpAttribute--focus");
+          currentWidget.element.closest(".dcpAttribute__content").removeClass("dcpAttribute--focus");
         });
 
         this.ckEditorInstance.on("instanceReady", function wHtmltext_loaded() {
           currentWidget._trigger("widgetReady");
         });
 
-        this.element.on(
-          "postMoved" + this.eventNamespace,
-          function wHtmlTextOnPostMoved(event, eventData) {
-            if (eventData && eventData.to === currentWidget.options.index) {
-              currentWidget.redraw();
-            }
+        this.element.on("postMoved" + this.eventNamespace, function wHtmlTextOnPostMoved(event, eventData) {
+          if (eventData && eventData.to === currentWidget.options.index) {
+            currentWidget.redraw();
           }
-        );
+        });
       }
 
       //If we are not in CKEDITOR mode, we take care of anchor and redirect it
@@ -416,31 +336,21 @@
             }
             event.preventDefault();
 
-            anchorsConfig = _.extend(
-              {},
-              currentWidget.options.renderOptions.anchors
-            );
+            anchorsConfig = _.extend({}, currentWidget.options.renderOptions.anchors);
 
-            isNotPrevented = currentWidget._trigger(
-              "anchorClick",
-              internalEvent,
-              {
-                $el: currentWidget.element,
-                index: currentWidget._getIndex(),
-                options: {
-                  anchor: anchor,
-                  anchorsConfig: anchorsConfig
-                }
+            isNotPrevented = currentWidget._trigger("anchorClick", internalEvent, {
+              $el: currentWidget.element,
+              index: currentWidget._getIndex(),
+              options: {
+                anchor: anchor,
+                anchorsConfig: anchorsConfig
               }
-            );
+            });
             if (isNotPrevented) {
               anchorsTarget = anchorsConfig.target || "_blank";
               href = anchor.href;
 
-              if (
-                $anchor.attr("href") &&
-                $anchor.attr("href").substring(0, 1) === "#"
-              ) {
+              if ($anchor.attr("href") && $anchor.attr("href").substring(0, 1) === "#") {
                 href =
                   window.location.protocol +
                   "//" +
@@ -480,16 +390,10 @@
                 default:
                   if (anchorsConfig.windowWidth || anchorsConfig.windowHeight) {
                     if (anchorsConfig.windowWidth) {
-                      wFeature +=
-                        "width=" +
-                        parseInt(anchorsConfig.windowWidth, 10) +
-                        ",";
+                      wFeature += "width=" + parseInt(anchorsConfig.windowWidth, 10) + ",";
                     }
                     if (anchorsConfig.windowHeight) {
-                      wFeature +=
-                        "height=" +
-                        parseInt(anchorsConfig.windowHeight, 10) +
-                        ",";
+                      wFeature += "height=" + parseInt(anchorsConfig.windowHeight, 10) + ",";
                     }
                     wFeature += "resizable=yes,scrollbars=yes";
                   }
@@ -548,9 +452,7 @@
       } else if (this.getMode() === "read") {
         this.getContentElements().html(value.displayValue);
       } else {
-        throw new Error(
-          "Attribute " + this.options.id + " unknown mode " + this.getMode()
-        );
+        throw new Error("Attribute " + this.options.id + " unknown mode " + this.getMode());
       }
 
       // call wAttribute::setValue()
@@ -564,10 +466,7 @@
     _destroy: function wHtmlTextDestroy() {
       var currentWidget = this;
       if (this.ckEditorInstance && this.ckEditorInstance.destroy) {
-        if (
-          this.ckEditorInstance.status === "loaded" ||
-          this.ckEditorInstance.status === "ready"
-        ) {
+        if (this.ckEditorInstance.status === "loaded" || this.ckEditorInstance.status === "ready") {
           this.ckEditorInstance.destroy();
           _.defer(function wHtmltext_deferDestroy() {
             currentWidget._destroy();
