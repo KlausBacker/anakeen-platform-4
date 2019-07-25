@@ -31,6 +31,8 @@ export default class AnkSmartForm extends Mixins(AnkSmartElement) {
     // noinspection JSIgnoredPromiseFromCall
     this.fetchSmartElement(this.initialConfig, {
       formConfiguration: newConfig
+    }).catch(e => {
+      console.error(e);
     });
   }
 

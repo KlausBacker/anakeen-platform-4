@@ -1,0 +1,90 @@
+{
+  "title": "Mon formulaire préféré",
+  "type": "Invitation",
+  "menu": [
+    {
+      "beforeContent": "<div class=\"fa fa-superpowers\" />",
+      "confirmationOptions": null,
+      "confirmationText": null,
+      "htmlAttributes": { "class": "menu--left" },
+      "htmlLabel": "",
+      "iconUrl": "",
+      "id": "special",
+      "important": false,
+      "label": "Special",
+      "target": "_self",
+      "targetOptions": null,
+      "tooltipHtml": false,
+      "tooltipLabel": "",
+      "tooltipPlacement": "",
+      "type": "itemMenu",
+      "url": "#action/superpower",
+      "visibility": "visible"
+    },
+    {
+      "beforeContent": "<div class=\"fa fa-save\" />",
+      "confirmationOptions": null,
+      "confirmationText": null,
+      "htmlAttributes": null,
+      "htmlLabel": "",
+      "iconUrl": "",
+      "id": "submit",
+      "important": false,
+      "label": "Soumettre",
+      "target": "_self",
+      "targetOptions": null,
+      "tooltipHtml": false,
+      "tooltipLabel": "",
+      "tooltipPlacement": "",
+      "type": "itemMenu",
+      "url": "#action/document.save",
+      "visibility": "visible"
+    }
+  ],
+  "renderOptions": {
+    "fields": {
+      "my_title": {
+        "description": {
+          "collapsed": false,
+          "htmlContent": "<p>Description du titre</p>",
+          "htmlTitle": "<h3>Ceci est le titre</h3>",
+          "position": "top"
+        }
+      },
+      "my_firstframe": {
+        "responsiveColumns": [
+          { "number": 2, "minWidth": "70rem", "maxWidth": "100rem", "grow": true },
+          { "number": 3, "minWidth": "100rem", "maxWidth": null, "grow": true }
+        ]
+      }
+    }
+  },
+  "structure": [
+    {
+      "content": [
+        {
+          "label": "Title",
+          "name": "my_title",
+          "type": "text"
+        },
+        {
+          "label": "Date de rédaction",
+          "name": "my_date",
+          "type": "date"
+        },
+        {
+          "label": "Remarques",
+          "name": "my_comment",
+          "type": "htmltext"
+        }
+      ],
+      "label": "My first frame",
+      "name": "my_firstframe",
+      "type": "frame"
+    }
+  ],
+  "values": {
+    "my_date": "2019-07-24",
+    "my_title": "Hello world"
+  }
+}

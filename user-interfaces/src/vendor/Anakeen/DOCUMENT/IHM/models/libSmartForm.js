@@ -24,10 +24,12 @@ define(["jquery", "underscore"], function libSmartForm($, _) {
     response.data.view.documentData.document.properties.id = model.get("initid");
     response.data.view.documentData.document.attributes = {};
 
-    defaultRenderConfig = response;
     if (formConfig.renderOptions.fields) {
       response.data.view.renderOptions.attributes = formConfig.renderOptions.fields;
     }
+
+    response.data.view.menu = formConfig.menu || [];
+
     response.data.view.documentData.document.properties.title = formConfig.title || "";
     response.data.view.documentData.document.properties.family.title = formConfig.type || "";
   };
@@ -39,6 +41,8 @@ define(["jquery", "underscore"], function libSmartForm($, _) {
           $.getJSON("/api/v2/smart-forms/0/views/!defaultEdition")
             .then(response => {
               _completeResponse(response, model);
+
+              defaultRenderConfig = response;
               options.success(response);
             })
             .fail(response => {
@@ -60,6 +64,9 @@ define(["jquery", "underscore"], function libSmartForm($, _) {
         item.visibility = item.visibility || "W";
         item.id = item.name;
         item.label = item.label || item.name;
+        if (!item.id) {
+          throw new Error("Field as no name: \n" + JSON.stringify(item, null, 2));
+        }
         if (values[item.id] !== undefined) {
           if (_.isObject(values[item.id])) {
             item.attributeValue = values[item.id];

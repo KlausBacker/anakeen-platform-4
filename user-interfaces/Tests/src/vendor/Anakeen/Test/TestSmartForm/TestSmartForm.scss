@@ -5,6 +5,10 @@
   width: 100%;
   position:relative;
 
+  .pane > header {
+    background-color:var(--primary);
+    color:var(--white);
+  }
   .ank-splitter {
     height:100%;
   }

@@ -419,11 +419,13 @@ define([
           }
           xhr = { status: 500, statusText: "Internal - No HTTP response" };
         } else {
-          result = JSON.parse(xhr.responseText);
-          if (result.message) {
-            messages.push(result);
-          } else if (result.messages) {
-            messages = result.messages;
+          if (!xhr.message) {
+            result = JSON.parse(xhr.responseText);
+            if (result.message) {
+              messages.push(result);
+            } else if (result.messages) {
+              messages = result.messages;
+            }
           }
         }
       } catch (e) {
@@ -461,7 +463,7 @@ define([
 
       parsedReturn = {
         messages: messages || [],
-        responseText: "Unexpected error: " + xhr.status + " " + xhr.statusText
+        responseText: xhr.message || "Unexpected error: " + xhr.status + " " + xhr.statusText
       };
 
       this.cleanErrorMessages();
@@ -1265,27 +1267,26 @@ define([
       }
 
       //Register promise events
-      documentCallback.promise.then(
-        function onFetchDocumentDone(currentModelProperties) {
-          currentModel._loadDocument(currentModel).then(
-            function mDocument_loadDocumentDone(values) {
+      documentCallback.promise
+        .then(currentModelProperties => {
+          currentModel
+            ._loadDocument(currentModel)
+            .then(values => {
               globalCallback.success.apply(currentModelProperties, values);
-            },
-            function mDocument_loadDocumentFail(values) {
-              globalCallback.error.apply(
+            })
+            .catch(values => {
+              globalCallback.error.call(
                 currentModelProperties,
                 values && values.promiseArguments ? values.promiseArguments : values
               );
-            }
-          );
-        },
-        function mDocument_onFetchDocumentFail(values) {
+            });
+        })
+        .catch(values => {
           globalCallback.error.call(
             serverProperties,
             values && values.promiseArguments ? values.promiseArguments : values
           );
-        }
-      );
+        });
 
       globalCallback.promise.then(
         function onPrepareDocumentDone(values) {
@@ -1299,7 +1300,17 @@ define([
           if (_.isFunction(options.error)) {
             options.error(values);
           }
-          if (!(values.promiseArguments && values.promiseArguments[0] && values.promiseArguments[0].eventPrevented)) {
+          if (values.promiseArguments && values.promiseArguments[0].message) {
+            currentModel.message = values.promiseArguments[0].message;
+            currentModel.trigger.apply(
+              currentModel,
+              _.union(["dduiDocumentFail", currentModel], values.promiseArguments)
+            );
+          } else if (
+            values.promiseArguments &&
+            values.promiseArguments[0] &&
+            values.promiseArguments[0].eventPrevented
+          ) {
             currentModel.trigger.apply(
               currentModel,
               _.union(["dduiDocumentFail", currentModel], values.promiseArguments[0])

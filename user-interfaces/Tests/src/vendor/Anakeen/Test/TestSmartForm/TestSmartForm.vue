@@ -6,14 +6,16 @@
       :panes="panes"
     >
       <template slot="left">
-        <div class="left-pane">
-          <div><h1>Configuration</h1></div>
+        <div class="pane left-pane">
+          <header><h1>Configuration </h1>
+            <input type="checkbox" @click="toggleMode"/>
+          </header>
           <v-jsoneditor class="json-editor" v-model="json" :options="options" :plus="false" height="400px" @error="onError"/>
         </div>
       </template>
       <template slot="right">
-        <div class="right-pane">
-          <div><h1>Smart Form</h1></div>
+        <div class="pane right-pane">
+          <header><h1>Smart Form</h1></header>
           <div class="smart-form">
             <ank-smart-form ref="smartFormRef" :config="json" />
           </div>

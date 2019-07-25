@@ -183,22 +183,28 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       this._requestData[key] = value;
     });
 
-    if (!this._model) {
-      const config: any = {
-        customClientData: values.customClientData
-      };
-      if (options.formConfiguration) {
-        config.formConfiguration = options.formConfiguration;
+    try {
+      if (!this._model) {
+        const config: any = {
+          customClientData: values.customClientData
+        };
+        if (options.formConfiguration) {
+          config.formConfiguration = options.formConfiguration;
+        }
+        documentPromise = this._initializeSmartElement(options, config);
+      } else {
+        if (values.customClientData) {
+          this._model._customClientData = values.customClientData;
+        }
+        if (options.formConfiguration) {
+          this._model._formConfiguration = options.formConfiguration;
+        }
+        documentPromise = this._model.fetchDocument(this._getModelValue(), options);
       }
-      documentPromise = this._initializeSmartElement(options, config);
-    } else {
-      if (values.customClientData) {
-        this._model._customClientData = values.customClientData;
+    } catch (e) {
+      if (documentPromise) {
+        documentPromise.reject(e);
       }
-      if (options.formConfiguration) {
-        this._model._formConfiguration = options.formConfiguration;
-      }
-      documentPromise = this._model.fetchDocument(this._getModelValue(), options);
     }
     return this._registerOutputPromise(documentPromise, options);
   }
@@ -2261,12 +2267,14 @@ export default class SmartElementController extends AnakeenController.BusEvents.
           });
         },
         values => {
-          const errorArguments = values.arguments;
+          const errorArguments = values.arguments || values.promiseArguments;
           let errorMessage = { contentText: "Undefined error" };
 
-          if (values.arguments) {
+          if (errorArguments) {
             try {
-              if (errorArguments && errorArguments[1] && errorArguments[1].responseJSON) {
+              if (errorArguments && errorArguments[0] && errorArguments[0].message) {
+                errorMessage = { contentText: errorArguments[0].message };
+              } else if (errorArguments && errorArguments[1] && errorArguments[1].responseJSON) {
                 errorMessage = errorArguments[1].responseJSON.messages[0];
               }
             } catch (e) {
