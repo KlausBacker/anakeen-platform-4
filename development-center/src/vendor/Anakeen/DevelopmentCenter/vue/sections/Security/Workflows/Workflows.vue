@@ -7,7 +7,7 @@
                             @item-clicked="onItemClicked"
                             @list-ready="onListReady"
             ></ss-list>
-            <router-tabs :ref="listItem.name" @hook:mounted="onTabsMounted(listItem.name)" @tab-selected="onTabSelected" v-for="(listItem, index) in listContent" :key="index" v-show="listItem && listItem.name === selectedWorkflow" :tabs="tabs">
+            <router-tabs :ref="listItem.name" @hook:mounted="onTabsMounted(listItem.name)" @tab-selected="onTabSelected" v-for="listItem in listContent" :key="listItem.name || listItem.id" v-show="listItem && listItem.name === selectedWorkflow" :tabs="tabs">
                 <template v-slot="slotProps">
                     <component :is="slotProps.tab.component" :workflowId="listItem.name || listItem.id"></component>
                 </template>

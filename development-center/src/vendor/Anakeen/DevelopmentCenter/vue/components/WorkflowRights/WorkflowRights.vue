@@ -34,6 +34,7 @@
                        :columnTemplate="privateMethods.getCellTemplate"
                        :inlineFilters="false"
                        :model="model"
+                       :sort="sortOptions"
                        messages="There are no rights for this workflow"
         ></ank-tree-list>
     </div>
