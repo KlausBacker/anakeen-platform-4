@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* tslint:disable:variable-name */
 import DOMReference = AnakeenController.Types.DOMReference;
 // @ts-ignore
@@ -13,12 +14,12 @@ import load from "./utils/ScriptLoader.js";
 import ListenableEventCallable = AnakeenController.BusEvents.ListenableEventCallable;
 import ListenableEvent = AnakeenController.BusEvents.ListenableEvent;
 
-type Asset = {
+interface IAsset {
   key: string;
   path: string;
-};
+}
 
-type CssAssetList = Asset[];
+type CssAssetList = IAsset[];
 
 const chainPromise = (...promisesList) =>
   promisesList.reduce((acc, curr) => {
@@ -32,8 +33,7 @@ const chainPromise = (...promisesList) =>
     });
   }, Promise.resolve());
 
-export default class GlobalController extends AnakeenController.BusEvents
-  .Listenable {
+export default class GlobalController extends AnakeenController.BusEvents.Listenable {
   /**
    * The singleton instance of the global controller;
    */
@@ -50,6 +50,7 @@ export default class GlobalController extends AnakeenController.BusEvents
   private _isReady: boolean = false;
 
   private _domObserver: MutationObserver;
+
   /**
    * Constructor of the GlobalController. The GlobalController is a Singleton
    */
@@ -69,17 +70,12 @@ export default class GlobalController extends AnakeenController.BusEvents
     if (!this._isReady) {
       const controllerDispatcher = require("./ControllerDispatcher").default;
       this._dispatcher = new controllerDispatcher();
-      this._domObserver = new MutationObserver((...args) =>
-        this._onRemoveDOMController(...args)
-      );
+      this._domObserver = new MutationObserver((...args) => this._onRemoveDOMController(...args));
       this._domObserver.observe(document, { subtree: true, childList: true });
       this._isReady = true;
-      this._dispatcher.on(
-        "injectCurrentSmartElementJS",
-        (controller, event, properties, jsEvent) => {
-          this._injectSmartElementJS(jsEvent);
-        }
-      );
+      this._dispatcher.on("injectCurrentSmartElementJS", (controller, event, properties, jsEvent) => {
+        this._injectSmartElementJS(jsEvent);
+      });
       this._dispatcher.on("renderCss", (controller, event, properties, css) => {
         this._onRenderCss(css);
       });
@@ -87,10 +83,7 @@ export default class GlobalController extends AnakeenController.BusEvents
     }
   }
 
-  public on(
-    eventName: string,
-    callback: AnakeenController.BusEvents.ListenableEventCallable
-  ) {
+  public on(eventName: string, callback: AnakeenController.BusEvents.ListenableEventCallable) {
     super.on(eventName, callback);
     if (eventName === "controllerReady" && this._isReady) {
       // If controller is already ready, execute callback immediatly
@@ -104,9 +97,7 @@ export default class GlobalController extends AnakeenController.BusEvents
    *
    * @param scopeId
    */
-  public scope(
-    scopeId?: ControllerUID | DOMReference
-  ): SmartElementController | SmartElementController[] {
+  public scope(scopeId?: ControllerUID | DOMReference): SmartElementController | SmartElementController[] {
     if (scopeId === undefined) {
       return this._dispatcher.getControllers() as SmartElementController[];
     }
@@ -118,11 +109,7 @@ export default class GlobalController extends AnakeenController.BusEvents
    * @param dom
    * @param viewData
    */
-  public addSmartElement(
-    dom: DOMReference,
-    viewData?: AnakeenController.Types.IViewData,
-    options?
-  ): ControllerUID {
+  public addSmartElement(dom: DOMReference, viewData?: AnakeenController.Types.IViewData, options?): ControllerUID {
     viewData = viewData || {
       initid: 0,
       revision: -1,
@@ -167,11 +154,7 @@ export default class GlobalController extends AnakeenController.BusEvents
     }
 
     // the first parameters can be the final object (chain removeEvent and addEvent)
-    if (
-      _.isObject(eventType) &&
-      _.isUndefined(eventOptions) &&
-      _.isUndefined(eventCallback)
-    ) {
+    if (_.isObject(eventType) && _.isUndefined(eventOptions) && _.isUndefined(eventCallback)) {
       currentEvent = eventType;
       if (!currentEvent.name) {
         throw new Error(
@@ -215,9 +198,7 @@ export default class GlobalController extends AnakeenController.BusEvents
         // tslint:disable-next-line:prefer-for-of
         for (let i = 0; i < mutation.removedNodes.length; i++) {
           const node = $(mutation.removedNodes[i]);
-          const controllerIDs = node
-            .find("[data-controller]")
-            .map((i, e) => $(e).attr("data-controller"));
+          const controllerIDs = node.find("[data-controller]").map((index, e) => $(e).attr("data-controller"));
           if (controllerIDs && controllerIDs.length) {
             for (let j = controllerIDs.length - 1; j >= 0; j--) {
               const controllerUID = controllerIDs[j];
@@ -253,10 +234,7 @@ export default class GlobalController extends AnakeenController.BusEvents
     );
   }
 
-  private _extractNewCss(
-    currentList: CssAssetList,
-    newList: CssAssetList
-  ): CssAssetList {
+  private _extractNewCss(currentList: CssAssetList, newList: CssAssetList): CssAssetList {
     const result: CssAssetList = [];
     newList.forEach(newCss => {
       const matches = currentList.filter(css => {
@@ -274,8 +252,7 @@ export default class GlobalController extends AnakeenController.BusEvents
     // add custom css style
     const $head = $("head");
     const cssLinkTemplate = _.template(
-      '<link rel="stylesheet" type="text/css" ' +
-        'href="<%= path %>" data-id="<%= key %>" data-view="true">'
+      '<link rel="stylesheet" type="text/css" ' + 'href="<%= path %>" data-id="<%= key %>" data-view="true">'
     );
 
     // Remove old CSS
@@ -350,10 +327,7 @@ export default class GlobalController extends AnakeenController.BusEvents
                 resolve();
               } else {
                 const functionName = currentJS.function || currentJS.key;
-                this._registerScript(
-                  currentJS.path,
-                  window[functionName] || global[functionName]
-                );
+                this._registerScript(currentJS.path, window[functionName] || global[functionName]);
               }
             },
             setup: script => this._createScript(currentJS, script)
@@ -380,10 +354,7 @@ export default class GlobalController extends AnakeenController.BusEvents
         const promisify = Promise.resolve();
         if (typeof this._scripts[jsPath] === "function") {
           try {
-            const returnFunction: any = this._scripts[jsPath].call(
-              this,
-              this.scope(event.controller.uid)
-            );
+            const returnFunction: any = this._scripts[jsPath].call(this, this.scope(event.controller.uid));
             // If returnFunction is Promise => handle async operation, else immediately resolve
             return () => promisify.then(() => returnFunction);
           } catch (err) {
@@ -405,7 +376,7 @@ export default class GlobalController extends AnakeenController.BusEvents
   private _registerScript(scriptUrl, scriptFunction) {
     if (typeof scriptUrl === "string" && typeof scriptFunction === "function") {
       this._scripts[scriptUrl] = scriptFunction;
-      this.emit("_internal::scriptReady", scriptUrl);
     }
+    this.emit("_internal::scriptReady", scriptUrl);
   }
 }

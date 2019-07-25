@@ -36,7 +36,7 @@ export namespace AnakeenController {
 
     export interface ListenableEventOptions {
       eventCallback: ListenableEventCallable;
-      [key: string]: any
+      [key: string]: any;
     }
 
     export type ListenableEvent = ListenableEventOptions;
@@ -46,7 +46,6 @@ export namespace AnakeenController {
     }
 
     export class Listenable {
-
       private static _getEventCallback(
         eventCb: ListenableEventCallable | ListenableEvent
       ): ListenableEvent {
@@ -93,7 +92,10 @@ export namespace AnakeenController {
         this.on(eventName, wrapperCallback);
       }
 
-      public off(eventName, callback?: ListenableEventCallable): ListenableEvent[] {
+      public off(
+        eventName,
+        callback?: ListenableEventCallable
+      ): ListenableEvent[] {
         if (!this._events[eventName]) {
           return;
         }
@@ -508,6 +510,66 @@ export namespace AnakeenController {
        * @return Promise
        */
       tryToDestroy();
+    }
+
+    export interface ISmartElement {
+      family: {
+        title: string;
+        name: string;
+        id: number;
+        icon: string;
+      };
+      hasUploadingFiles: boolean;
+      icon: string;
+      id: number;
+      initid: number;
+      isModified: boolean;
+      renderMode: "view" | "edit" | "create";
+      revision: number;
+      security: {
+        confidentiality: string;
+        fixed: boolean;
+        lock: {
+          id: number;
+          isLocked?: boolean;
+        };
+        profil?: {
+          id: number;
+          title: string;
+        };
+        readOnly: boolean;
+      };
+      status: string;
+      title: string;
+      type: string;
+      url: string;
+      viewId: string;
+    }
+
+    export interface ISmartField {
+      id: string;
+      getProperties(): { [propertyName: string]: any };
+      getOptions(): { [optionName: string]: any };
+      getOption(optionId: string): string | object | null;
+      setOption(optionId: string, value: any): void;
+      getValue(
+        type: "current" | "previous" | "initial"
+      ): { value: string | number; displayValue: string };
+      getValue(
+        type: "all"
+      ): {
+        initial: { value: string | number; displayValue: string };
+        current: { value: string | number; displayValue: string };
+        previous: { value: string | number; displayValue: string };
+      };
+      setValue(
+        newValue:
+          | { value: string | number; displayValue?: string }
+          | { value: string | number; displayValue?: string }[]
+      ): void;
+      getLabel(): string;
+      setLabel(newLabel: string): void;
+      isModified(): boolean;
     }
   }
 }

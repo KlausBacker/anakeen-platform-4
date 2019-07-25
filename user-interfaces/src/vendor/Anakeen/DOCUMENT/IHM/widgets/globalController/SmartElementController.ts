@@ -26,6 +26,8 @@ import "../../widgets/window/wNotification";
 import { AnakeenController } from "./types/ControllerTypes";
 import ListenableEvent = AnakeenController.BusEvents.ListenableEvent;
 import ISmartElementAPI = AnakeenController.SmartElement.ISmartElementAPI;
+import ISmartField = AnakeenController.SmartElement.ISmartField;
+import ISmartElement = AnakeenController.SmartElement.ISmartElement;
 
 interface IControllerOptions {
   router?: boolean | { noRouter: boolean };
@@ -54,16 +56,27 @@ interface ISmartElementModel extends Backbone.Model {
   _customClientData: {};
   _formConfiguration: null;
   _customRequestData: {};
+
   getModelProperties(): SmartElementProperties;
+
   fetchDocument(viewData?: ViewData, options?: any): Promise<any>;
+
   hasUploadingFile(): boolean;
+
   saveDocument(): Promise<any>;
+
   restoreDocument(): Promise<any>;
+
   deleteDocument(): Promise<any>;
+
   isModified(): boolean;
+
   getServerProperties(): any;
+
   getValues(): any;
+
   injectJS(jsToInject: string[]): Promise<any>;
+
   injectCSS(cssToInject: string[]): Promise<any>;
 }
 
@@ -90,13 +103,14 @@ export default class SmartElementController extends AnakeenController.BusEvents.
   protected _options: IControllerOptions = {};
   protected _constraintList = {};
   protected _activatedConstraint: any = {};
-  protected _activatedEventListener: any = {};
   protected $loading: JQuery & { dcpLoading(...args): JQuery };
   protected $notification: JQuery & { dcpNotification(...args): JQuery };
+  protected _globalEventHandler: (...args: any[]) => any;
 
-  constructor(dom: DOMReference, viewData: ViewData, options?: IControllerOptions, events?) {
+  constructor(dom: DOMReference, viewData: ViewData, options?: IControllerOptions, globalEventHandler?) {
     super();
     this.uid = _.uniqueId("smart-element-controller-");
+    this._globalEventHandler = globalEventHandler;
     this._options = _.defaults(options, DEFAULT_OPTIONS);
     if (viewData) {
       this._internalViewData.initid = viewData.initid;
@@ -116,13 +130,6 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     };
     if (!this._internalViewData.initid) {
       return;
-    }
-
-    // Bind initial events
-    if (events) {
-      Object.keys(events).forEach(eventType => {
-        this.addEventListener(eventType, events[eventType].bind(this));
-      });
     }
     // noinspection JSIgnoredPromiseFromCall
     this._initializeSmartElement({}, this._options);
@@ -153,7 +160,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
   }
 
   /**
-   * Fetch a new document
+   * Fetch a new smart element
    * @param values object {"initid" : int, "revision" : int, "viewId" : string, "customClientData" : mixed}
    * @param options object {"success": fct, "error", fct}
    */
@@ -305,7 +312,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
    * Get all the properties
    * @returns {*}
    */
-  public getProperties() {
+  public getProperties(): ISmartElement {
     let properties;
     let ready = true;
     try {
@@ -322,7 +329,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       properties.url = this._model.url() + ".html";
     }
 
-    return properties;
+    return properties as ISmartElement;
   }
 
   /**
@@ -343,13 +350,13 @@ export default class SmartElementController extends AnakeenController.BusEvents.
    * @param attributeId
    * @returns AttributeInterface|null
    */
-  public getAttribute(attributeId) {
+  public getAttribute(attributeId): ISmartField {
     this.checkInitialisedModel();
     const attributeModel = this._getAttributeModel(attributeId);
     if (!attributeModel) {
       return null;
     }
-    return new AttributeInterface(this._getAttributeModel(attributeId));
+    return new AttributeInterface(this._getAttributeModel(attributeId)) as ISmartField;
   }
 
   /**
@@ -477,6 +484,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     this.checkInitialisedModel();
     return this._model.get("customServerData");
   }
+
   /**
    * Add customData from render view model
    * @returns {*}
@@ -512,6 +520,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       };
     });
   }
+
   /**
    * Get customData from render view model
    * @returns {*}
@@ -520,6 +529,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     console.error("this function (setCustomClientData) is deprecated");
     return this.addCustomClientData(documentCheck, value);
   }
+
   /**
    * Get customData from render view model
    * @returns {*}
@@ -560,6 +570,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     }
     return this;
   }
+
   /**
    * Set a value
    * Trigger a change event
@@ -826,7 +837,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
    * Add an event to the widget
    *
    * @param eventType string kind of event
-   * @param options object { "name" : string, "documentCheck": function}
+   * @param options object { "name" : string, "check": function}
    * @param callback function callback called when the event is triggered
    * @returns {*|Window.options.name}
    */
@@ -906,7 +917,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     removed.forEach(event => {
       this.off(event.eventType, event.eventCallback);
     });
-    this._initActivatedListeners({ launchReady: false });
+    this._initListeners({ launchReady: false });
     return removed;
   }
 
@@ -936,6 +947,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     }
     attributeModel.trigger("hide");
   }
+
   /**
    * show a visible attribute (previously hidden)
    *
@@ -1051,6 +1063,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
 
     return this._model.injectJS(jsToInject);
   }
+
   /**
    * tryToDestroy the widget
    *
@@ -1094,19 +1107,35 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     });
   }
 
-  public emit(eventName, ...args) {
-    if (!this._events[eventName]) {
+  public emit(eventOptions: { name: string; type: "smartElement" | "smartField" }, ...args: any[]) {
+    const name = eventOptions.name;
+    const type = eventOptions.type || "smartElement";
+    if (_.isFunction(this._globalEventHandler)) {
+      this._globalEventHandler(name, ...args);
+    }
+    if (!this._events[name]) {
       return Promise.resolve();
     }
     return Promise.all(
-      this._events[eventName].map(cb => {
-        const callbackReturn: any = cb.eventCallback(...args);
-        if (callbackReturn && callbackReturn instanceof Promise && eventName.indexOf("before") === 0) {
-          return callbackReturn;
-        } else {
-          return Promise.resolve(callbackReturn);
-        }
-      })
+      this._events[name]
+        .filter(
+          currentEvent =>
+            !_.isFunction(currentEvent.check) || currentEvent.check.call($(this._element), this.getProperties())
+        )
+        .filter(
+          currentEvent =>
+            type !== "smartField" ||
+            !_.isFunction(currentEvent.fieldCheck) ||
+            currentEvent.fieldCheck($(this._element), args[1], this.getProperties())
+        )
+        .map(cb => {
+          const callbackReturn: any = cb.eventCallback(...args);
+          if (callbackReturn && callbackReturn instanceof Promise && name.indexOf("before") === 0) {
+            return callbackReturn;
+          } else {
+            return Promise.resolve(callbackReturn);
+          }
+        })
     );
   }
 
@@ -1270,7 +1299,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       this._internalViewData.viewId = this._model.get("viewId");
       this._internalViewData.revision = this._model.get("revision");
       this._element.data("document", this._getModelValue());
-      this._initActivatedListeners({ launchReady: false });
+      this._initListeners({ launchReady: false });
     });
     this._model.listenTo(this._model, "beforeRender", event => {
       event.promise = this._triggerControllerEvent(
@@ -1290,7 +1319,6 @@ export default class SmartElementController extends AnakeenController.BusEvents.
           customClientData
         );
       }
-      this._reinitListeners();
     });
     this._model.listenTo(this._model, "close", oldProperties => {
       if (this._initialized.view) {
@@ -1703,6 +1731,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
 
     this._model.listenTo(this._model, "injectCurrentSmartElementJS", event => {
       event.controller = this;
+      this._reinitListeners();
       this._triggerControllerEvent("injectCurrentSmartElementJS", null, this.getProperties(), event);
     });
   }
@@ -2091,46 +2120,34 @@ export default class SmartElementController extends AnakeenController.BusEvents.
    * @param args
    * @returns {boolean}
    */
-  private _triggerAttributeControllerEvent(eventName, originalEvent, attributeInternalElement, ...args) {
+  private _triggerAttributeControllerEvent = (
+    eventName,
+    originalEvent,
+    attributeInternalElement: ISmartField,
+    ...args
+  ) => {
     const event: any = $.Event(eventName);
-    let externalEventArgument;
-    const $element = $(this._element);
     event.target = this._element;
     // internal event trigger
     if (originalEvent && originalEvent.preventDefault) {
       event.originalEvent = originalEvent;
     }
-    args.unshift(event);
-    _.chain(this._activatedEventListener)
-      .filter((currentEvent: any) => {
-        // Check by eventType (only call callback with good eventType)
-        if (currentEvent.eventType === eventName) {
-          // Check with attributeCheck if the function exist
-          if (!_.isFunction(currentEvent.attributeCheck)) {
-            return true;
-          }
-          return currentEvent.attributeCheck.apply($element, [attributeInternalElement, this.getProperties()]);
-        }
-        return false;
-      })
-      .each((currentEvent: any) => {
-        try {
-          currentEvent.eventCallback.apply($element, args);
-        } catch (e) {
-          // @ts-ignore
-          if (window.dcp && window.dcp.logger) {
-            // @ts-ignore
-            window.dcp.logger(e);
-          } else {
-            console.error(e);
-          }
-        }
-      });
-    externalEventArgument = Array.prototype.slice.call(arguments, 0);
-    externalEventArgument.splice(1, 1);
-    this._triggerExternalEvent.apply(this, externalEventArgument);
-    return !event.isDefaultPrevented();
-  }
+    const callbackArgs = [event, attributeInternalElement, ...args];
+    let eventPromise = Promise.resolve();
+    try {
+      eventPromise = this.emit({ name: eventName as string, type: "smartField" }, ...callbackArgs) as Promise<void>;
+    } catch (e) {
+      // @ts-ignore
+      if (window.dcp.logger) {
+        // @ts-ignore
+        window.dcp.logger(e);
+      } else {
+        console.error(e);
+      }
+    }
+    this._triggerExternalEvent(eventName, originalEvent, attributeInternalElement, ...args);
+    return eventPromise;
+  };
 
   /**
    * Trigger a controller event
@@ -2155,7 +2172,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
 
     let eventPromise = Promise.resolve();
     try {
-      eventPromise = this.emit(eventName, ...callbackArgs) as Promise<void>;
+      eventPromise = this.emit({ name: eventName, type: "smartElement"}, ...callbackArgs) as Promise<void>;
     } catch (e) {
       // @ts-ignore
       if (window.dcp.logger) {
@@ -2325,8 +2342,11 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     const $element = $(this._element);
     // let uniqueName = (newEvent.externalEvent ? "external_" : "internal_") + newEvent.name;
     const currentElementProperties = this.getProperties();
-    this._registerListener(newEvent);
-
+    if (newEvent.once) {
+      this.once(newEvent.eventType, newEvent);
+    } else {
+      this.on(newEvent.eventType, newEvent);
+    }
     if (!this._initialized.model) {
       // early event model is not ready (no trigger, or current register possible)
       return this;
@@ -2334,11 +2354,6 @@ export default class SmartElementController extends AnakeenController.BusEvents.
 
     // Check if the event is for the current document
     if (!_.isFunction(newEvent.check) || newEvent.check.call($element, currentElementProperties)) {
-      if (newEvent.once) {
-        this.once(newEvent.eventType, newEvent);
-      } else {
-        this.on(newEvent.eventType, newEvent);
-      }
       if (this._initialized.view) {
         if (newEvent.eventType === "ready") {
           const event = $.Event(newEvent.eventType);
@@ -2377,30 +2392,9 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     }
   }
 
-  private _initActivatedListeners(options) {
+  private _initListeners(options) {
     const currentProperties = this.getProperties();
     const initOptions = options || {};
-    this._events = {};
-    // Get only the events for the current model
-    const modelListeners = this._registeredListeners[this._getModelUID()];
-    _.each(modelListeners, currentEvents => {
-      // Listen only checked events
-      currentEvents.forEach(currentEvent => {
-        if (!_.isFunction(currentEvent.check)) {
-          if (currentEvent.once) {
-            this.once(currentEvent.eventType, currentEvent);
-          } else {
-            this.on(currentEvent.eventType, currentEvent);
-          }
-        } else if (currentEvent.check.call($(this._element), currentProperties)) {
-          if (currentEvent.once) {
-            this.once(currentEvent.eventType, currentEvent);
-          } else {
-            this.on(currentEvent.eventType, currentEvent);
-          }
-        }
-      });
-    });
     // Trigger new added ready event
     if (this._initialized.view && initOptions.launchReady) {
       this._triggerControllerEvent("ready", null, currentProperties);
