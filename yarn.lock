@@ -8900,6 +8900,11 @@ split2@^2.0.0:
   dependencies:
     through2 "^2.0.2"
 
+splitpanes@^1.14.2:
+  version "1.14.2"
+  resolved "https://registry.yarnpkg.com/splitpanes/-/splitpanes-1.14.2.tgz#96e9f1e1de62afa30eb142418dfd8ff4d5612214"
+  integrity sha512-7NR+kw5g3S/r1RRYG5EnmfpVCV7BAQbp5X2OFXJNmNwfAlS8zxyaJaXq2fkSLFvs+AQr9Xqot7JAMtxPsiV98w==
+
 sprintf-js@~1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
