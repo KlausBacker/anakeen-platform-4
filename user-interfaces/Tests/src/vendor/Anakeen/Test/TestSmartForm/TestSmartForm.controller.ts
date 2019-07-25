@@ -3,7 +3,8 @@ import AnkSplitter from "@anakeen/internal-components/lib/Splitter";
 import AnkSmartForm from "@anakeen/user-interfaces/components/lib/AnkSmartForm";
 import * as example from "./SmartFormExample1.json";
 
-import VJsoneditor from "v-jsoneditor/src/index";
+import AnkPaneSplitter from "@anakeen/internal-components/lib/PaneSplitter";
+import VJsoneditor from "v-jsoneditor";
 
 import Vue from "vue";
 import Component from "vue-class-component";
@@ -13,30 +14,15 @@ import Component from "vue-class-component";
   components: {
     VJsoneditor,
     "ank-smart-form": AnkSmartForm,
-    "ank-splitter": AnkSplitter
+    "ank-splitter": AnkSplitter,
+    "ank-split-panes": AnkPaneSplitter
   }
 })
 export default class TestSmartFormController extends Vue {
   public json: object = example;
   public options: any = {
-    mode: "code",
-    plus:false
+    mode: "code"
   };
-
-  public panes: object[] = [
-    {
-      collapsible: true,
-      resizable: true,
-      scrollable: false,
-      size: "30%"
-    },
-    {
-      collapsible: true,
-      resizable: true,
-      scrollable: false,
-      size: "70%"
-    }
-  ];
 
   public $refs!: {
     smartFormRef: any;
@@ -49,12 +35,11 @@ export default class TestSmartFormController extends Vue {
   }
 
   public toggleMode() {
-    this.options.mode="code";
+    this.options.mode = "code";
   }
 
   public mounted() {
     // @ts-ignore
-    this.$refs.smartFormSplitter.disableEmptyContent();
     this.$nextTick(() => {
       this.$refs.smartFormRef.addEventListener("ready", (event, data) => {
         console.log("ready", event, data);

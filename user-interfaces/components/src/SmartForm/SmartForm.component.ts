@@ -49,10 +49,8 @@ export default class AnkSmartForm extends Mixins(AnkSmartElement) {
   }
 
   public mounted() {
-    window.console.log("BEFORE HELLO MOUNTED2");
     this._initController(this.initialConfig, {
       formConfiguration: this.config
     });
-    window.console.log("HELLO MOUNTED");
   }
 }

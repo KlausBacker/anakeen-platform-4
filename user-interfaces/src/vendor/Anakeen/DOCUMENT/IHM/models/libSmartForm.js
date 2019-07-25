@@ -32,6 +32,7 @@ define(["jquery", "underscore"], function libSmartForm($, _) {
 
     response.data.view.menu = formConfig.menu || [];
 
+    response.data.view.documentData.document.properties.icon = formConfig.icon || "";
     response.data.view.documentData.document.properties.title = formConfig.title || "";
     response.data.view.documentData.document.properties.family.title = formConfig.type || "";
   };
