@@ -28,6 +28,10 @@ export default class ControllerDispatcher extends AnakeenController.BusEvents.Li
     const globalEventHandler = function(eventType, ...args) {
       // @ts-ignore
       _dispatcher.emit(eventType, this, ...args);
+      if (options && typeof options.globalHandler === "function") {
+        // @ts-ignore
+        options.globalHandler.call(this, eventType, ...args);
+      }
     };
 
     const controller = new SmartElementController(dom, viewData, options, globalEventHandler);
