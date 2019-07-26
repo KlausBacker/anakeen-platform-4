@@ -669,7 +669,7 @@ hub-station-publish:
   tags:
     - a4ppm
   script:
-    - export ANK_CI_APP_VERSION=$(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/${ANK_CI_APP_NAME} ${ANK_CI_APP_NAME})
+    - export ANK_CI_APP_VERSION=$(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/${ANK_CI_APP_PATH} ${ANK_CI_APP_NAME})
     - >-
       curl -f
       --header "X-Http-Method-Override: PUT"
@@ -683,8 +683,8 @@ hub-station-publish:
         \"date\": \"$(date '+%Y-%m-%d %H-%M-%S')\",
         \"author\": \"${GITLAB_USER_NAME}\"
       }"
-      -F app=@${ANK_CI_ARTEFACTS_PATH}/${ANK_CI_APP_NAME}/${ANK_CI_APP_NAME}-${ANK_CI_APP_VERSION}.app
-      -F src=@${ANK_CI_ARTEFACTS_PATH}/${ANK_CI_APP_NAME}/${ANK_CI_APP_NAME}-${ANK_CI_APP_VERSION}.tar.gz
+      -F app=@${ANK_CI_ARTEFACTS_PATH}/${ANK_CI_APP_PATH}/${ANK_CI_APP_NAME}-${ANK_CI_APP_VERSION}.app
+      -F src=@${ANK_CI_ARTEFACTS_PATH}/${ANK_CI_APP_PATH}/${ANK_CI_APP_NAME}-${ANK_CI_APP_VERSION}.tar.gz
       --request POST
       "${ANK_CI_A4PPM}/${ANK_CI_BUCKET}"
 
@@ -692,6 +692,7 @@ smart-data-engine-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "smart-data-engine"
+    ANK_CI_APP_PATH: "smart-data-engine"
   only:
     refs:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
@@ -702,6 +703,7 @@ smart-data-engine-integration-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "smart-data-engine"
+    ANK_CI_APP_PATH: "smart-data-engine"
   only:
     refs:
       - master@Anakeen/Platform-4/anakeen-platform-4
@@ -712,6 +714,7 @@ workflow-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "workflow"
+    ANK_CI_APP_PATH: "workflow"
   only:
     refs:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
@@ -722,6 +725,7 @@ workflow-integration-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "workflow"
+    ANK_CI_APP_PATH: "workflow"
   only:
     refs:
       - master@Anakeen/Platform-4/anakeen-platform-4
@@ -732,6 +736,7 @@ security-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "security"
+    ANK_CI_APP_PATH: "security"
   only:
     refs:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
@@ -742,6 +747,7 @@ security-integration-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "security"
+    ANK_CI_APP_PATH: "security"
   only:
     refs:
       - master@Anakeen/Platform-4/anakeen-platform-4
@@ -752,6 +758,7 @@ user-interfaces-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "user-interfaces"
+    ANK_CI_APP_PATH: "user-interfaces"
   only:
     refs:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
@@ -762,6 +769,7 @@ user-interfaces-integration-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "user-interfaces"
+    ANK_CI_APP_PATH: "user-interfaces"
   only:
     refs:
       - master@Anakeen/Platform-4/anakeen-platform-4
@@ -772,6 +780,7 @@ migration-tools-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "migration-tools"
+    ANK_CI_APP_PATH: "migration-tools"
   only:
     refs:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
@@ -782,6 +791,7 @@ migration-tools-integration-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "migration-tools"
+    ANK_CI_APP_PATH: "migration-tools"
   only:
     refs:
       - master@Anakeen/Platform-4/anakeen-platform-4
@@ -792,6 +802,7 @@ hub-station-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "anakeen-hub"
+    ANK_CI_APP_PATH: "hub-station"
   only:
     refs:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
@@ -802,6 +813,7 @@ hub-station-integration-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "anakeen-hub"
+    ANK_CI_APP_PATH: "hub-station"
   only:
     refs:
       - master@Anakeen/Platform-4/anakeen-platform-4
@@ -812,6 +824,7 @@ business-app-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "anakeen-hub-business-app"
+    ANK_CI_APP_PATH: "business-app"
   only:
     refs:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
@@ -822,6 +835,7 @@ business-app-integration-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "anakeen-hub-business-app"
+    ANK_CI_APP_PATH: "business-app"
   only:
     refs:
       - master@Anakeen/Platform-4/anakeen-platform-4
@@ -832,6 +846,7 @@ development-center-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "development-center"
+    ANK_CI_APP_PATH: "development-center"
   only:
     refs:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
@@ -842,6 +857,7 @@ development-center-integration-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "development-center"
+    ANK_CI_APP_PATH: "development-center"
   only:
     refs:
       - master@Anakeen/Platform-4/anakeen-platform-4
@@ -852,6 +868,7 @@ admin-center-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "admin-center"
+    ANK_CI_APP_PATH: "admin-center"
   only:
     refs:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
@@ -862,6 +879,7 @@ admin-center-integration-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "admin-center"
+    ANK_CI_APP_PATH: "admin-center"
   only:
     refs:
       - master@Anakeen/Platform-4/anakeen-platform-4
@@ -872,6 +890,7 @@ transformation-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "transformation"
+    ANK_CI_APP_PATH: "transformation"
   only:
     refs:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
@@ -882,6 +901,7 @@ transformation-integration-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "transformation"
+    ANK_CI_APP_PATH: "transformation"
   only:
     refs:
       - master@Anakeen/Platform-4/anakeen-platform-4
