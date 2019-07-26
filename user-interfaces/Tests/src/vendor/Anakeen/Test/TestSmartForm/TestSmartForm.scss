@@ -12,7 +12,16 @@
   .ank-splitter {
     height:100%;
   }
-
+  &.warning {
+    .left-pane > header {
+      background: var(--warning);
+    }
+  }
+  &.error {
+    .left-pane > header {
+      background: var(--danger);
+    }
+  }
 
 
   .left-pane {

@@ -105,7 +105,6 @@ define([
      * @returns {*}
      */
     render: function vDocumentRender() {
-      console.time("render document view");
       var renderPromises = [];
       var $content,
         model = this.model,
@@ -374,7 +373,6 @@ define([
         this.$el.addClass("dcpDocument--show");
 
         this.resizeForFooter();
-        console.timeEnd("render document view");
         Promise.all(renderPromises).then(
           _.bind(function vDocumentRenderDone() {
             this.trigger("renderDone");

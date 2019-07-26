@@ -786,15 +786,12 @@ define([
         keyOrValues.menus = new CollectionMenus(keyOrValues.menus);
       }
       if (keyOrValues === "attributes") {
-        try {
-          value = new CollectionAttributes(value, {
-            documentModel: currentModel,
-            renderOptions: currentModel.get("renderOptions"),
-            renderMode: currentModel.get("renderMode")
-          });
-        } catch (e) {
-          console.error(e);
-        }
+        value = new CollectionAttributes(value, {
+          documentModel: currentModel,
+          renderOptions: currentModel.get("renderOptions"),
+          renderMode: currentModel.get("renderMode")
+        });
+
         //Set the internal content collection (for structure attributes)
         value.each(function mDocumentsetValuesEachAttributes(currentAttributeModel) {
           if (currentAttributeModel.get("isValueAttribute")) {

@@ -523,10 +523,13 @@ define(function attributeTemplate(require /*, exports, module*/) {
 
       descriptionTemplate = attributeView.model.getTemplates().attribute.description;
       data.renderOptions.description.htmlContentRender = Mustache.render(
-        data.renderOptions.description.htmlContent,
+        data.renderOptions.description.htmlContent || "",
         data
       );
-      data.renderOptions.description.htmlTitleRender = Mustache.render(data.renderOptions.description.htmlTitle, data);
+      data.renderOptions.description.htmlTitleRender = Mustache.render(
+        data.renderOptions.description.htmlTitle || "",
+        data
+      );
 
       $descriptionElement = $(Mustache.render(descriptionTemplate || "", data));
       if (!data.renderOptions.description.position) {
