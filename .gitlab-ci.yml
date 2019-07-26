@@ -173,7 +173,6 @@ hub-station-buildJS:
  artifacts:
    paths:
      - build/${PACKAGE_PATH}
-     - ${PACKAGE_PATH}/node_modules
    expire_in: 1 day
 
 smart-data-engine-build:
@@ -494,7 +493,6 @@ control-build:
   artifacts:
     paths:
       - build/${PACKAGE_PATH}
-      - ${PACKAGE_PATH}/node_modules
     expire_in: 1 day
   only:
     refs:
@@ -517,7 +515,6 @@ control-integration-build:
   artifacts:
     paths:
       - build/${PACKAGE_PATH}
-      - ${PACKAGE_PATH}/node_modules
     expire_in: 1 day
   only:
     refs:

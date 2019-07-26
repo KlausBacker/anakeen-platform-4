@@ -29,8 +29,9 @@ export default class AnkSmartForm extends Mixins(AnkSmartElement) {
   @Watch("config", { immediate: false, deep: true })
   public onConfigChanged(newConfig: ISmartForm) {
     // noinspection JSIgnoredPromiseFromCall
+    const config = JSON.parse(JSON.stringify(newConfig));
     this.fetchSmartElement(this.initialConfig, {
-      formConfiguration: newConfig
+      formConfiguration: config
     }).catch(e => {
       console.error(e);
     });
@@ -49,8 +50,9 @@ export default class AnkSmartForm extends Mixins(AnkSmartElement) {
   }
 
   public mounted() {
+    const config = JSON.parse(JSON.stringify(this.config));
     this._initController(this.initialConfig, {
-      formConfiguration: this.config
+      formConfiguration: config
     });
   }
 }

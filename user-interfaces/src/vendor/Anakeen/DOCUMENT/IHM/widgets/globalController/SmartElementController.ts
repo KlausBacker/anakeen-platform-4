@@ -1753,7 +1753,6 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       }
     });
     this._view.on("loaderShow", (text, pc) => {
-      console.time("xhr+render document view");
       this.$loading.dcpLoading("show", text, pc);
     });
     this._view.on("loaderHide", () => {
@@ -1763,14 +1762,12 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       this.$loading.dcpLoading("addItem");
     });
     this._view.on("renderDone", () => {
-      console.timeEnd("xhr+render document view");
       this.$loading.dcpLoading("setPercent", 100);
       this.$loading.dcpLoading("setLabel", null);
       this._initialized.view = true;
       this._triggerControllerEvent("ready", null, this.getProperties());
       _.delay(() => {
         this.$loading.dcpLoading("hide", true);
-        console.timeEnd("main");
       });
     });
     this._view.on("showMessage", message => {
@@ -2172,7 +2169,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
 
     let eventPromise = Promise.resolve();
     try {
-      eventPromise = this.emit({ name: eventName, type: "smartElement"}, ...callbackArgs) as Promise<void>;
+      eventPromise = this.emit({ name: eventName, type: "smartElement" }, ...callbackArgs) as Promise<void>;
     } catch (e) {
       // @ts-ignore
       if (window.dcp.logger) {

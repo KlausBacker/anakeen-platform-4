@@ -5,12 +5,15 @@ define(["jquery", "underscore"], function libSmartForm($, _) {
     let flatStruct = [];
     _.each(structure, function(field) {
       if (parent) {
-        field.parent = parent;
+        field.parent = parent.id;
+        if (!field.visibility && parent.visibility) {
+          field.visibility = parent.visibility;
+        }
       }
       field.id = field.name;
       flatStruct.push(field);
       if (field.content) {
-        flatStruct = _.union(flatStruct, _flatTheStructure(field.content, field.name));
+        flatStruct = _.union(flatStruct, _flatTheStructure(field.content, field));
       }
     });
 
@@ -28,6 +31,17 @@ define(["jquery", "underscore"], function libSmartForm($, _) {
       if (formConfig.renderOptions.fields) {
         response.data.view.renderOptions.attributes = formConfig.renderOptions.fields;
       }
+      if (formConfig.renderOptions.types) {
+        _.each(response.data.view.renderOptions.types, (item, key) => {
+          if (formConfig.renderOptions.types[key]) {
+            _.extend(item, formConfig.renderOptions.types[key]);
+          }
+        });
+
+        if (formConfig.renderOptions.common) {
+          _.extend(response.data.view.renderOptions.common, formConfig.renderOptions.common);
+        }
+      }
     }
 
     response.data.view.menu = formConfig.menu || [];
@@ -43,17 +57,18 @@ define(["jquery", "underscore"], function libSmartForm($, _) {
         if (!defaultRenderConfig) {
           $.getJSON("/api/v2/smart-forms/0/views/!defaultEdition")
             .then(response => {
+              defaultRenderConfig = JSON.stringify(response);
               _completeResponse(response, model);
-
-              defaultRenderConfig = response;
+              //Clone initial response
               options.success(response);
             })
             .fail(response => {
               options.error(response);
             });
         } else {
-          _completeResponse(defaultRenderConfig, model);
-          options.success(defaultRenderConfig);
+          let response = JSON.parse(defaultRenderConfig);
+          _completeResponse(response, model);
+          options.success(response);
         }
       }
     },
@@ -64,8 +79,20 @@ define(["jquery", "underscore"], function libSmartForm($, _) {
       fields = _flatTheStructure(config.structure);
 
       fields.forEach(item => {
-        item.visibility = item.visibility || "W";
         item.id = item.name;
+        switch (item.visibility) {
+          case "read":
+            item.visibility = "S";
+            break;
+          case "write":
+            item.visibility = "W";
+            break;
+          case "hidden":
+            item.visibility = "H";
+            break;
+          default:
+            item.visibility = "W";
+        }
         item.label = item.label || item.name;
         if (!item.id) {
           throw new Error("Field as no name: \n" + JSON.stringify(item, null, 2));

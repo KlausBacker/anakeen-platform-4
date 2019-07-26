@@ -1,5 +1,5 @@
 {
-  "title": "Modèle de champs",
+  "title": "Texte sans libellé",
   "type": "Invitation",
   "icon": "/api/v2/images/assets/sizes/24x24c/se-image.png",
   "structure": [
@@ -24,21 +24,24 @@
       ],
       "label": "Quelques textes",
       "name": "my_firstframe",
-      "type": "frame"
+      "type": "frame",
+      "visibility": "read"
     }
   ],
   "renderOptions": {
-    "fields" : {
-      "my_subtitle": {
-        "template": "<div style='outline:dotted 2px green; font-size:130%',>\n   <h3 style='color:red'>Le sous-titre</h3>\n           <div>{{{attribute.htmlDefaultContent}}} </div>\n </div>"
-
-
+    "common" : {
+      "labelPosition": "left"
+    },
+    "types": {
+      "text": {
+        "labelPosition": "none"
       }
     }
   },
   "values": {
     "my_subtitle": "Les ours forment la famille de mammifères des ursidés (Ursidae)",
-    "my_title": "Hello world"
+    "my_title": "Hello world",
+    "my_date": "1968-12-19"
 
   }
 }
