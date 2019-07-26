@@ -5,7 +5,6 @@ MK_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 MODULE_NAME=anakeen-hub
 CS_PATH_NAME=./../.devtool/ci/check/checkPHP/anakeenPhpCs.xml
 
-
 #Build
 APP_OUTPUT_PATH=../build/
 
