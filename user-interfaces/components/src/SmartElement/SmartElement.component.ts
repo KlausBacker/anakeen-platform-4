@@ -70,57 +70,6 @@ export default class AnkSmartElement extends Vue {
     return this.smartElementWidget !== null;
   }
 
-  /**
-   * Rebind all declared binding to internal widget
-   * @returns void
-   */
-  public listenAttributes() {
-    const eventNames = SmartElementEvents;
-    // @ts-ignore
-    const localListener = this.$options._parentListeners || {};
-    eventNames.forEach(eventName => {
-      this.smartElementWidget.addEventListener(
-        eventName,
-        {
-          name: `v-on-${eventName}-listen`
-        },
-        (event, documentObject, ...others) => {
-          this.$emit(eventName, event, documentObject, ...others);
-        }
-      );
-    });
-
-    Object.keys(localListener).forEach(key => {
-      // input is an internal vuejs bind
-      if (
-        eventNames.indexOf(key) === -1 &&
-        key !== "documentLoaded" &&
-        key !== "input" &&
-        key !== "internalComponentError"
-      ) {
-        /* eslint-disable no-console */
-        console.error(`Cannot listen to "${key}". It is not a defined listener for ank-smart-element component`);
-      }
-    });
-
-    /**
-     * Add listener to update component values
-     */
-    this.smartElementWidget.addEventListener(
-      "ready",
-      {
-        name: "v-on-dcpready-listen"
-      },
-      (event, documentObject) => {
-        if (this.initid && documentObject.initid.toString() !== this.initid.toString()) {
-          // @ts-ignore
-          this.documentIsReady = true;
-          this.$emit("update:props", documentObject);
-        }
-      }
-    );
-  }
-
   public addEventListener(eventType, options, callback) {
     return this.smartElementWidget.addEventListener(eventType, options, callback);
   }
@@ -303,19 +252,26 @@ export default class AnkSmartElement extends Vue {
     return this.smartElementWidget.injectCSS(cssToInject);
   }
 
-  protected _initController(viewData, options = null) {
+  protected _initController(viewData, options = {}) {
     if (!this.isLoaded() && viewData && viewData.initid !== 0) {
       if (window.ank && window.ank.smartElement && window.ank.smartElement.globalController) {
+        const controllerOptions = {
+          ...options,
+          globalHandler: this._onControllerOptions
+        };
         const scopeId = window.ank.smartElement.globalController.addSmartElement(
           // @ts-ignore
           this.$refs.ankSEWrapper,
           viewData,
-          options
+          controllerOptions
         );
         this.smartElementWidget = window.ank.smartElement.globalController.scope(scopeId) as SmartElementController;
         this.$emit("documentLoaded");
-        this.listenAttributes();
       }
     }
+  }
+
+  protected _onControllerOptions(eventType, ...args) {
+    this.$emit(eventType, ...args);
   }
 }
