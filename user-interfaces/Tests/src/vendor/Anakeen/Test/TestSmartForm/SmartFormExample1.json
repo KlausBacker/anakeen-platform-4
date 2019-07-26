@@ -1,9 +1,11 @@
 {
-  "title": "Modèle de champs",
-  "type": "Invitation",
-  "icon": "/api/v2/images/assets/sizes/24x24c/se-image.png",
+  "title": "Formulaire standard",
+  "type": "Demande de renseignement",
   "structure": [
     {
+      "label": "Identification",
+      "name": "my_fr_ident",
+      "type": "frame",
       "content": [
         {
           "label": "Title",
@@ -14,31 +16,59 @@
           "label": "Sous-titre",
           "name": "my_subtitle",
           "type": "text"
-        },
-
-        {
-          "label": "Maintenant",
-          "name": "my_date",
-          "type": "date"
         }
-      ],
-      "label": "Quelques textes",
-      "name": "my_firstframe",
-      "type": "frame"
+      ]
+    },
+    {
+      "label": "Informations",
+      "name": "my_t_info",
+      "type": "tab",
+      "content": [
+        {
+          "label": "Identité",
+          "name": "my_fr_info",
+          "type": "frame",
+          "content": [
+            {
+              "label": "Prénom",
+              "name": "my_firstname",
+              "type": "text"
+            },
+            {
+              "label": "Nom",
+              "name": "my_lastname",
+              "type": "text"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Localisation",
+      "name": "my_t_map",
+      "type": "tab",
+      "content": [{
+        "label": "Adresse",
+        "name": "my_fr_address",
+        "type": "frame",
+        "content": [
+          {
+            "label": "Rue",
+            "name": "my_street",
+            "type": "text"
+          },
+          {
+            "label": "Code postal",
+            "name": "my_postalcode",
+            "type": "text"
+          },
+          {
+            "label": "Ville",
+            "name": "my_town",
+            "type": "text"
+          }
+        ]
+      }]
     }
-  ],
-  "renderOptions": {
-    "fields" : {
-      "my_subtitle": {
-        "template": "<div style='outline:dotted 2px green; font-size:130%',>\n   <h3 style='color:red'>Le sous-titre</h3>\n           <div>{{{attribute.htmlDefaultContent}}} </div>\n </div>"
-
-
-      }
-    }
-  },
-  "values": {
-    "my_subtitle": "Les ours forment la famille de mammifères des ursidés (Ursidae)",
-    "my_title": "Hello world"
-
-  }
+  ]
 }

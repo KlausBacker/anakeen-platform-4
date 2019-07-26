@@ -8,8 +8,14 @@ import "splitpanes/dist/splitpanes.css";
   name: "ank-pane-splitter"
 })
 export default class SplitterComponent extends Mixins(splitpanes) {
+  private panes: any;
   public updated() {
     this.keepClassTheme();
+  }
+  public beforeUpdate() {
+    this.panes.forEach(pane => {
+      pane.savedWidth = pane.width;
+    });
   }
   public mounted() {
     this.keepClassTheme();

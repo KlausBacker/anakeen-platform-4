@@ -1,8 +1,9 @@
+/* eslint-disable no-console */
 /* tslint:disable:object-literal-sort-keys no-console */
 import AnkSplitter from "@anakeen/internal-components/lib/Splitter";
 import AnkSmartForm from "@anakeen/user-interfaces/components/lib/AnkSmartForm";
 import * as jsonSchema from "./SmartForm.schema.json";
-import * as example from "./SmartFormExample2.json";
+import SmartFormExamples from "./TestExamplesSmartForm.vue";
 
 import AnkPaneSplitter from "@anakeen/internal-components/lib/PaneSplitter";
 import VJsoneditor from "v-jsoneditor";
@@ -13,13 +14,14 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 @Component({
   components: {
     VJsoneditor,
+    SmartFormExamples,
     "ank-smart-form": AnkSmartForm,
     "ank-splitter": AnkSplitter,
     "ank-split-panes": AnkPaneSplitter
   }
 })
 export default class TestSmartFormController extends Vue {
-  public json: object = example;
+  public json: object = {};
   public hasWarning: boolean = false;
   public hasError: boolean = false;
   public options: any = {
@@ -41,6 +43,7 @@ export default class TestSmartFormController extends Vue {
     smartFormRef: any;
     smartFormSplitter: any;
     jsonEditorRef: any;
+    smartExampleRef: any;
   };
   public tooltip: string = "";
 
@@ -63,6 +66,10 @@ export default class TestSmartFormController extends Vue {
     }, 1000);
   }
 
+  public setJson(json) {
+    this.json = json;
+  }
+
   public onError(errorMsg) {
     if (errorMsg) {
       this.tooltip = errorMsg;
@@ -70,7 +77,7 @@ export default class TestSmartFormController extends Vue {
     }
   }
   public mounted() {
-    // @ts-ignore
+    this.$refs.smartExampleRef.selectExample(0);
     this.$nextTick(() => {
       this.$refs.smartFormRef.addEventListener("ready", (event, data) => {
         console.log("ready", event, data);
