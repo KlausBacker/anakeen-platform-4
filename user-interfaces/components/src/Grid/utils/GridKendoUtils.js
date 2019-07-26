@@ -484,47 +484,51 @@ export default class GridKendoUtils extends AbstractGridUtil {
           queryParams: this.vueComponent.privateScope.getQueryParamsData(config.smartFields, kendoOptions.data)
         },
         null,
-        false
+        true // Cancelable
       );
       this.vueComponent.$emit("before-content-request", event);
-      this.vueComponent.$http
-        .get(event.data.url, {
-          params: event.data.queryParams,
-          paramsSerializer: params => this.vueComponent.$.param(params)
-        })
-        .then(response => {
-          this.vueComponent.gridFilter.bindFilterEvents();
-          if (
-            response &&
-            response.data &&
-            response.data.data &&
-            response.data.data.requestParameters &&
-            response.data.data.requestParameters.pager
-          ) {
-            const pagerInfo = response.data.data.requestParameters.pager;
-            if (pagerInfo && pagerInfo.pageSize && pagerInfo.pageSize !== this.vueComponent.dataSource.pageSize()) {
-              this.vueComponent.dataSource.pageSize(pagerInfo.pageSize);
+      if (!event.isDefaultPrevented()) {
+        this.vueComponent.$http
+          .get(event.data.url, {
+            params: event.data.queryParams,
+            paramsSerializer: params => this.vueComponent.$.param(params)
+          })
+          .then(response => {
+            this.vueComponent.gridFilter.bindFilterEvents();
+            if (
+              response &&
+              response.data &&
+              response.data.data &&
+              response.data.data.requestParameters &&
+              response.data.data.requestParameters.pager
+            ) {
+              const pagerInfo = response.data.data.requestParameters.pager;
+              if (pagerInfo && pagerInfo.pageSize && pagerInfo.pageSize !== this.vueComponent.dataSource.pageSize()) {
+                this.vueComponent.dataSource.pageSize(pagerInfo.pageSize);
+              }
             }
-          }
-          const responseEvent = new GridEvent(
-            {
-              content: response.data.data
-            },
-            null,
-            false
-          );
-          this.vueComponent.$emit("after-content-response", responseEvent);
-          response.data.data = responseEvent.data.content;
-          kendoOptions.success(response);
-        })
-        .catch(err => {
-          if (err.response && err.response.data && err.response.data.exceptionMessage) {
-            alert(err.response.data.exceptionMessage);
-          }
+            const responseEvent = new GridEvent(
+              {
+                content: response.data.data
+              },
+              null,
+              false
+            );
+            this.vueComponent.$emit("after-content-response", responseEvent);
+            response.data.data = responseEvent.data.content;
+            kendoOptions.success(response);
+          })
+          .catch(err => {
+            if (err.response && err.response.data && err.response.data.exceptionMessage) {
+              alert(err.response.data.exceptionMessage);
+            }
 
-          this.vueComponent.gridError.error(err);
-          kendoOptions.error(err);
-        });
+            this.vueComponent.gridError.error(err);
+            kendoOptions.error(err);
+          });
+      } else {
+        kendoOptions.error("No data fetched");
+      }
     } catch (err) {
       // Handle general code exception and stop kendo datasource workflow
       this.vueComponent.gridError.error(err);

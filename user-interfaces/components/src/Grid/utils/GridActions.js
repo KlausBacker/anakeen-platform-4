@@ -294,35 +294,37 @@ export default class GridActions extends AbstractGridUtil {
     const $exportElement = $(event.sender.element).parent();
     const exportEvent = this.sendExportEvent();
     const queryParams = this.getExportQueryParams(exportAll);
-    if (exportEvent.serverProgression) {
-      this.displayExportPendingStatus($exportElement, false);
-      this.createExportTransaction().then(transaction => {
-        this.doTransactionExport(
-          transaction,
-          queryParams,
-          exportEvent.onExport || this.doDefaultExport.bind(this),
-          exportEvent.onPolling || this.doDefaultPolling.bind(this)
-        );
-      });
-    } else {
-      if (typeof exportEvent.onExport === "function") {
-        this.displayExportPendingStatus($exportElement, true);
-        const exportPromise = exportEvent.onExport(null, queryParams);
-        if (exportPromise instanceof Promise) {
-          exportPromise
-            .then(() => {
-              this.displayExportSuccessStatus();
-            })
-            .catch(() => {
-              this.displayExportErrorStatus();
-            });
+    if (!exportEvent.isDefaultPrevented()) {
+      if (exportEvent.serverProgression) {
+        this.displayExportPendingStatus($exportElement, false);
+        this.createExportTransaction().then(transaction => {
+          this.doTransactionExport(
+            transaction,
+            queryParams,
+            exportEvent.onExport || this.doDefaultExport.bind(this),
+            exportEvent.onPolling || this.doDefaultPolling.bind(this)
+          );
+        });
+      } else {
+        if (typeof exportEvent.onExport === "function") {
+          this.displayExportPendingStatus($exportElement, true);
+          const exportPromise = exportEvent.onExport(null, queryParams);
+          if (exportPromise instanceof Promise) {
+            exportPromise
+              .then(() => {
+                this.displayExportSuccessStatus();
+              })
+              .catch(() => {
+                this.displayExportErrorStatus();
+              });
+          } else {
+            this.displayExportErrorStatus();
+            this.vueComponent.gridError.error("Export failed: the export function must return a Promise");
+          }
         } else {
           this.displayExportErrorStatus();
-          this.vueComponent.gridError.error("Export failed: the export function must return a Promise");
+          this.vueComponent.gridError.error("Export failed: no export function are provided");
         }
-      } else {
-        this.displayExportErrorStatus();
-        this.vueComponent.gridError.error("Export failed: no export function are provided");
       }
     }
   }
@@ -475,7 +477,7 @@ export default class GridActions extends AbstractGridUtil {
       .find("ul.grid-export-action-menu")
       .kendoMenu({
         openOnClick: true,
-        direction: "top",
+        direction: "bottom",
         select: e => this.onExportActionMenuItemClick(e)
       })
       .data("kendoMenu");
