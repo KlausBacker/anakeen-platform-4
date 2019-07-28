@@ -28,7 +28,7 @@
         </hub_instance_jsassets>
         <hub_instance_cssassets>
           <hub_instance_cssasset_type>path</hub_instance_cssasset_type>
-          <hub_instance_cssasset>/Anakeen/adminCenter/assets/adminCenter.css</hub_instance_cssasset>
+          <hub_instance_cssasset>/apps/uitest/uiTestHub.css</hub_instance_cssasset>
         </hub_instance_cssassets>
       </hub_instance_fr_assets>
     </hub_instance_tab_assets>

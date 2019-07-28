@@ -12,12 +12,16 @@
     padding:0.55rem;
     &:hover {
       background-color:var(--secondary);
+      color: var(--white);
     }
   }
 
   .selected {
     background-color:var(--primary);
     color: var(--white);
+  }
+  .local {
+    font-weight: bold;
   }
 
 }

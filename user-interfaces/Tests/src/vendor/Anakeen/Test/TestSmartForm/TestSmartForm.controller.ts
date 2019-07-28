@@ -22,6 +22,7 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 })
 export default class TestSmartFormController extends Vue {
   public json: object = {};
+  public localIndex: number = -1;
   public hasWarning: boolean = false;
   public hasError: boolean = false;
   public options: any = {
@@ -64,10 +65,18 @@ export default class TestSmartFormController extends Vue {
         this.tooltip = msgWarnings.join(" \n");
       }
     }, 1000);
+
+    if (this.localIndex >= 0) {
+      this.$refs.smartExampleRef.recordExample(this.localIndex, this.json);
+    }
   }
 
-  public setJson(json) {
+  public setJson({ json = {}, localIndex = -1 }) {
+    this.localIndex = localIndex;
     this.json = json;
+  }
+  public recordNewExample() {
+    this.$refs.smartExampleRef.createExample();
   }
 
   public onError(errorMsg) {

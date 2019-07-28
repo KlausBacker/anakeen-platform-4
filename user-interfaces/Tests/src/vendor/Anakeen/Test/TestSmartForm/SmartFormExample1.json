@@ -8,14 +8,14 @@
       "type": "frame",
       "content": [
         {
-          "label": "Title",
+          "label": "Objet",
           "name": "my_title",
           "type": "text"
         },
         {
-          "label": "Sous-titre",
-          "name": "my_subtitle",
-          "type": "text"
+          "label": "Description de la requête",
+          "name": "my_request",
+          "type": "longtext"
         }
       ]
     },
