@@ -57,6 +57,7 @@ html {
 .dcpDocument__header__title {
   text-transform: uppercase;
   color: $text-color;
+  padding-left: 1rem;
   font-weight: bold;
 }
 
@@ -66,8 +67,8 @@ html {
 
 .dcpDocument__header__icon {
   height: $ank-ui-header-title-size;
-  padding-right: 1em;
-  padding-left: 0.5em;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
 }
 
 .dcpDocument__header__family {

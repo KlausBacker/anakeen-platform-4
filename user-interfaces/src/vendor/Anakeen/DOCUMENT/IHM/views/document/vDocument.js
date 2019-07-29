@@ -748,12 +748,14 @@ define([
      * @param tabId
      */
     recordSelectedTab: function vDocumentRecordSelectedTab(tabId) {
-      if (this.model.get("initid")) {
-        var tagTab = new ModelDocumentTab({
-          initid: this.model.get("initid"),
-          tabId: tabId
-        });
-        tagTab.save();
+      if (!this.model._formConfiguration) {
+        if (this.model.get("initid")) {
+          var tagTab = new ModelDocumentTab({
+            initid: this.model.get("initid"),
+            tabId: tabId
+          });
+          tagTab.save();
+        }
       }
     },
 

@@ -1,0 +1,27 @@
+
+
+.test-smart-form-examples {
+  height: 100%;
+  width: 100%;
+  position:relative;
+  display:flex;
+  flex-direction: column;
+
+  .example {
+    cursor: pointer;
+    padding:0.55rem;
+    &:hover {
+      background-color:var(--secondary);
+      color: var(--white);
+    }
+  }
+
+  .selected {
+    background-color:var(--primary);
+    color: var(--white);
+  }
+  .local {
+    font-weight: bold;
+  }
+
+}

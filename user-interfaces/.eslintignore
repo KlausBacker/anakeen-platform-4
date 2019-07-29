@@ -1,7 +1,8 @@
 src/vendor/Anakeen/SmartStructures/Dsearch/Render/jquery.stickytableheaders.min.js
 src/public/
 src/vendor/Anakeen/Ui/PhpLib
-Tests/
+Tests/lib/
+Tests/src/public/
 .cibuild/
 node_modules/
 webpackConfig/
