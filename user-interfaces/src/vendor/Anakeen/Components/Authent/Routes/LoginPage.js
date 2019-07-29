@@ -9,5 +9,11 @@ new Vue({
   components: {
     Login
   },
-  template: "<login></login>"
+  data: {
+    nsSde: ""
+  },
+  mounted() {
+    this.nsSde = window.nsSde;
+  },
+  template: "<login :nsSde='nsSde'></login>"
 });

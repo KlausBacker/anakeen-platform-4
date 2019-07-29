@@ -12,7 +12,15 @@ import "@progress/kendo-ui/js/kendo.tabstrip";
 import "@progress/kendo-ui/js/cultures/kendo.culture.fr-FR";
 import translations from "./translation.json";
 
-const setLocale = (Vue, kendo, locale = "fr_FR") => {
+const defaultLang = lang => {
+  if (lang === "fr") {
+    return "fr_FR";
+  } else {
+    return "en_US";
+  }
+};
+
+const setLocale = (Vue, kendo, locale = defaultLang()) => {
   const kendoLocale = locale.replace("_", "-");
   kendo.culture(kendoLocale);
   Vue.config.language = locale;
@@ -57,7 +65,7 @@ export default function install(Vue, opts = { globalVueComponent: false, webComp
       setLocale(Vue, kendo, parsedLocale);
     })
     .catch(() => {
-      console.warn("[src setup] No locale found (set fr_FR by default)");
+      console.warn("[src setup] No locale found (set " + defaultLang(navigator.language) + " by default)");
       setLocale(Vue, kendo);
     });
 
