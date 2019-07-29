@@ -41,17 +41,31 @@ class WorkflowData
             $resTransitions = [];
             foreach ($data["steps"] as $datum) {
                 $d = array_slice($datum, 0, 2);
-                if (strpos(strtolower($d["label"]), strtolower($this->filters[0]["value"])) !== false) {
-                    array_push($resSteps, $datum);
+                if ($this->filters[0]["field"] === "info") {
+                    if (strpos(strtolower($d["label"]), strtolower($this->filters[0]["value"])) !== false) {
+                        array_push($resSteps, $datum);
+                    }
+                    $result["steps"] = $resSteps;
+                } else {
+                    if (strpos(strtolower($d["id"]), strtolower($this->filters[0]["value"])) !== false) {
+                        array_push($resSteps, $datum);
+                    }
+                    $result["steps"] = $resSteps;
                 }
-                $result["steps"] = $resSteps;
             }
             foreach ($data["transitions"][0] as $d) {
                 $d = array_slice($datum, 0, 2);
-                if (strpos(strtolower($d["label"]), strtolower($this->filters[0]["value"])) !== false) {
-                    array_push($resTransitions, $datum);
+                if ($this->filters[0]["field"] === "info") {
+                    if (strpos(strtolower($d["label"]), strtolower($this->filters[0]["value"])) !== false) {
+                        array_push($resTransitions, $datum);
+                    }
+                    $result["transitions"] = $resTransitions;
+                } else {
+                    if (strpos(strtolower($d["id"]), strtolower($this->filters[0]["value"])) !== false) {
+                        array_push($resTransitions, $datum);
+                    }
+                    $result["transitions"] = $resTransitions;
                 }
-                $result["transitions"] = $resTransitions;
             }
             $result["properties"] = $data["properties"];
         } else {
