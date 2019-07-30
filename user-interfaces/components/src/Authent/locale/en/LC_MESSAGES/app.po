@@ -131,3 +131,7 @@ msgstr ""
 msgctxt "Authent"
 msgid "Confirm password are not same as new password"
 msgstr ""
+
+msgctxt "Authent"
+msgid "Connection to %s"
+msgstr "Connection to %s"

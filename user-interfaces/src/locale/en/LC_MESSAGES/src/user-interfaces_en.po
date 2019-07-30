@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ANAKEEN-UI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-21 15:49+0200\n"
+"POT-Creation-Date: 2019-07-25 13:52+0200\n"
 "PO-Revision-Date: 2018-06-01 08:42+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -214,7 +214,7 @@ msgstr ""
 
 #, php-format
 msgctxt "login"
-msgid "Connexion to %s"
+msgid "Connection to %s"
 msgstr ""
 
 msgctxt "grid-component"

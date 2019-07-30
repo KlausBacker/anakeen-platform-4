@@ -7,7 +7,9 @@
 namespace Anakeen\Components\Authent\Routes;
 
 use Anakeen\Core\ContextManager;
+use Anakeen\Core\Internal\ContextParameterManager;
 use Anakeen\Core\Utils\Gettext;
+use String\sprintf;
 
 /**
  * Main page to login
@@ -34,8 +36,15 @@ class LoginPage
     {
         $page = __DIR__ . "/LoginPage.html.mustache";
         $template = file_get_contents($page);
+        $lang = $this->getBrowserLanguage();
+        if ($lang === "fr") {
+            $title = sprintf(Gettext::___("Connexion à %s", "login"), ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_CLIENT"));
+        } else {
+            $title = sprintf(Gettext::___("Connection to %s", "login"), ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_CLIENT"));
+        }
         $data = [
-            "title" => sprintf(Gettext::___("Connexion to %s", "login"), ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_CLIENT")),
+            "nsSde" => ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_CLIENT"),
+            "title" => $title,
             "JS_DEPS" => [
                 [
                     "key" => "polyfill",
@@ -58,13 +67,13 @@ class LoginPage
             "JS" => [
                 [
                     "key" => "login",
-                    "path" =>  \Anakeen\Ui\UIGetAssetPath::getElementAssets("ank-components", \Anakeen\Ui\UIGetAssetPath::isInDebug() ? "dev" : "prod")["login"]["js"]
+                    "path" => \Anakeen\Ui\UIGetAssetPath::getElementAssets("ank-components", \Anakeen\Ui\UIGetAssetPath::isInDebug() ? "dev" : "prod")["login"]["js"]
                 ],
             ],
             "JS_LEGACY" => [
                 [
                     "key" => "login",
-                    "path" =>  \Anakeen\Ui\UIGetAssetPath::getElementAssets("ank-components", \Anakeen\Ui\UIGetAssetPath::isInDebug() ? "dev" : "legacy")["login"]["js"]
+                    "path" => \Anakeen\Ui\UIGetAssetPath::getElementAssets("ank-components", \Anakeen\Ui\UIGetAssetPath::isInDebug() ? "dev" : "legacy")["login"]["js"]
                 ],
             ],
             "CSS" => [
@@ -89,5 +98,22 @@ class LoginPage
         $mustache = new \Mustache_Engine();
 
         return $response->write($mustache->render($template, $data));
+    }
+
+    protected function getBrowserLanguage($available = ['fr', 'en'], $default = 'fr')
+    {
+        if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+            $langs = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
+            if (empty($available)) {
+                return $langs[0];
+            }
+            foreach ($langs as $lang) {
+                $lang = substr($lang, 0, 2);
+                if (in_array($lang, $available)) {
+                    return $lang;
+                }
+            }
+        }
+        return $default;
     }
 }

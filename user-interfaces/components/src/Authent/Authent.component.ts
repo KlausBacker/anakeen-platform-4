@@ -1,5 +1,5 @@
 import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { Component, Prop, Watch } from "vue-property-decorator";
 import axios from "axios";
 const a4Password = () => import("./AuthentPassword/AuthentPassword.vue");
 import { IAuthent } from "./IAuthent";
@@ -18,6 +18,7 @@ Vue.use(VueSetup);
   name: "ank-authent"
 })
 export default class AuthentComponent extends Vue {
+  @Prop({ type: String, default: ""}) public nsSde;
   @Prop({ type: String, default: "fr_FR, en_US" }) public authentLanguages;
   @Prop({ type: String, default: "fr_FR" }) public defaultLanguage;
   public login: string = "";
@@ -34,7 +35,6 @@ export default class AuthentComponent extends Vue {
   public resetPwd1: string = "";
   public resetPwd2: string = "";
   public authent: IAuthent;
-
   public $refs!: {
     authentForgetForm: HTMLElement;
     authentForm: HTMLElement;
@@ -51,6 +51,8 @@ export default class AuthentComponent extends Vue {
 
   public get translations() {
     return {
+      defaultTitleEn: this.$gettextInterpolate(this.$pgettext("Authent", "Connection to %{s}"), {s : this.nsSde}),
+      defaultTitleFr: this.$gettextInterpolate(this.$pgettext("Authent", "Connexion à %{s}"), {s : this.nsSde}),
       loginPlaceHolder: this.$pgettext("Authent", "Enter your identifier"),
       passwordPlaceHolder: this.$pgettext("Authent", "Enter your password"),
       validationMessagePassword: this.$pgettext(
@@ -190,8 +192,13 @@ export default class AuthentComponent extends Vue {
     $connectForm.on("submit", this.createSession);
 
     $(this.$refs.authentLocale).kendoDropDownList({
-      change(e: kendo.ui.DropDownListChangeEvent) {
+      change: (e: kendo.ui.DropDownListChangeEvent) => {
         Vue.config.language = e.sender.value();
+        if (e.sender.value() === "fr_FR") {
+          document.title = this.translations.defaultTitleFr;
+        } else {
+          document.title = this.translations.defaultTitleEn;
+        }
       }
     });
 

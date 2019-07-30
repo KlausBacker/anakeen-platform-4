@@ -1,24 +1,24 @@
-import "@progress/kendo-ui/js/kendo.filtercell";
-import "@progress/kendo-ui/js/kendo.grid";
-import "@progress/kendo-ui/js/kendo.toolbar";
-import "@progress/kendo-ui/js/kendo.window";
 import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
+import { Component, Watch, Prop } from "vue-property-decorator";
+import "@progress/kendo-ui/js/kendo.grid";
+import "@progress/kendo-ui/js/kendo.filtercell";
+import "@progress/kendo-ui/js/kendo.window";
+import "@progress/kendo-ui/js/kendo.toolbar";
 
-import ExportActionTemplate from "./templates/GridToolbarExportAction.template.kd";
 import GridActions from "./utils/GridActions";
 import GridEvent from "./utils/GridEvent";
+import ExportActionTemplate from "./templates/GridToolbarExportAction.template.kd";
 
 import GridDataUtils from "./utils/GridDataUtils";
 import GridFilter from "./utils/GridFilter";
 const GridColumnsDialog = () => import("./GridDialog/GridDialog.vue");
 
 import GridError from "./utils/GridError";
-import GridKendoUtils from "./utils/GridKendoUtils";
 import GridVueUtil from "./utils/GridVueUtil";
+import GridKendoUtils from "./utils/GridKendoUtils";
 const COMPLETE_FIELDS_INFO_URL = "/api/v2/grid/columns/<collection>";
-import VueSetup from "../setup.js";
 import { IGrid } from "./IGrid";
+import VueSetup from "../setup.js";
 Vue.use(VueSetup);
 
 @Component({
@@ -156,6 +156,11 @@ export default class GridController extends Vue {
     type: Boolean,
     default: false
   })
+  public refresh;
+  @Prop({
+    type: Boolean,
+    default: false
+  })
   public reorderable;
   @Prop({
     type: Boolean,
@@ -246,8 +251,9 @@ export default class GridController extends Vue {
     reorderable: this.reorderable,
     pageable: this.pageable
       ? {
+          numeric: false,
           pageSizes: this.pageSizes === true ? [10, 20, 50] : this.pageSizes,
-          numeric: false
+          refresh: this.refresh
         }
       : this.pageable,
     resizable: this.resizable,
@@ -284,7 +290,6 @@ export default class GridController extends Vue {
       });
     }
   }
-
   public created() {
     this.gridActions = new GridActions(this);
     this.gridFilter = new GridFilter(this);

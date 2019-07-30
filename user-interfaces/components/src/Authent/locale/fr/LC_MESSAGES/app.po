@@ -87,7 +87,7 @@ msgstr "Vous devez saisir votre identifiant"
 #: src/components/Authent/Authent.component.js:59
 msgctxt "Authent"
 msgid "Help to sign in"
-msgstr "Aide pour la connection"
+msgstr "Aide pour la connexion"
 
 #: src/components/Authent/Authent.component.js:60
 msgctxt "Authent"
@@ -128,3 +128,7 @@ msgstr "Confirmation du mot de passe :"
 msgctxt "Authent"
 msgid "Confirm password are not same as new password"
 msgstr "Les mots des passes indiqués sont différents"
+
+msgctxt "Authent"
+msgid "Connection to %s"
+msgstr "Connexion à %s"

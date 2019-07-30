@@ -321,6 +321,9 @@ export default class GridKendoUtils extends AbstractGridUtil {
       if (typeof config.pageable.pageSizes !== "undefined") {
         this.vueComponent.kendoGridOptions.pageable.pageSizes = config.pageable.pageSizes;
       }
+      if (typeof config.pageable.refresh !== "undefined") {
+        this.vueComponent.kendoGridOptions.pageable.refresh = config.pageable.refresh;
+      }
     }
   }
   /**

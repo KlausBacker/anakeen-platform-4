@@ -19,9 +19,11 @@
     >
       <kendo-grid-column
         :field="'type'"
-        :title="'<b>Type</b>'"
+        :title="'<b>Identifier</b>'"
         :template="displayData('type')"
-        :filterable="false"
+        :filterable-cell-operator="'contains'"
+        :filterable-cell-show-operators="false"
+        :filterable-cell-template="autoFilterCol"
       ></kendo-grid-column>
       <kendo-grid-column
         :field="'info'"

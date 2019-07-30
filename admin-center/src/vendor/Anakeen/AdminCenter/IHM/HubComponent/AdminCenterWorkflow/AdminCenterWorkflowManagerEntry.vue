@@ -13,6 +13,7 @@
 </template>
 <script>
 import HubElement from "@anakeen/hub-components/components/lib/HubElement";
+import { interceptDOMLinks } from "../../../setup.js";
 
 export default {
   name: "ank-admin-workflow-manager",
@@ -24,6 +25,14 @@ export default {
           resolve(Component.default);
         });
       })
+  },
+  created() {
+    interceptDOMLinks("body", path => {
+      this.$ankHubRouter.internal.navigate(path, true).resolve();
+      this.getRouter().historyAPIUpdateMethod("replaceState");
+      this.getRouter().navigate(path, true).resolve();
+      this.getRouter().historyAPIUpdateMethod("pushState");
+    });
   }
 };
 </script>
