@@ -4,9 +4,8 @@ import * as Backbone from "backbone";
 import SmartElementProperties = AnakeenController.Types.SmartElementProperties;
 import ViewData = AnakeenController.Types.IViewData;
 import DOMReference = AnakeenController.Types.DOMReference;
-import ListenableEvents = AnakeenController.BusEvents.ListenableEvents;
 import ListenableEventCallable = AnakeenController.BusEvents.ListenableEventCallable;
-import ListenableEventOptions = AnakeenController.BusEvents.ListenableEventOptions;
+import ListenableEventOptions = AnakeenController.BusEvents.IListenableEventOptions;
 import * as $ from "jquery";
 import * as _ from "underscore";
 import AttributeInterface = require("../../controllerObjects/attributeInterface");
@@ -28,6 +27,7 @@ import ListenableEvent = AnakeenController.BusEvents.ListenableEvent;
 import ISmartElementAPI = AnakeenController.SmartElement.ISmartElementAPI;
 import ISmartField = AnakeenController.SmartElement.ISmartField;
 import ISmartElement = AnakeenController.SmartElement.ISmartElement;
+import Listenable = AnakeenController.BusEvents.Listenable;
 
 interface IControllerOptions {
   router?: boolean | { noRouter: boolean };
@@ -83,7 +83,7 @@ interface ISmartElementModel extends Backbone.Model {
 // tslint:disable-next-line:max-classes-per-file
 export default class SmartElementController extends AnakeenController.BusEvents.Listenable implements ISmartElementAPI {
   public uid: string;
-  protected _registeredListeners: { [key: string]: ListenableEvents } = {};
+  protected _registeredListeners: Listenable = new Listenable();
   protected _element: JQuery<DOMReference>;
   protected _smartElement: JQuery<DOMReference>;
   protected _view: Backbone.View;
@@ -106,6 +106,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
   protected $loading: JQuery & { dcpLoading(...args): JQuery };
   protected $notification: JQuery & { dcpNotification(...args): JQuery };
   protected _globalEventHandler: (...args: any[]) => any;
+  protected _defaultPersistent: boolean = true;
 
   constructor(dom: DOMReference, viewData: ViewData, options?: IControllerOptions, globalEventHandler?) {
     super();
@@ -335,28 +336,28 @@ export default class SmartElementController extends AnakeenController.BusEvents.
   /**
    * Check if an attribute exist
    *
-   * @param attributeId
+   * @param smartField
    * @return {boolean}
    */
-  public hasAttribute(attributeId) {
+  public hasSmartField(smartField) {
     this.checkInitialisedModel();
-    const attribute = this._model.get("attributes").get(attributeId);
+    const attribute = this._model.get("attributes").get(smartField);
     return !!attribute;
   }
 
   /**
    * Get the attribute interface object
    * Return null if attribute not found
-   * @param attributeId
+   * @param smartField
    * @returns AttributeInterface|null
    */
-  public getAttribute(attributeId): ISmartField {
+  public getSmartField(smartField): ISmartField {
     this.checkInitialisedModel();
-    const attributeModel = this._getAttributeModel(attributeId);
+    const attributeModel = this._getAttributeModel(smartField);
     if (!attributeModel) {
       return null;
     }
-    return new AttributeInterface(this._getAttributeModel(attributeId)) as ISmartField;
+    return new AttributeInterface(this._getAttributeModel(smartField)) as ISmartField;
   }
 
   /**
@@ -364,7 +365,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
    *
    * @returns [AttributeInterface]
    */
-  public getAttributes() {
+  public getSmartFields() {
     this.checkInitialisedModel();
     return this._model.get("attributes").map(currentAttribute => {
       return new AttributeInterface(currentAttribute);
@@ -451,14 +452,14 @@ export default class SmartElementController extends AnakeenController.BusEvents.
   /**
    * Get an attribute value
    *
-   * @param attributeId
+   * @param smartFieldId
    * @param type string (current|previous|initial|all) what kind of value (default : current)
    * @returns {*}
    */
-  public getValue(attributeId, type) {
+  public getValue(smartFieldId, type) {
     let attribute;
     this.checkInitialisedModel();
-    const attributeModel = this._getAttributeModel(attributeId);
+    const attributeModel = this._getAttributeModel(smartFieldId);
     if (!attributeModel) {
       return null;
     }
@@ -489,20 +490,20 @@ export default class SmartElementController extends AnakeenController.BusEvents.
    * Add customData from render view model
    * @returns {*}
    */
-  public addCustomClientData(documentCheck, value) {
+  public addCustomClientData(check, value) {
     this.checkInitialisedModel();
     // First case no data, so documentCheck is data
     if (_.isUndefined(value)) {
-      value = documentCheck;
-      documentCheck = {};
+      value = check;
+      check = {};
     }
     // Second case documentCheck is a function and data is object
-    if (_.isFunction(documentCheck) && _.isObject(value)) {
-      documentCheck = { documentCheck };
+    if (_.isFunction(check) && _.isObject(value)) {
+      check = { check };
     }
     // Third case documentCheck is an object and data is object => check if documentCheck property exist
-    if (_.isObject(value) && _.isObject(documentCheck)) {
-      documentCheck = _.defaults(documentCheck, {
+    if (_.isObject(value) && _.isObject(check)) {
+      check = _.defaults(check, {
         documentCheck: () => {
           return true;
         },
@@ -514,8 +515,8 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     // Register the customClientData
     _.each(value, (currentValue, currentKey) => {
       this._customClientData[currentKey] = {
-        documentCheck: documentCheck.documentCheck,
-        once: documentCheck.once,
+        check: check.check,
+        once: check.once,
         value: currentValue
       };
     });
@@ -525,9 +526,9 @@ export default class SmartElementController extends AnakeenController.BusEvents.
    * Get customData from render view model
    * @returns {*}
    */
-  public setCustomClientData(documentCheck, value) {
+  public setCustomClientData(check, value) {
     console.error("this function (setCustomClientData) is deprecated");
-    return this.addCustomClientData(documentCheck, value);
+    return this.addCustomClientData(check, value);
   }
 
   /**
@@ -575,15 +576,15 @@ export default class SmartElementController extends AnakeenController.BusEvents.
    * Set a value
    * Trigger a change event
    *
-   * @param attributeId string attribute identifier
+   * @param smartFieldId string attribute identifier
    * @param value object { "value" : *, "displayValue" : *}
    * @returns {*}
    */
-  public setValue(attributeId, value) {
+  public setValue(smartFieldId, value) {
     this.checkInitialisedModel();
-    const attributeModel = this._getAttributeModel(attributeId);
+    const attributeModel = this._getAttributeModel(smartFieldId);
     if (!attributeModel) {
-      throw new Error("Unable to find attribute " + attributeId);
+      throw new Error("Unable to find smart field " + smartFieldId);
     }
     const attributeInterface = new AttributeInterface(attributeModel);
     let index;
@@ -633,22 +634,24 @@ export default class SmartElementController extends AnakeenController.BusEvents.
   /**
    * Add a row to an array
    *
-   * @param attributeId string attribute array
+   * @param smartFieldId string attribute array
    * @param values object { "attributeId" : { "value" : *, "displayValue" : * }, ...}
    */
-  public appendArrayRow(attributeId, values) {
+  public appendArrayRow(smartFieldId, values) {
     this.checkInitialisedModel();
-    const attribute = this._getAttributeModel(attributeId);
+    const attribute = this._getAttributeModel(smartFieldId);
 
     if (!attribute) {
-      throw new Error("Unable to find attribute " + attributeId);
+      throw new Error("Unable to find attribute " + smartFieldId);
     }
 
     if (attribute.get("type") !== "array") {
-      throw new Error("Attribute " + attributeId + " must be an attribute of type array");
+      throw new Error("Smart Field " + smartFieldId + " must be an attribute of type array");
     }
     if (!_.isObject(values)) {
-      throw new Error("Values must be an object where each properties is an attribute of the array for " + attributeId);
+      throw new Error(
+        "Values must be an object where each properties is an smart field of the array for " + smartFieldId
+      );
     }
     attribute.get("content").each(currentAttribute => {
       let newValue = values[currentAttribute.id];
@@ -669,22 +672,24 @@ export default class SmartElementController extends AnakeenController.BusEvents.
   /**
    * Add a row before another row
    *
-   * @param attributeId string attribute array
+   * @param smartFieldId string attribute array
    * @param values object { "attributeId" : { "value" : *, "displayValue" : * }, ...}
    * @param index int index of the row
    */
-  public insertBeforeArrayRow(attributeId, values, index) {
+  public insertBeforeArrayRow(smartFieldId, values, index) {
     this.checkInitialisedModel();
-    const attribute = this._getAttributeModel(attributeId);
+    const attribute = this._getAttributeModel(smartFieldId);
     let maxValue;
     if (!attribute) {
-      throw new Error("Unable to find attribute " + attributeId);
+      throw new Error("Unable to find attribute " + smartFieldId);
     }
     if (attribute.get("type") !== "array") {
-      throw new Error("Attribute " + attributeId + " must be an attribute of type array");
+      throw new Error("Smart Field " + smartFieldId + " must be an attribute of type array");
     }
     if (!_.isObject(values)) {
-      throw new Error("Values must be an object where each properties is an attribute of the array for " + attributeId);
+      throw new Error(
+        "Values must be an object where each properties is an smart field of the array for " + smartFieldId
+      );
     }
     maxValue = this._getMaxIndex(attribute);
     if (index < 0 || index > maxValue) {
@@ -709,22 +714,22 @@ export default class SmartElementController extends AnakeenController.BusEvents.
 
   /**
    * Remove an array row
-   * @param attributeId string attribute array
+   * @param smartFieldId string attribute array
    * @param index int index of the row
    */
-  public removeArrayRow(attributeId, index) {
+  public removeArrayRow(smartFieldId, index) {
     this.checkInitialisedModel();
-    const attribute = this._getAttributeModel(attributeId);
+    const attribute = this._getAttributeModel(smartFieldId);
     let maxIndex;
     if (!attribute) {
-      throw new Error("Unable to find attribute " + attributeId);
+      throw new Error("Unable to find smart field " + smartFieldId);
     }
     if (attribute.get("type") !== "array") {
-      throw Error("Attribute " + attributeId + " must be an attribute of type array");
+      throw Error("Smart field " + smartFieldId + " must be a smart field of type array");
     }
     maxIndex = this._getMaxIndex(attribute) - 1;
     if (index < 0 || index > maxIndex) {
-      throw Error("Index must be between 0 and " + maxIndex + " for " + attributeId);
+      throw Error("Index must be between 0 and " + maxIndex + " for " + smartFieldId);
     }
     attribute.get("content").each(currentAttribute => {
       currentAttribute.removeIndexValue(index);
@@ -756,12 +761,12 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       }
     } else {
       _.defaults(options, {
-        attributeCheck: () => true,
+        check: () => true,
         constraintCheck: callback,
-        documentCheck: () => true,
         externalConstraint: false,
         name: _.uniqueId("constraint"),
-        once: false
+        once: false,
+        smartFieldCheck: () => true
       });
     }
     currentConstraint = options;
@@ -858,6 +863,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     // the first parameters can be the final object (chain removeEvent and addEvent)
     if (_.isObject(eventType) && _.isUndefined(eventOptions) && _.isUndefined(eventCallback)) {
       currentEvent = eventType;
+      currentEvent._persistent = this._defaultPersistent;
       if (!currentEvent.name) {
         throw new Error(
           "When an event is initiated with a single object, this object needs to have the name property " +
@@ -868,10 +874,10 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       currentEvent = _.defaults(eventOptions, {
         eventCallback,
         eventType,
-        externalEvent: false,
         name: _.uniqueId("event_" + eventType),
         once: false
       });
+      currentEvent._persistent = this._defaultPersistent;
     }
     // the eventType must be one the list
     this.checkEventName(currentEvent.eventType);
@@ -890,7 +896,14 @@ export default class SmartElementController extends AnakeenController.BusEvents.
    * @returns {*}
    */
   public listEventListeners() {
-    return this._events;
+    let allEvents = [];
+    Object.keys(this._registeredListeners.getEventsList()).forEach(eventType => {
+      allEvents = allEvents.concat(this._registeredListeners.getEventsList()[eventType]);
+    });
+    Object.keys(this.getEventsList()).forEach(eventType => {
+      allEvents = allEvents.concat(this.getEventsList()[eventType]);
+    });
+    return allEvents;
   }
 
   /**
@@ -908,7 +921,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       removed = removed.concat(
         this.getEventsList()[eventType].filter(currentEvent => {
           return (
-            (allKind || !currentEvent.externalEvent) &&
+            (allKind || !currentEvent._persistent) &&
             (currentEvent.name === eventName || testRegExp.test(currentEvent.name))
           );
         })
@@ -917,8 +930,21 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     removed.forEach(event => {
       this.off(event.eventType, event.eventCallback);
     });
-    this._initListeners({ launchReady: false });
-    return removed;
+    let persistentRemoved = [];
+    if (allKind) {
+      Object.keys(this.getEventsList()).forEach(eventType => {
+        persistentRemoved = persistentRemoved.concat(
+          this._registeredListeners.getEventsList()[eventType].filter(currentEvent => {
+            return currentEvent.name === eventName || testRegExp.test(currentEvent.name);
+          })
+        );
+      });
+      persistentRemoved.forEach(event => {
+        this._registeredListeners.off(event.eventType, event.eventCallback);
+      });
+    }
+
+    return persistentRemoved.concat(removed);
   }
 
   /**
@@ -936,13 +962,13 @@ export default class SmartElementController extends AnakeenController.BusEvents.
   /**
    * Hide a visible attribute
    *
-   * @param attributeId
+   * @param smartFieldId
    */
-  public hideAttribute(attributeId) {
+  public hideSmartField(smartFieldId) {
     this.checkInitialisedView();
-    const attributeModel = this._getAttributeModel(attributeId);
+    const attributeModel = this._getAttributeModel(smartFieldId);
     if (!attributeModel) {
-      console.error("Unable find and hide the attribute " + attributeId);
+      console.error("Unable find and hide the attribute " + smartFieldId);
       return;
     }
     attributeModel.trigger("hide");
@@ -951,13 +977,13 @@ export default class SmartElementController extends AnakeenController.BusEvents.
   /**
    * show a visible attribute (previously hidden)
    *
-   * @param attributeId
+   * @param smartFieldId
    */
-  public showAttribute(attributeId) {
+  public showSmartField(smartFieldId) {
     this.checkInitialisedView();
-    const attributeModel = this._getAttributeModel(attributeId);
+    const attributeModel = this._getAttributeModel(smartFieldId);
     if (!attributeModel) {
-      console.error("Unable find and show the attribute " + attributeId);
+      console.error("Unable find and show the attribute " + smartFieldId);
       return;
     }
     attributeModel.trigger("show");
@@ -1010,15 +1036,15 @@ export default class SmartElementController extends AnakeenController.BusEvents.
   /**
    * Add an error message to an attribute
    *
-   * @param attributeId
+   * @param smartFieldId
    * @param message
    * @param index
    */
-  public setAttributeErrorMessage(attributeId, message, index) {
+  public setSmartFieldErrorMessage(smartFieldId, message, index) {
     this.checkInitialisedView();
-    const attributeModel = this._getAttributeModel(attributeId);
+    const attributeModel = this._getAttributeModel(smartFieldId);
     if (!attributeModel) {
-      console.error("Unable find and show the attribute " + attributeId);
+      console.error("Unable find and show the smart field " + smartFieldId);
       return;
     }
     attributeModel.setErrorMessage(message, index);
@@ -1027,14 +1053,14 @@ export default class SmartElementController extends AnakeenController.BusEvents.
   /**
    * Clean the error message of an attribute
    *
-   * @param attributeId
+   * @param smartFieldId
    * @param index
    */
-  public cleanAttributeErrorMessage(attributeId, index) {
+  public cleanSmartFieldErrorMessage(smartFieldId, index) {
     this.checkInitialisedView();
-    const attributeModel = this._getAttributeModel(attributeId);
+    const attributeModel = this._getAttributeModel(smartFieldId);
     if (!attributeModel) {
-      console.error("Unable find and show the attribute " + attributeId);
+      console.error("Unable find and show the smart field " + smartFieldId);
       return;
     }
     attributeModel.setErrorMessage(null, index);
@@ -1087,16 +1113,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
         reject("Unable to destroy because user refuses it");
         return;
       }
-      // event.prevent = !this._triggerControllerEvent(
-      //   "beforeClose",
-      //   null,
-      //   this._model.getServerProperties()
-      // );
-      // if (event.prevent) {
-      //   reject("Unable to destroy because before close refuses it");
-      //   return;
-      // }
-      // resolve();
+
       this._triggerControllerEvent("beforeClose", null, this._model.getModelProperties())
         .then(() => {
           resolve();
@@ -1113,11 +1130,14 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     if (_.isFunction(this._globalEventHandler)) {
       this._globalEventHandler(name, ...args);
     }
-    if (!this._events[name]) {
+    const persistentEvents = this._registeredListeners.getEventsList()[name] || [];
+    const tempEvents = this.getEventsList()[name] || [];
+    const allEvents = persistentEvents.concat(tempEvents);
+    if (!allEvents.length) {
       return Promise.resolve();
     }
     return Promise.all(
-      this._events[name]
+      allEvents
         .filter(
           currentEvent =>
             !_.isFunction(currentEvent.check) || currentEvent.check.call($(this._element), this.getProperties())
@@ -1125,14 +1145,20 @@ export default class SmartElementController extends AnakeenController.BusEvents.
         .filter(
           currentEvent =>
             type !== "smartField" ||
-            !_.isFunction(currentEvent.fieldCheck) ||
-            currentEvent.fieldCheck($(this._element), args[1], this.getProperties())
+            !_.isFunction(currentEvent.smartFieldCheck) ||
+            currentEvent.smartFieldCheck($(this._element), args[1], this.getProperties())
         )
         .map(cb => {
           const callbackReturn: any = cb.eventCallback(...args);
           if (callbackReturn && callbackReturn instanceof Promise && name.indexOf("before") === 0) {
             return callbackReturn;
           } else {
+            if (
+              (args[0] && typeof args[0].isDefaultPrevented === "function" && args[0].isDefaultPrevented()) ||
+              callbackReturn === false
+            ) {
+              return Promise.reject(callbackReturn);
+            }
             return Promise.resolve(callbackReturn);
           }
         })
@@ -1354,13 +1380,13 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       this._triggerControllerEvent("afterSave", null, this.getProperties(), oldProperties);
     });
     this._model.listenTo(this._model, "beforeRestore", event => {
-      event.prevent = !this._triggerControllerEvent("beforeRestore", event, this.getProperties());
+      event.promise = this._triggerControllerEvent("beforeRestore", event, this.getProperties());
     });
     this._model.listenTo(this._model, "afterRestore", oldProperties => {
       this._triggerControllerEvent("afterRestore", null, this.getProperties(), oldProperties);
     });
     this._model.listenTo(this._model, "beforeDelete", (event, customClientData) => {
-      event.prevent = !this._triggerControllerEvent(
+      event.promise = this._triggerControllerEvent(
         "beforeDelete",
         event,
         this.getProperties(),
@@ -1376,7 +1402,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     });
     this._model.listenTo(this._model, "changeValue", options => {
       try {
-        const currentAttribute = this.getAttribute(options.attributeId);
+        const currentAttribute = this.getSmartField(options.attributeId);
         let index = 0;
         const values = currentAttribute.getValue("all");
         const mAttribute = this._getAttributeModel(options.attributeId);
@@ -1406,7 +1432,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
           index = changesIndex.length === 1 ? changesIndex[0] : -1;
         }
         this._triggerAttributeControllerEvent(
-          "change",
+          "smartFieldChange",
           null,
           currentAttribute,
           this.getProperties(),
@@ -1422,9 +1448,9 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     });
     this._model.listenTo(this._model, "beforeAttributeRender", (event, attributeId, $el, index) => {
       try {
-        const currentAttribute = this.getAttribute(attributeId);
-        event.prevent = !this._triggerAttributeControllerEvent(
-          "attributeBeforeRender",
+        const currentAttribute = this.getSmartField(attributeId);
+        event.promise = this._triggerAttributeControllerEvent(
+          "smartFieldBeforeRender",
           event,
           currentAttribute,
           this.getProperties(),
@@ -1432,6 +1458,15 @@ export default class SmartElementController extends AnakeenController.BusEvents.
           $el,
           index
         );
+        // event.prevent = !this._triggerAttributeControllerEvent(
+        //   "smartFieldBeforeRender",
+        //   event,
+        //   currentAttribute,
+        //   this.getProperties(),
+        //   currentAttribute,
+        //   $el,
+        //   index
+        // );
       } catch (error) {
         if (!(error instanceof ErrorModelNonInitialized)) {
           console.error(error);
@@ -1440,9 +1475,9 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     });
     this._model.listenTo(this._model, "attributeRender", (attributeId, $el, index) => {
       try {
-        const currentAttribute = this.getAttribute(attributeId);
+        const currentAttribute = this.getSmartField(attributeId);
         this._triggerAttributeControllerEvent(
-          "attributeReady",
+          "smartFieldReady",
           null,
           currentAttribute,
           this.getProperties(),
@@ -1458,9 +1493,9 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     });
     this._model.listenTo(this._model, "arrayModified", options => {
       try {
-        const currentAttribute = this.getAttribute(options.attributeId);
+        const currentAttribute = this.getSmartField(options.attributeId);
         this._triggerAttributeControllerEvent(
-          "attributeArrayChange",
+          "smartFieldArrayChange",
           null,
           currentAttribute,
           this.getProperties(),
@@ -1479,9 +1514,9 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     });
     this._model.listenTo(this._model, "downloadFile", (event, attrid, options) => {
       try {
-        const currentAttribute = this.getAttribute(attrid);
+        const currentAttribute = this.getSmartField(attrid);
         event.prevent = !this._triggerAttributeControllerEvent(
-          "attributeDownloadFile",
+          "smartFieldDownloadFile",
           event,
           currentAttribute,
           this.getProperties(),
@@ -1497,9 +1532,9 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     });
     this._model.listenTo(this._model, "uploadFile", (event, attrid, options) => {
       try {
-        const currentAttribute = this.getAttribute(attrid);
+        const currentAttribute = this.getSmartField(attrid);
         event.prevent = !this._triggerAttributeControllerEvent(
-          "attributeUploadFile",
+          "smartFieldUploadFile",
           event,
           currentAttribute,
           this.getProperties(),
@@ -1519,9 +1554,9 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     });
     this._model.listenTo(this._model, "uploadFileDone", (event, attrid, options) => {
       try {
-        const currentAttribute = this.getAttribute(attrid);
+        const currentAttribute = this.getSmartField(attrid);
         event.prevent = !this._triggerAttributeControllerEvent(
-          "attributeUploadFileDone",
+          "smartFieldUploadFileDone",
           event,
           currentAttribute,
           this.getProperties(),
@@ -1541,11 +1576,11 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     });
 
     this._model.listenTo(this._model, "attributeBeforeTabSelect", (event, attrid) => {
-      const currentAttribute = this.getAttribute(attrid);
+      const currentAttribute = this.getSmartField(attrid);
       let prevent;
 
       prevent = !this._triggerAttributeControllerEvent(
-        "attributeBeforeTabSelect",
+        "smartFieldBeforeTabSelect",
         event,
         currentAttribute,
         this.getProperties(),
@@ -1557,10 +1592,10 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       }
     });
     this._model.listenTo(this._model, "attributeTabChange", (event, attrid, $el, data) => {
-      const currentAttribute = this.getAttribute(attrid);
+      const currentAttribute = this.getSmartField(attrid);
 
       this._triggerAttributeControllerEvent(
-        "attributeTabChange",
+        "smartFieldTabChange",
         event,
         currentAttribute,
         this.getProperties(),
@@ -1570,10 +1605,10 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       );
     });
     this._model.listenTo(this._model, "attributeAfterTabSelect", (event, attrid) => {
-      const currentAttribute = this.getAttribute(attrid);
+      const currentAttribute = this.getSmartField(attrid);
 
       this._triggerAttributeControllerEvent(
-        "attributeAfterTabSelect",
+        "smartFieldAfterTabSelect",
         event,
         currentAttribute,
         this.getProperties(),
@@ -1583,9 +1618,9 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     });
     this._model.listenTo(this._model, "helperSearch", (event, attrid, options) => {
       try {
-        const currentAttribute = this.getAttribute(attrid);
+        const currentAttribute = this.getSmartField(attrid);
         event.prevent = !this._triggerAttributeControllerEvent(
-          "attributeHelperSearch",
+          "smartFieldHelperSearch",
           event,
           currentAttribute,
           this.getProperties(),
@@ -1600,9 +1635,9 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     });
     this._model.listenTo(this._model, "helperResponse", (event, attrid, options) => {
       try {
-        const currentAttribute = this.getAttribute(attrid);
+        const currentAttribute = this.getSmartField(attrid);
         event.prevent = !this._triggerAttributeControllerEvent(
-          "attributeHelperResponse",
+          "smartFieldHelperResponse",
           event,
           currentAttribute,
           this.getProperties(),
@@ -1617,9 +1652,9 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     });
     this._model.listenTo(this._model, "helperSelect", (event, attrid, options) => {
       try {
-        const currentAttribute = this.getAttribute(attrid);
+        const currentAttribute = this.getSmartField(attrid);
         event.prevent = !this._triggerAttributeControllerEvent(
-          "attributeHelperSelect",
+          "smartFieldHelperSelect",
           event,
           currentAttribute,
           this.getProperties(),
@@ -1636,9 +1671,9 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     // listener to prevent default actions when anchorClick is triggered
     this._model.listenTo(this._model, "anchorClick", (event, attrid, options) => {
       try {
-        const currentAttribute = this.getAttribute(attrid);
+        const currentAttribute = this.getSmartField(attrid);
         event.prevent = !this._triggerAttributeControllerEvent(
-          "attributeAnchorClick",
+          "smartFieldAnchorClick",
           event,
           currentAttribute,
           this.getProperties(),
@@ -1657,8 +1692,8 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     // Generic listener for addCreateDocumentButton docid render option
     this._model.listenTo(this._model, "createDialogListener", (event, attrid, options) => {
       try {
-        const currentAttribute = this.getAttribute(attrid);
-        let triggername = "attributeCreateDialogDocument";
+        const currentAttribute = this.getSmartField(attrid);
+        let triggername = "smartFieldCreateDialogDocument";
         // Uppercase first letter
         triggername += options.triggerId.charAt(0).toUpperCase() + options.triggerId.slice(1);
 
@@ -1678,7 +1713,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     });
     this._model.listenTo(this._model, "constraint", (attribute, constraintController) => {
       try {
-        const currentAttribute = this.getAttribute(attribute);
+        const currentAttribute = this.getSmartField(attribute);
         const currentModel = this.getProperties();
         const $element = $(this._element);
         const addConstraint = currentConstraint => {
@@ -1731,7 +1766,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
 
     this._model.listenTo(this._model, "injectCurrentSmartElementJS", event => {
       event.controller = this;
-      this._reinitListeners();
+      // this._reinitListeners();
       this._triggerControllerEvent("injectCurrentSmartElementJS", null, this.getProperties(), event);
     });
   }
@@ -2142,7 +2177,6 @@ export default class SmartElementController extends AnakeenController.BusEvents.
         console.error(e);
       }
     }
-    this._triggerExternalEvent(eventName, originalEvent, attributeInternalElement, ...args);
     return eventPromise;
   };
 
@@ -2179,33 +2213,8 @@ export default class SmartElementController extends AnakeenController.BusEvents.
         console.error(e);
       }
     }
-    // @ts-ignore
-    this._triggerExternalEvent.call(this, ...arguments);
     return eventPromise;
     // return !event.isDefaultPrevented();
-  }
-
-  // noinspection JSMethodCanBeStatic
-  /**
-   * Trigger event as jQuery standard events (all events are prefixed by document)
-   *
-   * @param type
-   * @param args
-   */
-  private _triggerExternalEvent(type, ...args) {
-    // const event = $.Event(type);
-    // prepare argument for widget event trigger (we want type, event, data)
-    // add the eventObject
-    // args.unshift(event);
-    // add the type
-    // args.unshift(type);
-    // concatenate other argument in one element (to respect widget pattern)
-    // args[2] = args.slice(2);
-    // suppress other arguments (since they have been concatened)
-    // args = args.slice(0, 3);
-    // trigger external event
-    // TODO Trigger external event
-    // this._trigger.apply(this, args);
   }
 
   /**
@@ -2323,26 +2332,22 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     });
   }
 
-  private _getModelUID() {
-    const model = this._requestData;
-    return `${model.initid}|${model.viewId}`;
-  }
-
-  private _registerListener(event) {
-    this._registeredListeners[this._getModelUID()] = this._registeredListeners[this._getModelUID()] || {};
-    this._registeredListeners[this._getModelUID()][event.eventType] =
-      this._registeredListeners[this._getModelUID()][event.eventType] || [];
-    this._registeredListeners[this._getModelUID()][event.eventType].push(event);
-  }
-
   private _addAndInitNewEvents(newEvent: ListenableEventOptions) {
     const $element = $(this._element);
     // let uniqueName = (newEvent.externalEvent ? "external_" : "internal_") + newEvent.name;
     const currentElementProperties = this.getProperties();
-    if (newEvent.once) {
-      this.once(newEvent.eventType, newEvent);
+    if (newEvent.persistent) {
+      if (newEvent.once) {
+        this._registeredListeners.once(newEvent.eventType, newEvent);
+      } else {
+        this._registeredListeners.on(newEvent.eventType, newEvent);
+      }
     } else {
-      this.on(newEvent.eventType, newEvent);
+      if (newEvent.once) {
+        this.once(newEvent.eventType, newEvent);
+      } else {
+        this.on(newEvent.eventType, newEvent);
+      }
     }
     if (!this._initialized.model) {
       // early event model is not ready (no trigger, or current register possible)
@@ -2363,12 +2368,12 @@ export default class SmartElementController extends AnakeenController.BusEvents.
             console.error(e);
           }
         }
-        if (newEvent.eventType === "attributeReady") {
+        if (newEvent.eventType === "smartFieldReady") {
           const event = $.Event(newEvent.eventType);
           // @ts-ignore
           event.target = this._element;
           _.each(this._getRenderedAttributes(), (currentAttribute: any) => {
-            const objectAttribute = this.getAttribute(currentAttribute.id);
+            const objectAttribute = this.getSmartField(currentAttribute.id);
             if (!_.isFunction(newEvent.attributeCheck) || newEvent.attributeCheck.apply($element, [objectAttribute])) {
               try {
                 // add element as function context
@@ -2392,13 +2397,14 @@ export default class SmartElementController extends AnakeenController.BusEvents.
   private _initListeners(options) {
     const currentProperties = this.getProperties();
     const initOptions = options || {};
+    this._reinitListeners();
     // Trigger new added ready event
     if (this._initialized.view && initOptions.launchReady) {
       this._triggerControllerEvent("ready", null, currentProperties);
       _.each(this._getRenderedAttributes(), (currentAttribute: AttributeInterface) => {
-        const objectAttribute = this.getAttribute(currentAttribute.id);
+        const objectAttribute = this.getSmartField(currentAttribute.id);
         this._triggerAttributeControllerEvent(
-          "attributeReady",
+          "smartFieldReady",
           null,
           currentAttribute,
           currentProperties,

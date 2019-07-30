@@ -4,9 +4,10 @@
  */
 import { Component, Prop, Vue } from "vue-property-decorator";
 import SmartElementController from "../../../src/vendor/Anakeen/DOCUMENT/IHM/widgets/globalController/SmartElementController";
+import { AnakeenController } from "../../../src/vendor/Anakeen/DOCUMENT/IHM/widgets/globalController/types/ControllerTypes";
 import VueSetup from "../setup.js";
 import { ISmartElementValue } from "./ISmartElementValue";
-import { SmartElementEvents } from "./SmartElementEvents";
+import EVENTS_LIST = AnakeenController.SmartElement.EVENTS_LIST;
 
 Vue.use(VueSetup);
 @Component({
@@ -70,7 +71,7 @@ export default class AnkSmartElement extends Vue {
     return this.smartElementWidget !== null;
   }
 
-  public addEventListener(eventType, options, callback) {
+  public addEventListener(eventType, options, callback?) {
     return this.smartElementWidget.addEventListener(eventType, options, callback);
   }
 
@@ -100,15 +101,15 @@ export default class AnkSmartElement extends Vue {
     return this.smartElementWidget.showMessage(message);
   }
 
-  public getAttributes() {
-    return this.smartElementWidget.getAttributes();
+  public getSmartFields() {
+    return this.smartElementWidget.getSmartFields();
   }
 
-  public getAttribute(attributeId) {
-    return this.smartElementWidget.getAttribute(attributeId);
+  public getSmartField(smartFieldId) {
+    return this.smartElementWidget.getSmartField(smartFieldId);
   }
 
-  public setValue(attributeId, newValue) {
+  public setValue(smartFieldId, newValue) {
     if (typeof newValue === "string") {
       /* eslint-disable no-param-reassign */
       newValue = {
@@ -117,7 +118,7 @@ export default class AnkSmartElement extends Vue {
       };
     }
 
-    return this.smartElementWidget.setValue(attributeId, newValue);
+    return this.smartElementWidget.setValue(smartFieldId, newValue);
   }
 
   public reinitSmartElement(values, options) {
@@ -144,8 +145,8 @@ export default class AnkSmartElement extends Vue {
     return this.smartElementWidget.getProperties();
   }
 
-  public hasAttribute(attributeId) {
-    return this.smartElementWidget.hasAttribute(attributeId);
+  public hasSmartField(smartFieldId) {
+    return this.smartElementWidget.hasSmartField(smartFieldId);
   }
 
   public hasMenu(menuId) {
@@ -160,8 +161,8 @@ export default class AnkSmartElement extends Vue {
     return this.smartElementWidget.getMenus();
   }
 
-  public getValue(attributeId, type) {
-    return this.smartElementWidget.getValue(attributeId, type);
+  public getValue(smartFieldId, type) {
+    return this.smartElementWidget.getValue(smartFieldId, type);
   }
 
   public getValues() {
@@ -176,8 +177,8 @@ export default class AnkSmartElement extends Vue {
     return this.smartElementWidget.getProperty("isModified");
   }
 
-  public addCustomClientData(documentCheck, value) {
-    return this.smartElementWidget.addCustomClientData(documentCheck, value);
+  public addCustomClientData(check, value) {
+    return this.smartElementWidget.addCustomClientData(check, value);
   }
 
   public getCustomClientData(deleteOnce) {
@@ -188,16 +189,16 @@ export default class AnkSmartElement extends Vue {
     return this.smartElementWidget.removeCustomClientData(key);
   }
 
-  public appendArrayRow(attributeId, values) {
-    return this.smartElementWidget.appendArrayRow(attributeId, values);
+  public appendArrayRow(smartFieldId, values) {
+    return this.smartElementWidget.appendArrayRow(smartFieldId, values);
   }
 
-  public insertBeforeArrayRow(attributeId, values, index) {
-    return this.smartElementWidget.insertBeforeArrayRow(attributeId, values, index);
+  public insertBeforeArrayRow(smartFieldId, values, index) {
+    return this.smartElementWidget.insertBeforeArrayRow(smartFieldId, values, index);
   }
 
-  public removeArrayRow(attributeId, index) {
-    return this.smartElementWidget.removeArrayRow(attributeId, index);
+  public removeArrayRow(smartFieldId, index) {
+    return this.smartElementWidget.removeArrayRow(smartFieldId, index);
   }
 
   public addConstraint(options, callback) {
@@ -224,12 +225,12 @@ export default class AnkSmartElement extends Vue {
     return this.smartElementWidget.triggerEvent(eventName, ...parameters);
   }
 
-  public hideAttribute(attributeId) {
-    return this.smartElementWidget.hideAttribute(attributeId);
+  public hideSmartField(smartFieldId) {
+    return this.smartElementWidget.hideSmartField(smartFieldId);
   }
 
-  public showAttribute(attributeId) {
-    return this.smartElementWidget.showAttribute(attributeId);
+  public showSmartField(smartFieldId) {
+    return this.smartElementWidget.showSmartField(smartFieldId);
   }
 
   public maskSmartElement(message, px) {
@@ -255,23 +256,24 @@ export default class AnkSmartElement extends Vue {
   protected _initController(viewData, options = {}) {
     if (!this.isLoaded() && viewData && viewData.initid !== 0) {
       if (window.ank && window.ank.smartElement && window.ank.smartElement.globalController) {
-        const controllerOptions = {
-          ...options,
-          globalHandler: this._onControllerOptions
-        };
         const scopeId = window.ank.smartElement.globalController.addSmartElement(
           // @ts-ignore
           this.$refs.ankSEWrapper,
           viewData,
-          controllerOptions
+          options
         );
         this.smartElementWidget = window.ank.smartElement.globalController.scope(scopeId) as SmartElementController;
+        this.listenEvents();
         this.$emit("documentLoaded");
       }
     }
   }
 
-  protected _onControllerOptions(eventType, ...args) {
-    this.$emit(eventType, ...args);
+  protected listenEvents() {
+    EVENTS_LIST.forEach(eventName => {
+      this.addEventListener(eventName, (...args) => {
+        this.$emit(eventName, ...args);
+      });
+    });
   }
 }

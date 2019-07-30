@@ -6,6 +6,7 @@ define([
   "mustache",
   "dcpDocument/i18n/documentCatalog",
   "dcpDocument/views/document/attributeTemplate",
+  "dcpDocument/widgets/globalController/utils/EventUtils",
   "dcpDocument/widgets/attributes/label/wLabel",
   "dcpDocument/widgets/attributes/text/wText",
   "dcpDocument/widgets/attributes/int/wInt",
@@ -21,7 +22,7 @@ define([
   "dcpDocument/widgets/attributes/file/wFile",
   "dcpDocument/widgets/attributes/double/wDouble",
   "dcpDocument/widgets/attributes/docid/wDocid"
-], function vAttribute($, _, Backbone, Mustache, i18n, attributeTemplate) {
+], function vAttribute($, _, Backbone, Mustache, i18n, attributeTemplate, EventPromiseUtils) {
   "use strict";
 
   return Backbone.View.extend({
@@ -117,86 +118,92 @@ define([
             model: currentView.model,
             $el: currentView.$el
           });
-          if (event.prevent) {
-            resolve();
-            return currentView;
-          }
 
-          //We fetch data after beforeRender, if some data is modified by beforeRender we get it
-          data = currentView.getData();
+          EventPromiseUtils.getBeforeEventPromise(
+            event,
+            () => {
+              //We fetch data after beforeRender, if some data is modified by beforeRender we get it
+              data = currentView.getData();
 
-          currentView.$el.addClass("dcpAttribute--type--" + currentView.model.get("type"));
-          currentView.$el.addClass("dcpAttribute--visibility--" + currentView.model.get("visibility"));
-          currentView.$el.attr("data-attrid", currentView.model.get("id"));
-          if (currentView.model.get("needed")) {
-            currentView.$el.addClass("dcpAttribute--needed");
-          }
-
-          currentView.$el.append($(Mustache.render(currentView.templateWrapper || "", data)));
-
-          attributeTemplate.insertDescription(currentView);
-
-          //analyze the display label and add display class
-          if (currentView.displayLabel === false) {
-            currentView.$el.find(".dcpAttribute__label").remove();
-            // set to 100% width
-            currentView.$el.find(".dcpAttribute__right").addClass("dcpAttribute__right--full");
-          } else {
-            if (currentView.model.getOption("labelPosition") === "left") {
-              currentView.$el.addClass("dcpAttribute__labelPosition--left");
-              currentView.$el
-                .find(".dcpAttribute__right")
-                .not(".dcpAttribute__description")
-                .addClass("dcpAttribute__labelPosition--left");
-              currentView.$el
-                .find(".dcpAttribute__left")
-                .not(".dcpAttribute__description")
-                .addClass("dcpAttribute__labelPosition--left");
-            }
-            if (currentView.model.getOption("labelPosition") === "up") {
-              currentView.$el.addClass("dcpAttribute__labelPosition--up");
-              currentView.$el
-                .find(".dcpAttribute__right")
-                .not(".dcpAttribute__description")
-                .addClass("dcpAttribute__labelPosition--up");
-              currentView.$el
-                .find(".dcpAttribute__left")
-                .not(".dcpAttribute__description")
-                .addClass("dcpAttribute__labelPosition--up");
-            }
-            if (currentView.model.getOption("labelPosition") === "auto") {
-              currentView.$el.addClass("dcpAttribute__labelPosition--auto");
-              currentView.$el.find(".dcpAttribute__right").addClass("dcpAttribute__labelPosition--auto");
-              currentView.$el.find(".dcpAttribute__left").addClass("dcpAttribute__labelPosition--auto");
-            }
-            currentView.$el.find(".dcpAttribute__label").dcpLabel(data);
-          }
-
-          //If there is a template render it
-          if (currentView.options.originalView !== true && currentView.model.getOption("template")) {
-            customRender = attributeTemplate.renderCustomView(currentView.model);
-            currentView.customView = customRender.$el;
-            currentView.$el.find(".dcpAttribute__content").append(currentView.customView);
-            customRender.promise.then(resolve);
-            customRender.promise["catch"](reject);
-          } else {
-            //there is not template render (default)
-            currentView.$el.one(
-              "dcpattributewidgetready .dcpAttribute__content",
-              function vattributeRender_widgetready() {
-                resolve();
+              currentView.$el.addClass("dcpAttribute--type--" + currentView.model.get("type"));
+              currentView.$el.addClass("dcpAttribute--visibility--" + currentView.model.get("visibility"));
+              currentView.$el.attr("data-attrid", currentView.model.get("id"));
+              if (currentView.model.get("needed")) {
+                currentView.$el.addClass("dcpAttribute--needed");
               }
-            );
-            currentView.currentDcpWidget = currentView.widgetInit(currentView.$el.find(".dcpAttribute__content"), data);
-          }
 
-          currentView.renderDone = true;
-          if (currentView.customView) {
-            currentView.widgetReady = true;
-          }
+              currentView.$el.append($(Mustache.render(currentView.templateWrapper || "", data)));
 
-          currentView.triggerRenderDone();
-          return currentView;
+              attributeTemplate.insertDescription(currentView);
+
+              //analyze the display label and add display class
+              if (currentView.displayLabel === false) {
+                currentView.$el.find(".dcpAttribute__label").remove();
+                // set to 100% width
+                currentView.$el.find(".dcpAttribute__right").addClass("dcpAttribute__right--full");
+              } else {
+                if (currentView.model.getOption("labelPosition") === "left") {
+                  currentView.$el.addClass("dcpAttribute__labelPosition--left");
+                  currentView.$el
+                    .find(".dcpAttribute__right")
+                    .not(".dcpAttribute__description")
+                    .addClass("dcpAttribute__labelPosition--left");
+                  currentView.$el
+                    .find(".dcpAttribute__left")
+                    .not(".dcpAttribute__description")
+                    .addClass("dcpAttribute__labelPosition--left");
+                }
+                if (currentView.model.getOption("labelPosition") === "up") {
+                  currentView.$el.addClass("dcpAttribute__labelPosition--up");
+                  currentView.$el
+                    .find(".dcpAttribute__right")
+                    .not(".dcpAttribute__description")
+                    .addClass("dcpAttribute__labelPosition--up");
+                  currentView.$el
+                    .find(".dcpAttribute__left")
+                    .not(".dcpAttribute__description")
+                    .addClass("dcpAttribute__labelPosition--up");
+                }
+                if (currentView.model.getOption("labelPosition") === "auto") {
+                  currentView.$el.addClass("dcpAttribute__labelPosition--auto");
+                  currentView.$el.find(".dcpAttribute__right").addClass("dcpAttribute__labelPosition--auto");
+                  currentView.$el.find(".dcpAttribute__left").addClass("dcpAttribute__labelPosition--auto");
+                }
+                currentView.$el.find(".dcpAttribute__label").dcpLabel(data);
+              }
+
+              //If there is a template render it
+              if (currentView.options.originalView !== true && currentView.model.getOption("template")) {
+                customRender = attributeTemplate.renderCustomView(currentView.model);
+                currentView.customView = customRender.$el;
+                currentView.$el.find(".dcpAttribute__content").append(currentView.customView);
+                customRender.promise.then(resolve);
+                customRender.promise["catch"](reject);
+              } else {
+                //there is not template render (default)
+                currentView.$el.one(
+                  "dcpattributewidgetready .dcpAttribute__content",
+                  function vattributeRender_widgetready() {
+                    resolve();
+                  }
+                );
+                currentView.currentDcpWidget = currentView.widgetInit(
+                  currentView.$el.find(".dcpAttribute__content"),
+                  data
+                );
+              }
+
+              currentView.renderDone = true;
+              if (currentView.customView) {
+                currentView.widgetReady = true;
+              }
+
+              currentView.triggerRenderDone();
+            },
+            () => {
+              resolve();
+            }
+          );
         }, this)
       );
       return renderPromise;

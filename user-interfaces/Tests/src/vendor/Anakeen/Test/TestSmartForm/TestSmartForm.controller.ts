@@ -87,20 +87,18 @@ export default class TestSmartFormController extends Vue {
   }
   public mounted() {
     this.$refs.smartExampleRef.selectExample(0);
-    this.$nextTick(() => {
-      this.$refs.smartFormRef.addEventListener("ready", (event, data) => {
-        console.log("ready", event, data);
-      });
-      this.$refs.smartFormRef.addEventListener("change", (event, data) => {
-        console.log("change", event, data);
-      });
+    this.$refs.smartFormRef.$on("ready", (event, data) => {
+      console.log("ready", event, data);
+    });
+    this.$refs.smartFormRef.$on("smartFieldChange", (event, data) => {
+      console.log("change", event, data);
+    });
 
-      this.$refs.smartFormRef.addEventListener("beforeSave", (event, data) => {
-        console.log("change", event, data);
-      });
-      this.$refs.smartFormRef.addEventListener("actionClick", (event, data, options) => {
-        console.log("action", options.eventId);
-      });
+    this.$refs.smartFormRef.$on("beforeSave", (event, data) => {
+      console.log("change", event, data);
+    });
+    this.$refs.smartFormRef.$on("actionClick", (event, data, options) => {
+      console.log("action", options.eventId);
     });
   }
 }

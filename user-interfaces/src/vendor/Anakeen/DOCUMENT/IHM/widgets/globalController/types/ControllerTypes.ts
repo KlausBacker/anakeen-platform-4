@@ -30,25 +30,21 @@ export namespace AnakeenController {
   export namespace BusEvents {
     export type ListenableEventCallableArgs = any[];
 
-    export type ListenableEventCallable = (
-      ...args: ListenableEventCallableArgs
-    ) => void;
+    export type ListenableEventCallable = (...args: ListenableEventCallableArgs) => void;
 
-    export interface ListenableEventOptions {
+    export interface IListenableEventOptions {
       eventCallback: ListenableEventCallable;
       [key: string]: any;
     }
 
-    export type ListenableEvent = ListenableEventOptions;
+    export type ListenableEvent = IListenableEventOptions;
 
-    export interface ListenableEvents {
+    export interface IListenableEvents {
       [key: string]: ListenableEvent[];
     }
 
     export class Listenable {
-      private static _getEventCallback(
-        eventCb: ListenableEventCallable | ListenableEvent
-      ): ListenableEvent {
+      private static _getEventCallback(eventCb: ListenableEventCallable | ListenableEvent): ListenableEvent {
         if (eventCb) {
           if (typeof eventCb === "function") {
             return {
@@ -60,30 +56,25 @@ export namespace AnakeenController {
         }
         return null;
       }
-      protected _events: ListenableEvents;
+      // tslint:disable-next-line:variable-name
+      protected _events: IListenableEvents;
 
       constructor() {
         this._events = {};
       }
 
-      public getEventsList(): ListenableEvents {
+      public getEventsList(): IListenableEvents {
         return this._events;
       }
 
-      public on(
-        eventName: string,
-        eventCb: ListenableEventCallable | ListenableEvent
-      ) {
+      public on(eventName: string, eventCb: ListenableEventCallable | ListenableEvent) {
         if (eventCb) {
           this._events[eventName] = this._events[eventName] || [];
           this._events[eventName].push(Listenable._getEventCallback(eventCb));
         }
       }
 
-      public once(
-        eventName: string,
-        eventCb: ListenableEventCallable | ListenableEvent
-      ) {
+      public once(eventName: string, eventCb: ListenableEventCallable | ListenableEvent) {
         const wrapperCallback = (...args: ListenableEventCallableArgs) => {
           const originalCb = Listenable._getEventCallback(eventCb);
           originalCb.eventCallback(...args);
@@ -92,10 +83,7 @@ export namespace AnakeenController {
         this.on(eventName, wrapperCallback);
       }
 
-      public off(
-        eventName,
-        callback?: ListenableEventCallable
-      ): ListenableEvent[] {
+      public off(eventName, callback?: ListenableEventCallable): ListenableEvent[] {
         if (!this._events[eventName]) {
           return;
         }
@@ -111,10 +99,7 @@ export namespace AnakeenController {
             }
             return -1;
           };
-          const index = findIndex(
-            this._events[eventName],
-            e => e.callback === eventCb.eventCallback
-          );
+          const index = findIndex(this._events[eventName], e => e.callback === eventCb.eventCallback);
           if (index > -1) {
             return this._events[eventName].splice(index, 1);
           }
@@ -146,51 +131,51 @@ export namespace AnakeenController {
     export const EVENTS_LIST = [
       "beforeRender",
       "ready",
-      "change",
+      "smartFieldChange",
       "displayMessage",
       "displayError",
       "validate",
-      "attributeBeforeRender",
-      "attributeReady",
-      "attributeHelperSearch",
-      "attributeHelperResponse",
-      "attributeHelperSelect",
-      "attributeArrayChange",
+      "smartFieldBeforeRender",
+      "smartFieldReady",
+      "smartFieldHelperSearch",
+      "smartFieldHelperResponse",
+      "smartFieldHelperSelect",
+      "smartFieldArrayChange",
       "actionClick",
-      "attributeAnchorClick",
+      "smartFieldAnchorClick",
       "beforeClose",
       "close",
       "beforeSave",
       "afterSave",
-      "attributeDownloadFile",
-      "attributeUploadFile",
-      "attributeUploadFileDone",
+      "smartFieldDownloadFile",
+      "smartFieldUploadFile",
+      "smartFieldUploadFileDone",
       "beforeDelete",
       "afterDelete",
       "beforeRestore",
       "afterRestore",
       "failTransition",
       "successTransition",
-      "attributeBeforeTabSelect",
-      "attributeAfterTabSelect",
-      "attributeTabChange",
+      "smartFieldBeforeTabSelect",
+      "smartFieldAfterTabSelect",
+      "smartFieldTabChange",
       "beforeDisplayTransition",
       "afterDisplayTransition",
       "beforeTransition",
       "beforeTransitionClose",
       "destroy",
-      "attributeCreateDialogDocumentBeforeSetFormValues",
-      "attributeCreateDialogDocumentBeforeSetTargetValue",
-      "attributeCreateDialogDocumentReady",
-      "attributeCreateDialogDocumentBeforeClose",
-      "attributeCreateDialogDocumentBeforeDestroy",
+      "smartFieldCreateDialogSmartElementBeforeSetFormValues",
+      "smartFieldCreateDialogSmartElementBeforeSetTargetValue",
+      "smartFieldCreateDialogSmartElementReady",
+      "smartFieldCreateDialogSmartElementBeforeClose",
+      "smartFieldCreateDialogSmartElementBeforeDestroy",
       "renderCss",
       "injectCurrentSmartElementJS"
     ];
 
     export interface ISmartElementAPI {
       /**
-       * Reinit the current document (close it and re-open it) : keep the same view, revision, etc...
+       * Reinit the current smartElement (close it and re-open it) : keep the same view, revision, etc...
        *
        * @param values object {"initid" : int, "revision" : int, "viewId" : string, "customClientData" : mixed}
        * @param options object {"success": fct, "error", fct}
@@ -198,14 +183,14 @@ export namespace AnakeenController {
       reinitSmartElement(values, options?);
 
       /**
-       * Fetch a new document
+       * Fetch a new smartElement
        * @param values object {"initid" : int, "revision" : int, "viewId" : string, "customClientData" : mixed}
        * @param options object {"success": fct, "error", fct}
        */
       fetchSmartElement(values, options);
 
       /**
-       * Save the current document
+       * Save the current smartElement
        * Reload the interface in the same mode
        * @param options object {"success": fct, "error", fct, "customClientData" : mixed}
        *
@@ -213,7 +198,7 @@ export namespace AnakeenController {
       saveSmartElement(options);
 
       /**
-       * Change the workflow state of the document
+       * Change the workflow state of the smartElement
        *
        * @param parameters
        * @param reinitOptions
@@ -222,14 +207,14 @@ export namespace AnakeenController {
       changeStateSmartElement(parameters, reinitOptions, options);
 
       /**
-       * Delete the current document
+       * Delete the current smartElement
        * Reload the interface in the same mode
        * @param options object {"success": fct, "error", fct, "customClientData" : mixed}
        */
       deleteSmartElement(options);
 
       /**
-       * Restore the current document
+       * Restore the current smartElement
        * Reload the interface in the same mode
        * @param options object {"success": fct, "error", fct, "customClientData" : mixed}
        */
@@ -252,25 +237,25 @@ export namespace AnakeenController {
       /**
        * Check if an attribute exist
        *
-       * @param attributeId
+       * @param smartFieldId
        * @return {boolean}
        */
-      hasAttribute(attributeId);
+      hasSmartField(smartFieldId);
 
       /**
        * Get the attribute interface object
        * Return null if attribute not found
-       * @param attributeId
+       * @param smartFieldId
        * @returns AttributeInterface|null
        */
-      getAttribute(attributeId);
+      getSmartField(smartFieldId);
 
       /**
-       * Get all the attributes of the current document
+       * Get all the attributes of the current smartElement
        *
        * @returns [AttributeInterface]
        */
-      getAttributes();
+      getSmartFields();
 
       /**
        * Check if a menu exist
@@ -289,7 +274,7 @@ export namespace AnakeenController {
       getMenu(menuId);
 
       /**
-       * Get all the menu of the current document
+       * Get all the menu of the current smartElement
        *
        * @returns [MenuInterface]
        */
@@ -314,11 +299,11 @@ export namespace AnakeenController {
       /**
        * Get an attribute value
        *
-       * @param attributeId
+       * @param smartFieldId
        * @param type string (current|previous|initial|all) what kind of value (default : current)
        * @returns {*}
        */
-      getValue(attributeId, type);
+      getValue(smartFieldId, type);
 
       /**
        * Get all the values
@@ -337,13 +322,13 @@ export namespace AnakeenController {
        * Add customData from render view model
        * @returns {*}
        */
-      addCustomClientData(documentCheck, value);
+      addCustomClientData(smartElementCheck, value);
 
       /**
        * Get customData from render view model
        * @returns {*}
        */
-      setCustomClientData(documentCheck, value);
+      setCustomClientData(smartElementCheck, value);
 
       /**
        * Get customData from render view model
@@ -361,40 +346,40 @@ export namespace AnakeenController {
        * Set a value
        * Trigger a change event
        *
-       * @param attributeId string attribute identifier
+       * @param smartFieldId string attribute identifier
        * @param value object { "value" : *, "displayValue" : *}
        * @returns {*}
        */
-      setValue(attributeId, value);
+      setValue(smartFieldId, value);
 
       /**
        * Add a row to an array
        *
-       * @param attributeId string attribute array
+       * @param smartFieldId string attribute array
        * @param values object { "attributeId" : { "value" : *, "displayValue" : * }, ...}
        */
-      appendArrayRow(attributeId, values);
+      appendArrayRow(smartFieldId, values);
 
       /**
        * Add a row before another row
        *
-       * @param attributeId string attribute array
+       * @param smartFieldId string attribute array
        * @param values object { "attributeId" : { "value" : *, "displayValue" : * }, ...}
        * @param index int index of the row
        */
-      insertBeforeArrayRow(attributeId, values, index);
+      insertBeforeArrayRow(smartFieldId, values, index);
 
       /**
        * Remove an array row
-       * @param attributeId string attribute array
+       * @param smartFieldId string attribute array
        * @param index int index of the row
        */
-      removeArrayRow(attributeId, index);
+      removeArrayRow(smartFieldId, index);
 
       /**
        * Add a constraint to the widget
        *
-       * @param options object { "name" : string, "documentCheck": function}
+       * @param options object { "name" : string, "check": function}
        * @param callback function callback called when the event is triggered
        * @returns {*}
        */
@@ -420,7 +405,7 @@ export namespace AnakeenController {
        * Add an event to the widget
        *
        * @param eventType string kind of event
-       * @param options object { "name" : string, "documentCheck": function}
+       * @param options object { "name" : string, "check": function}
        * @param callback function callback called when the event is triggered
        * @returns {*|Window.options.name}
        */
@@ -452,16 +437,16 @@ export namespace AnakeenController {
       /**
        * Hide a visible attribute
        *
-       * @param attributeId
+       * @param smartFieldId
        */
-      hideAttribute(attributeId);
+      hideSmartField(smartFieldId);
 
       /**
        * show a visible attribute (previously hidden)
        *
-       * @param attributeId
+       * @param smartFieldId
        */
-      showAttribute(attributeId);
+      showSmartField(smartFieldId);
 
       /**
        * Display a message to the user
@@ -486,19 +471,19 @@ export namespace AnakeenController {
       /**
        * Add an error message to an attribute
        *
-       * @param attributeId
+       * @param smartFieldId
        * @param message
        * @param index
        */
-      setAttributeErrorMessage(attributeId, message, index);
+      setSmartFieldErrorMessage(smartFieldId, message, index);
 
       /**
        * Clean the error message of an attribute
        *
-       * @param attributeId
+       * @param smartFieldId
        * @param index
        */
-      cleanAttributeErrorMessage(attributeId, index);
+      cleanSmartFieldErrorMessage(smartFieldId, index);
 
       injectCSS(cssToInject);
 
@@ -552,9 +537,7 @@ export namespace AnakeenController {
       getOptions(): { [optionName: string]: any };
       getOption(optionId: string): string | object | null;
       setOption(optionId: string, value: any): void;
-      getValue(
-        type: "current" | "previous" | "initial"
-      ): { value: string | number; displayValue: string };
+      getValue(type: "current" | "previous" | "initial"): { value: string | number; displayValue: string };
       getValue(
         type: "all"
       ): {
@@ -565,7 +548,7 @@ export namespace AnakeenController {
       setValue(
         newValue:
           | { value: string | number; displayValue?: string }
-          | { value: string | number; displayValue?: string }[]
+          | Array<{ value: string | number; displayValue?: string }>
       ): void;
       getLabel(): string;
       setLabel(newLabel: string): void;

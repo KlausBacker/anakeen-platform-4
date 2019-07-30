@@ -1,4 +1,5 @@
 /*global define, console */
+
 define([
   "jquery",
   "underscore",
@@ -10,7 +11,8 @@ define([
   "dcpDocument/models/mFamilyStructure",
   "dcpDocument/collections/attributes",
   "dcpDocument/collections/menus",
-  "dcpDocument/i18n/documentCatalog"
+  "dcpDocument/i18n/documentCatalog",
+  "dcpDocument/widgets/globalController/utils/EventUtils"
 ], function mDocument(
   $,
   _,
@@ -22,7 +24,8 @@ define([
   FamilyStructure,
   CollectionAttributes,
   CollectionMenus,
-  i18n
+  i18n,
+  EventPromiseUtils
 ) {
   "use strict";
 
@@ -1304,9 +1307,11 @@ define([
               _.union(["dduiDocumentFail", currentModel], values.promiseArguments)
             );
           } else if (
-            values.promiseArguments &&
-            values.promiseArguments[0] &&
-            values.promiseArguments[0].eventPrevented
+            !(
+              values.promiseArguments &&
+              values.promiseArguments[0] &&
+              values.promiseArguments[0].eventPrevented === true
+            )
           ) {
             currentModel.trigger.apply(
               currentModel,
@@ -1326,8 +1331,7 @@ define([
 
       //Trigger (synchronous) before close event
       this.trigger("beforeClose", beforeCloseReturn, values, this._customClientData);
-
-      const beforeClosePromise = this._getBeforeEventPromise(
+      const beforeClosePromise = EventPromiseUtils.getBeforeEventPromise(
         beforeCloseReturn,
         () => {
           if (options.force === true) {
@@ -1348,7 +1352,7 @@ define([
           globalCallback.error({ eventPrevented: true });
         }
       );
-      return beforeClosePromise.then(() => globalCallback.promise);
+      return beforeClosePromise.finally(() => globalCallback.promise);
     },
 
     saveDocument: function mDocumentSaveDocument(attributes, options) {
@@ -1365,7 +1369,7 @@ define([
       }
       this.trigger("beforeSave", beforeSaveEvent, this._customClientData);
 
-      const beforeSavePromise = this._getBeforeEventPromise(
+      const beforeSavePromise = EventPromiseUtils.getBeforeEventPromise(
         beforeSaveEvent,
         () => {
           saveCallback.promise.then(
@@ -1443,28 +1447,32 @@ define([
       }
       this.trigger("beforeDelete", beforeDeleteEvent, this._customClientData);
 
-      if (beforeDeleteEvent.prevent !== false) {
-        globalCallback.error({ eventPrevented: true });
-      } else {
-        this.trigger("displayLoading");
-        deleteCallback.promise.then(
-          function mDocument_deleteDone() {
-            currentModel.fetchDocument({ initid: currentModel.get("initid") }).then(
-              function mDocument_afterDeleteLoadDone() {
-                globalCallback.success();
-              },
-              function mDocument_afterDeleteLoadFail() {
-                globalCallback.error.apply(currentModel, arguments);
-              }
-            );
-          },
-          function mDocument_deleteFail() {
-            globalCallback.error.apply(currentModel, arguments);
-          }
-        );
+      const preventPromise = EventPromiseUtils.getBeforeEventPromise(
+        beforeDeleteEvent,
+        () => {
+          this.trigger("displayLoading");
+          deleteCallback.promise.then(
+            function mDocument_deleteDone() {
+              currentModel.fetchDocument({ initid: currentModel.get("initid") }).then(
+                function mDocument_afterDeleteLoadDone() {
+                  globalCallback.success();
+                },
+                function mDocument_afterDeleteLoadFail() {
+                  globalCallback.error.apply(currentModel, arguments);
+                }
+              );
+            },
+            function mDocument_deleteFail() {
+              globalCallback.error.apply(currentModel, arguments);
+            }
+          );
 
-        this.sync("delete", this, deleteCallback);
-      }
+          this.sync("delete", this, deleteCallback);
+        },
+        () => {
+          globalCallback.error({ eventPrevented: true });
+        }
+      );
 
       globalCallback.promise.then(
         function onDeleteSuccess(values) {
@@ -1488,7 +1496,7 @@ define([
         }
       );
 
-      return globalCallback.promise;
+      return preventPromise.finally(() => globalCallback.promise);
     },
 
     restoreDocument: function mDocumentRestoreDocument(options) {
@@ -1496,7 +1504,8 @@ define([
         restoreCallback = this._promiseCallback(),
         beforeRestoreEvent = { prevent: false },
         currentModel = this,
-        serverProperties = this.getServerProperties();
+        serverProperties = this.getServerProperties(),
+        preventPromise = Promise.resolve();
 
       options = options || {};
 
@@ -1506,30 +1515,34 @@ define([
         }
         this.trigger("beforeRestore", beforeRestoreEvent, this._customClientData);
 
-        if (beforeRestoreEvent.prevent !== false) {
-          globalCallback.error({ eventPrevented: true });
-        } else {
-          this.trigger("displayLoading", { isSaving: true });
+        preventPromise = EventPromiseUtils.getBeforeEventPromise(
+          beforeRestoreEvent,
+          () => {
+            this.trigger("displayLoading", { isSaving: true });
 
-          restoreCallback.promise.then(
-            function mDocument_restoreDocument_Success() {
-              currentModel._loadDocument(currentModel).then(
-                function mDocument_restoreDocument_loadSuccess() {
-                  globalCallback.success();
-                },
-                function mDocument_restoreDocument_loadFail() {
-                  globalCallback.error.apply(currentModel, arguments);
-                }
-              );
-            },
-            function mDocument_restoreDocument_Fail() {
-              globalCallback.error.apply(currentModel, arguments);
-            }
-          );
+            restoreCallback.promise.then(
+              function mDocument_restoreDocument_Success() {
+                currentModel._loadDocument(currentModel).then(
+                  function mDocument_restoreDocument_loadSuccess() {
+                    globalCallback.success();
+                  },
+                  function mDocument_restoreDocument_loadFail() {
+                    globalCallback.error.apply(currentModel, arguments);
+                  }
+                );
+              },
+              function mDocument_restoreDocument_Fail() {
+                globalCallback.error.apply(currentModel, arguments);
+              }
+            );
 
-          this.get("properties").set("status", "alive");
-          currentModel.save({}, restoreCallback);
-        }
+            this.get("properties").set("status", "alive");
+            currentModel.save({}, restoreCallback);
+          },
+          () => {
+            globalCallback.error({ eventPrevented: true });
+          }
+        );
       } else {
         globalCallback.error({
           systemError: true,
@@ -1562,41 +1575,9 @@ define([
         }
       );
 
-      return globalCallback.promise;
+      return preventPromise.finally(() => globalCallback.promise);
     },
 
-    /**
-     *
-     */
-    _getBeforeEventPromise: function mDocumentBeforeEventPromise(event, onBeforeContinue, onBeforePrevent) {
-      let beforePromise = Promise.resolve();
-      // Promise based prevent event
-      if (event && event.promise && (event.promise instanceof Promise || typeof event.promise.then === "function")) {
-        beforePromise = event.promise
-          .then(() => {
-            if (typeof onBeforeContinue === "function") {
-              onBeforeContinue();
-            }
-          })
-          .catch(() => {
-            if (typeof onBeforePrevent === "function") {
-              onBeforePrevent();
-            }
-          });
-      } else {
-        // Traditional event prevent
-        if (event.prevent === false) {
-          if (typeof onBeforeContinue === "function") {
-            onBeforeContinue();
-          }
-        } else {
-          if (typeof onBeforePrevent === "function") {
-            onBeforePrevent();
-          }
-        }
-      }
-      return beforePromise;
-    },
     /**
      * Get complementary data : family structure
      */

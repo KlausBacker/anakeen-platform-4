@@ -126,12 +126,8 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
    * @param args
    */
   public execute(scopeId: ControllerUID, operation: string, ...args: any[]) {
-    this._dispatcher.dispatch(scopeId, operation, ...args);
+    return this._dispatcher.dispatch(scopeId, operation, ...args);
   }
-
-  // public addEventListener(eventType: string, options: object, callback) {
-  //
-  // }
 
   /**
    * Add global event listener
@@ -353,11 +349,25 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
       const promises = customJS.map(jsPath => {
         const promisify = Promise.resolve();
         if (typeof this._scripts[jsPath] === "function") {
+          // eslint-disable-next-line no-useless-catch
           try {
-            const returnFunction: any = this._scripts[jsPath].call(this, this.scope(event.controller.uid));
+            const scopedController = this.scope(event.controller.uid);
+            // @ts-ignore
+            scopedController._defaultPersistent = false;
+            const returnFunction: any = this._scripts[jsPath].call(this, scopedController);
             // If returnFunction is Promise => handle async operation, else immediately resolve
-            return () => promisify.then(() => returnFunction);
+            return () =>
+              promisify
+                .then(() => {
+                  // @ts-ignore
+                  scopedController._defaultPersistent = true;
+                  return returnFunction;
+                })
+                .catch(err => {
+                  throw err;
+                });
           } catch (err) {
+            console.error(err);
             throw err;
           }
         }
