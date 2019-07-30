@@ -169,9 +169,11 @@ class HubBusinessAppBehavior extends Hubconfigurationvue
         $image = $this->getAttributeValue(HubBusinessAppFields::hba_icon_image);
         if (!empty($image)) {
             $fileInfo = $this->getFileInfo($image);
-            $imgValue = base64_encode(file_get_contents($fileInfo["path"]));
-            $src = 'data: '.$fileInfo["mime_s"].';base64,'.$imgValue;
-            return "<img src='" .$src. "' width='32' height='32'/>";
+            if (file_exists($fileInfo["path"])) {
+                $imgValue = base64_encode(file_get_contents($fileInfo["path"]));
+                $src = 'data: ' . $fileInfo["mime_s"] . ';base64,' . $imgValue;
+                return "<img src='" . $src . "' width='32' height='32'/>";
+            }
         }
         return "<img width='32' height='32' src='/CORE/Images/core-noimage.png'/>";
     }
