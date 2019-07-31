@@ -2272,7 +2272,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
               if (window.console.warn) {
                 window.console.warn('Callback "success" is deprecated use promise instead');
               }
-              options.success.call($(this._element), values.documentProperties || {}, this.getProperties());
+              options.success.call($(this._element), (values ? values.documentProperties : {}) || {}, this.getProperties());
             } catch (exception) {
               // @ts-ignore
               if (window.dcp.logger) {
@@ -2286,7 +2286,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
           resolve({
             element: $(this._element),
             nextDocument: this.getProperties(),
-            previousDocument: values.documentProperties || {}
+            previousDocument: (values ? values.documentProperties : {}) || {}
           });
         },
         values => {
@@ -2336,7 +2336,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     const $element = $(this._element);
     // let uniqueName = (newEvent.externalEvent ? "external_" : "internal_") + newEvent.name;
     const currentElementProperties = this.getProperties();
-    if (newEvent.persistent) {
+    if (newEvent._persistent) {
       if (newEvent.once) {
         this._registeredListeners.once(newEvent.eventType, newEvent);
       } else {

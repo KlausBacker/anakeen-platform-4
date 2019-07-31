@@ -1131,7 +1131,7 @@ define([
               function mDocument_injectJSDone(/*values*/) {
                 resolve({
                   documentProperties: properties,
-                  successpromiseArguments: arguments
+                  promiseArguments: arguments
                 });
               },
               function mDocument_injectJSFail() {
