@@ -6,7 +6,6 @@ import { AnakeenController } from "./types/ControllerTypes";
 import DOMReference = AnakeenController.Types.DOMReference;
 import ViewData = AnakeenController.Types.IViewData;
 import ControllerUniqueID = AnakeenController.Types.ControllerUID;
-import EVENTS_LIST = AnakeenController.SmartElement.EVENTS_LIST;
 
 interface IControllersMap {
   [key: string]: SmartElementController;
@@ -18,9 +17,10 @@ export default class ControllerDispatcher extends AnakeenController.BusEvents.Li
     const controller = this.getController(scopeId);
     if (controller) {
       if (typeof controller[action] === "function") {
-        controller[action].call(controller[action], ...args);
+        return controller[action].call(controller[action], ...args);
       }
     }
+    return null;
   }
 
   public initController(dom: DOMReference, viewData: ViewData, options?) {

@@ -1,38 +1,4 @@
-export const SmartElementEvents = [
-  "beforeRender",
-  "ready",
-  "change",
-  "displayMessage",
-  "displayError",
-  "validate",
-  "attributeBeforeRender",
-  "attributeReady",
-  "attributeHelperSearch",
-  "attributeHelperResponse",
-  "attributeHelperSelect",
-  "attributeArrayChange",
-  "actionClick",
-  "attributeAnchorClick",
-  "beforeClose",
-  "close",
-  "beforeSave",
-  "afterSave",
-  "attributeDownloadFile",
-  "attributeUploadFile",
-  "beforeDelete",
-  "afterDelete",
-  "beforeRestore",
-  "afterRestore",
-  "failTransition",
-  "successTransition",
-  "beforeDisplayTransition",
-  "afterDisplayTransition",
-  "beforeTransition",
-  "beforeTransitionClose",
-  "destroy",
-  "attributeCreateDialogDocumentBeforeSetFormValues",
-  "attributeCreateDialogDocumentBeforeSetTargetValue",
-  "attributeCreateDialogDocumentReady",
-  "attributeCreateDialogDocumentBeforeClose",
-  "attributeCreateDialogDocumentBeforeDestroy"
-];
+import { AnakeenController } from "../../../src/vendor/Anakeen/DOCUMENT/IHM/widgets/globalController/types/ControllerTypes";
+import EVENTS_LIST = AnakeenController.SmartElement.EVENTS_LIST;
+
+export const SmartElementEvents = EVENTS_LIST;

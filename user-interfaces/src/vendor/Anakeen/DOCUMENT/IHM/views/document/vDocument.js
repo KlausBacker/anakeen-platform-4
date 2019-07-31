@@ -15,6 +15,7 @@ define([
   "dcpDocument/models/mTransitionGraph",
   "dcpDocument/views/workflow/vTransitionGraph",
   "dcpDocument/i18n/documentCatalog",
+  "dcpDocument/widgets/globalController/utils/EventUtils",
   "dcpDocument/widgets/history/wHistory",
   "dcpDocument/widgets/properties/wProperties"
 ], function vDocument(
@@ -31,7 +32,8 @@ define([
   attributeTemplate,
   ModelTransitionGraph,
   ViewTransitionGraph,
-  i18n
+  i18n,
+  EventPromiseUtils
 ) {
   "use strict";
 
@@ -130,7 +132,7 @@ define([
       this.selectedTab = this.model.getOption("openFirstTab");
       this.model.trigger("beforeRender", event);
 
-      this._getBeforeEventPromise(event, () => {
+      EventPromiseUtils.getBeforeEventPromise(event, () => {
         this.template = this.getTemplates("body").trim();
         this.partials = this.getTemplates("sections");
 
@@ -1469,39 +1471,6 @@ define([
       $(window.document).off("." + this.model.cid);
 
       return Backbone.View.prototype.remove.call(this);
-    },
-
-    /**
-     *
-     */
-    _getBeforeEventPromise: function mDocumentBeforeEventPromise(event, onBeforeContinue, onBeforePrevent) {
-      let beforePromise = Promise.resolve();
-      // Promise based prevent event
-      if (event && event.promise && (event.promise instanceof Promise || typeof event.promise.then === "function")) {
-        beforePromise = event.promise
-          .then(() => {
-            if (typeof onBeforeContinue === "function") {
-              onBeforeContinue();
-            }
-          })
-          .catch(() => {
-            if (typeof onBeforePrevent === "function") {
-              onBeforePrevent();
-            }
-          });
-      } else {
-        // Traditional event prevent
-        if (event.prevent === false) {
-          if (typeof onBeforeContinue === "function") {
-            onBeforeContinue();
-          }
-        } else {
-          if (typeof onBeforePrevent === "function") {
-            onBeforePrevent();
-          }
-        }
-      }
-      return beforePromise;
     }
   });
 });
