@@ -11,6 +11,10 @@ define(["jquery", "underscore"], function libSmartForm($, _) {
         }
       }
       field.id = field.name;
+      if (field.multiple === true) {
+        field.options = field.options || {};
+        field.options.multiple = "yes";
+      }
       flatStruct.push(field);
       if (field.content) {
         flatStruct = _.union(flatStruct, _flatTheStructure(field.content, field));

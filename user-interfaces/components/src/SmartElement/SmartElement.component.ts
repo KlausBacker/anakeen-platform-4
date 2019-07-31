@@ -8,6 +8,7 @@ import { AnakeenController } from "../../../src/vendor/Anakeen/DOCUMENT/IHM/widg
 import VueSetup from "../setup.js";
 import { ISmartElementValue } from "./ISmartElementValue";
 import EVENTS_LIST = AnakeenController.SmartElement.EVENTS_LIST;
+import { ISmartFormValue } from "../SmartForm/ISmartForm";
 
 Vue.use(VueSetup);
 @Component({
@@ -35,6 +36,10 @@ export default class AnkSmartElement extends Vue {
   @Prop({ type: Number, default: -1 }) public revision!: number;
 
   public smartElementWidget: SmartElementController = null;
+
+  get smartFieldValues(): any {
+    return this.getValues();
+  }
 
   public mounted() {
     if (this.initialData.initid.toString() !== "0") {

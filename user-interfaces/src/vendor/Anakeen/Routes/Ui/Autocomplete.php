@@ -2,6 +2,7 @@
 
 namespace Anakeen\Routes\Ui;
 
+use Anakeen\Core\SmartStructure\BasicAttribute;
 use Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod;
 use Anakeen\Core\SmartStructure\NormalAttribute;
 use Anakeen\Router\Exception;
@@ -43,7 +44,7 @@ class Autocomplete
      * Use Create but it is a GET
      * But data are requested in a $_POST because they are numerous
      *
-     * @param \Slim\Http\request  $request
+     * @param \Slim\Http\request $request
      * @param \Slim\Http\response $response
      * @param                     $args
      *
@@ -69,18 +70,38 @@ class Autocomplete
         $attrId = $this->attributeId;
 
 
-        if ($documentId !== "0") {
-            $this->currentElement = SmartElementManager::getDocument($documentId);
+        if ($documentId < 0 && $this->contentParameters["fieldInfo"]) {
+            $fieldInfo = $this->contentParameters["fieldInfo"];
+            $attributeObject = new NormalAttribute(
+                $fieldInfo["id"],
+                $this->contentParameters["fromid"],
+                $fieldInfo["label"]??"",
+                $fieldInfo["type"],
+                $fieldInfo["typeFormat"]??"",
+                false,
+                1,
+                "",
+                BasicAttribute::READWRITE_ACCESS
+            );
+            if (isset($fieldInfo["options"])) {
+                foreach ($fieldInfo["options"] as $optName => $optValue) {
+                    $attributeObject->setOption($optName, $optValue);
+                }
+            }
         } else {
-            $fromid = $this->contentParameters["fromid"];
-            $this->currentElement = SEManager::getFamily($fromid);
+            if ($documentId !== "0") {
+                $this->currentElement = SmartElementManager::getDocument($documentId);
+            } else {
+                $fromid = $this->contentParameters["fromid"];
+                $this->currentElement = SEManager::getFamily($fromid);
+            }
+
+            if (!$this->currentElement) {
+                throw new Exception(sprintf(___("Document \"%s\" not found ", "ddui"), $documentId));
+            }
+            $attributeObject = $this->currentElement->getAttribute($attrId);
         }
 
-        if (!$this->currentElement) {
-            throw new Exception(sprintf(___("Document \"%s\" not found ", "ddui"), $documentId));
-        }
-
-        $attributeObject = $this->currentElement->getAttribute($attrId);
         if (!$attributeObject) {
             throw new Exception(sprintf(___("Attribute \"%s\" not found ", "ddui"), $attrId));
         }
@@ -103,7 +124,8 @@ class Autocomplete
                 return $this->accountAutocomplete($attributeObject);
             default:
                 $response = new SmartAutocompleteResponse();
-                $response->setError(sprintf(___("Incompatible type \"%s\" for autocomplete", "autocomplete"), $attributeObject->type));
+                $response->setError(sprintf(___("Incompatible type \"%s\" for autocomplete", "autocomplete"),
+                    $attributeObject->type));
                 return $response;
         }
     }
@@ -130,7 +152,10 @@ class Autocomplete
             }
         }
 
-        $parse->inputs["smartstructure"] = new \Anakeen\Core\SmartStructure\Callables\InputArgument($attributeObject->format, "string");
+        $parse->inputs["smartstructure"] = new \Anakeen\Core\SmartStructure\Callables\InputArgument(
+            $attributeObject->format,
+            "string"
+        );
         if ($idType !== "initid") {
             $parse->inputs["revised"] = new \Anakeen\Core\SmartStructure\Callables\InputArgument(true, "string");
         }
@@ -145,7 +170,8 @@ class Autocomplete
         $parse->methodName = "getAccounts";
         $parse->outputs = [$attributeObject->id];
 
-        $parse->inputs["smartstructure"] = new \Anakeen\Core\SmartStructure\Callables\InputArgument($attributeObject->format, "string");
+        $parse->inputs["smartstructure"] = new \Anakeen\Core\SmartStructure\Callables\InputArgument($attributeObject->format,
+            "string");
 
         $options = $attributeObject->getOptions();
         foreach ($options as $k => $v) {
@@ -209,7 +235,8 @@ class Autocomplete
                 $message->type = \Anakeen\Routes\Core\Lib\ApiMessage::MESSAGE;
 
                 if (!empty($this->contentParameters["filter"]["filters"][0]["value"])) {
-                    $message->contentHtml = sprintf(___("No matches \"<i>%s</i>\"", "ddui"), htmlspecialchars($this->contentParameters["filter"]["filters"][0]["value"]));
+                    $message->contentHtml = sprintf(___("No matches \"<i>%s</i>\"", "ddui"),
+                        htmlspecialchars($this->contentParameters["filter"]["filters"][0]["value"]));
                 } else {
                     $message->contentText = ___("No result found", "ddui");
                 }

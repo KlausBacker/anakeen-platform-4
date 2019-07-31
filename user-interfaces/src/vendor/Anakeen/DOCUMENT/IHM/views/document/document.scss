@@ -47,6 +47,7 @@ html {
 .dcpDocument__header {
   background-color: $ank-ui-menu-bg;
   border-bottom: solid 1px darken($ank-ui-menu-bg, 30);
+  padding: 0.5rem;
   width: 100%;
   z-index: 100;
   font-size: $ank-ui-header-title-size;
@@ -57,7 +58,6 @@ html {
 .dcpDocument__header__title {
   text-transform: uppercase;
   color: $text-color;
-  padding-left: 1rem;
   font-weight: bold;
 }
 
@@ -76,7 +76,6 @@ html {
   font-size: 1rem;
   float: right;
   font-style: italic;
-  margin-right: 10px;
 }
 
 .dcpDocument__footer {
@@ -205,7 +204,6 @@ body {
   padding-right: 0.5em;
   font-size: 1rem;
   align-self: flex-start;
-  padding-top: 0.4rem;
   color: $warning;
 }
 
