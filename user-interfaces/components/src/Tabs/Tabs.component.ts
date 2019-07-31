@@ -1,14 +1,15 @@
 import { Component, Prop, Provide, Vue, Watch } from "vue-property-decorator";
-import SETabsEvent from "./TabsEvent";
 import SETabsNav from "./TabNav/TabNav.vue";
+import SETabsEvent from "./TabsEvent";
+// eslint-disable-next-line no-unused-vars
 import { TabPosition, TabTypes } from "./TabsTypes";
 
 @Component({
-  // @ts-ignore
-  name: "ank-tabs",
   components: {
     "tabs-nav": SETabsNav
-  }
+  },
+  // @ts-ignore
+  name: "ank-tabs"
 })
 export default class Tabs extends Vue {
   @Prop({ type: String }) public value!: string;
@@ -25,33 +26,56 @@ export default class Tabs extends Vue {
   public tabPosition!: TabPosition;
   @Prop({ default: true, type: Boolean }) public tabsList!: boolean;
 
+  @Provide("rootTabs") public rootTabs = this;
+
+  public panes: Vue[] = [];
+  public selectedTab: string = this.value || this.selected;
+
+  public setSelectedTab(tabName) {
+    const event = new SETabsEvent(tabName);
+    this.$emit("tabBeforeLeave", event);
+    if (!event.isDefaultPrevented()) {
+      this.selectedTab = tabName;
+      this.$emit("input", tabName);
+    }
+  }
+
+  public created() {
+    if (!this.selectedTab) {
+      this.setSelectedTab("0");
+    }
+  }
+
+  public mounted() {
+    this.calcPaneInstances();
+  }
+
+  public updated() {
+    this.calcPaneInstances();
+  }
+
   @Watch("selected")
-  onSelectedPropChange(newValue) {
+  protected onSelectedPropChange(newValue) {
     this.setSelectedTab(newValue);
   }
 
   @Watch("value")
-  onValuePropChange(newValue) {
+  protected onValuePropChange(newValue) {
     this.setSelectedTab(newValue);
   }
 
   @Watch("selectedTab")
-  onSelectedTabDataChange(newValue, oldValue) {
+  protected onSelectedTabDataChange() {
     if (this.$refs.nav) {
       this.$nextTick(() => {
         // @ts-ignore
-        this.$refs.nav.$nextTick(_ => {
+        this.$refs.nav.$nextTick(() => {
           // @ts-ignore
           this.$refs.nav.scrollToActiveTab();
         });
       });
     }
   }
-
-  @Provide("rootTabs") rootTabs = this;
-
-  public panes: Vue[] = [];
-  public selectedTab: string = this.value || this.selected;
 
   protected calcPaneInstances() {
     if (this.$slots.default) {
@@ -67,12 +91,7 @@ export default class Tabs extends Vue {
       );
       // update indeed
       const panes = paneSlots.map(({ componentInstance }) => componentInstance);
-      if (
-        !(
-          panes.length === this.panes.length &&
-          panes.every((pane, index) => pane === this.panes[index])
-        )
-      ) {
+      if (!(panes.length === this.panes.length && panes.every((pane, index) => pane === this.panes[index]))) {
         this.panes = panes;
       }
     } else if (this.panes.length !== 0) {
@@ -81,13 +100,17 @@ export default class Tabs extends Vue {
   }
 
   protected onTabClick(tab, tabName, event) {
-    if (tab.disabled) return;
+    if (tab.disabled) {
+      return;
+    }
     this.setSelectedTab(tabName);
     this.$emit("tabClick", tab, event);
   }
 
   protected onTabRemove(pane, ev) {
-    if (pane.disabled) return;
+    if (pane.disabled) {
+      return;
+    }
     ev.stopPropagation();
     this.$emit("tabEdit", pane.paneName, "remove");
     this.$emit("tabRemove", pane.paneName);
@@ -100,28 +123,5 @@ export default class Tabs extends Vue {
 
   protected onTabListSelected(pane) {
     this.selectedTab = pane;
-  }
-
-  public setSelectedTab(tabName) {
-    const event = new SETabsEvent(tabName);
-    this.$emit("tabBeforeLeave", event);
-    if (!event.isDefaultPrevented()) {
-      this.selectedTab = tabName;
-      this.$emit("input", tabName);
-    }
-  }
-
-  created() {
-    if (!this.selectedTab) {
-      this.setSelectedTab("0");
-    }
-  }
-
-  public mounted() {
-    this.calcPaneInstances();
-  }
-
-  public updated() {
-    this.calcPaneInstances();
   }
 }

@@ -53,13 +53,18 @@ export default class AnkSmartElement extends Vue {
   public smartElementWidget: SmartElementController = null;
 
   public mounted() {
-    this._initController(this.initialData);
+    if (this.initialData.initid.toString() !== "0") {
+      this._initController(this.initialData);
+    }
   }
 
   public updated() {
-    this._initController(this.initialData);
-    if (this.isLoaded()) {
-      this.fetchSmartElement(this.initialData);
+    if (this.initialData.initid.toString() !== "0") {
+      if (!this.isLoaded()) {
+        this._initController(this.initialData);
+      } else if (this.isLoaded()) {
+        this.fetchSmartElement(this.initialData);
+      }
     }
   }
 
@@ -76,21 +81,25 @@ export default class AnkSmartElement extends Vue {
   }
 
   public fetchSmartElement(value, options?) {
-    this._initController(value, options);
-    return this.smartElementWidget.fetchSmartElement(value, options).catch(error => {
-      let errorMessage = "Undefined error";
-      if (error && error.errorMessage && error.errorMessage.contentText) {
-        console.error(error.errorMessage.contentText);
-        errorMessage = error.errorMessage.contentText;
-      } else {
-        console.error(error);
-      }
-      // @ts-ignore
-      if (!this.documentIsReady) {
-        this.$emit("internalComponentError", {}, {}, { message: errorMessage });
-      }
-      throw error;
-    });
+    if (!this.isLoaded()) {
+      this._initController(value, options);
+      return Promise.resolve();
+    } else {
+      return this.smartElementWidget.fetchSmartElement(value, options).catch(error => {
+        let errorMessage = "Undefined error";
+        if (error && error.errorMessage && error.errorMessage.contentText) {
+          console.error(error.errorMessage.contentText);
+          errorMessage = error.errorMessage.contentText;
+        } else {
+          console.error(error);
+        }
+        // @ts-ignore
+        if (!this.documentIsReady) {
+          this.$emit("internalComponentError", {}, {}, { message: errorMessage });
+        }
+        throw error;
+      });
+    }
   }
 
   public saveSmartElement(options) {
@@ -254,18 +263,17 @@ export default class AnkSmartElement extends Vue {
   }
 
   protected _initController(viewData, options = {}) {
-    if (!this.isLoaded() && viewData && viewData.initid !== 0) {
-      if (window.ank && window.ank.smartElement && window.ank.smartElement.globalController) {
-        const scopeId = window.ank.smartElement.globalController.addSmartElement(
-          // @ts-ignore
-          this.$refs.ankSEWrapper,
-          viewData,
-          options
-        );
-        this.smartElementWidget = window.ank.smartElement.globalController.scope(scopeId) as SmartElementController;
-        this.listenEvents();
-        this.$emit("documentLoaded");
-      }
+    if (window.ank && window.ank.smartElement && window.ank.smartElement.globalController) {
+      const scopeId = window.ank.smartElement.globalController.addSmartElement(
+        // @ts-ignore
+        this.$refs.ankSEWrapper,
+        viewData,
+        options
+      );
+      this.smartElementWidget = window.ank.smartElement.globalController.scope(scopeId) as SmartElementController;
+      this.listenEvents();
+      this.$emit("smartElementLoaded");
+      this.$emit("documentLoaded");
     }
   }
 
