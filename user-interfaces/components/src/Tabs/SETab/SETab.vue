@@ -10,19 +10,19 @@
   >
     <slot>
       <ank-smart-element
-        v-show="documentLoaded"
+        v-show="smartElementLoaded"
         :initid="identifier"
         :viewId="viewId"
         class="ank-se-tab-element"
         ref="smartElement"
-        @documentLoaded="onDocumentLoaded"
+        @documentLoaded="onSmartElementLoaded"
       ></ank-smart-element>
       <ank-loading
         class="ank-loading"
         :fullLabel="false"
         height="30px"
         fontColor="black"
-        v-if="!documentLoaded"
+        v-if="!smartElementLoaded"
       ></ank-loading>
     </slot>
   </div>

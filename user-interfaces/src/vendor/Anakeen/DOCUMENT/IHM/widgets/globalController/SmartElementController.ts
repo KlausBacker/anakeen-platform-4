@@ -1146,7 +1146,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
           currentEvent =>
             type !== "smartField" ||
             !_.isFunction(currentEvent.smartFieldCheck) ||
-            currentEvent.smartFieldCheck($(this._element), args[1], this.getProperties())
+            currentEvent.smartFieldCheck.call($(this._element), args[2], this.getProperties())
         )
         .map(cb => {
           const callbackReturn: any = cb.eventCallback(...args);
@@ -2164,7 +2164,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     if (originalEvent && originalEvent.preventDefault) {
       event.originalEvent = originalEvent;
     }
-    const callbackArgs = [event, attributeInternalElement, ...args];
+    const callbackArgs = [event, ...args];
     let eventPromise = Promise.resolve();
     try {
       eventPromise = this.emit({ name: eventName as string, type: "smartField" }, ...callbackArgs) as Promise<void>;

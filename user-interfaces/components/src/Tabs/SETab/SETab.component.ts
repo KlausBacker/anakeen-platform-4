@@ -1,6 +1,6 @@
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import AnkSmartElement from "../../SmartElement/SmartElement.vue";
 import AnkLoading from "../../AnakeenLoading/AnakeenLoading.vue";
+import AnkSmartElement from "../../SmartElement/SmartElement.vue";
 import { SmartElementEvents } from "../../SmartElement/SmartElementEvents";
 
 const capitalize = str => {
@@ -8,39 +8,13 @@ const capitalize = str => {
 };
 
 @Component({
-  name: "ank-se-tab",
   components: {
-    "ank-smart-element": AnkSmartElement,
-    "ank-loading": AnkLoading
-  }
+    "ank-loading": AnkLoading,
+    "ank-smart-element": AnkSmartElement
+  },
+  name: "ank-se-tab"
 })
 export default class SETab extends Vue {
-  @Prop({ default: "Chargement en cours...", type: String })
-  public label!: string;
-  @Prop({ default: false, type: Boolean }) public disabled!: boolean;
-  @Prop({ type: String }) public identifier!: string;
-  @Prop({ type: String }) public tabId!: string;
-  @Prop({ type: String, default: "!defaultConsultation" })
-  public viewId!: string;
-  @Prop({ default: false, type: Boolean }) public closable!: boolean;
-  @Prop({ default: false, type: Boolean }) public lazy!: boolean;
-
-  @Watch("label")
-  onLabelPropCHange(newValue, oldValue) {
-    this.$parent.$emit("tabLabelChanged");
-  }
-
-  public index: any = null;
-  public loaded: boolean = false;
-  public isDirty: boolean = false;
-  public elementIcon: string = `<i class="fa fa-spinner fa-spin"></i>`;
-  public elementTitle: string = this.label;
-  public documentLoaded: boolean = false;
-
-  public $refs!: {
-    smartElement: AnkSmartElement;
-  };
-
   get selectedTab() {
     // @ts-ignore
     return this.$parent.selectedTab;
@@ -69,8 +43,7 @@ export default class SETab extends Vue {
   }
 
   public get tabNavItemList() {
-    return `<a href="/api/v2/smart-elements/${this.identifier}/views/${this
-      .viewId || "!defaultConsultation"}.html"
+    return `<a href="/api/v2/smart-elements/${this.identifier}/views/${this.viewId || "!defaultConsultation"}.html"
               title="${this.elementTitle}"
               onclick="return false"
             >
@@ -78,63 +51,30 @@ export default class SETab extends Vue {
               <span>${this.elementTitle}</span>
             </a>`;
   }
+  @Prop({ default: "Chargement en cours...", type: String })
+  public label!: string;
+  @Prop({ default: false, type: Boolean }) public disabled!: boolean;
+  @Prop({ type: String }) public identifier!: string;
+  @Prop({ type: String }) public tabId!: string;
+  @Prop({ type: String, default: "!defaultConsultation" })
+  public viewId!: string;
+  @Prop({ default: false, type: Boolean }) public closable!: boolean;
+  @Prop({ default: false, type: Boolean }) public lazy!: boolean;
 
-  protected bindSmartElementEvents() {
-    if (this.$refs.smartElement) {
-      const eventOptions = {
-        // @ts-ignore
-        check: (properties) => this.$refs.smartElement.getProperties().initid === properties.initid
-      };
-      window.ank.smartElement.globalController.addEventListener(
-        "ready",
-        eventOptions,
-        (event, elementData) => {
-          $(event.target, this.$el)
-            .find(".dcpDocument__header")
-            .hide();
-          this.elementIcon = `<img src="${elementData.icon}"/>`;
-          this.elementTitle = elementData.title;
-        }
-      );
-      const isDirtyCb = (event, elementData) => {
-        this.isDirty = !!elementData.isModified;
-      };
-      window.ank.smartElement.globalController.addEventListener(
-        "change",
-        eventOptions,
-        isDirtyCb
-      );
-      window.ank.smartElement.globalController.addEventListener(
-        "close",
-        eventOptions,
-        isDirtyCb
-      );
-      SmartElementEvents.forEach(eventName => {
-        this.$refs.smartElement.$on(eventName, (...args) => {
-          this.$emit(`seTab${capitalize(eventName)}`, ...args);
-        });
-      });
-    } else {
-      console.warn("[AnkSETab]: Smart Element component unfound in template");
-    }
-  }
+  public index: any = null;
+  public loaded: boolean = false;
+  public isDirty: boolean = false;
+  public elementIcon: string = `<i class="fa fa-spinner fa-spin"></i>`;
+  public elementTitle: string = this.label;
+  public smartElementLoaded: boolean = false;
+
+  public $refs!: {
+    smartElement: AnkSmartElement;
+  };
 
   public mounted() {
-    if (this.$slots && !(this.$slots.default && this.$slots.default.length)) {
+    if (this.$refs.smartElement) {
       this.bindSmartElementEvents();
-      const onLoaded = () => {
-        // // @ts-ignore
-        // this.$refs.smartElement.fetchSmartElement({
-        //   initid: this.identifier,
-        //   viewId: this.viewId
-        // });
-      };
-      // @ts-ignore
-      if (this.$refs.smartElement.isLoaded()) {
-        onLoaded();
-      } else {
-        this.$refs.smartElement.$on("documentLoaded", onLoaded);
-      }
     }
   }
 
@@ -152,7 +92,32 @@ export default class SETab extends Vue {
     }
   }
 
-  private onDocumentLoaded() {
-    this.documentLoaded = true;
+  @Watch("label")
+  protected onLabelPropCHange() {
+    this.$parent.$emit("tabLabelChanged");
+  }
+
+  protected bindSmartElementEvents() {
+    this.$refs.smartElement.$on("ready", (event, elementData) => {
+      $(event.target, this.$el)
+        .find(".dcpDocument__header")
+        .hide();
+      this.elementIcon = `<img src="${elementData.icon}"/>`;
+      this.elementTitle = elementData.title;
+    });
+    const isDirtyCb = (event, elementData) => {
+      this.isDirty = !!elementData.isModified;
+    };
+    this.$refs.smartElement.$on("smartFieldChange", isDirtyCb);
+    this.$refs.smartElement.$on("close", isDirtyCb);
+    SmartElementEvents.forEach(eventName => {
+      this.$refs.smartElement.$on(eventName, (...args) => {
+        this.$emit(`seTab${capitalize(eventName)}`, ...args);
+      });
+    });
+  }
+
+  private onSmartElementLoaded() {
+    this.smartElementLoaded = true;
   }
 }
