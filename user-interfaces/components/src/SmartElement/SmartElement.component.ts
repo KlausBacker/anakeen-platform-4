@@ -18,30 +18,14 @@ export default class AnkSmartElement extends Vue {
     const data: ISmartElementValue = {
       noRouter: !this.browserHistory
     };
-
-    data.initid = this.value.initid || this.initid;
-    data.customClientData = this.value.customClientData || this.customClientData;
-    data.revision = this.value.revision !== -1 ? this.value.revision : this.revision;
-    data.viewId = this.value.viewId || this.viewId;
-    return data;
+    return {
+      customClientData: this.customClientData || null,
+      initid: this.initid || 0,
+      noRouter: !this.browserHistory,
+      revision: this.revision === undefined ? -1 : this.revision,
+      viewId: this.viewId || "!defaultConsultation"
+    };
   }
-  @Prop({
-    default: () => ({
-      customClientData: null,
-      initid: 0,
-      revision: -1,
-      viewId: "!defaultConsultation"
-    }),
-    type: Object,
-    validator: value => {
-      if (value.initid === undefined) {
-        console.error("value property must contain a initid key");
-        return false;
-      }
-      return true;
-    }
-  })
-  public value!: ISmartElementValue;
 
   @Prop({ type: Boolean, default: false }) public browserHistory!: boolean;
   @Prop({ type: [String, Number], default: 0 }) public initid!: string | number;
