@@ -1,13 +1,12 @@
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
+/* tslint:disable:object-literal-sort-keys */
 import axios from "axios";
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
 const a4Password = () => import("./AuthentPassword/AuthentPassword.vue");
-import { IAuthent } from "./IAuthent";
-import {
-  $createComponentEvent,
-  _enableReady
-} from "../../mixins/AnkVueComponentMixin/IeventUtilsMixin";
+import { $createComponentEvent, _enableReady } from "../../mixins/AnkVueComponentMixin/IeventUtilsMixin";
 import VueSetup from "../setup.js";
+// eslint-disable-next-line no-unused-vars
+import { IAuthent } from "./IAuthent";
 Vue.use(VueSetup);
 
 // noinspection JSUnusedGlobalSymbols
@@ -18,7 +17,7 @@ Vue.use(VueSetup);
   name: "ank-authent"
 })
 export default class AuthentComponent extends Vue {
-  @Prop({ type: String, default: ""}) public nsSde;
+  @Prop({ type: String, default: "" }) public nsSde;
   @Prop({ type: String, default: "fr_FR, en_US" }) public authentLanguages;
   @Prop({ type: String, default: "fr_FR" }) public defaultLanguage;
   public login: string = "";
@@ -51,38 +50,26 @@ export default class AuthentComponent extends Vue {
 
   public get translations() {
     return {
-      defaultTitleEn: this.$gettextInterpolate(this.$pgettext("Authent", "Connection to %{s}"), {s : this.nsSde}),
-      defaultTitleFr: this.$gettextInterpolate(this.$pgettext("Authent", "Connexion à %{s}"), {s : this.nsSde}),
+      defaultTitleEn: this.$gettextInterpolate(this.$pgettext("Authent", "Connection to %{s}"), { s: this.nsSde }),
+      defaultTitleFr: this.$gettextInterpolate(this.$pgettext("Authent", "Connexion à %{s}"), { s: this.nsSde }),
       loginPlaceHolder: this.$pgettext("Authent", "Enter your identifier"),
       passwordPlaceHolder: this.$pgettext("Authent", "Enter your password"),
-      validationMessagePassword: this.$pgettext(
-        "Authent",
-        "You must enter your password"
-      ),
-      validationMessageIdentifier: this.$pgettext(
-        "Authent",
-        "You must enter your identifier"
-      ),
+      validationMessagePassword: this.$pgettext("Authent", "You must enter your password"),
+      validationMessageIdentifier: this.$pgettext("Authent", "You must enter your identifier"),
       helpContentTitle: this.$pgettext("Authent", "Help to sign in"),
       authentError: this.$pgettext("Authent", "Authentication error"),
       unexpectedError: this.$pgettext("Authent", "Unexpected error"),
       forgetContentTitle: this.$pgettext("Authent", "Form to reset password"),
-      forgetPlaceHolder: this.$pgettext(
-        "Authent",
-        "Identifier or email address"
-      ),
+      forgetPlaceHolder: this.$pgettext("Authent", "Identifier or email address"),
       passwordLabel: this.$pgettext("Authent", "Password :"),
       resetPasswordLabel: this.$pgettext("Authent", "New password :"),
       confirmPasswordLabel: this.$pgettext("Authent", "Confirm password :"),
-      confirmPasswordError: this.$pgettext(
-        "Authent",
-        "Confirm password are not same as new password"
-      )
+      confirmPasswordError: this.$pgettext("Authent", "Confirm password are not same as new password")
     };
   }
 
   public get availableLanguages() {
-    let languages = this.authentLanguages.split(",");
+    const languages = this.authentLanguages.split(",");
     return languages.map(lang => {
       // jscs:ignore requireShorthandArrowFunctions
       return {
@@ -101,10 +88,10 @@ export default class AuthentComponent extends Vue {
   }
 
   public beforeMount() {
-    let passKey = this.authent.getSearchArg("passkey");
+    const passKey = this.authent.getSearchArg("passkey");
     let currentLanguage = this.defaultLanguage;
     if (this.defaultLanguage === "auto") {
-      let navLanguage = navigator.language || window.navigator["userLanguage"];
+      const navLanguage = navigator.language || "fr";
       if (navLanguage.substr(0, 2) === "fr") {
         currentLanguage = "fr_FR";
       } else {
@@ -122,6 +109,7 @@ export default class AuthentComponent extends Vue {
   }
 
   public created() {
+    Vue.config.language = "en_US";
     this.authent = {
       authToken: null,
       getSearchArg: key => {
@@ -132,15 +120,17 @@ export default class AuthentComponent extends Vue {
           .split("&")
           .forEach(item => {
             tmp = item.split("=");
-            if (tmp[0] === key) result = decodeURIComponent(tmp[1]);
+            if (tmp[0] === key) {
+              result = decodeURIComponent(tmp[1]);
+            }
           });
 
         return result;
       },
 
       initForgetElements: () => {
-        let $ = kendo.jQuery;
-        let $forgetForm = $(this.$refs.authentForgetForm);
+        const $ = kendo.jQuery;
+        const $forgetForm = $(this.$refs.authentForgetForm);
         let forgetWindow;
 
         forgetWindow = $(this.$refs.authentForgetForm)
@@ -164,8 +154,8 @@ export default class AuthentComponent extends Vue {
       },
 
       initResetPassword: () => {
-        let $ = kendo.jQuery;
-        let $resetForm = $(this.$refs.authentResetPasswordForm);
+        const $ = kendo.jQuery;
+        const $resetForm = $(this.$refs.authentResetPasswordForm);
 
         $(this.$refs.authentResetSubmit).kendoButton();
 
@@ -175,9 +165,15 @@ export default class AuthentComponent extends Vue {
   }
 
   public mounted() {
-    let $ = kendo.jQuery;
-    let $connectForm = $(this.$refs.authentForm);
+    const $ = kendo.jQuery;
+    const $connectForm = $(this.$refs.authentForm);
     let helpWindow;
+
+    if (this.$language.current === "fr_FR") {
+      document.title = this.translations.defaultTitleFr;
+    } else {
+      document.title = this.translations.defaultTitleEn;
+    }
 
     $(this.$refs.authentHelpButton).kendoButton({
       click: () => {
@@ -221,12 +217,16 @@ export default class AuthentComponent extends Vue {
     _enableReady();
   }
 
+  public EN() {
+    this.$language.current = "en_US";
+  }
+
   public createSession(event) {
-    let $ = kendo.jQuery;
+    const $ = kendo.jQuery;
     $(this.$refs.authentForm);
     kendo.ui.progress($(this.$refs.authentForm), true);
 
-    let login = encodeURIComponent(this.login);
+    const login = encodeURIComponent(this.login);
     event.preventDefault();
 
     const beforeEvent = $createComponentEvent("beforeLogin", {
@@ -245,8 +245,7 @@ export default class AuthentComponent extends Vue {
       const data = beforeEvent.detail[0];
       this.$language.current = data.language;
       this.login = data.login;
-      const redirectURI =
-        data.redirect === this.redirectUri ? this.redirectUri : data.redirect;
+      const redirectURI = data.redirect === this.redirectUri ? this.redirectUri : data.redirect;
       this.$http
         .post(`/api/v2/authent/sessions/${login}`, {
           language: this.$language.current,
@@ -269,12 +268,8 @@ export default class AuthentComponent extends Vue {
         })
         .catch(e => {
           console.error("Error", e);
-          if (
-            e.response &&
-            e.response.data &&
-            e.response.data.exceptionMessage
-          ) {
-            let info = e.response.data;
+          if (e.response && e.response.data && e.response.data.exceptionMessage) {
+            const info = e.response.data;
             if (info.code === "AUTH0001") {
               // Normal authentication error
               this.authentError = this.translations.authentError;
@@ -298,7 +293,7 @@ export default class AuthentComponent extends Vue {
   }
 
   public forgetPassword(event) {
-    let $ = kendo.jQuery;
+    const $ = kendo.jQuery;
 
     kendo.ui.progress($(this.$refs.authentForgetForm), true);
 
@@ -327,17 +322,14 @@ export default class AuthentComponent extends Vue {
           password: this.pwd
         })
         .then(response => {
-          const afterEvent = $createComponentEvent(
-            "afterRequestResetPassword",
-            {
-              detail: [
-                {
-                  language: this.$language.current,
-                  login: this.login
-                }
-              ]
-            }
-          );
+          const afterEvent = $createComponentEvent("afterRequestResetPassword", {
+            detail: [
+              {
+                language: this.$language.current,
+                login: this.login
+              }
+            ]
+          });
           this.$emit("afterRequestResetPassword", afterEvent);
 
           this.forgetStatusFailed = false;
@@ -349,12 +341,8 @@ export default class AuthentComponent extends Vue {
         })
         .catch(e => {
           console.error("Error", e);
-          if (
-            e.response &&
-            e.response.data &&
-            e.response.data.exceptionMessage
-          ) {
-            let info = e.response.data;
+          if (e.response && e.response.data && e.response.data.exceptionMessage) {
+            const info = e.response.data;
 
             if (info.messages && info.messages.length > 0) {
               this.forgetError = info.messages[0].contentText;
@@ -377,7 +365,7 @@ export default class AuthentComponent extends Vue {
   }
 
   public applyResetPassword(event) {
-    let $ = kendo.jQuery;
+    const $ = kendo.jQuery;
 
     event.preventDefault();
 
@@ -399,7 +387,7 @@ export default class AuthentComponent extends Vue {
     this.$emit("beforeApplyResetPassword", beforeEvent);
 
     if (!beforeEvent.defaultPrevented) {
-      let httpAuth = axios.create({
+      const httpAuth = axios.create({
         baseURL: "/api/v2",
         headers: {
           Authorization: "Token " + this.authent.authToken
@@ -408,7 +396,7 @@ export default class AuthentComponent extends Vue {
 
       kendo.ui.progress($(this.$refs.authentResetPasswordForm), true);
 
-      let login = encodeURIComponent(this.login);
+      const login = encodeURIComponent(this.login);
       httpAuth
         .put(`/authent/password/${login}`, {
           password: this.resetPwd1,
@@ -436,18 +424,13 @@ export default class AuthentComponent extends Vue {
           }, 10);
         })
         .catch(e => {
-          if (
-            e.response &&
-            e.response.data &&
-            e.response.data.exceptionMessage
-          ) {
-            let info = e.response.data;
+          if (e.response && e.response.data && e.response.data.exceptionMessage) {
+            const info = e.response.data;
 
             if (info.messages && info.messages.length > 0) {
               this.resetError = info.messages[0].contentText;
             } else {
-              this.resetError =
-                e.response.data.userMessage || e.response.data.exceptionMessage;
+              this.resetError = e.response.data.userMessage || e.response.data.exceptionMessage;
             }
           } else {
             this.resetError = this.translations.unexpectedError;
