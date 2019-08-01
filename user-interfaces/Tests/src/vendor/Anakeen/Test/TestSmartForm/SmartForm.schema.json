@@ -20,12 +20,49 @@
         },
         "type": {
           "type": "string",
+          "enum": ["frame", "tab", "array"],
+          "title": "The Type Schema",
+          "default": "",
+          "examples": ["text"],
+          "pattern": "^(.*)$"
+        },
+        "visibility": { "type": "string", "enum": ["write", "read", "hidden"] },
+        "content": {
+          "$id": "#/properties/structure/items/properties/content",
+          "type": "array",
+          "title": "The Content Schema",
+          "items": {
+            "anyOf": [{ "$ref": "#/definitions/fieldSet" }, { "$ref": "#/definitions/fieldItem" }]
+          }
+        }
+      },
+      "required": ["name", "type"]
+    },
+    "fieldItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "type": "string",
+          "title": "The Label Schema",
+          "default": "",
+          "examples": ["Title"],
+          "pattern": "^(.*)$"
+        },
+        "name": {
+          "type": "string",
+          "title": "The Name Schema",
+          "default": "",
+          "examples": ["my_title"],
+          "pattern": "^(.*)$"
+        },
+        "type": {
+          "type": "string",
           "enum": [
             "text",
             "longtext",
             "image",
             "file",
-            "frame",
             "enum",
             "date",
             "integer",
@@ -35,10 +72,8 @@
             "password",
             "json",
             "xml",
-            "tab",
             "time",
             "timestamp",
-            "array",
             "color",
             "docid",
             "htmltext",
@@ -49,16 +84,30 @@
           "examples": ["text"],
           "pattern": "^(.*)$"
         },
-        "needed": {"type":"boolean"},
-        "visibility": { "type": "string", "enum": ["write", "read", "hidden"] },
-        "content": {
-          "$id": "#/properties/structure/items/properties/content",
-          "type": "array",
-          "title": "The Content Schema",
-          "items": {
-            "$ref": "#/definitions/fieldSet"
-          }
+
+        "multiple": {
+          "type": "boolean",
+          "title": "The Multiple Schema",
+          "default": false
         },
+
+        "needed": {
+          "type": "boolean",
+          "title": "If field no accept empty values",
+          "default": false
+        },
+        "options": {
+          "type": "object",
+          "title": "Specifics options depends of type",
+          "default": {}
+        },
+
+        "typeFormat": {
+          "type": "string",
+          "title": "The typeFormat Schema",
+          "default": ""
+        },
+
         "enumItems": {
           "$id": "#/properties/structure/items/properties/content/items/properties/enumItems",
           "type": "array",
@@ -87,57 +136,6 @@
               }
             }
           }
-        }
-      },
-      "required": ["name", "type"]
-    },
-    "fieldItem": {
-      "type": "object",
-      "properties": {
-        "label": {
-          "type": "string",
-          "title": "The Label Schema",
-          "default": "",
-          "examples": ["Title"],
-          "pattern": "^(.*)$"
-        },
-        "name": {
-          "type": "string",
-          "title": "The Name Schema",
-          "default": "",
-          "examples": ["my_title"],
-          "pattern": "^(.*)$"
-        },
-        "type": {
-          "type": "string",
-          "enum": [
-            "text",
-            "longtext",
-            "image",
-            "file",
-            "frame",
-            "enum",
-            "date",
-            "integer",
-            "int",
-            "double",
-            "money",
-            "password",
-            "json",
-            "xml",
-            "tab",
-            "time",
-            "timestamp",
-            "array",
-            "color",
-            "docid",
-            "htmltext",
-            "account"
-          ],
-          "title": "The Type Schema",
-          "default": "",
-          "examples": ["text"],
-          "pattern": "^(.*)$"
         }
       },
       "required": ["name", "type"]
