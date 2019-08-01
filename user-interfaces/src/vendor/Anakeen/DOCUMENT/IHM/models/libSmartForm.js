@@ -4,17 +4,36 @@ define(["jquery", "underscore"], function libSmartForm($, _) {
   const _flatTheStructure = function _flatTheStructure(structure, parent) {
     let flatStruct = [];
     _.each(structure, function(field) {
-      if (parent) {
-        field.parent = parent.id;
-        if (!field.visibility && parent.visibility) {
-          field.visibility = parent.visibility;
-        }
-      }
       field.id = field.name;
+      field.label = field.label || field.name;
       if (field.multiple === true) {
         field.options = field.options || {};
         field.options.multiple = "yes";
       }
+      switch (field.display) {
+        case "read":
+          field.visibility = "S";
+          break;
+        case "write":
+          field.visibility = "W";
+          break;
+        case "none":
+          field.visibility = "H";
+          break;
+        default:
+          field.visibility = "W";
+      }
+      if (parent) {
+        field.parent = parent.id;
+        if (!field.display && parent.display) {
+          field.visibility = parent.visibility;
+        }
+        if (parent.type === "array") {
+          field.multiple = true;
+        }
+      }
+      field.id = field.name;
+
       flatStruct.push(field);
       if (field.content) {
         flatStruct = _.union(flatStruct, _flatTheStructure(field.content, field));
@@ -83,21 +102,6 @@ define(["jquery", "underscore"], function libSmartForm($, _) {
       fields = _flatTheStructure(config.structure);
 
       fields.forEach(item => {
-        item.id = item.name;
-        switch (item.visibility) {
-          case "read":
-            item.visibility = "S";
-            break;
-          case "write":
-            item.visibility = "W";
-            break;
-          case "hidden":
-            item.visibility = "H";
-            break;
-          default:
-            item.visibility = "W";
-        }
-        item.label = item.label || item.name;
         if (!item.id) {
           throw new Error("Field as no name: \n" + JSON.stringify(item, null, 2));
         }

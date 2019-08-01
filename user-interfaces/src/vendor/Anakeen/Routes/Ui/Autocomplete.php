@@ -124,8 +124,10 @@ class Autocomplete
                 return $this->accountAutocomplete($attributeObject);
             default:
                 $response = new SmartAutocompleteResponse();
-                $response->setError(sprintf(___("Incompatible type \"%s\" for autocomplete", "autocomplete"),
-                    $attributeObject->type));
+                $response->setError(sprintf(
+                    ___("Incompatible type \"%s\" for autocomplete", "autocomplete"),
+                    $attributeObject->type
+                ));
                 return $response;
         }
     }
@@ -170,8 +172,10 @@ class Autocomplete
         $parse->methodName = "getAccounts";
         $parse->outputs = [$attributeObject->id];
 
-        $parse->inputs["smartstructure"] = new \Anakeen\Core\SmartStructure\Callables\InputArgument($attributeObject->format,
-            "string");
+        $parse->inputs["smartstructure"] = new \Anakeen\Core\SmartStructure\Callables\InputArgument(
+            $attributeObject->format,
+            "string"
+        );
 
         $options = $attributeObject->getOptions();
         foreach ($options as $k => $v) {
@@ -235,8 +239,10 @@ class Autocomplete
                 $message->type = \Anakeen\Routes\Core\Lib\ApiMessage::MESSAGE;
 
                 if (!empty($this->contentParameters["filter"]["filters"][0]["value"])) {
-                    $message->contentHtml = sprintf(___("No matches \"<i>%s</i>\"", "ddui"),
-                        htmlspecialchars($this->contentParameters["filter"]["filters"][0]["value"]));
+                    $message->contentHtml = sprintf(
+                        ___("No matches \"<i>%s</i>\"", "ddui"),
+                        htmlspecialchars($this->contentParameters["filter"]["filters"][0]["value"])
+                    );
                 } else {
                     $message->contentText = ___("No result found", "ddui");
                 }

@@ -26,7 +26,7 @@
           "examples": ["text"],
           "pattern": "^(.*)$"
         },
-        "visibility": { "type": "string", "enum": ["write", "read", "hidden"] },
+        "display": { "type": "string", "enum": ["write", "read", "none"] },
         "content": {
           "$id": "#/properties/structure/items/properties/content",
           "type": "array",
@@ -85,6 +85,7 @@
           "pattern": "^(.*)$"
         },
 
+        "display": { "type": "string", "enum": ["write", "read", "none"] },
         "multiple": {
           "type": "boolean",
           "title": "The Multiple Schema",
@@ -274,26 +275,7 @@
         "types": {
           "$id": "#/properties/renderOptions/properties/types",
           "type": "object",
-          "title": "The Types Schema",
-          "required": ["text"],
-          "properties": {
-            "text": {
-              "$id": "#/properties/renderOptions/properties/types/properties/text",
-              "type": "object",
-              "title": "The Text Schema",
-              "required": ["labelPosition"],
-              "properties": {
-                "labelPosition": {
-                  "$id": "#/properties/renderOptions/properties/types/properties/text/properties/labelPosition",
-                  "type": "string",
-                  "title": "The Labelposition Schema",
-                  "default": "",
-                  "examples": ["none"],
-                  "pattern": "^(.*)$"
-                }
-              }
-            }
-          }
+          "title": "The Types Schema"
         },
 
         "fields": {

@@ -19,7 +19,7 @@ export default class SplitterComponent extends Mixins(splitpanes) {
   }
   public mounted() {
     this.keepClassTheme();
-    this.$on("resized", () => {
+    this.$on("resize", () => {
       window.dispatchEvent(new Event("resize"));
     });
   }
