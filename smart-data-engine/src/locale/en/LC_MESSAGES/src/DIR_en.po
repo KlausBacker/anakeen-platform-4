@@ -24,12 +24,12 @@ msgstr "All or nothing"
 #: src/vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
 msgctxt "DIR"
 msgid "fld_fam"
-msgstr "Families (title)"
+msgstr "Smart Structures (title)"
 
 #: src/vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
 msgctxt "DIR"
 msgid "fld_famids"
-msgstr "Families"
+msgstr "Smart Structures"
 
 #: src/vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
 msgctxt "DIR"
@@ -54,12 +54,12 @@ msgstr "Default document profile"
 #: src/vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
 msgctxt "DIR"
 msgid "fld_subfam"
-msgstr "Sub family restriction"
+msgstr "Sub Smart Structure restriction"
 
 #: src/vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
 msgctxt "DIR"
 msgid "fld_tfam"
-msgstr "Filtered families"
+msgstr "Filtered Smart Structures"
 
 #: src/vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
 msgctxt "DIR"
