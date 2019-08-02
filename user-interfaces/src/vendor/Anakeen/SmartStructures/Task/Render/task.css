@@ -1,72 +1,72 @@
 
-.task-crontab {
+.dcpDocument[data-structure=TASK] .task-crontab {
     display:flex;
     flex-direction: row;
 }
-.task-crontab-box {
+.dcpDocument[data-structure=TASK] .task-crontab-box {
     flex:1;
     border:solid 1px grey;
     text-align: center;
     padding: 0.3rem;
     margin: 0.3rem;
 }
-.task-crontab-value {
+.dcpDocument[data-structure=TASK] .task-crontab-value {
     display:block;
     font-family: monospace;
     font-weight: bold;
 
 }
 
-.dcpAttribute[data-attrid=task_crontab].has-error .task-crontab-box {
+.dcpDocument[data-structure=TASK] .dcpAttribute[data-attrid=task_crontab].has-error .task-crontab-box {
     border-color:var(--danger);
 }
-.task-waiting {
+.dcpDocument[data-structure=TASK] .task-waiting {
     text-align: center;
 }
-.dcpAttribute__content__value[data-key=success],
-.dcpAttribute__content__value[data-key=active] {
+.dcpDocument[data-structure=TASK] .dcpAttribute__content__value[data-key=success],
+.dcpDocument[data-structure=TASK] .dcpAttribute__content__value[data-key=active] {
     background-color: darkseagreen;
     padding: 0.5rem;
     border-radius: 0.5rem;
 }
 
-.dcpAttribute__content__value[data-key=fail] {
+.dcpDocument[data-structure=TASK] .dcpAttribute__content__value[data-key=fail] {
     background-color: var(--danger);
     padding: 0.5rem;
     border-radius: 0.5rem;
 }
 
-.dcpAttribute__content__value[data-key=inprogress],
-.dcpAttribute__content__value[data-key=disabled] {
+.dcpDocument[data-structure=TASK] .dcpAttribute__content__value[data-key=inprogress],
+.dcpDocument[data-structure=TASK] .dcpAttribute__content__value[data-key=disabled] {
     background-color: var(--warning);
     padding: 0.5rem;
     border-radius: 0.5rem;
 }
 
-.dcpAttribute__content[data-attrid=task_humancrontab] .dcpAttribute__value {
+.dcpDocument[data-structure=TASK] .dcpAttribute__content[data-attrid=task_humancrontab] .dcpAttribute__value {
     font-style: italic;
 }
 
-.dcpDocument--edit .dcpAttribute--visibility--S .dcpAttribute__content[data-attrid=task_humancrontab] {
+.dcpDocument[data-structure=TASK].dcpDocument--edit .dcpAttribute--visibility--S .dcpAttribute__content[data-attrid=task_humancrontab] {
     padding-top:0;
 }
 
-.dcpAttribute__content[data-attrid=task_crontab] .dcpAttribute__value {
+.dcpDocument[data-structure=TASK] .dcpAttribute__content[data-attrid=task_crontab] .dcpAttribute__value {
     font-family: monospace;
 }
 
-.input-group .k-textbox.form-control {
+.dcpDocument[data-structure=TASK] .input-group .k-textbox.form-control {
      width: 100%;
 }
 
-.task-next-dates ol {
+.dcpDocument[data-structure=TASK] .task-next-dates ol {
     display:flex;
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: space-around;
 }
 
-.task-next-dates li {
+.dcpDocument[data-structure=TASK] .task-next-dates li {
     flex:1;
     white-space: nowrap;
     margin-right: 2rem;

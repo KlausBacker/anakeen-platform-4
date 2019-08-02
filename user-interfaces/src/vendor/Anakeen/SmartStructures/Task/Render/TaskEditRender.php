@@ -2,10 +2,12 @@
 
 namespace Anakeen\SmartStructures\Task\Render;
 
+use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Ui\DefaultConfigEditRender;
 use Anakeen\Ui\RenderAttributeVisibilities;
 use Anakeen\Ui\RenderOptions;
 use Anakeen\Ui\TextRenderOptions;
+use Anakeen\Ui\UIGetAssetPath;
 use SmartStructure\Fields\Task as TaskFields;
 
 class TaskEditRender extends DefaultConfigEditRender
@@ -80,5 +82,15 @@ HTML;
 
         $vis->setVisibility(TaskFields::task_humancrontab, RenderAttributeVisibilities::StaticWriteVisibility);
         return $vis;
+    }
+
+    public function getJsReferences(SmartElement $smartElement = null)
+    {
+        $js = parent::getJsReferences();
+
+        $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "legacy");
+        $js["taskRenderEdit"] = $path["TaskEdit"]["js"];
+        $js = $this->getCommonJSReferences($js);
+        return $js;
     }
 }
