@@ -183,6 +183,7 @@ export default class BusinessApp extends Vue {
       this.addTab({
         closable: true,
         name: data.options[0],
+        revision: data.options.length === 3 ? parseInt(data.options[2], 10) : -1,
         viewId: data.options[1]
       });
     }
