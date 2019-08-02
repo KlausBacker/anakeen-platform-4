@@ -492,19 +492,19 @@ export default class SmartElementController extends AnakeenController.BusEvents.
    */
   public addCustomClientData(check, value) {
     this.checkInitialisedModel();
-    // First case no data, so documentCheck is data
+    // First case no data, so check is data
     if (_.isUndefined(value)) {
       value = check;
       check = {};
     }
-    // Second case documentCheck is a function and data is object
+    // Second case check is a function and data is object
     if (_.isFunction(check) && _.isObject(value)) {
       check = { check };
     }
-    // Third case documentCheck is an object and data is object => check if documentCheck property exist
+    // Third case check is an object and data is object => check if check property exist
     if (_.isObject(value) && _.isObject(check)) {
       check = _.defaults(check, {
-        documentCheck: () => {
+        check: () => {
           return true;
         },
         once: true
@@ -537,14 +537,12 @@ export default class SmartElementController extends AnakeenController.BusEvents.
    */
   public getCustomClientData(deleteOnce) {
     const values = {};
-    let $element;
     let properties;
     const newCustomData = {};
     this.checkInitialisedModel();
     properties = this.getProperties();
-    $element = $(this._element);
     _.each(this._customClientData, (currentCustom: any, key) => {
-      if (currentCustom.documentCheck.call($element, properties)) {
+      if (currentCustom.check.call(this, properties)) {
         values[key] = currentCustom.value;
         if (deleteOnce === true && !currentCustom.once) {
           newCustomData[key] = currentCustom;
@@ -775,18 +773,15 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     }
     // If constraint is once : wrap it an callback that execute callback and delete it
     if (currentConstraint.once === true) {
-      currentConstraint.eventCallback = _.wrap(
-        currentConstraint.constraintCheck,
-        function documentController_onceWrapper(innerCallback) {
-          try {
-            // @ts-ignore
-            innerCallback.apply(this, _.rest(arguments));
-          } catch (e) {
-            console.error(e);
-          }
-          currentWidget.removeConstraint(currentConstraint.name, currentConstraint.externalConstraint);
+      currentConstraint.eventCallback = _.wrap(currentConstraint.constraintCheck, innerCallback => {
+        try {
+          // @ts-ignore
+          innerCallback.apply(this, _.rest(arguments));
+        } catch (e) {
+          console.error(e);
         }
-      );
+        currentWidget.removeConstraint(currentConstraint.name, currentConstraint.externalConstraint);
+      });
     }
     uniqueName = (currentConstraint.externalConstraint ? "external_" : "internal_") + currentConstraint.name;
     this._constraintList[uniqueName] = currentConstraint;
@@ -1140,16 +1135,16 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       allEvents
         .filter(
           currentEvent =>
-            !_.isFunction(currentEvent.check) || currentEvent.check.call($(this._element), this.getProperties())
+            !_.isFunction(currentEvent.check) || currentEvent.check.call(this, this.getProperties())
         )
         .filter(
           currentEvent =>
             type !== "smartField" ||
             !_.isFunction(currentEvent.smartFieldCheck) ||
-            currentEvent.smartFieldCheck.call($(this._element), args[2], this.getProperties())
+            currentEvent.smartFieldCheck.call(this, args[2], this.getProperties())
         )
         .map(cb => {
-          const callbackReturn: any = cb.eventCallback(...args);
+          const callbackReturn: any = cb.eventCallback.call(this, ...args);
           if (callbackReturn && callbackReturn instanceof Promise && name.indexOf("before") === 0) {
             return callbackReturn;
           } else {
@@ -1727,9 +1722,9 @@ export default class SmartElementController extends AnakeenController.BusEvents.
         Object.keys(this._activatedConstraint).forEach(key => {
           const currentConstraint = this._activatedConstraint[key];
           try {
-            if (currentConstraint.attributeCheck.apply($element, [currentAttribute, currentModel])) {
+            if (currentConstraint.smartFieldCheck.apply(this, [currentAttribute, currentModel])) {
               const response = currentConstraint.constraintCheck.call(
-                $element,
+                this,
                 currentModel,
                 currentAttribute,
                 currentAttribute.getValue("all")
@@ -2135,7 +2130,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     const currentDocumentProperties = this.getProperties();
     this._activatedConstraint = {};
     _.each(this.listConstraints(), (currentConstraint: any) => {
-      if (currentConstraint.documentCheck.call($(this._element), currentDocumentProperties)) {
+      if (currentConstraint.check.call(this, currentDocumentProperties)) {
         this._activatedConstraint[currentConstraint.name] = currentConstraint;
       }
     });
@@ -2272,7 +2267,11 @@ export default class SmartElementController extends AnakeenController.BusEvents.
               if (window.console.warn) {
                 window.console.warn('Callback "success" is deprecated use promise instead');
               }
-              options.success.call($(this._element), (values ? values.documentProperties : {}) || {}, this.getProperties());
+              options.success.call(
+                $(this._element),
+                (values ? values.documentProperties : {}) || {},
+                this.getProperties()
+              );
             } catch (exception) {
               // @ts-ignore
               if (window.dcp.logger) {
@@ -2333,7 +2332,6 @@ export default class SmartElementController extends AnakeenController.BusEvents.
   }
 
   private _addAndInitNewEvents(newEvent: ListenableEventOptions) {
-    const $element = $(this._element);
     // let uniqueName = (newEvent.externalEvent ? "external_" : "internal_") + newEvent.name;
     const currentElementProperties = this.getProperties();
     if (newEvent._persistent) {
@@ -2355,7 +2353,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     }
 
     // Check if the event is for the current document
-    if (!_.isFunction(newEvent.check) || newEvent.check.call($element, currentElementProperties)) {
+    if (!_.isFunction(newEvent.check) || newEvent.check.call(this, currentElementProperties)) {
       if (this._initialized.view) {
         if (newEvent.eventType === "ready") {
           const event = $.Event(newEvent.eventType);
@@ -2363,7 +2361,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
           event.target = this._element;
           try {
             // add element as function context
-            newEvent.eventCallback.call($element, event, currentElementProperties);
+            newEvent.eventCallback.call(this, event, currentElementProperties);
           } catch (e) {
             console.error(e);
           }
@@ -2374,11 +2372,11 @@ export default class SmartElementController extends AnakeenController.BusEvents.
           event.target = this._element;
           _.each(this._getRenderedAttributes(), (currentAttribute: any) => {
             const objectAttribute = this.getSmartField(currentAttribute.id);
-            if (!_.isFunction(newEvent.attributeCheck) || newEvent.attributeCheck.apply($element, [objectAttribute])) {
+            if (!_.isFunction(newEvent.smartFieldCheck) || newEvent.smartFieldCheck.apply(this, [objectAttribute])) {
               try {
                 // add element as function context
                 newEvent.eventCallback.call(
-                  $element,
+                  this,
                   event,
                   currentElementProperties,
                   objectAttribute,
