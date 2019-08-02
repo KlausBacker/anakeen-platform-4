@@ -25,7 +25,7 @@ export default {
     "smart-element": AnkSmartElement,
     "ank-splitter": AnkSplitter
   },
-  props: ["hubId"],
+  props: ["hubId", "hubComponentSelected"],
   data() {
     return {
       // eslint-disable-next-line no-undef
@@ -34,7 +34,7 @@ export default {
       hubIcon: "",
       mockData: {},
       hubConfig: [],
-      selectedComponent: 0,
+      selectedComponent: this.hubComponentSelected,
       isListenActivated: false,
       panes: [
         {
@@ -63,6 +63,7 @@ export default {
         this.openDetailConfig(val);
       }
       this.selectTr(val);
+      this.$emit("hubComponentSelected", val);
     }
   },
 
@@ -87,7 +88,10 @@ export default {
     },
     openElement() {
       this.openDetailConfig(this.hubId);
-      this.selectedComponent = 0;
+      this.selectedComponent = this.hubComponentSelected;
+      if (this.selectedComponent) {
+        this.openDetailConfig(this.selectedComponent);
+      }
     },
     exportConfiguration() {
       window.open(`/hub/config/${this.hubId}.xml`);

@@ -18,11 +18,21 @@ export default {
     "ank-splitter": AnkSplitter,
     "ank-hub-admin": AnkHubAdmin
   },
+  props: ["hubInstanceSelected", "hubComponentSelected"],
+  watch: {
+    selectedHub(newValue) {
+      this.$emit("hubInstanceSelected", newValue);
+    },
+    selectedComponent(value) {
+      this.$emit("hubComponentSelected", value);
+    }
+  },
   data() {
     return {
+      selectedComponent: this.hubComponentSelected,
       collection: "",
       hubConfig: [],
-      selectedHub: 0,
+      selectedHub: this.hubInstanceSelected,
       displayConfig: false,
       panes: [
         {
@@ -145,6 +155,20 @@ export default {
         default:
           break;
       }
+    },
+    onListDataBound() {
+      if (this.hubInstanceSelected) {
+        this.$nextTick(() => {
+          this.$refs.hubInstanciationList.selectSe(this.hubInstanceSelected);
+        });
+      }
+    },
+    onHubComponentSelected(hubComponent) {
+      this.selectedComponent = hubComponent;
+    },
+    onListClicked() {
+      // reset componet selection
+      this.selectedComponent = 0;
     }
   }
 };
