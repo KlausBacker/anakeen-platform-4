@@ -2,14 +2,14 @@
 
 
 
-.dock-position-chooser {
+.dcpDocument--edit[data-structure=HUBCONFIGURATIONGENERIC] .dock-position-chooser {
     position: relative;
     width: 100%;
     height: 20rem;
     /*padding-top: calc(56.25% * 1); *//* 16:9 ratio */
 }
 
-.dock-position-chooser .dock-position-chooser-wrap {
+.dcpDocument--edit[data-structure=HUBCONFIGURATIONGENERIC] .dock-position-chooser .dock-position-chooser-wrap {
     position: absolute;
     top: 0;
     left: 0;
@@ -19,25 +19,25 @@
     flex-direction: column;
 }
 
-.dock-position-chooser .dock {
+.dcpDocument--edit[data-structure=HUBCONFIGURATIONGENERIC] .dock-position-chooser .dock {
     display: flex;
 }
 
-.dock-position-chooser .dock-left, .dock-position-chooser .dock-right {
+.dcpDocument--edit[data-structure=HUBCONFIGURATIONGENERIC] .dock-position-chooser .dock-left, .dock-position-chooser .dock-right {
     flex-direction: column;
 }
 
-.dock-position-chooser .dock-content {
+.dcpDocument--edit[data-structure=HUBCONFIGURATIONGENERIC] .dock-position-chooser .dock-content {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.dock-position-chooser .dock-area.dock-area-center, .dock-position-chooser .dock-content, .dock-position-chooser .dock-center {
+.dcpDocument--edit[data-structure=HUBCONFIGURATIONGENERIC] .dock-position-chooser .dock-area.dock-area-center, .dock-position-chooser .dock-content, .dock-position-chooser .dock-center {
     flex: 1;
 }
 
-.dock-position-chooser .dock-area {
+.dcpDocument--edit[data-structure=HUBCONFIGURATIONGENERIC] .dock-position-chooser .dock-area {
     background: white;
     border: 1px solid #666666;
     flex:1;
@@ -49,16 +49,16 @@
     transition: transform .1s ease;
 }
 
-.dock-position-chooser .dock-area.dock-position-selected {
+.dcpDocument--edit[data-structure=HUBCONFIGURATIONGENERIC] .dock-position-chooser .dock-area.dock-position-selected {
     border-color: transparent;
     background: #157EFB;
 }
 
-.dock-position-chooser .dock-area:hover {
+.dcpDocument--edit[data-structure=HUBCONFIGURATIONGENERIC] .dock-position-chooser .dock-area:hover {
     transform: scale(1.05);
     border-color: black;
 }
 
-.dcpTab__content.dcp-column--2 > .dcpFrame[data-attrid=hub_station_id_frame] {
+.dcpDocument--edit[data-structure=HUBCONFIGURATIONGENERIC] .dcpTab__content.dcp-column--2 > .dcpFrame[data-attrid=hub_station_id_frame] {
     flex-basis:100%;
 }

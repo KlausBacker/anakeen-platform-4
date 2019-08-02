@@ -33,17 +33,4 @@ class HubConfigurationViewRender extends \Anakeen\Ui\DefaultConfigViewRender
         $this->addDescriptions($options);
         return $options;
     }
-
-    /**
-     * @param \Anakeen\Core\Internal\SmartElement|null $document
-     * @return array|string[]
-     * @throws \Anakeen\Ui\Exception
-     */
-    public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
-    {
-        $parent = parent::getJsReferences();
-        $path = UIGetAssetPath::getElementAssets("hubRender", UIGetAssetPath::isInDebug() ? "dev" : "prod");
-        $parent["hubConfiguration"] = $path["hubConfiguration"]["js"];
-        return $parent;
-    }
 }
