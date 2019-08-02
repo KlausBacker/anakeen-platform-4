@@ -61,7 +61,7 @@ class RenderConfigView extends \Anakeen\Ui\DefaultView
         $js["familyTestRender"] = [
             "path" => $path["familyTestRender"]["js"],
             "type" => "library",
-            "function" => "familyTestRender"
+            "function" => "structureTestRender"
         ];
         return $js;
     }
