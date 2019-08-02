@@ -31,7 +31,7 @@
         @tabClick="onTabClick"
       >
         <ank-tab v-if="hasWelcomeTab" :closable="false" name="welcome">
-          <template slot="label">
+          <template v-slot:label>
             <span
               class="ank-business-app-welcome-title"
               v-html="welcomeTab.title"
@@ -52,6 +52,7 @@
           :tabId="tab.tabId"
           :closable="!!tab.closable"
           :viewId="tab.viewId || '!defaultConsultation'"
+          :revision="tab.revision"
           ref="seTab"
           @seTabAfterSave="onAfterSave"
           @seTabAfterDelete="onAfterDelete"

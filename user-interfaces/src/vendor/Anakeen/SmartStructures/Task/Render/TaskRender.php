@@ -37,12 +37,10 @@ trait TaskRender
         $options->text(TaskFields::task_humancrontab)->setLabelPosition(TextRenderOptions::nonePosition);
     }
 
-    public function getJsReferences(SmartElement $smartElement = null)
+    public function getCommonJSReferences($js)
     {
-        $js = parent::getJsReferences();
-
         $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "legacy");
-        $js["task"] = $path["Task"]["js"];
+        $js["taskRenderCommon"] = $path["TaskCommon"]["js"];
         return $js;
     }
 }

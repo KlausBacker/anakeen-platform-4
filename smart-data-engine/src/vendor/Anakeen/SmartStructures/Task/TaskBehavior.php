@@ -96,6 +96,9 @@ class TaskBehavior extends \Anakeen\SmartElement
     protected function getAnkCmd()
     {
         $euid = $this->getRawValue(TaskFields::task_iduser);
+        if (empty($euid)) {
+            throw new \Anakeen\Core\Exception(sprintf("Task \"%s\": field \"%s\" is empty", $this->getTitle(), $this->getAttribute(TaskFields::task_iduser)->getLabel()));
+        }
         $uid = AccountManager::getIdFromSEId($euid);
         $user = new Account("", $uid);
 

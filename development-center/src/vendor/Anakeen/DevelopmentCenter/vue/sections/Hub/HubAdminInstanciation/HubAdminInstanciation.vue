@@ -17,6 +17,8 @@
                 smart-collection="HUBINSTANCIATION"
                 label="Hub Instance"
                 @se-selected="openConfig"
+                @se-clicked="onListClicked"
+                @se-list-dataBound="onListDataBound"
               >
                 <div slot="header"></div>
                 <div slot="search">
@@ -35,6 +37,8 @@
             ref="ankHubAdmin"
             :hubId="selectedHub"
             class="hub-modal"
+            :hubComponentSelected="selectedComponent"
+            @hubComponentSelected="onHubComponentSelected"
             v-if="displayConfig && selectedHub"
           ></ank-hub-admin>
           <ank-smart-element

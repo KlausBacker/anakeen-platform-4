@@ -41,17 +41,7 @@ module.exports = () => {
           "KendoUI-manifest.json"
         )
       }),
-      cssLoader(),
-      {
-        output: {
-          library: "familyTestRender",
-          libraryTarget: "var",
-          libraryExport: "default"
-        }
-        // plugins: [
-        //   new EsmWebpackPlugin()
-        // ]
-      }
+      cssLoader()
     ]
   };
   if (process.env.conf === "PROD") {

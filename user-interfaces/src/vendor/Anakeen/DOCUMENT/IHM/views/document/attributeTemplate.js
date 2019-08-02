@@ -521,6 +521,21 @@ define(function attributeTemplate(require /*, exports, module*/) {
       var isTabLabel = $viewElement.hasClass("dcpTab__label");
       var $descriptionElement;
 
+      // Insert description once for this smart field
+      // Identity selector
+      const classSelector = `.${$viewElement
+        .attr("class")
+        .trim()
+        .replace(/ /g, ".")}[data-attrid=${data.id}]`;
+      const descriptionSelector = `.dcpAttribute__description[data-attrid=${data.id}]`;
+      // Search description in the parent tree
+      const $descriptionInserted = $viewElement
+        .parent()
+        .closest(classSelector)
+        .find(descriptionSelector);
+      if ($descriptionInserted.length) {
+        return;
+      }
       descriptionTemplate = attributeView.model.getTemplates().attribute.description;
       data.renderOptions.description.htmlContentRender = Mustache.render(
         data.renderOptions.description.htmlContent || "",

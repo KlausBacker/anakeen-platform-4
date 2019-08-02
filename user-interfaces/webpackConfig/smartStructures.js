@@ -41,12 +41,8 @@ module.exports = () => {
           "../src/vendor/Anakeen/SmartStructures/Iuser/Render/mainIuser.js"
         )
       ],
-      Task: [
-        path.resolve(
-          __dirname,
-          "../src/vendor/Anakeen/SmartStructures/Task/Render/task.js"
-        )
-      ],
+      TaskEdit: path.resolve(__dirname, "../src/vendor/Anakeen/SmartStructures/Task/Render/taskCrontab.js"),
+      TaskCommon: path.resolve(__dirname, "../src/vendor/Anakeen/SmartStructures/Task/Render/taskExecute.js"),
       "search-view-grid-render": [
         path.resolve(
           __dirname,

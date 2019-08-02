@@ -106,8 +106,12 @@
   visibility: hidden;
 }
 
-.dcpDocument--view .dcpArray__tools {
+.dcpArray .dcpArray__tools {
   display: none;
+}
+
+.dcpArray.dcpAttribute--visibility--W .dcpArray__tools {
+  display: unset;
 }
 
 .dcpFrame .dcpArray__content > table {

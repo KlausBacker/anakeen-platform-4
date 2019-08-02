@@ -123,4 +123,10 @@ HTML;
         }
         return $vis;
     }
+
+    public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
+    {
+        $js = parent::getJsReferences($document);
+        return $this->getCommonJSReferences($js);
+    }
 }

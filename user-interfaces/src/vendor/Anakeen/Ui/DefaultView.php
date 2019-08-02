@@ -50,7 +50,8 @@ class DefaultView extends RenderDefault
                 $menu->getElement("restore")->setVisibility(ElementMenu::VisibilityHidden);
                 $menu->getElement("modify")->setVisibility(ElementMenu::VisibilityHidden);
 
-                $item = new ItemMenu("gotolatest", ___("View current revision", "UiMenu"), "/api/v2/smart-elements/{{document.properties.id}}.html");
+                $item = new ItemMenu("gotolatest", ___("View current revision", "UiMenu"));
+                $item->setUrl(sprintf("#action/document.load:%d:%s", $document->initid, \Anakeen\Routes\Ui\DocumentView::defaultViewConsultationId));
                 if ($this->displayDefaultMenuTooltip) {
                     $item->setTooltipLabel(___("Display latest document revision", "UiMenu"));
                 }
