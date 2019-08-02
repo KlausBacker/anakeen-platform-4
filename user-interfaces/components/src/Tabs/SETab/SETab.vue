@@ -13,6 +13,7 @@
         v-show="smartElementLoaded"
         :initid="identifier"
         :viewId="viewId"
+        :revision="revision"
         class="ank-se-tab-element"
         ref="smartElement"
         @documentLoaded="onSmartElementLoaded"
