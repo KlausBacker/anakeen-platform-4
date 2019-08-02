@@ -19,6 +19,7 @@ const setLocale = (Vue, kendo, locale) => {
     Vue.config.language = locale;
   } else {
     if (Vue.config.language) {
+      locale = Vue.config.language;
       const kendoLocale = locale.replace("_", "-");
       kendo.culture(kendoLocale);
     } else {

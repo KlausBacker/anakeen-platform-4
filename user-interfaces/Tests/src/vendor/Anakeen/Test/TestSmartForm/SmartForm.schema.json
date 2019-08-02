@@ -260,14 +260,36 @@
           "$id": "#/properties/renderOptions/properties/common",
           "type": "object",
           "title": "The Common Schema",
-          "required": ["labelPosition"],
+          "required": [],
           "properties": {
             "labelPosition": {
               "$id": "#/properties/renderOptions/properties/common/properties/labelPosition",
               "type": "string",
               "title": "The Labelposition Schema",
-              "default": "",
+              "default": "up",
+              "enum": ["up", "left", "none", "auto"],
               "examples": ["left"],
+              "pattern": "^(.*)$"
+            },
+
+            "attributeLabel": {
+              "$id": "#/properties/renderOptions/properties/common/properties/attributeLabel",
+              "type": "string",
+              "title": "The attributeLabel Schema",
+              "default": "",
+              "examples": ["Hello"],
+              "pattern": "^(.*)$"
+            },
+
+            "description": {
+              "$id": "#/properties/renderOptions/properties/common/properties/description",
+              "type": "object",
+              "title": "The description Schema",
+              "default": "",
+              "examples": [{"collapsed": false,
+                "htmlContent": "<p>Décrire ici votre requête</p>",
+                "htmlTitle": "<h3>Objet de la demande</h3>",
+                "position": "top"}],
               "pattern": "^(.*)$"
             }
           }
