@@ -75,6 +75,7 @@ export default class TestExamplesSmartFormController extends Vue {
 
     recordedExamples[index] = json;
     this.examples[generalIndex].label = json.title || "Untitled form #" + (generalIndex + 1);
+    this.examples[generalIndex].json = json;
     window.localStorage.setItem(this.storageKey, JSON.stringify(recordedExamples));
   }
 

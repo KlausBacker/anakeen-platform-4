@@ -12,7 +12,7 @@ new Vue({
   data: {
     nsSde: ""
   },
-  mounted() {
+  created() {
     this.nsSde = window.nsSde;
   },
   template: "<login :nsSde='nsSde'></login>"

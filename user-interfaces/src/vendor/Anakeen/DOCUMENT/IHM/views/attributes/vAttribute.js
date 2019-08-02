@@ -588,7 +588,7 @@ define([
       autocompleteUrl = "/api/v2/smart-elements/" + (documentModel.id || "0") + "/autocomplete/" + this.model.id;
 
       options.data.fromid = documentModel.get("properties").get("family").id;
-
+      options.data.fieldInfo = this.model.toData();
       $.ajax({
         type: "POST",
         url: autocompleteUrl,

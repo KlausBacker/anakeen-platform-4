@@ -3,11 +3,9 @@
  */
 import { Component, Mixins, Prop, Vue, Watch } from "vue-property-decorator";
 import VueSetup from "../setup.js";
-// eslint-disable-next-line no-unused-vars
-import { ISmartElementValue } from "../SmartElement/ISmartElementValue";
 import AnkSmartElement from "../SmartElement/SmartElement.component";
 // eslint-disable-next-line no-unused-vars
-import { ISmartForm } from "./ISmartForm";
+import { ISmartFormConfiguration, ISmartFormValue } from "./ISmartForm";
 
 Vue.use(VueSetup);
 // noinspection JSUnusedGlobalSymbols
@@ -24,21 +22,28 @@ export default class AnkSmartForm extends Mixins(AnkSmartElement) {
     }),
     type: Object
   })
-  public config!: ISmartForm;
+  public config!: ISmartFormConfiguration;
+
+  @Prop({
+    default: () => ({}),
+    type: Object
+  })
+  public options!: any;
 
   @Watch("config", { immediate: false, deep: true })
-  public onConfigChanged(newConfig: ISmartForm) {
+  public onConfigChanged(newConfig: ISmartFormConfiguration) {
     // noinspection JSIgnoredPromiseFromCall
-    const config = JSON.parse(JSON.stringify(newConfig));
-    this.fetchSmartElement(this.initialConfig, {
-      formConfiguration: config
-    }).catch(e => {
+    const smartElementOptions = Object.assign(this.options, {
+      formConfiguration: JSON.parse(JSON.stringify(newConfig))
+    });
+
+    this.fetchSmartElement(this.initialFormData, smartElementOptions).catch(e => {
       console.error(e);
     });
   }
 
-  get initialConfig() {
-    const data: ISmartElementValue = {
+  get initialFormData(): ISmartFormValue {
+    const data: ISmartFormValue = {
       noRouter: !this.browserHistory
     };
 
@@ -50,9 +55,9 @@ export default class AnkSmartForm extends Mixins(AnkSmartElement) {
   }
 
   public mounted() {
-    const config = JSON.parse(JSON.stringify(this.config));
-    this._initController(this.initialConfig, {
-      formConfiguration: config
+    const smartElementOptions = Object.assign(this.options, {
+      formConfiguration: JSON.parse(JSON.stringify(this.config))
     });
+    this._initController(this.initialFormData, smartElementOptions);
   }
 }
