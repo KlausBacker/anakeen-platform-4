@@ -20,14 +20,4 @@ class MaskEditRender extends DefaultConfigEditRender
         $options->arrayAttribute(myAttributes::msk_t_contain)->disableRowDel(true);*/
         return $options;
     }
-
-    /*
-    public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
-    {
-        $js = parent::getJsReferences();
-        $version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
-        $js["dduiMask"] = "uiAssets/Families/mask/maskEdit.js?ws=" . $version;
-        return $js;
-    }
-    */
 }

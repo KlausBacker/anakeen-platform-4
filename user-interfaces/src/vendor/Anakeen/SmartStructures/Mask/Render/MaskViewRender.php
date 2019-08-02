@@ -11,8 +11,16 @@ class MaskViewRender extends DefaultConfigViewRender
     {
         $js = parent::getJsReferences();
         $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "legacy");
-        $js["dduiMask"] = $path["Mask"]["js"];
+        $js["mask"] = $path["Mask"]["js"];
 
+        return $js;
+    }
+
+    public function getJsDeps()
+    {
+        $js =  parent::getJsDeps();
+        $kendoDll = UIGetAssetPath::getJSKendoComponentPath();
+        $js["kendoDll"] = $kendoDll;
         return $js;
     }
 
