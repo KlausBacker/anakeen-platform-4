@@ -63,6 +63,7 @@ define([
               return currentView;
             }
 
+            currentView.$el.addClass("dcpAttribute--visibility--" + currentView.model.get("visibility"));
             if (currentView.options.originalView !== true) {
               if (currentView.model.getOption("template")) {
                 customRender = attributeTemplate.renderCustomView(currentView.model);
