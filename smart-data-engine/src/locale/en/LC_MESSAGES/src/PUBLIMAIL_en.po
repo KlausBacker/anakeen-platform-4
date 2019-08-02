@@ -48,7 +48,7 @@ msgstr "actions"
 #: App/Fdl/freeaction.ods.csv
 msgctxt "PUBLIMAIL"
 msgid "pubm_fam"
-msgstr "Batch family"
+msgstr "Batch Smart Structure"
 
 #: App/Fdl/freeaction.ods.csv
 msgctxt "PUBLIMAIL"
@@ -78,7 +78,7 @@ msgstr "Identification"
 #: App/Fdl/freeaction.ods.csv
 msgctxt "PUBLIMAIL"
 msgid "pubm_idfam"
-msgstr "Id family"
+msgstr "Id Smart Structure"
 
 #: App/Fdl/freeaction.ods.csv
 msgctxt "PUBLIMAIL"

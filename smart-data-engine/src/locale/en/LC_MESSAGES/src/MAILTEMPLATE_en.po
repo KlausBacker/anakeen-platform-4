@@ -44,7 +44,7 @@ msgstr "Type"
 #: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 msgctxt "MAILTEMPLATE"
 msgid "tmail_family"
-msgstr "Family"
+msgstr "Smart Structure"
 
 #: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 msgctxt "MAILTEMPLATE"

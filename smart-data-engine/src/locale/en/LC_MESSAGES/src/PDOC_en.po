@@ -26,12 +26,12 @@ msgstr "Document profile"
 #: src/vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml
 msgctxt "PDOC"
 msgid "dpdoc_fam"
-msgstr "Family"
+msgstr "Smart Structure"
 
 #: src/vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml
 msgctxt "PDOC"
 msgid "dpdoc_famid"
-msgstr "Family id"
+msgstr "Smart Structure id"
 
 #: src/vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml
 msgctxt "PDOC"
