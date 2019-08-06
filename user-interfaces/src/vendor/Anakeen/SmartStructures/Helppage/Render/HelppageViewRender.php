@@ -41,25 +41,11 @@ class HelppageViewRender extends \Anakeen\Ui\DefaultView
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $js = parent::getJsReferences();
-        $ws = \Anakeen\Ui\UIGetAssetPath::getWs();
-
-        $js["dduiHelppage"] = 'uiAssets/Families/helppage/prod/helppage.js?ws=' . $ws;
-        if (\Anakeen\Ui\UIGetAssetPath::isInDebug()) {
-            $js["dduiHelppage"] = 'uiAssets/Families/helppage/debug/helppage.js?ws=' . $ws;
-        }
 
         $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "legacy");
-        $js["dduiHelppage"] = $path["Helppage"]["js"];
+        $js["helpPage"] = $path["Helppage"]["js"];
 
         return $js;
-    }
-
-    public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
-    {
-        $css = parent::getCssReferences();
-        //$version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
-        //$css["dduiHelppage"] = "uiAssets/Families/helppage/helppage.css?ws=" . $version;
-        return $css;
     }
 
     /**
