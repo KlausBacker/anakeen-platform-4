@@ -3,11 +3,9 @@ window.ank.smartElement.globalController.registerFunction("iuser", controller =>
     "ready",
     {
       name: "addmenu",
-      check: documentObject => {
+      check: () => {
         const serverData = controller.getCustomServerData();
-        return (
-          documentObject.renderMode === "edit" && serverData && serverData["EDIT_GROUP"] && serverData["defaultGroup"]
-        );
+        return serverData && serverData["EDIT_GROUP"] && serverData["defaultGroup"];
       }
     },
     () => {
