@@ -378,10 +378,7 @@ class Compose {
    * @returns {Promise<*>}
    */
   async unpackSrc(archive, moduleName) {
-    if (!archive.match(/\.src$/)) {
-      throw new ComposeError(`Archive '${archive}' has no '.src' suffix`);
-    }
-    const basename = moduleName || path.basename(archive, ".src");
+    const basename = moduleName;
     const dirname = path.dirname(archive);
     const pathname = path.normalize([dirname, basename].join("/"));
     if (await Compose.fileExists(pathname)) {
