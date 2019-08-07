@@ -13,17 +13,11 @@ class MaskViewRender extends DefaultConfigViewRender
         $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "legacy");
         $js["mask"] = $path["Mask"]["js"];
 
-        return $js;
-    }
-
-    public function getJsDeps()
-    {
-        $js =  parent::getJsDeps();
         $kendoDll = UIGetAssetPath::getJSKendoComponentPath();
         $js["kendoDll"] = $kendoDll;
+
         return $js;
     }
-
 
     public function getTemplates(\Anakeen\Core\Internal\SmartElement $document = null)
     {
