@@ -1,53 +1,68 @@
 .helppage--content h1 {
-    margin: 3em 1em 1em 1em;
-    font-size: 120%;
-    border-bottom: solid 1px grey;
+  margin: 3em 1em 1em 1em;
+  font-size: 120%;
+  border-bottom: solid 1px grey;
 }
 
 .helppage--content h1 img {
-    float: right;
+  float: right;
 }
 
 .helppage--content h2 {
-    margin: 0.4em 3em;
-    font-size: 110%;
+  margin: 0.4em 3em;
+  font-size: 110%;
 }
 
 .helppage--content h3 {
-    margin: 0.7em 3em;
-    font-size: 100%;
-    font-weight: bold;
+  margin: 0.7em 3em;
+  font-size: 100%;
+  font-weight: bold;
 }
 
 .helppage--content .helppage-chapter-content {
-    margin: 0 2em;
-    padding-left: 1em;
+  margin: 0 2em;
+  padding-left: 1em;
 }
 
-.helppage--chapter:target
-{
-    padding-top: 2em;
+.helppage--chapter:target {
+  padding-top: 2em;
 }
 
 .helppage--chapter:target h3,
-.helppage--chapter.helppage--select h3
-{
-    margin-left: 1.7em;
+.helppage--chapter.helppage--select h3 {
+  margin-left: 1.7em;
 }
 
 .helppage--chapter:target h3::before,
 .helppage--chapter.helppage--select h3::before {
-    content: "\2217 ";
-    color: #7676FF;
-    width: 1.2em;
-    display: inline-block;
+  content: "\2217 ";
+  color: #7676ff;
+  width: 1.2em;
+  display: inline-block;
 }
 
 .helppage--chapter:target .helppage-chapter-content,
-.helppage--chapter.helppage--select .helppage-chapter-content  {
-    border-left: solid 3px #7676FF;
+.helppage--chapter.helppage--select .helppage-chapter-content {
+  border-left: solid 3px #7676ff;
 }
 
 .dcpDocument--view.dcpFamily--HELPPAGE {
-    background-color: white;
+  background-color: white;
+}
+
+[data-attrid="help_sec_text"] > .input-group.margin-bottom-sm {
+  flex-wrap: nowrap;
+}
+
+.dcpAttribute__content__button--delete {
+  display: flex;
+  flex-direction: column;
+}
+
+.dcpAttribute__content__button--delete > span {
+    margin: 0.3rem 0 0 0.6rem;
+}
+
+.cke_ltr {
+  width: 100% !important;
 }
