@@ -1,7 +1,7 @@
 import "@progress/kendo-ui/js/kendo.treeview";
 import "./changeGroupView.css";
 
-{
+window.ank.smartElement.globalController.registerFunction("iuserGroup", controller => {
   let getGroupTreeSource;
   let checkedGroups;
   let currentDoc;
@@ -105,13 +105,12 @@ import "./changeGroupView.css";
     });
   };
 
-  window.dcp.document.documentController(
-    "addEventListener",
+  controller.addEventListener(
     "beforeRender",
     {
       name: "changeGroupBeforeRender.changeGroup",
-      documentCheck: documentObject => {
-        const serverData = window.dcp.document.documentController("getCustomServerData");
+      check: documentObject => {
+        const serverData = controller.getCustomServerData();
         return documentObject.renderMode === "edit" && serverData["GROUP_ANALYZE"];
       }
     },
@@ -121,27 +120,21 @@ import "./changeGroupView.css";
       }
     }
   );
-  window.dcp.document.documentController(
-    "addEventListener",
-    "afterSave",
-    { name: "changeGroupSave.changeGroup" },
-    function reloadInConsultation() {
-      getGroupTreeSource = initTreeGroup(getGroups());
-    }
-  );
-  window.dcp.document.documentController(
-    "addEventListener",
+  controller.addEventListener("afterSave", { name: "changeGroupSave.changeGroup" }, function reloadInConsultation() {
+    getGroupTreeSource = initTreeGroup(getGroups());
+  });
+  controller.addEventListener(
     "ready",
     {
       name: "changeGroupReady.changeGroup",
-      documentCheck: documentObject => {
-        const serverData = window.dcp.document.documentController("getCustomServerData");
+      check: documentObject => {
+        const serverData = controller.getCustomServerData();
         currentDoc = documentObject.id;
         return documentObject.renderMode === "edit" && serverData["GROUP_ANALYZE"];
       }
     },
     () => {
-      const serverData = window.dcp.document.documentController("getCustomServerData");
+      const serverData = controller.getCustomServerData();
       checkedGroups = serverData.groups;
       let filterTitle = null;
 
@@ -200,7 +193,7 @@ import "./changeGroupView.css";
           if (eventNode.documentId !== currentDoc.toString() && !eventNode.id.includes(currentDoc.toString())) {
             getChecked(checked)(eventNode)(event.sender.dataSource);
             checkedGroups = checked;
-            window.dcp.document.documentController("addCustomClientData", {
+            controller.addCustomClientData({
               parentGroups: checkedGroups
             });
             updateListOfGroup(true);
@@ -230,4 +223,4 @@ import "./changeGroupView.css";
       updateListOfGroup = updateTreeSource($("#listOfGroups").data("kendoTreeView"));
     }
   );
-}
+});

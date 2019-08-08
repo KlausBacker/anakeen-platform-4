@@ -165,16 +165,6 @@ class IuserViewRender extends DefaultConfigViewRender
         return $menus;
     }
 
-    public function getJsReferences(SmartElement $smartElement = null)
-    {
-        $js = parent::getJsReferences();
-
-        $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "legacy");
-        $js["iuser"] = $path["Iuser"]["js"];
-
-        return $js;
-    }
-
     protected function checkMenuAccess(SmartElement $smartElement, $menuId)
     {
         //Do not show if the right is not ok
