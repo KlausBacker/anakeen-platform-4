@@ -59,7 +59,7 @@ class GroupEditRender extends DefaultConfigEditRender
         $js = parent::getJsReferences();
 
         $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "legacy");
-        $js["dduiIuser"] = $path["Iuser"]["js"];
+        $js["iuser"] = $path["Iuser"]["js"];
 
         return $js;
     }
