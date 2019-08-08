@@ -317,40 +317,42 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
    * @private
    */
   private _injectSmartElementJS(event) {
-    const injectPromises = event.js.map(currentJS => {
+    const injectPromise = event.js.reduce((acc, currentJS) => {
       const currentPath = currentJS.path;
       // inject js if not alredy exist
       if ($('script[data-src="' + currentPath + '"]').length === 0) {
-        return new Promise((resolve, reject) => {
-          load("", {
-            callback: err => {
-              if (err) {
-                reject(err);
-              } else if (currentJS.type === "global") {
-                resolve();
-              } else if (!currentJS.type || currentJS.type === "library") {
-                const functionKey = currentJS.function || currentJS.key;
-                this._registerScript(currentJS.path, this._getRegisteredFunction(functionKey));
-              }
-            },
-            setup: script => this._createScript(currentJS, script)
-          });
-          // Wait script function registration for module and library injection
-          if (currentJS.type !== "global") {
-            this.on("_internal::scriptReady", url => {
-              if (url === currentPath) {
-                resolve();
-              }
+        return acc.then(() => {
+          return new Promise((resolve, reject) => {
+            load("", {
+              callback: err => {
+                if (err) {
+                  reject(err);
+                } else if (currentJS.type === "global") {
+                  resolve();
+                } else if (!currentJS.type || currentJS.type === "library") {
+                  const functionKey = currentJS.function || currentJS.key;
+                  this._registerScript(currentJS.path, this._getRegisteredFunction(functionKey));
+                }
+              },
+              setup: script => this._createScript(currentJS, script)
             });
-          }
+            // Wait script function registration for module and library injection
+            if (currentJS.type !== "global") {
+              this.on("_internal::scriptReady", url => {
+                if (url === currentPath) {
+                  resolve();
+                }
+              });
+            }
+          });
         });
       } else {
         // Script function is already available
-        return Promise.resolve();
+        return acc;
       }
-    });
+    }, Promise.resolve());
     // Set inject promise
-    event.injectPromise = Promise.all(injectPromises).then(() => {
+    event.injectPromise = injectPromise.then(() => {
       // Execute script function with scoped controller
       const customJS = _.pluck(event.js, "path");
       const promises = customJS.map(jsPath => {
