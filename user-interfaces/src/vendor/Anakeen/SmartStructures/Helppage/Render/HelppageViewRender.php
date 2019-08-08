@@ -42,11 +42,11 @@ class HelppageViewRender extends \Anakeen\Ui\DefaultView
     {
         $js = parent::getJsReferences();
 
+        $kendoDll = UIGetAssetPath::getJSKendoComponentPath();
+        $js["kendoDll"] = $kendoDll;
+
         $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "legacy");
         $js["helpPage"] = $path["Helppage"]["js"];
-
-        $vue = UIGetAssetPath::getJSVueComponentPath();
-        $js["vueDll"] = $vue;
 
         return $js;
     }
