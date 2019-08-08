@@ -73,7 +73,6 @@ run-bash: ## Run bash in php container
 run-sql: ## Run psql in postgres container
 	make -C ./.devtool/docker docker-prompt-psql
 
-
 run-dev-server: ## Run webpack development server
 	$(NODE_BIN) .devtool/devserver/index.js
 

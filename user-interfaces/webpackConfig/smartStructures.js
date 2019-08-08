@@ -74,16 +74,6 @@ module.exports = () => {
           "ankKendoDll-manifest.json"
         )
       }),
-      addDll({
-        context: BASE_DIR,
-        manifest: path.join(
-          PUBLIC_PATH,
-          "Anakeen",
-          "ankDll",
-          "legacy",
-          "vueDll-manifest.json"
-        )
-      }),
       {
         resolve: {
           extensions: [".js"],
