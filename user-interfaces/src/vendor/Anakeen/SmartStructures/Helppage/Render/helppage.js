@@ -4,15 +4,15 @@ import Mustache from "mustache";
 import $ from "jquery";
 import i18n from "dcpDocument/i18n/documentCatalog";
 
-{
+window.ank.smartElement.globalController.registerFunction("helpPage", controller => {
   /**
    * Display help content according to parameter locale
    * @param lang fr_FR / en_US
    * @param $document current document element
    */
-  const helppageDisplayLocale = (lang, $document) => {
+  const helppageDisplayLocale = lang => {
     const template = $("#helppage-template").text();
-    const helpValues = $document.documentController("getValues");
+    const helpValues = controller.getValues();
     let htmlResult;
     let locale = { title: "Untitle", description: "", chapters: [] };
     let order;
@@ -62,12 +62,11 @@ import i18n from "dcpDocument/i18n/documentCatalog";
     }
   };
 
-  window.dcp.document.documentController(
-    "addEventListener",
+  controller.addEventListener(
     "ready",
     {
       name: "helppageReady",
-      documentCheck: documentObject => documentObject.renderMode === "view" && documentObject.family.name === "HELPPAGE"
+      check: documentObject => documentObject.family.name === "HELPPAGE"
     },
     function helppageReady(/*event, documentObject*/) {
       const currentLocale = i18n.getLocale().culture.replace("-", "_") || "fr_FR";
@@ -75,14 +74,14 @@ import i18n from "dcpDocument/i18n/documentCatalog";
       if (window.frameElement) {
         // if document is in dialog window
         if ($(window.frameElement).closest(".k-window").length === 1) {
-          const topMenu = this.documentController("getMenus");
+          const topMenu = controller.getMenus();
 
           // Hide all menu except lang menu
           topMenu.forEach(itemMenu => {
             if (itemMenu.id !== "helppage-langMenu") {
-              this.documentController("getMenu", itemMenu.id).hide();
+              controller.getMenu(itemMenu.id).hide();
             } else {
-              this.documentController("getMenu", itemMenu.id).setCssClass("menu--right");
+              controller.getMenu(itemMenu.id).setCssClass("menu--right");
             }
           });
 
@@ -110,12 +109,11 @@ import i18n from "dcpDocument/i18n/documentCatalog";
   /**
    * Select chapter and scroll to it
    */
-  window.dcp.document.documentController(
-    "addEventListener",
+  controller.addEventListener(
     "custom:helppageSelect",
     {
       name: "helppage-selectchapter",
-      documentCheck: documentObject => documentObject.renderMode === "view" && documentObject.family.name === "HELPPAGE"
+      check: documentObject => documentObject.family.name === "HELPPAGE"
     },
     function helppageDoSelectChapter(event, chapter) {
       helpPageSelectChapter("#CHAP-" + chapter);
@@ -125,12 +123,11 @@ import i18n from "dcpDocument/i18n/documentCatalog";
   /**
    * Change locale when lang menu is selected
    */
-  window.dcp.document.documentController(
-    "addEventListener",
+  controller.addEventListener(
     "actionClick",
     {
       name: "helppage-changelang",
-      documentCheck: documentObject => documentObject.renderMode === "view" && documentObject.family.name === "HELPPAGE"
+      check: documentObject => documentObject.family.name === "HELPPAGE"
     },
     function helppageClickChangeLocale(event, documentObject, options) {
       let culture;
@@ -142,13 +139,11 @@ import i18n from "dcpDocument/i18n/documentCatalog";
         selectedChapter = $(".helppage--select").attr("id");
         helppageDisplayLocale(culture, this);
         helpPageSelectChapter("#" + selectedChapter);
-        langMenu = this.documentController("getMenu", $(options.target).data("menu-id"));
-        this.documentController("getMenu", "helppage-langMenu").setIconUrl(langMenu.getProperties().iconUrl);
-        this.documentController("getMenu", "helppage-langMenu").setHtmlLabel(
-          "(" + langMenu.getProperties().id.substr(-5, 2) + ") "
-        );
+        langMenu = controller.getMenu($(options.target).data("menu-id"));
+        controller.getMenu("helppage-langMenu").setIconUrl(langMenu.getProperties().iconUrl);
+        controller.getMenu("helppage-langMenu").setHtmlLabel("(" + langMenu.getProperties().id.substr(-5, 2) + ") ");
         event.preventDefault();
       }
     }
   );
-}
+});
