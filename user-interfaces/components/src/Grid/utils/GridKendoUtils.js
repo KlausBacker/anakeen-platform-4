@@ -1,7 +1,6 @@
 import AbstractGridUtil from "./AbstractGridUtil";
 import GridFilter from "./GridFilter";
 import GridEvent from "./GridEvent";
-import ExportActionTemplate from "../templates/GridToolbarExportAction.template.kd";
 
 export default class GridKendoUtils extends AbstractGridUtil {
   onGridDataBound(dataBoundEvent) {
@@ -9,6 +8,9 @@ export default class GridKendoUtils extends AbstractGridUtil {
     this.createKendoActionMenu(allMenus);
     allMenus.on("mousedown", e => this.onKendoActionMenuMouseDown(e));
 
+    if (this.vueComponent.kendoGrid && this.vueComponent.kendoGrid.pager) {
+      this.vueComponent.kendoGrid.pager.element.hide();
+    }
     if (this.vueComponent.isFullSelectionState) {
       this.vueComponent.kendoGrid.select("tr");
     }
@@ -95,61 +97,10 @@ export default class GridKendoUtils extends AbstractGridUtil {
         }
       }
     });
-
-    if (this.vueComponent.collapseRowButton) {
-      this.addCollapseRowColumn();
-    }
-  }
-  addCollapseRowColumn() {
-    this.vueComponent.$once("grid-ready", () => {
-      if (this.vueComponent.kendoGrid.pager) {
-        const pagerSizes = this.vueComponent.kendoGrid.pager.element.find(".k-pager-sizes");
-        const $collapseButton = $(
-          '<a class="grid-collapse-button k-button"> <span class="k-icon k-i-arrows-resizing"></span></a>'
-        );
-        $collapseButton.attr("title", this.vueComponent.translations.rowCollapse);
-        $collapseButton.insertAfter($(pagerSizes));
-        $collapseButton.on("click", event => {
-          event.preventDefault();
-          $(this.vueComponent.kendoGrid.element).toggleClass("grid-row-collapsed");
-        });
-      }
-    });
   }
   resizeKendoWidgets() {
     if (this.vueComponent.kendoGrid) {
       this.vueComponent.kendoGrid.resize();
-    }
-    if (this.vueComponent.$refs.gridColumnsDialog) {
-      this.vueComponent.$refs.gridColumnsDialog.resize();
-    }
-  }
-
-  prepareKendoGridToolbar(config) {
-    if (config.toolbar) {
-      if (config.toolbar.actionConfigs && config.toolbar.actionConfigs.length) {
-        this.vueComponent.kendoGridOptions.toolbar = [];
-        config.toolbar.actionConfigs.forEach(a => {
-          const toolbarAction = this.vueComponent.gridActions.getToolbarAction(a.action);
-          const toolbarActionConfig = {
-            name: a.action,
-            text: a.title || toolbarAction.title,
-            iconClass: a.iconClass || toolbarAction.iconClass,
-            className: "grid-toolbar-action grid-toolbar-" + a.action + "-action",
-            attributes: { "data-action-id": a.action }
-          };
-          if (a.action === "export") {
-            toolbarActionConfig.template = ExportActionTemplate;
-            this.vueComponent.$once("grid-ready", () => {
-              const $exportMenu = this.vueComponent.kendoGrid.element.find(".grid-toolbar-export-action");
-              $exportMenu.each((index, item) => {
-                this.vueComponent.gridActions.initToolbarExportTemplate(item);
-              });
-            });
-          }
-          this.vueComponent.kendoGridOptions.toolbar.push(toolbarActionConfig);
-        });
-      }
     }
   }
 
@@ -378,7 +329,6 @@ export default class GridKendoUtils extends AbstractGridUtil {
 
     this.prepareKendoGridLocales(config);
     this.prepareKendoGridPaging(config);
-    this.prepareKendoGridToolbar(config);
     this.prepareKendoGridColumns(config);
     this.prepareKendoGridActions(config);
 
@@ -412,7 +362,6 @@ export default class GridKendoUtils extends AbstractGridUtil {
       change: e => this.onGridSelectionChange(e),
       dataBound: e => {
         this.onGridDataBound(e);
-        this.vueComponent.gridDataUtils.computeTotalExport(e.sender);
       }
     });
 

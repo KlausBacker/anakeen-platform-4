@@ -1,41 +1,37 @@
 import Vue from "vue";
-import { Component, Watch, Prop } from "vue-property-decorator";
-import "@progress/kendo-ui/js/kendo.grid";
+
 import "@progress/kendo-ui/js/kendo.filtercell";
-import "@progress/kendo-ui/js/kendo.window";
-import "@progress/kendo-ui/js/kendo.toolbar";
+import "@progress/kendo-ui/js/kendo.grid";
+import { Component, Prop, Watch } from "vue-property-decorator";
+
+import GridExpandButton from "./Components/GridExpandButton/GridExpandButton.vue";
+import GridPager from "./Components/GridPager/GridPager.vue";
 
 import GridActions from "./utils/GridActions";
 import GridEvent from "./utils/GridEvent";
-import ExportActionTemplate from "./templates/GridToolbarExportAction.template.kd";
 
 import GridDataUtils from "./utils/GridDataUtils";
 import GridFilter from "./utils/GridFilter";
-const GridColumnsDialog = () => import("./GridDialog/GridDialog.vue");
 
 import GridError from "./utils/GridError";
-import GridVueUtil from "./utils/GridVueUtil";
 import GridKendoUtils from "./utils/GridKendoUtils";
+import GridVueUtil from "./utils/GridVueUtil";
 const COMPLETE_FIELDS_INFO_URL = "/api/v2/grid/columns/<collection>";
-import { IGrid } from "./IGrid";
 import VueSetup from "../setup.js";
+// eslint-disable-next-line no-unused-vars
+import { IGrid } from "./IGrid";
 Vue.use(VueSetup);
 
 @Component({
-  name: "ank-se-grid",
   components: {
-    "grid-dialog": GridColumnsDialog
-  }
+    "ank-se-grid-expand-button": GridExpandButton,
+    "ank-se-grid-pager": GridPager
+  },
+  name: "ank-se-grid"
 })
 export default class GridController extends Vue {
   public get isFullSelectionState() {
     return this.checkable && this.allRowsSelectable;
-  }
-  public get colsConfig() {
-    if (this.kendoGrid) {
-      return this.kendoGrid.columns;
-    }
-    return [];
   }
 
   public get resolveExportUrl() {
@@ -84,128 +80,129 @@ export default class GridController extends Vue {
     return baseUrl.replace("<collection>", collection.toString());
   }
   @Prop({
-    type: String,
-    default: ""
+    default: "",
+    type: String
   })
   public persistStateKey: string;
   @Prop({
-    type: Boolean,
-    default: true
+    default: true,
+    type: Boolean
   })
   public contextTitles;
 
   @Prop({
-    type: Boolean,
-    default: true
+    default: true,
+    type: Boolean
   })
   public collapseRowButton: boolean;
 
   @Prop({
-    type: Boolean,
-    default: false
+    default: false,
+    type: Boolean
   })
   public exportButton: boolean;
 
   @Prop({
-    type: String,
-    default: "-"
+    default: "-",
+    type: String
   })
   public contextTitlesSeparator;
 
   @Prop({
-    type: String,
-    default: "/api/v2/grid/config/<collection>"
+    default: "/api/v2/grid/config/<collection>",
+    type: String
   })
   public urlConfig;
   @Prop({
-    type: String,
-    default: "/api/v2/grid/export/<transaction>/<collection>"
+    default: "/api/v2/grid/export/<transaction>/<collection>",
+    type: String
   })
   public urlExport;
   @Prop({
-    type: String,
-    default: "/api/v2/grid/content/<collection>"
+    default: "/api/v2/grid/content/<collection>",
+    type: String
   })
   public urlContent;
   @Prop({
-    type: String,
-    default: ""
+    default: "",
+    type: String
   })
   public collection;
   @Prop({
-    type: String,
-    default: ""
+    default: "",
+    type: String
   })
   public emptyCell;
   @Prop({
-    type: String,
-    default: "multiple"
+    default: "multiple",
+    type: String
   })
   public sortable;
   @Prop({
-    type: Boolean,
-    default: true
+    default: true,
+    type: Boolean
   })
   public serverSorting;
   @Prop({
-    type: String,
-    default: "menu"
+    default: "menu",
+    type: String
   })
   public filterable;
   @Prop({
-    type: Boolean,
-    default: false
+    default: false,
+    type: Boolean
   })
   public refresh;
   @Prop({
-    type: Boolean,
-    default: false
+    default: false,
+    type: Boolean
   })
   public reorderable;
   @Prop({
-    type: Boolean,
-    default: true
+    default: true,
+    type: Boolean
   })
   public serverFiltering;
   @Prop({
-    type: Boolean,
-    default: true
+    default: true,
+    type: Boolean
   })
   public pageable;
   @Prop({
-    type: [Boolean, Array],
-    default: () => [10, 20, 50]
+    default: () => [10, 20, 50],
+    type: [Boolean, Array]
   })
   public pageSizes;
   @Prop({
-    type: Boolean,
-    default: true
+    default: true,
+    type: Boolean
   })
   public serverPaging;
   @Prop({
-    type: Boolean,
-    default: true
+    default: true,
+    type: Boolean
   })
   public resizable;
   @Prop({
-    type: [Boolean, String],
-    default: false
+    default: false,
+    type: [Boolean, String]
   })
   public selectable;
   @Prop({
-    type: Boolean,
-    default: false
+    default: false,
+    type: Boolean
   })
   public checkable;
 
   @Prop({
-    type: Boolean,
-    default: true
+    default: true,
+    type: Boolean
   })
   public persistSelection;
   public translations = {
     uploadAllResults: "Upload all results",
-    uploadReport: "upload"
+    uploadReport: "upload",
+    uploadSelection: "Upload selected items"
   };
   public collectionProperties = {};
 
@@ -216,9 +213,10 @@ export default class GridController extends Vue {
     gridWrapper: HTMLElement;
   };
   public gridActions: any = null;
-  public gridFilter: any = null;
-  public gridError: any = null;
   public gridDataUtils: any = null;
+  public gridError: any = null;
+  public gridFilter: any = null;
+  public gridInstance: any = null;
   public gridVueUtils: any = null;
   public gridKendoUtils: any = null;
   public allRowsSelectable: boolean = false;
@@ -227,14 +225,14 @@ export default class GridController extends Vue {
   public kendoGrid: any = null;
   public gridConfig: any = null;
   public kendoDataSourceOptions: object = {
-    serverPaging: this.serverPaging,
-    serverFiltering: this.serverFiltering,
-    serverSorting: this.serverSorting,
     pageSize: this.pageSizes && this.pageSizes.length ? this.pageSizes[0] : 10,
     schema: {
       data: response => response.data.data.smartElements,
       total: response => response.data.data.requestParameters.pager.total
-    }
+    },
+    serverFiltering: this.serverFiltering,
+    serverPaging: this.serverPaging,
+    serverSorting: this.serverSorting
   };
   public kendoGridOptions: object = {
     filterable: this.filterable
@@ -242,13 +240,6 @@ export default class GridController extends Vue {
           mode: this.filterable === "inline" ? "menu, row" : this.filterable
         }
       : this.filterable,
-    sortable: this.sortable
-      ? {
-          mode: this.sortable,
-          showIndexes: true
-        }
-      : this.sortable,
-    reorderable: this.reorderable,
     pageable: this.pageable
       ? {
           numeric: false,
@@ -256,9 +247,16 @@ export default class GridController extends Vue {
           refresh: this.refresh
         }
       : this.pageable,
+    persistSelection: this.persistSelection,
+    reorderable: this.reorderable,
     resizable: this.resizable,
     selectable: this.selectable,
-    persistSelection: this.persistSelection
+    sortable: this.sortable
+      ? {
+          mode: this.sortable,
+          showIndexes: true
+        }
+      : this.sortable
   };
   @Watch("urlConfig")
   public watchUrlConfig(newVal, oldVal) {
@@ -425,7 +423,6 @@ export default class GridController extends Vue {
           .then(config => {
             this.gridConfig = config;
             this.gridKendoUtils.initKendoGrid(config, savedColsOpts);
-            this.privateScope.bindGridEvents();
             kendo.ui.progress(kendo.jQuery(this.$refs.gridWrapper), false);
           })
           .catch(err => {
@@ -433,44 +430,6 @@ export default class GridController extends Vue {
             kendo.ui.progress(kendo.jQuery(this.$refs.gridWrapper), false);
           });
       },
-
-      bindGridEvents: () => {
-        if (this.kendoGrid) {
-          if (this.gridConfig && this.gridConfig.toolbar && this.gridConfig.toolbar.actionConfigs) {
-            this.gridConfig.toolbar.actionConfigs.forEach(conf => {
-              if (conf.action !== "export") {
-                const action = this.gridActions.getToolbarAction(conf.action);
-                kendo
-                  .jQuery(this.$refs.kendoGrid)
-                  .find(".k-grid-toolbar")
-                  .on("click", `.grid-toolbar-${conf.action}-action`, e => action.click(e, conf.action));
-              }
-            });
-          }
-        }
-        if (this.exportButton) {
-          const pagerInfo = this.kendoGrid.pager.element.find(".k-pager-info");
-
-          const toolbarActionConfig = {
-            name: "export",
-            text: "",
-            iconClass: "k-icon k-i-upload",
-            attributes: { "data-action-id": "export" }
-          };
-          const exportTemplate = ExportActionTemplate;
-          const exportButton = kendo.template(exportTemplate)(toolbarActionConfig);
-          const $exportButton = $(exportButton);
-
-          $exportButton.addClass("grid-bottom-export");
-          $exportButton.find(".k-button-icontext").removeClass("k-button-icontext");
-          $exportButton.attr("title", this.translations.uploadReport);
-          $exportButton.insertBefore($(pagerInfo));
-          this.$once("grid-ready", () => {
-            this.gridActions.initToolbarExportTemplate($exportButton);
-          });
-        }
-      },
-
       notifyChange: () => {
         const event = new GridEvent(
           {
@@ -538,11 +497,9 @@ export default class GridController extends Vue {
           }
         });
       }
+      this.gridInstance = this;
       this.$emit("grid-ready");
     });
-  }
-  public setKendoOptions(options) {
-    this.kendoGridOptions = options;
   }
   public setData(data) {
     this.dataSource = new kendo.data.DataSource({
@@ -561,5 +518,9 @@ export default class GridController extends Vue {
         }
       });
     }
+  }
+
+  public onExpandButtonClicked() {
+    $(this.kendoGrid.element).toggleClass("grid-row-collapsed");
   }
 }

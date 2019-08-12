@@ -3,6 +3,7 @@ const { dontParse, dllPart, useCache  } = require("./common.part");
 
 const {
   vueLoader,
+  typeScriptLoader,
   addFalseKendoGlobal
 } = require("@anakeen/webpack-conf/parts");
 
@@ -31,6 +32,7 @@ const conf = {
   customParts: [
     useCache,
     vueLoader(),
+    typeScriptLoader(),
     addFalseKendoGlobal([/kendo.pdf/, /kendo.excel/]),
     {
       resolve: {

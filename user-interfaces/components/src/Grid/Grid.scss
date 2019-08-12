@@ -1,11 +1,9 @@
 .smart-element-grid {
-
   height: 100%;
   max-height: 100%;
   width: 100%;
 
   .k-grid {
-
     display: flex !important; // To override important kendo rule
     flex: 1;
 
@@ -32,7 +30,7 @@
         .k-icon {
           // Sort icon
           position: absolute;
-          top: .25rem;
+          top: 0.25rem;
           right: 1.15rem;
           // The sort arrox  must be inverted top-bottom means asc
           transform: rotate(180deg);
@@ -41,21 +39,21 @@
         .k-sort-order {
           // Sort icon number
           position: absolute;
-          top: .25rem;
+          top: 0.25rem;
           right: 0.7rem;
         }
 
         &::after {
           position: absolute;
-          top: .25rem;
+          top: 0.25rem;
           right: 1.35rem;
         }
       }
 
-      &[data-role=columnsorter]:not(.k-sorted) {
+      &[data-role="columnsorter"]:not(.k-sorted) {
         .k-link::after {
           position: absolute;
-          top: .25rem;
+          top: 0.25rem;
           right: 1.35rem;
         }
       }
@@ -64,15 +62,16 @@
         &:hover {
           &::after {
             position: absolute;
-            top: .25rem;
+            top: 0.25rem;
             right: 1.35rem;
           }
         }
       }
-
     }
 
-    tr.k-state-selected, th.k-state-selected, td.k-state-selected {
+    tr.k-state-selected,
+    th.k-state-selected,
+    td.k-state-selected {
       font-weight: bold;
     }
 
@@ -96,7 +95,8 @@
       vertical-align: middle;
     }
 
-    .checkable-grid-cell, .checkable-grid-header {
+    .checkable-grid-cell,
+    .checkable-grid-header {
       line-height: 1;
       padding: calc(0.75rem - 2px);
 
@@ -121,20 +121,19 @@
     }
 
     tr:not(.k-state-selected) {
-      .checkable-grid-cell, .checkable-grid-header {
+      .checkable-grid-cell,
+      .checkable-grid-header {
         input:not(:checked) + .k-checkbox-label.k-no-text {
           cursor: pointer;
 
           &::before {
             background-color: transparent;
-            border: 1px solid #BEBEBE;
+            border: 1px solid #bebebe;
           }
         }
       }
     }
-
   }
-
 
   .grid-cell-value {
     word-break: break-all; // For firefox
@@ -142,11 +141,11 @@
   }
 
   .grid-widget.grid-row-collapsed {
-    .grid-cell-value, .grid-footer--title {
+    .grid-cell-value,
+    .grid-footer--title {
       overflow: hidden;
       white-space: nowrap;
     }
-
   }
 
   &.smart--fit {
@@ -171,7 +170,8 @@
     }
   }
 
-  .grid-widget, .grid-widget-wrapper {
+  .grid-widget,
+  .grid-widget-wrapper {
     margin: 0;
     padding: 0;
     border-width: 0;
@@ -180,19 +180,18 @@
     flex-direction: column;
   }
 
-  th[data-role=columnsorter] .k-link {
+  th[data-role="columnsorter"] .k-link {
     display: flex;
   }
 
-
-  th[data-role=columnsorter]:not(.k-sorted) {
+  th[data-role="columnsorter"]:not(.k-sorted) {
     position: relative;
 
     .k-link::after {
       cursor: pointer;
       content: "\e127\e128";
       font-family: "WebComponentsIcons";
-      letter-spacing: -.4rem;
+      letter-spacing: -0.4rem;
     }
   }
 
@@ -201,7 +200,7 @@
       position: relative;
 
       &::after {
-        top: .25rem;
+        top: 0.25rem;
         content: "\e116";
         font-family: "WebComponentsIcons";
         font-size: 0.9rem;
@@ -216,8 +215,8 @@
       visibility: visible;
 
       &.k-state-active {
-        border-radius: .25rem;
-        background-color: #157EFB;
+        border-radius: 0.25rem;
+        background-color: #157efb;
       }
     }
   }
@@ -258,7 +257,8 @@
       display: none;
     }
 
-    .k-dropdown-operator .k-dropdown-wrap, .k-button {
+    .k-dropdown-operator .k-dropdown-wrap,
+    .k-button {
       background: transparent;
       border-width: 0;
     }
@@ -280,7 +280,6 @@
         //text-indent: 0;
       }
     }
-
   }
 
   .k-grid-pager {
@@ -292,11 +291,11 @@
       padding: 0;
 
       .k-item {
-        padding: .5rem;
+        padding: 0.5rem;
       }
     }
 
-    &.grid-bottom-export {
+    &.grid-export {
       .k-grid-export {
         height: 100%;
 
@@ -315,7 +314,6 @@
       width: auto;
     }
 
-
     .grid-export-menu {
       padding: 0;
 
@@ -329,7 +327,7 @@
     }
 
     .export-total {
-      margin-left: .5rem;
+      margin-left: 0.5rem;
       border-radius: 1rem;
       padding: 0 0.5rem;
     }
@@ -341,13 +339,16 @@
         font-size: 1.33333rem;
       }
 
-      &.grid-export-status--success, &.grid-export-status--pending, &.grid-export-status--error {
+      &.grid-export-status--success,
+      &.grid-export-status--pending,
+      &.grid-export-status--error {
         display: none;
       }
 
-      &.grid-export-status--pending, &.grid-export-status--success {
+      &.grid-export-status--pending,
+      &.grid-export-status--success {
         .material-icons {
-          color: #8AE234;
+          color: #8ae234;
         }
       }
 
@@ -358,19 +359,18 @@
       }
 
       &.grid-export-status--pending {
-
         .k-menu-group.k-popup {
           li.k-item {
             .k-link {
               height: 100%;
               width: 100%;
-              padding: .5rem;
+              padding: 0.5rem;
             }
           }
 
           li.k-item.k-first {
             height: 5rem;
-            border-bottom: 1px #F1F1F1 solid;
+            border-bottom: 1px #f1f1f1 solid;
 
             .export-pending-header {
               height: 100%;
@@ -383,7 +383,7 @@
                 align-items: center;
 
                 & > .k-icon {
-                  margin-right: .5rem;
+                  margin-right: 0.5rem;
                 }
 
                 & > .export-pending-title-text {
@@ -396,10 +396,10 @@
               .export-pending-close {
                 background: transparent;
                 border: transparent;
-                padding-right: .5rem;
+                padding-right: 0.5rem;
 
                 .k-icon {
-                  margin-right: .5rem;
+                  margin-right: 0.5rem;
                 }
 
                 .export-pending-close-text {
@@ -424,7 +424,6 @@
         }
 
         .grid-export-status-progress-bar-wrapper {
-
           &.grid-export-status-progress-bar-wrapper--indeterminate {
             overflow: hidden;
             // If indeterminate hide progress status
@@ -435,7 +434,7 @@
             & > .grid-export-status-progress-bar {
               position: relative;
               width: 40%;
-              transition: width .2s ease;
+              transition: width 0.2s ease;
               animation: indeterminate 1.5s linear infinite;
               @keyframes indeterminate {
                 0% {
@@ -449,17 +448,16 @@
                 }
               }
             }
-
           }
 
           width: 11.25rem;
           height: 1rem;
-          border-radius: .5rem;
-          background: #F1F1F1;
+          border-radius: 0.5rem;
+          background: #f1f1f1;
           position: relative;
 
           & > .grid-export-status-progress-bar-text {
-            font-size: .8rem;
+            font-size: 0.8rem;
             position: absolute;
             top: 0;
             display: flex;
@@ -471,48 +469,18 @@
             border-radius: inherit;
             height: 100%;
             width: 100%;
-            background: #8AE234;
-            transition: width .2s ease;
+            background: #8ae234;
+            transition: width 0.2s ease;
           }
         }
       }
     }
   }
 
-  .k-grid-toolbar {
-    display: flex;
-    justify-content: flex-end;
-
-    .k-button {
-      background: transparent;
-      border: none;
-      color: black;
-
-      &:hover {
-        border: initial;
-        background: rgba(210, 210, 210, 0.5);
-      }
-    }
-
-    .k-button + .k-button {
-      &:before {
-        content: '';
-        position: absolute;
-        left: -0.25rem;
-        top: calc((100% - 80%) / 2);
-        opacity: 1;
-        width: 1px;
-        height: 80%;
-        display: flex;
-        background-color: #777;
-      }
-    }
-  }
-
   .k-grid-content {
-    border-top: 1px solid #DDDDDD;
+    border-top: 1px solid #dddddd;
 
-    table[role=grid] {
+    table[role="grid"] {
       width: 100% !important;
     }
 
@@ -538,22 +506,22 @@
           }
         }
 
-        &.grid-cell-content--account, &.grid-cell-content--docid {
+        &.grid-cell-content--account,
+        &.grid-cell-content--docid {
           .grid-cell-value a {
-
             &:hover {
               text-decoration: underline;
             }
-
           }
         }
 
-        &.grid-cell-content--int, &.grid-cell-content--double, &.grid-cell-content--money {
+        &.grid-cell-content--int,
+        &.grid-cell-content--double,
+        &.grid-cell-content--money {
           text-align: right;
         }
       }
     }
-
   }
 
   .k-grid-footer {
@@ -563,15 +531,18 @@
       font-weight: bold;
     }
 
-    .grid-foot-content--int, .grid-foot-content--double, .grid-foot-content--money {
+    .grid-foot-content--int,
+    .grid-foot-content--double,
+    .grid-foot-content--money {
       text-align: right;
     }
   }
 
   .k-grid-pager {
-    border-top: 1px solid #DDD;
+    border-top: 1px solid #ddd;
 
-    .k-link, .k-pager-nav {
+    .k-link,
+    .k-pager-nav {
       border: none;
       border-radius: 10%;
     }
@@ -585,11 +556,10 @@
         border-radius: 10%;
       }
     }
-
   }
 
   .grid-cell-icon {
-    margin-right: .5rem;
+    margin-right: 0.5rem;
     height: 1rem;
     vertical-align: baseline;
   }
@@ -603,13 +573,12 @@
   }
 
   .k-grid-header {
-
-    table[role=grid] {
+    table[role="grid"] {
       width: 100% !important;
     }
 
-    .k-header, .k-header > .k-link {
-
+    .k-header,
+    .k-header > .k-link {
     }
   }
 
@@ -626,7 +595,8 @@
     margin-left: 0;
     padding-left: 0;
 
-    .k-button, .actionMenu .k-button {
+    .k-button,
+    .actionMenu .k-button {
       background: transparent;
       border: none;
       padding: 0.5rem 0.75rem;
@@ -638,20 +608,18 @@
       }
 
       &:hover {
-        border-color: transparent #DDDDDD;
+        border-color: transparent #dddddd;
       }
     }
 
     overflow: visible !important;
 
     .actionMenu {
-
       .k-menu-expand-arrow {
         display: none;
       }
 
       .k-menu-group.k-popup {
-
         .k-button {
           padding-left: 1rem;
 
@@ -686,6 +654,33 @@
     &:hover {
       background: rgba(210, 210, 210, 0.5);
     }
+  }
+
+  .grid-widget-header {
+    display: flex;
+    justify-content: flex-end;
+    .k-pager-numbers-wrap {
+      display: none !important;
+    }
+  }
+
+  .grid-widget-footer {
+    display: flex;
+
+    .grid-default-footer {
+      width: 100%;
+      height: 38px;
+
+      .grid-expand-button {
+        top: -35px;
+        left: 289px;
+      }
+    }
+
+    .k-pager-numbers-wrap {
+      display: none !important;
+    }
+
   }
 }
 
