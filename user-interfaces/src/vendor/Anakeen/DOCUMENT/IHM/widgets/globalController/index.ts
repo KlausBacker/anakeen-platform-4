@@ -1,9 +1,10 @@
+import { loadCatalog, storeCatalog } from "../../i18n/catalogStorage";
 import GlobalController from "./GlobalController";
-import { storeCatalog, loadCatalog } from "../../i18n/catalogStorage";
 
 import "../../../../../../../webpackConfig/kendo/kendo";
 
 declare global {
+  // tslint:disable-next-line:interface-name
   interface Window {
     ank?: {
       smartElement?: {

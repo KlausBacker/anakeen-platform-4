@@ -834,7 +834,8 @@ define([
      *
      */
     showHelp: function vDocumentShowHelp(event, helpId, attrid) {
-      var $document = $(this.el);
+      // TODO : voir si on reporte ce fonctionnement
+      /*var $document = $(this.el);
       var scope = this;
       var $dialogDiv = $document.data("dcpHelpDocument-" + helpId);
       var currentTarget = event.originalEvent ? event.originalEvent.currentTarget : event.currentTarget;
@@ -932,7 +933,7 @@ define([
           scope.helpWidget.open();
         },
         "wDocument"
-      );
+      );*/
     },
 
     /**

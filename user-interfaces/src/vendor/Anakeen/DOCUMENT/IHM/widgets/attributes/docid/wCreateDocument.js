@@ -3,8 +3,7 @@ define([
   "jquery",
   "mustache",
   "dcpDocument/i18n/documentCatalog",
-  "dcpDocument/views/document/attributeTemplate",
-  "dcpDocument/document"
+  "dcpDocument/views/document/attributeTemplate"
 ], function wCreateDocument(_, $, Mustache, i18n, attributeTemplate) {
   "use strict";
 
@@ -61,6 +60,10 @@ define([
         $createDocument.on("documentcreate", function wAttributeCreateDocumentCreation() {
           dw.currentWidget.find("> iframe").addClass("k-content-frame");
         });
+
+        //Use global controller to add the new Smart Element
+
+
 
         if (currentValue.value) {
           $createDocument.document({
