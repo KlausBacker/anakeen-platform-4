@@ -63,8 +63,6 @@ define([
 
         //Use global controller to add the new Smart Element
 
-
-
         if (currentValue.value) {
           $createDocument.document({
             initid: currentValue.value,
