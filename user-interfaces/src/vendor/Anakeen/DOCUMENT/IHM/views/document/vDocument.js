@@ -46,6 +46,7 @@ define([
     return bool;
   };
 
+  // noinspection JSUnusedLocalSymbols
   return Backbone.View.extend({
     className: "dcpDocument container-fluid",
 
@@ -794,47 +795,16 @@ define([
     renderCss: function vDocumentRenderCss(/* noRemove */) {
       const customCss = this.model.get("customCSS");
       this.trigger("renderCss", customCss);
-      // add custom css style
-      // var $head = $("head"),
-      //   cssLinkTemplate = _.template(
-      //     '<link rel="stylesheet" type="text/css" ' +
-      //       'href="<%= path %>" data-id="<%= key %>" data-view="true">'
-      //   ),
-      //   customCss = this.model.get("customCSS");
-      //
-      // if (noRemove !== true) {
-      //   //Remove old CSS
-      //   _.each($("link[data-view=true]"), function vDocumentRemoveOldCSS(
-      //     currentLink
-      //   ) {
-      //     var findCss = function vDocumentFindCss(currentCss) {
-      //       return $(currentLink).data("id") === currentCss.key;
-      //     };
-      //     if (_.find(customCss, findCss) === undefined) {
-      //       $(currentLink).remove();
-      //     }
-      //   });
-      // }
-      // // Inject new CSS
-      // _.each(customCss, function vDocumentInjectNewCSS(cssItem) {
-      //   var $existsLink = $(`link[rel=stylesheet][data-id=${cssItem.key}]`);
-      //
-      //   if ($existsLink.length === 0) {
-      //     if (document.createStyleSheet) {
-      //       // Special thanks to IE : ! up to 31 css cause errors...
-      //       document.createStyleSheet(cssItem.path);
-      //     }
-      //     $head.append(cssLinkTemplate(cssItem));
-      //   }
-      // });
     },
 
     /**
      * Show the help document in dialog
      *
      */
+    // eslint-disable-next-line no-unused-vars
     showHelp: function vDocumentShowHelp(event, helpId, attrid) {
-      var $document = $(this.el);
+      // TODO : voir si on reporte ce fonctionnement
+      /*var $document = $(this.el);
       var scope = this;
       var $dialogDiv = $document.data("dcpHelpDocument-" + helpId);
       var currentTarget = event.originalEvent ? event.originalEvent.currentTarget : event.currentTarget;
@@ -932,7 +902,7 @@ define([
           scope.helpWidget.open();
         },
         "wDocument"
-      );
+      );*/
     },
 
     /**

@@ -32,9 +32,6 @@ class HelppageViewRender extends \Anakeen\Ui\DefaultView
         $templates["sections"]["content"] = array(
             "file" => __DIR__ . '/HelppageView.mustache'
         );
-        /*$templates["sections"]["header"] = array(
-            "content" => ' '
-        );*/
         return $templates;
     }
 

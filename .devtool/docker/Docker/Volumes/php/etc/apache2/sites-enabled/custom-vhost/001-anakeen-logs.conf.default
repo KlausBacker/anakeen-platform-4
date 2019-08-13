@@ -1,4 +1,0 @@
-Alias /logs /var/www/html/logs/pimp-my-log/vendor/potsky/pimp-my-log/
-
-ErrorLog /var/www/html/logs/anakeen_error.log
-CustomLog /var/www/html/logs/anakeen_access.log combined

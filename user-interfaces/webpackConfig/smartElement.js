@@ -23,12 +23,6 @@ module.exports = () => {
           "../src/vendor/Anakeen/DOCUMENT/IHM/mainDocument.js"
         )
       ],
-      smartElementWidget: [
-        path.resolve(
-          __dirname,
-          "../src/vendor/Anakeen/DOCUMENT/IHM/smartElement.js"
-        )
-      ],
       smartElementController: [
         path.resolve(
           __dirname,
