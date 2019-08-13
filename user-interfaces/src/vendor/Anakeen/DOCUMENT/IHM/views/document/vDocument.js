@@ -144,9 +144,6 @@ define([
         this.renderCss();
         this.publishMessages();
 
-        // this.updateTitle();
-        // this.updateIcon();
-
         if (!locale) {
           locale = "fr-FR";
         }
@@ -1067,24 +1064,6 @@ define([
       this.propertiesWidget.element.on("viewDocument", function vDocumentViewDocument(event, data) {
         scope.model.fetchDocument({ initid: data });
       });
-    },
-
-    /**
-     * Update the title of the current page
-     */
-    updateTitle: function vDocumentUpdateTitle() {
-      var title = this.model.get("properties").get("title");
-
-      if (!_.isEmpty(title)) {
-        document.title = title;
-      }
-    },
-
-    /**
-     * Update the icon of the current page
-     */
-    updateIcon: function vDocumentUpdateIcon() {
-      $("link[rel='shortcut icon']").attr("href", this.model.get("properties").get("icon"));
     },
 
     /**

@@ -40,6 +40,33 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
   private static _selfController: GlobalController;
 
   /**
+   * Create script element
+   * @param js
+   * @param script
+   * @private
+   */
+  private static _createScript(js, script: HTMLScriptElement) {
+    const currentPath = js.path;
+    const $script = $(script);
+    $script.attr("data-id", js.key);
+    $script.attr("data-src", currentPath);
+    switch (js.type) {
+      case "module":
+        // Module mode injection
+        $script.attr("type", "module");
+        $script.text(Mustache.render(moduleTemplate, js));
+        break;
+      case "library":
+        $script.attr("src", currentPath);
+        break;
+      default:
+        // Global mode injection
+        $script.attr("src", currentPath);
+        break;
+    }
+  }
+
+  /**
    * Controller actions dispatcher
    */
   protected _dispatcher: ControllerDispatcher;
@@ -95,6 +122,7 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
   }
 
   /**
+   * Get a scoped controller
    *
    * @param scopeId
    */
@@ -285,33 +313,6 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
   }
 
   /**
-   * Create script element
-   * @param js
-   * @param script
-   * @private
-   */
-  private _createScript(js, script: HTMLScriptElement) {
-    const currentPath = js.path;
-    const $script = $(script);
-    $script.attr("data-id", js.key);
-    $script.attr("data-src", currentPath);
-    switch (js.type) {
-      case "module":
-        // Module mode injection
-        $script.attr("type", "module");
-        $script.text(Mustache.render(moduleTemplate, js));
-        break;
-      case "library":
-        $script.attr("src", currentPath);
-        break;
-      default:
-        // Global mode injection
-        $script.attr("src", currentPath);
-        break;
-    }
-  }
-
-  /**
    * Inject smart element js in the page
    * @param event
    * @private
@@ -334,7 +335,7 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
                   this._registerScript(currentJS.path, this._getRegisteredFunction(functionKey));
                 }
               },
-              setup: script => this._createScript(currentJS, script)
+              setup: script => GlobalController._createScript(currentJS, script)
             });
             // Wait script function registration for module and library injection
             if (currentJS.type !== "global") {
