@@ -14,6 +14,7 @@ $.get("/api/v2/i18n/DOCUMENT").done(function translationLoaded(catalog) {
   let $document = $(".document"),
     currentValues,
     varWidgetValue = "widgetValue",
+    /* @var currentController SmartElementController */
     currentController;
 
   window.dcp = window.dcp || {};
@@ -41,14 +42,6 @@ $.get("/api/v2/i18n/DOCUMENT").done(function translationLoaded(catalog) {
     }
   }
 
-  window.dcp.triggerReload = function triggerReload() {
-    // Init bind events in case of use extern document controller
-    if (window.documentLoaded && _.isFunction(window.documentLoaded) && !window.dcp.documentReady) {
-      window.documentLoaded($document, window.dcp.viewData);
-      window.dcp.documentReady = true;
-    }
-  };
-
   if (window.dcp.viewData !== false && window.dcp.viewData.initid) {
     window.ank.smartElement.globalController.on("controllerReady", controller => {
       /* @var controller GlobalController */
@@ -56,6 +49,10 @@ $.get("/api/v2/i18n/DOCUMENT").done(function translationLoaded(catalog) {
         router: true
       });
       currentController = controller.scope($document);
+      currentController.addEventListener("ready", (event, properties) => {
+        window.document.title = properties.title;
+        $("link[rel='shortcut icon']").attr("href", properties.icon);
+      });
     });
     $document.one("documentready", function launchReady() {
       _.each(window.dcp.messages, function(msg) {
@@ -65,13 +62,14 @@ $.get("/api/v2/i18n/DOCUMENT").done(function translationLoaded(catalog) {
         });
       });
     });
-    window.ank.smartElement.globalController.addEventListener("ready", (event, properties) => {
-      window.document.title = properties.title;
-      $("link[rel='shortcut icon']").attr("href", properties.icon);
-    });
   } else {
     window.ank.smartElement.globalController.on("controllerReady", controller => {
       controller.addSmartElement(".document");
+      currentController = controller.scope($document);
+      currentController.addEventListener("ready", (event, properties) => {
+        window.document.title = properties.title;
+        $("link[rel='shortcut icon']").attr("href", properties.icon);
+      });
     });
   }
 
