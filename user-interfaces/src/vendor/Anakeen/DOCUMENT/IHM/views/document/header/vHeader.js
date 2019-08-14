@@ -12,7 +12,6 @@ define(["jquery", "underscore", "backbone", "mustache"], function require_vheade
     headerTemplate: null,
 
     initialize: function vHeaderInitialize() {
-      this.listenTo(this.model.get("properties"), "change", this.updateHeader);
       this.listenTo(this.model, "destroy", this.remove);
       this.listenTo(this.model, "cleanView", this.remove);
       this.listenTo(this.model, "changeValue", this.documentHasChanged);
@@ -64,17 +63,17 @@ define(["jquery", "underscore", "backbone", "mustache"], function require_vheade
 
     /**
      * reset mustache template
-     * update window title also
      * @returns {*}
      */
     updateHeader: function vheaderUpdateHeader() {
-      var doctitle = this.model.get("properties").get("title");
-      if (doctitle) {
-        window.document.title = doctitle;
-      }
       return this.render();
     },
 
+    /**
+     * Get the the template of the header
+     * @param key
+     * @returns {*}
+     */
     getTemplates: function vheadergetTemplates(key) {
       var templates = {};
       if (this.model && this.model.get("templates")) {
@@ -88,15 +87,14 @@ define(["jquery", "underscore", "backbone", "mustache"], function require_vheade
       }
       throw new Error("Unknown template  " + key);
     },
+    /**
+     * Display has changed on the header
+     */
     documentHasChanged: function vheaderdocumentHasChanged() {
-      var wTitle = window.document.title.replace(/^\*+/g, "");
-
       if (this.model.hasAttributesChanged()) {
         this.$el.find(".dcpDocument__header__modified").show();
-        window.document.title = "*" + wTitle;
       } else {
         this.$el.find(".dcpDocument__header__modified").hide();
-        window.document.title = wTitle;
       }
       if (this.model.hasUploadingFile()) {
         this.$el.find(".dcpDocument__header__modified").addClass("fa-spin");

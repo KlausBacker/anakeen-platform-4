@@ -1,7 +1,6 @@
 /**
  * Main bootstraper
  */
-/*global require, console*/
 import $ from "jquery";
 import "../../../../../webpackConfig/kendo/kendo";
 
@@ -12,12 +11,11 @@ $.get("/api/v2/i18n/DOCUMENT").done(function translationLoaded(catalog) {
   var _ = require("underscore");
   require("dcpDocument/widgets/globalController");
 
-  ("use strict");
-  console.timeEnd("js loading");
-
-  var $document = $(".document"),
+  let $document = $(".document"),
     currentValues,
-    varWidgetValue = "widgetValue";
+    varWidgetValue = "widgetValue",
+    /* @var currentController SmartElementController */
+    currentController;
 
   window.dcp = window.dcp || {};
 
@@ -44,47 +42,35 @@ $.get("/api/v2/i18n/DOCUMENT").done(function translationLoaded(catalog) {
     }
   }
 
-  window.dcp.triggerReload = function triggerReload() {
-    // Init bind events in case of use extern document controller
-    if (window.documentLoaded && _.isFunction(window.documentLoaded) && !window.dcp.documentReady) {
-      window.documentLoaded($document, window.dcp.viewData);
-      window.dcp.documentReady = true;
-    }
-  };
-
   if (window.dcp.viewData !== false && window.dcp.viewData.initid) {
     window.ank.smartElement.globalController.on("controllerReady", controller => {
-      controller.addSmartElement(".document", window.dcp.viewData, {
+      /* @var controller GlobalController */
+      controller.addSmartElement($document, window.dcp.viewData, {
         router: true
       });
+      currentController = controller.scope($document);
+      currentController.addEventListener("ready", (event, properties) => {
+        window.document.title = properties.title;
+        $("link[rel='shortcut icon']").attr("href", properties.icon);
+      });
     });
-    // $document.documentController(window.dcp.viewData);
     $document.one("documentready", function launchReady() {
-      window.dcp.triggerReload();
       _.each(window.dcp.messages, function(msg) {
-        $document.documentController("showMessage", {
+        currentController.showMessage({
           type: msg.type,
           message: msg.contentText
         });
       });
     });
-    window.ank.smartElement.globalController.addEventListener(
-      "ready",
-      {
-        check: element => {
-          return window.dcp.viewData.initid === element.initid;
-        }
-      },
-      (event, properties) => {
-        window.document.title = properties.title;
-      }
-    );
   } else {
     window.ank.smartElement.globalController.on("controllerReady", controller => {
-      controller.addSmartElement();
+      controller.addSmartElement(".document");
+      currentController = controller.scope($document);
+      currentController.addEventListener("ready", (event, properties) => {
+        window.document.title = properties.title;
+        $("link[rel='shortcut icon']").attr("href", properties.icon);
+      });
     });
-    // $document.documentController();
-    window.dcp.triggerReload();
   }
 
   window.dcp.document = $document;

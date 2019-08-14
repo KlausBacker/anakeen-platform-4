@@ -21,6 +21,10 @@ define([
       this.element.data("dcpCreateDocument", this);
     },
 
+    /**
+     * Init a kendo window and call the global controller
+     * to have a SmartElement in the window
+     */
     open: function wcdOpen() {
       var wWidget = this;
       var config = this.options;
@@ -29,7 +33,6 @@ define([
         var documentModel = config.originDocumentModel;
         var attributeModel = documentModel.get("attributes").get(config.attributeId);
         var currentValue;
-        var url = "about:blank";
         var $createDocument;
 
         if (index >= 0) {
@@ -46,8 +49,6 @@ define([
             title: renderTitle,
             width: config.windowWidth,
             height: config.windowHeight,
-            content: url,
-            iframe: true,
             close: function wcdClose(event) {
               wWidget.closeDialog(event, true);
             }
@@ -64,138 +65,132 @@ define([
         //Use global controller to add the new Smart Element
 
         if (currentValue.value) {
-          $createDocument.document({
+          window.ank.smartElement.globalController.addSmartElement($createDocument, {
             initid: currentValue.value,
-            viewId: "!defaultEdition",
-            withoutResize: true
+            viewId: "!defaultEdition"
           });
         } else {
-          $createDocument.document({
+          window.ank.smartElement.globalController.addSmartElement($createDocument, {
             initid: config.familyName || attributeModel.get("typeFormat"),
-            viewId: "!defaultCreation",
-            withoutResize: true
+            viewId: "!defaultCreation"
           });
         }
 
-        $createDocument.on("documentloaded", function() {
-          $(this).document(
-            "addEventListener",
-            "ready",
-            { name: "ddui:create:ready" },
-            function wDocidCreateDocumentReady(event, documentInfo) {
-              var wOrigin = this;
-              var isPrevented;
-              var menuItem;
-              wWidget.$document = this;
+        const scopedController = window.ank.smartElement.globalController.scope($createDocument);
 
-              isPrevented = wWidget.proxyTrigger(event, "ready", {});
-              if (!isPrevented) {
-                if (documentInfo.viewId === "!defaultCreation") {
-                  // Set form values
-                  isPrevented = wWidget.proxyTrigger(event, "beforeSetFormValues", {
-                    getFormValues: function wcdCustomGetFormValues() {
-                      return config.formValues;
-                    },
-                    setFormValues: function wcdCustomSetFormValues(customFormValues) {
-                      wWidget.setFormValue(customFormValues, wOrigin);
-                    }
-                  });
+        this.scopedController = scopedController;
 
-                  if (!isPrevented) {
-                    wWidget.setFormValue(config.formValues, this);
-                  }
+        scopedController.addEventListener("ready", { name: "ddui:create:ready" }, (event, smartElementInfo) => {
+          const isReadyPrevented = wWidget.proxyTrigger(event, "ready", {});
+          if (!isReadyPrevented) {
+            if (smartElementInfo.viewId === "!defaultCreation") {
+              // Set form values
+              const isBeforePrevented = wWidget.proxyTrigger(event, "beforeSetFormValues", {
+                getFormValues: function wcdCustomGetFormValues() {
+                  return config.formValues;
+                },
+                setFormValues: function wcdCustomSetFormValues(customFormValues) {
+                  wWidget.setFormValue(customFormValues, scopedController);
                 }
-                menuItem = this.documentController("getMenu", "createAndClose");
-                if (menuItem) {
-                  menuItem.hide();
-                }
-                menuItem = this.documentController("getMenu", "saveAndClose");
-                if (menuItem) {
-                  menuItem.hide();
-                }
-                menuItem = this.documentController("getMenu", "create");
-                if (menuItem) {
-                  menuItem.setLabel(Mustache.render(config.createLabel, attributeModel.attributes));
-                }
-                menuItem = this.documentController("getMenu", "save");
-                if (menuItem) {
-                  menuItem.setLabel(Mustache.render(config.updateLabel, attributeModel.attributes));
-                }
-              }
-            }
-          );
-
-          $(this).document(
-            "addEventListener",
-            "actionClick",
-            {
-              name: "ddui:create:close"
-            },
-            function wAttributeCreateDocumentbeforeClose(event, documentObject, options) {
-              if (options.eventId === "document.close") {
-                event.preventDefault();
-                wWidget.closeDialog(event, true);
-              }
-            }
-          );
-
-          $(this).document(
-            "addEventListener",
-            "afterSave",
-            {
-              name: "ddui:create:record"
-            },
-            function wAttributeCreateDocumentRecord(event, currentDocumentObject) {
-              var newOneValue = {
-                value: currentDocumentObject.initid,
-                displayValue: currentDocumentObject.title,
-                familyRelation: currentDocumentObject.family.name,
-                icon: currentDocumentObject.icon
-              };
-              var newValue;
-              var isPrevented;
-              isPrevented = wWidget.proxyTrigger(event, "beforeSetTargetValue", {
-                attributeValue: newOneValue
               });
-              if (isPrevented) {
-                return;
-              }
 
-              if (attributeModel.hasMultipleOption()) {
-                newValue = attributeModel.getValue();
-                if (index >= 0) {
-                  newValue = newValue[index];
-                }
-                if (_.isArray(newValue)) {
-                  newValue = _.clone(newValue); // need to clone to trigger backbone change
-                  newValue.push(newOneValue);
-                } else {
-                  newValue = [newOneValue];
-                }
-              } else {
-                newValue = newOneValue;
-              }
-              attributeModel.setValue(newValue, index);
-
-              isPrevented = wWidget.proxyTrigger(event, "beforeClose", {
-                attributeValue: newValue
-              });
-              if (!isPrevented) {
-                dw.close();
+              if (!isBeforePrevented) {
+                wWidget.setFormValue(config.formValues, scopedController);
               }
             }
-          );
+            const menuCreateAndClose = scopedController.getMenu("createAndClose");
+            if (menuCreateAndClose) {
+              menuCreateAndClose.hide();
+            }
+            const menuSaveAndClose = scopedController.getMenu("saveAndClose");
+            if (menuSaveAndClose) {
+              menuSaveAndClose.hide();
+            }
+            const menuCreate = scopedController.getMenu("create");
+            if (menuCreate) {
+              menuCreate.setLabel(Mustache.render(config.createLabel, attributeModel.attributes));
+            }
+            const menuSave = scopedController.getMenu("save");
+            if (menuSave) {
+              menuSave.setLabel(Mustache.render(config.updateLabel, attributeModel.attributes));
+            }
+          }
         });
+
+        scopedController.addEventListener(
+          "actionClick",
+          {
+            name: "ddui:create:close"
+          },
+          function wAttributeCreateDocumentbeforeClose(event, documentObject, options) {
+            if (options.eventId === "document.close") {
+              event.preventDefault();
+              wWidget.closeDialog(event, true);
+            }
+          }
+        );
+
+        scopedController.addEventListener(
+          "afterSave",
+          {
+            name: "ddui:create:record"
+          },
+          function wAttributeCreateDocumentRecord(event, currentDocumentObject) {
+            var newOneValue = {
+              value: currentDocumentObject.initid,
+              displayValue: currentDocumentObject.title,
+              familyRelation: currentDocumentObject.family.name,
+              icon: currentDocumentObject.icon
+            };
+            var newValue;
+            var isPrevented;
+            isPrevented = wWidget.proxyTrigger(event, "beforeSetTargetValue", {
+              attributeValue: newOneValue
+            });
+            if (isPrevented) {
+              return;
+            }
+
+            if (attributeModel.hasMultipleOption()) {
+              newValue = attributeModel.getValue();
+              if (index >= 0) {
+                newValue = newValue[index];
+              }
+              if (_.isArray(newValue)) {
+                newValue = _.clone(newValue); // need to clone to trigger backbone change
+                newValue.push(newOneValue);
+              } else {
+                newValue = [newOneValue];
+              }
+            } else {
+              newValue = newOneValue;
+            }
+            attributeModel.setValue(newValue, index);
+
+            isPrevented = wWidget.proxyTrigger(event, "beforeClose", {
+              attributeValue: newValue
+            });
+            if (!isPrevented) {
+              dw.close();
+            }
+          }
+        );
       }
     },
-    setFormValue: function wcdSetFormValue(formValues, $subDoc) {
+    /**
+     * Set the value to the sub form
+     *
+     * @param formValues
+     * @param controllerSubDoc
+     */
+    setFormValue: function wcdSetFormValue(formValues, controllerSubDoc) {
       var documentModel = this.options.originDocumentModel;
       var tplData = attributeTemplate.getTemplateModelInfo(documentModel);
       // Set form values
       _.each(formValues, function wDocidFormValues(attrValue, attrId) {
         var rValue;
         if (_.isObject(attrValue)) {
-          $subDoc.documentController("setValue", attrId, attrValue);
+          controllerSubDoc.setValue(attrId, attrValue);
         } else {
           var isAttr = new RegExp("^{{attributes.(.+).attributeValue}}$").exec(attrValue);
 
@@ -204,10 +199,10 @@ define([
               .get("attributes")
               .get(isAttr[1])
               .getValue();
-            $subDoc.documentController("setValue", attrId, rValue);
+            controllerSubDoc.setValue(attrId, rValue);
           } else {
             rValue = Mustache.render(attrValue, tplData);
-            $subDoc.documentController("setValue", attrId, {
+            controllerSubDoc.setValue(attrId, {
               value: rValue,
               displayValue: rValue
             });
@@ -216,6 +211,14 @@ define([
       });
     },
 
+    /**
+     * Dispath event to the main backbone model
+     *
+     * @param event
+     * @param triggerName
+     * @param options
+     * @returns {boolean}
+     */
     proxyTrigger: function wcdTrigger(event, triggerName, options) {
       var listener, args;
       if (this.options[triggerName]) {
@@ -228,14 +231,14 @@ define([
       if (listener) {
         options.index = this.options.index;
         options.dialogWindow = this.$dialog;
-        listener.apply(this.$document, args);
+        listener.apply(this.scopedController, args);
         return event.prevent === true;
       }
       return false;
     },
 
     confirmClose: function wcdConfirmClose() {
-      var targetProperties = this.$document.documentController("getProperties");
+      var targetProperties = this.scopedController.getProperties();
       return new Promise(function wsdAskConfirmation(resolve, reject) {
         var confirmWindow = $("body").dcpConfirm({
           title: Mustache.render(i18n.___('Confirm close form "{{title}}"', "ddui"), targetProperties),
@@ -259,8 +262,8 @@ define([
       var wWidget = this;
       var isPrevented = false;
       var kDialog = this.$dialog.data("dcpWindow");
-      if (this.$document) {
-        var targetProperties = this.$document.documentController("getProperties");
+      if (this.scopedController) {
+        var targetProperties = this.scopedController.getProperties();
         isPrevented = this.proxyTrigger(event, "beforeClose", {});
 
         if (!isPrevented && askConfirm && targetProperties && targetProperties.isModified) {

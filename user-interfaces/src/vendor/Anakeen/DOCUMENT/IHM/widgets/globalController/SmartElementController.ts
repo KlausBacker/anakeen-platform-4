@@ -1134,8 +1134,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     return Promise.all(
       allEvents
         .filter(
-          currentEvent =>
-            !_.isFunction(currentEvent.check) || currentEvent.check.call(this, this.getProperties())
+          currentEvent => !_.isFunction(currentEvent.check) || currentEvent.check.call(this, this.getProperties())
         )
         .filter(
           currentEvent =>
@@ -1453,15 +1452,6 @@ export default class SmartElementController extends AnakeenController.BusEvents.
           $el,
           index
         );
-        // event.prevent = !this._triggerAttributeControllerEvent(
-        //   "smartFieldBeforeRender",
-        //   event,
-        //   currentAttribute,
-        //   this.getProperties(),
-        //   currentAttribute,
-        //   $el,
-        //   index
-        // );
       } catch (error) {
         if (!(error instanceof ErrorModelNonInitialized)) {
           console.error(error);
