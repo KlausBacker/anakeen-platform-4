@@ -12,38 +12,38 @@ msgstr ""
 "Generated-By: easygettext\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/components/Grid/GridDialog/GridDialog.vue:78
-msgctxt "GridDialog"
+#: src/components/Grid/Components/GridColumnsButton/GridColumnsButton.controller.ts:36
+msgctxt "GridColumnsButton"
 msgid "Cancel"
 msgstr ""
 
-#: src/components/Grid/GridDialog/GridDialog.vue:79
-msgctxt "GridDialog"
+#: src/components/Grid/Components/GridColumnsButton/GridColumnsButton.controller.ts:37
+msgctxt "GridColumnsButton"
 msgid "Apply changes"
 msgstr ""
 
-#: src/components/Grid/GridDialog/GridDialog.vue:80
-msgctxt "GridDialog"
+#: src/components/Grid/Components/GridColumnsButton/GridColumnsButton.controller.ts:38
+msgctxt "GridColumnsButton"
 msgid "Organize"
 msgstr ""
 
-#: src/components/Grid/GridDialog/GridDialog.vue:81
-msgctxt "GridDialog"
+#: src/components/Grid/Components/GridColumnsButton/GridColumnsButton.controller.ts:39
+msgctxt "GridColumnsButton"
 msgid "Title"
 msgstr ""
 
-#: src/components/Grid/GridDialog/GridDialog.vue:82
-msgctxt "GridDialog"
+#: src/components/Grid/Components/GridColumnsButton/GridColumnsButton.controller.ts:40
+msgctxt "GridColumnsButton"
 msgid "Display"
 msgstr ""
 
-#: src/components/Grid/GridDialog/GridDialog.vue:83
-msgctxt "GridDialog"
+#: src/components/Grid/Components/GridColumnsButton/GridColumnsButton.controller.ts:41
+msgctxt "GridColumnsButton"
 msgid "Search a column..."
 msgstr ""
 
-#: src/components/Grid/GridDialog/GridDialog.vue:84
-msgctxt "GridDialog"
+#: src/components/Grid/Components/GridColumnsButton/GridColumnsButton.controller.ts:42
+msgctxt "GridColumnsButton"
 msgid "Columns management"
 msgstr ""
 
