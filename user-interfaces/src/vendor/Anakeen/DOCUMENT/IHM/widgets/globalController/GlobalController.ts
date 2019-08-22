@@ -98,7 +98,7 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
     if (!this._isReady) {
       const controllerDispatcher = require("./ControllerDispatcher").default;
       this._dispatcher = new controllerDispatcher();
-      this._domObserver = new MutationObserver((...args) => this._onRemoveDOMController(...args));
+      this._domObserver = new MutationObserver(mutations => this._onRemoveDOMController(mutations));
       this._domObserver.observe(document, { subtree: true, childList: true });
       this._isReady = true;
       this._dispatcher.on("injectCurrentSmartElementJS", (controller, event, properties, jsEvent) => {
@@ -139,6 +139,7 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
    *
    * @param dom
    * @param viewData
+   * @param options
    */
   public addSmartElement(dom: DOMReference, viewData?: AnakeenController.Types.IViewData, options?): ControllerUID {
     viewData = viewData || {
@@ -225,7 +226,7 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
     }
   }
 
-  protected _onRemoveDOMController(mutationList: MutationRecord[], observer) {
+  protected _onRemoveDOMController(mutationList: MutationRecord[]) {
     mutationList.forEach(mutation => {
       if (mutation.type === "childList" && mutation.removedNodes.length) {
         // tslint:disable-next-line:prefer-for-of
@@ -236,6 +237,7 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
             for (let j = controllerIDs.length - 1; j >= 0; j--) {
               const controllerUID = controllerIDs[j];
               this._dispatcher.removeController(controllerUID);
+              this._cleanCss();
             }
           }
         }
@@ -280,6 +282,27 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
     return result;
   }
 
+  private _cleanCss() {
+    const controllers = this.getScopedController() as SmartElementController[];
+    let allCss = [];
+    controllers.forEach(controller => {
+      // @ts-ignore
+      const css = controller._model.get("customCSS");
+      if (css) {
+        const difference = css.filter(cssItem => {
+          return !_.find(allCss, item => item.key === cssItem.key);
+        });
+        allCss = allCss.concat(difference);
+      }
+    });
+    $("link[data-view=true]").each((index, element) => {
+      const matches = allCss.filter(css => css.key === $(element).data("id"));
+      if (!matches || !matches.length) {
+        $(element).remove();
+      }
+    });
+  }
+
   private _onRenderCss(customCss: CssAssetList) {
     this.cssList.push(...this._extractNewCss(this.cssList, customCss));
     // add custom css style
@@ -287,19 +310,19 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
     const cssLinkTemplate = _.template(
       '<link rel="stylesheet" type="text/css" ' + 'href="<%= path %>" data-id="<%= key %>" data-view="true">'
     );
-
-    // Clean CSS
-    _.each($("link[data-view=true]"), currentLink => {
-      if (
-        _.find(this.cssList, currentCss => {
-          return $(currentLink).data("id") === currentCss.key;
-        }) === undefined
-      ) {
-        $(currentLink).remove();
-      }
-    });
+    this._cleanCss();
+    // // Clean CSS
+    // _.each($("link[data-view=true]"), currentLink => {
+    //   if (
+    //     _.find(this.cssList, currentCss => {
+    //       return $(currentLink).data("id") === currentCss.key;
+    //     }) === undefined
+    //   ) {
+    //     $(currentLink).remove();
+    //   }
+    // });
     // Inject new CSS
-    _.each(this.cssList, cssItem => {
+    _.each(customCss, cssItem => {
       const $existsLink = $(`link[rel=stylesheet][data-id=${cssItem.key}]`);
 
       if ($existsLink.length === 0) {
