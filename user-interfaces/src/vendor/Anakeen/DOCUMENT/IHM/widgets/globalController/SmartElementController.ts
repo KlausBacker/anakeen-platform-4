@@ -1,6 +1,30 @@
 /* eslint-disable no-unused-vars */
 /* tslint:disable:variable-name */
 import * as Backbone from "backbone";
+// @ts-ignore
+import AttributeInterface = require("dcpDocument/controllerObjects/attributeInterface");
+// @ts-ignore
+import MenuInterface = require("dcpDocument/controllerObjects/menuInterface");
+// @ts-ignore
+import TransitionInterface = require("dcpDocument/controllerObjects/transitionInterface");
+// @ts-ignore
+import i18n = require("dcpDocument/i18n/documentCatalog");
+// @ts-ignore
+import Model = require("dcpDocument/models/mDocument");
+// @ts-ignore
+import MenuModel = require("dcpDocument/models/mMenu");
+// @ts-ignore
+import TransitionModel = require("dcpDocument/models/mTransition");
+// @ts-ignore
+import Router = require("dcpDocument/routers/router.js");
+// @ts-ignore
+import View = require("dcpDocument/views/document/vDocument");
+// @ts-ignore
+import TransitionView = require("dcpDocument/views/workflow/vTransition");
+import "dcpDocument/widgets/widget";
+import "dcpDocument/widgets/window/wConfirm";
+import "dcpDocument/widgets/window/wLoading";
+import "dcpDocument/widgets/window/wNotification";
 import SmartElementProperties = AnakeenController.Types.SmartElementProperties;
 import ViewData = AnakeenController.Types.IViewData;
 import DOMReference = AnakeenController.Types.DOMReference;
@@ -8,20 +32,6 @@ import ListenableEventCallable = AnakeenController.BusEvents.ListenableEventCall
 import ListenableEventOptions = AnakeenController.BusEvents.IListenableEventOptions;
 import * as $ from "jquery";
 import * as _ from "underscore";
-import AttributeInterface = require("../../controllerObjects/attributeInterface");
-import MenuInterface = require("../../controllerObjects/menuInterface");
-import TransitionInterface = require("../../controllerObjects/transitionInterface");
-import i18n = require("../../i18n/documentCatalog");
-import Model = require("../../models/mDocument");
-import MenuModel = require("../../models/mMenu");
-import TransitionModel = require("../../models/mTransition");
-import Router = require("../../routers/router.js");
-import View = require("../../views/document/vDocument");
-import TransitionView = require("../../views/workflow/vTransition");
-import "../../widgets/widget";
-import "../../widgets/window/wConfirm";
-import "../../widgets/window/wLoading";
-import "../../widgets/window/wNotification";
 import { AnakeenController } from "./types/ControllerTypes";
 import ListenableEvent = AnakeenController.BusEvents.ListenableEvent;
 import ISmartElementAPI = AnakeenController.SmartElement.ISmartElementAPI;

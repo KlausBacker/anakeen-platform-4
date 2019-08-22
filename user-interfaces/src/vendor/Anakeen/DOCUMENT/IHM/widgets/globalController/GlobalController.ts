@@ -126,7 +126,9 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
    *
    * @param scopeId
    */
-  public scope(scopeId?: ControllerUID | DOMReference): SmartElementController | SmartElementController[] {
+  public getScopedController(
+    scopeId?: ControllerUID | DOMReference
+  ): SmartElementController | SmartElementController[] {
     if (scopeId === undefined) {
       return this._dispatcher.getControllers() as SmartElementController[];
     }
@@ -361,7 +363,7 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
         if (typeof this._scripts[jsPath] === "function") {
           // eslint-disable-next-line no-useless-catch
           try {
-            const scopedController = this.scope(event.controller.uid) as SmartElementController;
+            const scopedController = this.getScopedController(event.controller.uid) as SmartElementController;
             // Restrict the js to the current smart element view
             // @ts-ignore
             scopedController._defaultPersistent = false;

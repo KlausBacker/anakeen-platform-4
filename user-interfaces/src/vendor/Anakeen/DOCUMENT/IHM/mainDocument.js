@@ -48,7 +48,7 @@ $.get("/api/v2/i18n/DOCUMENT").done(function translationLoaded(catalog) {
       controller.addSmartElement($document, window.dcp.viewData, {
         router: true
       });
-      currentController = controller.scope($document);
+      currentController = controller.getScopedController($document);
       currentController.addEventListener("ready", (event, properties) => {
         window.document.title = properties.title;
         $("link[rel='shortcut icon']").attr("href", properties.icon);
@@ -65,7 +65,7 @@ $.get("/api/v2/i18n/DOCUMENT").done(function translationLoaded(catalog) {
   } else {
     window.ank.smartElement.globalController.on("controllerReady", controller => {
       controller.addSmartElement(".document");
-      currentController = controller.scope($document);
+      currentController = controller.getScopedController($document);
       currentController.addEventListener("ready", (event, properties) => {
         window.document.title = properties.title;
         $("link[rel='shortcut icon']").attr("href", properties.icon);

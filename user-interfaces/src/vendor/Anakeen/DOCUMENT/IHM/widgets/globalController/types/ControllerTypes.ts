@@ -1,3 +1,17 @@
+// eslint-disable-next-line no-unused-vars
+import GlobalController from "../GlobalController";
+
+declare global {
+  // tslint:disable-next-line:interface-name
+  interface Window {
+    ank?: {
+      smartElement?: {
+        globalController?: GlobalController;
+      };
+      i18n?: any;
+    };
+  }
+}
 // tslint:disable-next-line:no-namespace
 export namespace AnakeenController {
   export namespace Types {
