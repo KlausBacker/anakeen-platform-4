@@ -1,5 +1,15 @@
 /* eslint-disable no-unused-vars */
-/* tslint:disable:variable-name */
+/* tslint:disable:variable-name ordered-imports */
+// @ts-ignore
+import StaticErrorTemplate from "!!raw-loader!./utils/templates/SEError.html.mustache";
+import { AnakeenController } from "./types/ControllerTypes";
+import ListenableEvent = AnakeenController.BusEvents.ListenableEvent;
+import ISmartElementAPI = AnakeenController.SmartElement.ISmartElementAPI;
+import ISmartField = AnakeenController.SmartElement.ISmartField;
+import ISmartElement = AnakeenController.SmartElement.ISmartElement;
+import Listenable = AnakeenController.BusEvents.Listenable;
+// @ts-ignore
+import LoadingTemplate from "!!raw-loader!./utils/templates/SELoading.html.mustache";
 import * as Backbone from "backbone";
 // @ts-ignore
 import AttributeInterface = require("dcpDocument/controllerObjects/attributeInterface");
@@ -31,13 +41,8 @@ import DOMReference = AnakeenController.Types.DOMReference;
 import ListenableEventCallable = AnakeenController.BusEvents.ListenableEventCallable;
 import ListenableEventOptions = AnakeenController.BusEvents.IListenableEventOptions;
 import * as $ from "jquery";
+import * as Mustache from "mustache";
 import * as _ from "underscore";
-import { AnakeenController } from "./types/ControllerTypes";
-import ListenableEvent = AnakeenController.BusEvents.ListenableEvent;
-import ISmartElementAPI = AnakeenController.SmartElement.ISmartElementAPI;
-import ISmartField = AnakeenController.SmartElement.ISmartField;
-import ISmartElement = AnakeenController.SmartElement.ISmartElement;
-import Listenable = AnakeenController.BusEvents.Listenable;
 
 interface IControllerOptions {
   router?: boolean | { noRouter: boolean };
@@ -1178,9 +1183,9 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       this._initialized.model = true;
     };
     const initOptions = options || {};
-    this._initExternalElements();
     this._initModel(this._getModelValue());
     this._initView();
+    this._initExternalElements();
     if (initOptions.success) {
       initOptions.success = _.wrap(options.success, (success, ...args) => {
         onInitializeSuccess.apply(this);
@@ -1220,9 +1225,9 @@ export default class SmartElementController extends AnakeenController.BusEvents.
    * @private
    */
   private _initExternalElements() {
-    if (this._options) {
+    if (this._options.loading) {
       // @ts-ignore
-      this.$loading = $(".dcpLoading").dcpLoading();
+      this.$loading = this._element.find(".dcpLoading").dcpLoading();
     }
     if (this._options.notification) {
       // @ts-ignore
@@ -1289,7 +1294,25 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     const $se = this._element.find(".dcpDocument");
     if (!this._smartElement || $se.length === 0) {
       this._element.attr("data-controller", this.uid);
-      this._element.append('<div class="document"><div class="dcpDocument"></div></div>');
+      const domTemplate = `<div class="smart-element-wrapper" style="position: relative">
+            <div class="document">
+                <div class="dcpDocument"></div>
+            </div>
+            {{> loading}}
+            {{> staticError}}
+        </div>`;
+      this._element.append(
+        Mustache.render(
+          domTemplate,
+          {
+            msg: {
+              loadError: i18n.___("Unable to load try again", "ddui"),
+              clickAction: i18n.___("Click to reload the document", "ddui")
+            }
+          },
+          { loading: LoadingTemplate, staticError: StaticErrorTemplate }
+        )
+      );
       this._smartElement = this._element.find(".dcpDocument");
     }
   }
