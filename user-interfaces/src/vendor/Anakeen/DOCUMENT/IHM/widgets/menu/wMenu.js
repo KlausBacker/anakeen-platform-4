@@ -276,14 +276,16 @@ define([
       /**
        * Fix menu when no see header
        */
-      $(window).off("scroll.ddui"); // reset
-
+      const wrapper = this.element.closest("[data-controller]");
+      wrapper.off("scroll.ddui"); // reset
       if (this.element.prop("nodeName").toUpperCase() === "NAV") {
-        $(window).on("scroll.ddui", function wMenuScroll() {
-          if ($(window).scrollTop() > $mainElement.position().top) {
+        wrapper.on("scroll.ddui", function wMenuScroll() {
+          if (wrapper.scrollTop() > $mainElement.position().top) {
             if (!$mainElement.data("isFixed")) {
               $mainElement.data("isFixed", "1");
               $mainElement.parent().addClass("menu--fixed");
+              $mainElement.parent().css("top", wrapper.offset().top);
+              $mainElement.parent().css("width", wrapper.prop("clientWidth"));
               $(window.document).trigger("redrawErrorMessages");
             }
           } else {
