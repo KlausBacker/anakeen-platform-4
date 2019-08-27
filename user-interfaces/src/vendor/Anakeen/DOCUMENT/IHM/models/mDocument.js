@@ -1350,7 +1350,8 @@ define([
           currentModel.set(serverProperties);
           //Indicate success to the promise object
           globalCallback.error({ eventPrevented: true });
-        }
+        },
+        { loadingStart: () => this.trigger("displayLoading") }
       );
       return beforeClosePromise.finally(() => globalCallback.promise);
     },
