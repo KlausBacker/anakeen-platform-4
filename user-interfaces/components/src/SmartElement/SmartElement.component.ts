@@ -259,7 +259,9 @@ export default class AnkSmartElement extends Vue {
         viewData,
         options
       );
-      this.smartElementWidget = window.ank.smartElement.globalController.scope(scopeId) as SmartElementController;
+      this.smartElementWidget = window.ank.smartElement.globalController.getScopedController(
+        scopeId
+      ) as SmartElementController;
       this.listenEvents();
       this.$emit("smartElementLoaded");
       this.$emit("documentLoaded");

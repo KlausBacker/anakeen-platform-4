@@ -76,7 +76,7 @@ define([
           });
         }
 
-        const scopedController = window.ank.smartElement.globalController.scope($createDocument);
+        const scopedController = window.ank.smartElement.globalController.getScopedController($createDocument);
 
         this.scopedController = scopedController;
 

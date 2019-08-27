@@ -1,20 +1,8 @@
-import { loadCatalog, storeCatalog } from "../../i18n/catalogStorage";
+// @ts-ignore
+import { loadCatalog, storeCatalog } from "dcpDocument/i18n/catalogStorage";
 import GlobalController from "./GlobalController";
 
 import "../../../../../../../webpackConfig/kendo/kendo";
-
-declare global {
-  // tslint:disable-next-line:interface-name
-  interface Window {
-    ank?: {
-      smartElement?: {
-        globalController?: GlobalController;
-      };
-      i18n?: any;
-    };
-  }
-}
-
 window.ank = window.ank || {};
 window.ank.smartElement = window.ank.smartElement || {};
 if (!window.ank.smartElement.globalController) {

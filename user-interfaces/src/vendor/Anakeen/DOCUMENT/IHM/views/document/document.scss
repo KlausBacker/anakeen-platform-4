@@ -165,19 +165,6 @@ body {
 }
 
 
-.dcpLoading .progress {
-  width: 100%;
-  height: 3px;
-  box-sizing: border-box;
-  border: none;
-  margin: 0;
-  background: $body-bg;
-  .progress-bar {
-    background-color: $ank-ui-color-client;
-  }
-}
-
-
 .k-widget.k-window.k-window-maximized {
     max-width: 100vw;
     max-height: 100vh;
@@ -248,12 +235,3 @@ body {
 
 //static error message
 
-.dcpStaticErrorMessage {
-  text-align: center;
-  z-index: 10000;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}

@@ -721,6 +721,12 @@
                   .data("dcpWindow")
                   .kendoWindow()
                   .center();
+                dpcWindow
+                  .data("dcpWindow")
+                  .kendoWindow()
+                  .bind("deactivate", () => {
+                    dpcWindow.data("dcpWindow").destroy();
+                  });
                 dpcWindow.data("dcpWindow").open();
               }
             }

@@ -13,6 +13,7 @@ import { AnakeenController } from "./types/ControllerTypes";
 import load from "./utils/ScriptLoader.js";
 import ListenableEventCallable = AnakeenController.BusEvents.ListenableEventCallable;
 import ListenableEvent = AnakeenController.BusEvents.ListenableEvent;
+import EVENTS_LIST = AnakeenController.SmartElement.EVENTS_LIST;
 
 interface IAsset {
   key: string;
@@ -72,6 +73,11 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
   protected _dispatcher: ControllerDispatcher;
 
   protected cssList: CssAssetList = [];
+
+  /**
+   * Verbose mode of the controller
+   */
+  private _verbose: boolean = false;
   private _scripts: { [scriptPath: string]: (controller: SmartElementController) => void } = {};
 
   private _isReady: boolean = false;
@@ -98,7 +104,7 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
     if (!this._isReady) {
       const controllerDispatcher = require("./ControllerDispatcher").default;
       this._dispatcher = new controllerDispatcher();
-      this._domObserver = new MutationObserver((...args) => this._onRemoveDOMController(...args));
+      this._domObserver = new MutationObserver(mutations => this._onRemoveDOMController(mutations));
       this._domObserver.observe(document, { subtree: true, childList: true });
       this._isReady = true;
       this._dispatcher.on("injectCurrentSmartElementJS", (controller, event, properties, jsEvent) => {
@@ -108,6 +114,7 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
         this._onRenderCss(css);
       });
       this.emit("controllerReady", this);
+      this._logVerbose("controller ready");
     }
   }
 
@@ -126,7 +133,9 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
    *
    * @param scopeId
    */
-  public scope(scopeId?: ControllerUID | DOMReference): SmartElementController | SmartElementController[] {
+  public getScopedController(
+    scopeId?: ControllerUID | DOMReference
+  ): SmartElementController | SmartElementController[] {
     if (scopeId === undefined) {
       return this._dispatcher.getControllers() as SmartElementController[];
     }
@@ -137,6 +146,7 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
    *
    * @param dom
    * @param viewData
+   * @param options
    */
   public addSmartElement(dom: DOMReference, viewData?: AnakeenController.Types.IViewData, options?): ControllerUID {
     viewData = viewData || {
@@ -145,6 +155,7 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
       viewId: "!defaultConsultation"
     };
     const controller = this._dispatcher.initController(dom, viewData, options);
+    this._logVerbose(`add smart element "${viewData.initid}"`);
     return controller.uid;
   }
 
@@ -220,10 +231,25 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
   public registerFunction(key: string, scriptFunction: (controller: SmartElementController) => void) {
     if (key && typeof scriptFunction === "function") {
       this._registeredFunction[key] = scriptFunction;
+      this._logVerbose(`register function with key ${key}`, "Asset", "JS");
     }
   }
 
-  protected _onRemoveDOMController(mutationList: MutationRecord[], observer) {
+  public setVerbose(enable: boolean) {
+    this._verbose = enable;
+    if (enable) {
+      this._logVerbose("verbose mode enabled", "Global");
+      // Log events
+      EVENTS_LIST.forEach(event => {
+        this._dispatcher.on(event, controller => {
+          const seProps = controller.getProperties();
+          this._logVerbose(`Smart element "${seProps.initid}" event ${event} triggered`, "Event");
+        });
+      });
+    }
+  }
+
+  protected _onRemoveDOMController(mutationList: MutationRecord[]) {
     mutationList.forEach(mutation => {
       if (mutation.type === "childList" && mutation.removedNodes.length) {
         // tslint:disable-next-line:prefer-for-of
@@ -233,7 +259,17 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
           if (controllerIDs && controllerIDs.length) {
             for (let j = controllerIDs.length - 1; j >= 0; j--) {
               const controllerUID = controllerIDs[j];
-              this._dispatcher.removeController(controllerUID);
+              const controller = this.getScopedController(controllerUID) as SmartElementController;
+              controller.tryToDestroy().finally(() => {
+                this._logVerbose(
+                  `remove scoped controller (${controllerUID}) for smart element "${
+                    controller.getProperties().initid
+                  }"`,
+                  "Global"
+                );
+                this._dispatcher.removeController(controllerUID);
+                this._cleanCss();
+              });
             }
           }
         }
@@ -278,6 +314,32 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
     return result;
   }
 
+  private _cleanCss() {
+    const controllers = this.getScopedController() as SmartElementController[];
+    let allCss = [];
+    controllers.forEach(controller => {
+      // @ts-ignore
+      const css = controller._model.get("customCSS");
+      if (css) {
+        const difference = css.filter(cssItem => {
+          return !_.find(allCss, item => item.key === cssItem.key);
+        });
+        allCss = allCss.concat(difference);
+      }
+    });
+    $("link[data-view=true]").each((index, element) => {
+      const matches = allCss.filter(css => css.key === $(element).data("id"));
+      if (!matches || !matches.length) {
+        this._logVerbose(
+          `remove useless stylesheet ${$(element).attr("href")} with key ${$(element).data("id")}`,
+          "Asset",
+          "CSS"
+        );
+        $(element).remove();
+      }
+    });
+  }
+
   private _onRenderCss(customCss: CssAssetList) {
     this.cssList.push(...this._extractNewCss(this.cssList, customCss));
     // add custom css style
@@ -285,22 +347,23 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
     const cssLinkTemplate = _.template(
       '<link rel="stylesheet" type="text/css" ' + 'href="<%= path %>" data-id="<%= key %>" data-view="true">'
     );
-
-    // Clean CSS
-    _.each($("link[data-view=true]"), currentLink => {
-      if (
-        _.find(this.cssList, currentCss => {
-          return $(currentLink).data("id") === currentCss.key;
-        }) === undefined
-      ) {
-        $(currentLink).remove();
-      }
-    });
+    this._cleanCss();
+    // // Clean CSS
+    // _.each($("link[data-view=true]"), currentLink => {
+    //   if (
+    //     _.find(this.cssList, currentCss => {
+    //       return $(currentLink).data("id") === currentCss.key;
+    //     }) === undefined
+    //   ) {
+    //     $(currentLink).remove();
+    //   }
+    // });
     // Inject new CSS
-    _.each(this.cssList, cssItem => {
+    _.each(customCss, cssItem => {
       const $existsLink = $(`link[rel=stylesheet][data-id=${cssItem.key}]`);
 
       if ($existsLink.length === 0) {
+        this._logVerbose(`add stylesheet ${cssItem.path} with key ${cssItem.key}`, "Asset", "CSS");
         // @ts-ignore
         if (document.createStyleSheet) {
           // Special thanks to IE : ! up to 31 css cause errors...
@@ -329,8 +392,14 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
                 if (err) {
                   reject(err);
                 } else if (currentJS.type === "global") {
+                  this._logVerbose(`inject javascript ${currentJS.path} in mode ${currentJS.type}`, "Asset", "JS");
                   resolve();
                 } else if (!currentJS.type || currentJS.type === "library") {
+                  this._logVerbose(
+                    `inject javascript ${currentJS.path} in mode ${currentJS.type || "library"}`,
+                    "Asset",
+                    "JS"
+                  );
                   const functionKey = currentJS.function || currentJS.key;
                   this._registerScript(currentJS.path, this._getRegisteredFunction(functionKey));
                 }
@@ -361,7 +430,7 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
         if (typeof this._scripts[jsPath] === "function") {
           // eslint-disable-next-line no-useless-catch
           try {
-            const scopedController = this.scope(event.controller.uid) as SmartElementController;
+            const scopedController = this.getScopedController(event.controller.uid) as SmartElementController;
             // Restrict the js to the current smart element view
             // @ts-ignore
             scopedController._defaultPersistent = false;
@@ -403,5 +472,15 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
 
   private _getRegisteredFunction(key: string) {
     return this._registeredFunction[key];
+  }
+
+  private _logVerbose(message, ...categories) {
+    let strCategories = "";
+    if (categories && categories.length) {
+      strCategories = `[${categories.join("][")}]`;
+    }
+    if (this._verbose) {
+      window.console.log(`[Smart Element Controller]${strCategories} :`, message);
+    }
   }
 }

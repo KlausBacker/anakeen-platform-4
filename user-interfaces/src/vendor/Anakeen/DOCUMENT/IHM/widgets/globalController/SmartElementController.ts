@@ -1,33 +1,48 @@
 /* eslint-disable no-unused-vars */
-/* tslint:disable:variable-name */
-import * as Backbone from "backbone";
-import SmartElementProperties = AnakeenController.Types.SmartElementProperties;
-import ViewData = AnakeenController.Types.IViewData;
-import DOMReference = AnakeenController.Types.DOMReference;
-import ListenableEventCallable = AnakeenController.BusEvents.ListenableEventCallable;
-import ListenableEventOptions = AnakeenController.BusEvents.IListenableEventOptions;
-import * as $ from "jquery";
-import * as _ from "underscore";
-import AttributeInterface = require("../../controllerObjects/attributeInterface");
-import MenuInterface = require("../../controllerObjects/menuInterface");
-import TransitionInterface = require("../../controllerObjects/transitionInterface");
-import i18n = require("../../i18n/documentCatalog");
-import Model = require("../../models/mDocument");
-import MenuModel = require("../../models/mMenu");
-import TransitionModel = require("../../models/mTransition");
-import Router = require("../../routers/router.js");
-import View = require("../../views/document/vDocument");
-import TransitionView = require("../../views/workflow/vTransition");
-import "../../widgets/widget";
-import "../../widgets/window/wConfirm";
-import "../../widgets/window/wLoading";
-import "../../widgets/window/wNotification";
+/* tslint:disable:variable-name ordered-imports */
+// @ts-ignore
+import StaticErrorTemplate from "!!raw-loader!./utils/templates/SEError.html.mustache";
 import { AnakeenController } from "./types/ControllerTypes";
 import ListenableEvent = AnakeenController.BusEvents.ListenableEvent;
 import ISmartElementAPI = AnakeenController.SmartElement.ISmartElementAPI;
 import ISmartField = AnakeenController.SmartElement.ISmartField;
 import ISmartElement = AnakeenController.SmartElement.ISmartElement;
 import Listenable = AnakeenController.BusEvents.Listenable;
+// @ts-ignore
+import LoadingTemplate from "!!raw-loader!./utils/templates/SELoading.html.mustache";
+import * as Backbone from "backbone";
+// @ts-ignore
+import AttributeInterface = require("dcpDocument/controllerObjects/attributeInterface");
+// @ts-ignore
+import MenuInterface = require("dcpDocument/controllerObjects/menuInterface");
+// @ts-ignore
+import TransitionInterface = require("dcpDocument/controllerObjects/transitionInterface");
+// @ts-ignore
+import i18n = require("dcpDocument/i18n/documentCatalog");
+// @ts-ignore
+import Model = require("dcpDocument/models/mDocument");
+// @ts-ignore
+import MenuModel = require("dcpDocument/models/mMenu");
+// @ts-ignore
+import TransitionModel = require("dcpDocument/models/mTransition");
+// @ts-ignore
+import Router = require("dcpDocument/routers/router.js");
+// @ts-ignore
+import View = require("dcpDocument/views/document/vDocument");
+// @ts-ignore
+import TransitionView = require("dcpDocument/views/workflow/vTransition");
+import "dcpDocument/widgets/widget";
+import "dcpDocument/widgets/window/wConfirm";
+import "dcpDocument/widgets/window/wLoading";
+import "dcpDocument/widgets/window/wNotification";
+import SmartElementProperties = AnakeenController.Types.SmartElementProperties;
+import ViewData = AnakeenController.Types.IViewData;
+import DOMReference = AnakeenController.Types.DOMReference;
+import ListenableEventCallable = AnakeenController.BusEvents.ListenableEventCallable;
+import ListenableEventOptions = AnakeenController.BusEvents.IListenableEventOptions;
+import * as $ from "jquery";
+import * as Mustache from "mustache";
+import * as _ from "underscore";
 
 interface IControllerOptions {
   router?: boolean | { noRouter: boolean };
@@ -743,51 +758,62 @@ export default class SmartElementController extends AnakeenController.BusEvents.
    * @returns {*}
    */
   public addConstraint(options, callback) {
-    let currentConstraint;
-    const currentWidget = this;
-    let uniqueName;
-    if (_.isUndefined(callback) && _.isFunction(options)) {
-      callback = options;
-      options = {};
-    }
-    if (_.isObject(options) && _.isUndefined(callback)) {
-      if (!options.name) {
-        throw new Error(
-          "When a constraint is initiated with a single object, this object needs to have the name property " +
-            JSON.stringify(options)
-        );
-      }
-    } else {
-      _.defaults(options, {
-        check: () => true,
-        constraintCheck: callback,
-        externalConstraint: false,
-        name: _.uniqueId("constraint"),
-        once: false,
-        smartFieldCheck: () => true
-      });
-    }
-    currentConstraint = options;
-    if (!_.isFunction(currentConstraint.constraintCheck)) {
-      throw new Error("An event need a callback");
-    }
-    // If constraint is once : wrap it an callback that execute callback and delete it
-    if (currentConstraint.once === true) {
-      currentConstraint.eventCallback = _.wrap(currentConstraint.constraintCheck, innerCallback => {
-        try {
-          // @ts-ignore
-          innerCallback.apply(this, _.rest(arguments));
-        } catch (e) {
-          console.error(e);
-        }
-        currentWidget.removeConstraint(currentConstraint.name, currentConstraint.externalConstraint);
-      });
-    }
-    uniqueName = (currentConstraint.externalConstraint ? "external_" : "internal_") + currentConstraint.name;
-    this._constraintList[uniqueName] = currentConstraint;
-    this._initActivatedConstraint();
-    return currentConstraint.name;
+    return this.addEventListener("smartFieldConstraintCheck", options, callback);
   }
+
+  /**
+   * Add a constraint to the widget
+   *
+   * @param options object { "name" : string, "documentCheck": function}
+   * @param callback function callback called when the event is triggered
+   * @returns {*}
+   */
+  // public addConstraint(options, callback) {
+  //   let currentConstraint;
+  //   const currentWidget = this;
+  //   let uniqueName;
+  //   if (_.isUndefined(callback) && _.isFunction(options)) {
+  //     callback = options;
+  //     options = {};
+  //   }
+  //   if (_.isObject(options) && _.isUndefined(callback)) {
+  //     if (!options.name) {
+  //       throw new Error(
+  //         "When a constraint is initiated with a single object, this object needs to have the name property " +
+  //           JSON.stringify(options)
+  //       );
+  //     }
+  //   } else {
+  //     _.defaults(options, {
+  //       check: () => true,
+  //       constraintCheck: callback,
+  //       externalConstraint: false,
+  //       name: _.uniqueId("constraint"),
+  //       once: false,
+  //       smartFieldCheck: () => true
+  //     });
+  //   }
+  //   currentConstraint = options;
+  //   if (!_.isFunction(currentConstraint.constraintCheck)) {
+  //     throw new Error("An event need a callback");
+  //   }
+  //   // If constraint is once : wrap it an callback that execute callback and delete it
+  //   if (currentConstraint.once === true) {
+  //     currentConstraint.eventCallback = _.wrap(currentConstraint.constraintCheck, innerCallback => {
+  //       try {
+  //         // @ts-ignore
+  //         innerCallback.apply(this, _.rest(arguments));
+  //       } catch (e) {
+  //         console.error(e);
+  //       }
+  //       currentWidget.removeConstraint(currentConstraint.name, currentConstraint.externalConstraint);
+  //     });
+  //   }
+  //   uniqueName = (currentConstraint.externalConstraint ? "external_" : "internal_") + currentConstraint.name;
+  //   this._constraintList[uniqueName] = currentConstraint;
+  //   this._initActivatedConstraint();
+  //   return currentConstraint.name;
+  // }
 
   /**
    * List the constraint of the widget
@@ -1119,7 +1145,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     });
   }
 
-  public emit(eventOptions: { name: string; type: "smartElement" | "smartField" }, ...args: any[]) {
+  public emit(eventOptions: { name: string; type: "smartElement" | "smartField" | "constraint" }, ...args: any[]) {
     const name = eventOptions.name;
     const type = eventOptions.type || "smartElement";
     if (_.isFunction(this._globalEventHandler)) {
@@ -1143,17 +1169,28 @@ export default class SmartElementController extends AnakeenController.BusEvents.
             currentEvent.smartFieldCheck.call(this, args[2], this.getProperties())
         )
         .map(cb => {
-          const callbackReturn: any = cb.eventCallback.call(this, ...args);
-          if (callbackReturn && callbackReturn instanceof Promise && name.indexOf("before") === 0) {
-            return callbackReturn;
-          } else {
-            if (
-              (args[0] && typeof args[0].isDefaultPrevented === "function" && args[0].isDefaultPrevented()) ||
-              callbackReturn === false
-            ) {
-              return Promise.reject(callbackReturn);
+          let callbackReturn: any;
+          if (cb.eventType === "smartFieldConstraintCheck") {
+            const constraintOptions = args[args.length - 1];
+            callbackReturn = cb.eventCallback.call(this, args[1], args[2], args[3]);
+            if (Array.isArray(callbackReturn)) {
+              callbackReturn.forEach(constraintOptions.displayConstraint);
+            } else {
+              constraintOptions.displayConstraint(callbackReturn);
             }
-            return Promise.resolve(callbackReturn);
+          } else {
+            callbackReturn = cb.eventCallback.call(this, ...args);
+            if (callbackReturn && callbackReturn instanceof Promise && name.indexOf("before") === 0) {
+              return callbackReturn;
+            } else {
+              if (
+                (args[0] && typeof args[0].isDefaultPrevented === "function" && args[0].isDefaultPrevented()) ||
+                callbackReturn === false
+              ) {
+                return Promise.reject(callbackReturn);
+              }
+              return Promise.resolve(callbackReturn);
+            }
           }
         })
     );
@@ -1168,9 +1205,9 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       this._initialized.model = true;
     };
     const initOptions = options || {};
-    this._initExternalElements();
     this._initModel(this._getModelValue());
     this._initView();
+    this._initExternalElements();
     if (initOptions.success) {
       initOptions.success = _.wrap(options.success, (success, ...args) => {
         onInitializeSuccess.apply(this);
@@ -1210,9 +1247,9 @@ export default class SmartElementController extends AnakeenController.BusEvents.
    * @private
    */
   private _initExternalElements() {
-    if (this._options) {
+    if (this._options.loading) {
       // @ts-ignore
-      this.$loading = $(".dcpLoading").dcpLoading();
+      this.$loading = this._element.find(".dcpLoading").dcpLoading();
     }
     if (this._options.notification) {
       // @ts-ignore
@@ -1279,7 +1316,25 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     const $se = this._element.find(".dcpDocument");
     if (!this._smartElement || $se.length === 0) {
       this._element.attr("data-controller", this.uid);
-      this._element.append('<div class="document"><div class="dcpDocument"></div></div>');
+      const domTemplate = `<div class="smart-element-wrapper" style="position: relative">
+            <div class="document">
+                <div class="dcpDocument"></div>
+            </div>
+            {{> loading}}
+            {{> staticError}}
+        </div>`;
+      this._element.append(
+        Mustache.render(
+          domTemplate,
+          {
+            msg: {
+              loadError: i18n.___("Unable to load try again", "ddui"),
+              clickAction: i18n.___("Click to reload the document", "ddui")
+            }
+          },
+          { loading: LoadingTemplate, staticError: StaticErrorTemplate }
+        )
+      );
       this._smartElement = this._element.find(".dcpDocument");
     }
   }
@@ -1678,7 +1733,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     this._model.listenTo(this._model, "createDialogListener", (event, attrid, options) => {
       try {
         const currentAttribute = this.getSmartField(attrid);
-        let triggername = "smartFieldCreateDialogDocument";
+        let triggername = "smartFieldCreateDialogSmartElement";
         // Uppercase first letter
         triggername += options.triggerId.charAt(0).toUpperCase() + options.triggerId.slice(1);
 
@@ -1700,7 +1755,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       try {
         const currentAttribute = this.getSmartField(attribute);
         const currentModel = this.getProperties();
-        const $element = $(this._element);
+        const values = currentAttribute.getValue("all");
         const addConstraint = currentConstraint => {
           if (_.isString(currentConstraint)) {
             constraintController.addConstraintMessage(currentConstraint);
@@ -1709,26 +1764,17 @@ export default class SmartElementController extends AnakeenController.BusEvents.
             constraintController.addConstraintMessage(currentConstraint.message, currentConstraint.index);
           }
         };
-        Object.keys(this._activatedConstraint).forEach(key => {
-          const currentConstraint = this._activatedConstraint[key];
-          try {
-            if (currentConstraint.smartFieldCheck.apply(this, [currentAttribute, currentModel])) {
-              const response = currentConstraint.constraintCheck.call(
-                this,
-                currentModel,
-                currentAttribute,
-                currentAttribute.getValue("all")
-              );
-              if (_.isArray(response)) {
-                _.each(response, addConstraint);
-              } else {
-                addConstraint(response);
-              }
-            }
-          } catch (e) {
-            console.error(e);
+        this._triggerAttributeControllerEvent(
+          "smartFieldConstraintCheck",
+          null,
+          currentAttribute,
+          currentModel,
+          currentAttribute,
+          values,
+          {
+            displayConstraint: addConstraint
           }
-        });
+        );
       } catch (error) {
         if (!(error instanceof ErrorModelNonInitialized)) {
           console.error(error);
