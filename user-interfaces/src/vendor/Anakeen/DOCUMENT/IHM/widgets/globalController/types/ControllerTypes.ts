@@ -184,7 +184,8 @@ export namespace AnakeenController {
       "smartFieldCreateDialogSmartElementBeforeClose",
       "smartFieldCreateDialogSmartElementBeforeDestroy",
       "renderCss",
-      "injectCurrentSmartElementJS"
+      "injectCurrentSmartElementJS",
+      "smartFieldConstraintCheck"
     ];
 
     export interface ISmartElementAPI {
