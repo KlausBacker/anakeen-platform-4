@@ -1,9 +1,9 @@
 const path = require("path");
 const merge = require("webpack-merge");
 const { vueLoader, typeScriptLoader } = require("@anakeen/webpack-conf/parts");
+const controllerConfig = require("./controller");
 
 const baseConfig = require("./base");
-const commonConfig = require("./common");
 
 const BASE_PATH = path.resolve(__dirname, "../");
 const ENTRIES_PATH = {
@@ -24,5 +24,8 @@ const config = {
 };
 
 module.exports = env => {
-  return [merge(baseConfig(config), commonConfig(config), vueLoader())];
+  if (process.env.conf === "CONTROLLER") {
+    return controllerConfig();
+  }
+  return [merge(config, baseConfig(), vueLoader())];
 };

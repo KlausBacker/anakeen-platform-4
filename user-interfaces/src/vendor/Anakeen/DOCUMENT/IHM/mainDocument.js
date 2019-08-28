@@ -2,14 +2,14 @@
  * Main bootstraper
  */
 import $ from "jquery";
-import "../../../../../webpackConfig/kendo/kendo";
 
-$.get("/api/v2/i18n/DOCUMENT").done(function translationLoaded(catalog) {
+import AnakeenController from "@anakeen/user-interfaces/components/lib/AnkController";
+
+AnakeenController.on("controllerReady", controller => {
   //Trigger an event when translation loaded
-  window.dcp.i18n = catalog;
+  // window.dcp.i18n = catalog;
 
   var _ = require("underscore");
-  require("dcpDocument/widgets/globalController");
 
   let $document = $(".document"),
     currentValues,
@@ -43,16 +43,14 @@ $.get("/api/v2/i18n/DOCUMENT").done(function translationLoaded(catalog) {
   }
 
   if (window.dcp.viewData !== false && window.dcp.viewData.initid) {
-    window.ank.smartElement.globalController.on("controllerReady", controller => {
-      /* @var controller GlobalController */
-      controller.addSmartElement($document, window.dcp.viewData, {
-        router: true
-      });
-      currentController = controller.getScopedController($document);
-      currentController.addEventListener("ready", (event, properties) => {
-        window.document.title = properties.title;
-        $("link[rel='shortcut icon']").attr("href", properties.icon);
-      });
+    /* @var controller GlobalController */
+    controller.addSmartElement($document, window.dcp.viewData, {
+      router: true
+    });
+    currentController = controller.getScopedController($document);
+    currentController.addEventListener("ready", (event, properties) => {
+      window.document.title = properties.title;
+      $("link[rel='shortcut icon']").attr("href", properties.icon);
     });
     $document.one("documentready", function launchReady() {
       _.each(window.dcp.messages, function(msg) {
@@ -63,13 +61,11 @@ $.get("/api/v2/i18n/DOCUMENT").done(function translationLoaded(catalog) {
       });
     });
   } else {
-    window.ank.smartElement.globalController.on("controllerReady", controller => {
-      controller.addSmartElement(".document");
-      currentController = controller.getScopedController($document);
-      currentController.addEventListener("ready", (event, properties) => {
-        window.document.title = properties.title;
-        $("link[rel='shortcut icon']").attr("href", properties.icon);
-      });
+    controller.addSmartElement(".document");
+    currentController = controller.getScopedController($document);
+    currentController.addEventListener("ready", (event, properties) => {
+      window.document.title = properties.title;
+      $("link[rel='shortcut icon']").attr("href", properties.icon);
     });
   }
 

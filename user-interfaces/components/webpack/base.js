@@ -7,7 +7,7 @@ const OUTPUT_PATH = {
   lib: path.resolve(BASE_PATH, "lib")
 };
 
-module.exports = config => ({
+module.exports = () => ({
   output: {
     libraryTarget: "commonjs2",
     path: OUTPUT_PATH.lib
