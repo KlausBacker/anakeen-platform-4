@@ -22,11 +22,7 @@
         rowMinLimit: -1,
         rowMinDefault: 0,
         rowMaxLimit: -1,
-        collapse: false,
-        arrayBreakPoints: {
-          transpositionRule: "@media (max-width: 768px)",
-          upRule: "@media (max-width: 1200px)"
-        }
+        collapse: false
       },
       displayLabel: true,
       customTemplate: false,
@@ -206,7 +202,7 @@
 
             // Set system css classes
             $table = this.element.find(".dcpArray__table");
-            $table.addClass("table table-condensed table-hover table-bordered responsive");
+            $table.addClass("table table-condensed table-hover table-bordered");
             $table
               .find("> tbody")
               .addClass("dcpArray__body")
@@ -232,11 +228,12 @@
                   scope._hideTooltips();
                   scope._disableTooltips();
 
-                  return $("<table/>")
+                  var $table = $("<table/>")
                     .addClass("dcpArray__dragLine " + classTable)
                     .css("width", lineWidth)
-                    .css("margin-left", "-" + (element.offset().left - dragLine.offset().left) + "px")
-                    .append(dragLine.clone());
+                    .css("margin-left", "-" + (element.offset().left - dragLine.offset().left) + "px");
+
+                  return $table.append($("<tbody/>").append(dragLine.clone()));
                 },
                 dragstart: function dcpArraydragstart(event) {
                   if (event.currentTarget) {
@@ -285,7 +282,6 @@
               scope.element.find(".dcpArray__content table.table").tooltip("destroy");
             });
           }
-          _.delay(_.bind(this._initCSSResponsive, this), 10);
 
           if (!this._isInitialized()) {
             this.addAllLines(this.options.nbLines)
@@ -331,57 +327,6 @@
           return this;
         }
       );
-    },
-    _initCSSResponsive: function _initCSSResponsive() {
-      // I9 not support transposition table
-      var useTransposition = $("html.k-ie9").length === 0;
-
-      this.element.append(
-        Mustache.render(
-          this._getTemplate("responsive") || "",
-          _.extend(this.options, { useTransposition: useTransposition })
-        )
-      );
-
-      if (useTransposition) {
-        this.element.find("table.dcpArray__table").addClass("responsive");
-        var cssString,
-          cssTemplate,
-          headers = _.map(this.element.find("table.responsive > thead th"), function addResponsiveKey(
-            currentElement,
-            index
-          ) {
-            var $currentElement = $(currentElement);
-            var $label = $currentElement.find(".dcpArray__head__label");
-
-            if ($label.length === 0) {
-              $label = $currentElement;
-            }
-            $label.attr("data-responsiveKey", "rk" + index);
-            return {
-              key: $label.attr("data-responsiveKey"),
-              attrid: $label.data("attrid"),
-              label: $label.text().trim()
-            };
-          });
-
-        // Generate CSS string
-        cssString = "<style>" + this.options.renderOptions.arrayBreakPoints.transpositionRule + " { ";
-
-        cssTemplate = _.template(
-          ".dcpArray__content[data-attrid=" +
-            this.options.id +
-            '] .dcpAttribute__content[data-responsiveKey=<%= key %>]:before { content: "<%= label %>"; }'
-        );
-
-        _.each(headers, function initCssHeader(currentHeader) {
-          currentHeader.label = currentHeader.label.replace(/([\\"])/g, "\\$1").replace(/\n/g, " ");
-          cssString += cssTemplate(currentHeader);
-        });
-        cssString += " }</style>";
-
-        this.element.append(cssString);
-      }
     },
 
     _hideTooltips: function wArray__hideTooltips() {
@@ -586,10 +531,9 @@
       if (this.options.renderOptions.rowMoveDisable === true) {
         $content.find(".dcpArray__content__toolCell__dragDrop").hide();
       }
-      _.each($content.find(">td"), function dcpArray_addCssClass(currentCell, index) {
+      _.each($content.find(">td"), function dcpArray_addCssClass(currentCell) {
         $(currentCell)
           .find(".dcpArray__content__cell")
-          .attr("data-responsiveKey", "rk" + index)
           .closest("td")
           .addClass("dcpArray__cell");
       });

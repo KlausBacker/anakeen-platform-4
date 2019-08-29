@@ -16,6 +16,7 @@ define([
     displayLabel: true,
     customView: false,
     customRowView: false,
+    absoluteTranspositionWith: null,
     events: {
       dcparraylineadded: "addLine",
       dcparraylineremoved: "removeLine",
@@ -40,6 +41,7 @@ define([
       this.listenTo(this.model, "removeWidgetLine", this.removeWidgetLine);
       this.listenTo(this.model, "addWidgetLine", this.addWidgetLine);
       this.listenTo(this.model, "haveView", this._identifyView);
+      this.listenTo(this.model, "resize", this.setResponsiveClasse);
       this.options = options;
     },
 
@@ -135,6 +137,8 @@ define([
                 });
               }
             }
+            $(window).on("resize.v" + this.model.cid, _.bind(this.setResponsiveClasse, this));
+            _.defer(_.bind(this.setResponsiveClasse, this));
           } catch (e) {
             reject(e);
           }
@@ -247,6 +251,34 @@ define([
       }
     },
 
+    setResponsiveClasse: function vArray_setResponsiveClasse() {
+      const arrayWidth = $(this.$el).width();
+      const transposeWidth = this.model.getOption("transpositionWidth");
+
+      if (this.absoluteTranspositionWith === null) {
+        if (parseInt(transposeWidth) > 0) {
+          const $fake = $("<div/>").css({
+            position: "absolute",
+            top: 0,
+            overflow: "hidden"
+          });
+          $("body").append($fake);
+          $fake.width(transposeWidth);
+          this.absoluteTranspositionWith = $fake.width();
+          $fake.remove();
+        } else {
+          this.absoluteTranspositionWith = 0;
+        }
+      }
+
+      if (this.absoluteTranspositionWith > 0) {
+        if (arrayWidth < this.absoluteTranspositionWith) {
+          this.$el.find("table.dcpArray__table").addClass("transpose");
+        } else {
+          this.$el.find("table.dcpArray__table").removeClass("transpose");
+        }
+      }
+    },
     refresh: function vArray_Refresh() {
       this.nbLines = this.$el.dcpArray("option", "nbLines");
       this.$el.dcpArray("destroy");
@@ -362,7 +394,16 @@ define([
     show: function vArray_show() {
       this.$el.show();
     },
+    /**
+     * Destroy the associated widget and suppress event listener before remov the dom
+     *
+     * @returns {*}
+     */
+    remove: function vArray_remove() {
+      $(window).off(".v" + this.model.cid);
 
+      return Backbone.View.prototype.remove.call(this);
+    },
     _identifyView: function vArray_identifyView(event) {
       event.haveView = true;
       //Add the pointer to the current jquery element to a list passed by the event

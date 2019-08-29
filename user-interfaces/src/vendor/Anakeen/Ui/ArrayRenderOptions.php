@@ -8,9 +8,9 @@ namespace Anakeen\Ui;
 
 class ArrayRenderOptions extends CommonRenderOptions
 {
-    
+
     const type = "array";
-    
+
     const rowCountThresholdOption = "rowCountThreshold";
     const rowAddDisableOption = "rowAddDisable";
     const rowDelDisableOption = "rowDelDisable";
@@ -18,10 +18,7 @@ class ArrayRenderOptions extends CommonRenderOptions
     const rowMinLimitOption = "rowMinLimit";
     const rowMinDefaultOption = "rowMinDefault";
     const rowMaxLimitOption = "rowMaxLimit";
-    const arrayBreakPointsOption = "arrayBreakPoints";
-    
-    const transpositionRule = "@media only screen and (max-width: 768px),(min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait)";
-    const upRule = "@media (max-width: 1200px)";
+    const transpositionWidthOption = "transpositionWidth";
 
 
     const collapseOption = "collapse";
@@ -59,6 +56,7 @@ class ArrayRenderOptions extends CommonRenderOptions
     {
         return $this->setOption(self::rowCountThresholdOption, (int)$since);
     }
+
     /**
      * Disable or enable the access to add new row on a table
      * It is enable by default
@@ -69,6 +67,7 @@ class ArrayRenderOptions extends CommonRenderOptions
     {
         return $this->setOption(self::rowAddDisableOption, (bool)$disable);
     }
+
     /**
      * Disable or enable the access to remove row on a table
      * It is enable by default
@@ -79,6 +78,7 @@ class ArrayRenderOptions extends CommonRenderOptions
     {
         return $this->setOption(self::rowDelDisableOption, (bool)$disable);
     }
+
     /**
      * Disable or enable the access to move row on a table
      * It is enable by default
@@ -89,6 +89,7 @@ class ArrayRenderOptions extends CommonRenderOptions
     {
         return $this->setOption(self::rowMoveDisableOption, (bool)$disable);
     }
+
     /**
      * Set min row to the table
      * If array has not the min, empty rows are added since reach limit
@@ -101,19 +102,21 @@ class ArrayRenderOptions extends CommonRenderOptions
     {
         return $this->setOption(self::rowMinLimitOption, (int)$limit);
     }
+
     /**
      * Set min row displayed for the array
      * If array has not the min, empty rows are added since reach limit
      * The remove button is NOT disabled when default limit is reach unlike the setRowMinLimit option
      * No min by default
      * @param int $default : min default, 0 (or negative) means no default
-     * @see setRowMinLimit
      * @return $this
+     * @see setRowMinLimit
      */
     public function setRowMinDefault($default)
     {
         return $this->setOption(self::rowMinDefaultOption, (int)$default);
     }
+
     /**
      * Set max row to the table
      * The add button is disabled when limit is reach
@@ -125,13 +128,14 @@ class ArrayRenderOptions extends CommonRenderOptions
     {
         return $this->setOption(self::rowMaxLimitOption, (int)$limit);
     }
-    
-    public function setResponsiveBreakpoints($transposition = self::transpositionRule, $labelUp = self::upRule)
+
+    /**
+     * If table width is less than the limit the table is displayed with a transposition
+     * @param string $transpositionWidth the max width to not transpose table
+     * @return ArrayRenderOptions
+     */
+    public function setTranspositionWidthLimit(string $transpositionWidth)
     {
-        
-        return $this->setOption(self::arrayBreakPointsOption, array(
-            "transpositionRule" => $transposition,
-            "upRule" => $labelUp
-        ));
+        return $this->setOption(self::transpositionWidthOption, $transpositionWidth);
     }
 }
