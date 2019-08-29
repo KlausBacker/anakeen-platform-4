@@ -633,7 +633,7 @@ define([
                 }
               }
             } else {
-              if ((!currentValue || !currentValue.value) && currentValue.value !== 0) {
+              if (!currentValue || (!currentValue.value && currentValue.value !== 0)) {
                 oneSuccess = false;
               }
             }
@@ -1633,8 +1633,8 @@ define([
             _.each(attributes, function mDocumentCompleteStructureSuccessEach(currentAttributeStructure) {
               if (currentAttributeStructure.id && valueAttributes[currentAttributeStructure.id]) {
                 currentAttributeStructure.attributeValue = valueAttributes[currentAttributeStructure.id];
-                currentAttributeStructure.needed = neededAttributes[currentAttributeStructure.id] === true;
               }
+              currentAttributeStructure.needed = neededAttributes[currentAttributeStructure.id] === true;
               if (currentAttributeStructure.id && visibilityAttributes[currentAttributeStructure.id]) {
                 currentAttributeStructure.visibility = visibilityAttributes[currentAttributeStructure.id];
               }

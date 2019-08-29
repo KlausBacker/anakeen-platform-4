@@ -227,9 +227,6 @@ class RenderDefault implements IRenderConfig
                     ),
                     "line" => array(
                         "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/array/line.mustache"
-                    ),
-                    "responsive" => array(
-                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/array/responsive.mustache"
                     )
                 )
             ),

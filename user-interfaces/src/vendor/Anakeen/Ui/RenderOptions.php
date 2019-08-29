@@ -101,10 +101,7 @@ class RenderOptions implements \JsonSerializable
             ) ,
             ArrayRenderOptions::type => array(
                 ArrayRenderOptions::rowCountThresholdOption => - 1,
-                ArrayRenderOptions::arrayBreakPointsOption => array(
-                    "transpositionRule" => ArrayRenderOptions::transpositionRule,
-                    "upRule" => ArrayRenderOptions::upRule
-                )
+                ArrayRenderOptions::transpositionWidthOption => "30rem"
             ) ,
             "time" => array() ,
             "timestamp" => array()

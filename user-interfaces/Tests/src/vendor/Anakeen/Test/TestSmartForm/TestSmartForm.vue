@@ -12,7 +12,7 @@
         <div splitpanes-size="45" class="pane right-pane">
           <header><h1>Smart Form</h1></header>
           <div class="smart-form">
-            <ank-smart-form ref="smartFormRef" :config="json" />
+            <ank-smart-form ref="smartFormRef" :config="json" :options="{force:true}" />
           </div>
         </div>
     </ank-split-panes>

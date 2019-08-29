@@ -12,7 +12,7 @@ class EmployeeFrameViewSRCLRRender extends \Anakeen\Ui\DefaultView
 
         $options->frame()->setResponsiveColumns([["number" => 2, "minWidth" => "70rem", "grow" => true, "direction" => $direction]]);
 
-
+        $options->arrayAttribute(myAttribute::tst_adp_phone_array)->setTranspositionWidthLimit("350px");
         $options->frame(myAttribute::tst_f_identite)->setResponsiveColumns([
             ["number" => 2, "minWidth" => "70rem", "maxWidth" => "100rem", "direction" => $direction],
             ["number" => 3, "minWidth" => "100rem", "maxWidth" => "110rem", "direction" => $direction],
