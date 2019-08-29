@@ -411,11 +411,24 @@
           );
         }
       }
+      this._cleanRenderOptions(this.options.renderOptions);
+
+      if (this.options.attributeValue && this.options.attributeValue.displayValue === undefined) {
+        this.options.attributeValue.displayValue = this.options.attributeValue.value;
+      }
       this.element.append(Mustache.render(this._getTemplate(this.options.mode) || "", this.options));
 
       if (this.element.find(".dcpAttribute__content__buttons button").length === 0) {
         this.element.find(".dcpAttribute__content__buttons").hide();
         this.element.find(".dcpAttribute__value").addClass("dcpAttribute__content__nobutton");
+      }
+    },
+
+    _cleanRenderOptions: function wAttribute_cleanRenderOptions(renderOptions) {
+      if (renderOptions && renderOptions.buttons) {
+        _.each(renderOptions.buttons, function(button) {
+          button.title = button.title || "";
+        });
       }
     },
 
@@ -538,32 +551,37 @@
             var url = Mustache.render(buttonConfig.url || "", currentWidget.options.attributeValue);
             Mustache.escape = originalEscape;
 
-            if (buttonConfig.target !== "_dialog") {
-              if (buttonConfig && (buttonConfig.windowWidth || buttonConfig.windowHeight)) {
-                if (buttonConfig.windowWidth) {
-                  wFeature += "width=" + parseInt(buttonConfig.windowWidth, 10) + ",";
-                }
-                if (buttonConfig.windowHeight) {
-                  wFeature += "height=" + parseInt(buttonConfig.windowHeight, 10) + ",";
-                }
-                wFeature += "resizable=yes,scrollbars=yes";
-              }
-              window.open(url, buttonConfig.target, wFeature);
+            if (buttonConfig.url.substr(0, 8) === "#action/") {
+              // Special case when url is an action url : the event is catch by wAttributeActionClick
+              $button.attr("data-action", url);
             } else {
-              var $bdw = $("<div/>");
-              $("body").append($bdw);
-              var renderTitle = Mustache.render(buttonConfig.windowTitle || "", currentWidget.options.attributeValue);
-              var dw = $bdw
-                .dcpWindow({
-                  title: renderTitle,
-                  width: buttonConfig.windowWidth,
-                  height: buttonConfig.windowHeight,
-                  content: url,
-                  iframe: true
-                })
-                .data("dcpWindow");
-              dw.kendoWindow().center();
-              dw.open();
+              if (buttonConfig.target !== "_dialog") {
+                if (buttonConfig && (buttonConfig.windowWidth || buttonConfig.windowHeight)) {
+                  if (buttonConfig.windowWidth) {
+                    wFeature += "width=" + parseInt(buttonConfig.windowWidth, 10) + ",";
+                  }
+                  if (buttonConfig.windowHeight) {
+                    wFeature += "height=" + parseInt(buttonConfig.windowHeight, 10) + ",";
+                  }
+                  wFeature += "resizable=yes,scrollbars=yes";
+                }
+                window.open(url, buttonConfig.target, wFeature);
+              } else {
+                var $bdw = $("<div/>");
+                $("body").append($bdw);
+                var renderTitle = Mustache.render(buttonConfig.windowTitle || "", currentWidget.options.attributeValue);
+                var dw = $bdw
+                  .dcpWindow({
+                    title: renderTitle,
+                    width: buttonConfig.windowWidth,
+                    height: buttonConfig.windowHeight,
+                    content: url,
+                    iframe: true
+                  })
+                  .data("dcpWindow");
+                dw.kendoWindow().center();
+                dw.open();
+              }
             }
           }
 
