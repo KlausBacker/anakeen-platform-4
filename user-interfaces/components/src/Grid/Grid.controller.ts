@@ -3,8 +3,9 @@ import Vue from "vue";
 import "@progress/kendo-ui/js/kendo.filtercell";
 import "@progress/kendo-ui/js/kendo.grid";
 import { Component, Prop, Watch } from "vue-property-decorator";
-
+import GridColumnsButton from "./Components/GridColumnsButton/GridColumnsButton.vue";
 import GridExpandButton from "./Components/GridExpandButton/GridExpandButton.vue";
+import GridExportButton from "./Components/GridExportButton/GridExportButton.vue";
 import GridPager from "./Components/GridPager/GridPager.vue";
 
 import GridActions from "./utils/GridActions";
@@ -13,14 +14,20 @@ import GridEvent from "./utils/GridEvent";
 import GridDataUtils from "./utils/GridDataUtils";
 import GridFilter from "./utils/GridFilter";
 
-import GridError from "./utils/GridError";
-import GridKendoUtils from "./utils/GridKendoUtils";
-import GridVueUtil from "./utils/GridVueUtil";
-const COMPLETE_FIELDS_INFO_URL = "/api/v2/grid/columns/<collection>";
 import VueSetup from "../setup.js";
 // eslint-disable-next-line no-unused-vars
 import { IGrid } from "./IGrid";
+import GridError from "./utils/GridError";
+import GridKendoUtils from "./utils/GridKendoUtils";
+import GridVueUtil from "./utils/GridVueUtil";
+
+const COMPLETE_FIELDS_INFO_URL = "/api/v2/grid/columns/<collection>";
 Vue.use(VueSetup);
+
+export const AnkSEGridExpandButton = GridExpandButton;
+export const AnkSEGridPager = GridPager;
+export const AnkSEGridExportButton = GridExportButton;
+export const AnkSEGridColumnsButton = GridColumnsButton;
 
 @Component({
   components: {
@@ -455,6 +462,8 @@ export default class GridController extends Vue {
         }
       }
     };
+
+    this.$on("grid-data-bound", () => this.configureDocidLinks());
   }
 
   public mounted() {
@@ -501,6 +510,7 @@ export default class GridController extends Vue {
       this.$emit("grid-ready");
     });
   }
+
   public setData(data) {
     this.dataSource = new kendo.data.DataSource({
       data: this.gridDataUtils.parseData(data)
@@ -522,5 +532,36 @@ export default class GridController extends Vue {
 
   public onExpandButtonClicked() {
     $(this.kendoGrid.element).toggleClass("grid-row-collapsed");
+  }
+
+  private configureDocidLinks() {
+    const docidLinks = $(".grid-cell-docid-link");
+    docidLinks.each(index => {
+      const link = $(docidLinks[index]);
+      link.off("click"); // Remove event listener before registering a new one
+      link.on("click", () => {
+        const event = new GridEvent(
+          {
+            initid: link.attr("data-initid"),
+            revision: link.attr("data-revision"),
+            viewId: "!defaultConsultation"
+          },
+          null,
+          true,
+          "GridCellLinkEvent"
+        );
+        this.$emit("before-docid-link", event);
+        if (!event.isDefaultPrevented()) {
+          let newUrl = `/api/v2/smart-elements/${event.data.initid}`;
+          if (parseInt(event.data.revision, 10) !== -1) {
+            newUrl += `/revisions/${event.data.revision}`;
+          }
+          newUrl += `/views/${event.data.viewId}.html`;
+          window.open(newUrl, "_blank");
+        } else {
+          return false;
+        }
+      });
+    });
   }
 }

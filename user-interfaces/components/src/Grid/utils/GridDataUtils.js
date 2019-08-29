@@ -98,7 +98,7 @@ export default class GridDataUtils extends AbstractGridUtil {
           switch (type) {
             case "account":
             case "docid":
-              unitValueTemplate = `<a href="#: url#" target="_blank"> <img src="#: icon#" alt="#: displayValue# icon" class="grid-cell-icon" />#: displayValue#</a>`;
+              unitValueTemplate = `<a href="#: url#" target="_blank" class="grid-cell-docid-link" data-initid="#: initid#" data-revision="#: revision#"> <img src="#: icon#" alt="#: displayValue# icon" class="grid-cell-icon" />#: displayValue#</a>`;
               break;
             case "image":
               unitValueTemplate = `<img src="# if (data.url) { # #: data.url# # } else { # #:data# # } #" alt="#if (data.displayValue) { # #: data.displayValue# # } else { # #:data# # }#"/>`;
