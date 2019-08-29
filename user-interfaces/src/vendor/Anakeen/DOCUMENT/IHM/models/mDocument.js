@@ -1269,6 +1269,7 @@ define([
       //Register promise events
       documentCallback.promise
         .then(currentModelProperties => {
+          currentModel.trigger("close", serverProperties);
           currentModel
             ._loadDocument(currentModel)
             .then(values => {
@@ -1293,7 +1294,6 @@ define([
           if (_.isFunction(options.success)) {
             options.success(values);
           }
-          currentModel.trigger("close", serverProperties);
           currentModel.trigger.apply(currentModel, _.union(["dduiDocumentReady"], values.promiseArguments));
         },
         function onPrepareDocumentFail(values) {

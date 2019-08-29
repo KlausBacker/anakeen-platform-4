@@ -13,7 +13,8 @@
   "scripts": {
     "beautify": "npx eslint ./src --fix",
     "lib:dev": "npx webpack --env development --config ./components/webpack/index.js",
-    "lib": "yarn run lib:dev",
+    "lib:controller": "conf=CONTROLLER npx webpack --env development --config ./components/webpack/index.js",
+    "lib": "yarn run lib:controller && yarn run lib:dev",
     "buildComponent:prod": "conf=PROD npx webpack --config ./webpackConfig/components.js",
     "buildComponent:dev": "conf=DEV npx webpack --config ./webpackConfig/components.js",
     "buildComponent:legacy": "conf=LEGACY npx webpack --config ./webpackConfig/components.js",

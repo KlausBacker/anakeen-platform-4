@@ -26,7 +26,7 @@ module.exports = () => {
       smartElementController: [
         path.resolve(
           __dirname,
-          "../src/vendor/Anakeen/DOCUMENT/IHM/widgets/globalController"
+          "../components/src/AnakeenController"
         )
       ]
     },
@@ -38,6 +38,7 @@ module.exports = () => {
         resolve: {
           extensions: [".js"],
           alias: {
+            "@anakeen/user-interfaces": BASE_DIR,
             dcpContextRoot: "",
             dcpDocument: path.resolve(
               BASE_DIR,

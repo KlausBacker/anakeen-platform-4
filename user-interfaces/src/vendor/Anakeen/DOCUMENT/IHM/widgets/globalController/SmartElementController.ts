@@ -1316,7 +1316,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     const $se = this._element.find(".dcpDocument");
     if (!this._smartElement || $se.length === 0) {
       this._element.attr("data-controller", this.uid);
-      const domTemplate = `<div class="smart-element-wrapper" style="position: relative">
+      const domTemplate = `<div class="smart-element-wrapper">
             <div class="document">
                 <div class="dcpDocument"></div>
             </div>
@@ -1328,13 +1328,17 @@ export default class SmartElementController extends AnakeenController.BusEvents.
           domTemplate,
           {
             msg: {
-              loadError: i18n.___("Unable to load try again", "ddui"),
-              clickAction: i18n.___("Click to reload the document", "ddui")
+              clickAction: i18n.___("Click to reload the document", "ddui"),
+              loadError: i18n.___("Unable to load try again", "ddui")
             }
           },
           { loading: LoadingTemplate, staticError: StaticErrorTemplate }
         )
       );
+      // Bind reload action in case of static error
+      this._element.find(".dcpStaticErrorMessage .staticErrorReloadButton").on("click", () => {
+        this._model.fetchDocument();
+      });
       this._smartElement = this._element.find(".dcpDocument");
     }
   }

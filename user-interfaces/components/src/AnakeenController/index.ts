@@ -1,12 +1,13 @@
 // @ts-ignore
 import { loadCatalog, storeCatalog } from "dcpDocument/i18n/catalogStorage";
-import GlobalController from "./GlobalController";
+// @ts-ignore
+import AnakeenController from "dcpDocument/widgets/globalController/GlobalController";
 
-import "../../../../../../../webpackConfig/kendo/kendo";
+import "../../../webpackConfig/kendo/kendo";
 window.ank = window.ank || {};
 window.ank.smartElement = window.ank.smartElement || {};
 if (!window.ank.smartElement.globalController) {
-  window.ank.smartElement.globalController = new GlobalController(false);
+  window.ank.smartElement.globalController = new AnakeenController(false);
 }
 
 const catalog = loadCatalog();
@@ -22,3 +23,5 @@ if (!catalog) {
 } else {
   window.ank.smartElement.globalController.init();
 }
+
+export default window.ank.smartElement.globalController;

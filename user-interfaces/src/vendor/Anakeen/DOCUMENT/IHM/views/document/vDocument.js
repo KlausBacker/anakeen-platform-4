@@ -1375,7 +1375,8 @@ define([
 
     displayNetworkError: function vDocument_displayNetworkError() {
       this.$el.hide();
-      $(".dcpStaticErrorMessage").removeAttr("hidden");
+      const wrapper = this.$el.closest(".smart-element-wrapper");
+      wrapper.find(".dcpStaticErrorMessage").removeAttr("hidden");
     },
 
     /**
