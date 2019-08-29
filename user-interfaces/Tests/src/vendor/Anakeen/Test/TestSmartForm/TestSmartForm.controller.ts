@@ -47,6 +47,7 @@ export default class TestSmartFormController extends Vue {
     smartExampleRef: any;
   };
   public tooltip: string = "";
+  private initialSet: boolean = true;
 
   @Watch("json", { immediate: true, deep: true })
   public onJsonChanged() {
@@ -67,13 +68,17 @@ export default class TestSmartFormController extends Vue {
     }, 1000);
 
     if (this.localIndex >= 0) {
-      this.$refs.smartExampleRef.recordExample(this.localIndex, this.json);
+      if (!this.initialSet) {
+        this.$refs.smartExampleRef.recordExample(this.localIndex, this.json);
+      }
+      this.initialSet = false;
     }
   }
 
   public setJson({ json = {}, localIndex = -1 }) {
     this.localIndex = localIndex;
     this.json = json;
+    this.initialSet = true;
   }
   public recordNewExample() {
     this.$refs.smartExampleRef.createExample();
@@ -86,19 +91,24 @@ export default class TestSmartFormController extends Vue {
     }
   }
   public mounted() {
-    this.$refs.smartExampleRef.selectExample(0);
     this.$refs.smartFormRef.$on("ready", (event, data) => {
       console.log("ready", event, data);
     });
+    /*
     this.$refs.smartFormRef.$on("smartFieldChange", (event, data) => {
       console.log("change", event, data);
     });
 
+     */
+
     this.$refs.smartFormRef.$on("beforeSave", (event, data) => {
-      console.log("change", event, data);
+      console.log("beforeSave", event, data);
     });
+
     this.$refs.smartFormRef.$on("actionClick", (event, data, options) => {
       console.log("action", options.eventId);
     });
+
+    this.$refs.smartExampleRef.selectExample(0);
   }
 }

@@ -60,10 +60,10 @@ define(["jquery", "underscore"], function libSmartForm($, _) {
             _.extend(item, formConfig.renderOptions.types[key]);
           }
         });
+      }
 
-        if (formConfig.renderOptions.common) {
-          _.extend(response.data.view.renderOptions.common, formConfig.renderOptions.common);
-        }
+      if (formConfig.renderOptions.common) {
+        _.extend(response.data.view.renderOptions.common, formConfig.renderOptions.common);
       }
     }
 
@@ -72,6 +72,16 @@ define(["jquery", "underscore"], function libSmartForm($, _) {
     response.data.view.documentData.document.properties.icon = formConfig.icon || "";
     response.data.view.documentData.document.properties.title = formConfig.title || "";
     response.data.view.documentData.document.properties.family.title = formConfig.type || "";
+  };
+  const normalizeSmartFieldValues = function normalizeSmartFieldValues(value) {
+    if (_.isObject(value)) {
+      return value;
+    } else {
+      return {
+        value: value,
+        displayValue: value
+      };
+    }
   };
 
   return {
@@ -106,13 +116,16 @@ define(["jquery", "underscore"], function libSmartForm($, _) {
           throw new Error("Field as no name: \n" + JSON.stringify(item, null, 2));
         }
         if (values[item.id] !== undefined) {
-          if (_.isObject(values[item.id])) {
-            item.attributeValue = values[item.id];
+          if (_.isArray(values[item.id])) {
+            item.attributeValue = _.map(values[item.id], subItem => {
+              return normalizeSmartFieldValues(subItem);
+            });
           } else {
-            item.attributeValue = {
-              value: values[item.id],
-              displayValue: values[item.id]
-            };
+            item.attributeValue = normalizeSmartFieldValues(values[item.id]);
+          }
+        } else {
+          if (item.multiple === true) {
+            item.attributeValue = [];
           }
         }
       });

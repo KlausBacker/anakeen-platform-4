@@ -505,7 +505,7 @@ define(function attributeTemplate(require /*, exports, module*/) {
     insertDescription: function attributeTemplateInsertDescription(attributeView, $customElement) {
       var data = attributeView.model.toData(null, true);
 
-      if (!data.renderOptions.description) {
+      if (!data.renderOptions || !data.renderOptions.description) {
         return;
       }
       var descriptionTemplate;

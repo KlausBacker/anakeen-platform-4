@@ -30,6 +30,9 @@ define(["underscore", "jquery", "backbone"], function require_mAttribute(_, $, B
         content.attributeValue = content.attributeValue ? content.attributeValue[index] : null;
         content.index = index;
       }
+      if (!this.getDocumentModel()) {
+        return content;
+      }
       content.isDisplayable = this.isDisplayable();
       content.content = [];
       if (this.get("content") && _.isFunction(this.get("content").toData)) {
@@ -245,7 +248,7 @@ define(["underscore", "jquery", "backbone"], function require_mAttribute(_, $, B
     },
 
     getDocumentModel: function mAttributegetDocumentModelgetDocumentModel() {
-      return this.collection.documentModel;
+      return this.collection ? this.collection.documentModel : null;
     },
 
     getTemplates: function mAttributegetTemplatesgetTemplates() {
