@@ -48,7 +48,8 @@ class RenderDefault implements IRenderConfig
         $version = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         $jsRef = [
             "polyfill" => UIGetAssetPath::getJsPolyfill(),
-            "kendoui" => UIGetAssetPath::getJSKendoPath()
+            "kendoui" => UIGetAssetPath::getJSKendoPath(),
+            "smartElementController" => UIGetAssetPath::getJSSmartElementControllerPath()
         ];
 
         if (ContextManager::getParameterValue("Ui", "ACTIVATE_LOGGING") === "TRUE") {
