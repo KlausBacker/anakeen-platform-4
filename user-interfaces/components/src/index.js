@@ -45,7 +45,15 @@ if (GlobalVue) {
   GlobalVue.use(plugin);
 }
 
-export * from "./components";
+export * from "./ComponentClasses/AnkSmartElement";
+export * from "./ComponentClasses/AnkSmartForm";
+export * from "./ComponentClasses/AnkSEGrid";
+export * from "./ComponentClasses/AnkAuthent";
+export * from "./ComponentClasses/AnkIdentity";
+export * from "./ComponentClasses/AnkLogout";
+export * from "./ComponentClasses/AnkSEList";
+export * from "./ComponentClasses/AnkSETabs";
+export * from "./ComponentClasses/AnkLoading";
 
 // To allow use as module (npm/webpack/etc.) export component
 export default {
