@@ -361,7 +361,7 @@ export default class GridController extends Vue {
                 this.$http
                   .get(`${this.resolveColumnsUrl}?${queryParams}`)
                   .then(response => {
-                    const serverConfig = response.data.data.fields || [];
+                    const serverConfig = response.data.data || [];
                     serverConfig.forEach(config => {
                       const field = config.field;
                       const clientConfIndex = clientConfig.smartFields.findIndex(c => c.field === field);
