@@ -226,9 +226,7 @@
         dataTextField: "docTitle",
         dataValueField: "docId",
         highlightFirst: true,
-        //value: values,
         dataSource: {
-          // type: "json",
           serverFiltering: true,
           transport: {
             read: function wDocidSelectRead(options) {
@@ -249,6 +247,9 @@
               });
 
               //Suppress multiple items
+              if (currentWidget.additionnalValue) {
+                items.push(currentWidget.additionnalValue);
+              }
               return _.uniq(items, false, function wDocidDataUniq(currentItem) {
                 return currentItem.docId || currentItem.message;
               });
@@ -535,6 +536,8 @@
 
     setValue: function wDocidSetValue(value, event) {
       var newValues;
+      var currentWidget = this;
+      currentWidget.additionnalValue = false;
       this._super(value, event);
       if (this.getMode() === "write") {
         if (!this.hasMultipleOption() && this.options.renderOptions.editDisplay === "singleMultiple") {
@@ -594,6 +597,7 @@
             if (val.value !== null) {
               info.docTitle = val.displayValue;
               info.docId = val.value;
+              currentWidget.additionnalValue = info;
               kendoSelect.dataSource.add(info);
             }
           }
@@ -601,6 +605,7 @@
 
         if (!this._isEqual(originalValues, newValues)) {
           kendoSelect.value(newValues);
+          kendoSelect.close();
           this.flashElement();
         }
         this._updateCreateButton();
