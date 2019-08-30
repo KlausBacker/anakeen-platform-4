@@ -129,7 +129,7 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
   }
 
   /**
-   * Get a scoped controller
+   * Get a scoped controller. If no argument, return all controllers.
    *
    * @param scopeId
    */
@@ -137,9 +137,18 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
     scopeId?: ControllerUID | DOMReference
   ): SmartElementController | SmartElementController[] {
     if (scopeId === undefined) {
-      return this._dispatcher.getControllers() as SmartElementController[];
+      return this.getControllers();
     }
     return this._dispatcher.getController(scopeId);
+  }
+
+  /**
+   * Get all controllers
+   *
+   * @param scopeId
+   */
+  public getControllers(scopeId?: ControllerUID | DOMReference): SmartElementController[] {
+    return this._dispatcher.getControllers() as SmartElementController[];
   }
 
   /**

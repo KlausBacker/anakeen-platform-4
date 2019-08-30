@@ -21,10 +21,7 @@ module.exports = () => {
       path: OUTPUT_PATH.lib
     },
     resolve: {
-      extensions: [".ts", ".js"],
-      alias: {
-        dcpDocument: path.resolve(ROOT_DIR, "src/vendor/Anakeen/DOCUMENT/IHM/"),
-      }
+      extensions: [".ts", ".js"]
     },
     mode: "development",
     devtool: "inline-source-map",
