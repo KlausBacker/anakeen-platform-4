@@ -26,7 +26,7 @@ module.exports = () => {
       smartElementController: [
         path.resolve(
           __dirname,
-          "../components/src/AnakeenController"
+          "../src/vendor/Anakeen/DOCUMENT/IHM/widgets/globalController/index.ts"
         )
       ]
     },
