@@ -1,31 +1,17 @@
 // jscs:disable disallowFunctionDeclarations
 import VueSetup from "./setup";
-import { publicMethods } from "../mixins/AnkWebComponentsMixin";
 import PackageInfo from "../../package.json";
 
 // Declare install function executed by Vue.use()
-export function install(Vue, opts = { globalVueComponents: false, webComponents: false }) {
+export function install(Vue) {
   if (install.installed === true) return;
   install.installed = true;
-  Vue.use(VueSetup, opts);
+  Vue.use(VueSetup);
   const components = require("./components");
-  if (opts.webComponents) {
-    // register Vue src to web src
-    Object.keys(components).forEach(key => {
-      const component = components[key];
-      Vue.customElement(component.name, component, {
-        connectedCallback() {
-          publicMethods(this);
-        }
-      });
-    });
-  }
-  if (opts.globalVueComponents) {
-    Object.keys(components).forEach(key => {
-      const component = components[key];
-      Vue.component(component.name, component);
-    });
-  }
+  Object.keys(components).forEach(key => {
+    const component = components[key];
+    Vue.component(component.name, component);
+  });
 }
 
 // Create module definition for Vue.use()
@@ -45,15 +31,7 @@ if (GlobalVue) {
   GlobalVue.use(plugin);
 }
 
-export * from "./ComponentClasses/AnkSmartElement";
-export * from "./ComponentClasses/AnkSmartForm";
-export * from "./ComponentClasses/AnkSEGrid";
-export * from "./ComponentClasses/AnkAuthent";
-export * from "./ComponentClasses/AnkIdentity";
-export * from "./ComponentClasses/AnkLogout";
-export * from "./ComponentClasses/AnkSEList";
-export * from "./ComponentClasses/AnkSETabs";
-export * from "./ComponentClasses/AnkLoading";
+export * from "./components";
 
 // To allow use as module (npm/webpack/etc.) export component
 export default {
