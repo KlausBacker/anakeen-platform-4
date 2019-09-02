@@ -10,6 +10,9 @@ import ControllerUniqueID = AnakeenController.Types.ControllerUID;
 interface IControllersMap {
   [key: string]: SmartElementController;
 }
+class ControllerUIDError extends Error {}
+
+// tslint:disable-next-line:max-classes-per-file
 export default class ControllerDispatcher extends AnakeenController.BusEvents.Listenable {
   protected _controllers: IControllersMap = {};
 
@@ -23,6 +26,13 @@ export default class ControllerDispatcher extends AnakeenController.BusEvents.Li
     return null;
   }
 
+  /**
+   * Create a scoped controller
+   * @param dom
+   * @param viewData
+   * @param options
+   * @throws ControllerUIDError if the controller name given is already used
+   */
   public initController(dom: DOMReference, viewData: ViewData, options?) {
     const _dispatcher = this;
     const globalEventHandler = function(eventType, ...args) {
@@ -33,7 +43,9 @@ export default class ControllerDispatcher extends AnakeenController.BusEvents.Li
         options.globalHandler.call(this, eventType, ...args);
       }
     };
-
+    if (options && options.controllerName) {
+      this._checkExistControllerName(options.controllerName);
+    }
     const controller = new SmartElementController(dom, viewData, options, globalEventHandler);
     this._controllers[controller.uid] = controller;
     return controller;
@@ -62,5 +74,17 @@ export default class ControllerDispatcher extends AnakeenController.BusEvents.Li
       return this._controllers;
     }
     return Object.keys(this._controllers).map(k => this._controllers[k]);
+  }
+
+  /**
+   * Check if a controller with a given name already exists
+   * @param controllerName
+   * @throws ControllerUIDError
+   * @private
+   */
+  private _checkExistControllerName(controllerName: string) {
+    if (this._controllers[controllerName] !== undefined) {
+      throw new ControllerUIDError(`The controller with the name "${controllerName}" already exists.`);
+    }
   }
 }

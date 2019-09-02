@@ -114,7 +114,7 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
         this._onRenderCss(css);
       });
       this.emit("controllerReady", this);
-      this._logVerbose("controller ready");
+      this._logVerbose("Global Anakeen Controller ready", "Global");
     }
   }
 
@@ -156,6 +156,7 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
    * @param dom
    * @param viewData
    * @param options
+   * @throws Error
    */
   public addSmartElement(dom: DOMReference, viewData?: AnakeenController.Types.IViewData, options?): ControllerUID {
     viewData = viewData || {
@@ -163,9 +164,15 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
       revision: -1,
       viewId: "!defaultConsultation"
     };
-    const controller = this._dispatcher.initController(dom, viewData, options);
-    this._logVerbose(`add smart element "${viewData.initid}"`);
-    return controller.uid;
+    try {
+      const controller = this._dispatcher.initController(dom, viewData, options);
+      this._logVerbose(`Add smart element "${viewData.initid}"`, controller.uid);
+      this.emit("controllerSmartElementAdded", controller);
+      return controller.uid;
+    } catch (error) {
+      this.emit("controllerError", null, error);
+      throw error;
+    }
   }
 
   /**
@@ -401,11 +408,17 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
                 if (err) {
                   reject(err);
                 } else if (currentJS.type === "global") {
-                  this._logVerbose(`inject javascript ${currentJS.path} in mode ${currentJS.type}`, "Asset", "JS");
+                  this._logVerbose(
+                    `inject javascript ${currentJS.path} in mode ${currentJS.type}`,
+                    event.controller.uid,
+                    "Asset",
+                    "JS"
+                  );
                   resolve();
                 } else if (!currentJS.type || currentJS.type === "library") {
                   this._logVerbose(
                     `inject javascript ${currentJS.path} in mode ${currentJS.type || "library"}`,
+                    event.controller.uid,
                     "Asset",
                     "JS"
                   );
@@ -484,12 +497,14 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
   }
 
   private _logVerbose(message, ...categories) {
-    let strCategories = "";
-    if (categories && categories.length) {
-      strCategories = `[${categories.join("][")}]`;
-    }
     if (this._verbose) {
-      window.console.log(`[Smart Element Controller]${strCategories} :`, message);
+      let strCategories = "";
+      if (categories && categories.length) {
+        strCategories = `[${categories.join("][")}]`;
+      }
+      const logMsg = `[Smart Element Controller]${strCategories} : ${message}`;
+      window.console.log(logMsg);
+      this.emit("controllerLog", logMsg);
     }
   }
 }

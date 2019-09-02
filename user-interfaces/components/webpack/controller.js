@@ -14,7 +14,7 @@ const PUBLIC_PATH = path.resolve(ROOT_DIR, "src/public");
 module.exports = () => {
   const config = {
     entry: {
-      AnkController: path.resolve(BASE_PATH, "src/AnakeenController")
+      AnkController: path.resolve(BASE_PATH, "src/AnkController")
     },
     output: {
       libraryTarget: "commonjs2",
@@ -30,7 +30,8 @@ module.exports = () => {
     config,
     typeScriptLoader({
       compilerOptions: {
-        declaration: false
+        declaration: true,
+        declarationDir: path.resolve(__dirname, "../lib"),
       }
     }),
   );

@@ -28,7 +28,7 @@ const setLocale = (Vue, kendo, locale) => {
   }
 };
 
-export default function install(Vue, opts = { globalVueComponent: false, webComponents: false }) {
+export default function install(Vue) {
   if (Vue.__ank_components_setup__ === true) return;
   Vue.__ank_components_setup__ = true;
   // jscs:ignore disallowFunctionDeclarations
@@ -69,15 +69,4 @@ export default function install(Vue, opts = { globalVueComponent: false, webComp
     .catch(() => {
       setLocale(Vue, kendo);
     });
-
-  if (opts.webComponents) {
-    const VueCustomElement = require("vue-custom-element").default;
-    Vue.use(VueCustomElement);
-    const installCE = require("document-register-element/pony");
-
-    installCE(window, {
-      type: "auto",
-      noBuiltIn: true
-    });
-  }
 }

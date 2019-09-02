@@ -95,9 +95,7 @@ export default class AdminCenterAccountController extends Vue {
                 groups = [];
               }
               const addUniqId = (currentElement, id = "") => {
-                currentElement.hierarchicalId = id
-                  ? id + "/" + currentElement.documentId
-                  : currentElement.documentId;
+                currentElement.hierarchicalId = id ? id + "/" + currentElement.documentId : currentElement.documentId;
                 if (currentElement.items) {
                   currentElement.items.forEach(childrenElement => {
                     addUniqId(childrenElement, currentElement.hierarchicalId);
@@ -107,15 +105,10 @@ export default class AdminCenterAccountController extends Vue {
               groups.forEach(currentGroup => {
                 addUniqId(currentGroup);
               });
-              const selectedElement = window.localStorage.getItem(
-                "admin.account.groupSelected"
-              );
+              const selectedElement = window.localStorage.getItem("admin.account.groupSelected");
               const restoreExpandedTree = (data, expanded) => {
                 for (const currentData of data) {
-                  if (
-                    expanded["#all"] === true ||
-                    expanded[currentData.hierarchicalId]
-                  ) {
+                  if (expanded["#all"] === true || expanded[currentData.hierarchicalId]) {
                     currentData.expanded = true;
                   }
                   if (currentData.hierarchicalId === selectedElement) {
@@ -126,9 +119,7 @@ export default class AdminCenterAccountController extends Vue {
                   }
                 }
               };
-              let expandedElements = window.localStorage.getItem(
-                "admin.account.expandedElement"
-              );
+              let expandedElements = window.localStorage.getItem("admin.account.expandedElement");
               if (expandedElements) {
                 try {
                   expandedElements = JSON.parse(expandedElements);
@@ -141,9 +132,7 @@ export default class AdminCenterAccountController extends Vue {
                 {
                   accountId: "@users",
                   documentId: "@users",
-                  expanded:
-                    expandedElements &&
-                    (expandedElements["#all"] || expandedElements["@users"]),
+                  expanded: expandedElements && (expandedElements["#all"] || expandedElements["@users"]),
                   hierarchicalId: "@users",
                   items: groups,
                   login: "@users",
@@ -197,7 +186,6 @@ export default class AdminCenterAccountController extends Vue {
   public groupTitle: any = false;
   private smartTriggerActivated: boolean = false;
   private refreshNeeded: boolean = false;
-
   @Watch("refreshNeeded")
   public watchRefreshNeeded(value) {
     if (value) {
@@ -221,9 +209,7 @@ export default class AdminCenterAccountController extends Vue {
   public mounted() {
     this.$refs.accountTreeSplitter.disableEmptyContent();
     this.$nextTick(() => {
-      this.groupId = window.localStorage.getItem(
-        "admin.account.groupSelected.id"
-      );
+      this.groupId = window.localStorage.getItem("admin.account.groupSelected.id");
       this.fetchConfig();
       this.bindTree();
       this.bindSplitter();
@@ -253,10 +239,7 @@ export default class AdminCenterAccountController extends Vue {
     treeview.bind("dataBound", () => {
       const selectedElement = treeview.dataItem(treeview.select());
       if (selectedElement) {
-        if (
-          selectedElement.login &&
-          this.selectedGroupLogin !== selectedElement.documentId
-        ) {
+        if (selectedElement.login && this.selectedGroupLogin !== selectedElement.documentId) {
           this.updateGridData(selectedElement.login);
         }
         if (selectedElement.documentId) {
@@ -315,10 +298,8 @@ export default class AdminCenterAccountController extends Vue {
         );
       };
     };
-    const sizeContentPart =
-      window.localStorage.getItem("admin.account.content") || "200px";
-    const sizeCenterPart =
-      window.localStorage.getItem("admin.account.center") || "200px";
+    const sizeContentPart = window.localStorage.getItem("admin.account.content") || "200px";
+    const sizeCenterPart = window.localStorage.getItem("admin.account.center") || "200px";
     $(this.$refs.gridAndTreePart).kendoSplitter({
       panes: [
         {
@@ -363,9 +344,7 @@ export default class AdminCenterAccountController extends Vue {
   // filter treeview datasource and expand until leaf is reached if a matching item is found
   public filter(dataSource, query) {
     let hasVisibleChildren = false;
-    const data =
-      dataSource instanceof kendo.data.HierarchicalDataSource &&
-      dataSource.data();
+    const data = dataSource instanceof kendo.data.HierarchicalDataSource && dataSource.data();
 
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < data.length; i++) {
@@ -378,8 +357,7 @@ export default class AdminCenterAccountController extends Vue {
 
       const anyVisibleChildren = this.filter(item.children, query);
 
-      hasVisibleChildren =
-        hasVisibleChildren || anyVisibleChildren || itemVisible;
+      hasVisibleChildren = hasVisibleChildren || anyVisibleChildren || itemVisible;
 
       item.hidden = !itemVisible && !anyVisibleChildren;
     }
@@ -395,9 +373,7 @@ export default class AdminCenterAccountController extends Vue {
   }
 
   public showAll(dataSource) {
-    const data =
-      dataSource instanceof kendo.data.HierarchicalDataSource &&
-      dataSource.data();
+    const data = dataSource instanceof kendo.data.HierarchicalDataSource && dataSource.data();
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < data.length; i++) {
       const item = data[i];
@@ -502,14 +478,8 @@ export default class AdminCenterAccountController extends Vue {
   // Update the selected group
   public onGroupSelect(event) {
     const selectedElement = event.sender.dataItem(event.sender.select());
-    window.localStorage.setItem(
-      "admin.account.groupSelected",
-      selectedElement.hierarchicalId
-    );
-    window.localStorage.setItem(
-      "admin.account.groupSelected.id",
-      selectedElement.documentId
-    );
+    window.localStorage.setItem("admin.account.groupSelected", selectedElement.hierarchicalId);
+    window.localStorage.setItem("admin.account.groupSelected.id", selectedElement.documentId);
     this.updateGridData(selectedElement.login);
     this.updateGroupSelected(selectedElement.documentId);
     this.groupTitle = selectedElement.title;
@@ -527,10 +497,7 @@ export default class AdminCenterAccountController extends Vue {
           expandedItemsIds[item.hierarchicalId] = true;
         }
       });
-      window.localStorage.setItem(
-        "admin.account.expandedElement",
-        JSON.stringify(expandedItemsIds)
-      );
+      window.localStorage.setItem("admin.account.expandedElement", JSON.stringify(expandedItemsIds));
     };
     window.setTimeout(saveTreeView, 100);
   }
@@ -553,20 +520,14 @@ export default class AdminCenterAccountController extends Vue {
 
   // Close all the leafs
   public collapseAll() {
-    window.localStorage.setItem(
-      "admin.account.expandedElement",
-      JSON.stringify({ "#all": false })
-    );
+    window.localStorage.setItem("admin.account.expandedElement", JSON.stringify({ "#all": false }));
     const treeview = this.$refs.groupTreeView.kendoWidget();
     treeview.collapse(".k-item");
   }
 
   // Expand all the leafs
   public expandAll() {
-    window.localStorage.setItem(
-      "admin.account.expandedElement",
-      JSON.stringify({ "#all": true })
-    );
+    window.localStorage.setItem("admin.account.expandedElement", JSON.stringify({ "#all": true }));
     const treeview = this.$refs.groupTreeView.kendoWidget();
     treeview.expand(".k-item");
   }

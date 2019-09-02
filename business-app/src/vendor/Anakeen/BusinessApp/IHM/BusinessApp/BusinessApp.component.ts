@@ -24,9 +24,7 @@ interface IBusinessAppCollectionProp {
 export default class BusinessApp extends Vue {
   @Prop({ default: () => [], type: Array })
   public collections!: IBusinessAppCollectionProp[];
-  @Prop({ default: false, type: [Boolean, Object] }) public welcomeTab!:
-    | boolean
-    | object;
+  @Prop({ default: false, type: [Boolean, Object] }) public welcomeTab!: boolean | object;
 
   @Prop({ default: "", type: String }) public selectedElement!: string;
   @Prop({ default: "", type: String }) public collection!: string;
@@ -137,8 +135,7 @@ export default class BusinessApp extends Vue {
 
   protected onTabRemove(tabRemoved) {
     const closeTab = tabIndex => {
-      const nextSelectedTab =
-        this.tabs[tabIndex - 1] || this.tabs[tabIndex + 1];
+      const nextSelectedTab = this.tabs[tabIndex - 1] || this.tabs[tabIndex + 1];
       this.tabs.splice(tabIndex, 1);
       if (this.selectedTab === tabRemoved) {
         if (nextSelectedTab) {
