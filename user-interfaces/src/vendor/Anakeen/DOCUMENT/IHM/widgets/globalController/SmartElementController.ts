@@ -49,6 +49,8 @@ interface IControllerOptions {
   customClientData?: any;
   loading?: boolean;
   notification?: boolean;
+  controllerName?: string;
+  controllerPrefix?: string;
 }
 
 const DEFAULT_OPTIONS: IControllerOptions = {
@@ -125,7 +127,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
 
   constructor(dom: DOMReference, viewData: ViewData, options?: IControllerOptions, globalEventHandler?) {
     super();
-    this.uid = _.uniqueId("smart-element-controller-");
+    this._generateUID(options);
     this._globalEventHandler = globalEventHandler;
     this._options = _.defaults(options, DEFAULT_OPTIONS);
     if (viewData) {
@@ -1194,6 +1196,16 @@ export default class SmartElementController extends AnakeenController.BusEvents.
           }
         })
     );
+  }
+
+  private _generateUID(options?: IControllerOptions) {
+    if (options && options.controllerName) {
+      this.uid = options.controllerName;
+    } else if (options && options.controllerPrefix) {
+      this.uid = _.uniqueId(options.controllerPrefix);
+    } else {
+      this.uid = _.uniqueId("smart-element-controller-");
+    }
   }
 
   private _reinitListeners() {
