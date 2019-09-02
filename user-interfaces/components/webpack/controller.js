@@ -30,7 +30,8 @@ module.exports = () => {
     config,
     typeScriptLoader({
       compilerOptions: {
-        declaration: false
+        declaration: true,
+        declarationDir: path.resolve(__dirname, "../lib"),
       }
     }),
   );

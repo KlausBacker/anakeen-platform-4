@@ -6,6 +6,7 @@ const BASE_PATH = process.env.base
 const OUTPUT_PATH = {
   lib: path.resolve(BASE_PATH, "lib")
 };
+const WebpackCopyPlugin = require("copy-webpack-plugin");
 
 module.exports = () => ({
   output: {
@@ -26,7 +27,8 @@ module.exports = () => ({
           appendTsSuffixTo: [/\.vue$/],
           compilerOptions: {
             declaration: true,
-            declarationDir: path.resolve(__dirname, "../lib")
+            declarationDir: path.resolve(__dirname, "../lib"),
+            experimentalDecorators: true
             //declarationDir: "./lib/types"
           }
         }
@@ -38,5 +40,12 @@ module.exports = () => ({
       importType: "commonjs",
       modulesDir: path.resolve(__dirname, "..", "..", "..", "node_modules")
     })
+  ],
+  plugins: [
+    new WebpackCopyPlugin([{
+      context: path.resolve(__dirname, "../types"),
+      from: "**/*.d.ts",
+      to: path.resolve(__dirname, "../lib/")
+    }])
   ]
 });

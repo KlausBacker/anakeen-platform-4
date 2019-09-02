@@ -12,3 +12,4 @@ components/lib
 components/webpack
 components/public
 ide/
+components/types
