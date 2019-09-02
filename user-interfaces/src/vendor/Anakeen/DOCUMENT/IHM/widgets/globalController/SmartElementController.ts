@@ -1139,6 +1139,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
 
       this._triggerControllerEvent("beforeClose", null, this._model.getModelProperties())
         .then(() => {
+          this._model.trigger("destroy");
           resolve();
         })
         .catch(err => {
