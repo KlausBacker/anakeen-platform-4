@@ -10,7 +10,7 @@
 </template>
 <script lang="ts">
   import Vue from "vue";
-  import AnkAuthent from "../../../../../../components/src/Authent/Authent.vue";
+  import AnkAuthent from "../../../../../../components/src/AnkAuthent/AnkAuthent.vue";
 
   import { Component, Prop } from "vue-property-decorator";
 

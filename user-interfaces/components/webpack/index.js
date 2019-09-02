@@ -1,22 +1,23 @@
 const path = require("path");
 const merge = require("webpack-merge");
-const { vueLoader, typeScriptLoader } = require("@anakeen/webpack-conf/parts");
+const { vueLoader } = require("@anakeen/webpack-conf/parts");
 const controllerConfig = require("./controller");
 
 const baseConfig = require("./base");
 
 const BASE_PATH = path.resolve(__dirname, "../");
 const ENTRIES_PATH = {
-  AnkSEList: path.resolve(BASE_PATH, "src/SEList/seList.vue"),
-  AnkSETabs: path.resolve(BASE_PATH, "src/Tabs/Tabs.vue"),
-  AnkSETab: path.resolve(BASE_PATH, "src/Tabs/SETab/SETab.vue"),
-  AnkTab: path.resolve(BASE_PATH, "src/Tabs/Tab/Tab.vue"),
-  AnkLogout: path.resolve(BASE_PATH, "src/Logout/Logout.vue"),
-  AnkIdentity: path.resolve(BASE_PATH, "src/Identity/Identity.vue"),
-  AnkAuthent: path.resolve(BASE_PATH, "src/Authent/Authent.vue"),
-  AnkSEGrid: path.resolve(BASE_PATH, "src/Grid/Grid.vue"),
-  AnkSmartElement: path.resolve(BASE_PATH, "src/SmartElement/SmartElement.vue"),
-  AnkSmartForm: path.resolve(BASE_PATH, "src/SmartForm/SmartForm.vue")
+  AnkLoading: path.resolve(BASE_PATH, "src/AnkLoading/AnkLoading.vue"),
+  AnkSEList: path.resolve(BASE_PATH, "src/AnkSEList/AnkSEList.vue"),
+  AnkSETabs: path.resolve(BASE_PATH, "src/AnkSETabs/AnkSETabs.vue"),
+  AnkSETab: path.resolve(BASE_PATH, "src/AnkSETabs/AnkSETab/AnkSETab.vue"),
+  AnkTab: path.resolve(BASE_PATH, "src/AnkSETabs/AnkTab/AnkTab.vue"),
+  AnkLogout: path.resolve(BASE_PATH, "src/AnkLogout/AnkLogout.vue"),
+  AnkIdentity: path.resolve(BASE_PATH, "src/AnkIdentity/AnkIdentity.vue"),
+  AnkAuthent: path.resolve(BASE_PATH, "src/AnkAuthent/AnkAuthent.vue"),
+  AnkSEGrid: path.resolve(BASE_PATH, "src/AnkSEGrid/AnkSEGrid.vue"),
+  AnkSmartElement: path.resolve(BASE_PATH, "src/AnkSmartElement/AnkSmartElement.vue"),
+  AnkSmartForm: path.resolve(BASE_PATH, "src/AnkSmartForm/AnkSmartForm.vue"),
 };
 
 const config = {
