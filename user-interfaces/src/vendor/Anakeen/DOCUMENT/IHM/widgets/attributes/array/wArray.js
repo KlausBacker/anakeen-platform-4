@@ -527,6 +527,10 @@
 
       if (this.options.renderOptions.rowDelDisable === true) {
         $content.find(".dcpArray__content__toolCell__delete").hide();
+        if (this.options.renderOptions.rowAddDisable === true) {
+          // Delete row selector also
+          $content.find(".dcpArray__content__toolCell__check").hide();
+        }
       }
       if (this.options.renderOptions.rowMoveDisable === true) {
         $content.find(".dcpArray__content__toolCell__dragDrop").hide();
