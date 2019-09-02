@@ -1,7 +1,10 @@
 /* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
+
 /* tslint:disable:object-literal-sort-keys no-console */
 import AnkSplitter from "@anakeen/internal-components/lib/Splitter";
-import AnkSmartForm from "@anakeen/user-interfaces/components/lib/AnkSmartForm";
+import AnkSmartForm, { ISmartFormConfiguration } from "../../../../../../components/lib/AnkSmartForm";
+
 import * as jsonSchema from "./SmartForm.schema.json";
 import SmartFormExamples from "./TestExamplesSmartForm.vue";
 
@@ -21,7 +24,7 @@ import { Component, Vue, Watch } from "vue-property-decorator";
   }
 })
 export default class TestSmartFormController extends Vue {
-  public json: object = {};
+  public json: ISmartFormConfiguration = {};
   public localIndex: number = -1;
   public hasWarning: boolean = false;
   public hasError: boolean = false;
@@ -41,7 +44,7 @@ export default class TestSmartFormController extends Vue {
   };
 
   public $refs!: {
-    smartFormRef: any;
+    smartFormRef: AnkSmartForm;
     smartFormSplitter: any;
     jsonEditorRef: any;
     smartExampleRef: any;
