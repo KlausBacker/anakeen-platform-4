@@ -288,4 +288,35 @@ class SearchElements
     {
         return $this->searchData->getNextDoc();
     }
+    /**
+     * return where condition like : foo in ('x','y','z')
+     *
+     * @static
+     *
+     * @param array  $values  set of values
+     * @param string $column  database column name
+     * @param bool   $integer set to true if database column is numeric type
+     *
+     * @return string
+     */
+    public static function sqlcond(array $values, $column, $integer = false)
+    {
+        $sql_cond = "true";
+        if (count($values) > 0) {
+            if ($integer) { // for integer type
+                $sql_cond = "$column in (";
+                $sql_cond .= implode(",", $values);
+                $sql_cond .= ")";
+            } else { // for text type
+                foreach ($values as & $v) {
+                    $v = pg_escape_string($v);
+                }
+                $sql_cond = "$column in ('";
+                $sql_cond .= implode("','", $values);
+                $sql_cond .= "')";
+            }
+        }
+
+        return $sql_cond;
+    }
 }

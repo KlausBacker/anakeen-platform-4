@@ -135,4 +135,30 @@ class ElementList implements \Iterator, \Countable
     {
         $this->hookFunction = $hookFunction;
     }
+    /**
+     * set element identifiers to be used in iterator
+     *
+     * @api Set smart element identifiers to be used in iterator
+     * @param int[] $ids smart element identifiers
+     * @param bool $useInitid if true identifier must ne initid else must be latest ids
+     */
+    public function addElementIdentifiers(array $ids, $useInitid = true)
+    {
+        $this->search = new SearchElements();
+//        $this->search->setObjectReturn();
+        $this->search->excludeConfidential();
+        foreach ($ids as $k => $v) {
+            if ((!$v) || (!is_numeric($v))) {
+                unset($ids[$k]);
+            }
+        }
+        $ids = array_unique($ids);
+        $sid = $useInitid ? "initid" : "id";
+        if (count($ids) == 0) {
+            $this->search->addFilter("false");
+        } else {
+            $this->search->addFilter($this->search->sqlCond($ids, $sid, true));
+        }
+    }
+
 }
