@@ -280,10 +280,11 @@
                 }
               });
 
+              //Add setValue values
+
+              items = items.concat(currentWidget.additionnalValue);
+
               //Suppress multiple items
-              if (currentWidget.additionnalValue) {
-                items.push(currentWidget.additionnalValue);
-              }
               return _.uniq(items, false, function wDocidDataUniq(currentItem) {
                 return currentItem.docId || currentItem.message;
               });
@@ -603,7 +604,7 @@
     setValue: function wDocidSetValue(value, event) {
       var newValues;
       var currentWidget = this;
-      currentWidget.additionnalValue = false;
+      currentWidget.additionnalValue = [];
       this._super(value, event);
       if (this.getMode() === "write") {
         if (
@@ -677,6 +678,14 @@
               kendoSelect.dataSource.add(info);
             }
           }
+        });
+
+        //Add currentValue to the store
+        currentWidget.additionnalValue = _.map(value, function(currentValue) {
+          return {
+            docTitle: currentValue.displayValue,
+            docId: currentValue.value
+          };
         });
 
         if (!this._isEqual(originalValues, newValues)) {
