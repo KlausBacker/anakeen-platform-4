@@ -160,5 +160,4 @@ class ElementList implements \Iterator, \Countable
             $this->search->addFilter($this->search->sqlCond($ids, $sid, true));
         }
     }
-
 }
