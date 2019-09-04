@@ -2,11 +2,15 @@
   .dcpAttribute__content.dcpAttribute__content--htmltext {
     .cke_top {
       padding: 0;
-      height: 27px !important;
     }
 
     .k-autocomplete.form-control {
       height:auto;
     }
   }
+}
+
+.dcpDocument--view .dcpAttribute__content--htmltext  .dcpAttribute__value--read {
+  /* No bold for htmltext */
+  font-family: inherit;
 }

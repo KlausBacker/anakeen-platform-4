@@ -1,13 +1,12 @@
 .dcpAttribute__content--htmltext .cke {
   width: 100%;
-  border:none;
+  border: none;
 }
-
 
 .dcpAttribute__content--htmltext .cke_inner {
   border-radius: $border-radius-inset;
   .cke_top {
-     border-radius: $border-radius-inset $border-radius-inset 0 0;
+    border-radius: $border-radius-inset $border-radius-inset 0 0;
   }
 }
 .dcpAttribute__content--htmltext .cke.k-state-focused {
@@ -18,37 +17,74 @@
   border-color: $error transparent $error $error;
 }
 
-
 .dcpAttribute__content.dcpAttribute__content--htmltext .input-group-addon {
   .dcpAttribute__content__button--delete {
-    height:3rem;
-    left: -4rem;
+    height: 2rem;
   }
 }
-
 
 .dcpAttribute__content--htmltext div[contenteditable="true"] {
-  overflow:auto;
+  overflow: auto;
   height: 100%;
   min-height: 3em;
-  display:block;
-  border:none;
+  display: block;
+  border: none;
 }
 
-.cke.cke_float {
+.dcpAttribute__content--htmltext {
 
-  border-top: solid 0.2rem transparent;
-  border-bottom: solid 0.2rem transparent;
-  //border-width: 0.2rem;
-  //border-style:solid;
+  .cke_wysiwyg_div {
+    padding: 0.5rem;
 
-  .cke_inner {
-    border: $ank-ui-doc-edit-attribute-hover-border;
-    box-shadow: $ank-ui-doc-edit-attribute-focus-shadow;
-    border-radius:$ank-ui-doc-edit-attribute-border-radius;
   }
-  .cke_top {
-    border:0;
-    background: transparent;
+
+
+  a.cke_toolbox_collapser {
+    float: none;
+    height: 26px;
+    flex-basis: 1rem;
+    min-width: 1rem;
+    margin:0;
+    border-style: none dotted none none;
+    vertical-align: middle;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .cke_toolbox_main {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .cke_toolbox {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    margin-bottom: 0;
+  }
+
+  .cke_toolgroup {
+    margin: 1px 2px 0 0;
+  }
+  .cke_combo {
+    margin-bottom: 0;
+  }
+  .cke.cke_float {
+    border-top: solid 0.2rem transparent;
+    border-bottom: solid 0.2rem transparent;
+    //border-width: 0.2rem;
+    //border-style:solid;
+
+    .cke_inner {
+      border: $ank-ui-doc-edit-attribute-hover-border;
+      box-shadow: $ank-ui-doc-edit-attribute-focus-shadow;
+      border-radius: $ank-ui-doc-edit-attribute-border-radius;
+    }
+    .cke_top {
+      border: 0;
+      background: transparent;
+    }
   }
 }
