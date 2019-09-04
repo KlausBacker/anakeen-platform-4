@@ -580,17 +580,9 @@ define([
       var success = true,
         currentDocument = this,
         errorMessage = [],
-        event = { prevent: false },
         templateMessage,
         error;
       try {
-        this.trigger("validate", event);
-        if (event.prevent) {
-          return {
-            title: "Unable to save"
-          };
-        }
-
         this.get("attributes").each(function mDocumentvalidateClearErrorEach(currentAttribute) {
           currentAttribute.setErrorMessage(null);
         });
@@ -1399,11 +1391,16 @@ define([
               type: "info"
             });
             currentModel.once("uploadFileFinished", function mDocumentsetValuesListenUploadUntilTheEnd(/*event*/) {
-              currentModel.trigger("displayLoading", { isSaving: true });
+
+              if (!this._formConfiguration) {
+                currentModel.trigger("displayLoading", { isSaving: true });
+              }
               currentModel.save(attributes, saveCallback);
             });
           } else {
-            this.trigger("displayLoading", { isSaving: true });
+            if (!this._formConfiguration) {
+              this.trigger("displayLoading", { isSaving: true });
+            }
             currentModel.save(attributes, saveCallback);
           }
         },
