@@ -1391,14 +1391,13 @@ define([
               type: "info"
             });
             currentModel.once("uploadFileFinished", function mDocumentsetValuesListenUploadUntilTheEnd(/*event*/) {
-
-              if (!this._formConfiguration) {
+              if (!currentModel._formConfiguration) {
                 currentModel.trigger("displayLoading", { isSaving: true });
               }
               currentModel.save(attributes, saveCallback);
             });
           } else {
-            if (!this._formConfiguration) {
+            if (!currentModel._formConfiguration) {
               this.trigger("displayLoading", { isSaving: true });
             }
             currentModel.save(attributes, saveCallback);
