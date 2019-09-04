@@ -152,11 +152,6 @@
             $button.html(
               buttonConfig.renderHtmlContent + buttonConfig.htmlEditContent
             );
-            // @TODO Find an efficient way to verify edit access of target
-            /*
-                     if (!currentValue.value) {
-                     $button.prop("disabled", true);
-                     }*/
           } else {
             // also when mutiple always create
             $button.html(
@@ -283,6 +278,13 @@
               //Add setValue values
 
               items = items.concat(currentWidget.additionnalValue);
+
+              //Suppress undefined value and null value
+              items = _.filter(items, function(currentItem) {
+                return (
+                  currentItem && (currentItem.docId || currentItem.message)
+                );
+              });
 
               //Suppress multiple items
               return _.uniq(items, false, function wDocidDataUniq(currentItem) {
