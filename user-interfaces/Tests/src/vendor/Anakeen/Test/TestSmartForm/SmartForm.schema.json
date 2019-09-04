@@ -54,7 +54,7 @@
           "title": "The Name Schema",
           "default": "",
           "examples": ["my_title"],
-          "pattern": "^(.*)$"
+          "pattern": "^[a-z_][a-z0-9_]*$"
         },
         "type": {
           "type": "string",
@@ -140,6 +140,113 @@
         }
       },
       "required": ["name", "type"]
+    },
+    "menuItem" : {
+      "$id": "#/properties/menu/items",
+      "type": ["object"],
+      "additionalProperties": false,
+      "title": "The Items Schema",
+      "required": ["type"],
+      "properties": {
+        "beforeContent": {
+          "$id": "#/properties/menu/items/properties/beforeContent",
+          "type": "string",
+          "title": "The Beforecontent Schema",
+          "default": "",
+          "examples": ["<div class=\"fa fa-superpowers\" />"],
+          "pattern": "^(.*)$"
+        },
+        "htmlAttributes": {
+          "$id": "#/properties/menu/items/properties/htmlAttributes",
+          "type": "object",
+          "title": "The Htmlattributes Schema",
+          "required": ["class"],
+          "properties": {
+            "class": {
+              "$id": "#/properties/menu/items/properties/htmlAttributes/properties/class",
+              "type": "string",
+              "title": "The Class Schema",
+              "default": "",
+              "examples": ["menu--left"],
+              "pattern": "^(.*)$"
+            }
+          }
+        },
+        "id": {
+          "$id": "#/properties/menu/items/properties/id",
+          "type": "string",
+          "title": "The Id Schema",
+          "default": "",
+          "examples": ["special"],
+          "pattern": "^(.*)$"
+        },
+        "label": {
+          "$id": "#/properties/menu/items/properties/label",
+          "type": "string",
+          "title": "The Label Schema",
+          "default": "",
+          "examples": ["Special"],
+          "pattern": "^(.*)$"
+        },
+        "type": {
+          "$id": "#/properties/menu/items/properties/type",
+          "type": "string",
+          "enum": ["itemMenu", "listMenu", "separatorMenu"],
+          "title": "The Type Schema",
+          "default": "",
+          "examples": ["itemMenu"],
+          "pattern": "^(.*)$"
+        },
+        "url": {
+          "$id": "#/properties/menu/items/properties/url",
+          "type": "string",
+          "title": "The Url Schema",
+          "default": "",
+          "examples": ["#action/superpower"],
+          "pattern": "^(.*)$"
+        },
+        "iconUrl": {
+          "type": "string"
+        },
+        "htmlLabel": {
+          "type": "string"
+        },
+        "tooltipHtml": {
+          "title": "If tooltipLabel is an html fragment",
+          "type": "boolean"
+        },
+        "tooltipPlacement": {
+          "type": "string",
+          "enum" : ["top","right","left", "bottom"]
+        },
+        "tooltipLabel": {
+          "type": "string"
+        },
+        "important": {
+          "type": "boolean"
+        },
+        "visibility": {
+          "type": "string",
+          "enum" : ["visible", "hidden" , "disabled"]
+        },
+        "target": {
+          "type": "string"
+        },
+        "targetOptions": {
+          "type": "object"
+        },
+        "confirmationText": {
+          "type": "string"
+        },
+        "confirmationOptions": {
+          "type": "object"
+        },"content": {
+          "$id": "#/properties/structure/items/properties/content",
+          "type": "array",
+          "title": "The Content Schema",
+          "items": {"$ref": "#/definitions/menuItem"}
+          }
+      }
     }
   },
   "$id": "http://example.com/root.json",
@@ -184,70 +291,8 @@
       "$id": "#/properties/menu",
       "type": "array",
       "title": "The Menu Schema",
-      "items": {
-        "$id": "#/properties/menu/items",
-        "type": "object",
-        "title": "The Items Schema",
-        "required": ["type"],
-        "properties": {
-          "beforeContent": {
-            "$id": "#/properties/menu/items/properties/beforeContent",
-            "type": "string",
-            "title": "The Beforecontent Schema",
-            "default": "",
-            "examples": ["<div class=\"fa fa-superpowers\" />"],
-            "pattern": "^(.*)$"
-          },
-          "htmlAttributes": {
-            "$id": "#/properties/menu/items/properties/htmlAttributes",
-            "type": "object",
-            "title": "The Htmlattributes Schema",
-            "required": ["class"],
-            "properties": {
-              "class": {
-                "$id": "#/properties/menu/items/properties/htmlAttributes/properties/class",
-                "type": "string",
-                "title": "The Class Schema",
-                "default": "",
-                "examples": ["menu--left"],
-                "pattern": "^(.*)$"
-              }
-            }
-          },
-          "id": {
-            "$id": "#/properties/menu/items/properties/id",
-            "type": "string",
-            "title": "The Id Schema",
-            "default": "",
-            "examples": ["special"],
-            "pattern": "^(.*)$"
-          },
-          "label": {
-            "$id": "#/properties/menu/items/properties/label",
-            "type": "string",
-            "title": "The Label Schema",
-            "default": "",
-            "examples": ["Special"],
-            "pattern": "^(.*)$"
-          },
-          "type": {
-            "$id": "#/properties/menu/items/properties/type",
-            "type": "string",
-            "title": "The Type Schema",
-            "default": "",
-            "examples": ["itemMenu"],
-            "pattern": "^(.*)$"
-          },
-          "url": {
-            "$id": "#/properties/menu/items/properties/url",
-            "type": "string",
-            "title": "The Url Schema",
-            "default": "",
-            "examples": ["#action/superpower"],
-            "pattern": "^(.*)$"
-          }
-        }
-      }
+      "additionalProperties": false,
+      "items": { "$ref": "#/definitions/menuItem" }
     },
     "renderOptions": {
       "$id": "#/properties/renderOptions",
@@ -286,10 +331,14 @@
               "type": "object",
               "title": "The description Schema",
               "default": "",
-              "examples": [{"collapsed": false,
-                "htmlContent": "<p>Décrire ici votre requête</p>",
-                "htmlTitle": "<h3>Objet de la demande</h3>",
-                "position": "top"}],
+              "examples": [
+                {
+                  "collapsed": false,
+                  "htmlContent": "<p>Décrire ici votre requête</p>",
+                  "htmlTitle": "<h3>Objet de la demande</h3>",
+                  "position": "top"
+                }
+              ],
               "pattern": "^(.*)$"
             }
           }
