@@ -1,29 +1,35 @@
 /* eslint-disable no-unused-vars */
-/* tslint:disable:variable-name */
+/* tslint:disable:variable-name max-classes-per-file */
 import * as $ from "jquery";
 import SmartElementController from "./SmartElementController";
 import { AnakeenController } from "./types/ControllerTypes";
 import DOMReference = AnakeenController.Types.DOMReference;
 import ViewData = AnakeenController.Types.IViewData;
 import ControllerUniqueID = AnakeenController.Types.ControllerUID;
+import ControllerOptions = AnakeenController.Types.IControllerOptions;
 
 interface IControllersMap {
   [key: string]: SmartElementController;
 }
 class ControllerUIDError extends Error {}
+class ControllerNotFoundError extends Error {}
 
-// tslint:disable-next-line:max-classes-per-file
 export default class ControllerDispatcher extends AnakeenController.BusEvents.Listenable {
   protected _controllers: IControllersMap = {};
 
-  public dispatch(scopeId: ControllerUniqueID, action: string, ...args: any[]) {
-    const controller = this.getController(scopeId);
-    if (controller) {
-      if (typeof controller[action] === "function") {
-        return controller[action].call(controller[action], ...args);
-      }
-    }
-    return null;
+  public dispatch(action: string, check: (controller: SmartElementController) => boolean = () => true, ...args: any[]) {
+    const result = [];
+    Object.keys(this._controllers)
+      .filter(uid => typeof check !== "function" || check(this._controllers[uid]))
+      .forEach(uid => {
+        const controller = this._controllers[uid];
+        if (typeof controller[action] === "function") {
+          result.push(controller[action].call(controller, ...args));
+        } else {
+          result.push(null);
+        }
+      });
+    return result;
   }
 
   /**
@@ -33,7 +39,7 @@ export default class ControllerDispatcher extends AnakeenController.BusEvents.Li
    * @param options
    * @throws ControllerUIDError if the controller name given is already used
    */
-  public initController(dom: DOMReference, viewData: ViewData, options?) {
+  public initController(dom: DOMReference, viewData: ViewData, options?: ControllerOptions) {
     const _dispatcher = this;
     const globalEventHandler = function(eventType, ...args) {
       // @ts-ignore
@@ -55,18 +61,23 @@ export default class ControllerDispatcher extends AnakeenController.BusEvents.Li
     delete this._controllers[controllerUID];
   }
 
-  public getController(scopeId: ControllerUniqueID | DOMReference) {
+  public getController(scopeId: ControllerUniqueID | DOMReference): SmartElementController {
+    let controller;
     if (typeof scopeId === "string") {
-      return this._controllers[scopeId];
+      controller = this._controllers[scopeId];
     } else {
       const element = $(scopeId);
       if (element.length) {
-        const controllerUid = element.attr("data-controller");
+        const controllerUid = element.closest("[data-controller]").attr("data-controller");
         if (typeof controllerUid === "string") {
-          return this._controllers[controllerUid];
+          controller = this._controllers[controllerUid];
         }
       }
     }
+    if (!controller) {
+      throw new ControllerNotFoundError(`The controller with the uid "${scopeId}" does not exist`);
+    }
+    return controller;
   }
 
   public getControllers(asObject?: boolean): SmartElementController[] | IControllersMap {
