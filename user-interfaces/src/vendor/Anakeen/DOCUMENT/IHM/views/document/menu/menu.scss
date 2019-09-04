@@ -78,7 +78,7 @@ $menu-before-width : 12px;
 }
 
 .menu--fixed {
-  position: fixed;
+  position: sticky;
   top: 0;
   width: 100%;
   z-index: 10;
