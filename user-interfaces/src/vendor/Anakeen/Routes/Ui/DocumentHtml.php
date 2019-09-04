@@ -156,9 +156,11 @@ class DocumentHtml
         $data["JS_DEPS"] = $js;
 
         $data["JS"] = [
+            ["key" => "coreController", "path" => $render->getControllerJs()],
             ["key" => "core", "path" => $render->getCoreJs()]
         ];
         $data["JS_LEGACY"] = [
+            ["key" => "coreController", "path" => $render->getControllerJs(true)],
             ["key" => "core", "path" => $render->getCoreJs(true)]
         ];
 

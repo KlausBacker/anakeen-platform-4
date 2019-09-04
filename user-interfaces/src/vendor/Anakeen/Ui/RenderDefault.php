@@ -41,15 +41,14 @@ class RenderDefault implements IRenderConfig
         return [];
     }
 
-    public function getJsDeps()
+    public function getJsDeps($legacy = false)
     {
         $pubExternalPath = "/uiAssets/externals";
         $pubInternalPath = "/uiAssets/anakeen";
         $version = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         $jsRef = [
             "polyfill" => UIGetAssetPath::getJsPolyfill(),
-            "kendoui" => UIGetAssetPath::getJSKendoPath(),
-            "smartElementController" => UIGetAssetPath::getJSSmartElementControllerPath()
+            "kendoui" => UIGetAssetPath::getJSKendoPath()
         ];
 
         if (ContextManager::getParameterValue("Ui", "ACTIVATE_LOGGING") === "TRUE") {
@@ -59,6 +58,11 @@ class RenderDefault implements IRenderConfig
             ]);
         }
         return $jsRef;
+    }
+
+    public function getControllerJs($legacy = false)
+    {
+        return UIGetAssetPath::getJSSmartElementControllerPath($legacy);
     }
 
     public function getCoreJs($legacy = false)

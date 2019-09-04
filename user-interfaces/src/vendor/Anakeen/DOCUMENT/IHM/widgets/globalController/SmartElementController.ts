@@ -40,20 +40,13 @@ import ViewData = AnakeenController.Types.IViewData;
 import DOMReference = AnakeenController.Types.DOMReference;
 import ListenableEventCallable = AnakeenController.BusEvents.ListenableEventCallable;
 import ListenableEventOptions = AnakeenController.BusEvents.IListenableEventOptions;
+import IControllerOptions = AnakeenController.Types.IControllerOptions;
 import * as $ from "jquery";
 import * as Mustache from "mustache";
 import * as _ from "underscore";
 
-interface IControllerOptions {
-  router?: boolean | { noRouter: boolean };
-  customClientData?: any;
-  loading?: boolean;
-  notification?: boolean;
-  controllerName?: string;
-  controllerPrefix?: string;
-}
-
 const DEFAULT_OPTIONS: IControllerOptions = {
+  controllerPrefix: "smart-element-controller-",
   customClientData: {},
   loading: true,
   notification: true,
@@ -118,8 +111,6 @@ export default class SmartElementController extends AnakeenController.BusEvents.
   };
   protected _requestData: ViewData;
   protected _options: IControllerOptions = {};
-  protected _constraintList = {};
-  protected _activatedConstraint: any = {};
   protected $loading: JQuery & { dcpLoading(...args): JQuery };
   protected $notification: JQuery & { dcpNotification(...args): JQuery };
   protected _globalEventHandler: (...args: any[]) => any;
@@ -127,13 +118,16 @@ export default class SmartElementController extends AnakeenController.BusEvents.
 
   constructor(dom: DOMReference, viewData: ViewData, options?: IControllerOptions, globalEventHandler?) {
     super();
-    this._generateUID(options);
-    this._globalEventHandler = globalEventHandler;
     this._options = _.defaults(options, DEFAULT_OPTIONS);
+    this._generateUID(this._options);
+    this._globalEventHandler = globalEventHandler;
     if (viewData) {
       this._internalViewData.initid = viewData.initid;
       this._internalViewData.viewId = viewData.viewId;
       this._internalViewData.revision = viewData.revision;
+      if (viewData.customClientData && Object.keys(viewData.customClientData).length) {
+        this._options.customClientData = viewData.customClientData;
+      }
       this._requestData = _.defaults(Object.assign({}, this._internalViewData), {
         initid: 0,
         revision: -1,
@@ -764,66 +758,14 @@ export default class SmartElementController extends AnakeenController.BusEvents.
   }
 
   /**
-   * Add a constraint to the widget
-   *
-   * @param options object { "name" : string, "documentCheck": function}
-   * @param callback function callback called when the event is triggered
-   * @returns {*}
-   */
-  // public addConstraint(options, callback) {
-  //   let currentConstraint;
-  //   const currentWidget = this;
-  //   let uniqueName;
-  //   if (_.isUndefined(callback) && _.isFunction(options)) {
-  //     callback = options;
-  //     options = {};
-  //   }
-  //   if (_.isObject(options) && _.isUndefined(callback)) {
-  //     if (!options.name) {
-  //       throw new Error(
-  //         "When a constraint is initiated with a single object, this object needs to have the name property " +
-  //           JSON.stringify(options)
-  //       );
-  //     }
-  //   } else {
-  //     _.defaults(options, {
-  //       check: () => true,
-  //       constraintCheck: callback,
-  //       externalConstraint: false,
-  //       name: _.uniqueId("constraint"),
-  //       once: false,
-  //       smartFieldCheck: () => true
-  //     });
-  //   }
-  //   currentConstraint = options;
-  //   if (!_.isFunction(currentConstraint.constraintCheck)) {
-  //     throw new Error("An event need a callback");
-  //   }
-  //   // If constraint is once : wrap it an callback that execute callback and delete it
-  //   if (currentConstraint.once === true) {
-  //     currentConstraint.eventCallback = _.wrap(currentConstraint.constraintCheck, innerCallback => {
-  //       try {
-  //         // @ts-ignore
-  //         innerCallback.apply(this, _.rest(arguments));
-  //       } catch (e) {
-  //         console.error(e);
-  //       }
-  //       currentWidget.removeConstraint(currentConstraint.name, currentConstraint.externalConstraint);
-  //     });
-  //   }
-  //   uniqueName = (currentConstraint.externalConstraint ? "external_" : "internal_") + currentConstraint.name;
-  //   this._constraintList[uniqueName] = currentConstraint;
-  //   this._initActivatedConstraint();
-  //   return currentConstraint.name;
-  // }
-
-  /**
    * List the constraint of the widget
    *
    * @returns {*}
    */
   public listConstraints() {
-    return this._constraintList;
+    let constraints = this._registeredListeners.getEventsList().smartFieldConstraintCheck || [];
+    constraints = constraints.concat(this.getEventsList().smartFieldConstraintCheck || []);
+    return constraints;
   }
 
   /**
@@ -834,31 +776,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
    * @returns {*}
    */
   public removeConstraint(constraintName, allKind) {
-    const removed = [];
-    let newConstraintList;
-    let constraintList;
-    const testRegExp = new RegExp("\\" + constraintName + "$");
-    // jscs:disable disallowImplicitTypeConversion
-    allKind = !!allKind;
-    // jscs:enable disallowImplicitTypeConversion
-    newConstraintList = _.filter(this.listConstraints(), (currentConstraint: any) => {
-      if (
-        (allKind || !currentConstraint.externalConstraint) &&
-        (currentConstraint.name === constraintName || testRegExp.test(currentConstraint.name))
-      ) {
-        removed.push(currentConstraint);
-        return false;
-      }
-      return true;
-    });
-    constraintList = {};
-    _.each(newConstraintList, (currentConstraint: any) => {
-      const uniqueName = (currentConstraint.externalConstraint ? "external_" : "internal_") + currentConstraint.name;
-      constraintList[uniqueName] = currentConstraint;
-    });
-    this._constraintList = constraintList;
-    this._initActivatedConstraint();
-    return removed;
+    return this.removeEventListener(constraintName, allKind);
   }
 
   /**
@@ -2172,21 +2090,6 @@ export default class SmartElementController extends AnakeenController.BusEvents.
         })
         .get("attributeValue")
     );
-  }
-
-  /**
-   * Activate constraint on the current document
-   * Used on the fetch of a new document
-   *
-   */
-  private _initActivatedConstraint() {
-    const currentDocumentProperties = this.getProperties();
-    this._activatedConstraint = {};
-    _.each(this.listConstraints(), (currentConstraint: any) => {
-      if (currentConstraint.check.call(this, currentDocumentProperties)) {
-        this._activatedConstraint[currentConstraint.name] = currentConstraint;
-      }
-    });
   }
 
   /**

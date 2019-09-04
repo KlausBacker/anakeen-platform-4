@@ -284,8 +284,6 @@ define([
             if (!$mainElement.data("isFixed")) {
               $mainElement.data("isFixed", "1");
               $mainElement.parent().addClass("menu--fixed");
-              $mainElement.parent().css("top", wrapper.offset().top);
-              $mainElement.parent().css("width", wrapper.prop("clientWidth"));
               $(window.document).trigger("redrawErrorMessages");
             }
           } else {

@@ -21,19 +21,18 @@ export namespace AnakeenController {
       initid: string | number;
       viewId: string;
       revision: number;
+      customClientData?: any;
     }
 
-    export type ControllerOptions = IViewData & {
-      eventPrefix: string;
-      router: { noRouter: boolean } | false;
-      constraintList: any;
-      eventListener: any;
-      activatedConstraint: {};
-      activatedEventListener: {};
-      _initializedModel: boolean;
-      _initializedView: boolean;
-      customClientData: {};
-    };
+    export interface IControllerOptions {
+      router?: boolean | { noRouter: boolean };
+      customClientData?: any;
+      loading?: boolean;
+      notification?: boolean;
+      controllerName?: string;
+      controllerPrefix?: string;
+      globalHandler?: (...args: any[]) => void;
+    }
 
     export type SmartElementProperties = IViewData & {
       renderMode: "create" | "edit" | "view";
@@ -142,6 +141,7 @@ export namespace AnakeenController {
   }
 
   export namespace SmartElement {
+    import IViewData = AnakeenController.Types.IViewData;
     export const EVENTS_LIST = [
       "beforeRender",
       "ready",
@@ -195,14 +195,14 @@ export namespace AnakeenController {
        * @param values object {"initid" : int, "revision" : int, "viewId" : string, "customClientData" : mixed}
        * @param options object {"success": fct, "error", fct}
        */
-      reinitSmartElement(values, options?);
+      reinitSmartElement(values: IViewData, options?);
 
       /**
        * Fetch a new smartElement
        * @param values object {"initid" : int, "revision" : int, "viewId" : string, "customClientData" : mixed}
        * @param options object {"success": fct, "error", fct}
        */
-      fetchSmartElement(values, options);
+      fetchSmartElement(values: IViewData, options);
 
       /**
        * Save the current smartElement
@@ -424,7 +424,7 @@ export namespace AnakeenController {
        * @param callback function callback called when the event is triggered
        * @returns {*|Window.options.name}
        */
-      addEventListener(eventType, options, callback);
+      addEventListener(eventType: string, options, callback);
 
       /**
        * List of the events of the current widget

@@ -5,6 +5,7 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import SmartElementController from "../../../src/vendor/Anakeen/DOCUMENT/IHM/widgets/globalController/SmartElementController";
 import { AnakeenController } from "../../../src/vendor/Anakeen/DOCUMENT/IHM/widgets/globalController/types/ControllerTypes";
+import AnakeenGlobalController from "../AnkController";
 import VueSetup from "../setup.js";
 import { ISmartElementValue } from "./ISmartElementValue";
 import EVENTS_LIST = AnakeenController.SmartElement.EVENTS_LIST;
@@ -12,7 +13,7 @@ Vue.use(VueSetup);
 @Component({
   name: "ank-smart-element"
 })
-export default class AnkSmartElement extends Vue {
+export default class AnkSmartElement extends Vue implements AnakeenController.SmartElement.ISmartElementAPI {
   get initialData() {
     const data: ISmartElementValue = {
       noRouter: !this.browserHistory
@@ -64,7 +65,12 @@ export default class AnkSmartElement extends Vue {
   }
 
   public addEventListener(eventType, options, callback?) {
-    return this.smartElementWidget.addEventListener(eventType, options, callback);
+    const operation = () => this.smartElementWidget.addEventListener(eventType, options, callback);
+    if (this.isLoaded()) {
+      operation();
+    } else {
+      this.$once("smartElementLoaded", operation);
+    }
   }
 
   public fetchSmartElement(value, options?) {
@@ -198,7 +204,12 @@ export default class AnkSmartElement extends Vue {
   }
 
   public addConstraint(options, callback) {
-    return this.smartElementWidget.addConstraint(options, callback);
+    const operation = () => this.smartElementWidget.addConstraint(options, callback);
+    if (this.isLoaded()) {
+      operation();
+    } else {
+      this.$once("smartElementLoaded", operation);
+    }
   }
 
   public listConstraints() {
@@ -249,21 +260,37 @@ export default class AnkSmartElement extends Vue {
     return this.smartElementWidget.injectCSS(cssToInject);
   }
 
+  public selectTab(tabId: any) {
+    return this.smartElementWidget.selectTab(tabId);
+  }
+
+  public drawTab(tabId: any) {
+    return this.smartElementWidget.drawTab(tabId);
+  }
+
+  public setCustomClientData(smartElementCheck: any, value: any) {
+    return this.smartElementWidget.setCustomClientData(smartElementCheck, value);
+  }
+
+  public setSmartFieldErrorMessage(smartFieldId: any, message: any, index: any) {
+    return this.smartElementWidget.setSmartFieldErrorMessage(smartFieldId, message, index);
+  }
+
+  public cleanSmartFieldErrorMessage(smartFieldId: any, index: any) {
+    return this.smartElementWidget.cleanSmartFieldErrorMessage(smartFieldId, index);
+  }
+
   protected _initController(viewData, options = {}) {
-    if (window.ank && window.ank.smartElement && window.ank.smartElement.globalController) {
-      const scopeId = window.ank.smartElement.globalController.addSmartElement(
-        // @ts-ignore
-        this.$refs.ankSEWrapper,
-        viewData,
-        options
-      );
-      this.smartElementWidget = window.ank.smartElement.globalController.getScopedController(
-        scopeId
-      ) as SmartElementController;
-      this.listenEvents();
-      this.$emit("smartElementLoaded");
-      this.$emit("documentLoaded");
-    }
+    const scopeId = AnakeenGlobalController.addSmartElement(
+      // @ts-ignore
+      this.$refs.ankSEWrapper,
+      viewData,
+      options
+    );
+    this.smartElementWidget = AnakeenGlobalController.getScopedController(scopeId) as SmartElementController;
+    this.listenEvents();
+    this.$emit("smartElementLoaded");
+    this.$emit("documentLoaded");
   }
 
   protected listenEvents() {

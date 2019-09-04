@@ -1,19 +1,20 @@
 /* eslint-disable no-unused-vars */
-/* tslint:disable:variable-name */
+/* tslint:disable:variable-name ordered-imports */
+import { AnakeenController } from "./types/ControllerTypes";
 import DOMReference = AnakeenController.Types.DOMReference;
+import ControllerUID = AnakeenController.Types.ControllerUID;
+import ListenableEventCallable = AnakeenController.BusEvents.ListenableEventCallable;
+import ListenableEvent = AnakeenController.BusEvents.ListenableEvent;
+import EVENTS_LIST = AnakeenController.SmartElement.EVENTS_LIST;
+import ControllerOptions = AnakeenController.Types.IControllerOptions;
 // @ts-ignore
 import moduleTemplate from "!!raw-loader!./utils/templates/module.js.mustache";
-import ControllerUID = AnakeenController.Types.ControllerUID;
 import * as $ from "jquery";
 import * as Mustache from "mustache";
 import * as _ from "underscore";
 import ControllerDispatcher from "./ControllerDispatcher";
 import SmartElementController from "./SmartElementController";
-import { AnakeenController } from "./types/ControllerTypes";
 import load from "./utils/ScriptLoader.js";
-import ListenableEventCallable = AnakeenController.BusEvents.ListenableEventCallable;
-import ListenableEvent = AnakeenController.BusEvents.ListenableEvent;
-import EVENTS_LIST = AnakeenController.SmartElement.EVENTS_LIST;
 
 interface IAsset {
   key: string;
@@ -132,6 +133,8 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
    * Get a scoped controller. If no argument, return all controllers.
    *
    * @param scopeId
+   * @return {SmartElementController} controller
+   * @throws {Error} if controller not found
    */
   public getScopedController(
     scopeId?: ControllerUID | DOMReference
@@ -139,7 +142,12 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
     if (scopeId === undefined) {
       return this.getControllers();
     }
-    return this._dispatcher.getController(scopeId);
+    try {
+      return this._dispatcher.getController(scopeId);
+    } catch (error) {
+      this.emit("controllerError", null, error);
+      throw error;
+    }
   }
 
   /**
@@ -158,7 +166,11 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
    * @param options
    * @throws Error
    */
-  public addSmartElement(dom: DOMReference, viewData?: AnakeenController.Types.IViewData, options?): ControllerUID {
+  public addSmartElement(
+    dom: DOMReference,
+    viewData?: AnakeenController.Types.IViewData,
+    options?: ControllerOptions
+  ): ControllerUID {
     viewData = viewData || {
       initid: 0,
       revision: -1,
@@ -177,12 +189,12 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
 
   /**
    *
-   * @param scopeId
    * @param operation
+   * @param check
    * @param args
    */
-  public execute(scopeId: ControllerUID, operation: string, ...args: any[]) {
-    return this._dispatcher.dispatch(scopeId, operation, ...args);
+  public execute(operation: string, check: (controller: SmartElementController) => boolean, ...args: any[]) {
+    return this._dispatcher.dispatch(operation, check, ...args);
   }
 
   /**
