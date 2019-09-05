@@ -3,6 +3,7 @@
 $navScrollSize: 2rem;
 $navListSize: 4rem;
 .ank-tabs-nav-wrap {
+  user-select: none;
   &.scrollable {
     &.is-top,
     &.is-bottom {
