@@ -43,7 +43,6 @@ class AllRenderConfigEdit extends \Anakeen\Ui\DefaultEdit
         $options->enum(myAttributes::test_ddui_all__enumsserververtical)->setDisplay(\Anakeen\Ui\EnumRenderOptions::verticalDisplay)->useSourceUri(false);
         $options->enum(myAttributes::test_ddui_all__enumsserverhorizontal)->setDisplay(\Anakeen\Ui\EnumRenderOptions::horizontalDisplay)->useSourceUri(false);
 
-        $options->htmltext()->useCkInline(true);
 
         return $options;
     }
