@@ -74,6 +74,35 @@ export interface ISmartFormFieldCompleteValue {
   displayValue: string;
 }
 
+export interface ISmartFormMenuCommon {
+  id: string;
+  beforeContent?: string;
+  htmlAttributes?: object;
+  type: "listMenu" | "itemMenu" | "separatorMenu";
+  label?: string;
+  htmlLabel?: string;
+  tooltipLabel?: string;
+  tooltipPlacement?: ["top" | "bottom" | "right" | "left"];
+  tooltipHtml?: boolean;
+  visibility?: "visible" | "hidden" | "disabled";
+  important?: boolean;
+  iconUrl?: string;
+}
+
+export interface ISmartFormMenuItem extends ISmartFormMenuCommon {
+  url: string;
+  target?: string;
+  targetOptions?: object;
+  confirmationText?: string;
+  confirmationOptions?: object;
+}
+
+export interface ISmartFormMenuList extends ISmartFormMenuCommon {
+  content: ISmartFormMenuElement[];
+}
+
+export type ISmartFormMenuElement = ISmartFormMenuItem | ISmartFormMenuList;
+
 export interface ISmartFormConfiguration {
   title?: string;
   type?: string;
@@ -81,4 +110,5 @@ export interface ISmartFormConfiguration {
   structure?: ISmartFormFieldTopSet[];
   renderOptions?: object;
   values?: ISmartFormFieldsValues;
+  menu?: ISmartFormMenuElement[];
 }

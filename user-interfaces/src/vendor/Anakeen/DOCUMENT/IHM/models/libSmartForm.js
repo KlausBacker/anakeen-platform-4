@@ -55,9 +55,11 @@ define(["jquery", "underscore"], function libSmartForm($, _) {
         response.data.view.renderOptions.attributes = formConfig.renderOptions.fields;
       }
       if (formConfig.renderOptions.types) {
-        _.each(response.data.view.renderOptions.types, (item, key) => {
-          if (formConfig.renderOptions.types[key]) {
-            _.extend(item, formConfig.renderOptions.types[key]);
+        _.each(formConfig.renderOptions.types, (item, key) => {
+          if (response.data.view.renderOptions.types[key]) {
+            _.extend(response.data.view.renderOptions.types[key], item);
+          } else {
+            response.data.view.renderOptions.types[key] = item;
           }
         });
       }

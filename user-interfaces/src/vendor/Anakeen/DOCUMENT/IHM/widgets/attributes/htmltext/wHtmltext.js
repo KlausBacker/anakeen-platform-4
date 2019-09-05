@@ -24,7 +24,6 @@
         ckEditorConfiguration: {},
         ckEditorAllowAllTags: false
       },
-      inline: false,
       locale: "en"
     },
 
@@ -36,9 +35,7 @@
         bindInitEvent = _.bind(this._initEvent, this);
       try {
         this.popupWindows = {};
-        if (this.options.renderOptions.ckEditorInline) {
-          this.options.inline = true;
-        }
+
         if (this.getMode() === "write") {
           (function wHtmltext_umdRequire(factory) {
             var init = function() {
@@ -123,7 +120,7 @@
         contentsCss: [cssPath],
         removePlugins: "elementspath", // no see HTML path elements
         extraPlugins:
-          "a11yhelp,about,basicstyles,blockquote,clipboard,colorbutton,contextmenu,elementspath,enterkey,entities,filebrowser,floatingspace,font,format,horizontalrule,htmlwriter,image,indentlist,justify,link,list,magicline,maximize,pastefromword,pastetext,removeformat,resize,scayt,showborders,sourcearea,sourcedialog,specialchar,stylescombo,tab,table,tabletools,toolbar,undo,wsc,wysiwygarea",
+          "a11yhelp,about,basicstyles,blockquote,clipboard,colorbutton,contextmenu,divarea,elementspath,enterkey,entities,filebrowser,floatingspace,font,format,horizontalrule,htmlwriter,image,indentlist,justify,link,list,magicline,maximize,pastefromword,pastetext,removeformat,resize,scayt,showborders,sourcearea,sourcedialog,specialchar,stylescombo,tab,table,tabletools,toolbar,undo,wsc,wysiwygarea",
         toolbarCanCollapse: true,
         entities: false, // no use HTML entities
         baseHref: "/",
@@ -442,12 +439,8 @@
         //noinspection JSHint
         if (originalValue.trim() != value.value.trim()) {
           // Modify value only if different
-          if (this.options.inline) {
-            this.getContentElements().html(value.value);
-          } else {
-            this.getContentElements().val(value.value);
-            this.flashElement(this.element.find("iframe"));
-          }
+
+          this.getContentElements().html(value.value);
         }
       } else if (this.getMode() === "read") {
         this.getContentElements().html(value.displayValue);
