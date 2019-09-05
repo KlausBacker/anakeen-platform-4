@@ -1,0 +1,36 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: enum TST_DOCENUM-ABCD \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2019-09-05T11:44:00.673Z\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: Tests/src/vendor/Anakeen/TestUnits/Data/PU_data_dcp_docenum_family.xml
+#, fuzzy
+msgctxt "TST_DOCENUM-ABCD"
+msgid "a"
+msgstr "A"
+
+#: Tests/src/vendor/Anakeen/TestUnits/Data/PU_data_dcp_docenum_family.xml
+#, fuzzy
+msgctxt "TST_DOCENUM-ABCD"
+msgid "b"
+msgstr "B"
+
+#: Tests/src/vendor/Anakeen/TestUnits/Data/PU_data_dcp_docenum_family.xml
+#, fuzzy
+msgctxt "TST_DOCENUM-ABCD"
+msgid "c"
+msgstr "C"
+
+#: Tests/src/vendor/Anakeen/TestUnits/Data/PU_data_dcp_docenum_family.xml
+#, fuzzy
+msgctxt "TST_DOCENUM-ABCD"
+msgid "d"
+msgstr "D"

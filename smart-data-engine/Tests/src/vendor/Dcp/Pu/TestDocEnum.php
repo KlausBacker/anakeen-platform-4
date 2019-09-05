@@ -6,6 +6,7 @@
 
 namespace Dcp\Pu;
 
+use Anakeen\Core\EnumCustomLocale;
 use Anakeen\Core\EnumManager;
 use Anakeen\Core\SmartStructure\DocEnum;
 use Anakeen\Core\SmartStructure\EnumLocale;
@@ -33,7 +34,9 @@ class TestDocEnum extends TestCaseDcpCommonFamily
 
     public static function tearDownAfterClass()
     {
-
+        $e = new EnumCustomLocale("TST_DOCENUM-0123");
+        $e->deletePoFile("fr");
+        $e->deletePoFile("en");
         $system = new \Anakeen\Script\System();
         $system->localeGen();
         parent::tearDownAfterClass();
@@ -44,8 +47,7 @@ class TestDocEnum extends TestCaseDcpCommonFamily
      */
     public function testDocEnumAdd($attrid, $key, $label, $absOrder, $expectedOrder)
     {
-        //print_r(EnumManager::getEnum($attrid));exit;
-        $enums= EnumManager::getEnums($attrid);
+        $enums = EnumManager::getEnums($attrid);
         $s = new EnumStructure();
         $s->key = $key;
         $s->label = $label;
@@ -114,21 +116,29 @@ class TestDocEnum extends TestCaseDcpCommonFamily
         $enumKey = array_keys($enums);
         $diff = array_diff($enumKey, $expectedEnums);
 
-        $this->assertEmpty($diff, sprintf("getEnumLabel:: not expected visible \nExpect:\n %s,\nHas\n %s", print_r($expectedEnums, true), print_r($enumKey, true)));
+        $this->assertEmpty($diff,
+            sprintf("getEnumLabel:: not expected visible \nExpect:\n %s,\nHas\n %s", print_r($expectedEnums, true),
+                print_r($enumKey, true)));
 
-        $this->assertEquals(count($expectedEnums), count($enumKey), sprintf("getEnumLabel:: not expected enum count %s, %s", print_r($expectedEnums, true), print_r($enums, true)));
+        $this->assertEquals(count($expectedEnums), count($enumKey),
+            sprintf("getEnumLabel:: not expected enum count %s, %s", print_r($expectedEnums, true),
+                print_r($enums, true)));
 
         EnumManager::resetEnum();
         $enums = EnumManager::getEnums($enumName, false);
         $enums2 = EnumManager::getEnums($enumName, false);
-        $this->assertEquals($enums, $enums2, sprintf("getEnum::not same with cache %s, %s", print_r($enums, true), print_r($enums2, true)));
+        $this->assertEquals($enums, $enums2,
+            sprintf("getEnum::not same with cache %s, %s", print_r($enums, true), print_r($enums2, true)));
 
         $enumKey = array_keys($enums);
         $diff = array_diff($enumKey, $expectedEnums);
 
-        $this->assertEmpty($diff, sprintf("getEnum:: not expected visible \nExpect:\n %s,\nHas\n %s", print_r($expectedEnums, true), print_r($enumKey, true)));
+        $this->assertEmpty($diff,
+            sprintf("getEnum:: not expected visible \nExpect:\n %s,\nHas\n %s", print_r($expectedEnums, true),
+                print_r($enumKey, true)));
 
-        $this->assertEquals(count($expectedEnums), count($enumKey), sprintf("getEnum::not expected enum count %s, %s", print_r($expectedEnums, true), print_r($enums, true)));
+        $this->assertEquals(count($expectedEnums), count($enumKey),
+            sprintf("getEnum::not expected enum count %s, %s", print_r($expectedEnums, true), print_r($enums, true)));
     }
 
     /**
@@ -182,6 +192,7 @@ class TestDocEnum extends TestCaseDcpCommonFamily
         EnumManager::resetEnum();
         $label = EnumManager::getEnumItem($attrid, $key)["label"];
         $this->assertTrue($label !== null, "Enum not inserted");
+
 
         foreach ($locale as $lang => $localeLabel) {
             \Anakeen\Core\ContextManager::setLanguage($lang);
@@ -365,7 +376,9 @@ class TestDocEnum extends TestCaseDcpCommonFamily
                     "d"
                 ),
                 "expect" => array(
-                    "a","b1","b2",
+                    "a",
+                    "b1",
+                    "b2",
                     "c"
                 )
             )

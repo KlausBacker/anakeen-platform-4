@@ -5,6 +5,7 @@
         "slim/http-cache": "^0.4.0",
         "mustache/mustache": "v2.12.0",
         "monolog/monolog": "^1.23",
-        "dragonmantank/cron-expression": "^2.2"
+        "dragonmantank/cron-expression": "^2.2",
+        "sepia/po-parser": "^5.1"
     }
 }

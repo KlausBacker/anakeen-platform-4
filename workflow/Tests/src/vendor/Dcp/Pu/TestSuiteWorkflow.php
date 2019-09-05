@@ -6,6 +6,8 @@
 
 namespace Dcp\Pu;
 
+use Anakeen\TestUnits\CoreTests;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -19,8 +21,9 @@ set_include_path(get_include_path() . PATH_SEPARATOR . "./DCPTEST:./WHAT");
 // ...
 class TestSuiteWorkflow
 {
-    const logFile = "/var/tmp/pudcp.log";
-    const msgFile = "/var/tmp/pudcp.msg";
+    const logFile = CoreTests::LOGFILE;
+    const msgFile = CoreTests::MSGFILE;
+
     public static $allInProgress = false;
     public static function suite()
     {

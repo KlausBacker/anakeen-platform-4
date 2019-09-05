@@ -1,20 +1,17 @@
 <?php
 
+namespace Anakeen\Core;
 
-namespace Anakeen\Routes\Admin\I18n;
-
-use Anakeen\Core\ContextManager;
 use Anakeen\Exception;
-use Anakeen\Router\ApiV2Response;
 
 /**
  * Class RecordTranslation
  *
  * @note Used by route : PUT /api/v2/admin/i18n/{lang}/{msgctxt}/{msgid}
  */
-class RecordTranslation
+class EnumCustomLocale
 {
-    const OVERRIDE_FILE = "custom/1_override.po";
+    const OVERRIDE_DIR = "custom";
     protected $msgid = null;
     protected $msgctxt = null;
     protected $lang = null;
@@ -38,48 +35,46 @@ class RecordTranslation
      */
     protected $pluralid;
 
-    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
+
+    public function __construct($enumName)
     {
-        $this->initParameters($request, $args);
-        return ApiV2Response::withData($response, $this->doRequest());
+        $this->msgctxt = $enumName;
     }
 
-    public function doRequest()
-    {
-        $poFile = $this->copyBackup();
-        $this->initOverrideEntries($poFile);
 
+    public function addEntry( $EnumKey, $enumLabel, $lang)
+    {
+        $this->msgid = $EnumKey;
+        $this->lang = substr($lang, 0, 2);
+        $this->msgstr = $enumLabel;
+
+        $poFile = $this->getOverrideFile();
+
+        $backupFile = $this->copyBackup();
+        $this->initOverrideEntries($poFile);
         $this->setEntry();
         $this->savePoFile();
-        $this->analyzePoFile($poFile);
-        $this->reinitMainPo($poFile);
-        return "";
+        try {
+            $this->analyzePoFile($poFile);
+        } catch (\Anakeen\Exception $e) {
+            // Restore original
+            rename($backupFile, $poFile);
+        }
     }
 
-    protected function initParameters(\Slim\Http\request $request, $args)
-    {
-        $this->msgid = $args["msgid"];
-        $this->msgctxt = $args["msgctxt"] ?? "";
-        $this->lang = $args["lang"];
-        $data = $request->getParsedBody();
-        $this->msgstr = $data["msgstr"] ?? "";
-        $this->plural = $data["plural"] ?? "";
-        $this->pluralid = $data["pluralid"] ?? "";
-        $this->plurals = $data["plurals"] ?? "";
+    public function deletePoFile($lang) {
+        $this->lang = substr($lang, 0, 2);
+
+        $poFile = $this->getOverrideFile();
+        unlink($poFile);
     }
 
-    /*
-     * ./src/custom/1_override.po:2: warning: header field 'Last-Translator' missing in header
-./src/custom/1_override.po:2: warning: header field 'Language-Team' missing in header
-./src/custom/1_override.po:2: warning: header field 'MIME-Version' missing in header
-
-     */
     protected function initPoFile($filePath)
     {
         $msgInit = sprintf(
             'msgid ""
 msgstr ""
-"Project-Id-Version: Override translations\n"
+"Project-Id-Version: Override translations enum %s\n"
 "Language: %s\n"
 "PO-Revision-Date: %s\n"
 "Language-Team: Override\n"
@@ -89,6 +84,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"',
+            $this->msgctxt,
             substr($this->lang, 0, 2),
             date('Y-m-d H:i:s'),
             ContextManager::getCurrentUser()->login
@@ -103,7 +99,9 @@ msgstr ""
         $filePath = self::getOverrideFilepath($this->lang);
         if (!file_exists($filePath)) {
             if (!is_dir(dirname($filePath))) {
-                mkdir(dirname($filePath));
+                if (!@mkdir(dirname($filePath))) {
+                    throw new \Anakeen\Core\Exception(sprintf("cannot create dir [%s]", dirname($filePath)));
+                }
             }
             $this->initPoFile($filePath);
         }
@@ -111,13 +109,14 @@ msgstr ""
     }
 
 
-    public static function getOverrideFilepath($lang)
+    public function getOverrideFilepath($lang)
     {
-        return $filePath = sprintf(
-            "%s/locale/%s/LC_MESSAGES/src/%s",
+        return sprintf(
+            "%s/locale/%s/LC_MESSAGES/src/%s/enum%s.po",
             ContextManager::getRootDirectory(),
             $lang,
-            self::OVERRIDE_FILE
+            self::OVERRIDE_DIR,
+            $this->msgctxt
         );
     }
 
@@ -153,15 +152,15 @@ msgstr ""
             $this->catalog->addEntry($entry);
         } else {
             if ($entry->isFuzzy()) {
-                $flags=$entry->getFlags();
-                $flags=array_filter($flags, function ($flag) {
+                $flags = $entry->getFlags();
+                $flags = array_filter($flags, function ($flag) {
                     return $flag !== "fuzzy";
                 });
                 $entry->setFlags($flags);
             }
 
             if ($this->pluralid) {
-                $entry->setMsgStrPlurals($this->msgstr?:[]);
+                $entry->setMsgStrPlurals($this->msgstr ?: []);
             } else {
                 $entry->setMsgStr($this->msgstr);
             }
