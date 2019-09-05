@@ -1033,14 +1033,21 @@ define([
 
     /**
      * Used by backbone for the save part
-     * @var getAllAttributes  ((false by default) : if true return also unmodified values
+     * @var backboneOptions  ((false by default) : if creation request return also unmodified values
      * @returns {{document: {attributes: *, properties : *}}}
      */
-    toJSON: function mDocumenttoJSON(getAllAttributes) {
+    toJSON: function mDocumenttoJSON(backboneOptions) {
+      let getAllFieldValues = false;
+      if (this.changed && this.changed.currentHttpMethod === "create") {
+        getAllFieldValues = true;
+      }
+      if (backboneOptions.getAllFieldValues) {
+        getAllFieldValues = true;
+      }
       return {
         document: {
           properties: this.getModelProperties(),
-          attributes: this.getValues(getAllAttributes !== true)
+          attributes: this.getValues(getAllFieldValues !== true)
         },
         customClientData: this._customClientData
       };
