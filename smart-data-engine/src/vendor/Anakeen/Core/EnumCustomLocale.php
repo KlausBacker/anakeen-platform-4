@@ -42,7 +42,7 @@ class EnumCustomLocale
     }
 
 
-    public function addEntry( $EnumKey, $enumLabel, $lang)
+    public function addEntry($EnumKey, $enumLabel, $lang)
     {
         $this->msgid = $EnumKey;
         $this->lang = substr($lang, 0, 2);
@@ -62,7 +62,8 @@ class EnumCustomLocale
         }
     }
 
-    public function deletePoFile($lang) {
+    public function deletePoFile($lang)
+    {
         $this->lang = substr($lang, 0, 2);
 
         $poFile = $this->getOverrideFile();
