@@ -17,7 +17,7 @@ ankSmartController.registerFunction("structureTestRender", scopedController => {
     if (data.eventId === "tst") {
       if (data.options.length > 0 && data.options[0] === "openWindow") {
         const insideController = ankSmartController.getScopedController(insideControllerid);
-        window.open(insideController.getProperties().url);
+        window.open(insideController.getProperties().pageUrl);
       }
     }
   });

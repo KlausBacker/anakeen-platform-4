@@ -89,9 +89,9 @@ export default class TabsNav extends Vue {
       // @ts-ignore
       [`is-${this.rootTabs.tabPosition}`]: true,
       "is-active": pane.active,
-      "is-disabled": pane.disabled,
       // @ts-ignore
       "is-closable": pane.isClosable || this.rootTabs.editable,
+      "is-disabled": pane.disabled,
       "is-focus": this.isFocus
     };
   }

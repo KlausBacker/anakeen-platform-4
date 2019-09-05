@@ -11,7 +11,7 @@ AnakeenController.on("controllerReady", controller => {
 
   var _ = require("underscore");
 
-  let $document = $(".document"),
+  let $document = $(".smart-element"),
     currentValues,
     varWidgetValue = "widgetValue",
     /* @var currentController SmartElementController */
@@ -61,7 +61,7 @@ AnakeenController.on("controllerReady", controller => {
       });
     });
   } else {
-    controller.addSmartElement(".document");
+    controller.addSmartElement($document);
     currentController = controller.getScopedController($document);
     currentController.addEventListener("ready", (event, properties) => {
       window.document.title = properties.title;

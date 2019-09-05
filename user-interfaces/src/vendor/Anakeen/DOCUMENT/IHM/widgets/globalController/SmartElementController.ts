@@ -338,7 +338,8 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     if (ready) {
       properties = this._model.getServerProperties();
       properties.isModified = this._model.isModified();
-      properties.url = this._model.url() + ".html";
+      properties.url = this._model.url();
+      properties.pageUrl = this._computeUrl(properties);
     }
 
     return properties as ISmartElement;
@@ -1186,6 +1187,33 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       // @ts-ignore
       this.$notification = $("body").dcpNotification(window.dcp.notifications); // active notification
     }
+  }
+
+  private _computeUrl(options) {
+    let urlSecondPart = "";
+    let locationSearch = "";
+    let identifier = options.initid;
+    if (!identifier && options.family && (options.viewId === "!defaultCreation" || options.viewId === "!coreCreation")) {
+      identifier = options.family.name || options.family.id;
+    }
+    if (options.viewId !== "!defaultConsultation") {
+      urlSecondPart = "/views/" + encodeURIComponent(options.viewId);
+      if (options.revision >= 0 && options.security && options.security.fixed) {
+        urlSecondPart += "/revisions/" + encodeURIComponent(options.revision);
+      }
+    } else {
+      if (options.revision >= 0 && options.security && options.security.fixed) {
+        urlSecondPart = "/revisions/" + encodeURIComponent(options.revision);
+      }
+    }
+
+    if (options.customClientData) {
+      locationSearch += locationSearch ? "&" : "?";
+      locationSearch += "customClientData=";
+      locationSearch += encodeURIComponent(JSON.stringify(options.customClientData));
+    }
+
+    return "/api/v2/smart-elements/" + identifier + urlSecondPart + ".html" + locationSearch;
   }
 
   /**
