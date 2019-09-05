@@ -263,7 +263,7 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
     }
   }
 
-  public setVerbose(enable: boolean) {
+  public setVerbose(enable: boolean = false) {
     this._verbose = enable;
     if (enable) {
       this._logVerbose("verbose mode enabled", "Global");
@@ -375,17 +375,8 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
     const cssLinkTemplate = _.template(
       '<link rel="stylesheet" type="text/css" ' + 'href="<%= path %>" data-id="<%= key %>" data-view="true">'
     );
+    // Clean CSS
     this._cleanCss();
-    // // Clean CSS
-    // _.each($("link[data-view=true]"), currentLink => {
-    //   if (
-    //     _.find(this.cssList, currentCss => {
-    //       return $(currentLink).data("id") === currentCss.key;
-    //     }) === undefined
-    //   ) {
-    //     $(currentLink).remove();
-    //   }
-    // });
     // Inject new CSS
     _.each(customCss, cssItem => {
       const $existsLink = $(`link[rel=stylesheet][data-id=${cssItem.key}]`);
