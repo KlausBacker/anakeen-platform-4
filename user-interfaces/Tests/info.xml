@@ -7,6 +7,7 @@
         <module name="user-interfaces" version="2.0.x"/>
         <module name="workflow" version="2.0.x"/>
         <module name="smart-data-engine-test" version="2.0.x"/>
+        <module name="anakeen-hub-business-app"/>
         <module name="anakeen-dev-data"/>
     </requires>
 
