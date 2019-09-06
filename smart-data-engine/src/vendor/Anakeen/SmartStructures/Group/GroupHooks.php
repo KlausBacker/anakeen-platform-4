@@ -12,6 +12,7 @@
 namespace Anakeen\SmartStructures\Group;
 
 use Anakeen\SmartHooks;
+use Anakeen\SmartStructures\Dir\DirHooks;
 
 class GroupHooks extends \SmartStructure\Dir
 {
@@ -30,6 +31,20 @@ class GroupHooks extends \SmartStructure\Dir
             $err = $this->setGroupMail();
             $this->refreshParentGroup();
             return $err;
+        });
+        $this->getHooks()->addListener(DirHooks::POSTINSERT, function () {
+            //* update groups table in USER database
+            //* reconstruct mail group & recompute parent group
+            $err = $this->setGroupMail();
+            $this->refreshParentGroup();
+            return $err;
+        });
+        $this->getHooks()->addListener(DirHooks::POSTREMOVE, function () {
+            // update groups table in USER database before suppress
+            $this->setGroupMail();
+            $this->refreshMembers();
+            $this->specPostInsert();
+            return "";
         });
     }
 
@@ -53,23 +68,6 @@ class GroupHooks extends \SmartStructure\Dir
         return $err;
     }
 
-    /**
-     * update groups table in USER database
-     *
-     * @param      $docid
-     * @param bool $multiple
-     *
-     * @return string error message
-     */
-    public function postInsertDocument($docid, $multiple = false)
-    {
-        if ($multiple == false) {
-            $this->setGroupMail();
-            $this->refreshMembers();
-            $this->specPostInsert();
-        }
-        return "";
-    }
 
     /**
      * update groups table in USER database
@@ -86,21 +84,6 @@ class GroupHooks extends \SmartStructure\Dir
         return "";
     }
 
-    /**
-     * update groups table in USER database before suppress
-     *
-     * @param      $docid
-     * @param bool $multiple
-     *
-     * @return string error message
-     */
-    public function postRemoveDocument($docid, $multiple = false)
-    {
-        $this->setGroupMail();
-        $this->refreshMembers();
-        $this->specPostInsert();
-        return "";
-    }
 
     /**
      * special method for child classes
@@ -199,7 +182,16 @@ class GroupHooks extends \SmartStructure\Dir
     public function refreshMembers()
     {
         // 2)groups
-        $tu = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection($this->dbaccess, $this->initid, "0", "ALL", array(), 1, "TABLE", "GROUP");
+        $tu = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection(
+            $this->dbaccess,
+            $this->initid,
+            "0",
+            "ALL",
+            array(),
+            1,
+            "TABLE",
+            "GROUP"
+        );
         $tmemid = array();
         $tmem = array();
         if (count($tu) > 0) {
