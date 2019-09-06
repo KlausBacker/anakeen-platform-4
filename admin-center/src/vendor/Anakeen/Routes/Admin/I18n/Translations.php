@@ -13,7 +13,6 @@ use Anakeen\Search\SearchElements;
 use Anakeen\SmartStructures\Wdoc\WDocHooks;
 use Sepia\PoParser\Catalog\Entry;
 
-
 /**
  * Get All Enumerate Items
  *
