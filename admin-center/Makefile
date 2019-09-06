@@ -27,10 +27,8 @@ CHECK_VERSION=node ./../.devtool/ci/check/checkVersionNpmApp.js
 node_modules:
 	${YARN_BIN} install
 
-$(PHP_LIB_PATH)/vendor:
-	cd $(PHP_LIB_PATH); $(COMPOSER_BIN) install
 
-install-deps: node_modules $(PHP_LIB_PATH)/vendor
+install-deps: node_modules
 	@${PRINT_COLOR} "${DEBUG_COLOR}Install deps${RESET_COLOR}\n"
 
 ./../.devtool/ci/check/checkPHP/vendor:
