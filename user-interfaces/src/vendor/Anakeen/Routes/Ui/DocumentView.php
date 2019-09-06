@@ -6,6 +6,7 @@ use Anakeen\Router\URLUtils;
 use Anakeen\Routes\Core\Lib\ApiMessage;
 use Anakeen\SmartElementManager;
 use Anakeen\SmartStructures\Wdoc\WDocHooks;
+use Anakeen\Ui\JsAssetReference;
 use Anakeen\Ui\RenderOptions;
 use SmartStructure\Fields\Cvdoc as CvdocAttribute;
 use Anakeen\Core\ContextManager;
@@ -449,14 +450,16 @@ class DocumentView
             throw new Exception("CRUDUI0007");
         }
         $jsArray = array();
-        foreach ($jsList as $cssId => $cssPath) {
+        foreach ($jsList as $jsId => $jsRef) {
             $result = array(
-                "key" => $cssId
+                "key" => $jsId
             );
-            if (is_array($cssPath)) {
-                $result = array_merge($result, $cssPath);
+            if (is_object($jsRef) && is_a($jsRef, JsAssetReference::class)) {
+                $result = array_merge($result, ($jsRef->toArray()));
+            } elseif (is_array($jsRef)) {
+                $result = array_merge($result, $jsRef);
             } else {
-                $result["path"] = $cssPath;
+                $result["path"] = $jsRef;
             }
             $jsArray[] = $result;
         }

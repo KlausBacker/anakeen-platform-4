@@ -426,7 +426,13 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
                     "JS"
                   );
                   const functionKey = currentJS.function || currentJS.key;
-                  this._registerScript(currentJS.path, this._getRegisteredFunction(functionKey));
+                  if (Array.isArray(functionKey)) {
+                    functionKey.forEach(functionName => {
+                      this._registerScript(currentJS.path, this._getRegisteredFunction(functionName));
+                    });
+                  } else {
+                    this._registerScript(currentJS.path, this._getRegisteredFunction(functionKey));
+                  }
                 }
               },
               setup: script => GlobalController._createScript(currentJS, script)
