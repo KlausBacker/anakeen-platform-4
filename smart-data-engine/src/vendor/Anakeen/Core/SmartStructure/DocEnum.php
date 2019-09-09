@@ -9,6 +9,8 @@ namespace Anakeen\Core\SmartStructure;
  */
 
 use Anakeen\Core\DbManager;
+use Anakeen\Core\EnumCustomLocale;
+use Anakeen\Core\EnumManager;
 use Anakeen\Core\Internal\DbObj;
 
 class DocEnum extends DbObj
@@ -221,6 +223,11 @@ SQL;
         if ($err) {
             throw new \Anakeen\Exception(sprintf("Cannot add enum %s:%s : %s", $name, $enumStruct->key, $err));
         }
+        if ($enumStruct->localeLabel) {
+            foreach ($enumStruct->localeLabel as $lLabel) {
+                self::changeLocale($enum->name, $enumStruct->key, $lLabel->lang, $lLabel->label);
+            }
+        }
     }
 
     public static function modifyEnum($name, EnumStructure $enumStruct)
@@ -248,5 +255,13 @@ SQL;
         if ($err) {
             throw new \Anakeen\Exception(sprintf("Cannot modify enum %s:%s : %s", $name, $enumStruct->key, $err));
         }
+    }
+
+    public static function changeLocale($enumName, $enumId, $lang, $label)
+    {
+        $enum = EnumManager::getEnums($enumName);
+
+        $e = new EnumCustomLocale($enumName);
+        $e->addEntry($enumId, $label, $lang);
     }
 }

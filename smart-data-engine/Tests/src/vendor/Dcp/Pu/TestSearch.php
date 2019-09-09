@@ -930,6 +930,8 @@ class TestSearch extends TestCaseDcpCommonFamily
     public function testSearchGetValue($famName, $docName, $expectedAttr)
     {
         $s = new \Anakeen\Search\Internal\SearchSmartData("", $famName);
+        $s->setSlice(100);
+        $s->setOrder("cdate desc");
         $s->setObjectReturn(true);
         $dl = $s->search()->getDocumentList();
 
@@ -952,6 +954,8 @@ class TestSearch extends TestCaseDcpCommonFamily
     public function testSearchElementsGetValue($famName, $docName, $expectedAttr)
     {
         $s = new SearchElements($famName);
+        $s->setSlice(100);
+        $s->setOrder("cdate desc");
         $dl = $s->search()->getResults();
 
         foreach ($dl as $doc) {
@@ -976,6 +980,8 @@ class TestSearch extends TestCaseDcpCommonFamily
     {
         $s = new \Anakeen\Search\Internal\SearchSmartData("", $famName);
         $s->setObjectReturn(false);
+        $s->setSlice(100);
+        $s->setOrder("cdate desc");
         $data = $s->search();
 
         foreach ($data as $doc) {
@@ -997,6 +1003,8 @@ class TestSearch extends TestCaseDcpCommonFamily
     public function testSearchElementGetData($famName, $docName, $expectedAttr)
     {
         $s = new SearchElementData($famName);
+        $s->setSlice(100);
+        $s->setOrder("cdate desc");
         $data = $s->search()->getResults();
 
         foreach ($data as $doc) {

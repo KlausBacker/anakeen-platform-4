@@ -17,9 +17,6 @@ set_include_path(get_include_path() . PATH_SEPARATOR . __DIR__);
 // ...
 class WorkflowTests
 {
-    const LOGFILE = "/var/tmp/pudcp.log";
-    const MSGFILE = "/var/tmp/pudcp.msg";
-
     public static $allInProgress = false;
 
     public static function suite()

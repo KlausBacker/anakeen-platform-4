@@ -23,8 +23,8 @@ set_include_path(get_include_path() . PATH_SEPARATOR . __DIR__);
 // ...
 class CoreTests
 {
-    const LOGFILE = "/var/tmp/pudcp.log";
-    const MSGFILE = "/var/tmp/pudcp.msg";
+    const LOGFILE = "/tmp/pudcp.log";
+    const MSGFILE = "/tmp/pudcp.msg";
 
     public static $allInProgress = true;
 

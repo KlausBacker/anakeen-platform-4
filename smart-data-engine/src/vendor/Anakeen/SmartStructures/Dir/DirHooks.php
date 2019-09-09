@@ -1,16 +1,8 @@
 <?php /** @noinspection PhpUnusedParameterInspection */
-/*
- * @author Anakeen
- * @package FDL
-*/
+
 /**
- * Folder document definition
+ * Folder  definition
  *
- * @author  Anakeen
- * @version $Id: Class.Dir.php,v 1.81 2008/09/03 08:35:24 marc Exp $
- * @package FDL
- */
-/**
  */
 
 namespace Anakeen\SmartStructures\Dir;
@@ -26,6 +18,19 @@ use Anakeen\SmartHooks;
  */
 class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
 {
+    /** @var string before add new Smart Element into Folder */
+    const PREINSERT = "preInsert";
+    /** @var string after adding new Smart Element into Folder */
+    const POSTINSERT = "postInsert";
+    /** @var string before remove Smart Element from Folder */
+    const PREREMOVE = "preRemove";
+    /** @var string after removing Smart Element from Folder */
+    const POSTREMOVE = "postRemove";
+    /** @var string before add several Smart Element into Folder */
+    const PREINSERTMULTIPLE = "preInsertMultiple";
+    /** @var string after adding several Smart Element into Folder */
+    const POSTINSERTMULTIPLE = "postInsertMultiple";
+
     public $defDoctype = 'D';
     private $authfam = false;
     private $norestrict = false;
@@ -72,106 +77,6 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
     }
 
     /**
-     * hook method use before insert document in folder
-     *
-     * @api hook method use before insert document in folder
-     *
-     * @param int  $docid    document identifier to insert
-     * @param bool $multiple flag to indicate if the insertion is a part of grouped insertion
-     *
-     * @return string error message if not empty the insertion will be aborted
-     */
-    public function preInsertDocument($docid, $multiple = false)
-    {
-        return "";
-    }
-
-
-    /**
-     * virtual method use after insert document in folder
-     *
-     * @api hook method called after insert document in folder
-     * @see DirHooks::insertDocument
-     *
-     * @param int  $docid    document identifier to insert
-     * @param bool $multiple flag to indicate if the insertion is a part of grouped insertion
-     *
-     * @return string error message
-     */
-    public function postInsertDocument($docid, $multiple = false)
-    {
-        return "";
-    }
-
-
-    /**
-     * hook method use after insert multiple document in this folder
-     * must be redefined to optimize algorithm
-     *
-     *
-     * @api hook method called after insert several documents in folder
-     * @see DirHooks::insertMultipleDocuments
-     * @see DirHooks::postInsertDocument
-     *
-     * @param array $tdocid array of document identifier to insert
-     *
-     * @return string warning message
-     */
-    public function postInsertMultipleDocuments($tdocid)
-    {
-        return '';
-    }
-
-    /**
-     * hook method use after insert multiple document in this folder
-     * must be redefined to optimize algorithm
-     *
-     * @api hook method called before insert several documents in folder
-     * @see DirHooks::preInsertDocument
-     * @see DirHooks::insertMultipleDocuments
-     *
-     * @param array $tdocid array of document identifier to insert
-     *
-     * @return string warning message
-     */
-    public function preInsertMultipleDocuments($tdocid)
-    {
-        return '';
-    }
-
-
-    /**
-     * hook method use after unlink document in folder
-     *
-     * @api hook method use before remove document to folder
-     *
-     * @param int  $docid    document identifier to unlink
-     * @param bool $multiple flag to indicate if the insertion is a part of grouped insertion
-     *
-     * @return string error message if not empty the insert will be aborted
-     */
-    public function preRemoveDocument($docid, $multiple = false)
-    {
-        return "";
-    }
-
-    /**
-     * hook method use after unlink document in folder
-     *
-     * @api hook method use after remove document of folder
-     *
-     * @param int  $docid    document identifier to unlink
-     * @param bool $multiple flag to indicate if the insertion is a part of grouped insertion
-     *
-     * @return string error message
-     */
-    public function postRemoveDocument($docid, $multiple = false)
-    {
-        return "";
-    }
-
-
-    /**
      * Test if current user can add or delete document in this folder
      *
      * @return string error message, if no error empty string
@@ -193,18 +98,23 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
      * if mode is latest the user always see latest revision
      * if mode is static the user see the revision which has been inserted
      *
-     * @api add a document reference in this folder
-     *
-     * @param int    $docid         document ident for the insertion
-     * @param string $mode          latest|static
-     * @param bool   $noprepost     if true if the virtuals methods {@link Dir::preInsertDoc()} and {@link Dir::postInsertDoc()} are not called
-     * @param bool   $forcerestrict if true don't test restriction (if have)
-     * @param bool   $nocontrol     if true no test acl "modify"
+     * @param int $docid document ident for the insertion
+     * @param string $mode latest|static
+     * @param bool $noprepost if true if the virtuals methods {@link DirHooks::PREINSERT()} and {@link DirHooks::POSTINSERT()} are not called
+     * @param bool $forcerestrict if true don't test restriction (if have)
+     * @param bool $nocontrol if true no test acl "modify"
      *
      * @return string error message, if no error empty string
+     * @api add a document reference in this folder
+     *
      */
-    public function insertDocument($docid, $mode = "latest", $noprepost = false, $forcerestrict = false, $nocontrol = false)
-    {
+    public function insertDocument(
+        $docid,
+        $mode = "latest",
+        $noprepost = false,
+        $forcerestrict = false,
+        $nocontrol = false
+    ) {
         $err = '';
         if (!$nocontrol) {
             $err = $this->canModify();
@@ -236,20 +146,29 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
         if (!$qf->exists()) {
             // use pre virtual method
             if (!$noprepost) {
-                $err = $this->preInsertDocument($doc->id);
+                $err = $this->getHooks()->trigger(DirHooks::PREINSERT, $doc->id);
             }
             if ($err != "") {
                 return $err;
             }
             // verify if doc family is autorized
             if ((!$forcerestrict) && (!$this->isAuthorized($doc->fromid))) {
-                return sprintf(_("Cannot add %s in %s folder, restriction set to add this kind of document"), $doc->title, $this->title);
+                return sprintf(
+                    _("Cannot add %s in %s folder, restriction set to add this kind of document"),
+                    $doc->title,
+                    $this->title
+                );
             }
 
             $err = $qf->add();
             if ($err == "") {
                 $this->addHistoryEntry(sprintf(_("Document %s inserted"), $doc->title));
-                $doc->addHistoryEntry(sprintf(_("Document inserted in %s folder"), $this->title, \DocHisto::INFO, "MOVEADD"));
+                $doc->addHistoryEntry(sprintf(
+                    _("Document inserted in %s folder"),
+                    $this->title,
+                    \DocHisto::INFO,
+                    "MOVEADD"
+                ));
 
                 $this->addLog('addcontent', array(
                     "insert" => array(
@@ -269,7 +188,10 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
                                     "dprofid"
                                 ), true);
                                 if ($err == "") {
-                                    $doc->addHistoryEntry(sprintf(_("Change profil to default document profil : %d"), $profid));
+                                    $doc->addHistoryEntry(sprintf(
+                                        _("Change profil to default document profil : %d"),
+                                        $profid
+                                    ));
                                 }
                             }
                             break;
@@ -289,7 +211,10 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
                                 }
                                 $err = $doc->modify();
                                 if ($err == "") {
-                                    $doc->addHistoryEntry(sprintf(_("Change profil to default subfolder profil : %d"), $profid));
+                                    $doc->addHistoryEntry(sprintf(
+                                        _("Change profil to default subfolder profil : %d"),
+                                        $profid
+                                    ));
                                 }
                             }
                             break;
@@ -307,7 +232,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
                 $this->updateFldRelations();
                 // use post virtual method
                 if (!$noprepost) {
-                    $err = $this->postInsertDocument($doc->id, false);
+                    $err = $this->getHooks()->trigger(DirHooks::POSTINSERT, $doc->id);
                 }
             }
         }
@@ -322,19 +247,25 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
      * if mode is latest the user always see latest revision
      * if mode is static the user see the revision which has been inserted
      *
-     * @api insert multiple document reference in this folder
-     *
-     * @param array   $tdocs     documents  for the insertion
-     * @param string  $mode      latest|static static is not implemented yet
+     * @param array $tdocs documents  for the insertion
+     * @param string $mode latest|static static is not implemented yet
      * @param boolean $noprepost not call preInsert and postInsert method (default if false)
-     * @param array   $tinserted
-     * @param array   $twarning
-     * @param array   $info
+     * @param array $tinserted
+     * @param array $twarning
+     * @param array $info
      *
      * @return string error message, if no error empty string
+     * @api insert multiple document reference in this folder
+     *
      */
-    public function insertMultipleDocuments(array $tdocs, $mode = "latest", $noprepost = false, &$tinserted = array(), &$twarning = array(), &$info = array())
-    {
+    public function insertMultipleDocuments(
+        array $tdocs,
+        $mode = "latest",
+        $noprepost = false,
+        &$tinserted = array(),
+        &$twarning = array(),
+        &$info = array()
+    ) {
         $insertError = array();
         if (!$noprepost) {
             $tdocids = array();
@@ -344,7 +275,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
                     $tdocids[] = ($isStatic) ? $v["id"] : $v["initid"];
                 }
             }
-            $err = $this->preInsertMultipleDocuments($tdocids);
+            $err = $this->getHooks()->trigger(DirHooks::PREINSERTMULTIPLE, $tdocids);
             $info = array(
                 "error" => $err,
                 "preInsertMultipleDocuments" => $err,
@@ -375,7 +306,11 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
         $tmsg = array();
         foreach ($tdocs as $tdoc) {
             if (!$this->isAuthorized($tdoc["fromid"])) {
-                $warn = sprintf(_("Cannot add %s in %s folder, restriction set to add this kind of document"), $tdoc["title"], $this->title);
+                $warn = sprintf(
+                    _("Cannot add %s in %s folder, restriction set to add this kind of document"),
+                    $tdoc["title"],
+                    $this->title
+                );
                 $twarning[$tdoc['id']] = $warn;
             } else {
                 switch ($mode) {
@@ -398,13 +333,18 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
                 $qf->query = "";
                 // use post virtual method
                 if (!$noprepost) {
-                    $insertOne = $this->preInsertDocument($tdoc["initid"], true);
+                    $multipleMode = true;
+                    $insertOne = $this->getHooks()->trigger(DirHooks::PREINSERT, $tdoc["initid"], $multipleMode);
                 }
 
                 if ($insertOne == "") {
                     $insertOne = $qf->add();
                     if ($insertOne == "") {
-                        $this->addHistoryEntry(sprintf(_("Document %s inserted"), $tdoc["title"]), \DocHisto::INFO, "MODCONTAIN");
+                        $this->addHistoryEntry(
+                            sprintf(_("Document %s inserted"), $tdoc["title"]),
+                            \DocHisto::INFO,
+                            "MODCONTAIN"
+                        );
 
                         $this->addLog('addcontent', array(
                             "insert" => array(
@@ -416,7 +356,12 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
                         $tinserted[$docid] = sprintf(_("Document %s inserted"), $tdoc["title"]);
                         // use post virtual method
                         if (!$noprepost) {
-                            $tmsg[$docid] = $this->postInsertDocument($tdoc["initid"], true);
+                            $multipleMode = true;
+                            $tmsg[$docid] = $this->getHooks()->trigger(
+                                DirHooks::POSTINSERT,
+                                $tdoc["initid"],
+                                $multipleMode
+                            );
                         }
                     }
                 } else {
@@ -429,7 +374,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
         $msg = '';
         if (!$noprepost) {
             $this->updateFldRelations();
-            $msg = $this->postInsertMultipleDocuments($tAddeddocids);
+            $msg = $this->getHooks()->trigger(DirHooks::POSTINSERTMULTIPLE, $tAddeddocids);
             $err .= $msg;
         }
         // integrate pre insert errors
@@ -509,7 +454,11 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
             return $err;
         }
 
-        $err = $this->query(sprintf("insert INTO fld (select %d,query,childid,qtype from fld where dirid=%d);", $this->initid, $docid));
+        $err = $this->query(sprintf(
+            "insert INTO fld (select %d,query,childid,qtype from fld where dirid=%d);",
+            $this->initid,
+            $docid
+        ));
 
         $this->updateFldRelations();
         return $err;
@@ -543,13 +492,13 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
     /**
      * delete a document reference from this folder
      *
-     * @api remove a document reference from this folder
-     *
-     * @param int  $docid     document ident for the deletion
-     * @param bool $noprepost if true then the virtuals methods {@link Dir::preRemoveDocument()} and {@link Dir::postRemoveDocument()} are not called
+     * @param int $docid document ident for the deletion
+     * @param bool $noprepost if true then the virtuals methods {@link DirHooks::PREREMOVE} and {@link DirHooks::POSTREMOVE} are not called
      * @param bool $nocontrol if true no test acl "modify"
      *
      * @return string error message, if no error empty string
+     * @api remove a document reference from this folder
+     *
      */
     public function removeDocument($docid, $noprepost = false, $nocontrol = false)
     {
@@ -562,7 +511,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
         }
         // use pre virtual method
         if (!$noprepost) {
-            $err = $this->preRemoveDocument($docid);
+            $err = $this->getHooks()->trigger(DirHooks::PREREMOVE, $docid);
         }
         if ($err != "") {
             return $err;
@@ -580,7 +529,11 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
             $docid
         ));
         if (!($qf->isAffected())) {
-            $err = sprintf(_("cannot delete link : initial query not found for doc %d in folder %d"), $docid, $this->initid);
+            $err = sprintf(
+                _("cannot delete link : initial query not found for doc %d in folder %d"),
+                $docid,
+                $this->initid
+            );
         }
 
         if ($err != "") {
@@ -614,11 +567,16 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
             )
         ));
         $this->addHistoryEntry(sprintf(_("Document %s umounted"), $doc->title), \DocHisto::INFO, "MODCONTAIN");
-        $doc->addHistoryEntry(sprintf(_("Document unlinked of %s folder"), $this->title, \DocHisto::INFO, "MOVEUNLINK"));
+        $doc->addHistoryEntry(sprintf(
+            _("Document unlinked of %s folder"),
+            $this->title,
+            \DocHisto::INFO,
+            "MOVEUNLINK"
+        ));
         // use post virtual method
         if (!$noprepost) {
             $this->updateFldRelations();
-            $err = $this->postRemoveDocument($docid);
+            $err = $this->getHooks()->trigger(DirHooks::POSTREMOVE, $docid);
         }
 
         return $err;
@@ -627,7 +585,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
     /**
      * move a document from me to a folder
      *
-     * @param integer $docid    the document identifier to move
+     * @param integer $docid the document identifier to move
      * @param integer $movetoid target destination
      *
      * @return string error message (empty if null)
@@ -692,7 +650,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
     /**
      * return families that can be use in insertion
      *
-     * @param int  $classid      : restrict for same usefor families
+     * @param int $classid : restrict for same usefor families
      * @param bool $verifyCreate set to true if you want to get only families the user can create (icreate acl)
      *
      * @return array
@@ -712,7 +670,12 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
             $this->norestrict = false;
             $tclassdoc = array();
             if ($allbut != "1") {
-                $tallfam = DirLib::getClassesDoc($this->dbaccess, ContextManager::getCurrentUser()->id, $classid, "TABLE");
+                $tallfam = DirLib::getClassesDoc(
+                    $this->dbaccess,
+                    ContextManager::getCurrentUser()->id,
+                    $classid,
+                    "TABLE"
+                );
 
                 foreach ($tallfam as $cdoc) {
                     $tclassdoc[$cdoc["id"]] = $cdoc;
@@ -778,11 +741,11 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
     /**
      * return document includes in folder
      *
-     * @param bool       $controlview if false all document are returned else only visible for current user  document are return
-     * @param array      $filter      to add list sql filter for selected document
-     * @param int|string $famid       family identifier to restrict search
-     * @param string     $qtype       type os result TABLE|LIST|ITEM
-     * @param string     $trash
+     * @param bool $controlview if false all document are returned else only visible for current user  document are return
+     * @param array $filter to add list sql filter for selected document
+     * @param int|string $famid family identifier to restrict search
+     * @param string $qtype type os result TABLE|LIST|ITEM
+     * @param string $trash
      *
      * @return array array of document array
      */

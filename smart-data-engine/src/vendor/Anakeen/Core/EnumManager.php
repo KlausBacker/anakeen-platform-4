@@ -32,8 +32,6 @@ class EnumManager
 
         // set the enum array
         $enums = array();
-        $br = $name . ':'; // id i18n prefix
-
 
         $cached = self::_cacheFetch(self::_cEnum, $name, null, $returnDisabled);
         if ($cached !== null) {
@@ -72,7 +70,7 @@ class EnumManager
 
             if ($item["parentkey"] !== null) {
                 $enums[$enumKey]["path"] = self::getCompleteEnumKey($item["keyPath"], $dbEnums);
-                $enums[$enumKey]["longLabel"] = self::getCompleteEnumlabel($enumKey, $dbEnums, $br);
+                $enums[$enumKey]["longLabel"] = self::getCompleteEnumlabel($enumKey, $dbEnums, $name);
             } else {
                 $enums[$enumKey]["path"] = $item["keyPath"];
             }

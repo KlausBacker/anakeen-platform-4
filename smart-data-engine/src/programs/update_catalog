@@ -38,6 +38,7 @@ function whattext ()
         if [ -f "main-catalog.mo" ]; then
             mv -f main-catalog.mo main-catalog.mo.old
         fi
+        rm -f main-catalog.po
         rm -f origin-catalog.po custom-catalog.po
 
         find . -type l -name "main-catalog[0-9]*.mo" -exec /bin/rm {} \;

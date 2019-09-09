@@ -12,6 +12,7 @@ namespace Anakeen\SmartStructures\Igroup;
 
 use Anakeen\Core\SEManager;
 use Anakeen\SmartHooks;
+use Anakeen\SmartStructures\Dir\DirHooks;
 use SmartStructure\Fields\Igroup as MyAttributes;
 use \Anakeen\Core\Exception;
 
@@ -41,8 +42,18 @@ class IGroupHooks extends \SmartStructure\Group
         })->addListener(SmartHooks::POSTAFFECT, function () {
             $this->resetUserObject();
         });
+        $this->getHooks()->removeListeners(DirHooks::POSTINSERT);
+        $this->getHooks()->removeListeners(DirHooks::POSTINSERTMULTIPLE);
+        $this->getHooks()->addListener(DirHooks::POSTINSERT, function ($docid, $multiple = false) {
+            return $this->updateGroupTable($docid, $multiple);
+        });
+        $this->getHooks()->addListener(DirHooks::POSTREMOVE, function ($docid) {
+            return $this->deleteItemInGroupTable($docid);
+        });
+        $this->getHooks()->addListener(DirHooks::POSTINSERTMULTIPLE, function ($tdocid) {
+            return $this->updateGroupTableItems($tdocid);
+        });
     }
-
 
 
     /**
@@ -187,13 +198,13 @@ class IGroupHooks extends \SmartStructure\Group
     /**
      * update groups table in USER database
      *
-     * @param int  $docid
+     * @param int $docid
      * @param bool $multiple
      *
      * @return string error message
      * @throws Exception
      */
-    public function postInsertDocument($docid, $multiple = false)
+    protected function updateGroupTable($docid, $multiple = false)
     {
         $err = "";
         if ($multiple == false) {
@@ -234,7 +245,7 @@ class IGroupHooks extends \SmartStructure\Group
      * @return string error message
      * @throws Exception
      */
-    public function postInsertMultipleDocuments($tdocid)
+    protected function updateGroupTableItems($tdocid)
     {
         $err = "";
 
@@ -269,13 +280,13 @@ class IGroupHooks extends \SmartStructure\Group
     /**
      * update groups table in USER database before suppress
      *
-     * @param int  $docid
+     * @param int $docid
      * @param bool $multiple
      *
      * @return string error message
      * @throws Exception
      */
-    public function postRemoveDocument($docid, $multiple = false)
+    public function deleteItemInGroupTable($docid)
     {
         $err = "";
         $gid = $this->getRawValue("US_WHATID");
@@ -303,7 +314,6 @@ class IGroupHooks extends \SmartStructure\Group
     }
 
 
-
     /**
      * (re)insert members of the group in folder from USER databasee
      *
@@ -317,7 +327,7 @@ class IGroupHooks extends \SmartStructure\Group
         $tu = $gAccount->GetUsersGroupList($gAccount->id);
 
         if (is_array($tu)) {
-            $err=parent::clear();
+            $err = parent::clear();
             if (!$err) {
                 $tfid = array();
                 foreach ($tu as $k => $v) {
