@@ -1,10 +1,10 @@
 {
   "name": "security",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "main": "index.js",
   "author": "anakeen",
   "license": "SEE LICENSE IN LICENSE",
   "devDependencies": {
-    "@anakeen/anakeen-cli": "^1.0.7"
+    "@anakeen/anakeen-cli": "1.1.20"
   }
 }

@@ -12,9 +12,9 @@
     "buildJs": "yarn run buildJs:tokens"
   },
   "devDependencies": {
-    "@anakeen/anakeen-cli": "^1.1.13",
+    "@anakeen/anakeen-cli": "1.1.20",
     "@anakeen/internal-components": "^1.0.1",
-    "@anakeen/user-interfaces": "2.0.1",
+    "@anakeen/user-interfaces": "2.0.2",
     "@progress/kendo-buttons-vue-wrapper": "^2019.2.621",
     "@progress/kendo-charts-vue-wrapper": "^2019.2.621",
     "@progress/kendo-dropdowns-vue-wrapper": "^2019.2.621",
@@ -28,8 +28,8 @@
     "vue": "2.6.10"
   },
   "dependencies": {
-    "@anakeen/hub-components": "^1.0.1",
-    "@anakeen/webpack-conf": "^1.2.0",
+    "@anakeen/hub-components": "1.0.2",
+    "@anakeen/webpack-conf": "1.2.1",
     "core-js": "3.1.4",
     "vue-template-compiler": "2.6.10"
   }

@@ -22,8 +22,8 @@
     "yarn.lock"
   ],
   "devDependencies": {
-    "@anakeen/user-interfaces": "2.0.1",
-    "@anakeen/webpack-conf": "^1.2.0",
+    "@anakeen/user-interfaces": "2.0.2",
+    "@anakeen/webpack-conf": "1.2.1",
     "@progress/kendo-ui": "^2019.2.710",
     "jquery": "^3.3.1",
     "ts-loader": "^6.0.4",
