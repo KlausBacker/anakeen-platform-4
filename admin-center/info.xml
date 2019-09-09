@@ -2,7 +2,7 @@
 <module xmlns="https://platform.anakeen.com/4/schemas/app/1.0"
         vendor="Anakeen"
         license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0"
-        name="admin-center" version="2.0.1">
+        name="admin-center" version="2.0.2">
     <description>Admin Center</description>
 
     <requires>

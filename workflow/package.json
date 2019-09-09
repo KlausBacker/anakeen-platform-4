@@ -13,6 +13,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@anakeen/anakeen-cli": "^1.0.7"
+    "@anakeen/anakeen-cli": "1.1.20"
   }
 }
