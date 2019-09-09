@@ -26,6 +26,10 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
     const PREREMOVE = "preRemove";
     /** @var string after removing Smart Element from Folder */
     const POSTREMOVE = "postRemove";
+    /** @var string before add several Smart Element into Folder */
+    const PREINSERTMULTIPLE = "preInsertMultiple";
+    /** @var string after adding several Smart Element into Folder */
+    const POSTINSERTMULTIPLE = "postInsertMultiple";
 
     public $defDoctype = 'D';
     private $authfam = false;
@@ -71,62 +75,6 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
         $this->updateFldRelations();
         return $err;
     }
-
-    /**
-     * hook method use before insert document in folder
-     *
-     * @param int $docid document identifier to insert
-     * @param bool $multiple flag to indicate if the insertion is a part of grouped insertion
-     *
-     * @return string error message if not empty the insertion will be aborted
-     * @api hook method use before insert document in folder
-     *
-     */
-    public function preInsertDocument($docid, $multiple = false)
-    {
-        return "";
-    }
-
-
-
-
-
-    /**
-     * hook method use after insert multiple document in this folder
-     * must be redefined to optimize algorithm
-     *
-     *
-     * @param array $tdocid array of document identifier to insert
-     *
-     * @return string warning message
-     * @see DirHooks::POSTINSERT
-     *
-     * @api hook method called after insert several documents in folder
-     * @see DirHooks::insertMultipleDocuments
-     */
-    public function postInsertMultipleDocuments($tdocid)
-    {
-        return '';
-    }
-
-    /**
-     * hook method use after insert multiple document in this folder
-     * must be redefined to optimize algorithm
-     *
-     * @param array $tdocid array of document identifier to insert
-     *
-     * @return string warning message
-     * @see DirHooks::insertMultipleDocuments
-     *
-     * @api hook method called before insert several documents in folder
-     * @see DirHooks::PREINSERT
-     */
-    public function preInsertMultipleDocuments($tdocid)
-    {
-        return '';
-    }
-
-
 
     /**
      * Test if current user can add or delete document in this folder
@@ -327,7 +275,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
                     $tdocids[] = ($isStatic) ? $v["id"] : $v["initid"];
                 }
             }
-            $err = $this->preInsertMultipleDocuments($tdocids);
+            $err = $this->getHooks()->trigger(DirHooks::PREINSERTMULTIPLE, $tdocids);
             $info = array(
                 "error" => $err,
                 "preInsertMultipleDocuments" => $err,
@@ -426,7 +374,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
         $msg = '';
         if (!$noprepost) {
             $this->updateFldRelations();
-            $msg = $this->postInsertMultipleDocuments($tAddeddocids);
+            $msg = $this->getHooks()->trigger(DirHooks::POSTINSERTMULTIPLE, $tAddeddocids);
             $err .= $msg;
         }
         // integrate pre insert errors

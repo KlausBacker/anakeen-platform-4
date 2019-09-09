@@ -46,6 +46,13 @@ class GroupHooks extends \SmartStructure\Dir
             $this->specPostInsert();
             return "";
         });
+        $this->getHooks()->addListener(DirHooks::POSTINSERTMULTIPLE, function () {
+            // update groups table in USER database before suppress
+            $this->setGroupMail();
+            $this->refreshMembers();
+            $this->specPostInsert();
+            return "";
+        });
     }
 
     /**
@@ -69,20 +76,6 @@ class GroupHooks extends \SmartStructure\Dir
     }
 
 
-    /**
-     * update groups table in USER database
-     *
-     * @param $tdocid
-     *
-     * @return string error message
-     */
-    public function postInsertMultipleDocuments($tdocid)
-    {
-        $this->setGroupMail();
-        $this->refreshMembers();
-        $this->specPostInsert();
-        return "";
-    }
 
 
     /**

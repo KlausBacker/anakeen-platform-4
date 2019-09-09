@@ -43,11 +43,15 @@ class IGroupHooks extends \SmartStructure\Group
             $this->resetUserObject();
         });
         $this->getHooks()->removeListeners(DirHooks::POSTINSERT);
+        $this->getHooks()->removeListeners(DirHooks::POSTINSERTMULTIPLE);
         $this->getHooks()->addListener(DirHooks::POSTINSERT, function ($docid, $multiple = false) {
             return $this->updateGroupTable($docid, $multiple);
         });
         $this->getHooks()->addListener(DirHooks::POSTREMOVE, function ($docid) {
             return $this->deleteItemInGroupTable($docid);
+        });
+        $this->getHooks()->addListener(DirHooks::POSTINSERTMULTIPLE, function ($tdocid) {
+            return $this->updateGroupTableItems($tdocid);
         });
     }
 
@@ -241,7 +245,7 @@ class IGroupHooks extends \SmartStructure\Group
      * @return string error message
      * @throws Exception
      */
-    public function postInsertMultipleDocuments($tdocid)
+    protected function updateGroupTableItems($tdocid)
     {
         $err = "";
 
