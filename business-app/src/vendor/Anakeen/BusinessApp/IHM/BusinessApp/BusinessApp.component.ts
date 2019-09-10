@@ -38,8 +38,6 @@ export default class BusinessApp extends Vue {
     seTab: AnkSETab;
   };
 
-  public tabs: object[] = [];
-  public selectedTab: string = this.selectedElement;
   public panes: object[] = [
     {
       collapsible: true,
@@ -51,7 +49,7 @@ export default class BusinessApp extends Vue {
       scrollable: false
     }
   ];
-  public selectedCollection: string | number = "";
+
   public collectionDropDownList: kendo.ui.DropDownList = null;
   public currentListPage: number = 0;
   public currentListFilter: string = "";
@@ -85,6 +83,11 @@ export default class BusinessApp extends Vue {
     }
   }
 
+  public created() {
+    // @ts-ignore
+    this.$store.commit("businessApp/SELECT_TAB", this.selectedElement);
+  }
+
   public mounted() {
     if (this.isMultiCollection) {
       this.initCollectionSelector();
@@ -108,13 +111,39 @@ export default class BusinessApp extends Vue {
     return this.welcomeTab;
   }
 
+  public get tabs() {
+    // @ts-ignore
+    return this.$store.getters["businessApp/tabs"];
+  }
+
+  public get selectedTab() {
+    // @ts-ignore
+    return this.$store.getters["businessApp/selectedTab"];
+  }
+
+  public set selectedTab(value) {
+    // @ts-ignore
+    this.$store.commit("businessApp/SELECT_TAB", value);
+  }
+
+  public get selectedCollection() {
+    // @ts-ignore
+    return this.$store.getters["businessApp/selectedCollection"];
+  }
+
+  public set selectedCollection(value) {
+    // @ts-ignore
+    this.$store.commit("businessApp/SET_COLLECTION", value);
+  }
+
   protected addTab(tab) {
     if (tab.tabId === undefined) {
       tab.tabId = tab.name;
     }
     // @ts-ignore
     if (this.tabs.findIndex(t => t.tabId === tab.tabId) === -1) {
-      this.tabs.push(tab);
+      // @ts-ignore
+      this.$store.commit("businessApp/ADD_TAB", tab);
       this.$emit("openTab", tab);
     }
     this.selectedTab = tab.tabId;
@@ -136,7 +165,8 @@ export default class BusinessApp extends Vue {
   protected onTabRemove(tabRemoved) {
     const closeTab = tabIndex => {
       const nextSelectedTab = this.tabs[tabIndex - 1] || this.tabs[tabIndex + 1];
-      this.tabs.splice(tabIndex, 1);
+      // @ts-ignore
+      this.$store.commit("businessApp/REMOVE_TAB", tabIndex);
       if (this.selectedTab === tabRemoved) {
         if (nextSelectedTab) {
           // @ts-ignore
