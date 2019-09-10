@@ -29,6 +29,7 @@
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import HubElement from "@anakeen/hub-components/components/lib/HubElement";
 import BusinessApp from "../BusinessApp/BusinessApp.vue";
+import BusinessAppModule from "./businessAppModule.js";
 
 @Component({
   name: "ank-business-app",
@@ -96,6 +97,8 @@ export default class HubBusinessApp extends Vue {
     this.currentFilter = filterValue;
   }
   public created() {
+    // @ts-ignore
+    this.getStore().registerModule("businessApp", BusinessAppModule);
     this.subRouting();
   }
 
