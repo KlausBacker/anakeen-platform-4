@@ -128,7 +128,7 @@ const postGlobFile = ({
 };
 
 exports.deployConfiguration = ({ sourcePath, contextUrl, contextUsername, contextPassword, verbose, dryRun }) => {
-  return gulp.task("importConfiguration", () => {
+  return gulp.task("deployConfiguration", () => {
     // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve, reject) => {
       try {
@@ -146,7 +146,7 @@ exports.deployConfiguration = ({ sourcePath, contextUrl, contextUsername, contex
           dryRun
         })
           .then(() => {
-            interactive.success("Import config file done");
+            interactive.success("Deploy config file done");
             resolve();
           })
           .catch(error => {
@@ -168,7 +168,7 @@ exports.deployGlobConfiguration = ({
   verbose,
   dryRun
 }) => {
-  return gulp.task("importGlobConfiguration", () => {
+  return gulp.task("deployGlobConfiguration", () => {
     // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve, reject) => {
       try {
@@ -187,7 +187,7 @@ exports.deployGlobConfiguration = ({
           dryRun
         })
           .then(() => {
-            interactive.success("Import config file done");
+            interactive.success("Deploy config file done");
             resolve();
           })
           .catch(error => {

@@ -9,7 +9,7 @@ signale.config({
   displayDate: true
 });
 
-exports.desc = "Import a configuration";
+exports.desc = "Deploy a configuration";
 exports.builder = {
   noCheck: {
     description: "add check of XML inside the module",
@@ -17,7 +17,7 @@ exports.builder = {
     type: "boolean"
   },
   glob: {
-    description: "glob instruction for the configuration files to import",
+    description: "glob instruction for the configuration files to deploy",
     alias: "g",
     conflicts: "sourcePath"
   },
@@ -38,13 +38,13 @@ exports.builder = {
     type: "boolean"
   },
   dryRun: {
-    description: "make dry run import",
+    description: "make dry run deploy",
     alias: "d",
     default: false,
     type: "boolean"
   },
   sourcePath: {
-    description: "path of the xml configuration to import",
+    description: "path of the xml configuration to deploy",
     alias: "s",
     type: "string",
     conflicts: "glob",
@@ -76,9 +76,9 @@ exports.builder = {
 exports.handler = function(argv) {
   try {
     let checkPromise = Promise.resolve();
-    signale.time("importConfiguration");
+    signale.time("deployConfiguration");
     if (argv.dryRun) {
-      signale.info("Dry run import mode");
+      signale.info("Dry run deploy mode");
     }
     if (argv.verbose) {
       signale.info("Verbose mode");
@@ -91,29 +91,29 @@ exports.handler = function(argv) {
         checkPromise = checkConfigFile.handler(argv, true);
       }
       deployConfiguration(argv);
-      task = gulp.task("importConfiguration");
+      task = gulp.task("deployConfiguration");
     } else if (argv.glob) {
       signale.info("Glob file mode");
       if (!argv.noCheck) {
         checkPromise = checkConfigFile.handler(argv, true);
       }
       deployGlobConfiguration(argv);
-      task = gulp.task("importGlobConfiguration");
+      task = gulp.task("deployGlobConfiguration");
     }
     checkPromise
       .then(() => {
         return task().then(() => {
-          signale.timeEnd("importConfiguration");
-          signale.success("import configuration done");
+          signale.timeEnd("deployConfiguration");
+          signale.success("deploy configuration done");
         });
       })
       .catch(e => {
-        signale.timeEnd("importConfiguration");
+        signale.timeEnd("deployConfiguration");
         signale.error(e);
         process.exit(1);
       });
   } catch (e) {
-    signale.timeEnd("importConfiguration");
+    signale.timeEnd("deployConfiguration");
     signale.error(e);
     process.exit(1);
   }
