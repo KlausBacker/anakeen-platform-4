@@ -12,7 +12,6 @@ exports.builder = {
   sourcePath: {
     description: "path of the configuration file",
     alias: "s",
-    default: ".",
     type: "string",
     conflicts: "glob"
   },
