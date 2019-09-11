@@ -100,7 +100,7 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);";
     public function getIRelations($reltype = "", $doctype = "", $limit = 0)
     {
         $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, get_class($this));
-        $q->AddQuery("cinitid=" . $this->sinitid);
+        $q->AddQuery(sprintf("cinitid= %d", $this->sinitid));
         if ($reltype != "") {
             $q->AddQuery("type='$reltype'");
         }
