@@ -81,13 +81,13 @@
                 <cv_menu></cv_menu>
             </cv_t_views>
             <cv_t_views>
-                <cv_idview>TABTOPFIX</cv_idview>
-                <cv_lview>Tab scroll</cv_lview>
+                <cv_idview>STICKYTAB</cv_idview>
+                <cv_lview>Sticky Tab</cv_lview>
                 <cv_kview>VEDIT</cv_kview>
-                
-                <cv_renderconfigclass>Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\AllRenderTabTopFix</cv_renderconfigclass>
+
+                <cv_renderconfigclass>Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\AllRenderStickyTab</cv_renderconfigclass>
                 <cv_mskid xsi:nil="true"/>
-                
+
                 <cv_order></cv_order>
                 <cv_displayed>no</cv_displayed>
                 <cv_menu></cv_menu>

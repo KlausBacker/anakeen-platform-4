@@ -375,6 +375,18 @@
               }
             }
           }
+        },
+
+        "document": {
+          "$id": "#/properties/renderOptions/properties/document",
+          "type": "object",
+          "title": "The Types Schema",
+          "required": [],
+          "propertyNames": {
+            "pattern": "^[a-z_][a-zA-Z0-9_]*$"
+          }
+
+
         }
       }
     },

@@ -6,7 +6,7 @@
 }
 
 
-.dcpDocument[data-structure=TST_DDUI_ALLTYPE][data-viewid=CSSCOLOR] .dcpDocument__tabs.tab--fixed.dcpDocument__tabs .dcpTab__label.k-state-active,
+.dcpDocument[data-structure=TST_DDUI_ALLTYPE][data-viewid=CSSCOLOR] .dcpDocument__tabs.dcpDocument__tabs .dcpTab__label.k-state-active,
 .dcpDocument[data-structure=TST_DDUI_ALLTYPE][data-viewid=CSSCOLOR] .dcpDocument__tabs .dcpTab__label.k-state-active {
     background: #fcff85;
 }
