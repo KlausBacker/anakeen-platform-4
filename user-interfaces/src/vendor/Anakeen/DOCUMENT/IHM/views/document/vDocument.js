@@ -150,6 +150,7 @@ define([
         $(window).off(".v" + this.model.cid);
 
         $(window).on("resize.v" + this.model.cid, _.bind(this.resizeForFooter, this));
+
         kendo.culture(locale);
         //add document base
         try {
@@ -331,11 +332,6 @@ define([
             this.$(".dcpDocument__tabs").addClass("dcpDocument__tabs--left");
           }
 
-          if (tabPlacement === "topFix" && this.kendoTabs) {
-            this.$(".dcpDocument__tabs").addClass("dcpDocument__tabs--fixed");
-
-            $(window).on("resize.v" + this.model.cid, _.debounce(_.bind(this.responsiveTabMenu, this), 100, false));
-          }
           if (tabPlacement === "top" && this.kendoTabs) {
             this.$(".dcpDocument__tabs").addClass("dcpDocument__tabs--fixed");
             $(window).on("resize.v" + this.model.cid, _.debounce(_.bind(this.scrollTabList, this), 100, false));
@@ -379,9 +375,7 @@ define([
           }, this)
         );
         this.$el.show();
-        if (tabPlacement === "topFix" && this.kendoTabs) {
-          _.defer(_.bind(this.responsiveTabMenu, this)); // need to call here to have good dimensions
-        }
+
         if (tabPlacement === "left") {
           this.$(".dcpTab__content").css(
             "width",
@@ -391,8 +385,30 @@ define([
 
         _.delay(function vDocumentEndLoading() {
           $(".dcpLoading--init").removeClass("dcpLoading--init");
-          if (tabPlacement === "topFix" && documentView.kendoTabs) {
-            documentView.responsiveTabMenu(); // need to call here to have good dimensions
+
+          if (documentView.model.getOption("stickyTabs") !== undefined) {
+            var menuHeight = 0;
+            if (documentView.model.getOption("stickyTabs") === "auto") {
+              menuHeight = documentView.$el.find(".dcpDocument__menu").height();
+            } else {
+              menuHeight = documentView.model.getOption("stickyTabs");
+            }
+            var $tab = documentView.$el.find(".dcpDocument__tabs");
+            var $tabList = documentView.$el.find(".dcpDocument__tabs__list");
+            $tabList.css("top", menuHeight);
+
+            $tabList.append($tab.find("> .k-tabstrip-next"));
+            $tabList.prepend($tab.find("> .k-tabstrip-prev"));
+            $(window).on(
+              "resize.v" + documentView.model.cid,
+              _.debounce(function() {
+                var $tabList = documentView.$el.find(".dcpDocument__tabs__list");
+                $tabList.append($tab.find("> .k-tabstrip-next"));
+                $tabList.prepend($tab.find("> .k-tabstrip-prev"));
+              }, 200)
+            );
+
+            $tab.addClass("tab--sticky");
           }
         }, 500);
       });
@@ -458,287 +474,6 @@ define([
           bTooltip.show();
         }
       });
-    },
-    /**
-     * Add menu if needed in topFix placement tab
-     */
-    responsiveTabMenu: function vDocumentTabFixMenu() {
-      var $tabLabel = this.$(".dcpDocument__tabs__list li");
-
-      var documentWidth = this.$(".dcpDocument__tabs").width() - 12;
-      var currentWidth = 0;
-      var hiddens = [];
-      var lastShow = null;
-      var $dropSelect;
-      var $dropTopSelect;
-      var $kendoTabs = this.kendoTabs.data("kendoTabStrip");
-      var liIndex = 0;
-      var $tabs = this.$(".dcpDocument__tabs");
-      var $selectedTabId = this.selectedTab;
-      var hiddenSelected = false;
-      var dataSource = null;
-      var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
-
-      // $tabs.find(".dcpDocument__tabs__list").css("overflow", "hidden").css("max-height", "2.7em");
-      // Restore initial tabs
-      $tabLabel.show();
-
-      $tabLabel.each(function vDocumentHideTabWidth() {
-        currentWidth += $(this).outerWidth();
-        if (currentWidth > documentWidth) {
-          $(this).hide();
-          if (hiddens.length === 0) {
-            hiddens.push({
-              tooltipLabel: $(lastShow).data("tooltipLabel"),
-              label: $(lastShow)
-                .find(".k-link")
-                .text(),
-              id: $(lastShow).data("attrid"),
-              index: liIndex - 1
-            });
-          }
-          hiddens.push({
-            tooltipLabel: $(this).data("tooltipLabel"),
-            label: $(this)
-              .find(".k-link")
-              .text(),
-            id: $(this).data("attrid"),
-            index: liIndex
-          });
-        } else {
-          $kendoTabs.enable && $kendoTabs.enable($(this));
-          lastShow = this;
-        }
-
-        liIndex++;
-      });
-
-      /**
-       * Need to recompute container width
-       */
-      $(".dcpLabel__select-hide:visible").each(function vDocumentSelectContainer() {
-        var $container = $(this).closest(".k-list-container");
-        var x = $container.offset().left;
-        var maxWidth = $("body").width() - x - 20 + "px";
-
-        $container.css("max-width", maxWidth);
-        $container.closest(".k-animation-container").css("max-width", maxWidth);
-        $(this).css("max-width", "");
-      });
-
-      if ($tabs.data("hiddenTabsLength") === hiddens.length) {
-        // Optimization if no new tabs to hide
-        if (hiddens.length > 0) {
-          $kendoTabs && $kendoTabs.disable && $kendoTabs.disable($(lastShow));
-        }
-
-        //$tabs.find(".dcpDocument__tabs__list").css("overflow", "").css("max-height", "");
-        return;
-      }
-
-      // Delete fixed height
-      //$tabLabel.css("height", '');
-      // Record hidden count to optimization
-      $tabs.data("hiddenTabsLength", hiddens.length);
-      $tabLabel.find(".k-link").show(); // Restore original link (tab label)
-
-      $dropTopSelect = $tabs.find(".dcpTab__label__select.k-combobox").hide();
-      $tabs.find("input.dcpTab__label__select[data-role=combobox]").each(function vDocumentSelectTabClose() {
-        $(this).data("kendoComboBox") &&
-          $(this).data("kendoComboBox").close &&
-          $(this)
-            .data("kendoComboBox")
-            .close();
-      });
-
-      $tabs.find(".dcpLabel--select").removeClass("dcpLabel--select k-state-active");
-      $tabs.find('.dcpLabel[data-attrid="' + $selectedTabId + '"]').addClass("k-state-active");
-
-      if (hiddens.length > 0) {
-        // Need to disable tab to use own events managing
-        if (lastShow) {
-          $kendoTabs.disable($(lastShow));
-        }
-
-        // Hide original link
-        $(lastShow)
-          .find(".k-link")
-          .hide();
-        // Replace it to a dropdown selector
-        hiddenSelected = _.some(hiddens, function vDocumentSomeHiddens(item) {
-          return item.id === $selectedTabId;
-        });
-
-        if (hiddenSelected) {
-          $(lastShow).addClass("k-state-active");
-        } else {
-          if ($(lastShow).data("attrid") !== $selectedTabId) {
-            $(lastShow).removeClass("k-state-active");
-          }
-        }
-
-        $(lastShow).addClass("dcpLabel--select");
-        //$(lastShow).height(currentHeight - 5);
-        if ($dropTopSelect.length === 0) {
-          $dropSelect = $('<input class="dcpTab__label__select" />');
-          $(lastShow).append($dropSelect);
-          $dropSelect.kendoComboBox({
-            value: hiddenSelected ? $selectedTabId : hiddens[0].id,
-            dataSource: hiddens,
-            dataTextField: "label",
-            dataValueField: "id",
-            dataBound: function vDocumentTabSelectDatabound() {
-              var myTab = $(this.element).closest("li");
-              var liItem = $tabs.find('li[data-attrid="' + this.value() + '"]');
-              myTab.data("tooltipLabelSelect", liItem.data("tooltipLabel"));
-            },
-            select: function vDocumentTabSelectSelect(event) {
-              var dataItem = this.dataSource.at(event.item.index());
-              var liItem = $tabs.find('li[data-attrid="' + dataItem.id + '"]');
-              var myTab = $(this.element).closest("li");
-
-              myTab.data("tooltipLabelSelect", dataItem.tooltipLabel);
-              // Need to reset class and enable to really trigger show events
-              myTab.removeClass("k-state-active");
-              $kendoTabs.enable(myTab);
-              $kendoTabs.select(liItem);
-              $kendoTabs.disable(myTab);
-              myTab.addClass("k-state-active");
-              myTab.find(".k-input").blur(); // Because input is read only
-            },
-            open: function vDocumentTabSelectOpen() {
-              // Need to compute width of container to see elements
-              // Set max-width to not be out of body
-              var $ul = $(this.ul);
-              var $li = $(this.element).closest("li");
-              var x = $li.offset().left;
-              var bodyWidth = $("body").width();
-              $ul.css("max-width", Math.max(bodyWidth - x - 20, $(lastShow).width()) + "px");
-              $ul.css("min-width", $li.width());
-              _.defer(function vDocumentSelectTabOpen() {
-                $ul.closest(".k-animation-container").addClass("menu__select_container");
-              });
-            },
-
-            template: function vDocumentTabSelectTemplate(event) {
-              if (event.tooltipLabel) {
-                return Mustache.render(
-                  '<span class="dcpLabel__select--tooltip" data-tooltipLabel="{{tooltipLabel}}">{{label}}</span>',
-                  event
-                );
-              }
-              return event.label;
-            }
-          });
-
-          $dropSelect.data("kendoComboBox").ul.addClass("dcpLabel__select-hide");
-          // The container width is computed by open event
-          $dropSelect.data("kendoComboBox").list.width("auto");
-          // No use input selector
-          $(lastShow)
-            .find("input")
-            .attr("aria-readonly", "true")
-            .prop("readonly", true);
-          $(lastShow)
-            .find(".k-select")
-            .prepend($("<span/>").addClass("dcpLabel__count"));
-
-          $dropSelect.data("kendoComboBox").ul.tooltip({
-            selector: "li.k-item ",
-            placement: "left",
-            container: ".dcpDocument",
-            html: true,
-            title: function vDocumentTabSelectTitle() {
-              return $(this)
-                .find(".dcpLabel__select--tooltip")
-                .attr("data-tooltipLabel");
-            }
-          });
-          $dropSelect
-            .parent()
-            .find(".k-input")
-            .css("width", "");
-        } else {
-          // Reuse dropDown created previously
-          $dropTopSelect.show();
-          $dropSelect = $tabs.find("input.dcpTab__label__select[data-role=combobox]");
-          $(lastShow).append($dropTopSelect); // Move to new lastShow
-          if ($dropSelect.data("kendoComboBox")) {
-            $dropSelect.data("kendoComboBox").value(hiddenSelected ? $selectedTabId : hiddens[0].id);
-            dataSource = new kendo.data.DataSource({
-              data: hiddens
-            });
-            $dropSelect.data("kendoComboBox").setDataSource(dataSource);
-          }
-        }
-
-        // Add count in select button
-        $(lastShow)
-          .find(".dcpLabel__count")
-          .text(hiddens.length);
-
-        if (!$tabs.data("selectFixOn")) {
-          // Add callback only one time
-          $tabs.on("click", ".dcpLabel--select .k-dropdown-wrap .k-input", function vDocumentTabSelectClick() {
-            var selectedTab = $kendoTabs.select().data("attrid");
-            var selectedItem = $tabs
-              .data("selectFixOn")
-              .data("kendoComboBox")
-              .value();
-            var liItem = $tabs.find('li[data-attrid="' + selectedItem + '"]');
-            var myTab = $(this).closest("li");
-
-            if (selectedItem !== selectedTab) {
-              myTab.removeClass("k-state-active");
-              $kendoTabs.enable(myTab);
-              $kendoTabs.select(liItem);
-              $kendoTabs.disable(myTab);
-              myTab.addClass("k-state-active");
-            }
-          });
-
-          $tabs.on("focus", ".dcpLabel--select .k-dropdown-wrap .k-input", function vDocumentTabFocus() {
-            $(this).blur();
-          });
-        }
-
-        // Memorize dropdown to reuse it in callback and to listen only one
-        $tabs.data("selectFixOn", $dropSelect);
-      }
-      if ("ontouchstart" in document.documentElement && iOS) {
-        $("body")
-          .off("show.bs.tooltip")
-          .on("show.bs.tooltip", "[data-original-title]", function vDocumentWorkaroundIosTouch(e) {
-            // prevent ios double tap
-            var $tooltip = $(this);
-            var tooltipObject = $tooltip.data("bs.tooltip");
-
-            if (
-              tooltipObject &&
-              tooltipObject.inState.click === false &&
-              tooltipObject.inState.focus === false &&
-              tooltipObject.inState.hover === false
-            ) {
-              return;
-            }
-
-            if ("ontouchstart" in document.documentElement) {
-              if (!$tooltip.data("showios")) {
-                e.preventDefault();
-                $tooltip.data("showios", true);
-                _.delay(function vDocumentWorkaroundIosDelay() {
-                  $tooltip.tooltip("show");
-                  $tooltip.data("showios", false);
-                  _.delay(function vDocumentWorkaroundIosSecondDelay() {
-                    $tooltip.tooltip("hide");
-                  }, 2000);
-                }, 500);
-              }
-            }
-          });
-      }
-
-      //$tabs.find(".dcpDocument__tabs__list").css("overflow", "").css("max-height", "");
     },
 
     /**

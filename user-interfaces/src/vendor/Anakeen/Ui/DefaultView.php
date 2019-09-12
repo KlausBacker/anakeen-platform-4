@@ -107,7 +107,7 @@ class DefaultView extends RenderDefault
         $confirmOption->title = ___("Confirm deletion of {{{document.properties.title}}}", "render");
         $confirmOption->confirmButton = ___("Confirm deletion", "UiMenu");
         $confirmOption->windowWidth = "35rem";
-        $confirmOption->windowHeight = "12rem";
+        $confirmOption->windowHeight = "13rem";
         $item->useConfirm(sprintf(___("Sure delete %s ?", "UiMenu"), $document->getHTMLTitle()), $confirmOption);
         $item->setBeforeContent('<div class="fa fa-trash-o" />');
         $menu->appendElement($item);

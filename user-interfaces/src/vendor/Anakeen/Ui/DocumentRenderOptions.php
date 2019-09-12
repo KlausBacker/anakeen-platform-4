@@ -15,9 +15,9 @@ class DocumentRenderOptions extends BaseRenderOptions
     const tabPlacementOption = "tabPlacement";
     const tabLeftPlacement = "left";
     const tabTopProportionalPlacement = "topProportional";
-    const tabTopFixPlacement = "topFix"; // fix width and display
     const tabTopScrollPlacement = "top"; // fix width and horizontal scroll
-    
+    const stickyTabsOptions = "stickyTabs";
+
     protected $scope = "document";
     /**
      * add custom option to be propagated to client
@@ -68,12 +68,23 @@ class DocumentRenderOptions extends BaseRenderOptions
         $allowPlacement = array(
             self::tabLeftPlacement,
             self::tabTopProportionalPlacement,
-            self::tabTopFixPlacement,
             self::tabTopScrollPlacement
         );
         if (!in_array($tabPlacement, $allowPlacement)) {
             throw new Exception("UI0107", $tabPlacement, implode(', ', $allowPlacement));
         }
         return $this->setOption(self::tabPlacementOption, $tabPlacement);
+    }
+    /**
+     * Tab labels are sticky when scroll height has reach $height
+     * Cannot be used with leftPlacement
+     * @param string $height with unit like "100px" or "10rem".
+     * if "auto", the barmenu height is used
+     *
+     * @return DocumentRenderOptions
+     */
+    public function setStickyTabs($height = "auto")
+    {
+        return $this->setOption(self::stickyTabsOptions, $height);
     }
 }

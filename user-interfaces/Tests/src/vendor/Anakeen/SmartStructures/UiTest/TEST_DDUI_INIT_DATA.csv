@@ -161,9 +161,9 @@ DOC;TST_RENDER;TST_RENDER_0101;;101;Document::setTabPlacement(top);"<p>Test du l
 DOC;TST_RENDER;TST_RENDER_0100;;100;Document::setTabPlacement(left);"<p>Test du l'option setTabPlacement(tabLeftPlacement)</p>
 
 <p>Les onglets sont affichsé sur la gauche</p>";TST_ALL_COMPLET;TABLEFT;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-DOC;TST_RENDER;TST_RENDER_0103;;103;Document::setTabPlacement(topFix);"<p>Test du l'option setTabPlacement(tabTopFixPlacement)</p>
+DOC;TST_RENDER;TST_RENDER_0104;;104;Document::setStickyTab();"<p>Test du l'option setStickyTab()</p>
 
-<p>Les onglets ce place dans un sélecteur à droit lorsque la fenêtre est trop petite</p>";TST_ALL_COMPLET;TABTOPFIX;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+<p>Les onglets son ttoujours visible même lors du scroll vertical</p>";TST_ALL_COMPLET;STICKYTAB;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DOC;TST_RENDER;TST_RENDER_0102;;102;Document::setTabPlacement(topProportional);"<p>Test du l'option setTabPlacement(tabTopProportionalPlacement)</p>
 
 <p>La largeur des onglets diminue au fur et à mesure de la diminution de la largeur de la fenêtre.</p>";TST_ALL_COMPLET;TABPROPORTIONAL;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
