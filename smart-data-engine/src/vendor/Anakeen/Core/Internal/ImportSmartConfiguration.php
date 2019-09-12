@@ -32,6 +32,11 @@ class ImportSmartConfiguration
      * @var array
      */
     protected $verboseMessages = [];
+    /**
+     * @var array
+     */
+    protected $debugData = [];
+
 
     /**
      * @var array report
@@ -60,6 +65,7 @@ class ImportSmartConfiguration
             throw new Exception(sprintf('Xml Configuration file "%s" is not a smart configuration file', $xmlFile));
         }
 
+        $this->debugData = [];
         $this->importConfigurations();
     }
 
@@ -172,6 +178,14 @@ class ImportSmartConfiguration
         return [];
     }
 
+    /**
+     * @return array
+     */
+    public function getDebugData(): array
+    {
+        return $this->debugData;
+    }
+
     protected function getElementdata(SmartElement $elt)
     {
         $values = $elt->getValues();
@@ -233,17 +247,6 @@ class ImportSmartConfiguration
 
         $this->recordSmartData($data);
         return $data;
-    }
-
-    public function print($data)
-    {
-        foreach ($data as $line) {
-            $lineMessages = [];
-            foreach ($line as $item) {
-                $lineMessages[] = sprintf("%-20s", str_replace("\n", " ", print_r($item, true)));
-            }
-            $this->verboseMessages[] = implode(" ; ", $lineMessages);
-        }
     }
 
     protected function importFieldAccessElements()
@@ -471,7 +474,7 @@ class ImportSmartConfiguration
     protected function recordSmartData(array $data)
     {
         if ($this->verbose) {
-            $this->print($data);
+            $this->debugData[] = $data;
         }
         $import = new \Anakeen\Exchange\ImportDocumentDescription();
         $import->analyzeOnly($this->onlyAnalyze);
@@ -736,7 +739,9 @@ class ImportSmartConfiguration
         $enumCall = $this->evaluate($enumConfig, "{$this->smartPrefix}:enum-callable");
         /** @var \DOMNodeList $enumCall */
         if ($enumCall->length === 1) {
-            return $this->extractEnumCallable($enumCall->item(0), $enumName);
+            /** @var \DOMElement $item0 */
+            $item0=$enumCall->item(0);
+            return $this->extractEnumCallable($item0, $enumName);
         }
         $enumItems = $this->evaluate($enumConfig, "{$this->smartPrefix}:enum");
         foreach ($enumItems as $enumNode) {
@@ -1133,6 +1138,10 @@ class ImportSmartConfiguration
      */
     public function getVerboseMessages(): array
     {
+        $this->verboseMessages = [];
+        foreach ($this->cr as $cr) {
+            $this->verboseMessages[] = $cr["msg"];
+        }
         return $this->verboseMessages;
     }
 }

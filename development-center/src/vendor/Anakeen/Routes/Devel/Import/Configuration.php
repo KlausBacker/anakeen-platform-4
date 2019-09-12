@@ -2,6 +2,7 @@
 namespace Anakeen\Routes\Devel\Import;
 
 //use Anakeen\Core\Internal\ImportSmartConfiguration;
+use Anakeen\Core\Internal\ImportAnyConfiguration;
 use Anakeen\Core\Internal\ImportSmartConfiguration;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Exception;
@@ -15,6 +16,8 @@ class Configuration
 {
     protected $verbose = false;
     protected $dryRun = false;
+    /** @var ImportAnyConfiguration */
+    protected $import;
 
     protected function initParameters(\Slim\Http\request $request, $args)
     {
@@ -25,13 +28,19 @@ class Configuration
         $this->dryRun = ($dryRun == "true" || $dryRun == "yes" || $dryRun == "1");
     }
 
-    protected static function importFiles(ImportSmartConfiguration $import, $files)
+    /**
+     * @param $files
+     * @throws Exception
+     * @throws \Anakeen\Exception
+     */
+    protected function importFiles($files)
     {
         foreach ($files as $fileItem) {
             if (is_a($fileItem, \Slim\Http\UploadedFile::class)) {
-                $import->importAll($fileItem->file);
+                $this->import->load($fileItem->file);
+                $this->import->import();
             } elseif (is_array($fileItem)) {
-                self::importFiles($import, $fileItem);
+                $this->importFiles($fileItem);
             }
         }
     }
@@ -46,25 +55,25 @@ class Configuration
             throw $e;
         }
 
-        $import = new ImportConfiguration();
-        $import->setVerbose($this->verbose);
-        $import->setOnlyAnalyze($this->dryRun);
-        self::importFiles($import, $files);
+        $this->import = new ImportAnyConfiguration();
+        $this->import->setVerbose($this->verbose);
+        $this->import->setDryRun($this->dryRun);
 
-        $err = $import->getErrorMessage();
-
-        if ($err) {
-            $e = new Exception('DEV0103', $err);
+        try {
+            $this->importFiles($files);
+        } catch (Exception $e) {
+            $e = new Exception('DEV0103', $e->getMessage());
             $e->setHttpStatus(400, 'Importation error');
-            $e->setUserMessage($err);
+            $e->setUserMessage($e->getMessage());
             throw $e;
         }
-        return $import->getVerboseMessages();
+        return $this->import->getVerboseMessages();
     }
 
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $this->initParameters($request, $args);
+
         return ApiV2Response::withMessages($response, $this->doRequest($request));
     }
 }
