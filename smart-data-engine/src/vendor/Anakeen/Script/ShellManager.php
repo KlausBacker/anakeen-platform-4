@@ -115,12 +115,17 @@ class ShellManager
                         break;
 
                     default:
-                        fprintf(STDERR, "%s\n", $e->getDcpMessage());
+                        fprintf(STDERR, "%s", $e->getDcpMessage());
                         self::exceptionHandler($e, false);
                         exit(1);
                 }
             } catch (Exception $e) {
-                fprintf(STDERR, "%s\n", $e->getDcpMessage());
+                $err=$e->getDcpMessage();
+                $spaces=str_pad("", mb_strlen($err), " ");
+
+                fprintf(STDERR, "\033[0;37m\033[41m %s \033[0m\n", $spaces);
+                fprintf(STDERR, "\033[0;37m\033[41m %s \033[0m\n", $e->getDcpMessage());
+                fprintf(STDERR, "\033[0;37m\033[41m %s \033[0m\n", $spaces);
                 self::exceptionHandler($e, false);
                 exit(1);
             } catch (\Anakeen\Exception $e) {
