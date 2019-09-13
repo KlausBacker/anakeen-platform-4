@@ -93,6 +93,8 @@ interface ISmartElementModel extends Backbone.Model {
 // tslint:disable-next-line:max-classes-per-file
 export default class SmartElementController extends AnakeenController.BusEvents.Listenable implements ISmartElementAPI {
   public uid: string;
+  public $: (selector: string) => JQuery = null;
+
   protected _registeredListeners: Listenable = new Listenable();
   protected _element: JQuery<DOMReference>;
   protected _smartElement: JQuery<DOMReference>;
@@ -136,6 +138,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     }
     // @ts-ignore
     this._element = $(dom);
+    this.$ = selector => $(selector, this._element);
     this._initialized = {
       model: false,
       view: false
@@ -201,7 +204,6 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       this._internalViewData[key] = value;
       this._requestData[key] = value;
     });
-
     try {
       if (!this._model) {
         const config: any = {
@@ -1193,7 +1195,11 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     let urlSecondPart = "";
     let locationSearch = "";
     let identifier = options.initid;
-    if (!identifier && options.family && (options.viewId === "!defaultCreation" || options.viewId === "!coreCreation")) {
+    if (
+      !identifier &&
+      options.family &&
+      (options.viewId === "!defaultCreation" || options.viewId === "!coreCreation")
+    ) {
       identifier = options.family.name || options.family.id;
     }
     if (options.viewId !== "!defaultConsultation") {

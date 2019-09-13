@@ -1041,7 +1041,7 @@ define([
       if (this.changed && this.changed.currentHttpMethod === "create") {
         getAllFieldValues = true;
       }
-      if (backboneOptions.getAllFieldValues) {
+      if (backboneOptions && backboneOptions.getAllFieldValues) {
         getAllFieldValues = true;
       }
       return {
