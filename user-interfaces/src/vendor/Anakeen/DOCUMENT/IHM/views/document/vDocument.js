@@ -157,260 +157,263 @@ define([
           var renderData = this.model.toData();
           renderData.document = attributeTemplate.getTemplateModelInfo(this.model);
           this.$el.append($(Mustache.render(this.template || "", renderData, this.partials)));
-          attributeTemplate.completeCustomContent(this.$el, this.model, null, {
-            initializeContent: true
-          });
-          $body = this.$el
-            .find(".dcpDocument__body")
-            .append(htmlBody)
-            .addClass("container-fluid");
+          attributeTemplate
+            .completeCustomContent(this.$el, this.model, null, {
+              initializeContent: true
+            })
+            .then(() => {
+              $body = this.$el
+                .find(".dcpDocument__body")
+                .append(htmlBody)
+                .addClass("container-fluid");
+
+              this.$el.removeClass("dcpDocument--create");
+              if (this.model.get("creationFamid")) {
+                this.$el.addClass("dcpDocument--create");
+              }
+              this.$el.addClass("dcpDocument dcpDocument--" + this.model.get("renderMode"));
+              this.$el.addClass("dcpFamily--" + this.model.get("properties").get("family").name);
+              this.$el.attr("data-viewid", this.model.get("viewId"));
+              this.$el.attr("data-structure", this.model.get("properties").get("family").name);
+              this.trigger("loading", 10);
+              //add menu
+              try {
+                this.$el.find(".dcpDocument__menu").each(function vDocumentAddMenu() {
+                  var viewMenu = new ViewDocumentMenu({
+                    model: currentView.model,
+                    el: this
+                  });
+                  renderPromises.push(viewMenu.render());
+                  viewMenus.push(viewMenu);
+                });
+              } catch (e) {
+                if (window.dcp.logger) {
+                  window.dcp.logger(e);
+                } else {
+                  console.error(e);
+                }
+              }
+              try {
+                this.$el.find(".dcpDocument__header").each(function vDocumentAddHeader() {
+                  renderPromises.push(
+                    new ViewDocumentHeader({
+                      model: currentView.model,
+                      el: this
+                    }).render()
+                  );
+                });
+              } catch (e) {
+                if (window.dcp.logger) {
+                  window.dcp.logger(e);
+                } else {
+                  console.error(e);
+                }
+              }
+              this.trigger("loading", 20, this.model.get("attributes").length);
+              //add first level attributes
+
+              $content = this.$el.find(".dcpDocument__frames");
+              if ($body && $body.length > 0) {
+                this.model.get("attributes").each(function vDocumentRenderAttribute(currentAttr) {
+                  var view, viewTabLabel, viewTabContent;
+                  if (!currentAttr.isDisplayable()) {
+                    currentView.trigger("partRender");
+                    return;
+                  }
+                  if (currentAttr.get("type") === "frame" && _.isEmpty(currentAttr.get("parent"))) {
+                    try {
+                      view = new ViewAttributeFrame({
+                        model: model.get("attributes").get(currentAttr.id)
+                      });
+                      renderPromises.push(view.render());
+                      $content.append(view.$el);
+                    } catch (e) {
+                      if (window.dcp.logger) {
+                        window.dcp.logger(e);
+                      } else {
+                        console.error(e);
+                      }
+                    }
+                  }
+                  if (currentAttr.get("type") === "tab" && _.isEmpty(currentAttr.get("parent"))) {
+                    try {
+                      var tabModel = model.get("attributes").get(currentAttr.id);
+                      var tabContent;
+                      viewTabLabel = new ViewAttributeTabLabel({ model: tabModel });
+
+                      viewTabContent = new ViewAttributeTabContent({
+                        model: tabModel
+                      });
+                      renderPromises.push(viewTabContent.render());
+
+                      tabContent = viewTabContent.$el;
+
+                      $el.find(".dcpDocument__tabs__list").append(viewTabLabel.render().$el);
+
+                      $el.find(".dcpDocument__tabs").append(tabContent);
+                      $el.find(".dcpDocument__tabs").show();
+                    } catch (e) {
+                      if (window.dcp.logger) {
+                        window.dcp.logger(e);
+                      } else {
+                        console.error(e);
+                      }
+                    }
+                  }
+                  currentView.trigger("partRender");
+                });
+
+                this.kendoTabs = this.$(".dcpDocument__tabs").kendoTabStrip({
+                  tabPosition: tabPlacement,
+                  animation: {
+                    open: {
+                      duration: 100,
+                      effects: "fadeIn"
+                    }
+                  },
+                  select: function vDocumentKendoSelectTab(event) {
+                    var tabId = $(event.item).data("attrid");
+                    var tab = currentView.model.get("attributes").get(tabId);
+
+                    if (tab) {
+                      tab.isRealSelected = true;
+                      tab.trigger("attributeBeforeTabSelect", event, tabId);
+                    }
+                  },
+                  activate: function vDocumentShowTab(event) {
+                    var tabId = $(event.item).data("attrid");
+                    var scrollY = $(window).scrollTop();
+                    currentView
+                      .$(".dcpTab__label")
+                      .removeClass("dcpLabel--active")
+                      .addClass("dcpLabel--default");
+                    currentView
+                      .$('.dcpLabel[data-attrid="' + tabId + '"]')
+                      .addClass("dcpLabel--active")
+                      .removeClass("dcpLabel--default");
+                    if (documentView.selectedTab !== tabId) {
+                      documentView.selectedTab = tabId;
+                      documentView.recordSelectedTab(tabId);
+                    }
+                    _.defer(function selectOneTab() {
+                      if (currentView && currentView.model && currentView.model.get("attributes")) {
+                        var tab = currentView.model.get("attributes").get(tabId);
+                        if (tab) {
+                          tab.trigger("showTab", event);
+                          _.each(viewMenus, function(viewMenu) {
+                            viewMenu.refresh();
+                          });
+                          _.defer(function() {
+                            $(window).scrollTop(scrollY);
+                          });
+                        }
+                      }
+                    });
+                    if (!this._dcpNotFirstactivate) {
+                      _.delay(_.bind(documentView.scrollTobVisibleTab, documentView), 500);
+                      this._dcpNotFirstactivate = true;
+                    }
+                  }
+                });
+                if (tabPlacement === "topProportional") {
+                  var tabItems = $el.find(".dcpDocument__tabs__list li");
+                  if (tabItems.length > 1) {
+                    tabItems.css("width", Math.floor(100 / tabItems.length) - 0.5 + "%");
+                  } else {
+                    tabItems.css("width", "80%");
+                  }
+                }
+                if (tabPlacement === "left") {
+                  this.$(".dcpTab__content").css("min-height", this.$(".dcpDocument__tabs__list").height() + "px");
+                  this.$(".dcpDocument__tabs").addClass("dcpDocument__tabs--left");
+                }
+
+                if (tabPlacement === "top" && this.kendoTabs) {
+                  this.$(".dcpDocument__tabs").addClass("dcpDocument__tabs--fixed");
+                  $(window).on("resize.v" + this.model.cid, _.debounce(_.bind(this.scrollTabList, this), 100, false));
+                  _.delay(_.bind(this.scrollTabList, this), 500);
+                }
+
+                if (this.kendoTabs.length > 0 && this.kendoTabs.data("kendoTabStrip")) {
+                  var selectTab = 'li[data-attrid="' + this.selectedTab + '"]';
+                  if (this.selectedTab && $(selectTab).length > 0) {
+                    this.kendoTabs.data("kendoTabStrip").select(selectTab);
+                  } else {
+                    this.kendoTabs.data("kendoTabStrip").select(0);
+                  }
+                }
+              }
+              $(window.document)
+                .on("drop.v" + this.model.cid + " dragover." + this.model.cid, function vDocumentPreventDragDrop(e) {
+                  e.preventDefault();
+                })
+                .on("redrawErrorMessages.v" + this.model.cid, function vDocumentRedrawErrorMessages() {
+                  documentView.redrawTootips();
+                });
+              $(window).on(
+                "resize.v" + this.model.cid,
+                _.debounce(
+                  function vDocumentResizeDebounce() {
+                    documentView.redrawTootips();
+                    documentView.scrollTobVisibleTab();
+                  },
+                  100,
+                  false
+                )
+              );
+
+              this.$el.addClass("dcpDocument--show");
+
+              this.resizeForFooter();
+              Promise.all(renderPromises).then(
+                _.bind(function vDocumentRenderDone() {
+                  this.trigger("renderDone");
+                }, this)
+              );
+              this.$el.show();
+
+              if (tabPlacement === "left") {
+                this.$(".dcpTab__content").css(
+                  "width",
+                  "calc(100% - " + ($(".dcpDocument__tabs__list").width() + 30) + "px)"
+                );
+              }
+
+              _.delay(function vDocumentEndLoading() {
+                $(".dcpLoading--init").removeClass("dcpLoading--init");
+
+                if (documentView.model.getOption("stickyTabs") !== undefined) {
+                  var menuHeight = 0;
+                  if (documentView.model.getOption("stickyTabs") === "auto") {
+                    menuHeight = documentView.$el.find(".dcpDocument__menu").height();
+                  } else {
+                    menuHeight = documentView.model.getOption("stickyTabs");
+                  }
+                  var $tab = documentView.$el.find(".dcpDocument__tabs");
+                  var $tabList = documentView.$el.find(".dcpDocument__tabs__list");
+                  $tabList.css("top", menuHeight);
+
+                  $tabList.append($tab.find("> .k-tabstrip-next"));
+                  $tabList.prepend($tab.find("> .k-tabstrip-prev"));
+                  $(window).on(
+                    "resize.v" + documentView.model.cid,
+                    _.debounce(function() {
+                      var $tabList = documentView.$el.find(".dcpDocument__tabs__list");
+                      $tabList.append($tab.find("> .k-tabstrip-next"));
+                      $tabList.prepend($tab.find("> .k-tabstrip-prev"));
+                    }, 200)
+                  );
+
+                  $tab.addClass("tab--sticky");
+                }
+              }, 500);
+            });
         } catch (e) {
           console.error(e);
           this.model.trigger("showError", {
             title: e.message
           });
         }
-
-        this.$el.removeClass("dcpDocument--create");
-        if (this.model.get("creationFamid")) {
-          this.$el.addClass("dcpDocument--create");
-        }
-        this.$el.addClass("dcpDocument dcpDocument--" + this.model.get("renderMode"));
-        this.$el.addClass("dcpFamily--" + this.model.get("properties").get("family").name);
-        this.$el.attr("data-viewid", this.model.get("viewId"));
-        this.$el.attr("data-structure", this.model.get("properties").get("family").name);
-        this.trigger("loading", 10);
-        //add menu
-        try {
-          this.$el.find(".dcpDocument__menu").each(function vDocumentAddMenu() {
-            var viewMenu = new ViewDocumentMenu({
-              model: currentView.model,
-              el: this
-            });
-            renderPromises.push(viewMenu.render());
-            viewMenus.push(viewMenu);
-          });
-        } catch (e) {
-          if (window.dcp.logger) {
-            window.dcp.logger(e);
-          } else {
-            console.error(e);
-          }
-        }
-        try {
-          this.$el.find(".dcpDocument__header").each(function vDocumentAddHeader() {
-            renderPromises.push(
-              new ViewDocumentHeader({
-                model: currentView.model,
-                el: this
-              }).render()
-            );
-          });
-        } catch (e) {
-          if (window.dcp.logger) {
-            window.dcp.logger(e);
-          } else {
-            console.error(e);
-          }
-        }
-        this.trigger("loading", 20, this.model.get("attributes").length);
-        //add first level attributes
-
-        $content = this.$el.find(".dcpDocument__frames");
-        if ($body && $body.length > 0) {
-          this.model.get("attributes").each(function vDocumentRenderAttribute(currentAttr) {
-            var view, viewTabLabel, viewTabContent;
-            if (!currentAttr.isDisplayable()) {
-              currentView.trigger("partRender");
-              return;
-            }
-            if (currentAttr.get("type") === "frame" && _.isEmpty(currentAttr.get("parent"))) {
-              try {
-                view = new ViewAttributeFrame({
-                  model: model.get("attributes").get(currentAttr.id)
-                });
-                renderPromises.push(view.render());
-                $content.append(view.$el);
-              } catch (e) {
-                if (window.dcp.logger) {
-                  window.dcp.logger(e);
-                } else {
-                  console.error(e);
-                }
-              }
-            }
-            if (currentAttr.get("type") === "tab" && _.isEmpty(currentAttr.get("parent"))) {
-              try {
-                var tabModel = model.get("attributes").get(currentAttr.id);
-                var tabContent;
-                viewTabLabel = new ViewAttributeTabLabel({ model: tabModel });
-
-                viewTabContent = new ViewAttributeTabContent({
-                  model: tabModel
-                });
-                renderPromises.push(viewTabContent.render());
-
-                tabContent = viewTabContent.$el;
-
-                $el.find(".dcpDocument__tabs__list").append(viewTabLabel.render().$el);
-
-                $el.find(".dcpDocument__tabs").append(tabContent);
-                $el.find(".dcpDocument__tabs").show();
-              } catch (e) {
-                if (window.dcp.logger) {
-                  window.dcp.logger(e);
-                } else {
-                  console.error(e);
-                }
-              }
-            }
-            currentView.trigger("partRender");
-          });
-
-          this.kendoTabs = this.$(".dcpDocument__tabs").kendoTabStrip({
-            tabPosition: tabPlacement,
-            animation: {
-              open: {
-                duration: 100,
-                effects: "fadeIn"
-              }
-            },
-            select: function vDocumentKendoSelectTab(event) {
-              var tabId = $(event.item).data("attrid");
-              var tab = currentView.model.get("attributes").get(tabId);
-
-              if (tab) {
-                tab.isRealSelected = true;
-                tab.trigger("attributeBeforeTabSelect", event, tabId);
-              }
-            },
-            activate: function vDocumentShowTab(event) {
-              var tabId = $(event.item).data("attrid");
-              var scrollY = $(window).scrollTop();
-              currentView
-                .$(".dcpTab__label")
-                .removeClass("dcpLabel--active")
-                .addClass("dcpLabel--default");
-              currentView
-                .$('.dcpLabel[data-attrid="' + tabId + '"]')
-                .addClass("dcpLabel--active")
-                .removeClass("dcpLabel--default");
-              if (documentView.selectedTab !== tabId) {
-                documentView.selectedTab = tabId;
-                documentView.recordSelectedTab(tabId);
-              }
-              _.defer(function selectOneTab() {
-                if (currentView && currentView.model && currentView.model.get("attributes")) {
-                  var tab = currentView.model.get("attributes").get(tabId);
-                  if (tab) {
-                    tab.trigger("showTab", event);
-                    _.each(viewMenus, function(viewMenu) {
-                      viewMenu.refresh();
-                    });
-                    _.defer(function() {
-                      $(window).scrollTop(scrollY);
-                    });
-                  }
-                }
-              });
-              if (!this._dcpNotFirstactivate) {
-                _.delay(_.bind(documentView.scrollTobVisibleTab, documentView), 500);
-                this._dcpNotFirstactivate = true;
-              }
-            }
-          });
-          if (tabPlacement === "topProportional") {
-            var tabItems = $el.find(".dcpDocument__tabs__list li");
-            if (tabItems.length > 1) {
-              tabItems.css("width", Math.floor(100 / tabItems.length) - 0.5 + "%");
-            } else {
-              tabItems.css("width", "80%");
-            }
-          }
-          if (tabPlacement === "left") {
-            this.$(".dcpTab__content").css("min-height", this.$(".dcpDocument__tabs__list").height() + "px");
-            this.$(".dcpDocument__tabs").addClass("dcpDocument__tabs--left");
-          }
-
-          if (tabPlacement === "top" && this.kendoTabs) {
-            this.$(".dcpDocument__tabs").addClass("dcpDocument__tabs--fixed");
-            $(window).on("resize.v" + this.model.cid, _.debounce(_.bind(this.scrollTabList, this), 100, false));
-            _.delay(_.bind(this.scrollTabList, this), 500);
-          }
-
-          if (this.kendoTabs.length > 0 && this.kendoTabs.data("kendoTabStrip")) {
-            var selectTab = 'li[data-attrid="' + this.selectedTab + '"]';
-            if (this.selectedTab && $(selectTab).length > 0) {
-              this.kendoTabs.data("kendoTabStrip").select(selectTab);
-            } else {
-              this.kendoTabs.data("kendoTabStrip").select(0);
-            }
-          }
-        }
-        $(window.document)
-          .on("drop.v" + this.model.cid + " dragover." + this.model.cid, function vDocumentPreventDragDrop(e) {
-            e.preventDefault();
-          })
-          .on("redrawErrorMessages.v" + this.model.cid, function vDocumentRedrawErrorMessages() {
-            documentView.redrawTootips();
-          });
-        $(window).on(
-          "resize.v" + this.model.cid,
-          _.debounce(
-            function vDocumentResizeDebounce() {
-              documentView.redrawTootips();
-              documentView.scrollTobVisibleTab();
-            },
-            100,
-            false
-          )
-        );
-
-        this.$el.addClass("dcpDocument--show");
-
-        this.resizeForFooter();
-        Promise.all(renderPromises).then(
-          _.bind(function vDocumentRenderDone() {
-            this.trigger("renderDone");
-          }, this)
-        );
-        this.$el.show();
-
-        if (tabPlacement === "left") {
-          this.$(".dcpTab__content").css(
-            "width",
-            "calc(100% - " + ($(".dcpDocument__tabs__list").width() + 30) + "px)"
-          );
-        }
-
-        _.delay(function vDocumentEndLoading() {
-          $(".dcpLoading--init").removeClass("dcpLoading--init");
-
-          if (documentView.model.getOption("stickyTabs") !== undefined) {
-            var menuHeight = 0;
-            if (documentView.model.getOption("stickyTabs") === "auto") {
-              menuHeight = documentView.$el.find(".dcpDocument__menu").height();
-            } else {
-              menuHeight = documentView.model.getOption("stickyTabs");
-            }
-            var $tab = documentView.$el.find(".dcpDocument__tabs");
-            var $tabList = documentView.$el.find(".dcpDocument__tabs__list");
-            $tabList.css("top", menuHeight);
-
-            $tabList.append($tab.find("> .k-tabstrip-next"));
-            $tabList.prepend($tab.find("> .k-tabstrip-prev"));
-            $(window).on(
-              "resize.v" + documentView.model.cid,
-              _.debounce(function() {
-                var $tabList = documentView.$el.find(".dcpDocument__tabs__list");
-                $tabList.append($tab.find("> .k-tabstrip-next"));
-                $tabList.prepend($tab.find("> .k-tabstrip-prev"));
-              }, 200)
-            );
-
-            $tab.addClass("tab--sticky");
-          }
-        }, 500);
       });
 
       return this;
