@@ -28,6 +28,15 @@ class ImportSmartConfiguration
         "group" => "group",
         "role" => "role"
     ];
+    /**
+     * @var array
+     */
+    protected $verboseMessages = [];
+    /**
+     * @var array
+     */
+    protected $debugData = [];
+
 
     /**
      * @var array report
@@ -49,10 +58,14 @@ class ImportSmartConfiguration
 
     public function import($xmlFile)
     {
-
         $this->dom = new \DOMDocument();
         $this->dom->load($xmlFile);
 
+        if (!Xml::getPrefix($this->dom, ExportConfiguration::NSURL)) {
+            throw new Exception(sprintf('Xml Configuration file "%s" is not a smart configuration file', $xmlFile));
+        }
+
+        $this->debugData = [];
         $this->importConfigurations();
     }
 
@@ -65,7 +78,6 @@ class ImportSmartConfiguration
 
     protected function importTasks()
     {
-
         $this->taskPrefix = Xml::getPrefix($this->dom, ExportConfiguration::NSTASKURL);
         $configs = $this->getTaskNodes($this->dom->documentElement, "task");
         $data = [];
@@ -76,7 +88,7 @@ class ImportSmartConfiguration
     }
 
     /**
-     * @param string      $name
+     * @param string $name
      * @param \DOMElement $e
      *
      * @return \DOMNodeList
@@ -95,14 +107,38 @@ class ImportSmartConfiguration
             $task->name = $name;
 
             $this->setEltValue($task, $taskNode->getAttribute("label"), TaskFields::task_title);
-            $this->setEltValue($task, $this->evaluate($taskNode, "string({$this->taskPrefix}:description)"), TaskFields::task_desc);
-            $this->setEltValue($task, $this->evaluate($taskNode, "string({$this->taskPrefix}:crontab)"), TaskFields::task_crontab);
-            $this->setEltValue($task, $this->evaluate($taskNode, "string({$this->taskPrefix}:status)"), TaskFields::task_status);
+            $this->setEltValue(
+                $task,
+                $this->evaluate($taskNode, "string({$this->taskPrefix}:description)"),
+                TaskFields::task_desc
+            );
+            $this->setEltValue(
+                $task,
+                $this->evaluate($taskNode, "string({$this->taskPrefix}:crontab)"),
+                TaskFields::task_crontab
+            );
+            $this->setEltValue(
+                $task,
+                $this->evaluate($taskNode, "string({$this->taskPrefix}:status)"),
+                TaskFields::task_status
+            );
 
 
-            $this->setEltValue($task, $this->evaluate($taskNode, "string({$this->taskPrefix}:route/@ns)"), TaskFields::task_route_ns);
-            $this->setEltValue($task, $this->evaluate($taskNode, "string({$this->taskPrefix}:route/@ref)"), TaskFields::task_route_name);
-            $this->setEltValue($task, $this->evaluate($taskNode, "string({$this->taskPrefix}:route/@method)"), TaskFields::task_route_method);
+            $this->setEltValue(
+                $task,
+                $this->evaluate($taskNode, "string({$this->taskPrefix}:route/@ns)"),
+                TaskFields::task_route_ns
+            );
+            $this->setEltValue(
+                $task,
+                $this->evaluate($taskNode, "string({$this->taskPrefix}:route/@ref)"),
+                TaskFields::task_route_name
+            );
+            $this->setEltValue(
+                $task,
+                $this->evaluate($taskNode, "string({$this->taskPrefix}:route/@method)"),
+                TaskFields::task_route_method
+            );
 
             $args = $this->evaluate($taskNode, "({$this->taskPrefix}:route/{$this->taskPrefix}:argument)");
             /** @var \DOMElement $arg */
@@ -140,6 +176,14 @@ class ImportSmartConfiguration
             return $this->getElementdata($task);
         }
         return [];
+    }
+
+    /**
+     * @return array
+     */
+    public function getDebugData(): array
+    {
+        return $this->debugData;
     }
 
     protected function getElementdata(SmartElement $elt)
@@ -203,16 +247,6 @@ class ImportSmartConfiguration
 
         $this->recordSmartData($data);
         return $data;
-    }
-
-    public function print($data)
-    {
-        foreach ($data as $line) {
-            foreach ($line as $item) {
-                printf(" , %-20s", str_replace("\n", " ", print_r($item, true)));
-            }
-            printf("\n");
-        }
     }
 
     protected function importFieldAccessElements()
@@ -290,7 +324,6 @@ class ImportSmartConfiguration
 
     protected function addFieldLayer(\DOMElement $config)
     {
-
         $prfType = "FIELDACCESSLAYER";
         $prfDEsc = $this->getDescription($config);
 
@@ -315,7 +348,17 @@ class ImportSmartConfiguration
             $fieldAccess[] = $fa->getAttribute("access");
         }
 
-        $this->profilElements[] = ["ORDER", $prfType, "", "", FalFields::fal_title, FalFields::fal_desc, FalFields::fal_fieldid, FalFields::fal_fieldaccess, FalFields::fal_famid];
+        $this->profilElements[] = [
+            "ORDER",
+            $prfType,
+            "",
+            "",
+            FalFields::fal_title,
+            FalFields::fal_desc,
+            FalFields::fal_fieldid,
+            FalFields::fal_fieldaccess,
+            FalFields::fal_famid
+        ];
         $this->profilElements[] = [
             "DOC",
             $prfType,
@@ -371,13 +414,25 @@ class ImportSmartConfiguration
              * @var \DOMElement $access
              */
             if ($access->getAttribute("account")) {
-                $prfData[] = sprintf("%s=account(%s)", $access->getAttribute("access"), $access->getAttribute("account"));
+                $prfData[] = sprintf(
+                    "%s=account(%s)",
+                    $access->getAttribute("access"),
+                    $access->getAttribute("account")
+                );
             }
             if ($access->getAttribute("field")) {
-                $prfData[] = sprintf("%s=attribute(%s)", $access->getAttribute("access"), $access->getAttribute("field"));
+                $prfData[] = sprintf(
+                    "%s=attribute(%s)",
+                    $access->getAttribute("access"),
+                    $access->getAttribute("field")
+                );
             }
             if ($access->getAttribute("element")) {
-                $prfData[] = sprintf("%s=document(%s)", $access->getAttribute("access"), $access->getAttribute("element"));
+                $prfData[] = sprintf(
+                    "%s=document(%s)",
+                    $access->getAttribute("access"),
+                    $access->getAttribute("element")
+                );
             }
         }
         if ($prfData) {
@@ -419,7 +474,7 @@ class ImportSmartConfiguration
     protected function recordSmartData(array $data)
     {
         if ($this->verbose) {
-            $this->print($data);
+            $this->debugData[] = $data;
         }
         $import = new \Anakeen\Exchange\ImportDocumentDescription();
         $import->analyzeOnly($this->onlyAnalyze);
@@ -466,7 +521,10 @@ class ImportSmartConfiguration
                 /**
                  * @var \DOMElement $attrNode
                  */
-                if (preg_match("/{$this->smartPrefix}:field-/", $attrNode->tagName) && $attrNode->tagName !== "{$this->smartPrefix}:field-option") {
+                if (preg_match(
+                    "/{$this->smartPrefix}:field-/",
+                    $attrNode->tagName
+                ) && $attrNode->tagName !== "{$this->smartPrefix}:field-option") {
                     $data = array_merge($data, $this->extractAttr($attrNode, "PARAM"));
                 }
             }
@@ -621,7 +679,10 @@ class ImportSmartConfiguration
                 /**
                  * @var \DOMElement $attrNode
                  */
-                if (preg_match("/{$this->smartPrefix}:field-/", $attrNode->tagName) && $attrNode->tagName !== "{$this->smartPrefix}:field-option") {
+                if (preg_match(
+                    "/{$this->smartPrefix}:field-/",
+                    $attrNode->tagName
+                ) && $attrNode->tagName !== "{$this->smartPrefix}:field-option") {
                     $data = array_merge($data, $this->extractAttr($attrNode, "ATTR"));
                 }
             }
@@ -678,7 +739,9 @@ class ImportSmartConfiguration
         $enumCall = $this->evaluate($enumConfig, "{$this->smartPrefix}:enum-callable");
         /** @var \DOMNodeList $enumCall */
         if ($enumCall->length === 1) {
-            return $this->extractEnumCallable($enumCall->item(0), $enumName);
+            /** @var \DOMElement $item0 */
+            $item0=$enumCall->item(0);
+            return $this->extractEnumCallable($item0, $enumName);
         }
         $enumItems = $this->evaluate($enumConfig, "{$this->smartPrefix}:enum");
         foreach ($enumItems as $enumNode) {
@@ -729,7 +792,10 @@ class ImportSmartConfiguration
                 /**
                  * @var \DOMElement $childNode
                  */
-                if (preg_match("/{$this->smartPrefix}:field-/", $childNode->tagName) && $childNode->tagName !== "{$this->smartPrefix}:field-option") {
+                if (preg_match(
+                    "/{$this->smartPrefix}:field-/",
+                    $childNode->tagName
+                ) && $childNode->tagName !== "{$this->smartPrefix}:field-option") {
                     $data = array_merge($data, $this->extractAttr($childNode, $key, $fieldName));
                 }
             }
@@ -945,7 +1011,7 @@ class ImportSmartConfiguration
     }
 
     /**
-     * @param string      $name
+     * @param string $name
      * @param \DOMElement $e
      *
      * @return \DOMNodeList
@@ -957,7 +1023,7 @@ class ImportSmartConfiguration
 
     /**
      * @param \DOMElement $e
-     * @param string      $name
+     * @param string $name
      *
      * @return \DOMElement
      */
@@ -973,7 +1039,7 @@ class ImportSmartConfiguration
 
     /**
      * @param \DOMElement $e
-     * @param string      $name
+     * @param string $name
      *
      * @return \DOMElement
      */
@@ -1052,10 +1118,10 @@ class ImportSmartConfiguration
         foreach ($returnNodes as $returnNode) {
             $attridreturn = $returnNode->getAttribute("field");
             if ($attridreturn) {
-                $attridreturn=strtolower($attridreturn);
+                $attridreturn = strtolower($attridreturn);
                 $returnName = $returnNode->getAttribute("name");
                 if ($returnName) {
-                    $attridreturn.=sprintf("{%s}", $returnName);
+                    $attridreturn .= sprintf("{%s}", $returnName);
                 }
                 $returns[] = $attridreturn;
             }
@@ -1065,5 +1131,17 @@ class ImportSmartConfiguration
             $method .= ":" . implode(",", $returns);
         }
         return $method;
+    }
+
+    /**
+     * @return array
+     */
+    public function getVerboseMessages(): array
+    {
+        $this->verboseMessages = [];
+        foreach ($this->cr as $cr) {
+            $this->verboseMessages[] = $cr["msg"];
+        }
+        return $this->verboseMessages;
     }
 }

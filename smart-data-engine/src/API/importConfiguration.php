@@ -2,22 +2,28 @@
 
 /**
  * Import configuration for Smart Structure
+ * Import Accounts
+ * Import Smart Element Data
  */
+
+use Anakeen\Core\Internal\ImportAnyConfiguration;
 
 $usage = new \Anakeen\Script\ApiUsage();
 $usage->setDefinitionText("Import configuration file");
 $filename = $usage->addOptionalParameter("file", "the configuration file path (XML)");
 $glob = $usage->addOptionalParameter("glob", "the configuration glob path");
-$analyze = $usage->addOptionalParameter("analyze", "analyze only", array(
-    "yes",
-    "no"
-), "no");
+$analyze = $usage->addHiddenParameter("analyze", "analyze only - keep for compatibility");
+
+$dry = $usage->addEmptyParameter("dry-run", "Analyse file only - no import is proceed");
+
 
 $logfile = $usage->addOptionalParameter("log", "log file output");
 $verbose = $usage->addEmptyParameter("verbose", "Verbose mode");
 $debug = $usage->addEmptyParameter("debug", "Debug mode");
 
 $usage->verify();
+
+$dryRun = ($analyze === "yes") || $dry;
 
 if (!$filename && !$glob) {
     throw new \Anakeen\Script\Exception("filename or glob parameter needed");
@@ -47,41 +53,72 @@ if ($logfile) {
     }
 }
 
-
-$hasWorkflow=class_exists(\Anakeen\Workflow\ImportWorkflowConfiguration::class);
-$hasUi=class_exists(\Anakeen\Ui\ImportRenderConfiguration::class);
-
-if ($hasUi) {
-    if ($hasWorkflow) {
-        $oImport = new \Anakeen\Workflow\ImportWorkflowConfiguration();
-    } else {
-        $oImport = new \Anakeen\Ui\ImportRenderConfiguration();
-    }
-} else {
-    $oImport = new \Anakeen\Core\Internal\ImportSmartConfiguration();
-}
-
-
-$oImport->setOnlyAnalyze($analyze !== "no");
-$oImport->setVerbose($debug);
-
 $point = "IMPCFG";
 \Anakeen\Core\DbManager::savePoint($point);
 
-
+// -----------
+// Pre Testing
+$xmlErrors = [];
 foreach ($configFiles as $configFile) {
-    if ($verbose) {
-        printf("Importing config \"%s\".\n", $configFile);
-    }
-
-    $oImport->importAll($configFile);
-
-    if ($oImport->getErrorMessage()) {
-        break;
+    $err = ImportAnyConfiguration::checkValidity($configFile);
+    if ($err) {
+        $xmlErrors[] = $err;
     }
 }
 
-$err = $oImport->getErrorMessage();
+if ($xmlErrors) {
+    throw new \Anakeen\Script\Exception(implode("\n", $xmlErrors));
+}
+
+$importObject = new ImportAnyConfiguration();
+$importObject->setDryRun($dryRun);
+$importObject->setVerbose($verbose);
+
+// -------------------------------
+// Process configuration files
+foreach ($configFiles as $configFile) {
+    if ($verbose) {
+        printf("Parse file \"%s\".\n", $configFile);
+    }
+
+    $importObject->load($configFile);
+    if ($verbose) {
+        switch ($importObject->getImportType()) {
+            case ImportAnyConfiguration::SMARTCONFIG:
+                printf("\tImporting smart configuration from \"%s\".\n", $configFile);
+                break;
+            case ImportAnyConfiguration::ACCOUNTCONFIG:
+                printf("\tImporting accounts configuration from \"%s\".\n", $configFile);
+                break;
+            case ImportAnyConfiguration::SMARTELEMENTCONFIG:
+                printf("\tImporting Smart Elements data from \"%s\".\n", $configFile);
+                break;
+        }
+    }
+
+    try {
+        $importObject->import();
+    } catch (\Anakeen\Exception $exception) {
+        if ($debug) {
+            $data = $importObject->getDebugData();
+            print(json_encode($data, JSON_PRETTY_PRINT));
+            print "\n";
+        }
+        throw new \Anakeen\Script\Exception($exception->getMessage());
+    }
+
+    if ($verbose) {
+        $data = $importObject->getVerboseMessages();
+        print implode("\n", $data);
+        print "\n";
+    }
+    if ($debug) {
+        $data = $importObject->getDebugData();
+        print(json_encode($data, JSON_PRETTY_PRINT));
+        print "\n";
+    }
+}
+
 
 if ($err) {
     \Anakeen\Core\DbManager::rollbackPoint($point);

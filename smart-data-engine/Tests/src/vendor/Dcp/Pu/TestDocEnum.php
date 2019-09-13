@@ -116,29 +116,51 @@ class TestDocEnum extends TestCaseDcpCommonFamily
         $enumKey = array_keys($enums);
         $diff = array_diff($enumKey, $expectedEnums);
 
-        $this->assertEmpty($diff,
-            sprintf("getEnumLabel:: not expected visible \nExpect:\n %s,\nHas\n %s", print_r($expectedEnums, true),
-                print_r($enumKey, true)));
+        $this->assertEmpty(
+            $diff,
+            sprintf(
+                "getEnumLabel:: not expected visible \nExpect:\n %s,\nHas\n %s",
+                print_r($expectedEnums, true),
+                print_r($enumKey, true)
+            )
+        );
 
-        $this->assertEquals(count($expectedEnums), count($enumKey),
-            sprintf("getEnumLabel:: not expected enum count %s, %s", print_r($expectedEnums, true),
-                print_r($enums, true)));
+        $this->assertEquals(
+            count($expectedEnums),
+            count($enumKey),
+            sprintf(
+                "getEnumLabel:: not expected enum count %s, %s",
+                print_r($expectedEnums, true),
+                print_r($enums, true)
+            )
+        );
 
         EnumManager::resetEnum();
         $enums = EnumManager::getEnums($enumName, false);
         $enums2 = EnumManager::getEnums($enumName, false);
-        $this->assertEquals($enums, $enums2,
-            sprintf("getEnum::not same with cache %s, %s", print_r($enums, true), print_r($enums2, true)));
+        $this->assertEquals(
+            $enums,
+            $enums2,
+            sprintf("getEnum::not same with cache %s, %s", print_r($enums, true), print_r($enums2, true))
+        );
 
         $enumKey = array_keys($enums);
         $diff = array_diff($enumKey, $expectedEnums);
 
-        $this->assertEmpty($diff,
-            sprintf("getEnum:: not expected visible \nExpect:\n %s,\nHas\n %s", print_r($expectedEnums, true),
-                print_r($enumKey, true)));
+        $this->assertEmpty(
+            $diff,
+            sprintf(
+                "getEnum:: not expected visible \nExpect:\n %s,\nHas\n %s",
+                print_r($expectedEnums, true),
+                print_r($enumKey, true)
+            )
+        );
 
-        $this->assertEquals(count($expectedEnums), count($enumKey),
-            sprintf("getEnum::not expected enum count %s, %s", print_r($expectedEnums, true), print_r($enums, true)));
+        $this->assertEquals(
+            count($expectedEnums),
+            count($enumKey),
+            sprintf("getEnum::not expected enum count %s, %s", print_r($expectedEnums, true), print_r($enums, true))
+        );
     }
 
     /**

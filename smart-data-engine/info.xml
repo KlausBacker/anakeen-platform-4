@@ -258,7 +258,7 @@
             <label>Add ROLE Structure</label>
         </process>
 
-        <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/SmartStructures/Igroup/group.init.xml">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Igroup/group.init.xml">
             <label>Create system group</label>
         </process>
         <process command="./ank.php --script=refreshUserAccount">
