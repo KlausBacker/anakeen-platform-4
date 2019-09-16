@@ -10,6 +10,14 @@ Quelques prérequis :
 - docker-compose
 - un compte sur le repo docker de notre gitlab
 
+- composer
+- yarn (version au moins 1.17)
+- npm (+ npm update)
+- php-xml
+- php-gd
+- php-mbstring
+- php-zip
+
 Ensuite quelques commandes :
 
 1.  Faire un `make app-autorelease` pour builder les dernières versions des paquets
