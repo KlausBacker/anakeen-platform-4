@@ -613,27 +613,27 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       currentValueLength = attributeInterface.getValue().length;
       attributeInterface.setValue(value);
 
-      // Pad values of complete array with default values
-      const arrayModel = attributeModel.getParent();
-      const modifiedColumns = {};
-      arrayModel.get("content").each(aModel => {
-        const aValue = _.clone(aModel.get("attributeValue"));
-        let defaultValue = aModel.get("defaultValue");
+      _.defer(() => {
+        // Pad values of complete array with default values
+        const arrayModel = attributeModel.getParent();
+        const modifiedColumns = {};
+        arrayModel.get("content").each(aModel => {
+          const aValue = _.clone(aModel.get("attributeValue"));
+          let defaultValue = aModel.get("defaultValue");
 
-        if (!defaultValue) {
-          defaultValue = aModel.hasMultipleOption() ? [] : { value: null, displayValue: "" };
-        }
-
-        for (i = currentValueLength; i <= index; i++) {
-          if (_.isUndefined(aValue[i])) {
-            aValue[i] = defaultValue;
-            modifiedColumns[aModel.id] = { model: aModel, values: aValue };
+          if (!defaultValue) {
+            defaultValue = aModel.hasMultipleOption() ? [] : { value: null, displayValue: "" };
           }
-        }
-      });
 
-      _.each(modifiedColumns, (modData: any) => {
-        _.defer(() => {
+          for (i = currentValueLength; i <= index; i++) {
+            if (_.isUndefined(aValue[i])) {
+              aValue[i] = defaultValue;
+              modifiedColumns[aModel.id] = { model: aModel, values: aValue };
+            }
+          }
+        });
+
+        _.each(modifiedColumns, (modData: any) => {
           modData.model.set("attributeValue", modData.values);
         });
       });
