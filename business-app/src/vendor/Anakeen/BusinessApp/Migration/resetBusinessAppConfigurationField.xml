@@ -1,5 +1,5 @@
 <migration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:noNamespaceSchemaLocation="DbMigrationRules.xsd">
+           xsi:noNamespaceSchemaLocation="migrationRules.xsd">
 
     <action id="BusinessAppConfiguration" label="Remove html text icon fields from HUBBUSINESSAPP">
         <condition>

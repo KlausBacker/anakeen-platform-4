@@ -20,7 +20,7 @@ if (isset($options["help"])) {
     print migrUsage($argv);
     return 0;
 }
-$om = new \Anakeen\Database\DbMigration($options["file"]);
+$om = new \Anakeen\Database\MigrationScript($options["file"]);
 $om->verbose(isset($options["verbose"]) ? (empty($options["verbose"]) ? 1 : $options["verbose"]) : 0);
 if (isset($options['dry-run'])) {
     $om->dryRun();

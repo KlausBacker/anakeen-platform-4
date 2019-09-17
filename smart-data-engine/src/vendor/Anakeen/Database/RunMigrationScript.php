@@ -9,7 +9,7 @@ use Anakeen\Core\Internal\SmartElement;
 /**
  * Class Execute Migration Xml Scripts
  */
-class DbMigration
+class MigrationScript
 {
     protected $verbose = 1;
     protected $xmlFile = '';
