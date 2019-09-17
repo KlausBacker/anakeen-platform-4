@@ -8,7 +8,7 @@
     <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/BusinessApp/SmartStructures/HubBusinessApp/**/*.xml"/>
   </post-install>
   <post-upgrade>
-    <process command="./programs/RunMigrationScript.php --file=./vendor/Anakeen/BusinessApp/Migration/resetBusinessAppConfigurationField.xml">
+    <process command="./programs/runMigrationScript.php --file=./vendor/Anakeen/BusinessApp/Migration/resetBusinessAppConfigurationField.xml">
       <label>Apply Migrate HubBusinessApp Rules</label>
     </process>
     <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/BusinessApp/SmartStructures/HubBusinessApp/**/*.xml"/>

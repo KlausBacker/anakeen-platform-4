@@ -152,7 +152,7 @@
             <label>ROLE Structure view</label>
         </process>
 
-        <process command="./programs/RunMigrationScript.php --file=./vendor/Anakeen/SmartStructures/Mailtemplate/Migration/mailTemplateMigration.xml">
+        <process command="./programs/runMigrationScript.php --file=./vendor/Anakeen/SmartStructures/Mailtemplate/Migration/mailTemplateMigration.xml">
             <label>Apply Migrate Mail Template Control View</label>
         </process>
     </post-upgrade>
