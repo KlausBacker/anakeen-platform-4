@@ -1,13 +1,41 @@
 import "./searchRender.css";
+import searchUISEGridProcess from "./searchUISEGrid";
+import reportViewGridProcess from "../../Report/Render/reportViewGrid";
+import searchUIEventEditProcess from "./searchUIEventEdit";
+import searchUICreationEventProcess from "./searchUICreationEvent";
+import searchUIEventViewProcess from "./searchUIEventView";
+import ankController from "../../../../../../components/lib/AnkController";
+import SearchConditions from "./Refactor/SearchConditions.vue";
+import Vue from "vue";
 
-$.getJSON("/api/v2/i18n/SEARCH_UI_HTML5").done(catalog => {
-  window.dsearch = window.dsearch || {};
-  window.dsearch.catalog = catalog;
-  require("./searchUISEGrid");
-  require("../../Report/Render/reportViewGrid");
-  require("./searchAttributeHelper");
-  require("./searchUI");
-  require("./searchUIEventEdit");
-  require("./searchUICreationEvent");
-  require("./searchUIEventView");
+ankController.on("controllerReady", inner => {
+  inner.registerFunction("dSearch", controller => {
+    searchUISEGridProcess(controller);
+    reportViewGridProcess(controller);
+    searchUIEventEditProcess(controller);
+    searchUICreationEventProcess(controller);
+    searchUIEventViewProcess(controller);
+
+    controller.addEventListener(
+      "ready",
+      {
+        name: "report:edit:condition",
+        check: document => {
+          return document.renderMode === "edit" && document.type === "search";
+        }
+      },
+      () => {
+        new Vue({
+          el: ".search-conditions-component",
+          components: {
+            "search-conditions": SearchConditions
+          },
+          data: {
+            controller: controller
+          },
+          template: "<search-conditions :controller='controller'></search-conditions>"
+        });
+      }
+    );
+  });
 });

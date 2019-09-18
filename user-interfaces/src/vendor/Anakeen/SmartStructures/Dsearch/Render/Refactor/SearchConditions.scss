@@ -1,0 +1,125 @@
+.conditions-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.condition-type-wrapper {
+  width: 100%;
+  display: flex;
+}
+
+.conditions-radio-container {
+  margin: 0 1rem 0 1rem;
+}
+
+input:checked + .conditions-enum-label {
+  font-weight: bold;
+}
+
+.conditions-detail {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+
+  .conditions-detail-table {
+    width: 100%;
+
+    .conditions-column-head-tool {
+      width: 5%;
+    }
+
+    .conditions-column-head-fields {
+      width: 35%;
+    }
+
+    .conditions-column-head-functions {
+      width: 30%;
+    }
+    .conditions-column-head-keywords {
+      width: 30%;
+    }
+  }
+
+  .conditions-detail-table.conditions-table-custom {
+    .conditions-column-head-tool {
+      width: 5%;
+    }
+
+    .conditions-column-head-operator {
+      width: 5rem;
+    }
+
+    .conditions-column-head-leftp {
+      width: 6rem;
+    }
+
+    .conditions-column-head-fields {
+      width: 25%;
+    }
+
+    .conditions-column-head-functions {
+      width: 20%;
+    }
+    .conditions-column-head-keywords {
+      min-width: 5rem;
+    }
+
+    .conditions-column-head-rightp {
+      width: 6em;
+    }
+  }
+
+  .conditions-table-tools-add-line-button {
+    color: #ffffff;
+    background-color: #157efb;
+    border: none;
+    border-radius: 0.166rem;
+    font-size: 1rem;
+  }
+
+  tbody {
+    .k-input {
+      background-color: #ffffff;
+    }
+
+    span.k-select {
+      position: absolute;
+      height: 100%;
+      left: 0;
+      right: auto;
+      border: none;
+      width: 1.9rem;
+    }
+
+    .k-dropdown-wrap {
+      padding-left: 1.9rem;
+      padding-right: 0;
+    }
+
+    .k-state-default > .k-select {
+      border-right-width: 1px;
+      border-left-width: 0;
+    }
+
+    .condition-table-fields {
+      width: 100%;
+    }
+
+    .condition-table-functions {
+      width: 100%;
+    }
+
+    .condition-table-keywords {
+      width: 100%;
+    }
+
+    .condition-table-keywords-timestamp-datetimepicker {
+      span.k-select {
+        width: 4rem;
+        span.k-link {
+          border-left: none;
+        }
+      }
+    }
+  }
+}

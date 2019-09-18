@@ -2,26 +2,24 @@
 Ask for a document title in creation mode
  */
 
-{
-  window.dcp.document.documentController(
-    "addEventListener",
+export default function searchUICreationEventProcess(controller) {
+  controller.addEventListener(
     "ready",
     {
       name: "addDsearchCreationEvent",
-      documentCheck: function(document) {
+      check: function(document) {
         return document.type === "search";
       }
     },
     function prepareResultViewEvents() {
       /*
-            add a pop-up window to define a name to the new document
-             */
-      $(this).documentController(
-        "addEventListener",
+              add a pop-up window to define a name to the new document
+               */
+      controller.addEventListener(
         "actionClick",
         {
           name: "confirmCreation.createEvent",
-          documentCheck: function isDSearch(document) {
+          check: function isDSearch(document) {
             return document.type === "search" && document.viewId === "!coreCreation";
           }
         },
@@ -58,19 +56,18 @@ Ask for a document title in creation mode
             dialog.content(windowContent.append(button));
 
             button.click(function clickOnCreateButton() {
-              window.dcp.document.documentController("saveDocument");
+              controller.saveSmartElement();
               dialog.close();
             });
           }
         }
       );
 
-      $(this).documentController(
-        "addEventListener",
+      controller.addEventListener(
         "actionClick",
         {
           name: "confirmCreation&Close.createEvent",
-          documentCheck: function isDSearch(document) {
+          check: function isDSearch(document) {
             return document.type === "search" && document.viewId === "!coreCreation";
           }
         },
@@ -107,16 +104,15 @@ Ask for a document title in creation mode
             dialog.content(windowContent.append(button));
 
             button.click(function clickOnCreateButton() {
-              window.dcp.document.documentController("saveDocument");
+              controller.saveSmartElement();
               dialog.close();
-              window.dcp.document.documentController(
-                "addEventListener",
+              controller.addEventListener(
                 "afterSave",
                 {
                   name: "switchToViewAfterSave.createEvent"
                 },
                 function reloadInConsultation(event, document) {
-                  window.dcp.document.documentController("fetchDocument", {
+                  controller.fetchSmartElement({
                     initid: document.id,
                     revision: -1,
                     viewId: "!defaultConsultation"
@@ -130,18 +126,16 @@ Ask for a document title in creation mode
     }
   );
 
-  window.dcp.document.documentController(
-    "addEventListener",
+  controller.addEventListener(
     "close",
     {
       name: "removeDsearchCreateEvent",
-      documentCheck: function(document) {
+      check: function(document) {
         return document.type === "search";
       }
     },
     function() {
-      var $this = $(this);
-      $this.documentController("removeEventListener", ".createEvent");
+      controller.removeEventListener(".createEvent");
     }
   );
 }

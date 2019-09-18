@@ -1,28 +1,25 @@
 const _ = require("underscore");
-import i18n from "./searchCatalog";
 import searchAttributes from "./searchAttributes";
 
-{
+export default function searchAttributeHelperProcess(controller) {
   var dataAttributesNew = [];
   var dataAttributes = [];
   var $wf = null;
 
-  window.dcp.document.documentController(
-    "addEventListener",
+  controller.addEventListener(
     "ready",
     {
       name: "addDsearchAttributesEvents",
-      documentCheck: function(document) {
+      check: function(document) {
         return document.type === "search";
       }
     },
     function prepareAttributesEvents() {
-      $(this).documentController(
-        "addEventListener",
+      controller.addEventListener(
         "ready",
         {
           name: "searchAttributesReady.sAttr",
-          documentCheck: function isDSearch(document) {
+          check: function isDSearch(document) {
             return document.type === "search";
           }
         },
@@ -30,8 +27,7 @@ import searchAttributes from "./searchAttributes";
          * prepare attributes list and attributes kendo widget
          */
         function prepareAttributesReady() {
-          var $documentController = $(this);
-          var famid = $(this).documentController("getValues").se_famid.value;
+          let famid = controller.getValues().se_famid.value;
 
           if (famid === null) {
             famid = "";
@@ -47,7 +43,7 @@ import searchAttributes from "./searchAttributes";
                * initialize attribute list
                */
               $.each(data.data, function eachDataAttributesReady(key, val) {
-                var myObject = {
+                let myObject = {
                   id: val.id,
                   label: val.label,
                   label_parent: val.parent.label,
@@ -65,7 +61,7 @@ import searchAttributes from "./searchAttributes";
               } else {
                 $wf = null;
               }
-              findIfWorkflow(dataAttributes, $documentController);
+              findIfWorkflow(dataAttributes);
             })
             .then(function doneAttributesReady() {
               $(".dcpAttribute__value[name=se_attrids]").each(function eachAttributesAttributesReady() {
@@ -73,7 +69,7 @@ import searchAttributes from "./searchAttributes";
                  * create/update attributes kendo widget
                  */
                 if ($(this).data("kendoComboBox") !== undefined) {
-                  var $dataSource = new kendo.data.DataSource({
+                  const $dataSource = new kendo.data.DataSource({
                     data: dataAttributes,
                     group: { field: "label_parent" }
                   });
@@ -81,7 +77,7 @@ import searchAttributes from "./searchAttributes";
                     .data("kendoComboBox")
                     .setDataSource($dataSource);
                 } else {
-                  var $environment = $(this);
+                  const $environment = $(this);
                   initKendoComboBox(dataAttributes, $environment);
                 }
               });
@@ -89,15 +85,14 @@ import searchAttributes from "./searchAttributes";
         }
       );
 
-      $(this).documentController(
-        "addEventListener",
-        "attributeArrayChange",
+      controller.addEventListener(
+        "smartFieldArrayChange",
         {
           name: "searchAttributesAddArray.sAttr",
-          documentCheck: function isDSearch(document) {
+          check: function isDSearch(document) {
             return document.type === "search";
           },
-          attributeCheck: function isArray(attribute) {
+          smartFieldCheck: function isArray(attribute) {
             if (attribute.id === "se_t_detail") {
               return true;
             }
@@ -118,15 +113,14 @@ import searchAttributes from "./searchAttributes";
         }
       );
 
-      $(this).documentController(
-        "addEventListener",
-        "change",
+      controller.addEventListener(
+        "smartFieldChange",
         {
           name: "searchAttributesRevChanged.sAttr",
-          documentCheck: function isDSearch(document) {
+          check: function isDSearch(document) {
             return document.type === "search";
           },
-          attributeCheck: function isFamily(attribute) {
+          smartFieldCheck: function isFamily(attribute) {
             if (attribute.id === "se_latest") {
               return true;
             }
@@ -137,8 +131,7 @@ import searchAttributes from "./searchAttributes";
          * triggered if revision value change
          */
         function displayRevisionChange() {
-          var $documentController = $(this);
-          findIfWorkflow(dataAttributes, $documentController);
+          findIfWorkflow(dataAttributes);
           $(".dcpAttribute__value[name=se_attrids]").each(function eachAttributesAttributesRevchanged() {
             if ($(this).data("kendoComboBox") !== undefined) {
               var $dataSource = new kendo.data.DataSource({
@@ -153,9 +146,8 @@ import searchAttributes from "./searchAttributes";
         }
       );
 
-      $(this).documentController(
-        "addEventListener",
-        "change",
+      controller.addEventListener(
+        "smartFieldChange",
         {
           name: "searchAttributesFamilyChanged.sAttr",
           documentCheck: function isDSearch(document) {
@@ -176,8 +168,7 @@ import searchAttributes from "./searchAttributes";
          * @param options current, previous, and initial values
          */
         function displayChange(event, document, attribute, options) {
-          var famid = $(this).documentController("getValues").se_famid.value;
-          var $documentController = $(this);
+          var famid = controller.getValues().se_famid.value;
           dataAttributesNew = [];
           searchAttributes(famid)
             .then(function requestAttributesAttributesFamilychanged(data) {
@@ -200,38 +191,30 @@ import searchAttributes from "./searchAttributes";
               } else {
                 $wf = null;
               }
-              findIfWorkflow(dataAttributesNew, $documentController);
+              findIfWorkflow(dataAttributesNew);
             })
             .then(function doneAttributesFamilychanged() {
-              if (Array.isArray($documentController.documentController("getValues").se_attrids)) {
+              if (Array.isArray(controller.getValues().se_attrids)) {
                 /**
                  * Test if attributes selected are still in current family
                  * Show an error message if not
                  */
-                $documentController.documentController("cleanAttributeErrorMessage", "se_attrids");
-                $.each(
-                  $documentController.documentController("getValues").se_attrids,
-                  function eachAttridsAttributesFamilychanged(key, val) {
-                    var attrId = val.value;
-                    var $controle = 0;
+                controller.cleanSmartFieldErrorMessage("se_attrids");
+                $.each(controller.getValues().se_attrids, function eachAttridsAttributesFamilychanged(key, val) {
+                  var attrId = val.value;
+                  var $controle = 0;
 
-                    $.each(dataAttributesNew, function eachNewDataattributesAttributesFamilychanged(mkey, mval) {
-                      if (attrId === mval.id) {
-                        $controle = 1;
-                      }
-                    });
-                    if ($controle === 0 && !itemEmpty(attrId)) {
-                      $documentController.documentController(
-                        "setAttributeErrorMessage",
-                        "se_attrids",
-                        i18n.___("Invalid attribute", "dsearch"),
-                        key
-                      );
-                      var myOperator = $documentController.documentController("getValues").se_funcs[options];
-                      setVisibility(myOperator, options, $documentController);
+                  $.each(dataAttributesNew, function eachNewDataattributesAttributesFamilychanged(mkey, mval) {
+                    if (attrId === mval.id) {
+                      $controle = 1;
                     }
+                  });
+                  if ($controle === 0 && !itemEmpty(attrId)) {
+                    controller.setSmartFieldErrorMessage("se_attrids", "TODO translate", key);
+                    var myOperator = controller.getValues().se_funcs[options];
+                    setVisibility(myOperator, options);
                   }
-                );
+                });
               }
               dataAttributes = dataAttributesNew;
               $(".dcpAttribute__value[name=se_attrids]").each(function eachAttributesAttributesFamilychanged() {
@@ -254,18 +237,16 @@ import searchAttributes from "./searchAttributes";
     }
   );
 
-  window.dcp.document.documentController(
-    "addEventListener",
+  controller.addEventListener(
     "close",
     {
       name: "removeDsearchAttributesEvent",
-      documentCheck: function(document) {
+      check: function(document) {
         return document.type === "search";
       }
     },
     function() {
-      var $this = $(this);
-      $this.documentController("removeEventListener", ".sAttr");
+      controller.removeEventListener(".sAttr");
     }
   );
 
@@ -304,9 +285,8 @@ import searchAttributes from "./searchAttributes";
    * Set keys visibilities
    * @param myOperator operator used to know if you show or hide the keys field
    * @param $index index of the field in the table
-   * @param $documentController the document controller of the document
    */
-  function setVisibility(myOperator, $index, $documentController) {
+  function setVisibility(myOperator, $index) {
     var myKeyword;
     var minorKeyword;
     var visible = false;
@@ -315,7 +295,7 @@ import searchAttributes from "./searchAttributes";
         myKeyword = value;
       }
     });
-    minorKeyword = $documentController.documentController("getValues").se_keys[$index];
+    minorKeyword = controller.getValues().se_keys[$index];
     if (myKeyword !== undefined) {
       var $label = null;
 
@@ -356,9 +336,9 @@ import searchAttributes from "./searchAttributes";
    * @param $documentController
    * @returns {boolean}
    */
-  function findIfWorkflow($data, $documentController) {
+  function findIfWorkflow($data) {
     var $lastAttribute = $data[$data.length - 1];
-    var $revAttribute = $documentController.documentController("getValues").se_latest;
+    var $revAttribute = controller.getValues().se_latest;
     var myObject;
     if ($lastAttribute.type === "wid") {
       $data.pop();

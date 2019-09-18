@@ -6,6 +6,7 @@ namespace Anakeen\SmartStructures\Dsearch\Render;
 use Anakeen\Core\Internal\SmartCollectionOperators;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
+use Anakeen\Core\SmartStructure;
 use Anakeen\Ui\BarMenu;
 use Anakeen\Ui\DefaultView;
 use Anakeen\Ui\DocumentTemplateContext;
@@ -27,8 +28,6 @@ class SearchViewRender extends DefaultView
     {
         $js = parent::getJsReferences($document);
 
-        $js["vueDll"] = UIGetAssetPath::getJSVueComponentPath();
-        $js["kendo"] = UIGetAssetPath::getJSKendoPath();
         $js["kendoDLL"] = UIGetAssetPath::getJSKendoComponentPath();
         $js["dSearch"] = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev": "legacy")["Dsearch"]["js"];
 
@@ -57,7 +56,11 @@ class SearchViewRender extends DefaultView
         $attributes = $document->getAttributeValue("se_attrids");
         $condition = $document->getAttributeValue("se_ol");
 
-        $family = SEManager::getFamily($document->getRawValue("se_famid"));
+        $family = new SmartStructure();
+        $famid = $document->getRawValue("se_famid");
+        if ($famid) {
+            $family = SEManager::getFamily($famid);
+        }
 
         /**
          * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $workflow
