@@ -1,8 +1,7 @@
 const _ = require("underscore");
-import i18n from "./searchCatalog";
 import searchAttributes from "./searchAttributes";
 
-{
+export default function searchUIProcess(controller) {
   var myOperators = [];
   var thisOperators = [];
   var myAttributes = [];
@@ -12,22 +11,20 @@ import searchAttributes from "./searchAttributes";
   var $beforeMeth = [];
   var $checkMeth = false;
 
-  window.dcp.document.documentController(
-    "addEventListener",
+  controller.addEventListener(
     "ready",
     {
       name: "addDsearchEvents",
-      documentCheck: function(document) {
+      check: function(document) {
         return document.renderMode === "edit" && document.type === "search";
       }
     },
     function prepareEvents() {
-      $(this).documentController(
-        "addEventListener",
+      controller.addEventListener(
         "ready",
         {
           name: "initDivResult.dsearch",
-          documentCheck: function isDSearch(document) {
+          check: function isDSearch(document) {
             return document.type === "search";
           }
         },
@@ -44,12 +41,11 @@ import searchAttributes from "./searchAttributes";
         }
       );
 
-      $(this).documentController(
-        "addEventListener",
+      controller.addEventListener(
         "ready",
         {
           name: "searchReady.dsearch",
-          documentCheck: function isDSearch(document) {
+          check: function isDSearch(document) {
             return document.type === "search" && document.renderMode === "edit";
           }
         },
@@ -60,7 +56,7 @@ import searchAttributes from "./searchAttributes";
          */
         function prepareSearchDocUI(event, document) {
           var $documentController = $(this);
-          var famid = $(this).documentController("getValues").se_famid.value;
+          var famid = controller.getValues().se_famid.value;
           var testWorkflow = false;
 
           if ($(".dcpArray__content[data-attrid=se_t_detail]").length === 0) {
@@ -69,20 +65,19 @@ import searchAttributes from "./searchAttributes";
 
           kendo.ui.progress($(".dcpTab--loading"), true);
           /*
-                 Hide title field if in creation mode
-                 */
+                   Hide title field if in creation mode
+                   */
           if (document.viewId === "!coreCreation") {
             $(".dcpCustomTemplate--content[data-attrid='ba_title']").hide();
           } else {
             $(".dcpCustomTemplate--content[data-attrid='ba_title']").show();
           }
 
-          $documentController.documentController(
-            "addEventListener",
+          controller.addEventListener(
             "beforeClose",
             {
               name: "preventClose.dsearch",
-              documentCheck: function isDsearch(document) {
+              check: function isDsearch(document) {
                 return document.type === "search";
               }
             },
@@ -109,7 +104,7 @@ import searchAttributes from "./searchAttributes";
               } else {
                 $wf = null;
               }
-              testWorkflow = findIfWorkflow(myAttributes, $documentController);
+              testWorkflow = findIfWorkflow(myAttributes);
             })
             .then(function doneFirstSReady() {
               $.getJSON("/api/v2/smartstructures/dsearch/operators/", function requestOperatorsSReady(data) {
@@ -135,10 +130,7 @@ import searchAttributes from "./searchAttributes";
                 }
 
                 $r.done(function() {
-                  $.each($documentController.documentController("getValues").se_attrids, function eachDocAttridsSReady(
-                    $index,
-                    myAttribute
-                  ) {
+                  $.each(controller.getValues().se_attrids, function eachDocAttridsSReady($index, myAttribute) {
                     var myChangedAttribute;
                     if (myAttribute !== undefined) {
                       if (!itemEmpty(myAttribute)) {
@@ -171,16 +163,16 @@ import searchAttributes from "./searchAttributes";
                   $(".dcpAttribute__value[name=se_keys]").each(function eachKeysSReady(index) {
                     var $environment = $(this);
                     var $methods = [];
-                    var myAttribute = $documentController.documentController("getValues").se_attrids[index];
-                    var myOperator = $documentController.documentController("getValues").se_funcs[index];
+                    var myAttribute = controller.getValues().se_attrids[index];
+                    var myOperator = controller.getValues().se_funcs[index];
                     var $type = defineTypeIdAttribute(myAttribute, myAttributes);
 
                     deleteButton($environment);
 
                     if (myAttribute !== undefined && myOperator !== undefined) {
                       /*
-                                     if the widget is a comboBox, the current input is saved in the place where it should be
-                                     */
+                                       if the widget is a comboBox, the current input is saved in the place where it should be
+                                       */
                       if (
                         !itemEmpty(myOperator) &&
                         (myOperator.value === "=" || myOperator.value === "!=" || myOperator.value === "~y")
@@ -263,31 +255,27 @@ import searchAttributes from "./searchAttributes";
                       }
                     }
                   });
-                  $.each($documentController.documentController("getValues").se_funcs, function eachDocFuncsSReady(
-                    $index,
-                    myOperator
-                  ) {
-                    setVisibility(myOperator, $index, $documentController);
+                  $.each(controller.getValues().se_funcs, function eachDocFuncsSReady($index, myOperator) {
+                    setVisibility(myOperator, $index);
                   });
 
                   kendo.ui.progress($(".dcpTab--loading"), false);
                   $(".dcpTab__content").removeClass("dcpTab--loading");
                 });
               });
-              conditionVisibility($documentController);
+              conditionVisibility();
             });
         }
       );
 
-      $(this).documentController(
-        "addEventListener",
-        "change",
+      controller.addEventListener(
+        "smartFieldChange",
         {
           name: "searchVisibilityRevChanged.dsearch",
-          documentCheck: function isDSearch(document) {
+          check: function isDSearch(document) {
             return document.type === "search" && document.renderMode === "edit";
           },
-          attributeCheck: function isFamily(attribute) {
+          smartFieldCheck: function isFamily(attribute) {
             if (attribute.id === "se_latest") {
               return true;
             }
@@ -297,10 +285,9 @@ import searchAttributes from "./searchAttributes";
          * update the displayValue of workflows when revision value changed
          */
         function displayVisRevisionChange() {
-          var $documentController = $(this);
-          findIfWorkflow(myAttributes, $documentController);
+          findIfWorkflow(myAttributes);
 
-          var typeRevision = $(this).documentController("getValues").se_latest.value;
+          var typeRevision = controller.getValues().se_latest.value;
           var myObject;
           var dataWorkflow = [];
           _.each(myWorkflows, function eachPersoWorkflowsLatestChanged(item) {
@@ -352,15 +339,14 @@ import searchAttributes from "./searchAttributes";
         }
       );
 
-      $(this).documentController(
-        "addEventListener",
-        "change",
+      controller.addEventListener(
+        "smartFieldChange",
         {
           name: "searchFuncsAttributeChanged.dsearch",
-          documentCheck: function isDSearch(document) {
+          check: function isDSearch(document) {
             return document.type === "search" && document.renderMode === "edit";
           },
-          attributeCheck: function isFamily(attribute) {
+          smartFieldCheck: function isFamily(attribute) {
             if (attribute.id === "se_attrids") {
               return true;
             }
@@ -374,12 +360,12 @@ import searchAttributes from "./searchAttributes";
          * @param values current, previous and initial attribute value
          */
         function displayAttrChange(event, document, attribute, values) {
-          conditionVisibility($(this));
+          conditionVisibility();
           var $nodeToSave = null;
           var $parent = null;
           var $index = null;
           var $methods = [];
-          var famid = $(this).documentController("getValues").se_famid.value;
+          var famid = controller.getValues().se_famid.value;
           var $documentController = $(this);
           var current = values.current;
           var prev = values.previous;
@@ -408,8 +394,8 @@ import searchAttributes from "./searchAttributes";
               $displayAttribute = $(this);
             }
           });
-          var myAttribute = $documentController.documentController("getValues").se_attrids[$index];
-          var myOperator = $documentController.documentController("getValues").se_funcs[$index];
+          var myAttribute = controller.getValues().se_attrids[$index];
+          var myOperator = controller.getValues().se_funcs[$index];
           var myChangedAttribute;
           var attributeExists = false;
           var $type;
@@ -418,12 +404,12 @@ import searchAttributes from "./searchAttributes";
           // key values reloaded
           if (!itemEmpty(myOperator) && !itemEmpty(myAttribute)) {
             if (myOperator.value !== "is null" && myOperator.value !== "is not null" && myOperator.value !== "><") {
-              $documentController.documentController("setValue", "se_keys", {
+              controller.setValue("se_keys", {
                 value: "",
                 index: $index
               });
             } else {
-              $documentController.documentController("setValue", "se_keys", {
+              controller.setValue("se_keys", {
                 value: "foo",
                 index: $index
               });
@@ -440,29 +426,21 @@ import searchAttributes from "./searchAttributes";
 
           $seKeys = $(".dcpAttribute__value[name=se_keys]");
           if (!itemEmpty(myAttribute) && attributeExists) {
-            $documentController.documentController("cleanAttributeErrorMessage", "se_attrids");
+            controller.cleanSmartFieldErrorMessage("se_attrids");
 
-            $.each(
-              $documentController.documentController("getValues").se_attrids,
-              function eachAttridsAttributesFamilychanged(key, val) {
-                var attrId = val.value;
-                var $controle = 0;
+            $.each(controller.getValues().se_attrids, function eachAttridsAttributesFamilychanged(key, val) {
+              var attrId = val.value;
+              var $controle = 0;
 
-                $.each(myAttributes, function eachNewDataattributesAttributesFamilychanged(mkey, mval) {
-                  if (attrId === mval.id) {
-                    $controle = 1;
-                  }
-                });
-                if ($controle === 0 && !itemEmpty(attrId)) {
-                  $documentController.documentController(
-                    "setAttributeErrorMessage",
-                    "se_attrids",
-                    i18n.___("Invalid attribute", "dsearch"),
-                    key
-                  );
+              $.each(myAttributes, function eachNewDataattributesAttributesFamilychanged(mkey, mval) {
+                if (attrId === mval.id) {
+                  $controle = 1;
                 }
+              });
+              if ($controle === 0 && !itemEmpty(attrId)) {
+                controller.setSmartFieldErrorMessage("se_attrids", "TODO Translate", key);
               }
-            );
+            });
 
             if ($funcEl !== undefined) {
               if ($funcEl.parentElement !== undefined) {
@@ -497,7 +475,7 @@ import searchAttributes from "./searchAttributes";
             }
             defineDropDown($index, thisOperators);
             myOperator.value = thisOperators[0].monId;
-            $documentController.documentController("setValue", "se_funcs", {
+            controller.setValue("se_funcs", {
               value: thisOperators[0].monId,
               index: $index
             });
@@ -538,8 +516,8 @@ import searchAttributes from "./searchAttributes";
             $type = defineTypeIdAttribute(myAttribute, myAttributes);
             if (myAttribute !== undefined && myOperator !== undefined) {
               /*
-                         if the widget is a comboBox, the current input is saved in the place where it should be
-                         */
+                           if the widget is a comboBox, the current input is saved in the place where it should be
+                           */
               if (
                 !itemEmpty(myOperator) &&
                 (myOperator.value === "=" || myOperator.value === "!=" || myOperator.value === "~y")
@@ -623,22 +601,22 @@ import searchAttributes from "./searchAttributes";
                 deleteButtonMethods($environment);
               }
             }
-            setVisibility(myOperator, $index, $documentController);
+            setVisibility(myOperator, $index);
           } else {
             /* reload values */
             if (!attributeExists) {
-              $documentController.documentController("setValue", "se_keys", {
+              controller.setValue("se_keys", {
                 value: "foo",
                 index: $index
               });
-              $documentController.documentController("setValue", "se_attrids", {
+              controller.setValue("se_attrids", {
                 value: "",
                 index: $index
               });
             }
             /*
-                     without a selected attribute, widget should be deleted
-                     */
+                       without a selected attribute, widget should be deleted
+                       */
             if ($displayAttribute !== undefined) {
               if ($displayAttribute.data("kendoComboBox") !== undefined) {
                 $displayAttribute.data("kendoComboBox").value("");
@@ -675,21 +653,20 @@ import searchAttributes from "./searchAttributes";
                 $parent.insertBefore($nodeToSave, $parent.lastElementChild);
                 $nodeToSave.style.display = "block";
               }
-              setVisibility(myOperator, $index, $documentController);
+              setVisibility(myOperator, $index);
             }
           }
         }
       );
 
-      $(this).documentController(
-        "addEventListener",
-        "change",
+      controller.addEventListener(
+        "smartFieldChange",
         {
           name: "searchFuncsFamidChanged.dsearch",
-          documentCheck: function isDSearch(document) {
+          check: function isDSearch(document) {
             return document.type === "search" && document.renderMode === "edit";
           },
-          attributeCheck: function isOperator(attribute) {
+          smartFieldCheck: function isOperator(attribute) {
             if (attribute.id === "se_famid") {
               return true;
             }
@@ -699,8 +676,7 @@ import searchAttributes from "./searchAttributes";
          * update attributes and workflows list if the family change
          */
         function displayFuncsFamidChange() {
-          var famid = $(this).documentController("getValues").se_famid.value;
-          var $documentController = $(this);
+          var famid = controller.getValues().se_famid.value;
           var testWorkflow = false;
 
           if (famid === null) {
@@ -721,7 +697,7 @@ import searchAttributes from "./searchAttributes";
               } else {
                 $wf = null;
               }
-              testWorkflow = findIfWorkflow(myAttributes, $documentController);
+              testWorkflow = findIfWorkflow(myAttributes);
             })
             .then(function doneFamidChanged() {
               if (testWorkflow) {
@@ -739,15 +715,14 @@ import searchAttributes from "./searchAttributes";
         }
       );
 
-      $(this).documentController(
-        "addEventListener",
-        "change",
+      controller.addEventListener(
+        "smartFieldChange",
         {
           name: "searchFuncsConditionChanged.dsearch",
-          documentCheck: function isDSearch(document) {
+          check: function isDSearch(document) {
             return document.type === "search" && document.renderMode === "edit";
           },
-          attributeCheck: function isSeOl(attribute) {
+          smartFieldCheck: function isSeOl(attribute) {
             if (attribute.id === "se_ol") {
               return true;
             }
@@ -762,14 +737,13 @@ import searchAttributes from "./searchAttributes";
          * @param values current, previous and initial
          */
         function displayConditionChange(event, document, attribute, values) {
-          var $documentController = $(this);
           var $tabOperands = [];
-          conditionVisibility($documentController);
+          conditionVisibility();
           if ((values.current.value === "perso" && values.previous.value === "and") || values.current.value === "and") {
             $(".dcpAttribute__value[name=se_ols]").each(function eachOperandsOlChangedAnd() {
               $tabOperands.push({ value: "and", displayValue: "et" });
             });
-            $documentController.documentController("setValue", "se_ols", $tabOperands);
+            controller.setValue("se_ols", $tabOperands);
           } else if (
             (values.current.value === "perso" && values.previous.value === "or") ||
             values.current.value === "or"
@@ -777,20 +751,19 @@ import searchAttributes from "./searchAttributes";
             $(".dcpAttribute__value[name=se_ols]").each(function eachOperandOlChangedOr() {
               $tabOperands.push({ value: "or", displayValue: "ou" });
             });
-            $documentController.documentController("setValue", "se_ols", $tabOperands);
+            controller.setValue("se_ols", $tabOperands);
           }
         }
       );
 
-      $(this).documentController(
-        "addEventListener",
-        "change",
+      controller.addEventListener(
+        "smartFieldChange",
         {
           name: "searchVisibilityFuncsChanged.dsearch",
-          documentCheck: function isDSearch(document) {
+          check: function isDSearch(document) {
             return document.type === "search" && document.renderMode === "edit";
           },
-          attributeCheck: function isOperator(attribute) {
+          smartFieldCheck: function isOperator(attribute) {
             if (attribute.id === "se_funcs") {
               return true;
             }
@@ -816,9 +789,9 @@ import searchAttributes from "./searchAttributes";
               $index = key;
             }
           });
-          var myOperator = $documentController.documentController("getValues").se_funcs[$index];
-          var myAttribute = $documentController.documentController("getValues").se_attrids[$index];
-          var famid = $(this).documentController("getValues").se_famid.value;
+          var myOperator = controller.getValues().se_funcs[$index];
+          var myAttribute = controller.getValues().se_attrids[$index];
+          var famid = controller.getValues().se_famid.value;
           var $environment = null;
           var $seKeys = $(".dcpAttribute__value[name=se_keys]");
           var $type;
@@ -843,7 +816,7 @@ import searchAttributes from "./searchAttributes";
             if (myOperator.value !== "is null" && myOperator.value !== "is not null" && myOperator.value !== "><") {
               // $documentController.documentController("setValue", "se_keys", {value: "", index: $index});
             } else {
-              $documentController.documentController("setValue", "se_keys", {
+              controller.setValue("se_keys", {
                 value: "",
                 index: $index
               });
@@ -858,8 +831,8 @@ import searchAttributes from "./searchAttributes";
           var $init = false;
           if (myAttribute !== undefined && myOperator !== undefined) {
             /*
-                     if the widget is a comboBox, the current input is saved in the place where it should be
-                     */
+                       if the widget is a comboBox, the current input is saved in the place where it should be
+                       */
             if (
               !itemEmpty(myOperator) &&
               !$checkMeth &&
@@ -939,8 +912,8 @@ import searchAttributes from "./searchAttributes";
             }
           } else if ($environment !== undefined) {
             /*
-                 without a selected attribute widget should be deleted
-                 */
+                   without a selected attribute widget should be deleted
+                   */
             if (
               !$init &&
               !itemEmpty($environment) &&
@@ -963,20 +936,19 @@ import searchAttributes from "./searchAttributes";
             }
           }
           if (myOperator !== undefined) {
-            setVisibility(myOperator, $index, $documentController);
+            setVisibility(myOperator, $index);
           }
         }
       );
 
-      $(this).documentController(
-        "addEventListener",
-        "attributeArrayChange",
+      controller.addEventListener(
+        "smartFieldArrayChange",
         {
           name: "searchFuncsAddArray.dsearch",
-          documentCheck: function isDSearch(document) {
+          check: function isDSearch(document) {
             return document.type === "search" && document.renderMode === "edit";
           },
-          attributeCheck: function isArray(attribute) {
+          smartFieldCheck: function isArray(attribute) {
             if (attribute.id === "se_t_detail") {
               return true;
             }
@@ -992,11 +964,10 @@ import searchAttributes from "./searchAttributes";
          * @param options raw of the button to delete
          */
         function displayChange(event, document, attribut, type, options) {
-          var $documentController = $(this);
           var $environment = null;
           if (type === "addLine") {
             var $funcEl;
-            var $funcInput = $documentController.documentController("getValues").se_funcs[options];
+            var $funcInput = controller.getValues().se_funcs[options];
             $(".dcpAttribute__value[name=se_funcs]").each(function eachFuncsArrayModified(key, val) {
               if (key === options) {
                 $funcEl = val;
@@ -1012,57 +983,54 @@ import searchAttributes from "./searchAttributes";
                 $environment = $(this);
               }
             });
-            var myOperator = $documentController.documentController("getValues").se_funcs[options];
-            setVisibility(myOperator, options, $documentController);
+            var myOperator = controller.getValues().se_funcs[options];
+            setVisibility(myOperator, options);
             deleteButton($environment);
           }
-          conditionVisibility($documentController);
+          conditionVisibility();
         }
       );
     }
   );
 
-  window.dcp.document.documentController(
-    "addEventListener",
+  controller.addEventListener(
     "close",
     {
       name: "removeDsearchEvent",
-      documentCheck: function(document) {
+      check: function(document) {
         return document.type === "search";
       }
     },
     function() {
-      var $this = $(this);
-      $this.documentController("removeEventListener", ".dsearch");
+      controller.removeEventListener(".dsearch");
     }
   );
 
   /**
    * set visibilities according to condition field / swap classes to  make css easier
    * set visibilities of parenthesis and operand fields
-   * @param $documentController of current document
    */
-  function conditionVisibility($documentController) {
-    var $condition = $documentController.documentController("getValues").se_ol;
+  function conditionVisibility() {
+    var $condition = controller.getValues().se_ol;
     if ($condition && $condition.value !== "perso") {
       $(".dcpArray__content[data-attrid=se_t_detail] > table")
         .removeClass("dcpArray--custom")
         .addClass("dcpArray--not_custom");
-      $documentController.documentController("hideAttribute", "se_ols");
+      controller.hideSmartField("se_ols");
       $('.dcpArray__head__cell[data-attrid="se_ols"]').hide();
-      $documentController.documentController("hideAttribute", "se_rightp");
+      controller.hideSmartField("se_rightp");
       $('.dcpArray__head__cell[data-attrid="se_rightp"]').hide();
-      $documentController.documentController("hideAttribute", "se_leftp");
+      controller.hideSmartField("se_leftp");
       $('.dcpArray__head__cell[data-attrid="se_leftp"]').hide();
     } else {
       $(".dcpArray__content[data-attrid=se_t_detail] > table")
         .removeClass("dcpArray--not_custom")
         .addClass("dcpArray--custom");
-      $documentController.documentController("showAttribute", "se_ols");
+      controller.showSmartField("se_ols");
       $('.dcpArray__head__cell[data-attrid="se_ols"]').show();
-      $documentController.documentController("showAttribute", "se_rightp");
+      controller.showSmartField("se_rightp");
       $('.dcpArray__head__cell[data-attrid="se_rightp"]').show();
-      $documentController.documentController("showAttribute", "se_leftp");
+      controller.showSmartField("se_leftp");
       $('.dcpArray__head__cell[data-attrid="se_leftp"]').show();
       $(".dcpAttribute__value[name=se_ols]").each(function(key, val) {
         if (key === 0) {
@@ -1096,8 +1064,8 @@ import searchAttributes from "./searchAttributes";
       parseFormats: ["yyyy-MM-dd"],
       format: null, // standard format depends of the user's langage
       /*
-             trigger a fonction that change the value of the date from the displayValue according to ISO 8601
-             */
+               trigger a fonction that change the value of the date from the displayValue according to ISO 8601
+               */
       change: function changeDatePickerValure() {
         var keywordObj = null;
         $(".dcpAttribute__value[name=se_keys]").each(function eachKeysChangeDatePicker(key, value) {
@@ -1120,7 +1088,7 @@ import searchAttributes from "./searchAttributes";
         } else {
           $(keywordObj).val("");
         }
-        $(keywordObj).trigger("change");
+        $(keywordObj).trigger("smartFieldChange");
       }
     });
   }
@@ -1136,8 +1104,8 @@ import searchAttributes from "./searchAttributes";
       timeFormat: "HH:mm",
       format: null, // standard format depends of the user's langage
       /*
-             trigger a fonction that change the value of the date from the displayValue according to ISO 8601
-             */
+               trigger a fonction that change the value of the date from the displayValue according to ISO 8601
+               */
       change: function changeDatePickerValure() {
         var keywordObj = null;
         $(".dcpAttribute__value[name=se_keys]").each(function eachKeysChangeDatePicker(key, value) {
@@ -1163,7 +1131,7 @@ import searchAttributes from "./searchAttributes";
             searchPadNumber(timeDate.getSeconds());
         }
         $(keywordObj).val(sTimeDate);
-        $(keywordObj).trigger("change");
+        $(keywordObj).trigger("smartFieldChange");
       }
     });
   }
@@ -1178,8 +1146,8 @@ import searchAttributes from "./searchAttributes";
       timeDataFormat: ["HH:mm", "HH:mm:ss"],
       format: null, // standard format depends of the user's langage
       /*
-             trigger a fonction that change the value of the date from the displayValue according to ISO 8601
-             */
+               trigger a fonction that change the value of the date from the displayValue according to ISO 8601
+               */
       change: function changeDatePickerValure() {
         var keywordObj = null;
         $(".dcpAttribute__value[name=se_keys]").each(function eachKeysChangeDatePicker(key, value) {
@@ -1193,7 +1161,7 @@ import searchAttributes from "./searchAttributes";
           time = searchPadNumber(timeDate.getHours()) + ":" + searchPadNumber(timeDate.getMinutes());
         }
         $(keywordObj).val(time);
-        $(keywordObj).trigger("change");
+        $(keywordObj).trigger("smartFieldChange");
       }
     });
   }
@@ -1243,15 +1211,14 @@ import searchAttributes from "./searchAttributes";
   /**
    * Initialize workflow keywords kendoComboBox widget
    * @param $environment place to put the widget
-   * @param $documentController of current document
    */
-  function initKendoComboBoxWorkflow($environment, $documentController) {
-    var typeRevision = $documentController.documentController("getValues").se_latest.value;
+  function initKendoComboBoxWorkflow($environment) {
+    var typeRevision = controller.getValues().se_latest.value;
     var myObject;
     var dataWorkflow = [];
     /*
-         initialize the workflows keys list, depending on the revision value
-         */
+           initialize the workflows keys list, depending on the revision value
+           */
     _.each(myWorkflows, function eachWorkflowsIWorkflow(item) {
       if (typeRevision === "fixed" || typeRevision === "allfixed" || typeRevision === "lastfixed") {
         myObject = {
@@ -1306,8 +1273,8 @@ import searchAttributes from "./searchAttributes";
     $(".dcpAttribute__value[name=se_funcs]").each(function eachFuncsDefineDD(key) {
       if (key === $index) {
         /*
-                 update or create the widget
-                 */
+                   update or create the widget
+                   */
         if ($(this).data("kendoDropDownList") !== undefined) {
           var $dataSource = new kendo.data.DataSource({
             data: myOperators
@@ -1329,8 +1296,8 @@ import searchAttributes from "./searchAttributes";
             .list.css("min-width", "300px");
         }
         /*
-                 remove bootstrap button
-                 */
+                   remove bootstrap button
+                   */
         if ($(this)[0].parentElement.parentElement.children.length === 2) {
           $(this)[0].parentElement.parentElement.lastElementChild.remove();
         }
@@ -1473,8 +1440,8 @@ import searchAttributes from "./searchAttributes";
           operators.push(myObject);
         } else if (
           /*
-                 check if the type is compatible with the operator
-                 */
+                   check if the type is compatible with the operator
+                   */
           value.compatibleTypes.indexOf(myChangedAttribute.type) !== -1
         ) {
           myObject = {
@@ -1506,9 +1473,9 @@ import searchAttributes from "./searchAttributes";
    * @param $documentController
    * @returns {boolean}
    */
-  function findIfWorkflow($data, $documentController) {
+  function findIfWorkflow($data) {
     var $lastAttribute = $data[$data.length - 1];
-    var $revAttribute = $documentController.documentController("getValues").se_latest;
+    var $revAttribute = controller.getValues().se_latest;
     var myObject;
     if ($lastAttribute.type === "wid" && !itemEmpty($revAttribute)) {
       $data.pop();
@@ -1548,7 +1515,7 @@ import searchAttributes from "./searchAttributes";
    * @param $index index of the field in the table
    * @param $documentController the document controller of the document
    */
-  function setVisibility(myOperator, $index, $documentController) {
+  function setVisibility(myOperator, $index) {
     var myKeyword;
     var minorKeyword;
     var visible = false;
@@ -1559,7 +1526,7 @@ import searchAttributes from "./searchAttributes";
         myKeyword = value;
       }
     });
-    minorKeyword = $documentController.documentController("getValues").se_keys[$index];
+    minorKeyword = controller.getValues().se_keys[$index];
     if (myKeyword !== undefined) {
       var $label = null;
 
@@ -1577,8 +1544,8 @@ import searchAttributes from "./searchAttributes";
         visible = false;
       } else {
         /*
-             check if the operator has a "right" operand
-             */
+               check if the operator has a "right" operand
+               */
         visible = $label.indexOf("{right}") !== -1;
       }
       var $parent = $environment.closest("div");
@@ -1613,7 +1580,7 @@ import searchAttributes from "./searchAttributes";
           $methodInput.show();
 
           $methodInput.val("");
-          $methodInput.trigger("change");
+          $methodInput.trigger("smartFieldChange");
         }
         $beforeMeth[$index] = $inputs[$inputs.length - 1];
         $environment.kendoComboBox({
@@ -1642,7 +1609,7 @@ import searchAttributes from "./searchAttributes";
           $($inputs[$inputs.length - 1]).hide();
           $($($inputs[0]).closest("span")[0].parentElement).show();
           $($nodeToSave).val("");
-          $($nodeToSave).trigger("change");
+          $($nodeToSave).trigger("smartFieldChange");
           $($inputs[0]).val("");
         }
         $checkMeth = false;

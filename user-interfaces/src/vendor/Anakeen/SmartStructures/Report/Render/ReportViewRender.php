@@ -2,11 +2,14 @@
 
 namespace Anakeen\SmartStructures\Report\Render;
 
+use Anakeen\Core\Internal\SmartElement;
 use Anakeen\SmartStructures\Dsearch\Render\SearchViewRender;
 use Anakeen\Ui\BarMenu;
+use Anakeen\Ui\DefaultView;
+use Anakeen\Ui\UIGetAssetPath;
 use SmartStructure\Fields\Report;
 
-class ReportViewRender extends SearchViewRender
+class ReportViewRender extends DefaultView
 {
 
     public function getTemplates(\Anakeen\Core\Internal\SmartElement $document = null)
@@ -25,6 +28,16 @@ class ReportViewRender extends SearchViewRender
         $menu->removeElement("searchview");
 
         return $menu;
+    }
+
+    public function getJsReferences(SmartElement $document = null)
+    {
+        $js = parent::getJsReferences($document);
+
+        $js["kendoDLL"] = UIGetAssetPath::getJSKendoComponentPath();
+        $js["dSearch"] = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev": "legacy")["Dsearch"]["js"];
+
+        return $js;
     }
 
 

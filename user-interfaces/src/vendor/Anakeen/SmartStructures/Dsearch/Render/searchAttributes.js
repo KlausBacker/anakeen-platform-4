@@ -7,7 +7,8 @@ const searchAttributes = {};
 export default familyIdentifier => {
   if (!searchAttributes[familyIdentifier]) {
     searchAttributes[familyIdentifier] = new Promise((xhrResolve, xhrReject) => {
-      $.getJSON("/api/v2/smartstructures/dsearch/attributes/" + familyIdentifier)
+      const famId = familyIdentifier ? familyIdentifier : "";
+      $.getJSON("/api/v2/smartstructures/dsearch/attributes/" + famId)
         .done(xhrResolve)
         .fail(xhrReject);
     });
