@@ -75,7 +75,6 @@
     "tracekit": "^0.4.5",
     "underscore": "^1.8.3",
     "vue-m-loader": "^1.0.1",
-    "vue-property-decorator": "^8.2.1",
     "webpack-node-externals": "^1.7.2"
   },
   "peerDependencies": {
@@ -97,6 +96,7 @@
     "v-jsoneditor": "^1.2.1",
     "vue": "2.6.10",
     "vue-gettext": "^2.1.0",
+    "vue-property-decorator": "^8.2.2",
     "vue-template-compiler": "2.6.10",
     "whatwg-fetch": "^3.0.0"
   }
