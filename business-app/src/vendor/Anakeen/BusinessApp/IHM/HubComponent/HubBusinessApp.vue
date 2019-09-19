@@ -7,6 +7,7 @@
     <template v-slot:hubContent>
       <div class="business-app-entry">
         <business-app
+          :businessAppName="businessAppName"
           :collections="collections"
           :welcomeTab="welcomeTab"
           :selectedElement="selectedElement"
@@ -98,8 +99,15 @@ export default class HubBusinessApp extends Vue {
   }
   public created() {
     // @ts-ignore
-    this.getStore().registerModule("businessApp", BusinessAppModule);
+    this.getStore().registerModule(this.businessAppName, BusinessAppModule());
     this.subRouting();
+  }
+
+  public get businessAppName() {
+    // @ts-ignore
+    let name = this.entryOptions.name || this.entryOptions.route;
+    name = name.replace(/\//, "-");
+    return name;
   }
 
   public get routeUrl() {
