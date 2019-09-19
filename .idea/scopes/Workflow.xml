@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Workflow" pattern="file[anakeen-platform-4]:workflow/src//*&amp;&amp;!file[anakeen-platform-4]:workflow/src/public//*" />
+</component>

@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="User Interfaces Tests" pattern="file[anakeen-platform-4]:user-interfaces/Tests//*&amp;&amp;!file[anakeen-platform-4]:user-interfaces/Tests/src/public//*||file[anakeen-platform-4]:user-interfaces/Tests/src/public/TEST_DOCUMENT_SELENIUM//*" />
+</component>

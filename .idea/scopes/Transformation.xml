@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Transformation" pattern="file[anakeen-platform-4]:transformation/src//*" />
+</component>

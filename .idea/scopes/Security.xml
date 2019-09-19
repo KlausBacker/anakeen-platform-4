@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Security" pattern="file[anakeen-platform-4]:security/src//*&amp;&amp;!file[anakeen-platform-4]:security/src/public//*" />
+</component>

@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Hub Station" pattern="file[anakeen-platform-4]:hub-station/src//*||file[anakeen-platform-4]:hub-station/components/src//*" />
+</component>

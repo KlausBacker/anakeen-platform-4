@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Smart Data Engine" pattern="file[anakeen-platform-4]:smart-data-engine/src//*&amp;&amp;!file[anakeen-platform-4]:smart-data-engine/src/public//*&amp;&amp;!file[anakeen-platform-4]:smart-data-engine/src/var//*" />
+</component>

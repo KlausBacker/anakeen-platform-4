@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="User Interfaces" pattern="(file[anakeen-platform-4]:user-interfaces/src//*||file[anakeen-platform-4]:user-interfaces/components//*)&amp;&amp;!file[anakeen-platform-4]:user-interfaces/src/public//*" />
+</component>
