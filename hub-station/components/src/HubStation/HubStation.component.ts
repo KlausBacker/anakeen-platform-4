@@ -9,11 +9,7 @@ import { IHubStationConfig } from "./HubStationsTypes";
 
 Vue.use(VueSetupPlugin);
 
-import {
-  DockPosition,
-  IHubStationDockConfigs,
-  IHubStationPropConfig
-} from "./HubStationsTypes";
+import { DockPosition, IHubStationDockConfigs, IHubStationPropConfig } from "./HubStationsTypes";
 
 const urlJoin = require("url-join");
 
@@ -68,21 +64,13 @@ export default class HubStation extends Vue {
         const configs = this.configData[key];
         routeEntries = routeEntries.concat(
           configs.filter(cfg => {
-            return (
-              cfg.component &&
-              cfg.component.name &&
-              cfg.entryOptions &&
-              cfg.entryOptions.route
-            );
+            return cfg.component && cfg.component.name && cfg.entryOptions && cfg.entryOptions.route;
           })
         );
       });
     }
     routeEntries.map(item => {
-      item.entryOptions.completeRoute = urlJoin(
-        this.rootUrl,
-        item.entryOptions.route
-      );
+      item.entryOptions.completeRoute = urlJoin(this.rootUrl, item.entryOptions.route);
     });
     return routeEntries;
   }
@@ -94,9 +82,7 @@ export default class HubStation extends Vue {
     return str;
   }
 
-  private static organizeData(
-    config: IHubStationPropConfig[]
-  ): IHubStationDockConfigs {
+  private static organizeData(config: IHubStationPropConfig[]): IHubStationDockConfigs {
     return {
       bottom: config.filter(c => c.position.dock === DockPosition.BOTTOM),
       left: config.filter(c => c.position.dock === DockPosition.LEFT),
@@ -234,25 +220,22 @@ export default class HubStation extends Vue {
       );
     }
     // @ts-ignore
-    const routesPanels = this._l(
-      this.panes.filter(pane => this.alreadyVisited[pane.entryOptions.route]),
-      pane => {
-        return createElement(
-          "div",
-          {
-            attrs: {
-              "data-route": pane.entryOptions.route
-            },
-            class: {
-              "hub-station-route-content": true,
-              "route-active": pane.entryOptions.route === this.activeRoute
-            },
-            key: pane.entryOptions.route
+    const routesPanels = this._l(this.panes.filter(pane => this.alreadyVisited[pane.entryOptions.route]), pane => {
+      return createElement(
+        "div",
+        {
+          attrs: {
+            "data-route": pane.entryOptions.route
           },
-          pane.hubContentLayout.$slots.hubContent
-        );
-      }
-    );
+          class: {
+            "hub-station-route-content": true,
+            "route-active": pane.entryOptions.route === this.activeRoute
+          },
+          key: pane.entryOptions.route
+        },
+        pane.hubContentLayout.$slots.hubContent
+      );
+    });
     centerSections.push(
       createElement(
         "section",
@@ -334,8 +317,7 @@ export default class HubStation extends Vue {
       {
         class: {
           "hub-station-component": true,
-          [`hub-instance-${this.config.instanceName}`]: !!this.config
-            .instanceName
+          [`hub-instance-${this.config.instanceName}`]: !!this.config.instanceName
         }
       },
       sections
@@ -360,11 +342,7 @@ export default class HubStation extends Vue {
   }
 
   protected initRouterConfig(configData: IHubStationDockConfigs) {
-    const rootUrl = urlJoin(
-      window.location.protocol,
-      window.location.host,
-      this.config.routerEntry
-    );
+    const rootUrl = urlJoin(window.location.protocol, window.location.host, this.config.routerEntry);
     Vue.use(Router, { root: rootUrl });
     Object.keys(configData).forEach(key => {
       const routes = this.getRoutesConfigs(configData[key]);
@@ -385,12 +363,7 @@ export default class HubStation extends Vue {
   }
 
   protected onHubElementSelected(event) {
-    if (
-      event &&
-      event.entryOptions &&
-      event.entryOptions.route &&
-      this.withDefaultRouter
-    ) {
+    if (event && event.entryOptions && event.entryOptions.route && this.withDefaultRouter) {
       const routePath = urlJoin("/", event.entryOptions.route) + "/";
       this.$ankHubRouter.internal.navigate(routePath);
       this.$ankHubRouter.internal.resolve();
@@ -400,8 +373,7 @@ export default class HubStation extends Vue {
 
   private isPriorityDefaultRoute(entryOptions, computedPriority) {
     return (
-      (entryOptions.activated === true &&
-        this.defaultRoute.priority === null) ||
+      (entryOptions.activated === true && this.defaultRoute.priority === null) ||
       (entryOptions.activated === true &&
         // @ts-ignore
         computedPriority > this.defaultRoute.priority)
@@ -419,8 +391,7 @@ export default class HubStation extends Vue {
           const component = Vue.component(cfg.component.name);
           if (component && cfg.entryOptions && cfg.entryOptions.route) {
             const priority =
-              cfg.entryOptions.activatedOrder === null ||
-              cfg.entryOptions.activatedOrder === undefined
+              cfg.entryOptions.activatedOrder === null || cfg.entryOptions.activatedOrder === undefined
                 ? Number.NEGATIVE_INFINITY
                 : cfg.entryOptions.activatedOrder;
             if (this.isPriorityDefaultRoute(cfg.entryOptions, priority)) {
