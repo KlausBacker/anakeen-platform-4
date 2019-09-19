@@ -41,12 +41,18 @@ export namespace AnakeenController {
     export type ControllerUID = string;
   }
   export namespace BusEvents {
+    import SmartElementEvent = AnakeenController.SmartElement.SmartElementEvent;
     export type ListenableEventCallableArgs = any[];
 
     export type ListenableEventCallable = (...args: ListenableEventCallableArgs) => void;
 
     export interface IListenableEventOptions {
       eventCallback: ListenableEventCallable;
+      check?: (...args: any[]) => boolean;
+      smartFieldCheck?: (...args: any[]) => boolean;
+      once?: boolean;
+      name?: string;
+      eventType?: SmartElementEvent;
       [key: string]: any;
     }
 
@@ -142,7 +148,55 @@ export namespace AnakeenController {
 
   export namespace SmartElement {
     import IViewData = AnakeenController.Types.IViewData;
-    export const EVENTS_LIST = [
+    import ListenableEvent = AnakeenController.BusEvents.ListenableEvent;
+    import ListenableEventCallable = AnakeenController.BusEvents.ListenableEventCallable;
+
+    export type SmartElementEvent =
+      | "beforeRender"
+      | "ready"
+      | "smartFieldChange"
+      | "displayMessage"
+      | "displayError"
+      | "validate"
+      | "smartFieldBeforeRender"
+      | "smartFieldReady"
+      | "smartFieldHelperSearch"
+      | "smartFieldHelperResponse"
+      | "smartFieldHelperSelect"
+      | "smartFieldArrayChange"
+      | "actionClick"
+      | "smartFieldAnchorClick"
+      | "beforeClose"
+      | "close"
+      | "beforeSave"
+      | "afterSave"
+      | "smartFieldDownloadFile"
+      | "smartFieldUploadFile"
+      | "smartFieldUploadFileDone"
+      | "beforeDelete"
+      | "afterDelete"
+      | "beforeRestore"
+      | "afterRestore"
+      | "failTransition"
+      | "successTransition"
+      | "smartFieldBeforeTabSelect"
+      | "smartFieldAfterTabSelect"
+      | "smartFieldTabChange"
+      | "beforeDisplayTransition"
+      | "afterDisplayTransition"
+      | "beforeTransition"
+      | "beforeTransitionClose"
+      | "destroy"
+      | "smartFieldCreateDialogSmartElementBeforeSetFormValues"
+      | "smartFieldCreateDialogSmartElementBeforeSetTargetValue"
+      | "smartFieldCreateDialogSmartElementReady"
+      | "smartFieldCreateDialogSmartElementBeforeClose"
+      | "smartFieldCreateDialogSmartElementBeforeDestroy"
+      | "renderCss"
+      | "injectCurrentSmartElementJS"
+      | "smartFieldConstraintCheck"
+      | string;
+    export const EVENTS_LIST: SmartElementEvent[] = [
       "beforeRender",
       "ready",
       "smartFieldChange",
@@ -202,7 +256,7 @@ export namespace AnakeenController {
        * @param values object {"initid" : int, "revision" : int, "viewId" : string, "customClientData" : mixed}
        * @param options object {"success": fct, "error", fct}
        */
-      fetchSmartElement(values: IViewData, options);
+      fetchSmartElement(values: IViewData, options?);
 
       /**
        * Save the current smartElement
@@ -210,7 +264,7 @@ export namespace AnakeenController {
        * @param options object {"success": fct, "error", fct, "customClientData" : mixed}
        *
        */
-      saveSmartElement(options);
+      saveSmartElement(options?);
 
       /**
        * Change the workflow state of the smartElement
@@ -219,21 +273,21 @@ export namespace AnakeenController {
        * @param reinitOptions
        * @param options
        */
-      changeStateSmartElement(parameters, reinitOptions, options);
+      changeStateSmartElement(parameters, reinitOptions?, options?);
 
       /**
        * Delete the current smartElement
        * Reload the interface in the same mode
        * @param options object {"success": fct, "error", fct, "customClientData" : mixed}
        */
-      deleteSmartElement(options);
+      deleteSmartElement(options?);
 
       /**
        * Restore the current smartElement
        * Reload the interface in the same mode
        * @param options object {"success": fct, "error", fct, "customClientData" : mixed}
        */
-      restoreSmartElement(options);
+      restoreSmartElement(options?);
 
       /**
        * Get a property value
@@ -318,7 +372,7 @@ export namespace AnakeenController {
        * @param type string (current|previous|initial|all) what kind of value (default : current)
        * @returns {*}
        */
-      getValue(smartFieldId, type);
+      getValue(smartFieldId, type?: "current" | "previous" | "initial" | "all");
 
       /**
        * Get all the values
@@ -420,11 +474,28 @@ export namespace AnakeenController {
        * Add an event to the widget
        *
        * @param eventType string kind of event
+       * @returns {*|Window.options.name}
+       */
+      addEventListener(eventType: ListenableEvent);
+
+      /**
+       * Add an event to the widget
+       *
+       * @param eventType string kind of event
        * @param options object { "name" : string, "check": function}
        * @param callback function callback called when the event is triggered
        * @returns {*|Window.options.name}
        */
-      addEventListener(eventType: string, options, callback);
+      addEventListener(eventType: SmartElementEvent, options?: object, callback?: ListenableEventCallable);
+
+      /**
+       * Add an event to the widget
+       *
+       * @param eventType string kind of event
+       * @param callback function callback called when the event is triggered
+       * @returns {*|Window.options.name}
+       */
+      addEventListener(eventType: SmartElementEvent, callback?: ListenableEventCallable);
 
       /**
        * List of the events of the current widget
@@ -512,6 +583,23 @@ export namespace AnakeenController {
       tryToDestroy();
     }
 
+    export type SmartElementProperty =
+      | "family"
+      | "hasUploadingFiles"
+      | "icon"
+      | "id"
+      | "initid"
+      | "isModified"
+      | "renderMode"
+      | "revision"
+      | "security"
+      | "status"
+      | "title"
+      | "type"
+      | "url"
+      | "pageUrl"
+      | "viewId";
+
     export interface ISmartElement {
       family: {
         title: string;
@@ -543,6 +631,7 @@ export namespace AnakeenController {
       title: string;
       type: string;
       url: string;
+      pageUrl: string;
       viewId: string;
     }
 

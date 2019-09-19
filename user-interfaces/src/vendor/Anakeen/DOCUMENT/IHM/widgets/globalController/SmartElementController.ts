@@ -44,6 +44,7 @@ import IControllerOptions = AnakeenController.Types.IControllerOptions;
 import * as $ from "jquery";
 import * as Mustache from "mustache";
 import * as _ from "underscore";
+import SmartElementEvent = AnakeenController.SmartElement.SmartElementEvent;
 
 const DEFAULT_OPTIONS: IControllerOptions = {
   controllerPrefix: "smart-element-controller-",
@@ -791,7 +792,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
    * @returns {*|Window.options.name}
    */
   public addEventListener(
-    eventType: string | ListenableEvent,
+    eventType: SmartElementEvent | ListenableEvent,
     options?: object | ListenableEventCallable,
     callback?: ListenableEventCallable
   ) {

@@ -114,6 +114,7 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
       this._dispatcher.on("renderCss", (controller, event, properties, css) => {
         this._onRenderCss(css);
       });
+      this.setVerbose(this._verbose);
       this.emit("controllerReady", this);
       this._logVerbose("Global Anakeen Controller ready", "Global");
     }
