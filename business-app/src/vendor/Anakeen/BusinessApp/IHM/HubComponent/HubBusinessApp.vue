@@ -106,8 +106,7 @@ export default class HubBusinessApp extends Vue {
   public get businessAppName() {
     // @ts-ignore
     let name = this.entryOptions.name || this.entryOptions.route;
-    name = name.replace(/\//, "-");
-    return name;
+    return HubBusinessApp.formatString(name, { separator: "_", uppercase: true});
   }
 
   public get routeUrl() {
@@ -185,6 +184,36 @@ export default class HubBusinessApp extends Vue {
         title: message.title
       }
     });
+  }
+
+  private static formatString(str: string, opts: any = { uppercase: false, capitalize: true, lowercase: false, separator: ""}) {
+    const DEFAULT_OPTIONS = { uppercase: false, capitalize: true, lowercase: false, separator: ""};
+    const options = Object.assign({}, DEFAULT_OPTIONS, opts);
+    const capitalize = (msg) => msg.charAt(0).toUpperCase() + msg.slice(1);
+    const finalResult = str.replace(/[/ \-_']+[\w]?/g, (capture, index, input) => {
+      const lastCapture = capture.charAt(capture.length - 1);
+      if (/\w/.test(lastCapture)) {
+        let result = lastCapture;
+        if (options.capitalize) {
+          result = result.toUpperCase();
+        }
+        if (options.separator) {
+          result = options.separator + result;
+        }
+        return result;
+      }
+      return ""
+    });
+    if (options.uppercase) {
+      return finalResult.toUpperCase();
+    }
+    if (options.lowercase) {
+      return finalResult.toLowerCase();
+    }
+    if (options.capitalize) {
+      return capitalize(finalResult);
+    }
+    return finalResult;
   }
 }
 </script>
