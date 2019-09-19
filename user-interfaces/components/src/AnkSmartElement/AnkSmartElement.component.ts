@@ -9,6 +9,9 @@ import AnakeenGlobalController from "../AnkController";
 import VueSetup from "../setup.js";
 import { ISmartElementValue } from "./ISmartElementValue";
 import EVENTS_LIST = AnakeenController.SmartElement.EVENTS_LIST;
+import ListenableEventCallable = AnakeenController.BusEvents.ListenableEventCallable;
+import ListenableEvent = AnakeenController.BusEvents.ListenableEvent;
+import SmartElementEvent = AnakeenController.SmartElement.SmartElementEvent;
 Vue.use(VueSetup);
 @Component({
   name: "ank-smart-element"
@@ -64,7 +67,11 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
     return this.smartElementWidget !== null;
   }
 
-  public addEventListener(eventType, options, callback?) {
+  public addEventListener(
+    eventType: SmartElementEvent | ListenableEvent,
+    options?: object | ListenableEventCallable,
+    callback?: ListenableEventCallable
+  ) {
     const operation = () => this.smartElementWidget.addEventListener(eventType, options, callback);
     if (this.isLoaded()) {
       operation();

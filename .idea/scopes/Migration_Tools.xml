@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Migration Tools" pattern="file[anakeen-platform-4]:migration-tools/src//*" />
+</component>

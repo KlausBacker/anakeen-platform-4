@@ -30,6 +30,7 @@ export default class BusinessApp extends Vue {
   @Prop({ default: "", type: String }) public collection!: string;
   @Prop({ default: 1, type: Number }) public page!: number;
   @Prop({ default: "", type: String }) public filter!: string;
+  @Prop({ required: true }) public businessAppName!: string;
 
   public $refs!: {
     businessAppList: AnkSEList;
@@ -85,7 +86,7 @@ export default class BusinessApp extends Vue {
 
   public created() {
     // @ts-ignore
-    this.$store.commit("businessApp/SELECT_TAB", this.selectedElement);
+    this.$store.commit(this.getBusinessAppModuleKey("SELECT_TAB"), this.selectedElement);
   }
 
   public mounted() {
@@ -113,27 +114,31 @@ export default class BusinessApp extends Vue {
 
   public get tabs() {
     // @ts-ignore
-    return this.$store.getters["businessApp/tabs"];
+    return this.$store.getters[this.getBusinessAppModuleKey("tabs")];
   }
 
   public get selectedTab() {
     // @ts-ignore
-    return this.$store.getters["businessApp/selectedTab"];
+    return this.$store.getters[this.getBusinessAppModuleKey("selectedTab")];
   }
 
   public set selectedTab(value) {
     // @ts-ignore
-    this.$store.commit("businessApp/SELECT_TAB", value);
+    this.$store.commit(this.getBusinessAppModuleKey("SELECT_TAB"), value);
   }
 
   public get selectedCollection() {
     // @ts-ignore
-    return this.$store.getters["businessApp/selectedCollection"];
+    return this.$store.getters[this.getBusinessAppModuleKey("selectedCollection")];
   }
 
   public set selectedCollection(value) {
     // @ts-ignore
-    this.$store.commit("businessApp/SET_COLLECTION", value);
+    this.$store.commit(this.getBusinessAppModuleKey("SET_COLLECTION"), value);
+  }
+
+  protected getBusinessAppModuleKey(operation: string): string {
+    return `${this.businessAppName}/${operation}`;
   }
 
   protected addTab(tab) {
@@ -143,7 +148,7 @@ export default class BusinessApp extends Vue {
     // @ts-ignore
     if (this.tabs.findIndex(t => t.tabId === tab.tabId) === -1) {
       // @ts-ignore
-      this.$store.commit("businessApp/ADD_TAB", tab);
+      this.$store.commit(this.getBusinessAppModuleKey("ADD_TAB"), tab);
       this.$emit("openTab", tab);
     }
     this.selectedTab = tab.tabId;
@@ -166,7 +171,7 @@ export default class BusinessApp extends Vue {
     const closeTab = tabIndex => {
       const nextSelectedTab = this.tabs[tabIndex - 1] || this.tabs[tabIndex + 1];
       // @ts-ignore
-      this.$store.commit("businessApp/REMOVE_TAB", tabIndex);
+      this.$store.commit(this.getBusinessAppModuleKey("REMOVE_TAB"), tabIndex);
       if (this.selectedTab === tabRemoved) {
         if (nextSelectedTab) {
           // @ts-ignore
