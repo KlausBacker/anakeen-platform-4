@@ -9,6 +9,7 @@ const {
   msgmerge,
   msgmergeMustache
 } = require("../utils/POExtractor");
+const { vueJSExtract } = require("../utils/POExtractorVuejs");
 const { getModuleInfo } = require("../utils/moduleInfo");
 const { analyzeXML } = require("../utils/globAnalyze");
 const mustache2Pot = require("../utils/POExtractorMustache");
@@ -99,6 +100,46 @@ exports.po = ({ sourcePath, verbose }) => {
         })
       );
     });
+  });
+
+  /**
+   * Extract the js part
+   */
+  gulp.task("poVueJs", async () => {
+    const info = await getModuleInfo(sourcePath);
+    const poConfig = info.buildInfo.build.config["po-config"];
+    let poEntry = null;
+
+    if (poConfig) {
+      poEntry = poConfig[0]["po-vuejs"];
+    }
+    if (!poEntry || poEntry.length === 0) {
+      log("No VUEJS glob");
+      return Promise.resolve();
+    }
+
+    //Order glob by target
+    const globByTargets = poEntry.reduce((acc, currentElement) => {
+      if (!acc[currentElement.$.target]) {
+        acc[currentElement.$.target] = [];
+      }
+      acc[currentElement.$.target].push(currentElement);
+      return acc;
+    }, {});
+
+    log("Extract VUEJS");
+    return Promise.all(
+      Object.keys(globByTargets).map(currentKey => {
+        return vueJSExtract({
+          globFile: analyzeXML(globByTargets[currentKey]),
+          targetName: currentKey,
+          info,
+          potPath,
+          verbose,
+          log
+        });
+      })
+    );
   });
 
   /**
@@ -315,6 +356,7 @@ exports.po = ({ sourcePath, verbose }) => {
         await gulp.task("poMustache")();
         await gulp.task("poPhp")();
         await gulp.task("poJs")();
+        await gulp.task("poVueJs")();
 
         deleteFolderRecursive(potPath);
         resolve();

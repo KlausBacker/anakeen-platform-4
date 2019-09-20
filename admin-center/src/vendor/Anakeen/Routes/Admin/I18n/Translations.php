@@ -20,6 +20,7 @@ use Sepia\PoParser\Catalog\Entry;
  */
 class Translations
 {
+    const COMPONENT_SECTION="Component";
     protected $lang;
     protected $filters = array();
     const PAGESIZE = 50;
@@ -78,6 +79,8 @@ class Translations
         $this->addWorkflowLocale($data);
         $this->addEnumLocale($data);
 
+        $this->addVueJsLocale($data);
+
         $this->addOverride($data);
 
         usort($data, function ($a, $b) {
@@ -91,9 +94,54 @@ class Translations
         return $data;
     }
 
+    protected function addVueJsLocale(&$data)
+    {
+        $vueGlob = sprintf("%s/locale/%s/vuejs/src/*.json", ContextManager::getRootDirectory(), $this->lang);
+
+        foreach (glob($vueGlob) as $filename) {
+            $vueData = json_decode(file_get_contents($filename), true);
+
+            $ctx = strtok(basename($filename), ".");
+            foreach ($vueData as $entryID => $entryMsg) {
+                $key = self::COMPONENT_SECTION . $entryID;
+                $entry = [
+                    "section" => self::COMPONENT_SECTION,
+                    "msgctxt" => $ctx,
+                    "msgid" => $entryID,
+                    "msgstr" => $entryMsg,
+                    "override" => null
+                ];
+                if (empty($this->filters) || $this->filterContainsEntry($entry, $this->filters)) {
+                    $data[$key]  = $entry;
+                }
+            }
+        }
+    }
+
+
+    protected function addVueJSoverride(&$data)
+    {
+        $vueGlob = sprintf("%s/locale/%s/vuejs/src/custom/*.json", ContextManager::getRootDirectory(), $this->lang);
+
+        foreach (glob($vueGlob) as $filename) {
+            $vueData = json_decode(file_get_contents($filename), true);
+
+            $ctx = strtok(basename($filename), ".");
+            foreach ($vueData as $entryID => $entryMsg) {
+                $key = self::COMPONENT_SECTION . $entryID;
+                if (isset($data[$key])) {
+                    $data[$key]["override"]=$entryMsg;
+                }
+            }
+        }
+    }
     protected function addoverride(&$data)
     {
-        $customPoFile = sprintf("%s/locale/%s/LC_MESSAGES/custom-catalog.po", ContextManager::getRootDirectory(), $this->lang);
+        $customPoFile = sprintf(
+            "%s/locale/%s/LC_MESSAGES/custom-catalog.po",
+            ContextManager::getRootDirectory(),
+            $this->lang
+        );
         if (!file_exists($customPoFile)) {
             throw new Exception("Fail retrieve custom locale results");
         }
@@ -115,7 +163,7 @@ class Translations
                 if ($customEntry->getMsgIdPlural()) {
                     $val1 = $customEntry->getMsgStrPlurals()[0] ?? "";
                     $val2 = $customEntry->getMsgStrPlurals()[1] ?? "";
-                    $datum["override"] = [$val1,$val2];
+                    $datum["override"] = [$val1, $val2];
                 } else {
                     $datum["override"] = $customEntry->getMsgStr();
                     if (!empty($datum["defaultstr"])) {
@@ -124,6 +172,8 @@ class Translations
                 }
             }
         }
+
+        $this->addVueJSoverride($data);
     }
 
     protected function addSmartStructureLocale(&$data)
@@ -262,7 +312,11 @@ class Translations
     {
         $data = [];
 
-        $originPoFile = sprintf("%s/locale/%s/LC_MESSAGES/origin-catalog.po", ContextManager::getRootDirectory(), $this->lang);
+        $originPoFile = sprintf(
+            "%s/locale/%s/LC_MESSAGES/origin-catalog.po",
+            ContextManager::getRootDirectory(),
+            $this->lang
+        );
         if (!file_exists($originPoFile)) {
             throw new Exception("Fail retrieve origin locale results");
         }
@@ -325,7 +379,10 @@ class Translations
                     default:
                         break;
                 }
-                if (strpos(Strings::unaccent(strtolower($entryValue)), Strings::unaccent(strtolower($filterValue))) === false) {
+                if (strpos(
+                    Strings::unaccent(strtolower($entryValue)),
+                    Strings::unaccent(strtolower($filterValue))
+                ) === false) {
                     return false;
                 }
             }
@@ -344,7 +401,10 @@ class Translations
 
                 $entryValue = $entry[$filterField] ?? "";
 
-                if (strpos(Strings::unaccent(strtolower($entryValue)), Strings::unaccent(strtolower($filterValue))) === false) {
+                if (strpos(
+                    Strings::unaccent(strtolower($entryValue)),
+                    Strings::unaccent(strtolower($filterValue))
+                ) === false) {
                     return false;
                 }
             }

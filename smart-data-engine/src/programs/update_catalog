@@ -97,7 +97,25 @@ function whattext ()
             \rm null-mo.js
             popd >/dev/null
         fi
+        if [ -d "$lang_dir/vuejs" ]; then
+            pushd "$lang_dir/vuejs" > /dev/null
+
+            lang=`basename "$lang_dir"`
+             dirPublicPath=$wpub/public/locale/$lang
+             echo $dirPublicPath
+             if [ ! -d "$dirPublicPath" ]; then
+                mkdir -p $dirPublicPath
+            fi
+            cp src/*json $dirPublicPath
+            php "$wpub/programs/json_concat" --flat src/*json src/custom/*json > "$dirPublicPath/catalog.json"
+
+            popd >/dev/null
+        fi
     done
+
+
+    php "$wpub/programs/locale_vuejs_concat.php"
+
 }
 
 main "$@"

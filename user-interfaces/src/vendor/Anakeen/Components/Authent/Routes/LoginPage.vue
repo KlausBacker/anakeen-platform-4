@@ -4,7 +4,7 @@
             <img class="imgbanner" src="/CORE/Images/anakeen-logo.svg" alt="Anakeen logo">
         </div>
         <div class="login-form">
-            <ank-authent default-language="auto" authent-languages="fr_FR, en_US" :nsSde="nsSde"></ank-authent>
+            <ank-authent default-language="auto" authent-languages="fr-FR, en-US" :nsSde="nsSde"></ank-authent>
         </div>
     </div>
 </template>

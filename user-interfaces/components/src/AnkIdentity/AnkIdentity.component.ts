@@ -2,6 +2,7 @@ import Vue from "vue";
 const AuthentPassword = () => import("../AnkAuthent/AnkAuthentPassword/AnkAuthentPassword.vue");
 import { Component, Mixins, Prop } from "vue-property-decorator";
 import EventUtilsMixin from "../../mixins/AnkVueComponentMixin/EventUtilsMixin";
+import I18nMixin from "../../mixins/AnkVueComponentMixin/I18nMixin";
 import ReadyMixin from "../../mixins/AnkVueComponentMixin/ReadyMixin";
 import VueSetup from "../setup.js";
 Vue.use(VueSetup);
@@ -12,7 +13,7 @@ Vue.use(VueSetup);
   },
   name: "ank-identity"
 })
-export default class IdentityComponent extends Mixins(EventUtilsMixin, ReadyMixin) {
+export default class IdentityComponent extends Mixins(EventUtilsMixin, ReadyMixin, I18nMixin) {
   // Compact badge (just the initials), or large badge (with name and email)
   @Prop({ type: Boolean, default: false }) public large;
   // Allow the user to change his email, or not
@@ -397,31 +398,31 @@ export default class IdentityComponent extends Mixins(EventUtilsMixin, ReadyMixi
   }
   public get translations() {
     return {
-      cancelEmailButtonLabel: this.$pgettext("Identity", "Cancel email modification"),
-      cancelPasswordButtonLabel: this.$pgettext("Identity", "Cancel password modification"),
-      closeButtonLabel: this.$pgettext("Identity", "Close"),
-      currentEmailLabel: this.$pgettext("Identity", "Current email"),
-      emailChangeAction: this.$pgettext("Identity", "Change email"),
-      emailChangeSuccess: this.$pgettext("Identity", "Email successfully changed"),
-      emailChangeSuccessTitle: this.$pgettext("Identity", "Email changed"),
-      emailFormatMessage: this.$pgettext("Identity", "Wrong email format"),
-      newEmailLabel: this.$pgettext("Identity", "New email"),
-      newEmailPlaceholder: this.$pgettext("Identity", "Your new email address"),
-      newPasswordConfirmationLabel: this.$pgettext("Identity", "New password confirmation"),
-      newPasswordConfirmationPlaceholder: this.$pgettext("Identity", "Confirmation of your new password"),
-      newPasswordLabel: this.$pgettext("Identity", "New password"),
-      newPasswordPlaceholder: this.$pgettext("Identity", "Your new password"),
-      noEmail: this.$pgettext("Identity", "No email yet"),
-      oldPasswordLabel: this.$pgettext("Identity", "Current password"),
-      oldPasswordPlaceholder: this.$pgettext("Identity", "Your current password"),
-      passwordChangeAction: this.$pgettext("Identity", "Change password"),
-      passwordChangeSuccess: this.$pgettext("Identity", "Password successfully changed"),
-      passwordChangeSuccessTitle: this.$pgettext("Identity", "Password changed"),
-      passwordsMismatchMessage: this.$pgettext("Identity", "Confirmation doesn't match with the password"),
-      serverError: this.$pgettext("Identity", "Server error"),
-      unkownError: this.$pgettext("Identity", "unkown error, try again"),
-      validateEmailButtonLabel: this.$pgettext("Identity", "Confirm email modification"),
-      validatePasswordButtonLabel: this.$pgettext("Identity", "Confirm password modification")
+      cancelEmailButtonLabel: this.$t("identity.Cancel email modification") as string,
+      cancelPasswordButtonLabel: this.$t("identity.Cancel password modification") as string,
+      closeButtonLabel: this.$t("identity.Close") as string,
+      currentEmailLabel: this.$t("identity.Current email") as string,
+      emailChangeAction: this.$t("identity.Change email") as string,
+      emailChangeSuccess: this.$t("identity.Email successfully changed") as string,
+      emailChangeSuccessTitle: this.$t("identity.Email changed") as string,
+      emailFormatMessage: this.$t("identity.Wrong email format") as string,
+      newEmailLabel: this.$t("identity.New email") as string,
+      newEmailPlaceholder: this.$t("identity.Your new email address") as string,
+      newPasswordConfirmationLabel: this.$t("identity.New password confirmation") as string,
+      newPasswordConfirmationPlaceholder: this.$t("identity.Confirmation of your new password") as string,
+      newPasswordLabel: this.$t("identity.New password") as string,
+      newPasswordPlaceholder: this.$t("identity.Your new password") as string,
+      noEmail: this.$t("identity.No email yet") as string,
+      oldPasswordLabel: this.$t("identity.Current password") as string,
+      oldPasswordPlaceholder: this.$t("identity.Your current password") as string,
+      passwordChangeAction: this.$t("identity.Change password") as string,
+      passwordChangeSuccess: this.$t("identity.Password successfully changed") as string,
+      passwordChangeSuccessTitle: this.$t("identity.Password changed") as string,
+      passwordsMismatchMessage: this.$t("identity.Confirmation doesn't match with the password") as string,
+      serverError: this.$t("identity.Server error") as string,
+      unkownError: this.$t("identity.unkown erroras string, try again") as string,
+      validateEmailButtonLabel: this.$t("identity.Confirm email modification") as string,
+      validatePasswordButtonLabel: this.$t("identity.Confirm password modification") as string
     };
   }
 

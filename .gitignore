@@ -14,3 +14,4 @@ node_modules
 /control/src/.htpasswd
 .devtool/docker/.env
 .devtool/docker/Docker/Volumes/php/etc/apache2/sites-enabled/custom-vhost/001-anakeen-logs.conf
+.idea/watcherTasks.xml
