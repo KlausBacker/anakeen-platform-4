@@ -16,7 +16,7 @@ app: tmp install
 	cd ./tmp && zip -q -r ../anakeen-control-${PACKAGE_VERSION}.zip ./*
 	rm -r ./tmp
 	mv ./anakeen-control-${PACKAGE_VERSION}.zip ${APP_OUTPUT_PATH}
-	cd ${APP_OUTPUT_PATH} && ln -sf ./anakeen-control-${VERSION}.zip ./anakeen-control-latest.zip
+	cd ${APP_OUTPUT_PATH} && ln -sf ./anakeen-control-${PACKAGE_VERSION}.zip ./anakeen-control-latest.zip
 	cp ./src/version.json ${APP_OUTPUT_PATH}
 
 compute-version:

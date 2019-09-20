@@ -62,7 +62,7 @@
     "@progress/kendo-buttons-vue-wrapper": "^2019.2.621",
     "@progress/kendo-datasource-vue-wrapper": "^2019.2.621",
     "@progress/kendo-dropdowns-vue-wrapper": "^2019.2.621",
-    "@progress/kendo-ui": "2019.2.710",
+    "@progress/kendo-ui": "2019.3.917",
     "@types/node": "^12.6.2",
     "fg-loadcss": "^2.1.0",
     "hard-source-webpack-plugin": "^0.13.1",
