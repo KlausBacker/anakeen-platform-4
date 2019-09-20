@@ -1,11 +1,11 @@
 import "@progress/kendo-ui/js/kendo.button";
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
+import { Component, Mixins, Prop, Watch } from "vue-property-decorator";
+import I18nMixin from "../../../../mixins/AnkVueComponentMixin/I18nMixin";
 
 @Component({
   name: "ank-se-grid-columns-button"
 })
-export default class GridColumnsButtonController extends Vue {
+export default class GridColumnsButtonController extends Mixins(I18nMixin) {
   @Prop({
     default: "",
     type: String
@@ -37,13 +37,13 @@ export default class GridColumnsButtonController extends Vue {
   }
   public get translations() {
     return {
-      applyChanges: this.$pgettext("GridColumnsButton", "Apply changes"),
-      cancel: this.$pgettext("GridColumnsButton", "Cancel"),
-      columnSearch: this.$pgettext("GridColumnsButton", "Search a column..."),
-      dialogTitle: this.$pgettext("GridColumnsButton", "Columns management"),
-      display: this.$pgettext("GridColumnsButton", "Display"),
-      label: this.$pgettext("GridColumnsButton", "Title"),
-      organize: this.$pgettext("GridColumnsButton", "Organize")
+      applyChanges: this.$t("gridColumnsButton.Apply changes"),
+      cancel: this.$t("gridColumnsButton.Cancel"),
+      columnSearch: this.$t("gridColumnsButton.Search a column..."),
+      dialogTitle: this.$t("gridColumnsButton.Columns management"),
+      display: this.$t("gridColumnsButton.Display"),
+      label: this.$t("gridColumnsButton.Title"),
+      organize: this.$t("gridColumnsButton.Organize")
     };
   }
   public mounted() {

@@ -17,10 +17,12 @@ html {
 
   .login-banner {
     border-radius: 5px;
+    text-align: center;
   }
 
   .imgbanner {
     height: 8rem;
+    max-width: 100%;
   }
 
   .btn-secondary {
@@ -83,4 +85,42 @@ html {
     border-color: $ank-ui-doc-edit-attribute-hover-color;
     box-shadow: $ank-ui-doc-edit-attribute-hover-shadow;
   }
+}
+
+
+@media (max-width:34rem){
+
+  .login-page {
+    .login-parent {
+      width: 100%;
+    }
+    .login-form {
+      min-width: unset;
+      width: 100%;
+      .authent-component {
+        .authent-bottom {
+          flex-direction: column;
+          > .k-widget, >.k-button {
+            width:100%;
+          }
+          .k-input {
+            text-align: center;
+            display: inline-block;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+@media (max-width:20rem){
+  .login-page {
+    .authent-component {
+      .authent-form {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+    }
+}
 }

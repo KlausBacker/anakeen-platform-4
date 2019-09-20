@@ -18,6 +18,7 @@ const ENTRIES_PATH = {
   AnkSEGrid: path.resolve(BASE_PATH, "src/AnkSEGrid/AnkSEGrid.vue"),
   AnkSmartElement: path.resolve(BASE_PATH, "src/AnkSmartElement/AnkSmartElement.vue"),
   AnkSmartForm: path.resolve(BASE_PATH, "src/AnkSmartForm/AnkSmartForm.vue"),
+  AnkI18NMixin: path.resolve(BASE_PATH, "mixins/AnkVueComponentMixin/I18nMixin.ts"),
 };
 
 const config = {

@@ -32,6 +32,10 @@ class RecordTranslation
     /**
      * @var string
      */
+    protected $section;
+    /**
+     * @var string
+     */
     private $plural;
     /**
      * @var string
@@ -46,13 +50,21 @@ class RecordTranslation
 
     public function doRequest()
     {
-        $poFile = $this->copyBackup();
-        $this->initOverrideEntries($poFile);
+        if ($this->section === Translations::COMPONENT_SECTION) {
+            $record = new RecordComponentTranslation($this->lang);
+            $record->save($this->msgid, $this->msgstr);
 
-        $this->setEntry();
-        $this->savePoFile();
-        $this->analyzePoFile($poFile);
-        $this->reinitMainPo($poFile);
+            $system = new \Anakeen\Script\System();
+            $system->localeGen();
+        } else {
+            $poFile = $this->copyBackup();
+            $this->initOverrideEntries($poFile);
+
+            $this->setEntry();
+            $this->savePoFile();
+            $this->analyzePoFile($poFile);
+            $this->reinitMainPo($poFile);
+        }
         return "";
     }
 
@@ -62,6 +74,7 @@ class RecordTranslation
         $this->msgctxt = $args["msgctxt"] ?? "";
         $this->lang = $args["lang"];
         $data = $request->getParsedBody();
+        $this->section = $data["section"]??"";
         $this->msgstr = $data["msgstr"] ?? "";
         $this->plural = $data["plural"] ?? "";
         $this->pluralid = $data["pluralid"] ?? "";
@@ -153,15 +166,15 @@ msgstr ""
             $this->catalog->addEntry($entry);
         } else {
             if ($entry->isFuzzy()) {
-                $flags=$entry->getFlags();
-                $flags=array_filter($flags, function ($flag) {
+                $flags = $entry->getFlags();
+                $flags = array_filter($flags, function ($flag) {
                     return $flag !== "fuzzy";
                 });
                 $entry->setFlags($flags);
             }
 
             if ($this->pluralid) {
-                $entry->setMsgStrPlurals($this->msgstr?:[]);
+                $entry->setMsgStrPlurals($this->msgstr ?: []);
             } else {
                 $entry->setMsgStr($this->msgstr);
             }

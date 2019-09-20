@@ -11,6 +11,12 @@
  */
 
 array_shift($argv);
+$flat = false;
+if ($argv[0] === "--flat") {
+    $flat = true;
+    array_shift($argv);
+}
+
 
 $js_out = array();
 foreach ($argv as $js_file) {
@@ -28,7 +34,11 @@ foreach ($argv as $js_file) {
         exit(2);
     }
 
-    $js_out=array_merge_recursive($js_out,$js_dec);
+    if ($flat === true) {
+        $js_out = array_merge($js_out, $js_dec);
+    } else {
+        $js_out = array_merge_recursive($js_out, $js_dec);
+    }
 }
 
 
@@ -78,4 +88,3 @@ function json_last_errmsg($errcode = null)
     }
     return sprintf("error code '%s'", $errcode);
 }
-?>

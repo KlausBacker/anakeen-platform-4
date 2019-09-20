@@ -2,9 +2,8 @@
 /* eslint-disable no-unused-vars */
 
 /* tslint:disable:object-literal-sort-keys no-console */
-import AnkSplitter from "@anakeen/internal-components/lib/Splitter";
-import AnkSmartForm, { ISmartFormConfiguration } from "../../../../../../components/lib/AnkSmartForm";
 
+import AnkSmartForm, { ISmartFormConfiguration } from "../../../../../../components/lib/AnkSmartForm";
 import * as jsonSchema from "./SmartForm.schema.json";
 import SmartFormExamples from "./TestExamplesSmartForm.vue";
 
@@ -19,7 +18,6 @@ import { Component, Vue, Watch } from "vue-property-decorator";
     VJsoneditor,
     SmartFormExamples,
     "ank-smart-form": AnkSmartForm,
-    "ank-splitter": AnkSplitter,
     "ank-split-panes": AnkPaneSplitter
   }
 })

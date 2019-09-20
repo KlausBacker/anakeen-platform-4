@@ -169,6 +169,7 @@ class ContextManager
         ContextParameterManager::setVolatile(\Anakeen\Core\Settings::NsSde, "CORE_LANG", $lang);
 
         if (strpos($lang, ".") === false) {
+            $lang = str_replace("-", "_", $lang);
             $lang .= ".UTF-8";
         }
         if (setlocale(LC_MESSAGES, $lang) === false) {

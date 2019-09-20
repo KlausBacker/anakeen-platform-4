@@ -1,5 +1,6 @@
 import axios from "../utils/axios";
-import GetTextPlugin from "vue-gettext/src/index.js";
+import VueI18n from "vue-i18n";
+import I18nSetup from "../mixins/AnkVueComponentMixin/I18nSetup.js";
 import "@progress/kendo-ui/js/kendo.button";
 import "@progress/kendo-ui/js/kendo.tabstrip";
 import "@progress/kendo-ui/js/kendo.dropdownlist";
@@ -10,16 +11,15 @@ import "@progress/kendo-ui/js/kendo.sortable";
 import "@progress/kendo-ui/js/kendo.listview";
 import "@progress/kendo-ui/js/kendo.tabstrip";
 import "@progress/kendo-ui/js/cultures/kendo.culture.fr-FR";
-import translations from "./translation.json";
 
 const setLocale = (Vue, kendo, locale) => {
   if (locale) {
     const kendoLocale = locale.replace("_", "-");
     kendo.culture(kendoLocale);
-    Vue.config.language = locale;
+    Vue.$_globalI18n.setLocale(locale);
   } else {
-    if (Vue.config.language) {
-      locale = Vue.config.language;
+    if (Vue.$_globalI18n.locale) {
+      locale = Vue.$_globalI18n.locale;
       const kendoLocale = locale.replace("_", "-");
       kendo.culture(kendoLocale);
     } else {
@@ -31,31 +31,15 @@ const setLocale = (Vue, kendo, locale) => {
 export default function install(Vue) {
   if (Vue.__ank_components_setup__ === true) return;
   Vue.__ank_components_setup__ = true;
-  // jscs:ignore disallowFunctionDeclarations
-  Vue.use(GetTextPlugin, {
-    availableLanguages: {
-      en_US: "English",
-      fr_FR: "Français"
-    },
-    defaultLanguage: "fr_FR",
-    languageVmMixin: {
-      computed: {
-        currentKebabCase: function adjustCulture() {
-          return this.current.toLowerCase().replace("_", "-");
-        }
-      }
-    },
-    translations: translations,
-    silent: true
-  });
+
+  Vue.use(VueI18n);
+  Vue.use(I18nSetup);
 
   Vue.http = Vue.prototype.$http = axios;
-
   Vue.jQuery = Vue.jquery = Vue.prototype.$ = kendo.jQuery;
   Vue.kendo = Vue.Kendo = Vue.prototype.$kendo = kendo;
-  Vue.prototype.$dockEventBus = new Vue();
 
-  // Fetch locale for component (Vue/kendo) on server or set fr_FR by default
+  // Fetch locale for component (Vue/kendo) on server or set fr-FR by default
   Vue.http
     .get("/api/v2/ui/users/current")
     .then(response => {
@@ -63,7 +47,7 @@ export default function install(Vue) {
         throw "[src setup] Invalid locale server response";
       }
       const locale = response.data.data.locale;
-      const parsedLocale = locale.split(".")[0];
+      const parsedLocale = locale.split(".")[0].replace("_", "-");
       setLocale(Vue, kendo, parsedLocale);
     })
     .catch(() => {

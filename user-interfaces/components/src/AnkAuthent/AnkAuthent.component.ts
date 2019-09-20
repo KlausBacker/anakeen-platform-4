@@ -4,7 +4,9 @@ import Vue from "vue";
 import { Component, Mixins, Prop } from "vue-property-decorator";
 const a4Password = () => import("./AnkAuthentPassword/AnkAuthentPassword.vue");
 import EventUtilsMixin from "../../mixins/AnkVueComponentMixin/EventUtilsMixin";
+import I18nMixin from "../../mixins/AnkVueComponentMixin/I18nMixin";
 import ReadyMixin from "../../mixins/AnkVueComponentMixin/ReadyMixin";
+
 import VueSetup from "../setup.js";
 // eslint-disable-next-line no-unused-vars
 import { IAuthent } from "./IAuthent";
@@ -17,10 +19,10 @@ Vue.use(VueSetup);
   },
   name: "ank-authent"
 })
-export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin) {
+export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin, I18nMixin) {
   @Prop({ type: String, default: "" }) public nsSde;
-  @Prop({ type: String, default: "fr_FR, en_US" }) public authentLanguages;
-  @Prop({ type: String, default: "fr_FR" }) public defaultLanguage;
+  @Prop({ type: String, default: "fr-FR, en-US" }) public authentLanguages;
+  @Prop({ type: String, default: "fr-FR" }) public defaultLanguage;
   public login: string = "";
   public authentError: string = "Error";
   public forgetError: string = "Error";
@@ -35,6 +37,11 @@ export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin
   public resetPwd1: string = "";
   public resetPwd2: string = "";
   public authent: IAuthent;
+  public availableLanguagesLabel: object = {
+    "en-US": "English",
+    "fr-FR": "Français"
+  };
+
   public $refs!: {
     authentForgetForm: HTMLElement;
     authentForm: HTMLElement;
@@ -51,31 +58,30 @@ export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin
 
   public get translations() {
     return {
-      defaultTitleEn: this.$gettextInterpolate(this.$pgettext("Authent", "Connection to %{s}"), { s: this.nsSde }),
-      defaultTitleFr: this.$gettextInterpolate(this.$pgettext("Authent", "Connexion à %{s}"), { s: this.nsSde }),
-      loginPlaceHolder: this.$pgettext("Authent", "Enter your identifier"),
-      passwordPlaceHolder: this.$pgettext("Authent", "Enter your password"),
-      validationMessagePassword: this.$pgettext("Authent", "You must enter your password"),
-      validationMessageIdentifier: this.$pgettext("Authent", "You must enter your identifier"),
-      helpContentTitle: this.$pgettext("Authent", "Help to sign in"),
-      authentError: this.$pgettext("Authent", "Authentication error"),
-      unexpectedError: this.$pgettext("Authent", "Unexpected error"),
-      forgetContentTitle: this.$pgettext("Authent", "Form to reset password"),
-      forgetPlaceHolder: this.$pgettext("Authent", "Identifier or email address"),
-      passwordLabel: this.$pgettext("Authent", "Password :"),
-      resetPasswordLabel: this.$pgettext("Authent", "New password :"),
-      confirmPasswordLabel: this.$pgettext("Authent", "Confirm password :"),
-      confirmPasswordError: this.$pgettext("Authent", "Confirm password are not same as new password")
+      loginPlaceHolder: this.$t("authent.Enter your identifier"),
+      passwordPlaceHolder: this.$t("authent.Enter your password"),
+      validationMessagePassword: this.$t("authent.You must enter your password"),
+      validationMessageIdentifier: this.$t("authent.You must enter your identifier"),
+      helpContentTitle: this.$t("authent.Help to sign in"),
+      authentError: this.$t("authent.Authentication error"),
+      unexpectedError: this.$t("authent.Unexpected error"),
+      forgetContentTitle: this.$t("authent.Form to reset password"),
+      forgetPlaceHolder: this.$t("authent.Identifier or email address"),
+      passwordLabel: this.$t("authent.password :"),
+      resetPasswordLabel: this.$t("authent.New password :"),
+      confirmPasswordLabel: this.$t("authent.Confirm password :"),
+      confirmPasswordError: this.$t("authent.Confirm password are not same as new password")
     };
   }
 
+  // noinspection JSUnusedGlobalSymbols
   public get availableLanguages() {
     const languages = this.authentLanguages.split(",");
     return languages.map(lang => {
       // jscs:ignore requireShorthandArrowFunctions
       return {
         key: lang.trim(),
-        label: this.$language.available[lang.trim()]
+        label: this.availableLanguagesLabel[lang.trim()]
       };
     });
   }
@@ -94,13 +100,13 @@ export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin
     if (this.defaultLanguage === "auto") {
       const navLanguage = navigator.language || "fr";
       if (navLanguage.substr(0, 2) === "fr") {
-        currentLanguage = "fr_FR";
+        currentLanguage = "fr-FR";
       } else {
-        currentLanguage = "en_US";
+        currentLanguage = "en-US";
       }
     }
 
-    Vue.config.language = currentLanguage;
+    this.$_globalI18n.setLocale(currentLanguage);
 
     if (passKey) {
       this.resetPassword = true;
@@ -110,7 +116,6 @@ export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin
   }
 
   public created() {
-    Vue.config.language = "en_US";
     this.authent = {
       authToken: null,
       getSearchArg: key => {
@@ -170,12 +175,6 @@ export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin
     const $connectForm = $(this.$refs.authentForm);
     let helpWindow;
 
-    if (this.$language.current === "fr_FR") {
-      document.title = this.translations.defaultTitleFr;
-    } else {
-      document.title = this.translations.defaultTitleEn;
-    }
-
     $(this.$refs.authentHelpButton).kendoButton({
       click: () => {
         helpWindow
@@ -190,13 +189,14 @@ export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin
 
     $(this.$refs.authentLocale).kendoDropDownList({
       change: (e: kendo.ui.DropDownListChangeEvent) => {
-        Vue.config.language = e.sender.value();
-        if (e.sender.value() === "fr_FR") {
-          document.title = this.translations.defaultTitleFr;
-        } else {
-          document.title = this.translations.defaultTitleEn;
-        }
+        this.$_globalI18n.setLocale(e.sender.value());
       }
+    });
+
+    this.$on("localeChanged", lang => {
+      $(this.$refs.authentLocale)
+        .data("kendoDropDownList")
+        .value(lang);
     });
 
     helpWindow = $(this.$refs.authentHelpContent)
@@ -218,10 +218,6 @@ export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin
     this._enableReady();
   }
 
-  public EN() {
-    this.$language.current = "en_US";
-  }
-
   public createSession(event) {
     const $ = kendo.jQuery;
     $(this.$refs.authentForm);
@@ -231,19 +227,19 @@ export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin
     event.preventDefault();
 
     const beforeEvent = this.$emitCancelableEvent("beforeLogin", {
-      language: this.$language.current,
+      language: this.$i18n.locale,
       login: this.login,
       redirect: this.redirectUri
     });
 
     if (!beforeEvent.isDefaultPrevented()) {
       const data = beforeEvent.detail[0];
-      this.$language.current = data.language;
+      this.$_globalI18n.setLocale(data.language);
       this.login = data.login;
       const redirectURI = data.redirect === this.redirectUri ? this.redirectUri : data.redirect;
       this.$http
         .post(`/api/v2/authent/sessions/${login}`, {
-          language: this.$language.current,
+          language: this.$i18n.locale.replace("-", "_"),
           password: this.pwd
         })
         .then(() => {
@@ -251,7 +247,7 @@ export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin
             cancelable: false,
             data: [
               {
-                language: this.$language.current,
+                language: this.$i18n.locale,
                 login: this.login,
                 redirect: redirectURI
               }
@@ -268,12 +264,12 @@ export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin
             const info = e.response.data;
             if (info.code === "AUTH0001") {
               // Normal authentication error
-              this.authentError = this.translations.authentError;
+              this.authentError = this.translations.authentError as string;
             } else {
               this.authentError = info.userMessage || info.exceptionMessage;
             }
           } else {
-            this.authentError = this.translations.authentError;
+            this.authentError = this.translations.authentError as string;
           }
 
           this.wrongPassword = true;
@@ -297,18 +293,18 @@ export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin
     event.preventDefault();
 
     const beforeEvent = this.$emitCancelableEvent("beforeRequestResetPassword", {
-      language: this.$language.current,
+      language: this.$i18n.locale,
       login: this.login
     });
 
     if (!beforeEvent.isDefaultPrevented()) {
       const data = beforeEvent.detail[0];
-      this.$language.current = data.language;
+      this.$_globalI18n.setLocale(data.language);
       this.login = data.login;
 
       this.$http
         .post(`/api/v2/authent/mailPassword/${login}`, {
-          language: this.$language.current,
+          language: this.$i18n.locale.replace("-", "_"),
           password: this.pwd
         })
         .then(response => {
@@ -316,7 +312,7 @@ export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin
             cancelable: false,
             data: [
               {
-                language: this.$language.current,
+                language: this.$i18n.locale,
                 login: this.login
               }
             ]
@@ -341,7 +337,7 @@ export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin
               this.forgetError = info.userMessage || info.exceptionMessage;
             }
           } else {
-            this.forgetError = this.translations.unexpectedError;
+            this.forgetError = this.translations.unexpectedError as string;
           }
 
           this.forgetStatusFailed = true;
@@ -362,12 +358,12 @@ export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin
 
     if (!this.resetPwd1 || this.resetPwd1 !== this.resetPwd2) {
       this.resetStatusFailed = true;
-      this.resetError = this.translations.confirmPasswordError;
+      this.resetError = this.translations.confirmPasswordError as string;
       return;
     }
 
     const beforeEvent = this.$emitCancelableEvent("beforeApplyResetPassword", {
-      language: this.$language.current,
+      language: this.$i18n.locale,
       login: this.login
     });
 
@@ -385,14 +381,14 @@ export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin
       httpAuth
         .put(`/authent/password/${login}`, {
           password: this.resetPwd1,
-          language: this.$language.current
+          language: this.$i18n.locale.replace("-", "_")
         })
         .then(response => {
           const afterEvent = this.$createEvent("afterApplyResetPassword", {
             cancelable: false,
             data: [
               {
-                language: this.$language.current,
+                language: this.$i18n.locale,
                 login: this.login
               }
             ]
@@ -419,7 +415,7 @@ export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin
               this.resetError = e.response.data.userMessage || e.response.data.exceptionMessage;
             }
           } else {
-            this.resetError = this.translations.unexpectedError;
+            this.resetError = this.translations.unexpectedError as string;
           }
 
           this.resetStatusFailed = true;

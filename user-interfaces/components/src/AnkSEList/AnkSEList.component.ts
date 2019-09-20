@@ -1,6 +1,7 @@
 import Vue from "vue";
 import { Component, Mixins, Prop, Watch } from "vue-property-decorator";
 import EventUtilsMixin from "../../mixins/AnkVueComponentMixin/EventUtilsMixin";
+import I18nMixin from "../../mixins/AnkVueComponentMixin/I18nMixin";
 import ReadyMixin from "../../mixins/AnkVueComponentMixin/ReadyMixin";
 import VueSetup from "../setup.js";
 
@@ -8,7 +9,7 @@ Vue.use(VueSetup);
 @Component({
   name: "ank-se-list"
 })
-export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin) {
+export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin, I18nMixin) {
   public get dataSourceItems() {
     if (this.dataSource) {
       const view = this.dataSource.view();
@@ -24,16 +25,14 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin)
     return [];
   }
   public get translations() {
-    const searchTranslated = this.$pgettext("SEList", "Search in : %{collection}");
-    const noDataTranslated = this.$pgettext("SEList", "No %{collection} to display");
+    const searchTranslated = this.$t("selist.Search in : {collection}", {
+      collection: this.collectionLabel.toUpperCase()
+    });
+    const noDataTranslated = this.$t("selist.No {collection} to display", { collection: this.collectionLabel });
     return {
-      itemsPerPageLabel: this.$pgettext("SEList", "Items per page"),
-      noDataPagerLabel: this.$gettextInterpolate(noDataTranslated, {
-        collection: this.collectionLabel
-      }),
-      searchPlaceholder: this.$gettextInterpolate(searchTranslated, {
-        collection: this.collectionLabel.toUpperCase()
-      })
+      itemsPerPageLabel: this.$t("selist.Items per page"),
+      noDataPagerLabel: noDataTranslated,
+      searchPlaceholder: searchTranslated
     };
   }
   public get collectionLabel() {
@@ -118,20 +117,14 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin)
   public mounted() {
     kendo.ui.progress(kendo.jQuery(this.$refs.wrapper), true);
     const ready = () => {
-      this.initKendoWidgets();
-      window.addEventListener("resize", this.onResize);
-      kendo.ui.progress(kendo.jQuery(this.$refs.wrapper), false);
-
-      if (this.smartCollection) {
-        this.setCollection({
-          name: this.smartCollection,
-          title: this.collectionLabel
-        }).then(() => {
-          this._enableReady();
-        });
+      if (this.$_globalI18n.loaded) {
+        this.initWidgets();
       } else {
-        this._enableReady();
+        this.$on("localeLoaded", () => {
+          this.initWidgets();
+        });
       }
+
       this.onResize();
     };
 
@@ -230,7 +223,21 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin)
       activeItem.scrollIntoView();
     }
   }
-
+  protected initWidgets() {
+    this.initKendoWidgets();
+    window.addEventListener("resize", this.onResize);
+    kendo.ui.progress(kendo.jQuery(this.$refs.wrapper), false);
+    if (this.smartCollection) {
+      this.setCollection({
+        name: this.smartCollection,
+        title: this.collectionLabel
+      }).then(() => {
+        this._enableReady();
+      });
+    } else {
+      this._enableReady();
+    }
+  }
   protected onResize() {
     if (this.$el.clientWidth) {
       this.componentClasses["is-compact"] = this.$el.clientWidth < 210;
@@ -321,7 +328,7 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin)
       info: false,
       input: true,
       messages: {
-        empty: this.translations.noDataPagerLabel,
+        empty: this.translations.noDataPagerLabel as string,
         of: "/ {0}",
         page: ""
       },

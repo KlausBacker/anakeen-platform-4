@@ -1,13 +1,14 @@
 import Vue from "vue";
 import { Component, Mixins, Prop } from "vue-property-decorator";
 import EventUtilsMixin from "../../mixins/AnkVueComponentMixin/EventUtilsMixin";
+import I18nMixin from "../../mixins/AnkVueComponentMixin/I18nMixin";
 import ReadyMixin from "../../mixins/AnkVueComponentMixin/ReadyMixin";
 import VueSetup from "../setup.js";
 Vue.use(VueSetup);
 @Component({
   name: "ank-logout"
 })
-export default class LogoutComponent extends Mixins(EventUtilsMixin, ReadyMixin) {
+export default class LogoutComponent extends Mixins(EventUtilsMixin, ReadyMixin, I18nMixin) {
   @Prop({ type: String, default: "" }) public title;
   public logout() {
     kendo.ui.progress(kendo.jQuery("body"), true);
@@ -35,7 +36,7 @@ export default class LogoutComponent extends Mixins(EventUtilsMixin, ReadyMixin)
   }
   public get translations() {
     return {
-      title: this.$pgettext("Logout", "Logout")
+      title: this.$t("Logout.Logout")
     };
   }
   public mounted() {

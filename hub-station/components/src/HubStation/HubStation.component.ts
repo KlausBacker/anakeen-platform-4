@@ -1,15 +1,16 @@
 import VueAxiosPlugin from "@anakeen/internal-components/lib/AxiosPlugin";
+import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin";
 // Vue class based component export
-import { Component, Prop, Provide, Vue, Watch } from "vue-property-decorator";
+import { Component, Mixins, Prop, Provide, Vue, Watch } from "vue-property-decorator";
 import { HubElementDisplayTypes } from "../HubElement/HubElementTypes";
 import VueSetupPlugin from "../utils/VueSetupPlugin";
 import Router from "./HubRouter";
 import HubStationDock from "./HubStationDock/HubStationDock.vue";
-import { IHubStationConfig } from "./HubStationsTypes";
 
 Vue.use(VueSetupPlugin);
 
-import { DockPosition, IHubStationDockConfigs, IHubStationPropConfig } from "./HubStationsTypes";
+// eslint-disable-next-line no-unused-vars
+import { DockPosition, IHubStationConfig, IHubStationDockConfigs, IHubStationPropConfig } from "./HubStationsTypes";
 
 const urlJoin = require("url-join");
 
@@ -17,10 +18,15 @@ Vue.use(VueAxiosPlugin);
 
 @Component({
   components: {
-    "hub-station-dock": HubStationDock
+    "hub-station-dock": resolve => {
+      // @ts-ignore
+      Vue.$_globalI18n.recordCatalog().finally(() => {
+        resolve(HubStationDock);
+      });
+    }
   }
 })
-export default class HubStation extends Vue {
+export default class HubStation extends Mixins(AnkI18NMixin) {
   // region computed
   get isHeaderEnabled() {
     return this.configData.top.length;

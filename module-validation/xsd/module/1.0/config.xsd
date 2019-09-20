@@ -24,6 +24,7 @@
             <xs:element type="ns:poTarget" name="po-mustache" maxOccurs="unbounded" minOccurs="0"/>
             <xs:element type="ns:poTarget" name="po-php" maxOccurs="unbounded" minOccurs="0"/>
             <xs:element type="ns:poTarget" name="po-js" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="ns:poTarget" name="po-vuejs" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 
