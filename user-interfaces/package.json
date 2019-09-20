@@ -78,20 +78,20 @@
     "webpack-node-externals": "^1.7.2"
   },
   "peerDependencies": {
-    "@progress/kendo-ui": "2019.1.320",
-    "jquery": "3.3.1",
+    "@progress/kendo-ui": "2019.3.917",
+    "jquery": "3.4.1",
     "vue": "2.6.10"
   },
   "dependencies": {
     "@anakeen/theme-variables": "^1.0.0",
     "@anakeen/webpack-conf": "1.2.1",
     "@progress/kendo-theme-bootstrap": "^4.0.0",
-    "@progress/kendo-ui": "2019.2.710",
+    "@progress/kendo-ui": "^2019.3.917",
     "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
     "core-js": "3.1.4",
     "easygettext": "^2.7.0",
-    "jquery": "^3.3.1",
+    "jquery": "^3.4.1",
     "popper.js": "^1.14.7",
     "v-jsoneditor": "^1.2.1",
     "vue": "2.6.10",

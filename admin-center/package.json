@@ -57,7 +57,7 @@
     "@progress/kendo-grid-vue-wrapper": "^2019.2.621",
     "@progress/kendo-layout-vue-wrapper": "^2019.2.621",
     "@progress/kendo-treeview-vue-wrapper": "^2019.2.621",
-    "@progress/kendo-ui": "2019.2.710",
+    "@progress/kendo-ui": "2019.3.917",
     "@types/jquery": "^3.3.30",
     "axios": "^0.19.0",
     "core-js": "3.1.4",
