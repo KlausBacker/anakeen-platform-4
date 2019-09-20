@@ -16,6 +16,24 @@ module.exports.getConfig = () => {
   ];
 };
 
+module.exports.getDllConfig = () => {
+  const configHubVendor = require(path.resolve(BASE_DIR, "hub-station/webpack/hubVendor"))();
+  const configComponent = require(path.resolve(BASE_DIR, "user-interfaces/components/webpack/"))();
+  return [
+    {
+      webpack: configHubVendor,
+      context: path.resolve(BASE_DIR, "hub-station/"),
+      path: {
+        url: /Anakeen\/hubVendor\/dev\/hubVendor\.js$/,
+        local: path.resolve(BASE_DIR, "hub-station/src/public/Anakeen/hubVendor/dev/hubVendor.js")
+      }
+    },
+    {
+      webpack: configComponent
+    }
+  ];
+};
+
 module.exports.getDeps = () => {
   return {
   }

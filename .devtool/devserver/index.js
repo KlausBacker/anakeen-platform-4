@@ -1,12 +1,32 @@
 const webpack = require("webpack");
 const webpackDevMiddleware = require("webpack-dev-middleware");
-const webpackHotMiddleware = require("webpack-hot-middleware");
 const express = require("express");
 const app = express();
 const proxy = require("express-http-proxy");
 const config = require("./config.perso.js");
 const merge = require("webpack-merge");
-//const hotMiddlewareScript = 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true';
+
+config.getDllConfig().forEach(currentElement => {
+  currentElement.webpack.forEach(currentConfig => {
+    if (currentConfig.mode !== "development") {
+      return;
+    }
+    if (currentElement.context) {
+      currentConfig.context = currentElement.context;
+    }
+    //Run a webpack watcher to reinit file when needed
+    const compiler = webpack(currentConfig);
+    compiler.watch({}, () => {
+      console.log(`build of ${currentConfig.name} done`);
+    });
+    //If there is a path a add rule to express to handle the file
+    if (currentElement.path) {
+      app.get(currentElement.path.url, (req, res) => {
+        res.sendFile(currentElement.path.local);
+      });
+    }
+  });
+});
 
 config.getConfig().forEach(currentConfig => {
   if (currentConfig.mode !== "development") {
@@ -22,20 +42,7 @@ config.getConfig().forEach(currentConfig => {
   if (config.devtool) {
     currentConfig.devtool = config.devtool;
   }
-  //Add HMR entry
-  /*currentConfig.entry = Object.keys(currentConfig.entry).reduce(
-    (acc, currentEntry) => {
-      const entry = currentConfig.entry[currentEntry];
-      entry.push(hotMiddlewareScript);
-      acc[currentEntry] = entry;
-      return acc;
-    },
-    {}
-  );*/
-  //Add HMR plugin
-  /*currentConfig.plugins = currentConfig.plugins || [];
-  currentConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
-  currentConfig.plugins.push(new webpack.NoEmitOnErrorsPlugin());*/
+  currentConfig.plugins = currentConfig.plugins || [];
 
   const compiler = webpack(currentConfig);
 
@@ -43,26 +50,15 @@ config.getConfig().forEach(currentConfig => {
     publicPath: currentConfig.output.publicPath
   });
   app.use(instance);
-
-  //const wphmw = webpackHotMiddleware(compiler);
-  //app.use(wphmw);
 });
 
 app.use(
   "/",
   proxy(config.platformUrl, {
     proxyReqOptDecorator: function(proxyReqOpts) {
-      if (
-        config.credentials &&
-        config.credentials.user &&
-        config.credentials.password
-      ) {
-        const buffer = new Buffer(
-          `${config.credentials.user}:${config.credentials.password}`
-        );
-        proxyReqOpts.headers["Authorization"] = `Basic ${buffer.toString(
-          "base64"
-        )}`;
+      if (config.credentials && config.credentials.user && config.credentials.password) {
+        const buffer = new Buffer(`${config.credentials.user}:${config.credentials.password}`);
+        proxyReqOpts.headers["Authorization"] = `Basic ${buffer.toString("base64")}`;
       }
       return proxyReqOpts;
     }
