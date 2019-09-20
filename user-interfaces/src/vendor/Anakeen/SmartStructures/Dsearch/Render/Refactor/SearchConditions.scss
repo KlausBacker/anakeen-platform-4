@@ -16,13 +16,21 @@ input:checked + .conditions-enum-label {
   font-weight: bold;
 }
 
+.conditions-enum {
+  padding: 10px;
+}
+
 .conditions-detail {
   display: flex;
   flex-direction: column;
-  background: #ffffff;
+  background: #fafafa;
+  padding: 10px;
 
   .conditions-detail-table {
     width: 100%;
+    background: #ffffff;
+    border: 1px solid #c8c8c8;
+    border-radius: 0.25rem;
 
     .conditions-column-head-tool {
       width: 5%;
@@ -75,6 +83,15 @@ input:checked + .conditions-enum-label {
     border: none;
     border-radius: 0.166rem;
     font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .conditions-table-delete-condition {
+    .fa {
+      font-size: 1.5em;
+    }
   }
 
   tbody {
@@ -120,6 +137,16 @@ input:checked + .conditions-enum-label {
           border-left: none;
         }
       }
+    }
+
+    .conditions-table-tools-add-line {
+      display: flex;
+      justify-content: center;
+    }
+
+    .conditions-table-delete-condition {
+      display: flex;
+      justify-content: center;
     }
   }
 }

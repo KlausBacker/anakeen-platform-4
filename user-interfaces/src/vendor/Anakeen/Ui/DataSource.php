@@ -145,8 +145,8 @@ class DataSource extends DocumentList
                         $this->_searchDoc->fromid = 0;
                     } else {
                         $this->_searchDoc->fromid = $famId;
-                        $this->_searchDoc->useCollection($this->smartElement->initid);
                     }
+                    $this->_searchDoc->useCollection($this->smartElement->initid);
                     break;
                 default:
                     $exception = new Exception("GRID0002", $this->smartElementId);

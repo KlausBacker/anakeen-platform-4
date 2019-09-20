@@ -1,6 +1,6 @@
 <template>
   <div class="conditions-wrapper">
-    <div class="condition-enum" ref="conditionEnum">
+    <div class="conditions-enum" ref="conditionEnum">
       <div class="input-group margin-bottom-sm">
         <div class="k-textbox condition-type-wrapper">
           <div class="conditions-radio-container">
@@ -73,15 +73,18 @@
               ></component>
             </td>
           </tr>
+          <tr>
+            <td class="conditions-table-tools">
+              <div class="conditions-table-tools-add-line" title="Ajouter une nouvelle ligne">
+                <button type="button" class="conditions-table-tools-add-line-button" @click="onAddLineButtonClick">
+                  <span class="fa fa-plus fa-2x"></span>
+                </button>
+              </div>
+            </td>
+            <td v-for="column in columns" v-show="column.visible"></td>
+          </tr>
         </tbody>
       </table>
-      <div class="conditions-table-tools">
-        <div class="conditions-table-tools-add-line" title="Ajouter une nouvelle ligne">
-          <button type="button" class="conditions-table-tools-add-line-button" @click="onAddLineButtonClick">
-            <span class="fa fa-plus"></span>
-          </button>
-        </div>
-      </div>
     </div>
   </div>
 </template>
