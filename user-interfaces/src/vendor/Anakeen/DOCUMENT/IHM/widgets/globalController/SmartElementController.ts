@@ -1904,7 +1904,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
 
     return new Promise((resolve, reject) => {
       result = !this._triggerControllerEvent(
-        "beforeDisplayChangeState",
+        "beforeDisplayTransition",
         null,
         this.getProperties(),
         new TransitionInterface(null, $target, nextState, transition)
