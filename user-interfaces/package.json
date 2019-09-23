@@ -45,11 +45,9 @@
     "lib/**/*",
     "components/**/*",
     "src/**/*.scss",
-    "src/vendor/Anakeen/DOCUMENT/IHM/document.js",
-    "src/vendor/Anakeen/DOCUMENT/IHM/widgets/widget.js",
     "src/public/Anakeen/ank-components/deps/*",
-    "src/public/Anakeen/assets/**/*",
-    "src/public/Anakeen/ankDll/**/*",
+    "src/public/Anakeen/assets/**/*.json",
+    "src/public/Anakeen/ankDll/**/*.json",
     "LICENSE",
     "README.md",
     "yarn.lock"
