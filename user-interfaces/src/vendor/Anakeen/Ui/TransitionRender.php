@@ -76,19 +76,22 @@ class TransitionRender
         $attrData = array();
         $askes = [];
         if (!$transitionId) {
-            return $attrData;
+            // Always ask reason for non valid transition
+            $addComment = true;
+        } else {
+            $transition = $this->workflow->getTransition($transitionId);
+            if ($transition) {
+                $askes = $transition->getAsks();
+            }
+            $addComment = $transition->getRequiredComment();
         }
-        $transition = $this->workflow->getTransition($transitionId);
-        if ($transition) {
-            $askes = $transition->getAsks();
-        }
-
-        $addComment = $transition->getRequiredComment();
         $workflow = $this->getViewWorkflow();
 
-
         if (count($askes) > 0) {
-            $transitionLabel = isset($transitionId) ? $this->workflow->getTransitionLabel($transitionId) : ___("Invalid transition", "ddui");
+            $transitionLabel = isset($transitionId) ? $this->workflow->getTransitionLabel($transitionId) : ___(
+                "Invalid transition",
+                "ddui"
+            );
             $askFrame = new \Anakeen\Core\SmartStructure\FieldSetAttribute(
                 self::parameterFrameAttribute,
                 $this->workflow->id,
@@ -114,6 +117,7 @@ class TransitionRender
                 }
             }
         }
+
         if ($addComment) {
             $frComment = new \Anakeen\Core\SmartStructure\FieldSetAttribute(
                 self::commentFrameAttribute,
@@ -148,12 +152,14 @@ class TransitionRender
     }
 
     /**
-     * @param \Anakeen\Routes\Core\Lib\DocumentApiData    $document
+     * @param \Anakeen\Routes\Core\Lib\DocumentApiData $document
      * @param \Anakeen\Core\SmartStructure\BasicAttribute $attribute
      * @return AttributeInfo
      */
-    protected function getAttributeInfo(\Anakeen\Routes\Core\Lib\DocumentApiData $document, \Anakeen\Core\SmartStructure\BasicAttribute $attribute)
-    {
+    protected function getAttributeInfo(
+        \Anakeen\Routes\Core\Lib\DocumentApiData $document,
+        \Anakeen\Core\SmartStructure\BasicAttribute $attribute
+    ) {
         if ($this->formatCollection === null) {
             $this->formatCollection = new \Anakeen\Core\Internal\FormatCollection($this->workflow);
         }
@@ -213,7 +219,10 @@ class TransitionRender
         $default = new RenderDefault();
 
         $options = $default->getOptions($this->workflow);
-        $options->longtext(self::commentAttribute)->setPlaceHolder(___("Add a note to the history", "ddui"))->setLabelPosition(CommonRenderOptions::nonePosition);
+        $options->longtext(self::commentAttribute)->setPlaceHolder(___(
+            "Add a note to the history",
+            "ddui"
+        ))->setLabelPosition(CommonRenderOptions::nonePosition);
         $options->frame(self::commentFrameAttribute)->setLabelPosition(CommonRenderOptions::nonePosition);
 
         return $options;
