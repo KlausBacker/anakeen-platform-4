@@ -2,11 +2,16 @@
   display: flex;
   flex: 1;
   min-height: 0;
+  height: 100%;
 
   .mail-grid {
     flex: 1;
     align-items: flex-start;
     justify-content: stretch;
+    height: 100%;
+    display: flex !important;
+    flex-direction: column;
+
   }
 
   .mail-splitter {
@@ -22,6 +27,9 @@
   }
 
   /deep/ {
+    .k-grid, .grid-widget-wrapper {
+      height: 100%;
+    }
     .k-dropdown-operator {
       display: none;
     }

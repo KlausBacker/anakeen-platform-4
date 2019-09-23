@@ -1,4 +1,4 @@
-import Splitter from "@anakeen/internal-components/lib/Splitter.js";
+import AnkPaneSplitter from "@anakeen/internal-components/lib/PaneSplitter";
 import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSEGrid";
 import SmartElement from "@anakeen/user-interfaces/components/lib/AnkSmartElement";
 import Vue from "vue";
@@ -8,32 +8,15 @@ import { Component } from "vue-property-decorator";
   components: {
     "ank-se-grid": AnkSEGrid,
     "ank-smart-element": SmartElement,
-    "ank-splitter": Splitter
+    "ank-split-panes": AnkPaneSplitter
   }
 })
 export default class AdminCenterMailController extends Vue {
-  public panes: any = [
-    {
-      collapsible: true,
-      resizable: true,
-      scrollable: false,
-      size: "50%"
-    },
-    {
-      collapsible: true,
-      resizable: true,
-      scrollable: false,
-      size: "50%"
-    }
-  ];
-
   public selectMailTemplate(e) {
     switch (e.data.type) {
       case "consultMailTemplate":
-        e.preventDefault();
         const mailId = e.data.row.name || e.data.row.id.toString();
         // @ts-ignore
-        this.$refs.mailSplitter.disableEmptyContent();
         this.$nextTick(() => {
           // @ts-ignore
           this.$refs.mailSmartElement.fetchSmartElement({
