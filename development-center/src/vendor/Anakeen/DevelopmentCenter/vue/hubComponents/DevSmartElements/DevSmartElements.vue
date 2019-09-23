@@ -111,7 +111,7 @@ export default {
           .map(r => r.url)
           .join("/")
           .replace(/\/\//g, "/");
-      this.navigate(routeUrl);
+      this.navigate(routeUrl, true, {silent:true});
     }
   }
 };
