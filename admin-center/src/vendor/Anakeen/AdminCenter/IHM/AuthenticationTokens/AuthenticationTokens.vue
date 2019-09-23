@@ -1,45 +1,32 @@
 <template>
   <div class="authentication-tokens">
-    <ank-splitter
-      ref="splitter"
-      class="ank-token-splitter"
-      :panes="panes"
-      localStorageKey="token-manager-splitter"
-    >
-      <template slot="left">
-        <div class="token-main">
-          <header>
-            <kendo-button class="button-filtering k-outline k-primary" @click="flipFiltering">
-              <i class="fa " :class="{ 'fa-check': showExpire }"/>
-              <span> Show expired </span>
-            </kendo-button>
+    <ank-split-panes watch-slots vertical  ref="splitter" class="ank-token-splitter" localStorageKey="token-manager-splitter">
+      <div class="token-main">
+        <header>
+          <kendo-button class="button-filtering k-outline k-primary" @click="flipFiltering">
+            <i class="fa " :class="{ 'fa-check': showExpire }" />
+            <span> Show expired </span>
+          </kendo-button>
 
-            <kendo-button class="button-createform k-primary" @click="displayCreateForm">
-              <i class="fa fa-plus"/>
-              <span>Create token</span></kendo-button>
-          </header>
+          <kendo-button class="button-createform k-primary" @click="displayCreateForm">
+            <i class="fa fa-plus" />
+            <span>Create token</span></kendo-button
+          >
+        </header>
 
-          <div class="token-grid-box">
-            <div ref="tokenGrid" class="token-grid"></div>
-          </div>
-
+        <div class="token-grid-box">
+          <div ref="tokenGrid" class="token-grid"></div>
         </div>
-      </template>
-      <template slot="right">
-        <ank-token-info
-          v-if="viewToken"
-          :info="tokenInfo"
-          @token-deleted="refreshList"
-          >Detail</ank-token-info
-        >
-      </template>
-      <template slot="emptyIcon">
-        <div class="token-logo">
-          <span class="material-icons">fingerprint</span>
-        </div>
-      </template>
-      <template slot="emptyText"></template>
-    </ank-splitter>
+      </div>
+      <div v-if="!viewToken" class="token-logo">
+        <span class="material-icons">fingerprint</span>
+        <p>Select token to display details</p>
+      </div>
+
+      <ank-token-info v-if="viewToken" :info="tokenInfo" @token-deleted="refreshList"
+        >Detail
+      </ank-token-info >
+    </ank-split-panes>
   </div>
 </template>
 
@@ -47,5 +34,4 @@
 @import "./AuthenticationTokens.scss";
 </style>
 
-<script src="./AuthenticationTokens.controller.ts" lang="ts">
-</script>
+<script src="./AuthenticationTokens.controller.ts" lang="ts"></script>

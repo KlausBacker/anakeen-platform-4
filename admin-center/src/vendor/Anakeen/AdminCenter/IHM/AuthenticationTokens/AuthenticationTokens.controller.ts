@@ -1,4 +1,4 @@
-import AnkSplitter from "@anakeen/internal-components/lib/Splitter";
+import AnkPaneSplitter from "@anakeen/internal-components/lib/PaneSplitter";
 import "@progress/kendo-ui/js/kendo.button";
 import "@progress/kendo-ui/js/kendo.filtercell";
 import "@progress/kendo-ui/js/kendo.grid";
@@ -6,6 +6,7 @@ import "@progress/kendo-ui/js/kendo.treelist";
 import "@progress/kendo-ui/js/kendo.window";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import AnkTokenInfo from "./AuthenticationTokenInfo.vue";
+// eslint-disable-next-line no-unused-vars
 import { IAuthenticationToken } from "./IAuthenticationToken";
 import IsoDates from "./IsoDates";
 
@@ -14,31 +15,12 @@ declare var kendo;
 // noinspection JSUnusedGlobalSymbols
 @Component({
   components: {
-    "ank-splitter": AnkSplitter,
+    "ank-split-panes": AnkPaneSplitter,
     "ank-token-info": AnkTokenInfo
   },
   name: "ank-authentication-tokens"
 })
 export default class AuthenticationTokensController extends Vue {
-  // noinspection JSMethodCanBeStatic
-  public get panes() {
-    return [
-      {
-        collapsible: false,
-        resizable: true,
-        scrollable: false
-      },
-      {
-        collapsible: false,
-        max: "500px",
-        min: "250px",
-        resizable: true,
-        scrollable: false,
-        size: "500px"
-      }
-    ];
-  }
-
   public get viewToken() {
     return this.tokenInfo.token !== "";
   }
@@ -82,7 +64,6 @@ export default class AuthenticationTokensController extends Vue {
         resolve(AuthenticationTokenInfo.default);
       });
     });
-    this.$refs.splitter.disableEmptyContent();
     const tomorrow = new Date();
 
     tomorrow.setDate(tomorrow.getDate() + 1);
@@ -111,9 +92,7 @@ export default class AuthenticationTokensController extends Vue {
   }
 
   protected selectTokenRow(tokenId) {
-    const $viewButtons = $(this.$el).find(
-      "tr[data-token=" + tokenId + "] .k-button.k-grid-Info"
-    );
+    const $viewButtons = $(this.$el).find("tr[data-token=" + tokenId + "] .k-button.k-grid-Info");
     $($viewButtons.get(0)).trigger("click");
   }
   /**
@@ -207,17 +186,12 @@ export default class AuthenticationTokensController extends Vue {
             command: {
               click: e => {
                 e.preventDefault();
-                this.$refs.splitter.disableEmptyContent();
                 Vue.component("ank-token-info", resolve => {
-                  import("./AuthenticationTokenInfo.vue").then(
-                    AuthenticationTokenInfo => {
-                      resolve(AuthenticationTokenInfo.default);
-                    }
-                  );
+                  import("./AuthenticationTokenInfo.vue").then(AuthenticationTokenInfo => {
+                    resolve(AuthenticationTokenInfo.default);
+                  });
                 });
-                const widget = kendo
-                  .jQuery(e.delegateTarget)
-                  .data("kendo-grid");
+                const widget = kendo.jQuery(e.delegateTarget).data("kendo-grid");
                 const $tr = kendo.jQuery(e.currentTarget).closest("tr");
                 const dataItem = widget.dataItem($tr).toJSON(); // Need to use JSON to has the raw data
                 this.tokenInfo = {
@@ -225,10 +199,7 @@ export default class AuthenticationTokensController extends Vue {
                   creationDate: new Date(dataItem.cdate),
                   description: dataItem.description,
                   expendable: dataItem.expendable,
-                  expirationDate:
-                    dataItem.expire === "infinity"
-                      ? null
-                      : new Date(dataItem.expire),
+                  expirationDate: dataItem.expire === "infinity" ? null : new Date(dataItem.expire),
                   routes: [],
                   token: dataItem.token,
                   user: dataItem.user
