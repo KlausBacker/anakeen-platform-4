@@ -12,15 +12,16 @@ import { Component } from "vue-property-decorator";
   }
 })
 export default class AdminCenterMailController extends Vue {
+  public selectedMail: string = "";
   public selectMailTemplate(e) {
     switch (e.data.type) {
       case "consultMailTemplate":
-        const mailId = e.data.row.name || e.data.row.id.toString();
+        this.selectedMail = e.data.row.name || e.data.row.id.toString();
         // @ts-ignore
         this.$nextTick(() => {
           // @ts-ignore
           this.$refs.mailSmartElement.fetchSmartElement({
-            initid: mailId
+            initid: this.selectedMail
           });
         });
         break;
