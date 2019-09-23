@@ -13,7 +13,7 @@ Vue.use(VueSetupPlugin);
 export default class HubElementMixin extends Vue {
   @Prop() public entryOptions!: IHubStationEntryOptions;
   // @Prop() public displayType!: HubElementDisplayTypes;
-  @Prop({ required: true, type: Boolean, default: true}) public isDockCollapsed!: boolean;
+  @Prop({ required: true, type: Boolean, default: true }) public isDockCollapsed!: boolean;
   @Prop() public parentPath!: string;
 
   public resolveHubSubPath(subPath) {
@@ -34,10 +34,16 @@ export default class HubElementMixin extends Vue {
     }
   }
 
-  public navigate(to: string, absolute = true) {
+  public navigate(to: string, absolute = true, options = { silent: false }) {
     const router = this.getRouter();
     if (router !== null) {
+      if (options.silent === true) {
+        router.pause();
+      }
       router.navigate(to, absolute);
+      if (options.silent === true) {
+        router.resume();
+      }
     }
   }
 
