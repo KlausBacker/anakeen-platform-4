@@ -34,6 +34,7 @@ input:checked + .conditions-enum-label {
 
     .conditions-column-head-tool {
       width: 5%;
+      padding-top: 3rem;
     }
 
     .conditions-column-head-fields {
@@ -78,14 +79,20 @@ input:checked + .conditions-enum-label {
   }
 
   .conditions-table-tools-add-line-button {
+    font-size: 1rem;
     color: #ffffff;
     background-color: #157efb;
     border: none;
     border-radius: 0.166rem;
-    font-size: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-weight: 400;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .conditions-table-tools-add-line {
+    padding-bottom: 0.5rem;
   }
 
   .conditions-table-delete-condition {
@@ -149,4 +156,9 @@ input:checked + .conditions-enum-label {
       justify-content: center;
     }
   }
+}
+
+.tooltip-inner {
+  background-color: #ff542c;
+  max-width: none;
 }

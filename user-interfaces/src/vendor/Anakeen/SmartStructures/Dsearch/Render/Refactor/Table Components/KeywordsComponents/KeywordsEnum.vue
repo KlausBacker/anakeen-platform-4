@@ -8,7 +8,7 @@
         @change="onInputChange"
       />
     </div>
-    <div class="condition-table-keywords-enum-combobox-wrapper" v-show="isComboBox">
+    <div class="condition-table-keywords-enum-combobox-wrapper" v-show="!isTextBox">
       <div class="condition-table-keywords-enum-combobox" ref="keywordsEnumWrapper"></div>
     </div>
   </div>
@@ -27,19 +27,24 @@ export default {
   data() {
     return {
       textBoxOperators: ["~*", "!~*"],
-      comboBoxOperators: ["~y", "=", "!="],
       comboBox: null
     };
   },
   computed: {
     isTextBox() {
       return this.textBoxOperators.indexOf(this.operator) !== -1;
-    },
-    isComboBox() {
-      return this.comboBoxOperators.indexOf(this.operator) !== -1;
     }
   },
   methods: {
+    isValid() {
+      let valid;
+      if (this.isTextBox) {
+        valid = this.$refs.keywordsEnumTextBoxWrapper.value !== "";
+      } else {
+        valid = !!this.comboBox.value();
+      }
+      return valid;
+    },
     onComboBoxChange() {
       const value = this.comboBox.value();
       this.$emit("keysChange", {
@@ -56,12 +61,12 @@ export default {
     },
     initData() {
       if (this.initValue) {
-        if (this.isComboBox) {
+        if (!this.isTextBox) {
           let that = this;
           this.comboBox.select(function(item) {
             return item.value === that.initValue;
           });
-        } else if (this.isTextBox) {
+        } else {
           $(this.$refs.keywordsEnumTextBoxWrapper).val(this.initValue);
         }
       }
@@ -121,8 +126,7 @@ export default {
         }
       })
       .data("kendoComboBox");
-  },
-  watch: {}
+  }
 };
 </script>
 <style>

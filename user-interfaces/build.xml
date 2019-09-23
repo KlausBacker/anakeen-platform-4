@@ -8,9 +8,9 @@
         <module:po-php source="src/**/*.php" target="user-interfaces"/>
         <module:po-php source="src/vendor/Anakeen/Ui/PhpLib/**/*.php" target="user-interfaces" ignore="true"/>
         <module:po-js source="src/vendor/Anakeen/DOCUMENT/**/*js" target="DOCUMENT"/>
-        <module:po-js source="src/vendor/Anakeen/SmartStructures/Dsearch/**/*js" target="SEARCH_UI_HTML5"/>
         <module:po-vuejs source="components/src/**/*.?(ts|vue|js)" target="ui-components"/>
         <module:po-vuejs source="src/vendor/Anakeen/Components/**/*.?(js)" target="ui-components"/>
+        <module:po-vuejs source="src/vendor/Anakeen/SmartStructures/Dsearch/Render/**/*vue" target="dsearch-components"/>
     </module:po-config>
     <module:stub-config>
         <module:stub-struct source="src/**/*struct.xml"/>

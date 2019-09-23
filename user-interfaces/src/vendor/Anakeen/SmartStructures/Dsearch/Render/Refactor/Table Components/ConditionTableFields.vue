@@ -5,13 +5,15 @@
 </template>
 <script>
 import "@progress/kendo-ui/js/kendo.combobox";
-import "@progress/kendo-ui/js/kendo.tooltip";
 import BaseComponent from "./ConditionTableBaseComponent.vue";
 import searchAttributes from "../../searchAttributes";
+
+import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin";
 
 export default {
   name: "condition-table-fields",
   extends: BaseComponent,
+  mixins: [AnkI18NMixin],
   props: {
     controller: Object,
     famid: Number,
@@ -49,7 +51,7 @@ export default {
             data: this.fieldOptions,
             group: { field: "label_parent" }
           },
-          change: function () {
+          change: function() {
             that.onValueChange();
             that.checkValidity();
           }
@@ -121,10 +123,10 @@ export default {
             // container: "span.condition-table-fields-combobox-wrapper",
             title: function wAttributeSetErrorTitle() {
               const rawMessage = $("<div/>")
-                .text("TODO translate")
+                .text(that.$t("dsearch.Invalid smart field"))
                 .html();
               return (
-                `<div class=""><span id="closeTooltip" class="btn fa fa-times button-close-error">&nbsp;</span>` +
+                `<div class=""><span class="btn fa fa-times button-close-error close-tooltip-fields">&nbsp;</span>` +
                 rawMessage +
                 "</div>"
               );
@@ -132,7 +134,7 @@ export default {
             trigger: "manual"
           })
           .one("shown.bs.tooltip", function wErrorTooltip() {
-            $("#closeTooltip").on("click", () => {
+            $($(".close-tooltip-fields")[that.row]).on("click", () => {
               $(that.$refs.fieldsWrapper).tooltip("hide");
               that.errorClass = "";
             });
@@ -198,9 +200,6 @@ export default {
 }
 
 .condition-table-fields.hasError {
-  outline: solid 2px #FF542C;
-}
-.tooltip-inner {
-  background-color: #ff542c;
+  outline: solid 2px #ff542c;
 }
 </style>

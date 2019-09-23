@@ -19,6 +19,9 @@ export default {
     this.initData();
   },
   methods: {
+    isValid() {
+      return this.$refs.keysInput.value !== "";
+    },
     onInputChange(event) {
       let value = event.target.value;
       this.$emit("keysChange", {
