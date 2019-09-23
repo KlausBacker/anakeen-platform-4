@@ -1378,6 +1378,23 @@ export default class SmartElementController extends AnakeenController.BusEvents.
         // no test here
       }
     });
+    this._model.listenTo(this._model, "beforeValidate", (event, customClientData) => {
+      const requestOptions = {
+        getRequestData: () => {
+          return this._model.toJSON();
+        },
+        setRequestData: data => {
+          this._model._customRequestData = data;
+        }
+      };
+      event.promise = this._triggerControllerEvent(
+        "beforeValidate",
+        event,
+        this.getProperties(),
+        requestOptions,
+        customClientData
+      );
+    });
     this._model.listenTo(this._model, "beforeSave", (event, customClientData) => {
       const requestOptions = {
         getRequestData: () => {

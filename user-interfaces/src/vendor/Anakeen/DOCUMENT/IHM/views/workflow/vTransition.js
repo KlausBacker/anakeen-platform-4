@@ -218,32 +218,34 @@ define([
             if (event.prevent === false) {
               saveXhr = currentView.model.save();
               if (saveXhr) {
-                saveXhr
-                  .then(function vTransition_direct_afterSave() {
-                    currentView.model.trigger("success", currentView.getMessages());
-                  })
-                  .fail(function vTransition_direct_error(response, statusTxt, errorTxt) {
-                    if (response.responseJSON) {
-                      let userMessage = response.responseJSON.userMessage;
+                saveXhr.then(function vTransition_direct_continue(xhr) {
+                  xhr.promise
+                    .then(function vTransition_direct_afterSave() {
+                      currentView.model.trigger("success", currentView.getMessages());
+                    })
+                    .fail(function vTransition_direct_error(response, statusTxt, errorTxt) {
+                      if (response.responseJSON) {
+                        let userMessage = response.responseJSON.userMessage;
 
-                      response.responseJSON.messages = response.responseJSON.messages || [];
-                      response.responseJSON.messages.push({
-                        contentText: userMessage
-                      });
-                      _.each(response.responseJSON.messages, function vTransition_clickOnOk_displayError(aMessage) {
-                        currentView.displayError({
-                          title: aMessage.contentText
+                        response.responseJSON.messages = response.responseJSON.messages || [];
+                        response.responseJSON.messages.push({
+                          contentText: userMessage
                         });
-                      });
-                    } else {
-                      if (errorTxt && !errorTxt.title && errorTxt.message) {
-                        errorTxt.title = errorTxt.message;
-                        currentView.displayError(errorTxt);
-                      } else if (_.isString(errorTxt)) {
-                        currentView.displayError({ title: errorTxt });
+                        _.each(response.responseJSON.messages, function vTransition_clickOnOk_displayError(aMessage) {
+                          currentView.displayError({
+                            title: aMessage.contentText
+                          });
+                        });
+                      } else {
+                        if (errorTxt && !errorTxt.title && errorTxt.message) {
+                          errorTxt.title = errorTxt.message;
+                          currentView.displayError(errorTxt);
+                        } else if (_.isString(errorTxt)) {
+                          currentView.displayError({ title: errorTxt });
+                        }
                       }
-                    }
-                  });
+                    });
+                });
               }
             }
           });
@@ -304,32 +306,34 @@ define([
       if (event.prevent === false) {
         saveXhr = this.model.save();
         if (saveXhr) {
-          saveXhr
-            .then(function vTransition_clickOnOk_afterSave() {
-              currentView.model.trigger("success", currentView.getMessages());
-            })
-            .fail(function vTransition_clickOnOk_error(response, statusTxt, errorTxt) {
-              if (response.responseJSON) {
-                let userMessage = response.responseJSON.userMessage || response.responseJSON.message;
+          saveXhr.then(function vTransition_clickOnOk_continue(xhr) {
+            xhr.promise
+              .then(function vTransition_clickOnOk_afterSave() {
+                currentView.model.trigger("success", currentView.getMessages());
+              })
+              .fail(function vTransition_clickOnOk_error(response, statusTxt, errorTxt) {
+                if (response.responseJSON) {
+                  let userMessage = response.responseJSON.userMessage || response.responseJSON.message;
 
-                response.responseJSON.messages = response.responseJSON.messages || [];
-                response.responseJSON.messages.push({
-                  contentText: userMessage
-                });
-                _.each(response.responseJSON.messages, function vTransition_clickOnOk_displayError(aMessage) {
-                  currentView.displayError({
-                    title: aMessage.contentText
+                  response.responseJSON.messages = response.responseJSON.messages || [];
+                  response.responseJSON.messages.push({
+                    contentText: userMessage
                   });
-                });
-              } else {
-                if (errorTxt && !errorTxt.title && errorTxt.message) {
-                  errorTxt.title = errorTxt.message;
-                  currentView.displayError(errorTxt);
-                } else if (_.isString(errorTxt)) {
-                  currentView.displayError({ title: errorTxt });
+                  _.each(response.responseJSON.messages, function vTransition_clickOnOk_displayError(aMessage) {
+                    currentView.displayError({
+                      title: aMessage.contentText
+                    });
+                  });
+                } else {
+                  if (errorTxt && !errorTxt.title && errorTxt.message) {
+                    errorTxt.title = errorTxt.message;
+                    currentView.displayError(errorTxt);
+                  } else if (_.isString(errorTxt)) {
+                    currentView.displayError({ title: errorTxt });
+                  }
                 }
-              }
-            });
+              });
+          });
         }
       }
     },
