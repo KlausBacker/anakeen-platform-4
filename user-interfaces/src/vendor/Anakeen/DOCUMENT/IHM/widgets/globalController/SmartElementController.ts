@@ -1283,6 +1283,11 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     if (!this._smartElement || $se.length === 0) {
       this._element.attr("data-controller", this.uid);
       const domTemplate = `<div class="smart-element-wrapper">
+            <style>
+                .smart-element-wrapper {
+                    position: relative;
+                }
+            </style>
             <div class="document">
                 <div class="dcpDocument"></div>
             </div>
