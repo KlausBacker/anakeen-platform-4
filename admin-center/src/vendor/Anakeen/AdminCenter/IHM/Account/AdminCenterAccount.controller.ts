@@ -1,4 +1,4 @@
-import AnkSplitter from "@anakeen/internal-components/lib/Splitter";
+import AnkPaneSplitter from "@anakeen/internal-components/lib/PaneSplitter";
 import AnkSmartElement from "@anakeen/user-interfaces/components/lib/AnkSmartElement";
 import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
@@ -21,38 +21,10 @@ declare var kendo;
 @Component({
   components: {
     AnkSmartElement,
-    "ank-splitter": AnkSplitter
+    "ank-split-panes": AnkPaneSplitter
   }
 })
 export default class AdminCenterAccountController extends Vue {
-  public mainPanes: object[] = [
-    {
-      collapsible: true,
-      resizable: true,
-      scrollable: false,
-      size: "50%"
-    },
-    {
-      collapsible: true,
-      resizable: true,
-      scrollable: false
-    }
-  ];
-
-  public panes: object[] = [
-    {
-      collapsible: true,
-      min: "300px",
-      resizable: true,
-      scrollable: false,
-      size: "20%"
-    },
-    {
-      collapsible: true,
-      resizable: true,
-      scrollable: false
-    }
-  ];
   public $refs!: {
     [key: string]: any;
   };
@@ -154,7 +126,7 @@ export default class AdminCenterAccountController extends Vue {
     }
   });
   public gridContent = new kendo.data.DataSource({
-    pageSize: 10,
+    pageSize: 20,
     schema: {
       data: "data",
       model: {
@@ -181,6 +153,7 @@ export default class AdminCenterAccountController extends Vue {
   public displayGroupDocument: boolean = false;
   public selectedGroupDocumentId: boolean = false;
   public selectedGroupLogin: boolean = false;
+  public selectedUser: string = "";
   public options: object = {};
   public groupId: any = false;
   public groupTitle: any = false;
@@ -198,21 +171,21 @@ export default class AdminCenterAccountController extends Vue {
 
   @Watch("groupId")
   public watchGroupId(value) {
-    const createGrpBtn = this.$refs.groupList.kendoWidget();
-    if (value === "@users") {
-      createGrpBtn.setOptions({ optionLabel: "Create group" });
-    } else {
-      createGrpBtn.setOptions({ optionLabel: "Create sub group" });
+    if (this.$refs.groupList) {
+      const createGrpBtn = this.$refs.groupList.kendoWidget();
+      if (value === "@users") {
+        createGrpBtn.setOptions({ optionLabel: "Create group" });
+      } else {
+        createGrpBtn.setOptions({ optionLabel: "Create sub group" });
+      }
     }
   }
 
   public mounted() {
-    this.$refs.accountTreeSplitter.disableEmptyContent();
     this.$nextTick(() => {
       this.groupId = window.localStorage.getItem("admin.account.groupSelected.id");
       this.fetchConfig();
       this.bindTree();
-      this.bindSplitter();
     });
   }
 
@@ -260,11 +233,12 @@ export default class AdminCenterAccountController extends Vue {
   // Bind the grid events (click to open an user)
   public openUser(event) {
     event.preventDefault();
-    this.$refs.accountSplitter.disableEmptyContent();
     const grid = this.$refs.grid.kendoWidget();
     const $tr = $(event.currentTarget).closest("tr");
     const dataItem = grid.dataItem($tr);
     const userId = dataItem.id;
+
+    this.selectedUser = userId;
     this.$nextTick(() => {
       if (!this.$refs.grid.kendoWidget()._data) {
         this.gridContent.read();
@@ -279,51 +253,6 @@ export default class AdminCenterAccountController extends Vue {
           this.refreshData(openDoc);
         }
       }
-    });
-  }
-
-  // Create the splitter system
-  public bindSplitter() {
-    const onContentResize = (part, $split) => {
-      return () => {
-        window.setTimeout(() => {
-          $(window).trigger("resize");
-        }, 100);
-        window.localStorage.setItem(
-          "admin.account." + part,
-          $($split)
-            .data("kendoSplitter")
-
-            .size(".k-pane:first")
-        );
-      };
-    };
-    const sizeContentPart = window.localStorage.getItem("admin.account.content") || "200px";
-    const sizeCenterPart = window.localStorage.getItem("admin.account.center") || "200px";
-    $(this.$refs.gridAndTreePart).kendoSplitter({
-      panes: [
-        {
-          collapsible: true,
-          min: "200px",
-          resizable: true,
-          size: sizeContentPart
-        },
-        { collapsible: false, resizable: true }
-      ],
-      resize: onContentResize("content", this.$refs.gridAndTreePart)
-    });
-    $(this.$refs.centerPart).kendoSplitter({
-      orientation: "vertical",
-      panes: [
-        {
-          collapsible: true,
-          min: "200px",
-          resizable: true,
-          size: sizeCenterPart
-        },
-        { collapsible: false, resizable: true }
-      ],
-      resize: onContentResize("center", this.$refs.centerPart)
     });
   }
 
@@ -413,7 +342,6 @@ export default class AdminCenterAccountController extends Vue {
   }
 
   public openGroup() {
-    this.$refs.accountSplitter.disableEmptyContent();
     this.$nextTick(() => {
       const openDoc = this.$refs.openDoc;
       if (openDoc) {
@@ -427,7 +355,6 @@ export default class AdminCenterAccountController extends Vue {
   }
   public selectCreateUserConfig(e) {
     if (e.dataItem.canCreate) {
-      this.$refs.accountSplitter.disableEmptyContent();
       this.$nextTick(() => {
         const openDoc = this.$refs.openDoc;
         if (openDoc) {
@@ -446,7 +373,6 @@ export default class AdminCenterAccountController extends Vue {
   }
   public selectCreateGroupConfig(e) {
     if (e.dataItem.canCreate) {
-      this.$refs.accountSplitter.disableEmptyContent();
       this.$nextTick(() => {
         const openDoc = this.$refs.openDoc;
         if (openDoc) {
@@ -463,7 +389,6 @@ export default class AdminCenterAccountController extends Vue {
 
   // Open group selected in group change mode
   public openChangeGroup() {
-    this.$refs.accountSplitter.disableEmptyContent();
     this.$nextTick(() => {
       const openDoc = this.$refs.openDoc;
       if (openDoc) {
