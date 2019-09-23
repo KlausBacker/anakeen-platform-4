@@ -121,13 +121,26 @@ define([
      * @returns {*}
      */
     sync: function mDocumentSync(method, model, options) {
-      if (this._formConfiguration) {
-        LibSmartForm.smartFormSync(method, model, options);
-      } else {
-        this.set("currentHttpMethod", method); // record for url method
-        options.attrs = this._customRequestData;
-        return Backbone.Model.prototype.sync.apply(this, arguments);
+      const beforeSaveEvent = { eventType: "beforeSave", preventDefault: false, promise: Promise.resolve() };
+      if (method === "update") {
+        this.trigger("beforeSave", beforeSaveEvent, this._customClientData);
       }
+      return EventPromiseUtils.getBeforeEventPromise(
+        beforeSaveEvent,
+        () => {
+          if (this._formConfiguration) {
+            LibSmartForm.smartFormSync(method, model, options);
+          } else {
+            this.set("currentHttpMethod", method); // record for url method
+            options.attrs = this._customRequestData;
+            return { promise: Backbone.Model.prototype.sync.call(this, method, model, options) };
+          }
+        },
+        () => {
+          this.trigger("hideLoading");
+        },
+        { noPropagatePromiseArg: true }
+      );
     },
     /**
      * Initialize event handling
@@ -1349,8 +1362,7 @@ define([
           currentModel.set(serverProperties);
           //Indicate success to the promise object
           globalCallback.error({ eventPrevented: true });
-        },
-        { loadingStart: () => this.trigger("displayLoading") }
+        }
       );
       return beforeClosePromise.finally(() => globalCallback.promise);
     },
@@ -1358,19 +1370,18 @@ define([
     saveDocument: function mDocumentSaveDocument(attributes, options) {
       var globalCallback = this._promiseCallback(),
         saveCallback = this._promiseCallback(),
-        beforeSaveEvent = { prevent: false },
+        beforeValidateEvent = { prevent: false },
         currentModel = this,
         serverProperties = this.getServerProperties();
-
       options = options || {};
 
       if (_.isEmpty(this._customClientData)) {
         this.trigger("getCustomClientData");
       }
-      this.trigger("beforeSave", beforeSaveEvent, this._customClientData);
+      this.trigger("beforeValidate", beforeValidateEvent, this._customClientData);
 
-      const beforeSavePromise = EventPromiseUtils.getBeforeEventPromise(
-        beforeSaveEvent,
+      const beforeValidatePromise = EventPromiseUtils.getBeforeEventPromise(
+        beforeValidateEvent,
         () => {
           saveCallback.promise.then(
             function mDocument_saveDone() {
@@ -1434,7 +1445,7 @@ define([
         }
       );
 
-      return beforeSavePromise.finally(() => globalCallback.promise);
+      return beforeValidatePromise.finally(() => globalCallback.promise);
     },
 
     deleteDocument: function mDocumentDelete(options) {

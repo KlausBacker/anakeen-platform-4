@@ -62,6 +62,7 @@ define([
     initialize: function vDocumentInitialize() {
       this.listenTo(this.model, "destroy", this.remove);
       this.listenTo(this.model, "displayLoading", this.displayLoading);
+      this.listenTo(this.model, "hideLoading", this.hideLoading);
       this.listenTo(this.model, "invalid", this.showView);
       this.listenTo(this.model, "displayNetworkError", this.displayNetworkError);
       this.listenTo(this.model, "actionAttributeLink", this.doStandardAction);
@@ -831,6 +832,13 @@ define([
       }
       this.trigger("cleanNotification");
       this.trigger("loaderShow", text, avance);
+    },
+
+    /**
+     * Hide the loading widget
+     */
+    hideLoading: function vDocumentHideLoading() {
+      this.trigger("loaderHide");
     },
 
     /**

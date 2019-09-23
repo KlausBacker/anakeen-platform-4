@@ -168,6 +168,7 @@ export namespace AnakeenController {
       | "smartFieldAnchorClick"
       | "beforeClose"
       | "close"
+      | "beforeValidate"
       | "beforeSave"
       | "afterSave"
       | "smartFieldDownloadFile"
@@ -213,6 +214,7 @@ export namespace AnakeenController {
       "smartFieldAnchorClick",
       "beforeClose",
       "close",
+      "beforeValidate",
       "beforeSave",
       "afterSave",
       "smartFieldDownloadFile",

@@ -1283,6 +1283,11 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     if (!this._smartElement || $se.length === 0) {
       this._element.attr("data-controller", this.uid);
       const domTemplate = `<div class="smart-element-wrapper">
+            <style>
+                .smart-element-wrapper {
+                    position: relative;
+                }
+            </style>
             <div class="document">
                 <div class="dcpDocument"></div>
             </div>
@@ -1377,6 +1382,23 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       } catch (e) {
         // no test here
       }
+    });
+    this._model.listenTo(this._model, "beforeValidate", (event, customClientData) => {
+      const requestOptions = {
+        getRequestData: () => {
+          return this._model.toJSON();
+        },
+        setRequestData: data => {
+          this._model._customRequestData = data;
+        }
+      };
+      event.promise = this._triggerControllerEvent(
+        "beforeValidate",
+        event,
+        this.getProperties(),
+        requestOptions,
+        customClientData
+      );
     });
     this._model.listenTo(this._model, "beforeSave", (event, customClientData) => {
       const requestOptions = {
@@ -1882,7 +1904,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
 
     return new Promise((resolve, reject) => {
       result = !this._triggerControllerEvent(
-        "beforeDisplayChangeState",
+        "beforeDisplayTransition",
         null,
         this.getProperties(),
         new TransitionInterface(null, $target, nextState, transition)

@@ -1,7 +1,8 @@
 const DEFAULT_OPTIONS = {
   timeout: -1,
   loadingStart: () => {},
-  loadingStop: () => {}
+  loadingStop: () => {},
+  noPropagatePromiseArg: false
 };
 
 class TimeoutPromiseError extends Error {
@@ -66,12 +67,26 @@ export function getBeforeEventPromise(event, onBeforeContinue, onBeforePrevent, 
             try {
               result = onBeforeContinue();
               if (result instanceof Promise) {
-                result.then(() => resolve(eventResolveArg)).catch(reject);
+                if (options.noPropagatePromiseArg) {
+                  result.then(arg => resolve(arg)).catch(reject);
+                } else {
+                  result.then(() => resolve(eventResolveArg)).catch(reject);
+                }
               } else {
-                resolve(eventResolveArg);
+                if (options.noPropagatePromiseArg) {
+                  resolve(result);
+                } else {
+                  resolve(eventResolveArg);
+                }
               }
             } catch (callbackError) {
               reject(callbackError);
+            }
+          } else {
+            if (options.noPropagatePromiseArg) {
+              resolve();
+            } else {
+              resolve(eventResolveArg);
             }
           }
         })
@@ -92,6 +107,14 @@ export function getBeforeEventPromise(event, onBeforeContinue, onBeforePrevent, 
               }
             } catch (callbackError) {
               reject(callbackError);
+            }
+          } else {
+            if (eventError) {
+              // if event promise reject with message consider it as preventDefault + error
+              reject(new Error(`[SmartElementController][${event.eventType}]: ${eventError.message || eventError}`));
+            } else {
+              // if event promise reject without message consider it as just preventDefault
+              resolve(result);
             }
           }
         });
