@@ -146,6 +146,26 @@
       overflow: hidden;
       white-space: nowrap;
     }
+    .grid-cell-content {
+      overflow: hidden;
+
+      * {
+        display: inline;
+      }
+    }
+    .grid-cell-value {
+      * {
+        font-size:unset;
+        display: inline;
+      }
+      br,
+      hr {
+        content: " ";
+        &:after {
+          content: " ";
+        }
+      }
+    }
   }
 
   &.smart--fit {
@@ -176,6 +196,7 @@
     padding: 0;
     border-width: 0;
     min-height: 0;
+    height: 100%;
     display: flex;
     flex-direction: column;
   }
