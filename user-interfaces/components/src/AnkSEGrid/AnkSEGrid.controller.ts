@@ -536,6 +536,9 @@ export default class GridController extends Vue {
   public reload() {
     return this.dataSource.read();
   }
+  public hideColumn(col) {
+    return this.kendoGrid.hideColumn(col);
+  }
   private configureDocidLinks() {
     const docidLinks = $(".grid-cell-docid-link");
     docidLinks.each(index => {
