@@ -44,7 +44,7 @@ export default class VaultInfoController extends Vue {
     }
     return "#";
   }
-  @Prop({ type: Object as () => {} })
+  @Prop({ type: Object as () => { metrics: {} } })
   public info;
 
   public requestMessage: string = "";
@@ -70,28 +70,18 @@ export default class VaultInfoController extends Vue {
 
   public labelTemplate(data) {
     if (data.category === "Free") {
-      return `${data.category} - ${this.convertBytes(
-        data.dataItem.sizeFiles
-      )} (${data.dataItem.value}%)`;
+      return `${data.category} - ${this.convertBytes(data.dataItem.sizeFiles)} (${data.dataItem.value}%)`;
     }
-    return `${data.category} - ${
-      data.dataItem.nbFiles
-    } files \n ${this.convertBytes(data.dataItem.sizeFiles)} (${
+    return `${data.category} - ${data.dataItem.nbFiles} files \n ${this.convertBytes(data.dataItem.sizeFiles)} (${
       data.dataItem.value
     }%)`;
   }
 
   public get getGaugeLogicalMax() {
-    return (
-      this.info.metrics.totalSize /
-      VaultInfoController.getGaugeUnit(this.info.metrics.totalSize)
-    );
+    return this.info.metrics.totalSize / VaultInfoController.getGaugeUnit(this.info.metrics.totalSize);
   }
   public get getGaugeLogicalUsed() {
-    return (
-      this.info.metrics.usedSize /
-      VaultInfoController.getGaugeUnit(this.info.metrics.totalSize)
-    );
+    return this.info.metrics.usedSize / VaultInfoController.getGaugeUnit(this.info.metrics.totalSize);
   }
 
   public get getGaugeLogicalRangeLabel() {
@@ -119,16 +109,10 @@ export default class VaultInfoController extends Vue {
   }
 
   public get getGaugeDiskMax() {
-    return (
-      this.info.disk.totalSize /
-      VaultInfoController.getGaugeUnit(this.info.disk.totalSize)
-    );
+    return this.info.disk.totalSize / VaultInfoController.getGaugeUnit(this.info.disk.totalSize);
   }
   public get getGaugeDiskUsed() {
-    return (
-      this.info.disk.usedSize /
-      VaultInfoController.getGaugeUnit(this.info.disk.totalSize)
-    );
+    return this.info.disk.usedSize / VaultInfoController.getGaugeUnit(this.info.disk.totalSize);
   }
 
   public get getGaugeDiskRangeLabel() {
@@ -160,61 +144,62 @@ export default class VaultInfoController extends Vue {
     let orphanPc;
     let referencedPc;
     let trashPc;
-    const totalSize = Math.max(
-      this.info.metrics.totalSize,
-      this.info.metrics.usedSize
-    );
-
-    orphanPc = Math.ceil(
-      (this.info.metrics.repartition.orphanSize / totalSize) * 100
-    );
-    trashPc = Math.ceil(
-      (this.info.metrics.repartition.trashSize / totalSize) * 100
-    );
-
-    referencedPc = Math.ceil(
-      (this.info.metrics.repartition.usefulSize / totalSize) * 100
-    );
-
-    freeSize = Math.max(100 - orphanPc - trashPc - referencedPc, 0);
     const data = [];
-    if (referencedPc) {
-      data.push({
-        category: "Referenced",
-        color: "#17a2b8",
-        nbFiles: this.info.metrics.repartition.usefulCount,
-        sizeFiles: this.info.metrics.repartition.usefulSize,
-        value: referencedPc
-      });
-    }
+    if (this.info.metrics && this.info.metrics.totalSize) {
+      const totalSize = Math.max(this.info.metrics.totalSize, this.info.metrics.usedSize);
 
-    if (trashPc > 0) {
-      data.push({
-        category: "Trash can",
-        color: "#dc5c8c",
-        nbFiles: this.info.metrics.repartition.trashCount,
-        sizeFiles: this.info.metrics.repartition.trashSize,
-        value: trashPc
-      });
-    }
+      orphanPc = Math.ceil((this.info.metrics.repartition.orphanSize / totalSize) * 100);
+      trashPc = Math.ceil((this.info.metrics.repartition.trashSize / totalSize) * 100);
 
-    if (orphanPc > 0) {
-      data.push({
-        category: "Orphans",
-        color: "#ffc107",
-        nbFiles: this.info.metrics.repartition.orphanCount,
-        sizeFiles: this.info.metrics.repartition.orphanSize,
-        value: orphanPc
-      });
-    }
+      referencedPc = Math.ceil((this.info.metrics.repartition.usefulSize / totalSize) * 100);
 
-    if (freeSize > 0) {
+      freeSize = Math.max(100 - orphanPc - trashPc - referencedPc, 0);
+      if (referencedPc) {
+        data.push({
+          category: "Referenced",
+          color: "#17a2b8",
+          nbFiles: this.info.metrics.repartition.usefulCount,
+          sizeFiles: this.info.metrics.repartition.usefulSize,
+          value: referencedPc
+        });
+      }
+
+      if (trashPc > 0) {
+        data.push({
+          category: "Trash can",
+          color: "#dc5c8c",
+          nbFiles: this.info.metrics.repartition.trashCount,
+          sizeFiles: this.info.metrics.repartition.trashSize,
+          value: trashPc
+        });
+      }
+
+      if (orphanPc > 0) {
+        data.push({
+          category: "Orphans",
+          color: "#ffc107",
+          nbFiles: this.info.metrics.repartition.orphanCount,
+          sizeFiles: this.info.metrics.repartition.orphanSize,
+          value: orphanPc
+        });
+      }
+
+      if (freeSize > 0) {
+        data.push({
+          category: "Free",
+          color: "#28a644",
+          nbFiles: 0,
+          sizeFiles: totalSize - this.info.metrics.usedSize,
+          value: freeSize
+        });
+      }
+    } else {
       data.push({
-        category: "Free",
+        category: "No data",
         color: "#28a644",
         nbFiles: 0,
-        sizeFiles: totalSize - this.info.metrics.usedSize,
-        value: freeSize
+        sizeFiles: 0,
+        value: 0
       });
     }
     return [
@@ -243,13 +228,9 @@ export default class VaultInfoController extends Vue {
   public requestMoveIt(e) {
     this.closeWindow(e);
     this.$http
-      .put(
-        "/api/v2/admin/vaults/" + this.info.fsid + "/path/",
-        $(this.$refs.newPath).val(),
-        {
-          headers: { "Content-Type": "text/plain" }
-        }
-      )
+      .put("/api/v2/admin/vaults/" + this.info.fsid + "/path/", $(this.$refs.newPath).val(), {
+        headers: { "Content-Type": "text/plain" }
+      })
       .then(response => {
         const data = response.data.data;
 
@@ -267,9 +248,7 @@ export default class VaultInfoController extends Vue {
     this.$http
       .put(
         "/api/v2/admin/vaults/" + this.info.fsid + "/size/",
-        Math.floor(
-          parseFloat(newSize) * parseFloat(kSizeUnit.kendoWidget().value())
-        ),
+        Math.floor(parseFloat(newSize) * parseFloat(kSizeUnit.kendoWidget().value())),
         {
           headers: { "Content-Type": "text/plain" }
         }
@@ -311,24 +290,46 @@ export default class VaultInfoController extends Vue {
   }
 
   public logicalTemplate() {
-    return `<b>${this.convertBytes(
-      this.info.metrics.usedSize
-    )}</b> used out of <b>${this.convertBytes(
+    return `<b>${this.convertBytes(this.info.metrics.usedSize)}</b> used out of <b>${this.convertBytes(
       this.info.metrics.totalSize
-    )}</b> (<b>${Math.floor(
-      (this.info.metrics.usedSize / this.info.metrics.totalSize) * 100
-    )}%</b>)`;
+    )}</b> (<b>${Math.floor((this.info.metrics.usedSize / this.info.metrics.totalSize) * 100)}%</b>)`;
   }
 
   public diskTemplate() {
-    return `<b>${this.convertBytes(
-      this.info.disk.usedSize
-    )}</b> used out of <b>${this.convertBytes(
+    return `<b>${this.convertBytes(this.info.disk.usedSize)}</b> used out of <b>${this.convertBytes(
       this.info.disk.totalSize
-    )}</b> (<b>${Math.floor(
-      (this.info.disk.usedSize / this.info.disk.totalSize) * 100
-    )}%</b>)`;
+    )}</b> (<b>${Math.floor((this.info.disk.usedSize / this.info.disk.totalSize) * 100)}%</b>)`;
   }
 
-  // public mounted() {}
+  public redrawGauche() {
+    let gauge = this.$refs.logicalGauge;
+    // @ts-ignore
+    let kGauge = gauge.kendoWidget();
+    if (kGauge) {
+      kGauge.setOptions({ transitions: false });
+      kGauge.redraw();
+    }
+    gauge = this.$refs.diskGauge;
+    // @ts-ignore
+    kGauge = gauge.kendoWidget();
+    if (kGauge) {
+      kGauge.setOptions({ transitions: false });
+      kGauge.redraw();
+    }
+
+    gauge = this.$refs.chart;
+    // @ts-ignore
+    kGauge = gauge.kendoWidget();
+    if (kGauge) {
+      kGauge.setOptions({ transitions: false });
+      kGauge.redraw();
+    }
+  }
+
+  public mounted() {
+    window.addEventListener("resize", this.redrawGauche);
+  }
+  public beforeDestroy() {
+    window.removeEventListener("resize", this.redrawGauche);
+  }
 }

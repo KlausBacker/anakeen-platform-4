@@ -181,6 +181,7 @@ export default {
             name: seIdentifier,
             label: seIdentifier
           };
+
           this.getRoute().then(route => {
             this.$emit("navigate", route);
           });

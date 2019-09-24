@@ -36,29 +36,27 @@ export default class I18nManagerController extends Vue {
       }
     }
   };
-  private translationGridData: kendo.data.DataSource = new kendo.data.DataSource(
-    {
-      pageSize: 50,
-      schema: {
-        data: response => response.data.data.data,
-        total: response => response.data.data.requestParameters.total
-      },
-      serverFiltering: true,
-      serverPaging: true,
-      serverSorting: true,
-      transport: {
-        read: options => {
-          this.$http
-            .get(`/api/v2/admin/i18n/fr`, {
-              params: options.data,
-              paramsSerializer: kendo.jQuery.param
-            })
-            .then(options.success)
-            .catch(options.error);
-        }
+  private translationGridData: kendo.data.DataSource = new kendo.data.DataSource({
+    pageSize: 50,
+    schema: {
+      data: response => response.data.data.data,
+      total: response => response.data.data.requestParameters.total
+    },
+    serverFiltering: true,
+    serverPaging: true,
+    serverSorting: true,
+    transport: {
+      read: options => {
+        this.$http
+          .get(`/api/v2/admin/i18n/fr`, {
+            params: options.data,
+            paramsSerializer: kendo.jQuery.param
+          })
+          .then(options.success)
+          .catch(options.error);
       }
     }
-  );
+  });
 
   @Watch("translationLocale")
   public watchTranslationLocale(value) {
@@ -90,15 +88,9 @@ export default class I18nManagerController extends Vue {
       .setDataSource(this.translationGridData);
     setTimeout(() => {
       if (value === "fr") {
-        $(".overriden-translation-input").attr(
-          "placeholder",
-          "modifier la traduction"
-        );
+        $(".overriden-translation-input").attr("placeholder", "modifier la traduction");
       } else {
-        $(".overriden-translation-input").attr(
-          "placeholder",
-          "edit translation"
-        );
+        $(".overriden-translation-input").attr("placeholder", "edit translation");
       }
     }, 300);
   }
@@ -131,10 +123,7 @@ export default class I18nManagerController extends Vue {
           filterable: this.translationFilterableOptions,
           minResizableWidth: 25,
           template: rowData => {
-            return this.escapeHtml(rowData.msgid).replace(
-              /\\n/g,
-              "&para;<br/>"
-            );
+            return this.escapeHtml(rowData.msgid).replace(/\\n/g, "&para;<br/>");
           },
           title: "ID"
         },
@@ -254,10 +243,7 @@ export default class I18nManagerController extends Vue {
     } else if (e.id === "i18n-locale-button-en") {
       this.translationLocale = "en";
     } else {
-      this.$emit(
-        "changeLocaleWrongArgument",
-        "Wrong locale argument : " + e.id + "id is unknown"
-      );
+      this.$emit("changeLocaleWrongArgument", "Wrong locale argument : " + e.id + "id is unknown");
     }
   }
 
@@ -268,20 +254,13 @@ export default class I18nManagerController extends Vue {
       const formData = new FormData();
 
       kendo.ui.progress($("body"), true);
-      formData.append(
-        "file",
-        (this.$refs.importFile as HTMLInputElement).files[0]
-      );
+      formData.append("file", (this.$refs.importFile as HTMLInputElement).files[0]);
       this.$http
-        .post(
-          `/api/v2/admin/i18n/${encodeURIComponent(this.translationLocale)}/`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data"
-            }
+        .post(`/api/v2/admin/i18n/${encodeURIComponent(this.translationLocale)}/`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data"
           }
-        )
+        })
         .then(() => {
           $(this.$refs.i18nGrid)
             .data("kendoGrid")
@@ -295,10 +274,7 @@ export default class I18nManagerController extends Vue {
   }
 
   public exportLocaleFile() {
-    window.open(
-      `/api/v2/admin/i18n/${this.translationLocale}/custom.po`,
-      "_self"
-    );
+    window.open(`/api/v2/admin/i18n/${this.translationLocale}/custom.po`, "_self");
   }
 
   private setEventSingularConfirm() {
@@ -309,9 +285,7 @@ export default class I18nManagerController extends Vue {
           .data("kendoGrid")
           .dataItem($(confirmEvent.event.target).closest("tr[role=row]"));
         let newVal;
-        const textareaVal = $(
-          confirmEvent.event.target.closest("tr[role=row]")
-        ).find("textarea")[0].value;
+        const textareaVal = $(confirmEvent.event.target.closest("tr[role=row]")).find("textarea")[0].value;
         if (rowData.pluralid) {
           newVal = {
             msgstr: textareaVal,
@@ -323,6 +297,8 @@ export default class I18nManagerController extends Vue {
             msgstr: textareaVal
           };
         }
+
+        newVal.section = rowData.section;
         this.setSingularTranslation(newVal, rowData);
         $(confirmEvent.sender.element[0])
           .data("kendoButton")
@@ -338,9 +314,7 @@ export default class I18nManagerController extends Vue {
         const rowData: any = $(this.$refs.i18nGrid)
           .data("kendoGrid")
           .dataItem($(confirmEvent.event.target).closest("tr[role=row]"));
-        const textarea = $(
-          confirmEvent.event.target.closest("tr[role=row]")
-        ).find("textarea");
+        const textarea = $(confirmEvent.event.target.closest("tr[role=row]")).find("textarea");
         const newVal = JSON.stringify({
           msgstr: [textarea[0].value, textarea[1].value],
           plural: 1,
@@ -395,9 +369,7 @@ export default class I18nManagerController extends Vue {
   }
 
   private setEventInput() {
-    const input = $(
-      ".overriden-translation-input-singular, .overriden-translation-input-plural"
-    );
+    const input = $(".overriden-translation-input-singular, .overriden-translation-input-plural");
 
     input.on("input", event => {
       const cancelBtn = $(event.target.nextElementSibling.children[1]);
@@ -414,14 +386,15 @@ export default class I18nManagerController extends Vue {
   private setSingularTranslation(newVal, rowData) {
     kendo.ui.progress($("body"), true);
     const msgctxtData = rowData.msgctxt !== null ? rowData.msgctxt : "";
-    const url = `/api/v2/admin/i18n/${encodeURIComponent(
-      this.translationLocale
-    )}/${encodeURIComponent(msgctxtData)}/${encodeURIComponent(rowData.msgid)}`;
+    const url = `/api/v2/admin/i18n/${encodeURIComponent(this.translationLocale)}/${encodeURIComponent(
+      msgctxtData
+    )}/${encodeURIComponent(rowData.msgid)}`;
     const jsonHeader = {
       headers: {
         "Content-type": "application/json"
       }
     };
+
     this.$http
       .put(url, JSON.stringify(newVal), jsonHeader)
       .then(() => {
@@ -435,9 +408,9 @@ export default class I18nManagerController extends Vue {
   }
   private setPluralTranslation(newVal, rowData) {
     const msgctxtData = rowData.msgctxt !== null ? rowData.msgctxt : "";
-    const url = `/api/v2/admin/i18n/${encodeURIComponent(
-      this.translationLocale
-    )}/${encodeURIComponent(msgctxtData)}/${encodeURIComponent(rowData.msgid)}`;
+    const url = `/api/v2/admin/i18n/${encodeURIComponent(this.translationLocale)}/${encodeURIComponent(
+      msgctxtData
+    )}/${encodeURIComponent(rowData.msgid)}`;
     const jsonHeader = {
       headers: {
         "Content-type": "application/json"

@@ -1,4 +1,4 @@
-import AnkSplitter from "@anakeen/internal-components/lib/Splitter";
+import AnkPaneSplitter from "@anakeen/internal-components/lib/PaneSplitter";
 import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 import { DropdownsInstaller } from "@progress/kendo-dropdowns-vue-wrapper";
 import "@progress/kendo-ui/js/kendo.grid.js";
@@ -13,7 +13,7 @@ Vue.use(DropdownsInstaller);
 // noinspection JSUnusedGlobalSymbols
 @Component({
   components: {
-    "ank-splitter": AnkSplitter,
+    "ank-split-panes": AnkPaneSplitter,
     "ank-vault-info": () =>
       new Promise(resolve => {
         import("./VaultInfo/VaultInfo.vue").then(AnkVaultInfo => {
@@ -42,21 +42,7 @@ export default class VaultManagerController extends Vue {
   }
   @Prop({ default: "", type: String })
   public value!: string;
-  public info: any = {};
-  public panes: object[] = [
-    {
-      collapsible: true,
-      resizable: true,
-      scrollable: false,
-      size: "30%"
-    },
-    {
-      collapsible: true,
-      resizable: true,
-      scrollable: false,
-      size: "70%"
-    }
-  ];
+  public info: any = { metrics: {}, disk: {} };
   public vaultsGridData: kendo.data.DataSource = new kendo.data.DataSource({
     schema: {
       data: response => response.data.data
@@ -122,9 +108,7 @@ export default class VaultManagerController extends Vue {
     this.$http
       .post("/api/v2/admin/vaults/", {
         path: $(this.$refs.newPath).val(),
-        size: Math.floor(
-          parseFloat(newSize) * parseFloat(kSizeUnit.kendoWidget().value())
-        )
+        size: Math.floor(parseFloat(newSize) * parseFloat(kSizeUnit.kendoWidget().value()))
       })
       .then(response => {
         const data = response.data.data;
@@ -173,9 +157,7 @@ export default class VaultManagerController extends Vue {
   }
 
   protected selectFsRow(fsId) {
-    const $viewButtons = $(this.$el).find(
-      "tr[data-fsid=" + fsId + "] .k-command-cell .k-button"
-    );
+    const $viewButtons = $(this.$el).find("tr[data-fsid=" + fsId + "] .k-command-cell .k-button");
     $($viewButtons.get(0)).trigger("click");
   }
   /**
@@ -202,10 +184,7 @@ export default class VaultManagerController extends Vue {
               field: "path",
               template: dataItem => {
                 let vaultErrorClass = "";
-                if (
-                  dataItem.disk.totalSize === 0 ||
-                  dataItem.metrics.totalSize < dataItem.metrics.usedSize
-                ) {
+                if (dataItem.disk.totalSize === 0 || dataItem.metrics.totalSize < dataItem.metrics.usedSize) {
                   vaultErrorClass = " vault-grid--error";
                 }
                 return (
@@ -213,13 +192,9 @@ export default class VaultManagerController extends Vue {
                   "<div class='vault-grid-sizes" +
                   vaultErrorClass +
                   "'> (" +
-                  VaultManagerController.convertBytes(
-                    dataItem.metrics.usedSize
-                  ) +
+                  VaultManagerController.convertBytes(dataItem.metrics.usedSize) +
                   " / " +
-                  VaultManagerController.convertBytes(
-                    dataItem.metrics.totalSize
-                  ) +
+                  VaultManagerController.convertBytes(dataItem.metrics.totalSize) +
                   ") </div>"
                 );
               },
@@ -230,14 +205,10 @@ export default class VaultManagerController extends Vue {
                 click: e => {
                   e.preventDefault();
                   const $tr = $(e.currentTarget).closest("tr");
-                  const kendoGrid = $(this.$refs.vaultManagerGrid).data(
-                    "kendoGrid"
-                  );
+                  const kendoGrid = $(this.$refs.vaultManagerGrid).data("kendoGrid");
                   const dataItem = kendoGrid.dataItem($tr);
                   // @ts-ignore
                   this.info = dataItem.toJSON();
-                  // @ts-ignore
-                  this.$refs.vaultSplitter.disableEmptyContent();
                   // @ts-ignore
                   this.selectedFs = dataItem.fsid;
                   $tr

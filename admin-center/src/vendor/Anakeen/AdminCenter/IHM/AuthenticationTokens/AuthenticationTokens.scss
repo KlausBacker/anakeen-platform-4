@@ -20,6 +20,7 @@
   .token-main {
     display: flex;
     flex-direction: column;
+    height: 100%;
 
     .token-grid-box {
       flex: 1;
@@ -28,6 +29,9 @@
     }
     .token-grid {
       height: 100%;
+      display: flex !important;
+      flex-direction: column;
+
       table {
         // table-layout: auto;
       }
@@ -57,8 +61,8 @@
         background-color: transparent;
         box-shadow: none;
         border: none;
-        padding-right:0.5rem;
-        padding-left:0.5rem;
+        padding-right: 0.5rem;
+        padding-left: 0.5rem;
       }
 
       .k-button:hover {
@@ -78,9 +82,14 @@
   .token-logo {
     display: flex;
     height: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #dedede;
+    font-size: 1.5rem;
+    color: #a4a4a4;
     > span {
       font-size: 5rem;
-      margin: auto;
     }
   }
   .token--selected {

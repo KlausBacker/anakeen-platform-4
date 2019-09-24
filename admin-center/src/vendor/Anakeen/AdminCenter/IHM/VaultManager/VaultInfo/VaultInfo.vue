@@ -42,7 +42,7 @@
             </div>
         </div>
         <div class="vault-graphs">
-            <div class="disk-gauges">
+            <div class="disk-gauges" v-if="info.metrics.totalSize">
                 <div class="disk-gauge" :class="{ diskerror: info.metrics.totalSize < info.metrics.usedSize }">
 
                     <p class="arc-title">Logical vault capacity</p>
