@@ -1,9 +1,13 @@
+.dev-center-search-engine-main {
+  height: 100%;
+}
 .dev-center-search-engine-panel {
   display: flex;
   flex-direction: column;
   min-height: 0;
   flex: 1;
   background: #8b8b8b;
+  height: 100%;
 
   .dev-center-search-engine-grid {
     display: flex !important;
