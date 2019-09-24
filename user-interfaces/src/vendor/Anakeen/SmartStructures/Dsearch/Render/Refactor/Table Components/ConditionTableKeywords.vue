@@ -1,12 +1,14 @@
 <template>
-  <component
-    v-show="shouldBeDisplay"
-    v-if="fieldType"
-    :is="componentsConfiguration[fieldType].componentName"
-    v-bind="componentsConfiguration[fieldType].props"
-    @keysChange="onKeysChange"
-    ref="keywordsComponent"
-  ></component>
+  <div :class="errorClass" class="keywords-wrapper" ref="keywordsWrapper">
+    <component
+      v-show="shouldBeDisplayed"
+      v-if="fieldType"
+      :is="componentsConfiguration[fieldType].componentName"
+      v-bind="componentsConfiguration[fieldType].props"
+      @keysChange="onKeysChange"
+      ref="keywordsComponent"
+    ></component>
+  </div>
 </template>
 <script>
 import "@progress/kendo-ui/js/kendo.combobox";
@@ -18,6 +20,7 @@ import KeywordsTime from "./KeywordsComponents/KeywordsTime";
 import KeywordsTimestamp from "./KeywordsComponents/KeywordsTimestamp";
 import KeywordsWid from "./KeywordsComponents/KeywordsWid";
 import KeywordsDefault from "./KeywordsComponents/KeywordsDefault";
+import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin";
 
 export default {
   name: "condition-table-keywords",
@@ -31,6 +34,7 @@ export default {
     "condition-table-keywords-default": KeywordsDefault
   },
   extends: BaseComponent,
+  mixins: [AnkI18NMixin],
   props: {
     controller: Object,
     field: null,
@@ -41,7 +45,8 @@ export default {
   data() {
     return {
       fieldType: "",
-      initialFieldType: null
+      initialFieldType: null,
+      errorClass: ""
     };
   },
   computed: {
@@ -105,13 +110,8 @@ export default {
         }
       };
     },
-    shouldBeDisplay() {
-      let display =
-        !!this.field &&
-        this.operator &&
-        this.operator !== "is null" &&
-        this.operator !== "is not null";
-      return display;
+    shouldBeDisplayed() {
+      return !!this.field && this.operator && this.operator !== "is null" && this.operator !== "is not null";
     }
   },
   methods: {
@@ -126,6 +126,7 @@ export default {
         },
         parentValue: event.parentValue
       });
+      this.checkValidity();
     },
     clearKeysValue: function() {
       this.$emit("valueChange", {
@@ -143,6 +144,43 @@ export default {
       if (this.$refs.keywordsComponent) {
         this.$refs.keywordsComponent.clearData();
       }
+    },
+    checkValidity() {
+      if (this.$refs.keywordsComponent) {
+        const valid = this.$refs.keywordsComponent.isValid();
+        let that = this;
+        if (!valid && this.shouldBeDisplayed) {
+          $(this.$refs.keywordsWrapper)
+            .tooltip({
+              placement: "bottom",
+              html: true,
+              animation: false,
+              title: function wAttributeSetErrorTitle() {
+                const rawMessage = $("<div/>")
+                  .text(that.$t("dsearch.Select keys"))
+                  .html();
+                return (
+                  `<div class=""><span class="btn fa fa-times button-close-error close-tooltip-keys">&nbsp;</span>` +
+                  rawMessage +
+                  "</div>"
+                );
+              },
+              trigger: "manual"
+            })
+            .one("shown.bs.tooltip", function wErrorTooltip() {
+              $($(".close-tooltip-keys")[that.row]).on("click", () => {
+                $(that.$refs.keywordsWrapper).tooltip("hide");
+                that.errorClass = "";
+              });
+              that.errorClass = "hasError";
+            });
+          $(this.$refs.keywordsWrapper).tooltip("show");
+        } else {
+          $(this.$refs.keywordsWrapper).tooltip("hide");
+          this.errorClass = "";
+        }
+        return valid;
+      }
     }
   },
   watch: {
@@ -154,18 +192,27 @@ export default {
         } else {
           this.fieldType = "default";
         }
+        this.$nextTick(this.checkValidity);
       }
       if (this.initialFieldType === null) {
         this.initialFieldType = this.fieldType;
       }
       this.clearInnerData();
     },
-    shouldBeDisplay: function(newValue) {
+    shouldBeDisplayed: function(newValue) {
       if (!newValue) {
         this.clearKeysValue();
+        this.$nextTick(this.checkValidity);
       }
+    },
+    operator: function(newValue) {
+      this.$nextTick(this.checkValidity);
     }
   }
 };
 </script>
-<style></style>
+<style>
+.keywords-wrapper.hasError {
+  outline: solid 2px #ff542c;
+}
+</style>

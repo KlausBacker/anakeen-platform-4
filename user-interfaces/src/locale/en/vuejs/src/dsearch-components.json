@@ -1,0 +1,17 @@
+{
+  "dsearch.Invalid smart field": "This attribute is invalid with the current family.",
+  "dsearch.Empty smart field": "You must select a smart field.",
+  "dsearch.Select condition": "You must select a grouped condition.",
+  "dsearch.Select keys": "You must select or type a keyword.",
+  "dsearch.Select operator": "You must select an operator.",
+  "dsearch.type a title": "Type a title for the new document",
+  "dsearch.se_ols": "Operator",
+  "dsearch.se_leftp": "Left parenthesis",
+  "dsearch.se_attrids": "Smart Fields",
+  "dsearch.se_funcs": "Functions",
+  "dsearch.se_keys": "Keywords",
+  "dsearch.se_rightp": "Right parenthesis",
+  "dsearch.se_ol-and": "Satisfies all conditions",
+  "dsearch.se_ol-or": "Satisfies at least one condition",
+  "dsearch.se_ol-perso": "Custom"
+}

@@ -17,11 +17,6 @@ msgctxt "ddui"
 msgid "Add new line"
 msgstr ""
 
-#: src/vendor/Anakeen/Routes/Ui/Templates/document-view.html.mustache
-msgctxt "ddui"
-msgid "Click to reload the document"
-msgstr ""
-
 #: src/vendor/Anakeen/SmartStructures/Report/Render/reportHTML5_edit.mustache
 msgctxt "dsearch"
 msgid "Conditions"
@@ -65,11 +60,6 @@ msgstr "Form is under modification"
 
 #: src/vendor/Anakeen/SmartStructures/Report/Render/reportHTML5_edit.mustache
 msgctxt "dsearch"
-msgid "Loading criteria ..."
-msgstr ""
-
-#: src/vendor/Anakeen/SmartStructures/Report/Render/reportHTML5_edit.mustache
-msgctxt "dsearch"
 msgid "Results"
 msgstr ""
 
@@ -87,9 +77,4 @@ msgstr "Revision created at"
 #: src/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/array/line.mustache
 msgctxt "ddui"
 msgid "Select line"
-msgstr ""
-
-#: src/vendor/Anakeen/Routes/Ui/Templates/document-view.html.mustache
-msgctxt "ddui"
-msgid "Unable to load try again"
 msgstr ""

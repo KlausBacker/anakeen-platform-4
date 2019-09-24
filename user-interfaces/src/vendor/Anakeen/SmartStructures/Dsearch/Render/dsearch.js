@@ -2,7 +2,6 @@ import "./searchRender.css";
 import searchUISEGridProcess from "./searchUISEGrid";
 import reportViewGridProcess from "../../Report/Render/reportViewGrid";
 import searchUIEventEditProcess from "./searchUIEventEdit";
-import searchUICreationEventProcess from "./searchUICreationEvent";
 import searchUIEventViewProcess from "./searchUIEventView";
 import ankController from "../../../../../../components/lib/AnkController";
 import SearchConditions from "./Refactor/SearchConditions.vue";
@@ -13,7 +12,6 @@ ankController.on("controllerReady", inner => {
     searchUISEGridProcess(controller);
     reportViewGridProcess(controller);
     searchUIEventEditProcess(controller);
-    searchUICreationEventProcess(controller);
     searchUIEventViewProcess(controller);
 
     controller.addEventListener(

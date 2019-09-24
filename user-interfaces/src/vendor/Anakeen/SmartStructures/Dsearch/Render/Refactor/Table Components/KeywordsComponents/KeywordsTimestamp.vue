@@ -46,6 +46,19 @@ export default {
     }
   },
   methods: {
+    isValid() {
+      let valid;
+      if (this.isTextBox){
+        valid = this.$refs.keywordsTimestampTextBoxWrapper.value !== "";
+      } else {
+        if (this.dateMode) {
+          valid = !!this.dateTimePicker.value();
+        } else {
+          valid = !!this.methodsComboBox.value();
+        }
+      }
+      return valid;
+    },
     onInputChange(event) {
       let value = event.target.value;
       this.$emit("keysChange", {

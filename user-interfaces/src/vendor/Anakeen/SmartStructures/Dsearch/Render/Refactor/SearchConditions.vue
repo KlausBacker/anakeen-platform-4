@@ -14,7 +14,7 @@
               @change="onConditionRuleTypeChange"
               v-model="conditionRuleType"
             />
-            <label class="conditions-enum-label k-radio-label" for="enumAnd">Satisfait toutes les conditions</label>
+            <label class="conditions-enum-label k-radio-label" for="enumAnd">{{ andTitle }}</label>
           </div>
           <div class="conditions-radio-container">
             <input
@@ -27,7 +27,7 @@
               @change="onConditionRuleTypeChange"
               v-model="conditionRuleType"
             />
-            <label class="conditions-enum-label k-radio-label" for="enumOr">Satisfait au moins une condition</label>
+            <label class="conditions-enum-label k-radio-label" for="enumOr">{{ orTitle }}</label>
           </div>
           <div class="conditions-radio-container">
             <input
@@ -40,7 +40,7 @@
               @change="onConditionRuleTypeChange"
               v-model="conditionRuleType"
             />
-            <label class="conditions-enum-label k-radio-label" for="enumCustom">Personnalisée</label>
+            <label class="conditions-enum-label k-radio-label" for="enumCustom">{{ customTitle }}</label>
           </div>
         </div>
       </div>
@@ -77,7 +77,7 @@
             <td class="conditions-table-tools">
               <div class="conditions-table-tools-add-line" title="Ajouter une nouvelle ligne">
                 <button type="button" class="conditions-table-tools-add-line-button" @click="onAddLineButtonClick">
-                  <span class="fa fa-plus fa-2x"></span>
+                  <span class="fa fa-plus"></span>
                 </button>
               </div>
             </td>

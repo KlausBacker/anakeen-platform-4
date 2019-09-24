@@ -1,0 +1,17 @@
+{
+  "dsearch.Invalid smart field": "Le Smart Field n'est pas présent dans la Smart Structure courante.",
+  "dsearch.Empty smart field": "Vous devez sélectionner un Smart Field.",
+  "dsearch.Select condition": "Vous devez sélectionner une condition groupée.",
+  "dsearch.Select keys": "Vous devez sélectionner ou saisir un mot-clé.",
+  "dsearch.Select operator": "Vous devez sélectionner un opérateur.",
+  "dsearch.type a title": "Entrez un titre pour le nouveau Smart Element",
+  "dsearch.se_ols": "Opérateur",
+  "dsearch.se_leftp": "Parenthèse gauche",
+  "dsearch.se_attrids": "Smart Fields",
+  "dsearch.se_funcs": "Fonctions",
+  "dsearch.se_keys": "Mot-clefs",
+  "dsearch.se_rightp": "Parenthèse droite",
+  "dsearch.se_ol-and": "Satisfait toutes les conditions",
+  "dsearch.se_ol-or": "Satisfait au moins une condition",
+  "dsearch.se_ol-perso": "Personnalisée"
+}

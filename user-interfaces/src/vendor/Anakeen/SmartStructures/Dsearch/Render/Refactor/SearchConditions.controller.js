@@ -4,9 +4,11 @@ import ConditionTableFields from "./Table Components/ConditionTableFields";
 import ConditionTableFunctions from "./Table Components/ConditionTableFunctions";
 import ConditionTableKeywords from "./Table Components/ConditionTableKeywords";
 import ConditionTableRightP from "./Table Components/ConditionTableRightP";
+import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin";
 
 export default {
   name: "search-conditions",
+  mixins: [AnkI18NMixin],
   components: {
     "condition-table-operator": ConditionTableOperator,
     "condition-table-leftp": ConditionTableLeftP,
@@ -22,7 +24,10 @@ export default {
     return {
       famid: null,
       conditionRuleType: "and",
-      conditions: []
+      conditions: [],
+      andTitle: "",
+      orTitle: "",
+      customTitle: ""
     };
   },
   computed: {
@@ -33,7 +38,7 @@ export default {
       return [
         {
           name: "operator",
-          title: "Opérateur",
+          title: this.$t("dsearch.se_ols"),
           class: "conditions-column-head-operator",
           componentName: "condition-table-operator",
           propertyName: "list",
@@ -49,7 +54,7 @@ export default {
         },
         {
           name: "fields",
-          title: "Smart Fields",
+          title: this.$t("dsearch.se_attrids"),
           class: "conditions-column-head-fields",
           componentName: "condition-table-fields",
           propertyName: "list",
@@ -57,7 +62,7 @@ export default {
         },
         {
           name: "functions",
-          title: "Functions",
+          title: this.$t("dsearch.se_funcs"),
           class: "conditions-column-head-functions",
           componentName: "condition-table-functions",
           propertyName: "list",
@@ -65,7 +70,7 @@ export default {
         },
         {
           name: "keywords",
-          title: "Mots-clefs",
+          title: this.$t("dsearch.se_keys"),
           class: "conditions-column-head-keywords",
           componentName: "condition-table-keywords",
           propertyName: "list",
@@ -83,6 +88,7 @@ export default {
     }
   },
   mounted() {
+    this.$on("localeLoaded", this.initTranslation);
     this.controller.addEventListener(
       "smartFieldChange",
       {
@@ -102,6 +108,11 @@ export default {
     this.loadSmartElement();
   },
   methods: {
+    initTranslation() {
+      this.andTitle = this.$t("dsearch.se_ol-and");
+      this.orTitle = this.$t("dsearch.se_ol-or");
+      this.customTitle = this.$t("dsearch.se_ol-perso");
+    },
     onConditionRuleTypeChange(event) {
       this.conditionRuleType = event.target.value;
       this.controller.setValue("se_ol", { value: this.conditionRuleType });

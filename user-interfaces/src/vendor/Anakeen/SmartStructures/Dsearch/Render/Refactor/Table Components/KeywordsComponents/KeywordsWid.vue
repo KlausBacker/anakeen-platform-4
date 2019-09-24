@@ -20,6 +20,9 @@ export default {
     };
   },
   methods: {
+    isValid() {
+      return !!this.comboBox.value();
+    },
     onComboBoxChange() {
       const value = this.comboBox.value();
       this.$emit("keysChange", {
@@ -40,6 +43,18 @@ export default {
     }
   },
   mounted() {
+    this.comboBox = $(this.$refs.keywordsWidWrapper)
+      .kendoComboBox({
+        width: 200,
+        filter: "contains",
+        clearButton: false,
+        minLength: 0,
+        dataValueField: "id",
+        dataTextField: "label",
+        template: `<span style='background-color: #: color #; width: 100%;'>#: label #</span>`,
+        change: this.onComboBoxChange
+      })
+      .data("kendoComboBox");
     let that = this;
     $.getJSON("/api/v2/smart-elements/" + this.famid + "/workflows/states/?allStates=1", function requestWorkflows(
       data
@@ -84,19 +99,7 @@ export default {
         myObject.color = item.color;
         that.dataWorkflow.push(myObject);
       });
-      that.comboBox = $(that.$refs.keywordsWidWrapper)
-        .kendoComboBox({
-          width: 200,
-          filter: "contains",
-          clearButton: false,
-          minLength: 0,
-          dataValueField: "id",
-          dataTextField: "label",
-          template: `<span style='background-color: #: color #; width: 100%;'>#: label #</span>`,
-          change: that.onComboBoxChange,
-          dataSource: that.dataWorkflow
-        })
-        .data("kendoComboBox");
+      that.comboBox.setDataSource(that.dataWorkflow);
       that.initData();
     });
   }
@@ -105,5 +108,8 @@ export default {
 <style>
 .condition-table-keywords-wid {
   width: 100%;
+}
+.condition-table-keywords-wid.k-widget.k-combobox {
+  display: block;
 }
 </style>

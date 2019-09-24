@@ -46,6 +46,19 @@ export default {
     }
   },
   methods: {
+    isValid() {
+      let valid;
+      if (this.isTextBox){
+        valid = this.$refs.keywordsDateTextBoxWrapper.value !== "";
+      } else {
+        if (this.dateMode) {
+          valid = !!this.datePicker.value();
+        } else {
+          valid = !!this.methodsComboBox.value();
+        }
+      }
+      return valid;
+    },
     onInputChange(event) {
       let value = event.target.value;
       this.$emit("keysChange", {
@@ -178,6 +191,4 @@ export default {
 .condition-table-keywords-date-textbox.k-textbox {
   width: 100%;
 }
-
-
 </style>
