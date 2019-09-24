@@ -533,7 +533,9 @@ export default class GridController extends Vue {
   public onExpandButtonClicked() {
     $(this.kendoGrid.element).toggleClass("grid-row-collapsed");
   }
-
+  public reload() {
+    return this.dataSource.read();
+  }
   private configureDocidLinks() {
     const docidLinks = $(".grid-cell-docid-link");
     docidLinks.each(index => {
