@@ -1,4 +1,4 @@
-import Splitter from "@anakeen/internal-components/lib/Splitter.js";
+import AnkPaneSplitter from "@anakeen/internal-components/lib/PaneSplitter";
 import "@progress/kendo-ui/js/kendo.button";
 import "@progress/kendo-ui/js/kendo.filtercell";
 import "@progress/kendo-ui/js/kendo.grid.js";
@@ -9,7 +9,7 @@ import WflList from "./WorkflowList/WorkflowList.vue";
 
 @Component({
   components: {
-    "ank-splitter": Splitter,
+    "ank-split-panes": AnkPaneSplitter,
     "wfl-data": WflData,
     "wfl-list": WflList
   }
@@ -20,37 +20,11 @@ export default class AdminCenterWorkflowController extends Vue {
   public isEmpty: boolean = true;
   public selectedWfl: string = "";
   public force: number = 0;
-  public panes: any = [
-    {
-      collapsible: true,
-      resizable: true,
-      scrollable: false,
-      size: "500px"
-    },
-    {
-      collapsible: true,
-      resizable: true,
-      scrollable: false
-    }
-  ];
 
   @Watch("selectedWfl")
   public watchSelectedWfl(newValue) {
     if (newValue) {
       this.isEmpty = false;
-    }
-  }
-
-  @Watch("isEmpty")
-  public watchIsEmpty(newValue) {
-    if (!newValue) {
-      this.$nextTick(() => {
-        // @ts-ignore
-        this.$refs.wflSplitter.disableEmptyContent();
-      });
-    } else {
-      // @ts-ignore
-      this.$refs.wflSplitter.enableEmptyContent();
     }
   }
 

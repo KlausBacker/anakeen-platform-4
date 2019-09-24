@@ -30,22 +30,6 @@ export default class WorkflowDataController extends Vue {
       .then(response => (this.language = response.data.locale === "fr_FR.UTF-8" ? "fr" : "en"));
   }
   public gridDataBound() {
-    const wrapper = $(".wfl-data");
-    const header = $(".k-grid-header");
-    const data = $(".k-grid-content");
-    header.css("width", wrapper.width());
-    data.css("top", header.height());
-    function scrollFixed() {
-      const offset = $("wfl-grid-content").scrollTop();
-      const tableOffsetTop = wrapper.offset().top;
-      const tableOffsetBottom = tableOffsetTop + wrapper.height() - header.height();
-      if (offset < tableOffsetTop || offset > tableOffsetBottom) {
-        header.removeClass("fixed-header");
-      } else if (offset >= tableOffsetTop && offset <= tableOffsetBottom && !header.hasClass("fixed")) {
-        header.addClass("fixed-header");
-      }
-    }
-    $(window).scroll(scrollFixed);
     $(".wfl-step__color").kendoColorPicker({
       buttons: true,
       change: e => {
