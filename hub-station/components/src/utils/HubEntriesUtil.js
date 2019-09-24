@@ -95,12 +95,16 @@ class HubEntriesUtil {
             assets.js.forEach(jsUrl => {
               if (jsUrl) {
                 const insertElement = new Promise((resolve, reject) => {
-                  littleLoader(jsUrl, err => {
-                    if (err) {
-                      return reject(err);
-                    }
+                  if ($(`script[src="${jsUrl}"]`).length === 0) {
+                    littleLoader(jsUrl, err => {
+                      if (err) {
+                        return reject(err);
+                      }
+                      resolve();
+                    });
+                  } else {
                     resolve();
-                  });
+                  }
                 });
                 assetsPromises.push(insertElement);
               }
