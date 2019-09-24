@@ -1385,6 +1385,8 @@ define([
         () => {
           saveCallback.promise.then(
             function mDocument_saveDone() {
+              currentModel.trigger("afterSave", serverProperties);
+              currentModel.trigger("close", serverProperties);
               currentModel._loadDocument(currentModel).then(
                 function mDocument_loadDocumentDone() {
                   globalCallback.success();
@@ -1428,8 +1430,6 @@ define([
 
       globalCallback.promise.then(
         function onSaveSuccess(values) {
-          currentModel.trigger("afterSave", serverProperties);
-          currentModel.trigger("close", serverProperties);
           if (_.isFunction(options.success)) {
             options.success();
           }
