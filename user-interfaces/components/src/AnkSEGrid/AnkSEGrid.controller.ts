@@ -542,6 +542,9 @@ export default class GridController extends Vue {
   public showColumn(col) {
     return this.kendoGrid.showColumn(col);
   }
+  public filter(f, op, val) {
+    return this.dataSource.filter({ field: f, operator: op, value: val });
+  }
   private configureDocidLinks() {
     const docidLinks = $(".grid-cell-docid-link");
     docidLinks.each(index => {
