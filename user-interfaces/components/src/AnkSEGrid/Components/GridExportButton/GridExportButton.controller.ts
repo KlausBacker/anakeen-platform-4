@@ -83,6 +83,10 @@ export default class GridExportButtonController extends Vue {
       .data("kendoMenu");
   }
 
+  public export() {
+    this.doExport(new jQuery.Event(""), true, $(this.$refs.exportButton));
+  }
+
   @Watch("gridComponent")
   public watchGridComponent(newValue) {
     this.gridComponent = newValue;
@@ -201,10 +205,9 @@ export default class GridExportButtonController extends Vue {
     this.displayExportMenu();
   }
 
-  private doExport(event: any, exportAll = false) {
+  private doExport(event: any, exportAll = false, $exportElement = $(event.sender.element).parent()) {
     event.preventDefault();
 
-    const $exportElement = $(event.sender.element).parent();
     const exportEvent = this.sendExportEvent();
     const queryParams = this.getExportQueryParams(exportAll);
     if (!exportEvent.isDefaultPrevented()) {
@@ -266,6 +269,10 @@ export default class GridExportButtonController extends Vue {
     event.onPolling = null;
     this.gridComponent.$emit("toolbar-action-click", event);
     return event;
+  }
+
+  private sendExportDoneEvent() {
+    this.$emit("exportDone");
   }
 
   private getExportQueryParams(exportAll: any) {
@@ -439,6 +446,8 @@ export default class GridExportButtonController extends Vue {
         this.displayExportMenu();
       }, 1000);
     }
+
+    this.sendExportDoneEvent();
   }
 
   private computeTotalExport() {
