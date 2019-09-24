@@ -31,7 +31,7 @@
         @tabClick="onTabClick"
       >
         <ank-tab v-if="hasWelcomeTab" :closable="false" name="welcome">
-          <template v-slot:label>
+          <template slot="label">
             <span
               class="ank-business-app-welcome-title"
               v-html="welcomeTab.title"
