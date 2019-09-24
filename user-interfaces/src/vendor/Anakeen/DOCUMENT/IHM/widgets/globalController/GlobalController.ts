@@ -404,7 +404,7 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
     const injectPromise = event.js.reduce((acc, currentJS) => {
       const currentPath = currentJS.path;
       // inject js if not alredy exist
-      if ($('script[data-src="' + currentPath + '"]').length === 0) {
+      if ($(`script[data-src="${currentPath}"], script[src="${currentPath}"]`).length === 0) {
         return acc.then(() => {
           return new Promise((resolve, reject) => {
             load("", {
