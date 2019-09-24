@@ -178,7 +178,6 @@
     min-height: 0;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
   }
 
   th[data-role="columnsorter"] .k-link {
@@ -669,19 +668,15 @@
     display: flex;
 
     .grid-default-footer {
-      width: 100%;
-      height: 38px;
-
-      .grid-expand-button {
-        top: -35px;
-        left: 289px;
-      }
+      display: flex;
+      flex: 1;
+      align-items: center;
+      border-top: 1px solid #ddd;
     }
 
     .k-pager-numbers-wrap {
       display: none !important;
     }
-
   }
 }
 
@@ -703,4 +698,3 @@
     white-space: nowrap;
   }
 }
-
