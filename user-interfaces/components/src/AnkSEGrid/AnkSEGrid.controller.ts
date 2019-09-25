@@ -560,6 +560,9 @@ export default class GridController extends Vue {
       });
     }
   }
+  public sort(f, d = "asc") {
+    return this.dataSource.sort({ field: f, dir: d });
+  }
   private configureDocidLinks() {
     const docidLinks = $(".grid-cell-docid-link");
     docidLinks.each(index => {
