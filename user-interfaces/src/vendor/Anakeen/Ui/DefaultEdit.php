@@ -84,7 +84,6 @@ class DefaultEdit extends RenderDefault
             $menu->appendElement($item);
         }
 
-        $this->addHelpMenu($document, $menu);
         return $menu;
     }
 
@@ -120,18 +119,5 @@ class DefaultEdit extends RenderDefault
             $item->setTooltipLabel(___("Create to server and view document", "UiMenu"));
         }
         $menu->appendElement($item);
-    }
-
-    /**
-     * @param \Anakeen\Core\Internal\SmartElement $document Document instance
-     *
-     * @return RenderOptions
-     */
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
-    {
-        $options = parent::getOptions($document);
-        $this->addDocumentHelpLinks($options, $document);
-
-        return $options;
     }
 }

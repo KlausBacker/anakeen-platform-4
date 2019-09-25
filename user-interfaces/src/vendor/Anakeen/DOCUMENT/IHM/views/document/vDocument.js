@@ -534,114 +534,6 @@ define([
     },
 
     /**
-     * Show the help document in dialog
-     *
-     */
-    // eslint-disable-next-line no-unused-vars
-    showHelp: function vDocumentShowHelp(event, helpId, attrid) {
-      // TODO : voir si on reporte ce fonctionnement
-      /*var $document = $(this.el);
-      var scope = this;
-      var $dialogDiv = $document.data("dcpHelpDocument-" + helpId);
-      var currentTarget = event.originalEvent ? event.originalEvent.currentTarget : event.currentTarget;
-      var htmlLink = {
-        target: "_dialog",
-        windowWidth: "400px",
-        windowHeight: "300px",
-        windowTitle: '<span class="fa fa-question-circle"></span> ' + i18n.___("Info", "ddui")
-      };
-
-      require.ensure(
-        ["dcpDocument/document"],
-        function vDocumentHelp() {
-          require("dcpDocument/document");
-          var helpX, helpY, bodyH, dialogH, dialogW;
-
-          if (!$dialogDiv || $dialogDiv.is(":visible") === false) {
-            if (scope.helpWidget) {
-              scope.helpWidget.destroy();
-            }
-            $dialogDiv = $("<div/>").addClass("dcpHelp-wrapper");
-
-            $dialogDiv.kendoWindow({
-              width: htmlLink.windowWidth,
-              height: htmlLink.windowHeight,
-              iframe: true,
-              content: "about:blank",
-              actions: ["Maximize", "Close"],
-              close: function vDocumentSelectHelpClose() {
-                $(".dcpLabel__help__link--selected").removeClass("dcpLabel__help__link--selected");
-              }
-            });
-
-            $dialogDiv
-              .closest(".k-window")
-              .find(".k-window-title")
-              .html(htmlLink.windowTitle);
-            $dialogDiv.on("documentcreate", function vDocumentHelpCreate() {
-              $dialogDiv.find("> iframe").addClass("k-content-frame");
-            });
-
-            $dialogDiv
-              .document({
-                initid: helpId,
-                withoutResize: true
-              })
-              .on("documentloaded", function vDocumentSelectHelpChapter() {
-                $(this).document("addEventListener", "ready", function() {
-                  _.defer(function triggerSelectHelpChapter() {
-                    $dialogDiv.document("triggerEvent", "custom:helppageSelect", attrid);
-                  });
-                });
-              });
-
-            $document.data("dcpHelpDocument-" + helpId, $dialogDiv);
-          } else {
-            $dialogDiv.document("triggerEvent", "custom:helppageSelect", attrid);
-          }
-
-          scope.helpWidget = $dialogDiv.data("kendoWindow");
-          $(".dcpLabel__help__link--selected").removeClass("dcpLabel__help__link--selected");
-
-          if ($(currentTarget).length > 0) {
-            $(currentTarget).addClass("dcpLabel__help__link--selected");
-
-            // Compute new position of help dialog window
-            helpX = $(currentTarget).offset().left;
-            helpY = $(currentTarget).offset().top;
-            bodyH = $("body").height();
-            dialogH = $(scope.helpWidget.wrapper)
-              .closest(".k-window")
-              .height();
-            dialogW = $(scope.helpWidget.wrapper)
-              .closest(".k-window")
-              .width();
-            if (helpX > dialogW + 50) {
-              helpX = helpX - dialogW - 30;
-            } else {
-              helpX = helpX + 30;
-            }
-
-            if (helpY > bodyH - dialogH) {
-              helpY = bodyH - dialogH - 50;
-            }
-
-            helpY = helpY < 0 ? 0 : helpY;
-
-            $(scope.helpWidget.wrapper).css({
-              top: helpY + "px",
-              left: helpX + "px"
-            });
-          } else {
-            scope.helpWidget.center();
-          }
-          scope.helpWidget.open();
-        },
-        "wDocument"
-      );*/
-    },
-
-    /**
      * Show the history widget
      *
      */
@@ -1113,9 +1005,6 @@ define([
       }
       if (options.eventId === "document.restore") {
         return this.restoreDocument();
-      }
-      if (options.eventId === "document.help") {
-        return this.showHelp(event, eventArgs[0], eventArgs[1]);
       }
     },
 

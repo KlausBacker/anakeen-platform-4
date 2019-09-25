@@ -38,9 +38,6 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Report/report.views.xml">
             <label>REPORT Structure view</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Helppage/helppage.views.xml">
-            <label>HELPPAGE Structure view</label>
-        </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.views.xml">
             <label>CVDOC Structure view</label>
         </process>
@@ -107,9 +104,6 @@
         </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Report/report.views.xml">
             <label>REPORT Structure view</label>
-        </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Helppage/helppage.views.xml">
-            <label>HELPPAGE Structure view</label>
         </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.views.xml">
             <label>CVDOC Structure view</label>

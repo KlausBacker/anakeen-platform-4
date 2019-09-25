@@ -12,9 +12,7 @@
 
   $.widget("dcp.dcpLabel", {
     options: {
-      renderOptions: {
-        helpLinkIdentifier: 0
-      },
+      renderOptions: {},
       labels: {
         helpTitle: "Info"
       }

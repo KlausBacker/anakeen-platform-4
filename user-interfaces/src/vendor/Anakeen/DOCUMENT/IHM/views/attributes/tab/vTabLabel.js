@@ -39,7 +39,6 @@ define([
       var label = this.model.get("label");
       var tooltipLabel = this.model.getOption("tooltipLabel");
       var attrData = this.model.attributes;
-      var helpId = this.model.getOption("helpLinkIdentifier");
 
       this.$el.empty();
       if (this.displayLabel !== false) {
@@ -47,20 +46,7 @@ define([
           label = this.model.getOption("attributeLabel");
         }
 
-        if (helpId) {
-          this.$el.append(
-            Mustache.render(
-              '<span class="dcpLabel__text">{{label}} <a class="dcpLabel__help__link" href="#action/document.help:{{helpId}}:{{attrid}}"><span class="fa fa-question-circle"></span></a></span>',
-              {
-                helpId: helpId,
-                attrid: this.model.id,
-                label: label
-              }
-            )
-          );
-        } else {
-          this.$el.html($('<span class="dcpLabel__text" />').text(label));
-        }
+        this.$el.html($('<span class="dcpLabel__text" />').text(label));
 
         attributeTemplate.insertDescription(this);
         if (tooltipLabel) {

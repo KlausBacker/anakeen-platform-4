@@ -179,7 +179,7 @@ deploy-all: deploy deploy-test
 clean: ## clean the local pub
 	@${PRINT_COLOR} "${DEBUG_COLOR}Clean $@${RESET_COLOR}\n"
 	rm -fr node_modules
-	rm -fr components/lib	src/public/uiAssets/ src/public/Anakeen/ Tests/src/public/Anakeen/
+	rm -fr components/lib	src/public/uiAssets/ src/public/Anakeen/ Tests/src/public/Anakeen/ src/public/Images
 	rm -f *.app
 	rm -f *.src
 	make -f pojs.make clean

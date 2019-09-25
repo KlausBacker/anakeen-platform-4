@@ -6,9 +6,6 @@
 
 namespace Anakeen\Ui;
 
-use Anakeen\Core\SEManager;
-use Anakeen\SmartElementManager;
-
 class CommonRenderOptions extends BaseRenderOptions
 {
     const type = "common";
@@ -26,7 +23,6 @@ class CommonRenderOptions extends BaseRenderOptions
     const placeHolderOption = "placeHolder";
     const attributeLabelOption = "attributeLabel";
     const formatOption = "format";
-    const helpLinkIdentifierOption = "helpLinkIdentifier";
     const customWidgetAttributeFunctionOption = "customWidgetAttributeFunction";
 
     const autoPosition = "auto";
@@ -222,24 +218,6 @@ class CommonRenderOptions extends BaseRenderOptions
         }
         $this->setOption(self::translatedLabelsOption, array_merge($cLabels, $labels));
         return $this;
-    }
-
-    /**
-     * Display help document links before attribute label
-     *
-     * @param string $documentIdentifier must identifier a HELP family document
-     *
-     * @return $this
-     * @throws Exception
-     */
-    public function setLinkHelp($documentIdentifier)
-    {
-        $helpDocument = SmartElementManager::getDocument($documentIdentifier);
-        if (!$helpDocument || !is_a($helpDocument, \Anakeen\Core\SEManager::getFamilyClassName("Helppage"))) {
-            throw new Exception("UI0208", $helpDocument->fromname);
-        }
-        SEManager::cache()->addDocument($helpDocument);
-        return $this->setOption(self::helpLinkIdentifierOption, $documentIdentifier);
     }
 
     /**

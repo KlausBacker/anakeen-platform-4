@@ -160,9 +160,6 @@ class TestFolder extends TestCaseDcpCommonFamily
     {
         return array(
             array(
-                "HELP_REPORT"
-            ) ,
-            array(
                 "USER_ADMIN"
             )
         );
