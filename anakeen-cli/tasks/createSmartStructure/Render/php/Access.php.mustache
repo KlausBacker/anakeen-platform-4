@@ -2,21 +2,21 @@
 
 namespace {{namespace}};
 
-class {{ssName}}Access implements \Dcp\Ui\IRenderConfigAccess
+class {{ssName}}Access implements \Anakeen\Ui\IRenderConfigAccess
 {
     /**
      * Choose good render from view or edit mode
      * @param string $mode
      * @param \Anakeen\Core\Internal\SmartElement $element
-     * @return \Dcp\Ui\IRenderConfig
+     * @return \Anakeen\Ui\IRenderConfig
      */
     public function getRenderConfig($mode, \Anakeen\Core\Internal\SmartElement $element)
     {
         switch ($mode) {
-            case \Dcp\Ui\RenderConfigManager::CreateMode:
-            case \Dcp\Ui\RenderConfigManager::EditMode:
+            case \Anakeen\Ui\RenderConfigManager::CreateMode:
+            case \Anakeen\Ui\RenderConfigManager::EditMode:
                 return new {{ssName}}EditRender();
-            case \Dcp\Ui\RenderConfigManager::ViewMode:
+            case \Anakeen\Ui\RenderConfigManager::ViewMode:
                 return new {{ssName}}ViewRender();
         }
         return null;
