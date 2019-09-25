@@ -36,7 +36,7 @@ export default {
   extends: BaseComponent,
   mixins: [AnkI18NMixin],
   props: {
-    controller: Object,
+    controllerProxy: Function,
     field: null,
     operator: "",
     famid: Number,
@@ -75,7 +75,7 @@ export default {
           props: {
             operator: this.operator,
             famid: this.famid,
-            controller: this.controller,
+            controllerProxy: this.controllerProxy,
             initValue: this.initialFieldType === "wid" ? this.initValue : ""
           }
         },

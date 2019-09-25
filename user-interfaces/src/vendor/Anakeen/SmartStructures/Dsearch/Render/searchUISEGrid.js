@@ -1,6 +1,5 @@
 import Vue from "vue";
 import SearchUISEGrid from "./searchUISEGrid.vue";
-
 export default function searchUISEGridProcess(controller) {
   controller.addEventListener(
     "ready",
@@ -11,14 +10,38 @@ export default function searchUISEGridProcess(controller) {
       }
     },
     () => {
-      new Vue({
-        el: ".search-ui-se-grid",
+      const searchVueGrid = new Vue({
         components: {
           "search-grid": SearchUISEGrid
         },
-        data: { controller: controller },
-        template: "<search-grid :controller='controller'></search-grid>"
+        el: ".search-ui-se-grid",
+        data: { searchId: null },
+        template: "<search-grid :searchId='searchId'></search-grid>"
       });
+      controller.addEventListener(
+        "custom:content",
+        {
+          name: "getTmpSearchId",
+          check: function isDsearch(document) {
+            return document.type === "search";
+          }
+        },
+        function prepareResultEditEvents(event, data) {
+          searchVueGrid.searchId = data.id.toString();
+        }
+      );
+      controller.addEventListener(
+        "custom:content:view",
+        {
+          name: "getTmpViewId",
+          check: function isReport(document) {
+            return document.type === "search";
+          }
+        },
+        function prepareResultViewEvents(event, data) {
+          searchVueGrid.searchId = data.id.toString();
+        }
+      );
     }
   );
 }

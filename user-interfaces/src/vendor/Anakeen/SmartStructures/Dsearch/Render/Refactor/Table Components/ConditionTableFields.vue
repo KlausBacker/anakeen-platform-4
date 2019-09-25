@@ -15,7 +15,7 @@ export default {
   extends: BaseComponent,
   mixins: [AnkI18NMixin],
   props: {
-    controller: Object,
+    controllerProxy: Function,
     famid: Number,
     initValue: ""
   },
@@ -61,7 +61,7 @@ export default {
     },
     findIfWorkflow: function(data) {
       const $lastAttribute = data[data.length - 1];
-      const $revAttribute = this.controller.getValue("se_latest");
+      const $revAttribute = this.controllerProxy("getValue", "se_latest");
       let myObject;
       if ($lastAttribute.type === "wid") {
         data.pop();

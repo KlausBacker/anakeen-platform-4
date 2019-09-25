@@ -9,7 +9,7 @@ export default {
   props: {
     operator: "",
     famid: Number,
-    controller: null,
+    controllerProxy: Function,
     initValue: ""
   },
   data() {
@@ -54,7 +54,7 @@ export default {
           that.workflows.push(value);
         });
       }).done(function() {
-        const typeRevision = that.controller.getValue("se_latest").value;
+        const typeRevision = that.controllerProxy("getValue", "se_latest").value;
         that.workflows.forEach(item => {
           let myObject;
           if (typeRevision === "fixed" || typeRevision === "allfixed" || typeRevision === "lastfixed") {

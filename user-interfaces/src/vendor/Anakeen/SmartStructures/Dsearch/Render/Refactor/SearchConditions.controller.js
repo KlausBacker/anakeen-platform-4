@@ -18,7 +18,10 @@ export default {
     "condition-table-rightp": ConditionTableRightP
   },
   props: {
-    controller: Object
+    controllerProxy: {
+      type: Function,
+      default: () => () => {}
+    }
   },
   data() {
     return {
@@ -89,7 +92,8 @@ export default {
   },
   mounted() {
     this.$on("localeLoaded", this.initTranslation);
-    this.controller.addEventListener(
+    this.controllerProxy(
+      "addEventListener",
       "smartFieldChange",
       {
         name: "searchAttributesFamilyChanged.sAttr",
@@ -115,14 +119,14 @@ export default {
     },
     onConditionRuleTypeChange(event) {
       this.conditionRuleType = event.target.value;
-      this.controller.setValue("se_ol", { value: this.conditionRuleType });
+      this.controllerProxy("setValue", "se_ol", { value: this.conditionRuleType });
     },
     onAddLineButtonClick() {
       this.conditions.push(this.createDefaultCondition());
     },
     deleteCondition(event, row) {
       this.conditions.splice(row, 1);
-      this.controller.removeArrayRow("se_t_detail", row);
+      this.controllerProxy("removeArrayRow", "se_t_detail", row);
     },
     updateFamIds() {
       this.conditions.forEach(condition => {
@@ -131,18 +135,18 @@ export default {
       });
     },
     loadSmartElement() {
-      this.famid = parseInt(this.controller.getValue("se_famid").value); //init Famid
-      const se_olValue = this.controller.getValue("se_ol").value;
+      this.famid = parseInt(this.controllerProxy("getValue", "se_famid").value); //init Famid
+      const se_olValue = this.controllerProxy("getValue", "se_ol").value;
       if (se_olValue) {
         this.conditionRuleType = se_olValue;
       }
 
-      const operator = this.controller.getValue("se_ols");
-      const leftp = this.controller.getValue("se_leftp");
-      const fields = this.controller.getValue("se_attrids");
-      const funcs = this.controller.getValue("se_funcs");
-      const keys = this.controller.getValue("se_keys");
-      const rightp = this.controller.getValue("se_rightp");
+      const operator = this.controllerProxy("getValue", "se_ols");
+      const leftp = this.controllerProxy("getValue", "se_leftp");
+      const fields = this.controllerProxy("getValue", "se_attrids");
+      const funcs = this.controllerProxy("getValue", "se_funcs");
+      const keys = this.controllerProxy("getValue", "se_keys");
+      const rightp = this.controllerProxy("getValue", "se_rightp");
       const length = fields.length;
 
       for (let row = 0; row < length; row++) {
@@ -177,7 +181,7 @@ export default {
         case "rightp":
           break;
       }
-      this.controller.setValue(event.smartFieldId, event.smartFieldValue);
+      this.controllerProxy("setValue", event.smartFieldId, event.smartFieldValue);
     },
     createDefaultCondition: function() {
       return {
@@ -188,7 +192,7 @@ export default {
           initValue: ""
         },
         fields: {
-          controller: this.controller,
+          controllerProxy: this.controllerProxy,
           famid: this.famid,
           initValue: ""
         },
@@ -197,7 +201,7 @@ export default {
           initValue: ""
         },
         keywords: {
-          controller: this.controller,
+          controllerProxy: this.controllerProxy,
           field: null,
           operator: "",
           famid: this.famid,

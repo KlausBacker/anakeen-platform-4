@@ -21,39 +21,7 @@ export default {
   components: {
     "ank-se-grid": AnkSEGrid
   },
-  props: ["controller"],
-  created() {
-    const that = this;
-    that.controller.addEventListener(
-      "custom:content",
-      {
-        name: "getTmpSearchId",
-        check: function isDsearch(document) {
-          return document.type === "search";
-        }
-      },
-      function prepareResultEditEvents(event, data) {
-        that.searchId = data.id.toString();
-      }
-    );
-    that.controller.addEventListener(
-      "custom:content:view",
-      {
-        name: "getTmpViewId",
-        check: function isReport(document) {
-          return document.type === "search";
-        }
-      },
-      function prepareResultViewEvents(event, data) {
-        that.searchId = data.id.toString();
-      }
-    );
-  },
-  data() {
-    return {
-      searchId: null
-    };
-  }
+  props: ["searchId"]
 };
 </script>
 <style lang="scss"></style>
