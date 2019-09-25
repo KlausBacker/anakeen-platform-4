@@ -16,7 +16,10 @@ export default function reportViewGridProcess(controller) {
         components: {
           "search-ui-view": SearchViewGrid
         },
-        template: "<search-ui-view/>"
+        data: {
+          controller: controller
+        },
+        template: "<search-ui-view :controller='controller'/>"
       });
     }
   );

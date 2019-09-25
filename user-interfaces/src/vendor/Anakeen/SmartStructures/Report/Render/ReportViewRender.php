@@ -6,6 +6,7 @@ use Anakeen\Core\Internal\SmartElement;
 use Anakeen\SmartStructures\Dsearch\Render\SearchViewRender;
 use Anakeen\Ui\BarMenu;
 use Anakeen\Ui\DefaultView;
+use Anakeen\Ui\ItemMenu as ItemMenu;
 use Anakeen\Ui\UIGetAssetPath;
 use SmartStructure\Fields\Report;
 
@@ -22,12 +23,24 @@ class ReportViewRender extends DefaultView
 
     public function getMenu(\Anakeen\Core\Internal\SmartElement $document):BarMenu
     {
-        $menu = parent::getMenu($document);
+        $myMenu = parent::getMenu($document);
 
-        $menu->removeElement("advanced");
-        $menu->removeElement("searchview");
+        $searchViewItem = new ItemMenu("searchview");
+        $searchViewItem->setTextLabel(___("consult", "searchUi"));
+        $searchViewItem->setUrl("#action/previewConsult");
+        $myMenu->appendElement($searchViewItem);
 
-        return $menu;
+        $exportViewItem = new ItemMenu("exportView");
+        $exportViewItem->setBeforeContent('<i class="fa fa-upload"></i>');
+        $exportViewItem->setTextLabel(___("export", "searchUi"));
+        $exportViewItem->setUrl("#action/exportReport");
+        $myMenu->appendElement($exportViewItem);
+
+        $myMenu->removeElement("se_open");
+        $myMenu->removeElement("advanced");
+        $myMenu->removeElement("searchview");
+
+        return $myMenu;
     }
 
     public function getJsReferences(SmartElement $document = null)

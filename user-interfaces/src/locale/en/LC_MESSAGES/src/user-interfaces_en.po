@@ -857,6 +857,10 @@ msgctxt "searchUi"
 msgid "consult"
 msgstr "Launch the research"
 
+msgctxt "searchUi"
+msgid "export"
+msgstr "Export report"
+
 #, php-format
 msgctxt "CVDOC"
 msgid "creation view '%s' does not exists"
