@@ -11,15 +11,15 @@ export default function reportViewGridProcess(controller) {
       }
     },
     () => {
-      new Vue({
-        el: ".search-ui-view",
-        components: {
-          "search-ui-view": SearchViewGrid
-        },
-        data: {
-          controller: controller
-        },
-        template: "<search-ui-view :controller='controller'/>"
+      const SearchViewGridComponent = Vue.extend(SearchViewGrid);
+      const searchGrid = new SearchViewGridComponent({
+        el: ".search-ui-view"
+      });
+      controller.addEventListener("actionClick", (event, smartElementProps, data) => {
+        if (data.eventId === "exportReport") {
+          searchGrid.showButton();
+          searchGrid.export();
+        }
       });
     }
   );

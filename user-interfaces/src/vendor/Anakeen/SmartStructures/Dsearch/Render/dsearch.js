@@ -5,6 +5,7 @@ import searchUIEventEditProcess from "./searchUIEventEdit";
 import searchUIEventViewProcess from "./searchUIEventView";
 import ankController from "../../../../../../components/lib/AnkController";
 import SearchConditions from "./Refactor/SearchConditions.vue";
+
 import Vue from "vue";
 
 ankController.on("controllerReady", inner => {
@@ -23,15 +24,11 @@ ankController.on("controllerReady", inner => {
         }
       },
       () => {
-        new Vue({
+        new (Vue.extend(SearchConditions))({
           el: ".search-conditions-component",
-          components: {
-            "search-conditions": SearchConditions
-          },
-          data: {
-            controller: controller
-          },
-          template: "<search-conditions :controller='controller'></search-conditions>"
+          propsData: {
+            controllerProxy: (action, ...args) => controller[action](...args)
+          }
         });
       }
     );

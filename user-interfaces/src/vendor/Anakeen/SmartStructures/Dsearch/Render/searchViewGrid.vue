@@ -24,9 +24,6 @@ export default {
     "ank-se-grid": AnkSEGrid,
     "ank-se-grid-export-button": AnkSEGridExportButton
   },
-  props: {
-    controller: null
-  },
   data() {
     return {
       searchId: window.ankGridSearchId.toString(),
@@ -36,15 +33,13 @@ export default {
   methods: {
     hideButton() {
       this.showProgress = false;
+    },
+    showButton() {
+      this.showProgress = true;
+    },
+    export() {
+      this.$refs.exportButton.export();
     }
-  },
-  mounted() {
-    this.controller.addEventListener("actionClick", (event, smartElementProps, data) => {
-      if (data.eventId === "exportReport") {
-        this.showProgress = true;
-        this.$refs.exportButton.export();
-      }
-    });
   }
 };
 </script>
