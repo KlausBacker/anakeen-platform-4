@@ -7704,29 +7704,6 @@ create unique index i_docir on doc(initid, revision);";
     }
 
     /**
-     * Get the helppage document associated to the document family.
-     *
-     * @param string $fromid get the helppage for this family id (default is the family of the current document)
-     *
-     * @return \SmartStructure\Helppage the helppage document on success, or a non-alive document if no helppage is associated with the family
-     */
-    public function getHelpPage($fromid = "")
-    {
-        if ($fromid === "") {
-            $fromid = $this->fromid;
-        }
-        $s = new \Anakeen\Search\Internal\SearchSmartData($this->dbaccess, "HELPPAGE");
-        $s->addFilter("help_family='%d'", $fromid);
-        $help = $s->search();
-        $helpId = "";
-        if ($s->count() > 0) {
-            $helpId = $help[0]["id"];
-        }
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return SEManager::getDocument($helpId);
-    }/** @noinspection PhpUnusedParameterInspection */
-
-    /**
      * Get the list of compatible search methods for a given attribute type
      *
      * @param string $attrId   attribute name

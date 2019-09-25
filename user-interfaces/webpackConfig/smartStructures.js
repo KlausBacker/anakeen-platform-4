@@ -17,12 +17,6 @@ module.exports = () => {
           "../src/vendor/Anakeen/SmartStructures/Dsearch/Render/dsearch.js"
         )
       ],
-      Helppage: [
-        path.resolve(
-          __dirname,
-          "../src/vendor/Anakeen/SmartStructures/Helppage/Render/helppage.js"
-        )
-      ],
       Mask: [
         path.resolve(
           __dirname,

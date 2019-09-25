@@ -61,6 +61,17 @@ module.exports = () => {
               },
               to: path.resolve(__dirname, "../src/public/TargetImages/")
             },
+
+            {
+              //Images : Copy Anakeen/Images/<IMG> to public/Images/<IMG>
+              context: path.resolve(
+                __dirname,
+                "../src/vendor/Anakeen/Images/"
+              ),
+              from: "**",
+
+              to: path.resolve(__dirname, "../src/public/Images/")
+            },
             //datatables
             {
               from: "../node_modules/datatables.net-bs4/css",

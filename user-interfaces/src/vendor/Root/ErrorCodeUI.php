@@ -139,11 +139,7 @@ class ErrorCodeUI
      * @see       CommonRenderOptions::setDescription
      */
     const UI0207 = 'Expand must be a bool, found "%s"';
-    /**
-     * @errorCode Description Html text is a string
-     * @see       CommonRenderOptions::setLinkHelp
-     */
-    const UI0208 = 'Document help must be a HELPPAGE document , found "%s"';
+
     /**
      * @errorCode invalid value for orderBy enum option
      */

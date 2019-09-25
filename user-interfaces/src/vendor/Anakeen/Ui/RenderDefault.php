@@ -457,21 +457,7 @@ class RenderDefault implements IRenderConfig
         }
     }
 
-    /**
-     * Add Help if Help document is associated to family
-     * @param \Anakeen\Core\Internal\SmartElement $doc
-     * @param BarMenu                             $menu target menu
-     */
-    protected function addHelpMenu(\Anakeen\Core\Internal\SmartElement $doc, BarMenu & $menu)
-    {
-        $helpDoc = $helpDoc = $this->getDefaultHelpPageDocument($doc);
-        if ($helpDoc) {
-            $menuItem = new ItemMenu("help", ___("Help", "UiMenu"));
-            $menuItem->setBeforeContent('<div class="fa fa-question-circle" />');
-            $menuItem->setUrl(sprintf("#action/document.help:%d", $helpDoc->initid));
-            $menu->appendElement($menuItem);
-        }
-    }
+
 
     /**
      * Get custom data to transmit to client document controller
@@ -501,43 +487,5 @@ class RenderDefault implements IRenderConfig
     public function getEtag(\Anakeen\Core\Internal\SmartElement $document)
     {
         return '';
-    }
-
-    /**
-     * Add setLinkHelp option to attributes referenced in HELP family related document
-     * @param RenderOptions                       $options
-     * @param \Anakeen\Core\Internal\SmartElement $document Document instance
-     *
-     * @return $this
-     */
-    protected function addDocumentHelpLinks(RenderOptions $options, \Anakeen\Core\Internal\SmartElement $document)
-    {
-        $helpDoc = $this->getDefaultHelpPageDocument($document);
-        if ($helpDoc) {
-            \Anakeen\Core\SEManager::cache()->addDocument($helpDoc);
-            $attrids = $helpDoc->getMultipleRawValues(\SmartStructure\Fields\Helppage::help_sec_key);
-
-            foreach ($attrids as $k => $aid) {
-                if ($aid) {
-                    $options->commonOption($aid)->setLinkHelp($helpDoc->initid);
-                }
-            }
-        }
-        return $this;
-    }
-
-    /**
-     * Return default help document associated with family
-     * @param \Anakeen\Core\Internal\SmartElement $document
-     *
-     * @return \SmartStructure\HELPPAGE|null
-     */
-    protected function getDefaultHelpPageDocument(\Anakeen\Core\Internal\SmartElement $document)
-    {
-        $helpDoc = $document->getHelpPage();
-        if ($helpDoc && $helpDoc->isAlive()) {
-            return $helpDoc;
-        }
-        return null;
     }
 }

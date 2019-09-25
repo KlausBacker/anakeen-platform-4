@@ -89,11 +89,6 @@ const SETTING_TYPES = {
     name: "Exec",
     value: "Exec"
   },
-  HelpPage: {
-    name: "Help Page",
-    value: "HelpPage",
-    onlySS: true
-  },
   Enumerate: {
     name: "Enumerate",
     value: "Enumerate"

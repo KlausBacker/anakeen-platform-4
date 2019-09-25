@@ -109,7 +109,7 @@ export default {
       countryHeaderTemplate: lang => {
         return `
           <span    class="country-header">
-              <img class="country-logo" src="/api/v2/images/assets/sizes/20x20/Helppage/flags/${getIsoAlpha2Code(
+              <img class="country-logo" src="/api/v2/images/assets/sizes/20x20/flags/${getIsoAlpha2Code(
                 lang.field
               )}.png"/>
               <span class="country-label">${lang.title}</span>
