@@ -25,6 +25,7 @@ export default class GridPagerController extends Vue {
     this.pager = $(this.$refs.pager)
       .kendoPager({
         dataSource: this.gridComponent.dataSource,
+        messages: this.gridComponent.translations.pageable.messages,
         pageSizes: this.gridComponent.pageSizes
       })
       .data("kendoPager");
