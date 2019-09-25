@@ -66,6 +66,7 @@ export default {
           this.comboBox.select(function(item) {
             return item.value === that.initValue;
           });
+          this.onComboBoxChange();
         } else {
           $(this.$refs.keywordsEnumTextBoxWrapper).val(this.initValue);
         }
@@ -74,10 +75,47 @@ export default {
     clearData() {
       this.comboBox.value("");
       $(this.$refs.keywordsEnumTextBoxWrapper).val("");
+    },
+    updateDataSource() {
+      let that = this;
+      let dataSource = {
+        serverFiltering: true,
+        transport: {
+          read: function readDatasIEnum(options) {
+            let filter = "";
+            if (options.data.filter !== undefined && options.data.filter.filters[0] !== undefined) {
+              filter = {
+                keyword: options.data.filter.filters[0].value,
+                operator: options.data.filter.filters[0].operator
+              };
+            }
+            $.ajax({
+              type: "GET",
+              url: "/api/v2/smart-structures/" + that.famid + "/enumerates/" + that.field.id,
+              data: filter,
+              dataType: "json",
+              success: function succesRequestEnumsIEnum(result) {
+                let info = [];
+                result.data.enumItems.forEach(function eachResultEnumsIEnum(enumItem) {
+                  info.push({
+                    value: enumItem.key,
+                    displayValue: enumItem.label
+                  });
+                });
+                options.success(info);
+                that.initData();
+              },
+              error: function errorRequestEnumsIEnum(result) {
+                options.error(result);
+              }
+            });
+          }
+        }
+      };
+      this.comboBox.setDataSource(dataSource);
     }
   },
   mounted() {
-    let that = this;
     this.comboBox = $(this.$refs.keywordsEnumWrapper)
       .kendoComboBox({
         width: 200,
@@ -85,47 +123,14 @@ export default {
         clearButton: false,
         dataValueField: "value",
         dataTextField: "displayValue",
-        change: this.onComboBoxChange,
-        dataSource: {
-          serverFiltering: true,
-          transport: {
-            /**
-             * function to get data
-             * @param options param to return success or error data
-             */
-            read: function readDatasIEnum(options) {
-              let filter = "";
-              if (options.data.filter !== undefined && options.data.filter.filters[0] !== undefined) {
-                filter = {
-                  keyword: options.data.filter.filters[0].value,
-                  operator: options.data.filter.filters[0].operator
-                };
-              }
-              $.ajax({
-                type: "GET",
-                url: "/api/v2/smart-structures/" + that.famid + "/enumerates/" + that.field.id,
-                data: filter,
-                dataType: "json",
-                success: function succesRequestEnumsIEnum(result) {
-                  let info = [];
-                  result.data.enumItems.forEach(function eachResultEnumsIEnum(enumItem) {
-                    info.push({
-                      value: enumItem.key,
-                      displayValue: enumItem.label
-                    });
-                  });
-                  options.success(info);
-                  that.initData();
-                },
-                error: function errorRequestEnumsIEnum(result) {
-                  options.error(result);
-                }
-              });
-            }
-          }
-        }
+        change: this.onComboBoxChange
       })
       .data("kendoComboBox");
+  },
+  watch: {
+    field: function() {
+      this.$nextTick(this.updateDataSource);
+    }
   }
 };
 </script>
