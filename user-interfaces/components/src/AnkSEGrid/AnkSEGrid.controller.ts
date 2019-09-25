@@ -533,7 +533,36 @@ export default class GridController extends Vue {
   public onExpandButtonClicked() {
     $(this.kendoGrid.element).toggleClass("grid-row-collapsed");
   }
-
+  public reload() {
+    return this.dataSource.read();
+  }
+  public hideColumn(col) {
+    return this.kendoGrid.hideColumn(col);
+  }
+  public showColumn(col) {
+    return this.kendoGrid.showColumn(col);
+  }
+  public filter(f, op, val) {
+    return this.dataSource.filter({ field: f, operator: op, value: val });
+  }
+  public configureColumns(colTab) {
+    if (colTab.length === 0) {
+      this.kendoGrid.columns.forEach(item => {
+        this.hideColumn(item);
+      });
+    } else {
+      const tab = this.find_diff(this.kendoGrid.columns, colTab);
+      tab.forEach(item => {
+        this.hideColumn(item);
+      });
+      colTab.forEach(item => {
+        this.showColumn(item);
+      });
+    }
+  }
+  public sort(f, d = "asc") {
+    return this.dataSource.sort({ field: f, dir: d });
+  }
   private configureDocidLinks() {
     const docidLinks = $(".grid-cell-docid-link");
     docidLinks.each(index => {
@@ -563,5 +592,15 @@ export default class GridController extends Vue {
         }
       });
     });
+  }
+
+  private find_diff(arr1, arr2) {
+    const diff = [];
+    arr1.forEach(i1 => {
+      if (!arr2.includes(i1.field)) {
+        diff.push(i1.field);
+      }
+    });
+    return diff;
   }
 }
