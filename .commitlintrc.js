@@ -21,7 +21,8 @@ const Configuration = {
         "ui",
         "workflow",
         "tools",
-        "i18n"
+        "i18n",
+        "test-tools"
       ]
     ]
   }

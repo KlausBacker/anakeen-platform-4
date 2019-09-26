@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="anakeen-platform-test-tools" vendor="Anakeen" version="0.0.1">
+    <requires>
+    </requires>
+    <post-install>
+    </post-install>
+    <post-upgrade>
+    </post-upgrade>
+</module>

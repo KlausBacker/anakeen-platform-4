@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+<!--    <sde:routes namespace="AnakeenTestTools">-->
+<!--        <sde:route name="TestRoute">-->
+<!--            <sde:callable>Anakeen\TestTools\Routes\TestRoute</sde:callable>-->
+<!--            <sde:method>GET</sde:method>-->
+<!--            <sde:pattern>/test/</sde:pattern>-->
+<!--            <sde:description>Test route</sde:description>-->
+<!--        </sde:route>-->
+<!--    </sde:routes>-->
+</sde:config>
