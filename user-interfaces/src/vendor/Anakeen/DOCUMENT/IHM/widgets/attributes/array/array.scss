@@ -214,10 +214,16 @@ table.dcpArray__table.transpose {
         padding: 0.5rem 0;
         &:before {
           content: attr(data-heading) ":";
-          display: inline-block;
+          display: block;
           margin-right: 0.5rem;
           font-size: 0.75rem;
           letter-spacing: 0.12rem;
+        }
+        &.dcpArray__toolCell {
+          width: auto;
+          &:before {
+            display: none;
+          }
         }
       }
 

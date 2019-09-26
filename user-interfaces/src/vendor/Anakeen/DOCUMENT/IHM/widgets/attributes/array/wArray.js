@@ -525,6 +525,18 @@
         .closest("td")
         .addClass("dcpArray__toolCell");
 
+      if (this.options.customTemplate) {
+        // add data-heading for responsive by code when custom
+        this.element.find(".dcpCustomTemplate table.dcpArray__table > thead > tr > th").each((index, thElt) => {
+          $content.find("> td:nth-child(" + (index + 1) + ")").attr(
+            "data-heading",
+            $(thElt)
+              .text()
+              .trim()
+          );
+        });
+      }
+
       if (this.options.renderOptions.rowDelDisable === true) {
         $content.find(".dcpArray__content__toolCell__delete").hide();
         if (this.options.renderOptions.rowAddDisable === true) {
