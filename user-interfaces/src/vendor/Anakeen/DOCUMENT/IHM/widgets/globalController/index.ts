@@ -2,6 +2,7 @@
 import { loadCatalog, storeCatalog } from "dcpDocument/i18n/catalogStorage";
 // @ts-ignore
 import AnakeenController from "dcpDocument/widgets/globalController/GlobalController";
+import * as $ from "jquery";
 
 import "../../../../../../../webpackConfig/kendo/kendo";
 window.ank = window.ank || {};
@@ -12,14 +13,10 @@ if (!window.ank.smartElement.globalController) {
 
 const catalog = loadCatalog();
 if (!catalog) {
-  fetch("/api/v2/i18n/DOCUMENT")
-    .then(response => {
-      return response.json();
-    })
-    .then(response => {
-      storeCatalog(response);
-      window.ank.smartElement.globalController.init();
-    });
+  $.ajax("/api/v2/i18n/DOCUMENT").done(response => {
+    storeCatalog(response);
+    window.ank.smartElement.globalController.init();
+  });
 } else {
   window.ank.smartElement.globalController.init();
 }

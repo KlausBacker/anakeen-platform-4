@@ -252,7 +252,7 @@ exports.jsLegacyLoader = exclude => {
     module: {
       rules: [
         configureBabelLoader({
-          browserlist: ["> 1%", "last 2 versions", "Firefox ESR", "ie >= 11"],
+          browserlist: ["> 1%", "last 2 versions", "Firefox ESR", "Firefox >= 45"],
           exclude
         })
       ]

@@ -13,8 +13,10 @@ module.exports = () => {
       polyfill: ["core-js/features/promise", "whatwg-fetch"]
     },
     buildPath: PUBLIC_PATH,
+    withoutBabel: true,
     customParts: [
-      useCache]
+      useCache
+    ]
   };
   if (process.env.conf === "LEGACY") {
     return legacy(conf);
