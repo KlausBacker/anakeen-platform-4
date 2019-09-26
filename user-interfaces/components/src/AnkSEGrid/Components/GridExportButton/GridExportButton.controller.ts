@@ -2,6 +2,7 @@ import "@progress/kendo-ui/js/kendo.menu";
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
 import GridEvent from "../../utils/GridEvent";
+import jQuery = kendo.jQuery;
 @Component({
   name: "ank-se-grid-export-button"
 })
