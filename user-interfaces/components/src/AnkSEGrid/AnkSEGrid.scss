@@ -606,6 +606,7 @@
   .k-grid-norecords {
     text-align: center;
     padding: 2rem;
+    justify-content: space-around;
 
     + .k-grid-content-expander {
       display: none;
