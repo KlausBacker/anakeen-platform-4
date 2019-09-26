@@ -39,4 +39,8 @@ user-interfaces/lib/
 user-interfaces/components/lib
 user-interfaces/components/webpack
 user-interfaces/components/public
+test-tools/node_modules/
+test-tools/src/public/
+test-tools/components/lib
+test-tools/components/webpack/
 workflow/node_modules

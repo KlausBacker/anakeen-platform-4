@@ -1,0 +1,46 @@
+{
+  "name": "@anakeen/test-tools",
+  "version": "0.0.1",
+  "autorelease": true,
+  "description": "Anakeen Platform Test Tools",
+  "main": "components/lib/TestTools.js",
+  "types": "components/lib/types/index.d.ts",
+  "scripts": {
+    "beautify": "npx eslint ./ --fix",
+    "lint": "npx eslint ./",
+    "lib:dev": "npx webpack --env development --config ./components/webpack/index.js",
+    "lib": "yarn run lib:dev",
+    "watch": "webpack --watch --env development --config ./components/webpack/index.js"
+  },
+  "files": [
+    "/components/**/*",
+    "/components/README.md",
+    "/src/**/*",
+    "yarn.lock"
+  ],
+  "repository": {
+    "type": "git"
+  },
+  "keywords": [
+    "test",
+    "tools"
+  ],
+  "author": "Anakeen",
+  "license": "SEE LICENSE IN LICENSE",
+  "dependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.2.0",
+    "node-fetch": "^2.6.0",
+    "typescript": "^3.5.3"
+  },
+  "devDependencies": {
+    "@anakeen/anakeen-cli": "1.1.20",
+    "@anakeen/webpack-conf": "1.2.1",
+    "@types/node": "^12.6.2",
+    "fg-loadcss": "^2.1.0",
+    "hard-source-webpack-plugin": "^0.13.1",
+    "ts-loader": "^6.0.4",
+    "webpack-merge": "^4.2.1",
+    "webpack-node-externals": "^1.7.2"
+  }
+}

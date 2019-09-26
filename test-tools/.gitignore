@@ -1,0 +1,10 @@
+node_modules
+src/public/
+Makefile.local
+.idea/
+ide/vendor/
+*.app
+.php_cs.cache
+yarn-error.log
+*.src
+docs/.vuepress/dist

@@ -18,6 +18,7 @@
         "business-app",
         "webpack-conf",
         "dev-data",
+        "test-tools",
         ".devtool/devserver"
     ],
     "dependencies": {
