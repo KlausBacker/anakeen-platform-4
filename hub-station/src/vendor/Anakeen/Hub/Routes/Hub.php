@@ -62,10 +62,6 @@ class Hub
                     "path" => UIGetAssetPath::getJSVueComponentPath()
                 ],
                 [
-                    "key" => "smartElementController",
-                    "path" => UIGetAssetPath::getJSSmartElementControllerPath()
-                ],
-                [
                     "key" => "hub",
                     "path" => UIGetAssetPath::getElementAssets(
                         "hubVendor",
@@ -75,6 +71,10 @@ class Hub
             ],
             "JS" => [
                 [
+                    "key" => "smartElementController",
+                    "path" => UIGetAssetPath::getJSSmartElementControllerPath()
+                ],
+                [
                     "key" => "hub",
                     "path" => UIGetAssetPath::getElementAssets(
                         "hub",
@@ -83,6 +83,10 @@ class Hub
                 ]
             ],
             "JS_LEGACY" => [
+                [
+                    "key" => "smartElementController",
+                    "path" => UIGetAssetPath::getJSSmartElementControllerPath(true)
+                ],
                 [
                     "key" => "hub",
                     "path" => UIGetAssetPath::getElementAssets(
