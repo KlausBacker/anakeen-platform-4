@@ -2,13 +2,13 @@
 
 import "./HubConfiguration.css";
 
-window.ank.smartElement.globalController.registerFunction("hubConfiguration", controller => {
+window.ank.smartElement.globalController.registerFunction("hubConfiguration", function(controller) {
   controller.addEventListener(
     "smartFieldReady",
     {
       smartFieldCheck: smartField => smartField.id === "hub_docker_position"
     },
-    (event, sElement, sField, $el) => {
+    function(event, sElement, sField, $el) {
       const selectedValue = sField.getValue().value;
       if (selectedValue) {
         $(".dock-area", $el).removeClass("dock-position-selected");
@@ -19,7 +19,7 @@ window.ank.smartElement.globalController.registerFunction("hubConfiguration", co
         if (clickValue) {
           $(".dock-area", $el).removeClass("dock-position-selected");
           $(`.dock-area[data-value=${clickValue}]`, $el).addClass("dock-position-selected");
-          $(this).documentController("setValue", "hub_docker_position", {
+          this.setValue("hub_docker_position", {
             value: clickValue
           });
         }

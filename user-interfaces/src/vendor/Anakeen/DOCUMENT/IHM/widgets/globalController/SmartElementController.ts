@@ -1994,7 +1994,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
         );
       });
 
-      transitionElements.model.listenTo(this._model, "sync", function documentController_TransitionClose() {
+      transitionElements.model.listenTo(this._model, "sync", function smartElementController_TransitionClose() {
         // @ts-ignore
         this.trigger("close");
       });
