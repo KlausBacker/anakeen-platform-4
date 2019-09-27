@@ -56,5 +56,9 @@
   "selist.Search in : {collection}": "Rechercher dans : {collection}",
   "selist.No {collection} to display": "Aucun {collection} à afficher",
   "selist.Items per page": "Éléments par page",
-  "authent.Connect to {s}": "Connexion à {s}"
+  "authent.Connect to {s}": "Connexion à {s}",
+  "gridPager.{0} - {1} of {2} items": "{0} - {1} sur {2} résultats",
+  "gridPager.No items to display": "Aucun résultat",
+  "gridPager.items per page": "résultats par page",
+  "gridPager.of {0}": "sur {0}"
 }
