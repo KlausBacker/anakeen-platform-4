@@ -9,9 +9,9 @@ import GridExportButton from "./Components/GridExportButton/GridExportButton.vue
 import GridPager from "./Components/GridPager/GridPager.vue";
 
 import GridActions from "./utils/GridActions";
-import GridEvent from "./utils/GridEvent";
-
 import GridDataUtils from "./utils/GridDataUtils";
+import GridEvent from "./utils/GridEvent";
+import GridExportUtils from "./utils/GridExportUtils.js";
 import GridFilter from "./utils/GridFilter";
 
 import VueSetup from "../setup.js";
@@ -223,6 +223,7 @@ export default class GridController extends Vue {
   public gridDataUtils: any = null;
   public gridError: any = null;
   public gridFilter: any = null;
+  public gridExport: any = null;
   public gridInstance: any = null;
   public gridVueUtils: any = null;
   public gridKendoUtils: any = null;
@@ -298,6 +299,7 @@ export default class GridController extends Vue {
   public created() {
     this.gridActions = new GridActions(this);
     this.gridFilter = new GridFilter(this);
+    this.gridExport = new GridExportUtils(this);
     this.gridError = new GridError(this);
     this.gridDataUtils = new GridDataUtils(this);
     this.gridVueUtils = new GridVueUtil(this);
@@ -563,6 +565,19 @@ export default class GridController extends Vue {
   public sort(f, d = "asc") {
     return this.dataSource.sort({ field: f, dir: d });
   }
+
+  /**
+   * Exports grid data into xlsx file.
+   * @param exportAll if false, will only export the selected rows
+   * @param directDownload if true, directly downloads the xlsx file. Else returns a promise with the file as a result.
+   * @param onPolling the callback to poll download status
+   * @param pollingTime time between polling requests
+   * @param onExport the callback to export data
+   */
+  public export(exportAll, directDownload, onPolling, pollingTime, onExport) {
+    return this.gridExport.export(exportAll, directDownload, onPolling, pollingTime, onExport);
+  }
+
   private configureDocidLinks() {
     const docidLinks = $(".grid-cell-docid-link");
     docidLinks.each(index => {

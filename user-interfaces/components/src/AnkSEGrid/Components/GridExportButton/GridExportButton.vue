@@ -1,7 +1,7 @@
 <template>
   <div ref="exportButtonWrapper" class="grid-export-button" :title="title">
     <div class="grid-export grid-toolbar-action grid-toolbar-export-action" ref="exportButton">
-      <ul class="grid-export-action-menu grid-export-menu" ref="actionMenu">
+      <ul class="grid-export-action-menu grid-export-menu" ref="actionMenu" v-show="actionMenuVisible">
         <li data-export-menu="root">
           <span role="button" class="k-button k-button-icontext k-grid-export">
             <span :class="iconClass"></span>
@@ -9,19 +9,32 @@
           </span>
         </li>
       </ul>
-      <ul class="grid-export-status grid-export-status--error grid-export-menu" ref="errorMenu">
+      <ul
+        class="grid-export-status grid-export-status--error grid-export-menu"
+        ref="errorMenu"
+        v-show="errorMenuVisible"
+      >
         <li data-export-menu="root">
           <span role="button" class="k-button k-button-icontext k-grid-export">
             <span class="grid-export-status-icon k-image material-icons">warning</span>
-            <span class="grid-export-status-text">Error</span>
+            <span class="grid-export-status-text" ref="errorMenuText">Error</span>
           </span>
         </li>
       </ul>
-      <span role="button" class="k-button k-button-icontext grid-export-status grid-export-status--success" ref="successMenu">
+      <span
+        role="button"
+        class="k-button k-button-icontext grid-export-status grid-export-status--success"
+        ref="successMenu"
+        v-show="successMenuVisible"
+      >
         <span class="material-icons k-image grid-export-status-icon">check</span>
-        <span class="grid-export-status-text">Upload done</span>
+        <span class="grid-export-status-text" ref="successMenuText">Upload done</span>
       </span>
-      <ul class="grid-export-status grid-export-status--pending grid-export-menu" ref="pendingMenu">
+      <ul
+        class="grid-export-status grid-export-status--pending grid-export-menu"
+        ref="pendingMenu"
+        v-show="pendingMenuVisible"
+      >
         <li data-export-menu="root">
           <span role="button" class="k-button k-button-icontext k-grid-export">
             <span class="material-icons k-image grid-export-status-icon">cached</span>
