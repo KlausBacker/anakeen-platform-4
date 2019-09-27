@@ -1,43 +1,18 @@
 import "@progress/kendo-ui/js/kendo.menu";
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
-import GridEvent from "../../utils/GridEvent";
-import jQuery = kendo.jQuery;
 @Component({
   name: "ank-se-grid-export-button"
 })
 export default class GridExportButtonController extends Vue {
-  private static displayExportPendingStatus(exportElement: any, indeterminate = false) {
-    const menu = exportElement;
-    menu.find("ul.grid-export-action-menu").css("display", "none");
-    menu.find(".grid-export-status--error").css("display", "none");
-    const returnDom = menu.find(".grid-export-status--pending");
-    if (indeterminate) {
-      returnDom
-        .find(".grid-export-status-progress-bar-wrapper")
-        .addClass("grid-export-status-progress-bar-wrapper--indeterminate");
-      returnDom.find(".grid-export-status-progress-bar").css("width", "40");
-    } else {
-      returnDom
-        .find(".grid-export-status-progress-bar-wrapper")
-        .removeClass("grid-export-status-progress-bar-wrapper--indeterminate");
-      returnDom.find(".grid-export-status-progress-bar").css("width", "0");
-    }
-    returnDom.css("display", "inline-flex");
-    menu.find(".grid-export-status--success").css("display", "none");
-  }
-
-  private static updateProgressBar(element, exported, total) {
-    const percent = (exported / total) * 100;
-    element.find(".grid-export-status-progress-bar").css("width", `${percent}%`);
-    element.find(".grid-export-status-progress-details-text").text(`${exported} lignes exportées`);
-    element.find(".grid-export-status-progress-bar-text .exported").text(exported);
-    element.find(".grid-export-status-progress-bar-text .total").text(total);
-  }
   public title = "";
   public actionMenu;
   public errorMenu;
   public pendingMenu;
+  public actionMenuVisible = true;
+  public errorMenuVisible = false;
+  public pendingMenuVisible = false;
+  public successMenuVisible = false;
 
   @Prop({
     default: "k-icon k-i-upload",
@@ -85,7 +60,7 @@ export default class GridExportButtonController extends Vue {
   }
 
   public export() {
-    this.doExport(new jQuery.Event(""), true, $(this.$refs.exportButton));
+    this.gridComponent.export(true, true, this.doDefaultPolling);
   }
 
   @Watch("gridComponent")
@@ -95,6 +70,8 @@ export default class GridExportButtonController extends Vue {
     this.title = this.gridComponent.translations.uploadReport;
     this.gridComponent.kendoGrid.bind("dataBound", () => this.computeTotalExport());
     this.gridComponent.kendoGrid.bind("change", () => this.computeTotalExport());
+    this.gridComponent.$on("before-polling-grid-export", () => this.displayExportPendingStatus(false));
+    this.gridComponent.$on("grid-export-error", this.displayExportErrorStatus);
   }
 
   private setupMenus() {
@@ -181,16 +158,16 @@ export default class GridExportButtonController extends Vue {
           this.cancelExport(event);
           break;
         case "retry":
-          this.doExport(event, true);
+          this.gridComponent.export(true, true, this.doDefaultPolling);
           break;
         case "selection":
           disabled = this.gridComponent.$(event.item).find(".k-state-disabled");
           if (!disabled.length) {
-            this.doExport(event);
+            this.gridComponent.export(false, true, this.doDefaultPolling);
           }
           break;
         case "all":
-          this.doExport(event, true);
+          this.gridComponent.export(true, true, this.doDefaultPolling);
           break;
         case "quit":
           this.displayExportMenu();
@@ -206,217 +183,18 @@ export default class GridExportButtonController extends Vue {
     this.displayExportMenu();
   }
 
-  private doExport(event: any, exportAll = false, $exportElement = $(event.sender.element).parent()) {
-    event.preventDefault();
-
-    const exportEvent = this.sendExportEvent();
-    const queryParams = this.getExportQueryParams(exportAll);
-    if (!exportEvent.isDefaultPrevented()) {
-      if (exportEvent.serverProgression) {
-        GridExportButtonController.displayExportPendingStatus($exportElement, false);
-        this.createExportTransaction().then(transaction => {
-          this.doTransactionExport(
-            transaction,
-            queryParams,
-            exportEvent.onExport || this.doDefaultExport.bind(this),
-            exportEvent.onPolling || this.doDefaultPolling.bind(this)
-          );
-        });
-      } else {
-        if (typeof exportEvent.onExport === "function") {
-          GridExportButtonController.displayExportPendingStatus($exportElement, true);
-          const exportPromise = exportEvent.onExport(null, queryParams);
-          if (exportPromise instanceof Promise) {
-            exportPromise
-              .then(() => {
-                this.displayExportSuccessStatus();
-              })
-              .catch(() => {
-                this.displayExportErrorStatus();
-              });
-          } else {
-            this.displayExportErrorStatus();
-            this.gridComponent.gridError.error("Export failed: the export function must return a Promise");
-          }
-        } else {
-          this.displayExportErrorStatus();
-          this.gridComponent.gridError.error("Export failed: no export function are provided");
-        }
-      }
-    }
-  }
-
   private displayExportMenu() {
-    const menu = $(this.$refs.exportButtonWrapper);
-    menu.find("ul.grid-export-action-menu").css("display", "");
-    menu.find("ul.grid-export-action-menu .k-animation-container").css("display", "none");
-    menu.find(".grid-export-status--error").css("display", "none");
-    menu.find(".grid-export-status--pending").css("display", "none");
-    menu.find(".grid-export-status--success").css("display", "none");
-  }
-
-  private sendExportEvent() {
-    const event = new GridEvent(
-      {
-        component: this.gridComponent,
-        type: "export"
-      },
-      null,
-      true,
-      "GridToolbarActionEvent"
-    );
-    event.serverProgression = true;
-    event.onExport = null;
-    event.onPolling = null;
-    this.gridComponent.$emit("toolbar-action-click", event);
-    return event;
+    this.actionMenuVisible = true;
+    this.errorMenuVisible = false;
+    this.pendingMenuVisible = false;
+    this.successMenuVisible = false;
   }
 
   private sendExportDoneEvent() {
     this.$emit("exportDone");
   }
 
-  private getExportQueryParams(exportAll: any) {
-    const gridOptions = this.gridComponent.kendoGrid.getOptions();
-    const gridColumns = gridOptions.columns.filter(c => c.field && !c.hidden && c.field !== "icon");
-    const dataOptions = Object.assign({}, this.gridComponent.kendoReadOptionsData);
-    dataOptions.take = "all";
-    delete dataOptions.pageSize;
-    const queryParams = this.gridComponent.privateScope.getQueryParamsData(gridColumns, dataOptions);
-    queryParams.columnsConfig = gridColumns.map(c => {
-      return {
-        field: c.field,
-        smartType: c.smartType,
-        title: c.title
-      };
-    });
-    if (!exportAll) {
-      if (this.gridComponent.isFullSelectionState) {
-        queryParams.unselectedRows = this.gridComponent.gridDataUtils.getUncheckRowsList();
-      } else {
-        queryParams.selectedRows = this.gridComponent.kendoGrid.selectedKeyNames();
-      }
-    }
-    return queryParams;
-  }
-
-  private createExportTransaction() {
-    return this.gridComponent.$http
-      .post("/api/v2/grid/export")
-      .then(response => {
-        return response.data.data;
-      })
-      .catch(err => {
-        this.displayExportErrorStatus();
-        this.gridComponent.gridError.error(err);
-      });
-  }
-
-  private displayExportErrorStatus() {
-    const menu = $(this.$refs.exportButtonWrapper);
-    menu.find("ul.grid-export-action-menu").css("display", "none");
-    menu.find(".grid-export-status--error .grid-export-status-text").text(this.gridComponent.translations.uploadError);
-    menu.find(".grid-export-status--error").css("display", "inline-flex");
-    menu.find(".grid-export-status--pending").css("display", "none");
-    menu.find(".grid-export-status--success").css("display", "none");
-  }
-
-  /**
-   * Do the transaction based export action
-   * @param transaction
-   * @param queryParams
-   * @param exportRequest
-   * @param pollingRequest
-   */
-  private doTransactionExport(transaction, queryParams, exportRequest, pollingRequest) {
-    const transactionId = transaction.transactionId;
-    if (typeof exportRequest === "function") {
-      exportRequest(transaction, queryParams);
-      this.pollTransaction(transactionId, pollingRequest);
-    } else {
-      this.displayExportErrorStatus();
-      this.gridComponent.gridError.error("Export failed: no export function are provided");
-    }
-  }
-
-  // tslint:disable-next-line:no-empty
-  private pollTransaction(transactionId, pollingCb = () => {}, pollingTime = 500) {
-    let timer = null;
-    const getStatus = () => {
-      this.gridComponent.$http
-        .get(`/api/v2/ui/transaction/${transactionId}/status`)
-        .then(response => {
-          const responseData = response.data.data;
-          const progressBar = this.gridComponent.$(".grid-export-status--pending", this.gridComponent.$el);
-          if (responseData.transactionStatus === "PENDING" || responseData.transactionStatus === "CREATED") {
-            if (typeof pollingCb === "function") {
-              // @ts-ignore
-              pollingCb(responseData, progressBar);
-            }
-            timer = setTimeout(getStatus, pollingTime);
-          } else {
-            if (typeof pollingCb === "function") {
-              // @ts-ignore
-              pollingCb(responseData, progressBar);
-            }
-            if (timer) {
-              clearTimeout(timer);
-            }
-          }
-        })
-        .catch(err => {
-          console.error(err);
-          if (timer) {
-            clearTimeout(timer);
-          }
-        });
-    };
-    getStatus();
-  }
-
-  private doDefaultExport(transaction, queryParams) {
-    const transactionId = transaction.transactionId;
-    const exportUrl = this.gridComponent.resolveExportUrl.replace("<transaction>", transactionId);
-    if (!exportUrl) {
-      this.displayExportErrorStatus();
-      this.gridComponent.gridError.error("Export failed: the default export url cannot be used");
-    } else {
-      this.gridComponent.$http
-        .get(this.gridComponent.resolveExportUrl.replace("<transaction>", transactionId), {
-          params: queryParams,
-          paramsSerializer: params => this.gridComponent.$.param(params),
-          responseType: "blob",
-          timeout: 0
-        })
-        .then(response => this.downloadExportFile(response.data))
-        .catch(err => {
-          this.displayExportErrorStatus();
-          this.gridComponent.gridError.error(err);
-        });
-    }
-  }
-
-  private downloadExportFile(blobFile) {
-    const url = window.URL.createObjectURL(blobFile);
-    let link;
-    const existLink = this.gridComponent.$("a.seGridExportLink");
-    if (existLink.length) {
-      link = existLink[0];
-    } else {
-      link = document.createElement("a");
-      link.classList.add("seGridExportLink");
-
-      document.body.appendChild(link);
-    }
-    link.setAttribute(
-      "download",
-      `${this.gridComponent.collectionProperties.title || this.gridComponent.collection || "data"}.xlsx`
-    );
-    link.href = url;
-    link.click();
-  }
-
-  private doDefaultPolling(transaction, progressBar) {
+  private doDefaultPolling(transaction) {
     let exportedRows = 0;
     let total = this.gridComponent.kendoGrid.dataSource.total();
     if (transaction.transactionStatus === "PENDING") {
@@ -430,25 +208,7 @@ export default class GridExportButtonController extends Vue {
     } else if (transaction.transactionStatus === "ERROR") {
       this.displayExportErrorStatus();
     }
-    GridExportButtonController.updateProgressBar(progressBar, exportedRows, total);
-  }
-
-  private displayExportSuccessStatus(autoHide = true) {
-    const menu = $(this.$refs.exportButtonWrapper);
-    menu.find("ul.grid-export-action-menu").css("display", "none");
-    menu.find(".grid-export-status--error").css("display", "none");
-    menu.find(".grid-export-status--pending").css("display", "none");
-    menu
-      .find(".grid-export-status--success .grid-export-status-text")
-      .text(this.gridComponent.translations.uploadSuccess);
-    menu.find(".grid-export-status--success").css("display", "inline-flex");
-    if (autoHide) {
-      setTimeout(() => {
-        this.displayExportMenu();
-      }, 1000);
-    }
-
-    this.sendExportDoneEvent();
+    this.updateProgressBar(exportedRows, total);
   }
 
   private computeTotalExport() {
@@ -485,5 +245,57 @@ export default class GridExportButtonController extends Vue {
     } else {
       exportAll.append(template(countTotals));
     }
+  }
+
+  private displayExportPendingStatus(indeterminate = false) {
+    this.actionMenuVisible = false;
+    this.errorMenuVisible = false;
+    this.successMenuVisible = false;
+    this.pendingMenuVisible = true;
+    const pendingMenuDom = this.pendingMenu.element;
+    if (indeterminate) {
+      pendingMenuDom
+        .find(".grid-export-status-progress-bar-wrapper")
+        .addClass("grid-export-status-progress-bar-wrapper--indeterminate");
+      pendingMenuDom.find(".grid-export-status-progress-bar").css("width", "40");
+    } else {
+      pendingMenuDom
+        .find(".grid-export-status-progress-bar-wrapper")
+        .removeClass("grid-export-status-progress-bar-wrapper--indeterminate");
+      pendingMenuDom.find(".grid-export-status-progress-bar").css("width", "0");
+    }
+  }
+
+  private updateProgressBar(exported, total) {
+    const percent = (exported / total) * 100;
+    const progressBar = $(this.$refs.pendingMenu);
+    progressBar.find(".grid-export-status-progress-bar").css("width", `${percent}%`);
+    progressBar.find(".grid-export-status-progress-details-text").text(`${exported} lignes exportées`);
+    progressBar.find(".grid-export-status-progress-bar-text .exported").text(exported);
+    progressBar.find(".grid-export-status-progress-bar-text .total").text(total);
+  }
+
+  private displayExportSuccessStatus(autoHide = true) {
+    this.actionMenuVisible = false;
+    this.errorMenuVisible = false;
+    this.pendingMenuVisible = false;
+    this.successMenuVisible = true;
+    $(this.$refs.successMenuText).text(this.gridComponent.translations.uploadSuccess);
+    if (autoHide) {
+      setTimeout(() => {
+        this.displayExportMenu();
+      }, 1000);
+    }
+    this.sendExportDoneEvent();
+  }
+
+  private displayExportErrorStatus() {
+    const menu = $(this.$refs.exportButtonWrapper);
+    menu.find("ul.grid-export-action-menu").css("display", "none");
+    this.actionMenuVisible = false;
+    this.errorMenuVisible = true;
+    $(this.$refs.errorMenuText).text(this.gridComponent.translations.uploadError);
+    this.pendingMenuVisible = false;
+    this.successMenuVisible = false;
   }
 }

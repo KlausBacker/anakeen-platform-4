@@ -57,9 +57,6 @@
       font-size: 1.33333rem;
     }
 
-    &.grid-export-status--success, &.grid-export-status--pending, &.grid-export-status--error {
-      display: none;
-    }
 
     &.grid-export-status--pending, &.grid-export-status--success {
       .material-icons {

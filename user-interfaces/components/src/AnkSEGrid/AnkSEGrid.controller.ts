@@ -570,12 +570,14 @@ export default class GridController extends Vue {
    * Exports grid data into xlsx file.
    * @param exportAll if false, will only export the selected rows
    * @param directDownload if true, directly downloads the xlsx file. Else returns a promise with the file as a result.
-   * @param onExport the callback to export data
    * @param onPolling the callback to poll download status
+   * @param pollingTime time between polling requests
+   * @param onExport the callback to export data
    */
-  public export(exportAll, directDownload, onExport, onPolling) {
-    return this.gridExport.export(exportAll, directDownload, onExport, onPolling);
+  public export(exportAll, directDownload, onPolling, pollingTime, onExport) {
+    return this.gridExport.export(exportAll, directDownload, onPolling, pollingTime, onExport);
   }
+
   private configureDocidLinks() {
     const docidLinks = $(".grid-cell-docid-link");
     docidLinks.each(index => {

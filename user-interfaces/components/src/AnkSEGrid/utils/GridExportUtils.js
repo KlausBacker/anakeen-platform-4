@@ -5,7 +5,13 @@ export default class GridExportUtils {
     this.gridComponent = grid;
   }
 
-  export(exportAll = true, directDownload = true, onExport = this.doDefaultExport.bind(this), onPolling = () => {}) {
+  export(
+    exportAll = true,
+    directDownload = true,
+    onPolling = () => {},
+    pollingTime = 500,
+    onExport = this.doDefaultExport.bind(this)
+  ) {
     let beforeEvent = this.sendBeforeExportEvent(onExport, onPolling);
     if (!beforeEvent.isDefaultPrevented()) {
       let exportCb = beforeEvent.onExport;
@@ -15,10 +21,10 @@ export default class GridExportUtils {
         this.sendBeforePollingEvent();
         let promise = this.createExportTransaction()
           .then(transaction => {
-            return this.doTransactionExport(transaction, queryParams, exportCb, pollingCb, directDownload);
+            return this.doTransactionExport(transaction, queryParams, exportCb, pollingCb, pollingTime, directDownload);
           })
           .then(result => {
-            return result.data;
+            return result ? result.data : true;
           });
         if (!directDownload) {
           return promise;
@@ -95,14 +101,14 @@ export default class GridExportUtils {
       });
   }
 
-  doTransactionExport(transaction, queryParams, exportRequest, pollingRequest, directDownload) {
+  doTransactionExport(transaction, queryParams, exportRequest, pollingRequest, pollingTime, directDownload) {
     const transactionId = transaction.transactionId;
     let file = exportRequest(transaction, queryParams, directDownload);
-    this.pollTransaction(transactionId, pollingRequest);
+    this.pollTransaction(transactionId, pollingRequest, pollingTime);
     return file;
   }
 
-  pollTransaction(transactionId, pollingCb, pollingTime = 500) {
+  pollTransaction(transactionId, pollingCb, pollingTime) {
     let timer = null;
     const getStatus = () => {
       this.gridComponent.$http
