@@ -1,13 +1,11 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
     "strict": true,
-    "target": "es6",
-    "importHelpers": true,
-    "noUnusedLocals": true,
-    "noImplicitAny": false,
+    "module": "commonjs",
+    "target": "es5",
     "sourceMap": true,
+    "declaration": true,
+    "declarationDir": "./lib/types",
     "moduleResolution": "node",
     "lib": ["dom", "es6"]
   },

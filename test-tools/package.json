@@ -28,6 +28,7 @@
   "author": "Anakeen",
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
+    "@types/chai": "^4.2.3",
     "chai": "^4.2.0",
     "mocha": "^6.2.2",
     "node-fetch": "^2.6.0",
