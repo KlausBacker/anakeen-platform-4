@@ -2,7 +2,7 @@
   <div ref="gridWrapper" class="smart-element-grid">
     <div class="grid-widget-wrapper">
       <div class="grid-widget-header">
-        <slot name="gridHeader" v-bind:gridComponent="gridInstance"></slot>
+        <slot name="gridHeader" direction="left" v-bind:gridComponent="gridInstance"></slot>
       </div>
       <div class="grid-widget" ref="kendoGrid"></div>
       <div class="grid-widget-footer">
