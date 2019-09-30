@@ -1,11 +1,10 @@
 import "@progress/kendo-ui/js/kendo.pager";
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
-
+import { Component, Mixins, Prop, Watch } from "vue-property-decorator";
+import I18nMixin from "../../../../mixins/AnkVueComponentMixin/I18nMixin";
 @Component({
   name: "ank-se-grid-pager"
 })
-export default class GridPagerController extends Vue {
+export default class GridPagerController extends Mixins(I18nMixin) {
   public pager = null;
   @Prop({
     default: null,
@@ -13,23 +12,38 @@ export default class GridPagerController extends Vue {
   })
   public gridComponent;
 
+  public get serverTranslations() {
+    if (this.gridComponent && this.gridComponent.translations && this.gridComponent.translations.pageable) {
+      return this.gridComponent.translations.pageable;
+    }
+    return {};
+  }
+
+  public get translations() {
+    return {
+      display: this.serverTranslations.display || (this.$t("gridPager.{0} - {1} of {2} items") as string),
+      empty: this.serverTranslations.empty || (this.$t("gridPager.No items to display") as string),
+      itemsPerPage: this.serverTranslations.itemsPerPage || (this.$t("gridPager.items per page") as string),
+      of: this.serverTranslations.of || (this.$t("gridPager.of {0}") as string)
+    };
+  }
+
   @Watch("gridComponent")
   public watchGridComponent(newValue) {
     if (newValue) {
-      this.gridComponent = newValue;
-      this.initGridComponent();
+      this.initGridComponent(newValue);
     }
   }
 
-  public initGridComponent() {
+  public initGridComponent(gridComponent) {
     this.pager = $(this.$refs.pager)
       .kendoPager({
-        dataSource: this.gridComponent.dataSource,
-        messages: this.gridComponent.translations.pageable.messages,
-        pageSizes: this.gridComponent.pageSizes
+        dataSource: gridComponent.dataSource,
+        messages: this.translations,
+        pageSizes: gridComponent.pageSizes
       })
       .data("kendoPager");
-    this.gridComponent.kendoGrid.bind("dataBound", () => this.refreshPager());
+    gridComponent.kendoGrid.bind("dataBound", () => this.refreshPager());
   }
 
   private refreshPager() {
