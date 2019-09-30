@@ -11,6 +11,7 @@
         :gridComponent="gridComponent"
         v-show="showProgress"
         @exportDone="hideButton"
+        direction="left"
         ref="exportButton"
       ></ank-se-grid-export-button>
     </template>
