@@ -13,10 +13,11 @@ const exec = util.promisify(child_process.exec);
 
 const tag = process.argv[2];
 
+console.log("tag", tag);
+
 const bumpNpmVersion = async ({ package, version, dir = "." }) => {
-  return await bumpVersion(package, version, dir).catch(() => {
-    console.error("ERRROOOORRRR", package, version, dir);
-  });
+  console.log(package, version, dir);
+  return await bumpVersion(package, version, dir);
 };
 
 const bumpInfoXML = async ({ modulePath, version }) => {
@@ -30,37 +31,34 @@ const bumpInfoXML = async ({ modulePath, version }) => {
 };
 
 const tagVersion = async ({ package, version }) => {
-  return await exec(`git tag "${package}-${version}"`);
+  return await exec(`git tag -f "${package}-${version}"`);
 };
-
-console.log(versions);
 
 const release = `${versions.RC ? "RC." : ""}${versions.release}${versions.RC ? "." + versions.RC : ""}`;
 
 console.log(`Release is : ${release}`);
 
-Promise.all(
-  versions.versions.map(async currentVersion => {
-    if (!tag) {
+versions.versions
+  .reduce((acc, currentVersion) => {
+    return acc.then(async () => {
       if (versions.RC) {
         currentVersion.version = `${currentVersion.version}-${release}`;
       }
-      console.log(`Handle ${JSON.stringify(currentVersion)}`);
-      await bumpNpmVersion(currentVersion);
-      if (!currentVersion.npmOnly) {
-        await bumpInfoXML(currentVersion).catch(err => {
-          console.error("ERROR", JSON.stringify(currentVersion), err);
-        });
+      if (!tag) {
+        console.log(`Handle ${JSON.stringify(currentVersion)}`);
+        await bumpNpmVersion(currentVersion);
+        if (!currentVersion.npmOnly) {
+          await bumpInfoXML(currentVersion);
+        }
+      } else {
+        await tagVersion(currentVersion);
       }
-    } else {
-      await tagVersion(currentVersion);
-    }
-  })
-)
+    });
+  }, Promise.resolve())
   .then(async () => {
     if (tag) {
       console.log("Add general tag");
-      return await exec(`git tag ${versions.release}${versions.RC ? "." + versions.RC : ""}`);
+      return await exec(`git tag -f ${versions.release}${versions.RC ? "." + versions.RC : ""}`);
     }
     return Promise.resolve();
   })
