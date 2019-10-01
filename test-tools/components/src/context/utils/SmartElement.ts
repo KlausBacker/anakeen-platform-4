@@ -1,26 +1,10 @@
-import Credentials from "./Credentials";
-
-const fetch = require("node-fetch");
-
 export default class SmartElement {
-  protected id!: string | number;
-  protected title!: string;
-  protected initid!: number;
-  protected icon!: string;
-  protected name!: string;
-  protected revision!: number;
-  protected status!: string;
-  protected details!: any;
+  protected properties: any;
+  protected smartFields: any;
 
-  constructor(smartElementProperties: any) {
-    this.id = smartElementProperties.id;
-    this.title = smartElementProperties.title;
-    this.initid = smartElementProperties.initid;
-    this.icon = smartElementProperties.icon;
-    this.name = smartElementProperties.name;
-    this.revision = smartElementProperties.revision;
-    this.status = smartElementProperties.status;
-    this.details = Object.assign({}, smartElementProperties);
+  constructor(smartElementData) {
+    this.properties = smartElementData.properties;
+    this.smartFields = smartElementData.attributes;
   }
 
   public changeState() {
@@ -32,11 +16,11 @@ export default class SmartElement {
   }
 
   public getPropertyValue(propertyName: string) {
-    return this.details[propertyName];
+    return this.properties[propertyName];
   }
 
-  public getSmartFieldValue() {
-    console.log("get smart field value");
+  public getSmartFieldValue(fieldId: string) {
+    return this.smartFields[fieldId];
   }
 
   public destroy() {

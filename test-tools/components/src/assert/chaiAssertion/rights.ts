@@ -1,4 +1,1 @@
-
-export default function chaiRights(chai: any) {
- 
-}
+export default function chaiRightsPlugin(chai: Chai.ChaiStatic) {}
