@@ -1,7 +1,5 @@
-<?xml version="1.0"?>
-<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0"
-        name="migration-tools" version="2.0.1" vendor="Anakeen"
-        license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0">
+<?xml version="1.0" encoding="UTF-8"?>
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="migration-tools" version="2.0.1-RC.2019.01.1" vendor="Anakeen" license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0">
 
     <description>Migration tools</description>
 

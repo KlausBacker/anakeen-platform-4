@@ -1,7 +1,5 @@
-<?xml version="1.0"?>
-<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0"
-        name="smart-data-engine" version="2.0.2" vendor="Anakeen"
-        license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0" basecomponent="Y">
+<?xml version="1.0" encoding="UTF-8"?>
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="smart-data-engine" version="2.1.0-RC.2019.01.1" vendor="Anakeen" license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0" basecomponent="Y">
 
     <description>Smart Data Engine</description>
 
@@ -11,11 +9,9 @@
 
     <parameters>
         <param name="client_name" label="client name" type="text"/>
-        <param name="core_db" label="database postgresql service name"  type="text" needed="Y"/>
-        <param name="authtype" label="authenticate default mode" default="basic" type="enum" values="basic|html"
-               needed="Y"/>
-        <param name="core_admin_passwd" label="Admin password" default="anakeen" type="text" volatile="Y"
-               onedit="H"/>
+        <param name="core_db" label="database postgresql service name" type="text" needed="Y"/>
+        <param name="authtype" label="authenticate default mode" default="basic" type="enum" values="basic|html" needed="Y"/>
+        <param name="core_admin_passwd" label="Admin password" default="anakeen" type="text" volatile="Y" onedit="H"/>
     </parameters>
 
     <pre-install>
@@ -51,7 +47,7 @@
         </check>
         <check type="exec" cmd="zip -Z store &lt; /dev/null &gt; /dev/null 2&gt;&amp;1">
             <label>Check zip support for -Z store flag. Use for openDocument writting</label>
-            <help>Your zip command does not seems to support the -Z store flag. Please install info-zip >= 3.0</help>
+            <help>Your zip command does not seems to support the -Z store flag. Please install info-zip &gt;= 3.0</help>
         </check>
         <check type="syscommand" command="unzip">
             <label>Check "unzip". To import archive and openDocument</label>
@@ -74,8 +70,7 @@
                 support in PHP.
             </help>
         </check>
-        <check type="exec"
-               cmd="php -r '$s=false;$r=openssl_random_pseudo_bytes(16,$s);exit(($r!==false&amp;&amp;$s!==false)?0:1);'">
+        <check type="exec" cmd="php -r '$s=false;$r=openssl_random_pseudo_bytes(16,$s);exit(($r!==false&amp;&amp;$s!==false)?0:1);'">
             <label>Check for cryptographically strong random bytes from openssl</label>
             <help>Unable to get cryptographically strong random bytes from openssl: your system might be broken or too
                 old.
@@ -121,8 +116,7 @@
                 PHP.
             </help>
         </check>
-        <check type="exec"
-               cmd="php -r 'if(function_exists(&quot;iconv&quot;) &amp;&amp; ICONV_IMPL == &quot;glibc&quot;){exit(0);}exit(1);'">
+        <check type="exec" cmd="php -r 'if(function_exists(&quot;iconv&quot;) &amp;&amp; ICONV_IMPL == &quot;glibc&quot;){exit(0);}exit(1);'">
             <label>Check iconv in libc</label>
             <help>Your PHP iconv extension is compiled with a non-GLIBC implementation of iconv, and it might not work
                 as expected.
@@ -294,7 +288,7 @@
         </check>
         <check type="exec" cmd="zip -Z store &lt; /dev/null &gt; /dev/null 2&gt;&amp;1">
             <label>Check zip support for -Z store flag. Use for openDocument writting</label>
-            <help>Your zip command does not seems to support the -Z store flag. Please install info-zip >= 3.0</help>
+            <help>Your zip command does not seems to support the -Z store flag. Please install info-zip &gt;= 3.0</help>
         </check>
         <check type="syscommand" command="unzip">
             <label>Check "unzip". To import archive and openDocument</label>
@@ -316,8 +310,7 @@
                 support in PHP.
             </help>
         </check>
-        <check type="exec"
-               cmd="php -r '$s=false;$r=openssl_random_pseudo_bytes(16,$s);exit(($r!==false&amp;&amp;$s!==false)?0:1);'">
+        <check type="exec" cmd="php -r '$s=false;$r=openssl_random_pseudo_bytes(16,$s);exit(($r!==false&amp;&amp;$s!==false)?0:1);'">
             <label>Check for cryptographically strong random bytes from openssl</label>
             <help>Unable to get cryptographically strong random bytes from openssl: your system might be broken or too
                 old.
@@ -362,8 +355,7 @@
                 PHP.
             </help>
         </check>
-        <check type="exec"
-               cmd="php -r 'if(function_exists(&quot;iconv&quot;) &amp;&amp; ICONV_IMPL == &quot;glibc&quot;){exit(0);}exit(1);'">
+        <check type="exec" cmd="php -r 'if(function_exists(&quot;iconv&quot;) &amp;&amp; ICONV_IMPL == &quot;glibc&quot;){exit(0);}exit(1);'">
             <label>Check iconv in libc</label>
             <help>Iconv might not work as you want</help>
         </check>

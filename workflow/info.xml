@@ -1,7 +1,5 @@
-<?xml version="1.0" ?>
-<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0"
-        license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3"
-        name="workflow" version="2.0.0" vendor="Anakeen">
+<?xml version="1.0" encoding="UTF-8"?>
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3" name="workflow" version="2.0.0-RC.2019.01.1" vendor="Anakeen">
     <description>Workflow Package</description>
 
     <requires>
