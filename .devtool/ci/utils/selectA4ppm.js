@@ -1,7 +1,7 @@
 let bucket = process.env.CIBUILD_INTEGRATION_ANAKEEN_APP_REGISTRY_URL;
 const stableBranchRegexp = new RegExp("[\\d]+\\.[\\d]+-stable$");
 
-if (stableBranchRegexp.test(process.env.CI_MERGE_REQUEST_TARGET_BRANCH_NAME)) {
+if (stableBranchRegexp.test(process.env.CI_COMMIT_REF_NAME)) {
     bucket = process.env.CIBUILD_STABLE_ANAKEEN_APP_REGISTRY_URL;
 }
 

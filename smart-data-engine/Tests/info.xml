@@ -1,12 +1,9 @@
-<?xml version="1.0"?>
-<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0"
-        name="smart-data-engine-test"
-        license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3"
-        version="2.0.2" vendor="Anakeen">
+<?xml version="1.0" encoding="UTF-8"?>
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="smart-data-engine-test" license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3" version="2.0.2" vendor="Anakeen">
     <description>Test case for Smart Data Engine.</description>
 
     <requires>
-        <module name="smart-data-engine" version="2.0.x"/>
+        <module name="smart-data-engine" version="2.1.0-RC.2019.1.2"/>
     </requires>
     
     <pre-install>
