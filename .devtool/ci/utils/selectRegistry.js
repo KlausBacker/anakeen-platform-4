@@ -6,7 +6,7 @@ const exec = util.promisify(child_process.exec);
 let registry = process.env.CIBUILD_INTEGRATION_ANAKEEN_NPM_REGISTRY;
 const stableBranchRegexp = new RegExp("[\\d]+\\.[\\d]+-stable$");
 
-if (stableBranchRegexp.test(process.env.CI_MERGE_REQUEST_TARGET_BRANCH_NAME)) {
+if (stableBranchRegexp.test(process.env.CI_COMMIT_REF_NAME)) {
     registry = process.env.CIBUILD_STABLE_ANAKEEN_NPM_REGISTRY;
 }
 
