@@ -1,0 +1,65 @@
+
+
+
+.trash-parent {
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+
+
+  .tree-toolbar {
+    justify-content: center;
+  }
+
+
+  .trash-grid {
+    flex: 1;
+    align-items: flex-start;
+    justify-content: stretch;
+    height: 100%;
+    display: flex !important;
+    flex-direction: column;
+
+  }
+
+  .trash-empty {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #dedede;
+    font-size: 1.5rem;
+    color: #a4a4a4;
+    > span {
+      font-size: 5rem;
+    }
+  }
+
+  .trash-splitter {
+    height: 100%;
+    width: 100%;
+  }
+
+  .splitter-wrapper-right-content {
+    overflow: hidden !important;
+  }
+  .trash-smart-element {
+    height: 100%;
+  }
+
+  /deep/ {
+    .k-grid, .grid-widget-wrapper {
+      height: 100%;
+    }
+    .k-dropdown-operator {
+      display: none;
+    }
+    .splitter-wrapper-right-content {
+      overflow: hidden !important;
+    }
+    .k-pager-sizes {
+      display: flex !important;
+    }
+  }
+}
