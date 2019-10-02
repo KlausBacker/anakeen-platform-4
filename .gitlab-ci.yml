@@ -523,6 +523,54 @@ control-integration-build:
       - control/**/*
 #endBuildControl
 
+
+#buildTe
+te-build:
+  <<: *pull-cache
+  stage: build
+  tags:
+    - a4ppm
+  variables:
+    PACKAGE_PATH: "transformationServer"
+    PACKAGE_NAME: "anakeen-transformation-engine"
+  script:
+    - make APP_OUTPUT_PATH=${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH} -C ${PACKAGE_PATH} app
+    - export ANK_CI_APP_VERSION=$(jq -r .version ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}/package.json)
+    - tar -C ${PACKAGE_PATH} -czf ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}/${PACKAGE_NAME}-${ANK_CI_APP_VERSION}.tar.gz ./src ./lib
+  artifacts:
+    paths:
+      - build/${PACKAGE_PATH}
+    expire_in: 1 day
+  only:
+    refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - transformationServer/**/*
+
+te-integration-build:
+  <<: *pull-cache
+  stage: build
+  tags:
+    - a4ppm
+  variables:
+    PACKAGE_PATH: "transformationServer"
+    PACKAGE_NAME: "anakeen-transformation-engine"
+  script:
+    - make APP_OUTPUT_PATH=${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH} -C ${PACKAGE_PATH} app-autorelease
+    - export ANK_CI_APP_VERSION=$(jq -r .version ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}/package.json)
+    - tar -C ${PACKAGE_PATH} -czf ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}/${PACKAGE_NAME}-${ANK_CI_APP_VERSION}.tar.gz ./src ./lib
+  artifacts:
+    paths:
+      - build/${PACKAGE_PATH}
+    expire_in: 1 day
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - transformationServer/**/*
+#endBuildTe
+
+
 #region publishNpm
 .npm-publish-package:
   <<: *pull-cache
@@ -956,3 +1004,54 @@ control-integration-register:
       - control/**/*
 
 #endregion registryControl
+
+
+#region registryTe
+.registry-te:
+  <<: *pull-cache
+  stage: registry
+  tags:
+    - a4ppm
+  script:
+    - export ANK_CI_APP_VERSION=$(jq -r .version ${ANK_CI_ARTEFACTS_PATH}/${ANK_CI_APP_PATH}/package.json)
+    - >-
+      curl -f
+      --header "X-Http-Method-Override: PUT"
+      -F name=${ANK_CI_APP_NAME}
+      -F version=${ANK_CI_APP_VERSION}
+      -F metadata="{
+        \"git-sha\": \"${CI_COMMIT_SHA}\",
+        \"git-ref\": \"${CI_COMMIT_REF}\",
+        \"version\": \"${ANK_CI_APP_VERSION}\",
+        \"release\": \"\",
+        \"date\": \"$(date '+%Y-%m-%d %H-%M-%S')\",
+        \"author\": \"${GITLAB_USER_NAME}\"
+      }"
+      -F app=@${ANK_CI_ARTEFACTS_PATH}/${ANK_CI_APP_PATH}/${ANK_CI_APP_NAME}-${ANK_CI_APP_VERSION}.zip
+      -F src=@${ANK_CI_ARTEFACTS_PATH}/${ANK_CI_APP_PATH}/${ANK_CI_APP_NAME}-${ANK_CI_APP_VERSION}.tar.gz
+      --request POST
+      "${ANK_CI_A4PPM}/${ANK_CI_BUCKET}"
+
+te-register:
+  extends: .registry-te
+  variables:
+    ANK_CI_APP_PATH: "transformationServer"
+    ANK_CI_APP_NAME: "anakeen-transformation-engine"
+  only:
+    refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - transformationServer/**/*
+
+te-integration-register:
+  extends: .registry-te
+  variables:
+    ANK_CI_APP_PATH: "transformationServer"
+    ANK_CI_APP_NAME: "anakeen-transformation-engine"
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - transformationServer/**/*
+
+#endregion registryTe
