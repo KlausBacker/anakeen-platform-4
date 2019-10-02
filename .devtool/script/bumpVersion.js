@@ -14,7 +14,6 @@ const exec = util.promisify(child_process.exec);
 const tag = process.argv[2];
 
 const bumpNpmVersion = async ({ package, version, dir = "." }) => {
-  console.log(package, version, dir);
   return await bumpVersion(package, version, dir);
 };
 
@@ -24,14 +23,13 @@ const bumpDepsInfoXML = async ({ moduleName, version }) => {
       const infoPath = path.resolve(currentPath, info);
       const xmlFile = await readFile(infoPath, { encoding: "utf8" });
       const document = libxml.parseXmlString(xmlFile);
-      console.log(currentPath);
       const requires = document
         .root()
         .get("module:requires", { module: "https://platform.anakeen.com/4/schemas/app/1.0" });
       return requires.childNodes().reduce((acc, currentNode) => {
         return acc.then(async () => {
           if (currentNode.name() === "module" && currentNode.attr("name").value() === moduleName) {
-            currentNode.attr("version").value(version);
+            currentNode.attr("version").value(`^${version}`);
             return await writeFile(infoPath, document.toString());
           }
         });
