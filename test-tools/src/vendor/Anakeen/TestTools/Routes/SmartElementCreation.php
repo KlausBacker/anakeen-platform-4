@@ -1,8 +1,7 @@
 <?php
 
 namespace Anakeen\TestTools\Routes;
-
-class TestRoute
+class SmartElementCreation
 {
     /**
      * @param \Slim\Http\request $request
@@ -15,7 +14,7 @@ class TestRoute
         \Slim\Http\response $response,
         $args
     ) {
-
+        
         return $response;
     }
 }

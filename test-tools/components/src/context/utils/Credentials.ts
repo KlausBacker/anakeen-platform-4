@@ -29,4 +29,8 @@ export default class Credentials {
       Authorization: `Basic ${base64.encode(this._login + ":" + this._password)}`
     };
   }
+
+  public getCompleteUrl(uri: string) {
+    return `${this.uri}/${uri}`.replace(/(?<!http:)\/\/+/g, "/");
+  }
 }

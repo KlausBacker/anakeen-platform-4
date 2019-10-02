@@ -1,4 +1,6 @@
 // eslint-disable-next-line no-unused-vars
+import fetch from "node-fetch";
+// eslint-disable-next-line no-unused-vars
 import AbstractContext from "./AbstractContext";
 import SafeContext from "./SafeContext";
 import SimpleContext from "./SimpleContext";

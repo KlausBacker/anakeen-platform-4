@@ -21,7 +21,10 @@ describe("profileCompteRendu", () => {
   //On créé les éléments qu'on va utiliser
   before(async () => {
     testContext = currentContext.initTest();
-    smartElement = await testContext.getSmartElement("ADMINCENTER");
+    smartElement = await testContext.getSmartElement(
+      { smartStructure: "DEVBILL" },
+      { bill_title: { value: "Test API Creation test" } }
+    );
     // user1 = await testContext.getAccount({"type": "user", "login": "user1", "roles": ["redacteur"]);
     // user2 = await testContext.getAccount({"type": "user", "login": "user2", "roles": ["validateur"]);
   });
