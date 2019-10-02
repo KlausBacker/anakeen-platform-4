@@ -40,7 +40,8 @@ export default class GridPagerController extends Mixins(I18nMixin) {
       .kendoPager({
         dataSource: gridComponent.dataSource,
         messages: this.translations,
-        pageSizes: gridComponent.pageSizes
+        pageSizes: gridComponent.pageSizes,
+        refresh: gridComponent.refresh
       })
       .data("kendoPager");
     gridComponent.kendoGrid.bind("dataBound", () => this.refreshPager());
