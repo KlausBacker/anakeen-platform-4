@@ -1,5 +1,6 @@
-import IContext from "./IContext";
+// eslint-disable-next-line no-unused-vars
+import AbstractContext from "./AbstractContext";
 
-export default class SafeContext implements IContext {
-  // clean();
+export default class SafeContext extends AbstractContext {
+  public clean() {}
 }

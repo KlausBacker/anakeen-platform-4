@@ -1,14 +1,16 @@
-import ContextBase from "./ContextBase";
-import IContext from "./IContext";
-import Credentials from "./utils/Credentials";
+// eslint-disable-next-line no-unused-vars
+import AbstractContext from "./AbstractContext";
 import SafeContext from "./SafeContext";
+import SimpleContext from "./SimpleContext";
+import Credentials from "./utils/Credentials";
 
-export default class Context extends ContextBase {
+export default class Context {
   protected credentials!: Credentials;
   protected safeMode: boolean = false;
 
   constructor(url: string, login: string, password: string) {
     this.credentials = new Credentials(url, login, password);
+    // @ts-ignore
     return fetch(url, {
       headers: this.credentials.getBasicHeader()
     }).then(() => {
@@ -16,7 +18,7 @@ export default class Context extends ContextBase {
     });
   }
 
-  public initTest(safeMode: boolean = false): IContext {
+  public initTest(safeMode: boolean = false): AbstractContext {
     this.safeMode = safeMode;
     if (this.safeMode) {
       return new SafeContext(this.credentials);
