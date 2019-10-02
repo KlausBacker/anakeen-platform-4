@@ -22,6 +22,7 @@ const deployPipe = (exports.deployPipe = async ({
   controlUrl,
   controlUsername,
   controlPassword,
+  reinstall = false,
   log
 }) => {
   let tmpDir = false;
@@ -41,11 +42,15 @@ const deployPipe = (exports.deployPipe = async ({
       controlPassword
     });
     log("Post the module");
+    if (reinstall) {
+      log("Force installation mode");
+    }
     const result = await control
       .postModuleAndWaitTheEnd({
         controlUrl,
         controlUsername,
         controlPassword,
+        reinstall,
         fileName: appPath
       })
       .catch(e => {
@@ -90,7 +95,14 @@ exports.deploy = ({ appPath = "./", controlUrl, controlUsername, controlPassword
   });
 };
 
-exports.buildAndDeploy = ({ sourcePath = ".", controlUrl, controlUsername, controlPassword, autoRelease = false }) => {
+exports.buildAndDeploy = ({
+  sourcePath = ".",
+  controlUrl,
+  controlUsername,
+  controlPassword,
+  autoRelease = false,
+  reinstall = false
+}) => {
   return gulp.task("buildAndDeploy", () => {
     // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve, reject) => {
@@ -111,6 +123,7 @@ exports.buildAndDeploy = ({ sourcePath = ".", controlUrl, controlUsername, contr
           controlUrl,
           controlUsername,
           controlPassword,
+          reinstall,
           errorCallback: reject,
           log
         })
