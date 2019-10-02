@@ -15,6 +15,7 @@ class InstallAppFile extends Install
 {
     protected $fileModulePath;
     protected $force = true;
+    protected $reinstall = false;
 
     protected function initModuleManager(\Slim\Http\Request $request, $args)
     {
@@ -27,7 +28,11 @@ class InstallAppFile extends Install
         fclose($tmp);
         $this->moduleManager = new ModuleManager("");
 
-        $this->moduleManager->setFile($this->fileModulePath);
+        if ($request->getHeaderLine("X-ForceInstall") === "true") {
+            $this->reinstall=true;
+        }
+
+        $this->moduleManager->setFile($this->fileModulePath,$this->reinstall);
     }
 
     protected function completeModuleManager()

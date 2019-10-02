@@ -40,10 +40,10 @@ exports.builder = controlArguments({
     type: "string",
     implies: "sourcePath"
   },
-  action: {
-    description: "action to execute (install|upgrade)",
+  reinstall: {
+    description: "force reinstall instead if module is already installed",
     default: "",
-    type: "string"
+    type: "boolean"
   }
 });
 

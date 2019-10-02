@@ -72,14 +72,15 @@ exports.getControlStatus = async ({ controlUrl, controlUsername, controlPassword
  * Send the generated or gived module for upload
  * @param {*} param0
  */
-exports.postModule = ({ controlUrl, controlUsername, controlPassword, fileName }) => {
+exports.postModule = ({ controlUrl, controlUsername, controlPassword, fileName, reinstall = false }) => {
   const stats = fs.statSync(fileName);
   const fileSizeInBytes = stats.size;
 
   return fetch(urljoin(controlUrl, "/api/modules"), {
     headers: {
       "Content-length": fileSizeInBytes,
-      Authorization: getBaseAutorisation(controlUsername, controlPassword)
+      Authorization: getBaseAutorisation(controlUsername, controlPassword),
+      "X-ForceInstall": reinstall
     },
     method: "POST",
     body: fs.createReadStream(fileName)
