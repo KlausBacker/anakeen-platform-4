@@ -1,0 +1,80 @@
+.enum-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .enum-grid-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .k-grid-content.k-auto-scrollable {
+      height: 100%;
+      min-height: 0;
+    }
+
+    .k-grid.k-widget.k-display-block {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+  }
+
+  .enum-form-wrapper {
+    display: flex;
+    height: 100%;
+
+    .enum-empty {
+      display: flex;
+      height: 100%;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      background-color: #dedede;
+      font-size: 1.5rem;
+      color: #a4a4a4;
+      > span {
+        font-size: 5rem;
+      }
+    }
+
+    .enum-key-wrapper[mode=view] {
+      .enum-key-edit-wrapper {
+        display: none !important;
+      }
+    }
+
+    .enum-key-wrapper[mode=edit] {
+
+      .enum-key-view-wrapper {
+        display: none;
+      }
+    }
+
+    .enum-validate-wrapper[mode=view] {
+      display: none;
+    }
+
+    //.enum-key-wrapper[mode=edit] {
+    //
+    //
+    //}
+
+    .enum-validate-apply-button {
+      background: none;
+      border-color: #26bd56;
+      border-style: solid;
+      border-radius: 0.25rem;
+      color: #26bd56;
+    }
+    .enum-validate-cancel-button {
+      background: none;
+      border-color: #de3e26;
+      border-style: solid;
+      border-radius: 0.25rem;
+      color: #de3e26;
+    }
+
+  }
+}
