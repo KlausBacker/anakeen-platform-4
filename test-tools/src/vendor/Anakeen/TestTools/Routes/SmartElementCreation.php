@@ -1,6 +1,7 @@
 <?php
 
 namespace Anakeen\TestTools\Routes;
+
 class SmartElementCreation
 {
     /**
