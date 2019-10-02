@@ -1,0 +1,40 @@
+# Transformation Engine Configuration
+# - - - - - - - - - - - - - - - - - -
+TE_PG_SERVICE="te"                # Postgresql database service name
+TE_SERVER_DEBUG=no
+
+#---- REQUEST PART ----
+PORT=51968                        # port number where listen client
+LISTEN_ADDRESS=0.0.0.0            # address mask to listen : listen everybody by default
+REQUEST_MAX_CLIENT=15             # max request in parallel 
+PURGE_DAYS=7                      # remove tasks older than 7 days
+PURGE_INTERVAL=100                # trigger tasks purge every 100 requests (set to 0 to disable purge)
+TE_WORK_DIR=/var/tmp		  # Directory where task's files and engine's temporary files are stored 
+
+#---- RENDERING PART ----
+RENDERING_MAX_CLIENT=10           # max conversion in parallel 
+
+# -- Run TE servers as a user --
+TE_SERVER_USER=root
+
+# -- Server-mode (Libre|Open)Office.org parameters
+TE_OOO_SERVER_ENABLED=yes
+TE_OOO_BASE_DIR=/replace/me/with/path/to/libreoffice_or_openoffice/directory
+#
+# Example:
+#
+#   TE_OOO_BASE_DIR=/opt/libreoffice5.0
+#   TE_OOO_BASE_DIR=/opt/libreoffice4.4
+#   TE_OOO_BASE_DIR=/opt/openoffice4
+#
+TE_OOO_SERVER_SOFFICE=${TE_OOO_BASE_DIR}/program/soffice
+TE_OOO_JVM_OPTS=""
+TE_OOO_SERVER_HOST=127.0.0.1
+TE_OOO_SERVER_PORT=8123
+
+# -- Tika-server Jar file
+TE_TIKA_SERVER_ENABLED=yes
+TE_TIKA_SERVER_JAR="/replace/me/with/path/to/tika-server-#version#.jar"
+TE_TIKA_SERVER_HOST=127.0.0.1
+TE_TIKA_SERVER_PORT=9998
+TE_TIKA_SERVER_LOGLEVEL="" # 'debug' or 'info'
