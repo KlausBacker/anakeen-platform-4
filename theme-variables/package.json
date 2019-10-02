@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/theme-variables",
-  "version": "1.0.0-RC.2019.1.2",
+  "version": "1.0.0",
   "description": "Anakeen Theme Variables",
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/npm/theme-variables.git",
   "author": "Anakeen",
