@@ -259,7 +259,10 @@ class RenderDefault implements IRenderConfig
         ));
         $opt->arrayAttribute()->setTranslations(array(
             "limitMaxMessage" => ___("Row count limit to {{limit}}", "ddui"),
-            "limitMinMessage" => ___("Min row limit is {{limit}}", "ddui")
+            "limitMinMessage" => ___("Min row limit is {{limit}}", "ddui"),
+            "dragLine" => ___("Drag to move line", "ddui"),
+            "selectLine" => ___("Select line", "ddui"),
+            "deleteLine" => ___("Delete line", "ddui")
         ));
         $opt->image()->setTranslations(array(
             "dropFileHere" => ___("Drop image here", "ddui-image"),

@@ -20,13 +20,12 @@ class MaskHooks extends \SmartStructure\Base
     {
         return array(
             "-" => " ",
-            "R" => ___("read only", "mask"),
-            "W" => ___("read write", "mask"),
-            "O" => ___("write only", "mask"),
-            "H" => ___("hidden", "mask"),
-            "S" => ___("read disabled", "mask"),
-            "U" => ___("static array", "mask"),
-            "I" => ___("invisible", "mask")
+            "R" => "read only",
+            "W" => "read write",
+            "O" => "write only",
+            "H" => "hidden",
+            "S" => "read disabled",
+            "U" => "static array",
         );
     }
 
@@ -34,8 +33,8 @@ class MaskHooks extends \SmartStructure\Base
     {
         return array(
             "-" => " ",
-            "Y" => ___("Y", "mask"),
-            "N" => ___("N", "mask")
+            "Y" => "Yes",
+            "N" => "No"
         );
     }
 

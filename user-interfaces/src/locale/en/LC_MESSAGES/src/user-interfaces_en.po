@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ANAKEEN-UI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-23 09:43+0200\n"
+"POT-Creation-Date: 2019-10-03 14:40+0200\n"
 "PO-Revision-Date: 2018-06-01 08:42+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -278,6 +278,10 @@ msgctxt "UiMenu"
 msgid "Delete"
 msgstr ""
 
+msgctxt "ddui"
+msgid "Delete line"
+msgstr ""
+
 msgctxt "smart-grid"
 msgid "Display"
 msgstr ""
@@ -310,6 +314,10 @@ msgstr ""
 
 msgctxt "ddui-image"
 msgid "Download image"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Drag to move line"
 msgstr ""
 
 msgctxt "ddui-file"
@@ -365,10 +373,6 @@ msgstr ""
 #, php-format
 msgctxt "smart iuser"
 msgid "Groups of \"%s\" has been updated"
-msgstr ""
-
-msgctxt "UiMenu"
-msgid "Help"
 msgstr ""
 
 msgctxt "UiMenu"
@@ -469,10 +473,6 @@ msgctxt " smart cvdoc"
 msgid "Label of menu list"
 msgstr ""
 
-msgctxt "ddui helppage"
-msgid "Lang"
-msgstr ""
-
 msgctxt "UiMenu"
 msgid "Lock"
 msgstr ""
@@ -518,10 +518,6 @@ msgstr ""
 
 msgctxt "ddui"
 msgid "Modifying by"
-msgstr ""
-
-msgctxt "mask"
-msgid "N"
 msgstr ""
 
 msgctxt "smart iuser"
@@ -704,6 +700,10 @@ msgid "Select alternative choice"
 msgstr ""
 
 msgctxt "ddui"
+msgid "Select line"
+msgstr ""
+
+msgctxt "ddui"
 msgid "Smart ELement"
 msgstr ""
 
@@ -737,7 +737,7 @@ msgctxt "grid-component"
 msgid "Title contains"
 msgstr ""
 
-msgctxt " smart group"
+msgctxt "smart group"
 msgid "To avoid compute mail addresses when group has lot of members"
 msgstr ""
 
@@ -825,10 +825,6 @@ msgctxt "ddui"
 msgid "Workflow Transition Comment"
 msgstr ""
 
-msgctxt "mask"
-msgid "Y"
-msgstr ""
-
 msgctxt "identityComponent"
 msgid "You entered an invalid current password"
 msgstr ""
@@ -857,22 +853,13 @@ msgctxt "searchUi"
 msgid "consult"
 msgstr "Launch the research"
 
-msgctxt "searchUi"
-msgid "export"
-msgstr "Export report"
-
-#, php-format
-msgctxt "CVDOC"
-msgid "creation view '%s' does not exists"
-msgstr ""
-
 msgctxt "searchui"
 msgid "doctitle"
 msgstr "Title"
 
-msgctxt "mask"
-msgid "hidden"
-msgstr ""
+msgctxt "searchUi"
+msgid "export"
+msgstr "Export report"
 
 msgctxt "Report"
 msgid "id"
@@ -886,10 +873,6 @@ msgctxt "searchui"
 msgid "id owner"
 msgstr "Owner's id"
 
-msgctxt "mask"
-msgid "invisible"
-msgstr ""
-
 msgctxt "ddui-file"
 msgid "kB"
 msgstr "kB"
@@ -900,18 +883,6 @@ msgstr ""
 
 msgctxt "smart-grid"
 msgid "of"
-msgstr ""
-
-msgctxt "mask"
-msgid "read disabled"
-msgstr ""
-
-msgctxt "mask"
-msgid "read only"
-msgstr ""
-
-msgctxt "mask"
-msgid "read write"
 msgstr ""
 
 msgctxt "smart-grid"
@@ -930,10 +901,6 @@ msgctxt "dsearch"
 msgid "state"
 msgstr "State"
 
-msgctxt "mask"
-msgid "static array"
-msgstr ""
-
 msgid "step"
 msgstr "Step"
 
@@ -949,10 +916,6 @@ msgstr "Title"
 
 msgid "workflow"
 msgstr "Workflow"
-
-msgctxt "mask"
-msgid "write only"
-msgstr ""
 
 msgctxt "smart-grid"
 msgid "{0} - {1} of {2} results"
