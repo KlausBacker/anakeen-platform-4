@@ -7,9 +7,7 @@
 namespace Anakeen\Components\Authent\Routes;
 
 use Anakeen\Core\ContextManager;
-use Anakeen\Core\Internal\ContextParameterManager;
 use Anakeen\Core\Utils\Gettext;
-use String\sprintf;
 
 /**
  * Main page to login
@@ -36,12 +34,17 @@ class LoginPage
     {
         $page = __DIR__ . "/LoginPage.html.mustache";
         $template = file_get_contents($page);
-        $lang = $this->getBrowserLanguage();
-        if ($lang === "fr") {
-            $title = sprintf(Gettext::___("Connexion à %s", "login"), ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_CLIENT"));
-        } else {
-            $title = sprintf(Gettext::___("Connection to %s", "login"), ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_CLIENT"));
+        $lang = $this->completeLanguage($this->getBrowserLanguage());
+
+        if ($lang) {
+            ContextManager::setLanguage($lang);
         }
+
+        $title = sprintf(
+            Gettext::___("Connection to %s", "login"),
+            ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_CLIENT")
+        );
+
         $data = [
             "nsSde" => ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_CLIENT"),
             "title" => $title,
@@ -67,13 +70,19 @@ class LoginPage
             "JS" => [
                 [
                     "key" => "login",
-                    "path" => \Anakeen\Ui\UIGetAssetPath::getElementAssets("ank-components", \Anakeen\Ui\UIGetAssetPath::isInDebug() ? "dev" : "prod")["login"]["js"]
+                    "path" => \Anakeen\Ui\UIGetAssetPath::getElementAssets(
+                        "ank-components",
+                        \Anakeen\Ui\UIGetAssetPath::isInDebug() ? "dev" : "prod"
+                    )["login"]["js"]
                 ],
             ],
             "JS_LEGACY" => [
                 [
                     "key" => "login",
-                    "path" => \Anakeen\Ui\UIGetAssetPath::getElementAssets("ank-components", \Anakeen\Ui\UIGetAssetPath::isInDebug() ? "dev" : "legacy")["login"]["js"]
+                    "path" => \Anakeen\Ui\UIGetAssetPath::getElementAssets(
+                        "ank-components",
+                        \Anakeen\Ui\UIGetAssetPath::isInDebug() ? "dev" : "legacy"
+                    )["login"]["js"]
                 ],
             ],
             "CSS" => [
@@ -115,5 +124,15 @@ class LoginPage
             }
         }
         return $default;
+    }
+    protected function completeLanguage($lang)
+    {
+        switch ($lang) {
+            case "fr":
+                return "fr_FR";
+            case "en":
+                return "en_US";
+        }
+        return $lang;
     }
 }

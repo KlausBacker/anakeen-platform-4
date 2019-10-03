@@ -26,11 +26,6 @@ msgctxt "ddui"
 msgid "Delete : "
 msgstr "Suppression de : "
 
-#: src/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/array/line.mustache
-msgctxt "ddui"
-msgid "Delete line"
-msgstr "Supprimer la ligne"
-
 #: src/vendor/Anakeen/Routes/Ui/Templates/document-view.html.mustache
 msgctxt "ddui"
 msgid "Document Render"
@@ -40,11 +35,6 @@ msgstr "Smart element"
 msgctxt "ddui"
 msgid "DocumentDeleted"
 msgstr "Supprimée le"
-
-#: src/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/array/line.mustache
-msgctxt "ddui"
-msgid "Drag to move line"
-msgstr "Cliquer pour déplacer la ligne"
 
 #: src/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/array/content.mustache
 msgctxt "ddui"
@@ -71,14 +61,17 @@ msgctxt "ddui"
 msgid "RevisionCreated"
 msgstr "Créée le"
 
-#: src/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/array/line.mustache
-msgctxt "ddui"
-msgid "Select line"
-msgstr "Sélectionner la ligne"
-
 #~ msgctxt "ddui"
 #~ msgid "Click to reload the document"
 #~ msgstr "Cliquez pour recharger la page"
+
+#~ msgctxt "ddui"
+#~ msgid "Delete line"
+#~ msgstr "Supprimer la ligne"
+
+#~ msgctxt "ddui"
+#~ msgid "Drag to move line"
+#~ msgstr "Cliquer pour déplacer la ligne"
 
 #~ msgctxt "dsearch"
 #~ msgid "Loading criteria ..."
@@ -87,6 +80,10 @@ msgstr "Sélectionner la ligne"
 #~ msgctxt "dsearch"
 #~ msgid "Searching ..."
 #~ msgstr "Recherche en cours"
+
+#~ msgctxt "ddui"
+#~ msgid "Select line"
+#~ msgstr "Sélectionner la ligne"
 
 #~ msgctxt "ddui"
 #~ msgid "Unable to load try again"

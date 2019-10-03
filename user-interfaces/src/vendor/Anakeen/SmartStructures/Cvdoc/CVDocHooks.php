@@ -153,7 +153,7 @@ class CVDocHooks extends \SmartStructure\Base
         $err = '';
         if ('' !== $idCreationView) {
             if (!is_array($idViews) || !in_array($idCreationView, $idViews)) {
-                $err = sprintf(___("creation view '%s' does not exists", "CVDOC"), $labelCreationView);
+                $err = sprintf("creation view '%s' does not exists", $labelCreationView);
             }
         }
         return $err;

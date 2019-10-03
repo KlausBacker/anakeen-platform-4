@@ -27,11 +27,6 @@ msgctxt "ddui"
 msgid "Delete : "
 msgstr ""
 
-#: src/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/array/line.mustache
-msgctxt "ddui"
-msgid "Delete line"
-msgstr ""
-
 #: src/vendor/Anakeen/Routes/Ui/Templates/document-view.html.mustache
 #, fuzzy
 msgctxt "ddui"
@@ -42,11 +37,6 @@ msgstr "Document deleted at"
 msgctxt "ddui"
 msgid "DocumentDeleted"
 msgstr "Document deleted at"
-
-#: src/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/array/line.mustache
-msgctxt "ddui"
-msgid "Drag to move line"
-msgstr ""
 
 #: src/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/array/content.mustache
 msgctxt "ddui"
@@ -73,8 +63,3 @@ msgstr "Revision created at"
 msgctxt "ddui"
 msgid "RevisionCreated"
 msgstr "Revision created at"
-
-#: src/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/array/line.mustache
-msgctxt "ddui"
-msgid "Select line"
-msgstr ""
