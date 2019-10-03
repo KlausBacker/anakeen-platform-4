@@ -8,8 +8,9 @@ tmpot/
 src/public/login/dist/
 src/public/Anakeen/
 src/public/uiAssets/
+src/public/Images/
 src/vendor/Anakeen/Components/translation.json
-Tests/src/public/Anakeen/
+Tests/src/public/Anakeen
 src/public/uiAssets/
 Makefile.local
 .anakeen-cli.xml
