@@ -1,0 +1,338 @@
+#!/bin/bash
+#
+# ted  This is the init script for starting up the Transformation Engine
+#      server
+#
+# chkconfig: 2345 99 01
+# description: Starts and stops the request and rendering backend daemon
+
+### BEGIN INIT INFO
+# Provides:          ted
+# Required-Start:    $all
+# Required-Stop:     $all
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: This is the init script for starting up the Transformation Engine server
+# Description:       This is the init script for starting up the Transformation Engine server
+### END INIT INFO
+
+function main {
+    local MY_PATH=$(readlink -f "$0")
+
+    cd /
+
+    # Source function library.
+    . /lib/lsb/init-functions
+
+    # Find the name of the script
+    NAME=$(basename "$0")
+    if [ ${NAME:0:1} = "S" -o ${NAME:0:1} = "K" ]
+    then
+	NAME=${NAME:3}
+    fi
+
+    # Try to locate TE_HOME from script pathname
+    if [ -z "$TE_HOME" ]; then
+	local DIRNAME=$(dirname "$MY_PATH")
+	export TE_HOME=$(readlink -f "$DIRNAME/../")
+    fi
+
+    # Set defaults for configuration variables
+    PID_DIR=/var/run
+    TE_REQUEST_PID=$PID_DIR/te-request-server.pid
+    TE_RENDERING_PID=$PID_DIR/te-rendering-server.pid
+    TE_OOO_PID=$PID_DIR/te-ooo-server.pid
+    TE_TIKA_PID=$PID_DIR/te-tika-server.pid
+
+    TE_PG_SERVICE=te
+    TE_SERVER_DEBUG=no
+    PORT=51968
+    LISTEN_ADDRESS=0.0.0.0
+    REQUEST_MAX_CLIENT=15
+    RENDERING_MAX_CLIENT=10
+    TE_SERVER_USER=root
+    TE_WORK_DIR=/var/tmp
+
+    # Get config.
+    . "$TE_HOME/etc/te.conf"
+    # Services
+    . "$TE_HOME/lib/services/common.sh"
+    . "$TE_HOME/lib/services/te-request-server.sh"
+    . "$TE_HOME/lib/services/te-rendering-server.sh"
+    . "$TE_HOME/lib/services/te-ooo-server.sh"
+    . "$TE_HOME/lib/services/te-tika-server.sh"
+
+    check_environment "$1"
+
+    # Postgresql database service
+    DB="service='$TE_PG_SERVICE'"
+
+    # See how we were called.
+    case "$1" in
+	start)
+	    shift
+	    start "$@"
+	    ;;
+	stop)
+	    shift
+	    stop "$@"
+	    ;;
+	init)
+	    init
+	    ;;
+	status)
+	    shift
+	    status2 "$@"
+	    ;;
+	restart)
+	    shift
+	    restart "$@"
+	    ;;
+	check)
+	    check
+	    ;;
+	cleantmpfiles)
+	    cleantmpfiles "$2"
+	    ;;
+	run)
+	    shift
+	    run "$@"
+	    ;;
+	*)
+	    echo "Usage: $0 {init|start|stop|status|restart|check|cleantmpfiles}"
+	    exit 1
+    esac
+
+    exit $?
+}
+
+function _service {
+    local RET
+    local PID
+    local CMD=$1
+    shift
+    case $CMD in
+	start)
+	    local SERVICE_LABEL=$1
+	    local SERVICE_NAME=$2
+	    local SERVICE_PID_FILE=$3
+	    echo -n "Starting $SERVICE_LABEL... "
+	    "${TE_HOME}/bin/runas.php" "$TE_SERVER_USER" $(printf "%q run %q" "$0" "$SERVICE_NAME") > /dev/null 2>&1 &
+	    sleep 1
+	    kill -0 $!
+	    RET=$?
+	    echo $! > "$SERVICE_PID_FILE"
+	    echo $!
+	    return $RET
+	    ;;
+	stop)
+	    local SERVICE_LABEL=$1
+	    local SERVICE_NAME=$2
+	    local SERVICE_PID_FILE=$3
+	    echo -n "Stopping $SERVICE_LABEL... "
+	    PID=$(cat "$SERVICE_PID_FILE")
+	    kill -TERM "$PID" 1> /dev/null 2>&1
+	    RET=$?
+	    rm -f "${SERVICE_PID_FILE}" > /dev/null 2>&1
+	    echo "$PID"
+	    return $RET
+	    ;;
+	status)
+	    local SERVICE_PID_FILE=$1
+	    PID=$(cat "$SERVICE_PID_FILE")
+	    kill -0 "$PID" 1> /dev/null 2>&1
+	    RET=$?
+	    echo "$PID"
+	    return $RET
+	    ;;
+	*)
+	    echo "Unknown _service command '$CMD'."
+	    exit 1
+    esac	
+}
+
+function start {
+    if [ $# -le 0 ]; then
+	set \
+	    te-ooo-server \
+	    te-tika-server \
+	    te-request-server \
+	    te-rendering-server \
+	    ;
+    fi
+
+    local GLOBAL_STATUS=0
+    local SERVICE_NAME=""
+    for SERVICE_NAME in "$@"; do
+	case "${SERVICE_NAME}" in
+	    te-request-server)
+		te_request_server start
+		;;
+	    te-rendering-server)
+		te_rendering_server start
+		;;
+	    te-tika-server)
+		te_tika_server start
+		;;
+	    te-ooo-server)
+		te_ooo_server start
+		;;
+	    *)
+		echo "Unknown service name '${SERVICE_NAME}'!"
+		GLOBAL_STATUS=1
+		;;
+	esac
+	if [ $? -ne 0 ]; then
+	    GLOBAL_STATUS=1
+	fi
+    done
+
+    if [ $GLOBAL_STATUS -eq 0 ]; then
+	log_success_msg "Starting ${NAME} service: " "OK"
+	echo
+    else
+	log_failure_msg "Starting ${NAME} service: " "FAILED"
+	echo
+	return 1
+    fi
+}
+
+function stop {
+    if [ $# -le 0 ]; then
+	set \
+	    te-request-server \
+	    te-rendering-server \
+	    te-tika-server \
+	    te-ooo-server \
+	    ;
+    fi
+
+    local GLOBAL_STATUS=0
+    local SERVICE_NAME=""
+    for SERVICE_NAME in "$@"; do
+	case "${SERVICE_NAME}" in
+	    te-request-server)
+		te_request_server stop
+		;;
+	    te-rendering-server)
+		te_rendering_server stop
+		;;
+	    te-tika-server)
+		te_tika_server stop
+		;;
+	    te-ooo-server)
+		te_ooo_server stop
+		;;
+	    *)
+		echo "Unknown service name '${SERVICE_NAME}'!"
+		GLOBAL_STATUS=1
+		;;
+	esac
+	if [ $? -ne 0 ]; then
+	    GLOBAL_STATUS=1
+	fi
+    done
+
+    if [ $GLOBAL_STATUS -eq 0 ]; then
+	log_success_msg "Stopping ${NAME} service: " "OK"
+	echo
+    else
+	log_failure_msg "Stopping ${NAME} service: " "FAILED"
+	echo
+    fi
+
+    sleep 3
+
+    return $GLOBAL_STATUS
+}
+
+function restart  {
+    stop "$@"
+    start "$@"
+}
+
+function status2 {
+    if [ $# -le 0 ]; then
+	set \
+	    te-request-server \
+	    te-rendering-server \
+	    te-tika-server \
+	    te-ooo-server \
+	    ;
+    fi
+
+    local PID
+    local GLOBAL_STATUS=0
+    local SERVICE_NAME=""
+    for SERVICE_NAME in "$@"; do
+	case "${SERVICE_NAME}" in
+	    te-request-server)
+		te_request_server status
+		;;
+	    te-rendering-server)
+		te_rendering_server status
+		;;
+	    te-tika-server)
+		te_tika_server status
+		;;
+	    te-ooo-server)
+		te_ooo_server status
+		;;
+	    *)
+		echo "Unknown service name '${SERVICE_NAME}'!"
+		GLOBAL_STATUS=1
+		;;
+	esac
+	if [ $? -ne 0 ]; then
+	    GLOBAL_STATUS=1
+	fi
+    done
+    return $GLOBAL_STATUS
+}
+
+function exec_respawn {
+    local COMMAND_NAME=$1
+    shift
+    exec "${TE_HOME}/bin/respawn" -n "${COMMAND_NAME}" "$@"
+}
+
+function run {
+    if [ "$TE_SERVER_DEBUG" = "yes" ]; then
+	    exec 1> >(logger -t "$1")
+    else
+	    exec 1> /dev/null
+    fi
+    exec 2>&1
+    case "$1" in
+	    te-tika-server)
+		    exec_respawn "$1" java -jar "$TE_TIKA_SERVER_JAR" --host="$TE_TIKA_SERVER_HOST" --port="$TE_TIKA_SERVER_PORT"
+		    ;;
+	    te-ooo-server)
+		    case "$TE_OOO_PRODUCTKEY" in
+			OpenOffice*)
+			    exec_respawn "$1" "$TE_OOO_SERVER_SOFFICE" -headless -invisible -nofirststartwizard -accept="socket,host=$TE_OOO_SERVER_HOST,port=$TE_OOO_SERVER_PORT;urp;"
+			    ;;
+			*)
+			    exec_respawn "$1" "$TE_OOO_SERVER_SOFFICE" --headless --invisible --nofirststartwizard --accept="socket,host=$TE_OOO_SERVER_HOST,port=$TE_OOO_SERVER_PORT;urp;"
+			    ;;
+		    esac
+		    exit 1
+		    ;;
+	    te-request-server)
+		    exec_respawn "$1" "$TE_HOME/bin/te_request_server" --port="$PORT" --laddr="$LISTEN_ADDRESS" --db="$DB" --maxclient="$REQUEST_MAX_CLIENT" --work-directory="$TE_WORK_DIR"
+		    ;;
+	    te-rendering-server)
+		    exec_respawn "$1" "$TE_HOME/bin/te_rendering_server" --db="$DB" --maxclient="$RENDERING_MAX_CLIENT" --work-directory="$TE_WORK_DIR" --loginfile="$TE_HOME/etc/te.conf" --purge-days="$PURGE_DAYS" --purge-interval="$PURGE_INTERVAL"
+		    ;;
+	    *)
+		    echo "Unknown run command '$1'."
+		    exit 1
+		    ;;
+    esac
+    echo "Error executing subcommand '$1'."
+    exit 1
+}
+
+main "$@"
+
+# vim: tabstop=8 softtabstop=4 shiftwidth=4 noexpandtab
