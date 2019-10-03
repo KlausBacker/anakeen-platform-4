@@ -53,12 +53,12 @@ exports.writeTemplate = (packagePath, { vendorName, moduleName, namespace }) => 
       fsUtils
         .writeFiles(
           {
-            path: path.join(accountsDir, `100-${moduleName}Groups.xml`),
-            content: groupXml
+            path: path.join(accountsDir, `100-${moduleName}Roles.xml`),
+            content: rolesXml
           },
           {
-            path: path.join(accountsDir, `110-${moduleName}Roles.xml`),
-            content: rolesXml
+            path: path.join(accountsDir, `110-${moduleName}Groups.xml`),
+            content: groupXml
           },
           {
             path: path.join(accountsDir, `120-${moduleName}Users.xml`),
