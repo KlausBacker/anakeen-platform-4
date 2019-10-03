@@ -6,7 +6,8 @@ use Anakeen\Router\Exception;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Accounts\SearchAccounts;
 
-class AccountInfos {
+class AccountInfos
+{
     /**
      * @param \Slim\Http\request $request
      * @param \Slim\Http\response $response
@@ -23,7 +24,7 @@ class AccountInfos {
             $search->addFilter("login = '%s'", pg_escape_string($args['login']));
             $list = $search->search();
 
-            $result = $list->current();        
+            $result = $list->current();
             $responseData = self::formatAccount($result);
             return ApiV2Response::withData($response, $responseData);
         } else {
@@ -33,7 +34,8 @@ class AccountInfos {
         }
     }
 
-    public static function formatAccount($account) {
+    public static function formatAccount($account)
+    {
         return [
             "login" => $account->login,
             "id" => $account->id,

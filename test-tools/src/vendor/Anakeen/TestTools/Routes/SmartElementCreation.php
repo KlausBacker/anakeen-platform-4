@@ -50,7 +50,7 @@ class SmartElementCreation
                 $exception->setHttpStatus("500", "Unable to create the SmartElement");
                 throw $exception;
             }
-        }else{
+        } else {
             $exception = new Exception("ANKTEST002", $smartElement->id, $error);
             $exception->setHttpStatus("400", "Structure identifier is required");
             throw $exception;

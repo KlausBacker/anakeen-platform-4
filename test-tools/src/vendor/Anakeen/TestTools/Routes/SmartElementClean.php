@@ -40,5 +40,5 @@ class SmartElementClean
             $exception->setHttpStatus("400", "test tag is required");
             throw $exception;
         }
-    } 
+    }
 }
