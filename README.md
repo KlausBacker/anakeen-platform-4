@@ -42,3 +42,5 @@ Pour mettre en place pimp-my-log
 1. Lancer `make -C .devtool/docker install-pimp-my-log`
 2. Copier le contenu du fichier [001-anakeen-logs.conf.default](.devtool/docker/Docker/Volumes/php/etc/apache2/sites-enabled/custom-vhost/001-anakeen-logs.conf.default) en `001-anakeen-logs.conf`
 3. `make start-env`
+
+Les logs sont accessibles sur l'url http://localhost:8080/logs/
