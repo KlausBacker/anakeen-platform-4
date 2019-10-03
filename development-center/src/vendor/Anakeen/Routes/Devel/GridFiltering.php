@@ -77,6 +77,6 @@ class GridFiltering
             }
             return "where " . implode(" and ", $where);
         }
-        return "";
+        return "where true";
     }
 }

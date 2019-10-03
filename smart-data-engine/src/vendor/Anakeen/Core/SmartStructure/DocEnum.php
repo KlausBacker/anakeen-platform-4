@@ -112,14 +112,16 @@ create unique index i_docenum on docenum(name,  key);
      */
     protected function consolidateOrder()
     {
-        if (empty($this->eorder) || $this->eorder < 0) {
-            $sql = sprintf("select max(eorder) from docenum where name = '%s' ", pg_escape_string($this->name));
-            DbManager::query($sql, $newOrder, true, true);
+        if ($this->key !== EnumManager::EXTENDABLEKEY) {
+            if (empty($this->eorder) || $this->eorder < 0) {
+                $sql = sprintf("select max(eorder) from docenum where name = '%s' ", pg_escape_string($this->name));
+                DbManager::query($sql, $newOrder, true, true);
 
-            if ($newOrder > 0) {
-                $this->eorder = intval($newOrder) + 1;
-            } else {
-                $this->eorder = 1;
+                if ($newOrder > 0) {
+                    $this->eorder = intval($newOrder) + 1;
+                } else {
+                    $this->eorder = 1;
+                }
             }
         }
     }
@@ -128,9 +130,10 @@ create unique index i_docenum on docenum(name,  key);
     {
         if ($n > 0) {
             $sql = sprintf(
-                "update docenum set eorder=eorder + 1 where name = '%s'  and key != '%s' and eorder >= %d",
+                "update docenum set eorder=eorder + 1 where name = '%s'  and key != '%s' and key != '%s' and eorder >= %d",
                 pg_escape_string($this->name),
                 pg_escape_string($this->key),
+                pg_escape_string(EnumManager::EXTENDABLEKEY),
                 $n
             );
             DbManager::query($sql);
@@ -140,11 +143,16 @@ create unique index i_docenum on docenum(name,  key);
             $sqlPattern = <<<'SQL'
 UPDATE docenum SET eorder = neworder 
 from (SELECT *, nextval('%s') as neworder 
-   from (select * from docenum where  name='%s'  order by eorder) as tmpz) as w 
+   from (select * from docenum where  name='%s' and key != '%s' order by eorder) as tmpz) as w 
    where w.name=docenum.name  and docenum.key=w.key;
 SQL;
 
-            $sql .= sprintf($sqlPattern, $seqName, pg_escape_string($this->name));
+            $sql .= sprintf(
+                $sqlPattern,
+                $seqName,
+                pg_escape_string($this->name),
+                pg_escape_string(EnumManager::EXTENDABLEKEY)
+            );
             DbManager::query($sql);
         }
     }
@@ -199,7 +207,6 @@ SQL;
 
     public static function addEnum($name, EnumStructure $enumStruct)
     {
-
         $enum = new DocEnum("", array(
             $name,
             $enumStruct->key
@@ -232,7 +239,6 @@ SQL;
 
     public static function modifyEnum($name, EnumStructure $enumStruct)
     {
-
         $enum = new DocEnum("", array(
             $name,
             $enumStruct->key
@@ -259,7 +265,7 @@ SQL;
 
     public static function changeLocale($enumName, $enumId, $lang, $label)
     {
-        $enum = EnumManager::getEnums($enumName);
+        EnumManager::getEnums($enumName);
 
         $e = new EnumCustomLocale($enumName);
         $e->addEntry($enumId, $label, $lang);

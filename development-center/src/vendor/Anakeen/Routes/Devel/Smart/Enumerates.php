@@ -3,6 +3,7 @@
 namespace Anakeen\Routes\Devel\Smart;
 
 use Anakeen\Core\DbManager;
+use Anakeen\Core\EnumManager;
 use Anakeen\Routes\Devel\GridFiltering;
 
 /**
@@ -22,13 +23,24 @@ class Enumerates extends GridFiltering
 
     public function doRequest()
     {
-        $data=[];
+        $data = [];
 
-        $this->sWhere= $this->getSqlWhere();
+        $this->sWhere = $this->getSqlWhere();
 
-        $sql = sprintf("select * from docenum %s order by name, eorder offset %d", $this->sWhere, $this->offset);
+        $sql = sprintf(
+            "select * from docenum %s and key != '%s' order by name, eorder offset %d",
+            $this->sWhere,
+            EnumManager::EXTENDABLEKEY,
+            $this->offset
+        );
         if ($this->slice !== 'all') {
-            $sql = sprintf("select * from docenum %s order by name, eorder limit %d offset %d", $this->sWhere, $this->slice, $this->offset);
+            $sql = sprintf(
+                "select * from docenum %s and key != '%s' order by name, eorder limit %d offset %d",
+                $this->sWhere,
+                EnumManager::EXTENDABLEKEY,
+                $this->slice,
+                $this->offset
+            );
         }
         DbManager::query($sql, $results);
         foreach ($results as &$result) {
@@ -45,7 +57,12 @@ class Enumerates extends GridFiltering
     protected function getRequestParameters()
     {
         $requestData = parent::getRequestParameters();
-        DbManager::query("select count(name) from docenum {$this->sWhere}", $c, true, true);
+        DbManager::query(
+            sprintf("select count(name) from docenum {$this->sWhere} and key != '%s'", EnumManager::EXTENDABLEKEY),
+            $c,
+            true,
+            true
+        );
         $requestData["total"] = intval($c);
         return $requestData;
     }
