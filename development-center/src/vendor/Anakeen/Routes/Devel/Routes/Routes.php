@@ -9,7 +9,7 @@ class Routes
 {
     protected $currentNameSpace = null;
     protected $currentName = null;
-    protected $regExpMiddleware = null;
+    protected $regExpMiddleware = [];
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $allRoutes = new \Anakeen\Router\RouterManager();
