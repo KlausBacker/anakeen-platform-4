@@ -18,6 +18,10 @@ clean:
 	rm -f $(TAR_DIST_NAME)-$(VERSION).zip
 	rm -f $(TAR_DIST_NAME)-$(VERSION).autoinstall.php
 
+app-autorelease:
+app-test-autorelease:
+lint:
+po:
 app-test:
 app-all: app
 deploy:
