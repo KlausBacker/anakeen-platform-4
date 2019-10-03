@@ -3,38 +3,38 @@ const fsUtils = require("../plugins/files");
 const path = require("path");
 const xml2js = require("xml2js");
 
-const createGroupsXML = namespace => {
+const createGroupsXML = () => {
   return {
-    accounts: {
-      groups: {
-        $: {
-          namespace: namespace
-        }
-      }
+    "accounts:accounts": {
+      $: {
+        "xmlns:accounts": "https://platform.anakeen.com/4/schemas/account/1.0"
+      },
+
+      "accounts:groups": {}
     }
   };
 };
 
-const createRolesXML = namespace => {
+const createRolesXML = () => {
   return {
-    accounts: {
-      roles: {
-        $: {
-          namespace: namespace
-        }
-      }
+    "accounts:accounts": {
+      $: {
+        "xmlns:accounts": "https://platform.anakeen.com/4/schemas/account/1.0"
+      },
+
+      "accounts:roles": {}
     }
   };
 };
 
-const createUsersXML = namespace => {
+const createUsersXML = () => {
   return {
-    accounts: {
-      users: {
-        $: {
-          namespace: namespace
-        }
-      }
+    "accounts:accounts": {
+      $: {
+        "xmlns:accounts": "https://platform.anakeen.com/4/schemas/account/1.0"
+      },
+
+      "accounts:users": {}
     }
   };
 };
@@ -53,12 +53,12 @@ exports.writeTemplate = (packagePath, { vendorName, moduleName, namespace }) => 
       fsUtils
         .writeFiles(
           {
-            path: path.join(accountsDir, `100-${moduleName}Groups.xml`),
-            content: groupXml
+            path: path.join(accountsDir, `100-${moduleName}Roles.xml`),
+            content: rolesXml
           },
           {
-            path: path.join(accountsDir, `110-${moduleName}Roles.xml`),
-            content: rolesXml
+            path: path.join(accountsDir, `110-${moduleName}Groups.xml`),
+            content: groupXml
           },
           {
             path: path.join(accountsDir, `120-${moduleName}Users.xml`),
