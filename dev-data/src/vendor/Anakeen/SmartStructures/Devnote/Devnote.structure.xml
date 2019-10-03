@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:enumerates>
+        <smart:enum-configuration name="notelevel" extendable="true" >
+            <smart:enum name="internal" label="Internal note"/>
+            <smart:enum name="confidential" label="Confidential note"/>
+        </smart:enum-configuration>
+    </smart:enumerates>
     <smart:structure-configuration name="DEVNOTE" label="Note">
         <smart:icon file="devnote.png"/>
         <smart:class>Anakeen\SmartStructures\Devnote\DevnoteBehavior</smart:class>
@@ -10,6 +16,7 @@
                 <smart:field-text name="note_author_display" is-title="true" access="Read" label="Author name"/>
                 <smart:field-date name="note_redactdate" access="ReadWrite" label="Redaction date"/>
                 <smart:field-text name="note_location" access="ReadWrite" label="City"/>
+                <smart:field-enum name="note_level" access="ReadWrite" label="Level" relation="notelevel"/>
                 <smart:field-set name="note_co_authors" type="array" access="ReadWrite" label="Co-authors">
                     <smart:field-docid name="note_coauthor" relation="DEVPERSON" access="ReadWrite" label="Co-author list" multiple="true"/>
                     <smart:field-text name="note_name" access="Read" label="Co-author name"/>

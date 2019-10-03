@@ -11,6 +11,7 @@ class EnumManager
     const _cEnum = "_CACHE_ENUM";
     const _cParent = "_CACHE_PARENT";
     const CALLABLEKEY = '::function::';
+    const EXTENDABLEKEY = '.extendable';
     private static $_cache = array();
 
     /**
@@ -38,7 +39,7 @@ class EnumManager
             return $cached;
         }
 
-        $sql = sprintf("select * from docenum where name='%s' order by eorder", pg_escape_string($name));
+        $sql = sprintf("select * from docenum where name='%s' and key != '%s' order by eorder", pg_escape_string($name), pg_escape_string(self::EXTENDABLEKEY));
 
         DbManager::query($sql, $dbEnums);
 
@@ -81,6 +82,14 @@ class EnumManager
             return self::_cacheFetch(self::_cEnum, $name, null, $returnDisabled);
         }
         return $enums;
+    }
+
+    public static function isExtendable(string $enumName)
+    {
+        $sql = sprintf("select name from docenum where name='%s' and key = '%s' ", pg_escape_string($enumName), pg_escape_string(self::EXTENDABLEKEY));
+
+        DbManager::query($sql, $exists, true, true);
+        return $exists !== false;
     }
 
     protected static function getCallableEnums(string $callableString)

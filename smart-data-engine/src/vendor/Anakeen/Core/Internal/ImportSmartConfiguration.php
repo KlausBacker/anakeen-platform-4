@@ -724,6 +724,14 @@ class ImportSmartConfiguration
              */
             if ($enumConfig->getAttribute("extendable") !== "true") {
                 $data[] = ["RESET", "enums", $enumConfig->getAttribute("name")];
+            } else {
+                $data[] = [
+                    0 => "ENUM",
+                    "name" => $enumConfig->getAttribute("name"),
+                    "key" => EnumManager::EXTENDABLEKEY,
+                    "label" => "",
+                    "parentKey" => ""
+                ];
             }
             $data = array_merge($data, $this->extractEnum($enumConfig, $enumConfig->getAttribute("name")));
         }
@@ -740,7 +748,7 @@ class ImportSmartConfiguration
         /** @var \DOMNodeList $enumCall */
         if ($enumCall->length === 1) {
             /** @var \DOMElement $item0 */
-            $item0=$enumCall->item(0);
+            $item0 = $enumCall->item(0);
             return $this->extractEnumCallable($item0, $enumName);
         }
         $enumItems = $this->evaluate($enumConfig, "{$this->smartPrefix}:enum");

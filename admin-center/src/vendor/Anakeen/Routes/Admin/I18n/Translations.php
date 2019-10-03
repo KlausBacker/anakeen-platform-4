@@ -4,6 +4,7 @@ namespace Anakeen\Routes\Admin\I18n;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
+use Anakeen\Core\EnumManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure\Attributes;
 use Anakeen\Core\Utils\Strings;
@@ -278,7 +279,7 @@ class Translations
 
     protected function addEnumLocale(&$data)
     {
-        DbManager::query("select * from docenum", $enums);
+        DbManager::query(sprintf("select * from docenum where key != '%s'", EnumManager::EXTENDABLEKEY), $enums);
 
         foreach ($enums as $enum) {
             $entry = [
