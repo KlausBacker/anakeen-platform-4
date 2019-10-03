@@ -1,15 +1,10 @@
 import "@progress/kendo-ui/js/kendo.treelist";
-import "@progress/kendo-ui/js/kendo.columnmenu";
 import { checksum, convertAclToKendoStyle } from "./utils/group";
 
 export default {
   name: "ank-dev-profile",
   props: {
     profileId: [Number, String],
-    defaultColumns: {
-      type: Array,
-      default: () => ["create", "icreate", "view", "edit", "delete"]
-    },
     onlyExtendedAcls: false,
     detachable: false,
     onRefProfileClickCallback: {
@@ -26,7 +21,6 @@ export default {
   watch: {
     profileId() {
       this.profileTreeReady = false;
-      this.displayAllElements = false;
       this.privateScope.initProfileComponent();
     },
     showLabels(newValue, oldValue) {
@@ -34,20 +28,50 @@ export default {
         this.profileTreeReady = false;
         this.privateScope.initProfileComponent();
       }
+    },
+    displayAllElements(newValue) {
+      window.localStorage.setItem("profile.display.all.elements", newValue);
+    },
+    showColumns(newValue) {
+      if (newValue) {
+        this.columns.forEach(item => {
+          if (!this.defaultColumns.includes(item.field.split(".")[1])) {
+            $(this.$refs.profileTreeList)
+              .data("kendoTreeList")
+              .showColumn(item.field);
+          }
+        });
+        window.localStorage.setItem("profile.show.columns", newValue);
+      } else {
+        this.columns.forEach(item => {
+          if (!this.defaultColumns.includes(item.field.split(".")[1])) {
+            $(this.$refs.profileTreeList)
+              .data("kendoTreeList")
+              .hideColumn(item.field);
+          }
+        });
+        window.localStorage.setItem("profile.show.columns", newValue);
+        this.profileTreeReady = false;
+        this.privateScope.initProfileComponent();
+      }
     }
   },
   data: () => ({
+    hiddenCol: ["modify", "send", "unlock", "confidential"],
+    defaultColumns: [],
     title: "",
     id: "",
     name: "",
     refProfile: null,
-    displayAllElements: false,
+    displayAllElements: window.localStorage.getItem("profile.display.all.elements") === "true" ? true : false,
     labelRotation: 300,
     columnWidth: "3rem",
     profileTreeReady: false,
     showError: false,
     errorToDisplay: "",
-    showLabels: false
+    showLabels: false,
+    showColumns: window.localStorage.getItem("profile.show.columns") === "true" ? true : false,
+    columns: []
   }),
   devCenterRefreshData() {
     this.profileTreeReady = false;
@@ -213,6 +237,11 @@ export default {
         }
       },
       initTreeView: data => {
+        data.properties.acls.map(currentElement => {
+          if (!this.hiddenCol.includes(currentElement.name)) {
+            this.defaultColumns.push(currentElement.name);
+          }
+        });
         const lineRender = (column, callback) => {
           return currentLine => {
             return callback(column, currentLine);
@@ -231,50 +260,79 @@ export default {
               "data-transformation": "header-rotate"
             };
           }
-          return {
-            field: `acls.${currentElement.name}`,
-            title: this.showLabels ? `${currentElement.label}` : `${currentElement.name}`,
-            attributes: {
-              class: "rightColumn"
-            },
-            headerAttributes,
-            headerTemplate: `<div class="header-acl-label">
+          if (!this.showColumns) {
+            return {
+              field: `acls.${currentElement.name}`,
+              title: this.showLabels ? `${currentElement.label}` : `${currentElement.name}`,
+              attributes: {
+                class: "rightColumn"
+              },
+              headerAttributes,
+              headerTemplate: `<div class="header-acl-label">
                        <span class="acl-label">${
                          this.showLabels ? currentElement.label : currentElement.name
                        }</span></div>`,
-            width: this.columnWidth,
-            hidden: !this.defaultColumns.reduce((accumulator, currentColumn) => {
-              if (accumulator) {
-                return true;
-              }
-              if (this.onlyExtendedAcls && currentElement.extended) {
-                return true;
-              }
-              if (this.onlyExtendedAcls) {
-                return false;
-              }
-              return currentColumn === currentElement.name;
-            }, false),
-            template: lineRender(currentElement.name, (column, currentLine) => {
-              if (!currentLine.acls) {
-                return "";
-              }
-              switch (currentLine.acls[column]) {
-                case "set":
-                  return `<span class="k-icon k-i-kpi-status-open right-set"></span>`;
-                case "inherit":
-                  return `<span class="k-icon k-i-kpi-status-open right-inherited"></span>`;
-                default:
+              width: this.columnWidth,
+              hidden: !this.defaultColumns.reduce((accumulator, currentColumn) => {
+                if (accumulator) {
+                  return true;
+                }
+                if (this.onlyExtendedAcls && currentElement.extended) {
+                  return true;
+                }
+                if (this.onlyExtendedAcls) {
+                  return false;
+                }
+                return currentColumn === currentElement.name;
+              }, false),
+              template: lineRender(currentElement.name, (column, currentLine) => {
+                if (!currentLine.acls) {
                   return "";
-              }
-            })
-          };
+                }
+                switch (currentLine.acls[column]) {
+                  case "set":
+                    return `<span class="k-icon k-i-kpi-status-open right-set"></span>`;
+                  case "inherit":
+                    return `<span class="k-icon k-i-kpi-status-open right-inherited"></span>`;
+                  default:
+                    return "";
+                }
+              })
+            };
+          } else {
+            return {
+              field: `acls.${currentElement.name}`,
+              title: this.showLabels ? `${currentElement.label}` : `${currentElement.name}`,
+              attributes: {
+                class: "rightColumn"
+              },
+              headerAttributes,
+              headerTemplate: `<div class="header-acl-label">
+                       <span class="acl-label">${
+                         this.showLabels ? currentElement.label : currentElement.name
+                       }</span></div>`,
+              width: this.columnWidth,
+              template: lineRender(currentElement.name, (column, currentLine) => {
+                if (!currentLine.acls) {
+                  return "";
+                }
+                switch (currentLine.acls[column]) {
+                  case "set":
+                    return `<span class="k-icon k-i-kpi-status-open right-set"></span>`;
+                  case "inherit":
+                    return `<span class="k-icon k-i-kpi-status-open right-inherited"></span>`;
+                  default:
+                    return "";
+                }
+              })
+            };
+          }
         });
+        this.columns = columns;
         this.dataSource.bind("change", () => {
           treeList.data("kendoTreeList").autoFitColumn("title");
         });
         const treeList = $(this.$refs.profileTreeList).kendoTreeList({
-          columnMenu: true,
           columns: [
             {
               field: "title",
