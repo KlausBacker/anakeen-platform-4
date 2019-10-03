@@ -12,14 +12,33 @@ export interface ISmartElementValues {
   [fieldId: string]: { value: string, displayValue: string, [other: string]: any };
 }
 
+export interface IAccountData {
+  type: string,
+  login: string,
+  roles: string[]
+}
+
 export default abstract class AbstractContext {
   protected credentials!: Credentials;
   constructor(credentials: Credentials) {
     this.credentials = credentials;
   }
 
-  public getAccount(login: string): Account {
-    return new Account().logAs(login);
+  public async getAccount(login: string | IAccountData) {
+    if (typeof login === "string") {
+      const response = await fetch(
+        `${this.credentials.uri}/api/v2/test-tools/account/${login}/`,
+        {
+          headers: this.credentials.getBasicHeader()
+        }
+      );
+      const responseJson = await response.json();
+      if (responseJson.success && responseJson.data) {
+        return new Account(responseJson.data);
+      } else {
+        throw new Error("Unfound Smart Element data");
+      }
+    }
   }
 
   // eslint-disable-next-line no-unused-vars

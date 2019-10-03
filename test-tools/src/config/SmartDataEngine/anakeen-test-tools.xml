@@ -10,6 +10,33 @@
         <sde:access ns="AnakeenTestTools">TestUser</sde:access>
       </sde:requiredAccess>
     </sde:route>
+    <sde:route name="TestCleanSmartElement">
+      <sde:callable>Anakeen\TestTools\Routes\SmartElementClean</sde:callable>
+      <sde:method>DELETE</sde:method>
+      <sde:pattern>/api/v2/test-tools/clean/{tag}/</sde:pattern>
+      <sde:description>Clean test env</sde:description>
+      <sde:requiredAccess>
+        <sde:access ns="AnakeenTestTools">TestUser</sde:access>
+      </sde:requiredAccess>
+    </sde:route>
+    <sde:route name="TestGetAccount">
+      <sde:callable>Anakeen\TestTools\Routes\AccountInfos</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/api/v2/test-tools/account/{login}/</sde:pattern>
+      <sde:description>Get account informations</sde:description>
+      <sde:requiredAccess>
+        <sde:access ns="AnakeenTestTools">TestUser</sde:access>
+      </sde:requiredAccess>
+    </sde:route>
+    <sde:route name="TestCreateAccount">
+      <sde:callable>Anakeen\TestTools\Routes\CreateAccount</sde:callable>
+      <sde:method>POST</sde:method>
+      <sde:pattern>/api/v2/test-tools/accounts/</sde:pattern>
+      <sde:description>Create account</sde:description>
+      <sde:requiredAccess>
+        <sde:access ns="AnakeenTestTools">TestUser</sde:access>
+      </sde:requiredAccess>
+    </sde:route>
    </sde:routes>
    <sde:accesses namespace="AnakeenTestTools">
         <sde:access name="TestUser">

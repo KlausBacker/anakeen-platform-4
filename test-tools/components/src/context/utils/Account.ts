@@ -1,9 +1,15 @@
 interface IRole {
   id: string;
+  login: string;
 }
 
-interface IGroup {
-  id: string;
+interface AccountProps {
+  id: string | number;
+  login: string;
+  data: any;
+  type: string;
+  roles: IRole[];
+  groups: AccountProps[];
 }
 
 export default class Account {
@@ -12,7 +18,16 @@ export default class Account {
   protected data: any;
   protected type!: string;
   protected roles!: IRole[];
-  protected groups!: IGroup[];
+  protected groups!: AccountProps[];
+
+  constructor(data: AccountProps) {
+    this.id = data.id;
+    this.login = data.login;
+    this.data = data.data;
+    this.type = data.type;
+    this.roles = data.roles;
+    this.groups = data.groups;
+  } 
 
   public logAs(login: string): Account {
     console.log("Login", login);
