@@ -3,38 +3,38 @@ const fsUtils = require("../plugins/files");
 const path = require("path");
 const xml2js = require("xml2js");
 
-const createGroupsXML = namespace => {
+const createGroupsXML = () => {
   return {
-    accounts: {
-      groups: {
-        $: {
-          namespace: namespace
-        }
-      }
+    "accounts:accounts": {
+      $: {
+        "xmlns:accounts": "https://platform.anakeen.com/4/schemas/account/1.0"
+      },
+
+      "accounts:groups": {}
     }
   };
 };
 
-const createRolesXML = namespace => {
+const createRolesXML = () => {
   return {
-    accounts: {
-      roles: {
-        $: {
-          namespace: namespace
-        }
-      }
+    "accounts:accounts": {
+      $: {
+        "xmlns:accounts": "https://platform.anakeen.com/4/schemas/account/1.0"
+      },
+
+      "accounts:roles": {}
     }
   };
 };
 
-const createUsersXML = namespace => {
+const createUsersXML = () => {
   return {
-    accounts: {
-      users: {
-        $: {
-          namespace: namespace
-        }
-      }
+    "accounts:accounts": {
+      $: {
+        "xmlns:accounts": "https://platform.anakeen.com/4/schemas/account/1.0"
+      },
+
+      "accounts:users": {}
     }
   };
 };
