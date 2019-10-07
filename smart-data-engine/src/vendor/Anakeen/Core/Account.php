@@ -1316,7 +1316,7 @@ union
         }
         if (!is_numeric($idRole)) {
             DbManager::query(sprintf(
-                "select id from users where login = '%'",
+                "select id from users where login = '%s'",
                 pg_escape_string($idRole)
             ), $idRoleW, true, true);
             if ($idRoleW) {
