@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:cli="https://platform.anakeen.com/4/schemas/cli/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="https://platform.anakeen.com/4/schemas/cli/1.0">
+
+    <xs:element name="config" type="cli:config" />
+
+    <xs:complexType name="config">
+        <xs:sequence>
+            <xs:element type="cli:contextConfig" name="contextConfig" minOccurs="0" />
+            <xs:element type="cli:controlConfig" name="controlConfig" minOccurs="0" />
+            <xs:element type="cli:composeConfig" name="composeConfig" minOccurs="0" />
+            <xs:element type="cli:path" name="path" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="contextConfig">
+        <xs:sequence>
+            <xs:element type="cli:contextUrl" name="contextUrl" minOccurs="0" />
+            <xs:element type="cli:contextUsername" name="contextUsername" minOccurs="0" />
+            <xs:element type="cli:contextPassword" name="contextPassword" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="contextUrl">
+        <xs:annotation>
+            <xs:documentation>Access url of the context part</xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:string"></xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="contextUsername">
+        <xs:annotation>
+            <xs:documentation>Login of the context part</xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:string"></xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="contextPassword">
+        <xs:annotation>
+            <xs:documentation>Password of context part</xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:string"></xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+
+    <xs:complexType name="controlConfig">
+        <xs:sequence>
+            <xs:element type="cli:controlUrl" name="controlUrl" minOccurs="0" />
+            <xs:element type="cli:controlUsername" name="controlUsername" minOccurs="0" />
+            <xs:element type="cli:controlPassword" name="controlPassword" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="controlUrl">
+        <xs:annotation>
+            <xs:documentation>Access url at control part</xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:string"></xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="controlUsername">
+        <xs:annotation>
+            <xs:documentation>Login of the control part</xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:string"></xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="controlPassword">
+        <xs:annotation>
+            <xs:documentation>Password of control part</xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:string"></xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+
+    <xs:complexType name="composeConfig">
+        <xs:sequence>
+            <xs:element type="cli:localRepo" name="localRepo" minOccurs="0" />
+            <xs:element type="cli:localSrc" name="localSrc" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="localRepo">
+        <xs:annotation>
+            <xs:documentation>Path to the local repo</xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:string"></xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="localSrc">
+        <xs:annotation>
+            <xs:documentation>Path to the local src</xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:string"></xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="path">
+        <xs:sequence>
+            <xs:element type="cli:sourcePath" name="sourcePath" minOccurs="0" />
+            <xs:element type="cli:targetPath" name="targetPath" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="sourcePath">
+        <xs:annotation>
+            <xs:documentation>Path of the source</xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:string"></xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="targetPath">
+        <xs:annotation>
+            <xs:documentation>Path where the build go</xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:string"></xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+</xs:schema>

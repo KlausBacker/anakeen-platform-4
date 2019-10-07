@@ -63,7 +63,7 @@ buildJS: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build JS $@${RESET_COLOR}\n"
 	$(YARN_BIN) buildJs
 
-app:
+app: buildJS
 	${ANAKEEN_CLI_BIN} build -t ${APP_OUTPUT_PATH}
 
 app-test:
