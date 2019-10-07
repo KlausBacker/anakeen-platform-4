@@ -56,6 +56,7 @@
   "license": "SEE LICENSE IN LICENSE",
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/user-interfaces.git",
   "devDependencies": {
+    "@anakeen/webpack-conf": "1.2.1",
     "@anakeen/anakeen-cli": "1.2.0",
     "@types/backbone": "^1.4.0",
     "@types/jquery": "^3.3.29",
@@ -82,7 +83,6 @@
   },
   "dependencies": {
     "@anakeen/theme-variables": "1.0.0",
-    "@anakeen/webpack-conf": "1.2.1",
     "@progress/kendo-theme-bootstrap": "^4.0.0",
     "@progress/kendo-ui": "^2019.3.917",
     "axios": "^0.19.0",
