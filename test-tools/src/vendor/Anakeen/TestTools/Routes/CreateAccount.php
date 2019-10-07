@@ -47,7 +47,7 @@ class CreateAccount
             if (isset($requestData["tag"])) {
                 $smartElement->addATag("ank_test", $requestData["tag"]);
             }
-            if(isset($requestData['users']) && $requestData['type'] === self::GROUP_TYPE) {
+            if (isset($requestData['users']) && $requestData['type'] === self::GROUP_TYPE) {
                 $this->addUsersToGroup($smartElement, $requestData['users']);
             }
         } else {
@@ -90,7 +90,8 @@ class CreateAccount
         }
         return $group;
     }
-    protected function addUsersToGroup($group, $users) {
+    protected function addUsersToGroup($group, $users)
+    {
         if (isset($users) && is_array($users)) {
             foreach ($users as $userLogin) {
                 $userAccount = AccountManager::getAccount($userLogin);
