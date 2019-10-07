@@ -6,6 +6,9 @@
     <!--app -->
     <public uri="./xsd/app/1.0/config.xsd" publicId="https://platform.anakeen.com/4/schemas/app/1.0"/>
     <uri uri="./xsd/app/1.0/config.xsd" name="https://platform.anakeen.com/4/schemas/app/1.0" />
+    <!--cli -->
+    <public uri="./xsd/cli/1.0/config.xsd" publicId="https://platform.anakeen.com/4/schemas/cli/1.0"/>
+    <uri uri="./xsd/cli/1.0/config.xsd" name="https://platform.anakeen.com/4/schemas/cli/1.0" />
     <!-- compose -->
     <public uri="./xsd/compose/1.0/compose.xsd" publicId="https://platform.anakeen.com/4/schemas/compose/1.0"/>
     <uri uri="./xsd/compose/1.0/compose.xsd" name="https://platform.anakeen.com/4/schemas/compose/1.0" />
