@@ -15,29 +15,28 @@ before(async () => {
 
 //On décrit le test
 describe("profileCompteRendu", () => {
-  let smartElement;
   let testContext;
-  let account;
   //On init un contexte de test
   //On créé les éléments qu'on va utiliser
   before(async () => {
     testContext = currentContext.initTest();
-    user1 = await testContext.getAccount({"type": "user", "login": "anakeen_user3"});
-    user2 = await testContext.getAccount({"type": "user", "login": "anakeen_user4"});
-    // group1 = await testContext.getAccount({"type": "group", "lastname": "Anakeen Test Groupe", "login": "anakeen_test_users_2", "users": ["anakeen_user3", "anakeen_user4"]});
+    const user = await testContext.getAccount("anakeen_user4");
+    const role = await testContext.getAccount("anakeen_user_test_role");
+    const result2 = await user.addRole(role);
+  
   });
 
   //On nettoie après le test
   after(async () => {
-    await testContext.clean();
+    // await testContext.clean();
   });
 
   //On créé un SE et on test les droits qui nous intéresse
   it("compteRenduProfile", async () => {
-    // compteRendu = await testContext.getSmartElement(
-    //   { smartStructure: "COMPTE_RENDU" },
-    //   { cr_auteur: user1, cr_title: "test" }
-    // );
+  //   compteRendu = await testContext.getSmartElement(
+  //     { smartStructure: "COMPTE_RENDU" },
+  //     { cr_auteur: user1, cr_title: "test" }
+  //   );
     expect(true);
     // await compteRendu.setState("redaction");
     // await expect(compteRendu)

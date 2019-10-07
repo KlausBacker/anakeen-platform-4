@@ -1,4 +1,4 @@
-import fetch from "node-fetch";
+import fetch, { RequestInit as FetchRequestInit } from "node-fetch";
 import Account from "./utils/Account";
 // eslint-disable-next-line no-unused-vars
 import Credentials from "./utils/Credentials";
@@ -26,15 +26,12 @@ export default abstract class AbstractContext {
 
   public async getAccount(login: string | IAccountData) {
     if (typeof login === "string") {
-      const response = await fetch(
-        `${this.credentials.uri}/api/v2/test-tools/account/${login}/`,
-        {
-          headers: this.credentials.getBasicHeader()
-        }
+      const response = await this.fetchApi(
+        `/api/v2/test-tools/account/${login}/`
       );
       const responseJson = await response.json();
       if (responseJson.success && responseJson.data) {
-        return new Account(responseJson.data);
+        return new Account(responseJson.data, (url, ...args) => this.fetchApi(url, ...args));
       } else {
         throw new Error("Unfound Smart Element data");
       }
@@ -44,20 +41,27 @@ export default abstract class AbstractContext {
   // eslint-disable-next-line no-unused-vars
   public async getSmartElement(seName: string | ISmartElementProps, seValues?: ISmartElementValues) {
     if (typeof seName === "string") {
-      const response = await fetch(
-        `${this.credentials.uri}/api/v2/smart-elements/${seName}.json?fields=document.properties.all,document.attributes.all`,
-        {
-          headers: this.credentials.getBasicHeader()
-        }
+      const response = await this.fetchApi(
+        `/api/v2/smart-elements/${seName}.json?fields=document.properties.all,document.attributes.all`
       );
       const responseJson = await response.json();
       if (responseJson.success && responseJson.data && responseJson.data.document) {
-        return new SmartElement(responseJson.data.document);
+        return new SmartElement(responseJson.data.document, (url, ...args) => this.fetchApi(url, ...args));
       } else {
         throw new Error("Unfound Smart Element data");
       }
     }
   }
 
-  public abstract clean();
+  public async abstract clean();
+
+  protected async fetchApi(url: string, init?: FetchRequestInit) {
+    let headers = this.credentials.getBasicHeader();
+    if (init && init.headers) {
+      headers = Object.assign({}, this.credentials.getBasicHeader(), init.headers);
+    }
+    let fetchOptions = Object.assign({}, init || {}, { headers });
+    console.log(fetchOptions);
+    return await fetch(this.credentials.getCompleteUrl(url), fetchOptions);
+  }
 }

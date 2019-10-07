@@ -2,9 +2,12 @@ export default class SmartElement {
   protected properties: any;
   protected smartFields: any;
 
-  constructor(smartElementData) {
+  private fetchApi: any = null;
+
+  constructor(smartElementData, fetch?: any) {
     this.properties = smartElementData.properties;
     this.smartFields = smartElementData.attributes;
+    this.fetchApi = fetch;
   }
 
   public changeState() {

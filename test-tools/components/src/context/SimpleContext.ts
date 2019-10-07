@@ -28,22 +28,19 @@ export default class SimpleContext extends AbstractContext {
       if (login && typeof login === "object") {
         const requestData: { [key: string]: any } = Object.assign({}, login);
         requestData.tag = this.testTagUid;
-        const response = await fetch(this.credentials.getCompleteUrl(url), {
+        const response = await this.fetchApi(url, {
           body: JSON.stringify(requestData),
           headers: {
-            "Content-Type": "application/json",
-            ...this.credentials.getBasicHeader()
+            "Content-Type": "application/json"
           },
           method: "post"
         });
-        const responseText = await response.text();
-        console.log(responseText);
-        /* const responseJson = await response.json();
+        const responseJson = await response.json();
         if (responseJson.success && responseJson.data) {
-          return new Account(responseJson.data);
+          return new Account(responseJson.data, (url, ...args) => this.fetchApi(url, ...args));
         } else {
           throw new Error("Unfound Smart Element data");
-        } */
+        }
       }
     }
   }
@@ -61,17 +58,16 @@ export default class SimpleContext extends AbstractContext {
           requestData.document.attributes = seValues;
         }
         requestData.document.options.tag = this.testTagUid;
-        const response = await fetch(this.credentials.getCompleteUrl(url), {
+        const response = await this.fetchApi(url, {
           body: JSON.stringify(requestData),
           headers: {
-            "Content-Type": "application/json",
-            ...this.credentials.getBasicHeader()
+            "Content-Type": "application/json"
           },
           method: "post"
         });
         const responseJson = await response.json();
         if (responseJson.success && responseJson.data && responseJson.data.document) {
-          return new SmartElement(responseJson.data.document);
+          return new SmartElement(responseJson.data.document, (url, ...args) => this.fetchApi(url, ...args));
         } else {
           throw new Error("Unfound Smart Element data");
         }
@@ -81,10 +77,9 @@ export default class SimpleContext extends AbstractContext {
 
   public async clean() {
     const url = SimpleContext.CLEAN_API.replace(/%s/g, this.testTagUid);
-    const response = await fetch(this.credentials.getCompleteUrl(url), {
+    const response = await this.fetchApi(url, {
       headers: {
         "Content-Type": "application/json",
-        ...this.credentials.getBasicHeader()
       },
       method: "delete"
     });

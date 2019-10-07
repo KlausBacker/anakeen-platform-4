@@ -47,6 +47,9 @@ class CreateAccount
             if (isset($requestData["tag"])) {
                 $smartElement->addATag("ank_test", $requestData["tag"]);
             }
+            if(isset($requestData['users']) && $requestData['type'] === self::GROUP_TYPE) {
+                $this->addUsersToGroup($smartElement, $requestData['users']);
+            }
         } else {
             $exception = new Exception("ANKTEST007", $smartElement->getRawValue("us_login"));
             $exception->setHttpStatus("500", "Cannot create account");
@@ -85,8 +88,11 @@ class CreateAccount
         if (isset($requestData['lastname'])) {
             $group->setValue("grp_name", $requestData['lastname']);
         }
-        if (isset($requestData['users']) && is_array($requestData['users'])) {
-            foreach ($requestData['users'] as $userLogin) {
+        return $group;
+    }
+    protected function addUsersToGroup($group, $users) {
+        if (isset($users) && is_array($users)) {
+            foreach ($users as $userLogin) {
                 $userAccount = AccountManager::getAccount($userLogin);
 
                 if (!empty($userAccount) && ($userAccount->accounttype === "U" || $userAccount->accounttype === "G")) {
@@ -99,7 +105,6 @@ class CreateAccount
                 }
             }
         }
-        return $group;
     }
     protected function createRole($requestData)
     {
@@ -111,5 +116,6 @@ class CreateAccount
         if (isset($requestData['lastname'])) {
             $create->setValue("role_name", $requestData['lastname']);
         }
+        return $create;
     }
 }

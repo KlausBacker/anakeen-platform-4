@@ -37,6 +37,26 @@
         <sde:access ns="AnakeenTestTools">TestUser</sde:access>
       </sde:requiredAccess>
     </sde:route>
+    <sde:route name="TestAccountGroup">
+      <sde:callable>Anakeen\TestTools\Routes\AccountGroup</sde:callable>
+      <sde:method>PUT</sde:method>
+      <sde:method>DELETE</sde:method>
+      <sde:pattern>/api/v2/test-tools/groups/{group}/</sde:pattern>
+      <sde:description>Add or remove account to a group</sde:description>
+      <sde:requiredAccess>
+        <sde:access ns="AnakeenTestTools">TestUser</sde:access>
+      </sde:requiredAccess>
+    </sde:route>
+    <sde:route name="TestAccountRole">
+      <sde:callable>Anakeen\TestTools\Routes\AccountRole</sde:callable>
+      <sde:method>PUT</sde:method>
+      <sde:method>DELETE</sde:method>
+      <sde:pattern>/api/v2/test-tools/roles/{role}/</sde:pattern>
+      <sde:description>Add or remove role to an account</sde:description>
+      <sde:requiredAccess>
+        <sde:access ns="AnakeenTestTools">TestUser</sde:access>
+      </sde:requiredAccess>
+    </sde:route>
    </sde:routes>
    <sde:accesses namespace="AnakeenTestTools">
         <sde:access name="TestUser">
