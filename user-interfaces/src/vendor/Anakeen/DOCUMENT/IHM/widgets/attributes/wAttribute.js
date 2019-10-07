@@ -755,6 +755,7 @@
           .find(".dcpAttribute__content__link[title]")
           .tooltip({
             placement: "top",
+            boundary: "viewport",
             container: ".dcpDocument",
             html: true,
             trigger: "hover"
