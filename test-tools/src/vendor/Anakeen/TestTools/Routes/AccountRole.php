@@ -76,7 +76,7 @@ class AccountRole
                 $accountRoles = $account->getRoles();
                 $keepAccountRole = [];
                 foreach ($accountRoles as $rId) {
-                    if(($rId !== $role->id)) {
+                    if (($rId !== $role->id)) {
                         array_push($keepAccountRole, $rId);
                     }
                 }
