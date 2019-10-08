@@ -16,34 +16,28 @@ before(async () => {
 //On décrit le test
 describe("profileCompteRendu", () => {
   let testContext;
+  let compteRendu;
   //On init un contexte de test
   //On créé les éléments qu'on va utiliser
   before(async () => {
     testContext = currentContext.initTest();
-    const user = await testContext.getAccount("anakeen_user6");
-    const role = await testContext.getAccount("anakeen_user_test_role");
-    const result2 = await user.removeRole(role);
+    // const user = await testContext.getAccount("anakeen_user6");
+    compteRendu = await testContext.getSmartElement({ smartStructure: "DEVBILL"}, { bill_title: "Mon titre à la création"});
+    // const role = await testContext.getAccount("anakeen_user_test_role");
+    // const result2 = await user.removeRole(role);
   
   });
 
   //On nettoie après le test
   after(async () => {
-    // await testContext.clean();
+    await testContext.clean();
   });
 
   //On créé un SE et on test les droits qui nous intéresse
   it("compteRenduProfile", async () => {
-  //   compteRendu = await testContext.getSmartElement(
-  //     { smartStructure: "COMPTE_RENDU" },
-  //     { cr_auteur: user1, cr_title: "test" }
-  //   );
-    expect(true);
-    // await compteRendu.setState("redaction");
-    // await expect(compteRendu)
-    //   .for(user1)
-    //   .to.haveRight(["read", "write", "delete"]);
-    // await expect(compteRendu)
-    //   .for(user2)
-    //   .to.not.haveRight("read");
+  
+    const updatedValue = "Mon titre a été modifié";
+    const updateCompteRendu = await compteRendu.updateValues({ bill_title: updatedValue});
+    expect(updateCompteRendu.getValue("bill_title").value).to.be.equal(updatedValue);
   });
 });

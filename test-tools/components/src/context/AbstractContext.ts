@@ -61,7 +61,6 @@ export default abstract class AbstractContext {
       headers = Object.assign({}, this.credentials.getBasicHeader(), init.headers);
     }
     let fetchOptions = Object.assign({}, init || {}, { headers });
-    console.log(fetchOptions);
     return await fetch(this.credentials.getCompleteUrl(url), fetchOptions);
   }
 }

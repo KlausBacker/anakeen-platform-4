@@ -19,6 +19,15 @@
         <sde:access ns="AnakeenTestTools">TestUser</sde:access>
       </sde:requiredAccess>
     </sde:route>
+    <sde:route name="TestUpdateSmartElement">
+      <sde:callable>Anakeen\TestTools\Routes\SmartElementUpdate</sde:callable>
+      <sde:method>PUT</sde:method>
+      <sde:pattern>/api/v2/test-tools/smart-elements/{seId}/</sde:pattern>
+      <sde:description>Update a Smart Element</sde:description>
+      <sde:requiredAccess>
+        <sde:access ns="AnakeenTestTools">TestUser</sde:access>
+      </sde:requiredAccess>
+    </sde:route>
     <sde:route name="TestGetAccount">
       <sde:callable>Anakeen\TestTools\Routes\AccountInfos</sde:callable>
       <sde:method>GET</sde:method>
