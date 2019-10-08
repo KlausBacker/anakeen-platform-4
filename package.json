@@ -7,6 +7,7 @@
         "workflow",
         "admin-center",
         "transformation",
+        "transformationServer",
         "development-center",
         "migration-tools",
         "control",
