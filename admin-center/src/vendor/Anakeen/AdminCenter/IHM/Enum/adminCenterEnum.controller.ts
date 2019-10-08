@@ -31,7 +31,7 @@ export default class AdminCenterEnumController extends Vue {
       renderOptions: {
         fields: {
           enum_array: {
-            rowDelDisable: false
+            rowDelDisable: true
           },
           enum_array_active: {
             template: '<input class="enum-form-active-wrapper"/>'
@@ -109,6 +109,8 @@ export default class AdminCenterEnumController extends Vue {
   private initCounter: number = 0;
 
   public loadEnumerate(e) {
+    this.keysArray = [];
+    this.labelArray = [];
     this.selectedEnum = this.kendoGrid.dataItem($(e.currentTarget).closest("tr")).enumerate;
     const that = this;
     this.$http.get(`/api/v2/admin/enumdata/${this.selectedEnum}`).then(response => {
@@ -255,18 +257,23 @@ export default class AdminCenterEnumController extends Vue {
           throw Error("temporary modification is not defined.");
         }
       });
-    $(this.getRow(index))
-      .find(".enum-validate-apply-button")
-      .on("click", e => {
-        if (this.tempModifications[index]) {
-          this.smartFormModel[index] = this.tempModifications[index];
-          this.modifications[index] = this.tempModifications[index];
-          delete this.tempModifications[index];
-          this.insertFormData(index);
-        } else {
-          throw Error("temporary modification is not defined.");
-        }
-      });
+      $(this.getRow(index))
+        .find(".enum-validate-apply-button")
+        .on("click", e => {
+          if (this.tempModifications[index]) {
+            this.smartFormModel[index] = this.tempModifications[index];
+            this.modifications[index] = this.tempModifications[index];
+            delete this.tempModifications[index];
+            this.insertFormData(index);
+          } else {
+            throw Error("temporary modification is not defined.");
+          }
+        });
+        $(this.getRow(index))
+          .find(".enum-validate-cancel-button")
+          .on("click", e => {
+            console.log("Add Canceled")
+          });
   }
 
   private initRow(index) {
