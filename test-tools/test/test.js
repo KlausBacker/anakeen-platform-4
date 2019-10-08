@@ -20,9 +20,9 @@ describe("profileCompteRendu", () => {
   //On créé les éléments qu'on va utiliser
   before(async () => {
     testContext = currentContext.initTest();
-    const user = await testContext.getAccount("anakeen_user4");
+    const user = await testContext.getAccount("anakeen_user6");
     const role = await testContext.getAccount("anakeen_user_test_role");
-    const result2 = await user.addRole(role);
+    const result2 = await user.removeRole(role);
   
   });
 

@@ -52,7 +52,6 @@ class AccountRole
         if (isset($accountLogin)) {
             $account = AccountManager::getAccount($accountLogin);
             if (!empty($account) && ($account->accounttype === "U" || $account->accounttype === "G")) {
-                error_log($role->login);
                 $err = $account->addRole($role->login);
                 if (!empty($err)) {
                     $exception = new Exception("ANKTEST008", $accountLogin, $role->getAttributeValue("us_login"));
@@ -74,12 +73,14 @@ class AccountRole
                 /**
                  * @var \Anakeen\SmartElement
                  */
-                $seAccount = SmartElementManager::getDocument($account->fid);
-                $allRoles = $seAccount->getAttributeValue("us_roles");
-                $index = array_search($role->fid, $allRoles);
-                if ($index !== false) {
-                    $err = $seAccount->removeArrayRow("us_t_roles", $index);
+                $accountRoles = $account->getRoles();
+                $keepAccountRole = [];
+                foreach ($accountRoles as $rId) {
+                    if(($rId !== $role->id)) {
+                        array_push($keepAccountRole, $rId);
+                    }
                 }
+                $account->setRoles($keepAccountRole);
                 if (!empty($err)) {
                     $exception = new Exception("ANKTEST008", $accountLogin, $role->getAttributeValue("us_login"));
                     $exception->setHttpStatus("500", "Cannot remove account role");
