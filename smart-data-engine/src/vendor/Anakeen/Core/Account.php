@@ -1360,7 +1360,7 @@ union
             foreach ($roleIds as $rid) {
                 if (!is_numeric($rid)) {
                     DbManager::query(sprintf(
-                        "select id from users where login = '%'",
+                        "select id from users where login = '%s'",
                         pg_escape_string($rid)
                     ), $idRoleW, true, true);
                     if ($idRoleW) {
