@@ -57,7 +57,7 @@ class SmartElementUpdate
             }
             $smartElementData = new \Anakeen\Routes\Core\Lib\DocumentApiData($smartElement);
             return ApiV2Response::withData($response, $smartElementData->getDocumentData());
-        }else{
+        } else {
             $exception = new Exception("ANKTEST004", 'seId');
             $exception->setHttpStatus("400", "smart element identifier is required");
             throw $exception;
