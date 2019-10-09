@@ -1,6 +1,6 @@
 {
   "name": "dev-data",
-  "version": "2.0.2",
+  "version": "2.0.0-RC.2019.1.7",
   "description": "Smart Data to test Anakeen Platform dev",
   "main": "index.js",
   "scripts": {
@@ -9,6 +9,6 @@
   "author": "Anakeen",
   "license": "ISC",
   "devDependencies": {
-    "@anakeen/anakeen-cli": "1.2.0"
+    "@anakeen/anakeen-cli": "1.2.0-RC.2019.1.7"
   }
 }

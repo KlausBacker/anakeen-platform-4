@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="anakeen-dev-data" vendor="Anakeen" version="2.0.2">
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="anakeen-dev-data" vendor="Anakeen" version="2.0.0-RC.2019.1.7">
   <description>Data set for developpement test</description>
   <parameters>
     <param name="COUNT_PERSON" label="Number of person to create" default="200" type="text" needed="Y"/>
@@ -7,9 +7,9 @@
     <param name="COUNT_ACCOUNTS" label="Number of accounts to create" default="0" type="text" needed="N"/>
   </parameters>
   <requires>
-    <module name="smart-data-engine" version="^2.1.0"/>
-    <module name="security" version="^2.0.1"/>
-    <module name="workflow" version="^2.0.0"/>
+    <module name="smart-data-engine" version="^2.1.0-RC.2019.1.7"/>
+    <module name="security" version="^2.0.1-RC.2019.1.7"/>
+    <module name="workflow" version="^2.0.0-RC.2019.1.7"/>
   </requires>
 
   <post-install>
