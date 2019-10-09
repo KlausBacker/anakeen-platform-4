@@ -27,7 +27,7 @@ exports.versions = [
     npmOnly: true
   },
   {
-    package: "transformationServer",
+    package: "transformation-server",
     version: "1.4.2",
     npmOnly: true
   },
