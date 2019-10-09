@@ -27,6 +27,11 @@ exports.versions = [
     npmOnly: true
   },
   {
+    package: "transformationServer",
+    version: "1.4.2",
+    npmOnly: true
+  },
+  {
     package: "development-center",
     version: "2.2.0",
     modulePath: "development-center",
