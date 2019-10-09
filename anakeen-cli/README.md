@@ -65,3 +65,25 @@ Pour lancer manuellement anakeen-cli après avoir cloné le repo, il est possibl
 $ yarn run anakeen-cli --help
 ```
 
+## A4PPM registry authentication
+
+Quand un dépôt A4PPM est ajouté avec les options `--authUser` et
+`--authPassword`, les identifiants de connexion sont stockés dans un fichier
+`.anakeen-cli.credentials`.
+
+Le fichier `.anakeen-cli.credentials` est recherché dans l'ordre suivant :
+
+* dans le répertoire courant (e.g. `./.anakeen-cli.credentials`) ;
+* dans le répertoire de l'utilisateur (e.g. `$HOME/.anakeen-cli.credentials`) ;
+* de manière récursive dans les répertoires depuis le répertoire courant jusqu'à
+  la racine du système de fichier (`/`).
+
+Le fichier `.aankeen-cli.credentials` est au format XML et structuré comme suit
+:
+
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<credentials>
+    <credential url="http://a4ppm.example.net/bucketName/" authUser="john.doe" authPassword="secret" />
+</credentials>
+```
