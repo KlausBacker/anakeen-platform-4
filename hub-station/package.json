@@ -39,6 +39,7 @@
   "author": "Anakeen",
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
+    "@anakeen/internal-components": "1.0.2",
     "@types/navigo": "^7.0.1",
     "@types/url-join": "^4.0.0",
     "navigo": "^7.1.2",
@@ -48,7 +49,6 @@
     "fg-loadcss": "^2.1.0"
   },
   "devDependencies": {
-    "@anakeen/internal-components": "1.0.2",
     "@anakeen/anakeen-cli": "1.2.0",
     "@anakeen/user-interfaces": "3.0.0",
     "@anakeen/webpack-conf": "1.2.1",
