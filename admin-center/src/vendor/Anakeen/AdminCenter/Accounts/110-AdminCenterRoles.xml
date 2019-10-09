@@ -44,6 +44,7 @@
             <accounts:displayName>Mail Template Manager</accounts:displayName>
             <accounts:structure name="AC_MAILTEMPLATEMANAGER"/>
         </accounts:role>
+<<<<<<< HEAD
         <accounts:role name="trash_manager_role">
             <accounts:displayName>Mail Template Manager</accounts:displayName>
             <accounts:structure name="AC_TRASHMANAGER"/>
@@ -51,6 +52,11 @@
         <accounts:role name="enum_manager_role">
             <accounts:displayName>Enumerates Manager</accounts:displayName>
             <accounts:structure name="AC_ENUMMANAGER"/>
+=======
+        <accounts:role name="structure_manager_role">
+            <accounts:displayName>Smart Structure Manager</accounts:displayName>
+            <accounts:structure name="AC_STRUCTUREMANAGER"/>
+>>>>>>> feat(admin): sslist, infos and default values base files refs #43
         </accounts:role>
     </accounts:roles>
     <accounts:groups>

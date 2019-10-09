@@ -1,0 +1,39 @@
+.smart-structure-infos-card {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: auto;
+
+  .infos-card-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  &.hierarchy-card {
+    max-height: 50%;
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+  }
+
+  padding: 0.5rem;
+  border: 1px solid rgb(210, 210, 210);
+  flex: 1;
+
+  & + .smart-structure-infos-card {
+    border-top-width: 0;
+  }
+
+  .infos-card-content {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    font-size: 1.1rem;
+
+    .card-content-item-label {
+      font-weight: bold;
+      margin-right: 0.5rem;
+    }
+  }
+}

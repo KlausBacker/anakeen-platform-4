@@ -73,7 +73,7 @@ run-sql: ## Run psql in postgres container
 	make -C ./.devtool/docker docker-prompt-psql
 
 run-dev-server: ## Run webpack development server
-	$(NODE_BIN) .devtool/devserver/index.js
+	$(NODE_BIN) --max-old-space-size=4096 .devtool/devserver/index.js
 
 .PHONY: $(TOPTARGETS) $(SUBDIRS) $(BUILDDIRS) $(BUILDTARGETS) help lint-JS beautify-JS lint-po start-env stop-env clean-env reset-env reboot-env clean-env-full update-all init-docker control-status run-dev-server
 
