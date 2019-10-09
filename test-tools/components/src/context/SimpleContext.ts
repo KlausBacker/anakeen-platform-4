@@ -10,7 +10,7 @@ import Account from "./utils/Account";
 export default class SimpleContext extends AbstractContext {
   private static CREATION_API: string = "/api/v2/test-tools/smart-structures/%s/smart-elements/";
   private static ACCOUNT_CREATION_API: string = "/api/v2/test-tools/accounts/";
-  private static CLEAN_API: string = "/api/v2/test-tools/clean/%s/";
+  private static CLEAN_API: string = "/api/v2/test-tools/context/%s/";
 
   protected testTagUid!: string;
 

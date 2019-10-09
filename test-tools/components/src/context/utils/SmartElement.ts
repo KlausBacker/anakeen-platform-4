@@ -42,7 +42,19 @@ export default class SmartElement {
     return this.smartFields[fieldId];
   }
 
-  public destroy() {
-    console.log("destroy");
+  public async destroy() {
+    const url = SmartElement.UPDATE_API.replace(/%s/g, this.properties.id);
+    const response = await this.fetchApi(url, {
+      headers: {
+        "Content-Type": "application/json"
+      },
+      method: "delete"
+    });
+    const responseJson = await response.json();
+    if (responseJson.success && responseJson.data && responseJson.data.document) {
+      return new SmartElement(responseJson.data.document, (url, ...args) => this.fetchApi(url, ...args));
+    } else {
+      throw new Error("Unfound Smart Element data");
+    }
   }
 }

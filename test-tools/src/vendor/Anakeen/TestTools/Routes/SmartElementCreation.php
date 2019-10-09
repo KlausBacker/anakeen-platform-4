@@ -60,6 +60,7 @@ class SmartElementCreation
         }
         $response = $response->withStatus(201);
         $smartElementData = new \Anakeen\Routes\Core\Lib\DocumentApiData($smartElement);
+        $smartElementData->setFields(["document.properties.all", "document.attributes.all"]);
         return ApiV2Response::withData($response, $smartElementData->getDocumentData());
     }
 }

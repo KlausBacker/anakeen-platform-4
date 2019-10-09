@@ -13,8 +13,17 @@
     <sde:route name="TestCleanSmartElement">
       <sde:callable>Anakeen\TestTools\Routes\SmartElementClean</sde:callable>
       <sde:method>DELETE</sde:method>
-      <sde:pattern>/api/v2/test-tools/clean/{tag}/</sde:pattern>
+      <sde:pattern>/api/v2/test-tools/context/{tag}/</sde:pattern>
       <sde:description>Clean test env</sde:description>
+      <sde:requiredAccess>
+        <sde:access ns="AnakeenTestTools">TestUser</sde:access>
+      </sde:requiredAccess>
+    </sde:route>
+    <sde:route name="TestDeleteSmartElement">
+      <sde:callable>Anakeen\TestTools\Routes\SmartElementDelete</sde:callable>
+      <sde:method>DELETE</sde:method>
+      <sde:pattern>/api/v2/test-tools/smart-elements/{seId}/</sde:pattern>
+      <sde:description>Delete a smart element</sde:description>
       <sde:requiredAccess>
         <sde:access ns="AnakeenTestTools">TestUser</sde:access>
       </sde:requiredAccess>
@@ -62,6 +71,15 @@
       <sde:method>DELETE</sde:method>
       <sde:pattern>/api/v2/test-tools/roles/{role}/</sde:pattern>
       <sde:description>Add or remove role to an account</sde:description>
+      <sde:requiredAccess>
+        <sde:access ns="AnakeenTestTools">TestUser</sde:access>
+      </sde:requiredAccess>
+    </sde:route>
+    <sde:route name="TestChangeTransition">
+      <sde:callable>Anakeen\TestTools\Routes\Transition</sde:callable>
+      <sde:method>PUT</sde:method>
+      <sde:pattern>/api/v2/test-tools/smart-elements/{seId}/workflows/transitions/{transition}/</sde:pattern>
+      <sde:description>Change or set a transition</sde:description>
       <sde:requiredAccess>
         <sde:access ns="AnakeenTestTools">TestUser</sde:access>
       </sde:requiredAccess>
