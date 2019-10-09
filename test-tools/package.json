@@ -34,7 +34,7 @@
     "typescript": "^3.5.3"
   },
   "devDependencies": {
-    "@anakeen/anakeen-cli": "1.2.0",
+    "@anakeen/anakeen-cli": "1.2.0-RC.2019.1.7",
     "@anakeen/webpack-conf": "1.2.1",
     "@types/node": "^12.6.2",
     "fg-loadcss": "^2.1.0",

@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/hub-components",
-  "version": "1.0.2",
+  "version": "1.0.2-RC.2019.1.7",
   "autorelease": true,
   "description": "Anakeen Hub Components",
   "main": "components/lib/hub-components.common.min.js",
@@ -39,7 +39,7 @@
   "author": "Anakeen",
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
-    "@anakeen/internal-components": "1.0.2",
+    "@anakeen/internal-components": "1.0.2-RC.2019.1.7",
     "@types/navigo": "^7.0.1",
     "@types/url-join": "^4.0.0",
     "navigo": "^7.1.2",
@@ -49,8 +49,8 @@
     "fg-loadcss": "^2.1.0"
   },
   "devDependencies": {
-    "@anakeen/anakeen-cli": "1.2.0",
-    "@anakeen/user-interfaces": "3.0.0",
+    "@anakeen/anakeen-cli": "1.2.0-RC.2019.1.7",
+    "@anakeen/user-interfaces": "3.0.0-RC.2019.1.7",
     "@anakeen/webpack-conf": "1.2.1",
     "@progress/kendo-buttons-vue-wrapper": "^2019.2.621",
     "@progress/kendo-datasource-vue-wrapper": "^2019.2.621",
@@ -71,7 +71,7 @@
     "webpack-node-externals": "^1.7.2"
   },
   "peerDependencies": {
-    "@anakeen/user-interfaces": "3.0.0",
+    "@anakeen/user-interfaces": "3.0.0-RC.2019.1.7",
     "axios": "^0.19.0",
     "jquery": "^3.3.1",
     "vue": "2.6.10",
