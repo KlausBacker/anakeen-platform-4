@@ -1,8 +1,10 @@
 <template>
   <div class="ssm-default-grid">
     <kendo-datasource ref="defaultGridData"
+                      class="default-grid-data"
                       :transport-read="getDefaultValues"
-                      :schema-data="parseDefaultValuesData">
+                      :schema-data="parseDefaultValuesData"
+                      :sort="[{ field: 'id', dir: 'asc'}]">
     </kendo-datasource>
     <kendo-grid
       ref="defaultGridContent"
@@ -10,15 +12,23 @@
       :data-source-ref="'defaultGridData'"
       :sortable="false"
       :resizable="true"
-      :noRecords="{ template: `<span> LOL </span>` }"
-    >
-      <kendo-grid-column :title="'<b>Id</b>'" :field="'id'"></kendo-grid-column>
-      <kendo-grid-column :title="'<b>Type</b>'" :field="'type'"></kendo-grid-column>
-      <kendo-grid-column :title="'<b>Value</b>'" :template="displayData('value')"></kendo-grid-column>
-      <kendo-grid-column :title="''" :command="{name:'edit', click:onEditClick }"></kendo-grid-column>
+      :filterable-mode="'row'"
+      :filterable-extra="false"
+      :noRecords="{ template: `<div class='empty-ssm-grid'>
+                                                <div class='empty-ssm-grid-icon'>
+                                                   <i class='material-icons'>grid_off</i>
+                                                </div>
+                                                <div class='empty-ssm-grid-text'>
+                                                    <span> No default values to display for this Smart Structure</span>
+                                                </div>
+                                            </div>`}">
+      <kendo-grid-column :title="'<b>Id</b>'" :field="'id'" :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol" ></kendo-grid-column>
+      <kendo-grid-column :title="'<b>Type</b>'" width="10rem" :field="'type'" :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol" ></kendo-grid-column>
+      <kendo-grid-column :title="'<b>Value</b>'" :field="'value'" :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol" :template="displayData('value')"></kendo-grid-column>
+      <kendo-grid-column :title="''" width="6rem" :command="{click:onEditClick, text: 'Edit' }"></kendo-grid-column>
     </kendo-grid>
-    <modal name="hello-world" width="50%" height="50%" @before-open="beforeEdit">
-      <smart-form :config="smartForm"></smart-form>
+    <modal name="ssm-modal" width="50%" height="50%" @before-open="beforeEdit">
+      <smart-form :config="smartForm" @actionClick="formClickMenu" ref="ssmForm" @ready="ssmFormReady" @smartFieldChange="ssmFormChange"></smart-form>
     </modal>
   </div>
 </template>

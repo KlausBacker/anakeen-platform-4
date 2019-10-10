@@ -27,10 +27,7 @@
 </script>
 <style>
     .structure-parent {
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        min-height: 0;
         height: 100%;
+        width: 100%;
     }
 </style>

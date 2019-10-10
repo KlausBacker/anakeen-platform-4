@@ -1,3 +1,4 @@
+import ankSmartController from "@anakeen/user-interfaces/components/lib/AnkController";
 import AnkSmartForm from "@anakeen/user-interfaces/components/lib/AnkSmartForm";
 import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
 import { Grid, GridInstaller } from "@progress/kendo-grid-vue-wrapper";
@@ -39,10 +40,10 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
   }
   public onEditClick(e) {
     const row = $(e.target).closest("tr")[0];
+    // const sf = row.children[0].textContent;
     const value = row.children[2].textContent;
-    console.log(value);
     const type = row.children[1].textContent;
-    this.$modal.show("hello-world", {
+    this.$modal.show("ssm-modal", {
       config: {
         menu: [
           {
@@ -54,7 +55,7 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
             label: "Cancel",
             target: "_self",
             type: "itemMenu",
-            url: "#action/document.cancel",
+            url: "#action/ssmanager.cancel",
             visibility: "visible"
           },
           {
@@ -66,7 +67,7 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
             label: "Submit",
             target: "_self",
             type: "itemMenu",
-            url: "#action/document.save",
+            url: "#action/ssmanager.save",
             visibility: "visible"
           }
         ],
@@ -93,36 +94,75 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
                   }
                 ],
                 label: "Type",
-                name: "my_type",
+                name: "ssm_type",
                 type: "enum"
               },
               {
                 label: "Inherited",
-                name: "my_inherited_value",
+                name: "ssm_inherited_value",
                 type: "text"
               },
               {
                 label: "Value",
-                name: "my_value",
+                name: "ssm_value",
                 type: `${type}`
               },
               {
                 label: "Advanced value",
-                name: "my_advanced_value",
+                name: "ssm_advanced_value",
                 type: "longtext"
               }
             ],
             label: "Default value",
-            name: "my_default_value",
+            name: "ssm_default_value",
             type: "frame"
           }
         ],
         title: "Edit value form",
         values: {
-          my_inherited_value: `${value}`
+          ssm_inherited_value: `${value}`,
+          ssm_type: "inherited"
         }
       }
     });
+  }
+  public ssmFormReady() {
+    this.$refs.ssmForm.hideSmartField("ssm_advanced_value");
+    this.$refs.ssmForm.hideSmartField("ssm_value");
+  }
+  public ssmFormChange() {
+    const smartForm = this.$refs.ssmForm;
+    switch (smartForm.getValue("ssm_type").value) {
+      case "inherited":
+        smartForm.hideSmartField("ssm_advanced_value");
+        smartForm.hideSmartField("ssm_value");
+        smartForm.showSmartField("ssm_inherited_value");
+        break;
+      case "value":
+        smartForm.hideSmartField("ssm_advanced_value");
+        smartForm.showSmartField("ssm_value");
+        smartForm.hideSmartField("ssm_inherited_value");
+        break;
+      case "advanced_value":
+        smartForm.showSmartField("ssm_advanced_value");
+        smartForm.hideSmartField("ssm_value");
+        smartForm.hideSmartField("ssm_inherited_value");
+        break;
+      default:
+        this.$refs.ssmForm.hideSmartField("ssm_advanced_value");
+        this.$refs.ssmForm.hideSmartField("ssm_value");
+        this.$refs.ssmForm.hideSmartField("ssm_inherited_value");
+        break;
+    }
+  }
+  public formClickMenu(e, se, params) {
+    switch (params.eventId) {
+      case "ssmanager.cancel":
+        this.$modal.hide("ssm-modal");
+        break;
+      case "ssmanager.save":
+        break;
+    }
   }
   public beforeEdit(data) {
     this.smartForm = data.params.config;
@@ -199,5 +239,8 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
         options.error(response);
       });
     return [];
+  }
+  protected autoFilterCol(e) {
+    e.element.addClass("k-textbox filter-input");
   }
 }
