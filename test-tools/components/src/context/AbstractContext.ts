@@ -45,6 +45,7 @@ export default abstract class AbstractContext {
         `/api/v2/smart-elements/${seName}.json?fields=document.properties.all,document.attributes.all`
       );
       const responseJson = await response.json();
+  
       if (responseJson.success && responseJson.data && responseJson.data.document) {
         return new SmartElement(responseJson.data.document, (url, ...args) => this.fetchApi(url, ...args));
       } else {

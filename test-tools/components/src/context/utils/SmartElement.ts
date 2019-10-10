@@ -1,7 +1,10 @@
 import { ISmartElementValues } from "../AbstractContext";
+import Account from "../utils/Account";
 
 export default class SmartElement {
   private static UPDATE_API: string = "/api/v2/test-tools/smart-elements/%s/";
+  private static SET_API: string = "/api/v2/test-tools/smart-elements/<docid>/workflows/states/<state>/";
+  private static CHANGE_API: string = "/api/v2/test-tools/smart-elements/<docid>/workflows/transitions/<transition>/";
   protected properties: any;
   protected smartFields: any;
 
@@ -13,12 +16,40 @@ export default class SmartElement {
     this.fetchApi = fetch;
   }
 
-  public changeState() {
-    console.log("change state");
+  public async changeState(stateInfo: {transition: string, ask: any, account?: Account}): Promise<SmartElement> {
+    const url = SmartElement.CHANGE_API.replace(/<docid>/g, this.properties.initid).replace(/<transition>/g, stateInfo.transition);
+    const response = await this.fetchApi(url, {
+      headers: {
+        "Content-Type": "application/json"
+      },
+      method: "put"
+    });
+    const responseJson = await response.json();
+    if (responseJson.success && responseJson.data && responseJson.data.document) {
+      return new SmartElement(responseJson.data.document, (url, ...args) => this.fetchApi(url, ...args));
+    } else {
+      throw new Error("Unfound Smart Element data");
+    }
   }
 
-  public async updateValues(seValues: ISmartElementValues) {
-    const url = SmartElement.UPDATE_API.replace(/%s/g, this.properties.id);
+  public async setState(newState: string): Promise<SmartElement> {
+    const url = SmartElement.SET_API.replace(/<docid>/g, this.properties.initid).replace(/<state>/g, newState);
+    const response = await this.fetchApi(url, {
+      headers: {
+        "Content-Type": "application/json"
+      },
+      method: "put"
+    });
+    const responseJson = await response.json();
+    if (responseJson.success && responseJson.data && responseJson.data.document) {
+      return new SmartElement(responseJson.data.document, (url, ...args) => this.fetchApi(url, ...args));
+    } else {
+      throw new Error("Unfound Smart Element data");
+    }
+  }
+
+  public async updateValues(seValues: ISmartElementValues): Promise<SmartElement> {
+    const url = SmartElement.UPDATE_API.replace(/%s/g, this.properties.initid);
     const response = await this.fetchApi(url, {
       body: JSON.stringify(seValues),
       headers: {
@@ -34,16 +65,59 @@ export default class SmartElement {
     }
   }
 
-  public getPropertyValue(propertyName: string) {
-    return this.properties[propertyName];
+  public async getPropertyValue(propertyName: string): Promise<any> {
+    const response = await this.fetchApi(
+      `/api/v2/smart-elements/${this.properties.initid}.json?fields=document.properties.${propertyName}`
+    );
+    const responseJson = await response.json();
+    if (responseJson.success && responseJson.data && responseJson.data.document) {
+      return responseJson.data.document.properties[propertyName];
+    } else {
+      throw new Error("Unfound Smart Element data");
+    }
   }
 
-  public getValue(fieldId: string) {
-    return this.smartFields[fieldId];
+  public async getValue(fieldId: string): Promise<{value: any, displayValue: string}> {
+    const response = await this.fetchApi(
+      `/api/v2/smart-elements/${this.properties.initid}.json?fields=document.attributes.${fieldId}`
+    );
+    const responseJson = await response.json();
+
+    if (responseJson.success && responseJson.data && responseJson.data.document) {
+      return responseJson.data.document.attributes[fieldId];
+    } else {
+      throw new Error("Unfound Smart Element data");
+    }
   }
 
-  public async destroy() {
-    const url = SmartElement.UPDATE_API.replace(/%s/g, this.properties.id);
+  public async getValues(): Promise<{[fieldId: string]: any}> {
+    const response = await this.fetchApi(
+      `/api/v2/smart-elements/${this.properties.initid}.json?fields=document.attributes.all`
+    );
+    const responseJson = await response.json();
+
+    if (responseJson.success && responseJson.data && responseJson.data.document) {
+      return responseJson.data.document.attributes;
+    } else {
+      throw new Error("Unfound Smart Element data");
+    }
+  }
+
+  public async getPropertiesValues(): Promise<{[fieldId: string]: any}> {
+    const response = await this.fetchApi(
+      `/api/v2/smart-elements/${this.properties.initid}.json?fields=document.properties.all`
+    );
+    const responseJson = await response.json();
+
+    if (responseJson.success && responseJson.data && responseJson.data.document) {
+      return responseJson.data.document.properties;
+    } else {
+      throw new Error("Unfound Smart Element data");
+    }
+  }
+
+  public async destroy(): Promise<SmartElement> {
+    const url = SmartElement.UPDATE_API.replace(/%s/g, this.properties.initid);
     const response = await this.fetchApi(url, {
       headers: {
         "Content-Type": "application/json"

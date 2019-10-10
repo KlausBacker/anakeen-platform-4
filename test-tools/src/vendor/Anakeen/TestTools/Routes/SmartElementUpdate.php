@@ -56,6 +56,7 @@ class SmartElementUpdate
                 }
             }
             $smartElementData = new \Anakeen\Routes\Core\Lib\DocumentApiData($smartElement);
+            $smartElementData->setFields(["document.properties.all", "document.attributes.all"]);
             return ApiV2Response::withData($response, $smartElementData->getDocumentData());
         } else {
             $exception = new Exception("ANKTEST004", 'seId');

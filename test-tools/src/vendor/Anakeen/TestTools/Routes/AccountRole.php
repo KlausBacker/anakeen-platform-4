@@ -43,6 +43,7 @@ class AccountRole
                     $result = $this->removeRoleToAccount($requestData['accountlogin'], $role);
                     break;
             }
+            error_log(print_r($result->getAllRoles(), true));
             return ApiV2Response::withData($response, AccountInfos::formatAccount($result));
         }
     }
@@ -52,7 +53,9 @@ class AccountRole
         if (isset($accountLogin)) {
             $account = AccountManager::getAccount($accountLogin);
             if (!empty($account) && ($account->accounttype === "U" || $account->accounttype === "G")) {
-                $err = $account->addRole($role->login);
+                $roles = $account->getRoles();
+                array_push($roles, $role->id);
+                $err = $account->setRoles($roles);
                 if (!empty($err)) {
                     $exception = new Exception("ANKTEST008", $accountLogin, $role->getAttributeValue("us_login"));
                     $exception->setHttpStatus("500", "Cannot add user to group");

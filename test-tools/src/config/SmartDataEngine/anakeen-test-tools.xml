@@ -78,8 +78,17 @@
     <sde:route name="TestChangeTransition">
       <sde:callable>Anakeen\TestTools\Routes\Transition</sde:callable>
       <sde:method>PUT</sde:method>
-      <sde:pattern>/api/v2/test-tools/smart-elements/{seId}/workflows/transitions/{transition}/</sde:pattern>
-      <sde:description>Change or set a transition</sde:description>
+      <sde:pattern>/api/v2/test-tools/smart-elements/{docid}/workflows/transitions/{transition}/</sde:pattern>
+      <sde:description>Change a transition</sde:description>
+      <sde:requiredAccess>
+        <sde:access ns="AnakeenTestTools">TestUser</sde:access>
+      </sde:requiredAccess>
+    </sde:route>
+    <sde:route name="TestSetState">
+      <sde:callable>Anakeen\TestTools\Routes\State</sde:callable>
+      <sde:method>PUT</sde:method>
+      <sde:pattern>/api/v2/test-tools/smart-elements/{docid}/workflows/states/{state}/</sde:pattern>
+      <sde:description>Set a transition</sde:description>
       <sde:requiredAccess>
         <sde:access ns="AnakeenTestTools">TestUser</sde:access>
       </sde:requiredAccess>
