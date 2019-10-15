@@ -532,7 +532,7 @@ te-build:
     - a4ppm
   variables:
     PACKAGE_PATH: "transformation-server"
-    PACKAGE_NAME: "anakeen-transformation-server"
+    PACKAGE_NAME: "transformation-server"
   script:
     - make APP_OUTPUT_PATH=${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH} -C ${PACKAGE_PATH} app
     - export ANK_CI_APP_VERSION=$(jq -r .version ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}/package.json)
@@ -554,7 +554,7 @@ te-integration-build:
     - a4ppm
   variables:
     PACKAGE_PATH: "transformation-server"
-    PACKAGE_NAME: "anakeen-transformation-server"
+    PACKAGE_NAME: "transformation-server"
   script:
     - make APP_OUTPUT_PATH=${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH} -C ${PACKAGE_PATH} app-autorelease
     - export ANK_CI_APP_VERSION=$(jq -r .version ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}/package.json)
@@ -1036,7 +1036,7 @@ te-register:
   extends: .registry-te
   variables:
     ANK_CI_APP_PATH: "transformation-server"
-    ANK_CI_APP_NAME: "anakeen-transformation-server"
+    ANK_CI_APP_NAME: "transformation-server"
   only:
     refs:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
@@ -1047,7 +1047,7 @@ te-integration-register:
   extends: .registry-te
   variables:
     ANK_CI_APP_PATH: "transformation-server"
-    ANK_CI_APP_NAME: "anakeen-transformation-server"
+    ANK_CI_APP_NAME: "transformation-server"
   only:
     refs:
       - master@Anakeen/Platform-4/anakeen-platform-4
