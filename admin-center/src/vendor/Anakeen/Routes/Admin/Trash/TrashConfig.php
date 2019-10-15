@@ -39,7 +39,7 @@ class TrashConfig extends GridConfig
             return false;
         }
 
-        $stringsOperators=[];
+        $stringsOperators = [];
         foreach ($operators as $k => $operator) {
             if (!empty($operator["typedLabels"])) {
                 $stringsOperators[$k] = $operator["typedLabels"][$type] ?? $operator["label"];
@@ -62,6 +62,31 @@ class TrashConfig extends GridConfig
         return $filterable;
     }
 
+    protected static function getAuthColumnConfig()
+    {
+        return [
+            "field" => "auth",
+            "smartType" => "text",
+            "abstract" => true,
+            "title" => "Authorization",
+            "hidden" => true,
+            "sortable" => false,
+            "filterable" => false
+        ];
+    }
+
+    protected static function getAuthorColumnConfig()
+    {
+        return [
+            "field" => "author",
+            "smartType" => "text",
+            "abstract" => true,
+            "title" => "Author of the deletion",
+            "sortable" => true,
+            "filterable" => self::getFilterable("text")
+        ];
+    }
+
     protected function getElementsConfig($originalConfig)
     {
 
@@ -77,11 +102,13 @@ class TrashConfig extends GridConfig
         $fromConfig["title"] = "Type";
 
         $dateConfig = ColumnsConfig::getColumnConfig("mdate");
-        $dateConfig["title"] = "date of deletion";
-        // $dateConfig["smartType"] = "datetimepicker";
+        $dateConfig["title"] = "Date of deletion";
 
-        $authorConfig = ColumnsConfig::getColumnConfig("title");
-        $authorConfig["title"] = "author of the deletion";
+        $authorConfig = self::getAuthorColumnConfig();
+
+        // print_r($authorConfig)
+
+        $authorization = self::getAuthColumnConfig();
 
         // $titleConfig = ColumnsConfig::getColumnConfig("title");
         // $titleConfig["title"] = "Auteur de la suppression";
@@ -91,16 +118,16 @@ class TrashConfig extends GridConfig
             $titleConfig,
             $fromConfig,
             $dateConfig,
-            $authorConfig
-            // $authorConfig
+            $authorConfig,
+            $authorization
         ];
 
         $originalConfig["actions"] = [
             "title" => "Actions",
             "actionConfigs" => [
-                [ "action" => "display", "title" => "Display"],
-                [ "action" => "restore", "title" => "Restore"],
-                [ "action" => "delete", "title" => "Delete"]
+                ["action" => "restore", "title" => "Restore"],
+                ["action" => "display", "title" => "Display"],
+                ["action" => "delete", "title" => "Delete"],
             ]
         ];
         $originalConfig["footer"] = [];

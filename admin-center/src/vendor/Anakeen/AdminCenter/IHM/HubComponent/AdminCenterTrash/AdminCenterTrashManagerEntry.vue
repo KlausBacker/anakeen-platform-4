@@ -10,6 +10,7 @@
         <admin-center-trash
           @changeLocaleWrongArgument="handleLocaleWrongArgumentError"
           @trashOffline="handleLocaleNetworkError"
+          @notify="handleNotification"
           :msgStrValue="msgStrValue"
           :msgIdValue="msgIdValue"
           :lang="lang"
@@ -84,7 +85,15 @@ export default {
           title: "Wrong locale argument"
         }
       });
-      
+    },
+    handleNotification(message, title) {
+      this.hubNotify({
+        type: "error",
+        content: {
+          textContent: message,
+          title: title || "Network error"
+        }
+      })
     },
     handleLocaleNetworkError(message) {
       this.hubNotify({

@@ -5,6 +5,7 @@ namespace Anakeen\Routes\Admin\Trash;
 use Anakeen\Components\Grid\Operators;
 use Anakeen\Components\Grid\Routes\GridContent;
 use Anakeen\Core\DbManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Search\Internal\SearchSmartData;
 
 /**
@@ -58,12 +59,51 @@ class TrashContent extends GridContent
     protected function prepareSearchDoc()
     {
         $this->_searchDoc = new SearchSmartData();
+
         $this->_searchDoc->trash = "only";
         $this->_searchDoc->setObjectReturn();
         // $this->_searchDoc->returnsOnly(["icon", "uname"]);
         $this->_searchDoc->excludeConfidential(true);
+        $this->_searchDoc->overrideViewControl(true);
         // $this->_searchDoc->join("id = dochisto(id)");
+    }
 
+    protected static function canDisplay($seData)
+    {
+        $se = SEManager::getDocument($seData["properties"]["id"]);
+        if (!empty($se)) {
+            $err = $se->control("view");
+            return empty($err);
+        }
+        return false;
+    }
 
+    protected static function getAuthorName($seData)
+    {
+        $seId = $seData["properties"]["id"];
+        $sql = <<<'SQL'
+select distinct on(docread.initid) docread.*, dochisto.uname as deluser, dochisto.date as deldate  
+from docread, dochisto 
+where docread.id=%d and docread.id= dochisto.id and docread.doctype='Z' and dochisto.code = 'DELETE'
+SQL;
+        $result = [];
+        DbManager::query(sprintf($sql, $seId), $result, false, true);
+        return [
+            "value" => $result["deluser"],
+            "displayValue" => $result["deluser"]
+        ];
+    }
+
+    protected function getData()
+    {
+        $parentData = parent::getData();
+
+        foreach ($parentData["smartElements"] as $key => $smartElement) {
+            $parentData["smartElements"][$key]["attributes"]["author"] = self::getAuthorName($parentData["smartElements"][$key]);
+            $parentData["smartElements"][$key]["attributes"]["auth"] = [
+                "value" => self::canDisplay($parentData["smartElements"][$key])
+            ];
+        }
+        return $parentData;
     }
 }

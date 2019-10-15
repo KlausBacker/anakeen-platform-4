@@ -8,7 +8,7 @@ use Anakeen\SmartElementManager;
 
 /**
  * Class DocumentDeletedData
- *
+ *-
  * Get data from deleted document
  * @note    Used by route : GET /api/v2/trash/{docid}
  * @package Anakeen\Routes\Core

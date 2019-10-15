@@ -5,32 +5,37 @@ const i18n = require("./i18nManager");
 const parameters = require("./parametersManager");
 const mail = require("./mailManager");
 const workflow = require("./workflowManager");
+const trash = require("./trashManager");
 const { lib } = require("@anakeen/webpack-conf");
 
-module.exports = () => {
+module.exports = (entry) => {
   const modeDev = {
-    mode: process.env.dev === "DEV" ? "dev" : "prod"
+    mode: process.env.dev === "DEV" || !!entry ? "dev" : "prod"
   };
-  if (process.env.element === "TOKENS") {
+  const type = entry || process.env.element;
+  if (type === "TOKENS") {
     return lib({ ...tokens, ...modeDev });
   }
-  if (process.env.element === "VAULTFS") {
+  if (type === "VAULTFS") {
     return lib({ ...vaults, ...modeDev });
   }
-  if (process.env.element === "PARAMETERS") {
+  if (type === "PARAMETERS") {
     return lib({ ...parameters, ...modeDev });
   }
-  if (process.env.element === "ACCOUNTS") {
+  if (type === "ACCOUNTS") {
     return lib({ ...accounts, ...modeDev });
   }
-  if (process.env.element === "I18N") {
+  if (type === "I18N") {
     return lib({ ...i18n, ...modeDev });
   }
-  if (process.env.element === "MAIL") {
+  if (type === "MAIL") {
     return lib({ ...mail, ...modeDev });
   }
-  if (process.env.element === "WORKFLOW") {
+  if (type === "WORKFLOW") {
     return lib({ ...workflow, ...modeDev });
+  }
+  if (type === "TRASH") {
+    return lib({ ...trash, ...modeDev });
   }
   return [
     lib(tokens),
@@ -46,6 +51,8 @@ module.exports = () => {
     lib(mail),
     lib({ ...mail, ...{ mode: "dev" } }),
     lib(workflow),
-    lib({ ...workflow, ...{ mode: "dev"} })
+    lib({ ...workflow, ...{ mode: "dev"} }),
+    lib(trash),
+    lib({ ...trash, ...{ mode: "dev"} })
   ];
 };
