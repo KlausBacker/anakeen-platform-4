@@ -39,6 +39,18 @@
       }
     }
 
+    // Overwrite "active"'s switch button (SmartElement)
+    [data-heading="Active"]>div>div{
+      border: none;
+      box-shadow: none;
+      .k-textbox{
+        background: transparent;
+      }
+      // Hide the cross
+      span {
+        display: none;
+      }
+    }
     .enum-key-wrapper[mode=view] {
       .enum-key-edit-wrapper {
         display: none !important;
@@ -46,7 +58,6 @@
     }
 
     .enum-key-wrapper[mode=edit] {
-
       .enum-key-view-wrapper {
         display: none;
       }
@@ -56,12 +67,8 @@
       display: none;
     }
 
-    //.enum-key-wrapper[mode=edit] {
-    //
-    //
-    //}
-
     .enum-validate-apply-button {
+      font-size: 1.33rem;
       background: none;
       border-color: #26bd56;
       border-style: solid;

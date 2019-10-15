@@ -34,18 +34,18 @@ export default class AdminCenterEnumController extends Vue {
             rowDelDisable: true
           },
           enum_array_active: {
-            template: '<input class="enum-form-active-wrapper"/>'
+            editDisplay: "bool"
           },
           enum_array_key: {
             template:
-              '<div class="enum-key-wrapper" mode="view"><div class="enum-key-view-wrapper">{{{attributes.enum_array_key.htmlContent}}}</div><div class="enum-key-edit-wrapper"><input type="text" class="k-textbox enum-key-edit-input"></div></div>'
+              '<div class="enum-key-wrapper" mode="view"><div class="enum-key-view-wrapper">{{{attributes.enum_array_key.htmlContent}}}</div><div class="enum-key-edit-wrapper"><input type="text" class="k-textbox enum-key-edit-input"/></div></div>'
           },
           enum_array_translation: {
             template: '<a href="#">Translate</a>'
           },
           enum_array_validate: {
             template:
-              '<div class="enum-validate-wrapper" mode="view"><button class="fa fa-check enum-validate-apply-button"><button class="fa fa-times enum-validate-cancel-button"></div>'
+              '<div class="enum-validate-wrapper" mode="view"><button class="fa fa-check enum-validate-apply-button"><!-- <button class="fa fa-times enum-validate-cancel-button"></div> !>'
           }
         }
       },
@@ -73,10 +73,20 @@ export default class AdminCenterEnumController extends Vue {
                 {
                   label: "Active",
                   name: "enum_array_active",
-                  type: "text"
+                  type: "enum",
+                  "enumItems": [
+                    {
+                      "key": "disable",
+                      "label": "Disable"
+                    },
+                    {
+                      "key": "enable",
+                      "label": "Enable"
+                    }
+                  ]
                 },
                 {
-                  label: " ",
+                  label: "Actions",
                   name: "enum_array_validate"
                 }
               ],
@@ -94,29 +104,38 @@ export default class AdminCenterEnumController extends Vue {
       type: "",
       values: {
         enum_array_key: this.keysArray,
-        enum_array_label: this.labelArray
+        enum_array_label: this.labelArray,
+        enum_array_active: this.activeArray
       }
     };
   }
 
   public selectedEnum: string = "";
   public kendoGrid: any = null;
-  public smartFormModel: any = {};
-  public modifications: any = {};
+  // Store temporarily data from a specific line update/add
   public tempModifications: any = {};
+  // Store data to send to the server
+  public modifications: any = {};
+  // SmartForm's filling data
   public keysArray: any = [];
   public labelArray: any = [];
+  public activeArray: any = [];
+  // Initial enum entries data
+  public smartFormModel: any = {};
+
   private initCounter: number = 0;
 
+  // Get entries from an Enum
   public loadEnumerate(e) {
     this.keysArray = [];
     this.labelArray = [];
+    this.activeArray = [];
     this.selectedEnum = this.kendoGrid.dataItem($(e.currentTarget).closest("tr")).enumerate;
     const that = this;
     this.$http.get(`/api/v2/admin/enumdata/${this.selectedEnum}`).then(response => {
       const enumData = response.data.data;
       enumData.forEach((value, index) => {
-        that.smartFormModel[index] = _.defaults(value, { key: "", label: "", enabled: true });
+        that.smartFormModel[index] = _.defaults(value, { key: "", label: "", active: "" });
         that.initCounter++;
       });
       that.smartFormModel.size = that.initCounter;
@@ -124,35 +143,78 @@ export default class AdminCenterEnumController extends Vue {
     });
   }
 
-  public updateModifications(event, smartElement, smartField, values, index) {
-    const currentValues = values.current;
-    if (currentValues.length === values.previous.length) {
-      const labelValue = currentValues[index].value;
-      if (this.tempModifications[index]) {
-        this.tempModifications[index].label = labelValue;
-      } else {
-        this.smartFormModel[index].label = labelValue;
-        if (this.modifications[index]) {
-          this.modifications[index].label = labelValue;
-        } else {
-          this.modifications[index] = this.getModification("update", index, this.smartFormModel[index].key, labelValue);
+  // Manage how SmartForm's lines are added and act accordingly
+  public addEntry(event, smartElement, smartField, type, index) {
+    if (smartField.id === "enum_array") {
+      if (type === "addLine") {
+        // If user's clicking on the "+" button
+        if (this.initCounter <= 0) {
+          this.tempModifications[index] = this.saveTemporaryData("add", index, "", "", "");
+          this.setRowMode(true, index);
+          this.manageNewRowData(index);
+        }
+        // If lines are added by the SmartForm's initial build
+        else {
+          this.initCounter--;
         }
       }
     }
   }
 
-  public addEntry(event, smartElement, smartField, type, index) {
-    if (smartField.id === "enum_array") {
-      if (type === "addLine") {
-        if (this.initCounter <= 0) {
-          this.tempModifications[index] = this.getModification("add", index, "", "", true);
-          this.setRowMode(true, index);
-          this.configureRow(index);
-        } else {
-          this.initCounter--;
-          this.initRow(index);
+  public updateModifications(event, smartElement, smartField, values, index) {
+    const currentValues = values.current;
+    const smartFormModelLength = Object.keys(this.smartFormModel).length - 1;
+    // If it's an update
+    if (currentValues.length === smartFormModelLength) {
+      // Check what field has been updated and if it's the first time or not
+      switch (smartField.id) {
+        case "enum_array_label": {
+          let activeValue = this.modifications[index]
+            ? this.modifications[index].active
+            : this.smartFormModel[index].active
+
+          this.modifications[index] = this.saveTemporaryData("update", index, this.smartFormModel[index].key, currentValues[index].value, activeValue);
+          break;
         }
+        case "enum_array_active": {
+          let labelValue = this.modifications[index]
+            ? this.modifications[index].label
+            : this.smartFormModel[index].label
+
+          this.modifications[index] = this.saveTemporaryData("update", index, this.smartFormModel[index].key, labelValue, currentValues[index].value);
+          break;
+        }
+        default:
+          break;
       }
+    } else if (currentValues.length > smartFormModelLength){
+      // If updating a newly added row
+      switch (smartField.id) {
+        case "enum_array_label": {
+          if (this.modifications[index]) {
+            this.modifications[index].label = currentValues[index].value;
+          }
+          else {
+            this.tempModifications[index].label = currentValues[index].value;
+          }
+          break;
+        }
+        case "enum_array_active": {
+          if (this.modifications[index]) {
+            this.modifications[index].active = currentValues[index].value;
+          }
+          else {
+            this.tempModifications[index].active = currentValues[index].value;
+          }
+          break;
+        }
+        default:
+          break;
+      }
+    } else {
+      // If deletting a newly added row
+        delete this.tempModifications[index];
+
     }
   }
 
@@ -174,26 +236,33 @@ export default class AdminCenterEnumController extends Vue {
   public saveModifications(event, smartElement, params) {
     if (params.eventId === "enum.save") {
       const data = {
-        data: this.modifications
+        data: this.modifications,
+        enumName: this.selectedEnum
       };
-      this.$http.post(`/api/v2/admin/enumupdate/${this.selectedEnum}`, data).then(() => {});
+      this.$http.post(`/api/v2/admin/enumupdate/${this.selectedEnum}`, data).then(() => {
+        this.modifications = [];
+        alert("Data has been added");
+        // @ts-ignore
+        this.kendoGrid.refresh()
+      });
     }
   }
   public mounted() {
     this.kendoGrid = $(this.$refs.gridWrapper)
       .kendoGrid({
+        toolbar: kendo.template('<input type="button" id="clearFilterButton" class="k-button" value="Clear Filter" />'),
         columns: [
           {
             field: "enumerate",
-            title: "Enumerate"
+            title: "Enumerate",
           },
           {
             field: "label",
-            title: "Label"
+            title: "Label",
           },
           {
             field: "structures",
-            title: "Found in structure..."
+            title: "Found in structure...",
           },
           {
             field: "fields",
@@ -201,7 +270,8 @@ export default class AdminCenterEnumController extends Vue {
           },
           {
             field: "modifiable",
-            title: "Modifiable"
+            title: "Modifiable",
+            filterable: false
           },
           {
             command: {
@@ -237,16 +307,29 @@ export default class AdminCenterEnumController extends Vue {
           pageSize: 20,
           pageSizes: [10, 20, 50]
         },
-        scrollable: true
+        scrollable: true,
+
+        filterable: {
+          extra: false,
+          operators: {
+            string: {
+              contains: "Contains"
+            }
+          },
+        },
       })
       .data("kendoGrid");
+      let that = this;
+      $("#clearFilterButton").click(function (){
+        // @ts-ignore
+        that.kendoGrid.dataSource.filter({});
+      });
   }
   private getRow(rowIndex) {
     return $(`tr[data-line=${rowIndex}]`)[0];
   }
 
-  private configureRow(index) {
-    this.initRow(index);
+  private manageNewRowData(index) {
     $(this.getRow(index))
       .find(".enum-key-edit-input")
       .on("change", e => {
@@ -257,68 +340,61 @@ export default class AdminCenterEnumController extends Vue {
           throw Error("temporary modification is not defined.");
         }
       });
-      $(this.getRow(index))
-        .find(".enum-validate-apply-button")
-        .on("click", e => {
-          if (this.tempModifications[index]) {
-            this.smartFormModel[index] = this.tempModifications[index];
-            this.modifications[index] = this.tempModifications[index];
-            delete this.tempModifications[index];
-            this.insertFormData(index);
-          } else {
-            throw Error("temporary modification is not defined.");
-          }
-        });
-        $(this.getRow(index))
-          .find(".enum-validate-cancel-button")
-          .on("click", e => {
-            console.log("Add Canceled")
-          });
+    // Validate new row data
+    $(this.getRow(index))
+      .find(".enum-validate-apply-button")
+      .on("click", e => {
+        this.validateNewRowData(index);
+      });
+    /* // ToDo : Cancel add row
+    $(this.getRow(index))
+      .find(".enum-validate-cancel-button")
+      .on("click", e => {
+        // @ts-ignore
+        this.getRow(index).remove()
+        delete this.tempModifications[index];
+      }); */
   }
 
-  private initRow(index) {
-    let that = this;
-    $($(this.getRow(index)).find(".enum-form-active-wrapper")).kendoSwitch({
-      change(e) {
-        const enabledValue = e.checked;
-        if (that.tempModifications[index]) {
-          // If temporary row (Added and not validated yet)
-          that.tempModifications[index].enabled = enabledValue;
-        } else {
-          that.smartFormModel[index].enabled = enabledValue;
-          if (that.modifications[index]) {
-            // Already modified row
-            that.modifications[index].enabled = enabledValue;
-          } else {
-            // Newly modified row
-            that.modifications[index] = that.getModification(
-              "update",
-              index,
-              that.smartFormModel[index].key,
-              that.smartFormModel[index].label,
-              enabledValue
-            );
+  private validateNewRowData(index) {
+    if (this.tempModifications[index]) {
+      let isKeyOk = true;
+
+      if (this.tempModifications[index].key.length > 0 && this.tempModifications[index].label !== null) {
+        for (let [key, value] of Object.entries(this.smartFormModel)) {
+          // @ts-ignore
+          if (this.tempModifications[index].key === value.key) {
+            isKeyOk = !isKeyOk;
           }
         }
-      },
-      messages: {
-        checked: "active",
-        unchecked: "disabled"
+      } else {
+        isKeyOk = !isKeyOk;
       }
-    });
+      if (isKeyOk) {
+        this.smartFormModel[index] = this.tempModifications[index];
+        this.modifications[index] = this.tempModifications[index];
+        delete this.tempModifications[index];
+        this.insertFormData(index);
+      }
+      else {
+        alert("Please fill all field and check that key is not already existing");
+      }
+    } else {
+      throw Error("temporary modification is not defined.");
+    }
   }
 
-  private getModification(
+  private saveTemporaryData(
     type,
     row,
-    key = this.smartFormModel[row].key,
-    label = this.smartFormModel[row].label,
-    enabled = this.smartFormModel[row].enabled,
+    key,
+    label,
+    active,
     from = -1,
     to = -1
   ) {
     return {
-      enabled,
+      active,
       from,
       key,
       label,
@@ -328,16 +404,30 @@ export default class AdminCenterEnumController extends Vue {
     };
   }
 
+  // Fill SmartForm's initial data arrays
   private buildInitialFormData() {
     for (let i = 0; i < this.smartFormModel.size; i++) {
       this.keysArray.push(this.smartFormModel[i].key);
       this.labelArray.push(this.smartFormModel[i].label);
+      this.activeArray.push(this.smartFormModel[i].active)
     }
   }
 
+  // Add data in SmartForm's data arrays and complete the "add" process
   private insertFormData(index) {
     this.keysArray[index] = this.smartFormModel[index].key;
     this.labelArray[index] = this.smartFormModel[index].label;
+    this.activeArray[index] = this.smartFormModel[index].active;
+    this.setFieldValue("enum_array_key", {
+      value: this.keysArray[index],
+      displayValue: this.keysArray[index],
+      index
+    });
     this.setRowMode(false, index);
+  }
+
+  private setFieldValue(smartFieldId, newValue) {
+    //@ts-ignore
+    this.$refs.smartForm.setValue(smartFieldId, newValue);
   }
 }

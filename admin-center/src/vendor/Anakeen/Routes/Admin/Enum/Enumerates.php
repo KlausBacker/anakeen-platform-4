@@ -11,7 +11,9 @@ class Enumerates
 
     private $take = 20;
     private $skip = 0;
-
+    private $filterLogic = 'AND';
+    private $filters = NULL; // [][]
+    private $finalFilter = '';
 
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
@@ -22,14 +24,37 @@ class Enumerates
 
     protected function doRequest()
     {
-
+ 
+       // Construct the filterable part of the query
+        if(!is_null($this->filters)) {
+            for($i = 0; $i < count($this->filters); $i++) {
+                switch($this->filters[$i]["field"]){
+                    case "enumerate":{
+                        $this->finalFilter = $this->filterLogic." docenum.NAME LIKE('%".$this->filters[$i]["value"]."%') ";
+                    }
+                    break;
+                    case "label":{
+                        $this->finalFilter = $this->filterLogic." LABEL LIKE ('%".$this->filters[$i]["value"]."%') ";
+                    }
+                    break;
+                    case "structures":{
+                        $this->finalFilter = $this->filterLogic." LABELTEXT LIKE ('%".$this->filters[$i]["value"]."%') ";
+                    }
+                    break;
+                    case "fields":{
+                        $this->finalFilter = $this->filterLogic." TITLE LIKE ('%".$this->filters[$i]["value"]."%') ";
+                    }
+                    break;
+                }
+            }
+            $this->filters = NULL;
+        }
         $sqlPattern = <<<'SQL'
 select docenum.key, docenum.name, docenum.label, docenum.disabled, docattr.docid, docattr.labeltext, docfam.title from docattr, docenum, docfam
-where docattr.type='enum("'||docenum.name||'")' and docattr.docid = docfam.id  ORDER BY docenum.name
-limit %s offset %s
+where docattr.type='enum("'||docenum.name||'")' and docattr.docid = docfam.id %s ORDER BY docenum.name limit %s offset %s
 SQL;
 
-        $sql = sprintf($sqlPattern, $this->take, $this->skip);
+        $sql = sprintf($sqlPattern, $this->finalFilter, $this->take, $this->skip);
 
         $extendableEnums = $this->getExtendableEnums();
 
@@ -63,8 +88,11 @@ SQL;
     private function parseParams(\Slim\Http\request $request)
     {
         $param = $request->getQueryParams();
+        
         $this->take = isset($param["take"]) ? $param["take"] : 20;
         $this->skip = isset($param["skip"]) ? $param["skip"] : 0;
+        $this->filterLogic = isset($param["filter"]) ? $param["filter"]["logic"] : "AND";
+        $this->filters = isset($param["filter"]) ? $param["filter"]["filters"] : NULL;
     }
 
     /**
@@ -96,9 +124,11 @@ SQL;
     {
         $sqlTotalQuery = <<<'SQL'
 select count(docenum.name) from docattr, docenum, docfam
-where docattr.type='enum("'||docenum.name||'")' and docattr.docid = docfam.id
+where docattr.type='enum("'||docenum.name||'")' and docattr.docid = docfam.id %s
 SQL;
-        DbManager::query($sqlTotalQuery, $total);
+
+        $sql = sprintf($sqlTotalQuery, $this->finalFilter);
+        DbManager::query($sql, $total);
         return $total[0]["count"];
     }
 }

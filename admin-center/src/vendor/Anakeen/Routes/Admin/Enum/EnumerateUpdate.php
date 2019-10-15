@@ -20,21 +20,19 @@ class EnumerateUpdate
     protected function doRequest(\Slim\Http\request $request)
     {
         $modifications = $request->getParsedBody()["data"];
+        $enumName = $request->getParsedBody()["enumName"];
 
-        foreach ($modifications as $updateData) {
-            $key = $updateData["key"];
-            $label = $updateData["label"];
-            $enabled = $updateData["enabled"];
-            $type = $updateData["type"];
+        foreach ($modifications as $newData) {
+            $key = $newData["key"];
+            $label = $newData["label"];
+            $active = $newData["active"];
+            $type = $newData["type"];
             switch ($type) {
                 case "add":
-                    $this->addEnum($key, $label);
+                    $this->addEnum($key, $label, $active);
                     break;
                 case "update":
-                    $this->updateEnum($updateData);
-                    break;
-                case "enable":
-                    $this->enableEnum($updateData);
+                    $this->updateEnum($enumName, $key, $label, $active);
                     break;
             }
         }
@@ -45,18 +43,44 @@ class EnumerateUpdate
         $this->id = $args["id"];
     }
 
-    private function addEnum($key, $label)
+    private function addEnum($key, $label, $active)
     {
-        EnumManager::addEnum($this->id, $key, $label);
+        // "disabled" field in DB accept only one character
+        $activeChar = $active === "enable" ? '' : 't';
+
+        // If the entry is marked as disabled
+        if ($activeChar === 't') {
+            $queryPattern = <<<'SQL'
+INSERT INTO docenum (name, key, label, disabled, eorder)
+VALUES ('%s', '%s', '%s', '%s', (SELECT MAX(eorder)+1 from docenum WHERE name = 'dir-fld_allbut'))
+SQL;
+            $query = sprintf($queryPattern, $this->id, $key, $label, $activeChar);
+        } else {
+            $queryPattern = <<<'SQL'
+INSERT INTO docenum (name, key, label, eorder)
+VALUES ('%s', '%s', '%s', (SELECT MAX(eorder)+1 from docenum WHERE name = 'dir-fld_allbut'))
+SQL;
+            $query = sprintf($queryPattern, $this->id, $key, $label);
+        }
+        DbManager::query($query, $output);
     }
 
-    private function updateEnum($data)
+    private function updateEnum($enumName, $key, $label, $active)
     {
-        error_log("UPDATE ENUM");
-    }
+        $activeChar = $active === "enable" ? null : 't';
 
-    private function enableEnum($data)
-    {
-        error_log("ENABLE ENUM");
+        if($activeChar === 't'){
+            $queryPattern = <<<'SQL'
+UPDATE docenum SET label = '%s', disabled = '%s' WHERE name = '%s' AND key = '%s'
+SQL;
+            $query = sprintf($queryPattern, $label, $activeChar, $enumName, $key);
+        }
+        else {
+            $queryPattern = <<<'SQL'
+UPDATE docenum SET label = '%s', disabled = null WHERE name = '%s' AND key = '%s'
+SQL;
+            $query = sprintf($queryPattern, $label, $enumName, $key);
+        }
+        DbManager::query($query, $output);
     }
 }

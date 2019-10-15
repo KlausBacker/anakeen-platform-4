@@ -19,15 +19,21 @@ class EnumerateData
 
     protected function doRequest()
     {
-        $data = EnumManager::getEnums($this->id);
+        $sqlPattern = <<<'SQL'
+select docenum.key, docenum.label, docenum.disabled from docenum where name = '%s' ORDER BY docenum.eorder
+SQL;
+
+        $sql = sprintf($sqlPattern, $this->id);
+        DbManager::query($sql, $enumData);
+
         $result = array();
 
-        foreach ($data as $enumEntry) {
+        foreach ($enumData as $enumEntry) {
             $temp["key"] = $enumEntry["key"];
             $temp["label"] = $enumEntry["label"];
+            $temp["active"] = $enumEntry["disabled"] === "t" ? "disable" : "enable";
             array_push($result, $temp);
         }
-        
         return $result;
     }
 
