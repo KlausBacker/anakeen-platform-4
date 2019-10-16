@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "declaration": true,
+    "declarationDir": "./components/lib/types",
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "strict": true,

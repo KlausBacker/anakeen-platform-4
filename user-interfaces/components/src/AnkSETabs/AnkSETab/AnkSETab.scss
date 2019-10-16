@@ -11,7 +11,7 @@
     background: transparent;
     margin-top: 3px;
 
-    /deep/ {
+    ::v-deep {
       .main-logo *, .text-logo * {
         fill: black !important;
       }
@@ -19,7 +19,7 @@
   }
 
   .ank-se-tab-element {
-    /deep/ {
+    ::v-deep {
       > .smart-element-wrapper {
         height: 100%;
 

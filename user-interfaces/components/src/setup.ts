@@ -1,18 +1,18 @@
-import axios from "../utils/axios";
+import "@progress/kendo-ui/js/cultures/kendo.culture.fr-FR";
+import "@progress/kendo-ui/js/kendo.button";
+import "@progress/kendo-ui/js/kendo.dropdownlist";
+import "@progress/kendo-ui/js/kendo.listview";
+import "@progress/kendo-ui/js/kendo.pager";
+import "@progress/kendo-ui/js/kendo.popup";
+import "@progress/kendo-ui/js/kendo.sortable";
+import "@progress/kendo-ui/js/kendo.tabstrip";
+import "@progress/kendo-ui/js/kendo.tabstrip";
+import "@progress/kendo-ui/js/kendo.window";
 import VueI18n from "vue-i18n";
 import I18nSetup from "../mixins/AnkVueComponentMixin/I18nSetup.js";
-import "@progress/kendo-ui/js/kendo.button";
-import "@progress/kendo-ui/js/kendo.tabstrip";
-import "@progress/kendo-ui/js/kendo.dropdownlist";
-import "@progress/kendo-ui/js/kendo.window";
-import "@progress/kendo-ui/js/kendo.popup";
-import "@progress/kendo-ui/js/kendo.pager";
-import "@progress/kendo-ui/js/kendo.sortable";
-import "@progress/kendo-ui/js/kendo.listview";
-import "@progress/kendo-ui/js/kendo.tabstrip";
-import "@progress/kendo-ui/js/cultures/kendo.culture.fr-FR";
+import axios from "../utils/axios";
 
-const setLocale = (Vue, kendo, locale) => {
+const setLocale = (Vue, kendo, locale?) => {
   if (locale) {
     const kendoLocale = locale.replace("_", "-");
     kendo.culture(kendoLocale);
@@ -29,7 +29,9 @@ const setLocale = (Vue, kendo, locale) => {
 };
 
 export default function install(Vue) {
-  if (Vue.__ank_components_setup__ === true) return;
+  if (Vue.__ank_components_setup__ === true) {
+    return;
+  }
   Vue.__ank_components_setup__ = true;
 
   Vue.use(VueI18n);
@@ -44,7 +46,7 @@ export default function install(Vue) {
     .get("/api/v2/ui/users/current")
     .then(response => {
       if (!(response && response.data && response.data.data && response.data.data.locale)) {
-        throw "[src setup] Invalid locale server response";
+        throw new Error("[src setup] Invalid locale server response");
       }
       const locale = response.data.data.locale;
       const parsedLocale = locale.split(".")[0].replace("_", "-");
