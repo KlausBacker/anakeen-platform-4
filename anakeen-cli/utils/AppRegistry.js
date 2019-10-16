@@ -9,15 +9,11 @@ class AppRegistryError extends GenericError {}
 class AppRegistry {
   /**
    * @param {string} url Registry's base URL
-   * @param {string} authUser (optional) HTTP auth username
-   * @param {string} authPassword (optional) HTTP auth password
    */
-  constructor({ url, authUser, authPassword }) {
+  constructor({ url }) {
     this._index = undefined;
     this.url = url.trim().replace(/\/+$/, "");
-    /* TODO: Implement HTTP Basic authentication. */
-    this.authUser = authUser;
-    this.authPassword = authPassword;
+    this.agent = new HTTPAgent();
   }
 
   /**
@@ -25,10 +21,11 @@ class AppRegistry {
    */
   async refreshIndex() {
     const url = this.getURL();
-    const agent = new HTTPAgent();
-    const response = await agent.fetch(url);
+    const response = await this.agent.fetch(url);
     if (!response.ok) {
-      throw new AppRegistryError(`Could not get content from registry at URL '${url}'`);
+      throw new AppRegistryError(
+        `Could not get content from registry at URL '${url}' (HTTP ${response.status} ${response.statusText})`
+      );
     }
     const data = await response.text();
     const index = JSON.parse(data);
@@ -132,10 +129,11 @@ class AppRegistry {
     const url = this.getURL();
     const infoUrl = [url, encodeURI(name), encodeURI(version)].join("/");
 
-    const agent = new HTTPAgent();
-    const response = await agent.fetch(infoUrl);
+    const response = await this.agent.fetch(infoUrl);
     if (!response.ok) {
-      throw new AppRegistryError(`Could not get info from URL '${infoUrl}'`);
+      throw new AppRegistryError(
+        `Could not get info from URL '${infoUrl}' (HTTP ${response.status} ${response.statusText})`
+      );
     }
 
     const data = await response.text();
