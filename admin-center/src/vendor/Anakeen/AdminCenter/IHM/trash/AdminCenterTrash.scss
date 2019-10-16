@@ -87,6 +87,14 @@
   }
 
   /deep/ {
+
+
+    .actionMenu {
+      .k-animation-container {
+        left: -9rem !important;
+      }
+    }
+
     .k-grid,
     .grid-widget-wrapper {
       height: 100%;

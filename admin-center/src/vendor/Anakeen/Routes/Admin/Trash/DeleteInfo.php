@@ -22,10 +22,8 @@ class DeleteInfo
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $this->documentId = $args["docid"];
-        // $this->setDocument($this->documentId);
         $this->element = SEManager::getDocument($this->documentId);
         
-       
         if (!$this->element) {
             $exception = new Exception(sprintf("Element \"%s\" not exist", $this->$args["docid"]));
             throw $exception;

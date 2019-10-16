@@ -8,11 +8,11 @@ use Anakeen\Routes\Core\DocumentData;
 use Anakeen\Core\SEManager;
 
 /**
- * Class DeleteDocumentFromTrash
+ * Class TrashRestore
  *
- * Delete document from the trash
+ * Restore element from the trash to the origin place
  *
- * @note    Used by route : DELETE /api/v2/trash/{docid}
+ * @note    Used by route : PUT /api/v2/trash/{docid}
  * @package Anakeen\Routes\Admin\Trash;
  */
 
@@ -21,9 +21,7 @@ class TrashRestore extends DocumentData
 {
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        // $mb = microtime(true);
         $this->documentId = $args["docid"];
-        // $this->setDocument($this->documentId);
         $this->_document = SEManager::getDocument($this->documentId);
         
         if (!$this->_document) {
@@ -37,10 +35,7 @@ class TrashRestore extends DocumentData
             throw new \Anakeen\Ui\Exception("Unable to restore $err");
         }
 
-        // $this->_document->addHistoryEntry(___("Definitively deleted by API", "ank"), \DocHisto::NOTICE, "DELETE");
-
         $data = $this->getDocumentData();
-        // $data["duration"] = sprintf("%.04f", microtime(true) - $mb);
         return ApiV2Response::withData($response, $data);
     }
 }
