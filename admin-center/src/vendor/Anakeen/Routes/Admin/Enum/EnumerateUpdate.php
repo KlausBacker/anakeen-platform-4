@@ -69,13 +69,12 @@ SQL;
     {
         $activeChar = $active === "enable" ? null : 't';
 
-        if($activeChar === 't'){
+        if ($activeChar === 't') {
             $queryPattern = <<<'SQL'
 UPDATE docenum SET label = '%s', disabled = '%s' WHERE name = '%s' AND key = '%s'
 SQL;
             $query = sprintf($queryPattern, $label, $activeChar, $enumName, $key);
-        }
-        else {
+        } else {
             $queryPattern = <<<'SQL'
 UPDATE docenum SET label = '%s', disabled = null WHERE name = '%s' AND key = '%s'
 SQL;

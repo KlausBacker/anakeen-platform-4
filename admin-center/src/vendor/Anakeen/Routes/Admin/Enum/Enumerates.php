@@ -12,8 +12,11 @@ class Enumerates
     private $take = 20;
     private $skip = 0;
     private $filterLogic = 'AND';
-    private $filters = NULL; // [][]
+    private $filters = null;
     private $finalFilter = '';
+    private $sortingDirection = '';
+    private $sortingField = null;
+    private $finalSorting = 'ORDER BY docenum.name';
 
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
@@ -25,10 +28,10 @@ class Enumerates
     protected function doRequest()
     {
  
-       // Construct the filterable part of the query
-        if(!is_null($this->filters)) {
-            for($i = 0; $i < count($this->filters); $i++) {
-                switch($this->filters[$i]["field"]){
+       // Construct filterable's part of the query
+        if (!is_null($this->filters)) {
+            for ($i = 0; $i < count($this->filters); $i++) {
+                switch ($this->filters[$i]["field"]) {
                     case "enumerate":{
                         $this->finalFilter = $this->filterLogic." docenum.NAME LIKE('%".$this->filters[$i]["value"]."%') ";
                     }
@@ -47,15 +50,37 @@ class Enumerates
                     break;
                 }
             }
-            $this->filters = NULL;
+            $this->filters = null;
+        }
+        // Construct sortable's part of the query
+        if (!is_null($this->sortingField)) {
+            switch ($this->sortingField) {
+                case "enumerate":{
+                    $this->finalSorting = "ORDER BY docenum.name ".$this->sortingDirection;
+                }
+                break;
+                case "label":{
+                    $this->finalSorting = "ORDER BY docenum.label ".$this->sortingDirection;
+                }
+                break;
+                case "structures":{
+                    $this->finalSorting = "ORDER BY labeltext ".$this->sortingDirection;
+                }
+                break;
+                case "fields":{
+                    $this->finalSorting = "ORDER BY title ".$this->sortingDirection;
+                }
+                break;
+            }
         }
         $sqlPattern = <<<'SQL'
 select docenum.key, docenum.name, docenum.label, docenum.disabled, docattr.docid, docattr.labeltext, docfam.title from docattr, docenum, docfam
-where docattr.type='enum("'||docenum.name||'")' and docattr.docid = docfam.id %s ORDER BY docenum.name limit %s offset %s
+where docattr.type='enum("'||docenum.name||'")' and docattr.docid = docfam.id %s %s limit %s offset %s
 SQL;
 
-        $sql = sprintf($sqlPattern, $this->finalFilter, $this->take, $this->skip);
+        $sql = sprintf($sqlPattern, $this->finalFilter, $this->finalSorting, $this->take, $this->skip);
 
+        error_log($sql);
         $extendableEnums = $this->getExtendableEnums();
 
         DbManager::query($sql, $enums);
@@ -92,7 +117,9 @@ SQL;
         $this->take = isset($param["take"]) ? $param["take"] : 20;
         $this->skip = isset($param["skip"]) ? $param["skip"] : 0;
         $this->filterLogic = isset($param["filter"]) ? $param["filter"]["logic"] : "AND";
-        $this->filters = isset($param["filter"]) ? $param["filter"]["filters"] : NULL;
+        $this->filters = isset($param["filter"]) ? $param["filter"]["filters"] : null;
+        $this->sortingField = isset($param["sort"]) ? $param["sort"][0]["field"] : $this->sortingField;
+        $this->sortingDirection = isset($param["sort"]) ? $param["sort"][0]["dir"] : $this->sortingDirection;
     }
 
     /**

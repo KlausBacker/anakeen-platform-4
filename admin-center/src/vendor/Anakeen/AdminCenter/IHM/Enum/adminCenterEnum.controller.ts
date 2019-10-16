@@ -123,7 +123,8 @@ export default class AdminCenterEnumController extends Vue {
   // Initial enum entries data
   public smartFormModel: any = {};
 
-  private initCounter: number = 0;
+  private smartFormInitCounter: number = 0;
+  private newRowInitCounter: number = 0;
 
   // Get entries from an Enum
   public loadEnumerate(e) {
@@ -136,9 +137,9 @@ export default class AdminCenterEnumController extends Vue {
       const enumData = response.data.data;
       enumData.forEach((value, index) => {
         that.smartFormModel[index] = _.defaults(value, { key: "", label: "", active: "" });
-        that.initCounter++;
+        that.smartFormInitCounter++;
       });
-      that.smartFormModel.size = that.initCounter;
+      that.smartFormModel.size = that.smartFormInitCounter;
       that.buildInitialFormData();
     });
   }
@@ -148,14 +149,14 @@ export default class AdminCenterEnumController extends Vue {
     if (smartField.id === "enum_array") {
       if (type === "addLine") {
         // If user's clicking on the "+" button
-        if (this.initCounter <= 0) {
+        if (this.smartFormInitCounter <= 0) {
           this.tempModifications[index] = this.saveTemporaryData("add", index, "", "", "");
           this.setRowMode(true, index);
           this.manageNewRowData(index);
         }
         // If lines are added by the SmartForm's initial build
         else {
-          this.initCounter--;
+          this.smartFormInitCounter--;
         }
       }
     }
@@ -187,7 +188,7 @@ export default class AdminCenterEnumController extends Vue {
         default:
           break;
       }
-    } else if (currentValues.length > smartFormModelLength){
+    } else if (currentValues.length > smartFormModelLength) {
       // If updating a newly added row
       switch (smartField.id) {
         case "enum_array_label": {
@@ -213,7 +214,7 @@ export default class AdminCenterEnumController extends Vue {
       }
     } else {
       // If deletting a newly added row
-        delete this.tempModifications[index];
+      delete this.tempModifications[index];
 
     }
   }
@@ -241,9 +242,8 @@ export default class AdminCenterEnumController extends Vue {
       };
       this.$http.post(`/api/v2/admin/enumupdate/${this.selectedEnum}`, data).then(() => {
         this.modifications = [];
-        alert("Data has been added");
         // @ts-ignore
-        this.kendoGrid.refresh()
+        this.kendoGrid.dataSource.read();
       });
     }
   }
@@ -296,6 +296,7 @@ export default class AdminCenterEnumController extends Vue {
           },
           serverFiltering: true,
           serverPaging: true,
+          serverSorting: true,
           transport: {
             read: {
               dataType: "json",
@@ -308,7 +309,7 @@ export default class AdminCenterEnumController extends Vue {
           pageSizes: [10, 20, 50]
         },
         scrollable: true,
-
+        sortable: true,
         filterable: {
           extra: false,
           operators: {
@@ -319,11 +320,11 @@ export default class AdminCenterEnumController extends Vue {
         },
       })
       .data("kendoGrid");
-      let that = this;
-      $("#clearFilterButton").click(function (){
-        // @ts-ignore
-        that.kendoGrid.dataSource.filter({});
-      });
+    let that = this;
+    $("#clearFilterButton").click(function () {
+      // @ts-ignore
+      that.kendoGrid.dataSource.filter({});
+    });
   }
   private getRow(rowIndex) {
     return $(`tr[data-line=${rowIndex}]`)[0];
@@ -377,7 +378,7 @@ export default class AdminCenterEnumController extends Vue {
         this.insertFormData(index);
       }
       else {
-        alert("Please fill all field and check that key is not already existing");
+        throw Error("Key value and/or label value are not initialized")
       }
     } else {
       throw Error("temporary modification is not defined.");
