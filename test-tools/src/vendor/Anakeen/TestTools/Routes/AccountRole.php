@@ -43,7 +43,7 @@ class AccountRole
                     $result = $this->removeRoleToAccount($requestData['accountlogin'], $role);
                     break;
             }
-            error_log(print_r($result->getAllRoles(), true));
+            // error_log(print_r($result->getAllRoles(), true));
             return ApiV2Response::withData($response, AccountInfos::formatAccount($result));
         }
     }

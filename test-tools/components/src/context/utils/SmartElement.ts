@@ -1,10 +1,16 @@
 import { ISmartElementValues } from "../AbstractContext";
 import Account from "../utils/Account";
+import { IOptions } from "minimatch";
+
+interface ITestOptions {
+  login?: string
+}
 
 export default class SmartElement {
-  private static UPDATE_API: string = "/api/v2/test-tools/smart-elements/%s/";
-  private static SET_API: string = "/api/v2/test-tools/smart-elements/<docid>/workflows/states/<state>/";
-  private static CHANGE_API: string = "/api/v2/test-tools/smart-elements/<docid>/workflows/transitions/<transition>/";
+  private static BASE_API: string = "/api/v2/test-tools/";
+  private static UPDATE_API: string = SmartElement.BASE_API + "smart-elements/<docid>/";
+  private static SET_API: string = SmartElement.BASE_API + "smart-elements/<docid>/workflows/states/<state>/";
+  private static CHANGE_API: string = SmartElement.BASE_API + "smart-elements/<docid>/workflows/transitions/<transition>/";
   protected properties: any;
   protected smartFields: any;
 
@@ -16,7 +22,7 @@ export default class SmartElement {
     this.fetchApi = fetch;
   }
 
-  public async changeState(stateInfo: {transition: string, ask: any, account?: Account}): Promise<SmartElement> {
+  public async changeState(stateInfo: { transition: string, ask: any, account?: Account }): Promise<SmartElement> {
     const url = SmartElement.CHANGE_API.replace(/<docid>/g, this.properties.initid).replace(/<transition>/g, stateInfo.transition);
     const response = await this.fetchApi(url, {
       headers: {
@@ -49,7 +55,7 @@ export default class SmartElement {
   }
 
   public async updateValues(seValues: ISmartElementValues): Promise<SmartElement> {
-    const url = SmartElement.UPDATE_API.replace(/%s/g, this.properties.initid);
+    const url = SmartElement.UPDATE_API.replace(/<docid>/g, this.properties.initid);
     const response = await this.fetchApi(url, {
       body: JSON.stringify(seValues),
       headers: {
@@ -65,9 +71,14 @@ export default class SmartElement {
     }
   }
 
-  public async getPropertyValue(propertyName: string): Promise<any> {
+  public async getPropertyValue(propertyName: string, options?: ITestOptions): Promise<any> {
+    const searchParams = new URLSearchParams();
+    searchParams.set('fields', `document.properties.${propertyName}`);
+    if (options && options.login) {
+      searchParams.set('login', options.login);
+    }
     const response = await this.fetchApi(
-      `/api/v2/smart-elements/${this.properties.initid}.json?fields=document.properties.${propertyName}`
+      `${SmartElement.BASE_API}smart-elements/${this.properties.initid}.json?${searchParams}`
     );
     const responseJson = await response.json();
     if (responseJson.success && responseJson.data && responseJson.data.document) {
@@ -77,7 +88,7 @@ export default class SmartElement {
     }
   }
 
-  public async getValue(fieldId: string): Promise<{value: any, displayValue: string}> {
+  public async getValue(fieldId: string): Promise<{ value: any, displayValue: string }> {
     const response = await this.fetchApi(
       `/api/v2/smart-elements/${this.properties.initid}.json?fields=document.attributes.${fieldId}`
     );
@@ -90,7 +101,7 @@ export default class SmartElement {
     }
   }
 
-  public async getValues(): Promise<{[fieldId: string]: any}> {
+  public async getValues(): Promise<{ [fieldId: string]: any }> {
     const response = await this.fetchApi(
       `/api/v2/smart-elements/${this.properties.initid}.json?fields=document.attributes.all`
     );
@@ -103,7 +114,7 @@ export default class SmartElement {
     }
   }
 
-  public async getPropertiesValues(): Promise<{[fieldId: string]: any}> {
+  public async getPropertiesValues(): Promise<{ [fieldId: string]: any }> {
     const response = await this.fetchApi(
       `/api/v2/smart-elements/${this.properties.initid}.json?fields=document.properties.all`
     );
@@ -117,7 +128,7 @@ export default class SmartElement {
   }
 
   public async destroy(): Promise<SmartElement> {
-    const url = SmartElement.UPDATE_API.replace(/%s/g, this.properties.initid);
+    const url = SmartElement.UPDATE_API.replace(/<docid>/g, this.properties.initid);
     const response = await this.fetchApi(url, {
       headers: {
         "Content-Type": "application/json"
