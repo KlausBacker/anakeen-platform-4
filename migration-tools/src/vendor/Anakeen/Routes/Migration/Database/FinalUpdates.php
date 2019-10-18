@@ -50,6 +50,8 @@ class FinalUpdates
         DbManager::query("select setval('seq_id_vaultdiskfsstorage', (select max(id_fs) from vaultdiskfsstorage))");
 
 
+         DbManager::query("update docattr set accessibility = 'Read'  where options ~ 'autotitle=yes'");
+
         return $data;
     }
 }
