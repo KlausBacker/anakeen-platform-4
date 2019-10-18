@@ -9,8 +9,8 @@ class ApiV2Response
     /**
      * Return normalize output for http api
      *
-     * @param \Slim\Http\response                   $response
-     * @param mixed                                 $data
+     * @param \Slim\Http\response $response
+     * @param mixed $data
      * @param \Anakeen\Routes\Core\Lib\ApiMessage[] $messages
      *
      * @return \Slim\Http\response
@@ -23,7 +23,7 @@ class ApiV2Response
     }
 
     /**
-     * @param \Slim\Http\request  $request
+     * @param \Slim\Http\request $request
      * @param \Slim\Http\response $response
      * @param                     $eTag
      *
@@ -60,7 +60,7 @@ class ApiV2Response
      * Add more messages in data response
      *
      * @param \Slim\Http\response $response
-     * @param array               $messages
+     * @param array $messages
      *
      * @return \Slim\Http\response
      */
@@ -113,6 +113,18 @@ class ApiV2Response
         }
         // Double quote not supported by all browsers - replace by minus
         $name = str_replace('"', '-', $fileName);
+
+        // truncate filename if is too long
+        if (strlen($name) > 243) {
+            $after = mb_substr($name, -50);
+            $before = mb_substr($name, 0, -50);
+
+            do {
+                $before = mb_substr($before, 0, -1);
+                $name = $before . "---" . $after;
+            } while (strlen($name) > 240);
+        }
+
         $uName = iconv("UTF-8", "ASCII//TRANSLIT", $name);
         $name = rawurlencode($name);
         if (!$mime) {

@@ -19,6 +19,13 @@
       }
     },
 
+    _initDom: function wIntInitDom() {
+      if (this.options.renderOptions.currency) {
+        this.options.attributeValue.displayValue = this.formatNumber(this.options.attributeValue.value);
+      }
+      this._super();
+    },
+
     /**
      * Get kendo option from normal options and from renderOptions.kendoNumeric
      * @returns {*}

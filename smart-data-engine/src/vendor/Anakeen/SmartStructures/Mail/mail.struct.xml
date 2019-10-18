@@ -54,7 +54,10 @@
                 </smart:field-returns>
             </smart:field-autocomplete>
         </smart:autocompletion>
-        <smart:defaults/>
+        <smart:defaults>
+            <smart:default field="mail_copymode">to</smart:default>
+            <smart:default field="mail_savecopy">no</smart:default>
+        </smart:defaults>
         <smart:accesses/>
     </smart:structure-configuration>
 </smart:config>
