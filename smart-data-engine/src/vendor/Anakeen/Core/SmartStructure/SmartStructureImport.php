@@ -178,8 +178,9 @@ class SmartStructureImport
                             $table1[$doctitle] = clone ($v);
                             $table1[$doctitle]->id = $doctitle;
                             $table1[$doctitle]->type = "text";
-                            $table1[$doctitle]->access = BasicAttribute::READ_ACCESS;
+                            $table1[$doctitle]->accessibility = FieldAccessManager::getTextAccess(BasicAttribute::READ_ACCESS);
                             $table1[$doctitle]->phpfile = "";
+                            $table1[$doctitle]->phpfunc = "";
                             $table1[$doctitle]->options = "autotitle=yes|relativeOrder=" . $v->id;
                             $table1[$doctitle]->title = "N";
                             $table1[$doctitle]->abstract = "N";
