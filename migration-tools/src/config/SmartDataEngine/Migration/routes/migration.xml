@@ -72,5 +72,13 @@
             <sde:description>Download module files associated to a vendor</sde:description>
             <sde:requiredAccess/>
         </sde:route>
+
+        <sde:route name="PrimaryMask">
+            <sde:callable>Anakeen\Routes\Migration\Database\PrimaryMask</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/migration/database/transfert/masks/{structure}</sde:pattern>
+            <sde:description>Database transfert primary mask</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
     </sde:routes>
 </sde:config>
