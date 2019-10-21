@@ -80,7 +80,6 @@ SQL;
 
         $sql = sprintf($sqlPattern, $this->finalFilter, $this->finalSorting, $this->take, $this->skip);
 
-        error_log($sql);
         $extendableEnums = $this->getExtendableEnums();
 
         DbManager::query($sql, $enums);

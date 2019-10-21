@@ -18,6 +18,15 @@
       flex-direction: column;
       height: 100%;
     }
+
+    a.k-button.k-button-icontext.k-grid-Modify {
+      border: none;
+      background: transparent;
+      color: #157EFB;
+      text-transform: uppercase;
+      font-weight: bold;
+      width: 0;
+    }
   }
 
   .enum-form-wrapper {

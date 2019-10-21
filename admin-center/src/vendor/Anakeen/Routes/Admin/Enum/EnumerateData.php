@@ -20,7 +20,7 @@ class EnumerateData
     protected function doRequest()
     {
         $sqlPattern = <<<'SQL'
-select docenum.key, docenum.label, docenum.disabled from docenum where name = '%s' ORDER BY docenum.eorder
+select docenum.key, docenum.label, docenum.disabled, docenum.eorder from docenum where name = '%s' ORDER BY docenum.eorder
 SQL;
 
         $sql = sprintf($sqlPattern, $this->id);
@@ -32,6 +32,7 @@ SQL;
             $temp["key"] = $enumEntry["key"];
             $temp["label"] = $enumEntry["label"];
             $temp["active"] = $enumEntry["disabled"] === "t" ? "disable" : "enable";
+            $temp["eorder"] = $enumEntry["eorder"];
             array_push($result, $temp);
         }
         return $result;

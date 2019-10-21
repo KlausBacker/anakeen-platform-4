@@ -21,20 +21,14 @@ class EnumerateUpdate
     {
         $modifications = $request->getParsedBody()["data"];
         $enumName = $request->getParsedBody()["enumName"];
-
+        $this->deleteEnums();
         foreach ($modifications as $newData) {
             $key = $newData["key"];
             $label = $newData["label"];
             $active = $newData["active"];
-            $type = $newData["type"];
-            switch ($type) {
-                case "add":
-                    $this->addEnum($key, $label, $active);
-                    break;
-                case "update":
-                    $this->updateEnum($enumName, $key, $label, $active);
-                    break;
-            }
+            $eorder = $newData["eorder"];
+
+            $this->addEnum($key, $label, $active, $eorder);
         }
     }
 
@@ -43,7 +37,7 @@ class EnumerateUpdate
         $this->id = $args["id"];
     }
 
-    private function addEnum($key, $label, $active)
+    private function addEnum($key, $label, $active, $eorder)
     {
         // "disabled" field in DB accept only one character
         $activeChar = $active === "enable" ? '' : 't';
@@ -51,35 +45,25 @@ class EnumerateUpdate
         // If the entry is marked as disabled
         if ($activeChar === 't') {
             $queryPattern = <<<'SQL'
-INSERT INTO docenum (name, key, label, disabled, eorder)
-VALUES ('%s', '%s', '%s', '%s', (SELECT MAX(eorder)+1 from docenum WHERE name = 'dir-fld_allbut'))
+INSERT INTO docenum (name, key, label, disabled, eorder) VALUES ('%s', '%s', '%s', '%s', '%s')
 SQL;
-            $query = sprintf($queryPattern, $this->id, $key, $label, $activeChar);
+            $query = sprintf($queryPattern, $this->id, $key, $label, $activeChar, $eorder);
         } else {
             $queryPattern = <<<'SQL'
-INSERT INTO docenum (name, key, label, eorder)
-VALUES ('%s', '%s', '%s', (SELECT MAX(eorder)+1 from docenum WHERE name = 'dir-fld_allbut'))
+INSERT INTO docenum (name, key, label, eorder) VALUES ('%s', '%s', '%s', '%s')
 SQL;
-            $query = sprintf($queryPattern, $this->id, $key, $label);
+            $query = sprintf($queryPattern, $this->id, $key, $label, $eorder);
         }
         DbManager::query($query, $output);
     }
 
-    private function updateEnum($enumName, $key, $label, $active)
+    private function deleteEnums()
     {
-        $activeChar = $active === "enable" ? null : 't';
-
-        if ($activeChar === 't') {
-            $queryPattern = <<<'SQL'
-UPDATE docenum SET label = '%s', disabled = '%s' WHERE name = '%s' AND key = '%s'
+        $queryPattern = <<<'SQL'
+DELETE FROM docenum WHERE docenum.name = '%s'
 SQL;
-            $query = sprintf($queryPattern, $label, $activeChar, $enumName, $key);
-        } else {
-            $queryPattern = <<<'SQL'
-UPDATE docenum SET label = '%s', disabled = null WHERE name = '%s' AND key = '%s'
-SQL;
-            $query = sprintf($queryPattern, $label, $enumName, $key);
-        }
+        $query = sprintf($queryPattern, $this->id);
         DbManager::query($query, $output);
+        // ToDo : Manage error /w output result
     }
 }
