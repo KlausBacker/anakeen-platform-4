@@ -5,14 +5,31 @@ import "@progress/kendo-ui/js/kendo.switch";
 import * as _ from "underscore";
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
+import { exists } from 'fs';
+import { runInThisContext } from 'vm';
 
 @Component({
   components: {
     "ank-smart-form": AnkSmartForm,
-    "ank-split-panes": AnkPaneSplitter
+    "ank-split-panes": AnkPaneSplitter,
   }
 })
 export default class AdminCenterEnumController extends Vue {
+  
+  public selectedEnum: string = "";
+  public kendoGrid: any = null;
+  public language: string = "";
+  // Store data to send to the server
+  public modifications: any = {};
+  // Initial enum entries data
+  public smartFormModel: any = {};
+  // SmartForm's filling data
+  public keysArray: any = [];
+  public labelArray: any = [];
+  public activeArray: any = [];
+
+  private smartFormDataCounter: number = 0;
+
   get smartFormData() {
     return {
       menu: [
@@ -34,14 +51,20 @@ export default class AdminCenterEnumController extends Vue {
             editDisplay: "bool"
           },
           enum_array_translation: {
-            template: '<a href="#">Translate</a>'
+            template: `<a href="#">Translate</a>`
           },
         }
       },
       structure: [
         {
+          label: "Enumerate " + this.selectedEnum,
+          name: "enum_frame",
+          type: "frame",
           content: [
             {
+              label: "Entries",
+              name: "enum_array",
+              type: "array",
               content: [
                 {
                   display: "write",
@@ -74,15 +97,9 @@ export default class AdminCenterEnumController extends Vue {
                     }
                   ]
                 },
-              ],
-              label: "Entries",
-              name: "enum_array",
-              type: "array"
+              ]
             }
-          ],
-          label: "Enumerate " + this.selectedEnum,
-          name: "enum_frame",
-          type: "frame"
+          ]
         }
       ],
       title: "Enumerate " + this.selectedEnum,
@@ -94,24 +111,10 @@ export default class AdminCenterEnumController extends Vue {
       }
     };
   }
-
-  public selectedEnum: string = "";
-  public kendoGrid: any = null;
-  // Store temporarily data from a specific line update/add
-  public tempModifications: any = {};
-  // Store data to send to the server
-  public modifications: any = {};
-  // Initial enum entries data
-  public smartFormModel: any = {};
-  // SmartForm's filling data
-  public keysArray: any = [];
-  public labelArray: any = [];
-  public activeArray: any = [];
-
-  private smartFormDataCounter: number = 0;
-
   // Get entries from an Enum
   public loadEnumerate(e) {
+    //@ts-ignore
+    console.log(this.entryOptions);
     this.keysArray = [];
     this.labelArray = [];
     this.activeArray = [];
@@ -137,7 +140,7 @@ export default class AdminCenterEnumController extends Vue {
           // If user's clicking on the "+" button
           if (this.smartFormDataCounter <= 0) {
             //@ts-ignore
-            this.modifications[index] = { key: "", label: "", active: "enable", eorder: index + 1};
+            this.modifications[index] = { key: "", label: "", active: "enable", eorder: index + 1 };
           }
           // If lines are added by the SmartForm's initial build
           else {
@@ -154,26 +157,39 @@ export default class AdminCenterEnumController extends Vue {
           const fromLine = index["fromLine"] + 1;
           const toLine = index["toLine"] + 1;
           this.changeEnumOrder(fromLine, toLine);
-          console.log(this.modifications);
           break;
         }
       }
     }
   }
 
+  public smartFormReady(event, smartElement) {
+    if (this.getRow(0) !== undefined) {
+      // Manage actions for already existing rows
+      this.disableInitialDataRowAction(
+      );
+    };
+  }
+
   public updateModifications(event, smartElement, smartField, values, index) {
     if (values.current[index] !== undefined) {
+      // ToDo : 'index' = 'eorder' et non this.modification[index]
+      // @ts-ignore
+      let entryToUpdate = Object.values(this.modifications).find(entry => entry.eorder == index + 1);
       switch (smartField.id) {
         case "enum_array_key": {
-          this.modifications[index].key = values.current[index].value;
+          // @ts-ignore
+          entryToUpdate.key = values.current[index].value;
           break;
         }
         case "enum_array_label": {
-          this.modifications[index].label = values.current[index].value;
+          // @ts-ignore
+          entryToUpdate.label = values.current[index].value;
           break;
         }
         case "enum_array_active": {
-          this.modifications[index].active = values.current[index].value;
+          // @ts-ignore
+          entryToUpdate.active = values.current[index].value;
           break;
         }
         default:
@@ -182,43 +198,56 @@ export default class AdminCenterEnumController extends Vue {
     }
   }
 
-  public setRowMode(edit, rowIndex) {
-
-
-
-    
-   /*  const mode = edit ? "edit" : "view";
-    const row = this.getRow(rowIndex);
-    $(row)
-      .find(".enum-key-wrapper")
-      .attr("mode", mode);
-    $(row)
-      .find(".enum-validate-wrapper")
-      .attr("mode", mode);
-
-    if (edit) {
-    } else {
-    } */
-  }
-
   public saveModifications(event, smartElement, params) {
     if (params.eventId === "enum.save") {
-      // ToDo : Check validity of data
-
-      const data = {
-        data: this.modifications,
-        enumName: this.selectedEnum
-      };
-      this.$http.post(`/api/v2/admin/enumupdate/${this.selectedEnum}`, data).then(() => {
-        // @ts-ignore
-        this.kendoGrid.dataSource.read();
-      });
+      let valid = true;
+      Object.values(this.modifications).forEach(modif => {
+        Object.values(modif).forEach(element => {
+          if (element === null) {
+            valid = false;
+            return;
+          }
+        })
+      })
+      if (valid) {
+        const data = {
+          data: this.modifications,
+          enumName: this.selectedEnum
+        };
+        this.$http.post(`/api/v2/admin/enumupdate/${this.selectedEnum}`, data).then(() => {
+          // @ts-ignore
+          this.kendoGrid.dataSource.read();
+        });
+      } else {
+        $(this.$refs.smartFormAlert).kendoDialog({
+          title: false,
+          content: "<center><h4>Please fill all fields</h4></center>",
+          size: "small",
+          actions: [{
+            text: "OK",
+          }],
+          closable: false,
+          animation: {
+            open: {
+              effects: "fade:in",
+              duration: 150
+            },
+          },
+          visible: false,
+        })
+        $(this.$refs.smartFormAlert).data("kendoDialog").open();
+      }
     }
   }
   public mounted() {
+    let that = this;
+
+    this.$http
+      .get(`/api/v2/ui/users/current`)
+      .then(response => (this.language = response.data.locale === "fr_FR.UTF-8" ? "fr" : "en"));
+
     this.kendoGrid = $(this.$refs.gridWrapper)
       .kendoGrid({
-        toolbar: kendo.template('<input type="button" id="clearFilterButton" class="k-button" value="Clear Filter" />'),
         columns: [
           {
             field: "enumerate",
@@ -286,15 +315,13 @@ export default class AdminCenterEnumController extends Vue {
             }
           },
         },
-        filterMenuInit:function(e){
-          let that=this;
-          $(e.container).find('.k-primary').click(function(event){
+        filterMenuInit: function (e) {
+          $(e.container).find('.k-primary').click(function (event) {
             let val = $(e.container).find('[title="Value"]').val()
-            if(val == ""){
+            if (val == "") {
               // @ts-ignore
               that.kendoGrid.dataSource.filter({});
             }
-
           })
         },
       })
@@ -322,11 +349,31 @@ export default class AdminCenterEnumController extends Vue {
     this.activeArray[index] = this.smartFormModel[index].active;
   }
 
+  private disableInitialDataRowAction() {
+    const delButtonsList = document.querySelectorAll("[Title='Delete line']");
+    const selectButtonsList = document.querySelectorAll("[Title='Select line']");
+    const enumArrayKeyInputs = document.querySelectorAll("[name='enum_array_key']");
+    // Remove the "duplicate selected line" button
+    document.querySelectorAll("[Title='Dupliquer la ligne sélectionnée']")[0].remove();
+    // Remove the "delete line" button
+    delButtonsList.forEach((deleteButton) => {
+      deleteButton.remove();
+    })
+    // Remove the "select line" button
+    selectButtonsList.forEach((selectButton) => {
+      selectButton.remove();
+    })
+    // Make "keys" read-only for already existing enums and no deletables
+    enumArrayKeyInputs.forEach((enumArrayKeyInput) => {
+      enumArrayKeyInput.setAttribute("disabled", "");
+      enumArrayKeyInput.nextElementSibling.remove();
+    })
+  }
+
   private changeEnumOrder(fromLine, toLine) {
     for (let i in this.modifications) {
       if (this.modifications.hasOwnProperty(i)) {
         if (fromLine > toLine) {
-          console.log("from > to")
           if (this.modifications[i].eorder < fromLine && this.modifications[i].eorder >= toLine) {
             Number(this.modifications[i].eorder++);
           }
@@ -335,7 +382,6 @@ export default class AdminCenterEnumController extends Vue {
           }
         }
         else if (fromLine < toLine) {
-          console.log("from < to")
           if (this.modifications[i].eorder > fromLine && this.modifications[i].eorder <= toLine) {
             Number(this.modifications[i].eorder--);
           }

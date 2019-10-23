@@ -15,7 +15,8 @@
           <span class="material-icons">format_list_number</span>
           <p>Select enumerate</p>
         </div>
-        <ank-smart-form v-show="selectedEnum" class="enum-smart-form" ref="smartForm" :config="smartFormData" @smartFieldArrayChange="manageRows" @smartFieldChange="updateModifications" @actionClick="saveModifications"></ank-smart-form>
+        <ank-smart-form v-show="selectedEnum" class="enum-smart-form" ref="smartForm" :config="smartFormData" @ready="smartFormReady" @smartFieldArrayChange="manageRows" @smartFieldChange="updateModifications" @actionClick="saveModifications"></ank-smart-form>
+        <div ref="smartFormAlert"></div>
       </div>
     </ank-split-panes>
   </div>
