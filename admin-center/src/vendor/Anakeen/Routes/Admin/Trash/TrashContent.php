@@ -26,15 +26,15 @@ class TrashContent extends GridContent
 
     private function filterAuthor($filter)
     {
-        if ($filter["operator"] === "contains")
+        if ($filter["operator"] === "contains") {
             $this->_searchDoc->addFilter("dochisto.uname ILIKE '%" . $filter["value"] . "%'");
-        else if ($filter["operator"] === "startswith") {
+        } elseif ($filter["operator"] === "startswith") {
             $this->_searchDoc->addFilter("dochisto.uname ILIKE '" . $filter["value"] . "%'");
-        } else if ($filter["operator"] === "doesnotcontain") { 
+        } elseif ($filter["operator"] === "doesnotcontain") {
             $this->_searchDoc->addFilter("dochisto.uname NOT ILIKE '%" . $filter["value"] . "%'");
-        } else if ($filter["operator"] === "isempty") { 
+        } elseif ($filter["operator"] === "isempty") {
             $this->_searchDoc->addFilter("dochisto.uname IS NULL OR dochisto.uname = ''");
-        } else if ($filter["operator"] === "isnotempty") { 
+        } elseif ($filter["operator"] === "isnotempty") {
             $this->_searchDoc->addFilter("dochisto.uname IS NOT NULL AND dochisto.uname != ''");
         }
     }

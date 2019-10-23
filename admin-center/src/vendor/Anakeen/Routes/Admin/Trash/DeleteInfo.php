@@ -37,7 +37,7 @@ class DeleteInfo
         $relatedElements = $relations->getIRelations();
 
         $tmp = '{ 
-            "data":[]}';;
+            "data":[]}';
 
         $arr = json_decode($tmp, true);
 
