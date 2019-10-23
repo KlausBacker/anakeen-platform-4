@@ -15,12 +15,28 @@ use Anakeen\Search\Internal\SearchSmartData;
  */
 class TrashContent extends GridContent
 {
+    private $allDataColumn = [];
 
     protected function parseUrlArgs($urlArgs = array())
     {
         // For search in all structure
 
         $this->smartElementId = 0;
+    }
+
+    private function filterAuthor($filter)
+    {
+        if ($filter["operator"] === "contains")
+            $this->_searchDoc->addFilter("dochisto.uname ILIKE '%" . $filter["value"] . "%'");
+        else if ($filter["operator"] === "startswith") {
+            $this->_searchDoc->addFilter("dochisto.uname ILIKE '" . $filter["value"] . "%'");
+        } else if ($filter["operator"] === "doesnotcontain") { 
+            $this->_searchDoc->addFilter("dochisto.uname NOT ILIKE '%" . $filter["value"] . "%'");
+        } else if ($filter["operator"] === "isempty") { 
+            $this->_searchDoc->addFilter("dochisto.uname IS NULL OR dochisto.uname = ''");
+        } else if ($filter["operator"] === "isnotempty") { 
+            $this->_searchDoc->addFilter("dochisto.uname IS NOT NULL AND dochisto.uname != ''");
+        }
     }
 
     protected function prepareFiltering()
@@ -32,6 +48,8 @@ class TrashContent extends GridContent
             foreach ($flatFilters as $filter) {
                 if (isset($filter["field"]) && $filter["field"] === "fromid") {
                     $this->filterFromId($filter);
+                } elseif (isset($filter["field"]) && $filter["field"] === "author") {
+                    $this->filterAuthor($filter);
                 } else {
                     $filterObject = Operators::getFilterObject($filter);
                     if (!empty($filterObject)) {
@@ -62,20 +80,37 @@ class TrashContent extends GridContent
 
         $this->_searchDoc->trash = "only";
         $this->_searchDoc->setObjectReturn();
-        // $this->_searchDoc->returnsOnly(["icon", "uname"]);
+        $this->_searchDoc->distinct = true;
         $this->_searchDoc->excludeConfidential(true);
         $this->_searchDoc->overrideViewControl(true);
-        // $this->_searchDoc->join("id = dochisto(id)");
+        $this->_searchDoc->join("id = dochisto(id)");
+        $this->_searchDoc->addFilter("dochisto.code = 'DELETE'");
     }
+
+    protected function prepareDocumentList()
+    {
+        parent::prepareDocumentList();
+        $this->_searchDoc->setOrder("dochisto.uname asc", "asc");
+    }
+
+
+
 
     protected static function canDisplay($seData)
     {
+
         $se = SEManager::getDocument($seData["properties"]["id"]);
         if (!empty($se)) {
             $err = $se->control("view");
             return empty($err);
         }
         return false;
+    }
+
+    protected function extractOrderBy()
+    {
+        $orderBy = parent::extractOrderBy();
+        return $orderBy;
     }
 
     protected static function getAuthorName($seData)

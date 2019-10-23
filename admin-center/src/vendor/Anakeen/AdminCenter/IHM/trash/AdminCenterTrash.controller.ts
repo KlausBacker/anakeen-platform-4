@@ -5,11 +5,6 @@ import SmartElement from "@anakeen/user-interfaces/components/lib/AnkSmartElemen
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 
-
-// declare var $;
-
-
-
 @Component({
   components: {
     "ank-se-grid": AnkSEGrid,
@@ -24,10 +19,11 @@ export default class AdminCenterTrashController extends Vue {
 
   public selectedTrash: string = "";
   public NbReference: any = 0;
+  content: string;
 
-    /*** 
-      This function close the confirmation pop-up (for restore or delete one element) 
-    ***/
+  /*** 
+    This function close the confirmation pop-up (for restore or delete one element) 
+  ***/
   public onClose(e) {
     e.sender.element
       .closest("[data-role=window]")
@@ -37,6 +33,7 @@ export default class AdminCenterTrashController extends Vue {
 
   public selectTrash(e) {
     switch (e.data.type) {
+
       /*** 
         When the user click on the "display" button 
       ***/
@@ -50,53 +47,37 @@ export default class AdminCenterTrashController extends Vue {
           });
         }
         break;
+
       /*** 
         When the user click on the "restore" button 
       ***/
       case "restore":
         this.selectedTrash = e.data.row.name || e.data.row.id.toString();
         const contentRestore =
-          "<p ref='content_confirm' class='content-confirm' >Warning : you are about to restore this element</p> <div class='button_wrapper'> <button class='k-cancel' ref='cancel'>Cancel</button><button class='k-delete' ref='deleteElement'>Restore Element</button> </div>";
+          "<p ref='content_confirm' class='content-confirm' >Warning : you are about to restore this element</p> <div class='button_wrapper'> <button class='k-cancel' ref='cancel'>Cancel</button><button class='k-restore' ref='deleteElement'>Restore Element</button> </div>";
 
         $(this.$refs.confirm)
           .kendoWindow({
             actions: ["close"],
             activate: () => {
-              const that = this;
               $(".k-cancel").kendoButton({
-                click(e) {
-                  $(that.$refs.confirm)
+                click:(e) => {
+                  $(this.$refs.confirm)
                     .data("kendoWindow")
                     .destroy();
                 }
               });
-              $(".k-delete").kendoButton({
-                click(e) {
+              $(".k-restore").kendoButton({
+                click: (e) => {
+                  const docid = this.selectedTrash;
 
-                  const docid = that.selectedTrash;
+                  this.$http
+                    .put("/api/v2/admin/trash/" + docid)
+                    .then(response => {
+                      this.$refs.grid.reload();
+                    });
 
-
-
-                  // this.$http
-                  // .put("/api/v2/admin/trash/" + docid)
-                  // .then(response => {
-                  //   that.$refs.grid.reload();
-                  // });
-
-                  $.ajax({
-                    async: false,
-                    type: "PUT",
-                    url: "/api/v2/admin/trash/" + docid,
-                    success: function (response) {
-                      that.$refs.grid.reload();
-                      that.selectedTrash = "";
-                    },
-                    error: function (res, status, error) {
-                      that.$emit("notify", "Restore error in request");
-                    }
-                  });
-
-                  $(that.$refs.confirm)
+                  $(this.$refs.confirm)
                     .data("kendoWindow")
                     .destroy();
                 }
@@ -113,6 +94,7 @@ export default class AdminCenterTrashController extends Vue {
           .open();
 
         break;
+
       /*** 
         When the user click on the "delete" button 
       ***/
@@ -120,13 +102,11 @@ export default class AdminCenterTrashController extends Vue {
         this.selectedTrash = e.data.row.name || e.data.row.id.toString();
         const thisPointer = this;
 
-        $.ajax({
-          async: false,
-          type: "GET",
-          url: "/api/v2/admin/trash/" + this.selectedTrash,
-          success: function (response) {
-            thisPointer.NbReference = response.data;
-            if (thisPointer.NbReference === 0) {
+        this.$http
+          .get("/api/v2/admin/trash/" + this.selectedTrash)
+          .then(response => {
+            thisPointer.NbReference = response.data.data;
+            if (Number(thisPointer.NbReference) === 0) {
               this.content =
                 "<p ref='content_confirm' class='content-confirm' >Warning : you are about to definitively delete this Smart Element which is not referenced in any other Smart Element</p> <div class='button_wrapper'> <button class='k-cancel' ref='cancel'>Cancel</button><button class='k-delete' ref='deleteElement'>Delete Element</button> </div>";
             } else {
@@ -139,30 +119,23 @@ export default class AdminCenterTrashController extends Vue {
               .kendoWindow({
                 actions: ["close"],
                 activate: () => {
-                  const that = thisPointer;
                   $(".k-cancel").kendoButton({
-                    click(e) {
-                      $(that.$refs.confirm)
+                    click:(e) => {
+                      $(this.$refs.confirm)
                         .data("kendoWindow")
                         .destroy();
                     }
                   });
                   $(".k-delete").kendoButton({
-                    click(e) {
-                      const docid = that.selectedTrash;
-                      $.ajax({
-                        async: false,
-                        type: "DELETE",
-                        url: "/api/v2/admin/trash/" + docid,
-                        success: function (response) {
-                          that.$refs.grid.reload();
-                        },
-                        error: function (res) {
-                          console.log(res);
-                          that.$emit("notify", "Error : " + res.responseText);
-                        }
-                      });
-                      $(that.$refs.confirm)
+                    click: (e) => {
+                      const docid = this.selectedTrash;
+                      this.$http
+                        .delete("/api/v2/admin/trash/" + docid)
+                        .then(response => {
+                          this.$refs.grid.reload();
+                        });
+
+                      $(this.$refs.confirm)
                         .data("kendoWindow")
                         .destroy();
                     }
@@ -177,18 +150,14 @@ export default class AdminCenterTrashController extends Vue {
               .data("kendoWindow")
               .center()
               .open();
-          },
-          error: function (res) {
-            thisPointer.$emit("notify", "Error :" + + res.responseText);
-          }
-        });
+          });
         break;
     }
   }
 
-    /*** 
-      This function put the "display" button in disable 
-    ***/
+  /*** 
+    This function put the "display" button in disable 
+  ***/
   protected onGridDataBound() {
     $(".k-grid-display", $(this.$el)).each((index, item) => {
       const rowData = this.$refs.grid.kendoGrid.dataItem($(item).closest("tr")).rowData;

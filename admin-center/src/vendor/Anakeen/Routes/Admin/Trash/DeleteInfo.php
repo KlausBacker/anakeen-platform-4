@@ -6,6 +6,8 @@ use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 use Anakeen\Routes\Core\DocumentData;
 use Anakeen\Core\SEManager;
+use Anakeen\Core\DbManager;
+
 use DocRel;
 
 /**
@@ -15,7 +17,7 @@ use DocRel;
  * @note    Used by route : GET /api/v2/trash/{docid}
  */
 
- 
+
 class DeleteInfo
 {
     protected $element;
@@ -23,21 +25,37 @@ class DeleteInfo
     {
         $this->documentId = $args["docid"];
         $this->element = SEManager::getDocument($this->documentId);
-        
+
         if (!$this->element) {
             $exception = new Exception(sprintf("Element \"%s\" not exist", $this->$args["docid"]));
             throw $exception;
         }
 
-        $relations=new DocRel();
+        $relations = new DocRel();
         $relations->sinitid = $this->element->initid;
 
-        $relatedElements= $relations->getIRelations();
+        $relatedElements = $relations->getIRelations();
 
-        $nbRelatedElements= count($relatedElements);
+        $tmp = '{ 
+            "data":[]}';;
 
-        $data = $nbRelatedElements;
+        $arr = json_decode($tmp, true);
 
-        return ApiV2Response::withData($response, $data);
+
+        foreach ($relatedElements as $item) {
+            if ($item["doctype"] !== "Z" && $item["doctype"] !== "F") {
+                array_push($arr['data'], $item);
+            }
+        };
+
+        return ApiV2Response::withData($response, count($arr["data"]));
+
+
+        // $nbRelatedElements = count($relatedElements);
+
+        // $data = $nbRelatedElements;
+        // $data = $result[0]["count"];
+
+        // return ApiV2Response::withData($response, $data);
     }
 }
