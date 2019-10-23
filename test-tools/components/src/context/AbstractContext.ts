@@ -33,7 +33,11 @@ export default abstract class AbstractContext {
       if (responseJson.success && responseJson.data) {
         return new Account(responseJson.data, (url, ...args) => this.fetchApi(url, ...args));
       } else {
-        throw new Error("Unfound Smart Element data");
+        let msg: string = 'unknown error';
+        if(responseJson.success === false) {
+          msg = responseJson.message;
+        }
+        throw new Error(`unable to get login ${login}: ${msg}`);
       }
     }
   }
@@ -49,7 +53,15 @@ export default abstract class AbstractContext {
       if (responseJson.success && responseJson.data && responseJson.data.document) {
         return new SmartElement(responseJson.data.document, (url, ...args) => this.fetchApi(url, ...args));
       } else {
-        throw new Error("Unfound Smart Element data");
+        let msg: string = 'unknown error';
+        if(responseJson.success === false && !seValues) {
+          msg = responseJson.message;
+          throw new Error(`unable to get SE ${seName}: ${msg}`);
+        }
+        if(responseJson.success === false && seValues) {
+          msg = responseJson.message;
+          throw new Error(`unable to create SE ${seName}: ${msg}`);
+        }
       }
     }
   }

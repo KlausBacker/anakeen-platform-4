@@ -17,6 +17,16 @@ export default class Context {
       headers: this.credentials.getBasicHeader()
     }).then(() => {
       return this;
+    }).catch((e) => {
+      let msg: string;
+      switch(e.code) {
+        case 'ECONNREFUSED':
+          msg = `Context initialization failed: Connection to '${url}' refused`
+          break;
+        default:
+            msg = `Context initialization failed: unknown error for '${url}': ${e.message}`
+      }
+      throw new Error(msg);
     });
   }
 

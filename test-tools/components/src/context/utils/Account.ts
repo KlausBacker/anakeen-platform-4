@@ -53,6 +53,7 @@ export default class Account {
   public destroy(): void {
     console.log("Destroy");
   }
+
   public async addToAGroup(group: string | Account) {
     let login: string;
     if (typeof group === "string") {
@@ -75,10 +76,14 @@ export default class Account {
     if (responseJson.success && responseJson.data) {
       return new Account(responseJson.data, (url, ...args) => this.fetchApi(url, ...args));
     } else {
-      throw new Error("Unfound Smart Element data");
+      let msg: string = 'unknown error';
+      if(responseJson.success === false) {
+        msg = responseJson.message;
+      }
+      throw new Error(`unable to add to group ${group}: ${msg}`);
     }
-
   }
+
   public async removeFromAGroup(group: string | Account) {
     let login: string;
     if (typeof group === "string") {
@@ -101,9 +106,14 @@ export default class Account {
     if (responseJson.success && responseJson.data) {
       return new Account(responseJson.data, (url, ...args) => this.fetchApi(url, ...args));
     } else {
-      throw new Error("Unfound Smart Element data");
+      let msg: string = 'unknown error';
+      if(responseJson.success === false) {
+        msg = responseJson.message;
+      }
+      throw new Error(`unable to remove from group ${group}: ${msg}`);
     }
   }
+
   public async addRole(role: string | Account) {
     let login: string;
     if (typeof role === "string") {
@@ -126,9 +136,14 @@ export default class Account {
     if (responseJson.success && responseJson.data) {
       return new Account(responseJson.data, (url, ...args) => this.fetchApi(url, ...args));
     } else {
-      throw new Error("Unfound Smart Element data");
+      let msg: string = 'unknown error';
+      if(responseJson.success === false) {
+        msg = responseJson.message;
+      }
+      throw new Error(`unable to add role ${role}: ${msg}`);
     }
   }
+
   public async removeRole(role: string | Account) {
     let login: string;
     if (typeof role === "string") {
@@ -151,7 +166,11 @@ export default class Account {
     if (responseJson.success && responseJson.data) {
       return new Account(responseJson.data, (url, ...args) => this.fetchApi(url, ...args));
     } else {
-      throw new Error("Unfound Smart Element data");
+      let msg: string = 'unknown error';
+      if(responseJson.success === false) {
+        msg = responseJson.message;
+      }
+      throw new Error(`unable to remove role ${role}: ${msg}`);
     }
   }
 }

@@ -34,7 +34,11 @@ export default class SmartElement {
     if (responseJson.success && responseJson.data && responseJson.data.document) {
       return new SmartElement(responseJson.data.document, (url, ...args) => this.fetchApi(url, ...args));
     } else {
-      throw new Error("Unfound Smart Element data");
+      let msg: string = 'unknown error';
+      if(responseJson.success === false) {
+        msg = responseJson.message;
+      }
+      throw new Error(`unable to change state ${stateInfo}: ${msg}`);
     }
   }
 
@@ -50,7 +54,11 @@ export default class SmartElement {
     if (responseJson.success && responseJson.data && responseJson.data.document) {
       return new SmartElement(responseJson.data.document, (url, ...args) => this.fetchApi(url, ...args));
     } else {
-      throw new Error("Unfound Smart Element data");
+      let msg: string = 'unknown error';
+      if(responseJson.success === false) {
+        msg = responseJson.message;
+      }
+      throw new Error(`unable to set state ${newState}: ${msg}`);
     }
   }
 
@@ -67,37 +75,53 @@ export default class SmartElement {
     if (responseJson.success && responseJson.data && responseJson.data.document) {
       return new SmartElement(responseJson.data.document, (url, ...args) => this.fetchApi(url, ...args));
     } else {
-      throw new Error("Unfound Smart Element data");
+      let msg: string = 'unknown error';
+      if(responseJson.success === false) {
+        msg = responseJson.message;
+      }
+      throw new Error(`unable to update value for ${seValues}: ${msg}`);
     }
   }
 
   public async getPropertyValue(propertyName: string, options?: ITestOptions): Promise<any> {
     const searchParams = new URLSearchParams();
     searchParams.set('fields', `document.properties.${propertyName}`);
+    searchParams.set('XDEBUG_SESSION_START', `true`);
     if (options && options.login) {
       searchParams.set('login', options.login);
     }
-    const response = await this.fetchApi(
-      `${SmartElement.BASE_API}smart-elements/${this.properties.initid}.json?${searchParams}`
-    );
+    const url = `${SmartElement.BASE_API}smart-elements/${this.properties.initid}.json?${searchParams}`;
+    const response = await this.fetchApi(url);
     const responseJson = await response.json();
     if (responseJson.success && responseJson.data && responseJson.data.document) {
       return responseJson.data.document.properties[propertyName];
     } else {
-      throw new Error("Unfound Smart Element data");
+      let msg: string = 'unknown error';
+      if(responseJson.success === false) {
+        msg = responseJson.message;
+      }
+      throw new Error(`unable to get value for property ${propertyName}: ${msg}`);
     }
   }
 
-  public async getValue(fieldId: string): Promise<{ value: any, displayValue: string }> {
-    const response = await this.fetchApi(
-      `/api/v2/smart-elements/${this.properties.initid}.json?fields=document.attributes.${fieldId}`
-    );
+  public async getValue(fieldId: string, options?: ITestOptions): Promise<{ value: any, displayValue: string }> {
+    const searchParams = new URLSearchParams();
+    searchParams.set('fields', `document.attributes.${fieldId}`);
+    searchParams.set('XDEBUG_SESSION_START', `true`);
+    if (options && options.login) {
+      searchParams.set('login', options.login);
+    }
+    const url = `${SmartElement.BASE_API}smart-elements/${this.properties.initid}.json?${searchParams}`;
+    const response = await this.fetchApi(url);
     const responseJson = await response.json();
-
     if (responseJson.success && responseJson.data && responseJson.data.document) {
       return responseJson.data.document.attributes[fieldId];
     } else {
-      throw new Error("Unfound Smart Element data");
+      let msg: string = 'unknown error';
+      if(responseJson.success === false) {
+        msg = responseJson.message;
+      }
+      throw new Error(`unable to get value for attribute ${fieldId}: ${msg}`);
     }
   }
 
@@ -110,7 +134,11 @@ export default class SmartElement {
     if (responseJson.success && responseJson.data && responseJson.data.document) {
       return responseJson.data.document.attributes;
     } else {
-      throw new Error("Unfound Smart Element data");
+      let msg: string = 'unknown error';
+      if(responseJson.success === false) {
+        msg = responseJson.message;
+      }
+      throw new Error(`unable to get all attributes : ${msg}`);
     }
   }
 
@@ -123,7 +151,11 @@ export default class SmartElement {
     if (responseJson.success && responseJson.data && responseJson.data.document) {
       return responseJson.data.document.properties;
     } else {
-      throw new Error("Unfound Smart Element data");
+      let msg: string = 'unknown error';
+      if(responseJson.success === false) {
+        msg = responseJson.message;
+      }
+      throw new Error(`unable to get all values : ${msg}`);
     }
   }
 
@@ -139,7 +171,11 @@ export default class SmartElement {
     if (responseJson.success && responseJson.data && responseJson.data.document) {
       return new SmartElement(responseJson.data.document, (url, ...args) => this.fetchApi(url, ...args));
     } else {
-      throw new Error("Unfound Smart Element data");
+      let msg: string = 'unknown error';
+      if(responseJson.success === false) {
+        msg = responseJson.message;
+      }
+      throw new Error(`unable to destroy SE : ${msg}`);
     }
   }
 }

@@ -26,6 +26,7 @@ export default class Credentials {
 
   public getBasicHeader() {
     return {
+      Accept: "application/json",
       Authorization: `Basic ${base64.encode(this._login + ":" + this._password)}`
     };
   }

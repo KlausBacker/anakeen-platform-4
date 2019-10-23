@@ -11,6 +11,7 @@ let currentContext;
 //on crée et vérifie le lien avec le context Anakeen Platform
 before(async () => {
   currentContext = await new Context("http://localhost:8080", "admin", "anakeen");
+  console.log(context);
 });
 
 //On décrit le test
@@ -27,15 +28,16 @@ describe("Test d'assertions :", () => {
     testContext = currentContext.initTest();
 
     // 1- Test Smart Element
-    smartElementTest = await testContext.getSmartElement({ smartStructure: "DEVBILL"}, { bill_title: "Test State Smart Element"});
+    smartElementTest = await testContext.getSmartElement({ smartStructure: "DEVBILL"}, { bill_title: "Test State Smart Element", bill_content: "Content State Smart Element"});
     testDeleted = await testContext.getSmartElement({ smartStructure: "DEVBILL"}, { bill_title: "Test Delete Smart Element"});
     smartElement = await testContext.getSmartElement("2405");
+    smartElement2 = await testContext.getSmartElement("1");
 
     // testPropertieValue = await testContext.getPropertyValue("");
     // testRole = await testContext.getAccount({ type: "role", login: "anakeen_test_user_role"}); // create custom test role
 
     // 2- Test Account
-    testAccount = await testContext.getAccount("anakeen_test_user"); // Get user
+    testAccount = await testContext.getAccount("admin"); // Get user
     testAccount = await testAccount.addRole("anakeen_test_user_role"); // Add existing role
     testAccount = await testAccount.addRole("rtstdduiboss"); // Add custom test role
 
@@ -51,18 +53,26 @@ describe("Test d'assertions :", () => {
     it("1 : testAssertState", async () => {
       await expect(smartElementTest).has.state("wfam_bill_e1");
       await expect(smartElementTest).has.not.state("wfam_bill_e12");
+    });
 
-      await expect(smartElementTest).for('anakeen_test_user').has.state("wfam_bill_e1");
-      await expect(smartElementTest).for('anakeen_test_user').has.not.state("wfam_bill_e12");
+    it("TEST : testAssertCanSave", async () => {
+      await expect(smartElementTest).canSave({ bill_title: "expectedValue"});
+      // console.log(smartElementTest);
     });
 
     it("2 : testUpdateAssert", async () => {
       const expectedValue = "Test State Smart Element Is Updated";
-      const updateSmartElement = await smartElementTest.updateValues({ bill_title: expectedValue}); // Mise à jour de bill_title    
-      // const getUpdatedValue = await updateSmartElement.getValue("bill_title").value; // à vérifier !
-      const updatedValue = updateSmartElement.smartFields.bill_title.value; // Récupération de la nouvelle valeur bill_title
-      expect(updatedValue).is.equal(expectedValue);
+      const updateSmartElement = await smartElementTest.updateValues({ bill_title: expectedValue, bill_content: expectedValue}); // Mise à jour de bill_title   
+      await expect(updateSmartElement).to.have.values("bill_title", expectedValue);
+      await expect(updateSmartElement).to.have.values("bill_content", expectedValue);
+      // console.log(updateSmartElement);
     });
+
+    // it("2 : testUpdateAssert", async () => {
+    //   const expectedValue = "Test State Smart Element Is Updated";
+    //   const updateSmartElement = await smartElementTest.updateValues({ bill_title: expectedValue}); // Mise à jour de bill_title   
+    //   await expect(smartElementTest).to.have.values({"bill_title": expectedValue});
+    // });
 
     it("3 : testAliveAssert", async () => {
       await expect(smartElementTest).is.alive();
@@ -80,16 +90,17 @@ describe("Test d'assertions :", () => {
 
     it("6 : testLockedAssert", async () => {
       await expect(smartElementTest).is.not.locked();
+      await expect(smartElementTest).for('admin').is.not.locked();
     });
 
     it("7 : testWorkflowAssert", async () => {
       await expect(smartElementTest).is.workflow("2170");
     });
 
-    // it("6 : testDeletedAssert", async () => {
+    // it("8 : testDeletedAssert", async () => {
     //   await expect(testDeleted).is.alive();
     //   const del = await testDeleted.destroy();
-    //   console.log(del.properties);
+    //   // console.log(del.properties);
     //   await expect(del).is.not.alive(); // à tester
     // });
   });
@@ -110,16 +121,19 @@ describe("Test d'assertions :", () => {
       await expect(smartElement).is.not.profile();
     });
 
-    // it("3 : testViewAccess", async () => {
-    //   await expect(smartElement).viewAccess("EGROUP");
+    // it("4 : testViewAccess", async () => {
+    //   await expect(smartElement).for('anakeen_test_user').has.viewAccess("EUSER");
     //   // expect(testeu).to.be.a("function");
     // });
 
     // it("4 : testSmartElementRight", async () => {
-    //   await expect(smartElement).smartElementRight("EGROsUP");
-    //   // expect(testeu).to.be.a("function");
+    //   await expect(smartElement2).smartElementRight("EUSER");
     // });
 
-  }); 
+    // it("4 : testSmartElementRight", async () => {
+    //   await expect(smartElement).transitionRight("t_wfam_bill_e1_e2");
+    // });
+
+  });
 
 });
