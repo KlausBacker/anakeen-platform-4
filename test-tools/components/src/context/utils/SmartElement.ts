@@ -3,12 +3,14 @@ import Account from "../utils/Account";
 import { IOptions } from "minimatch";
 
 interface ITestOptions {
-  login?: string
+  login?: string,
+  dryRun?: boolean
 }
 
 export default class SmartElement {
   private static BASE_API: string = "/api/v2/test-tools/";
   private static UPDATE_API: string = SmartElement.BASE_API + "smart-elements/<docid>/";
+  private static REVERT_API: string = SmartElement.BASE_API + "smart-elements-updated/<docid>/";
   private static SET_API: string = SmartElement.BASE_API + "smart-elements/<docid>/workflows/states/<state>/";
   private static CHANGE_API: string = SmartElement.BASE_API + "smart-elements/<docid>/workflows/transitions/<transition>/";
   protected properties: any;
@@ -22,8 +24,15 @@ export default class SmartElement {
     this.fetchApi = fetch;
   }
 
-  public async changeState(stateInfo: { transition: string, ask: any, account?: Account }): Promise<SmartElement> {
+  public async changeState(stateInfo: { transition: string, ask: any, account?: Account }, options?: ITestOptions): Promise<SmartElement> {
     const url = SmartElement.CHANGE_API.replace(/<docid>/g, this.properties.initid).replace(/<transition>/g, stateInfo.transition);
+    const searchParams = new URLSearchParams();
+    if (options && options.login) {
+      searchParams.set('login', options.login);
+    }
+    if (options && options.dryRun) {
+      searchParams.set('dry-run', options.dryRun.toString());
+    }
     const response = await this.fetchApi(url, {
       headers: {
         "Content-Type": "application/json"
@@ -42,8 +51,15 @@ export default class SmartElement {
     }
   }
 
-  public async setState(newState: string): Promise<SmartElement> {
+  public async setState(newState: string, options?: ITestOptions): Promise<SmartElement> {
     const url = SmartElement.SET_API.replace(/<docid>/g, this.properties.initid).replace(/<state>/g, newState);
+    const searchParams = new URLSearchParams();
+    if (options && options.login) {
+      searchParams.set('login', options.login);
+    }
+    if (options && options.dryRun) {
+      searchParams.set('dry-run', options.dryRun.toString());
+    }
     const response = await this.fetchApi(url, {
       headers: {
         "Content-Type": "application/json"
@@ -62,8 +78,15 @@ export default class SmartElement {
     }
   }
 
-  public async updateValues(seValues: ISmartElementValues): Promise<SmartElement> {
+  public async updateValues(seValues: ISmartElementValues, options?: ITestOptions): Promise<SmartElement> {
     const url = SmartElement.UPDATE_API.replace(/<docid>/g, this.properties.initid);
+    const searchParams = new URLSearchParams();
+    if (options && options.login) {
+      searchParams.set('login', options.login);
+    }
+    if (options && options.dryRun) {
+      searchParams.set('dry-run', options.dryRun.toString());
+    }
     const response = await this.fetchApi(url, {
       body: JSON.stringify(seValues),
       headers: {
@@ -86,7 +109,6 @@ export default class SmartElement {
   public async getPropertyValue(propertyName: string, options?: ITestOptions): Promise<any> {
     const searchParams = new URLSearchParams();
     searchParams.set('fields', `document.properties.${propertyName}`);
-    searchParams.set('XDEBUG_SESSION_START', `true`);
     if (options && options.login) {
       searchParams.set('login', options.login);
     }
@@ -159,8 +181,15 @@ export default class SmartElement {
     }
   }
 
-  public async destroy(): Promise<SmartElement> {
+  public async destroy(options?: ITestOptions): Promise<SmartElement> {
     const url = SmartElement.UPDATE_API.replace(/<docid>/g, this.properties.initid);
+    const searchParams = new URLSearchParams();
+    if (options && options.login) {
+      searchParams.set('login', options.login);
+    }
+    if (options && options.dryRun) {
+      searchParams.set('dry-run', options.dryRun.toString());
+    }
     const response = await this.fetchApi(url, {
       headers: {
         "Content-Type": "application/json"

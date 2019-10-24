@@ -111,7 +111,6 @@
         <sde:access ns="AnakeenTestTools">TestUser</sde:access>
       </sde:requiredAccess>
     </sde:route>
-
     <sde:route name="TestGetDocument">
       <sde:priority>1</sde:priority>
       <sde:callable>Anakeen\Routes\Core\DocumentData</sde:callable>

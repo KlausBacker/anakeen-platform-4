@@ -10,6 +10,8 @@ use \Slim\Http\response;
 
 class TestToolsUserChange
 {
+    protected $login;
+
     public function __invoke(request $request, response $response, callable $next, array $args): response
     {
         error_log(var_export($request->getHeaders(), true));

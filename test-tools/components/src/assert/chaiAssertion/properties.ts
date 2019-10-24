@@ -88,24 +88,6 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
     );
   });
 
-  // chai.Assertion.addMethod("canChangeState", async function (this: Chai.AssertionStatic, stateReference: string, dryRun: boolean = false) {
-  //   const target: SmartElement = this._obj;
-  //   const options = getCommonOptions(this);
-  //   const state = await target.getPropertyValue("state", options);
-  //   console.log(state);
-
-  //   const expectedMessage = "expected state is #{exp} but was #{act}";
-  //   const notExpectedMessage = "expected state is not #{exp} but was #{act}";
-
-  //   this.assert(
-  //     state.reference === stateReference,
-  //     expectedMessage,
-  //     notExpectedMessage,
-  //     stateReference,
-  //     state.reference
-  //   );
-  // })
-
   chai.Assertion.addMethod("state", async function (this: Chai.AssertionStatic, stateReference: string, dryRun: boolean = false) {
     const target: SmartElement = this._obj;
     const options = getCommonOptions(this);
@@ -123,7 +105,7 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
     );
   })
 
-  chai.Assertion.addMethod("values", async function (this: Chai.AssertionStatic, smartField: string, smartFieldValue: string) {
+  chai.Assertion.addMethod("value", async function (this: Chai.AssertionStatic, smartField: string, expectedValue: any) {
     const target: SmartElement = this._obj;
     const options = getCommonOptions(this);
     const value = await target.getValue(smartField, options);
@@ -133,10 +115,10 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
     const notExpectedMessage = "expected value is not #{exp} but was #{act}";
 
     this.assert(
-      value.value === smartFieldValue,
+      value.value === expectedValue,
       expectedMessage,
       notExpectedMessage,
-      smartFieldValue,
+      expectedValue,
       value.value
     );
   })
@@ -144,27 +126,25 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
 
   chai.Assertion.addMethod("canSave", async function (this: Chai.AssertionStatic, values: ISmartElementValues) {
     const target: SmartElement = this._obj;
-    const updateValue = await target.updateValues(values);
-    const seId = await updateValue.getPropertyValue("initid");
-    // console.log(seId);
+    let success = false;
+    let error = "";
+    try {
+      const updatedSe = await target.updateValues(values, {dryRun: true});
+      // console.log(updatedSe);
+      success = true;
+    } catch(e) {
+      error = e.message;
+    }
 
-    let result = false;
-    const response = await this._obj.fetchApi(`/api/v2/test-tools/smart-elements/${seId}.json`, {
-      headers: {
-        Accept: "application/json"
-      }
-    });
-    const responseData = await response.json();
-    result = responseData.success;
-
-    const expectedMessage = "expected state is #{exp} but was #{act}";
-    const notExpectedMessage = "expected state is not #{exp} but was #{act}";
+    const expectedMessage = "smart element has been updated with success";
+    const notExpectedMessage = "smart element has not been updated with success: #{act}";
 
     this.assert(
-      result === true,
+      success,
       expectedMessage,
       notExpectedMessage,
-      seId
+      true,
+      error
     );
   })
 
@@ -232,30 +212,6 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
       acl
     );
   });
-
-  // chai.Assertion.addMethod("transitionRight", async function (this: Chai.AssertionStatic, transition: string) {
-  //   const target: SmartElement = this._obj;
-  //   const options = getCommonOptions(this);
-  //   const seId = await target.getPropertyValue("initid", options);
-  //   let result = false;
-  //   const response = await this._obj.fetchApi(`/api/v2/test-tools/smart-elements/${seId}/rights/${transition}`, {
-  //     headers: {
-  //       Accept: "application/json"
-  //     }
-  //   });
-  //   const responseData = await response.json();
-  //   result = responseData.success;
-
-  //   const expectedMessage = `expected access to #{exp} but was not because: ${responseData.message || responseData.exceptionMessage}`;
-  //   const notExpectedMessage = "expected not access to #{exp} but was";
-
-  //   this.assert(
-  //     result === true,
-  //     expectedMessage,
-  //     notExpectedMessage,
-  //     transition
-  //   );
-  // });
 
   chai.Assertion.addMethod("viewAccess", async function (this: Chai.AssertionStatic, viewId: string) {
     const target: SmartElement = this._obj;
