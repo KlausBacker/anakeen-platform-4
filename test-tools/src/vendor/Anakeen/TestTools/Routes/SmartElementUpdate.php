@@ -27,13 +27,13 @@ class SmartElementUpdate
     ) {
         $this->initParameters($request, $args);
 
-        if($this->dryRun) {
+        if ($this->dryRun) {
             $this->initTransaction();
         }
 
         $this->updateValues();
 
-        if($this->dryRun) {
+        if ($this->dryRun) {
             $this->rollbackTransaction();
         }
 
@@ -57,7 +57,7 @@ class SmartElementUpdate
         }
 
         $this->newValues = $request->getParsedBody();
-        if(null === $this->newValues) {
+        if (null === $this->newValues) {
             $exception = new Exception("ANKTEST004", 'seId');
             $exception->setHttpStatus("400", "problem with getParseBody");
             throw $exception;
@@ -98,7 +98,7 @@ class SmartElementUpdate
     protected function initTransaction()
     {
         $savepoint = DbManager::savePoint("seUpdate");
-        if(!empty($savepoint)) {
+        if (!empty($savepoint)) {
             $exception = new Exception("ANKTEST001", $savepoint);
             $exception->setHttpStatus("500", "Cannot put the save point");
             $exception->setUserMessage(err);
@@ -107,9 +107,9 @@ class SmartElementUpdate
     }
 
     protected function rollbackTransaction()
-    {    
+    {
         $rollback = DbManager::rollbackPoint('seUpdate');
-        if(!empty($rollback)) {
+        if (!empty($rollback)) {
             $exception = new Exception("ANKTEST001", $rollback);
             $exception->setHttpStatus("500", "Error rollback : save point is not define");
             $exception->setUserMessage(err);

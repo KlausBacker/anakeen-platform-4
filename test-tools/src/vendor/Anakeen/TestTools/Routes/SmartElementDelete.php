@@ -53,7 +53,7 @@ class SmartElementDelete
     }
 
     protected function deleteSmartElement()
-    {       
+    {
         $error =  $this->smartElement->delete();
         if (!empty($error)) {
             error_log(print_r(">>>>>>>>>>3", true));
