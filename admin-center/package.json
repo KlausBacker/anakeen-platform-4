@@ -29,7 +29,10 @@
     "buildJs:workflow:prod": "element=WORKFLOW npx webpack --config webpack/index.js",
     "buildJs:workflow:dev": "element=WORKFLOW dev=DEV npx webpack --config webpack/index.js",
     "buildJs:workflow": "yarn run buildJs:workflow:prod && yarn run buildJs:workflow:dev",
-    "buildJs": "yarn run buildJs:tokens && yarn run buildJs:vaults && yarn run buildJs:parameters && yarn run buildJs:accounts && yarn run buildJs:i18n && yarn run buildJs:mail && yarn run buildJs:workflow"
+    "buildJs:trash:prod": "element=TRASH npx webpack --config webpack/index.js",
+    "buildJs:trash:dev":"element=TRASH dev=DEV npx webpack --config webpack/index.js",
+    "buildJs:trash": "yarn run buildJs:trash:prod && yarn run buildJs:trash:dev",
+    "buildJs": "yarn run buildJs:tokens && yarn run buildJs:vaults && yarn run buildJs:parameters && yarn run buildJs:accounts && yarn run buildJs:i18n && yarn run buildJs:mail && yarn run buildJs:workflow && yarn run buildJs:trash"
   },
   "files": [
     "src/**/*.scss",
