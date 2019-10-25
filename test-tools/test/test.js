@@ -28,7 +28,7 @@ describe("Test d'assertions :", () => {
     testContext = currentContext.initTest();
 
     // 1- Test Smart Element
-    smartElementTest = await testContext.getSmartElement({ smartStructure: "DEVBILL"}, { bill_title: "Test State Smart Element", bill_content: "Content State Smart Element"});
+    smartElementTest = await testContext.getSmartElement({ smartStructure: "DEVBILL"}, { bill_title: "Test State Smart Elements", bill_content: "Content State Smart Element"});
     testDeleted = await testContext.getSmartElement({ smartStructure: "DEVBILL"}, { bill_title: "Test Delete Smart Element"});
     smartElement = await testContext.getSmartElement("2405");
     // smartElement2 = await testContext.getSmartElement("2407");
@@ -56,8 +56,12 @@ describe("Test d'assertions :", () => {
     // });
 
     // it("TEST : testAssertCanSave", async () => {
+    //   await expect(smartElementTest).to.have.value("bill_title", "Test State Smart Elements");
     //   await expect(smartElementTest).canSave({ bill_title: "expectedValue"});
+    //   await expect(smartElementTest).to.have.value("bill_title", "Test State Smart Elements");
     //   // console.log(smartElementTest);
+    //   const test = await smartElementTest.getPropertiesValues();
+    //   console.log(test);
     // });
 
     // it("2 : testUpdateAssert", async () => {
@@ -71,17 +75,20 @@ describe("Test d'assertions :", () => {
     // it("2 : testUpdateAssert", async () => {
     //   const expectedValue = "Test State Smart Element Is Updated";
     //   const updateSmartElement = await smartElementTest.updateValues({ bill_title: expectedValue}); // Mise à jour de bill_title   
-    //   await expect(smartElementTest).to.have.values({"bill_title": expectedValue});
+    //   // await expect(smartElementTest).to.have.value({"bill_title": expectedValue});
     // });
 
     // it("3 : testAliveAssert", async () => {
     //   await expect(smartElementTest).is.alive();
     // });
 
-    // it("4 : testTransitionStateAssert", async () => {
-    //   const setState = await smartElementTest.changeState({ transition: "t_wfam_bill_e1_e2" });
-    //   await expect(setState).is.state("wfam_bill_e2");
-    // });
+    it("4 : testTransitionStateAssert", async () => {
+      await expect(smartElementTest).canChangeState("t_wfam_bill_e1_e2", {test: "test"});
+      // await expect(smartElementTest).canChangeState("t_wfam_bill_e1_e2");
+      await expect(smartElementTest).to.have.state("wfam_bill_e1");
+      // await expect(smartElementTest).not.canChangeState("t_wfam_bill_e1_e3");
+      // await expect(smartElementTest).to.have.state("wfam_bill_e1");
+    });
 
     // it("5 : testSetStateAssert", async () => {
     //   const setState = await smartElementTest.setState("wfam_bill_e1");
@@ -97,12 +104,12 @@ describe("Test d'assertions :", () => {
     //   await expect(smartElementTest).is.workflow("2170");
     // });
 
-    it("8 : testDeletedAssert", async () => {
-      await expect(testDeleted).is.alive();
-      const del = await testDeleted.destroy();
-      // console.log(del.properties.initid);
-      // await expect(del).for("zoo.user1").is.not.alive(); // à tester
-    });
+    // it("8 : testDeletedAssert", async () => {
+    //   await expect(testDeleted).is.alive();
+    //   const del = await testDeleted.destroy();
+    //   // console.log(del.properties.initid);
+    //   await expect(del).for("admin").is.not.alive(); // à tester
+    // });
   });
 
   describe("2- Test Account ==> 1 : on vérifie si le role pour l'account 'anakeen_test_user' est 'rtstdduiboss', 2 : on test si ce smart element à la viewcontroller 'CV_IUSER_ACCOUNT'; 3 : on test si c'est un SE de type Account", () => {

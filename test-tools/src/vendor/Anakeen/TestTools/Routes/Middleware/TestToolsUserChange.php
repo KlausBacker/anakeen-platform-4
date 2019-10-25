@@ -14,7 +14,6 @@ class TestToolsUserChange
 
     public function __invoke(request $request, response $response, callable $next, array $args): response
     {
-        error_log(var_export($request->getHeaders(), true));
         $this->login = $request->getQueryParams()["login"] ?? null;
         if (!empty($this->login)) {
             $account = AccountManager::getAccount($this->login);

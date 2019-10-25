@@ -8,6 +8,8 @@ use Anakeen\Router\ApiV2Response;
 
 class SmartElementClean
 {
+    protected $errors;
+
     /**
      * @param \Slim\Http\request $request
      * @param \Slim\Http\response $response
@@ -19,22 +21,35 @@ class SmartElementClean
         \Slim\Http\response $response,
         $args
     ) {
-        if (!empty($args['tag'])) {
+
+        $this->initParameters($request, $args);
+        
+        return ApiV2Response::withMessages($response, $this->errors);
+    }
+
+    protected function initParameters(\Slim\Http\request $request, $args)
+    {
+        $tag = $args['tag'] ?? null;
+        if (empty($tag)) {
+            $exception = new Exception("ANKTEST004", 'tag');
+            $exception->setHttpStatus("400", "smart element identifier is required");
+            throw $exception;
+        }
+
+        if (!empty($tag)) {
             $search = new SearchElements('');
             $search->addFilter('atags is not null');
             $search->addFilter("atags ->> 'ank_test' = '%s'", pg_escape_string($args['tag']));
             $search->search();
             $list = $search->getResults();
-            $errors = [];
+            $this->errors = [];
 
             foreach ($list as $docid => $doc) {
                 $error = $doc->delete();
                 if (!empty($error)) {
-                    $errors[] = $error;
+                    $this->errors[] = $error;
                 }
             }
-
-            return ApiV2Response::withMessages($response, $errors);
         } else {
             $exception = new Exception("ANKTEST005", $search->id, $error);
             $exception->setHttpStatus("400", "test tag is required");

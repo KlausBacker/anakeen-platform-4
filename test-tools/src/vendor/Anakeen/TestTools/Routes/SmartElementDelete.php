@@ -2,10 +2,10 @@
 
 namespace Anakeen\TestTools\Routes;
 
-use Anakeen\Core\Internal\SmartElement;
-use Anakeen\SmartElementManager;
-use Anakeen\Router\Exception;
 use Anakeen\Router\ApiV2Response;
+use Anakeen\Router\Exception;
+use Anakeen\SmartElement;
+use Anakeen\SmartElementManager;
 
 class SmartElementDelete
 {
@@ -38,7 +38,6 @@ class SmartElementDelete
     {
         $seId = $args['seId'] ?? null;
         if (empty($seId)) {
-            error_log(print_r(">>>>>>>>>>1", true));
             $exception = new Exception("ANKTEST004", 'seId');
             $exception->setHttpStatus("400", "smart element identifier is required");
             throw $exception;
@@ -56,7 +55,6 @@ class SmartElementDelete
     {
         $error =  $this->smartElement->delete();
         if (!empty($error)) {
-            error_log(print_r(">>>>>>>>>>3", true));
             $exception = new Exception("ANKTEST003", $this->smartElement->id, $error);
             $exception->setHttpStatus("500", "Unable to delete the smart element");
             throw $exception;

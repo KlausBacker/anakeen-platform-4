@@ -123,12 +123,20 @@
   </sde:routes>
 
   <sde:middlewares namespace="AnakeenTestToolsMiddleWares">
-    <sde:middleware name="Middleware:For">
+    <sde:middleware name="Middleware:TestToolsUserChange">
       <sde:priority>0</sde:priority>
       <sde:callable>Anakeen\TestTools\Routes\Middleware\TestToolsUserChange</sde:callable>
       <sde:method>ANY</sde:method>
       <sde:pattern>[/api/v2/test-tools/{args:.*}]</sde:pattern>
       <sde:description>Test with an user</sde:description>
+      <sde:requiredAccess/>
+    </sde:middleware>
+    <sde:middleware name="Middleware:TestToolsDryRun">
+      <sde:priority>0</sde:priority>
+      <sde:callable>Anakeen\TestTools\Routes\Middleware\TestToolsDryRun</sde:callable>
+      <sde:method>ANY</sde:method>
+      <sde:pattern>[/api/v2/test-tools/{args:.*}]</sde:pattern>
+      <sde:description>Test can save and revert after</sde:description>
       <sde:requiredAccess/>
     </sde:middleware>
   </sde:middlewares>

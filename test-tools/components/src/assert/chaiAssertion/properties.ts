@@ -1,6 +1,11 @@
 import SmartElement from "../../context/utils/SmartElement";
 import { ISmartElementValues } from "../../context/AbstractContext";
 
+/*
+Set const enableXdebug = TRUE for activate PHP debugger
+ */
+const enableXDebug = false;
+
 export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
 
   const getCommonOptions = function getDefaultOptions(assertion: Chai.AssertionStatic) {
@@ -8,6 +13,11 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
     const login = chai.util.flag(assertion, 'login');
     if (login) {
       options.login = login;
+    }
+    if(enableXDebug) {
+      options.searchParams = {
+        XDEBUG_SESSION_START : 'true'
+      }
     }
     return options;
   }
@@ -57,6 +67,10 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
   chai.Assertion.addMethod("alive", async function (this: Chai.AssertionStatic, dryRun: boolean = false) {
     const target: SmartElement = this._obj;
     const options = getCommonOptions(this);
+    options.searchParams = {
+      ...options.searchParams || {},
+      useTrash: "true"
+    }
     const doctype = await target.getPropertyValue("doctype", options);
 
     const expectedMessage = "expected smart element is alive but was in doctype #{act}";
@@ -126,18 +140,43 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
 
   chai.Assertion.addMethod("canSave", async function (this: Chai.AssertionStatic, values: ISmartElementValues) {
     const target: SmartElement = this._obj;
+    // const options = getCommonOptions(this);
     let success = false;
     let error = "";
     try {
-      const updatedSe = await target.updateValues(values, {dryRun: true});
+      const updatedSe = await target.updateValues(values, { dryRun: true });
       // console.log(updatedSe);
       success = true;
-    } catch(e) {
+    } catch (e) {
       error = e.message;
     }
 
     const expectedMessage = "smart element has been updated with success";
     const notExpectedMessage = "smart element has not been updated with success: #{act}";
+
+    this.assert(
+      success,
+      expectedMessage,
+      notExpectedMessage,
+      true,
+      error
+    );
+  })
+
+  chai.Assertion.addMethod("canChangeState", async function (this: Chai.AssertionStatic, transition: string, askValues?: object) {
+    const target: SmartElement = this._obj;
+    // const options = getCommonOptions(this);
+    let success = false;
+    let error = "";
+    try {
+      await target.changeState({transition, askValues}, { dryRun: true });
+      success = true;
+    } catch (e) {
+      error = e.message;
+    }
+
+    const expectedMessage = "Transition was expected to be allowed, but failed with error #{act}";
+    const notExpectedMessage = "Transition was not expected to be allowed, but succeeded";
 
     this.assert(
       success,
@@ -192,7 +231,7 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
     const target: SmartElement = this._obj;
     const options = getCommonOptions(this);
     const seId = await target.getPropertyValue("initid", options);
-    
+
     let result = false;
     const response = await this._obj.fetchApi(`/api/v2/test-tools/smart-elements/${seId}/rights/${acl}`, {
       headers: {

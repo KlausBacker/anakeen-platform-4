@@ -2,9 +2,9 @@
 
 namespace Anakeen\TestTools\Routes;
 
-use Anakeen\Core\Internal\SmartElement;
-use Anakeen\Router\Exception;
 use Anakeen\Router\ApiV2Response;
+use Anakeen\Router\Exception;
+use Anakeen\SmartElement;
 use Anakeen\SmartElementManager;
 
 class SmartElementUpdate
@@ -27,15 +27,7 @@ class SmartElementUpdate
     ) {
         $this->initParameters($request, $args);
 
-        if ($this->dryRun) {
-            $this->initTransaction();
-        }
-
         $this->updateValues();
-
-        if ($this->dryRun) {
-            $this->rollbackTransaction();
-        }
 
         return ApiV2Response::withData($response, $this->getSmartElementdata());
     }
@@ -92,28 +84,6 @@ class SmartElementUpdate
                 $exception->setData($info);
                 throw $exception;
             }
-        }
-    }
-
-    protected function initTransaction()
-    {
-        $savepoint = DbManager::savePoint("seUpdate");
-        if (!empty($savepoint)) {
-            $exception = new Exception("ANKTEST001", $savepoint);
-            $exception->setHttpStatus("500", "Cannot put the save point");
-            $exception->setUserMessage(err);
-            throw $exception;
-        }
-    }
-
-    protected function rollbackTransaction()
-    {
-        $rollback = DbManager::rollbackPoint('seUpdate');
-        if (!empty($rollback)) {
-            $exception = new Exception("ANKTEST001", $rollback);
-            $exception->setHttpStatus("500", "Error rollback : save point is not define");
-            $exception->setUserMessage(err);
-            throw $exception;
         }
     }
 

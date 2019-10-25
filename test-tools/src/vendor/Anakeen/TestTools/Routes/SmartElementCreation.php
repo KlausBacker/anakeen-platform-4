@@ -2,12 +2,16 @@
 
 namespace Anakeen\TestTools\Routes;
 
-use Anakeen\SmartElementManager;
-use Anakeen\Router\Exception;
 use Anakeen\Router\ApiV2Response;
+use Anakeen\Router\Exception;
+use Anakeen\SmartElement;
+use Anakeen\SmartElementManager;
 
 class SmartElementCreation
 {
+    /** @var SmartElement $smartElement */
+    protected $smartElement;
+
     /**
      * @param \Slim\Http\request $request
      * @param \Slim\Http\response $response
@@ -19,20 +23,36 @@ class SmartElementCreation
         \Slim\Http\response $response,
         $args
     ) {
-        if (!empty($args['structure'])) {
-            $smartElement = SmartElementManager::createDocument($args['structure']);
+    
+        $this->initParameters($request, $args);
+
+        $this->getSmartElementdata();
+
+        return ApiV2Response::withData($response, $this->getSmartElementdata());
+    }
+
+    protected function initParameters(\Slim\Http\request $request, $args)
+    {
+        $structure = $args['structure'] ?? null;
+        if (empty($structure)) {
+            $exception = new Exception("ANKTEST004", 'structure');
+            $exception->setHttpStatus("400", "smart element identifier is required");
+            throw $exception;
+        }
+        if (!empty($structure)) {
+            $this->smartElement = SmartElementManager::createDocument($structure);
             $requestData = $request->getParsedBody();
             if (isset($requestData['document']['attributes'])) {
                 $newValues = $requestData['document']['attributes'];
                 foreach ($newValues as $aid => $value) {
                     try {
                         if ($value === null or $value === '') {
-                            $smartElement->setAttributeValue($aid, null);
+                            $this->smartElement->setAttributeValue($aid, null);
                         } else {
-                            $smartElement->setAttributeValue($aid, $value);
+                            $this->smartElement->setAttributeValue($aid, $value);
                         }
                     } catch (SmartFieldValueException $e) {
-                        $exception = new Exception("ANKTEST003", $smartElement->id, $aid, $e->getDcpMessage());
+                        $exception = new Exception("ANKTEST003", $this->smartElement->id, $aid, $e->getDcpMessage());
                         $exception->setHttpStatus("500", "Unable to modify the smart element");
                         $info = array(
                             "id" => $aid,
@@ -44,23 +64,26 @@ class SmartElementCreation
                     }
                 }
             }
-            $error = $smartElement->store();
+            $error = $this->smartElement->store();
             if (!empty($error)) {
-                $exception = new Exception("ANKTEST001", $smartElement->id, $error);
+                $exception = new Exception("ANKTEST001", $this->smartElement->id, $error);
                 $exception->setHttpStatus("500", "Unable to create the SmartElement");
                 throw $exception;
             }
         } else {
-            $exception = new Exception("ANKTEST002", $smartElement->id, $error);
+            $exception = new Exception("ANKTEST002", $this->smartElement->id, $error);
             $exception->setHttpStatus("400", "Structure identifier is required");
             throw $exception;
         }
         if (isset($requestData['document']['options']['tag'])) {
-            $smartElement->addATag('ank_test', $requestData['document']['options']['tag']);
+            $this->smartElement->addATag('ank_test', $requestData['document']['options']['tag']);
         }
-        $response = $response->withStatus(201);
-        $smartElementData = new \Anakeen\Routes\Core\Lib\DocumentApiData($smartElement);
+    }
+
+    protected function getSmartElementdata()
+    {
+        $smartElementData = new \Anakeen\Routes\Core\Lib\DocumentApiData($this->smartElement);
         $smartElementData->setFields(["document.properties.all", "document.attributes.all"]);
-        return ApiV2Response::withData($response, $smartElementData->getDocumentData());
+        return $smartElementData->getDocumentData();
     }
 }

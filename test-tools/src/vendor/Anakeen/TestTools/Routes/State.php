@@ -2,14 +2,16 @@
 
 namespace Anakeen\TestTools\Routes;
 
-use Anakeen\SmartElementManager;
-use Anakeen\WorkflowSetState;
-use Anakeen\Router\Exception;
 use Anakeen\Router\ApiV2Response;
-use Anakeen\Routes\Core\WorkflowState;
+use Anakeen\Router\Exception;
+use Anakeen\SmartElement;
+use Anakeen\SmartElementManager;
 
 class State
 {
+    /** @var SmartElement $smartElement */
+    protected $smartElement;
+    
     /**
      * @param \Slim\Http\request $request
      * @param \Slim\Http\response $response
@@ -21,17 +23,34 @@ class State
         \Slim\Http\response $response,
         $args
     ) {
-        if (!empty($args['docid'])) {
-            $smartElement = SmartElementManager::getDocument($args['docid']);
-            if (empty($smartElement)) {
+
+        $this->initParameters($request, $args);
+
+        $this->getSmartElementdata();
+
+        return ApiV2Response::withData($response, $this->getSmartElementdata());
+    }
+
+    protected function initParameters(\Slim\Http\request $request, $args)
+    {
+        $docid = $args['docid'] ?? null;
+        if (empty($docid)) {
+            $exception = new Exception("ANKTEST004", 'docid');
+            $exception->setHttpStatus("400", "smart element identifier is required");
+            throw $exception;
+        }
+
+        if (!empty($docid)) {
+            $this->smartElement = SmartElementManager::getDocument($docid);
+            if (empty($this->smartElement)) {
                 $exception = new Exception("ANKTEST001", $args['docid']);
                 $exception->setHttpStatus("500", "Cannot update Smart Element");
                 $exception->setUserMessage(err);
                 throw $exception;
             }
-            $error = $smartElement->setState($args['state']);
+            $error = $this->smartElement->setState($args['state']);
             if (!empty($error)) {
-                $exception = new Exception("ANKTEST003", $smartElement->id, $error);
+                $exception = new Exception("ANKTEST003", $this->smartElement->id, $error);
                 $exception->setHttpStatus("500", "Unable to set the smart element state");
                 throw $exception;
             }
@@ -40,8 +59,12 @@ class State
             $exception->setHttpStatus("400", "smart element identifier is required");
             throw $exception;
         }
-        $smartElementData = new \Anakeen\Routes\Core\Lib\DocumentApiData($smartElement);
+    }
+
+    protected function getSmartElementdata()
+    {
+        $smartElementData = new \Anakeen\Routes\Core\Lib\DocumentApiData($this->smartElement);
         $smartElementData->setFields(["document.properties.all", "document.attributes.all"]);
-        return ApiV2Response::withData($response, $smartElementData->getDocumentData());
+        return $smartElementData->getDocumentData();
     }
 }
