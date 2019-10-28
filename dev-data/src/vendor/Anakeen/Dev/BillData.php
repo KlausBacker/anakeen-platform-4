@@ -7,7 +7,7 @@ use SmartStructure\Fields\Devbill as DevbillFields;
 
 class BillData
 {
-    public function __invoke($billMin=0, $billMax=3)
+    public function __invoke($billMin = 0, $billMax = 3)
     {
         \Anakeen\Core\DbManager::query(sprintf("delete from family.%s", strtolower(\SmartStructure\Devbill::familyName)));
 
@@ -55,7 +55,7 @@ class BillData
                         $otherSocities[] = \Anakeen\Dev\Data::getRandomSociety();
                     }
                     $bill->setValue(DevbillFields::bill_clientname, $otherClients);
-                    $bill->setValue(DevbillFields::bill_society,  $otherSocities);
+                    $bill->setValue(DevbillFields::bill_society, $otherSocities);
                 }
                 $bill->store();
                 printf("\r%05d/%05d - %05d", $c, $count, $cbill++);

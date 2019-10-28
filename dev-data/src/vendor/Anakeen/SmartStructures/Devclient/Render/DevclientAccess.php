@@ -14,11 +14,11 @@ class DevclientAccess implements \Anakeen\Ui\IRenderConfigAccess
     public function getRenderConfig($mode, \Anakeen\Core\Internal\SmartElement $element)
     {
         switch ($mode) {
-        case \Anakeen\Ui\RenderConfigManager::CreateMode:
-        case \Anakeen\Ui\RenderConfigManager::EditMode:
-            return new DevclientEditRender();
-        case \Anakeen\Ui\RenderConfigManager::ViewMode:
-            return new DevclientViewRender();
+            case \Anakeen\Ui\RenderConfigManager::CreateMode:
+            case \Anakeen\Ui\RenderConfigManager::EditMode:
+                return new DevclientEditRender();
+            case \Anakeen\Ui\RenderConfigManager::ViewMode:
+                return new DevclientViewRender();
         }
         return null;
     }

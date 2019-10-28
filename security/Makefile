@@ -4,6 +4,8 @@ MK_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 #Path
 PHP_LIB_PATH=src/vendor/Anakeen/Routes/Admin/Lib
 
+#path
+CS_PATH_NAME=./../.devtool/ci/check/checkPHP/anakeenPhpCs.xml
 
 #Build
 APP_OUTPUT_PATH=../build/
@@ -12,7 +14,7 @@ APP_OUTPUT_PATH=../build/
 YARN_BIN=yarn
 ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
 CBF_BIN=php ./../.devtool/ci/check/checkPHP/vendor/bin/phpcbf
-CS_BIN=php ./../.devtool/ci/check/checkPHP/vendor/bin/phpcbf
+CS_BIN=php ./../.devtool/ci/check/checkPHP/vendor/bin/phpcs
 COMPOSER_BIN=composer
 CHECK_VERSION=node ./../.devtool/ci/check/checkVersionNpmApp.js
 

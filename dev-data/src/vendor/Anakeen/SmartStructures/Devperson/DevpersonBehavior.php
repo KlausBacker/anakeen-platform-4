@@ -11,9 +11,11 @@ class DevpersonBehavior extends \Anakeen\SmartElement
     {
         parent::registerHooks();
         $this->getHooks()->addListener(
-            SmartHooks::PRESTORE, function () {
+            SmartHooks::PRESTORE,
+            function () {
                 $this->setValue(
-                    DevPersonFields::dev_title, sprintf(
+                    DevPersonFields::dev_title,
+                    sprintf(
                         "%s %s",
                         mb_strtoupper($this->getRawValue(DevPersonFields::dev_lastname)),
                         $this->getRawValue(DevPersonFields::dev_firstname)

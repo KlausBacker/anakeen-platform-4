@@ -1,0 +1,7 @@
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:access-configuration name="PROFIL_DEVBILL"
+                                label="PROFIL_DEVBILL" policy="SET">
+        <smart:element-access access="view" account="bill_reader"/>
+        <smart:element-access access="edit" account="bill_writer"/>
+    </smart:access-configuration>
+</smart:config>

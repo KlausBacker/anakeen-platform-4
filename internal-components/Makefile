@@ -17,5 +17,6 @@ lint:
 po:
 stub:
 checkXML:
+beautify:
 clean:
 	rm -fr node_modules

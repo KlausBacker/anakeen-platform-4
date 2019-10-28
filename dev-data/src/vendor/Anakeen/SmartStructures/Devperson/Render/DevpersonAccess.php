@@ -14,11 +14,11 @@ class DevpersonAccess implements \Anakeen\Ui\IRenderConfigAccess
     public function getRenderConfig($mode, \Anakeen\Core\Internal\SmartElement $element)
     {
         switch ($mode) {
-        case \Anakeen\Ui\RenderConfigManager::CreateMode:
-        case \Anakeen\Ui\RenderConfigManager::EditMode:
-            return new DevpersonEditRender();
-        case \Anakeen\Ui\RenderConfigManager::ViewMode:
-            return new DevpersonViewRender();
+            case \Anakeen\Ui\RenderConfigManager::CreateMode:
+            case \Anakeen\Ui\RenderConfigManager::EditMode:
+                return new DevpersonEditRender();
+            case \Anakeen\Ui\RenderConfigManager::ViewMode:
+                return new DevpersonViewRender();
         }
         return null;
     }

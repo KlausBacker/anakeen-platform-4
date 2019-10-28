@@ -13,17 +13,18 @@
   </requires>
 
   <post-install>
+    <process command="./ank.php --script=importConfiguration --file=./vendor/DevData/Accounts/100-DevDataRoles.xml"/>
     <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Devperson/Devperson.structure.xml"/>
     <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Devperson/Devperson.render.xml"/>
     <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Devnote/Devnote.structure.xml"/>
     <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Devnote/Devnote.render.xml"/>
-    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Devbill/Devbill.structure.xml"/>
-    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Devbill/Devbill.render.xml"/>
+    <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/SmartStructures/Devbill/**/*.xml"/>
     <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Devclient/Devclient.structure.xml"/>
     <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Devclient/Devclient.render.xml"/>
     <process command="./ank.php --script=recordDevData --person=@{COUNT_PERSON} --client=@{COUNT_CLIENT} --accounts=@{COUNT_ACCOUNTS} --note=0-3 --bill=0-3"/>
   </post-install>
   <post-upgrade>
+    <process command="./ank.php --script=importConfiguration --file=./vendor/DevData/Accounts/100-DevDataRoles.xml"/>
     <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Devperson/Devperson.structure.xml"/>
     <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Devperson/Devperson.render.xml"/>
     <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Devnote/Devnote.structure.xml"/>

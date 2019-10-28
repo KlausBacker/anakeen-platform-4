@@ -2,7 +2,6 @@
 
 namespace Anakeen\Dev;
 
-
 class Data
 {
     protected static $nameSet;

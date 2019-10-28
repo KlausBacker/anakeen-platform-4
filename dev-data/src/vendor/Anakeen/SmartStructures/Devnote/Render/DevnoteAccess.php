@@ -14,11 +14,11 @@ class DevnoteAccess implements \Anakeen\Ui\IRenderConfigAccess
     public function getRenderConfig($mode, \Anakeen\Core\Internal\SmartElement $element)
     {
         switch ($mode) {
-        case \Anakeen\Ui\RenderConfigManager::CreateMode:
-        case \Anakeen\Ui\RenderConfigManager::EditMode:
-            return new DevnoteEditRender();
-        case \Anakeen\Ui\RenderConfigManager::ViewMode:
-            return new DevnoteViewRender();
+            case \Anakeen\Ui\RenderConfigManager::CreateMode:
+            case \Anakeen\Ui\RenderConfigManager::EditMode:
+                return new DevnoteEditRender();
+            case \Anakeen\Ui\RenderConfigManager::ViewMode:
+                return new DevnoteViewRender();
         }
         return null;
     }

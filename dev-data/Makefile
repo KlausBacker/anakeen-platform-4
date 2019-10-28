@@ -4,11 +4,14 @@ MK_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 #Build
 APP_OUTPUT_PATH=../build/
 
+#path
+CS_PATH_NAME=./../.devtool/ci/check/checkPHP/anakeenPhpCs.xml
+
 ##bin
 YARN_BIN=yarn
 ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
 CBF_BIN=php ./../.devtool/ci/check/checkPHP/vendor/bin/phpcbf
-CS_BIN=php ./../.devtool/ci/check/checkPHP/vendor/bin/phpcbf
+CS_BIN=php ./../.devtool/ci/check/checkPHP/vendor/bin/phpcs
 CHECK_VERSION=node ./../.devtool/ci/check/checkVersionNpmApp.js
 
 -include ../Makefile.local

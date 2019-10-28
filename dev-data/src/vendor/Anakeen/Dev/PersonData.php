@@ -15,7 +15,7 @@ class PersonData
 
         $data = [];
 
-        for ($i = 0; $i < $number; $i++ ) {
+        for ($i = 0; $i < $number; $i++) {
             $firstName = \Anakeen\Dev\Data::getRandomFirstName();
             $lastName = \Anakeen\Dev\Data::getRandomLastName();
             $data[] = [
@@ -27,7 +27,6 @@ class PersonData
         }
 
         self::storeData(\SmartStructure\Devperson::familyName, $data);
-
     }
 
     protected function storeData(string $structName, array $data)
