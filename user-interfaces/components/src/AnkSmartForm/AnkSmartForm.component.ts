@@ -3,7 +3,7 @@
  */
 import { Component, Mixins, Prop, Vue, Watch } from "vue-property-decorator";
 import AnkSmartElement from "../AnkSmartElement/AnkSmartElement.component";
-import VueSetup from "../setup.js";
+import VueSetup from "../setup.ts";
 // eslint-disable-next-line no-unused-vars
 import { ISmartFormConfiguration, ISmartFormValue } from "./ISmartForm";
 

@@ -6,7 +6,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import SmartElementController from "../../../src/vendor/Anakeen/DOCUMENT/IHM/widgets/globalController/SmartElementController";
 import { AnakeenController } from "../../../src/vendor/Anakeen/DOCUMENT/IHM/widgets/globalController/types/ControllerTypes";
 import AnakeenGlobalController from "../AnkController";
-import VueSetup from "../setup.js";
+import VueSetup from "../setup.ts";
 import { ISmartElementValue } from "./ISmartElementValue";
 import EVENTS_LIST = AnakeenController.SmartElement.EVENTS_LIST;
 import ListenableEventCallable = AnakeenController.BusEvents.ListenableEventCallable;

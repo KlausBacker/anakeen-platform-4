@@ -3,7 +3,7 @@ import { Component, Mixins, Prop, Watch } from "vue-property-decorator";
 import EventUtilsMixin from "../../mixins/AnkVueComponentMixin/EventUtilsMixin";
 import I18nMixin from "../../mixins/AnkVueComponentMixin/I18nMixin";
 import ReadyMixin from "../../mixins/AnkVueComponentMixin/ReadyMixin";
-import VueSetup from "../setup.js";
+import VueSetup from "../setup.ts";
 
 Vue.use(VueSetup);
 @Component({

@@ -14,7 +14,7 @@ import GridEvent from "./utils/GridEvent";
 import GridExportUtils from "./utils/GridExportUtils.js";
 import GridFilter from "./utils/GridFilter";
 
-import VueSetup from "../setup.js";
+import VueSetup from "../setup.ts";
 // eslint-disable-next-line no-unused-vars
 import { IGrid } from "./IAnkSEGrid";
 import GridError from "./utils/GridError";

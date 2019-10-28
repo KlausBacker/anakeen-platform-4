@@ -7,7 +7,7 @@ import EventUtilsMixin from "../../mixins/AnkVueComponentMixin/EventUtilsMixin";
 import I18nMixin from "../../mixins/AnkVueComponentMixin/I18nMixin";
 import ReadyMixin from "../../mixins/AnkVueComponentMixin/ReadyMixin";
 
-import VueSetup from "../setup.js";
+import VueSetup from "../setup.ts";
 // eslint-disable-next-line no-unused-vars
 import { IAuthent } from "./IAuthent";
 Vue.use(VueSetup);
