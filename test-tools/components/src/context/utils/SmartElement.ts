@@ -1,4 +1,5 @@
 import { ISmartElementValues } from "../AbstractContext";
+import { searchParams } from "../../utils/routes";
 
 interface ITestOptions {
   login?: string,
@@ -27,26 +28,10 @@ export default class SmartElement {
     this.fetchApi = fetch;
   }
 
-  public searchParams(options?: ITestOptions) {
-    const searchParams = new URLSearchParams();
-    if (options && options.login) {
-      searchParams.set('login', options.login);
-    }
-    if (options && options.dryRun) {
-      searchParams.set('dry-run', options.dryRun.toString());
-    }
-    if(options && options.searchParams) {
-      for (let searchParam in options.searchParams) {
-        searchParams.set(searchParam, options.searchParams[searchParam]);
-      }
-    }
-    return searchParams;
-  }
-
   public async changeState(stateInfo: StateInfos, options?: ITestOptions): Promise<SmartElement> {
     const baseUrl = SmartElement.CHANGE_API.replace(/<docid>/g, this.properties.initid).replace(/<transition>/g, stateInfo.transition);
-    const searchParams = this.searchParams(options);
-    const url = `${baseUrl}?${searchParams}`
+    const searchParameters = searchParams(options);
+    const url = `${baseUrl}?${searchParameters}`
     const response = await this.fetchApi(url, {
       headers: {
         "Content-Type": "application/json"
@@ -68,8 +53,8 @@ export default class SmartElement {
 
   public async setState(newState: string, options?: ITestOptions): Promise<SmartElement> {
     const baseUrl = SmartElement.SET_API.replace(/<docid>/g, this.properties.initid).replace(/<state>/g, newState);
-    const searchParams = this.searchParams(options);
-    const url = `${baseUrl}?${searchParams}`
+    const searchParameters = searchParams(options);
+    const url = `${baseUrl}?${searchParameters}`
     const response = await this.fetchApi(url, {
       headers: {
         "Content-Type": "application/json"
@@ -90,8 +75,8 @@ export default class SmartElement {
 
   public async updateValues(seValues: ISmartElementValues, options?: ITestOptions): Promise<SmartElement> {
     const baseUrl = SmartElement.UPDATE_API.replace(/<docid>/g, this.properties.initid);
-    const searchParams = this.searchParams(options);
-    const url = `${baseUrl}?${searchParams}`
+    const searchParameters = searchParams(options);
+    const url = `${baseUrl}?${searchParameters}`
     const response = await this.fetchApi(url, {
       body: JSON.stringify(seValues),
       headers: {
@@ -112,9 +97,9 @@ export default class SmartElement {
   }
 
   public async getPropertyValue(propertyName: string, options?: ITestOptions): Promise<any> {
-    const searchParams = this.searchParams(options);
-    searchParams.set('fields', `document.properties.${propertyName}`);
-    const url = `${SmartElement.BASE_API}smart-elements/${this.properties.initid}.json?${searchParams}`;
+    const searchParameters = searchParams(options);
+    searchParameters.set('fields', `document.properties.${propertyName}`);
+    const url = `${SmartElement.BASE_API}smart-elements/${this.properties.initid}.json?${searchParameters}`;
     const response = await this.fetchApi(url);
     const responseJson = await response.json();
     if (responseJson.success && responseJson.data && responseJson.data.document) {
@@ -129,9 +114,9 @@ export default class SmartElement {
   }
 
   public async getValue(fieldId: string, options?: ITestOptions): Promise<{ value: any, displayValue: string }> {
-    const searchParams = this.searchParams(options);
-    searchParams.set('fields', `document.attributes.${fieldId}`);
-    const url = `${SmartElement.BASE_API}smart-elements/${this.properties.initid}.json?${searchParams}`;
+    const searchParameters = searchParams(options);
+    searchParameters.set('fields', `document.attributes.${fieldId}`);
+    const url = `${SmartElement.BASE_API}smart-elements/${this.properties.initid}.json?${searchParameters}`;
     const response = await this.fetchApi(url);
     const responseJson = await response.json();
     if (responseJson.success && responseJson.data && responseJson.data.document) {
@@ -146,10 +131,10 @@ export default class SmartElement {
   }
 
   public async getValues(options?: ITestOptions): Promise<{ [fieldId: string]: any }> {
-    const searchParams = this.searchParams(options);
-    searchParams.set('fields', `document.attributes.all`);
+    const searchParameters = searchParams(options);
+    searchParameters.set('fields', `document.attributes.all`);
     const response = await this.fetchApi(
-      `/api/v2/smart-elements/${this.properties.initid}.json?${searchParams}`
+      `/api/v2/smart-elements/${this.properties.initid}.json?${searchParameters}`
     );
     const responseJson = await response.json();
 
@@ -165,10 +150,10 @@ export default class SmartElement {
   }
 
   public async getPropertiesValues(options?: ITestOptions): Promise<{ [fieldId: string]: any }> {
-    const searchParams = this.searchParams(options);
-    searchParams.set('fields', `document.properties.all`);
+    const searchParameters = searchParams(options);
+    searchParameters.set('fields', `document.properties.all`);
     const response = await this.fetchApi(
-      `/api/v2/smart-elements/${this.properties.initid}.json?${searchParams}`
+      `/api/v2/smart-elements/${this.properties.initid}.json?${searchParameters}`
     );
     const responseJson = await response.json();
 
@@ -184,8 +169,8 @@ export default class SmartElement {
   }
 
   public async destroy(options?: ITestOptions): Promise<SmartElement> {
-    const searchParams = this.searchParams(options);
-    const url = `${SmartElement.UPDATE_API.replace(/<docid>/g, this.properties.initid)}?${searchParams}`;
+    const searchParameters = searchParams(options);
+    const url = `${SmartElement.UPDATE_API.replace(/<docid>/g, this.properties.initid)}?${searchParameters}`;
     // console.log(url);
     const response = await this.fetchApi(url, {
       headers: {

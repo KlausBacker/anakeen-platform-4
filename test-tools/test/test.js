@@ -30,6 +30,8 @@ describe("Test d'assertions :", () => {
     // 1- Test Smart Element
     smartElementTest = await testContext.getSmartElement({ smartStructure: "DEVBILL"}, { bill_title: "Test State Smart Elements", bill_content: "Content State Smart Element"});
     testDeleted = await testContext.getSmartElement({ smartStructure: "DEVBILL"}, { bill_title: "Test Delete Smart Element"});
+    testUser = await testContext.getSmartElement({ smartStructure: "TST_RENDER"});
+    // console.log(testUser);
     smartElement = await testContext.getSmartElement("2405");
     // smartElement2 = await testContext.getSmartElement("2407");
 
@@ -61,7 +63,7 @@ describe("Test d'assertions :", () => {
     //   await expect(smartElementTest).to.have.value("bill_title", "Test State Smart Elements");
     //   // console.log(smartElementTest);
     //   const test = await smartElementTest.getPropertiesValues();
-    //   console.log(test);
+    //   // console.log(test);
     // });
 
     // it("2 : testUpdateAssert", async () => {
@@ -97,11 +99,11 @@ describe("Test d'assertions :", () => {
 
     // it("6 : testLockedAssert", async () => {
     //   await expect(smartElementTest).is.not.locked();
-      // await expect(smartElementTest).for('admin').is.not.locked();
+    //   await expect(smartElementTest).for('admin').is.not.locked();
     // });
 
     // it("7 : testWorkflowAssert", async () => {
-    //   await expect(smartElementTest).is.workflow("2170");
+    //   await expect(smartElementTest).is.workflow("WDOC_BILL");
     // });
 
     // it("8 : testDeletedAssert", async () => {
@@ -120,7 +122,11 @@ describe("Test d'assertions :", () => {
     // });
 
     // it("2 : testViewControlAccount", async () => {
-    //   await expect(smartElement).viewControl("CV_IUSER_ACCOUNT");      
+    //   await expect(smartElement).for("zoo.user1").viewControl("CV_IUSER_ACCOUNT");      
+    // });
+
+    // it("2 : testViewControlAccount", async () => {
+    //   await expect(smartElement).for("zoo.user1").fieldAccess("EGROUP");      
     // });
 
     // it("3 : testProfileAccount", async () => {
@@ -129,16 +135,37 @@ describe("Test d'assertions :", () => {
     // });
 
     // it("4 : testViewAccess", async () => {
-    //   await expect(smartElement).for('anakeen_test_user').has.viewAccess("EUSER");
+    //   await expect(smartElement).for('anakeen_test_user').has.viewAccess("EGROUP");
     //   // expect(testeu).to.be.a("function");
     // });
 
     // it("4 : testSmartElementRight", async () => {
-    //   await expect(smartElement2).smartElementRight("EUSER");
+    //   await expect(smartElement).for('anakeen_test_user').smartElementRight("EUSER");
     // });
 
     // it("4 : testSmartElementRight", async () => {
     //   await expect(smartElement).transitionRight("t_wfam_bill_e1_e2");
+    // });
+
+  });
+
+  describe("TEST", () => {
+
+    // it("viewControl", async () => {
+    //   await expect(smartElement).viewControl("CV_IUSER_ACCOUNT");      // fonctionne 
+    // });
+
+    // it("fieldAccess", async () => {
+    //   await expect(smartElement).fieldAccess("FALL_IUSER");      //fonctionne
+    // });
+
+    it("viewAccess", async () => {
+      await expect(smartElement).for('zoo.user1').has.viewAccess("EGROUP");
+      // await expect(smartElement).for('zoo.user1').has.viewAccess("EGROUP_");
+    });
+
+    // it("smartElementRight", async () => {
+    //   await expect(smartElement).for('admin').smartElementRight("EUSER");
     // });
 
   });

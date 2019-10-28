@@ -2,12 +2,29 @@
 
 namespace Anakeen\TestTools\Routes;
 
-use Anakeen\Core\SEManager;
-use Anakeen\Router\Exception;
 use Anakeen\Router\ApiV2Response;
+use Anakeen\Router\Exception;
+use \Anakeen\Routes\Ui\DocumentView;
+use Anakeen\Core\SEManager;
+use Anakeen\SmartElement;
 
 class ViewAccess
 {
+    const defaultViews = [
+        DocumentView::coreViewCreationId,
+        DocumentView::defaultViewConsultationId,
+        DocumentView::defaultViewEditionId,
+        DocumentView::defaultViewCreationId,
+        DocumentView::coreViewConsultationId,
+        DocumentView::coreViewEditionId
+    ];
+
+    /** @var SmartElement */
+    protected $smartElement;
+    /** @var SmartElement */
+    protected $viewController;
+    protected $viewId;
+
     /**
      * @param \Slim\Http\request $request
      * @param \Slim\Http\response $response
@@ -19,34 +36,66 @@ class ViewAccess
         \Slim\Http\response $response,
         $args
     ) {
-        if (!empty($args['seId'])) {
-            $smartElement = SEManager::getDocument($args['seId']);
-            if (empty($smartElement)) {
-                $exception = new Exception("ANKTEST001", $args['seId']);
-                $exception->setHttpStatus("500", "Cannot get smart element");
-                throw $exception;
-            }
-            $cvid = $smartElement->cvid;
-            $viewController = SEManager::getDocument($cvid);
-            if (empty($viewController)) {
-                $exception = new Exception("ANKTEST001", $cvid);
-                $exception->setHttpStatus("500", "Cannot get view controller");
-                throw $exception;
-            }
-            $err = $viewController->control($args["viewId"]);
-            error_log(">>>>>>>>>>>>>>>".print_r($viewController, true));
-            if (!empty($err)) {
-                $exception = new Exception("ANKTEST003", $smartElement->id, $err);
-                $exception->setHttpStatus("403", "Access forbidden");
-                throw $exception;
-            }
-        } else {
+
+        $this->initParameters($request, $args);
+
+        $this->checkViewAccess();
+
+        return ApiV2Response::withData($response, $this->getSmartElementdata());
+    }
+
+    protected function initParameters(\Slim\Http\request $request, $args)
+    {
+        $seId = $args['seId'] ?? null;
+        if (empty($seId)) {
             $exception = new Exception("ANKTEST004", 'seId');
             $exception->setHttpStatus("400", "smart element identifier is required");
             throw $exception;
         }
-        $smartElementData = new \Anakeen\Routes\Core\Lib\DocumentApiData($smartElement);
+        $this->smartElement = SEManager::getDocument($seId);
+        if (empty($this->smartElement)) {
+            $exception = new Exception("ANKTEST001", $seId);
+            $exception->setHttpStatus("404", "Cannot get Smart Element");
+            throw $exception;
+        }
+
+        $this->viewId = $args['viewId'] ?? null;
+
+        if (!in_array($this->viewId, self::defaultViews)) {
+            $cvid = $this->smartElement->cvid;
+            if (empty($cvid)) {
+                $msg = sprintf("SE %s has no cvid, thus view %s does not exists", $seId, $this->viewId);
+                $exception = new Exception($msg);
+                $exception->setHttpStatus("404", $msg);
+                throw $exception;
+            }
+            $this->viewController = SEManager::getDocument($cvid);
+            if (empty($this->viewController)) {
+                $exception = new Exception("ANKTEST001", $cvid);
+                $exception->setHttpStatus("500", sprintf("Referenced view controller (%s) for %s does not exists"), $cvid, $seId);
+                throw $exception;
+            }
+        }
+    }
+
+    protected function checkViewAccess()
+    {
+        if (in_array($this->viewId, self::defaultViews)) {
+            //FIXME: check default view access
+        } else {
+            $err = $this->viewController->control($this->viewId);
+            if (!empty($err)) {
+                $exception = new Exception("ANKTEST009", $this->viewId, $err);
+                $exception->setHttpStatus("403", "Access forbidden");
+                throw $exception;
+            }
+        }
+    }
+
+    protected function getSmartElementdata()
+    {
+        $smartElementData = new \Anakeen\Routes\Core\Lib\DocumentApiData($this->smartElement);
         $smartElementData->setFields(["document.properties.all", "document.attributes.all"]);
-        return ApiV2Response::withData($response, $smartElementData->getDocumentData());
+        return $smartElementData->getDocumentData();
     }
 }

@@ -2,13 +2,15 @@
 
 namespace Anakeen\TestTools\Routes;
 
-use Anakeen\Router\Exception;
-use Anakeen\Router\ApiV2Response;
-use Anakeen\SmartElementManager;
 use Anakeen\Core\AccountManager;
+use Anakeen\Router\ApiV2Response;
+use Anakeen\Router\Exception;
+use Anakeen\SmartElementManager;
 
 class CreateAccount
 {
+    /** @var SmartElement */
+    protected $smartElement;
 
     const USER_TYPE = "user";
     const GROUP_TYPE = "group";
@@ -25,37 +27,46 @@ class CreateAccount
         \Slim\Http\response $response,
         $args
     ) {
+        
+        $this->initParameters($request, $args);
+
+        return ApiV2Response::withData($response, AccountInfos::formatAccount($this->smartElement->getAccount()));
+    }
+
+    protected function initParameters(\Slim\Http\request $request, $args)
+    {
         $requestData = $request->getParsedBody();
-        switch ($requestData['type']) {
+        $type = $requestData['type'];
+        switch ($type) {
             case self::USER_TYPE:
-                $smartElement = $this->createUser($requestData);
+                $this->smartElement = $this->createUser($requestData);
                 break;
             case self::GROUP_TYPE:
-                $smartElement = $this->createGroup($requestData);
+                $this->smartElement = $this->createGroup($requestData);
                 break;
             case self::ROLE_TYPE:
-                $smartElement = $this->createRole($requestData);
+                $this->smartElement = $this->createRole($requestData);
                 break;
         }
-        if (!empty($smartElement)) {
-            $err = $smartElement->store();
+
+        if (!empty($this->smartElement)) {
+            $err = $this->smartElement->store();
             if (!empty($err)) {
-                $exception = new Exception("ANKTEST007", $smartElement->getRawValue("us_login"), $err);
+                $exception = new Exception("ANKTEST007", $this->smartElement->getRawValue("us_login"), $err);
                 $exception->setHttpStatus("500", "Cannot create account");
                 throw $exception;
             }
             if (isset($requestData["tag"])) {
-                $smartElement->addATag("ank_test", $requestData["tag"]);
+                $this->smartElement->addATag("ank_test", $requestData["tag"]);
             }
-            if (isset($requestData['users']) && $requestData['type'] === self::GROUP_TYPE) {
-                $this->addUsersToGroup($smartElement, $requestData['users']);
+            if (isset($requestData['users']) && $type === self::GROUP_TYPE) {
+                $this->addUsersToGroup($this->smartElement, $requestData['users']);
             }
         } else {
-            $exception = new Exception("ANKTEST007", $smartElement->getRawValue("us_login"));
+            $exception = new Exception("ANKTEST007", $this->smartElement->getRawValue("us_login"));
             $exception->setHttpStatus("500", "Cannot create account");
             throw $exception;
         }
-        return ApiV2Response::withData($response, AccountInfos::formatAccount($smartElement->getAccount()));
     }
 
     protected function createUser($requestData)
@@ -90,6 +101,7 @@ class CreateAccount
         }
         return $group;
     }
+
     protected function addUsersToGroup($group, $users)
     {
         if (isset($users) && is_array($users)) {
@@ -107,6 +119,7 @@ class CreateAccount
             }
         }
     }
+    
     protected function createRole($requestData)
     {
         $create = SmartElementManager::createDocument("ROLE");

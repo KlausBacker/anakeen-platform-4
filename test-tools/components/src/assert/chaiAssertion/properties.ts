@@ -1,5 +1,6 @@
 import SmartElement from "../../context/utils/SmartElement";
 import { ISmartElementValues } from "../../context/AbstractContext";
+import { searchParams } from "../../utils/routes";
 
 /*
 Set const enableXdebug = TRUE for activate PHP debugger
@@ -30,8 +31,13 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
     const notExpectedMessage = "expected profile not to equal #{exp} but was #{act}";
     let expectedProfile: number = 0;
 
+    const options = getCommonOptions(this);
+    const baseUrl = `/api/v2/smart-elements/${smartElement}.json`;
+    const searchParameters = searchParams(options);
+    const url = `${baseUrl}?${searchParameters}`
+
     if (typeof smartElement === "string") {
-      const response = await this._obj.fetchApi(`/api/v2/smart-elements/${smartElement}.json`);
+      const response = await this._obj.fetchApi(url);
       const responseData = await response.json();
       expectedProfile = responseData.document.properties.initid;
     } else if (smartElement instanceof SmartElement) {
@@ -48,8 +54,12 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
     const target: SmartElement = this._obj;
     const options = getCommonOptions(this);
     const wId = await target.getPropertyValue("workflow", options);
+    
+    const baseUrl = `/api/v2/smart-elements/${smartElementLogicalName}.json`;
+    const searchParameters = searchParams(options);
+    const url = `${baseUrl}?${searchParameters}`
 
-    const response = await this._obj.fetchApi(`/api/v2/smart-elements/${smartElementLogicalName}.json`);
+    const response = await this._obj.fetchApi(url);
     const responseData = await response.json();
 
     const expectedMessage = "expected profile to equal #{exp} but was #{act}";
@@ -187,33 +197,18 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
     );
   })
 
-  chai.Assertion.addMethod("fieldAccess", async function (this: Chai.AssertionStatic, smartElementLogicalName: string | SmartElement, dryRun: boolean = false) {
-    const target: SmartElement = this._obj;
-    const security = await target.getPropertyValue("security");
-    const fallId = security.fieldAccess ? security.fieldAccess.id : -1;
-
-    const response = await this._obj.fetchApi(`/api/v2/smart-elements/${smartElementLogicalName}.json`);
-    const responseData = await response.json();
-
-    const expectedMessage = "expected field access to equal #{exp} but was #{act}";
-    const notExpectedMessage = "expected field access not to equal #{exp} but was #{act}";
-
-    this.assert(
-      responseData.data.document.properties.initid === fallId,
-      expectedMessage,
-      notExpectedMessage,
-      responseData.data.document.properties.initid,
-      fallId
-    );
-  });
-
   chai.Assertion.addMethod("viewControl", async function (this: Chai.AssertionStatic, smartElementLogicalName: string | SmartElement, dryRun: boolean = false) {
     const target: SmartElement = this._obj;
     const options = getCommonOptions(this);
     const cvId = await target.getPropertyValue("viewController", options);
+    
+    const baseUrl = `/api/v2/smart-elements/${smartElementLogicalName}.json`;
+    const searchParameters = searchParams(options);
+    const url = `${baseUrl}?${searchParameters}`
 
-    const response = await this._obj.fetchApi(`/api/v2/smart-elements/${smartElementLogicalName}.json`);
+    const response = await this._obj.fetchApi(url);
     const responseData = await response.json();
+
 
     const expectedMessage = "expected viewControllrer to equal #{exp} but was #{act}";
     const notExpectedMessage = "expected viewController not to equal #{exp} but was #{act}";
@@ -227,18 +222,78 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
     );
   });
 
-  chai.Assertion.addMethod("smartElementRight", async function (this: Chai.AssertionStatic, acl: string) {
+  chai.Assertion.addMethod("viewAccess", async function (this: Chai.AssertionStatic, viewId: string) {
     const target: SmartElement = this._obj;
     const options = getCommonOptions(this);
     const seId = await target.getPropertyValue("initid", options);
+    const baseUrl = `/api/v2/test-tools/smart-elements/${seId}/views/${viewId}`;
+    const searchParameters = searchParams(options);
+    const url = `${baseUrl}?${searchParameters}`
 
     let result = false;
-    const response = await this._obj.fetchApi(`/api/v2/test-tools/smart-elements/${seId}/rights/${acl}`, {
+    const response = await this._obj.fetchApi(url, {
       headers: {
         Accept: "application/json"
       }
     });
     const responseData = await response.json();
+    result = responseData.success;
+
+    const expectedMessage = `expected user to have access to view #{exp} but got: ${responseData.message || responseData.exceptionMessage}`;
+    const notExpectedMessage = "expected user to have access to view #{exp} but he has access";
+
+    this.assert(
+      result === true,
+      expectedMessage,
+      notExpectedMessage,
+      viewId
+    );
+  });
+
+  chai.Assertion.addMethod("fieldAccess", async function (this: Chai.AssertionStatic, smartElementLogicalName: string | SmartElement, dryRun: boolean = false) {
+    const target: SmartElement = this._obj;
+    const security = await target.getPropertyValue("security");
+    const fallId = security.fieldAccess ? security.fieldAccess.id : -1;
+    
+    const options = getCommonOptions(this);
+    const baseUrl = `/api/v2/smart-elements/${smartElementLogicalName}.json`;
+    const searchParameters = searchParams(options);
+    const url = `${baseUrl}?${searchParameters}`
+
+    const response = await this._obj.fetchApi(url);
+    const responseData = await response.json();
+    console.log(fallId);
+    console.log(responseData.data.document.properties);
+
+    const expectedMessage = "expected field access to equal #{exp} but was #{act}";
+    const notExpectedMessage = "expected field access not to equal #{exp} but was #{act}";
+
+    this.assert(
+      responseData.data.document.properties.initid === fallId,
+      expectedMessage,
+      notExpectedMessage,
+      responseData.data.document.properties.initid,
+      fallId
+    );
+  });
+
+  chai.Assertion.addMethod("smartElementRight", async function (this: Chai.AssertionStatic, acl: string) {
+    const target: SmartElement = this._obj;
+    const options = getCommonOptions(this);
+    const seId = await target.getPropertyValue("initid", options);
+    
+    const baseUrl = `/api/v2/test-tools/smart-elements/${seId}/rights/${acl}`;
+    const searchParameters = searchParams(options);
+    const url = `${baseUrl}?${searchParameters}`
+
+    let result = false;
+    const response = await this._obj.fetchApi(url, {
+      headers: {
+        Accept: "application/json"
+      }
+    });
+    const responseData = await response.json();
+    console.log(responseData.data.document.properties.security);
     result = responseData.success;
 
     const expectedMessage = `expected access to #{exp} but was not because: ${responseData.message || responseData.exceptionMessage}`;
@@ -249,31 +304,6 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
       expectedMessage,
       notExpectedMessage,
       acl
-    );
-  });
-
-  chai.Assertion.addMethod("viewAccess", async function (this: Chai.AssertionStatic, viewId: string) {
-    const target: SmartElement = this._obj;
-    const options = getCommonOptions(this);
-    const seId = await target.getPropertyValue("initid", options);
-    let result = false;
-    const response = await this._obj.fetchApi(`/api/v2/test-tools/smart-elements/${seId}/views/${viewId}`, {
-      headers: {
-        Accept: "application/json"
-      }
-    });
-    const responseData = await response.json();
-    // console.log(responseData);
-    result = responseData.success;
-
-    const expectedMessage = `expected access to view #{exp} but was not because: ${responseData.message || responseData.exceptionMessage}`;
-    const notExpectedMessage = "expected not access to view #{exp} but was";
-
-    this.assert(
-      result === true,
-      expectedMessage,
-      notExpectedMessage,
-      viewId
     );
   });
 

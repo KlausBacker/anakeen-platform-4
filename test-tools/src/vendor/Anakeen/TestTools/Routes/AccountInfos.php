@@ -2,8 +2,8 @@
 
 namespace Anakeen\TestTools\Routes;
 
-use Anakeen\Router\Exception;
 use Anakeen\Router\ApiV2Response;
+use Anakeen\Router\Exception;
 use Anakeen\Accounts\SearchAccounts;
 
 class AccountInfos
