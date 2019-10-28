@@ -11,7 +11,7 @@
     >
       <ank-se-grid
         class="trash-grid"
-        sortable="multiple"
+        :sortable="false"
         :refresh="true"
         :pageSizes="[50, 100, 200]"
         ref="grid"

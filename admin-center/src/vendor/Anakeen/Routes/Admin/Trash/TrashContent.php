@@ -27,11 +27,11 @@ class TrashContent extends GridContent
     private function filterAuthor($filter)
     {
         if ($filter["operator"] === "contains") {
-            $this->_searchDoc->addFilter("dochisto.uname ILIKE '%" . $filter["value"] . "%'");
+            $this->_searchDoc->addFilter("dochisto.uname ILIKE '%%%s%%'", $filter["value"]);
         } elseif ($filter["operator"] === "startswith") {
-            $this->_searchDoc->addFilter("dochisto.uname ILIKE '" . $filter["value"] . "%'");
+            $this->_searchDoc->addFilter("dochisto.uname ILIKE '%s%%'", $filter["value"]);
         } elseif ($filter["operator"] === "doesnotcontain") {
-            $this->_searchDoc->addFilter("dochisto.uname NOT ILIKE '%" . $filter["value"] . "%'");
+            $this->_searchDoc->addFilter("dochisto.uname NOT ILIKE '%%%s%%'", $filter["value"]);
         } elseif ($filter["operator"] === "isempty") {
             $this->_searchDoc->addFilter("dochisto.uname IS NULL OR dochisto.uname = ''");
         } elseif ($filter["operator"] === "isnotempty") {
@@ -90,7 +90,7 @@ class TrashContent extends GridContent
     protected function prepareDocumentList()
     {
         parent::prepareDocumentList();
-        $this->_searchDoc->setOrder("dochisto.uname asc", "asc");
+        $this->_searchDoc->setOrder("dochisto.date desc");
     }
 
 
