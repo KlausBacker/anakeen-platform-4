@@ -2,7 +2,7 @@ const path = require("path");
 
 const GenericError = require(path.resolve(__dirname, "GenericError.js"));
 const XMLLoader = require(path.resolve(__dirname, "XMLLoader.js"));
-const { normalizeUrl } = require(path.resolve(__dirname, "HTTPAgent.js"));
+const Utils = require(path.resolve(__dirname, "Utils.js"));
 const { AppRegistry } = require(path.resolve(__dirname, "AppRegistry.js"));
 
 class RepoXMLError extends GenericError {}
@@ -70,24 +70,16 @@ class RepoXML extends XMLLoader {
   /**
    * @param {string} name
    * @param {string} url
-   * @param {string} authUser
-   * @param {string} authPassword
    * @returns {RepoXML}
    */
-  addAppRegistry({ name, url, authUser, authPassword }) {
+  addAppRegistry({ name, url }) {
     if (this.registryExists(name)) {
       throw new RepoXMLError(`Registry with name/identifier '${name}' already exists`);
     }
 
-    url = normalizeUrl(url);
+    url = Utils.normalizeUrl(url);
 
     let newRegistry = { $: { name, url } };
-    if (authUser !== null) {
-      newRegistry.$.authUser = authUser;
-      if (authPassword !== null) {
-        newRegistry.$.authPassword = authPassword;
-      }
-    }
 
     const registryList = this._getRegistryList();
     registryList.push(newRegistry);

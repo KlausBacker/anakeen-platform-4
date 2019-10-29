@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:routes namespace="AdminCenter">
+        <sde:route name="AdminTrash:Config">
+            <sde:callable>Anakeen\Routes\Admin\Trash\TrashConfig</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/admin/trash/config/</sde:pattern>
+            <sde:description>Get trash grid configuration</sde:description>
+            <sde:requiredAccess operator="or">
+                <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminTrash</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="AdminTrash:Content">
+            <sde:callable>Anakeen\Routes\Admin\Trash\TrashContent</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/admin/trash/content/</sde:pattern>
+            <sde:description>Get trash grid Content</sde:description>
+            <sde:requiredAccess operator="or">
+                <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminTrash</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="AdminTrash:deleteInfo">
+            <sde:callable>Anakeen\Routes\Admin\Trash\DeleteInfo</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/admin/trash/{docid}</sde:pattern>
+            <sde:description>Delete info trash element</sde:description>
+            <sde:requiredAccess operator="or">
+                <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminTrash</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="AdminTrash:delete">
+            <sde:callable>Anakeen\Routes\Admin\Trash\TrashDelete</sde:callable>
+            <sde:method>DELETE</sde:method>
+            <sde:pattern>/api/v2/admin/trash/{docid}</sde:pattern>
+            <sde:description>Delete trash element</sde:description>
+            <sde:requiredAccess operator="or">
+                <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminTrash</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="AdminTrash:restore">
+            <sde:callable>Anakeen\Routes\Admin\Trash\TrashRestore</sde:callable>
+            <sde:method>PUT</sde:method>
+            <sde:pattern>/api/v2/admin/trash/{docid}</sde:pattern>
+            <sde:description>Restore trash element</sde:description>
+            <sde:requiredAccess operator="or">
+                <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminTrash</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+    </sde:routes>
+    <sde:accesses namespace="AdminCenter">
+        <sde:access name="AdminTrash">
+            <sde:description>Trash administrator access</sde:description>
+        </sde:access>
+        <sde:route-access ref="AdminTrash" account="trash_manager_role" />
+    </sde:accesses>
+</sde:config>

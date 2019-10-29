@@ -42,6 +42,7 @@ stub:
 	mkdir ./stubs
 checkXML:
 app-test-autorelease:
+beautify:
 
 clean:
 	rm -rf ${APP_OUTPUT_PATH}

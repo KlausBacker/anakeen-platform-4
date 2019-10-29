@@ -14,6 +14,8 @@ const { RepoLockXML } = require(path.resolve(__dirname, "RepoLockXML.js"));
 const { HTTPAgent } = require(path.resolve(__dirname, "HTTPAgent.js"));
 const { RepoContentXML } = require(path.resolve(__dirname, "RepoContentXML.js"));
 const SHA256Digest = require(path.resolve(__dirname, "SHA256Digest"));
+const Utils = require(path.resolve(__dirname, "Utils.js"));
+const { HTTPCredentialStore } = require(path.resolve(__dirname, "HTTPCredentialStore.js"));
 
 const fs_stat = util.promisify(fs.stat);
 const fs_mkdir = util.promisify(fs.mkdir);
@@ -116,19 +118,6 @@ class Compose {
   }
 
   /**
-   * Check if a file (or dir) exists
-   * @param {string} filename
-   * @returns {boolean|{fs.Stats}}
-   */
-  static async fileExists(filename) {
-    try {
-      return await fs_stat(filename);
-    } catch (e) {
-      return false;
-    }
-  }
-
-  /**
    * @param {string} localRepo
    * @param {string} localSrc
    * @returns {Promise<void>}
@@ -136,7 +125,7 @@ class Compose {
   async init({ localRepo, localSrc }) {
     let stats;
 
-    if (await Compose.fileExists("repo.xml")) {
+    if (await Utils.fileExists("repo.xml")) {
       throw new Error(`File 'repo.xml' already exists`);
     }
 
@@ -182,7 +171,13 @@ class Compose {
    */
   async addAppRegistry({ name, url, authUser, authPassword }) {
     await this.loadContext();
-    await this.repoXML.addAppRegistry({ name, url, authUser, authPassword });
+    await this.repoXML.addAppRegistry({ name, url });
+    if (authUser) {
+      let httpCredentialStore = new HTTPCredentialStore();
+      await httpCredentialStore.loadCredentialStore();
+      await httpCredentialStore.setCredential(url, authUser, authPassword);
+      await httpCredentialStore.saveCredentialStore();
+    }
     await this.commitContext();
   }
 
@@ -219,7 +214,7 @@ class Compose {
    * @private
    */
   async _installSemverModule({ name: moduleName, version: moduleVersion, registry: registryName }) {
-    const lockExists = Compose.fileExists("repo.lock.xml");
+    const lockExists = await Utils.fileExists("repo.lock.xml");
     if (lockExists === true && this.$.frozenLockfile) {
       throw new ComposeError(`Cannot install module '${moduleName}' while using '--frozen-lock' option`);
     }
@@ -362,7 +357,7 @@ class Compose {
     }
 
     for (let elmt of rmList) {
-      if (Compose.fileExists(elmt.path)) {
+      if (await Utils.fileExists(elmt.path)) {
         signale.note(`Removing ${elmt.type} '${elmt.path}'...`);
         await Compose.rm_Rf(elmt.path);
       }
@@ -381,7 +376,7 @@ class Compose {
     const basename = moduleName;
     const dirname = path.dirname(archive);
     const pathname = path.normalize([dirname, basename].join("/"));
-    if (await Compose.fileExists(pathname)) {
+    if (await Utils.fileExists(pathname)) {
       await Compose.rm_Rf(pathname);
     }
     await fs_mkdir(pathname, { recursive: true });
@@ -542,7 +537,7 @@ class Compose {
       const pathname = [resourceDir[type], basename].join("/");
 
       let localIsOutdated = true;
-      if (await Compose.fileExists(pathname)) {
+      if (await Utils.fileExists(pathname)) {
         const localSha256 = await SHA256Digest.file(pathname);
         localIsOutdated = localSha256 !== sha256;
       }
@@ -572,7 +567,7 @@ class Compose {
     const srcBasename = path.basename(srcPathname, ".src");
     const srcDirname = path.dirname(srcPathname);
     const srcUnpackDir = path.join(srcDirname, srcBasename);
-    return Compose.fileExists(srcUnpackDir);
+    return Utils.fileExists(srcUnpackDir);
   }
 
   async _updateLocalResource({ type, src, pathname, moduleName }) {

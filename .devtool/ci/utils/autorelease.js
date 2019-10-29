@@ -26,7 +26,7 @@ readPackage().then(async content => {
       .substr(0, 14);
     versionAutorelease = `${content.version}-dev${dNow}`;
   }
-  console.log("BUMP VERSION");
   content.version = versionAutorelease;
-  await writeFile(path.join(sourcePath, versionFile), JSON.stringify(content));
+  console.log(versionAutorelease);
+  return await writeFile(path.join(sourcePath, versionFile), JSON.stringify(content));
 });

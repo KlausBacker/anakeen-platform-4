@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<accounts:accounts xmlns:accounts="https://platform.anakeen.com/4/schemas/account/1.0">
+    <accounts:roles>
+        <accounts:role name="bill_reader">
+            <accounts:displayName>Bill Reader</accounts:displayName>
+        </accounts:role>
+        <accounts:role name="bill_writer">
+            <accounts:displayName>Bill Reader</accounts:displayName>
+        </accounts:role>
+    </accounts:roles>
+</accounts:accounts>

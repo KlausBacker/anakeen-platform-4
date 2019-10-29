@@ -6,16 +6,10 @@ const fetch = require("node-fetch");
 
 const GenericError = require(path.resolve(__dirname, "GenericError.js"));
 const Tmp = require(path.resolve(__dirname, "Tmp.js"));
+const { HTTPCredentialStore } = require(path.resolve(__dirname, "HTTPCredentialStore.js"));
+const Utils = require(path.resolve(__dirname, "Utils.js"));
 
 const fs_rename = util.promisify(fs.rename);
-
-function normalizeUrl(url) {
-  /* Normalize hostname (to lowercase) in URL */
-  const u = new URL(url);
-  /* Remove duplicates slashes */
-  u.pathname = u.pathname.replace(/\/\/+/, "/");
-  return u.toString();
-}
 
 class HTTPAgentError extends GenericError {}
 
@@ -27,15 +21,40 @@ class HTTPAgent {
     this._debug = options.hasOwnProperty("debug") && options.debug === true;
   }
 
+  setAuthorizationHeader(headers, authUser, authPassword) {
+    if (authUser) {
+      let data = authUser + ":";
+      if (authPassword) {
+        data = data + authPassword;
+      }
+      let buff = Buffer.from(data, "utf8");
+      headers["Authorization"] = "Basic " + buff.toString("base64");
+    }
+  }
+
   debug(msg) {
     if (typeof console === "object" && this._debug) {
       console.log(msg);
     }
   }
 
+  async getHeadersForUrl(url) {
+    let headers = {};
+    let httpCredentialStore = new HTTPCredentialStore();
+    await httpCredentialStore.loadCredentialStore();
+    let credential = httpCredentialStore.getCredentialForUrl(url);
+    if (credential !== null) {
+      this.setAuthorizationHeader(headers, credential.authUser, credential.authPassword);
+    }
+    return headers;
+  }
+
   async fetch(url) {
-    url = normalizeUrl(url);
-    return await fetch(url);
+    url = Utils.normalizeUrl(url);
+    const headers = await this.getHeadersForUrl(url);
+    return await fetch(url, {
+      headers: headers
+    });
   }
 
   /**
@@ -52,10 +71,16 @@ class HTTPAgent {
 
     this.debug(`[HTTPAgent] Downloading '${url}' to temporary file '${tmpName}'`);
 
-    const response = await fetch(url);
+    const headers = await this.getHeadersForUrl(url);
+    const response = await fetch(url, {
+      headers: headers
+    });
     const outputStream = fs.createWriteStream(tmpName);
     await new Promise((resolve, reject) => {
       try {
+        if (!response.ok) {
+          reject(new HTTPAgentError(`Unexpected HTTP status ${response.status} ('${response.statusText}')`));
+        }
         response.body
           .pipe(outputStream)
           .on("finish", resolve)
@@ -79,4 +104,4 @@ class HTTPAgent {
   }
 }
 
-module.exports = { HTTPAgent, HTTPAgentError, normalizeUrl };
+module.exports = { HTTPAgent, HTTPAgentError };

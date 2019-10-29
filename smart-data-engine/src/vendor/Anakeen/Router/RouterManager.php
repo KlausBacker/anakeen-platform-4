@@ -159,6 +159,9 @@ class RouterManager
             if ($route->isActive() === false) {
                 continue;
             }
+            if (!$route->pattern) {
+                continue;
+            }
             if (count($route->methods) && strtoupper($route->methods[0]) === "ANY") {
                 $route->methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'];
             }

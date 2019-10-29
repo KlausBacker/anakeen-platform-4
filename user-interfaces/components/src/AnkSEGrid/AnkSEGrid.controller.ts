@@ -141,8 +141,11 @@ export default class GridController extends Vue {
   })
   public emptyCell;
   @Prop({
-    default: "multiple",
-    type: String
+    default: () => ({
+      mode: "multiple",
+      showIndexes: true
+    }),
+    type: [String, Boolean, Object]
   })
   public sortable;
   @Prop({
@@ -259,12 +262,13 @@ export default class GridController extends Vue {
     reorderable: this.reorderable,
     resizable: this.resizable,
     selectable: this.selectable,
-    sortable: this.sortable
-      ? {
-          mode: this.sortable,
-          showIndexes: true
-        }
-      : this.sortable
+    sortable:
+      typeof this.sortable === "string"
+        ? {
+            mode: this.sortable,
+            showIndexes: true
+          }
+        : this.sortable
   };
   @Watch("urlConfig")
   public watchUrlConfig(newVal, oldVal) {

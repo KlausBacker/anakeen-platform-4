@@ -4,7 +4,7 @@ namespace Anakeen\Dev;
 
 use SmartStructure\Fields\Devclient as DevClientFields;
 
-class ClientData extends  PersonData
+class ClientData extends PersonData
 {
     public function __invoke(int $number)
     {
@@ -13,7 +13,7 @@ class ClientData extends  PersonData
 
         $data = [];
 
-        for ($i = 0; $i < $number; $i++ ) {
+        for ($i = 0; $i < $number; $i++) {
             $firstName = \Anakeen\Dev\Data::getRandomFirstName();
             $lastName = \Anakeen\Dev\Data::getRandomLastName();
             $data[] = [
