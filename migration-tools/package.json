@@ -1,6 +1,6 @@
 {
   "name": "migration-tools",
-  "version": "2.0.1-RC.2019.1.8",
+  "version": "2.0.1-RC.2019.1.9",
   "description": "Migration tools to migrate data from Dynacase to Anakeen Platform",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,7 @@
   "author": "anakeen",
   "license": "SEE LICENSE IN LICENSE",
   "devDependencies": {
-    "@anakeen/anakeen-cli": "1.2.0-RC.2019.1.8"
+    "@anakeen/anakeen-cli": "1.2.0-RC.2019.1.9"
   },
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/migration-tools.git",
   "keywords": [
