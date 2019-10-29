@@ -48,6 +48,8 @@
     "src/public/Anakeen/ank-components/deps/*",
     "src/public/Anakeen/assets/**/*.json",
     "src/public/Anakeen/ankDll/**/*.json",
+    "src/public/Anakeen/manifest/**/*.json",
+    "src/vendor/Anakeen/DOCUMENT/**/*",
     "LICENSE",
     "README.md",
     "yarn.lock"
