@@ -39,6 +39,7 @@ class AccountInfos
         return [
             "login" => $account->login,
             "id" => $account->id,
+            "fid" => $account->fid,
             "type" => $account->accounttype,
             "roles" => $account->getAllRoles(),
             "groupes"=> $account->getAllMembers(),

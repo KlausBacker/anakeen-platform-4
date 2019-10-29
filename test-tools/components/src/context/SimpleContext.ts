@@ -40,7 +40,7 @@ export default class SimpleContext extends AbstractContext {
         } else {
           let msg: string = 'unknown error';
           if(responseJson.success === false) {
-            msg = responseJson.message;
+            msg = responseJson.message || responseJson.exceptionMessage;
           }
           throw new Error(`unable to get login ${login}: ${msg}`);
         }

@@ -7,14 +7,13 @@ use Anakeen\Router\Exception;
 use Anakeen\SmartElement;
 use Anakeen\SmartElementManager;
 
-class Transition
+class TransitionAccess
 {
     /** @var SmartElement */
     protected $smartElement;
     /** @var SmartElement */
     protected $workflow;
     protected $transition;
-    protected $askValues;
 
     /**
      * @param \Slim\Http\request $request
@@ -30,7 +29,7 @@ class Transition
 
         $this->initParameters($request, $args);
 
-        $this->doTransition();
+        $this->checkTransition();
 
         return ApiV2Response::withData($response, $this->getSmartElementdata());
     }
@@ -47,59 +46,37 @@ class Transition
         $this->smartElement = SmartElementManager::getDocument($docid);
         if (empty($this->smartElement)) {
             $exception = new Exception("ANKTEST001", $docid);
-            $exception->setHttpStatus("500", "Cannot update Smart Element");
+            $exception->setHttpStatus("500", sprintf("Cannot get Smart Element %s", $docid));
             throw $exception;
         }
 
         $this->transition = $args['transition'] ?? null;
         if (empty($this->transition)) {
             $exception = new Exception("ANKTEST004", 'transition');
-            $exception->setHttpStatus("400", "smart element identifier is required");
+            $exception->setHttpStatus("400", "transition identifier is required");
             throw $exception;
         }
                 
         $wid = $this->smartElement->wid;
         if ($wid === 0) {
-            $exception = new Exception("ANKTEST003", $this->smartElement->id);
+            $exception = new Exception("ANKTEST001", $this->smartElement->id);
             $exception->setHttpStatus("500", "There is no workflow");
             throw $exception;
         }
 
         $this->workflow = SmartElementManager::getDocument($wid);
         if (empty($this->workflow)) {
-            $exception = new Exception("ANKTEST003", $this->smartElement->id);
+            $exception = new Exception("ANKTEST001", $this->smartElement->id);
             $exception->setHttpStatus("404", "Cannot find workflow");
             throw $exception;
         }
 
-        $this->askValues = $request->getParsedBody();
+        $this->workflow->set($this->smartElement);
     }
 
-    protected function doTransition()
+    protected function checkTransition()
     {
-        $nextState = '';
-        foreach ($this->workflow->cycle as $wTransition) {
-            if (($wTransition["e1"] === $this->smartElement->state)
-                && ($wTransition["t"] === $this->transition)) {
-                $nextState = $wTransition["e2"];
-            }
-        }
-        if (empty($nextState)) {
-            $exception = new Exception("ANKTEST003", $this->smartElement->id);
-            $exception->setHttpStatus("400", sprintf("No target state found from %s with transition %s", $this->smartElement->state, $this->transition));
-            throw $exception;
-        }
-        if (!empty($this->askValues) && is_array($this->askValues)) {
-            foreach ($this->askValues as $askAttrId => $askValue) {
-                $this->workflow->setAskValue($askAttrId, $askValue);
-            }
-        }
-        $error = $this->smartElement->setState($nextState);
-        if (!empty($error)) {
-            $exception = new Exception("ANKTEST003", $this->smartElement->id, $error);
-            $exception->setHttpStatus("500", "Unable to set the smart element state");
-            throw $exception;
-        }
+        $err = $this->workflow->control($this->transition);
     }
 
     protected function getSmartElementdata()

@@ -75,6 +75,7 @@ class ViewAccess
                 $exception->setHttpStatus("500", sprintf("Referenced view controller (%s) for %s does not exists"), $cvid, $seId);
                 throw $exception;
             }
+            $this->viewController->set($this->smartElement);
         }
     }
 
@@ -83,6 +84,7 @@ class ViewAccess
         if (in_array($this->viewId, self::defaultViews)) {
             //FIXME: check default view access
         } else {
+            $currentUser = \Anakeen\Core\ContextManager::getCurrentUser();
             $err = $this->viewController->control($this->viewId);
             if (!empty($err)) {
                 $exception = new Exception("ANKTEST009", $this->viewId, $err);

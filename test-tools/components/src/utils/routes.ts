@@ -1,7 +1,17 @@
-interface ITestOptions {
+export interface ITestOptions {
   login?: string,
   dryRun?: boolean,
   searchParams?: object
+}
+
+export interface StateInfos {
+  transition: string,
+  askValues?: object
+}
+
+export interface SFValues {
+  id: string,
+  value: string
 }
 
 export const searchParams = function(options?: ITestOptions) {

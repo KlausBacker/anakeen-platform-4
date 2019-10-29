@@ -1,11 +1,11 @@
 import SmartElement from "../../context/utils/SmartElement";
 import { ISmartElementValues } from "../../context/AbstractContext";
-import { searchParams } from "../../utils/routes";
+import { searchParams, SFValues } from "../../utils/routes";
 
 /*
 Set const enableXdebug = TRUE for activate PHP debugger
  */
-const enableXDebug = false;
+const enableXDebug = true;
 
 export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
 
@@ -147,6 +147,24 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
     );
   })
 
+  // chai.Assertion.addMethod("values", async function (this: Chai.AssertionStatic, values: SFValues) {
+  //   const target: SmartElement = this._obj;
+  //   const options = getCommonOptions(this);
+  //   const value = await target.getValues(values, options);
+  //   console.log(value);
+
+  //   const expectedMessage = "expected value is #{exp} but was #{act}";
+  //   const notExpectedMessage = "expected value is not #{exp} but was #{act}";
+
+  //   this.assert(
+  //     value === values,
+  //     expectedMessage,
+  //     notExpectedMessage,
+  //     values,
+  //     value
+  //   );
+  // })
+
 
   chai.Assertion.addMethod("canSave", async function (this: Chai.AssertionStatic, values: ISmartElementValues) {
     const target: SmartElement = this._obj;
@@ -262,8 +280,8 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
 
     const response = await this._obj.fetchApi(url);
     const responseData = await response.json();
-    console.log(fallId);
-    console.log(responseData.data.document.properties);
+    // console.log(fallId);
+    // console.log(responseData.data.document.properties);
 
     const expectedMessage = "expected field access to equal #{exp} but was #{act}";
     const notExpectedMessage = "expected field access not to equal #{exp} but was #{act}";
@@ -280,9 +298,9 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
   chai.Assertion.addMethod("smartElementRight", async function (this: Chai.AssertionStatic, acl: string) {
     const target: SmartElement = this._obj;
     const options = getCommonOptions(this);
-    const seId = await target.getPropertyValue("initid", options);
+    const docid = await target.getPropertyValue("initid", options);
     
-    const baseUrl = `/api/v2/test-tools/smart-elements/${seId}/rights/${acl}`;
+    const baseUrl = `/api/v2/test-tools/smart-elements/${docid}/rights/${acl}`;
     const searchParameters = searchParams(options);
     const url = `${baseUrl}?${searchParameters}`
 
@@ -293,7 +311,6 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
       }
     });
     const responseData = await response.json();
-    console.log(responseData.data.document.properties.security);
     result = responseData.success;
 
     const expectedMessage = `expected access to #{exp} but was not because: ${responseData.message || responseData.exceptionMessage}`;
@@ -304,6 +321,64 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
       expectedMessage,
       notExpectedMessage,
       acl
+    );
+  });
+
+  chai.Assertion.addMethod("smartFieldRight", async function (this: Chai.AssertionStatic, smartfield: {right: string}) {
+    const target: SmartElement = this._obj;
+    const options = getCommonOptions(this);
+    const seId = await target.getPropertyValue("initid", options);
+    
+    const baseUrl = `/api/v2/test-tools/smart-elements/${seId}/smartfield/right/${smartfield.right}`;
+    const searchParameters = searchParams(options);
+    const url = `${baseUrl}?${searchParameters}`
+
+    let result = false;
+    const response = await this._obj.fetchApi(url, {
+      headers: {
+        Accept: "application/json"
+      }
+    });
+    const responseData = await response.json();
+    result = responseData.success;
+
+    const expectedMessage = `expected access to #{exp} but was not because: ${responseData.message || responseData.exceptionMessage}`;
+    const notExpectedMessage = "expected not access to #{exp} but was";
+
+    this.assert(
+      result === true,
+      expectedMessage,
+      notExpectedMessage,
+      smartfield.right
+    );
+  });
+
+  chai.Assertion.addMethod("transitionRight", async function (this: Chai.AssertionStatic, transition: string) {
+    const target: SmartElement = this._obj;
+    const options = getCommonOptions(this);
+    const docid = await target.getPropertyValue("initid", options);
+    
+    const baseUrl = `/api/v2/test-tools/smart-elements/${docid}/workflows/transitions/right/${transition}`;
+    const searchParameters = searchParams(options);
+    const url = `${baseUrl}?${searchParameters}`
+
+    let result = false;
+    const response = await this._obj.fetchApi(url, {
+      headers: {
+        Accept: "application/json"
+      }
+    });
+    const responseData = await response.json();
+    result = responseData.success;
+
+    const expectedMessage = `expected access to #{exp} but was not because: ${responseData.message || responseData.exceptionMessage}`;
+    const notExpectedMessage = "expected not access to #{exp} but was";
+
+    this.assert(
+      result === true,
+      expectedMessage,
+      notExpectedMessage,
+      transition
     );
   });
 

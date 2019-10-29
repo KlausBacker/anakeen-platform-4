@@ -11,37 +11,71 @@ let currentContext;
 //on crée et vérifie le lien avec le context Anakeen Platform
 before(async () => {
   currentContext = await new Context("http://localhost:8080", "admin", "anakeen");
-  console.log(context);
 });
 
 //On décrit le test
 describe("Test d'assertions :", () => {
   let testContext;
-  let smartElementTest;
-  let testDeleted;
-  let testRole;
-  let smartElement;
+  let simpleuserLogin;
+  let simpleuser2Login;
+  let accountsManagerUserLogin;
+  let simpleUser;
+  let accountsManagerUser;
+  let seBill;
+  let seSimpleUser;
 
   //On init un contexte de test
   //On créé les éléments qu'on va utiliser
   before(async () => {
     testContext = currentContext.initTest();
 
-    // 1- Test Smart Element
-    smartElementTest = await testContext.getSmartElement({ smartStructure: "DEVBILL"}, { bill_title: "Test State Smart Elements", bill_content: "Content State Smart Element"});
-    testDeleted = await testContext.getSmartElement({ smartStructure: "DEVBILL"}, { bill_title: "Test Delete Smart Element"});
-    testUser = await testContext.getSmartElement({ smartStructure: "TST_RENDER"});
-    // console.log(testUser);
-    smartElement = await testContext.getSmartElement("2405");
-    // smartElement2 = await testContext.getSmartElement("2407");
+    // 1- Accounts
 
-    // testPropertieValue = await testContext.getPropertyValue("");
-    // testRole = await testContext.getAccount({ type: "role", login: "anakeen_test_user_role"}); // create custom test role
+    simpleuserLogin = "test_tools_user1";
+    simpleuser2Login = "test_tools_user2";
+    accountsManagerUserLogin = "accounts_manager_user1"
 
-    // 2- Test Account
-    testAccount = await testContext.getAccount("admin"); // Get user
-    testAccount = await testAccount.addRole("anakeen_test_user_role"); // Add existing role
-    testAccount = await testAccount.addRole("rtstdduiboss"); // Add custom test role
+    simpleUser = await testContext.getAccount({
+      login: simpleuserLogin,
+      type: "user",
+      roles: []
+    });
+
+    simpleUser2 = await testContext.getAccount({
+      login: simpleuser2Login,
+      type: "user",
+      roles: []
+    });
+
+    accountsManagerUser = await testContext.getAccount({
+      login: accountsManagerUserLogin,
+      type: "user",
+      roles: [
+        "accounts_manager_role"
+      ]
+    });
+    //FIXME: role non pris en compte lors de la création
+    await accountsManagerUser.addRole("accounts_manager_role");
+
+    // 2 - Smart Elements
+
+    seBill = await testContext.getSmartElement({
+      smartStructure: "DEVBILL"
+    },
+    {
+      bill_title: "Test State Smart Elements",
+      bill_content: "Content State Smart Element"
+    });
+
+    seBilltoBeDeleted = await testContext.getSmartElement({
+      smartStructure: "DEVBILL"
+    },
+    {
+      bill_title: "Test State Smart Element Deleted",
+      bill_content: "Content State Smart Element"
+    });
+
+    seSimpleUser = await testContext.getSmartElement(simpleUser.fid);
 
   });
 
@@ -51,121 +85,108 @@ describe("Test d'assertions :", () => {
   });
 
   describe("1- Test Smart Element ==> 1 : on vérifie si l'état est 'wfam_bill_e1', 2 : on met à jour bill_title = 'Test State Smart Element Is Updated', 3 : on vérifie que le statut est 'alive', 4 : on passe une transition pour passer de state 'wfam_bill_e1' à 'wfam_bill_e2', 5 : On set le state à 'wfam_bill_e1', 6 : on test si le SE est Locked, 7 : on test si le SE à le workflow donné", () => {
-    //On créé un SE et on test les droits qui nous intéresse
+    // On créé un SE et on test les droits qui nous intéresse
     // it("1 : testAssertState", async () => {
-    //   await expect(smartElementTest).has.state("wfam_bill_e1");
-    //   await expect(smartElementTest).has.not.state("wfam_bill_e12");
-    // });
-
-    // it("TEST : testAssertCanSave", async () => {
-    //   await expect(smartElementTest).to.have.value("bill_title", "Test State Smart Elements");
-    //   await expect(smartElementTest).canSave({ bill_title: "expectedValue"});
-    //   await expect(smartElementTest).to.have.value("bill_title", "Test State Smart Elements");
-    //   // console.log(smartElementTest);
-    //   const test = await smartElementTest.getPropertiesValues();
-    //   // console.log(test);
-    // });
-
-    // it("2 : testUpdateAssert", async () => {
-    //   const expectedValue = "Test State Smart Element Is Updatedsss";
-    //   const updateSmartElement = await smartElementTest.updateValues({ bill_title: expectedValue, bill_content: expectedValue}); // Mise à jour de bill_title   
-    //   await expect(updateSmartElement).to.have.value("bill_title", expectedValue);
-    //   await expect(updateSmartElement).to.have.value("bill_content", expectedValue);
-    //   // console.log(updateSmartElement);
+    //   await expect(seBill).has.state("wfam_bill_e1");
+    //   await expect(seBill).has.not.state("wfam_bill_e12");
     // });
 
     // it("2 : testUpdateAssert", async () => {
     //   const expectedValue = "Test State Smart Element Is Updated";
-    //   const updateSmartElement = await smartElementTest.updateValues({ bill_title: expectedValue}); // Mise à jour de bill_title   
-    //   // await expect(smartElementTest).to.have.value({"bill_title": expectedValue});
+    //   const updateSmartElement = await seBill.updateValues({
+    //     bill_title: expectedValue,
+    //     bill_content: expectedValue
+    //   }); // Mise à jour de bill_title   
+    //   await expect(updateSmartElement).to.have.value("bill_title", expectedValue);
+    //   await expect(updateSmartElement).to.have.value("bill_content", expectedValue);
     // });
 
     // it("3 : testAliveAssert", async () => {
-    //   await expect(smartElementTest).is.alive();
+    //   await expect(seBill).is.alive();
     // });
 
-    it("4 : testTransitionStateAssert", async () => {
-      await expect(smartElementTest).canChangeState("t_wfam_bill_e1_e2", {test: "test"});
-      // await expect(smartElementTest).canChangeState("t_wfam_bill_e1_e2");
-      await expect(smartElementTest).to.have.state("wfam_bill_e1");
-      // await expect(smartElementTest).not.canChangeState("t_wfam_bill_e1_e3");
-      // await expect(smartElementTest).to.have.state("wfam_bill_e1");
-    });
+    // it("4 : testTransitionStateAssert", async () => {
+    //   await expect(seBill).to.have.state("wfam_bill_e1");
+    //   await expect(seBill).canChangeState("t_wfam_bill_e1_e2");
+    //   await expect(seBill).to.have.state("wfam_bill_e1");
+    //   await expect(seBill).not.canChangeState("t_wfam_bill_e1_e3");
+    //   await expect(seBill).to.have.state("wfam_bill_e1");
+    // });
 
     // it("5 : testSetStateAssert", async () => {
-    //   const setState = await smartElementTest.setState("wfam_bill_e1");
-    //   await expect(setState).is.state("wfam_bill_e1");
+    //   await expect(seBill).to.have.state("wfam_bill_e1");
+    //   const setState = await seBill.setState("wfam_bill_e2");
+    //   await expect(setState).to.have.state("wfam_bill_e2");
     // });
 
     // it("6 : testLockedAssert", async () => {
-    //   await expect(smartElementTest).is.not.locked();
-    //   await expect(smartElementTest).for('admin').is.not.locked();
+    //   await expect(seBill).is.not.locked();
     // });
 
     // it("7 : testWorkflowAssert", async () => {
-    //   await expect(smartElementTest).is.workflow("WDOC_BILL");
+    //   await expect(seBill).is.workflow("WDOC_BILL");
     // });
 
     // it("8 : testDeletedAssert", async () => {
-    //   await expect(testDeleted).is.alive();
-    //   const del = await testDeleted.destroy();
-    //   // console.log(del.properties.initid);
-    //   await expect(del).for("admin").is.not.alive(); // à tester
+    //   await expect(seBilltoBeDeleted).is.alive();
+    //   const del = await seBilltoBeDeleted.destroy();
+    //   await expect(del).for("admin").is.not.alive();
+    // });
+
+    // it("9 : testAssertCanSave", async () => {
+    //   await expect(seBill).to.have.value("bill_title", "Test State Smart Element Is Updated");
+    //   await expect(seBill).canSave({ bill_title: "expectedValue"});
+    //   await expect(seBill).to.have.value("bill_title", "Test State Smart Element Is Updated");
     // });
   });
 
   describe("2- Test Account ==> 1 : on vérifie si le role pour l'account 'anakeen_test_user' est 'rtstdduiboss', 2 : on test si ce smart element à la viewcontroller 'CV_IUSER_ACCOUNT'; 3 : on test si c'est un SE de type Account", () => {
 
-    // it("1 : testAccountRole", async () => {
-    //   const roleExist = !!testAccount.roles.find((role) => role.login === "rtstdduiboss") // On définit un nom de rôle pour vérifier s'il existe pour ce login 
-    //   expect(roleExist).is.true;
-    // });
-
     // it("2 : testViewControlAccount", async () => {
-    //   await expect(smartElement).for("zoo.user1").viewControl("CV_IUSER_ACCOUNT");      
+    //   await expect(seSimpleUser).for("zoo.user1").viewControl("CV_IUSER_ACCOUNT");      
     // });
 
-    // it("2 : testViewControlAccount", async () => {
-    //   await expect(smartElement).for("zoo.user1").fieldAccess("EGROUP");      
+    // it("3 : viewControl", async () => {
+    //   await expect(seSimpleUser).for(accountsManagerUserLogin).viewControl("CV_IUSER_ACCOUNT");      // fonctionne 
     // });
 
-    // it("3 : testProfileAccount", async () => {
-    //   await expect(smartElementTest).is.profile();
-    //   await expect(smartElement).is.not.profile();
+    // it("4 : fieldAccess", async () => {
+    //   await expect(seSimpleUser).for(accountsManagerUserLogin).fieldAccess("FALL_IUSER");      //fonctionne
     // });
 
-    // it("4 : testViewAccess", async () => {
-    //   await expect(smartElement).for('anakeen_test_user').has.viewAccess("EGROUP");
-    //   // expect(testeu).to.be.a("function");
+    // it("5 : viewAccess", async () => {
+    //   await expect(seSimpleUser).for(accountsManagerUserLogin).to.have.viewAccess("EUSER");  
+    //   await expect(seSimpleUser).for(simpleuserLogin).to.not.have.viewAccess("EUSER");
+    //   await expect(seSimpleUser).for(accountsManagerUserLogin).to.not.have.viewAccess("INEXISTENT_VIEW");  
     // });
 
-    // it("4 : testSmartElementRight", async () => {
-    //   await expect(smartElement).for('anakeen_test_user').smartElementRight("EUSER");
-    // });
-
-    // it("4 : testSmartElementRight", async () => {
-    //   await expect(smartElement).transitionRight("t_wfam_bill_e1_e2");
+    // it("6 : testProfileAccount", async () => {
+    //   await expect(seBill).is.profile();
+    //   await expect(seSimpleUser).is.not.profile();
     // });
 
   });
 
   describe("TEST", () => {
 
-    // it("viewControl", async () => {
-    //   await expect(smartElement).viewControl("CV_IUSER_ACCOUNT");      // fonctionne 
-    // });
+    it("smartElementRight", async () => {
+      await expect(seSimpleUser).for(simpleuserLogin).to.have.smartElementRight("view");
+      await expect(seSimpleUser).for(simpleuser2Login).to.have.smartElementRight("view");
 
-    // it("fieldAccess", async () => {
-    //   await expect(smartElement).fieldAccess("FALL_IUSER");      //fonctionne
-    // });
+      await expect(seSimpleUser).for(simpleuserLogin).to.have.smartElementRight("edit");
+      await expect(seSimpleUser).for(simpleuser2Login).to.not.have.smartElementRight("edit");
 
-    it("viewAccess", async () => {
-      await expect(smartElement).for('zoo.user1').has.viewAccess("EGROUP");
-      // await expect(smartElement).for('zoo.user1').has.viewAccess("EGROUP_");
+      await expect(seSimpleUser).for(accountsManagerUserLogin).to.have.smartElementRight("view");
+      await expect(seSimpleUser).for(accountsManagerUserLogin).to.have.smartElementRight("edit");
+      await expect(seSimpleUser).for(accountsManagerUserLogin).to.have.smartElementRight("delete");
     });
 
-    // it("smartElementRight", async () => {
-    //   await expect(smartElement).for('admin').smartElementRight("EUSER");
+    it("transitionRight", async () => {
+      await expect(seBill).for(simpleuserLogin).transitionRight("t_wfam_bill_e1_e2");
+    });
+
+    // it("values", async () => {
+    //   await expect(seBill).to.have.values( {bill_title: "Test State Smart Elements"});
     // });
 
   });

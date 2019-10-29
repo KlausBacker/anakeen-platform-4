@@ -2,13 +2,16 @@
 
 namespace Anakeen\TestTools\Routes;
 
-use Anakeen\Router\Exception;
-use Anakeen\Router\ApiV2Response;
 use Anakeen\Core\AccountManager;
-use Anakeen\SmartElementManager;
+use Anakeen\Router\ApiV2Response;
+use Anakeen\Router\Exception;
 
 class AccountRole
 {
+    protected $request;
+    protected $result;
+    protected $role;
+
     /**
      * @param \Slim\Http\request $request
      * @param \Slim\Http\response $response
@@ -20,33 +23,46 @@ class AccountRole
         \Slim\Http\response $response,
         $args
     ) {
-        if (!empty($args['role'])) {
-            $role = AccountManager::getAccount($args['role']);
-            if (empty($role)) {
-                $exception = new Exception("ANKTEST006", $args['role']);
-                $exception->setHttpStatus("500", "role doesn't exist");
-                throw $exception;
-            }
-            $requestData = $request->getParsedBody();
-            if (!isset($requestData['accountlogin'])) {
-                $exception = new Exception("ANKTEST007", 'accountlogin', $role->login);
-                $exception->setHttpStatus("400", "Parameter is required");
-                throw $exception;
-            }
+        
+        $this->initParameters($request, $args);
+        
+        return ApiV2Response::withData($response, AccountInfos::formatAccount($this->result));
+    }
 
-            $result = null;
-            switch ($request->getMethod()) {
-                case "PUT":
-                    $result = $this->addRoleToAccount($requestData['accountlogin'], $role);
-                    break;
-                case "DELETE":
-                    $result = $this->removeRoleToAccount($requestData['accountlogin'], $role);
-                    break;
-            }
-            // error_log(print_r($result->getAllRoles(), true));
-            return ApiV2Response::withData($response, AccountInfos::formatAccount($result));
+    protected function initParameters(\Slim\Http\request $request, $args)
+    {
+        $role = $args['role'] ?? null;
+        if (empty($role)) {
+            $exception = new Exception("ANKTEST004", 'role');
+            $exception->setHttpStatus("400", "role identifier is required");
+            throw $exception;
+        }
+
+        $this->role = AccountManager::getAccount($role);
+        if (empty($this->role)) {
+            $exception = new Exception("ANKTEST006", $role);
+            $exception->setHttpStatus("500", "role doesn't exist");
+            throw $exception;
+        }
+
+        $this->requestData = $request->getParsedBody();
+        if (!isset($this->requestData['accountlogin'])) {
+            $exception = new Exception("ANKTEST007", 'accountlogin', $this->role->login);
+            $exception->setHttpStatus("400", "Parameter is required");
+            throw $exception;
+        }
+
+        $this->result = null;
+        switch ($request->getMethod()) {
+            case "PUT":
+                $this->result = $this->addRoleToAccount($this->requestData['accountlogin'], $this->role);
+                break;
+            case "DELETE":
+                $this->result = $this->removeRoleToAccount($this->requestData['accountlogin'], $this->role);
+                break;
         }
     }
+
     protected function addRoleToAccount($accountLogin, \Anakeen\Core\Account $role = null)
     {
         $account = null;

@@ -1,16 +1,5 @@
 import { ISmartElementValues } from "../AbstractContext";
-import { searchParams } from "../../utils/routes";
-
-interface ITestOptions {
-  login?: string,
-  dryRun?: boolean,
-  searchParams?: object
-}
-
-interface StateInfos {
-  transition: string,
-  askValues?: object
-}
+import { searchParams, ITestOptions, StateInfos, SFValues  } from "../../utils/routes";
 
 export default class SmartElement {
   private static BASE_API: string = "/api/v2/test-tools/";

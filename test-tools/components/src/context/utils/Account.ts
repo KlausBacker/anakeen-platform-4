@@ -7,6 +7,7 @@ interface IRole {
 
 interface AccountProps {
   id: string | number;
+  fid: string | number;
   login: string;
   data: any;
   type: string;
@@ -16,6 +17,7 @@ interface AccountProps {
 
 export default class Account {
   protected id!: string | number;
+  protected fid!: string | number;
   protected login!: string;
   protected data: any;
   protected type!: string;
@@ -26,6 +28,7 @@ export default class Account {
 
   constructor(data: AccountProps, fetch?: any) {
     this.id = data.id;
+    this.fid = data.fid;
     this.login = data.login;
     this.data = data.data;
     this.type = data.type;
@@ -138,7 +141,7 @@ export default class Account {
     } else {
       let msg: string = 'unknown error';
       if(responseJson.success === false) {
-        msg = responseJson.message;
+        msg = responseJson.message || responseJson.exceptionMessage;
       }
       throw new Error(`unable to add role ${role}: ${msg}`);
     }
