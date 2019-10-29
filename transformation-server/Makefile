@@ -15,10 +15,10 @@ autoRelease: copyFiles
 app: copyFiles
 	rm -f ../$(ZIP_DIST_NAME)-$(PACKAGE_VERSION).zip
 	cd ./tmp && zip -q -r ../$(ZIP_DIST_NAME)-$(PACKAGE_VERSION).zip ./*
-	rm -Rf tmp
 	mv ./$(ZIP_DIST_NAME)-${PACKAGE_VERSION}.zip ${APP_OUTPUT_PATH}
 	cd ${APP_OUTPUT_PATH} && ln -sf ./$(ZIP_DIST_NAME)-${PACKAGE_VERSION}.zip ./$(ZIP_DIST_NAME)-latest.zip
 	cp tmp/package.json ${APP_OUTPUT_PATH}
+	rm -Rf tmp
 
 app-autorelease: autoRelease
 	$(eval PACKAGE_VERSION_AUTO_RELEASE := $(shell node ./getVersion.js))
