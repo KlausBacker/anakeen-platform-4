@@ -1,5 +1,6 @@
 const gulp = require("gulp");
 const { getModuleInfo } = require("../utils/moduleInfo");
+const { checkSetting } = require("../utils/checkSettings");
 const signale = require("signale");
 const fs = require("fs");
 const path = require("path");
@@ -215,7 +216,7 @@ const builder = {
         const Type = capitalize(settingOptions.type);
         return `${ModuleName}${structName || wflName || ""}${Type}`;
       } else {
-        return [];
+        return "";
       }
     }
   },
@@ -253,16 +254,16 @@ const getInquirerQuestion = (paramKey, paramValue) => {
     name: paramKey,
     message: `${paramValue.description} : `,
     default: paramValue.default,
-    validate: paramValue.coerce
-      ? arg => {
-          try {
-            paramValue.coerce(arg);
-          } catch (e) {
-            return e.message;
-          }
-          return true;
+    validate: paramValue.coerce 
+    ? arg => {
+        try {
+          paramValue.coerce(arg);
+        } catch (e) {
+          return e.message;
         }
-      : () => true
+        return true;
+      }
+       : () => true
   };
   switch (paramKey) {
     case "sourcePath":
@@ -312,6 +313,22 @@ const getInquirerQuestion = (paramKey, paramValue) => {
   return question;
 };
 
+const completeArgv = async argv => {
+  // get infos module
+  const moduleInfo = await getModuleInfo(argv.sourcePath);
+
+  if (argv.vendorName === undefined || argv.vendorName === "") {
+    argv.vendorName = moduleInfo.moduleInfo.vendor;
+  }
+  if (argv.moduleName === undefined || argv.moduleName === "") {
+    argv.moduleName = moduleInfo.moduleInfo.name;
+  }
+  if (argv.name === "" || argv.name === undefined) {
+    argv.name = argv.moduleName + argv.type;
+  }
+  return argv;
+}
+
 exports.handler = async argv => {
   if (process.argv.indexOf("createSetting") === process.argv.length - 1) {
     // Mode question
@@ -322,23 +339,33 @@ exports.handler = async argv => {
       })
     );
   }
-  try {
-    signale.time("createSetting");
-    createSetting(argv);
-    const task = gulp.task("createSetting");
-    task()
-      .then(() => {
-        signale.timeEnd("createSetting");
-        signale.success("createSetting done");
-      })
-      .catch(e => {
-        signale.timeEnd("createSetting");
-        signale.error(e);
-        process.exit(1);
-      });
-  } catch (e) {
+
+  const rjson = checkSetting(argv)
+  signale.time("createSetting");
+  if (rjson.success === true) {
+
+    argv = await completeArgv(argv);
+
+    try {
+      createSetting(argv);
+      const task = gulp.task("createSetting");
+      task()
+        .then(() => {
+          signale.timeEnd("createSetting");
+          signale.success("createSetting done");
+        })
+        .catch(e => {
+          signale.timeEnd("createSetting");
+          signale.error(e);
+          process.exit(1);
+        });
+    } catch (e) {
+      signale.timeEnd("createSetting");
+      signale.error(e);
+      process.exit(1);
+    }
+  } else {
     signale.timeEnd("createSetting");
-    signale.error(e);
-    process.exit(1);
+    signale.error(rjson.error);
   }
 };
