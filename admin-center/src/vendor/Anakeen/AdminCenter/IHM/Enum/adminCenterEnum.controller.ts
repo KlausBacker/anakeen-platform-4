@@ -4,7 +4,7 @@ import "@progress/kendo-ui/js/kendo.grid";
 import "@progress/kendo-ui/js/kendo.switch";
 import * as _ from "underscore";
 import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { Component, Watch } from "vue-property-decorator";
 import { exists } from 'fs';
 import { runInThisContext } from 'vm';
 
@@ -15,10 +15,13 @@ import { runInThisContext } from 'vm';
   }
 })
 export default class AdminCenterEnumController extends Vue {
-  
+  // Useful for translate's filters
   public selectedEnum: string = "";
-  public kendoGrid: any = null;
+  public actualKey: string = "";
+  public acualLabel: string = "";
   public language: string = "";
+  
+  public kendoGrid: any = null;
   // Store data to send to the server
   public modifications: any = {};
   // Initial enum entries data
@@ -51,7 +54,7 @@ export default class AdminCenterEnumController extends Vue {
             editDisplay: "bool"
           },
           enum_array_translation: {
-            template: `<a href="#">Translate</a>`
+            template: `<a data-role="adminRouterLink" class="translate-button" href="#">Translate</a>`
           },
         }
       },
@@ -113,8 +116,6 @@ export default class AdminCenterEnumController extends Vue {
   }
   // Get entries from an Enum
   public loadEnumerate(e) {
-    //@ts-ignore
-    console.log(this.entryOptions);
     this.keysArray = [];
     this.labelArray = [];
     this.activeArray = [];
@@ -166,14 +167,21 @@ export default class AdminCenterEnumController extends Vue {
   public smartFormReady(event, smartElement) {
     if (this.getRow(0) !== undefined) {
       // Manage actions for already existing rows
-      this.disableInitialDataRowAction(
-      );
+      this.disableInitialDataRowAction();
+      // Add event listeners on "Translate" buttons
+      let translateButtons = document.getElementsByClassName("translate-button");
+      for (let i = 0; i < translateButtons.length; i++) {
+          const key = translateButtons[i].closest("[data-line]").querySelector("[name=enum_array_key]").getAttribute("value");
+          const selectedEnum = this.selectedEnum;
+          const language = this.language;
+        //@ts-ignore
+        translateButtons[i].setAttribute("href", `/admin/i18n/${language}?section=Enum&msgctxt=${selectedEnum}&msgid=${key}`)
+      }
     };
   }
 
   public updateModifications(event, smartElement, smartField, values, index) {
     if (values.current[index] !== undefined) {
-      // ToDo : 'index' = 'eorder' et non this.modification[index]
       // @ts-ignore
       let entryToUpdate = Object.values(this.modifications).find(entry => entry.eorder == index + 1);
       switch (smartField.id) {

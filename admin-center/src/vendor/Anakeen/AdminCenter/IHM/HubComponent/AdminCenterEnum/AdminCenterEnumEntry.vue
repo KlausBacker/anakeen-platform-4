@@ -13,13 +13,18 @@
 </template>
 <script>
 import HubElement from "@anakeen/hub-components/components/lib/HubElement";
-import AdminCenterEnum from "../../Enum/AdminCenterEnum"
+import AdminCenterEnum from "../../Enum/AdminCenterEnum";
 
 export default {
   name: "ank-admin-enum-manager",
   extends: HubElement, // ou mixins: [ HubElementMixins ],
   components: {
-    "admin-center-enum": AdminCenterEnum
+    "admin-center-enum": () =>
+      new Promise(resolve => {
+        import("../../Enum/AdminCenterEnum.vue").then(Component => {
+          resolve(Component.default);
+        });
+      })
   }
 };
 </script>

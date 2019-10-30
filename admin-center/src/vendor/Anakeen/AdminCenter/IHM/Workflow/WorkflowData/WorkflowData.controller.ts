@@ -91,7 +91,7 @@ export default class WorkflowDataController extends Vue {
           if (dataItem.type === "steps") {
             return `<ul><li><b>Label:&nbsp</b><a data-role="adminRouterLink" href="/admin/i18n/${
               this.language
-            }?msgstr=${dataItem.label}&msgid=${dataItem.id}">${
+            }?section=Workflow&msgstr=${dataItem.label}&msgid=${dataItem.id}">${
               dataItem.label
             }</a></li><li><b>Timer:&nbsp</b>${this.displayMultiple(
               dataItem.timer,
@@ -105,7 +105,7 @@ export default class WorkflowDataController extends Vue {
           } else {
             return `<ul><li><b>Label:&nbsp</b><a data-role="adminRouterLink" href="/admin/i18n/${
               this.language
-            }?msgstr=${dataItem.label}&msgid=${dataItem.id}">${
+            }?section=Workflow&msgstr=${dataItem.label}&msgid=${dataItem.id}">${
               dataItem.label
             }</a></li><li><b>Persistent timer:&nbsp</b>${this.displayMultiple(
               dataItem.persistentTimers,
