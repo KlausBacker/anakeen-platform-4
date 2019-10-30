@@ -147,23 +147,23 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
     );
   })
 
-  // chai.Assertion.addMethod("values", async function (this: Chai.AssertionStatic, values: SFValues) {
-  //   const target: SmartElement = this._obj;
-  //   const options = getCommonOptions(this);
-  //   const value = await target.getValues(values, options);
-  //   console.log(value);
+  chai.Assertion.addMethod("values", async function (this: Chai.AssertionStatic, smartFields: {smartField: string, expectedValue: any}) {
+    const target: SmartElement = this._obj;
+    const options = getCommonOptions(this);
+    const value = await target.getValue(smartFields.smartField, options);
+    console.log(value);
 
-  //   const expectedMessage = "expected value is #{exp} but was #{act}";
-  //   const notExpectedMessage = "expected value is not #{exp} but was #{act}";
+    const expectedMessage = "expected value is #{exp} but was #{act}";
+    const notExpectedMessage = "expected value is not #{exp} but was #{act}";
 
-  //   this.assert(
-  //     value === values,
-  //     expectedMessage,
-  //     notExpectedMessage,
-  //     values,
-  //     value
-  //   );
-  // })
+    this.assert(
+      value === smartFields.expectedValue,
+      expectedMessage,
+      notExpectedMessage,
+      smartFields.expectedValue,
+      value
+    );
+  })
 
 
   chai.Assertion.addMethod("canSave", async function (this: Chai.AssertionStatic, values: ISmartElementValues) {
@@ -324,12 +324,14 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
     );
   });
 
-  chai.Assertion.addMethod("smartFieldRight", async function (this: Chai.AssertionStatic, smartfield: {right: string}) {
+  chai.Assertion.addMethod("smartFieldRight", async function (this: Chai.AssertionStatic, acl: string, smartField: string) {
     const target: SmartElement = this._obj;
     const options = getCommonOptions(this);
-    const seId = await target.getPropertyValue("initid", options);
+    const docid = await target.getPropertyValue("initid", options);
+    // const sF = await target.getValue("us_meid");
+    // console.log(sF);
     
-    const baseUrl = `/api/v2/test-tools/smart-elements/${seId}/smartfield/right/${smartfield.right}`;
+    const baseUrl = `/api/v2/test-tools/smart-elements/${docid}/rights/${acl}`;
     const searchParameters = searchParams(options);
     const url = `${baseUrl}?${searchParameters}`
 
@@ -349,7 +351,7 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
       result === true,
       expectedMessage,
       notExpectedMessage,
-      smartfield.right
+      acl
     );
   });
 

@@ -10,8 +10,8 @@ export interface StateInfos {
 }
 
 export interface SFValues {
-  id: string,
-  value: string
+  smartField: string,
+  expectedValue: any
 }
 
 export const searchParams = function(options?: ITestOptions) {

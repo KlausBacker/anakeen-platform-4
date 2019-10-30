@@ -18,11 +18,13 @@ describe("Test d'assertions :", () => {
   let testContext;
   let simpleuserLogin;
   let simpleuser2Login;
+  let zooUser1Login;
   let accountsManagerUserLogin;
   let simpleUser;
   let accountsManagerUser;
   let seBill;
   let seSimpleUser;
+  let seZooUser1;
 
   //On init un contexte de test
   //On créé les éléments qu'on va utiliser
@@ -33,6 +35,7 @@ describe("Test d'assertions :", () => {
 
     simpleuserLogin = "test_tools_user1";
     simpleuser2Login = "test_tools_user2";
+    zooUser1Login = "zoo.user1";
     accountsManagerUserLogin = "accounts_manager_user1"
 
     simpleUser = await testContext.getAccount({
@@ -76,6 +79,7 @@ describe("Test d'assertions :", () => {
     });
 
     seSimpleUser = await testContext.getSmartElement(simpleUser.fid);
+    seZooUser1 = await testContext.getSmartElement("2054");
 
   });
 
@@ -91,15 +95,15 @@ describe("Test d'assertions :", () => {
     //   await expect(seBill).has.not.state("wfam_bill_e12");
     // });
 
-    // it("2 : testUpdateAssert", async () => {
-    //   const expectedValue = "Test State Smart Element Is Updated";
-    //   const updateSmartElement = await seBill.updateValues({
-    //     bill_title: expectedValue,
-    //     bill_content: expectedValue
-    //   }); // Mise à jour de bill_title   
-    //   await expect(updateSmartElement).to.have.value("bill_title", expectedValue);
-    //   await expect(updateSmartElement).to.have.value("bill_content", expectedValue);
-    // });
+    it("2 : testUpdateAssert", async () => {
+      const expectedValue = "Test State Smart Element Is Updated";
+      const updateSmartElement = await seBill.updateValues({
+        bill_title: expectedValue,
+        bill_content: expectedValue
+      }); // Mise à jour de bill_title   
+      await expect(updateSmartElement).to.have.value("bill_title", expectedValue);
+      await expect(updateSmartElement).to.have.value("bill_content", expectedValue);
+    });
 
     // it("3 : testAliveAssert", async () => {
     //   await expect(seBill).is.alive();
@@ -147,11 +151,11 @@ describe("Test d'assertions :", () => {
     // });
 
     // it("3 : viewControl", async () => {
-    //   await expect(seSimpleUser).for(accountsManagerUserLogin).viewControl("CV_IUSER_ACCOUNT");      // fonctionne 
+    //   await expect(seSimpleUser).for(accountsManagerUserLogin).viewControl("CV_IUSER_ACCOUNT"); 
     // });
 
     // it("4 : fieldAccess", async () => {
-    //   await expect(seSimpleUser).for(accountsManagerUserLogin).fieldAccess("FALL_IUSER");      //fonctionne
+    //   await expect(seSimpleUser).for(accountsManagerUserLogin).fieldAccess("FALL_IUSER");  
     // });
 
     // it("5 : viewAccess", async () => {
@@ -169,20 +173,24 @@ describe("Test d'assertions :", () => {
 
   describe("TEST", () => {
 
-    it("smartElementRight", async () => {
-      await expect(seSimpleUser).for(simpleuserLogin).to.have.smartElementRight("view");
-      await expect(seSimpleUser).for(simpleuser2Login).to.have.smartElementRight("view");
+    // it("smartElementRight", async () => {
+    //   await expect(seSimpleUser).for(simpleuserLogin).to.have.smartElementRight("view");
+    //   await expect(seSimpleUser).for(simpleuser2Login).to.have.smartElementRight("view");
 
-      await expect(seSimpleUser).for(simpleuserLogin).to.have.smartElementRight("edit");
-      await expect(seSimpleUser).for(simpleuser2Login).to.not.have.smartElementRight("edit");
+    //   await expect(seSimpleUser).for(simpleuserLogin).to.have.smartElementRight("edit");
+    //   await expect(seSimpleUser).for(simpleuser2Login).to.not.have.smartElementRight("edit");
 
-      await expect(seSimpleUser).for(accountsManagerUserLogin).to.have.smartElementRight("view");
-      await expect(seSimpleUser).for(accountsManagerUserLogin).to.have.smartElementRight("edit");
-      await expect(seSimpleUser).for(accountsManagerUserLogin).to.have.smartElementRight("delete");
-    });
+    //   await expect(seSimpleUser).for(accountsManagerUserLogin).to.have.smartElementRight("view");
+    //   await expect(seSimpleUser).for(accountsManagerUserLogin).to.have.smartElementRight("edit");
+    //   await expect(seSimpleUser).for(accountsManagerUserLogin).to.have.smartElementRight("delete");
+    // });
 
-    it("transitionRight", async () => {
-      await expect(seBill).for(simpleuserLogin).transitionRight("t_wfam_bill_e1_e2");
+    // it("transitionRight", async () => {
+    //   await expect(seBill).for(simpleuserLogin).transitionRight("t_wfam_bill_e1_e2");
+    // });
+
+    it("smartFieldRight", async () => {
+      await expect(seZooUser1).for(zooUser1Login).smartFieldRight("read", "us_meid");
     });
 
     // it("values", async () => {

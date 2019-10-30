@@ -49,6 +49,12 @@ class RightAccess
         }
 
         $acl = $args['acl'] ?? null;
+        if (empty($acl)) {
+            $exception = new Exception("ANKTEST004", 'acl');
+            $exception->setHttpStatus("400", "right identifier is required");
+            throw $exception;
+        }
+
         $err = $this->smartElement->control($acl);
         if (!empty($err)) {
             $exception = new Exception("ANKTEST003", $this->smartElement->id, $err);

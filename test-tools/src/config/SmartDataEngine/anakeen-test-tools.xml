@@ -132,7 +132,7 @@
     <sde:route name="TestSmartFieldRight">
       <sde:callable>Anakeen\TestTools\Routes\SmartFieldRight</sde:callable>
       <sde:method>GET</sde:method>
-      <sde:pattern>/api/v2/test-tools/smart-elements/{seId}/smartfield/right/{viewId}</sde:pattern>
+      <sde:pattern>/api/v2/test-tools/smart-elements/{seId}/smartfield/right/{acl}</sde:pattern>
       <sde:description>Get smartfield right</sde:description>
       <sde:requiredAccess>
         <sde:access ns="AnakeenTestTools">TestUser</sde:access>
