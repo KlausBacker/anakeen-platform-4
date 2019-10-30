@@ -318,13 +318,16 @@ async function completeArgv(argv) {
   const moduleInfo = await getModuleInfo(argv.sourcePath);
 
   if (argv.vendorName === undefined || argv.vendorName === "") {
-    argv.vendorName += moduleInfo.moduleInfo.vendor;
+    // eslint-disable-next-line require-atomic-updates
+    argv.vendorName = moduleInfo.moduleInfo.vendor;
   }
   if (argv.moduleName === undefined || argv.moduleName === "") {
-    argv.moduleName += moduleInfo.moduleInfo.name;
+    // eslint-disable-next-line require-atomic-updates
+    argv.moduleName = moduleInfo.moduleInfo.name;
   }
   if (argv.name === "" || argv.name === undefined) {
-    argv.name += argv.moduleName + argv.type;
+    // eslint-disable-next-line require-atomic-updates
+    argv.name = argv.moduleName + argv.type;
   }
   return argv;
 }
