@@ -18,6 +18,8 @@ class InitTransfert
     protected $structureName;
     protected $structure;
 
+    const delta= 200;
+
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $this->initParameters();
@@ -41,10 +43,10 @@ class InitTransfert
     {
         $data = [];
 
+        DbManager::query("create schema if not exists dynacase;");
         // Testing connexion with foreign server first
         Utils::importForeignTable("docfam");
 
-        DbManager::query("create schema if not exists dynacase;");
         $tools = file_get_contents(__DIR__ . "/../../../Migration/Tools.sql");
         DbManager::query($tools);
 
@@ -63,19 +65,19 @@ class InitTransfert
         DbManager::query($sql, $ids, true, false);
         foreach ($ids as $id) {
             $id = intval($id);
-            $sqls = static::getSqlToMoveId($id, $id - 100);
+            $sqls = static::getSqlToMoveId($id, $id - self::delta);
             foreach ($sqls as $sql) {
                 DbManager::query($sql);
             }
         }
         if ($ids) {
-            $sql = "select id from docfam where id > 899";
+            $sql = sprintf("select id from docfam where id > %d", 999 - self::delta);
             DbManager::query($sql, $ids, true, false);
             foreach ($ids as $id) {
                 $id = intval($id);
-                $sql = sprintf("alter table doc%d rename to doc%d", $id + 100, $id);
+                $sql = sprintf("alter table doc%d rename to doc%d", $id + self::delta, $id);
                 DbManager::query($sql);
-                $sql = sprintf("alter sequence seq_doc%d rename to seq_doc%d", $id + 100, $id);
+                $sql = sprintf("alter sequence seq_doc%d rename to seq_doc%d", $id + self::delta, $id);
                 DbManager::query($sql);
             }
         }

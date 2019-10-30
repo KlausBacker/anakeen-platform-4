@@ -5,6 +5,7 @@ namespace Anakeen\Routes\Migration\Database;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\Internal\ContextParameterManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Migration\Utils;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
@@ -50,6 +51,26 @@ class FinalUpdates
         DbManager::query("select setval('seq_id_vaultdiskfsstorage', (select max(id_fs) from vaultdiskfsstorage))");
 
 
+        DbManager::query("update docattr set accessibility = 'Read'  where options ~ 'autotitle=yes'");
+
+        $this->nameElements("CVDOC", "cv_famid");
+        $this->nameElements("MASK", "msk_famid");
+        $this->nameElements("MAILTEMPLATE", "tmail_family");
+        $this->nameElements("WDOC", "wf_famid");
+        $this->nameElements("PDOC", "dpdoc_famid");
         return $data;
+    }
+
+    protected function nameElements($structName, $relName)
+    {
+        $struct = SEManager::getFamily($structName);
+
+        $sql = sprintf(
+            "update doc%d as dd set name=('%s_' || docfam.name || '_' || dd.id) from docfam where dd.name is null and dd.doctype != 'Z' and dd.%s::int = docfam.id",
+            $struct->id,
+            $struct->name,
+            $relName
+        );
+        DbManager::query($sql);
     }
 }
