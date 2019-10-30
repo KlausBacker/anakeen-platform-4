@@ -318,13 +318,13 @@ async function completeArgv(argv) {
   const moduleInfo = await getModuleInfo(argv.sourcePath);
 
   if (argv.vendorName === undefined || argv.vendorName === "") {
-    argv.vendorName = moduleInfo.moduleInfo.vendor;
+    argv.vendorName += moduleInfo.moduleInfo.vendor;
   }
   if (argv.moduleName === undefined || argv.moduleName === "") {
-    argv.moduleName = moduleInfo.moduleInfo.name;
+    argv.moduleName += moduleInfo.moduleInfo.name;
   }
   if (argv.name === "" || argv.name === undefined) {
-    argv.name = argv.moduleName + argv.type;
+    argv.name += argv.moduleName + argv.type;
   }
   return argv;
 }
