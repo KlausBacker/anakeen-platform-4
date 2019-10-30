@@ -7,8 +7,9 @@ define([
   "dcpDocument/views/attributes/vAttribute",
   "dcpDocument/views/attributes/array/vColumn",
   "dcpDocument/views/document/attributeTemplate",
+  "dcpDocument/widgets/globalController/utils/EventUtils",
   "dcpDocument/widgets/attributes/array/wArray"
-], function vArray($, _, Backbone, Mustache, ViewAttribute, ViewColumn, attributeTemplate) {
+], function vArray($, _, Backbone, Mustache, ViewAttribute, ViewColumn, attributeTemplate, EventPromiseUtils) {
   "use strict";
 
   return Backbone.View.extend({
@@ -413,10 +414,16 @@ define([
       var documentModel = this.model.getDocumentModel();
       options.attrid = this.model.id;
       this.model.trigger("internalLinkSelected", event, options);
-      if (event.prevent) {
-        return this;
-      }
-      documentModel.trigger("actionAttributeLink", event, options);
+      return EventPromiseUtils.getBeforeEventPromise(
+        event,
+        () => {
+          documentModel.trigger("actionAttributeLink", event, options);
+          return this;
+        },
+        () => {
+          return this;
+        }
+      );
     }
   });
 });

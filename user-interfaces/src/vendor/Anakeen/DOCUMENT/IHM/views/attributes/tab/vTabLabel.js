@@ -4,8 +4,9 @@ define([
   "underscore",
   "backbone",
   "mustache",
-  "dcpDocument/views/document/attributeTemplate"
-], function vTabLabel($, _, Backbone, Mustache, attributeTemplate) {
+  "dcpDocument/views/document/attributeTemplate",
+  "dcpDocument/widgets/globalController/utils/EventUtils"
+], function vTabLabel($, _, Backbone, Mustache, attributeTemplate, EventPromiseUtils) {
   "use strict";
 
   return Backbone.View.extend({
@@ -131,13 +132,16 @@ define([
       documentModel = this.model.getDocumentModel();
 
       this.model.trigger("internalLinkSelected", internalEvent, eventOptions);
-      if (event.prevent) {
-        return this;
-      }
-
-      documentModel.trigger("actionAttributeLink", internalEvent, options);
-
-      return this;
+      return EventPromiseUtils.getBeforeEventPromise(
+        internalEvent,
+        () => {
+          documentModel.trigger("actionAttributeLink", internalEvent, options);
+          return this;
+        },
+        () => {
+          return this;
+        }
+      );
     }
   });
 });

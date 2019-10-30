@@ -924,11 +924,16 @@ define([
       };
 
       this.model.trigger("internalLinkSelected", internalEvent, eventOptions);
-      if (internalEvent.prevent) {
-        return this;
-      }
 
-      return this.doStandardAction(internalEvent, eventOptions);
+      return EventPromiseUtils.getBeforeEventPromise(
+        internalEvent,
+        () => {
+          return this.doStandardAction(internalEvent, eventOptions);
+        },
+        () => {
+          return this;
+        }
+      );
     },
 
     handleHashClick: function vDocumenthandleHashClick(event) {

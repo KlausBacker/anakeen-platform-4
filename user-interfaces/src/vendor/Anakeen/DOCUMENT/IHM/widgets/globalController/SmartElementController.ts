@@ -1542,7 +1542,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       }
     });
     this._model.listenTo(this._model, "internalLinkSelected", (event, options) => {
-      event.prevent = !this._triggerControllerEvent("actionClick", event, this.getProperties(), options);
+      event.promise = this._triggerControllerEvent("actionClick", event, this.getProperties(), options);
     });
     this._model.listenTo(this._model, "downloadFile", (event, attrid, options) => {
       try {
