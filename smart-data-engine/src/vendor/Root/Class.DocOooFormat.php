@@ -54,7 +54,7 @@ class DocOooFormat
         $atype = $this->oattr->type;
 
         if (($this->oattr->repeat) && ($this->index <= 0)) {
-            $tvalues = explode("\n", $value);
+            $tvalues = \Anakeen\Core\Utils\Postgres::stringToArray($value);
         } else {
             $tvalues[$this->index] = $value;
         }
