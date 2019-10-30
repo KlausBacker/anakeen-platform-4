@@ -13,14 +13,16 @@ class MailAutoComplete
      * get mail address from MAILRECIPIENT Smart Structures
      *
      *
-     * @param SmartAutocompleteRequest  $request
+     * @param SmartAutocompleteRequest $request
      * @param SmartAutocompleteResponse $response
      * @return SmartAutocompleteResponse
      * @throws \Anakeen\Database\Exception
      * @throws \Anakeen\Search\Exception
      */
-    public static function getMailAddresses(SmartAutocompleteRequest $request, SmartAutocompleteResponse $response): SmartAutocompleteResponse
-    {
+    public static function getMailAddresses(
+        SmartAutocompleteRequest $request,
+        SmartAutocompleteResponse $response
+    ): SmartAutocompleteResponse {
         $filter = $request->getFilterValue();
         $sf = new \Anakeen\Search\Internal\SearchSmartData("", -1);
         $sf->setObjectReturn();
@@ -29,7 +31,10 @@ class MailAutoComplete
         $dlf = $sf->search()->getDocumentList();
 
         if ($dlf->count() == 0) {
-            return $response->setError(sprintf(___("none smart structure are described to be used as recipient", "smart mail")));
+            return $response->setError(sprintf(___(
+                "none smart structure are described to be used as recipient",
+                "smart mail"
+            )));
         }
         foreach ($dlf as $fam) {
             $cfam = SEManager::createTemporaryDocument($fam->id);
@@ -37,13 +42,22 @@ class MailAutoComplete
              * @var \Anakeen\Core\IMailRecipient $cfam
              */
             if (!method_exists($cfam, "getMail")) {
-                return $response->setError(sprintf(___("smart structure %s does not implement IMailRecipent - missing getMail method", "smart mail"), $fam->name));
+                return $response->setError(sprintf(___(
+                    "smart structure %s does not implement IMailRecipent - missing getMail method",
+                    "smart mail"
+                ), $fam->name));
             }
             if (!method_exists($cfam, "getMailAttribute")) {
-                return $response->setError(sprintf(___("smart structure %s does not implement IMailRecipent - missing getMailAttribute method", "smart mail"), $fam->name));
+                return $response->setError(sprintf(___(
+                    "smart structure %s does not implement IMailRecipent - missing getMailAttribute method",
+                    "smart mail"
+                ), $fam->name));
             }
             if (!method_exists($cfam, "getMailTitle")) {
-                return $response->setError(sprintf(___("smart structure %s does not implement IMailRecipient - missing getMailTitle method", "smart mail"), $fam->name));
+                return $response->setError(sprintf(___(
+                    "smart structure %s does not implement IMailRecipient - missing getMailTitle method",
+                    "smart mail"
+                ), $fam->name));
             }
 
             $mailAttr = $cfam->getMailAttribute();
@@ -55,7 +69,7 @@ class MailAutoComplete
             }
             if ($filter != "") {
                 if ($mailAttr) {
-                    $s->addFilter("(title ~* '%s') or (%s ~* '%s')", $filter, $mailAttr, $filter);
+                    $s->addFilter("(title ~* '%s') or (%s::text ~* '%s')", $filter, $mailAttr, $filter);
                 } else {
                     $s->addFilter("(title ~* '%s')", $filter, $filter);
                 }
@@ -67,6 +81,9 @@ class MailAutoComplete
                  */
                 $mailTitle = $dest->getMailTitle();
                 $mail = $dest->getMail();
+                if (!$mail) {
+                    continue;
+                }
                 if ($mailTitle == '') {
                     $mailTitle = $mail;
                 }
