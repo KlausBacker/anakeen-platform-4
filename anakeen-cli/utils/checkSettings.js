@@ -14,7 +14,6 @@ exports.checkSetting = checkSetting => {
     return msgError(false, "Type of the setting is not in the cmd");
   }
   if (checkSetting.sourcePath !== "." && checkSetting.sourcePath !== undefined) {
-    console.log(fs.existsSync(checkSetting.sourcePath));
     if (!fs.existsSync(checkSetting.sourcePath)) {
       return msgError(false, 'The path for the "s" option not exist');
     }

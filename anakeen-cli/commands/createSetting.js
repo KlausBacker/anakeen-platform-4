@@ -313,7 +313,7 @@ const getInquirerQuestion = (paramKey, paramValue) => {
   return question;
 };
 
-const completeArgv = async argv => {
+async function completeArgv(argv) {
   // get infos module
   const moduleInfo = await getModuleInfo(argv.sourcePath);
 
