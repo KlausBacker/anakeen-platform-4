@@ -11,9 +11,6 @@ function msgError(_success, msg = "") {
 }
 
 exports.checkSetting = checkSetting => {
-
-
-    // return console.log(checkSetting);
     if (checkSetting.type === undefined) {
         return msgError(false, "Type of the setting is not in the cmd");
     }
@@ -28,12 +25,5 @@ exports.checkSetting = checkSetting => {
             return msgError(false, "You need to associate an Smart Structure with this Type.");
         }
     }
-    // if (checkSetting.name === "") {
-    //     return msgError(false, "You need to put name in the option.");
-    // }
-    // if (checkSetting.v !== ) {
-    // }
-    // if (checkSetting.m !== ) {
-    // }
     return msgError(true);
 };
