@@ -254,16 +254,16 @@ const getInquirerQuestion = (paramKey, paramValue) => {
     name: paramKey,
     message: `${paramValue.description} : `,
     default: paramValue.default,
-    validate: paramValue.coerce 
-    ? arg => {
-        try {
-          paramValue.coerce(arg);
-        } catch (e) {
-          return e.message;
+    validate: paramValue.coerce
+      ? arg => {
+          try {
+            paramValue.coerce(arg);
+          } catch (e) {
+            return e.message;
+          }
+          return true;
         }
-        return true;
-      }
-       : () => true
+      : () => true
   };
   switch (paramKey) {
     case "sourcePath":
@@ -327,7 +327,7 @@ const completeArgv = async argv => {
     argv.name = argv.moduleName + argv.type;
   }
   return argv;
-}
+};
 
 exports.handler = async argv => {
   if (process.argv.indexOf("createSetting") === process.argv.length - 1) {
@@ -340,10 +340,9 @@ exports.handler = async argv => {
     );
   }
 
-  const rjson = checkSetting(argv)
+  const rjson = checkSetting(argv);
   signale.time("createSetting");
   if (rjson.success === true) {
-
     argv = await completeArgv(argv);
 
     try {
