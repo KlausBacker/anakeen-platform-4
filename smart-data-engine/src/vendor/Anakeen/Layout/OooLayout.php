@@ -9,7 +9,7 @@ namespace Anakeen\Layout;
  * @class OOoLayout
  * use an open document text file as template
  */
-class OOoLayout extends TextLayout
+class OooLayout extends TextLayout
 {
     //############################################
     //#
