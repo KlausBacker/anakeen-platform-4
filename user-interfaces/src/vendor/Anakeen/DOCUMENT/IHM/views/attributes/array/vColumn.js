@@ -5,8 +5,9 @@ define([
   "backbone",
   "mustache",
   "dcpDocument/views/attributes/vAttribute",
-  "dcpDocument/views/document/attributeTemplate"
-], function vColumn($, _, Backbone, Mustache, ViewAttribute, attributeTemplate) {
+  "dcpDocument/views/document/attributeTemplate",
+  "dcpDocument/widgets/globalController/utils/EventUtils"
+], function vColumn($, _, Backbone, Mustache, ViewAttribute, attributeTemplate, EventPromiseUtils) {
   "use strict";
 
   return ViewAttribute.extend({
@@ -164,15 +165,20 @@ define([
         row: tableLine
       });
 
-      if (event.prevent) {
-        return this;
-      }
-
-      documentModel.fetchDocument({
-        initid: initid,
-        revision: -1,
-        viewId: "!defaultConsultation"
-      });
+      return EventPromiseUtils.getBeforeEventPromise(
+        event,
+        () => {
+          documentModel.fetchDocument({
+            initid: initid,
+            revision: -1,
+            viewId: "!defaultConsultation"
+          });
+          return this;
+        },
+        () => {
+          return this;
+        }
+      );
     },
 
     /**
