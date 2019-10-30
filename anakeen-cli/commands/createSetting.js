@@ -327,7 +327,7 @@ async function completeArgv(argv) {
     argv.name = argv.moduleName + argv.type;
   }
   return argv;
-};
+}
 
 exports.handler = async argv => {
   if (process.argv.indexOf("createSetting") === process.argv.length - 1) {
