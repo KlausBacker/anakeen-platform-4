@@ -1,0 +1,23 @@
+<?php
+/**
+ * Enumerate constants
+ * @name: {{name}}
+ */
+namespace {{namespace}};
+
+class {{classname}}
+{
+{{#items}}
+{{#isGood}}
+    /** @var string {{{escapeLabel}}} */
+    const {{name}}="{{{escapeName}}}";
+{{/isGood}}{{^isGood}}
+    /**
+     * {{{escapeLabel}}}{{^isGood}}
+     * @name : {{{name}}}
+     * @ignored: complex name{{/isGood}}
+     */
+{{/isGood}}
+
+{{/items}}
+}

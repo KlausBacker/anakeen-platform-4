@@ -8,6 +8,7 @@
     </module:po-config>
     <module:stub-config>
         <module:stub-struct source="src/**/*struct.xml"/>
+        <module:stub-struct-js-config target="./constants/smartStructureFields.js"/>
     </module:stub-config>
     <module:check-config>
         <module:config-xml source="src/**/*.xml"/>

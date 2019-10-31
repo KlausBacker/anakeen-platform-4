@@ -4,6 +4,9 @@
   "main": "index.js",
   "author": "anakeen",
   "license": "SEE LICENSE IN LICENSE",
+  "files": [
+    "/constants/*.js"
+  ],
   "devDependencies": {
     "@anakeen/anakeen-cli": "1.2.0"
   }

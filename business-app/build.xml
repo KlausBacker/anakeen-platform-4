@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<acli:config xmlns:acli="https://platform.anakeen.com/4/schemas/module/1.0">
-  <acli:source path="src"/>
-  <acli:stub-config>
-    <acli:stub-struct source="src/vendor/Anakeen/BusinessApp/SmartStructures/**/*Structure.xml"/>
-  </acli:stub-config>
-</acli:config>
+<module:config xmlns:module="https://platform.anakeen.com/4/schemas/module/1.0">
+  <module:source path="src"/>
+  <module:stub-config>
+    <module:stub-struct source="src/vendor/Anakeen/BusinessApp/SmartStructures/**/*Structure.xml"/>
+    <module:stub-struct-js-config target="./constants/smartStructureFields.js">
+      <module:stub-js-import name="HubFields" source="@anakeen/hub-components/constants/smartStructureFields.js"/>
+    </module:stub-struct-js-config>
+  </module:stub-config>
+</module:config>
