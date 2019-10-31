@@ -58,6 +58,7 @@ describe("Test d'assertions :", () => {
       ]
     });
     //FIXME: role non pris en compte lors de la création
+
     await accountsManagerUser.addRole("accounts_manager_role");
 
     // 2 - Smart Elements
@@ -103,6 +104,10 @@ describe("Test d'assertions :", () => {
       }); // Mise à jour de bill_title   
       await expect(updateSmartElement).to.have.value("bill_title", expectedValue);
       await expect(updateSmartElement).to.have.value("bill_content", expectedValue);
+      await expect(updateSmartElement).to.have.values({
+        bill_title: expectedValue,
+        bill_content: expectedValue
+      });
     });
 
     // it("3 : testAliveAssert", async () => {
@@ -117,11 +122,11 @@ describe("Test d'assertions :", () => {
     //   await expect(seBill).to.have.state("wfam_bill_e1");
     // });
 
-    // it("5 : testSetStateAssert", async () => {
-    //   await expect(seBill).to.have.state("wfam_bill_e1");
-    //   const setState = await seBill.setState("wfam_bill_e2");
-    //   await expect(setState).to.have.state("wfam_bill_e2");
-    // });
+    it("5 : testSetStateAssert", async () => {
+      await expect(seBill).to.have.state("wfam_bill_e1");
+      const setState = await seBill.setState("wfam_bill_e2");
+      await expect(setState).to.have.state("wfam_bill_e2");
+    });
 
     // it("6 : testLockedAssert", async () => {
     //   await expect(seBill).is.not.locked();
@@ -131,11 +136,11 @@ describe("Test d'assertions :", () => {
     //   await expect(seBill).is.workflow("WDOC_BILL");
     // });
 
-    // it("8 : testDeletedAssert", async () => {
-    //   await expect(seBilltoBeDeleted).is.alive();
-    //   const del = await seBilltoBeDeleted.destroy();
-    //   await expect(del).for("admin").is.not.alive();
-    // });
+    it("8 : testDeletedAssert", async () => {
+      await expect(seBilltoBeDeleted).is.alive();
+      const seDeleted = await seBilltoBeDeleted.destroy();
+      await expect(seDeleted).is.not.alive();
+    });
 
     // it("9 : testAssertCanSave", async () => {
     //   await expect(seBill).to.have.value("bill_title", "Test State Smart Element Is Updated");
@@ -189,12 +194,15 @@ describe("Test d'assertions :", () => {
     //   await expect(seBill).for(simpleuserLogin).transitionRight("t_wfam_bill_e1_e2");
     // });
 
-    it("smartFieldRight", async () => {
-      await expect(seZooUser1).for(zooUser1Login).smartFieldRight("read", "us_meid");
-    });
+    // it("smartFieldRight", async () => {
+    //   await expect(seZooUser1).for(zooUser1Login).smartFieldRight("us_passwd1", "write");
+    //   await expect(seZooUser1).for(zooUser1Login).smartFieldRight("us_meid", "none");
+      // await expect(seZooUser1).for(zooUser1Login).smartFieldRight("us_meid", "write");
+      // await expect(seZooUser1).for(zooUser1Login).smartFieldRight("us_fr_intranet", "none");
+    // });
 
     // it("values", async () => {
-    //   await expect(seBill).to.have.values( {bill_title: "Test State Smart Elements"});
+    //   await expect(seBill).to.have.values( {bill_title: "Test State Smart Elements"}, {bill_content: "Test State Smart Elements"});
     // });
 
   });

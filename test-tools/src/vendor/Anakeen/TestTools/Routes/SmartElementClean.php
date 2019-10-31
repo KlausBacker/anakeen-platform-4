@@ -9,6 +9,7 @@ use Anakeen\Router\ApiV2Response;
 class SmartElementClean
 {
     protected $errors;
+    protected $tag;
 
     /**
      * @param \Slim\Http\request $request
@@ -23,37 +24,37 @@ class SmartElementClean
     ) {
 
         $this->initParameters($request, $args);
+
+        $this->cleanSmartElement();
         
         return ApiV2Response::withMessages($response, $this->errors);
     }
 
     protected function initParameters(\Slim\Http\request $request, $args)
     {
-        $tag = $args['tag'] ?? null;
-        if (empty($tag)) {
+        $this->tag = $args['tag'] ?? null;
+        if (empty($this->tag)) {
             $exception = new Exception("ANKTEST004", 'tag');
             $exception->setHttpStatus("400", "smart element identifier is required");
             throw $exception;
         }
+    }
 
-        if (!empty($tag)) {
-            $search = new SearchElements('');
-            $search->addFilter('atags is not null');
-            $search->addFilter("atags ->> 'ank_test' = '%s'", pg_escape_string($args['tag']));
-            $search->search();
-            $list = $search->getResults();
-            $this->errors = [];
+    protected function cleanSmartElement()
+    {
+        $search = new SearchElements('');
+        $search->addFilter('atags is not null');
+        $search->addFilter("atags ->> 'ank_test' = '%s'", pg_escape_string($this->tag));
+        $search->search();
+        
+        $list = $search->getResults();
+        $this->errors = [];
 
-            foreach ($list as $docid => $doc) {
-                $error = $doc->delete();
-                if (!empty($error)) {
-                    $this->errors[] = $error;
-                }
+        foreach ($list as $docid => $doc) {
+            $error = $doc->delete();
+            if (!empty($error)) {
+                $this->errors[] = $error;
             }
-        } else {
-            $exception = new Exception("ANKTEST005", $search->id, $error);
-            $exception->setHttpStatus("400", "test tag is required");
-            throw $exception;
         }
     }
 }

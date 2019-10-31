@@ -12,7 +12,6 @@ class SmartElementDelete
     /** @var SmartElement $smartElement */
     protected $smartElement;
     protected $newValues;
-    protected $dryRun;
 
     /**
      * @param \Slim\Http\request $request
@@ -28,8 +27,6 @@ class SmartElementDelete
         $this->initParameters($request, $args);
 
         $this->deleteSmartElement();
-
-        $this->getSmartElementdata();
 
         return ApiV2Response::withData($response, $this->getSmartElementdata());
     }

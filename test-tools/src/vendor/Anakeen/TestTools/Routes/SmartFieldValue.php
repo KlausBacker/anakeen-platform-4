@@ -4,14 +4,14 @@ namespace Anakeen\TestTools\Routes;
 
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
-use Anakeen\Core\SEManager;
 use Anakeen\SmartElement;
+use Anakeen\SmartElementManager;
 
-class RightAccess
+class SmartFieldValue
 {
-    /** @var SmartElement */
+    /** @var SmartElement $smartElement */
     protected $smartElement;
-    protected $acl;
+    protected $values;
 
     /**
      * @param \Slim\Http\request $request
@@ -24,10 +24,9 @@ class RightAccess
         \Slim\Http\response $response,
         $args
     ) {
-
         $this->initParameters($request, $args);
 
-        $this->checkSmartElementRight();
+        $this->getSmartFieldValues();
 
         return ApiV2Response::withData($response, $this->getSmartElementdata());
     }
@@ -41,36 +40,37 @@ class RightAccess
             throw $exception;
         }
 
-        $this->smartElement = SEManager::getDocument($seId);
+        $this->smartElement = SmartElementManager::getDocument($seId);
         if (empty($this->smartElement)) {
             $exception = new Exception("ANKTEST001", $seId);
-            $exception->setHttpStatus("500", "Cannot get smart element");
-            $exception->setUserMessage(err);
+            $exception->setHttpStatus("500", "Cannot update Smart Element");
             throw $exception;
         }
 
-        $this->acl = $args['acl'] ?? null;
-        if (empty($this->acl)) {
-            $exception = new Exception("ANKTEST004", 'acl');
-            $exception->setHttpStatus("400", "right identifier is required");
+        $this->values = $request->getParsedBody();
+        if (null === $this->values) {
+            $exception = new Exception("ANKTEST004", 'getValues');
+            $exception->setHttpStatus("400", "problem with getParseBody");
             throw $exception;
         }
+        //FIXME: check array
     }
 
-    protected function checkSmartElementRight()
+    protected function getSmartFieldValues()
     {
-        $err = $this->smartElement->control($this->acl);
-        if (!empty($err)) {
-            $exception = new Exception("ANKTEST003", $this->smartElement->id, $err);
-            $exception->setHttpStatus("403", "Access forbidden");
-            throw $exception;
+        foreach ($this->values as $sFId => $sFvalue) {
+            $realValue = $this->smartElement->getAttributeValue($sFId);
+           
+
+            if ($realValue === $sFvalue) {
+            }
         }
     }
 
     protected function getSmartElementdata()
     {
         $smartElementData = new \Anakeen\Routes\Core\Lib\DocumentApiData($this->smartElement);
-        $smartElementData->setFields(["document.properties.all", "document.attributes.all"]);
+        $smartElementData->setFields(["document.attributes.all"]);
         return $smartElementData->getDocumentData();
     }
 }

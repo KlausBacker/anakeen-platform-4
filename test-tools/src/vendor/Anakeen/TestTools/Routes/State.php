@@ -11,6 +11,7 @@ class State
 {
     /** @var SmartElement $smartElement */
     protected $smartElement;
+    protected $state;
     
     /**
      * @param \Slim\Http\request $request
@@ -26,7 +27,7 @@ class State
 
         $this->initParameters($request, $args);
 
-        $this->getSmartElementdata();
+        $this->setSmartElementState();
 
         return ApiV2Response::withData($response, $this->getSmartElementdata());
     }
@@ -39,24 +40,24 @@ class State
             $exception->setHttpStatus("400", "smart element identifier is required");
             throw $exception;
         }
+    
+        $this->smartElement = SmartElementManager::getDocument($docid);
+        if (empty($this->smartElement)) {
+            $exception = new Exception("ANKTEST001", $args['docid']);
+            $exception->setHttpStatus("500", "Cannot update Smart Element");
+            $exception->setUserMessage(err);
+            throw $exception;
+        }
 
-        if (!empty($docid)) {
-            $this->smartElement = SmartElementManager::getDocument($docid);
-            if (empty($this->smartElement)) {
-                $exception = new Exception("ANKTEST001", $args['docid']);
-                $exception->setHttpStatus("500", "Cannot update Smart Element");
-                $exception->setUserMessage(err);
-                throw $exception;
-            }
-            $error = $this->smartElement->setState($args['state']);
-            if (!empty($error)) {
-                $exception = new Exception("ANKTEST003", $this->smartElement->id, $error);
-                $exception->setHttpStatus("500", "Unable to set the smart element state");
-                throw $exception;
-            }
-        } else {
-            $exception = new Exception("ANKTEST004", 'docid');
-            $exception->setHttpStatus("400", "smart element identifier is required");
+        $this->state = $args['state'] ?? null;
+    }
+
+    protected function setSmartElementState()
+    {
+        $error = $this->smartElement->setState($this->state);
+        if (!empty($error)) {
+            $exception = new Exception("ANKTEST003", $this->smartElement->id, $error);
+            $exception->setHttpStatus("500", "Unable to set the smart element state");
             throw $exception;
         }
     }

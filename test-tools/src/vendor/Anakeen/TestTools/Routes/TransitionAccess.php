@@ -77,6 +77,11 @@ class TransitionAccess
     protected function checkTransition()
     {
         $err = $this->workflow->control($this->transition);
+        if (empty($err)) {
+            $exception = new Exception("ANKTEST012", "control");
+            $exception->setHttpStatus("404", "Cannot control workflow");
+            throw $exception;
+        }
     }
 
     protected function getSmartElementdata()

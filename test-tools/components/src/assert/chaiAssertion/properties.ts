@@ -1,6 +1,6 @@
 import SmartElement from "../../context/utils/SmartElement";
 import { ISmartElementValues } from "../../context/AbstractContext";
-import { searchParams, SFValues } from "../../utils/routes";
+import { searchParams, SmartField } from "../../utils/routes";
 
 /*
 Set const enableXdebug = TRUE for activate PHP debugger
@@ -133,7 +133,6 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
     const target: SmartElement = this._obj;
     const options = getCommonOptions(this);
     const value = await target.getValue(smartField, options);
-    // console.log(value);
 
     const expectedMessage = "expected value is #{exp} but was #{act}";
     const notExpectedMessage = "expected value is not #{exp} but was #{act}";
@@ -147,33 +146,76 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
     );
   })
 
-  chai.Assertion.addMethod("values", async function (this: Chai.AssertionStatic, smartFields: {smartField: string, expectedValue: any}) {
+  chai.Assertion.addMethod("values", async function (this: Chai.AssertionStatic, smartFieldValues: object) {
     const target: SmartElement = this._obj;
     const options = getCommonOptions(this);
-    const value = await target.getValue(smartFields.smartField, options);
-    console.log(value);
+    const seId = await target.getPropertyValue("initid", options);
+    
+    const baseUrl = `/api/v2/test-tools/smart-elements/${seId}/smartfields/values`;
+    const searchParameters = searchParams(options);
+    const url = `${baseUrl}?${searchParameters}`
 
-    const expectedMessage = "expected value is #{exp} but was #{act}";
-    const notExpectedMessage = "expected value is not #{exp} but was #{act}";
+    let result = false;
+    const response = await this._obj.fetchApi(url, {
+      body: JSON.stringify(smartFieldValues),
+      headers: {
+        Accept: "application/json"
+      },
+      method: "put"
+    });
+    const responseData = await response.json();
+    console.log(">>>", responseData);
+    result = responseData.success;
+
+    const expectedMessage = `expected values #{exp} but was not because: ${responseData.message || responseData.exceptionMessage}`;
+    const notExpectedMessage = "expected not values #{exp} but was";
 
     this.assert(
-      value === smartFields.expectedValue,
+      result === true,
       expectedMessage,
       notExpectedMessage,
-      smartFields.expectedValue,
-      value
+      smartFieldValues
     );
-  })
+  });
 
+  // chai.Assertion.addMethod("values", async function (this: Chai.AssertionStatic, smartFieldId: string, expectedValues: string) {
+  //   const target: SmartElement = this._obj;
+  //   const options = getCommonOptions(this);
+  //   const seId = await target.getPropertyValue("initid", options);
+  //   const testValue = await target.getValue(smartFieldId, options);
+    
+  //   const baseUrl = `/api/v2/test-tools/smart-elements/${seId}/smartfields/${smartFieldId}/values/${expectedValues}.json`;
+  //   const searchParameters = searchParams(options);
+  //   const url = `${baseUrl}?${searchParameters}`
+
+  //   let result = false;
+  //   const response = await this._obj.fetchApi(url, {
+  //     headers: {
+  //       Accept: "application/json"
+  //     }
+  //   });
+  //   const responseData = await response.json();
+  //   console.log(">>>", responseData.data.document.attributes);
+  //   result = responseData.success;
+
+  //   const expectedMessage = `expected access #{exp} but was not because: ${responseData.message || responseData.exceptionMessage}`;
+  //   const notExpectedMessage = "expected not access #{exp} but was";
+
+  //   this.assert(
+  //     testValue.value === expectedValues,
+  //     expectedMessage,
+  //     notExpectedMessage,
+  //     expectedValues,
+  //     testValue.value
+  //   );
+  // });
 
   chai.Assertion.addMethod("canSave", async function (this: Chai.AssertionStatic, values: ISmartElementValues) {
     const target: SmartElement = this._obj;
-    // const options = getCommonOptions(this);
     let success = false;
     let error = "";
     try {
       const updatedSe = await target.updateValues(values, { dryRun: true });
-      // console.log(updatedSe);
       success = true;
     } catch (e) {
       error = e.message;
@@ -193,7 +235,6 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
 
   chai.Assertion.addMethod("canChangeState", async function (this: Chai.AssertionStatic, transition: string, askValues?: object) {
     const target: SmartElement = this._obj;
-    // const options = getCommonOptions(this);
     let success = false;
     let error = "";
     try {
@@ -280,8 +321,6 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
 
     const response = await this._obj.fetchApi(url);
     const responseData = await response.json();
-    // console.log(fallId);
-    // console.log(responseData.data.document.properties);
 
     const expectedMessage = "expected field access to equal #{exp} but was #{act}";
     const notExpectedMessage = "expected field access not to equal #{exp} but was #{act}";
@@ -324,14 +363,12 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
     );
   });
 
-  chai.Assertion.addMethod("smartFieldRight", async function (this: Chai.AssertionStatic, acl: string, smartField: string) {
+  chai.Assertion.addMethod("smartFieldRight", async function (this: Chai.AssertionStatic, smartField: string, acl: string) {
     const target: SmartElement = this._obj;
     const options = getCommonOptions(this);
     const docid = await target.getPropertyValue("initid", options);
-    // const sF = await target.getValue("us_meid");
-    // console.log(sF);
     
-    const baseUrl = `/api/v2/test-tools/smart-elements/${docid}/rights/${acl}`;
+    const baseUrl = `/api/v2/test-tools/smart-elements/${docid}/smartfields/${smartField}/right/${acl}`;
     const searchParameters = searchParams(options);
     const url = `${baseUrl}?${searchParameters}`
 
@@ -344,8 +381,8 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
     const responseData = await response.json();
     result = responseData.success;
 
-    const expectedMessage = `expected access to #{exp} but was not because: ${responseData.message || responseData.exceptionMessage}`;
-    const notExpectedMessage = "expected not access to #{exp} but was";
+    const expectedMessage = `expected access #{exp} but was not because: ${responseData.message || responseData.exceptionMessage}`;
+    const notExpectedMessage = "expected not access #{exp} but was";
 
     this.assert(
       result === true,

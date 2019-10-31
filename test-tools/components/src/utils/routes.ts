@@ -9,9 +9,8 @@ export interface StateInfos {
   askValues?: object
 }
 
-export interface SFValues {
-  smartField: string,
-  expectedValue: any
+export interface SmartField {
+  [fieldId: string]: { value: string};
 }
 
 export const searchParams = function(options?: ITestOptions) {

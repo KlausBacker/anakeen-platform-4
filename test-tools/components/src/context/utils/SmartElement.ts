@@ -1,5 +1,5 @@
 import { ISmartElementValues } from "../AbstractContext";
-import { searchParams, ITestOptions, StateInfos, SFValues  } from "../../utils/routes";
+import { searchParams, ITestOptions, StateInfos, SmartField  } from "../../utils/routes";
 
 export default class SmartElement {
   private static BASE_API: string = "/api/v2/test-tools/";

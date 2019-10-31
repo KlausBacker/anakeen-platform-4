@@ -22,7 +22,6 @@ export default class SimpleContext extends AbstractContext {
     if (typeof login === "string") {
       return super.getAccount(login);
     } else {
-
       const url = SimpleContext.ACCOUNT_CREATION_API;
       if (login && typeof login === "object") {
         const requestData: { [key: string]: any } = Object.assign({}, login);
