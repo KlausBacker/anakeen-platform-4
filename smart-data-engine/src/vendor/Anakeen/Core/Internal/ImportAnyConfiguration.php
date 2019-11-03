@@ -138,6 +138,7 @@ class ImportAnyConfiguration
     protected function importAsSmartConfiguration($configFile)
     {
         $oImport = $this->getImportSmartObject();
+        $oImport->clearVerboseMessages();
         $oImport->importAll($configFile);
 
         if ($oImport->getErrorMessage()) {
@@ -174,7 +175,11 @@ class ImportAnyConfiguration
         return $this->verboseMessages;
     }
 
-
+    public function clearVerboseMessages()
+    {
+         $this->verboseMessages=[];
+        $this->debugData=[];
+    }
 
     protected function importAsSmartElementDataConfiguration($xmlData)
     {
