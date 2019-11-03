@@ -21,6 +21,7 @@ use Anakeen\Core\SEManager;
  */
 class DocumentHtml
 {
+    const templateFile = __DIR__ . "/Templates/document-view.html.mustache";
     protected $viewId = "!defaultConsultation";
     protected $revision = -1;
 
@@ -28,9 +29,9 @@ class DocumentHtml
      * Send Document Html page
      *
      *
-     * @param \Slim\Http\request  $request
+     * @param \Slim\Http\request $request
      * @param \Slim\Http\response $response
-     * @param array               $args
+     * @param array $args
      * @return \Slim\Http\response
      * @throws Exception
      */
@@ -52,23 +53,32 @@ class DocumentHtml
         return $response->write($html);
     }
 
+    public function view($initid, $viewId = "!defaultConsultation", $revision = -1)
+    {
+        $data = $this->getData($initid, $viewId, $revision);
+        $mustache = new \Mustache_Engine();
+        return $mustache->render(file_get_contents(static::templateFile), $data);
+    }
+
     /**
      * @param string|bool $initid
-     * @param string      $viewId
-     * @param int         $revision
+     * @param string $viewId
+     * @param int $revision
      *
      * @return string
      * @throws Exception
      */
-    public function view($initid, $viewId = "!defaultConsultation", $revision = -1)
+    public function getData($initid, $viewId = "!defaultConsultation", $revision = -1)
     {
         if (!is_numeric($revision)) {
             if (!preg_match('/^state:(.+)$/', $revision, $regStates)) {
-                throw new Exception(sprintf(Gettext::___("Revision \"%s\" must be a number or a state reference", "ddui"), $revision));
+                throw new Exception(sprintf(Gettext::___(
+                    "Revision \"%s\" must be a number or a state reference",
+                    "ddui"
+                ), $revision));
             }
         }
 
-        $templateFile = __DIR__ . "/Templates/document-view.html.mustache";
         $data = new I18nTemplateContext();
         $data["NOTIFICATION_DELAY"] = ContextManager::getParameterValue("Ui", "NOTIFICATION_DELAY");
         $data["htmlTitle"] = ___("Smart ELement", "ddui");
@@ -90,11 +100,14 @@ class DocumentHtml
                     $e->setHttpStatus("403", "Forbidden");
                     throw $e;
                 }
-                $data["htmlTitle"] =$doc->getTitle();
+                $data["htmlTitle"] = $doc->getTitle();
             } else {
                 $err = $doc->control("icreate");
                 if ($err) {
-                    $e = new Exception(sprintf(Gettext::___("Access not granted to create \"%s\" document", "ddui"), $doc->getTitle()));
+                    $e = new Exception(sprintf(
+                        Gettext::___("Access not granted to create \"%s\" document", "ddui"),
+                        $doc->getTitle()
+                    ));
                     $e->setHttpStatus("403", "Forbidden");
                     throw $e;
                 }
@@ -150,7 +163,7 @@ class DocumentHtml
             $js[] = array(
                 "key" => $key,
                 "path" => $path,
-                "noModule"=> $key === "polyfill"
+                "noModule" => $key === "polyfill"
             );
         }
         $data["JS_DEPS"] = $js;
@@ -163,9 +176,7 @@ class DocumentHtml
             ["key" => "coreController", "path" => $render->getControllerJs(true)],
             ["key" => "core", "path" => $render->getCoreJs(true)]
         ];
-
-        $mustache = new \Mustache_Engine();
-        return $mustache->render(file_get_contents($templateFile), $data);
+        return $data;
     }
 
     protected function getWarningMessages()
