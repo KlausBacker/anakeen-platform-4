@@ -39,7 +39,7 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
     if (typeof smartElement === "string") {
       const response = await this._obj.fetchApi(url);
       const responseData = await response.json();
-      expectedProfile = responseData.document.properties.initid;
+      expectedProfile = responseData.data.document.properties.initid;
     } else if (smartElement instanceof SmartElement) {
       expectedProfile = await smartElement.getPropertyValue("initid");
     }
@@ -74,7 +74,7 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
     );
   });
 
-  chai.Assertion.addMethod("alive", async function (this: Chai.AssertionStatic, dryRun: boolean = false) {
+  chai.Assertion.addMethod("alive", async function (this: Chai.AssertionStatic) {
     const target: SmartElement = this._obj;
     const options = getCommonOptions(this);
     options.searchParams = {
@@ -95,7 +95,7 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
     );
   });
 
-  chai.Assertion.addMethod("locked", async function (this: Chai.AssertionStatic, dryRun: boolean = false) {
+  chai.Assertion.addMethod("locked", async function (this: Chai.AssertionStatic) {
     const target: SmartElement = this._obj;
     const options = getCommonOptions(this);
     const locked = await target.getPropertyValue("locked", options);
@@ -112,7 +112,7 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
     );
   });
 
-  chai.Assertion.addMethod("state", async function (this: Chai.AssertionStatic, stateReference: string, dryRun: boolean = false) {
+  chai.Assertion.addMethod("state", async function (this: Chai.AssertionStatic, stateReference: string) {
     const target: SmartElement = this._obj;
     const options = getCommonOptions(this);
     const state = await target.getPropertyValue("state", options);
@@ -159,12 +159,12 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
     const response = await this._obj.fetchApi(url, {
       body: JSON.stringify(smartFieldValues),
       headers: {
-        Accept: "application/json"
+        Accept: "application/json",
+        "content-type": "application/json"
       },
       method: "put"
     });
     const responseData = await response.json();
-    console.log(">>>", responseData);
     result = responseData.success;
 
     const expectedMessage = `expected values #{exp} but was not because: ${responseData.message || responseData.exceptionMessage}`;
@@ -256,7 +256,7 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
     );
   })
 
-  chai.Assertion.addMethod("viewControl", async function (this: Chai.AssertionStatic, smartElementLogicalName: string | SmartElement, dryRun: boolean = false) {
+  chai.Assertion.addMethod("viewControl", async function (this: Chai.AssertionStatic, smartElementLogicalName: string | SmartElement) {
     const target: SmartElement = this._obj;
     const options = getCommonOptions(this);
     const cvId = await target.getPropertyValue("viewController", options);
@@ -309,7 +309,7 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
     );
   });
 
-  chai.Assertion.addMethod("fieldAccess", async function (this: Chai.AssertionStatic, smartElementLogicalName: string | SmartElement, dryRun: boolean = false) {
+  chai.Assertion.addMethod("fieldAccess", async function (this: Chai.AssertionStatic, smartElementLogicalName: string | SmartElement) {
     const target: SmartElement = this._obj;
     const security = await target.getPropertyValue("security");
     const fallId = security.fieldAccess ? security.fieldAccess.id : -1;

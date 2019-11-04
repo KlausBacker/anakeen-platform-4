@@ -17,4 +17,5 @@ class ErrorCodeANKTEST
     const ANKTEST013 = 'Can not create smart element of structure : %s';
     const ANKTEST014 = 'Can not store the smart element : %s, with message : %s';
     const ANKTEST015 = 'Get Smart Element : %s fail - Smart Fields "%s": "%s"';
+    const ANKTEST016 = '"%s" is not equal at expected value : "%s"';
 }

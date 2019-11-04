@@ -96,19 +96,19 @@ describe("Test d'assertions :", () => {
     //   await expect(seBill).has.not.state("wfam_bill_e12");
     // });
 
-    it("2 : testUpdateAssert", async () => {
-      const expectedValue = "Test State Smart Element Is Updated";
-      const updateSmartElement = await seBill.updateValues({
-        bill_title: expectedValue,
-        bill_content: expectedValue
-      }); // Mise à jour de bill_title   
-      await expect(updateSmartElement).to.have.value("bill_title", expectedValue);
-      await expect(updateSmartElement).to.have.value("bill_content", expectedValue);
-      await expect(updateSmartElement).to.have.values({
-        bill_title: expectedValue,
-        bill_content: expectedValue
-      });
-    });
+    // it("2 : testUpdateAssert", async () => {
+    //   const expectedValue = "Test State Smart Element Is Updated";
+    //   const updateSmartElement = await seBill.updateValues({
+    //     bill_title: expectedValue,
+    //     bill_content: expectedValue
+    //   }); // Mise à jour de bill_title   
+    //   await expect(updateSmartElement).to.have.value("bill_title", expectedValue);
+    //   await expect(updateSmartElement).to.have.value("bill_content", expectedValue);
+    //   await expect(updateSmartElement).to.have.values({
+    //     bill_title: expectedValue,
+    //     bill_content: expectedValue
+    //   });
+    // });
 
     // it("3 : testAliveAssert", async () => {
     //   await expect(seBill).is.alive();
@@ -136,17 +136,17 @@ describe("Test d'assertions :", () => {
     //   await expect(seBill).is.workflow("WDOC_BILL");
     // });
 
-    it("8 : testDeletedAssert", async () => {
-      await expect(seBilltoBeDeleted).is.alive();
-      const seDeleted = await seBilltoBeDeleted.destroy();
-      await expect(seDeleted).is.not.alive();
-    });
-
-    // it("9 : testAssertCanSave", async () => {
-    //   await expect(seBill).to.have.value("bill_title", "Test State Smart Element Is Updated");
-    //   await expect(seBill).canSave({ bill_title: "expectedValue"});
-    //   await expect(seBill).to.have.value("bill_title", "Test State Smart Element Is Updated");
+    // it("8 : testDeletedAssert", async () => {
+    //   await expect(seBilltoBeDeleted).is.alive();
+    //   const seDeleted = await seBilltoBeDeleted.destroy();
+    //   await expect(seDeleted).is.not.alive();
     // });
+
+    it("9 : testAssertCanSave", async () => {
+      await expect(seBill).to.have.value("bill_title", "Test State Smart Element Is Updated");
+      await expect(seBill).canSave({ bill_title: "expectedValue"});
+      await expect(seBill).to.have.value("bill_title", "Test State Smart Element Is Updated");
+    });
   });
 
   describe("2- Test Account ==> 1 : on vérifie si le role pour l'account 'anakeen_test_user' est 'rtstdduiboss', 2 : on test si ce smart element à la viewcontroller 'CV_IUSER_ACCOUNT'; 3 : on test si c'est un SE de type Account", () => {
@@ -160,19 +160,19 @@ describe("Test d'assertions :", () => {
     // });
 
     // it("4 : fieldAccess", async () => {
-    //   await expect(seSimpleUser).for(accountsManagerUserLogin).fieldAccess("FALL_IUSER");  
+    //   await expect(seSimpleUser).for(accountsManagerUserLogin).fieldAccess("FALL_IUSER");
     // });
 
-    // it("5 : viewAccess", async () => {
-    //   await expect(seSimpleUser).for(accountsManagerUserLogin).to.have.viewAccess("EUSER");  
-    //   await expect(seSimpleUser).for(simpleuserLogin).to.not.have.viewAccess("EUSER");
-    //   await expect(seSimpleUser).for(accountsManagerUserLogin).to.not.have.viewAccess("INEXISTENT_VIEW");  
-    // });
+    it("5 : viewAccess", async () => {
+      await expect(seSimpleUser).for(accountsManagerUserLogin).to.have.viewAccess("EUSER");  
+      await expect(seSimpleUser).for(simpleuserLogin).to.not.have.viewAccess("EUSER");
+      await expect(seSimpleUser).for(accountsManagerUserLogin).to.not.have.viewAccess("INEXISTENT_VIEW");  
+    });
 
-    // it("6 : testProfileAccount", async () => {
-    //   await expect(seBill).is.profile();
-    //   await expect(seSimpleUser).is.not.profile();
-    // });
+    it("6 : testProfile", async () => {
+      await expect(seSimpleUser).is.profile(seSimpleUser);
+      await expect(seSimpleUser).is.profile("PRF_IUSER_OWNER");
+    });
 
   });
 
@@ -191,7 +191,7 @@ describe("Test d'assertions :", () => {
     // });
 
     // it("transitionRight", async () => {
-    //   await expect(seBill).for(simpleuserLogin).transitionRight("t_wfam_bill_e1_e2");
+    //   await expect(seBill).for(simpleuserLogin).have.transitionRight("t_wfam_bill_e1_e2");
     // });
 
     // it("smartFieldRight", async () => {
