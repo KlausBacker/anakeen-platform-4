@@ -54,7 +54,7 @@ exports.createWorkflowModel = ({
         //Check current path
         const smartPath = path.join(currentPath, basePath);
         try {
-          return fs.statSync(smartPath).isDirectory();
+          return fs.existsSync(smartPath) && fs.statSync(smartPath).isDirectory();
         } catch (e) {
           return false;
         }
@@ -192,8 +192,7 @@ exports.createWorkflowInstance = ({
         }
       });
       if (!srcPath) {
-        let errorMessage = `Unable to find the ${associatedSmartStructure} source path for the vendor (${vendorName}), you should create it or indicate the settingPath option`;
-        throw new Error(errorMessage);
+        srcPath = path.join(sourcePath, "src", "vendor", vendorName, moduleName, "Workflow");
       }
       workflowPath = path.join(srcPath, basePath, `${StructureName}Workflows`);
     }

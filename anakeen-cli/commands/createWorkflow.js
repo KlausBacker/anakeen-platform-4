@@ -94,15 +94,12 @@ const builder = {
   smartStructureName: {
     description: "workflow smart structure name",
     alias: "n",
-    default: "",
+    default: undefined,
     type: "string",
     coerce: arg => {
-      if (!arg) {
-        return arg;
-      }
-      if (!checkSmartStructureName(arg)) {
+      if ((arg && !checkSmartStructureName(arg)) || arg === "") {
         throw new Error(
-          "Workflow model name must use only uppercase letter and numbers (_ authorized) , the current value is not valid : " +
+          "Workflow model smart structure name must use only uppercase letter and numbers (_ authorized) , the current value is not valid : " +
             arg
         );
       }
@@ -129,9 +126,9 @@ const builder = {
     alias: "e",
     type: "string",
     coerce: arg => {
-      if (!checkSmartStructureName(arg)) {
+      if ((arg && !checkSmartStructureName(arg)) || arg === "") {
         throw new Error(
-          "Workflow instance name must use only uppercase letter and numbers (_ authorized) , the current value is not valid : " +
+          "Workflow instance smart element name must use only uppercase letter and numbers (_ authorized) , the current value is not valid : " +
             arg
         );
       }
@@ -144,8 +141,14 @@ const builder = {
     type: "string",
     alias: "S",
     coerce: arg => {
-      if (arg) {
+      if (arg && arg !== "") {
         wflOptions.associatedSS = arg;
+      } else {
+        throw new Error(
+          "Workflow instance name of the associated smart structure can't be empty, the current value is not valid : \"" +
+            arg +
+            '"'
+        );
       }
       return arg;
     }

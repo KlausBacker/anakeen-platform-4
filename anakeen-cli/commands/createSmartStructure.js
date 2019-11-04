@@ -19,9 +19,9 @@ const defaultPath = () => {
       //Check current path
       const smartPath = path.join(currentPath, basePath);
       try {
-        return fs.exists(smartPath) && fs.statSync(smartPath).isDirectory();
+        return fs.existsSync(smartPath) && fs.statSync(smartPath).isDirectory();
       } catch (e) {
-        return smartPath;
+        return false;
       }
     });
   }
@@ -119,13 +119,10 @@ const builder = {
   smartStructurePath: {
     description: "path where the smart structure will be added",
     type: "string",
-    default: () => {
+    default: arg => {
       if (moduleData.buildInfo) {
         return defaultPath();
       }
-      return "";
-    },
-    coerce: arg => {
       if (!arg) {
         return arg;
       }
@@ -144,7 +141,11 @@ const builder = {
         // throw new Error("Unable to find the smart structure directory " + arg);
       }
       return arg;
+
+      // return "";
     }
+    // coerce: arg => {
+    // }
   },
   inSelfDirectory: {
     description: "add a directory for the new smart structure (not compatible with smartStructurePath)",

@@ -39,7 +39,7 @@ exports.createSetting = ({
         //Check current path
         const smartPath = path.join(currentPath, basePath);
         try {
-          return fs.exists(smartPath) && fs.statSync(smartPath).isDirectory();
+          return fs.existsSync(smartPath) && fs.statSync(smartPath).isDirectory();
         } catch (e) {
           return smartPath;
         }

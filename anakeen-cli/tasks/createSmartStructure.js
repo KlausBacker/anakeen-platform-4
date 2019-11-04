@@ -5,7 +5,7 @@ const fs = require("fs");
 const path = require("path");
 const appConst = require("../utils/appConst");
 const fsUtils = require("./plugins/files");
-
+const signale = require("signale");
 const createTemplates = require("./createSmartStructure/index.js");
 
 const getProcessXml = command => ({
@@ -60,17 +60,26 @@ exports.createSmartStructure = ({
         //Check current path
         const smartPath = path.join(currentPath, "vendor", vendorName, moduleName, "SmartStructures");
         try {
-          return fs.exists(smartPath) && fs.statSync(smartPath).isDirectory();
+          return fs.existsSync(smartPath) && fs.statSync(smartPath).isDirectory();
         } catch (e) {
-          return smartPath;
+          return "";
         }
       });
+
       if (!srcPath) {
-        throw new Error(
-          `Unable to find a smartStructure path for this vendor (${vendorName}), you should create it or indicate the smartStructurePath`
-        );
+        srcPath = path.join(sourcePath, "src", "vendor", vendorName, moduleName, "SmartStructures");
+        fsUtils.mkpdir(srcPath, err => {
+          if (err) {
+            // eslint-disable-next-line no-console
+            console.error(err);
+          }
+          signale.info("No Smart structure directory given : use default path (" + srcPath + ")");
+        });
       }
-      smartStructurePath = path.join(srcPath, "vendor", vendorName, moduleName, "SmartStructures");
+      if (srcPath === path.join(sourcePath, "src")) {
+        srcPath = path.join(sourcePath, "src", "vendor", vendorName, moduleName, "SmartStructures");
+      }
+      smartStructurePath = srcPath;
       vendorPath = path.join(srcPath, "vendor");
     }
     //Create the directory if needed
