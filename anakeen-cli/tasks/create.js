@@ -23,17 +23,38 @@ const createInfoXML = ({ moduleName, vendorName }, postInstall = {}, postUpgrade
   };
 };
 
-const createBuildXML = () => {
-  return {
-    "acli:config": {
-      $: {
-        "xmlns:acli": "https://platform.anakeen.com/4/schemas/module/1.0"
-      },
-      "acli:source": {
-        $: { path: "src" }
+const createBuildXML = ({ moduleName, vendorName }, isSmartStructure) => {
+  let xml = "";
+
+  if (isSmartStructure) {
+    xml = {
+      "acli:config": {
+        $: {
+          "xmlns:acli": "https://platform.anakeen.com/4/schemas/module/1.0"
+        },
+        "acli:source": {
+          $: { path: "src" }
+        },
+        "acli:stub-config": {
+          "acli:stub-struct": {
+            $: { source: path.join("src/vendor", vendorName, moduleName, "SmartStructures") }
+          }
+        }
       }
-    }
-  };
+    };
+  } else {
+    xml = {
+      "acli:config": {
+        $: {
+          "xmlns:acli": "https://platform.anakeen.com/4/schemas/module/1.0"
+        },
+        "acli:source": {
+          $: { path: "src" }
+        }
+      }
+    };
+  }
+  return xml;
 };
 
 const createCommand = command => {
@@ -162,7 +183,7 @@ exports.create = options => {
       .then(() => {
         return new Promise((resolve, reject) => {
           const builder = new xml2js.Builder();
-          const xml = builder.buildObject(createBuildXML());
+          const xml = builder.buildObject(createBuildXML({ moduleName, vendorName }, withSmartStructure));
           fs.writeFile(path.join(sourcePath, "build.xml"), xml, err => {
             if (err) {
               return reject(err);
