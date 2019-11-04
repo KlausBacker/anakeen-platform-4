@@ -6,6 +6,7 @@ const path = require("path");
 const inquirer = require("inquirer");
 const { createSmartStructure } = require("../tasks/createSmartStructure");
 const { checkVendorName, checkSmartStructureName, checkModuleName } = require("../utils/checkName");
+const fsUtils = require("../tasks/plugins/files");
 
 let moduleData = {};
 const structureOptions = {};
@@ -18,9 +19,9 @@ const defaultPath = () => {
       //Check current path
       const smartPath = path.join(currentPath, basePath);
       try {
-        return fs.statSync(smartPath).isDirectory();
+        return fs.exists(smartPath) && fs.statSync(smartPath).isDirectory();
       } catch (e) {
-        return false;
+        return smartPath;
       }
     });
   }
@@ -128,8 +129,19 @@ const builder = {
       if (!arg) {
         return arg;
       }
-      if (!fs.statSync(arg).isDirectory()) {
-        throw new Error("Unable to find the smart structure directory " + arg);
+      let directoryPromise = Promise.resolve(arg);
+      if (!fs.exists(arg) && !fs.statSync(arg).isDirectory()) {
+        const settingDirectory = arg;
+        directoryPromise = new Promise((resolve, reject) => {
+          fsUtils.mkpdir(settingDirectory, err => {
+            if (err) {
+              reject(err);
+            }
+            resolve(settingDirectory);
+          });
+        });
+        directoryPromise;
+        // throw new Error("Unable to find the smart structure directory " + arg);
       }
       return arg;
     }

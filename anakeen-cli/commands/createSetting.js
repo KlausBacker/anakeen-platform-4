@@ -85,14 +85,6 @@ const SETTING_TYPES = {
   Timer: {
     name: "Timer",
     value: "Timer"
-  },
-  Exec: {
-    name: "Exec",
-    value: "Exec"
-  },
-  Enumerate: {
-    name: "Enumerate",
-    value: "Enumerate"
   }
 };
 
@@ -117,7 +109,7 @@ const builder = {
     }
   },
   type: {
-    description: "type of the setting",
+    description: "type of the setting (Masks, View Control, Field Access, Profile, Mail Template, Timer)",
     type: "string",
     coerce: arg => {
       if (!arg) {

@@ -1,6 +1,7 @@
 const gulp = require("gulp");
 const { getModuleInfo } = require("../utils/moduleInfo");
 const fs = require("fs");
+const fsUtils = require("./plugins/files");
 const path = require("path");
 const { generateSetting } = require("./createSetting/index.js");
 
@@ -31,7 +32,18 @@ exports.createSetting = ({
       throw new Error("You need to specify a vendor name or settingPath");
     }
     if (!settingPath && vendorName && moduleName) {
-      let basePath = path.join("vendor", vendorName, moduleName, "Settings");
+      let basePath = path.join("vendor", vendorName, moduleName);
+
+      //Compute and test the settingPath for the vendor name
+      srcPath = moduleInfo.buildInfo.buildPath.find(currentPath => {
+        //Check current path
+        const smartPath = path.join(currentPath, basePath);
+        try {
+          return fs.exists(smartPath) && fs.statSync(smartPath).isDirectory();
+        } catch (e) {
+          return smartPath;
+        }
+      });
       if (associatedSmartStructure) {
         const StructureName =
           associatedSmartStructure.charAt(0).toUpperCase() + associatedSmartStructure.slice(1).toLowerCase();
@@ -44,21 +56,16 @@ exports.createSetting = ({
           `${StructureName}Settings`
         );
       }
-      //Compute and test the settingPath for the vendor name
-      srcPath = moduleInfo.buildInfo.buildPath.find(currentPath => {
-        //Check current path
-        const smartPath = path.join(currentPath, basePath);
-        try {
-          return fs.statSync(smartPath).isDirectory();
-        } catch (e) {
-          return false;
-        }
-      });
       if (!srcPath) {
         let errorMessage = `Unable to find a setting path for the vendor (${vendorName}), you should create it or indicate the settingPath option`;
-        if (associatedSmartStructure) {
-          errorMessage = `Unable to find a setting path for the vendor (${vendorName}) and the structure ${associatedSmartStructure}, you should create it or indicate the settingPath option`;
-        }
+        // if (associatedSmartStructure) {
+        //   errorMessage = `Unable to find a setting path for the vendor (${vendorName}) and the structure ${associatedSmartStructure}, you should create it or indicate the settingPath option`;
+        // }
+        fsUtils.mkpdir(basePath, err => {
+          if (err) {
+            errorMessage = err;
+          }
+        });
         throw new Error(errorMessage);
       }
       settingPath = path.join(srcPath, basePath);
@@ -69,7 +76,7 @@ exports.createSetting = ({
     if (inSelfDirectory) {
       const settingDirectory = path.join(settingPath, Name);
       directoryPromise = new Promise((resolve, reject) => {
-        fs.mkdir(settingDirectory, err => {
+        fsUtils.mkpdir(settingDirectory, err => {
           if (err) {
             reject(err);
           }

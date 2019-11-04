@@ -4,6 +4,7 @@ const xml2js = require("xml2js");
 const fs = require("fs");
 const path = require("path");
 const appConst = require("../utils/appConst");
+const fsUtils = require("./plugins/files");
 
 const createTemplates = require("./createSmartStructure/index.js");
 
@@ -59,9 +60,9 @@ exports.createSmartStructure = ({
         //Check current path
         const smartPath = path.join(currentPath, "vendor", vendorName, moduleName, "SmartStructures");
         try {
-          return fs.statSync(smartPath).isDirectory();
+          return fs.exists(smartPath) && fs.statSync(smartPath).isDirectory();
         } catch (e) {
-          return false;
+          return smartPath;
         }
       });
       if (!srcPath) {
@@ -78,7 +79,7 @@ exports.createSmartStructure = ({
     if (inSelfDirectory) {
       const smartStructureDirectory = path.join(smartStructurePath, Name);
       directoryPromise = new Promise((resolve, reject) => {
-        fs.mkdir(smartStructureDirectory, err => {
+        fsUtils.mkpdir(smartStructureDirectory, err => {
           if (err) {
             reject(err);
           }

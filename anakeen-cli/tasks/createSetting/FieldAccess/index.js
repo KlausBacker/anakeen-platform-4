@@ -12,7 +12,7 @@ exports.writeTemplate = (installPath, argv) => {
           path.resolve(installPath, `230-FieldAccess${argv.name}.xml`),
           path.resolve(__dirname, "xml", "FieldAccess.xml"),
           Object.assign({}, argv, {
-            nameLabel: argv.name.replace(/([A-Z])/g, " $1").trim(),
+            nameLabel: argv.name.replace(/([A-Z])/g, "$1").trim(),
             NAME: argv.name.toUpperCase(),
             SS: argv.associatedSmartStructure ? argv.associatedSmartStructure.toUpperCase() : ""
           })
