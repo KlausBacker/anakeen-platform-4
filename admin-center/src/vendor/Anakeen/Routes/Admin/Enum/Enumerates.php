@@ -27,43 +27,43 @@ class Enumerates
 
     protected function doRequest()
     {
-       // Construct filterable's part of the query
-       if (!is_null($this->filters)) {
-        for ($i = 0; $i < count($this->filters); $i++) {
-            switch ($this->filters[$i]["field"]) {
+        // Construct filterable's part of the query
+        if (!is_null($this->filters)) {
+            for ($i = 0; $i < count($this->filters); $i++) {
+                switch ($this->filters[$i]["field"]) {
+                    case 'enumerate':
+                        $this->finalFilter = $this->filterLogic . " docenum.NAME LIKE('%" . $this->filters[$i]["value"] . "%') ";
+                        break;
+                    case 'label':
+                        $this->finalFilter = $this->filterLogic . " LABEL LIKE ('%" . $this->filters[$i]["value"] . "%') ";
+                        break;
+                    case 'structures':
+                        $this->finalFilter = $this->filterLogic . " LABELTEXT LIKE ('%" . $this->filters[$i]["value"] . "%') ";
+                        break;
+                    case 'fields':
+                        $this->finalFilter = $this->filterLogic . " TITLE LIKE ('%" . $this->filters[$i]["value"] . "%') ";
+                        break;
+                }
+            }
+            $this->filters = null;
+        }
+        // Construct sortable's part of the query
+        if (!is_null($this->sortingField)) {
+            switch ($this->sortingField) {
                 case 'enumerate':
-                    $this->finalFilter = $this->filterLogic." docenum.NAME LIKE('%".$this->filters[$i]["value"]."%') ";
+                    $this->finalSorting = "ORDER BY docenum.name " . $this->sortingDirection;
                     break;
                 case 'label':
-                    $this->finalFilter = $this->filterLogic." LABEL LIKE ('%".$this->filters[$i]["value"]."%') ";
+                    $this->finalSorting = "ORDER BY docenum.label " . $this->sortingDirection;
                     break;
                 case 'structures':
-                    $this->finalFilter = $this->filterLogic." LABELTEXT LIKE ('%".$this->filters[$i]["value"]."%') ";
+                    $this->finalSorting = "ORDER BY labeltext " . $this->sortingDirection;
                     break;
                 case 'fields':
-                    $this->finalFilter = $this->filterLogic." TITLE LIKE ('%".$this->filters[$i]["value"]."%') ";
+                    $this->finalSorting = "ORDER BY title " . $this->sortingDirection;
                     break;
             }
         }
-        $this->filters = null;
-    }
-    // Construct sortable's part of the query
-    if (!is_null($this->sortingField)) {
-        switch ($this->sortingField) {
-            case 'enumerate':
-                $this->finalSorting = "ORDER BY docenum.name ".$this->sortingDirection;
-                break;
-            case 'label':
-                $this->finalSorting = "ORDER BY docenum.label ".$this->sortingDirection;
-                break;
-            case 'structures':
-                $this->finalSorting = "ORDER BY labeltext ".$this->sortingDirection;
-                break;
-            case 'fields':
-                $this->finalSorting = "ORDER BY title ".$this->sortingDirection;
-                break;
-        }
-    }
         $sqlPattern = <<<'SQL'
 select docenum.key, docenum.name, docenum.label, docenum.disabled, docattr.docid, docattr.labeltext, docfam.title from docattr, docenum, docfam
 where docattr.type='enum("'||docenum.name||'")' and docattr.docid = docfam.id %s %s limit %s offset %s
@@ -103,7 +103,7 @@ SQL;
     private function parseParams(\Slim\Http\request $request)
     {
         $param = $request->getQueryParams();
-        
+
         $this->take = isset($param["take"]) ? $param["take"] : 20;
         $this->skip = isset($param["skip"]) ? $param["skip"] : 0;
         $this->filterLogic = isset($param["filter"]) ? $param["filter"]["logic"] : "AND";
