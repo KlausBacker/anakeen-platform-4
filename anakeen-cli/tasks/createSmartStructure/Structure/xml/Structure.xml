@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
     <smart:structure-configuration name="{{SSNAME}}">
+        <smart:extends ref="{{PARENTNAME}}"></smart:extends>
         <smart:icon file="{{ssname}}.png"/>
         {{#parentName}}
-        <smart:extends ref="{{PARENTNAME}}"></smart:extends>
         {{/parentName}}
         {{#withBehavior}}
         <smart:class>{{namespace}}\{{ssName}}Behavior</smart:class>
