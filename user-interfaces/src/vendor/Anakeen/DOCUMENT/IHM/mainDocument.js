@@ -3,7 +3,7 @@
  */
 import $ from "jquery";
 
-import AnakeenController from "@anakeen/user-interfaces/components/lib/AnkController";
+import AnakeenController from "@anakeen/user-interfaces/components/lib/AnakeenController.esm";
 
 AnakeenController.on("controllerReady", controller => {
   //Trigger an event when translation loaded

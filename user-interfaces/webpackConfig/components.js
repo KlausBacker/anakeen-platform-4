@@ -28,8 +28,7 @@ module.exports = () => {
     buildPath: PUBLIC_PATH,
     excludeBabel: [
       /node_modules\/axios/,
-      /node_modules\/@progress\/kendo-ui/,
-      /node_modules\/document-register-element/
+      /node_modules\/@progress\/kendo-ui/
     ],
     customParts: [
       {

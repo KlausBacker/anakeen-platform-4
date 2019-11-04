@@ -35,29 +35,6 @@ module.exports = () => {
     customParts: [
       useCache,
       {
-        resolve: {
-          extensions: [".js"],
-          alias: {
-            "@anakeen/user-interfaces": BASE_DIR,
-            dcpContextRoot: "",
-            dcpDocument: path.resolve(
-              BASE_DIR,
-              "src/vendor/Anakeen/DOCUMENT/IHM/"
-            ),
-            dcpExternals: path.resolve(
-              BASE_DIR,
-              "src/public/uiAssets/externals/"
-            ),
-            datatables: "datatables.net",
-            "datatables-bootstrap": "datatables.net-bs4",
-            "kendo-culture-fr":
-              "@progress/kendo-ui/js/cultures/kendo.culture.fr-FR",
-            tooltip: "bootstrap/js/src/tooltip",
-            documentCkEditor: path.resolve(__dirname, "./ckeditor/ckeditor.js")
-          }
-        }
-      },
-      {
         plugins: [
           new webpack.ProvidePlugin({
             Popper: ["popper.js", "default"]
@@ -66,7 +43,7 @@ module.exports = () => {
       },
       typeScriptLoader({
         compilerOptions: {
-          declaration: false
+          declaration: true
         }
       }),
       addDll({

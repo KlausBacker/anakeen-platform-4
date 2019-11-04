@@ -48,7 +48,7 @@ class LoginPage
         $data = [
             "nsSde" => ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_CLIENT"),
             "title" => $title,
-            "JS_DEPS" => [
+            /*"JS_DEPS" => [
                 [
                     "key" => "polyfill",
                     "path" => \Anakeen\Ui\UIGetAssetPath::getJsPolyfill(),
@@ -66,25 +66,25 @@ class LoginPage
                     "key" => "vueDll",
                     "path" => \Anakeen\Ui\UIGetAssetPath::getJSVueComponentPath()
                 ]
-            ],
+            ],*/
             "JS" => [
                 [
                     "key" => "login",
                     "path" => \Anakeen\Ui\UIGetAssetPath::getElementAssets(
-                        "ank-components",
+                        "login",
                         \Anakeen\Ui\UIGetAssetPath::isInDebug() ? "dev" : "prod"
                     )["login"]["js"]
                 ],
             ],
-            "JS_LEGACY" => [
+            /*"JS_LEGACY" => [
                 [
                     "key" => "login",
                     "path" => \Anakeen\Ui\UIGetAssetPath::getElementAssets(
-                        "ank-components",
+                        "login",
                         \Anakeen\Ui\UIGetAssetPath::isInDebug() ? "dev" : "legacy"
                     )["login"]["js"]
                 ],
-            ],
+            ],*/
             "CSS" => [
                 [
                     "key" => "bootstrap",

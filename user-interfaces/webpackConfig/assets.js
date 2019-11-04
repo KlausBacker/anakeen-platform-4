@@ -90,7 +90,7 @@ module.exports = () => {
             },
             //ckeditor
             {
-              from: "../node_modules/ckeditor/",
+              from: "../node_modules/ckeditor4/",
               to: path.resolve(
                 __dirname,
                 "../src/public/uiAssets/externals/ckeditor"

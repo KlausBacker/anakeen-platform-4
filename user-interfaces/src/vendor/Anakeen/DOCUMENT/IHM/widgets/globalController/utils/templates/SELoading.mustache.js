@@ -1,4 +1,4 @@
-<div class="dcpLoading">
+export default `<div class="dcpLoading">
     <style>
         .white-logo .main-letter {
             fill: #93C648;
@@ -260,4 +260,4 @@
             </div>
         </div>
     </div>
-</div>
+</div>`;

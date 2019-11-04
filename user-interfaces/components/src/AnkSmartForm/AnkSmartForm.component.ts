@@ -1,13 +1,11 @@
 /**
  * Anakeen Smart Element component object
  */
-import { Component, Mixins, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Mixins, Prop, Watch } from "vue-property-decorator";
 import AnkSmartElement from "../AnkSmartElement/AnkSmartElement.component";
-import VueSetup from "../setup.ts";
 // eslint-disable-next-line no-unused-vars
 import { ISmartFormConfiguration, ISmartFormValue } from "./ISmartForm";
 
-Vue.use(VueSetup);
 // noinspection JSUnusedGlobalSymbols
 @Component({
   name: "ank-smart-form"

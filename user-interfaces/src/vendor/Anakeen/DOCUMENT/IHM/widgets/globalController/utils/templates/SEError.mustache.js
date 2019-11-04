@@ -1,4 +1,4 @@
-<div class="dcpStaticErrorMessage" hidden>
+export default `<div class="dcpStaticErrorMessage" hidden>
     <style>
         .dcpStaticErrorMessage {
             text-align: center;
@@ -15,4 +15,4 @@
         <button class="staticErrorReloadButton btn btn-default">{{msg.clickAction}}
         </button>
     </div>
-</div>
+</div>`;

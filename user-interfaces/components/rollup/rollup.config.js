@@ -1,6 +1,6 @@
 const path = require("path");
 const Scss = require("rollup-plugin-scss");
-const typescript = require("rollup-plugin-typescript");
+const typescript = require("rollup-plugin-typescript2");
 const VuePlugin = require("rollup-plugin-vue");
 const magicImporter = require("node-sass-magic-importer");
 const progress = require("rollup-plugin-progress");
@@ -21,13 +21,17 @@ const MONOREPO_PATH = path.resolve(BASE_PATH, "../..");
 // rollup.config.js
 export default {
   input: {
-    ankComponents: path.resolve(BASE_PATH, "src/index.ts")
+    AnkSmartForm: path.resolve(BASE_PATH, "src/AnkSmartForm/index.ts"),
+    AnkAuthent: path.resolve(BASE_PATH, "src/AnkAuthent/index.ts"),
+    AnakeenController: path.resolve(BASE_PATH, "src/AnkController/index.ts"),
+    AnkSmartElement: path.resolve(BASE_PATH, "src/AnkSmartElement/index.ts")
   },
   output: {
     dir: OUTPUT_DIR,
     entryFileNames: "[name].[format].js",
     name: "[name]",
-    format: "esm"
+    format: "esm",
+    sourcemap: true
   },
   external: NodeExternals({
     importType: "commonjs",
@@ -44,7 +48,12 @@ export default {
       include: "**/*.template.kd"
     }),
     commonjs(),
-    typescript(),
+    typescript({
+      objectHashIgnoreUnknownHack: true,
+      tsconfigDefaults: {
+        sourceMap: true
+      }
+    }),
     VuePlugin({
       css: true, // Dynamically inject css as a <style> tag
       compileTemplate: true, // Explicitly convert template to render function

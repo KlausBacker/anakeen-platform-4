@@ -3,7 +3,7 @@
 
 /* tslint:disable:object-literal-sort-keys no-console */
 
-import AnkSmartForm, { ISmartFormConfiguration } from "../../../../../../components/lib/AnkSmartForm";
+import AnkSmartForm, { ISmartFormConfiguration } from "../../../../../../components/lib/AnkSmartForm.esm";
 import * as jsonSchema from "./SmartForm.schema.json";
 import SmartFormExamples from "./TestExamplesSmartForm.vue";
 

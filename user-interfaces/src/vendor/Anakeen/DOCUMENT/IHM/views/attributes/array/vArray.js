@@ -1,32 +1,26 @@
-/*global define, console*/
-define([
-  "jquery",
-  "underscore",
-  "backbone",
-  "mustache",
-  "dcpDocument/views/attributes/vAttribute",
-  "dcpDocument/views/attributes/array/vColumn",
-  "dcpDocument/views/document/attributeTemplate",
-  "dcpDocument/widgets/globalController/utils/EventUtils",
-  "dcpDocument/widgets/attributes/array/wArray"
-], function vArray($, _, Backbone, Mustache, ViewAttribute, ViewColumn, attributeTemplate, EventPromiseUtils) {
-  "use strict";
+import $ from "jquery";
+import _ from "underscore";
+import Backbone from "backbone";
+import ViewColumn from "./vColumn";
+import attributeTemplate from "../../document/attributeTemplate";
+import * as EventPromiseUtils from "../../../widgets/globalController/utils/EventUtils";
+import "../../../widgets/attributes/array/wArray";
 
-  return Backbone.View.extend({
-    className: "row dcpArray",
-    displayLabel: true,
-    customView: false,
-    customRowView: false,
-    absoluteTranspositionWith: null,
-    events: {
-      dcparraylineadded: "addLine",
-      dcparraylineremoved: "removeLine",
-      dcparraylinemoved: "moveLine",
-      dcparrayexternallinkselected: "externalLinkSelected",
-      "dcpattributechange .dcpArray__content__cell": "updateValue"
-    },
+export default Backbone.View.extend({
+  className: "row dcpArray",
+  displayLabel: true,
+  customView: false,
+  customRowView: false,
+  absoluteTranspositionWith: null,
+  events: {
+    dcparraylineadded: "addLine",
+    dcparraylineremoved: "removeLine",
+    dcparraylinemoved: "moveLine",
+    dcparrayexternallinkselected: "externalLinkSelected",
+    "dcpattributechange .dcpArray__content__cell": "updateValue"
+  },
 
-    columnViews: {},
+  columnViews: {},
 
     initialize: function vArray_initialize(options) {
       if (options.displayLabel === false || this.model.getOption("labelPosition") === "none") {
@@ -435,5 +429,4 @@ define([
         }
       );
     }
-  });
 });
