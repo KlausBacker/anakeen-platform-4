@@ -123,6 +123,7 @@ export default class AdminCenterEnumController extends Vue {
     const that = this;
     this.$http.get(`/api/v2/admin/enumdata/${this.selectedEnum}`).then(response => {
       const enumData = response.data.data;
+      this.modifications = {};
       enumData.forEach((value, index) => {
         that.smartFormModel[index] = _.defaults(value, { key: "", label: "", active: "", eorder: "" });
         that.modifications[index] = that.smartFormModel[index];
