@@ -32,16 +32,16 @@ class Enumerates
             for ($i = 0; $i < count($this->filters); $i++) {
                 switch ($this->filters[$i]["field"]) {
                     case 'enumerate':
-                        $this->finalFilter = $this->filterLogic . " docenum.NAME LIKE('%" . $this->filters[$i]["value"] . "%') ";
+                        $this->finalFilter = pg_escape_string($this->filterLogic) . " docenum.NAME LIKE('%" . pg_escape_string($this->filters[$i]["value"]) . "%') ";
                         break;
                     case 'label':
-                        $this->finalFilter = $this->filterLogic . " LABEL LIKE ('%" . $this->filters[$i]["value"] . "%') ";
+                        $this->finalFilter = pg_escape_string($this->filterLogic) . " LABEL LIKE ('%" . pg_escape_string($this->filters[$i]["value"]) . "%') ";
                         break;
                     case 'structures':
-                        $this->finalFilter = $this->filterLogic . " LABELTEXT LIKE ('%" . $this->filters[$i]["value"] . "%') ";
+                        $this->finalFilter = pg_escape_string($this->filterLogic) . " LABELTEXT LIKE ('%" . pg_escape_string($this->filters[$i]["value"]) . "%') ";
                         break;
                     case 'fields':
-                        $this->finalFilter = $this->filterLogic . " TITLE LIKE ('%" . $this->filters[$i]["value"] . "%') ";
+                        $this->finalFilter = pg_escape_string($this->filterLogic) . " TITLE LIKE ('%" . pg_escape_string($this->filters[$i]["value"]) . "%') ";
                         break;
                 }
             }
@@ -51,16 +51,16 @@ class Enumerates
         if (!is_null($this->sortingField)) {
             switch ($this->sortingField) {
                 case 'enumerate':
-                    $this->finalSorting = "ORDER BY docenum.name " . $this->sortingDirection;
+                    $this->finalSorting = "ORDER BY docenum.name " . pg_escape_string($this->sortingDirection);
                     break;
                 case 'label':
-                    $this->finalSorting = "ORDER BY docenum.label " . $this->sortingDirection;
+                    $this->finalSorting = "ORDER BY docenum.label " . pg_escape_string($this->sortingDirection);
                     break;
                 case 'structures':
-                    $this->finalSorting = "ORDER BY labeltext " . $this->sortingDirection;
+                    $this->finalSorting = "ORDER BY labeltext " . pg_escape_string($this->sortingDirection);
                     break;
                 case 'fields':
-                    $this->finalSorting = "ORDER BY title " . $this->sortingDirection;
+                    $this->finalSorting = "ORDER BY title " . pg_escape_string($this->sortingDirection);
                     break;
             }
         }
@@ -69,7 +69,7 @@ select docenum.key, docenum.name, docenum.label, docenum.disabled, docattr.docid
 where docattr.type='enum("'||docenum.name||'")' and docattr.docid = docfam.id %s %s limit %s offset %s
 SQL;
 
-        $sql = sprintf($sqlPattern, $this->finalFilter, $this->finalSorting, $this->take, $this->skip);
+        $sql = sprintf($sqlPattern, $this->finalFilter, $this->finalSorting, pg_escape_string($this->take), pg_escape_string($this->skip));
 
         $extendableEnums = $this->getExtendableEnums();
 
