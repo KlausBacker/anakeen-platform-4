@@ -23,7 +23,7 @@ class EnumerateData
 select docenum.key, docenum.label, docenum.disabled, docenum.eorder from docenum where name = '%s' ORDER BY docenum.eorder
 SQL;
 
-        $sql = sprintf($sqlPattern, $this->id);
+        $sql = sprintf($sqlPattern, pg_escape_string($this->id));
         DbManager::query($sql, $enumData);
 
         $result = array();
