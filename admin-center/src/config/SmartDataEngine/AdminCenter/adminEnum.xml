@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:routes  namespace="AdminCenter">
+        <sde:route name="AdminEnum:Enumerates">
+            <sde:callable>Anakeen\Routes\Admin\Enum\Enumerates</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/admin/enum</sde:pattern>
+            <sde:description>Get all enumerates</sde:description>
+            <sde:requiredAccess operator="or">
+                <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminEnum</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="AdminEnum:EnumerateData">
+            <sde:callable>Anakeen\Routes\Admin\Enum\EnumerateData</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/admin/enumdata/{id}</sde:pattern>
+            <sde:description>Get enumerate data</sde:description>
+            <sde:requiredAccess operator="or">
+                <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminEnum</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="AdminEnum:EnumerateUpdate">
+            <sde:callable>Anakeen\Routes\Admin\Enum\EnumerateUpdate</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/admin/enumupdate/{id}</sde:pattern>
+            <sde:description>Update enumerate data</sde:description>
+            <sde:requiredAccess operator="or">
+                <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminEnum</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+    </sde:routes>
+    <sde:accesses namespace="AdminCenter">
+        <sde:access name="AdminEnum">
+            <sde:description>Enumerates administrator access</sde:description>
+        </sde:access>
+        <sde:route-access ref="AdminEnum" account="enum_manager_role" />
+    </sde:accesses>
+</sde:config>

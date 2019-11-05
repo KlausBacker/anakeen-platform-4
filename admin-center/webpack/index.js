@@ -4,6 +4,7 @@ const accounts = require("./accountManager");
 const i18n = require("./i18nManager");
 const parameters = require("./parametersManager");
 const mail = require("./mailManager");
+const enumManager = require("./enumManager");
 const workflow = require("./workflowManager");
 const trash = require("./trashManager");
 const { lib } = require("@anakeen/webpack-conf");
@@ -31,6 +32,9 @@ module.exports = (entry) => {
   if (type === "MAIL") {
     return lib({ ...mail, ...modeDev });
   }
+  if (type === "ENUM") {
+    return lib({ ...enumManager, ...modeDev });
+  }
   if (type === "WORKFLOW") {
     return lib({ ...workflow, ...modeDev });
   }
@@ -50,6 +54,8 @@ module.exports = (entry) => {
     lib({ ...i18n, ...{ mode: "dev" } }),
     lib(mail),
     lib({ ...mail, ...{ mode: "dev" } }),
+    lib(enumManager),
+    lib({ ...enumManager, ...{ mode: "dev" } }),
     lib(workflow),
     lib({ ...workflow, ...{ mode: "dev"} }),
     lib(trash),
