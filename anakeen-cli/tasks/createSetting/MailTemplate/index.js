@@ -1,15 +1,18 @@
 const fs = require("fs");
 const path = require("path");
 const fsUtils = require("../../plugins/files");
+const camelCase = require("camelcase");
 
 exports.writeTemplate = (installPath, argv) => {
+  const namePascalCase = camelCase(argv.name, { pascalCase: true });
+
   return new Promise((resolve, reject) => {
     if (!fs.existsSync(installPath)) {
       reject(`The path ${installPath} does not exist`);
     } else {
       fsUtils
         .writeTemplate(
-          path.resolve(installPath, `250-MailTemplate${argv.name}.xml`),
+          path.resolve(installPath, `250-MailTemplate${namePascalCase}.xml`),
           path.resolve(__dirname, "xml", "MailTemplate.xml"),
           Object.assign({}, argv, {
             nameLabel: argv.name.replace(/([A-Z])/g, "$1").trim(),

@@ -6,15 +6,19 @@ const xml2js = require("xml2js");
 const fsUtils = require("./plugins/files");
 const createTemplates = require("./create/index.js");
 
+const camelCase = require("camelcase");
+
 const { checkModuleName, checkVendorName, checkNamespace } = require("../utils/checkName");
 
 const createInfoXML = ({ moduleName, vendorName }, postInstall = {}, postUpgrade = {}) => {
+  const vendorNamePascalCase = camelCase(vendorName, { pascalCase: true });
+  const moduleNamePascalCase = camelCase(moduleName, { pascalCase: true });
   return {
     module: {
       $: {
         xmlns: "https://platform.anakeen.com/4/schemas/app/1.0",
-        name: moduleName,
-        vendor: vendorName,
+        name: moduleNamePascalCase,
+        vendor: vendorNamePascalCase,
         version: "1.0.0"
       },
       "post-install": postInstall,
@@ -25,8 +29,10 @@ const createInfoXML = ({ moduleName, vendorName }, postInstall = {}, postUpgrade
 
 const createBuildXML = ({ moduleName, vendorName }, isSmartStructure) => {
   let xml = "";
-
   if (isSmartStructure) {
+    const vendorNamePascalCase = camelCase(vendorName, { pascalCase: true });
+    const moduleNamePascalCase = camelCase(moduleName, { pascalCase: true });
+
     xml = {
       "acli:config": {
         $: {
@@ -37,7 +43,7 @@ const createBuildXML = ({ moduleName, vendorName }, isSmartStructure) => {
         },
         "acli:stub-config": {
           "acli:stub-struct": {
-            $: { source: path.join("src/vendor", vendorName, moduleName, "SmartStructures") }
+            $: { source: path.join("src/vendor", vendorNamePascalCase, moduleNamePascalCase, "SmartStructures") }
           }
         }
       }
@@ -99,11 +105,14 @@ exports.create = options => {
       if (!checkNamespace(namespace)) {
         reject("The namespace is invalid " + namespace);
       }
-      let completePath = path.join(sourcePath, "src", "vendor", vendorName, moduleName);
+      const vendorNamePascalCase = camelCase(options.vendorName, { pascalCase: true });
+      const moduleNamePascalCase = camelCase(options.moduleName, { pascalCase: true });
 
+      let completePath = path.join(sourcePath, "src", "vendor", vendorNamePascalCase, moduleNamePascalCase);
       if (withSmartStructure) {
         completePath = path.join(completePath, "SmartStructures");
       }
+
       fsUtils.mkpdir(completePath, err => {
         if (err) {
           return reject(err);
@@ -154,6 +163,7 @@ exports.create = options => {
             return Promise.resolve();
           });
         }
+
         return Promise.resolve();
       })
       .then(() => {

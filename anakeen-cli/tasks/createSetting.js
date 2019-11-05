@@ -4,6 +4,7 @@ const fs = require("fs");
 const fsUtils = require("./plugins/files");
 const path = require("path");
 const { generateSetting } = require("./createSetting/index.js");
+const camelCase = require("camelcase");
 
 exports.createSetting = ({
   sourcePath,
@@ -44,6 +45,10 @@ exports.createSetting = ({
           return smartPath;
         }
       });
+      // eslint-disable-next-line no-console
+      console.log(vendorName);
+      // eslint-disable-next-line no-console
+      console.log(moduleName);
       if (associatedSmartStructure) {
         const StructureName =
           associatedSmartStructure.charAt(0).toUpperCase() + associatedSmartStructure.slice(1).toLowerCase();
@@ -55,12 +60,11 @@ exports.createSetting = ({
           StructureName,
           `${StructureName}Settings`
         );
+        // eslint-disable-next-line no-console
+        console.log(basePath);
       }
       if (!srcPath) {
         let errorMessage = `Unable to find a setting path for the vendor (${vendorName}), you should create it or indicate the settingPath option`;
-        // if (associatedSmartStructure) {
-        //   errorMessage = `Unable to find a setting path for the vendor (${vendorName}) and the structure ${associatedSmartStructure}, you should create it or indicate the settingPath option`;
-        // }
         fsUtils.mkpdir(basePath, err => {
           if (err) {
             errorMessage = err;
@@ -74,7 +78,9 @@ exports.createSetting = ({
     let directoryPromise = Promise.resolve(settingPath);
     const Name = name.charAt(0).toUpperCase() + name.slice(1);
     if (inSelfDirectory) {
-      const settingDirectory = path.join(settingPath, Name);
+      const namePascalCase = camelCase(Name, { pascalCase: true });
+
+      const settingDirectory = path.join(settingPath, namePascalCase);
       directoryPromise = new Promise((resolve, reject) => {
         fsUtils.mkpdir(settingDirectory, err => {
           if (err) {

@@ -202,11 +202,11 @@ const builder = {
     type: "string",
     default: () => {
       if (moduleData.moduleInfo && settingOptions.type) {
-        const ModuleName = capitalize(moduleData.moduleInfo.name);
+        // const ModuleName = capitalize(moduleData.moduleInfo.name);
         const structName = capitalize(settingOptions.associatedSS);
         const wflName = capitalize(settingOptions.associatedWFL);
         const Type = capitalize(settingOptions.type);
-        return `${ModuleName}${structName || wflName || ""}${Type}`;
+        return `${structName || wflName || ""}${Type}`;
       } else {
         return "";
       }
