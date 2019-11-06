@@ -38,7 +38,7 @@ signale.config({
 exports.desc = "Create a smart structure";
 const builder = {
   sourcePath: {
-    description: "path to the info.xml directory",
+    description: "path to the info.xml directory [Mandatory]",
     alias: "s",
     default: ".",
     type: "string",
@@ -50,7 +50,7 @@ const builder = {
     }
   },
   name: {
-    description: "name of the smart structure",
+    description: "name of the smart structure [Mandatory]",
     alias: "n",
     type: "string",
     coerce: arg => {
@@ -64,7 +64,7 @@ const builder = {
     }
   },
   vendorName: {
-    description: "vendor name of the module",
+    description: "vendor name of the module [Mandatory]",
     alias: "v",
     default: () => {
       if (moduleData.moduleInfo) {
@@ -76,14 +76,16 @@ const builder = {
     type: "string",
     coerce: arg => {
       if (!checkVendorName(arg)) {
-        throw new Error("Vendor name must be only a-zA-Z0-9_ , the current value is not valid : " + arg);
+        throw new Error(
+          "Vendor name must be only a-zA-Z0-9 and in PascalCase, the current value is not valid : " + arg
+        );
       }
       structureOptions.vendorName = arg;
       return arg;
     }
   },
   moduleName: {
-    description: "name of the module",
+    description: "name of the module [Mandatory]",
     alias: "m",
     type: "string",
     default: () => {
@@ -95,7 +97,9 @@ const builder = {
     },
     coerce: arg => {
       if (!checkModuleName(arg)) {
-        throw new Error("Module name must be only a-zA-Z0-9_ , the current value is not valid : " + arg);
+        throw new Error(
+          "Module name must be only a-zA-Z0-9 and in PascalCase, the current value is not valid : " + arg
+        );
       }
       structureOptions.moduleName = arg;
       return arg;

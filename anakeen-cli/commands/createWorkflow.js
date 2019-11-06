@@ -3,6 +3,7 @@ const { getModuleInfo } = require("../utils/moduleInfo");
 const signale = require("signale");
 const fs = require("fs");
 const path = require("path");
+const camelCase = require("camelcase");
 
 const inquirer = require("inquirer");
 const { createWorkflowInstance, createWorkflowModel } = require("../tasks/createWorkflow");
@@ -14,7 +15,10 @@ const defaultPath = () => {
   let srcPath = "";
   let basePath = path.join("vendor", wflOptions.vendorName, wflOptions.moduleName, "Workflows");
   if (wflOptions.associatedSS) {
-    const Name = wflOptions.associatedSS.charAt(0).toUpperCase() + wflOptions.associatedSS.slice(1).toLowerCase();
+    const Name = camelCase(wflOptions.associatedSS, { pascalCase: true });
+
+    // a suppr
+    // const Name = wflOptions.associatedSS.charAt(0).toUpperCase() + wflOptions.associatedSS.slice(1).toLowerCase();
     basePath = path.join("vendor", wflOptions.vendorName, wflOptions.moduleName, "SmartStructures", Name);
   }
   if (moduleData.buildInfo) {
@@ -42,7 +46,7 @@ signale.config({
 exports.desc = "Create a workflow";
 const builder = {
   sourcePath: {
-    description: "path to the info.xml directory",
+    description: "path to the info.xml directory [Mandatory]",
     alias: "s",
     default: ".",
     type: "string",
@@ -54,7 +58,7 @@ const builder = {
     }
   },
   vendorName: {
-    description: "vendor name of the module",
+    description: "vendor name of the module [Mandatory]",
     alias: "v",
     default: () => {
       if (moduleData.moduleInfo) {
@@ -73,7 +77,7 @@ const builder = {
     }
   },
   moduleName: {
-    description: "name of the module",
+    description: "name of the module [Mandatory]",
     alias: "m",
     type: "string",
     default: () => {
@@ -92,7 +96,7 @@ const builder = {
     }
   },
   smartStructureName: {
-    description: "workflow smart structure name",
+    description: "workflow smart structure name [Mandatory]",
     alias: "n",
     default: undefined,
     type: "string",
@@ -122,7 +126,7 @@ const builder = {
     }
   },
   smartElementName: {
-    description: "workflow smart element name",
+    description: "workflow smart element name [Mandatory]",
     alias: "e",
     type: "string",
     coerce: arg => {
@@ -137,7 +141,7 @@ const builder = {
     }
   },
   associatedSmartStructure: {
-    description: "name of the associated smart structure",
+    description: "name of the associated smart structure [Mandatory]",
     type: "string",
     alias: "S",
     coerce: arg => {

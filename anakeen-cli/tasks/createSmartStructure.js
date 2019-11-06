@@ -7,6 +7,7 @@ const appConst = require("../utils/appConst");
 const fsUtils = require("./plugins/files");
 const signale = require("signale");
 const createTemplates = require("./createSmartStructure/index.js");
+const camelCase = require("camelcase");
 
 const getProcessXml = command => ({
   $: {
@@ -15,6 +16,31 @@ const getProcessXml = command => ({
 });
 
 const convertPathInPhpNamespace = ({ vendorPath, smartStructurePath }) => {
+  // const index = smartStructurePath.indexOf("vendor");
+  // const substring = smartStructurePath.substr(index, smartStructurePath.length - 1);
+  // smartStructurePath = substring.replace("vendor/", "");
+
+  // smartStructurePath = smartStructurePath.replace("/vendor", "VENDOR/");
+
+  // eslint-disable-next-line no-console
+  // console.log(vendorPath);
+  // let nameSpacePath = path
+  //   .relative(vendorPath, smartStructurePath)
+  //   .split(path.sep)
+  //   .join("\\");
+  // nameSpacePath = path.normalize(vendorPath, nameSpacePath);
+  // // nameSpacePath = nameSpacePath.replace("VENDOR\\", "");
+  // // eslint-disable-next-line no-console
+  // console.log(nameSpacePath);
+  // // eslint-disable-next-line no-console
+  // console.log(
+  //   "teste de path",
+  //   path
+  //     .relative("vendor", smartStructurePath)
+  //     .split(path.sep)
+  //     .join("\\")
+  // );
+
   return path
     .relative(vendorPath, smartStructurePath)
     .split(path.sep)
@@ -84,7 +110,10 @@ exports.createSmartStructure = ({
     }
     //Create the directory if needed
     let directoryPromise = Promise.resolve(smartStructurePath);
-    const Name = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+    const Name = camelCase(name, { pascalCase: true });
+
+    // a suppr
+    // const Name = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
     if (inSelfDirectory) {
       const smartStructureDirectory = path.join(smartStructurePath, Name);
       directoryPromise = new Promise((resolve, reject) => {

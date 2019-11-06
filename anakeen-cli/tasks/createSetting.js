@@ -45,13 +45,12 @@ exports.createSetting = ({
           return smartPath;
         }
       });
-      // eslint-disable-next-line no-console
-      console.log(vendorName);
-      // eslint-disable-next-line no-console
-      console.log(moduleName);
       if (associatedSmartStructure) {
-        const StructureName =
-          associatedSmartStructure.charAt(0).toUpperCase() + associatedSmartStructure.slice(1).toLowerCase();
+        const StructureName = camelCase(associatedSmartStructure, { pascalCase: true });
+
+        // a suppr
+        // const StructureName =
+        //   associatedSmartStructure.charAt(0).toUpperCase() + associatedSmartStructure.slice(1).toLowerCase();
         basePath = path.join(
           "vendor",
           vendorName,
@@ -60,8 +59,6 @@ exports.createSetting = ({
           StructureName,
           `${StructureName}Settings`
         );
-        // eslint-disable-next-line no-console
-        console.log(basePath);
       }
       if (!srcPath) {
         let errorMessage = `Unable to find a setting path for the vendor (${vendorName}), you should create it or indicate the settingPath option`;
@@ -76,7 +73,10 @@ exports.createSetting = ({
     }
     //Create the directory if needed
     let directoryPromise = Promise.resolve(settingPath);
-    const Name = name.charAt(0).toUpperCase() + name.slice(1);
+    const Name = camelCase(name, { pascalCase: true });
+
+    // a suppr
+    // const Name = name.charAt(0).toUpperCase() + name.slice(1);
     if (inSelfDirectory) {
       const namePascalCase = camelCase(Name, { pascalCase: true });
 

@@ -7,6 +7,7 @@ const path = require("path");
 const inquirer = require("inquirer");
 const { createSetting } = require("../tasks/createSetting.js");
 const { checkVendorName, checkModuleName } = require("../utils/checkName");
+const camelCase = require("camelcase");
 
 let moduleData = {};
 let settingOptions = {};
@@ -30,8 +31,10 @@ const defaultPath = () => {
   let srcPath = "";
   let basePath = path.join("vendor", settingOptions.vendorName, settingOptions.moduleName, "Settings");
   if (settingOptions.associatedSS) {
-    const StructureName =
-      settingOptions.associatedSS.charAt(0).toUpperCase() + settingOptions.associatedSS.slice(1).toLowerCase();
+    const StructureName = camelCase(settingOptions.associatedSS, { pascalCase: true });
+
+    // const StructureName =
+    //   settingOptions.associatedSS.charAt(0).toUpperCase() + settingOptions.associatedSS.slice(1).toLowerCase();
     basePath = path.join(
       "vendor",
       settingOptions.vendorName,
@@ -97,7 +100,7 @@ exports.desc = "Create a setting";
 
 const builder = {
   sourcePath: {
-    description: "path to the info.xml directory",
+    description: "path to the info.xml directory [Mandatory]",
     alias: "s",
     default: ".",
     type: "string",
@@ -109,7 +112,7 @@ const builder = {
     }
   },
   type: {
-    description: "type of the setting (Masks, View Control, Field Access, Profile, Mail Template, Timer)",
+    description: "type of the setting (Masks, View Control, Field Access, Profile, Mail Template, Timer) [Mandatory]",
     type: "string",
     coerce: arg => {
       if (!arg) {
@@ -159,7 +162,7 @@ const builder = {
     }
   },
   vendorName: {
-    description: "vendor name of the module",
+    description: "vendor name of the module [Mandatory]",
     alias: "v",
     default: () => {
       if (moduleData.moduleInfo) {
@@ -178,7 +181,7 @@ const builder = {
     }
   },
   moduleName: {
-    description: "name of the module",
+    description: "name of the module [Mandatory]",
     alias: "m",
     type: "string",
     default: () => {

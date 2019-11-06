@@ -3,6 +3,7 @@ const { getModuleInfo } = require("../utils/moduleInfo");
 const fs = require("fs");
 const fsUtils = require("./plugins/files");
 const path = require("path");
+const camelCase = require("camelcase");
 
 const createTemplates = require("./createWorkflow/index.js");
 
@@ -45,8 +46,11 @@ exports.createWorkflowModel = ({
       //Compute and test the workflowPath for the vendor name
       let basePath = path.join("vendor", vendorName, moduleName);
       if (associatedSmartStructure) {
-        const StructureName =
-          associatedSmartStructure.charAt(0).toUpperCase() + associatedSmartStructure.slice(1).toLowerCase();
+        const StructureName = camelCase(associatedSmartStructure, { pascalCase: true });
+
+        // a suppr
+        // const StructureName =
+        //   associatedSmartStructure.charAt(0).toUpperCase() + associatedSmartStructure.slice(1).toLowerCase();
         basePath = path.join("vendor", vendorName, moduleName, "SmartStructures", StructureName);
       }
       //Compute and test the workflowPath for the vendor name
@@ -59,6 +63,7 @@ exports.createWorkflowModel = ({
           return false;
         }
       });
+
       if (!srcPath) {
         let errorMessage = `Unable to find a source path for the vendor (${vendorName}), you should create it or indicate the workflowPath option`;
         if (associatedSmartStructure) {
@@ -67,8 +72,11 @@ exports.createWorkflowModel = ({
         throw new Error(errorMessage);
       }
       if (associatedSmartStructure) {
-        const StructureName =
-          associatedSmartStructure.charAt(0).toUpperCase() + associatedSmartStructure.slice(1).toLowerCase();
+        const StructureName = camelCase(associatedSmartStructure, { pascalCase: true });
+
+        // a suppr
+        // const StructureName =
+        //   associatedSmartStructure.charAt(0).toUpperCase() + associatedSmartStructure.slice(1).toLowerCase();
         basePath = path.join(basePath, `${StructureName}Workflows`);
       } else {
         basePath = path.join(basePath, "Workflows");
@@ -78,7 +86,9 @@ exports.createWorkflowModel = ({
     //Create the directory if needed
     let workflowDirectory = workflowPath;
     if (inSelfDirectory) {
-      const Name = modelName.charAt(0).toUpperCase() + modelName.slice(1).toLowerCase();
+      const Name = camelCase(modelName, { pascalCase: true });
+
+      // const Name = modelName.charAt(0).toUpperCase() + modelName.slice(1).toLowerCase();
       workflowDirectory = path.join(workflowPath, `${Name}Workflow`);
     }
     let directoryPromise = Promise.resolve(workflowDirectory);
@@ -177,8 +187,10 @@ exports.createWorkflowInstance = ({
     }
     if (!workflowPath && vendorName && moduleName) {
       //Compute and test the workflowPath for the vendor name
-      const StructureName =
-        associatedSmartStructure.charAt(0).toUpperCase() + associatedSmartStructure.slice(1).toLowerCase();
+      const StructureName = camelCase(associatedSmartStructure, { pascalCase: true });
+
+      // const StructureName =
+      //   associatedSmartStructure.charAt(0).toUpperCase() + associatedSmartStructure.slice(1).toLowerCase();
       let basePath = path.join("vendor", vendorName, moduleName, "SmartStructures", StructureName);
 
       //Compute and test the workflowPath for the vendor name
@@ -197,7 +209,9 @@ exports.createWorkflowInstance = ({
       workflowPath = path.join(srcPath, basePath, `${StructureName}Workflows`);
     }
     if (inSelfDirectory) {
-      const InstanceName = instanceName.charAt(0).toUpperCase() + instanceName.slice(1).toLowerCase();
+      const InstanceName = camelCase(instanceName, { pascalCase: true });
+
+      // const InstanceName = instanceName.charAt(0).toUpperCase() + instanceName.slice(1).toLowerCase();
       workflowPath = path.join(workflowPath, `${InstanceName}Workflow`);
     }
     //Create the directory if needed
