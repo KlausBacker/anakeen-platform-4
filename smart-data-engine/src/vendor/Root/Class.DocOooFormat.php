@@ -52,8 +52,7 @@ class DocOooFormat
         $this->index = $index;
         $this->cFormat = $this->oattr->format;
         $atype = $this->oattr->type;
-
-        if (($this->oattr->repeat) && ($this->index <= 0)) {
+        if (($this->oattr->repeat) && ($this->index < 0)) {
             $tvalues = \Anakeen\Core\Utils\Postgres::stringToArray($value);
         } else {
             $tvalues[$this->index] = $value;
@@ -296,8 +295,12 @@ class DocOooFormat
             $multiple = ($this->oattr->getOption("multiple") == "yes");
 
             if ($multiple) {
-                $avalue = str_replace("\n", "<BR>", $avalue);
-                $tval = explode("<BR>", $avalue);
+                if (! is_array($avalue)) {
+                    $avalue = str_replace("\n", "<BR>", $avalue);
+                    $tval = explode("<BR>", $avalue);
+                } else {
+                    $tval = $avalue;
+                }
                 $thval = array();
                 foreach ($tval as $kv => $vv) {
                     if (trim($vv) == "") {
