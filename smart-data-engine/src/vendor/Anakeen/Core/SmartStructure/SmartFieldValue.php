@@ -246,6 +246,7 @@ class SmartFieldValue
      * @param mixed                                        $value
      * @see \Anakeen\Core\Internal\SmartElement::setAttributeValue()
      * @throws SmartFieldValueException in case of incompatible value
+     * @throws SmartFieldAccessException
      */
     public static function setTypedValue(\Anakeen\Core\Internal\SmartElement & $doc, \Anakeen\Core\SmartStructure\NormalAttribute & $oAttr, $value)
     {
@@ -311,10 +312,17 @@ class SmartFieldValue
             }
         }
         if ($err) {
-            $e = new SmartFieldValueException('VALUE0001', $oAttr->id, $doc->fromname, $doc->getTitle(), $err);
-            $e->originalError = $err;
-            $e->attributeId = $oAttr->id;
-            $e->index = $kindex;
+            if (preg_match("/^{(DOC0132|DOC0136)}/", $err)) {
+                $e = new SmartFieldAccessException("VALUE0102", $oAttr->id, $err);
+
+                $e->attributeId = $oAttr->id;
+                $e->index = $kindex;
+            } else {
+                $e = new SmartFieldValueException('VALUE0001', $oAttr->id, $doc->fromname, $doc->getTitle(), $err);
+                $e->originalError = $err;
+                $e->attributeId = $oAttr->id;
+                $e->index = $kindex;
+            }
             throw $e;
         }
     }
