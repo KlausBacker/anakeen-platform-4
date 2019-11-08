@@ -3,6 +3,7 @@
 namespace Anakeen\Routes\Core;
 
 use Anakeen\Core\SEManager;
+use Anakeen\Core\SmartStructure\SmartFieldAccessException;
 use Anakeen\Core\SmartStructure\SmartFieldValueException;
 use Anakeen\Core\Utils\Gettext;
 use Anakeen\Router\ApiV2Response;
@@ -70,17 +71,19 @@ class DocumentUpdateData extends DocumentData
                     $this->_document->setAttributeValue($aid, $value);
                 }
             } catch (SmartFieldValueException $e) {
-                $exception = new Exception("ROUTES0107", $this->_document->id, $aid, $e->getDcpMessage());
-                $exception->setHttpStatus("500", "Unable to modify the document");
-                $exception->setUserMEssage(___("Document update failed", "ank"));
-                $info = array(
-                    "id" => $aid,
-                    "index" => $e->index,
-                    "err" => $e->originalError ? $e->originalError : $e->getDcpMessage()
-                );
+                    $exception = new Exception("ROUTES0107", $this->_document->id, $aid, $e->getDcpMessage());
+                    $exception->setHttpStatus("500", "Unable to modify the document");
+                    $exception->setUserMEssage(___("Document update failed", "ank"));
+                    $info = array(
+                        "id" => $aid,
+                        "index" => $e->index,
+                        "err" => $e->originalError ? $e->originalError : $e->getDcpMessage()
+                    );
 
-                $exception->setData($info);
-                throw $exception;
+                    $exception->setData($info);
+                    throw $exception;
+            } catch (SmartFieldAccessException $e) {
+                // Ignore exception write access
             }
         }
 

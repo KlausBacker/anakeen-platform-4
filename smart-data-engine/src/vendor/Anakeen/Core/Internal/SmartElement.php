@@ -25,6 +25,7 @@ use \Anakeen\Core\SEManager;
 use Anakeen\Core\Settings;
 use Anakeen\Core\SmartStructure\Callables\InputArgument;
 use Anakeen\Core\SmartStructure\FieldAccessManager;
+use Anakeen\Core\SmartStructure\SmartFieldAccessException;
 use Anakeen\Core\Utils\Date;
 use Anakeen\Core\Utils\FileMime;
 use Anakeen\Core\Utils\MiscDoc;
@@ -2868,6 +2869,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param string $idAttr attribute identifier
      *
      * @throws \Anakeen\Exception DOC0114 code
+     * @throws SmartFieldAccessException
      * @see ErrorCodeDoc::DOC0114
      * @return mixed the typed value
      */
@@ -2881,7 +2883,7 @@ create unique index i_docir on doc(initid, revision);";
             throw new \Anakeen\Exception('DOC0114', $idAttr, $this->title, $this->fromname);
         }
         if ($this->isUnderControl() && FieldAccessManager::hasReadAccess($this, $oa) === false) {
-            throw new \Anakeen\Exception('DOC0133', $idAttr, $this->title, $this->fromname);
+            throw new SmartFieldAccessException('DOC0133', $idAttr, $this->title, $this->fromname);
         }
         if (empty($oa->isNormal)) {
             throw new \Anakeen\Exception('DOC0116', $idAttr, $this->title, $this->fromname);
@@ -2900,6 +2902,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param mixed  $value  the new \value - value format must be compatible with type
      *
      * @throws \Anakeen\Exception
+     * @throws SmartFieldAccessException
      * @see ErrorCodeDoc::DOC0115
      * @see ErrorCodeDoc::DOC0117
      * @return void
@@ -2925,6 +2928,7 @@ create unique index i_docir on doc(initid, revision);";
             }
         }
         \Anakeen\Core\SmartStructure\SmartFieldValue::setTypedValue($this, $oa, $value);
+
         if ($oa->type === "array") {
             foreach ($localRecord as $aid => $v) {
                 if ($this->$aid !== $v) {
@@ -2942,7 +2946,7 @@ create unique index i_docir on doc(initid, revision);";
      * the attribute must be in an array or declared with multiple option
      *
      * @param string $idAttr identifier of list attribute
-     * @param string $def    default value returned if attribute not found or if is empty
+     * @param array $def    default value returned if attribute not found or if is empty
      * @param int    $index  the values for $index row (default value -1 means all values)
      *
      * @return array|string the list of attribute values
@@ -3252,7 +3256,11 @@ create unique index i_docir on doc(initid, revision);";
         /**
          * @var \Anakeen\Core\SmartStructure\NormalAttribute $oattr
          */
+        if (isset($this->$attrid) && $this->$attrid === $value) {
+            return "";
+        }
         $oattr = $this->GetAttribute($attrid);
+        $accessGranted=true;
         // control edit before set values
         if ($this->isUnderControl()) {
             if ($this->id > 0) { // no control yet if no effective doc
@@ -3262,7 +3270,7 @@ create unique index i_docir on doc(initid, revision);";
                 }
             }
             if ($oattr && FieldAccessManager::hasWriteAccess($this, $oattr) === false) {
-                return \ErrorCode::getError("DOC0132", $this->getTitle(), $oattr->id);
+                $accessGranted=false;
             }
         }
 
@@ -3332,7 +3340,12 @@ create unique index i_docir on doc(initid, revision);";
                         $this->hasChanged = true;
                         $this->_oldvalue[$attrid] = $this->$attrid;
                     }
-                    $this->$attrid = $value;
+                    if ($this->$attrid !== $value) {
+                        if ($accessGranted ===  false) {
+                            return \ErrorCode::getError("DOC0136", $this->getTitle(), $oattr->id);
+                        }
+                        $this->$attrid = $value;
+                    }
                 }
             } else {
                 $value = trim($value, " \x0B\r"); // suppress white spaces end & begin
@@ -3546,7 +3559,12 @@ create unique index i_docir on doc(initid, revision);";
                         $this->_oldvalue[$attrid] = $this->$attrid;
                         $this->hasChanged = true;
                     }
-                    $this->$attrid = $rawValue;
+                    if ($this->$attrid !== $rawValue) {
+                        if ($accessGranted ===  false) {
+                            return \ErrorCode::getError("DOC0132", $this->getTitle(), $oattr->id);
+                        }
+                        $this->$attrid = $rawValue;
+                    }
                 }
             }
         }
@@ -3933,7 +3951,6 @@ create unique index i_docir on doc(initid, revision);";
      * @param string $RidAttr attributes identifier chain (separated by ':')
      * @param string $def     $def default return value
      * @param bool   $latest  always last revision of document
-     * @param bool   $html    return formated value for html
      *
      * @return array|string
      */
@@ -4066,7 +4083,7 @@ create unique index i_docir on doc(initid, revision);";
 
     public static function seemsMethod($method)
     {
-        return is_string($method) && preg_match('/([^:]*)::([^\(]+)\(([^\)]*)\)/', $method);
+        return is_string($method) && preg_match('/([^:]*)::([^(]+)\(([^)]*)\)/', $method);
     }
 
     /**
@@ -5040,7 +5057,6 @@ create unique index i_docir on doc(initid, revision);";
      * @api duplicate document
      *
      * @param bool $temporary if true the document create it as temporary document
-     * @param bool $control   if false don't control acl create (generaly use when temporary is true)
      * @param bool $linkfld   if true and document is a folder then documents included in folder
      *                        are also inserted in the copy (are not duplicated) just linked
      * @param bool $copyfile  if true duplicate files of the document
@@ -7689,7 +7705,7 @@ create unique index i_docir on doc(initid, revision);";
                 return false;
             }
             // Extract index from 'layout' part if present
-            if ($i == 1 && preg_match("/^(?P<name>.*?)\[(?P<index>-?\d)\]$/", $el[$i], $match)) {
+            if ($i == 1 && preg_match("/^(?P<name>.*?)\[(?P<index>-?\d)]$/", $el[$i], $match)) {
                 $p[$parts[$i]] = $match['name'];
                 $p['index'] = $match['index'];
                 $i++;

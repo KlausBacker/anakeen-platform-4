@@ -13,48 +13,39 @@
 class ErrorCodeDOC
 {
     /**
-     * @errorCode
-     * when import smart element the  smart structure  reference is required
+     * @errorCode when import smart element the  smart structure  reference is required
      */
     const DOC0002 = ' smart structure  reference is empty for smart element "%s"';
     /**
-     * @errorCode
-     * the reference  smart structure  must begin with a letter and must contains only alphanum characters
+     * @errorCode the reference  smart structure  must begin with a letter and must contains only alphanum characters
      */
     const DOC0003 = 'syntax error  smart structure  reference "%s" for smart element "%s"';
     /**
-     * @errorCode
-     * the document's reference must begin with a letter and must contains only alphanum characters
+     * @errorCode the document's reference must begin with a letter and must contains only alphanum characters
      */
     const DOC0004 = 'syntax error smart element reference "%s" ';
     /**
-     * @errorCode
-     * the reference  smart structure  must be exists
+     * @errorCode the reference  smart structure  must be exists
      */
     const DOC0005 = ' smart structure  reference "%s" not exists for smart element "%s"';
     /**
-     * @errorCode
-     * the reference  smart structure  must be a  smart structure  document
+     * @errorCode the reference  smart structure  must be a  smart structure  document
      */
     const DOC0006 = ' smart structure  reference "%s" is not a  smart structure  "%s"';
     /**
-     * @errorCode
-     * must have create privilege to import thid kind of document
+     * @errorCode must have create privilege to import thid kind of document
      */
     const DOC0007 = 'insufficient privileges to import smart element "%s" of "%s"  smart structure  ';
     /**
-     * @errorCode
-     * cannot change inherit  smart structure  for a document
+     * @errorCode cannot change inherit  smart structure  for a document
      */
     const DOC0008 = 'the smart element "%s" cannot be converted from "%s" to "%s"  smart structure  ';
     /**
-     * @errorCode
-     * cannot update fixed document, no alive revision is found
+     * @errorCode cannot update fixed document, no alive revision is found
      */
     const DOC0009 = 'the smart element "%s" ( smart structure  "%s") is fixed';
     /**
-     * @errorCode
-     * the smart element cannot be imported because  smart structure  is not completed
+     * @errorCode the smart element cannot be imported because  smart structure  is not completed
      */
     const DOC0010 = ' smart structure  error detected "%s" for the smart element "%s" : %s';
 
@@ -63,83 +54,69 @@ class ErrorCodeDOC
      */
     const DOC0011 = ' smart structure  "%s" error detected  ORDER is needed';
     /**
-     * @errorCode
-     * error in setvalue when import document
+     * @errorCode error in setvalue when import document
      */
     const DOC0100 = 'setValue error "%s" for field "%s"';
     /**
-     * @errorCode
-     * error when inserting file for file fields
+     * @errorCode error when inserting file for file fields
      * @note when file is included in array field
      */
     const DOC0101 = 'vault error "%s" to import file "%s" for field "%s" in "%s" document';
     /**
-     * @errorCode
-     * error when inserting file in vault for file fields
+     * @errorCode error when inserting file in vault for file fields
      */
     const DOC0102 = 'vault error "%s" to import file "%s" for field "%s" in "%s" document';
     /**
-     * @errorCode
-     * error in set value for file fields
+     * @errorCode error in set value for file fields
      */
     const DOC0103 = 'set value error "%s" to import file "%s" for field "%s" in "%s" document';
     /**
-     * @errorCode
-     * preImport Method detect error (special) for physical id)
+     * @errorCode preImport Method detect error (special) for physical id)
      */
     const DOC0104 = 'preImport error in "%s" system smart element : %s';
     /**
-     * @errorCode
-     * preImport Method detect error when create it
+     * @errorCode preImport Method detect error when create it
      * @note when policy import is add
      */
     const DOC0105 = 'preImport error in "%s" smart element when create it: %s';
     /**
-     * @errorCode
-     * preImport Method detect error when create it
+     * @errorCode preImport Method detect error when create it
      * @note when policy import is update
      */
     const DOC0106 = 'preImport error in "%s" smart element when create it: %s';
     /**
-     * @errorCode
-     * detect error when create it
+     * @errorCode detect error when create it
      * @note when policy import is add
      */
     const DOC0107 = 'creation error in "%s" smart element : %s';
     /**
-     * @errorCode
-     * detect error when create it
+     * @errorCode detect error when create it
      * @note when policy import is update
      */
     const DOC0108 = 'creation error in "%s" smart element : %s';
     /**
-     * @errorCode
-     * preImport Method detect error when update it
+     * @errorCode preImport Method detect error when update it
      * @note when policy import is update
      */
     const DOC0109 = 'preImport error in "%s" smart element when update it: %s';
     /**
-     * @errorCode
-     * too many similar smart element when try update by key ref
+     * @errorCode too many similar smart element when try update by key ref
      * generaly  a smart element with same title has been found
      * @note when policy import is update
      */
     const DOC0110 = 'similar smart element "%s" smart element when update it';
     /**
-     * @errorCode
-     * preImport Method detect error when update it
+     * @errorCode preImport Method detect error when update it
      * @note when logical name is set
      */
     const DOC0111 = 'preImport error in "%s" smart element when update it: %s';
     /**
-     * @errorCode
-     * update doc error after postStore method
+     * @errorCode update doc error after postStore method
      * @see \Anakeen\Core\Internal\SmartElement::store
      */
     const DOC0112 = 'update error in "%s" smart element : %s';
     /**
-     * @errorCode
-     * update doc error after transfert values from old doc
+     * @errorCode update doc error after transfert values from old doc
      * @see \Anakeen\Core\Internal\SmartElement::store
      */
     const DOC0113 = 'transfertvalues error in smart element "%s" update: %s';
@@ -234,7 +211,7 @@ class ErrorCodeDOC
      */
     const DOC0131 = 'Cannot duplicate for familu "%s"';
     /**
-     * @errorCode The requested field was not found in \Anakeen\Core\Internal\SmartElement::getHtmlAttrValue()
+     * @errorCode The field is in read or none access
      * @see       \Anakeen\Core\Internal\SmartElement::setValue
      */
     const DOC0132 = 'Element "%s", field "%s" update not granted';
@@ -254,20 +231,22 @@ class ErrorCodeDOC
      */
     const DOC0135 = 'cannot set default value for "%s". array not allowed for single field "%s" ("%s")  smart structure ';
     /**
-     * @errorCode
-     * the smart element cannot be inserted in folder target
+     * @errorCode The field is in read or none access
+     * @see       \Anakeen\Core\Internal\SmartElement::setValue
+     */
+    const DOC0136 = 'Element "%s", field "%s" clear value is not granted';
+    /**
+     * @errorCode the smart element cannot be inserted in folder target
      * @note when DOC has defined a folder target
      */
     const DOC0200 = 'cannot insert "%s" smart element in "%s" folder : %s';
     /**
-     * @errorCode
-     * the folder target is not found
+     * @errorCode the folder target is not found
      * @note when DOC has defined a folder target
      */
     const DOC0201 = '"%s" folder not found. Cannot insert "%s" document';
     /**
-     * @errorCode
-     * the folder target is not a folder document
+     * @errorCode the folder target is not a folder document
      * @note when DOC has defined a folder target
      */
     const DOC0202 = '"%s" folder is not a folder (is is a "%s"). Cannot insert "%s" document';
@@ -277,34 +256,28 @@ class ErrorCodeDOC
      */
     const DOC0203 = "Cannot duplicate an invalid document";
     /**
-     * @errorCode
-     * the mask cannot be applied
+     * @errorCode the mask cannot be applied
      */
     const DOC1000 = '"%s" mask is not found , cannot apply it to "%s" document';
     /**
-     * @errorCode
-     * the mask to apply is not mask
+     * @errorCode the mask to apply is not mask
      */
     const DOC1001 = '"%s" smart element is not a mask  (is is a "%s"), cannot apply it to "%s" document';
     /**
-     * @errorCode
-     * the  smart structure  mask field is not compatible
+     * @errorCode the  smart structure  mask field is not compatible
      */
     const DOC1002 = '"%s" mask cannot be apply to "%s" document. It is set for "%s"  smart structure ';
     /**
-     * @errorCode
-     * the mask cannot be applied from its logical mask
+     * @errorCode the mask cannot be applied from its logical mask
      */
     const DOC1004 = '"%s" mask is not found , cannot apply it to "%s" document';
     /**
-     * @errorCode
-     * A method call by client must has a specific declaration in the comment part : @apiExpose
+     * @errorCode A method call by client must has a specific declaration in the comment part : @apiExpose
      *
      */
     const DOC1100 = 'Method %s::%s() not contains @apiExpose tag comment. Document %s';
     /**
-     * @errorCode
-     * A controller view method must has a specific declaration in the comment part : @templateController
+     * @errorCode A controller view method must has a specific declaration in the comment part : @templateController
      *
      */
     const DOC1101 = 'Method %s::%s() not contains @templateController tag comment. Document %s';

@@ -292,6 +292,7 @@ class SEManager
             throw new Exception("APIDM0102", $familyId);
         }
         $classFilePath = sprintf("%s/%s/SmartStructure/Smart%d.php", DEFAULT_PUBDIR, Settings::DocumentGenDirectory, $familyId);
+        /** @noinspection PhpIncludeInspection */
         require_once($classFilePath);
     }
 
