@@ -705,6 +705,74 @@ hub-station-publish:
     changes:
       - hub-station/**/*
 
+smart-data-engine-integration-publish:
+  extends: .npm-publish-package-integration-synchro
+  variables:
+    PACKAGE_PATH: smart-data-engine
+    ANK_CI_APP_NAME: smart-data-engine
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - smart-data-engine/**/*
+
+smart-data-engine-publish:
+  extends: .npm-publish-package
+  variables:
+    PACKAGE_PATH: smart-data-engine
+    ANK_CI_APP_NAME: smart-data-engine
+  only:
+    refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - smart-data-engine/**/*
+
+
+security-integration-publish:
+  extends: .npm-publish-package-integration-synchro
+  variables:
+    PACKAGE_PATH: security
+    ANK_CI_APP_NAME: security
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - security/**/*
+
+security-publish:
+  extends: .npm-publish-package
+  variables:
+    PACKAGE_PATH: security
+    ANK_CI_APP_NAME: security
+  only:
+    refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - security/**/*
+
+
+workflow-integration-publish:
+  extends: .npm-publish-package-integration-synchro
+  variables:
+    PACKAGE_PATH: workflow
+    ANK_CI_APP_NAME: workflow
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - workflow/**/*
+
+workflow-publish:
+  extends: .npm-publish-package
+  variables:
+    PACKAGE_PATH: workflow
+    ANK_CI_APP_NAME: workflow
+  only:
+    refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - workflow/**/*
+
 #endregion publishNpm
 
 #region registry

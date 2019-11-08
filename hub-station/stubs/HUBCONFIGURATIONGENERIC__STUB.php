@@ -85,15 +85,6 @@ namespace SmartStructure\Fields {
         */ 
         const hge_fr_identification='hge_fr_identification';
         /**
-        * Library name
-        * <ul>
-        * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>needed</i> true </li>
-        * <li> <i>type</i> text </li>
-        * </ul>
-        */ 
-        const hge_component_libname='hge_component_libname';
-        /**
         * Component tag
         * <ul>
         * <li> <i>access</i> ReadWrite </li>

@@ -1,0 +1,21 @@
+/**
+ * Enumerate constants
+ * @name: {{name}}
+ */
+
+export default class {{classname}}
+{
+{{#items}}
+{{#isGood}}
+    /** {{{escapeLabel}}} */
+    static {{name}}="{{{escapeName}}}";
+{{/isGood}}{{^isGood}}
+    /**
+     * {{{escapeLabel}}}{{^isGood}}
+     * @name : {{{name}}}
+     * @ignored: complex name{{/isGood}}
+     */
+{{/isGood}}
+
+{{/items}}
+}

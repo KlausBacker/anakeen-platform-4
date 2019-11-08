@@ -132,7 +132,7 @@ namespace SmartStructure\Fields {
         * <ul>
         * <li> <i>type</i> frame </li>
         * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>kind</i> parameters </li>
+        * <li> <i>kind</i> Parameter </li>
         * </ul>
         */ 
         const emsg_fr_parameters='emsg_fr_parameters';
@@ -142,7 +142,7 @@ namespace SmartStructure\Fields {
         * <li> <i>access</i> ReadWrite </li>
         * <li> <i>relation</i> SENTMESSAGE-emsg_editcontrol </li>
         * <li> <i>type</i> enum </li>
-        * <li> <i>kind</i> parameters </li>
+        * <li> <i>kind</i> Parameter </li>
         * </ul>
         */ 
         const emsg_editcontrol='emsg_editcontrol';

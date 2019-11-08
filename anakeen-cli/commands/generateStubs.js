@@ -33,7 +33,7 @@ exports.handler = function(argv) {
   try {
     signale.time("stub");
     stub(argv);
-    const task = gulp.task("stub");
+    const task = gulp.task("allStubs");
     task()
       .then(() => {
         signale.timeEnd("stub");

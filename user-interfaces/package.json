@@ -43,6 +43,7 @@
   },
   "files": [
     "lib/**/*",
+    "constants/*.js",
     "components/**/*",
     "src/**/*.scss",
     "src/public/Anakeen/ank-components/deps/*",
