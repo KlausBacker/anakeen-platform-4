@@ -166,7 +166,7 @@ hub-station-buildJS:
  script:
    - rm -rf ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}
    - mkdir -p ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}
-   - make -C ${PACKAGE_PATH} stubs
+   - make -C ${PACKAGE_PATH} stub
    - make APP_OUTPUT_PATH=${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH} -C ${PACKAGE_PATH} ${MODE}
    - export ANK_CI_APP_VERSION=$(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH} ${PACKAGE_NAME})
    - tar -C ${PACKAGE_PATH} -czf ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}/${PACKAGE_NAME}-${ANK_CI_APP_VERSION}.tar.gz ./src ./stubs
