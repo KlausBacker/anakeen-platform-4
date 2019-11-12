@@ -108,10 +108,20 @@ class TransitionRender
                     $attrData[] = $this->getAttributeInfo($workflow, $oa);
 
                     if ($oa->type === "array") {
-                        $attrs = $this->workflow->attributes->getArrayElements($oa->id);
-
-                        foreach ($attrs as $aid => $attr) {
-                            $attrData[] = $this->getAttributeInfo($workflow, $this->workflow->getAttribute($aid));
+                        if ($this->workflow->getAttribute($oa->id) &&
+                            in_array($oa->structureId, $this->workflow->getFromDoc())) {
+                            $attrs = $this->workflow->attributes->getArrayElements($oa->id);
+                            foreach ($attrs as $aid => $attr) {
+                                $attrData[] = $this->getAttributeInfo($workflow, $this->workflow->getAttribute($aid));
+                            }
+                        } elseif ($this->workflow->getSmartElement()->getAttribute($oa->id)) {
+                            $attrs = $this->workflow->getSmartElement()->attributes->getArrayElements($oa->id);
+                            foreach ($attrs as $aid => $attr) {
+                                $attrData[] = $this->getAttributeInfo(
+                                    $workflow,
+                                    $this->workflow->getSmartElement()->getAttribute($aid)
+                                );
+                            }
                         }
                     }
                 }
