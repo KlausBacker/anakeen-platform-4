@@ -9,11 +9,6 @@ exports.writeTemplate = (installPath, argv) => {
 
     const Name = camelCase(argv.name, { pascalCase: true });
 
-    // eslint-disable-next-line no-console
-    console.log("\n\n argv \n\n", argv, "end");
-
-    // /CharlesBonnissent/AaaBbbCccEe/SmartStructures/BillBob/Render/
-
     // a suppr
     // const Name = argv.name.charAt(0).toUpperCase() + argv.name.slice(1).toLowerCase();
     const NAME = argv.name.toUpperCase();
@@ -31,9 +26,6 @@ exports.writeTemplate = (installPath, argv) => {
             ssname: name,
             WFL: argv.workflow ? argv.workflow.toUpperCase() : ""
           });
-          // eslint-disable-next-line no-console
-          console.log("\n\n tpmplate data \n\n", templateData, "end");
-
           fsUtils
             .writeTemplates(
               {

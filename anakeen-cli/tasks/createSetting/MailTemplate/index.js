@@ -4,8 +4,10 @@ const fsUtils = require("../../plugins/files");
 const camelCase = require("camelcase");
 
 exports.writeTemplate = (installPath, argv) => {
-  const namePascalCase = camelCase(argv.associatedSmartStructure, { pascalCase: true });
-
+  let namePascalCase = "";
+  if (argv.associatedSmartStructure) {
+    namePascalCase = camelCase(argv.associatedSmartStructure, { pascalCase: true });
+  }
   return new Promise((resolve, reject) => {
     if (!fs.existsSync(installPath)) {
       reject(`The path ${installPath} does not exist`);

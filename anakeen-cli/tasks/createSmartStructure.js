@@ -15,36 +15,21 @@ const getProcessXml = command => ({
   }
 });
 
+String.prototype.replaceAll = function(search, replacement) {
+  var target = this;
+  return target.replace(new RegExp(search, "g"), replacement);
+};
+
+// eslint-disable-next-line no-unused-vars
 const convertPathInPhpNamespace = ({ vendorPath, smartStructurePath }) => {
-  // const index = smartStructurePath.indexOf("vendor");
-  // const substring = smartStructurePath.substr(index, smartStructurePath.length - 1);
-  // smartStructurePath = substring.replace("vendor/", "");
+  const tmpNameSpacePhp = smartStructurePath.split("vendor/");
 
-  // smartStructurePath = smartStructurePath.replace("/vendor", "VENDOR/");
-
-  // eslint-disable-next-line no-console
-  // console.log(vendorPath);
-  // let nameSpacePath = path
+  let nameSpacePhp = tmpNameSpacePhp[1].replaceAll("/", "\\");
+  return nameSpacePhp;
+  // return path
   //   .relative(vendorPath, smartStructurePath)
   //   .split(path.sep)
   //   .join("\\");
-  // nameSpacePath = path.normalize(vendorPath, nameSpacePath);
-  // // nameSpacePath = nameSpacePath.replace("VENDOR\\", "");
-  // // eslint-disable-next-line no-console
-  // console.log(nameSpacePath);
-  // // eslint-disable-next-line no-console
-  // console.log(
-  //   "teste de path",
-  //   path
-  //     .relative("vendor", smartStructurePath)
-  //     .split(path.sep)
-  //     .join("\\")
-  // );
-
-  return path
-    .relative(vendorPath, smartStructurePath)
-    .split(path.sep)
-    .join("\\");
 };
 
 exports.createSmartStructure = ({
