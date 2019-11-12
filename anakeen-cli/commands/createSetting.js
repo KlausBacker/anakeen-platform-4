@@ -1,11 +1,13 @@
 const gulp = require("gulp");
 const { getModuleInfo } = require("../utils/moduleInfo");
+const { checkSetting } = require("../utils/checkSettings");
 const signale = require("signale");
 const fs = require("fs");
 const path = require("path");
 const inquirer = require("inquirer");
 const { createSetting } = require("../tasks/createSetting.js");
 const { checkVendorName, checkModuleName } = require("../utils/checkName");
+const camelCase = require("camelcase");
 
 let moduleData = {};
 let settingOptions = {};
@@ -29,8 +31,10 @@ const defaultPath = () => {
   let srcPath = "";
   let basePath = path.join("vendor", settingOptions.vendorName, settingOptions.moduleName, "Settings");
   if (settingOptions.associatedSS) {
-    const StructureName =
-      settingOptions.associatedSS.charAt(0).toUpperCase() + settingOptions.associatedSS.slice(1).toLowerCase();
+    const StructureName = camelCase(settingOptions.associatedSS, { pascalCase: true });
+
+    // const StructureName =
+    //   settingOptions.associatedSS.charAt(0).toUpperCase() + settingOptions.associatedSS.slice(1).toLowerCase();
     basePath = path.join(
       "vendor",
       settingOptions.vendorName,
@@ -84,14 +88,6 @@ const SETTING_TYPES = {
   Timer: {
     name: "Timer",
     value: "Timer"
-  },
-  Exec: {
-    name: "Exec",
-    value: "Exec"
-  },
-  Enumerate: {
-    name: "Enumerate",
-    value: "Enumerate"
   }
 };
 
@@ -104,7 +100,7 @@ exports.desc = "Create a setting";
 
 const builder = {
   sourcePath: {
-    description: "path to the info.xml directory",
+    description: "path to the info.xml directory [Mandatory]",
     alias: "s",
     default: ".",
     type: "string",
@@ -116,7 +112,7 @@ const builder = {
     }
   },
   type: {
-    description: "type of the setting",
+    description: "type of the setting (Masks, View Control, Field Access, Profile, Mail Template, Timer) [Mandatory]",
     type: "string",
     coerce: arg => {
       if (!arg) {
@@ -166,7 +162,7 @@ const builder = {
     }
   },
   vendorName: {
-    description: "vendor name of the module",
+    description: "vendor name of the module [Mandatory]",
     alias: "v",
     default: () => {
       if (moduleData.moduleInfo) {
@@ -185,7 +181,7 @@ const builder = {
     }
   },
   moduleName: {
-    description: "name of the module",
+    description: "name of the module [Mandatory]",
     alias: "m",
     type: "string",
     default: () => {
@@ -209,13 +205,13 @@ const builder = {
     type: "string",
     default: () => {
       if (moduleData.moduleInfo && settingOptions.type) {
-        const ModuleName = capitalize(moduleData.moduleInfo.name);
+        // const ModuleName = capitalize(moduleData.moduleInfo.name);
         const structName = capitalize(settingOptions.associatedSS);
         const wflName = capitalize(settingOptions.associatedWFL);
         const Type = capitalize(settingOptions.type);
-        return `${ModuleName}${structName || wflName || ""}${Type}`;
+        return `${structName || wflName || ""}${Type}`;
       } else {
-        return [];
+        return "";
       }
     }
   },
@@ -312,6 +308,25 @@ const getInquirerQuestion = (paramKey, paramValue) => {
   return question;
 };
 
+async function completeArgv(argv) {
+  // get infos module
+  const moduleInfo = await getModuleInfo(argv.sourcePath);
+
+  if (argv.vendorName === undefined || argv.vendorName === "") {
+    // eslint-disable-next-line require-atomic-updates
+    argv.vendorName = moduleInfo.moduleInfo.vendor;
+  }
+  if (argv.moduleName === undefined || argv.moduleName === "") {
+    // eslint-disable-next-line require-atomic-updates
+    argv.moduleName = moduleInfo.moduleInfo.name;
+  }
+  if (argv.name === "" || argv.name === undefined) {
+    // eslint-disable-next-line require-atomic-updates
+    argv.name = argv.moduleName + argv.type;
+  }
+  return argv;
+}
+
 exports.handler = async argv => {
   if (process.argv.indexOf("createSetting") === process.argv.length - 1) {
     // Mode question
@@ -322,23 +337,32 @@ exports.handler = async argv => {
       })
     );
   }
-  try {
-    signale.time("createSetting");
-    createSetting(argv);
-    const task = gulp.task("createSetting");
-    task()
-      .then(() => {
-        signale.timeEnd("createSetting");
-        signale.success("createSetting done");
-      })
-      .catch(e => {
-        signale.timeEnd("createSetting");
-        signale.error(e);
-        process.exit(1);
-      });
-  } catch (e) {
+
+  const rjson = checkSetting(argv);
+  signale.time("createSetting");
+  if (rjson.success === true) {
+    argv = await completeArgv(argv);
+
+    try {
+      createSetting(argv);
+      const task = gulp.task("createSetting");
+      task()
+        .then(() => {
+          signale.timeEnd("createSetting");
+          signale.success("createSetting done");
+        })
+        .catch(e => {
+          signale.timeEnd("createSetting");
+          signale.error(e);
+          process.exit(1);
+        });
+    } catch (e) {
+      signale.timeEnd("createSetting");
+      signale.error(e);
+      process.exit(1);
+    }
+  } else {
     signale.timeEnd("createSetting");
-    signale.error(e);
-    process.exit(1);
+    signale.error(rjson.error);
   }
 };
