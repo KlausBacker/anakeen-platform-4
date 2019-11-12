@@ -110,8 +110,8 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     /**
      * affect document instance
      *
-     * @param \Anakeen\Core\Internal\SmartElement $doc   document to use for workflow
-     * @param bool                                $force set to true to force a doc reset
+     * @param \Anakeen\Core\Internal\SmartElement $doc document to use for workflow
+     * @param bool $force set to true to force a doc reset
      *
      * @return void
      */
@@ -436,7 +436,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
      * @param string $transitionName
      * @param string $mIndex m0, m1, m2, m3
      *
-     * @param array  $args   the three arguments $nextState, $previousState, $comment
+     * @param array $args the three arguments $nextState, $previousState, $comment
      *
      * @return false|string error message (empty if no errors)
      */
@@ -449,7 +449,12 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                     $err = call_user_func($tr[$mIndex], ...$args);
                 } else {
                     if (!method_exists($this, $tr[$mIndex])) {
-                        return (sprintf(___("[%s] the method '%s' is not known for the object class %s", "sde"), $mIndex, $tr[$mIndex], get_class($this)));
+                        return (sprintf(
+                            ___("[%s] the method '%s' is not known for the object class %s", "sde"),
+                            $mIndex,
+                            $tr[$mIndex],
+                            get_class($this)
+                        ));
                     }
                     $err = call_user_func(array(
                         $this,
@@ -791,21 +796,31 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
      * change state of a document
      * the method {@link set()} must be call before
      *
-     * @param string $newstate    the next state
-     * @param string $addcomment  comment to be set in history (describe why change state)
-     * @param bool   $force       is true when it is the second passage (without interactivity)
-     * @param bool   $withcontrol set to false if you want to not verify control permission ot transition
-     * @param bool   $wm1         set to false if you want to not apply m1 methods
-     * @param bool   $wm2         set to false if you want to not apply m2 methods
-     * @param bool   $wneed       set to false to not test required attributes
-     * @param bool   $wm0         set to false if you want to not apply m0 methods
-     * @param bool   $wm3         set to false if you want to not apply m3 methods
-     * @param string $msg         return message from m2 or m3 methods
+     * @param string $newstate the next state
+     * @param string $addcomment comment to be set in history (describe why change state)
+     * @param bool $force is true when it is the second passage (without interactivity)
+     * @param bool $withcontrol set to false if you want to not verify control permission ot transition
+     * @param bool $wm1 set to false if you want to not apply m1 methods
+     * @param bool $wm2 set to false if you want to not apply m2 methods
+     * @param bool $wneed set to false to not test required attributes
+     * @param bool $wm0 set to false if you want to not apply m0 methods
+     * @param bool $wm3 set to false if you want to not apply m3 methods
+     * @param string $msg return message from m2 or m3 methods
      *
      * @return string error message, if no error empty string
      */
-    public function changeState($newstate, $addcomment = "", $force = false, $withcontrol = true, $wm1 = true, $wm2 = true, $wneed = true, $wm0 = true, $wm3 = true, &$msg = '')
-    {
+    public function changeState(
+        $newstate,
+        $addcomment = "",
+        $force = false,
+        $withcontrol = true,
+        $wm1 = true,
+        $wm2 = true,
+        $wneed = true,
+        $wm0 = true,
+        $wm3 = true,
+        &$msg = ''
+    ) {
         $err = '';
         // if ($this->doc->state == $newstate) return ""; // no change => no action
         // search if possible change in concordance with transition array
@@ -834,7 +849,10 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                 ));
             }
             if (!$foundFrom) {
-                return (sprintf(___("ChangeState :: the initial state '%s' is not known", "sde"), $this->getStateLabel($this->doc->state)));
+                return (sprintf(
+                    ___("ChangeState :: the initial state '%s' is not known", "sde"),
+                    $this->getStateLabel($this->doc->state)
+                ));
             }
             if ($this->doc->isLocked()) {
                 $lockUserId = abs($this->doc->locked);
@@ -850,10 +868,16 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                         /* The document is locked by another user */
                         if ($this->doc->locked < 0) {
                             /* Currently being edited by another user */
-                            return sprintf(_("Could not perform transition because the document is being edited by '%s'"), $lockUserTitle);
+                            return sprintf(
+                                _("Could not perform transition because the document is being edited by '%s'"),
+                                $lockUserTitle
+                            );
                         } else {
                             /* Explicitly locked by another user */
-                            return sprintf(_("Could not perform transition because the document is locked by '%s'"), $lockUserTitle);
+                            return sprintf(
+                                _("Could not perform transition because the document is locked by '%s'"),
+                                $lockUserTitle
+                            );
                         }
                     }
                 }
@@ -914,7 +938,11 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             return $err;
         }
 
-        $revcomment = sprintf(_("change state : %s to %s"), $this->getStateLabel($oldstate), $this->getStateLabel($newstate));
+        $revcomment = sprintf(
+            _("change state : %s to %s"),
+            $this->getStateLabel($oldstate),
+            $this->getStateLabel($newstate)
+        );
         if ($addcomment != "") {
             $this->doc->addHistoryEntry($addcomment);
         }
@@ -1033,7 +1061,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
      * get associated color of a state
      *
      * @param string $state the state
-     * @param string $def   default value if not set
+     * @param string $def default value if not set
      *
      * @return string the color (#RGB)
      */
@@ -1053,7 +1081,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
      * get activity (localized language)
      *
      * @param string $state the state
-     * @param string $def   default value if not set
+     * @param string $def default value if not set
      *
      * @return string the text of action
      */
@@ -1074,9 +1102,9 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     /**
      * send associated mail of a state
      *
-     * @param string $state   the state
+     * @param string $state the state
      * @param string $comment reason of change state
-     * @param string $tname   transition name
+     * @param string $tname transition name
      *
      * @return string
      */
@@ -1141,7 +1169,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
     public function getAskValue($fieldId)
     {
-        return $this->askValue[$fieldId];
+        return $this->askValue[$fieldId] ?? null;
     }
 
     protected function recordAskValues($transitionId)
@@ -1149,9 +1177,19 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         if ($transitionId) {
             $asks = $this->getTransition($transitionId)->getAsks();
             foreach ($asks as $askField) {
-                $askValue = $this->getAskValue($askField->id);
                 if ($this->getSmartElement()->getAttribute($askField->id)) {
-                    $this->getSmartElement()->setValue($askField->id, $askValue);
+                    if ($askField->type !== "array") {
+                        $askValue = $this->getAskValue($askField->id);
+                        $this->getSmartElement()->setValue($askField->id, $askValue);
+                    } else {
+                        $fields = $this->getSmartElement()->attributes->getArrayElements($askField->id);
+                        if ($fields) {
+                            foreach ($fields as $field) {
+                                $askValue = $this->getAskValue($field->id);
+                                $this->getSmartElement()->setValue($field->id, $askValue);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -1255,7 +1293,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     /**
      * get transition array for the transition between $to and $from states
      *
-     * @param string $to   first state
+     * @param string $to first state
      * @param string $from next state
      *
      * @return array|false transition array (false if not found)
@@ -1290,7 +1328,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
      * Special control in case of dynamic controlled profil
      *
      * @param string $aclname
-     * @param bool   $strict set to true to not use substitute informations
+     * @param bool $strict set to true to not use substitute informations
      *
      * @return string error message
      */
@@ -1323,7 +1361,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
      * get value of instanced document
      *
      * @param string $attrid attribute identifier
-     * @param bool   $def    default value if no value
+     * @param bool $def default value if no value
      *
      * @return string return the value, false if attribute not exist or document not set
      */
