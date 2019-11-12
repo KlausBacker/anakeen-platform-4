@@ -55,7 +55,7 @@ exports.versions = [
     moduleName: "migration-tools"
   },
   {
-    package: "security",
+    package: "@anakeen/security",
     version: "2.0.1",
     modulePath: "security",
     moduleName: "security"
@@ -78,13 +78,13 @@ exports.versions = [
     moduleName: "user-interfaces"
   },
   {
-    package: "workflow",
+    package: "@anakeen/workflow",
     version: "2.0.0",
     modulePath: "workflow",
     moduleName: "workflow"
   },
   {
-    package: "smart-data-engine",
+    package: "@anakeen/smart-data-engine",
     version: "2.1.0",
     modulePath: "smart-data-engine",
     moduleName: "smart-data-engine"
