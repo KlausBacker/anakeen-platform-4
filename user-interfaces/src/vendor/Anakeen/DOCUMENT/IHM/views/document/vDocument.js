@@ -759,9 +759,12 @@ define([
           viewId = "!defaultConsultation";
         }
       }
-      this.loadDocument({
-        initid: this.model.get("initid"),
-        viewId: viewId
+
+      this.model.unautolock().then(() => {
+        this.loadDocument({
+          initid: this.model.get("initid"),
+          viewId: viewId
+        });
       });
     },
 

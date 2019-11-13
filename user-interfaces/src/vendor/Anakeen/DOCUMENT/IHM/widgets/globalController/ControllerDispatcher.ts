@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* tslint:disable:variable-name max-classes-per-file */
 import * as $ from "jquery";
+import ControllerNotFoundError from "./ControllerNotFoundError";
 import SmartElementController from "./SmartElementController";
 import { AnakeenController } from "./types/ControllerTypes";
 import DOMReference = AnakeenController.Types.DOMReference;
@@ -12,7 +13,6 @@ interface IControllersMap {
   [key: string]: SmartElementController;
 }
 class ControllerUIDError extends Error {}
-class ControllerNotFoundError extends Error {}
 
 export default class ControllerDispatcher extends AnakeenController.BusEvents.Listenable {
   protected _controllers: IControllersMap = {};
