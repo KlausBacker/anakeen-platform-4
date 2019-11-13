@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/admin-center",
-  "version": "2.1.0-RC.2019.1.10",
+  "version": "2.1.0-RC.2019.1.11",
   "autorelease": true,
   "description": "Web interfaces to admin applications and configure smart elements",
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/admin-center.git",
@@ -36,7 +36,6 @@
     "buildJs:trash:dev": "element=TRASH dev=DEV npx webpack --config webpack/index.js",
     "buildJs:trash": "yarn run buildJs:trash:prod && yarn run buildJs:trash:dev",
     "buildJs": "yarn run buildJs:tokens && yarn run buildJs:vaults && yarn run buildJs:parameters && yarn run buildJs:accounts && yarn run buildJs:i18n && yarn run buildJs:mail && yarn run buildJs:workflow && yarn run buildJs:trash && yarn run buildJs:enum"
-
   },
   "files": [
     "src/**/*.scss",
@@ -44,9 +43,9 @@
     "README.md"
   ],
   "devDependencies": {
-    "@anakeen/anakeen-cli": "1.2.0-RC.2019.1.10",
-    "@anakeen/hub-components": "1.0.2-RC.2019.1.10",
-    "@anakeen/user-interfaces": "3.0.0-RC.2019.1.10",
+    "@anakeen/anakeen-cli": "1.2.0-RC.2019.1.11",
+    "@anakeen/hub-components": "1.0.2-RC.2019.1.11",
+    "@anakeen/user-interfaces": "3.0.0-RC.2019.1.11",
     "@anakeen/webpack-conf": "1.2.1",
     "document-register-element": "^1.13.1",
     "hard-source-webpack-plugin": "^0.13.1",
@@ -54,7 +53,7 @@
     "typescript": "^3.5.3"
   },
   "dependencies": {
-    "@anakeen/internal-components": "1.0.2-RC.2019.1.10",
+    "@anakeen/internal-components": "1.0.2-RC.2019.1.11",
     "@progress/kendo-buttons-vue-wrapper": "^2019.2.621",
     "@progress/kendo-charts-vue-wrapper": "^2019.2.621",
     "@progress/kendo-datasource-vue-wrapper": "^2019.2.621",
