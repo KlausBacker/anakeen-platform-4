@@ -386,15 +386,19 @@ define([
         index: options.index
       });
 
-      if (event.prevent) {
-        return this;
-      }
-
-      documentModel.trigger("loadDocument", {
-        initid: initid,
-        viewId: "!defaultConsultation",
-        revision: revision
-      });
+      return EventPromiseUtils.getBeforeEventPromise(
+        event,
+        () => {
+          documentModel.trigger("loadDocument", {
+            initid: initid,
+            viewId: "!defaultConsultation",
+            revision: revision
+          });
+        },
+        () => {
+          return this;
+        }
+      );
     },
 
     /**
@@ -435,14 +439,19 @@ define([
       var documentModel = this.model.getDocumentModel();
       options.attrid = this.model.id;
       this.model.trigger("internalLinkSelected", event, options);
-      if (event.prevent) {
-        return this;
-      }
-      if (options.eventId === "attribute.createDocumentRelation") {
-        this.displayFormDocument(event, options.buttonConfig, options.index);
-      } else {
-        documentModel.trigger("actionAttributeLink", event, options);
-      }
+      return EventPromiseUtils.getBeforeEventPromise(
+        event,
+        () => {
+          if (options.eventId === "attribute.createDocumentRelation") {
+            this.displayFormDocument(event, options.buttonConfig, options.index);
+          } else {
+            documentModel.trigger("actionAttributeLink", event, options);
+          }
+        },
+        () => {
+          return this;
+        }
+      );
     },
     downloadFileSelect: function vAttributedownloadFileSelect(widgetEvent, options) {
       this.model.trigger("downloadFile", widgetEvent, this.model.id, options);

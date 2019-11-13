@@ -27,7 +27,7 @@ namespace SmartStructure\Fields {
         */ 
         const se_author='se_author';
         /**
-        * Critère
+        * Critères
         * <ul>
         * <li> <i>type</i> frame </li>
         * <li> <i>access</i> ReadWrite </li>

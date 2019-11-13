@@ -112,6 +112,7 @@ class ImportWorkflowConfiguration extends ImportRenderConfiguration
                 $mailtemplate->setValue(MailFields::tmail_attach, $attachData);
             }
 
+            $this->verboseMessages[]=sprintf("[%s] Record \"%s\"", $mailtemplate->fromname, $mailtemplate->name);
             return $this->getElementdata($mailtemplate);
         }
         return [];
@@ -254,6 +255,7 @@ class ImportWorkflowConfiguration extends ImportRenderConfiguration
                 }
             }
 
+            $this->verboseMessages[]=sprintf("[%s] Record \"%s\"", $timer->fromname, $timer->name);
             return $this->getElementdata($timer);
         }
         return [];
@@ -371,6 +373,7 @@ class ImportWorkflowConfiguration extends ImportRenderConfiguration
                 }
             }
 
+            $this->verboseMessages[]=sprintf("[%s] Record \"%s\"", $workflow->fromname, $workflow->name);
             $data = $this->getElementdata($workflow);
             return $data;
         }

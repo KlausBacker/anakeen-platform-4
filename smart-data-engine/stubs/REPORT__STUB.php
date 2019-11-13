@@ -63,7 +63,7 @@ namespace SmartStructure\Fields {
         */ 
         const rep_ordersort='rep_ordersort';
         /**
-        * Limite
+        * Nombre de résultats par page
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
         * <li> <i>type</i> int </li>
@@ -124,7 +124,7 @@ namespace SmartStructure\Fields {
         * <ul>
         * <li> <i>type</i> frame </li>
         * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>kind</i> parameters </li>
+        * <li> <i>kind</i> Parameter </li>
         * </ul>
         */ 
         const rep_fr_param='rep_fr_param';
@@ -133,7 +133,7 @@ namespace SmartStructure\Fields {
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
         * <li> <i>type</i> htmltext </li>
-        * <li> <i>kind</i> parameters </li>
+        * <li> <i>kind</i> Parameter </li>
         * </ul>
         */ 
         const rep_noaccesstext='rep_noaccesstext';
@@ -142,7 +142,7 @@ namespace SmartStructure\Fields {
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
         * <li> <i>type</i> int </li>
-        * <li> <i>kind</i> parameters </li>
+        * <li> <i>kind</i> Parameter </li>
         * </ul>
         */ 
         const rep_maxdisplaylimit='rep_maxdisplaylimit';

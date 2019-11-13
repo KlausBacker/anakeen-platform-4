@@ -1,10 +1,13 @@
 {
-  "name": "security",
-  "version": "2.0.1-RC.2019.1.10",
+  "name": "@anakeen/security",
+  "version": "2.0.1-RC.2019.1.11",
   "main": "index.js",
   "author": "anakeen",
   "license": "SEE LICENSE IN LICENSE",
+  "files": [
+    "/constants/*.js"
+  ],
   "devDependencies": {
-    "@anakeen/anakeen-cli": "1.2.0-RC.2019.1.10"
+    "@anakeen/anakeen-cli": "1.2.0-RC.2019.1.11"
   }
 }

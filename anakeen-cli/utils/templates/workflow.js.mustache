@@ -1,0 +1,21 @@
+/* constants */
+export default class {{classname}} {
+// Steps
+{{#steps}}
+    /**
+    * {{{label}}}{{#initial}}
+        * @initialStep : true{{/initial}}
+    */
+    static step_{{name}}="{{name}}";
+{{/steps}}
+
+// Transitions
+{{#transitionModels}}
+    /**
+    * {{label}}{{#arrows}}
+        * @from : {{from}} "{{{fromLabel}}}"
+        * @to   : {{to}} "{{{toLabel}}}"{{/arrows}}
+    */
+    static transition_{{name}}="{{name}}";
+{{/transitionModels}}
+}

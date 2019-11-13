@@ -156,6 +156,7 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
                     ]
                 );
             }
+            $this->verboseMessages[]=sprintf("[%s] Record \"%s\"", $mask->fromname, $mask->name);
             return $this->getElementdata($mask);
         }
         return [];
@@ -224,6 +225,7 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
                 );
             }
 
+            $this->verboseMessages[]=sprintf("[%s] Record \"%s\"", $cvdoc->fromname, $cvdoc->name);
             return $this->getElementdata($cvdoc);
         }
         return [];

@@ -78,9 +78,11 @@ $importObject->setVerbose($verbose);
 // Process configuration files
 foreach ($configFiles as $configFile) {
     if ($verbose) {
-        printf("Parse file \"%s\".\n", $configFile);
+        printf("%s> Parse file \"%s\".\n", date("Y-m-d H:i:s"), $configFile);
+        $mb1=microtime(true);
     }
 
+    $importObject->clearVerboseMessages();
     $importObject->load($configFile);
     if ($verbose) {
         switch ($importObject->getImportType()) {
@@ -109,8 +111,10 @@ foreach ($configFiles as $configFile) {
 
     if ($verbose) {
         $data = $importObject->getVerboseMessages();
-        print implode("\n", $data);
+        print "\n\t";
+        print implode("\n\t", str_replace("\n", "\n\t", $data));
         print "\n";
+        printf("%s> Elapsed time %.02fs.\n", date("Y-m-d H:i:s"), microtime(true) - $mb1);
     }
     if ($debug) {
         $data = $importObject->getDebugData();

@@ -108,7 +108,7 @@ class AppRegistry {
     /* Filter by semver version */
     if (filterVersion !== "undefined" && filterVersion !== "latest") {
       index = index.filter(elmt => {
-        return semver.satisfies(semver.coerce(elmt.version), filterVersion);
+        return semver.satisfies(elmt.version, filterVersion);
       });
     }
 

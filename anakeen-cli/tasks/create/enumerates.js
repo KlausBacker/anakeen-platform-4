@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const xml2js = require("xml2js");
+const camelCase = require("camelcase");
 
 const createEnumeratesXML = namespace => {
   return {
@@ -19,14 +20,23 @@ const createEnumeratesXML = namespace => {
 
 exports.writeTemplate = (packagePath, { vendorName, moduleName, namespace }) => {
   return new Promise((resolve, reject) => {
-    const enumeratesDir = path.join(packagePath, "src", "vendor", vendorName, moduleName, "Enumerates");
+    const vendorNamePascalCase = camelCase(vendorName, { pascalCase: true });
+    const moduleNamePascalCase = camelCase(moduleName, { pascalCase: true });
+    const enumeratesDir = path.join(
+      packagePath,
+      "src",
+      "vendor",
+      vendorNamePascalCase,
+      moduleNamePascalCase,
+      "Enumerates"
+    );
     fs.mkdir(enumeratesDir, err => {
       if (err) {
         reject(err);
       } else {
         const builder = new xml2js.Builder();
         const enumeratesXml = builder.buildObject(createEnumeratesXML(namespace));
-        fs.writeFile(path.join(enumeratesDir, `100-${moduleName}Enumerates.xml`), enumeratesXml, err => {
+        fs.writeFile(path.join(enumeratesDir, `100-${moduleNamePascalCase}Enumerates.xml`), enumeratesXml, err => {
           if (err) {
             reject(err);
           } else {

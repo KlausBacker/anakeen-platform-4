@@ -168,51 +168,6 @@ namespace SmartStructure\Fields {
         */ 
         const hub_execution_roles='hub_execution_roles';
         /**
-        * Hub asset parameters
-        * <ul>
-        * <li> <i>type</i> frame </li>
-        * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>kind</i> Parameter </li>
-        * </ul>
-        */ 
-        const hub_fr_assets='hub_fr_assets';
-        /**
-        * Javascript assets
-        * <ul>
-        * <li> <i>type</i> array </li>
-        * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>kind</i> Parameter </li>
-        * </ul>
-        */ 
-        const hub_jsassets='hub_jsassets';
-        /**
-        * Javascript Url
-        * <ul>
-        * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>type</i> text </li>
-        * <li> <i>kind</i> Parameter </li>
-        * </ul>
-        */ 
-        const hub_jsasset='hub_jsasset';
-        /**
-        * CSS assets
-        * <ul>
-        * <li> <i>type</i> array </li>
-        * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>kind</i> Parameter </li>
-        * </ul>
-        */ 
-        const hub_cssassets='hub_cssassets';
-        /**
-        * Css Url
-        * <ul>
-        * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>type</i> text </li>
-        * <li> <i>kind</i> Parameter </li>
-        * </ul>
-        */ 
-        const hub_cssasset='hub_cssasset';
-        /**
         * Security access
         * <ul>
         * <li> <i>type</i> frame </li>

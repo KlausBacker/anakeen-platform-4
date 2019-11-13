@@ -488,7 +488,7 @@ class DocHtmlFormat
                     if ($standardview) {
                         global $action;
                         $size = self::humanSize($fileInfo->size);
-                        $utarget = ($action->Read("navigator", "") == "NETSCAPE") ? "_self" : "_blank";
+                        $utarget = "_blank";
                         $inline = $this->oattr->getOption("inline");
                         $htmlval = "<a onmousedown=\"document.noselect=true;\" title=\"$size\" target=\"$utarget\" type=\"$mime\" href=\""
                             . $this->doc->getFileLink($this->oattr->id, $idx, false, ($inline == "yes"), $avalue, $fileInfo) . "\">";

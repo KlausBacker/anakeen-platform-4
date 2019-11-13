@@ -73,8 +73,6 @@ function SetHttpVar($name, $def)
  */
 function Http_DownloadFile($filename, $name, $mime_type = '', $inline = false, $cache = true, $deleteafter = false)
 {
-    require_once 'FDL/Class.FileMimeConfig.php';
-
     if (!file_exists($filename)) {
         printf(_("file not found : %s"), $filename);
         return;

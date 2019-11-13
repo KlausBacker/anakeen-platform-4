@@ -1,0 +1,12 @@
+/* Smart Fields Constants */
+{{#config.imports}}import * as {{name}} from "{{{relativeSource}}}";{{/config.imports}}
+{{#structures}}export class {{structureName}}{{#extend}} extends {{extend}}{{/extend}} {
+{{#fields}}
+    /**
+    * {{label}}
+    * @smartType {{type}}{{#relation}} {{relation}}{{/relation}}
+    */
+    static {{name}} = "{{name}}";
+{{/fields}}
+}
+{{/structures}}

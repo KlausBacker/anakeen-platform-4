@@ -1,5 +1,10 @@
 /*global define*/
-define(["underscore", "backbone", "dcpDocument/widgets/menu/wMenu"], function(_, Backbone) {
+define([
+  "underscore",
+  "backbone",
+  "dcpDocument/widgets/globalController/utils/EventUtils",
+  "dcpDocument/widgets/menu/wMenu"
+], function(_, Backbone, EventPromiseUtils) {
   "use strict";
 
   return Backbone.View.extend({
@@ -49,11 +54,16 @@ define(["underscore", "backbone", "dcpDocument/widgets/menu/wMenu"], function(_,
 
       options.attrid = this.model.id;
       this.model.trigger("internalLinkSelected", internalEvent, options);
-      if (internalEvent.prevent) {
-        return this;
-      }
-      this.model.trigger("actionAttributeLink", internalEvent, options);
-      return this;
+      return EventPromiseUtils.getBeforeEventPromise(
+        internalEvent,
+        () => {
+          this.model.trigger("actionAttributeLink", internalEvent, options);
+          return this;
+        },
+        () => {
+          return this;
+        }
+      );
     },
 
     showMessage: function vMenushowMessage(event, options) {

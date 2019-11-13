@@ -39,7 +39,6 @@ deploy-all: app
 lint:
 po:
 stub:
-	mkdir ./stubs
 checkXML:
 app-test-autorelease:
 beautify:

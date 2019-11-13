@@ -142,7 +142,7 @@ namespace SmartStructure\Fields {
         /**
         * Groupe
         * <ul>
-        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>access</i> Read </li>
         * <li> <i>multiple</i> true </li>
         * <li> <i>type</i> account </li>
         * </ul>
@@ -151,7 +151,7 @@ namespace SmartStructure\Fields {
         /**
         * Origine
         * <ul>
-        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>access</i> Read </li>
         * <li> <i>relation</i> IUSER-us_rolesorigin </li>
         * <li> <i>type</i> enum </li>
         * </ul>
@@ -284,7 +284,7 @@ namespace SmartStructure\Fields {
         * <ul>
         * <li> <i>type</i> frame </li>
         * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>kind</i> parameters </li>
+        * <li> <i>kind</i> Parameter </li>
         * </ul>
         */ 
         const us_fr_default='us_fr_default';
@@ -293,7 +293,7 @@ namespace SmartStructure\Fields {
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
         * <li> <i>type</i> account </li>
-        * <li> <i>kind</i> parameters </li>
+        * <li> <i>kind</i> Parameter </li>
         * </ul>
         */ 
         const us_defaultgroup='us_defaultgroup';
