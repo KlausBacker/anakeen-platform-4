@@ -1079,6 +1079,44 @@ define([
       return undefined;
     },
 
+    unautolock: function mDocumentUnautolock() {
+      var security = this.get("properties") ? this.get("properties").get("security") : null;
+      return new Promise((resolve, reject) => {
+        if (
+          this.get("renderMode") === "edit" &&
+          security &&
+          security.lock &&
+          security.lock.isLocked &&
+          security.lock.temporary
+        ) {
+          // No use model destroy : page is destroyed before request is some case
+          $.ajax({
+            url: "/api/v2/smart-elements/" + this.get("initid") + "/locks/temporary",
+            type: "DELETE"
+          })
+            .then(response => {
+              if (response && response.data) {
+                let propertiesModel = this.get("properties");
+                if (propertiesModel) {
+                  let securityModel = propertiesModel.get("security");
+                  if (securityModel && securityModel.lock) {
+                    if (response.data.lock === null) {
+                      securityModel.lock.isLocked = false;
+                    }
+                  }
+                }
+              }
+              resolve(response);
+            })
+            .fail(response => {
+              reject(response);
+            });
+        } else {
+          resolve();
+        }
+      });
+    },
+
     _promiseCallback: function mDocument_promiseCallback() {
       var promise,
         success,
@@ -1189,7 +1227,7 @@ define([
         security = currentModel.get("properties") ? currentModel.get("properties").get("security") : null;
         previousMode = currentModel.get("renderMode");
 
-        if (previousMode === "edit" && security && security.lock && security.lock.temporary) {
+        if (previousMode === "edit" && security && security.lock && security.lock.isLocked && security.lock.temporary) {
           needToUnlock = {
             initid: serverProperties.initid
           };
