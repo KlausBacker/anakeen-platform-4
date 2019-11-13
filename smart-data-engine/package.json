@@ -1,5 +1,5 @@
 {
-  "name": "smart-data-engine",
+  "name": "@anakeen/smart-data-engine",
   "version": "2.1.0-RC.2019.1.10",
   "description": "Anakeen Platform Engine",
   "main": "index.js",
@@ -12,6 +12,10 @@
   "devDependencies": {
     "@anakeen/anakeen-cli": "1.2.0-RC.2019.1.10"
   },
+
+  "files": [
+    "/constants/*.js"
+  ],
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/smart-data-engine.git",
   "keywords": [
     "anakeen",

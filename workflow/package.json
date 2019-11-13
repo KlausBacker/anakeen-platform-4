@@ -1,5 +1,5 @@
 {
-  "name": "workflow",
+  "name": "@anakeen/workflow",
   "version": "2.0.0-RC.2019.1.10",
   "description": "Workflow functionality for documents",
   "main": "index.js",
@@ -8,10 +8,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@gitlab.anakeen.com:Anakeen/Users/eric.brison/workflow.git"
+    "url": "git@gitlab.anakeen.com:Anakeen/Platform-4/workflow.git"
   },
   "author": "",
   "license": "ISC",
+  "files": [
+    "/constants/*.js"
+  ],
   "devDependencies": {
     "@anakeen/anakeen-cli": "1.2.0-RC.2019.1.10"
   }

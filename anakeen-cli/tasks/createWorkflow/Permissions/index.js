@@ -1,10 +1,11 @@
 const fs = require("fs");
 const path = require("path");
 const fsUtils = require("../../plugins/files");
+const camelCase = require("camelcase");
 
 exports.writeTemplate = (installPath, argv) => {
   return new Promise((resolve, reject) => {
-    const Name = argv.instanceName.charAt(0).toUpperCase() + argv.instanceName.slice(1).toLowerCase();
+    const Name = camelCase(argv.instanceName, { pascalCase: true });
     const NAME = argv.instanceName.toUpperCase();
     const name = argv.instanceName.toLowerCase();
     if (!fs.existsSync(installPath)) {

@@ -252,7 +252,7 @@ class ImportSingleDocument
 
             $this->tcr["action"] = "updated";
             $this->tcr["id"] = $this->doc->id;
-            $msg .= sprintf(_("update id [%d] "), $this->doc->id);
+            $msg .= sprintf("[DATA] update %s (%s) : \"%s\"", $this->doc->name?:$this->doc->id, $this->doc->fromname, $this->doc->title);
         }
 
         if ($this->hasError()) {

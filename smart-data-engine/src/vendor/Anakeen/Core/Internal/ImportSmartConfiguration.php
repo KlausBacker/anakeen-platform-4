@@ -65,6 +65,7 @@ class ImportSmartConfiguration
             throw new Exception(sprintf('Xml Configuration file "%s" is not a smart configuration file', $xmlFile));
         }
 
+        $this->cr = [];
         $this->debugData = [];
         $this->importConfigurations();
     }
@@ -197,6 +198,7 @@ class ImportSmartConfiguration
                 $data[] = $value;
             }
         }
+
         return ([$order, $data]);
     }
 
@@ -229,6 +231,7 @@ class ImportSmartConfiguration
         $this->smartPrefix = Xml::getPrefix($this->dom, ExportConfiguration::NSURL);
         $configs = $this->getNodes($this->dom->documentElement, "structure-configuration");
         $data = [];
+        $this->profilElements = [];
         foreach ($configs as $config) {
             $data = array_merge($data, $this->importSmartStructureConfig($config));
         }
@@ -478,8 +481,9 @@ class ImportSmartConfiguration
         }
         $import = new \Anakeen\Exchange\ImportDocumentDescription();
         $import->analyzeOnly($this->onlyAnalyze);
+        $cr = $import->importData($data);
 
-        $this->cr = array_merge($this->cr, $import->importData($data));
+        $this->cr = array_merge($this->cr, $cr);
     }
 
     protected function extractBegin(\DOMElement $config)
@@ -1141,14 +1145,23 @@ class ImportSmartConfiguration
         return $method;
     }
 
+
+    public function clearVerboseMessages()
+    {
+        $this->verboseMessages = [];
+    }
+
     /**
      * @return array
      */
     public function getVerboseMessages(): array
     {
-        $this->verboseMessages = [];
         foreach ($this->cr as $cr) {
-            $this->verboseMessages[] = $cr["msg"];
+            if (empty($cr["code"])) {
+                $this->verboseMessages[] = sprintf("%s", $cr["msg"]);
+            } else {
+                $this->verboseMessages[] = sprintf("[%s] %s", $cr["code"], $cr["msg"]);
+            }
         }
         return $this->verboseMessages;
     }

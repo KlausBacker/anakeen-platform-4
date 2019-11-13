@@ -6,6 +6,7 @@ const path = require("path");
 const inquirer = require("inquirer");
 const { createSmartStructure } = require("../tasks/createSmartStructure");
 const { checkVendorName, checkSmartStructureName, checkModuleName } = require("../utils/checkName");
+const fsUtils = require("../tasks/plugins/files");
 
 let moduleData = {};
 const structureOptions = {};
@@ -18,7 +19,7 @@ const defaultPath = () => {
       //Check current path
       const smartPath = path.join(currentPath, basePath);
       try {
-        return fs.statSync(smartPath).isDirectory();
+        return fs.existsSync(smartPath) && fs.statSync(smartPath).isDirectory();
       } catch (e) {
         return false;
       }
@@ -37,7 +38,7 @@ signale.config({
 exports.desc = "Create a smart structure";
 const builder = {
   sourcePath: {
-    description: "path to the info.xml directory",
+    description: "path to the info.xml directory [Mandatory]",
     alias: "s",
     default: ".",
     type: "string",
@@ -49,7 +50,7 @@ const builder = {
     }
   },
   name: {
-    description: "name of the smart structure",
+    description: "name of the smart structure [Mandatory]",
     alias: "n",
     type: "string",
     coerce: arg => {
@@ -63,7 +64,7 @@ const builder = {
     }
   },
   vendorName: {
-    description: "vendor name of the module",
+    description: "vendor name of the module [Mandatory]",
     alias: "v",
     default: () => {
       if (moduleData.moduleInfo) {
@@ -75,14 +76,16 @@ const builder = {
     type: "string",
     coerce: arg => {
       if (!checkVendorName(arg)) {
-        throw new Error("Vendor name must be only a-zA-Z0-9_ , the current value is not valid : " + arg);
+        throw new Error(
+          "Vendor name must be only a-zA-Z0-9 and in PascalCase, the current value is not valid : " + arg
+        );
       }
       structureOptions.vendorName = arg;
       return arg;
     }
   },
   moduleName: {
-    description: "name of the module",
+    description: "name of the module [Mandatory]",
     alias: "m",
     type: "string",
     default: () => {
@@ -94,7 +97,9 @@ const builder = {
     },
     coerce: arg => {
       if (!checkModuleName(arg)) {
-        throw new Error("Module name must be only a-zA-Z0-9_ , the current value is not valid : " + arg);
+        throw new Error(
+          "Module name must be only a-zA-Z0-9 and in PascalCase, the current value is not valid : " + arg
+        );
       }
       structureOptions.moduleName = arg;
       return arg;
@@ -118,21 +123,33 @@ const builder = {
   smartStructurePath: {
     description: "path where the smart structure will be added",
     type: "string",
-    default: () => {
+    default: arg => {
       if (moduleData.buildInfo) {
         return defaultPath();
       }
-      return "";
-    },
-    coerce: arg => {
       if (!arg) {
         return arg;
       }
-      if (!fs.statSync(arg).isDirectory()) {
-        throw new Error("Unable to find the smart structure directory " + arg);
+      let directoryPromise = Promise.resolve(arg);
+      if (!fs.exists(arg) && !fs.statSync(arg).isDirectory()) {
+        const settingDirectory = arg;
+        directoryPromise = new Promise((resolve, reject) => {
+          fsUtils.mkpdir(settingDirectory, err => {
+            if (err) {
+              reject(err);
+            }
+            resolve(settingDirectory);
+          });
+        });
+        directoryPromise;
+        // throw new Error("Unable to find the smart structure directory " + arg);
       }
       return arg;
+
+      // return "";
     }
+    // coerce: arg => {
+    // }
   },
   inSelfDirectory: {
     description: "add a directory for the new smart structure (not compatible with smartStructurePath)",

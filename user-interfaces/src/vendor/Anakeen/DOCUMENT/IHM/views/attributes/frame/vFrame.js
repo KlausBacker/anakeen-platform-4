@@ -347,13 +347,16 @@ define([
       documentModel = this.model.getDocumentModel();
 
       this.model.trigger("internalLinkSelected", internalEvent, eventOptions);
-      if (event.prevent) {
-        return this;
-      }
-
-      documentModel.trigger("actionAttributeLink", internalEvent, eventOptions);
-
-      return this;
+      return EventPromiseUtils.getBeforeEventPromise(
+        internalEvent,
+        () => {
+          documentModel.trigger("actionAttributeLink", internalEvent, eventOptions);
+          return this;
+        },
+        () => {
+          return this;
+        }
+      );
     },
 
     _identifyView: function vFrame_identifyView(event) {

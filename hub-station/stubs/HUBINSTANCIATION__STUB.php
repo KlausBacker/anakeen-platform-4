@@ -87,6 +87,14 @@ namespace SmartStructure\Fields {
         */ 
         const hub_instance_language='hub_instance_language';
         /**
+        * Advanced Settings
+        * <ul>
+        * <li> <i>type</i> frame </li>
+        * <li> <i>access</i> ReadWrite </li>
+        * </ul>
+        */ 
+        const hub_instance_advanced_settings='hub_instance_advanced_settings';
+        /**
         * Global assets
         * <ul>
         * <li> <i>type</i> tab </li>

@@ -1,0 +1,77 @@
+.enum-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .enum-grid-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .k-grid-content.k-auto-scrollable {
+      height: 100%;
+      min-height: 0;
+    }
+
+    .k-grid.k-widget.k-display-block {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    a.k-button.k-button-icontext.k-grid-Modify {
+      border: none;
+      background: transparent;
+      color: #157EFB;
+      text-transform: uppercase;
+      font-weight: bold;
+      width: 0;
+      &:focus {
+        box-shadow: none;
+      }
+    }
+  }
+
+  .enum-form-wrapper {
+    display: flex;
+    height: 100%;
+
+    .enum-empty {
+      display: flex;
+      height: 100%;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      background-color: #dedede;
+      font-size: 1.5rem;
+      color: #a4a4a4;
+      > span {
+        font-size: 5rem;
+      }
+    }
+
+    .hide-button {
+      display: none;
+    }
+
+    // "Translate" button
+    a {
+      color: #157EFB;
+      text-transform: uppercase;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    // Overwrite "active"'s switch button (SmartElement)
+    [data-heading="Active"]>div>div{
+      border: none;
+      box-shadow: none;
+      .k-textbox{
+        background: transparent;
+      }
+      // Hide the cross
+      span {
+        display: none;
+      }
+    }
+  }
+}

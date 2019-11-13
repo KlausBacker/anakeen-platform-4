@@ -239,6 +239,10 @@ SQL;
         $sql = "update docattr set accessibility='ReadWrite' where accessibility is null and id !~ '^:'";
         DbManager::query($sql);
 
+        // Thesaurus are only docid
+        $sql = "update docattr set type = 'docid(\"THCONCEPT\")'  where type ~ 'thesaurus';";
+        DbManager::query($sql);
+
         return $ids;
     }
 

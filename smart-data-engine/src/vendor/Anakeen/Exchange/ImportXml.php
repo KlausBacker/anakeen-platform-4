@@ -128,7 +128,7 @@ class ImportXml
 
     public function importXmlFileDocument($xmlfile, &$log)
     {
-        static $families = array();
+        $families = array();
         $dbaccess = DbManager::getDbAccess();
         $log = array(
             "err" => "",

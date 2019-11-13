@@ -89,4 +89,8 @@ class ErrorCodeVALUE
      * @see       \Anakeen\Core\Internal\SmartElement::getAttributeValue
      */
     const VALUE0101 = 'attribute "%s" is not defined for document "%s" (family "%s")';
+    /**
+     * @errorCode The smart field is in read or none access
+     */
+    const VALUE0102 = 'Field "%s" : write access not granted : %s';
 }

@@ -1,0 +1,29 @@
+<?php
+/**
+ * {{label}}
+ * @name: {{name}}
+ * @ns: {{ns}}
+ */
+namespace {{namespace}};
+
+class {{classname}}
+{
+    // Steps
+    {{#steps}}
+    /**
+      * {{{label}}}{{#initial}}
+      * @initialStep : true{{/initial}}
+      */
+    const step_{{name}}="{{name}}";
+    {{/steps}}
+
+    // Transitions
+    {{#transitionModels}}
+    /**
+      * {{label}}{{#arrows}}
+      * @from : {{from}} "{{{fromLabel}}}"
+      * @to   : {{to}} "{{{toLabel}}}"{{/arrows}}
+      */
+    const transition_{{name}}="{{name}}";
+    {{/transitionModels}}
+}

@@ -4,8 +4,10 @@ const xml2js = require("xml2js");
 const fs = require("fs");
 const path = require("path");
 const appConst = require("../utils/appConst");
-
+const fsUtils = require("./plugins/files");
+const signale = require("signale");
 const createTemplates = require("./createSmartStructure/index.js");
+const camelCase = require("camelcase");
 
 const getProcessXml = command => ({
   $: {
@@ -13,11 +15,21 @@ const getProcessXml = command => ({
   }
 });
 
+String.prototype.replaceAll = function(search, replacement) {
+  var target = this;
+  return target.replace(new RegExp(search, "g"), replacement);
+};
+
+// eslint-disable-next-line no-unused-vars
 const convertPathInPhpNamespace = ({ vendorPath, smartStructurePath }) => {
-  return path
-    .relative(vendorPath, smartStructurePath)
-    .split(path.sep)
-    .join("\\");
+  const tmpNameSpacePhp = smartStructurePath.split("vendor/");
+
+  let nameSpacePhp = tmpNameSpacePhp[1].replaceAll("/", "\\");
+  return nameSpacePhp;
+  // return path
+  //   .relative(vendorPath, smartStructurePath)
+  //   .split(path.sep)
+  //   .join("\\");
 };
 
 exports.createSmartStructure = ({
@@ -59,26 +71,38 @@ exports.createSmartStructure = ({
         //Check current path
         const smartPath = path.join(currentPath, "vendor", vendorName, moduleName, "SmartStructures");
         try {
-          return fs.statSync(smartPath).isDirectory();
+          return fs.existsSync(smartPath) && fs.statSync(smartPath).isDirectory();
         } catch (e) {
-          return false;
+          return "";
         }
       });
+
       if (!srcPath) {
-        throw new Error(
-          `Unable to find a smartStructure path for this vendor (${vendorName}), you should create it or indicate the smartStructurePath`
-        );
+        srcPath = path.join(sourcePath, "src", "vendor", vendorName, moduleName, "SmartStructures");
+        fsUtils.mkpdir(srcPath, err => {
+          if (err) {
+            // eslint-disable-next-line no-console
+            console.error(err);
+          }
+          signale.info("No Smart structure directory given : use default path (" + srcPath + ")");
+        });
       }
-      smartStructurePath = path.join(srcPath, "vendor", vendorName, moduleName, "SmartStructures");
+      if (srcPath === path.join(sourcePath, "src")) {
+        srcPath = path.join(sourcePath, "src", "vendor", vendorName, moduleName, "SmartStructures");
+      }
+      smartStructurePath = srcPath;
       vendorPath = path.join(srcPath, "vendor");
     }
     //Create the directory if needed
     let directoryPromise = Promise.resolve(smartStructurePath);
-    const Name = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+    const Name = camelCase(name, { pascalCase: true });
+
+    // a suppr
+    // const Name = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
     if (inSelfDirectory) {
       const smartStructureDirectory = path.join(smartStructurePath, Name);
       directoryPromise = new Promise((resolve, reject) => {
-        fs.mkdir(smartStructureDirectory, err => {
+        fsUtils.mkpdir(smartStructureDirectory, err => {
           if (err) {
             reject(err);
           }

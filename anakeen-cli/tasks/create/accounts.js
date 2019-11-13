@@ -2,6 +2,7 @@ const fs = require("fs");
 const fsUtils = require("../plugins/files");
 const path = require("path");
 const xml2js = require("xml2js");
+const camelCase = require("camelcase");
 
 const createGroupsXML = () => {
   return {
@@ -41,7 +42,9 @@ const createUsersXML = () => {
 
 exports.writeTemplate = (packagePath, { vendorName, moduleName, namespace }) => {
   return new Promise((resolve, reject) => {
-    const accountsDir = path.join(packagePath, "src", "vendor", vendorName, moduleName, "Accounts");
+    const vendorNamePascalCase = camelCase(vendorName, { pascalCase: true });
+    const moduleNamePascalCase = camelCase(moduleName, { pascalCase: true });
+    const accountsDir = path.join(packagePath, "src", "vendor", vendorNamePascalCase, moduleNamePascalCase, "Accounts");
     fs.mkdir(accountsDir, err => {
       if (err) {
         return reject(err);
@@ -53,15 +56,15 @@ exports.writeTemplate = (packagePath, { vendorName, moduleName, namespace }) => 
       fsUtils
         .writeFiles(
           {
-            path: path.join(accountsDir, `100-${moduleName}Roles.xml`),
+            path: path.join(accountsDir, `100-${moduleNamePascalCase}Roles.xml`),
             content: rolesXml
           },
           {
-            path: path.join(accountsDir, `110-${moduleName}Groups.xml`),
+            path: path.join(accountsDir, `110-${moduleNamePascalCase}Groups.xml`),
             content: groupXml
           },
           {
-            path: path.join(accountsDir, `120-${moduleName}Users.xml`),
+            path: path.join(accountsDir, `120-${moduleNamePascalCase}Users.xml`),
             content: usersXml
           }
         )
