@@ -7,6 +7,7 @@ import ListenableEventCallable = AnakeenController.BusEvents.ListenableEventCall
 import ListenableEvent = AnakeenController.BusEvents.ListenableEvent;
 import EVENTS_LIST = AnakeenController.SmartElement.EVENTS_LIST;
 import ControllerOptions = AnakeenController.Types.IControllerOptions;
+import ControllerNotFoundError from "./ControllerNotFoundError";
 // @ts-ignore
 import moduleTemplate from "!!raw-loader!./utils/templates/module.js.mustache";
 import * as $ from "jquery";
@@ -187,7 +188,22 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
       throw error;
     }
   }
-
+  public removeSmartElement(controllerUID) {
+    try {
+      const controller = this.getScopedController(controllerUID) as SmartElementController;
+      this._logVerbose(
+        `remove scoped controller (${controllerUID}) for smart element "${controller.getProperties().initid}"`,
+        "Global"
+      );
+      this._dispatcher.removeController(controllerUID);
+      this._cleanCss();
+    } catch (e) {
+      // Nothing to do : the element is already destroyed
+      if (!(e instanceof ControllerNotFoundError)) {
+        throw e;
+      }
+    }
+  }
   /**
    *
    * @param operation
@@ -288,17 +304,24 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
           if (controllerIDs && controllerIDs.length) {
             for (let j = controllerIDs.length - 1; j >= 0; j--) {
               const controllerUID = controllerIDs[j];
-              const controller = this.getScopedController(controllerUID) as SmartElementController;
-              controller.tryToDestroy().finally(() => {
-                this._logVerbose(
-                  `remove scoped controller (${controllerUID}) for smart element "${
-                    controller.getProperties().initid
-                  }"`,
-                  "Global"
-                );
-                this._dispatcher.removeController(controllerUID);
-                this._cleanCss();
-              });
+              try {
+                const controller = this.getScopedController(controllerUID) as SmartElementController;
+                controller.tryToDestroy({ testDirty: false }).finally(() => {
+                  this._logVerbose(
+                    `remove scoped controller (${controllerUID}) for smart element "${
+                      controller.getProperties().initid
+                    }"`,
+                    "Global"
+                  );
+                  this._dispatcher.removeController(controllerUID);
+                  this._cleanCss();
+                });
+              } catch (e) {
+                // Nothing to do : the element is already destroyed
+                if (!(e instanceof ControllerNotFoundError)) {
+                  throw e;
+                }
+              }
             }
           }
         }

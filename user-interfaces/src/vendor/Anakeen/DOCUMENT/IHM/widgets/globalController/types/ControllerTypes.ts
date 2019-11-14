@@ -582,7 +582,7 @@ export namespace AnakeenController {
        *
        * @return Promise
        */
-      tryToDestroy();
+      tryToDestroy({ testDirty: bool });
     }
 
     export type SmartElementProperty =
