@@ -86,6 +86,8 @@ interface ISmartElementModel extends Backbone.Model {
 
   getValues(): any;
 
+  unautolock(): Promise<any>;
+
   injectJS(jsToInject: string[]): Promise<any>;
 
   injectCSS(cssToInject: string[]): Promise<any>;
@@ -1040,7 +1042,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
    *
    * @return Promise
    */
-  public tryToDestroy() {
+  public tryToDestroy({ testDirty = true } = {}) {
     return new Promise((resolve, reject) => {
       if (!this._model) {
         resolve();
@@ -1062,7 +1064,10 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       this._triggerControllerEvent("beforeClose", null, this._model.getModelProperties())
         .then(() => {
           this._model.trigger("destroy");
-          resolve();
+          this._model
+            .unautolock()
+            .then(resolve)
+            .catch(reject);
         })
         .catch(err => {
           reject("Unable to destroy because before close refuses it : " + err);

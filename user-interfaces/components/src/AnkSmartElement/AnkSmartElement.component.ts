@@ -38,6 +38,7 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
   @Prop({ type: Number, default: -1 }) public revision!: number;
 
   public smartElementWidget: SmartElementController = null;
+  private controllerScopeId: string;
 
   get smartFieldValues(): any {
     return this.getValues();
@@ -256,7 +257,9 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
   }
 
   public tryToDestroy() {
-    return this.smartElementWidget.tryToDestroy();
+    return this.smartElementWidget.tryToDestroy().then(() => {
+      AnakeenGlobalController.removeSmartElement(this.controllerScopeId);
+    });
   }
 
   public injectJS(jsToInject) {
@@ -288,13 +291,15 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
   }
 
   protected _initController(viewData, options = {}) {
-    const scopeId = AnakeenGlobalController.addSmartElement(
+    this.controllerScopeId = AnakeenGlobalController.addSmartElement(
       // @ts-ignore
       this.$refs.ankSEWrapper,
       viewData,
       options
     );
-    this.smartElementWidget = AnakeenGlobalController.getScopedController(scopeId) as SmartElementController;
+    this.smartElementWidget = AnakeenGlobalController.getScopedController(
+      this.controllerScopeId
+    ) as SmartElementController;
     this.listenEvents();
     this.$emit("smartElementLoaded");
     this.$emit("documentLoaded");

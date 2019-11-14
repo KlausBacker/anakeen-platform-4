@@ -22,26 +22,14 @@ CHECK_VERSION=node ./../.devtool/ci/check/checkVersionNpmApp.js
 ## Deps
 ##
 ########################################################################################################################
-
-node_modules:
-	${YARN_BIN} install
-
-src/vendor/Anakeen/XmlSchemas: node_modules
-	rm -fr $@
-	cp -r ../node_modules/@anakeen/anakeen-module-validation/xsd $@
-
-src/vendor/Anakeen/lib/vendor:
-	cd src/vendor/Anakeen/lib; ${COMPOSER_BIN} install --ignore-platform-reqs
-
-Tests/src/vendor/Anakeen/TestUnits/lib/vendor:
-	cd Tests/src/vendor/Anakeen/TestUnits/lib; ${COMPOSER_BIN} install --ignore-platform-reqs
-
-./../.devtool/ci/check/checkPHP/vendor:
-	${COMPOSER_BIN} install --working-dir=./../.devtool/ci/check/checkPHP/ --ignore-platform-reqs
-
-
-install-deps: node_modules src/vendor/Anakeen/XmlSchemas src/vendor/Anakeen/lib/vendor Tests/src/vendor/Anakeen/TestUnits/lib/vendor
+install-deps:
 	@${PRINT_COLOR} "${DEBUG_COLOR}Install deps${RESET_COLOR}\n"
+	${YARN_BIN} install --frozen-lock
+	rm -fr src/vendor/Anakeen/XmlSchemas
+	cp -r ../node_modules/@anakeen/anakeen-module-validation/xsd src/vendor/Anakeen/XmlSchemas
+	${COMPOSER_BIN} install --ignore-platform-reqs --working-dir=src/vendor/Anakeen/lib
+	${COMPOSER_BIN} install --ignore-platform-reqs --working-dir=Tests/src/vendor/Anakeen/TestUnits/lib
+	${COMPOSER_BIN} install --working-dir=./../.devtool/ci/check/checkPHP/ --ignore-platform-reqs
 ########################################################################################################################
 ##
 ## Static analyze
