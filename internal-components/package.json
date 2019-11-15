@@ -1,7 +1,7 @@
 {
   "name": "@anakeen/internal-components",
   "autorelease": true,
-  "version": "1.0.2-RC.2019.1.12",
+  "version": "1.0.2-RC.2019.1.13",
   "description": "Anakeen internal components",
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/npm/internal-components.git",
   "author": "Anakeen",
@@ -22,7 +22,7 @@
     "yarn.lock"
   ],
   "devDependencies": {
-    "@anakeen/user-interfaces": "3.0.0-RC.2019.1.12",
+    "@anakeen/user-interfaces": "3.0.0-RC.2019.1.13",
     "@anakeen/webpack-conf": "1.2.1",
     "@progress/kendo-ui": "^2019.2.710",
     "jquery": "^3.3.1",
