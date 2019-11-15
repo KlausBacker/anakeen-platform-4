@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* tslint:disable:variable-name max-classes-per-file */
-import * as $ from "jquery";
+import $ from "jquery";
 import ControllerNotFoundError from "./ControllerNotFoundError";
 import SmartElementController from "./SmartElementController";
 import { AnakeenController } from "./types/ControllerTypes";

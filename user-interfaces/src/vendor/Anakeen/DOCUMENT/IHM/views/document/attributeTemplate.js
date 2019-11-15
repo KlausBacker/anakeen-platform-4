@@ -241,7 +241,7 @@ export default {
 
             renderElementPromises.push(
               viewImport.then(BackView => {
-                const view = new BackView({
+                const view = new BackView.default({
                   model: currentAttributeModel,
                   originalView: originalView,
                   initializeContent: (config && config.initializeContent) || false,
