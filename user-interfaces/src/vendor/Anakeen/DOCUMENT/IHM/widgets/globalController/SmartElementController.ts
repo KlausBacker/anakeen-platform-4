@@ -1197,6 +1197,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     }
   }
 
+  // noinspection JSMethodCanBeStatic
   private _computeUrl(options) {
     let urlSecondPart = "";
     let locationSearch = "";
@@ -1329,21 +1330,21 @@ export default class SmartElementController extends AnakeenController.BusEvents.
   private _initModelEvents() {
     this._model.listenTo(this._model, "invalid", (model, error) => {
       const result = this._triggerControllerEvent("displayError", null, this.getProperties(), error);
-      if (result) {
+      result.then(() => {
         this.$notification.dcpNotification("showError", error);
-      }
+      });
     });
     this._model.listenTo(this._model, "showError", error => {
       const result = this._triggerControllerEvent("displayError", null, this.getProperties(), error);
-      if (result) {
+      result.then(() => {
         this.$notification.dcpNotification("showError", error);
-      }
+      });
     });
     this._model.listenTo(this._model, "showMessage", msg => {
       const result = this._triggerControllerEvent("displayMessage", null, this.getProperties(), msg);
-      if (result) {
+      result.then(() => {
         this.$notification.dcpNotification("show", msg.type, msg);
-      }
+      });
     });
     this._model.listenTo(this._model, "reload", () => {
       this._model.fetchDocument();
@@ -1835,18 +1836,18 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     });
     this._view.on("showMessage", message => {
       const result = this._triggerControllerEvent("displayMessage", null, this.getProperties(), message);
-      if (result) {
+      result.then(() => {
         this.$notification.dcpNotification("show", message.type, message);
-      }
+      });
     });
     this._view.on("showSuccess", message => {
       if (message) {
         message.type = message.type ? message.type : "success";
       }
       const result = this._triggerControllerEvent("displayMessage", null, this.getProperties(), message);
-      if (result) {
+      result.then(() => {
         this.$notification.dcpNotification("showSuccess", message);
-      }
+      });
     });
     this._view.on("reinit", () => {
       this._initModel(this._getModelValue());
@@ -1908,174 +1909,173 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     const documentServerProperties = this.getProperties();
 
     return new Promise((resolve, reject) => {
-      result = !this._triggerControllerEvent(
+      result = this._triggerControllerEvent(
         "beforeDisplayTransition",
         null,
         this.getProperties(),
         new TransitionInterface(null, $target, nextState, transition)
       );
-      if (result) {
-        reject();
-        return this;
-      }
-
-      // Init transition model
-      transitionElements.model = new TransitionModel({
-        documentId: this._model.id,
-        documentModel: this._model,
-        state: nextState,
-        transition
-      });
-
-      // Init transition view
-      if (withoutInterface !== true) {
-        transitionElements.view = new TransitionView({
-          el: $target,
-          model: transitionElements.model
-        });
-      }
-
-      transitionInterface = new TransitionInterface(transitionElements.model, $target, nextState, transition);
-
-      if (transitionElements.view) {
-        // Propagate afterDisplayChange on renderDone
-        transitionElements.view.once("renderTransitionWindowDone", () => {
-          this._triggerControllerEvent("afterDisplayTransition", null, this.getProperties(), transitionInterface);
-        });
-      }
-
-      // Propagate the beforeTransition
-      transitionElements.model.listenTo(transitionElements.model, "beforeChangeState", event => {
-        event.prevent = !this._triggerControllerEvent(
-          "beforeTransition",
-          null,
-          this.getProperties(),
-          transitionInterface
-        );
-      });
-
-      // Propagate the beforeTransitionClose
-      transitionElements.model.listenTo(transitionElements.model, "beforeChangeStateClose", event => {
-        event.prevent = !this._triggerControllerEvent(
-          "beforeTransitionClose",
-          null,
-          this.getProperties(),
-          transitionInterface
-        );
-      });
-
-      transitionElements.model.listenTo(transitionElements.model, "showError", error => {
-        this._triggerControllerEvent("failTransition", null, this.getProperties(), transitionInterface, error);
-        reject({ documentProperties: documentServerProperties });
-      });
-
-      transitionElements.model.listenTo(transitionElements.model, "success", messages => {
-        if (transitionElements.view) {
-          transitionElements.view.$el.hide();
-          this._view.once("renderDone", () => {
-            transitionElements.view.remove();
-            _.each(messages, message => {
-              this._view.trigger("showMessage", message);
-            });
+      result
+        .then(() => {
+          // Init transition model
+          transitionElements.model = new TransitionModel({
+            documentId: this._model.id,
+            documentModel: this._model,
+            state: nextState,
+            transition
           });
-        }
 
-        // delete the pop up when the render of the pop up is done
-        this._triggerControllerEvent("successTransition", null, this.getProperties(), transitionInterface);
+          // Init transition view
+          if (withoutInterface !== true) {
+            transitionElements.view = new TransitionView({
+              el: $target,
+              model: transitionElements.model
+            });
+          }
 
-        reinitOptions = reinitOptions || { revision: -1 };
-        if (!_.has(reinitOptions, "revision")) {
-          reinitOptions.revision = -1;
-        }
+          transitionInterface = new TransitionInterface(transitionElements.model, $target, nextState, transition);
 
-        // Reinit the main model with last revision
-        this.reinitSmartElement(reinitOptions).then(
-          () => {
-            resolve({ documentProperties: documentServerProperties });
-          },
-          () => {
+          if (transitionElements.view) {
+            // Propagate afterDisplayChange on renderDone
+            transitionElements.view.once("renderTransitionWindowDone", () => {
+              this._triggerControllerEvent("afterDisplayTransition", null, this.getProperties(), transitionInterface);
+            });
+          }
+
+          // Propagate the beforeTransition
+          transitionElements.model.listenTo(transitionElements.model, "beforeChangeState", event => {
+            event.prevent = !this._triggerControllerEvent(
+              "beforeTransition",
+              null,
+              this.getProperties(),
+              transitionInterface
+            );
+          });
+
+          // Propagate the beforeTransitionClose
+          transitionElements.model.listenTo(transitionElements.model, "beforeChangeStateClose", event => {
+            event.prevent = !this._triggerControllerEvent(
+              "beforeTransitionClose",
+              null,
+              this.getProperties(),
+              transitionInterface
+            );
+          });
+
+          transitionElements.model.listenTo(transitionElements.model, "showError", error => {
+            this._triggerControllerEvent("failTransition", null, this.getProperties(), transitionInterface, error);
             reject({ documentProperties: documentServerProperties });
-          }
-        );
-      });
+          });
 
-      transitionElements.model.listenTo(this._model, "sync", function smartElementController_TransitionClose() {
-        // @ts-ignore
-        this.trigger("close");
-      });
+          transitionElements.model.listenTo(transitionElements.model, "success", messages => {
+            if (transitionElements.view) {
+              transitionElements.view.$el.hide();
+              this._view.once("renderDone", () => {
+                transitionElements.view.remove();
+                _.each(messages, message => {
+                  this._view.trigger("showMessage", message);
+                });
+              });
+            }
 
-      transitionElements.model.fetch({
-        error: (theModel, response, options) => {
-          const errorTxt: { title: string; message?: string } = {
-            title: "Transition Error"
-          };
-          if (options && options.errorThrown) {
-            errorTxt.message = options.errorThrown;
-          }
-          this.$notification.dcpNotification("showError", errorTxt);
-          transitionElements.model.trigger("showError", errorTxt);
-        },
-        success: () => {
-          if (withoutInterface === true) {
-            transitionElements.model
-              ._loadDocument(transitionElements.model)
-              .then(() => {
-                if (values) {
-                  transitionElements.model.setValues(values);
-                }
-                if (_.isFunction(transitionElementsCallBack)) {
-                  try {
-                    transitionElementsCallBack(transitionElements);
-                  } catch (e) {
-                    // nothing to do;
-                  }
-                }
-              })
-              .then(() => {
-                transitionElements.model.save(
-                  {},
-                  {
-                    error: () => {
-                      reject({
-                        documentProperties: documentServerProperties
-                      });
-                    },
-                    success: () => {
-                      transitionElements.model.trigger("success");
-                      resolve({
-                        documentProperties: documentServerProperties
-                      });
+            // delete the pop up when the render of the pop up is done
+            this._triggerControllerEvent("successTransition", null, this.getProperties(), transitionInterface);
+
+            reinitOptions = reinitOptions || { revision: -1 };
+            if (!_.has(reinitOptions, "revision")) {
+              reinitOptions.revision = -1;
+            }
+
+            // Reinit the main model with last revision
+            this.reinitSmartElement(reinitOptions).then(
+              () => {
+                resolve({ documentProperties: documentServerProperties });
+              },
+              () => {
+                reject({ documentProperties: documentServerProperties });
+              }
+            );
+          });
+
+          transitionElements.model.listenTo(this._model, "sync", function smartElementController_TransitionClose() {
+            // @ts-ignore
+            this.trigger("close");
+          });
+
+          transitionElements.model.fetch({
+            error: (theModel, response, options) => {
+              const errorTxt: { title: string; message?: string } = {
+                title: "Transition Error"
+              };
+              if (options && options.errorThrown) {
+                errorTxt.message = options.errorThrown;
+              }
+              this.$notification.dcpNotification("showError", errorTxt);
+              transitionElements.model.trigger("showError", errorTxt);
+            },
+            success: () => {
+              if (withoutInterface === true) {
+                transitionElements.model
+                  ._loadDocument(transitionElements.model)
+                  .then(() => {
+                    if (values) {
+                      transitionElements.model.setValues(values);
                     }
-                  }
-                );
-              })
-              .catch(function transitionModel_error() {
-                reject({ documentProperties: documentServerProperties });
-              });
-          } else {
-            transitionElements.model
-              ._loadDocument(transitionElements.model)
-              .then(() => {
-                if (values) {
-                  transitionElements.model.setValues(values);
-                }
-                if (_.isFunction(transitionElementsCallBack)) {
-                  try {
-                    transitionElementsCallBack(transitionElements);
-                  } catch (e) {
-                    // nothing to do;
-                  }
-                }
-              })
-              .then(() => {
-                transitionElements.model.trigger("dduiDocumentReady");
-              })
-              .catch(() => {
-                reject({ documentProperties: documentServerProperties });
-              });
-          }
-        }
-      });
+                    if (_.isFunction(transitionElementsCallBack)) {
+                      try {
+                        transitionElementsCallBack(transitionElements);
+                      } catch (e) {
+                        // nothing to do;
+                      }
+                    }
+                  })
+                  .then(() => {
+                    transitionElements.model.save(
+                      {},
+                      {
+                        error: () => {
+                          reject({
+                            documentProperties: documentServerProperties
+                          });
+                        },
+                        success: () => {
+                          transitionElements.model.trigger("success");
+                          resolve({
+                            documentProperties: documentServerProperties
+                          });
+                        }
+                      }
+                    );
+                  })
+                  .catch(function transitionModel_error() {
+                    reject({ documentProperties: documentServerProperties });
+                  });
+              } else {
+                transitionElements.model
+                  ._loadDocument(transitionElements.model)
+                  .then(() => {
+                    if (values) {
+                      transitionElements.model.setValues(values);
+                    }
+                    if (_.isFunction(transitionElementsCallBack)) {
+                      try {
+                        transitionElementsCallBack(transitionElements);
+                      } catch (e) {
+                        // nothing to do;
+                      }
+                    }
+                  })
+                  .then(() => {
+                    transitionElements.model.trigger("dduiDocumentReady");
+                  })
+                  .catch(() => {
+                    reject({ documentProperties: documentServerProperties });
+                  });
+              }
+            }
+          });
+        })
+        .catch(reject);
     });
   }
 

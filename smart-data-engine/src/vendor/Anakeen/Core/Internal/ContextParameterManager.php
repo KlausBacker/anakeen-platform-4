@@ -64,10 +64,10 @@ class ContextParameterManager
 
     /**
      * Set value to a user parameter
-     * @param string $ns        parameter namespace
-     * @param string $name      parameter name
-     * @param string $val       new value (if null the user value will be deleted)
-     * @param int    $accountId (user system id)  - 0 means current user id
+     * @param string $ns parameter namespace
+     * @param string $name parameter name
+     * @param string $val new value (if null the user value will be deleted)
+     * @param int $accountId (user system id)  - 0 means current user id
      * @throws Exception
      */
     public static function setUserValue(string $ns, string $name, $val, int $accountId = 0)
@@ -79,13 +79,47 @@ class ContextParameterManager
     }
 
     /**
+     * Get value to a user parameter
+     * If the user has not a specific value, return the common value
+     * If the common value is not found return $def
+     * @param string $ns parameter namespace
+     * @param string $name parameter name
+     * @param int $accountId (user system id)  - 0 means current user id
+     * @param mixed $def the return value if not found
+     * @return string the value or $def if not found
+     */
+    public static function getUserValue(string $ns, string $name, int $accountId, $def = null)
+    {
+        $key = $ns . '::' . $name;
+        $sqlRequest = sprintf(
+            "select paramv.val from paramdef, paramv where paramdef.name = paramv.name and paramv.type='%s' and paramdef.name='%s';",
+            pg_escape_string("U" . $accountId),
+            pg_escape_string($key)
+        );
+
+        DbManager::query($sqlRequest, $output, true, true);
+        if ($output === false) {
+            if (!self::$cache) {
+                self::initCache();
+            }
+            if (isset(self::$cache[$key])) {
+                return self::$cache[$key];
+            }
+            return $def;
+        }
+
+        return $output;
+    }
+
+
+    /**
      * get namespace if parameter name if found and unique
      * @param string $name
      * @return string the namespace (empty if not)
      */
     public static function getNs(string $name)
     {
-        $sql=sprintf("select name from paramdef where name ~ '::%s$'", pg_escape_string($name));
+        $sql = sprintf("select name from paramdef where name ~ '::%s$'", pg_escape_string($name));
         DbManager::query($sql, $results, true);
         if (count($results) === 1) {
             list($ns) = explode("::", $results[0]);
@@ -96,7 +130,7 @@ class ContextParameterManager
 
     public static function getValue(string $ns, string $name, $def = null)
     {
-        $key=$ns.'::'.$name;
+        $key = $ns . '::' . $name;
         if (isset(self::$volatile[$key])) {
             return self::$volatile[$key];
         }
@@ -117,14 +151,14 @@ class ContextParameterManager
 
     public static function setVolatile($ns, $name, $val)
     {
-        $key=$ns.'::'.$name;
+        $key = $ns . '::' . $name;
         if ($val !== null) {
             self::$volatile[$key] = $val;
         } else {
             unset(self::$volatile[$key]);
         }
     }
-    
+
     protected static function initCache()
     {
         $sql = sprintf("select  paramv.* from paramv where type = 'G'");
@@ -133,6 +167,7 @@ class ContextParameterManager
             self::$cache[$param["name"]] = $param["val"];
         }
     }
+
     protected static function initCacheUser()
     {
         $sql = sprintf("select  paramv.* from paramv where type = 'U%d'", ContextManager::getCurrentUser()->id);
@@ -140,6 +175,6 @@ class ContextParameterManager
         foreach ($params as $param) {
             self::$cache[$param["name"]] = $param["val"];
         }
-        self::$cacheUser=true;
+        self::$cacheUser = true;
     }
 }
