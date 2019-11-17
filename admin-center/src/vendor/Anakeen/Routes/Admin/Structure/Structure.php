@@ -39,7 +39,7 @@ class Structure
     public function doRequest()
     {
         $s=new \Anakeen\Search\Internal\SearchSmartData("", -1);
-        $s->setOrder("name, id");
+        $s->setOrder("title, name");
 
         $this->filterRequest($s);
         $s->setObjectReturn();

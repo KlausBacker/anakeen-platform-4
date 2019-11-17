@@ -43,4 +43,7 @@ export default class AdminCenterStructureController extends Vue {
     }
     // this.$refs.ssmTabs.selectSs(this.selectedTab);
   }
+  protected gotoParentStructure(structureId){
+    this.selectedSS = structureId.toString();
+  }
 }

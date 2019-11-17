@@ -211,14 +211,19 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
     const result = [];
     if (response && response.data && response.data.data) {
       const items = response.data.data.defaultValues;
+      const fields = response.data.data.fields;
       Object.keys(items).map(item => {
         if (!this.unsupportedType.includes(items[item].type)) {
-          result.push({
-            config: items[item].config,
-            id: item,
-            type: items[item].type,
-            value: items[item].value
-          });
+          const field =  fields.find(field => field.id === item)
+          if(field)
+          {
+            result.push({
+              config: items[item].config,
+              label: field.labeltext,
+              type: items[item].type,
+              value: items[item].value
+            });
+          }
         }
       });
       return result;

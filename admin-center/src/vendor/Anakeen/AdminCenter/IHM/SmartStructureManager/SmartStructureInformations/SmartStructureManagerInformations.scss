@@ -24,6 +24,25 @@
         font-weight: bold;
         margin-right: 0.5rem;
       }
+
+      .se-property-family {
+        color: #157efb;
+        font-weight: bold;
+        text-transform: uppercase;
+        background-color: transparent;
+        box-shadow: none;
+        border: none;
+        padding-right: 0.5rem;
+        padding-left: 0.5rem;
+
+        &:hover {
+          color: white;
+          font-weight: bold;
+          background-color: #157efb;
+          box-shadow: none;
+          border: none;
+        }
+      }
     }
   }
 }

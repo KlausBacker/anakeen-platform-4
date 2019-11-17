@@ -11,7 +11,7 @@
             <tbody>
                 <tr v-for="(property, index) in propertiesList" :key="index">
                     <td class="se-properties-description" style="width: 13rem;">{{property.label}}</td>
-                    <td class="se-properties-value"><span v-html="renderPropValue(property.id, property.value)"></span></td>
+                    <td class="se-properties-value"><span @click="gotoParentStructure(property.value.id)" v-html="renderPropValue(property.id, property.value)"></span></td>
                 </tr>
             </tbody>
         </table>

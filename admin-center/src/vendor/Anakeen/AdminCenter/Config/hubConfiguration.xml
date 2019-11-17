@@ -206,7 +206,6 @@
         </hge_jsassets>
         <hge_component_tag>ank-admin-trash-manager</hge_component_tag>
         <hub_execution_roles name="AC_FUNCADMIN,AC_TRASHMANAGER">document multiple</hub_execution_roles>
-        </hubconfigurationgeneric>
     </hubconfigurationgeneric>
     <hubconfigurationlabel name="HUBA_LABEL">
         <hub_station_id name="ADMINCENTER">Admin Center/Admin Center</hub_station_id>

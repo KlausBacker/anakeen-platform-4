@@ -9,7 +9,7 @@ Vue.use(DataSourceInstaller);
     prop: "selected"
   }
 })
-export default class WorkflowListController extends Vue {
+export default class SmartStructureListController extends Vue {
   @Prop({
     default: true,
     type: [Boolean, Object]
@@ -67,22 +67,22 @@ export default class WorkflowListController extends Vue {
   }
 
   public readData(options) {
-    kendo.ui.progress($(this.$refs.ssWflList as HTMLElement), true);
+    kendo.ui.progress($(this.$refs.ssList as HTMLElement), true);
     this.$http
       .get(`/api/v2/admin/smart-structures/all`, {
         params: options.data,
         paramsSerializer: kendo.jQuery.param
       })
       .then(response => {
-        kendo.ui.progress($(this.$refs.ssWflList as HTMLElement), false);
+        kendo.ui.progress($(this.$refs.ssList as HTMLElement), false);
         options.success(response);
         this.$nextTick(() => {
           this.autoScrollOnSelected();
-          this.$emit("wfl-list-ready", this.parseData(response));
+          this.$emit("ss-list-ready", this.parseData(response));
         });
       })
       .catch(error => {
-        kendo.ui.progress($(this.$refs.ssWflList as HTMLElement), false);
+        kendo.ui.progress($(this.$refs.ssList as HTMLElement), false);
         options.error(error);
       });
   }
@@ -102,7 +102,7 @@ export default class WorkflowListController extends Vue {
   }
   public mounted() {
     // @ts-ignore
-    this.dataSource = this.$refs.wflDataSource.kendoWidget();
+    this.dataSource = this.$refs.ssDataSource.kendoWidget();
     this.dataSource.read();
   }
 
@@ -110,6 +110,11 @@ export default class WorkflowListController extends Vue {
     if (this.dataSource) {
       let filterObject = {
         filters: [
+          {
+            field: "title",
+            operator: "contains",
+            value: filterValue
+          },
           {
             field: "name",
             operator: "contains",

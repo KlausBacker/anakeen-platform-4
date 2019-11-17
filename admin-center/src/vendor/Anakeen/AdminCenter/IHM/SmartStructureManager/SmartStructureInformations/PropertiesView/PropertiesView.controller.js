@@ -25,7 +25,7 @@ const PROPS_LABELS = {
   revision: "Revision",
   version: "Version",
   workflow: "Workflow",
-  family: "Structure",
+  family: "Parent Structure",
   createdBy: "Created by",
   "security.lock.lockedBy": "Locked by",
   confidential: "Confidential",
@@ -138,6 +138,9 @@ export default {
         if (propId === "creationDate" || propId === "lastModificationDate") {
           return this.formatDate(propValue);
         }
+        if (propId === "family") {
+          return `<a role="button" class="k-button se-property-family">${propValue.title}</a>`;
+        }
         if (propId === "tags") {
           return Object.keys(propValue)
             .map(key => {
@@ -157,6 +160,9 @@ export default {
         }
       }
       return "None";
+    },
+    gotoParentStructure(structureId) {
+      this.$parent.$emit("parent-structure-selected", structureId);
     }
   }
 };

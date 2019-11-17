@@ -12,7 +12,7 @@
             <template slot="label">
               <span class="ssm-informations-title">Informations</span>
             </template>
-            <ssm-info class="ssm-info" :ssName="selectedSS"></ssm-info>
+            <ssm-info class="ssm-info" :ssName="selectedSS" @parent-structure-selected="gotoParentStructure"></ssm-info>
           </ank-tab>
           <ank-tab :closable="false" name="defaultValues">
             <template slot="label">
