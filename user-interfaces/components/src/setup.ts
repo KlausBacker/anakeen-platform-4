@@ -1,4 +1,5 @@
 import "@progress/kendo-ui/js/cultures/kendo.culture.fr-FR";
+import "@progress/kendo-ui/js/kendo.core";
 import VueI18n from "vue-i18n";
 import I18nSetup from "../mixins/AnkVueComponentMixin/I18nSetup.js";
 import axios from "../utils/axios";

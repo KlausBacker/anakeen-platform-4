@@ -28,7 +28,9 @@ export default {
     AnkLogout: path.resolve(BASE_PATH, "src/AnkLogout/index.ts"),
     AnkSEGrid: path.resolve(BASE_PATH, "src/AnkSEGrid/index.ts"),
     AnkSEList: path.resolve(BASE_PATH, "src/AnkSEList/index.ts"),
-    AnkSETabs: path.resolve(BASE_PATH, "src/AnkSETabs/index.ts"),
+    AnkSmartElementTabs: path.resolve(BASE_PATH, "src/AnkSETabs/SmartElementTabs.ts"),
+    AnkSmartElementTab: path.resolve(BASE_PATH, "src/AnkSETabs/SmartElementTab.ts"),
+    AnkTab: path.resolve(BASE_PATH, "src/AnkSETabs/Tab.ts"),
     AnkSmartForm: path.resolve(BASE_PATH, "src/AnkSmartForm/index.ts"),
     AnkSmartElement: path.resolve(BASE_PATH, "src/AnkSmartElement/index.ts"),
     setup: path.resolve(BASE_PATH, "src/setup.ts")

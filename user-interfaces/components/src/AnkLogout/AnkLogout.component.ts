@@ -1,3 +1,4 @@
+import "@progress/kendo-ui/js/kendo.progressbar";
 import { Component, Mixins, Prop } from "vue-property-decorator";
 import EventUtilsMixin from "../../mixins/AnkVueComponentMixin/EventUtilsMixin";
 import I18nMixin from "../../mixins/AnkVueComponentMixin/I18nMixin";
