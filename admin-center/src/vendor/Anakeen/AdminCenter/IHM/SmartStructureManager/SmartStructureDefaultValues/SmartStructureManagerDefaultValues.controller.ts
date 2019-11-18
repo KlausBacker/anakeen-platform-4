@@ -214,15 +214,28 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
       const fields = response.data.data.fields;
       Object.keys(items).map(item => {
         if (!this.unsupportedType.includes(items[item].type)) {
-          const field =  fields.find(field => field.id === item)
+          let field =  fields.find(element => element.id === item)
           if(field)
           {
-            result.push({
-              config: items[item].config,
-              label: field.labeltext,
-              type: items[item].type,
-              value: items[item].value
-            });
+            // TODO : Refactor as a recursive function
+            // Construct label /w parent architecture
+            let constructingLabel = [field.labeltext]
+            let finalLabel = "";
+            while(field.parentId)
+            {
+              const parentField = fields.find(element => element.id === field.parentId)
+              constructingLabel.push(parentField.labeltext)
+              field = parentField;
+            }
+            constructingLabel = constructingLabel.reverse();
+            finalLabel = constructingLabel.join(" / ");
+
+              result.push({
+                config: items[item].config,
+                label: finalLabel,
+                type: items[item].type,
+                value: items[item].value,
+              });
           }
         }
       });
