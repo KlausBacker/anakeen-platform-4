@@ -1,0 +1,24 @@
+<migration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="migrationRules.xsd">
+
+    <action id="resyncfallId" label="Resynchronise fallid">
+        <condition>
+            <sql-assert-empty label="verify no one fallid in docread table">
+                select id from docread where fallid is not null;
+            </sql-assert-empty>
+            <sql-assert-not-empty label="verify no one fallid in docread table">
+                select id from doc where fallid is not null limit 1;
+            </sql-assert-not-empty>
+        </condition>
+        <process>
+            <sql-query label="Sync fallid to docread">
+                update docread set fallid = doc.fallid from doc where docread.id = doc.id and doc.fallid is not null;
+            </sql-query>
+        </process>
+        <check>
+            <sql-assert-not-empty label="verify some fallid in docread table are now presents">
+                select id from docread where fallid is not null;
+            </sql-assert-not-empty>
+        </check>
+    </action>
+</migration>

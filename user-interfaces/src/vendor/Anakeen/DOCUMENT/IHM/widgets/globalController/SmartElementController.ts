@@ -1049,6 +1049,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
         return;
       }
       if (
+        testDirty &&
         this._model &&
         this._model.isModified() &&
         !window.confirm(
