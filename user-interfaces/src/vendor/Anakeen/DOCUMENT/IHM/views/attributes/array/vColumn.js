@@ -86,7 +86,8 @@ define([
                   this.model.trigger("beforeRender", event, {
                     model: this.model,
                     $el: $el,
-                    index: index
+                    index: index,
+                    options: { customTemplate: !!customView }
                   });
                   if (event.prevent) {
                     resolve();
@@ -97,7 +98,8 @@ define([
                     this.model.trigger("renderDone", {
                       model: this.model,
                       $el: $el,
-                      index: index
+                      index: index,
+                      options: { customTemplate: true }
                     });
                     this.moveValueIndex({});
                     resolve($el);
@@ -108,7 +110,8 @@ define([
                         this.model.trigger("renderDone", {
                           model: this.model,
                           $el: $el,
-                          index: index
+                          index: index,
+                          options: { customTemplate: false }
                         });
                         this.moveValueIndex({});
                         resolve();

@@ -59,7 +59,8 @@ define([
             //Trigger the beforeRender event, and cancel display if asked
             currentView.model.trigger("beforeRender", event, {
               model: currentView.model,
-              $el: currentView.$el
+              $el: currentView.$el,
+              options: { customTemplate: currentView.options.originalView !== true }
             });
             if (event.prevent) {
               resolve(currentView);
@@ -176,7 +177,10 @@ define([
             currentView.$el.attr("data-attrid", currentView.model.id);
             currentView.model.trigger("renderDone", {
               model: currentView.model,
-              $el: currentView.$el
+              $el: currentView.$el,
+              options: {
+                customTemplate: !!currentView.customView
+              }
             });
             if (
               currentView.$el.find(
@@ -330,9 +334,18 @@ define([
                       ")"
                   );
                 }
+
+
+
                 currentWidgetOption.viewCid = _.uniqueId(currentWidgetOption.viewCid);
                 currentViewColumn.widgetInit($this, currentWidgetOption);
                 currentViewColumn.moveValueIndex({});
+                currentViewColumn.model.trigger("renderDone", {
+                  model: currentViewColumn.model,
+                  $el: $this,
+                  options: { customTemplate: $this.data("originalView") === false },
+                  index: options.line
+                });
               },
               { index: options.line }
             );

@@ -374,7 +374,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     if (!attributeModel) {
       return null;
     }
-    return new AttributeInterface(this._getAttributeModel(smartField)) as ISmartField;
+    return new AttributeInterface(attributeModel) as ISmartField;
   }
 
   /**
@@ -1493,7 +1493,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
         }
       }
     });
-    this._model.listenTo(this._model, "beforeAttributeRender", (event, attributeId, $el, index) => {
+    this._model.listenTo(this._model, "beforeAttributeRender", (event, attributeId, $el, index, options) => {
       try {
         const currentAttribute = this.getSmartField(attributeId);
         event.promise = this._triggerAttributeControllerEvent(
@@ -1503,7 +1503,8 @@ export default class SmartElementController extends AnakeenController.BusEvents.
           this.getProperties(),
           currentAttribute,
           $el,
-          index
+          index,
+          options
         );
       } catch (error) {
         if (!(error instanceof ErrorModelNonInitialized)) {
@@ -1511,7 +1512,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
         }
       }
     });
-    this._model.listenTo(this._model, "attributeRender", (attributeId, $el, index) => {
+    this._model.listenTo(this._model, "attributeRender", (attributeId, $el, index, options) => {
       try {
         const currentAttribute = this.getSmartField(attributeId);
         this._triggerAttributeControllerEvent(
@@ -1521,7 +1522,8 @@ export default class SmartElementController extends AnakeenController.BusEvents.
           this.getProperties(),
           currentAttribute,
           $el,
-          index
+          index,
+          options
         );
       } catch (error) {
         if (!(error instanceof ErrorModelNonInitialized)) {

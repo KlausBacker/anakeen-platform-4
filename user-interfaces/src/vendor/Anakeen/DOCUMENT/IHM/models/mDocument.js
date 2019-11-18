@@ -826,11 +826,11 @@ define([
         });
         //Propagate the renderDone event of the attributes to the model
         currentModel.listenTo(value, "renderDone", function mDocumentsetValuesListenRenderDone(options) {
-          currentModel.trigger("attributeRender", options.model.id, options.$el, options.index);
+          currentModel.trigger("attributeRender", options.model.id, options.$el, options.index, options.options);
         });
         //Propagate the beforeRender event of the attributes to the model
         currentModel.listenTo(value, "beforeRender", function mDocumentsetValuesListenBeforeRender(event, options) {
-          currentModel.trigger("beforeAttributeRender", event, options.model.id, options.$el, options.index);
+          currentModel.trigger("beforeAttributeRender", event, options.model.id, options.$el, options.index, options.options);
         });
         //Propagate the array event modified to the model
         currentModel.listenTo(value, "array", function mDocumentsetValuesListenArray(type, model, options) {
