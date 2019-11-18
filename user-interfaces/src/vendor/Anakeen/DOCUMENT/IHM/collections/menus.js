@@ -1,5 +1,4 @@
 import Backbone from "backbone";
-import _ from "underscore";
 import ModelMenu from "../models/mMenu";
 
 export default Backbone.Collection.extend({

@@ -21,10 +21,17 @@ const MONOREPO_PATH = path.resolve(BASE_PATH, "../..");
 // rollup.config.js
 export default {
   input: {
-    AnkSmartForm: path.resolve(BASE_PATH, "src/AnkSmartForm/index.ts"),
     AnkAuthent: path.resolve(BASE_PATH, "src/AnkAuthent/index.ts"),
-    AnakeenController: path.resolve(BASE_PATH, "src/AnkController/index.ts"),
-    AnkSmartElement: path.resolve(BASE_PATH, "src/AnkSmartElement/index.ts")
+    AnkController: path.resolve(BASE_PATH, "src/AnkController/index.ts"),
+    AnkIdentity: path.resolve(BASE_PATH, "src/AnkIdentity/index.ts"),
+    AnkLoading: path.resolve(BASE_PATH, "src/AnkLoading/index.ts"),
+    AnkLogout: path.resolve(BASE_PATH, "src/AnkLogout/index.ts"),
+    AnkSEGrid: path.resolve(BASE_PATH, "src/AnkSEGrid/index.ts"),
+    AnkSEList: path.resolve(BASE_PATH, "src/AnkSEList/index.ts"),
+    AnkSETabs: path.resolve(BASE_PATH, "src/AnkSETabs/index.ts"),
+    AnkSmartForm: path.resolve(BASE_PATH, "src/AnkSmartForm/index.ts"),
+    AnkSmartElement: path.resolve(BASE_PATH, "src/AnkSmartElement/index.ts"),
+    setup: path.resolve(BASE_PATH, "src/setup.ts")
   },
   output: {
     dir: OUTPUT_DIR,

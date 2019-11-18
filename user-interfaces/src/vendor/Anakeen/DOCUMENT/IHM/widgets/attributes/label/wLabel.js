@@ -1,5 +1,4 @@
 import $ from "jquery";
-import _ from "underscore";
 import Mustache from "mustache";
 import "../../widget";
 

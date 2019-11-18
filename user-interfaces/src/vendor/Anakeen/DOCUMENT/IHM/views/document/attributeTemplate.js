@@ -196,7 +196,6 @@ export default {
         displayLabel = $(this).data("displaylabel") === true,
         currentAttributeModel = documentModel.get("attributes").get(attrId),
         attrContent = "NO VIEW FOR " + attrId,
-        view = "",
         viewImport = null,
         // guess if the template is the true version (without template, only the widget)
         originalView = $(this).data("originalview") === true;

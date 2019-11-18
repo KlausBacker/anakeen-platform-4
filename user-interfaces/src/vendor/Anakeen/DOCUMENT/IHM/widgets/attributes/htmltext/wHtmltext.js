@@ -64,9 +64,9 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
             currentWidget.options.attributeValue.value = currentWidget.ckEditorInstance.getData();
             bindInitEvent();
           })
-          .catch((error) => {
+          .catch(error => {
             console.error(error);
-            currentWidget._trigger("displayNetworkError")
+            currentWidget._trigger("displayNetworkError");
           });
       } else {
         bind_super();

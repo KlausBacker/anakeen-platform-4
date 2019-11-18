@@ -1,5 +1,4 @@
 import $ from "jquery";
-/*global define*/
 
 var ErrorNoSuchMethod = function widget_ErrorNoSuchMethod(message) {
   this.name = "noSuchMethodError";

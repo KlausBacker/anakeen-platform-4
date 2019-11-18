@@ -1,13 +1,4 @@
 import "@progress/kendo-ui/js/cultures/kendo.culture.fr-FR";
-import "@progress/kendo-ui/js/kendo.button";
-import "@progress/kendo-ui/js/kendo.dropdownlist";
-import "@progress/kendo-ui/js/kendo.listview";
-import "@progress/kendo-ui/js/kendo.pager";
-import "@progress/kendo-ui/js/kendo.popup";
-import "@progress/kendo-ui/js/kendo.sortable";
-import "@progress/kendo-ui/js/kendo.tabstrip";
-import "@progress/kendo-ui/js/kendo.tabstrip";
-import "@progress/kendo-ui/js/kendo.window";
 import VueI18n from "vue-i18n";
 import I18nSetup from "../mixins/AnkVueComponentMixin/I18nSetup.js";
 import axios from "../utils/axios";

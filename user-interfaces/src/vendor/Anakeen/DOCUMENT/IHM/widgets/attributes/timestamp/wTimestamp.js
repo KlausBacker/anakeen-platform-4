@@ -1,5 +1,4 @@
 import $ from "jquery";
-import _ from "underscore";
 import "../date/wDate";
 
 $.widget("dcp.dcpTimestamp", $.dcp.dcpDate, {

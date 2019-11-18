@@ -29,11 +29,11 @@ var checkTouchEvents = function checkTouchEvents() {
 export default Backbone.View.extend({
   className: "dcpDocument container-fluid",
 
-    events: {
-      'click .dcpDocument__body a[href^="#action/"], .dcpDocument__body a[data-action], .dcpDocument__body button[data-action]':
-        "propagateActionClick",
-      'click .dcpDocument__body a[href^="#"]': "handleHashClick"
-    },
+  events: {
+    'click .dcpDocument__body a[href^="#action/"], .dcpDocument__body a[data-action], .dcpDocument__body button[data-action]':
+      "propagateActionClick",
+    'click .dcpDocument__body a[href^="#"]': "handleHashClick"
+  },
 
   /**
    * Init event
