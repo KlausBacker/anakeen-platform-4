@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/workflow",
-  "version": "2.0.0-RC.2019.1.13",
+  "version": "2.0.0-RC.2019.1.14",
   "description": "Workflow functionality for documents",
   "main": "index.js",
   "scripts": {
@@ -16,6 +16,6 @@
     "/constants/*.js"
   ],
   "devDependencies": {
-    "@anakeen/anakeen-cli": "1.2.0-RC.2019.1.13"
+    "@anakeen/anakeen-cli": "1.2.0-RC.2019.1.14"
   }
 }
