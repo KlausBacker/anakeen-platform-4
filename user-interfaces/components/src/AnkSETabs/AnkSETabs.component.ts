@@ -13,7 +13,7 @@ import { TabPosition, TabTypes } from "./TabsTypes";
 })
 export default class Tabs extends Vue {
   @Prop({ type: String }) public value!: string;
-  @Prop({ type: String }) public selected!: string;
+  @Prop({ type: String, default: null }) public selected!: string;
   @Prop({ type: String }) public type!: TabTypes;
   @Prop({ default: false, type: Boolean }) public closable!: boolean;
   @Prop({ default: false, type: Boolean }) public addable!: boolean;
