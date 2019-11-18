@@ -49,6 +49,7 @@ create index docty_docread on docread(doctype);";
         "wid",
         "postitid",
         "cvid",
+        "fallid",
         "name",
         "dprofid",
         "views",
