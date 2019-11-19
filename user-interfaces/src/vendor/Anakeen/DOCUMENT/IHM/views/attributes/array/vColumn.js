@@ -89,38 +89,39 @@ define([
                     index: index,
                     options: { customTemplate: !!customView }
                   });
-                  if (event.prevent) {
+
+                  EventPromiseUtils.getBeforeEventPromise(event, () => {
+                    if (customView) {
+                      $el.append(customView);
+                      this.model.trigger("renderDone", {
+                        model: this.model,
+                        $el: $el,
+                        index: index,
+                        options: { customTemplate: true }
+                      });
+                      this.moveValueIndex({});
+                      resolve($el);
+                    } else {
+                      $el.one(
+                        "dcpattributewidgetready .dcpAttribute__content",
+                        _.bind(function vcolumnRender_widgetready() {
+                          this.model.trigger("renderDone", {
+                            model: this.model,
+                            $el: $el,
+                            index: index,
+                            options: { customTemplate: false }
+                          });
+                          this.moveValueIndex({});
+                          resolve();
+                        }, this)
+                      );
+                      this.widgetInit($el, data);
+                      attributeTemplate.insertDescription(this, $el.parent());
+                      resolve();
+                    }
+                  }).catch(() => {
                     resolve();
-                    return this;
-                  }
-                  if (customView) {
-                    $el.append(customView);
-                    this.model.trigger("renderDone", {
-                      model: this.model,
-                      $el: $el,
-                      index: index,
-                      options: { customTemplate: true }
-                    });
-                    this.moveValueIndex({});
-                    resolve($el);
-                  } else {
-                    $el.one(
-                      "dcpattributewidgetready .dcpAttribute__content",
-                      _.bind(function vcolumnRender_widgetready() {
-                        this.model.trigger("renderDone", {
-                          model: this.model,
-                          $el: $el,
-                          index: index,
-                          options: { customTemplate: false }
-                        });
-                        this.moveValueIndex({});
-                        resolve();
-                      }, this)
-                    );
-                    this.widgetInit($el, data);
-                    attributeTemplate.insertDescription(this, $el.parent());
-                    resolve();
-                  }
+                  });
                 } catch (error) {
                   if (window.dcp.logger) {
                     window.dcp.logger(error);

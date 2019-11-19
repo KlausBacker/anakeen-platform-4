@@ -7,7 +7,7 @@ define([
   "dcpDocument/views/attributes/vAttribute",
   "dcpDocument/views/attributes/array/vArray",
   "dcpDocument/views/document/attributeTemplate",
-  "dcpDocument/widgets/globalController/utils/EventUtils.js"
+  "dcpDocument/widgets/globalController/utils/EventUtils"
 ], function require_vFrame(
   $,
   _,
@@ -67,7 +67,7 @@ define([
             model: currentView.model,
             $el: currentView.$el,
             options: {
-              customTemplate: currentView.model.getOption("template") && currentView.options.originalView !== true
+              customTemplate: !!currentView.model.getOption("template") && currentView.options.originalView !== true
             }
           });
 
