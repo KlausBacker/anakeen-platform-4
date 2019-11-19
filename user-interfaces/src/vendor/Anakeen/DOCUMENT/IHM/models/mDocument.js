@@ -830,7 +830,14 @@ define([
         });
         //Propagate the beforeRender event of the attributes to the model
         currentModel.listenTo(value, "beforeRender", function mDocumentsetValuesListenBeforeRender(event, options) {
-          currentModel.trigger("beforeAttributeRender", event, options.model.id, options.$el, options.index, options.options);
+          currentModel.trigger(
+            "beforeAttributeRender",
+            event,
+            options.model.id,
+            options.$el,
+            options.index,
+            options.options
+          );
         });
         //Propagate the array event modified to the model
         currentModel.listenTo(value, "array", function mDocumentsetValuesListenArray(type, model, options) {

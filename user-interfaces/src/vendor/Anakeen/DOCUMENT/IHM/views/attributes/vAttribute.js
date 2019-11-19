@@ -783,7 +783,11 @@ define([
 
     triggerRenderDone: function vAttribute_triggerRenderDone() {
       if (this.noRenderEvent !== false && this.renderDone && this.widgetReady && !this.triggerRender) {
-        this.model.trigger("renderDone", { model: this.model, $el: this.$el, options:{customTemplate:!!this.customView} });
+        this.model.trigger("renderDone", {
+          model: this.model,
+          $el: this.$el,
+          options: { customTemplate: !!this.customView }
+        });
         this.triggerRender = true;
       }
     },
