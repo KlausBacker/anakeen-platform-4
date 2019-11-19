@@ -4,13 +4,15 @@
   height: 100%;
   width: 100%;
   flex-direction: column;
-  overflow-y:hidden;
+  overflow-y: hidden;
   min-height: 0;
+
   & /deep/ {
     .k-grid-header {
       background: #F5F5F5;
       border-bottom: 1px solid rgba(33, 37, 41, 0.125);
     }
+
     .k-grid-header .k-header {
       border: 1px solid rgba(33, 37, 41, 0.125);
       border-bottom-width: 0;
@@ -18,8 +20,9 @@
 
       &[data-index="0"] {
         border-left-width: 0;
-        border-right: 1px solid rgba(33, 37, 41, 0.125); ;
+        border-right: 1px solid rgba(33, 37, 41, 0.125);;
         border-top-width: 0;
+
         & + .k-header {
           border-top-width: 0;
         }
@@ -64,6 +67,14 @@
     .k-treelist.k-grid {
       flex: 1;
       border-width: 0;
+
+      col {
+        &:first-child {
+          width: 10rem;
+        }
+
+        width: 3rem;
+      }
     }
 
     .k-grid .rightColumn {
@@ -77,6 +88,30 @@
     .right-inherited {
       color: grey;
     }
+
+    td.right--over {
+      background-color: var(--primary);
+
+      .right-inherited {
+        color:#f6f6f6;
+      }
+    }
+
+    $myblue:var(--primary);
+    table[role=treegrid] tr:nth-of-type(even) {
+      td.right--over {
+        background-color: #1f6ada;
+
+      }
+    }
+
+    table thead.rotated th[role=columnheader].right--over {
+      > div.header-acl-label {
+        background-color: var(--primary);
+        color:white;
+      }
+    }
+
   }
 
   .profile-toolbar {
@@ -90,17 +125,18 @@
     background: #f1f1f1;
     align-items: center;
     padding: 0.75rem 0;
+
     .detach-button {
       margin-right: .75rem;
     }
   }
 
- .profile-error-content{
-   position: relative;
-   top: 40%;
-   left: 50%;
-   transform: translateY(-50%);
- }
+  .profile-error-content {
+    position: relative;
+    top: 40%;
+    left: 50%;
+    transform: translateY(-50%);
+  }
 
   .container-fluid {
     padding-right: 0;
