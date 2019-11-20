@@ -68,4 +68,5 @@
 
 <style scoped lang="scss">
 @import "./profile.scss";
+@import "./profile-header-rotate.scss";
 </style>
