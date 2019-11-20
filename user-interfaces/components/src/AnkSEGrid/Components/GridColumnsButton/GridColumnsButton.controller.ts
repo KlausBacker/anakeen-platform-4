@@ -1,4 +1,5 @@
 import "@progress/kendo-ui/js/kendo.button";
+import $ from "jquery";
 import { Component, Mixins, Prop, Watch } from "vue-property-decorator";
 import I18nMixin from "../../../../mixins/AnkVueComponentMixin/I18nMixin";
 

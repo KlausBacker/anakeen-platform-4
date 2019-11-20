@@ -1,4 +1,5 @@
 import Vue from "vue";
+import $ from "jquery";
 
 import "@progress/kendo-ui/js/kendo.filtercell";
 import "@progress/kendo-ui/js/kendo.grid";

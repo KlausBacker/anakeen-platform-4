@@ -52,7 +52,6 @@
     "lint": "npx eslint ./src"
   },
   "files": [
-    "lib/**/*",
     "constants/*.js",
     "components/**/*",
     "src/**/*.scss",
