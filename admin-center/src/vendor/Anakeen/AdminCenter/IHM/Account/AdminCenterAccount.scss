@@ -25,6 +25,7 @@
     &.splitter-tree > .splitpanes__pane:first-child {
       min-width: 30rem;
     }
+
     &.splitter-grid > .splitpanes__pane:first-child {
       min-width: 40rem;
     }
@@ -32,6 +33,7 @@
     .tree-view-part {
       display: flex;
       flex-direction: column;
+      height: 100%;
 
       * {
         min-height: 0;
@@ -48,6 +50,7 @@
       }
     }
   }
+
   .user-empty {
     height: 100%;
     align-items: center;
@@ -57,6 +60,7 @@
     background-color: #dedede;
     font-size: 1.5rem;
     color: #a4a4a4;
+
     .token-logo {
       .material-icons {
         font-size: 5rem;
@@ -188,6 +192,7 @@
 .accountManager_contentPart_gridPart {
   height: 100%;
 }
+
 .accountManager_contentPart_gridPart .k-grid {
   height: 100%;
   display: flex !important;
@@ -231,10 +236,17 @@
 .select-container {
   width: auto !important;
 
-  .k-list-optionlabel {
-    background-color: #eee;
-    color: #333;
+  .k-state-selected.k-item {
+    background-color: unset;
+    color: unset;
   }
+
+  .k-list-optionlabel {
+    background-color: var(--primary);
+    color: var(--white);
+    cursor: default;
+  }
+
 
   li.k-item {
     white-space: nowrap;
