@@ -151,6 +151,23 @@ class TestCaseRoutes extends \Dcp\Pu\TestCaseDcpCommonFamily
                 );
                 if (is_array($expectedValue)) {
                     $nextKey = $keys . (empty($keys) ? $currentKey : ".$currentKey");
+
+                    if ( !empty($data[$currentKey][0])) {
+                        $this->assertEquals(
+                            count($expectedValue),
+                            count($data[$currentKey]),
+                            sprintf(
+                                'Wrong value for key "%s.%s" [api result : %s] // [expected : %s].' . "\n"
+                                . 'See file "%s"',
+                                $keys,
+                                $currentKey,
+                                var_export($data[$currentKey], true),
+                                var_export($expectedValue, true),
+                                $this->jsonResultFile
+                            )
+                        );
+                    }
+
                     $this->verifyData($data[$currentKey], $expectedValue, $nextKey);
                 } else {
                     if ($expectedValue === "%isoDate%") {
@@ -202,8 +219,10 @@ class TestCaseRoutes extends \Dcp\Pu\TestCaseDcpCommonFamily
 
 
         $expectedResult = str_replace('%baseURL%', URLUtils::getBaseURL(), $expectedResult);
-        $expectedResult = str_replace('%userName%', ContextManager::getCurrentUser()->getAccountName(), $expectedResult);
-        $expectedResult = str_replace('%userDocName%', SEManager::getTitle(ContextManager::getCurrentUser()->fid), $expectedResult);
+        $expectedResult = str_replace('%userName%', ContextManager::getCurrentUser()->getAccountName(),
+            $expectedResult);
+        $expectedResult = str_replace('%userDocName%', SEManager::getTitle(ContextManager::getCurrentUser()->fid),
+            $expectedResult);
         $expected = json_decode($expectedResult, true);
         $this->assertNotEmpty($expected, sprintf("Fail decode expected json : %s", $expectedResult));
 

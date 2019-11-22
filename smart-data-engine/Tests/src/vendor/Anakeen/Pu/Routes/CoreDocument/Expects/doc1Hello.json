@@ -23,7 +23,26 @@
                     "value": null,
                     "displayValue": null
                 },
-                "tst_api__docid_multiple": [],
+                "tst_api__docid_multiple": [{
+                    "familyRelation": "TST_API_ALLTYPE",
+                    "url": "\/api\/v2\/smart-elements\/1.html",
+                    "icon": "\/api\/v2\/images\/assets\/sizes\/14x14c\/doc.png",
+                    "revision": -1,
+                    "initid": 1,
+                    "fromid": 0,
+                    "value": "1",
+                    "displayValue": "de base"
+                },
+                    {
+                        "familyRelation": "TST_API_ALLTYPE",
+                        "url": "\/api\/v2\/smart-elements\/128.html",
+                        "icon": "\/api\/v2\/images\/assets\/sizes\/14x14c\/se-iuser.png",
+                        "revision": -1,
+                        "initid": 128,
+                        "fromid": 0,
+                        "value": "128",
+                        "displayValue": "Utilisateur"
+                    }],
                 "tst_api__date": {
                     "value": "2018-01-31",
                     "displayValue": "31\/01\/2018"
@@ -57,8 +76,13 @@
                     "displayValue": "#cf2929"
                 },
                 "tst_api__file": {
-                    "value": null,
-                    "displayValue": null
+                    "size": "6",
+                    "fileName": "Hello.txt",
+                    "url": "%regexp%/^\\/api\\//u",
+                    "mime": "text\/plain",
+                    "icon": "\/api\/v2\/images\/assets\/sizes\/20x20c\/mime-txt.png",
+                    "value": "%regexp%/^text.plain|[0-9]+]|Hello.txt\\//u",
+                    "displayValue": "Hello.txt"
                 },
                 "tst_api__image": {
                     "value": null,
