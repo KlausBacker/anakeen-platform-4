@@ -216,88 +216,104 @@ class ImportXml
         foreach ($la as $k => & $v) {
             $n = $dom->getElementsByTagName($v->id);
             $val = array();
+
             /**
              * @var \DomElement $item
              */
             foreach ($n as $item) {
-                switch ($v->type) {
-                    case 'array':
-                        break;
-
-                    case 'docid':
-                    case 'account':
-                        $id = $item->getAttribute("id");
-                        if (!$id) {
-                            $logicalName = $item->getAttribute("name");
-                            $name = $item->getAttribute("name");
-                            if ($name) {
-                                if (strpos($name, ',') !== false) {
-                                    $names = explode(',', $name);
-                                    $lids = array();
-                                    foreach ($names as $lname) {
-                                        $lids[] = \Anakeen\Core\SEManager::getIdFromName($lname);
-                                    }
-                                    $id = implode(",", $lids);
-                                } else {
-                                    $id = \Anakeen\Core\SEManager::getIdFromName($name);
-                                }
-                            }
-                            if (!$id) {
-                                // search from title
-                                if ($item->nodeValue) {
-                                    $afamid = $v->format;
-                                    $id = getIdFromTitle($dbaccess, $item->nodeValue, $afamid);
-                                    if (!$id) {
-                                        $msg .= sprintf(
-                                            _("No identifier found for relation '%s' %s in %s file") . "\n",
-                                            $logicalName ? $logicalName : $item->nodeValue,
-                                            $v->id,
-                                            $xmlfile
-                                        );
-                                    }
-                                }
-                            }
-                        }
-                        if ($v->getOption("multiple") == "yes") {
-                                $id = explode(",", $id);
-                        }
-                        $val[] = $id;
-                        break;
-
-                    case 'image':
-                    case 'file':
-                        $href = $item->getAttribute("href");
-                        if ($href) {
-                            $val[] = $href;
+                if ($item->getAttribute("xsi:nil") === "true") {
+                    if ($v->getOption("multiple") === "yes") {
+                        $val[] = "{}";
+                    } else {
+                        if ($v->inArray()) {
+                            $val[] = DELVALUE;
                         } else {
-                            $vid = $item->getAttribute("vid");
-                            $mime = $item->getAttribute("mime");
-                            $title = $item->getAttribute("title");
-                            if ($vid) {
-                                $val[] = "$mime|$vid|$title";
-                            } else {
-                                $val[] = '';
-                            }
+                            $val[] = DELVALUE;
                         }
-                        break;
+                    }
+                } else {
+                    switch ($v->type) {
+                        case 'array':
+                            break;
 
-                    case 'htmltext':
-                        $val[] = str_replace("\n", " ", str_replace(">\n", ">", $item->nodeValue));
-                        break;
+                        case 'docid':
+                        case 'account':
+                            $id = $item->getAttribute("id");
+                            if (!$id) {
+                                $logicalName = $item->getAttribute("name");
+                                $name = $item->getAttribute("name");
+                                if ($name) {
+                                    if (strpos($name, ',') !== false) {
+                                        $names = explode(',', $name);
+                                        $lids = array();
+                                        foreach ($names as $lname) {
+                                            $lids[] = \Anakeen\Core\SEManager::getIdFromName($lname);
+                                        }
+                                        $id = implode(",", $lids);
+                                    } else {
+                                        $id = \Anakeen\Core\SEManager::getIdFromName($name);
+                                    }
+                                }
+                                if (!$id) {
+                                    // search from title
+                                    if ($item->nodeValue) {
+                                        $afamid = $v->format;
+                                        $id = getIdFromTitle($dbaccess, $item->nodeValue, $afamid);
+                                        if (!$id) {
+                                            $msg .= sprintf(
+                                                _("No identifier found for relation '%s' %s in %s file") . "\n",
+                                                $logicalName ? $logicalName : $item->nodeValue,
+                                                $v->id,
+                                                $xmlfile
+                                            );
+                                        }
+                                    }
+                                }
+                            }
+                            if ($v->getOption("multiple") == "yes" && $id) {
+                                $id = explode(",", $id);
+                            }
+                            $val[] = $id;
+                            break;
 
-                    default:
-                        $val[] = $item->nodeValue;
+                        case 'image':
+                        case 'file':
+                            $href = $item->getAttribute("href");
+                            if ($href) {
+                                $val[] = $href;
+                            } else {
+                                $vid = $item->getAttribute("vid");
+                                $mime = $item->getAttribute("mime");
+                                $title = $item->getAttribute("title");
+                                if ($vid) {
+                                    $val[] = "$mime|$vid|$title";
+                                } else {
+                                    $val[] = '';
+                                }
+                            }
+                            break;
+
+                        case 'htmltext':
+                            $val[] = str_replace("\n", " ", str_replace(">\n", ">", $item->nodeValue));
+                            break;
+
+                        default:
+                            $val[] = $item->nodeValue;
+                    }
                 }
-                //  print $v->id.":".$item->nodeValue."\n";
             }
             $tord[] = $v->id;
             if (isset($val[0]) && !$v->inArray()) {
-                $rawval=$val[0];
+                $rawval = $val[0];
                 if (is_array($rawval)) {
-                    $rawval=SmartElement::arrayToRawValue($rawval);
+                    $rawval = SmartElement::arrayToRawValue($rawval);
                 }
             } else {
-                $rawval=SmartElement::arrayToRawValue($val);
+                if (count($val) === 1 && $val[0] === DELVALUE) {
+                    $rawval = "{}";
+                } else {
+                    $rawval = SmartElement::arrayToRawValue($val);
+                }
             }
             $tdoc[] = $rawval;
         }
@@ -403,7 +419,10 @@ class ImportXml
                 $buffer = fgets($f, 4096);
                 $mediaindex++;
                 if (preg_match("/<([a-z_0-9-]+)[^>]*mime=\"[^\"]+\"(.*)>(.*)/", $buffer, $reg)) {
-                    if ((substr($reg[2], -1) != "/") && (substr($reg[2], -strlen($reg[1]) - 3) != '></' . $reg[1])) { // not empty tag
+                    if ((substr($reg[2], -1) != "/") && (substr(
+                        $reg[2],
+                        -strlen($reg[1]) - 3
+                    ) != '></' . $reg[1])) { // not empty tag
                         $tag = $reg[1];
                         if (preg_match("/<([a-z_0-9-]+)[^>]*title=\"([^\"]+)\"/", $buffer, $regtitle)) {
                             $title = \XMLSplitter::unescapeEntities($regtitle[2]);
@@ -431,7 +450,10 @@ class ImportXml
                             throw new \Anakeen\Exception("IMPC0008", $fi);
                         }
                         if (preg_match("/(.*)(<$tag [^>]*)>/", $buffer, $regend)) {
-                            self::fputsError($nf, $regend[1] . $regend[2] . ' href="' . \XMLSplitter::escapeEntities($rfin) . '">');
+                            self::fputsError(
+                                $nf,
+                                $regend[1] . $regend[2] . ' href="' . \XMLSplitter::escapeEntities($rfin) . '">'
+                            );
                         }
                         if (preg_match("/>([^<]*)<\/$tag>(.*)/", $buffer, $regend)) {
                             // end of file
