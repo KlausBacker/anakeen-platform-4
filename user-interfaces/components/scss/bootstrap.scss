@@ -1,2 +1,8 @@
+@import "~@anakeen/theme-variables/scss/variables/corporate";
 @import "~@anakeen/theme-variables/scss/variables/fonts.scss";
 @import "~@progress/kendo-theme-bootstrap/modules/bootstrap/scss/bootstrap";
+
+//font-size
+html {
+  font-size: $ank-ui-font-size;
+}
