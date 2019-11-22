@@ -344,7 +344,7 @@ define([
                 }
               }
               $(window.document)
-                .on("drop.v" + this.model.cid + " dragover." + this.model.cid, function vDocumentPreventDragDrop(e) {
+                .on("drop.v" + this.model.cid + " dragover.v" + this.model.cid, function vDocumentPreventDragDrop(e) {
                   e.preventDefault();
                 })
                 .on("redrawErrorMessages.v" + this.model.cid, function vDocumentRedrawErrorMessages() {
@@ -1059,8 +1059,8 @@ define([
           console.error(e);
         }
       }
-      $(window).off("." + this.model.cid);
-      $(window.document).off("." + this.model.cid);
+      $(window).off(".v" + this.model.cid);
+      $(window.document).off(".v" + this.model.cid);
 
       return Backbone.View.prototype.remove.call(this);
     }
