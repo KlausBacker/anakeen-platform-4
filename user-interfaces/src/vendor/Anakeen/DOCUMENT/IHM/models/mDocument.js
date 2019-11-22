@@ -776,68 +776,68 @@ export default Backbone.Model.extend({
         renderMode: currentModel.get("renderMode")
       });
 
-        //Set the internal content collection (for structure attributes)
-        value.each(function mDocumentsetValuesEachAttributes(currentAttributeModel) {
-          if (currentAttributeModel.get("isValueAttribute")) {
-            return;
-          }
-          var childAttributes = value.filter(function mDocumentsetValuesEachAttributesFilter(candidateChildModel) {
-            return candidateChildModel.get("parent") === currentAttributeModel.id;
-          });
-          if (childAttributes.length > 0) {
-            currentAttributeModel.setContentCollection(childAttributes);
-          }
+      //Set the internal content collection (for structure attributes)
+      value.each(function mDocumentsetValuesEachAttributes(currentAttributeModel) {
+        if (currentAttributeModel.get("isValueAttribute")) {
+          return;
+        }
+        var childAttributes = value.filter(function mDocumentsetValuesEachAttributesFilter(candidateChildModel) {
+          return candidateChildModel.get("parent") === currentAttributeModel.id;
         });
-        //Propagate the change event to the model
-        currentModel.listenTo(value, "change:attributeValue", function mDocumentsetValuesListenChange(model) {
-          _.defer(function mDocumentAttributeChangerTrigger() {
-            currentModel.trigger("changeValue", {
-              attributeId: model.id
-            });
-          });
-        });
-        //Propagate the validate event to the model
-        currentModel.listenTo(value, "constraint", function mDocumentsetValuesListenConstraint(options) {
-          currentModel.trigger("constraint", options.model.id, options.response);
-        });
-        //Propagate the renderDone event of the attributes to the model
-        currentModel.listenTo(value, "renderDone", function mDocumentsetValuesListenRenderDone(options) {
-          currentModel.trigger("attributeRender", options.model.id, options.$el, options.index);
-        });
-        //Propagate the beforeRender event of the attributes to the model
-                currentModel.listenTo(value, "beforeRender", function mDocumentsetValuesListenBeforeRender(event, options) {
-          currentModel.trigger(
-            "beforeAttributeRender",
-            event,
-            options.model.id,
-            options.$el,
-            options.index,
-            options.options
-          );
-        });
-        //Propagate the array event modified to the model
-        currentModel.listenTo(value, "array", function mDocumentsetValuesListenArray(type, model, options) {
-          currentModel.trigger("arrayModified", {
-            attributeId: model.id,
-            type: type,
-            options: options
+        if (childAttributes.length > 0) {
+          currentAttributeModel.setContentCollection(childAttributes);
+        }
+      });
+      //Propagate the change event to the model
+      currentModel.listenTo(value, "change:attributeValue", function mDocumentsetValuesListenChange(model) {
+        _.defer(function mDocumentAttributeChangerTrigger() {
+          currentModel.trigger("changeValue", {
+            attributeId: model.id
           });
         });
-        //Propagate the event externalLinkSelected to the model
-        currentModel.listenTo(value, "internalLinkSelected", function mDocumentsetValuesListenLinkSelected(
+      });
+      //Propagate the validate event to the model
+      currentModel.listenTo(value, "constraint", function mDocumentsetValuesListenConstraint(options) {
+        currentModel.trigger("constraint", options.model.id, options.response);
+      });
+      //Propagate the renderDone event of the attributes to the model
+      currentModel.listenTo(value, "renderDone", function mDocumentsetValuesListenRenderDone(options) {
+        currentModel.trigger("attributeRender", options.model.id, options.$el, options.index);
+      });
+      //Propagate the beforeRender event of the attributes to the model
+      currentModel.listenTo(value, "beforeRender", function mDocumentsetValuesListenBeforeRender(event, options) {
+        currentModel.trigger(
+          "beforeAttributeRender",
           event,
-          options
-        ) {
-          currentModel.trigger("internalLinkSelected", event, options);
+          options.model.id,
+          options.$el,
+          options.index,
+          options.options
+        );
+      });
+      //Propagate the array event modified to the model
+      currentModel.listenTo(value, "array", function mDocumentsetValuesListenArray(type, model, options) {
+        currentModel.trigger("arrayModified", {
+          attributeId: model.id,
+          type: type,
+          options: options
         });
-        //Propagate the event downloadFile to the model
-        currentModel.listenTo(value, "downloadFile", function mDocumentsetValuesListenDownloadfile(
-          event,
-          attrid,
-          options
-        ) {
-          currentModel.trigger("downloadFile", event, attrid, options);
-        });
+      });
+      //Propagate the event externalLinkSelected to the model
+      currentModel.listenTo(value, "internalLinkSelected", function mDocumentsetValuesListenLinkSelected(
+        event,
+        options
+      ) {
+        currentModel.trigger("internalLinkSelected", event, options);
+      });
+      //Propagate the event downloadFile to the model
+      currentModel.listenTo(value, "downloadFile", function mDocumentsetValuesListenDownloadfile(
+        event,
+        attrid,
+        options
+      ) {
+        currentModel.trigger("downloadFile", event, attrid, options);
+      });
 
       //Propagate the event uploadFile to the model
       currentModel.listenTo(value, "uploadFile", function mDocumentListenUploadfileStart(event, attrid, options) {

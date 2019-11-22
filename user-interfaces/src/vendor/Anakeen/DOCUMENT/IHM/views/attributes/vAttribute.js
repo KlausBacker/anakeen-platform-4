@@ -110,11 +110,11 @@ export default Backbone.View.extend({
           event = { prevent: false },
           customRender;
 
-          currentView.model.trigger("beforeRender", event, {
-            model: currentView.model,
-            $el: currentView.$el,
-            options: { customTemplate: currentView.options.originalView !== true }
-          });
+        currentView.model.trigger("beforeRender", event, {
+          model: currentView.model,
+          $el: currentView.$el,
+          options: { customTemplate: currentView.options.originalView !== true }
+        });
 
         EventPromiseUtils.getBeforeEventPromise(
           event,
@@ -771,12 +771,12 @@ export default Backbone.View.extend({
     this.triggerRenderDone();
   },
 
-    triggerRenderDone: function vAttribute_triggerRenderDone() {
-      if (this.noRenderEvent !== false && this.renderDone && this.widgetReady && !this.triggerRender) {
-        this.model.trigger("renderDone", { model: this.model, $el: this.$el });
-        this.triggerRender = true;
-      }
-    },
+  triggerRenderDone: function vAttribute_triggerRenderDone() {
+    if (this.noRenderEvent !== false && this.renderDone && this.widgetReady && !this.triggerRender) {
+      this.model.trigger("renderDone", { model: this.model, $el: this.$el });
+      this.triggerRender = true;
+    }
+  },
 
   remove: function vAttributeRemove() {
     try {

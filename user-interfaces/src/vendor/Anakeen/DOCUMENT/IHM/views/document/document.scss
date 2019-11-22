@@ -28,11 +28,6 @@
 @import "../../widgets/workflow/transition";
 
 
-html {
-  font-size: $ank-ui-font-size;
-}
-.dcpDocument {
-}
 .dcpDocument__body {
   padding-top: 1.166rem;
 }
@@ -86,10 +81,6 @@ html {
   bottom: 0;
   width: 100%;
   z-index: 2;
-}
-
-body {
-  /*margin-bottom: 20px;*/
 }
 
 .dcpDocument__tabs .nav-tabs > li.active > a {

@@ -314,33 +314,33 @@ export default Backbone.View.extend({
                 _.delay(_.bind(this.scrollTabList, this), 500);
               }
 
-                if (this.kendoTabs.length > 0 && this.kendoTabs.data("kendoTabStrip")) {
-                  var selectTab = 'li[data-attrid="' + this.selectedTab + '"]';
-                  if (this.selectedTab && $(selectTab).length > 0) {
-                    this.kendoTabs.data("kendoTabStrip").select(selectTab);
-                  } else {
-                    this.kendoTabs.data("kendoTabStrip").select(0);
-                  }
+              if (this.kendoTabs.length > 0 && this.kendoTabs.data("kendoTabStrip")) {
+                var selectTab = 'li[data-attrid="' + this.selectedTab + '"]';
+                if (this.selectedTab && $(selectTab).length > 0) {
+                  this.kendoTabs.data("kendoTabStrip").select(selectTab);
+                } else {
+                  this.kendoTabs.data("kendoTabStrip").select(0);
                 }
               }
-              $(window.document)
-                .on("drop.v" + this.model.cid + " dragover.v" + this.model.cid, function vDocumentPreventDragDrop(e) {
-                  e.preventDefault();
-                })
-                .on("redrawErrorMessages.v" + this.model.cid, function vDocumentRedrawErrorMessages() {
+            }
+            $(window.document)
+              .on("drop.v" + this.model.cid + " dragover.v" + this.model.cid, function vDocumentPreventDragDrop(e) {
+                e.preventDefault();
+              })
+              .on("redrawErrorMessages.v" + this.model.cid, function vDocumentRedrawErrorMessages() {
+                documentView.redrawTootips();
+              });
+            $(window).on(
+              "resize.v" + this.model.cid,
+              _.debounce(
+                function vDocumentResizeDebounce() {
                   documentView.redrawTootips();
-                });
-              $(window).on(
-                "resize.v" + this.model.cid,
-                _.debounce(
-                  function vDocumentResizeDebounce() {
-                    documentView.redrawTootips();
-                    documentView.scrollTobVisibleTab();
-                  },
-                  100,
-                  false
-                )
-              );
+                  documentView.scrollTobVisibleTab();
+                },
+                100,
+                false
+              )
+            );
 
             this.$el.addClass("dcpDocument--show");
 
@@ -1021,25 +1021,25 @@ export default Backbone.View.extend({
     throw new Error("Unknown template  " + key);
   },
 
-    /**
-     * Destroy the associated widget and suppress event listener before remov the dom
-     *
-     * @returns {*}
-     */
-    remove: function vDocumentRemove() {
-      try {
-        if (this.kendoTabs && this.kendoTabs.data("kendoTabStrip")) {
-          this.kendoTabs.data("kendoTabStrip").destroy();
-        }
-      } catch (e) {
-        if (window.dcp.logger) {
-          window.dcp.logger(e);
-        } else {
-          console.error(e);
-        }
+  /**
+   * Destroy the associated widget and suppress event listener before remov the dom
+   *
+   * @returns {*}
+   */
+  remove: function vDocumentRemove() {
+    try {
+      if (this.kendoTabs && this.kendoTabs.data("kendoTabStrip")) {
+        this.kendoTabs.data("kendoTabStrip").destroy();
       }
-      $(window).off(".v" + this.model.cid);
-      $(window.document).off(".v" + this.model.cid);
+    } catch (e) {
+      if (window.dcp.logger) {
+        window.dcp.logger(e);
+      } else {
+        console.error(e);
+      }
+    }
+    $(window).off(".v" + this.model.cid);
+    $(window.document).off(".v" + this.model.cid);
 
     return Backbone.View.prototype.remove.call(this);
   }

@@ -22,12 +22,6 @@ module.exports = () => {
           __dirname,
           "../src/vendor/Anakeen/DOCUMENT/IHM/mainDocument.js"
         )
-      ],
-      smartElementController: [
-        path.resolve(
-          __dirname,
-          "../src/vendor/Anakeen/DOCUMENT/IHM/widgets/globalController/index.ts"
-        )
       ]
     },
     buildPath: PUBLIC_PATH,
@@ -45,16 +39,6 @@ module.exports = () => {
         compilerOptions: {
           declaration: true
         }
-      }),
-      addDll({
-        context: BASE_DIR,
-        manifest: path.join(
-          PUBLIC_PATH,
-          "Anakeen",
-          "assets",
-          "legacy",
-          "KendoUI-manifest.json"
-        )
       }),
       addFalseKendoGlobal([/dcpExternals\/KendoUI\/KendoUI/]),
       cssLoader()

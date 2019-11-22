@@ -1,24 +1,11 @@
-/*global define, console*/
-define([
-  "jquery",
-  "underscore",
-  "backbone",
-  "mustache",
-  "dcpDocument/views/attributes/vAttribute",
-  "dcpDocument/views/attributes/array/vArray",
-  "dcpDocument/views/document/attributeTemplate",
-  "dcpDocument/widgets/globalController/utils/EventUtils.js"
-], function require_vFrame(
-  $,
-  _,
-  Backbone,
-  Mustache,
-  ViewAttribute,
-  ViewAttributeArray,
-  attributeTemplate,
-  EventPromiseUtils
-) {
-  "use strict";
+import $ from "jquery";
+import _ from "underscore";
+import Backbone from "backbone";
+import Mustache from "mustache";
+import ViewAttribute from "../vAttribute";
+import ViewAttributeArray from "../array/vArray";
+import attributeTemplate from "../../document/attributeTemplate";
+import * as EventPromiseUtils from "../../../widgets/globalController/utils/EventUtils";
 
 export default Backbone.View.extend({
   className: "card card-default dcpFrame",
@@ -63,13 +50,13 @@ export default Backbone.View.extend({
           contentData,
           promiseAttributes = [];
 
-          currentView.model.trigger("beforeRender", event, {
-            model: currentView.model,
-            $el: currentView.$el,
-            options: {
-              customTemplate: !!currentView.model.getOption("template") && currentView.options.originalView !== true
-            }
-          });
+        currentView.model.trigger("beforeRender", event, {
+          model: currentView.model,
+          $el: currentView.$el,
+          options: {
+            customTemplate: !!currentView.model.getOption("template") && currentView.options.originalView !== true
+          }
+        });
 
         const renderPromise = EventPromiseUtils.getBeforeEventPromise(
           event,
@@ -155,32 +142,32 @@ export default Backbone.View.extend({
               attributeTemplate.insertDescription(currentView);
             }
 
-              if (currentView.model.getOption("collapse") === "collapse") {
-                currentView.toggle(null, true);
-              }
-            },
-            () => {}
-          );
-          renderPromise.finally(() =>
-            Promise.all(promiseAttributes)
-              .then(function allRenderDone() {
-                currentView.model.trigger("renderDone", {
-                  model: currentView.model,
-                  $el: currentView.$el,
-                  options: {
-                    customTemplate: !!currentView.customView
-                  }
-                });
-                if (currentView.model.getOption("responsiveColumns")) {
-                  currentView.responsiveColumns();
+            if (currentView.model.getOption("collapse") === "collapse") {
+              currentView.toggle(null, true);
+            }
+          },
+          () => {}
+        );
+        renderPromise.finally(() =>
+          Promise.all(promiseAttributes)
+            .then(function allRenderDone() {
+              currentView.model.trigger("renderDone", {
+                model: currentView.model,
+                $el: currentView.$el,
+                options: {
+                  customTemplate: !!currentView.customView
                 }
-                resolve(currentView);
-              })
-              .catch(reject)
-          );
-        }, this)
-      );
-    },
+              });
+              if (currentView.model.getOption("responsiveColumns")) {
+                currentView.responsiveColumns();
+              }
+              resolve(currentView);
+            })
+            .catch(reject)
+        );
+      }, this)
+    );
+  },
 
   setResponsiveClasse: function vFrame_setResponsiveClasse() {
     var _this = this;
