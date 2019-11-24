@@ -23,8 +23,10 @@
                                                 </div>
                                             </div>`}">
       <kendo-grid-column :title="'<b>Label</b>'" :field="'label'" :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol" ></kendo-grid-column>
-      <kendo-grid-column :hidden=true :title="'<b>Type</b>'" width="10rem" :field="'type'" :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol" ></kendo-grid-column>
-      <kendo-grid-column :title="'<b>Value</b>'" :field="'value'" :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol" :template="displayData('value')"></kendo-grid-column>
+      <kendo-grid-column :hidden="true" :title="'<b>Type</b>'" width="10rem" :field="'type'" :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol" ></kendo-grid-column>
+      <kendo-grid-column :title="'<b>Parent Value</b>'" :field="'parentValue'" :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol" :template="displayData('parentValue')"></kendo-grid-column>
+      <kendo-grid-column :title="'<b>Raw Value</b>'" :field="'rawValue'" :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol" :template="displayData('rawValue')"></kendo-grid-column>
+      <kendo-grid-column :title="'<b>Display Value</b>'" :field="'displayValue'" :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol" :template="displayData('displayValue')"></kendo-grid-column>
       <kendo-grid-column :title="''" width="6.5rem" :command="{click:onEditClick, text: 'Modify' }"></kendo-grid-column>
     </kendo-grid>
     <modal name="ssm-modal" width="50%" height="50%" @before-open="beforeEdit">
