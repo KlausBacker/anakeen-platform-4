@@ -117,6 +117,7 @@ class ModuleJob
         $data["action"] = $module->getMainPhase();
         $data["moduleArg"] = $module->getName();
         $data["file"] = $module->getFile();
+        $data["moduleFileForceInstall"] = $module->isModuleFileForceInstall();
         $data["options"] = $options;
         $dependencies = $module->getDepencies();
         foreach ($dependencies as $dependency) {
@@ -286,7 +287,8 @@ class ModuleJob
         if ($action !== "restore") {
             if ($moduleFileName) {
                 $module = new ModuleManager("");
-                $module->setFile($moduleFileName);
+                $reinstall = self::$jobData["moduleFileForceInstall"] ?? false;
+                $module->setFile($moduleFileName, $reinstall);
             } elseif ($moduleName) {
                 $module = new ModuleManager($moduleName);
             } else {

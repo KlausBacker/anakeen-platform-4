@@ -407,4 +407,12 @@ class ModuleManager
     {
         return $this->name;
     }
+
+    /**
+     * @return bool
+     */
+    public function isModuleFileForceInstall(): bool
+    {
+        return $this->moduleFileForceInstall;
+    }
 }
