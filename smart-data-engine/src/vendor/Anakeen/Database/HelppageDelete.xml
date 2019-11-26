@@ -1,0 +1,20 @@
+<migration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="migrationRules.xsd">
+
+    <action id="deleteHelppage" label="Delete helppage">
+        <condition>
+            <sql-assert-not-empty label="verify HELPPAGE exists">
+                select id from docfam where name='HELPPAGE';
+            </sql-assert-not-empty>
+        </condition>
+        <process>
+            <php label="delete HELPPAGE"
+                 callable="Anakeen\Core\SmartStructure\DestroySmartStructure::destroyFamily(HELPPAGE)"/>
+        </process>
+        <check>
+            <sql-assert-empty label="verify HELPPAGE has been destroyed">
+                select id from docfam where name='HELPPAGE';
+            </sql-assert-empty>
+        </check>
+    </action>
+</migration>
