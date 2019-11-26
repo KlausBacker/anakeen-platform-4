@@ -79,15 +79,18 @@ const SETTING_TYPES = {
   },
   Profile: {
     name: "Profile",
-    value: "Profile"
+    value: "Profile",
+    postfixDirname: "Profiles"
   },
   MailTemplate: {
     name: "Mail Template",
-    value: "MailTemplate"
+    value: "MailTemplate",
+    postfixDirname: "MailTemplates"
   },
   Timer: {
     name: "Timer",
-    value: "Timer"
+    value: "Timer",
+    postfixDirname: "Timers"
   }
 };
 
@@ -290,18 +293,12 @@ const getInquirerQuestion = (paramKey, paramValue) => {
       break;
     case "associatedWorkflow":
       question.when = arg => {
-        if (arg.associatedSmartStructure) {
-          return false;
-        }
-        return true;
+        return !arg.associatedSmartStructure;
       };
       break;
     case "associatedSmartStructure":
       question.when = arg => {
-        if (arg.associatedWorkflow) {
-          return false;
-        }
-        return true;
+        return !arg.associatedWorkflow;
       };
       break;
   }
@@ -321,8 +318,15 @@ async function completeArgv(argv) {
     argv.moduleName = moduleInfo.moduleInfo.name;
   }
   if (argv.name === "" || argv.name === undefined) {
-    // eslint-disable-next-line require-atomic-updates
-    argv.name = argv.moduleName + argv.type;
+    let typeInfo = SETTING_TYPES[argv.type];
+    let dirname = typeInfo.postfixDirname || argv.type;
+    if (argv.associatedSmartStructure) {
+      // eslint-disable-next-line require-atomic-updates
+      argv.name = argv.associatedSmartStructure + dirname;
+    } else {
+      // eslint-disable-next-line require-atomic-updates
+      argv.name = argv.moduleName + dirname;
+    }
   }
   return argv;
 }
@@ -337,7 +341,6 @@ exports.handler = async argv => {
       })
     );
   }
-
   const rjson = checkSetting(argv);
   signale.time("createSetting");
   if (rjson.success === true) {

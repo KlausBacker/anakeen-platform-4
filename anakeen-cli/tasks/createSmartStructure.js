@@ -16,20 +16,14 @@ const getProcessXml = command => ({
 });
 
 String.prototype.replaceAll = function(search, replacement) {
-  var target = this;
-  return target.replace(new RegExp(search, "g"), replacement);
+  return this.replace(new RegExp(search, "g"), replacement);
 };
 
 // eslint-disable-next-line no-unused-vars
 const convertPathInPhpNamespace = ({ vendorPath, smartStructurePath }) => {
   const tmpNameSpacePhp = smartStructurePath.split("vendor/");
 
-  let nameSpacePhp = tmpNameSpacePhp[1].replaceAll("/", "\\");
-  return nameSpacePhp;
-  // return path
-  //   .relative(vendorPath, smartStructurePath)
-  //   .split(path.sep)
-  //   .join("\\");
+  return tmpNameSpacePhp[1].replaceAll("/", "\\");
 };
 
 exports.createSmartStructure = ({
@@ -51,6 +45,7 @@ exports.createSmartStructure = ({
   const ssInstallCmd = [];
   const ssUpgradeCmd = [];
   let srcPath = path.join(sourcePath, "src");
+  let modulePath = srcPath;
   let vendorPath = path.join(srcPath, "vendor");
   return gulp.task("createSmartStructure", async () => {
     //Get module info
@@ -67,7 +62,7 @@ exports.createSmartStructure = ({
     }
     if (!smartStructurePath && vendorName && moduleName) {
       //Compute and test the smartStructurePath for the vendor name
-      srcPath = moduleInfo.buildInfo.buildPath.find(currentPath => {
+      modulePath = moduleInfo.buildInfo.buildPath.find(currentPath => {
         //Check current path
         const smartPath = path.join(currentPath, "vendor", vendorName, moduleName, "SmartStructures");
         try {
@@ -77,28 +72,26 @@ exports.createSmartStructure = ({
         }
       });
 
-      if (!srcPath) {
-        srcPath = path.join(sourcePath, "src", "vendor", vendorName, moduleName, "SmartStructures");
-        fsUtils.mkpdir(srcPath, err => {
+      if (!modulePath) {
+        modulePath = path.join(sourcePath, "src", "vendor", vendorName, moduleName, "SmartStructures");
+        fsUtils.mkpdir(modulePath, err => {
           if (err) {
             // eslint-disable-next-line no-console
             console.error(err);
           }
-          signale.info("No Smart structure directory given : use default path (" + srcPath + ")");
+          signale.info("No Smart structure directory given : use default path (" + modulePath + ")");
         });
       }
-      if (srcPath === path.join(sourcePath, "src")) {
-        srcPath = path.join(sourcePath, "src", "vendor", vendorName, moduleName, "SmartStructures");
+      if (modulePath === path.join(sourcePath, "src")) {
+        modulePath = path.join(sourcePath, "src", "vendor", vendorName, moduleName, "SmartStructures");
       }
-      smartStructurePath = srcPath;
+      smartStructurePath = modulePath;
       vendorPath = path.join(srcPath, "vendor");
     }
     //Create the directory if needed
     let directoryPromise = Promise.resolve(smartStructurePath);
     const Name = camelCase(name, { pascalCase: true });
 
-    // a suppr
-    // const Name = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
     if (inSelfDirectory) {
       const smartStructureDirectory = path.join(smartStructurePath, Name);
       directoryPromise = new Promise((resolve, reject) => {
@@ -123,7 +116,7 @@ exports.createSmartStructure = ({
           })
         }).then(() => {
           ssInstallCmd.push(
-            `./ank.php --script=importConfiguration --glob=${path.relative(
+            `./ank.php --script=importConfiguration --glob=./${path.relative(
               srcPath,
               path.join(currentPath, "**", "*.xml")
             )}`

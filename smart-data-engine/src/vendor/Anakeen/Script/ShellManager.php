@@ -10,7 +10,7 @@ class ShellManager
     protected static $opts = [];
     const ScriptBasename = "ank.php";
     protected static $programName = self::ScriptBasename;
-    protected static $absProgramName='';
+    protected static $absProgramName = '';
 
     public static function recordArgs(array $argv)
     {
@@ -37,7 +37,7 @@ class ShellManager
     protected static function getProgramName()
     {
         if (!self::$absProgramName) {
-            self::$absProgramName = DEFAULT_PUBDIR . '/'. self::ScriptBasename;
+            self::$absProgramName = DEFAULT_PUBDIR . '/' . self::ScriptBasename;
         }
 
         return self::$absProgramName;
@@ -120,12 +120,9 @@ class ShellManager
                         exit(1);
                 }
             } catch (Exception $e) {
-                $err=$e->getDcpMessage();
-                $spaces=str_pad("", mb_strlen($err), " ");
-
-                fprintf(STDERR, "\033[0;37m\033[41m %s \033[0m\n", $spaces);
-                fprintf(STDERR, "\033[0;37m\033[41m %s \033[0m\n", $e->getDcpMessage());
-                fprintf(STDERR, "\033[0;37m\033[41m %s \033[0m\n", $spaces);
+                $err = $e->getDcpMessage();
+                System::setStatusMessage($err, "error");
+                self::writeError($err);
                 self::exceptionHandler($e, false);
                 exit(1);
             } catch (\Anakeen\Exception $e) {
@@ -171,28 +168,63 @@ class ShellManager
      * depending if the program is used in a CLI or not.
      *
      * @param \Throwable $e
-     * @param bool       $callStack If set to false: the error message is minimal.
+     * @param bool $callStack If set to false: the error message is minimal.
      *                              Otherwise the error message is the call stack.
      */
     public static function exceptionHandler($e, $callStack = true)
     {
-        if ($callStack === true) {
+        if ($callStack === true && !is_a($e, \Anakeen\Exception::class)) {
             $errMsg = \Anakeen\Core\LogException::formatErrorLogException($e);
-            error_log($errMsg);
         } else {
             $errMsg = $e->getMessage();
         }
 
+
+        System::setStatusMessage($e->getMessage(), "error");
         if (!self::isInteractiveCLI()) {
             $expand = array(
                 'm' => preg_replace('/^([^\n]*).*/s', '\1', $e->getMessage())
             );
             self::sendEmailError($errMsg, $expand);
+        } else {
+            self::writeError($errMsg);
         }
 
         exit(255);
     }
 
+    public static function writeError($msg)
+    {
+        if (self::isInteractiveCLI()) {
+            $consoleWidth = 80;
+            // Need to do twice to avoid eventually errors
+            exec('tput cols 2> /dev/null', $output, $ret);
+            if ($ret === 0) {
+                $consoleWidth = intval(exec('tput cols'));
+                if (!$consoleWidth) {
+                    $consoleWidth = 80;
+                }
+            }
+
+            $msg = wordwrap($msg, $consoleWidth - 2, "\n", true);
+            $lines = explode("\n", $msg);
+            $maxLen = 0;
+
+            foreach ($lines as $line) {
+                $maxLen = max(mb_strlen($line), $maxLen);
+            }
+            $spaces = str_pad("", $maxLen, " ");
+
+            fprintf(STDERR, "\033[0;37m\033[41m %s \033[0m\n", $spaces);
+            foreach ($lines as $line) {
+                $line = str_pad($line, $maxLen, " ");
+                fprintf(STDERR, "\033[0;37m\033[41m %s \033[0m\n", $line);
+            }
+            fprintf(STDERR, "\033[0;37m\033[41m %s \033[0m\n", $spaces);
+        } else {
+            fprintf(STDERR, "%s\n", $msg);
+        }
+    }
 
     public static function shutdownHandler()
     {
@@ -281,9 +313,9 @@ EOF;
      * return shell commande for ank
      * depending of database (in case of several instances)
      *
-     * @param bool   $nice      set to true if want nice mode
+     * @param bool $nice set to true if want nice mode
      * @param string $userlogin the user login to send command (default is admin)
-     * @param bool   $sudo      set to true if want to be send with sudo (need /etc/sudoers correctly configured)
+     * @param bool $sudo set to true if want to be send with sudo (need /etc/sudoers correctly configured)
      *
      * @return string the command
      */
