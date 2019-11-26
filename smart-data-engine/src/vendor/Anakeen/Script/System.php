@@ -8,6 +8,8 @@ use Anakeen\Core\Settings;
 
 class System
 {
+    const statusFile = ".status.json";
+    const maintenanceLockFile = "maintenance.lock";
     /**
      * @var IStdio
      */
@@ -98,8 +100,8 @@ class System
      * Link files from source dir to destination dir.
      *
      * @param string $sourceDir Source dir from which files are to be linked
-     * @param string $destDir   Destination dir to which the symlinks will be created
-     * @param array  $linked    List of conflicting/duplicates files (i.e. source files with the same name)
+     * @param string $destDir Destination dir to which the symlinks will be created
+     * @param array $linked List of conflicting/duplicates files (i.e. source files with the same name)
      *
      * @throws Exception
      */
@@ -135,7 +137,7 @@ class System
                 }
             }
             $this->verbose(2, sprintf("Linking '%s' to '%s'.\n", $relTarget, $absLink));
-            if (! file_exists($absLink)) {
+            if (!file_exists($absLink)) {
                 if (symlink($relTarget, $absLink) === false) {
                     closedir($dh);
                     throw new Exception(sprintf("Error symlinking '%s' to '%s'.", $relTarget, $absLink));
@@ -173,7 +175,7 @@ class System
      */
     protected function removeFilesByRegex($dir, $regex)
     {
-        if (! is_dir($dir)) {
+        if (!is_dir($dir)) {
             return;
         }
         if (($dh = opendir($dir)) === false) {
@@ -302,10 +304,10 @@ class System
      *
      * @return string
      */
-    public function absolutize($file)
+    public static function absolutize($file)
     {
         if (substr($file, 0, 1) != '/') {
-            $file = $this->contextRoot . DIRECTORY_SEPARATOR . $file;
+            $file = DEFAULT_PUBDIR . DIRECTORY_SEPARATOR . $file;
         }
         return $file;
     }
@@ -474,12 +476,13 @@ class System
     public function unStop()
     {
         $this->verbose(1, sprintf("[+] Removing maintenance mode.\n"));
-        $maintenanceFile = $this->absolutize('maintenance.lock');
+        $maintenanceFile = $this->absolutize(self::maintenanceLockFile);
         if (is_file($maintenanceFile)) {
             if (unlink($maintenanceFile) === false) {
                 throw new Exception(sprintf("Error removing file '%s'.", $maintenanceFile));
             }
         }
+        $this->setStatusMessage("Platform is started");
         $this->verbose(1, sprintf("[+] Done.\n"));
     }
 
@@ -492,7 +495,7 @@ class System
             $this->debug(join("\n", $output) . "\n");
             throw new Exception(sprintf("Error executing '%s'.", $cmd));
         }
-        $this->verbose(1, "\t".implode("\n\t", $output)."\n");
+        $this->verbose(1, "\t" . implode("\n\t", $output) . "\n");
         $this->verbose(1, sprintf("[+] Done.\n"));
     }
 
@@ -500,14 +503,49 @@ class System
     public function stop()
     {
         $this->verbose(1, sprintf("[+] Set maintenance mode.\n"));
-        $maintenanceFile = $this->absolutize('maintenance.lock');
+        $maintenanceFile = $this->absolutize(self::maintenanceLockFile);
         if (!is_file($maintenanceFile)) {
             file_put_contents($maintenanceFile, date("c"));
             if (!is_file($maintenanceFile)) {
                 throw new Exception(sprintf("Error create file '%s'.", $maintenanceFile));
             }
         }
+        $this->setStatusMessage("Maintenance mode activated");
         $this->verbose(1, sprintf("[+] Http Access Disabled.\n"));
+    }
+
+    public static function setStatusMessage($msg, $type = "")
+    {
+        $filePath = ContextManager::getRootDirectory() . "/" . self::statusFile;
+
+        if ($type) {
+            $status["status"] = $type;
+            $status[$type] = $msg;
+        } else {
+            $status["status"] = $msg;
+        }
+        file_put_contents($filePath, json_encode($status), JSON_PRETTY_PRINT);
+    }
+
+    /**
+     * Return info about platform status
+     * "status" key indicate the common status
+     * "error" key is set if error
+     * "maintenance" key indicate if platform in maintenance mode
+     * @return array
+     */
+    public static function getStatusInfo()
+    {
+        $filePath = ContextManager::getRootDirectory() . "/" . self::statusFile;
+        if (is_file($filePath)) {
+            $status = file_get_contents($filePath);
+            if ($status) {
+                $info = json_decode($status, true);
+                $info["maintenance"] = file_exists(self::absolutize(self::maintenanceLockFile));
+                return $info;
+            }
+        }
+        return [];
     }
 
     /**
