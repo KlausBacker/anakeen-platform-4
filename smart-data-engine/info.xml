@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="smart-data-engine" version="2.1.0" vendor="Anakeen" license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0" basecomponent="Y">
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="smart-data-engine" version="2.1.0" vendor="Anakeen"
+        license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0" basecomponent="Y">
 
     <description>Smart Data Engine</description>
 
@@ -10,7 +11,8 @@
     <parameters>
         <param name="client_name" label="client name" type="text"/>
         <param name="core_db" label="database postgresql service name" type="text" needed="Y"/>
-        <param name="authtype" label="authenticate default mode" default="basic" type="enum" values="basic|html" needed="Y"/>
+        <param name="authtype" label="authenticate default mode" default="basic" type="enum" values="basic|html"
+               needed="Y"/>
         <param name="core_admin_passwd" label="Admin password" default="anakeen" type="text" volatile="Y" onedit="H"/>
     </parameters>
 
@@ -70,7 +72,8 @@
                 support in PHP.
             </help>
         </check>
-        <check type="exec" cmd="php -r '$s=false;$r=openssl_random_pseudo_bytes(16,$s);exit(($r!==false&amp;&amp;$s!==false)?0:1);'">
+        <check type="exec"
+               cmd="php -r '$s=false;$r=openssl_random_pseudo_bytes(16,$s);exit(($r!==false&amp;&amp;$s!==false)?0:1);'">
             <label>Check for cryptographically strong random bytes from openssl</label>
             <help>Unable to get cryptographically strong random bytes from openssl: your system might be broken or too
                 old.
@@ -116,7 +119,8 @@
                 PHP.
             </help>
         </check>
-        <check type="exec" cmd="php -r 'if(function_exists(&quot;iconv&quot;) &amp;&amp; ICONV_IMPL == &quot;glibc&quot;){exit(0);}exit(1);'">
+        <check type="exec"
+               cmd="php -r 'if(function_exists(&quot;iconv&quot;) &amp;&amp; ICONV_IMPL == &quot;glibc&quot;){exit(0);}exit(1);'">
             <label>Check iconv in libc</label>
             <help>Your PHP iconv extension is compiled with a non-GLIBC implementation of iconv, and it might not work
                 as expected.
@@ -185,68 +189,88 @@
         <process command="programs/set_param Core::CORE_CLIENT client_name">
             <label>Register client name</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Base/base.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Base/base.struct.xml">
             <label>Import BASE Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml">
             <label>Import PROFIL Structures</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Dir/dir.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Dir/dir.struct.xml">
             <label>Import DIR Structure</label>
         </process>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Dir/dir.data.csv">
             <label>Import Root dir</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mail/mail.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mail/mail.struct.xml">
             <label>Add Mail form Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml">
             <label>Add Mail Template form Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml">
             <label>Add Sent message Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Task/task.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Task/task.struct.xml">
             <label>Add Task Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Task/taskCleanContext.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Task/taskCleanContext.xml">
             <label>Add Task Clean Context</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Search/search.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Search/search.struct.xml">
             <label>Add Search Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml">
             <label>Add Grouped searches Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml">
             <label>Add Detailled searches Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Ssearch/ssearch.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Ssearch/ssearch.struct.xml">
             <label>Add Specialized searches Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Report/report.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Report/report.struct.xml">
             <label>Add Report Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Image/image.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Image/image.struct.xml">
             <label>Add Image Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/File/file.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/File/file.struct.xml">
             <label>Add File Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml">
             <label>Add IUSER Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Group/group.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Group/group.struct.xml">
             <label>Add GROUP Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml">
             <label>Add IGROUP Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Role/role.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Role/role.struct.xml">
             <label>Add ROLE Structure</label>
         </process>
 
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Igroup/group.init.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Igroup/group.init.xml">
             <label>Create system group</label>
         </process>
         <process command="./ank.php --script=refreshUserAccount">
@@ -310,7 +334,8 @@
                 support in PHP.
             </help>
         </check>
-        <check type="exec" cmd="php -r '$s=false;$r=openssl_random_pseudo_bytes(16,$s);exit(($r!==false&amp;&amp;$s!==false)?0:1);'">
+        <check type="exec"
+               cmd="php -r '$s=false;$r=openssl_random_pseudo_bytes(16,$s);exit(($r!==false&amp;&amp;$s!==false)?0:1);'">
             <label>Check for cryptographically strong random bytes from openssl</label>
             <help>Unable to get cryptographically strong random bytes from openssl: your system might be broken or too
                 old.
@@ -355,7 +380,8 @@
                 PHP.
             </help>
         </check>
-        <check type="exec" cmd="php -r 'if(function_exists(&quot;iconv&quot;) &amp;&amp; ICONV_IMPL == &quot;glibc&quot;){exit(0);}exit(1);'">
+        <check type="exec"
+               cmd="php -r 'if(function_exists(&quot;iconv&quot;) &amp;&amp; ICONV_IMPL == &quot;glibc&quot;){exit(0);}exit(1);'">
             <label>Check iconv in libc</label>
             <help>Iconv might not work as you want</help>
         </check>
@@ -415,59 +441,80 @@
         <process command="./programs/runMigrationScript.php --file=./vendor/Anakeen/Database/ResyncFallid.xml">
             <label>Resync fallid if needed</label>
         </process>
+        <process command="./programs/runMigrationScript.php --file=./vendor/Anakeen/Database/HelppageDelete.xml">
+            <label>Resync fallid if needed</label>
+        </process>
         <process command="programs/app_post CORE U"/>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Base/base.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Base/base.struct.xml">
             <label>Import BASE Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml">
             <label>Import PROFIL Structures</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Dir/dir.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Dir/dir.struct.xml">
             <label>Import DIR Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mail/mail.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mail/mail.struct.xml">
             <label>Add Mail form Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml">
             <label>Add Mail Template form Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml">
             <label>Add Sent message Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Task/task.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Task/task.struct.xml">
             <label>Add Task Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Search/search.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Search/search.struct.xml">
             <label>Add Search Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml">
             <label>Add Grouped searches Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml">
             <label>Add Detailled searches Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Ssearch/ssearch.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Ssearch/ssearch.struct.xml">
             <label>Add Specialized searches Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Report/report.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Report/report.struct.xml">
             <label>Add Report Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Image/image.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Image/image.struct.xml">
             <label>Add Image Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/File/file.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/File/file.struct.xml">
             <label>Add File Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml">
             <label>Add IUSER Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Group/group.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Group/group.struct.xml">
             <label>Add GROUP Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml">
             <label>Add IGROUP Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Role/role.struct.xml">
+        <process
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Role/role.struct.xml">
             <label>Add ROLE Structure</label>
         </process>
         <process command="./ank.php --system --localeGen"/>
