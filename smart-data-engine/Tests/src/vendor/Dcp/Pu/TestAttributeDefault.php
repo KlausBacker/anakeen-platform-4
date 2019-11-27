@@ -6,13 +6,8 @@
 
 namespace Dcp\Pu;
 
+use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure;
-
-/**
- * @author  Anakeen
- * @package Dcp\Pu
- */
-//require_once 'PU_testcase_dcp_commonfamily.php';
 
 class TestAttributeDefault extends TestCaseDcpCommonFamily
 {
@@ -23,6 +18,7 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
      */
     protected static function getCommonImportFile()
     {
+        self::importConfigurationFile(__DIR__ . "/../../Anakeen/Pu/Config/Inputs/tst_007.struct.xml");
         return "PU_data_dcp_familydefault.ods";
     }
 
@@ -33,7 +29,7 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
      */
     public function testDefaultValue($famid, $attrid, $expectedvalue)
     {
-        $d = createDoc(self::$dbaccess, $famid);
+        $d = SEManager::createDocument($famid);
         $this->assertTrue(is_object($d), sprintf("cannot create %s document", $famid));
 
         $oa = $d->getAttribute($attrid);
@@ -47,8 +43,7 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
      */
     public function testDefaultParamValue($famid, $attrid, $expectedvalue)
     {
-
-        $d = createDoc(self::$dbaccess, $famid, false, false);
+        $d = SEManager::createDocument($famid);
         $this->assertTrue(is_object($d), sprintf("cannot create %s1 document", $famid));
 
         $oa = $d->getAttribute($attrid);
@@ -62,7 +57,7 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
      */
     public function testDefaultInheritedValue($famid, array $expectedvalues, array $expectedParams)
     {
-        $d = createDoc(self::$dbaccess, $famid);
+        $d = SEManager::createDocument($famid);
         $this->assertTrue(is_object($d), sprintf("cannot create %s document", $famid));
 
         foreach ($expectedvalues as $attrid => $expectedValue) {
@@ -88,7 +83,7 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
         /**
          * @var  SmartStructure $d
          */
-        $d = new_Doc(self::$dbaccess, $famid);
+        $d = SEManager::getFamily($famid);
         $this->assertTrue(is_object($d), sprintf("cannot get %s family", $famid));
 
         foreach ($expectedvalues as $attrid => $expectedValue) {
@@ -109,7 +104,7 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
         /**
          * @var  SmartStructure $d
          */
-        $d = new_Doc(self::$dbaccess, $famid);
+        $d =  SEManager::getFamily($famid);
         $this->assertTrue(is_object($d), sprintf("cannot get %s family", $famid));
 
         foreach ($expectedParams as $attrid => $expectedValue) {
@@ -123,7 +118,7 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
      */
     public function testDocParamvalueInheritedWithDefaultArg($famid, $default, array $expectedParams)
     {
-        $d = createDoc(self::$dbaccess, $famid, false, false);
+        $d =  SEManager::createDocument($famid, false);
         $this->assertTrue(is_object($d), sprintf("cannot create %s1 document", $famid));
 
         foreach ($expectedParams as $attrid => $expectedvalue) {
@@ -139,7 +134,7 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
     {
         $err = '';
         try {
-            $d = createDoc(self::$dbaccess, $famid);
+            SEManager::createDocument($famid);
             $this->assertNotEmpty($err, sprintf(" no error returned, must have %s", $errorCode));
         } catch (\Anakeen\Exception $e) {
             $err = $e->getDcpCode();
@@ -152,7 +147,7 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
      */
     public function testInitialParam($famid, $attrid, $expectedValue, $expectedDefaultValue)
     {
-        $d = createDoc(self::$dbaccess, $famid);
+        $d =  SEManager::createDocument($famid);
         $value = $d->getFamilyParameterValue($attrid);
         $f = $d->getFamilyDocument();
         $this->assertEquals(
@@ -163,7 +158,7 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
         $err = $f->setParam($attrid, '');
         $this->assertEmpty($err, "parameter set error : $err");
         $f->modify();
-        $d2 = createDoc(self::$dbaccess, $famid);
+        $d2 =  SEManager::createDocument($famid);
         $f = $d2->getFamilyDocument();
         $value = $d2->getFamilyParameterValue($attrid);
         $this->assertEquals($expectedDefaultValue, $value, sprintf("parameter %s has not correct default value , family has \"%s\"", $attrid, $f->getParameterRawValue($attrid)));
@@ -506,7 +501,118 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
                 "TST_DEFAULTFAMILYNAMESPACE",
                 "TEXTE",
                 "one"
-            )
+            ),
+            array(
+                "TST_007",
+                "tst_title",
+                "Hello"
+            ),
+            array(
+                "TST_007",
+                "tst_n0",
+                "0"
+            ),
+            array(
+                "TST_007",
+                "tst_n1",
+                "1"
+            ),
+            array(
+                "TST_007",
+                "tst_n2",
+                "2"
+            ),
+            array(
+                "TST_007",
+                "tst_n6",
+                "6"
+            ),
+            array(
+                "TST_007",
+                "tst_n7",
+                "7"
+            ),
+            array(
+                "TST_007",
+                "tst_t0",
+                "Hello World : C'est l'été."
+            ),
+            array(
+                "TST_007",
+                "tst_t1",
+                "Des œufs à 12€,\net des brouettes."
+            ),
+            array(
+                "TST_007",
+                "tst_t2",
+                "Début,Hello World : C'est l'été.,Fin"
+            ),
+            array(
+                "TST_007",
+                "tst_t3",
+                "[:Début,Hello World : C'est l'été.,Fin:]"
+            ),
+            array(
+                "TST_007",
+                "tst_t4",
+                "Quatre"
+            ),
+            array(
+                "TST_007a",
+                "tst_title",
+                "Hello"
+            ),
+            array(
+                "TST_007a",
+                "tst_n0",
+                "1"
+            ),
+            array(
+                "TST_007a",
+                "tst_n1",
+                "2"
+            ),
+            array(
+                "TST_007a",
+                "tst_n2",
+                "3"
+            ),
+            array(
+                "TST_007a",
+                "tst_n6",
+                "6"
+            ),
+            array(
+                "TST_007a",
+                "tst_n7",
+                "9"
+            ),
+            array(
+                "TST_007a",
+                "tst_t0",
+                "Hello World : C'est l'hivers."
+            ),
+            array(
+                "TST_007a",
+                "tst_t1",
+                "Des œufs à 14€,\nça a augmenté."
+            ),
+            array(
+                "TST_007a",
+                "tst_t2",
+                "Début,Hello World : C'est l'hivers.,Fin"
+            ),
+            array(
+                "TST_007a",
+                "tst_t3",
+                "[:Début,Hello World : C'est l'hivers.,Fin:]"
+            ),
+            array(
+                "TST_007a",
+                "tst_t4",
+                ""
+            ),
+
         );
     }
 

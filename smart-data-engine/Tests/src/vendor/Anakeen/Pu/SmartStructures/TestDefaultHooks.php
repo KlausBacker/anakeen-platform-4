@@ -32,11 +32,9 @@ class TestDefaultHooks extends \Anakeen\SmartElement
         return $x;
     }
     
-    public function simpleAdd()
+    public function simpleAdd(...$args)
     {
-        $tx = func_get_args();
-        
-        return array_sum($tx);
+        return array_sum($args);
     }
     
     public function commaConcat()

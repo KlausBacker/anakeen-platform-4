@@ -514,7 +514,10 @@ class ImportDocumentDescription
         if ($value === "") {
             $value = true;
         }
-        $err = $this->doc->addATag($data[1], $value);
+        $err = "";
+        if (!$this->analyze) {
+            $err = $this->doc->addATag($data[1], $value);
+        }
         if (!$err) {
             $this->tcr[$this->nLine]["msg"] = sprintf("change application tag to '%s'", $this->doc->atags);
         } else {
@@ -877,12 +880,16 @@ class ImportDocumentDescription
 
                 case 'default':
                     $this->tcr[$this->nLine]["msg"] .= sprintf("Reset defaults values");
-                    $this->doc->defaultvalues = '{}';
+                    if ($this->doc) {
+                        $this->doc->defaultvalues = '{}';
+                    }
                     break;
 
                 case 'parameters':
                     $this->tcr[$this->nLine]["msg"] .= sprintf("Reset parameters values");
-                    $this->doc->param = '';
+                    if ($this->doc) {
+                        $this->doc->param = '';
+                    }
                     break;
 
                 case 'enums':
@@ -897,7 +904,9 @@ class ImportDocumentDescription
                     if ($this->analyze) {
                         return;
                     }
-                    $this->doc->resetPropertiesParameters();
+                    if ($this->doc) {
+                        $this->doc->resetPropertiesParameters();
+                    }
                     break;
 
                 case 'structure':
@@ -1165,7 +1174,6 @@ class ImportDocumentDescription
      */
     protected function doIcon(array $data)
     {
-
         if (empty($data[1])) {
             $this->tcr[$this->nLine]["msg"] = sprintf("No Icon specified");
         } elseif (($this->doc && $this->doc->icon == "") || (isset($data[2]) && $data[2] === "force=yes")) {
@@ -1614,10 +1622,10 @@ class ImportDocumentDescription
             $this->tcr[$this->nLine]["action"] = "ignored";
             return;
         }
-
-        if (!isset($data[2])) {
+        if (!array_key_exists(2, $data)) {
             $data[2] = '';
         }
+
         $attrid = trim(strtolower($data[1]));
         $defv = $data[2];
         $opt = (isset($data[3])) ? trim(strtolower($data[3])) : null;
@@ -2194,10 +2202,10 @@ class ImportDocumentDescription
             if (!$this->tcr[$this->nLine]["err"]) {
                 if ($data[0] == "PARAM") {
                     $oattr->usefor = 'Q';
-                    // parameters
+                // parameters
                 } elseif ($data[0] == "OPTION") {
                     $oattr->usefor = 'O';
-                    // options
+                // options
                 } else {
                     $oattr->usefor = 'N';
                     // normal
