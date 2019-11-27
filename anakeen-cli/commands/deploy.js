@@ -74,21 +74,21 @@ exports.handler = function(argv) {
           .catch(e => {
             signale.timeEnd("deploy");
             if (e.message) {
-              signale.error(e.message);
+              signale.error(JSON.stringify(e.message));
             } else {
-              signale.error(e);
+              signale.error(JSON.stringify(e));
             }
             process.exit(1);
           });
       })
       .catch(e => {
         signale.timeEnd("deploy");
-        signale.error(e);
+        signale.error(JSON.stringify(e));
         process.exit(1);
       });
   } catch (e) {
     signale.timeEnd("deploy");
-    signale.error(e);
+    signale.error(JSON.stringify(e));
     process.exit(1);
   }
 };
