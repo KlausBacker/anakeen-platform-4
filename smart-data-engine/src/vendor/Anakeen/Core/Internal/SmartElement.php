@@ -6467,7 +6467,6 @@ create unique index i_docir on doc(initid, revision);";
                  * @var \Anakeen\Core\SmartStructure\BasicAttribute $oattr
                  */
                 $oattr = $this->getAttribute($aid);
-
                 $ok = false;
                 if (empty($oattr)) {
                     $ok = false;
@@ -6479,15 +6478,17 @@ create unique index i_docir on doc(initid, revision);";
                     $ok = true;
                 } elseif (!$oattr->inArray()) {
                     $ok = true;
-                } elseif ($oattr->fieldSet->format != "empty" && $oattr->fieldSet->getOption("empty") != "yes") {
-                    if (empty($tdefval[$oattr->fieldSet->id])) {
-                        $ok = true;
+                } elseif ($oattr->fieldSet->type === "array") {
+                    if (($tdefval[$oattr->fieldSet->id]??null) !== null) {
+                        $ok=false;
                     } else {
-                        $ok = false;
+                        if ($oattr->fieldSet->getOption("empty") !== "yes" && $oattr->fieldSet->format !== "empty") {
+                            $ok = true;
+                        }
                     }
                 }
                 if ($ok) {
-                    if ($oattr->type == "array") {
+                    if ($oattr->type === "array") {
                         if ($method) {
                             $values = $dval;
                             if (is_string($values) && strpos($values, '::') !== false) {
@@ -6520,12 +6521,12 @@ create unique index i_docir on doc(initid, revision);";
                     } else {
                         if ($method) {
                             $val = $this->GetValueMethod($dval);
-                            if ($oattr->isMultiple()) {
+                            if ($oattr->inArray()) {
                                 $val = [$val];
                             }
                             $this->setValue($aid, $val);
                         } else {
-                            if ($oattr->isMultiple()) {
+                            if ($oattr->inArray()) {
                                 $dval = [$dval];
                             }
                             $this->setValue($aid, $dval); // raw data

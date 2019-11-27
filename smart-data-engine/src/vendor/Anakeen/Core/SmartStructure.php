@@ -539,7 +539,7 @@ create unique index idx_idfam on docfam(id);";
 
         $tval2 = $this->$tval;
         $v = isset($tval2[strtolower($idp)]) ? $tval2[strtolower($idp)] : '';
-        if ($v == "-") {
+        if ($v === "-") {
             return $def;
         }
         if ($v !== "") {
@@ -575,7 +575,7 @@ create unique index idx_idfam on docfam(id);";
         $defval = $this->$X;
 
         if ($this->$Xval) {
-            return $this->$Xval;
+           // return $this->$Xval;
         }
 
         $XS[$this->id] = $defval;
@@ -594,11 +594,10 @@ create unique index idx_idfam on docfam(id);";
         }
 
         $txval = array();
-
         foreach ($inhIds as $famId) {
             $txvalh = $this->explodeX($XS[$famId]);
             foreach ($txvalh as $aid => $dval) {
-                $txval[$aid] = ($dval == '-') ? null : $dval;
+                $txval[$aid] = ($dval === '-') ? null : $dval;
             }
         }
         if ($this->isComplete()) {
@@ -638,7 +637,7 @@ create unique index idx_idfam on docfam(id);";
     public function setXValue($X, $idp, $val)
     {
         $tval = "_xt$X";
-        if (is_string($val) && json_decode($val)) {
+        if (is_string($val) && json_decode($val)!==null) {
             $val = json_decode($val);
         }
 

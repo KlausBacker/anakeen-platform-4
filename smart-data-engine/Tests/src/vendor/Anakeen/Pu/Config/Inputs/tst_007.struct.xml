@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
     <smart:enumerates>
-        <smart:enum-configuration name="TST_001-colors">
+        <smart:enum-configuration name="tst_colors">
             <smart:enum name="red" label="Rouge"/>
             <smart:enum name="yellow" label="Jaune"/>
             <smart:enum name="green" label="Vert"/>
-            <smart:enum name="blue" label="Bleu">
-                <smart:enum name="lightblue" label="Bleu ciel"/>
-                <smart:enum name="navyblue" label="Bleu marine"/>
-            </smart:enum>
+            <smart:enum name="blue" label="Bleu"/>
         </smart:enum-configuration>
 
     </smart:enumerates>
@@ -17,8 +14,8 @@
         <smart:tag name="vendor">Anakeen</smart:tag>
         <smart:fields>
             <smart:field-set name="tst_f_title" type="frame" label="Titre" access="ReadWrite">
-                <smart:field-text name="tst_title" label="Le titre" access="ReadWrite" is-title="true"
-                                  is-abstract="true"/>
+                <smart:field-text name="tst_title" label="Le titre" access="ReadWrite" is-title="true"/>
+                <smart:field-enum name="tst_e0" relation="tst_colors" multiple="true" access="ReadWrite"/>
                 <smart:field-int name="tst_n0" access="ReadWrite"/>
                 <smart:field-int name="tst_n1" access="ReadWrite"/>
                 <smart:field-int name="tst_n2" access="ReadWrite"/>
@@ -35,11 +32,30 @@
                 <smart:field-text name="tst_t3" access="ReadWrite"/>
                 <smart:field-text name="tst_t4" access="ReadWrite"/>
                 <smart:field-text name="tst_t5" access="ReadWrite"/>
+                <smart:field-set name="tst_t_t1" access="ReadWrite" type="array">
+                    <smart:field-text name="tst_ts" access="ReadWrite"/>
+                    <smart:field-int name="tst_is" access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-set name="tst_t_t2" access="ReadWrite" type="array">
+                    <smart:field-longtext name="tst_lts" access="ReadWrite"/>
+                    <smart:field-double name="tst_ds" access="ReadWrite"/>
+                </smart:field-set>
             </smart:field-set>
         </smart:fields>
         <smart:parameters/>
 
         <smart:defaults>
+            <smart:default field="tst_t_t1">
+                [{"tst_ts":"Hola", "tst_is":12},{"tst_ts":"Hombre", "tst_is":56}]
+            </smart:default>
+            <smart:default field="tst_e0">
+                ["red","green"]
+            </smart:default>
+
+            <smart:default field="tst_ts">Never</smart:default>
+            <smart:default field="tst_is">-1</smart:default>
+            <smart:default field="tst_lts">Loooong texte</smart:default>
+            <smart:default field="tst_ds">12.567</smart:default>
             <smart:default field="tst_title">Hello</smart:default>
             <smart:default field="tst_n0">0</smart:default>
             <smart:default field="tst_n1">
@@ -86,8 +102,9 @@ et des brouettes.]]>
         <smart:tag name="vendor">Anakeen</smart:tag>
 
         <smart:defaults>
+            <smart:default field="tst_t_t2">[]</smart:default>
             <smart:default field="tst_title">Hello</smart:default>
-            <smart:default field="tst_n0">01</smart:default>
+            <smart:default field="tst_n0">1</smart:default>
             <smart:default field="tst_n1">002</smart:default>
             <smart:default field="tst_n2">32</smart:default>
             <smart:default field="tst_t1"><![CDATA[Des œufs à 14€,

@@ -32,10 +32,12 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
         $d = SEManager::createDocument($famid);
         $this->assertTrue(is_object($d), sprintf("cannot create %s document", $famid));
 
+        $struct=SEManager::getFamily($famid);
+
         $oa = $d->getAttribute($attrid);
         $this->assertNotEmpty($oa, sprintf("attribute %s not found in %s family", $attrid, $famid));
         $value = $d->getRawValue($oa->id);
-        $this->assertEquals($expectedvalue, $value, sprintf("not the expected default value attribute %s", $attrid));
+        $this->assertEquals($expectedvalue, $value, sprintf("not the expected default value field \"%s\" : in struct has \"%s\"", $attrid, print_r($struct->getDefValue($attrid),true)));
     }
 
     /**
@@ -558,9 +560,54 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
                 "Quatre"
             ),
             array(
+                "TST_007",
+                "tst_e0",
+                "{red,green}"
+            ),
+            array(
+                "TST_007",
+                "tst_ts",
+                "{Hola,Hombre}"
+            ),
+            array(
+                "TST_007",
+                "tst_is",
+                "{12,56}"
+            ),
+            array(
+                "TST_007",
+                "tst_lts",
+                '{"Loooong texte"}'
+            ),
+            array(
+                "TST_007",
+                "tst_ds",
+                '{12.567}'
+            ),
+            array(
                 "TST_007a",
                 "tst_title",
                 "Hello"
+            ),
+            array(
+                "TST_007a",
+                "tst_ts",
+                "{Hola,Hombre}"
+            ),
+            array(
+                "TST_007a",
+                "tst_is",
+                "{12,56}"
+            ),
+            array(
+                "TST_007a",
+                "tst_ds",
+                ""
+            ),
+            array(
+                "TST_007a",
+                "tst_lts",
+                ''
             ),
             array(
                 "TST_007a",
