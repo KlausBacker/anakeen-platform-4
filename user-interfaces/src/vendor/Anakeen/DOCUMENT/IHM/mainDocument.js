@@ -39,6 +39,5 @@ globalController.then(() => {
 
       window.dcp.document = $document;
     });
-
   });
 });

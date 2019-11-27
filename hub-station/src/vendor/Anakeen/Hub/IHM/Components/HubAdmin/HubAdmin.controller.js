@@ -240,17 +240,11 @@ export default {
       };
 
       this.$refs.hubAdminSplitter.disableEmptyContent();
-      console.log("keys", Object.keys(this.$refs));
       this.$nextTick(() => {
-        console.log("smartConfig", this.$refs.smartConfig);
-        console.log("keys", Object.keys(this.$refs));
-        console.log("object", this.$refs);
-        console.log("smartConfig", this.$refs.smartConfig);
         if (this.$refs.smartConfig && this.$refs.smartConfig.isLoaded()) {
           this.listenSmartElement();
           this.openConfig(seid);
         } else {
-          console.log(this.$refs.smartConfig);
           this.$refs.smartConfig.$once("documentLoaded", () => {
             this.listenSmartElement();
             this.openConfig(seid);

@@ -24,7 +24,6 @@ export default {
     "ank-hub-mockup": AnkHubMockup,
     "smart-element": () => {
       return AnkSmartElement.then(AnkSmartElement => {
-        console.log("toto");
         return AnkSmartElement.default;
       });
     },
