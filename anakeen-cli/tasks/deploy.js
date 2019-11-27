@@ -54,7 +54,7 @@ const deployPipe = (exports.deployPipe = async ({
         fileName: appPath
       })
       .catch(e => {
-        throw new Error(e.error || e.message);
+        throw new Error(JSON.stringify(e.error) || e.message);
       });
     log(result.message);
     if (tmpDir) {
