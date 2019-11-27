@@ -1,5 +1,5 @@
 import Splitter from "@anakeen/internal-components/lib/Splitter.js";
-import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSEGrid";
+import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementGrid.esm";
 import ProfileView from "./ProfileVisualizer/ProfileVisualizerContent.vue";
 
 export default {

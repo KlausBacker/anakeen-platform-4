@@ -22,7 +22,6 @@ ANAKEEN_UI_SRC_PATH=./
 TEST_SRC_PATH=Tests/
 CS_PATH_NAME=./../.devtool/ci/check/checkPHP/anakeenPhpCs.xml
 
-
 #Build
 APP_OUTPUT_PATH=../build/
 
@@ -109,6 +108,8 @@ buildJS: install-deps
 	$(YARN_BIN) buildPolyfill
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build smart element $@${RESET_COLOR}\n"
 	$(YARN_BIN) buildSmartElement
+	@${PRINT_COLOR} "${DEBUG_COLOR}Build login $@${RESET_COLOR}\n"
+	$(YARN_BIN) buildLogin
 ##	@${PRINT_COLOR} "${DEBUG_COLOR}Build smart structures $@${RESET_COLOR}\n"
 ##	$(YARN_BIN) buildSmartStructures
 

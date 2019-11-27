@@ -38,14 +38,6 @@ class HubAdmin
                     "path" => UIGetAssetPath::getJSKendoPath()
                 ],
                 [
-                    "key" => "kendoDLL",
-                    "path" => UIGetAssetPath::getJSKendoComponentPath()
-                ],
-                [
-                    "key" => "vueDll",
-                    "path" => UIGetAssetPath::getJSVueComponentPath()
-                ],
-                [
                     "key" => "hub",
                     "path" => UIGetAssetPath::getElementAssets(
                         "hubVendor",
@@ -83,6 +75,10 @@ class HubAdmin
                 [
                     "key" => "component",
                     "path" => UIGetAssetPath::getCssSmartWebComponents()
+                ],
+                [
+                    "key" => "smartElement",
+                    "smartElement" => \Anakeen\Ui\UIGetAssetPath::getCssSmartElement()
                 ]
             ]
         ];

@@ -15,33 +15,19 @@ const commonjs = require("rollup-plugin-commonjs");
 // eslint-disable-next-line no-undef
 const BASE_PATH = path.resolve(__dirname, "../");
 const OUTPUT_DIR = path.resolve(BASE_PATH, "lib");
-const MONOREPO_PATH = path.resolve(BASE_PATH, "../..");
+const MONOREPO_PATH = path.resolve(BASE_PATH, "../");
 
 // rollup.config.js
 export default {
   input: {
-    AnkAuthent: path.resolve(BASE_PATH, "src/AnkAuthent/index.ts"),
-    AnkController: path.resolve(BASE_PATH, "src/AnkController/index.ts"),
-    AnkIdentity: path.resolve(BASE_PATH, "src/AnkIdentity/index.ts"),
-    AnkLoading: path.resolve(BASE_PATH, "src/AnkLoading/index.ts"),
-    AnkLogout: path.resolve(BASE_PATH, "src/AnkLogout/index.ts"),
-    AnkSmartElementGrid: path.resolve(BASE_PATH, "src/AnkSEGrid/SmartGrid.ts"),
-    AnkSmartElementGridPager: path.resolve(BASE_PATH, "src/AnkSEGrid/SmartGridExport.ts"),
-    AnkSmartElementGridColumnsButton: path.resolve(BASE_PATH, "src/AnkSEGrid/SmartGridColumns.ts"),
-    AnkSmartElementGridExportButton: path.resolve(BASE_PATH, "src/AnkSEGrid/SmartGridExport.ts"),
-    AnkSmartElementGridExpandButton: path.resolve(BASE_PATH, "src/AnkSEGrid/SmartGridExpand.ts"),
-    AnkSmartElementList: path.resolve(BASE_PATH, "src/AnkSEList/index.ts"),
-    AnkSmartElementTabs: path.resolve(BASE_PATH, "src/AnkSETabs/SmartElementTabs.ts"),
-    AnkSmartElementTab: path.resolve(BASE_PATH, "src/AnkSETabs/SmartElementTab.ts"),
-    AnkTab: path.resolve(BASE_PATH, "src/AnkSETabs/Tab.ts"),
-    AnkSmartForm: path.resolve(BASE_PATH, "src/AnkSmartForm/index.ts"),
-    AnkSmartElement: path.resolve(BASE_PATH, "src/AnkSmartElement/index.ts"),
-    AnkI18NMixin: path.resolve(BASE_PATH, "mixins/AnkVueComponentMixin/I18nMixin.ts"),
-    setup: path.resolve(BASE_PATH, "src/setup.ts")
+    AxiosPlugin: path.resolve(BASE_PATH, "src/AxiosPlugin/AxiosPlugin.ts"),
+    Notifier: path.resolve(BASE_PATH, "src/Notifier/Notifier.vue"),
+    Splitter: path.resolve(BASE_PATH, "src/Splitter/Splitter.vue"),
+    PaneSplitter: path.resolve(BASE_PATH, "src/PaneSplitter/PaneSplitter.vue")
   },
   output: {
     dir: OUTPUT_DIR,
-    entryFileNames: "[name].[format].js",
+    entryFileNames: "[name].js",
     name: "[name]",
     format: "esm",
     sourcemap: true

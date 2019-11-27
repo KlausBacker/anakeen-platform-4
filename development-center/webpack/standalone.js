@@ -1,6 +1,6 @@
 const path = require('path');
 const {prod, dev} = require("@anakeen/webpack-conf");
-const { vueLoader,   addFalseKendoGlobal,
+const { vueLoader,   addKendoGlobal,
   addDll } = require("@anakeen/webpack-conf/parts");
 
 const BASE_DIR = path.resolve(__dirname, '../');
@@ -65,7 +65,7 @@ module.exports = () => {
         )
       }),
       vueLoader(),
-      addFalseKendoGlobal([
+      addKendoGlobal([
         /kendo.pdf/,
         /kendo.excel/
       ]),

@@ -3,9 +3,8 @@ import "@progress/kendo-ui/js/kendo.grid";
 import Vue from "vue";
 
 import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
-import AnkSEList from "@anakeen/user-interfaces/components/lib/AnkSEList";
+import AnkSEList from "@anakeen/user-interfaces/components/lib/AnkSmartElementList.esm";
 import AnkSplitter from "@anakeen/internal-components/lib/Splitter";
-import AnkSmartElement from "@anakeen/user-interfaces/components/lib/AnkSmartElement";
 import AnkHubAdmin from "../HubAdmin/HubAdmin.vue";
 
 Vue.use(ButtonsInstaller);
@@ -13,7 +12,6 @@ Vue.use(ButtonsInstaller);
 export default {
   name: "ank-hub-instanciation",
   components: {
-    "ank-smart-element": AnkSmartElement,
     "ank-se-list": AnkSEList,
     "ank-splitter": AnkSplitter,
     "ank-hub-admin": AnkHubAdmin

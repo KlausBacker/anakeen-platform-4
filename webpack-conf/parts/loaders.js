@@ -118,7 +118,8 @@ exports.typescriptLoader = (customOptions = {}) => {
         {
           test: /\.ts$/,
           loader: "ts-loader",
-          options
+          options,
+          exclude: /node_modules/
         }
       ]
     }
@@ -255,6 +256,20 @@ exports.jsLegacyLoader = exclude => {
           browserlist: ["> 1%", "last 2 versions", "Firefox ESR", "Firefox >= 45"],
           exclude
         })
+      ]
+    }
+  };
+};
+
+exports.sourceMapLoader = () => {
+  return {
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          use: ["source-map-loader"],
+          enforce: "pre"
+        }
       ]
     }
   };

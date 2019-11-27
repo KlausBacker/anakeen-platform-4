@@ -3,9 +3,7 @@ const { useCache } = require("./common");
 const { prod, legacy, dev } = require("@anakeen/webpack-conf");
 const {
   vueLoader,
-  typeScriptLoader,
-  addFalseKendoGlobal,
-  addDll
+  typeScriptLoader
 } = require("@anakeen/webpack-conf/parts");
 
 const BASE_DIR = path.resolve(__dirname, "../");
@@ -28,7 +26,7 @@ module.exports = () => {
       /node_modules\/@progress\/kendo-ui/
     ],
     customParts: [
-      //addFalseKendoGlobal([/kendo.pdf/, /kendo.excel/]),
+      //addKendoGlobal([/kendo.pdf/, /kendo.excel/]),
       vueLoader(),
       typeScriptLoader()
     ]

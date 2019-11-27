@@ -1,4 +1,4 @@
-import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSEGrid";
+import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementGrid.esm";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 @Component({

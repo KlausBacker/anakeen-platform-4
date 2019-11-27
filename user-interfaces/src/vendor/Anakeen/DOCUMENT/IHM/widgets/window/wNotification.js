@@ -1,3 +1,4 @@
+import "@progress/kendo-ui/js/kendo.notification";
 import $ from "jquery";
 import _ from "underscore";
 import "../widget";

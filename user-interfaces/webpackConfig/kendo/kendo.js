@@ -18,11 +18,4 @@ import "@progress/kendo-ui/js/kendo.tabstrip";
 import "@progress/kendo-ui/js/kendo.button";
 import "@progress/kendo-ui/js/kendo.listview";
 
-if (!window.$) {
-  window.$ = $;
-}
-if (!window.jQuery) {
-  window.jQuery = $;
-}
-
 export default $;

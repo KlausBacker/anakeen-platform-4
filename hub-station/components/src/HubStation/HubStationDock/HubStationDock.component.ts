@@ -1,7 +1,7 @@
 // Vue class based component export
 
-import AnkIdentity from "@anakeen/user-interfaces/components/lib/AnkIdentity";
-import AnkLogout from "@anakeen/user-interfaces/components/lib/AnkLogout";
+import AnkIdentity from "@anakeen/user-interfaces/components/lib/AnkIdentity.esm";
+import AnkLogout from "@anakeen/user-interfaces/components/lib/AnkLogout.esm";
 import { Component, Inject, Prop, Vue } from "vue-property-decorator";
 import HubDock from "../../HubDock/HubDock.vue";
 import HubDockEntry from "../../HubDock/HubDockEntry/HubDockEntry.vue";

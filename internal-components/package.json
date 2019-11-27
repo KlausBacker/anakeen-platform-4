@@ -11,9 +11,7 @@
     "lint": "npx eslint ./ && npx tslint ./src/**/*.ts",
     "prettier": "prettier --check ./src/**/*.{js,ts}",
     "prettier:fix": "prettier --write ./src/**/*.{js,ts}",
-    "build:dev": "npx webpack --env development --config ./webpack/index.js",
-    "build": "yarn run build:dev",
-    "watch": "webpack --watch --env development --config ./webpack/index.js"
+    "build": "npx rollup -c ./rollup/rollup.config.js"
   },
   "files": [
     "lib",
@@ -26,6 +24,16 @@
     "@anakeen/webpack-conf": "1.2.1",
     "@progress/kendo-ui": "^2019.2.710",
     "jquery": "^3.3.1",
+    "rollup": "^1.27.5",
+    "rollup-plugin-cleaner": "^1.0.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-json": "^4.0.0",
+    "rollup-plugin-postcss": "^2.0.3",
+    "rollup-plugin-progress": "^1.1.1",
+    "rollup-plugin-scss": "^1.0.2",
+    "rollup-plugin-string": "^3.0.0",
+    "rollup-plugin-typescript2": "^0.25.2",
+    "rollup-plugin-vue": "^5.1.4",
     "ts-loader": "^6.0.4",
     "typescript": "^3.5.3",
     "vue": "2.6.10",

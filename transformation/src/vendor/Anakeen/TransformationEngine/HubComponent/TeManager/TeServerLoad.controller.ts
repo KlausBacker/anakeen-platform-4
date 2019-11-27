@@ -11,7 +11,8 @@ Vue.use(DropdownsInstaller);
   name: "TeServerLoad"
 })
 export default class TeServerLoad extends Vue {
-  @Prop({ default: 30, type: Number }) public statusMaxRange: number;
+  @Prop({ default: 30, type: Number })
+  public statusMaxRange: number;
 
   public updateInterval = 5;
   public $refs!: {
@@ -133,14 +134,9 @@ export default class TeServerLoad extends Vue {
       .then(response => {
         // update Load Cpu graph
         response.data.data.load.forEach((key, index) => {
-          this.kCpuLoad.options.series[index].data.push(
-            response.data.data.load[index] || 0
-          );
+          this.kCpuLoad.options.series[index].data.push(response.data.data.load[index] || 0);
 
-          if (
-            this.kCpuLoad.options.series[index].data.length >
-            this.statusMaxRange
-          ) {
+          if (this.kCpuLoad.options.series[index].data.length > this.statusMaxRange) {
             this.kCpuLoad.options.series[index].data.shift();
           }
         });
@@ -150,14 +146,9 @@ export default class TeServerLoad extends Vue {
           const statusKeys = ["P", "W", "T"];
 
           statusKeys.forEach((key, index) => {
-            this.kStatusChart.options.series[index].data.push(
-              response.data.data.status_breakdown[key] || 0
-            );
+            this.kStatusChart.options.series[index].data.push(response.data.data.status_breakdown[key] || 0);
 
-            if (
-              this.kStatusChart.options.series[index].data.length >
-              this.statusMaxRange
-            ) {
+            if (this.kStatusChart.options.series[index].data.length > this.statusMaxRange) {
               this.kStatusChart.options.series[index].data.shift();
             }
           });

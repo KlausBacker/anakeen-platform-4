@@ -1,8 +1,8 @@
-import Vue from "vue";
-import $ from "jquery";
-
 import "@progress/kendo-ui/js/kendo.filtercell";
 import "@progress/kendo-ui/js/kendo.grid";
+import "@progress/kendo-ui/js/kendo.resizable";
+import $ from "jquery";
+import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
 import GridColumnsButton from "./Components/GridColumnsButton/GridColumnsButton.vue";
 import GridExpandButton from "./Components/GridExpandButton/GridExpandButton.vue";

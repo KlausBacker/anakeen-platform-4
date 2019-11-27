@@ -5,8 +5,8 @@ const { prod, dev, legacy } = require("@anakeen/webpack-conf");
 const webpack = require("webpack");
 const {
   cssLoader,
-  addFalseKendoGlobal,
-  addDll,
+  addKendoGlobal,
+  addJqueryGlobal,
   typeScriptLoader
 } = require("@anakeen/webpack-conf/parts");
 
@@ -40,7 +40,8 @@ module.exports = () => {
           declaration: true
         }
       }),
-      addFalseKendoGlobal([/dcpExternals\/KendoUI\/KendoUI/]),
+      addKendoGlobal([/kendo.pdf/, /kendo.excel/], true),
+      addJqueryGlobal(),
       cssLoader()
     ]
   };

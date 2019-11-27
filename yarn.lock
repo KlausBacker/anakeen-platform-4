@@ -1131,6 +1131,22 @@
     sass "^1.18.0"
     stylus "^0.54.5"
 
+"@vue/component-compiler@^4.2.0":
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/@vue/component-compiler/-/component-compiler-4.2.0.tgz#437855cd59f3d713a4eef81bac7ab0f4950977b4"
+  integrity sha512-bxFNxUpKzLfHDoGTsAe2w7gEz4OwII7tp5m7sAXES1DApbpYglH4YSpYxdZRZ4GN/wj2fPD0u72QRJXd4UPvFQ==
+  dependencies:
+    "@vue/component-compiler-utils" "^3.0.0"
+    clean-css "^4.1.11"
+    hash-sum "^1.0.2"
+    postcss-modules-sync "^1.0.0"
+    source-map "0.6.*"
+  optionalDependencies:
+    less "^3.9.0"
+    pug "^2.0.3"
+    sass "^1.18.0"
+    stylus "^0.54.5"
+
 "@webassemblyjs/ast@1.8.5":
   version "1.8.5"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.8.5.tgz#51b1c5fe6576a34953bf4b253df9f0d490d9e359"
@@ -1870,6 +1886,13 @@ async@^2.0.0:
   integrity sha512-H1qVYh1MYhEEFLsP97cVKqCGo7KfCyTt6uEWqsTBr9SO84oK9Uwbyd/yCW+6rKJLHksBNUVWZDAjfS+Ccx0Bbg==
   dependencies:
     lodash "^4.17.11"
+
+async@^2.5.0:
+  version "2.6.3"
+  resolved "https://registry.yarnpkg.com/async/-/async-2.6.3.tgz#d72625e2344a3656e3a3ad4fa749fa83299d82ff"
+  integrity sha512-zflvls11DCy+dQWzTW2dzuilv8Z5X/pjfmZOWba6TNIVDm+2UDaJmXSOXlasHKfNBs8oo3M0aT50fDEWfKZjXg==
+  dependencies:
+    lodash "^4.17.14"
 
 asynckit@^0.4.0:
   version "0.4.0"
@@ -4011,11 +4034,6 @@ es6-weak-map@^2.0.1:
     es5-ext "^0.10.46"
     es6-iterator "^2.0.3"
     es6-symbol "^3.1.1"
-
-escape-goat@^2.0.0:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/escape-goat/-/escape-goat-2.1.1.tgz#1b2dc77003676c457ec760b2dc68edb648188675"
-  integrity sha512-8/uIhbG12Csjy2JEW7D9pHbreaVaS/OpN3ycnyvElTdwM5n6GY6W6e2IPemfvGZeUMqZ9A/3GqIZMgKnBhAw/Q==
 
 escape-html@~1.0.3:
   version "1.0.3"
@@ -7405,7 +7423,7 @@ onetime@^2.0.0:
   dependencies:
     mimic-fn "^1.0.0"
 
-open@^6.0.0, open@^6.3.0:
+open@^6.0.0:
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/open/-/open-6.4.0.tgz#5c13e96d0dc894686164f18965ecfe889ecfc8a9"
   integrity sha512-IFenVPgF70fSm1keSd2iDBIDIBZkroLeuffXq+wKTzTJlBpesFWojV9lb8mzOfaAzM1sr7HQHuO0vtV0zYekGg==
@@ -8611,13 +8629,6 @@ punycode@^2.1.0:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
-pupa@^2.0.0:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/pupa/-/pupa-2.0.1.tgz#dbdc9ff48ffbea4a26a069b6f9f7abb051008726"
-  integrity sha512-hEJH0s8PXLY/cdXh66tNEQGndDrIKNqNC5xmrysZy3i5C3oEoLna7YAOad+7u125+zH1HNXUmGEkrhb3c2VriA==
-  dependencies:
-    escape-goat "^2.0.0"
-
 q@^1.1.2, q@^1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
@@ -9267,24 +9278,6 @@ rollup-plugin-typescript2@^0.25.2:
     rollup-pluginutils "2.8.1"
     tslib "1.10.0"
 
-rollup-plugin-typescript@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-typescript/-/rollup-plugin-typescript-1.0.1.tgz#86565033b714c3d1f3aba510aad3dc519f7091e9"
-  integrity sha512-rwJDNn9jv/NsKZuyBb/h0jsclP4CJ58qbvZt2Q9zDIGILF2LtdtvCqMOL+Gq9IVq5MTrTlHZNrn8h7VjQgd8tw==
-  dependencies:
-    resolve "^1.10.0"
-    rollup-pluginutils "^2.5.0"
-
-rollup-plugin-visualizer@^2.6.0:
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-visualizer/-/rollup-plugin-visualizer-2.6.0.tgz#a5a1110848347bb00b18ee3a0582fb1b541fa511"
-  integrity sha512-9HjvKAKUNqlcpLszA14njiQJgi+5rZSdMJymKXpFncHMBRPPCRh9jmKzZHqhoq5c1K/+Tjo9flMUcgdlPD397Q==
-  dependencies:
-    mkdirp "^0.5.1"
-    open "^6.3.0"
-    pupa "^2.0.0"
-    source-map "^0.7.3"
-
 rollup-plugin-vue@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/rollup-plugin-vue/-/rollup-plugin-vue-5.0.1.tgz#1d634db033b7c628886c7a84a7d1cd444aafe983"
@@ -9299,6 +9292,21 @@ rollup-plugin-vue@^5.0.1:
     rollup-pluginutils "^2.4.1"
     source-map "0.7.3"
     vue-runtime-helpers "1.0.1"
+
+rollup-plugin-vue@^5.1.4:
+  version "5.1.4"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-vue/-/rollup-plugin-vue-5.1.4.tgz#d1892cbb18e9a2224e2dfabcbccf4707186e02eb"
+  integrity sha512-caXDQkq1yn8+wgRF1sO7IftFtHwKxiOsbB507UHaPDvCLihll/H9683io85k51txbLO9AfdGFN4aMH0nGVOZfw==
+  dependencies:
+    "@vue/component-compiler" "^4.2.0"
+    "@vue/component-compiler-utils" "^3.0.0"
+    debug "^4.1.1"
+    hash-sum "^1.0.2"
+    magic-string "^0.25.2"
+    querystring "^0.2.0"
+    rollup-pluginutils "^2.4.1"
+    source-map "0.7.3"
+    vue-runtime-helpers "^1.1.2"
 
 rollup-pluginutils@2, rollup-pluginutils@^2.0.1, rollup-pluginutils@^2.4.1, rollup-pluginutils@^2.5.0, rollup-pluginutils@^2.8.1:
   version "2.8.2"
@@ -9318,6 +9326,15 @@ rollup@^1.23.1:
   version "1.23.1"
   resolved "https://registry.yarnpkg.com/rollup/-/rollup-1.23.1.tgz#0315a0f5d0dfb056e6363e1dff05b89ac2da6b8e"
   integrity sha512-95C1GZQpr/NIA0kMUQmSjuMDQ45oZfPgDBcN0yZwBG7Kee//m7H68vgIyg+SPuyrTZ5PrXfyLK80OzXeKG5dAA==
+  dependencies:
+    "@types/estree" "*"
+    "@types/node" "*"
+    acorn "^7.1.0"
+
+rollup@^1.27.5:
+  version "1.27.5"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-1.27.5.tgz#d100fb0ffd8353575cb2057152547b9abfddfe59"
+  integrity sha512-8rfVdzuTg2kt8ObD9LNJpEwUN7B6lsl3sHc5fddtgICpLjpYeSf4m2+RftBzcCaBTMi1iYX3Ez8zFT4Gj2nJjg==
   dependencies:
     "@types/estree" "*"
     "@types/node" "*"
@@ -9700,6 +9717,14 @@ source-list-map@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/source-list-map/-/source-list-map-2.0.1.tgz#3993bd873bfc48479cca9ea3a547835c7c154b34"
   integrity sha512-qnQ7gVMxGNxsiL4lEuJwe/To8UnK7fAnmbGEEH8RpLouuKbeEm0lhbQVFIrNSuB+G7tVrAlVsZgETT5nljf+Iw==
+
+source-map-loader@^0.2.4:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/source-map-loader/-/source-map-loader-0.2.4.tgz#c18b0dc6e23bf66f6792437557c569a11e072271"
+  integrity sha512-OU6UJUty+i2JDpTItnizPrlpOIBLmQbWMuBg9q5bVtnHACqw1tn9nNwqJLbv0/00JjnJb/Ee5g5WS5vrRv7zIQ==
+  dependencies:
+    async "^2.5.0"
+    loader-utils "^1.1.0"
 
 source-map-resolve@^0.5.0, source-map-resolve@^0.5.2:
   version "0.5.2"

@@ -5,7 +5,7 @@ import Vue from "vue";
 import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 import AnkSEList from "@anakeen/user-interfaces/components/lib/AnkSEList";
 import AnkSplitter from "@anakeen/internal-components/lib/Splitter";
-import AnkSmartElement from "@anakeen/user-interfaces/components/lib/AnkSmartElement";
+import AnkSmartElement from "@anakeen/user-interfaces/components/lib/AnkSmartElement.esm";
 import AnkHubAdmin from "../HubAdmin/HubAdmin.vue";
 
 Vue.use(ButtonsInstaller);

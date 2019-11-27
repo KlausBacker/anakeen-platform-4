@@ -96,7 +96,7 @@
           </div>
         </template>
         <template slot="right">
-          <smart-element ref="smartConfig" class="hub-modal"></smart-element>
+          <smart-element ref="smartConfig" class="hub-modal" :initid="hubid"></smart-element>
         </template>
       </ank-splitter>
     </section>

@@ -1,5 +1,5 @@
 import VueAxiosPlugin from "@anakeen/internal-components/lib/AxiosPlugin";
-import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin";
+import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
 // Vue class based component export
 import { Component, Mixins, Prop, Provide, Vue, Watch } from "vue-property-decorator";
 import { HubElementDisplayTypes } from "../HubElement/HubElementTypes";

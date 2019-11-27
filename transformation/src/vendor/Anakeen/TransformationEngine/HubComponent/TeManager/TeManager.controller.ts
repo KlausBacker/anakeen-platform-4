@@ -1,5 +1,6 @@
 import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 import { LayoutInstaller } from "@progress/kendo-layout-vue-wrapper";
+import "@progress/kendo-ui/kendo.splitter";
 
 import { Component, Vue } from "vue-property-decorator";
 
@@ -12,24 +13,9 @@ Vue.use(ButtonsInstaller);
 // noinspection JSUnusedGlobalSymbols
 @Component({
   components: {
-    "te-config": () =>
-      new Promise(resolve => {
-        import("./TeConfig.vue").then(component => {
-          resolve(component.default);
-        });
-      }),
-    "te-server-load": () =>
-      new Promise(resolve => {
-        import("./TeServerLoad.vue").then(component => {
-          resolve(component.default);
-        });
-      }),
-    "te-supervision": () =>
-      new Promise(resolve => {
-        import("./TeSupervision.vue").then(component => {
-          resolve(component.default);
-        });
-      })
+    "te-config": () => import("./TeConfig.vue"),
+    "te-server-load": TeServerLoad,
+    "te-supervision": TeSupervision
   }
 })
 export default class TeManagerController extends Vue {

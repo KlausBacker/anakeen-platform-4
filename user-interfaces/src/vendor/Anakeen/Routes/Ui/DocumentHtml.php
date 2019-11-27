@@ -148,7 +148,12 @@ class DocumentHtml
         $version = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
 
         $data["ws"] = $version;
-        $cssRefs = $render->getCssReferences();
+        $cssRefs = [
+            "bootstrap" => \Anakeen\Ui\UIGetAssetPath::getCssBootstrap(),
+            "kendo" => \Anakeen\Ui\UIGetAssetPath::getCssKendo(),
+            "smartElement" => \Anakeen\Ui\UIGetAssetPath::getCssSmartElement()
+        ];
+        $cssRefs = array_merge($cssRefs, $render->getCssReferences());
         $css = array();
         foreach ($cssRefs as $key => $path) {
             $css[] = array(
@@ -169,12 +174,10 @@ class DocumentHtml
         $data["JS_DEPS"] = $js;
 
         $data["JS"] = [
-            ["key" => "coreController", "path" => $render->getControllerJs()],
-            ["key" => "core", "path" => $render->getCoreJs()]
+            ["key" => "smartElement", "path" => $render->getSmartElementJs()]
         ];
         $data["JS_LEGACY"] = [
-            ["key" => "coreController", "path" => $render->getControllerJs(true)],
-            ["key" => "core", "path" => $render->getCoreJs(true)]
+            ["key" => "smartElement", "path" => $render->getSmartElementJs(true)]
         ];
         return $data;
     }

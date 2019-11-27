@@ -1,20 +1,22 @@
 import Vue from "vue";
 
+import setup from "@anakeen/user-interfaces/components/lib/setup.esm";
 import ankHubAdmin from "../Components/HubAdmin/HubAdmin";
-import AnkAxios from "axios";
 
-Vue.prototype.$http = AnkAxios.create();
+Vue.use(setup);
 
-new Vue({
-  el: "#ank-hub-admin",
-  template: "<ank-hub-admin :hub-id='hubId'/>",
-  components: {
-    ankHubAdmin
-  },
-  data: {
-    hubId: 0
-  },
-  beforeMount() {
-    this.hubId = this.$el.dataset.hubid;
-  }
+Vue.$_globalI18n.recordCatalog().then(() => {
+  new Vue({
+    el: "#ank-hub-admin",
+    template: "<ank-hub-admin :hub-id='hubId'/>",
+    components: {
+      ankHubAdmin
+    },
+    data: {
+      hubId: 0
+    },
+    beforeMount() {
+      this.hubId = this.$el.dataset.hubid;
+    }
+  });
 });

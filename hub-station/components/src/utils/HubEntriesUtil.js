@@ -1,5 +1,6 @@
-const loadCss = require("fg-loadcss");
-const littleLoader = require("little-loader");
+import $ from "jquery";
+import loadCss from "fg-loadcss";
+import littleLoader from "little-loader";
 
 class HubEntriesUtil {
   /**

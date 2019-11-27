@@ -2,7 +2,7 @@ const path = require("path");
 const { prod, dev, legacy } = require("@anakeen/webpack-conf");
 const {
   cssLoader,
-  addFalseKendoGlobal,
+  addKendoGlobal,
   addDll
 } = require("@anakeen/webpack-conf/parts");
 
@@ -47,7 +47,7 @@ module.exports = () => {
           "KendoUI-manifest.json"
         )
       }),
-      addFalseKendoGlobal([/kendo.pdf/, /kendo.excel/]),
+      addKendoGlobal([/kendo.pdf/, /kendo.excel/]),
       cssLoader()
     ]
   };

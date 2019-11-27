@@ -1,6 +1,6 @@
 const path = require("path");
 const { useCache } = require("./common");
-const { deps } = require("@anakeen/webpack-conf");
+const { legacy, dev } = require("@anakeen/webpack-conf");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const { clean } = require("@anakeen/webpack-conf/parts");
 
@@ -101,12 +101,6 @@ module.exports = () => {
       }
     ]
   };
-  if (process.env.conf === "DEV") {
-    return deps({ ...conf, ...{ mode: "dev" } });
-  }
-  if (process.env.conf === "LEGACY") {
-    return deps(conf);
-  }
 
-  return [deps(conf), deps({ ...conf, ...{ mode: "dev" } })];
+  return [legacy(conf), dev({ ...conf })];
 };

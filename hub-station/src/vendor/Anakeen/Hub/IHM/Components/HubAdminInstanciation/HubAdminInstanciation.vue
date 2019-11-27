@@ -27,7 +27,7 @@
         </template>
         <template slot="right">
           <ank-hub-admin ref="ankHubAdmin" :hubId="selectedHub" class="hub-modal" v-if="displayConfig && selectedHub"></ank-hub-admin>
-          <ank-smart-element v-show="!displayConfig" ref="instanceConfig" class="hub-modal"></ank-smart-element>
+          <ank-smart-element v-show="!displayConfig" ref="instanceConfig" class="hub-modal" :initid="selectedHub"></ank-smart-element>
         </template>
       </ank-splitter>
     </div>

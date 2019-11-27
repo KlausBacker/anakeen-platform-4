@@ -6,10 +6,9 @@
   "license": "SEE LICENSE IN LICENSE",
   "scripts": {
     "beautify": "eslint ./src --fix",
-    "buildJs:tedock:prod": "element=TEDOCK npx webpack --config webpack/index.js",
-    "buildJs:tedock:dev": "element=TEDOCK dev=DEV npx webpack --config webpack/index.js",
-    "buildJs:tokens": "yarn run buildJs:tedock:prod && yarn run buildJs:tedock:dev",
-    "buildJs": "yarn run buildJs:tokens"
+    "buildJs:tedock:prod": "npx webpack --config webpack/config.js",
+    "buildJs:tedock:dev": "dev=DEV npx webpack --config webpack/config.js",
+    "buildJs": "yarn run buildJs:tedock:prod && yarn run buildJs:tedock:dev"
   },
   "devDependencies": {
     "@anakeen/anakeen-cli": "1.2.0",

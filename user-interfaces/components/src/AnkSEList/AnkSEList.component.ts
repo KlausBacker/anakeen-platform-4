@@ -1,3 +1,5 @@
+import "@progress/kendo-ui/js/kendo.dropdownlist";
+import "@progress/kendo-ui/js/kendo.pager";
 import { Component, Mixins, Prop, Watch } from "vue-property-decorator";
 import EventUtilsMixin from "../../mixins/AnkVueComponentMixin/EventUtilsMixin";
 import I18nMixin from "../../mixins/AnkVueComponentMixin/I18nMixin";
