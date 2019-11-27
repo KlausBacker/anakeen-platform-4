@@ -819,7 +819,7 @@ msgstr "La clef d'authentification n'est pas valide"
 
 msgctxt "ank"
 msgid "Profil not configured"
-msgstr "Profil d'accès non configuré : acun accès autorisé"
+msgstr "Profil d'accès non configuré : aucun accès autorisé"
 
 msgid "REPORT_pivot"
 msgstr "REPORT_pivot"
