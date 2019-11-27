@@ -234,7 +234,12 @@ class ImportSingleDocument
         } else {
             if ($this->doc->fromid != $fromid) {
                 $this->tcr["id"] = $this->doc->id;
-                $this->setError("DOC0008", $this->doc->getTitle(), $this->doc->fromname, \Anakeen\Core\SEManager::getNameFromId($fromid));
+                $this->setError(
+                    "DOC0008",
+                    $this->doc->getTitle(),
+                    $this->doc->fromname,
+                    \Anakeen\Core\SEManager::getNameFromId($fromid)
+                );
                 return $this;
             }
             if ($this->doc->doctype == 'Z') {
@@ -252,7 +257,12 @@ class ImportSingleDocument
 
             $this->tcr["action"] = "updated";
             $this->tcr["id"] = $this->doc->id;
-            $msg .= sprintf("[DATA] update %s (%s) : \"%s\"", $this->doc->name?:$this->doc->id, $this->doc->fromname, $this->doc->title);
+            $msg .= sprintf(
+                "[DATA] update %s (%s) : \"%s\"",
+                $this->doc->name ?: $this->doc->id,
+                $this->doc->fromname,
+                $this->doc->title
+            );
         }
 
         if ($this->hasError()) {
@@ -276,86 +286,108 @@ class ImportSingleDocument
                     if (!\Anakeen\Core\Utils\Strings::isUTF8($dv)) {
                         $dv = utf8_encode($dv);
                     }
-                    if (($attr->type == "file") || ($attr->type == "image")) {
-                        // insert file
-                        $this->tcr["foldername"] = $this->importFilePath;
-                        $this->tcr["filename"] = $dv;
+                    if ($dv !== DELVALUE) {
+                        if (($attr->type == "file") || ($attr->type == "image")) {
+                            // insert file
+                            $this->tcr["foldername"] = $this->importFilePath;
+                            $this->tcr["filename"] = $dv;
 
-                        if (!$this->analyze) {
-                            if ($attr->inArray()) {
-                                $tabsfiles = $this->normalizeData($attr, $dv);
-                                if (is_string($tabsfiles)) {
-                                    $tabsfiles=Postgres::stringToArray($tabsfiles);
-                                }
-                                $tvfids = array();
-                                foreach ($tabsfiles as $fi) {
-                                    if (preg_match(PREGEXPFILE, $fi, $reg)) {
-                                        $tvfids[] = $fi;
-                                    } elseif (preg_match('/^http:/', $fi, $reg)) {
-                                        $tvfids[] = '';
-                                    } elseif ($fi) {
-                                        $absfile = "$this->importFilePath/$fi";
-                                        $err = Utils::addVaultFile($this->dbaccess, $absfile, $this->analyze, $vfid);
-                                        if ($err != "") {
-                                            $this->setError("DOC0101", $err, $fi, $attrid, $this->doc->name);
+                            if (!$this->analyze) {
+                                if ($attr->inArray()) {
+                                    $tabsfiles = $this->normalizeData($attr, $dv);
+                                    if (is_string($tabsfiles)) {
+                                        $tabsfiles = Postgres::stringToArray($tabsfiles);
+                                    }
+                                    $tvfids = array();
+                                    foreach ($tabsfiles as $fi) {
+                                        if (preg_match(PREGEXPFILE, $fi, $reg)) {
+                                            $tvfids[] = $fi;
+                                        } elseif (preg_match('/^http:/', $fi, $reg)) {
+                                            $tvfids[] = '';
+                                        } elseif ($fi) {
+                                            $absfile = "$this->importFilePath/$fi";
+                                            $err = Utils::addVaultFile(
+                                                $this->dbaccess,
+                                                $absfile,
+                                                $this->analyze,
+                                                $vfid
+                                            );
+                                            if ($err != "") {
+                                                $this->setError("DOC0101", $err, $fi, $attrid, $this->doc->name);
+                                            } else {
+                                                $tvfids[] = $vfid;
+                                            }
                                         } else {
-                                            $tvfids[] = $vfid;
+                                            $tvfids[] = '';
                                         }
-                                    } else {
-                                        $tvfids[] = '';
+                                    }
+                                    $err .= $this->doc->setValue($attr->id, $tvfids);
+                                } else {
+                                    // one file only
+                                    if (preg_match(PREGEXPFILE, $dv, $reg)) {
+                                        $this->doc->setValue($attr->id, $dv);
+                                        $this->tcr["values"][$attr->getLabel()] = $dv;
+                                    } elseif (preg_match('/^http:/', $dv, $reg)) {
+                                        // nothing
+                                    } elseif ($dv) {
+                                        $absfile = "$this->importFilePath/$dv";
+                                        $vfid = "";
+                                        $err = Utils::AddVaultFile($this->dbaccess, $absfile, $this->analyze, $vfid);
+                                        if ($err != "") {
+                                            $this->setError("DOC0102", $err, $dv, $attrid, $this->doc->name);
+                                        } else {
+                                            $err = $this->doc->setValue($attr->id, $vfid);
+                                            if ($err) {
+                                                $this->setError("DOC0103", $err, $dv, $attrid, $this->doc->name);
+                                            }
+                                        }
                                     }
                                 }
-                                $err .= $this->doc->setValue($attr->id, $tvfids);
                             } else {
-                                // one file only
-                                if (preg_match(PREGEXPFILE, $dv, $reg)) {
-                                    $this->doc->setValue($attr->id, $dv);
-                                    $this->tcr["values"][$attr->getLabel()] = $dv;
-                                } elseif (preg_match('/^http:/', $dv, $reg)) {
-                                    // nothing
-                                } elseif ($dv) {
-                                    $absfile = "$this->importFilePath/$dv";
-                                    $err = Utils::AddVaultFile($this->dbaccess, $absfile, $this->analyze, $vfid);
-                                    if ($err != "") {
-                                        $this->setError("DOC0102", $err, $dv, $attrid, $this->doc->name);
-                                    } else {
-                                        $err = $this->doc->setValue($attr->id, $vfid);
-                                        if ($err) {
-                                            $this->setError("DOC0103", $err, $dv, $attrid, $this->doc->name);
-                                        }
-                                    }
-                                }
+                                // just for analyze
+                                $this->tcr["values"][$attr->getLabel()] = $dv;
                             }
                         } else {
-                            // just for analyze
-                            $this->tcr["values"][$attr->getLabel()] = $dv;
-                        }
-                    } else {
-                        if ($attr->type == "htmltext" && !$this->analyze) {
-                            $this->currentAttrid = $attrid;
-                            $dv = preg_replace_callback('/(<img.*?src=")file:\/\/(.*?)(".*?\/>)/', function ($matches) {
-                                return $this->importHtmltextFiles($matches);
-                            }, $dv);
-                        }
-                        if ($attr->type == "docid" || $attr->type == "account" || $attr->type == "thesaurus") {
-                            /**
-                             * Check for unknown logical names in docid's raw value
-                             */
-                            $unknownLogicalNames = $this->getUnknownDocIdLogicalNames($this->doc, $attr, $dv);
-                            if (count($unknownLogicalNames) > 0) {
-                                foreach ($unknownLogicalNames as $logicalName) {
-                                    $warnMsg = sprintf(_("Unknown logical name '%s' in attribute '%s'."), $logicalName, $attr->id);
-                                    \Anakeen\LogManager::warning($warnMsg);
-                                    $this->tcr['specmsg'] .= (($this->tcr['specmsg'] != '') ? "\n" . $warnMsg : $warnMsg);
+                            if ($attr->type == "htmltext" && !$this->analyze) {
+                                $this->currentAttrid = $attrid;
+                                $dv = preg_replace_callback(
+                                    '/(<img.*?src=")file:\/\/(.*?)(".*?\/>)/',
+                                    function ($matches) {
+                                        return $this->importHtmltextFiles($matches);
+                                    },
+                                    $dv
+                                );
+                            }
+                            if ($attr->type == "docid" || $attr->type == "account" || $attr->type == "thesaurus") {
+                                /**
+                                 * Check for unknown logical names in docid's raw value
+                                 */
+                                $unknownLogicalNames = $this->getUnknownDocIdLogicalNames($this->doc, $attr, $dv);
+                                if (count($unknownLogicalNames) > 0) {
+                                    foreach ($unknownLogicalNames as $logicalName) {
+                                        $warnMsg = sprintf(
+                                            _("Unknown logical name '%s' in attribute '%s'."),
+                                            $logicalName,
+                                            $attr->id
+                                        );
+                                        \Anakeen\LogManager::warning($warnMsg);
+                                        $this->tcr['specmsg'] .= (($this->tcr['specmsg'] != '') ? "\n" . $warnMsg : $warnMsg);
+                                    }
                                 }
                             }
+                            $errv = $this->doc->setValue($attr->id, $this->normalizeData($attr, $dv));
+                            if ($errv) {
+                                $this->setError("DOC0100", $attr->id, $errv);
+                            }
                         }
-                        $errv = $this->doc->setValue($attr->id, $this->normalizeData($attr, $dv));
+                    } else {
+                        $errv = $this->doc->clearValue($attr->id);
                         if ($errv) {
                             $this->setError("DOC0100", $attr->id, $errv);
                         }
-                        $this->tcr["values"][$attr->getLabel()] = $dv;
+                        $dv="";
                     }
+                    $this->tcr["values"][$attr->getLabel()] = $dv;
                 }
             } elseif (strpos($attrid, "extra:") === 0) {
                 $attr = substr($attrid, strlen("extra:"));
@@ -702,14 +734,17 @@ class ImportSingleDocument
     /**
      * Parse a docid's raw value (single or multiple) for unknown logical names
      *
-     * @param \Anakeen\Core\Internal\SmartElement          $doc
+     * @param \Anakeen\Core\Internal\SmartElement $doc
      * @param \Anakeen\Core\SmartStructure\NormalAttribute $oattr
-     * @param string                                       $value docid's raw value
+     * @param string $value docid's raw value
      *
      * @return array List of unknown logical names referenced by the value
      */
-    protected function getUnknownDocIdLogicalNames(\Anakeen\Core\Internal\SmartElement & $doc, \Anakeen\Core\SmartStructure\NormalAttribute & $oattr, $value)
-    {
+    protected function getUnknownDocIdLogicalNames(
+        \Anakeen\Core\Internal\SmartElement & $doc,
+        \Anakeen\Core\SmartStructure\NormalAttribute & $oattr,
+        $value
+    ) {
         $res = array();
         if ($value === ' ') {
             return $res;
@@ -730,7 +765,12 @@ class ImportSingleDocument
         foreach ($tvalues as $kvalue => $avalue) {
             if ($avalue != "") {
                 $unresolvedLogicalNames = array();
-                $tvalues[$kvalue] = \Anakeen\Core\Utils\MiscDoc::resolveDocIdLogicalNames($oattr, $avalue, $unresolvedLogicalNames, $this->knownLogicalNames);
+                $tvalues[$kvalue] = \Anakeen\Core\Utils\MiscDoc::resolveDocIdLogicalNames(
+                    $oattr,
+                    $avalue,
+                    $unresolvedLogicalNames,
+                    $this->knownLogicalNames
+                );
                 if (count($unresolvedLogicalNames) > 0) {
                     $res = array_merge($res, $unresolvedLogicalNames);
                 }

@@ -1,0 +1,51 @@
+.profile-acls-view {
+
+  & /deep/ {
+    thead.rotated tr:nth-child(2) {
+
+      th {
+        height: 160px;
+        min-width: 3rem;
+        max-width: 3rem;
+        position: relative;
+        vertical-align: bottom;
+        padding: 0;
+        font-size: 1rem;
+        line-height: 0.8;
+        text-align: right;
+        overflow: visible;
+        border: none;
+      }
+
+      th > div {
+        position: relative;
+        top: 0;
+        left: -80px; /* 80 * tan(45) / 2 = 40 where 80 is the height on the cell and 45 is the transform angle*/
+        height: 100%;
+        transform: skew(45deg, 0deg);
+        overflow: hidden;
+
+      }
+
+      th span {
+        transform: skew(-45deg, 0deg) rotate(45deg);
+        position: absolute;
+        bottom: 120px; /* 40 cos(45) = 28 with an additional 2px margin*/
+        left: -25px; /*Because it looked good, but there is probably a mathematical link here as well*/
+        display: inline-block;
+
+        width: 85px; /* 80 / cos(45) - 40 cos (45) = 85 where 80 is the height of the cell, 40 the width of the cell and 45 the transform angle*/
+        text-align: left;
+        white-space: nowrap; /*whether to display in one line or not*/
+      }
+
+      th:nth-of-type(even) div {
+        background-color: #eee;
+      }
+      th:nth-of-type(odd) div {
+        background-color: white;
+      }
+    }
+
+  }
+}

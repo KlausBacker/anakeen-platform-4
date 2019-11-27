@@ -32,7 +32,7 @@ class InstallAppFile extends Install
             $this->reinstall=true;
         }
 
-        $this->moduleManager->setFile($this->fileModulePath,$this->reinstall);
+        $this->moduleManager->setFile($this->fileModulePath, $this->reinstall);
     }
 
     protected function completeModuleManager()
@@ -43,6 +43,4 @@ class InstallAppFile extends Install
 
         AskParameters::setParameters($this->moduleManager->getAllParameters());
     }
-
-
 }

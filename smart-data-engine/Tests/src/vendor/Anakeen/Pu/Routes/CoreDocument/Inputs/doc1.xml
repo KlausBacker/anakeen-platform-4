@@ -5,7 +5,7 @@
 <tst_api__t_tab><tst_api__fr_rels><tst_api__account xsi:nil="true"/>
 <tst_api__account_multiple xsi:nil="true"/>
 <tst_api__docid xsi:nil="true"/>
-<tst_api__docid_multiple xsi:nil="true"/></tst_api__fr_rels>
+<tst_api__docid_multiple name="BASE,IUSER"/>document multiple</tst_api__fr_rels>
 <tst_api__fr_date><tst_api__date>2018-01-31</tst_api__date>
 <tst_api__time>03:30:00</tst_api__time>
 <tst_api__timestamp>2018-02-14 02:00:00</tst_api__timestamp></tst_api__fr_date>
@@ -14,7 +14,9 @@
 <tst_api__money>236780</tst_api__money></tst_api__fr_number>
 <tst_api__fr_misc><tst_api__password xsi:nil="true"/>
 <tst_api__color>#cf2929</tst_api__color></tst_api__fr_misc>
-<tst_api__fr_file><tst_api__file mime="" title="" xsi:nil="true"/>
+<tst_api__fr_file>
+    <tst_api__file vid="" mime="text/plain" title="Hello.txt">Q291Y28K</tst_api__file>
+
 <tst_api__image mime="" title="" xsi:nil="true"/></tst_api__fr_file>
 <tst_api__fr_text><tst_api__htmltext>&lt;p&gt;Les &lt;strong&gt;ours&lt;/strong&gt; forment la &lt;a href="https://fr.wikipedia.org/wiki/Famille_(biologie)" title="Famille (biologie)"&gt;famille&lt;/a&gt; de &lt;a href="https://fr.wikipedia.org/wiki/Mammif%C3%A8res" title="Mammifères"&gt;mammifères&lt;/a&gt; des &lt;strong&gt;ursidés&lt;/strong&gt; (&lt;strong&gt;Ursidae&lt;/strong&gt;), de l'ordre des &lt;a href="https://fr.wikipedia.org/wiki/Carnivora" title="Carnivora"&gt;carnivores&lt;/a&gt; (&lt;a href="https://fr.wikipedia.org/wiki/Carnivora" title="Carnivora"&gt;Carnivora&lt;/a&gt;). Le &lt;a href="https://fr.wikipedia.org/wiki/Grand_panda" title="Grand panda"&gt;Grand panda&lt;/a&gt;, dont la classification a longtemps prêté à débat, est aujourd'hui considéré comme un ours &lt;a href="https://fr.wikipedia.org/wiki/Herbivore" title="Herbivore"&gt;herbivore&lt;/a&gt; au sein de cette famille&lt;a href="https://fr.wikipedia.org/wiki/Ursidae#cite_note-1"&gt;1&lt;/a&gt;,&lt;a href="https://fr.wikipedia.org/wiki/Ursidae#cite_note-2"&gt;2&lt;/a&gt;. Il n'existe que huit espèces d'ours vivantes réparties dans une grande variété d'&lt;a href="https://fr.wikipedia.org/wiki/Habitat_(%C3%A9cologie)" title="Habitat (écologie)"&gt;habitats&lt;/a&gt;, à la fois dans l'hémisphère Nord et dans une partie de l'hémisphère Sud. Les ours vivent sur les continents d'&lt;a href="https://fr.wikipedia.org/wiki/Europe" title="Europe"&gt;Europe&lt;/a&gt;, d'&lt;a href="https://fr.wikipedia.org/wiki/Am%C3%A9rique_du_Nord" title="Amérique du Nord"&gt;Amérique du Nord&lt;/a&gt;, d'&lt;a href="https://fr.wikipedia.org/wiki/Am%C3%A9rique_du_Sud" title="Amérique du Sud"&gt;Amérique du Sud&lt;/a&gt;, et en &lt;a href="https://fr.wikipedia.org/wiki/Asie" title="Asie"&gt;Asie&lt;/a&gt;.&lt;/p&gt;</tst_api__htmltext>
 <tst_api__longtext>Les ours sont chassés depuis la préhistoire pour leur viande et leur fourrure. Ils ont joué un rôle de premier plan dans la culture (mythologie, légendes, etc.) et les arts. À l'époque moderne, les populations d'ours sont victimes de pressions (comme celles des éleveurs dans les Pyrénées), de l'empiètement de l'homme sur son habitat naturel, de l'artificialisation et de la fragmentation des forêts, ainsi que du commerce illicite, notamment le marché asiatique de la bile d'ours. L'UICN a classé six espèces d'ours comme vulnérables ou menacées d'extinction. L'ours brun pourrait disparaître dans certains pays européens. Le braconnage et le commerce international des populations les plus en danger sont interdits, mais se pratiquent toujours.</tst_api__longtext>

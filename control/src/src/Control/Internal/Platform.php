@@ -33,4 +33,9 @@ class Platform
     }
 
 
+    public static function getStatusInfo() {
+        self::initPlatformContext();
+        return \Anakeen\Script\System::getStatusInfo();
+    }
+
 }

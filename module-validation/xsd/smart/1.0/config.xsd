@@ -554,7 +554,6 @@
     <xs:complexType name="accessType">
         <xs:simpleContent>
             <xs:extension base="xs:string">
-                <xs:attribute type="xs:token" name="ref"/>
                 <xs:attribute type="xs:token" name="account"/>
                 <xs:attribute type="xs:token" name="access"/>
                 <xs:attribute type="v1:fieldNameType" name="field"/>

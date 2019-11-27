@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documents date="2011-11-17T14:17:06" author="Default Master" name="recherche_Test_Famille_1">
+    <tst_famimp1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="tst_famimp1.xsd"
+                 title="Un" revision="0" name="TST_IMP1_GOOD2">
+        <tst_frame>
+            <tst_title>Eleven</tst_title>
+            <tst_number>11</tst_number>
+            <tst_docids name="IGROUP,IUSER"></tst_docids>
+            <tst_date>2003-08-26</tst_date>
+            <tst_texts>Extra 1</tst_texts>
+            <tst_texts>Extra 2</tst_texts>
+        </tst_frame>
+
+    </tst_famimp1>
+</documents>

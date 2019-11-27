@@ -673,13 +673,13 @@ exports.parseEnumContants = ({ globFile, info, log, verbose }) => {
           // Write PHP file constants
           allWorkflowData.forEach(enumData => {
             let pathParts = path.dirname(enumData.file).split(path.sep);
-            let targetBaseName = enumData.name + ".php";
+            enumData.classname = enumData.name.replace(/-/g, "_");
+            let targetBaseName = enumData.classname + ".php";
             let target = pathParts.concat([targetBaseName]).join(path.sep);
             let vendorIndex = pathParts.indexOf("vendor");
             if (vendorIndex >= 0) {
               enumData.namespace = pathParts.slice(vendorIndex + 1).join("\\");
             }
-            enumData.classname = enumData.name.replace("-", "_");
 
             fs.writeFileSync(target, mustache.render(tplPHP, enumData));
             if (verbose) log("Write PHP enum constants file: " + target);
@@ -693,7 +693,7 @@ exports.parseEnumContants = ({ globFile, info, log, verbose }) => {
 
           allWorkflowData.forEach(enumData => {
             let pathParts = path.dirname(enumData.file).split(path.sep);
-            let targetBaseName = enumData.name + ".js";
+            let targetBaseName = enumData.classname + ".js";
             let target = pathParts.concat([targetBaseName]).join(path.sep);
 
             let jsContent = mustache.render(tplJS, enumData);

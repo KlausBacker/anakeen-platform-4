@@ -59,143 +59,146 @@ define([
             //Trigger the beforeRender event, and cancel display if asked
             currentView.model.trigger("beforeRender", event, {
               model: currentView.model,
-              $el: currentView.$el
+              $el: currentView.$el,
+              options: { customTemplate: currentView.options.originalView !== true }
             });
             if (event.prevent) {
               resolve(currentView);
               return currentView;
             }
-
-            currentView.$el.addClass("dcpAttribute--visibility--" + currentView.model.get("visibility"));
-            if (currentView.options.originalView !== true) {
-              if (currentView.model.getOption("template")) {
-                customRender = attributeTemplate.renderCustomView(currentView.model);
-                currentView.customView = customRender.$el;
-                customRender.promise.then(resolve);
-                if (currentView.model.getOption("template").match("dcpArray__table")) {
-                  // Two case of custom : custom line or global custom array
-                  currentView.customRowView = true;
+            EventPromiseUtils.getBeforeEventPromise(event, () => {
+              currentView.$el.addClass("dcpAttribute--visibility--" + currentView.model.get("visibility"));
+              if (currentView.options.originalView !== true) {
+                if (currentView.model.getOption("template")) {
+                  customRender = attributeTemplate.renderCustomView(currentView.model);
+                  currentView.customView = customRender.$el;
+                  customRender.promise.then(resolve);
+                  if (currentView.model.getOption("template").match("dcpArray__table")) {
+                    // Two case of custom : custom line or global custom array
+                    currentView.customRowView = true;
+                  }
                 }
               }
-            }
 
-            //Extract only the displayable lines
-            data.content = _.filter(data.content, function vArray_filterCurrentElement(currentContent) {
-              return currentContent.isDisplayable;
-            });
-            data.nbLines = currentView.getNbLines();
-            currentView.padValues(data.nbLines);
-            data.renderOptions = currentView.model.getOptions();
-            data.templates = {};
-            data.displayLabel = currentView.displayLabel;
-            if (currentView.model.getTemplates().attribute[currentView.model.get("type")]) {
-              data.templates = currentView.model.getTemplates().attribute[currentView.model.get("type")];
-            }
-            if (data.nbLines === 0 && data.mode === "read") {
-              data.showEmpty = currentView.model.getOption("showEmptyContent");
-            } else {
-              if (!currentView.customView || currentView.customRowView) {
-                currentView.columnViews = [];
-                currentView.model.get("content").each(function vArray_analyzeContent(currentAttr) {
-                  if (!currentAttr.isDisplayable()) {
-                    return;
-                  }
-                  try {
-                    if (currentAttr.getOption("attributeLabel")) {
-                      data.content = _.map(data.content, function vArray_changeLabelCurrentElement(currentContent) {
-                        if (currentContent.id === currentAttr.id) {
-                          currentContent.label = currentAttr.getOption("attributeLabel");
-                        }
-                        return currentContent;
-                      });
+              //Extract only the displayable lines
+              data.content = _.filter(data.content, function vArray_filterCurrentElement(currentContent) {
+                return currentContent.isDisplayable;
+              });
+              data.nbLines = currentView.getNbLines();
+              currentView.padValues(data.nbLines);
+              data.renderOptions = currentView.model.getOptions();
+              data.templates = {};
+              data.displayLabel = currentView.displayLabel;
+              if (currentView.model.getTemplates().attribute[currentView.model.get("type")]) {
+                data.templates = currentView.model.getTemplates().attribute[currentView.model.get("type")];
+              }
+              if (data.nbLines === 0 && data.mode === "read") {
+                data.showEmpty = currentView.model.getOption("showEmptyContent");
+              } else {
+                if (!currentView.customView || currentView.customRowView) {
+                  currentView.columnViews = [];
+                  currentView.model.get("content").each(function vArray_analyzeContent(currentAttr) {
+                    if (!currentAttr.isDisplayable()) {
+                      return;
                     }
-                    if (currentAttr.get("isValueAttribute")) {
-                      currentView.columnViews[currentAttr.id] = new ViewColumn({
-                        el: currentView.el,
-                        els: function vArray_findScope() {
-                          return currentView.$el.find(
-                            '.dcpArray__cell[data-attrid="' +
-                              currentAttr.id +
-                              '"],' +
-                              '.dcpCustomTemplate--row[data-attrid="' +
-                              currentAttr.id +
-                              '"]'
-                          );
-                        },
-                        originalView: true,
-                        model: currentAttr,
-                        parentElement: currentView.$el
-                      });
-                      promisesColumn.push(currentView.columnViews[currentAttr.id].render());
+                    try {
+                      if (currentAttr.getOption("attributeLabel")) {
+                        data.content = _.map(data.content, function vArray_changeLabelCurrentElement(currentContent) {
+                          if (currentContent.id === currentAttr.id) {
+                            currentContent.label = currentAttr.getOption("attributeLabel");
+                          }
+                          return currentContent;
+                        });
+                      }
+                      if (currentAttr.get("isValueAttribute")) {
+                        currentView.columnViews[currentAttr.id] = new ViewColumn({
+                          el: currentView.el,
+                          els: function vArray_findScope() {
+                            return currentView.$el.find(
+                              '.dcpArray__cell[data-attrid="' +
+                                currentAttr.id +
+                                '"],' +
+                                '.dcpCustomTemplate--row[data-attrid="' +
+                                currentAttr.id +
+                                '"]'
+                            );
+                          },
+                          originalView: true,
+                          model: currentAttr,
+                          parentElement: currentView.$el
+                        });
+                        promisesColumn.push(currentView.columnViews[currentAttr.id].render());
+                      }
+                    } catch (e) {
+                      if (window.dcp.logger) {
+                        window.dcp.logger(e);
+                      } else {
+                        console.error(e);
+                      }
                     }
-                  } catch (e) {
-                    if (window.dcp.logger) {
-                      window.dcp.logger(e);
-                    } else {
-                      console.error(e);
-                    }
+                  });
+                }
+              }
+              $(window).on("resize.v" + this.model.cid, _.bind(this.setResponsiveClasse, this));
+              _.defer(_.bind(this.setResponsiveClasse, this));
+            }).finally(() => {
+              if (currentView.customView) {
+                data.customTemplate = currentView.customView;
+                data.customLineCallback = function vArray_callCustomLine(index) {
+                  return attributeTemplate.customArrayRowView(index, currentView.model, currentView);
+                };
+              }
+
+              try {
+                promisesColumn.push(
+                  new Promise(
+                    _.bind(function onArrayReady(resolve, reject) {
+                      try {
+                        currentView.$el.dcpArray(data).one("dcparraywidgetready", resolve);
+                        attributeTemplate.insertDescription(currentView);
+                      } catch (e) {
+                        reject(e);
+                      }
+                    }, this)
+                  )
+                );
+              } catch (e) {
+                if (window.dcp.logger) {
+                  window.dcp.logger(e);
+                } else {
+                  console.error(e);
+                }
+              }
+
+              Promise.all(promisesColumn).then(function renderDone() {
+                currentView.$el.attr("data-attrid", currentView.model.id);
+                currentView.model.trigger("renderDone", {
+                  model: currentView.model,
+                  $el: currentView.$el,
+                  options: {
+                    customTemplate: !!currentView.customView
                   }
                 });
-              }
-            }
-            $(window).on("resize.v" + this.model.cid, _.bind(this.setResponsiveClasse, this));
-            _.defer(_.bind(this.setResponsiveClasse, this));
+                if (
+                  currentView.$el.find(
+                    '.dcpCustomTemplate[data-attrid="' +
+                      currentView.model.id +
+                      '"] .dcpCustomTemplate--content[data-attrid="' +
+                      currentView.model.id +
+                      '"]'
+                  ).length > 0
+                ) {
+                  // it's a fake array view because template declare itself inside
+                  currentView.stopListening(currentView.model, "addWidgetLine");
+                  currentView.stopListening(currentView.model, "removeWidgetLine");
+                  currentView.undelegateEvents();
+                }
+                resolve(currentView);
+              });
+            });
           } catch (e) {
             reject(e);
           }
-
-          if (currentView.customView) {
-            data.customTemplate = currentView.customView;
-            data.customLineCallback = function vArray_callCustomLine(index) {
-              return attributeTemplate.customArrayRowView(index, currentView.model, currentView);
-            };
-          }
-
-          try {
-            promisesColumn.push(
-              new Promise(
-                _.bind(function onArrayReady(resolve, reject) {
-                  try {
-                    currentView.$el.dcpArray(data).one("dcparraywidgetready", resolve);
-                    attributeTemplate.insertDescription(currentView);
-                  } catch (e) {
-                    reject(e);
-                  }
-                }, this)
-              )
-            );
-          } catch (e) {
-            if (window.dcp.logger) {
-              window.dcp.logger(e);
-            } else {
-              console.error(e);
-            }
-          }
-
-          Promise.all(promisesColumn).then(function renderDone() {
-            currentView.$el.attr("data-attrid", currentView.model.id);
-            currentView.model.trigger("renderDone", {
-              model: currentView.model,
-              $el: currentView.$el
-            });
-            if (
-              currentView.$el.find(
-                '.dcpCustomTemplate[data-attrid="' +
-                  currentView.model.id +
-                  '"] .dcpCustomTemplate--content[data-attrid="' +
-                  currentView.model.id +
-                  '"]'
-              ).length > 0
-            ) {
-              // it's a fake array view because template declare itself inside
-              currentView.stopListening(currentView.model, "addWidgetLine");
-              currentView.stopListening(currentView.model, "removeWidgetLine");
-              currentView.undelegateEvents();
-            }
-            resolve(currentView);
-          });
-
-          return this;
         }, this)
       );
     },
@@ -330,9 +333,16 @@ define([
                       ")"
                   );
                 }
+
                 currentWidgetOption.viewCid = _.uniqueId(currentWidgetOption.viewCid);
                 currentViewColumn.widgetInit($this, currentWidgetOption);
                 currentViewColumn.moveValueIndex({});
+                currentViewColumn.model.trigger("renderDone", {
+                  model: currentViewColumn.model,
+                  $el: $this,
+                  options: { customTemplate: $this.data("originalView") === false },
+                  index: options.line
+                });
               },
               { index: options.line }
             );

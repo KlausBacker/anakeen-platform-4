@@ -7,7 +7,7 @@ define([
   "dcpDocument/views/attributes/vAttribute",
   "dcpDocument/views/attributes/array/vArray",
   "dcpDocument/views/document/attributeTemplate",
-  "dcpDocument/widgets/globalController/utils/EventUtils.js"
+  "dcpDocument/widgets/globalController/utils/EventUtils"
 ], function require_vFrame(
   $,
   _,
@@ -65,7 +65,10 @@ define([
 
           currentView.model.trigger("beforeRender", event, {
             model: currentView.model,
-            $el: currentView.$el
+            $el: currentView.$el,
+            options: {
+              customTemplate: !!currentView.model.getOption("template") && currentView.options.originalView !== true
+            }
           });
 
           const renderPromise = EventPromiseUtils.getBeforeEventPromise(
@@ -163,7 +166,10 @@ define([
               .then(function allRenderDone() {
                 currentView.model.trigger("renderDone", {
                   model: currentView.model,
-                  $el: currentView.$el
+                  $el: currentView.$el,
+                  options: {
+                    customTemplate: !!currentView.customView
+                  }
                 });
                 if (currentView.model.getOption("responsiveColumns")) {
                   currentView.responsiveColumns();

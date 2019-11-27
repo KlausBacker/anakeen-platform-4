@@ -1,6 +1,12 @@
 const fs = require("fs");
 const path = require("path");
 const mustache = require("mustache");
+const signale = require("signale");
+
+signale.config({
+  displayTimestamp: true,
+  displayDate: true
+});
 
 /**
  * Create a dir asynchronously (and parents dir if they not exist)
@@ -8,6 +14,9 @@ const mustache = require("mustache");
  * @param callback
  */
 exports.mkpdir = (dirPath, callback) => {
+  if (fs.existsSync(dirPath)) {
+    callback("");
+  }
   // Private function to keep dirPath in the high level function context
   const _makeparentdir = (parentPath, cb) => {
     const dirname = path.dirname(parentPath);
@@ -107,6 +116,7 @@ const writeTemplate = (destinationPath, templateFile, templateData = {}) => {
             if (err) {
               reject(err);
             } else {
+              signale.info("Wrote " + destinationPath);
               resolve(destinationPath);
             }
           });

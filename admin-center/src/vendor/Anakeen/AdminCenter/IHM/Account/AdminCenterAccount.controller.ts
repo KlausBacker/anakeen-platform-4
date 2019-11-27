@@ -342,6 +342,7 @@ export default class AdminCenterAccountController extends Vue {
   }
 
   public openGroup() {
+    this.selectedUser = this.groupId;
     this.$nextTick(() => {
       const openDoc = this.$refs.openDoc;
       if (openDoc) {
@@ -355,13 +356,15 @@ export default class AdminCenterAccountController extends Vue {
   }
   public selectCreateUserConfig(e) {
     if (e.dataItem.canCreate) {
+      this.selectedUser = e.dataItem.id;
       this.$nextTick(() => {
+        e.sender.value(""); // reset dropdownn
         const openDoc = this.$refs.openDoc;
         if (openDoc) {
           this.refreshData(openDoc);
           openDoc.fetchSmartElement({
             customClientData: { defaultGroup: this.selectedGroupDocumentId },
-            initid: e.dataItem.id,
+            initid: this.selectedUser,
             viewId: "!defaultCreation"
           });
         }
@@ -373,13 +376,15 @@ export default class AdminCenterAccountController extends Vue {
   }
   public selectCreateGroupConfig(e) {
     if (e.dataItem.canCreate) {
+      this.selectedUser = e.dataItem.id;
       this.$nextTick(() => {
+        e.sender.value(""); // reset dropdownn
         const openDoc = this.$refs.openDoc;
         if (openDoc) {
           this.refreshData(openDoc);
           openDoc.fetchSmartElement({
             customClientData: { defaultGroup: this.selectedGroupDocumentId },
-            initid: e.dataItem.id,
+            initid: this.selectedUser,
             viewId: "!defaultCreation"
           });
         }
@@ -389,6 +394,7 @@ export default class AdminCenterAccountController extends Vue {
 
   // Open group selected in group change mode
   public openChangeGroup() {
+    this.selectedUser = this.groupId;
     this.$nextTick(() => {
       const openDoc = this.$refs.openDoc;
       if (openDoc) {

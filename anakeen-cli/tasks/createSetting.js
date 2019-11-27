@@ -32,43 +32,33 @@ exports.createSetting = ({
     if (!settingPath && !vendorName) {
       throw new Error("You need to specify a vendor name or settingPath");
     }
-    if (!settingPath && vendorName && moduleName) {
-      let basePath = path.join("vendor", vendorName, moduleName);
 
+    let modulePath = path.join("vendor", vendorName, moduleName);
+    if (!settingPath && vendorName && moduleName) {
       //Compute and test the settingPath for the vendor name
+
       srcPath = moduleInfo.buildInfo.buildPath.find(currentPath => {
         //Check current path
-        const smartPath = path.join(currentPath, basePath);
-        try {
-          return fs.existsSync(smartPath) && fs.statSync(smartPath).isDirectory();
-        } catch (e) {
-          return smartPath;
-        }
+        return path.join(currentPath, modulePath);
       });
+
+      if (srcPath && (!fs.existsSync(srcPath) || !fs.statSync(srcPath).isDirectory())) {
+        throw new Error(`Source directory "${srcPath}" not exists. Use "settingPath" path option or create directory`);
+      } else {
+        settingPath = path.join(srcPath, modulePath);
+        if (!fs.existsSync(settingPath) || !fs.statSync(settingPath).isDirectory()) {
+          throw new Error(
+            `Module directory "${settingPath}" not exists. Use "settingPath" path option or create directory`
+          );
+        }
+      }
+      let basePath = modulePath;
       if (associatedSmartStructure) {
         const StructureName = camelCase(associatedSmartStructure, { pascalCase: true });
 
-        // a suppr
-        // const StructureName =
-        //   associatedSmartStructure.charAt(0).toUpperCase() + associatedSmartStructure.slice(1).toLowerCase();
-        basePath = path.join(
-          "vendor",
-          vendorName,
-          moduleName,
-          "SmartStructures",
-          StructureName,
-          `${StructureName}Settings`
-        );
+        basePath = path.join(modulePath, "SmartStructures", StructureName, `${StructureName}Settings`);
       }
-      if (!srcPath) {
-        let errorMessage = `Unable to find a setting path for the vendor (${vendorName}), you should create it or indicate the settingPath option`;
-        fsUtils.mkpdir(basePath, err => {
-          if (err) {
-            errorMessage = err;
-          }
-        });
-        throw new Error(errorMessage);
-      }
+
       settingPath = path.join(srcPath, basePath);
     }
     //Create the directory if needed
