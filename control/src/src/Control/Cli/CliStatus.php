@@ -14,7 +14,6 @@ use Symfony\Component\Console\Output\ConsoleSectionOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 
-
 class CliStatus extends CliJsonCommand
 {
     // the name of the command (the part after "bin/console")
@@ -27,7 +26,12 @@ class CliStatus extends CliJsonCommand
         $this
             // the short description shown while running "php bin/console list"
             ->setDescription('Get status of control manager.')
-            ->addOption('watch', "w", InputOption::VALUE_OPTIONAL, 'Watch log and refresh each n seconds. Ignored if json format')
+            ->addOption(
+                'watch',
+                "w",
+                InputOption::VALUE_OPTIONAL,
+                'Watch log and refresh each n seconds. Ignored if json format'
+            )
             // the full command description shown when running the command with
             // the "--help" option
             ->setHelp('Get job progress and some other statuses');
@@ -65,7 +69,11 @@ class CliStatus extends CliJsonCommand
                     $helper = $this->getHelper('question');
                     $output->writeln("<info>The last job has failed.</info>");
 
-                    $question = new ChoiceQuestion('<question>What do you what to do ?</question>', ['Retry', 'Ignore', 'Cancel'], "Cancel");
+                    $question = new ChoiceQuestion(
+                        '<question>What do you what to do ?</question>',
+                        ['Retry', 'Ignore', 'Cancel'],
+                        "Cancel"
+                    );
                     $answer = $helper->ask($input, $output, $question);
 
                     switch ($answer) {
@@ -74,7 +82,7 @@ class CliStatus extends CliJsonCommand
                             ModuleManager::runJobInBackground();
                             break;
 
-                        case 'Ignore' :
+                        case 'Ignore':
                             $output->writeln("<info>Rerun Job and ignore last error.</info>");
                             JobLog::markProcessFailedAsIgnored();
                             ModuleManager::runJobInBackground();
@@ -95,8 +103,12 @@ class CliStatus extends CliJsonCommand
             $table->setHeaders($headers);
 
             foreach ($data["tasks"] as $task) {
-
-                $status = sprintf("<%s>%s</%s>", strtolower($task["status"]), $task["status"], strtolower($task["status"]));
+                $status = sprintf(
+                    "<%s>%s</%s>",
+                    strtolower($task["status"]),
+                    $task["status"],
+                    strtolower($task["status"])
+                );
 
                 $row = [
                     sprintf("<comment>%s</comment>", $task["module"]),
@@ -108,7 +120,12 @@ class CliStatus extends CliJsonCommand
                 $taskStatus = ($task["status"] ?? "");
                 if ($taskStatus === ModuleJob::RUNNING_STATUS || $taskStatus === ModuleJob::INTERRUPTED_STATUS || $taskStatus === ModuleJob::FAILED_STATUS) {
                     foreach ($task["phases"] as $phase) {
-                        $status = sprintf("<%s>%s</%s>", strtolower($phase["status"]), $phase["status"], strtolower($phase["status"]));
+                        $status = sprintf(
+                            "<%s>%s</%s>",
+                            strtolower($phase["status"]),
+                            $phase["status"],
+                            strtolower($phase["status"])
+                        );
 
                         $row = [
                             sprintf("<comment>%s</comment>", ""),
@@ -121,10 +138,14 @@ class CliStatus extends CliJsonCommand
                             $data["error"] = $phase["error"];
                         }
                         if (isset($phase["process"])) {
-
                             foreach ($phase["process"] as $process) {
                                 if ($process["status"] !== ModuleJob::DONE_STATUS && $process["status"] !== ModuleJob::TODO_STATUS) {
-                                    $status = sprintf("<%s>%s</%s>", strtolower($process["status"]), $process["status"], strtolower($process["status"]));
+                                    $status = sprintf(
+                                        "<%s>%s</%s>",
+                                        strtolower($process["status"]),
+                                        $process["status"],
+                                        strtolower($process["status"])
+                                    );
                                     $row = [
                                         sprintf("<comment>%s</comment>", ""),
                                         sprintf("<info>%s</info>", $process["label"]),
@@ -152,8 +173,7 @@ class CliStatus extends CliJsonCommand
             }
         }
         if (!empty($data["error"])) {
-            $section->writeln(sprintf("<error>%s</error>", $data["error"]));
+            $section->writeln(sprintf("<error>%s.</error>", $data["error"]));
         }
     }
-
 }

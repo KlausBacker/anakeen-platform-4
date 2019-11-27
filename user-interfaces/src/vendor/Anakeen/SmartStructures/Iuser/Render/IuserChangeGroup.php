@@ -38,9 +38,9 @@ class IuserChangeGroup extends DefaultConfigEditRender
         return $js;
     }
 
-    public function getJsDeps()
+    public function getJsDeps($legacy = false)
     {
-        $js =  parent::getJsDeps();
+        $js =  parent::getJsDeps($legacy);
         $kendoDll = UIGetAssetPath::getJSKendoComponentPath();
         $js["kendoDll"] = $kendoDll;
         return $js;

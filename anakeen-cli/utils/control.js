@@ -128,11 +128,14 @@ exports.postModuleAndWaitTheEnd = async args => {
             running = controlStatus.status === "Running";
           }
           controlLog.note(`Deployment process is finished`);
-
           if (controlStatus.status === "Failed") {
             result.error = getStatusError(controlStatus);
             result.status = controlStatus;
             result.message = result.error.message;
+            reject(result);
+          } else if (controlStatus.error) {
+            result.status = controlStatus.status;
+            result.error = controlStatus.error;
             reject(result);
           } else {
             resolve(result);

@@ -27,6 +27,8 @@ export default {
       if (newValue !== oldValue) {
         this.profileTreeReady = false;
         this.privateScope.initProfileComponent();
+
+        window.localStorage.setItem("profile.show.labels", newValue);
       }
     },
     displayAllElements(newValue) {
@@ -41,7 +43,6 @@ export default {
               .showColumn(item.field);
           }
         });
-        window.localStorage.setItem("profile.show.columns", newValue);
       } else {
         this.columns.forEach(item => {
           if (!this.defaultColumns.includes(item.field.split(".")[1])) {
@@ -50,10 +51,10 @@ export default {
               .hideColumn(item.field);
           }
         });
-        window.localStorage.setItem("profile.show.columns", newValue);
-        this.profileTreeReady = false;
-        this.privateScope.initProfileComponent();
       }
+      window.localStorage.setItem("profile.show.columns", newValue);
+      this.profileTreeReady = false;
+      this.privateScope.initProfileComponent();
     }
   },
   data: () => ({
@@ -69,7 +70,7 @@ export default {
     profileTreeReady: false,
     showError: false,
     errorToDisplay: "",
-    showLabels: false,
+    showLabels: window.localStorage.getItem("profile.show.labels") === "true" ? true : false,
     showColumns: window.localStorage.getItem("profile.show.columns") === "true" ? true : false,
     columns: []
   }),
@@ -114,11 +115,14 @@ export default {
         return new kendo.data.TreeListDataSource({
           transport: {
             read: options => {
-              kendo.ui.progress($(".k-grid-content", this.$el), true);
+              $(this.$refs.profileTreeList)
+                .data("kendoTreeList")
+                .autoFitColumn("title");
+              kendo.ui.progress($(".k-grid", this.$el), true);
               this.$http
                 .get(this.privateScope.getCurrentUrl())
                 .then(content => {
-                  kendo.ui.progress($(".k-grid-content", this.$el), false);
+                  kendo.ui.progress($(".k-grid", this.$el), false);
                   if (!content.data.success) {
                     this.$emit("error", content.data.messages.join(" "));
                     throw Error(content.data.messages.join(" "));
@@ -209,7 +213,7 @@ export default {
         this.dataSource.read();
       },
       fetchTreeConfig: () => {
-        if (parseInt(this.profileId)) {
+        if (this.profileId) {
           this.$http
             .get(`/api/v2/devel/security/profile/${this.profileId}/accesses/?acls=only`)
             .then(content => {
@@ -255,11 +259,7 @@ export default {
             maxLabelSize = textWidth;
           }
           let headerAttributes = {};
-          if (this.labelRotate) {
-            headerAttributes = {
-              "data-transformation": "header-rotate"
-            };
-          }
+
           if (!this.showColumns) {
             return {
               field: `acls.${currentElement.name}`,
@@ -329,9 +329,7 @@ export default {
           }
         });
         this.columns = columns;
-        this.dataSource.bind("change", () => {
-          treeList.data("kendoTreeList").autoFitColumn("title");
-        });
+
         const treeList = $(this.$refs.profileTreeList).kendoTreeList({
           columns: [
             {
@@ -357,9 +355,16 @@ export default {
           },
           dataBound: () => {
             treeList.data("kendoTreeList").autoFitColumn("title");
+            $(window).trigger("resize");
           },
           dataSource: this.dataSource
         });
+        this.dataSource.bind("change", () => {
+          treeList.data("kendoTreeList").autoFitColumn("title");
+        });
+
+        $("table[role=grid]", this.$el).attr("style", this.previousWidth);
+
         treeList.on("click", ".foldGroups", () => {
           treeList
             .find(".account-type-group")
@@ -379,17 +384,11 @@ export default {
           treeList.data("kendoTreeList").autoFitColumn("title");
         });
         if (this.labelRotate) {
-          $(".k-header[data-transformation=header-rotate]", this.$el).css(
-            "height",
-            `${this.privateScope.computeHeaderHeight(maxLabelSize, this.labelRotation) + 15}px`
-          );
-          $(".k-header[data-transformation=header-rotate] > .header-acl-label", this.$el).css(
-            "transform",
-            `translateX(calc(${this.columnWidth} - 2.25rem)) rotate(${this.labelRotation}deg)`
-          );
+          $("thead", this.$el).addClass("rotated");
         }
       },
       initProfileComponent: () => {
+        this.previousWidth = $("table[role=grid]", this.$el).attr("style");
         this.dataSource = this.privateScope.initDataSource();
         this.privateScope.fetchTreeConfig();
         this.privateScope.onResizeContent();
@@ -406,6 +405,14 @@ export default {
   },
   mounted() {
     this.privateScope.initProfileComponent();
+
+    $(this.$el).on("mouseover", "td.rightColumn", event => {
+      let $item = $(event.currentTarget);
+      let index = $item.index();
+      let $table = $item.closest(".k-treelist").find("table");
+      $table.find(".right--over").removeClass("right--over");
+      $table.find("tr td:nth-child(" + (index + 1) + "), tr th:nth-child(" + index + ")").addClass("right--over");
+    });
   },
   methods: {
     updateGrid: function() {

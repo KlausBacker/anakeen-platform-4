@@ -16,6 +16,7 @@ class ModuleJob
     const INITIALIZED_STATUS = "Initialized";
     const RUNNING_STATUS = "Running";
     const DONE_STATUS = "Done";
+    const MAINTENANCE_STATUS = "Maintenance";
     const TODO_STATUS = "Todo";
     const INTERRUPTED_STATUS = "Interrupted";
     const ERROR_STATUS = "Error";
@@ -61,7 +62,18 @@ class ModuleJob
                 $status["status"] = ModuleJob::INITIALIZED_STATUS;
                 $status["message"] = "Ready to install modules";
             } else {
+                $platformStatus=Platform::getStatusInfo();
                 $status["status"] = ModuleJob::READY_STATUS;
+                if ($platformStatus) {
+                    if ($platformStatus["maintenance"]??null) {
+                        $status["status"] = ModuleJob::MAINTENANCE_STATUS;
+                    }
+                    if ($platformStatus["error"]??null) {
+                        $status["error"] = $platformStatus["error"]??"";
+                    } else {
+                        $status["message"] = $platformStatus["status"];
+                    }
+                }
             }
         }
 
@@ -117,6 +129,7 @@ class ModuleJob
         $data["action"] = $module->getMainPhase();
         $data["moduleArg"] = $module->getName();
         $data["file"] = $module->getFile();
+        $data["moduleFileForceInstall"] = $module->isModuleFileForceInstall();
         $data["options"] = $options;
         $dependencies = $module->getDepencies();
         foreach ($dependencies as $dependency) {
@@ -286,7 +299,8 @@ class ModuleJob
         if ($action !== "restore") {
             if ($moduleFileName) {
                 $module = new ModuleManager("");
-                $module->setFile($moduleFileName);
+                $reinstall = self::$jobData["moduleFileForceInstall"] ?? false;
+                $module->setFile($moduleFileName, $reinstall);
             } elseif ($moduleName) {
                 $module = new ModuleManager($moduleName);
             } else {

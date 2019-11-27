@@ -27,7 +27,6 @@ class PuCoreDataDocument extends \Anakeen\Pu\Routes\TestCaseRoutes
     }
 
 
-
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
@@ -182,7 +181,113 @@ class PuCoreDataDocument extends \Anakeen\Pu\Routes\TestCaseRoutes
                 ]),
 
                 __DIR__ . "/Expects/doc1Hello.json"
+            ),
+            array(
+                'PUT /api/v2/smart-elements/TST_APIDOC01',
+                json_encode([
+                    "document" => [
+                        "attributes" => [
+
+                            "tst_api__title" => [
+                                "value" => null,
+                                "displayValue" => null
+                            ],
+                            "tst_api__account" => [
+                                "value" => null,
+                                "displayValue" => null
+                            ],
+                            "tst_api__account_multiple" => [],
+                            "tst_api__docid" => [
+                                "value" => null,
+                                "displayValue" => null
+                            ],
+                            "tst_api__docid_multiple" => [],
+                            "tst_api__date" => [
+                                "value" => null,
+                                "displayValue" => null
+                            ],
+                            "tst_api__time" => [
+                                "value" => null,
+                                "displayValue" => null
+                            ],
+                            "tst_api__timestamp" => [
+                                "value" => null,
+                                "displayValue" => null
+                            ],
+                            "tst_api__integer" => [
+                                "value" => null,
+                                "displayValue" => null
+                            ],
+                            "tst_api__double" => [
+                                "value" => null,
+                                "displayValue" => null
+                            ],
+                            "tst_api__money" => [
+                                "value" => null,
+                                "displayValue" => null
+                            ],
+                            "tst_api__password" => [
+                                "value" => null,
+                                "displayValue" => null
+                            ],
+                            "tst_api__color" => [
+                                "value" => null,
+                                "displayValue" => null
+                            ],
+                            "tst_api__file" => [
+                                "value" => null,
+                                "displayValue" => null
+                            ],
+                            "tst_api__image" => [
+                                "value" => null,
+                                "displayValue" => null
+                            ],
+                            "tst_api__htmltext" => [
+                                "value" => null,
+                                "displayValue" => null
+                            ],
+                            "tst_api__longtext" => [
+                                "value" => null,
+                                "displayValue" => null
+                            ],
+                            "tst_api__text" => [
+                                "value" => null,
+                                "displayValue" => null
+                            ],
+                            "tst_api__enumlist" => [
+                                "value" => null,
+                                "displayValue" => null
+                            ],
+                            "tst_api__enumhorizontal" => [
+                                "value" => null,
+                                "displayValue" => null
+                            ],
+                            "tst_api__enumslist" => [],
+                            "tst_api__enumshorizontal" => [],
+                            "tst_api__date_array" => [],
+                            "tst_api__time_array" => [],
+                            "tst_api__timestamp_array" => [],
+                            "tst_api__docid_array" => [],
+                            "tst_api__docid_multiple_array" => [],
+                            "tst_api__account_array" => [],
+                            "tst_api__account_multiple_array" => [],
+                            "tst_api__double_array" => [],
+                            "tst_api__integer_array" => [],
+                            "tst_api__money_array" => [],
+                            "tst_api__color_array" => [],
+                            "tst_api__password_array" => [],
+                            "tst_api__file_array" => [],
+                            "tst_api__image_array" => [],
+                            "tst_api__text_array" => [],
+                            "tst_api__longtext_array" => [],
+                            "tst_api__htmltext_array" => []
+                        ]
+                    ]
+                ]),
+
+                __DIR__ . "/Expects/doc1Empty.json"
             )
+
         );
     }
 

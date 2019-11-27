@@ -116,7 +116,8 @@ define([
 
           currentView.model.trigger("beforeRender", event, {
             model: currentView.model,
-            $el: currentView.$el
+            $el: currentView.$el,
+            options: { customTemplate: currentView.options.originalView !== true }
           });
 
           EventPromiseUtils.getBeforeEventPromise(
@@ -782,7 +783,11 @@ define([
 
     triggerRenderDone: function vAttribute_triggerRenderDone() {
       if (this.noRenderEvent !== false && this.renderDone && this.widgetReady && !this.triggerRender) {
-        this.model.trigger("renderDone", { model: this.model, $el: this.$el });
+        this.model.trigger("renderDone", {
+          model: this.model,
+          $el: this.$el,
+          options: { customTemplate: !!this.customView }
+        });
         this.triggerRender = true;
       }
     },
