@@ -3,17 +3,11 @@ const { prod, dev, legacy } = require("@anakeen/webpack-conf");
 const {
   cssLoader,
   addKendoGlobal,
-  addDll
+  addJqueryGlobal
 } = require("@anakeen/webpack-conf/parts");
 
 const BASE_DIR = path.resolve(__dirname, "../");
-const USER_INTERFACES = path.resolve(
-  BASE_DIR,
-  "..",
-  "node_modules",
-  "@anakeen",
-  "user-interfaces"
-);
+
 const PUBLIC_PATH = path.join(BASE_DIR, "src/public");
 
 module.exports = () => {
@@ -35,19 +29,8 @@ module.exports = () => {
     ],
     buildPath: PUBLIC_PATH,
     customParts: [
-      addDll({
-        context: BASE_DIR,
-        manifest: path.join(
-          USER_INTERFACES,
-          "src",
-          "public",
-          "Anakeen",
-          "assets",
-          "legacy",
-          "KendoUI-manifest.json"
-        )
-      }),
-      addKendoGlobal([/kendo.pdf/, /kendo.excel/]),
+      addJqueryGlobal(),
+      addKendoGlobal([/kendo.pdf/, /kendo.excel/], true),
       cssLoader()
     ]
   };
