@@ -592,7 +592,7 @@ define([
               trigger: "hover",
               html: currentMenu.tooltipHtml,
               placement: currentMenu.tooltipPlacement ? currentMenu.tooltipPlacement : "bottom",
-              container: ".dcpDocument__menu"
+              container: currentWidget.element
             })
           );
         }
