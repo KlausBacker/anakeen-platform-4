@@ -10,7 +10,7 @@
 
     </smart:enumerates>
     <smart:structure-configuration name="TST_007" label="Test n°7">
-        <smart:class>Anakeen\Pu\SmartStructures\TestDefaultHooks</smart:class>
+        <smart:class>Anakeen\Pu\SmartStructures\TestDefault007</smart:class>
         <smart:tag name="vendor">Anakeen</smart:tag>
         <smart:fields>
             <smart:field-set name="tst_f_title" type="frame" label="Titre" access="ReadWrite">
@@ -42,7 +42,21 @@
                 </smart:field-set>
             </smart:field-set>
         </smart:fields>
-        <smart:parameters/>
+        <smart:parameters>
+            <smart:field-set name="tst_p_info" type="frame" label="Titre" access="ReadWrite">
+                <smart:field-enum name="tst_p0" relation="tst_colors" multiple="true" access="ReadWrite"/>
+                <smart:field-int name="tst_p1" access="ReadWrite"/>
+                <smart:field-int name="tst_p2" access="ReadWrite"/>
+                <smart:field-set name="tst_t_ps" access="ReadWrite" type="array">
+                    <smart:field-text name="tst_p3s" access="ReadWrite"/>
+                    <smart:field-int name="tst_p4s" access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-set name="tst_t_p2s" access="ReadWrite" type="array">
+                    <smart:field-text name="tst_p5s" access="ReadWrite"/>
+                    <smart:field-int name="tst_p6s" access="ReadWrite"/>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:parameters>
 
         <smart:defaults>
             <smart:default field="tst_t_t1">
@@ -93,6 +107,17 @@ et des brouettes.]]>
                 <smart:field-argument type="string">]</smart:field-argument>
             </smart:default>
             <smart:default field="tst_t4">Quatre</smart:default>
+            <smart:initial field="tst_p0">["red"]</smart:initial>
+            <smart:initial field="tst_p1">23</smart:initial>
+            <smart:initial field="tst_p2">
+                <smart:field-callable function="::simpleAdd"/>
+                <smart:field-argument type="field">tst_p1</smart:field-argument>
+                <smart:field-argument type="string">28</smart:field-argument>
+            </smart:initial>
+            <smart:initial field="tst_p5s">Hello</smart:initial>
+            <smart:initial field="tst_t_ps">
+                [{"tst_p3s":"Hola", "tst_p4s":122},{"tst_p3s":"Hombre", "tst_p4s":156}]
+            </smart:initial>
         </smart:defaults>
         <smart:accesses/>
     </smart:structure-configuration>
@@ -112,6 +137,7 @@ et des brouettes.]]>
             </smart:default>
             <smart:default field="tst_t0">Hello World : C'est l'hivers.</smart:default>
             <smart:default field="tst_t4"/>
+            <smart:initial field="tst_p1">78</smart:initial>
         </smart:defaults>
         <smart:accesses/>
     </smart:structure-configuration>
@@ -122,6 +148,25 @@ et des brouettes.]]>
 
         <smart:defaults>
             <smart:default reset="true" inherit="true" field="tst_n2"/>
+        </smart:defaults>
+        <smart:accesses/>
+    </smart:structure-configuration>
+
+
+    <smart:structure-configuration name="TST_007b" label="Test n°7b">
+        <smart:extends ref="TST_007a"/>
+
+        <smart:defaults>
+            <smart:initial field="tst_p1" >67569</smart:initial>
+        </smart:defaults>
+        <smart:accesses/>
+    </smart:structure-configuration>
+
+    <smart:structure-configuration name="TST_007b" label="Test n°7b">
+        <smart:extends ref="TST_007a"/>
+
+        <smart:defaults>
+            <smart:initial reset="true" field="tst_p1" inherit="false"/>
         </smart:defaults>
         <smart:accesses/>
     </smart:structure-configuration>

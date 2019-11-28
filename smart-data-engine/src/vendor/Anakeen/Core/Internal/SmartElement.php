@@ -795,8 +795,8 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return true if document has changed after setValue/clearValue calling
      *
-     * @api test if document attributes are changed
      * @return bool
+     * @api test if document attributes are changed
      */
     public function isChanged()
     {
@@ -1003,8 +1003,8 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Regenerate the template referenced by an attribute
      *
-     * @param string $aid   the name of the attribute holding the template
-     * @param int    $index the value for $index row (default value -1 means all values)
+     * @param string $aid the name of the attribute holding the template
+     * @param int $index the value for $index row (default value -1 means all values)
      *
      * @return string error message, if no error empty string
      */
@@ -1148,10 +1148,10 @@ create unique index i_docir on doc(initid, revision);";
      * disable access control for setValue/modify/store/lock
      * the document can be modified without testing edit acl
      *
-     * @see \Anakeen\Core\Internal\SmartElement::restoreAccessControl
+     * @param bool $disable if false restore control access immediatly
      * @api disable edit control for setValue/modify/store
      *
-     * @param bool $disable if false restore control access immediatly
+     * @see \Anakeen\Core\Internal\SmartElement::restoreAccessControl
      */
     final public function disableAccessControl($disable = true)
     {
@@ -1222,7 +1222,7 @@ create unique index i_docir on doc(initid, revision);";
      * convert to another family
      * loose all revisions
      *
-     * @param int   $fromid    family identifier where the document will be converted
+     * @param int $fromid family identifier where the document will be converted
      * @param array $prevalues values which will be added before conversion
      *
      * @return SmartElement|false|string the document converted (don't reuse $this) if error return string message
@@ -1298,12 +1298,12 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * record new \document or update
      *
-     * @api record new \document or update it in database
-     *
-     * @param StoreInfo $info           refresh and postStore messages
-     * @param boolean   $skipConstraint set to true to not test constraints
+     * @param StoreInfo $info refresh and postStore messages
+     * @param boolean $skipConstraint set to true to not test constraints
      *
      * @return string error message
+     * @api record new \document or update it in database
+     *
      */
     public function store(&$info = null, $skipConstraint = false)
     {
@@ -1436,8 +1436,8 @@ create unique index i_docir on doc(initid, revision);";
     }
 
     /**
-     * @see \Anakeen\Core\Internal\SmartElement::canUnLock
      * @return boolean true if current user can lock file
+     * @see \Anakeen\Core\Internal\SmartElement::canUnLock
      */
     public function canLock()
     {
@@ -1445,8 +1445,8 @@ create unique index i_docir on doc(initid, revision);";
     }
 
     /**
-     * @see \Anakeen\Core\Internal\SmartElement::canLock
      * @return bool true if current user can lock file
+     * @see \Anakeen\Core\Internal\SmartElement::canLock
      */
     public function canUnLock()
     {
@@ -1456,9 +1456,9 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * test if the document can be unlocked
      *
-     * @see \Anakeen\Core\Internal\SmartElement::CanLockFile()
-     * @see \Anakeen\Core\Internal\SmartElement::canEdit()
      * @return string empty means user can update else message of the raison
+     * @see \Anakeen\Core\Internal\SmartElement::canEdit()
+     * @see \Anakeen\Core\Internal\SmartElement::CanLockFile()
      */
     final public function canUnLockFile()
     {
@@ -1490,11 +1490,11 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * test if the document is locked
      *
-     * @see \Anakeen\Core\Internal\SmartElement::canLockFile()
-     *
      * @param bool $my if true test if it is lock of current user
      *
      * @return bool true if locked. If $my return true if it is locked by another user
+     * @see \Anakeen\Core\Internal\SmartElement::canLockFile()
+     *
      */
     final public function isLocked($my = false)
     {
@@ -1524,8 +1524,8 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return the family document where the document comes from
      *
-     * @api return family odcument
      * @return \Anakeen\Core\SmartStructure
+     * @api return family odcument
      */
     final public function getFamilyDocument()
     {
@@ -1546,13 +1546,13 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return family parameter
      *
-     * @deprecated use {@link \Anakeen\Core\Internal\SmartElement::getFamilyParameterValue} instead
-     * @see        \Anakeen\Core\Internal\SmartElement::getFamilyParameterValue
-     *
      * @param string $idp parameter identifier
      * @param string $def default value if parameter not found or if it is null
      *
      * @return string parameter value
+     * @see        \Anakeen\Core\Internal\SmartElement::getFamilyParameterValue
+     *
+     * @deprecated use {@link \Anakeen\Core\Internal\SmartElement::getFamilyParameterValue} instead
      */
     public function getParamValue($idp, $def = "")
     {
@@ -1561,8 +1561,6 @@ create unique index i_docir on doc(initid, revision);";
 
     /**
      * return family parameter
-     *
-     * @api  return family parameter value
      *
      * @param string $idp parameter identifier
      * @param string $def default value if parameter not found or if it is null
@@ -1573,19 +1571,23 @@ create unique index i_docir on doc(initid, revision);";
      * the default configuration value comes from inherited family if no default configuration.
      * In last case, if no values and no configurated default values, the $def argument is returned
      * @return string parameter value
+     * @api  return family parameter value
+     *
      */
     public function getFamilyParameterValue($idp, $def = "")
     {
         if (isset($this->_paramValue[$idp])) {
             return $this->_paramValue[$idp];
         }
-        $r = $this->getParameterFamilyRawValue($idp, $def);
         /* @var \Anakeen\Core\SmartStructure\NormalAttribute $paramAttr */
         $paramAttr = $this->getAttribute($idp);
         if (!$paramAttr) {
             return $def;
         }
+        $r = $this->getParameterFamilyRawValue($idp, $def);
         if ($paramAttr->phpfunc != "" && $paramAttr->phpfile == "" && $paramAttr->type !== "enum") {
+            // case cell is computed
+
             $this->_paramValue[$idp] = $r;
             if ($paramAttr->inArray()) {
                 $attributes_array = $this->attributes->getArrayElements($paramAttr->fieldSet->id);
@@ -1610,9 +1612,28 @@ create unique index i_docir on doc(initid, revision);";
                     $r = $val;
                 }
             }
-        } elseif ($r) {
-            $this->_paramValue[$idp] = $r;
-            $r = $this->getValueMethod($r);
+        } else {
+            if ($paramAttr->inArray()) {
+                $ra = $this->getParameterFamilyRawValue($paramAttr->fieldSet->id, "");
+                if (is_string($ra)) {
+                    $ra = $this->getValueMethod($ra);
+                }
+                if (is_array($ra)) {
+                    $rs=[];
+                    foreach ($ra as $colValue) {
+                        $rs[]=$colValue[$paramAttr->id]??"";
+                    }
+                    $r=Postgres::arrayToString($rs);
+                } else {
+                    $r="";
+                }
+            } elseif ($r) {
+                $r = $this->getValueMethod($r);
+            }
+        }
+
+        if (is_array($r)) {
+             $r=Postgres::arrayToString($r);
         }
         $this->_paramValue[$idp] = $r;
         return $r;
@@ -1657,7 +1678,7 @@ create unique index i_docir on doc(initid, revision);";
         $dl = $s->getDocumentList();
         $t = array();
         foreach ($dl as $doc) {
-            $t[] = clone ($doc);
+            $t[] = clone($doc);
         }
         return ($t);
     }
@@ -1667,7 +1688,7 @@ create unique index i_docir on doc(initid, revision);";
      * For the user the document is in the trash
      *
      * @param string $state wanted state
-     * @param bool   $fixed set to true if not search in current state
+     * @param bool $fixed set to true if not search in current state
      *
      * @return int document id (0 if no found)
      */
@@ -1741,13 +1762,13 @@ create unique index i_docir on doc(initid, revision);";
      * Set the document to zombie state
      * For the user the document is in the trash
      *
-     * @api Delete document
-     *
-     * @param bool $really  if true  really delete from database
+     * @param bool $really if true  really delete from database
      * @param bool $control if false don't control 'delete' acl
-     * @param bool $nopost  if true don't call {@link \Anakeen\Core\Internal\SmartElement::postDelete} and {@link \Anakeen\Core\Internal\SmartElement::preDelete}
+     * @param bool $nopost if true don't call {@link \Anakeen\Core\Internal\SmartElement::postDelete} and {@link \Anakeen\Core\Internal\SmartElement::preDelete}
      *
      * @return string error message
+     * @api Delete document
+     *
      */
     final public function delete($really = false, $control = true, $nopost = false)
     {
@@ -1861,9 +1882,9 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * To restore a document which is in the trash
      *
-     * @api restore deleted document
-     * @see \Anakeen\Core\Internal\SmartElement::delete
      * @return string error message (empty message if no errors);
+     * @see \Anakeen\Core\Internal\SmartElement::delete
+     * @api restore deleted document
      */
     final public function undelete()
     {
@@ -1933,8 +1954,8 @@ create unique index i_docir on doc(initid, revision);";
      * this function is call from QueryDb and all fields can not be instanciate
      *
      * @param array $array the data array
-     * @param bool  $more  add values from values attributes needed only if cast document
-     * @param bool  $reset reset all values before set and clean private variables
+     * @param bool $more add values from values attributes needed only if cast document
+     * @param bool $reset reset all values before set and clean private variables
      *
      * @return void
      */
@@ -2048,7 +2069,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Return array of child family raw documents
      *
-     * @param int  $id            if -1 use child for current document else for the family identifier set
+     * @param int $id if -1 use child for current document else for the family identifier set
      * @param bool $controlcreate set to true to not return documents which cannot be created by current user
      *
      * @return array raw docfam values
@@ -2088,8 +2109,8 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return all revision documents
      *
-     * @param string $type  LIST|TABLE il LIST return \Anakeen\Core\Internal\SmartElement object else if TABLE raw documents
-     * @param int    $limit limit of revision (by default the 200 latest revisions)
+     * @param string $type LIST|TABLE il LIST return \Anakeen\Core\Internal\SmartElement object else if TABLE raw documents
+     * @param int $limit limit of revision (by default the 200 latest revisions)
      *
      * @return \Anakeen\Core\Internal\SmartElement []|array
      */
@@ -2111,12 +2132,12 @@ create unique index i_docir on doc(initid, revision);";
 
     /** get Latest Id of document
      *
-     * @api get latest id of document
-     *
-     * @param bool $fixed      if true latest fixed revision
+     * @param bool $fixed if true latest fixed revision
      * @param bool $forcequery if true force recompute of id (use it in case of modification by another program)
      *
      * @return int identifier of latest revision
+     * @api get latest id of document
+     *
      */
     final public function getLatestId($fixed = false, $forcequery = false)
     {
@@ -2147,7 +2168,10 @@ create unique index i_docir on doc(initid, revision);";
 
         if ($this->doctype != 'Z') {
             if (count($rev) > 1) {
-                \Anakeen\Core\Utils\System::addWarningMsg(sprintf("document %d : multiple alive revision", $this->initid));
+                \Anakeen\Core\Utils\System::addWarningMsg(sprintf(
+                    "document %d : multiple alive revision",
+                    $this->initid
+                ));
             }
         }
         return $rev[0]["id"];
@@ -2196,11 +2220,11 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return the property value like id, initid, revision, ...
      *
-     * @api get property value
-     *
      * @param string $prop property identifier
      *
      * @return string false if not an property
+     * @api get property value
+     *
      */
     final public function getPropertyValue($prop)
     {
@@ -2218,12 +2242,12 @@ create unique index i_docir on doc(initid, revision);";
      * return the attribute object for a id
      * the attribute can be defined in fathers
      *
-     * @api get attribute object
-     *
-     * @param string                                       $idAttr attribute identifier
-     * @param \Anakeen\Core\SmartStructure\BasicAttribute &$oa     object reference use this if want to modify attribute
+     * @param string $idAttr attribute identifier
+     * @param \Anakeen\Core\SmartStructure\BasicAttribute &$oa object reference use this if want to modify attribute
      *
      * @return \Anakeen\Core\SmartStructure\BasicAttribute|false|\Anakeen\Core\SmartStructure\NormalAttribute
+     * @api get attribute object
+     *
      */
     final public function &getAttribute($idAttr, &$oa = null)
     {
@@ -2467,7 +2491,7 @@ create unique index i_docir on doc(initid, revision);";
      * reset Conversion of file
      *
      * @param string $attrid file attribute identifier
-     * @param int    $index  index in case of multiple attribute
+     * @param int $index index in case of multiple attribute
      *
      * @apiExpose
      * @return string error message
@@ -2499,9 +2523,9 @@ create unique index i_docir on doc(initid, revision);";
      * send a request to TE to convert files
      * waiting end of conversion
      *
-     * @param string $va      value of file attribute like mime|vid|name
-     * @param string $engine  the name of transformation
-     * @param bool   $isimage set true if it is an image (error returns is not same)
+     * @param string $va value of file attribute like mime|vid|name
+     * @param string $engine the name of transformation
+     * @param bool $isimage set true if it is an image (error returns is not same)
      *
      * @return string new \file reference
      */
@@ -2576,7 +2600,13 @@ create unique index i_docir on doc(initid, revision);";
                         }
                     }
 
-                    $err = \Anakeen\TransformationEngine\Manager::vaultGenerate($engine, $vidin, $vidout, $isimage, $this->initid);
+                    $err = \Anakeen\TransformationEngine\Manager::vaultGenerate(
+                        $engine,
+                        $vidin,
+                        $vidout,
+                        $isimage,
+                        $this->initid
+                    );
                     if ($err != "") {
                         $this->addHistoryEntry(sprintf(
                             _("convert file %s as %s failed : %s"),
@@ -2687,7 +2717,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return list of attribut which can be exported
      *
-     * @param bool $withfile     true if export also file attribute
+     * @param bool $withfile true if export also file attribute
      * @param bool $forcedefault if true preference FREEDOM_EXPORTCOLS are not read
      *
      * @return \Anakeen\Core\SmartStructure\NormalAttribute[]
@@ -2769,9 +2799,17 @@ create unique index i_docir on doc(initid, revision);";
         }
         /* Replace control chars with spaces, and limit title to 256 chars */
         if (\Anakeen\Core\Utils\Strings::mbTrim($title1) != "") {
-            $this->title = mb_substr(\Anakeen\Core\Utils\Strings::mbTrim(preg_replace('/\p{Cc}/u', ' ', $title1)), 0, 255);
+            $this->title = mb_substr(
+                \Anakeen\Core\Utils\Strings::mbTrim(preg_replace('/\p{Cc}/u', ' ', $title1)),
+                0,
+                255
+            );
         }
-        $this->title = mb_substr(\Anakeen\Core\Utils\Strings::mbTrim(preg_replace('/\p{Cc}/u', ' ', $this->getCustomTitle())), 0, 255);
+        $this->title = mb_substr(\Anakeen\Core\Utils\Strings::mbTrim(preg_replace(
+            '/\p{Cc}/u',
+            ' ',
+            $this->getCustomTitle()
+        )), 0, 255);
     }
 
 
@@ -2826,10 +2864,8 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return the raw value (database value) of an field or properties document
      *
-     * @api get the value of an attribute
-     *
      * @param string $idAttr attribute identifier
-     * @param string $def    default value returned if attribute not found or if is empty
+     * @param string $def default value returned if attribute not found or if is empty
      *
      * @code
      * $doc = new_Doc('',7498 );
@@ -2839,8 +2875,10 @@ create unique index i_docir on doc(initid, revision);";
      * $level = $doc->getRawValue("tst_level","0");
      * }
      * @endcode
-     * @see \Anakeen\Core\Internal\SmartElement::getAttributeValue
      * @return string the attribute value
+     * @see \Anakeen\Core\Internal\SmartElement::getAttributeValue
+     * @api get the value of an attribute
+     *
      */
     final public function getRawValue($idAttr, $def = "")
     {
@@ -2864,14 +2902,14 @@ create unique index i_docir on doc(initid, revision);";
      * return an array for multiple value
      * return date in DateTime format, number in int or double
      *
-     * @api get typed value of an attribute
-     *
      * @param string $idAttr attribute identifier
      *
-     * @throws \Anakeen\Exception DOC0114 code
-     * @throws SmartFieldAccessException
-     * @see ErrorCodeDoc::DOC0114
      * @return mixed the typed value
+     * @throws SmartFieldAccessException
+     * @throws \Anakeen\Exception DOC0114 code
+     * @see ErrorCodeDoc::DOC0114
+     * @api get typed value of an attribute
+     *
      */
     final public function getAttributeValue($idAttr)
     {
@@ -2896,16 +2934,16 @@ create unique index i_docir on doc(initid, revision);";
      * the affectation is only in object. To set modification in database the \Anakeen\Core\Internal\SmartElement::store() method must be
      * call after modification
      *
-     * @api Set a value to an attribute
-     *
      * @param string $idAttr attribute identifier
-     * @param mixed  $value  the new \value - value format must be compatible with type
+     * @param mixed $value the new \value - value format must be compatible with type
      *
-     * @throws \Anakeen\Exception
+     * @return void
      * @throws SmartFieldAccessException
+     * @throws \Anakeen\Exception
      * @see ErrorCodeDoc::DOC0115
      * @see ErrorCodeDoc::DOC0117
-     * @return void
+     * @api Set a value to an attribute
+     *
      */
     final public function setAttributeValue($idAttr, $value)
     {
@@ -2942,14 +2980,14 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return all values of a multiple value attribute
      *
+     * @param string $idAttr identifier of list attribute
+     * @param array $def default value returned if attribute not found or if is empty
+     * @param int $index the values for $index row (default value -1 means all values)
+     *
+     * @return array|string the list of attribute values
      * @api return all values of a multiple value attribute
      * the attribute must be in an array or declared with multiple option
      *
-     * @param string $idAttr identifier of list attribute
-     * @param array $def    default value returned if attribute not found or if is empty
-     * @param int    $index  the values for $index row (default value -1 means all values)
-     *
-     * @return array|string the list of attribute values
      */
     final public function getMultipleRawValues($idAttr, $def = [], $index = -1)
     {
@@ -2982,12 +3020,12 @@ create unique index i_docir on doc(initid, revision);";
      *
      * the attribute must  an array type
      *
-     * @api get all values for an array attribute
-     *
      * @param string $idAttr identifier of array attribute
-     * @param int    $index  the values for $index row (default value -1 means all values)
+     * @param int $index the values for $index row (default value -1 means all values)
      *
      * @return array|false all values of array order by rows (return false if not an array attribute)
+     * @api get all values for an array attribute
+     *
      */
     final public function getArrayRawValues($idAttr, $index = -1)
     {
@@ -3027,11 +3065,11 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @param string $idAttr identifier of array attribute
      *
-     * @api delete a row in an array attribute
-     *
-     * @param string $index  $index row (first is 0)
+     * @param string $index $index row (first is 0)
      *
      * @return string error message, if no error empty string
+     * @api delete a row in an array attribute
+     *
      */
     final public function removeArrayRow($idAttr, $index)
     {
@@ -3060,8 +3098,8 @@ create unique index i_docir on doc(initid, revision);";
      * the attribute must an array type
      * fill uncomplete column with null values
      *
-     * @param string $idAttr              identifier of array attribute
-     * @param bool   $deleteLastEmptyRows by default empty rows which are in the end are deleted
+     * @param string $idAttr identifier of array attribute
+     * @param bool $deleteLastEmptyRows by default empty rows which are in the end are deleted
      *
      * @return string error message, if no error empty string
      */
@@ -3142,13 +3180,13 @@ create unique index i_docir on doc(initid, revision);";
      *
      * the attribute must be an array type
      *
-     * @api add new \row in an array attribute
-     *
      * @param string $idAttr identifier of array attribute
-     * @param array  $tv     values of each column. Array index must be the attribute identifier
-     * @param int    $index  $index row (first is 0) -1 at the end; x means before x row
+     * @param array $tv values of each column. Array index must be the attribute identifier
+     * @param int $index $index row (first is 0) -1 at the end; x means before x row
      *
      * @return string error message, if no error empty string
+     * @api add new \row in an array attribute
+     *
      */
     final public function addArrayRow($idAttr, $tv, $index = -1)
     {
@@ -3205,11 +3243,11 @@ create unique index i_docir on doc(initid, revision);";
      *
      * the attribute must be an array type
      *
-     * @api delete all attributes values of an array
-     *
      * @param string $idAttr identifier of array attribute
      *
      * @return string error message, if no error empty string
+     * @api delete all attributes values of an array
+     *
      */
     final public function clearArrayValues($idAttr)
     {
@@ -3240,15 +3278,15 @@ create unique index i_docir on doc(initid, revision);";
      * If value is empty no modification are set. To reset a value use \Anakeen\Core\Internal\SmartElement::clearValue method.
      * an array can be use as value for values which are in arrays
      *
-     * @api affect value for an attribute
-     * @see \Anakeen\Core\Internal\SmartElement::setAttributeValue
-     *
-     * @param string        $attrid attribute identifier
-     * @param string|array  $value  new \value for the attribute
-     * @param int           $index  only for array values affect value in a specific row
+     * @param string $attrid attribute identifier
+     * @param string|array $value new \value for the attribute
+     * @param int $index only for array values affect value in a specific row
      * @param int          &$kvalue in case of error the index of error (for arrays)
      *
      * @return string error message, if no error empty string
+     * @see \Anakeen\Core\Internal\SmartElement::setAttributeValue
+     *
+     * @api affect value for an attribute
      */
     final public function setValue($attrid, $value, $index = -1, &$kvalue = null)
     {
@@ -3260,7 +3298,7 @@ create unique index i_docir on doc(initid, revision);";
             return "";
         }
         $oattr = $this->GetAttribute($attrid);
-        $accessGranted=true;
+        $accessGranted = true;
         // control edit before set values
         if ($this->isUnderControl()) {
             if ($this->id > 0) { // no control yet if no effective doc
@@ -3270,7 +3308,7 @@ create unique index i_docir on doc(initid, revision);";
                 }
             }
             if ($oattr && FieldAccessManager::hasWriteAccess($this, $oattr) === false) {
-                $accessGranted=false;
+                $accessGranted = false;
             }
         }
 
@@ -3341,7 +3379,7 @@ create unique index i_docir on doc(initid, revision);";
                         $this->_oldvalue[$attrid] = $this->$attrid;
                     }
                     if ($this->$attrid !== $value) {
-                        if ($accessGranted ===  false) {
+                        if ($accessGranted === false) {
                             return \ErrorCode::getError("DOC0136", $this->getTitle(), $oattr->id);
                         }
                         $this->$attrid = $value;
@@ -3513,7 +3551,10 @@ create unique index i_docir on doc(initid, revision);";
                                             $tvalues[$kvalue] = \Anakeen\Core\Utils\HtmlClean::cleanStyle($tvalues[$kvalue]);
                                         }
                                         /* Check for malformed HTML */
-                                        $html = \Anakeen\Core\Utils\HtmlClean::normalizeHTMLFragment($tvalues[$kvalue], $error);
+                                        $html = \Anakeen\Core\Utils\HtmlClean::normalizeHTMLFragment(
+                                            $tvalues[$kvalue],
+                                            $error
+                                        );
                                         if ($html === false) {
                                             $html = '';
                                         }
@@ -3560,7 +3601,7 @@ create unique index i_docir on doc(initid, revision);";
                         $this->hasChanged = true;
                     }
                     if ($this->$attrid !== $rawValue) {
-                        if ($accessGranted ===  false) {
+                        if ($accessGranted === false) {
                             return \ErrorCode::getError("DOC0132", $this->getTitle(), $oattr->id);
                         }
                         $this->$attrid = $rawValue;
@@ -3580,7 +3621,7 @@ create unique index i_docir on doc(initid, revision);";
      * create a new \file in Vault to replace old file
      *
      * @param string $attrid identifier of file attribute
-     * @param string $value  new \value for the attribute
+     * @param string $value new \value for the attribute
      * @param string $ftitle the name of file (if empty the same as before)
      *
      * @return string error message, if no error empty string
@@ -3634,8 +3675,8 @@ create unique index i_docir on doc(initid, revision);";
      *
      * get content of a file (must be an ascii file)
      *
-     * @param string  $attrid identifier of file attribute
-     * @param string &$text   the content of the file
+     * @param string $attrid identifier of file attribute
+     * @param string &$text the content of the file
      *
      * @return string error message, if no error empty string
      */
@@ -3668,10 +3709,10 @@ create unique index i_docir on doc(initid, revision);";
      *
      * replace a new \file in Vault to replace old file
      *
-     * @param string   $attrid identifier of file attribute
+     * @param string $attrid identifier of file attribute
      * @param resource $stream file resource from fopen
-     * @param string   $ftitle to change title of file also (empty to unchange)
-     * @param int      $index  for array of file : modify in specific row
+     * @param string $ftitle to change title of file also (empty to unchange)
+     * @param int $index for array of file : modify in specific row
      *
      * @return string error message, if no error empty string
      */
@@ -3767,9 +3808,9 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * use for duplicate physicaly the file
      *
-     * @param string $idattr  identifier of file attribute
+     * @param string $idattr identifier of file attribute
      * @param string $newname basename if want change name of file
-     * @param int    $index   in case of array
+     * @param int $index in case of array
      *
      * @return string attribut value formated to be inserted into a file attribute
      */
@@ -3812,9 +3853,9 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * rename physicaly the file
      *
-     * @param string $idattr  identifier of file attribute
+     * @param string $idattr identifier of file attribute
      * @param string $newname base name file
-     * @param int    $index   in case of array of files
+     * @param int $index in case of array of files
      *
      * @return string empty if no error
      */
@@ -3849,9 +3890,9 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Register (store) a file in the vault and return the file's vault's informations
      *
-     * @param string                  $filename the file pathname
-     * @param string                  $ftitle   override the stored file name or empty string to keep the original file name
-     * @param \Anakeen\Vault\FileInfo $info     the vault's informations for the stored file or null if could not get informations
+     * @param string $filename the file pathname
+     * @param string $ftitle override the stored file name or empty string to keep the original file name
+     * @param \Anakeen\Vault\FileInfo $info the vault's informations for the stored file or null if could not get informations
      *
      * @return string trigram of the file in the vault: "mime_s|id_file|name"
      * @throws \Exception on error
@@ -3871,10 +3912,10 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Store a file in a file attribute
      *
-     * @param string $attrid   identifier of file attribute
+     * @param string $attrid identifier of file attribute
      * @param string $filename file path
-     * @param string $ftitle   basename of file
-     * @param int    $index    only for array values affect value in a specific row
+     * @param string $ftitle basename of file
+     * @param int $index only for array values affect value in a specific row
      *
      * @return string error message, if no error empty string
      */
@@ -3949,8 +3990,8 @@ create unique index i_docir on doc(initid, revision);";
      * @endwarning
      *
      * @param string $RidAttr attributes identifier chain (separated by ':')
-     * @param string $def     $def default return value
-     * @param bool   $latest  always last revision of document
+     * @param string $def $def default return value
+     * @param bool $latest always last revision of document
      *
      * @return array|string
      */
@@ -3979,11 +4020,11 @@ create unique index i_docir on doc(initid, revision);";
      * return the previous value for a attibute set before \Anakeen\Core\Internal\SmartElement::SetValue
      * can be used in \Anakeen\Core\Internal\SmartElement::postModify generaly
      *
-     * @api get previous value of an attribute
-     *
      * @param string $attrid attribute identifier
      *
      * @return string the old value (false if not modified before)
+     *
+     * @api get previous value of an attribute
      *
      */
     final public function getOldRawValue($attrid)
@@ -3999,8 +4040,8 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return all modified values from last modify
      *
-     * @api get all modified values from last modify
      * @return array indexed by attribute identifier (lowercase)
+     * @api get all modified values from last modify
      */
     final public function getOldRawValues()
     {
@@ -4013,12 +4054,12 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * delete a value of an attribute
      *
-     * @see \Anakeen\Core\Internal\SmartElement::setValue
-     *
      * @param string $attrid attribute identifier
      *
-     * @api clear value of an attribute
      * @return string error message
+     * @api clear value of an attribute
+     * @see \Anakeen\Core\Internal\SmartElement::setValue
+     *
      */
     final public function clearValue($attrid)
     {
@@ -4090,12 +4131,12 @@ create unique index i_docir on doc(initid, revision);";
      * apply a method to a doc
      * specified like ::getFoo(10)
      *
-     * @param string $method  the method to apply
-     * @param string $def     default value if no method
-     * @param int    $index   index in case of value in row
-     * @param array  $bargs   first arguments sent before for the method
-     * @param array  $mapArgs indexed array to add more possibilities to map arguments
-     * @param string $err     error message
+     * @param string $method the method to apply
+     * @param string $def default value if no method
+     * @param int $index index in case of value in row
+     * @param array $bargs first arguments sent before for the method
+     * @param array $mapArgs indexed array to add more possibilities to map arguments
+     * @param string $err error message
      *
      * @return string the value
      */
@@ -4203,7 +4244,7 @@ create unique index i_docir on doc(initid, revision);";
      * verify attribute constraint
      *
      * @param string $attrid attribute identifier
-     * @param int    $index  index in case of multiple values
+     * @param int $index index in case of multiple values
      *
      * @return array array of 2 items ("err" + "sug").
      * The err is the string error message (empty means no error)
@@ -4257,8 +4298,8 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * verify if constraint ore OK
      *
-     * @param boolean  $stoptofirst stop in first constraint error
-     * @param array   &$info        set of information about constraint test
+     * @param boolean $stoptofirst stop in first constraint error
+     * @param array   &$info set of information about constraint test
      *
      * @return string error message (empty means no error)
      */
@@ -4327,15 +4368,15 @@ create unique index i_docir on doc(initid, revision);";
      * Add a comment line in history document
      * note : modify is call automatically
      *
-     * @api Add a comment message in history document
-     *
      * @param string $comment the comment to add
-     * @param int    $level   level of comment \DocHisto::INFO, \DocHisto::ERROR,
+     * @param int $level level of comment \DocHisto::INFO, \DocHisto::ERROR,
      *                        \DocHisto::NOTICE \DocHisto::MESSAGE, \DocHisto::WARNING
-     * @param string $code    use when memorize notification
-     * @param string $uid     user identifier : by default its the current user
+     * @param string $code use when memorize notification
+     * @param string $uid user identifier : by default its the current user
      *
      * @return string error message
+     * @api Add a comment message in history document
+     *
      */
     final public function addHistoryEntry($comment = '', $level = \DocHisto::INFO, $code = '', $uid = '')
     {
@@ -4374,10 +4415,10 @@ create unique index i_docir on doc(initid, revision);";
      * Add a log entry line in log document
      *
      * @param string $comment the comment to add
-     * @param string $level   level of comment
-     * @param string $code    use when memorize notification
-     * @param string $arg     serialized object
-     * @param string $uid     user identifier : by default its the current user
+     * @param string $level level of comment
+     * @param string $code use when memorize notification
+     * @param string $arg serialized object
+     * @param string $uid user identifier : by default its the current user
      *
      * @return string error message
      */
@@ -4416,10 +4457,10 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Get history for the document
      *
-     * @param bool   $allrev set true if want for all revision
+     * @param bool $allrev set true if want for all revision
      *
-     * @param string $code   code filter
-     * @param int    $limit  limit of items returned
+     * @param string $code code filter
+     * @param int $limit limit of items returned
      *
      * @return array of different comment
      */
@@ -4448,9 +4489,9 @@ create unique index i_docir on doc(initid, revision);";
      * if it is already set no set twice
      * A application tag must not contains "\n" character
      *
-     * @param string $tag   the tag to add
+     * @param string $tag the tag to add
      *
-     * @param mixed  $value value of tag (true by default)
+     * @param mixed $value value of tag (true by default)
      *
      * @return string error message
      */
@@ -4485,7 +4526,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Return true if application tag is present
      *
-     * @param string $tag   the tag to search
+     * @param string $tag the tag to search
      * @param string $value return tag value recorded
      *
      * @return bool return true if found
@@ -4532,10 +4573,10 @@ create unique index i_docir on doc(initid, revision);";
      * Add a user tag for the document
      * if it is already set no set twice
      *
-     * @param int    $uid         the system user identifier
-     * @param string $tag         the key tag
-     * @param string $datas       a comment or a value for the tag
-     * @param bool   $allrevision set to false if attach a tag to a specific version
+     * @param int $uid the system user identifier
+     * @param string $tag the key tag
+     * @param string $datas a comment or a value for the tag
+     * @param bool $allrevision set to false if attach a tag to a specific version
      *
      * @return string error message
      */
@@ -4572,8 +4613,8 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Test if current user has the user tag specified
      *
-     * @param string $tag         the tag to verify
-     * @param bool   $allrevision set to false to verify a tag to a specific version
+     * @param string $tag the tag to verify
+     * @param bool $allrevision set to false to verify a tag to a specific version
      *
      * @return bool
      */
@@ -4595,9 +4636,9 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Get current user tag specified
      *
-     * @param string $tag         the tag to verify
-     * @param bool   $allrevision set to false to get a tag to a specific version
-     * @param int    $uid         system user identifier
+     * @param string $tag the tag to verify
+     * @param bool $allrevision set to false to get a tag to a specific version
+     * @param int $uid system user identifier
      *
      * @return bool|\DocUTag
      * @throws \Anakeen\Database\Exception
@@ -4634,9 +4675,9 @@ create unique index i_docir on doc(initid, revision);";
      * Remove a user tag for the document
      * if it is already set no set twice
      *
-     * @param int    $uid         the system user identifier
-     * @param string $tag         the tag to add
-     * @param bool   $allrevision set to false to del a tag to a specific version
+     * @param int $uid the system user identifier
+     * @param string $tag the tag to add
+     * @param bool $allrevision set to false to del a tag to a specific version
      *
      * @return string error message
      */
@@ -4710,9 +4751,9 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * search all user tag for the document
      *
-     * @param string  $tag         tag to search
+     * @param string $tag tag to search
      * @param boolean $allrevision view tags for all revision
-     * @param boolean $allusers    view tags of all users
+     * @param boolean $allusers view tags of all users
      *
      * @return array user tags key=>value
      */
@@ -4761,11 +4802,11 @@ create unique index i_docir on doc(initid, revision);";
      * the current document is revised (became a fixed document)
      * a new \revision is created, a new \identifier if set
      *
-     * @api Create a new \revision of a document
-     *
      * @param string $comment the comment of the revision
      *
      * @return string error text (empty if no error)
+     * @api Create a new \revision of a document
+     *
      */
     final public function revise($comment = '')
     {
@@ -4905,20 +4946,20 @@ create unique index i_docir on doc(initid, revision);";
      * set state for a document controled by a workflow
      * apply associated transaction
      *
-     * @api set state for a document controled by a workflow
-     *
-     * @param string $newstate    the new \state
-     * @param string $comment     optional comment to set in history
-     * @param bool   $force       is true when it is the second passage (without interactivity)
-     * @param bool   $withcontrol set to false if you want to not verify control permission ot transition
-     * @param bool   $wm1         set to false if you want to not apply m1 methods
-     * @param bool   $wm2         set to false if you want to not apply m2 methods
-     * @param bool   $wneed       set to false to not test required attributes
-     * @param bool   $wm0         set to false if you want to not apply m0 methods
-     * @param bool   $wm3         set to false if you want to not apply m3 methods
-     * @param string $msg         return message from m2 or m3
+     * @param string $newstate the new \state
+     * @param string $comment optional comment to set in history
+     * @param bool $force is true when it is the second passage (without interactivity)
+     * @param bool $withcontrol set to false if you want to not verify control permission ot transition
+     * @param bool $wm1 set to false if you want to not apply m1 methods
+     * @param bool $wm2 set to false if you want to not apply m2 methods
+     * @param bool $wneed set to false to not test required attributes
+     * @param bool $wm0 set to false if you want to not apply m0 methods
+     * @param bool $wm3 set to false if you want to not apply m3 methods
+     * @param string $msg return message from m2 or m3
      *
      * @return string error message empty if no error
+     * @api set state for a document controled by a workflow
+     *
      */
     final public function setState(
         $newstate,
@@ -4965,8 +5006,8 @@ create unique index i_docir on doc(initid, revision);";
      * if document has workflow it is the key
      * if document state is a free state it is the name of the state
      *
-     * @api get the state of a document
      * @return string the state - empty if no state
+     * @api get the state of a document
      */
     public function getState()
     {
@@ -5054,15 +5095,15 @@ create unique index i_docir on doc(initid, revision);";
      * the profil of the copy is the default profil according to his family
      * the copy is not locked and if it is related to a workflow, his state is the first state
      *
-     * @api duplicate document
-     *
      * @param bool $temporary if true the document create it as temporary document
-     * @param bool $linkfld   if true and document is a folder then documents included in folder
+     * @param bool $linkfld if true and document is a folder then documents included in folder
      *                        are also inserted in the copy (are not duplicated) just linked
-     * @param bool $copyfile  if true duplicate files of the document
+     * @param bool $copyfile if true duplicate files of the document
      *
      * @return \Anakeen\Core\Internal\SmartElement |string in case of error return a string that indicate the error
      * @throws \Anakeen\Exception
+     * @api duplicate document
+     *
      */
     final public function duplicate($temporary = false, $linkfld = false, $copyfile = false)
     {
@@ -5160,8 +5201,8 @@ create unique index i_docir on doc(initid, revision);";
      *
      * the auto lock is unlocked when the user discard edition or when he's modify document
      *
-     * @param bool $auto   if true it is a automatic lock due to an edition (@see \Anakeen\Core\Internal\SmartElement::editcard()}
-     * @param int  $userid if set lock with another userid, the edit control will be disabled
+     * @param bool $auto if true it is a automatic lock due to an edition (@see \Anakeen\Core\Internal\SmartElement::editcard()}
+     * @param int $userid if set lock with another userid, the edit control will be disabled
      *
      * @return string error message, if no error empty string, if message
      * @see \Anakeen\Core\Internal\SmartElement::CanLockFile()
@@ -5212,7 +5253,7 @@ create unique index i_docir on doc(initid, revision);";
      * the automatic unlock is done only if the lock has been set automatically also
      * the explicit unlock, unlock in all case (if CanUnLockFile)
      *
-     * @param bool $auto  if true it is a automatic unlock
+     * @param bool $auto if true it is a automatic unlock
      * @param bool $force if true no control oif can unlock
      *
      * @return string error message, if no error empty string
@@ -5262,10 +5303,10 @@ create unique index i_docir on doc(initid, revision);";
      *
      * affect a document to a user
      *
-     * @param int    $userid   the system identifier of the user to affect
-     * @param string $comment  message for allocation
-     * @param bool   $revision if false no revision are made
-     * @param bool   $autolock if false no lock are made
+     * @param int $userid the system identifier of the user to affect
+     * @param string $comment message for allocation
+     * @param bool $revision if false no revision are made
+     * @param bool $autolock if false no lock are made
      *
      * @return string error message, if no error empty string, if message
      */
@@ -5300,7 +5341,10 @@ create unique index i_docir on doc(initid, revision);";
                         )
                     ));
 
-                    $this->delUTag(ContextManager::getCurrentUser()->id, "AFFECTED"); // TODO need delete all AFFECTED tag
+                    $this->delUTag(
+                        ContextManager::getCurrentUser()->id,
+                        "AFFECTED"
+                    ); // TODO need delete all AFFECTED tag
                     $this->addUTag($userid, "AFFECTED", $comment);
                     if ($autolock) {
                         $err = $this->lock(false, $userid);
@@ -5326,8 +5370,8 @@ create unique index i_docir on doc(initid, revision);";
      * unaffect a document to a user
      * only the allocated user can unallocate and also users which has unlock acl
      *
-     * @param string $comment  message for unallocation
-     * @param bool   $revision if false no revision are made
+     * @param string $comment message for unallocation
+     * @param bool $revision if false no revision are made
      *
      * @return string error message, if no error empty string, if message
      */
@@ -5348,7 +5392,10 @@ create unique index i_docir on doc(initid, revision);";
             if ($u->isAffected()) {
                 $err = $this->unlock();
                 if ($err == "") {
-                    $this->delUTag(ContextManager::getCurrentUser()->id, "AFFECTED"); // TODO need delete all AFFECTED tag
+                    $this->delUTag(
+                        ContextManager::getCurrentUser()->id,
+                        "AFFECTED"
+                    ); // TODO need delete all AFFECTED tag
                     if ($revision) {
                         $this->revise(sprintf(_("Unallocated of %s %s : %s"), $u->firstname, $u->lastname, $comment));
                     } else {
@@ -5383,8 +5430,8 @@ create unique index i_docir on doc(initid, revision);";
      * if no icon found return doc.png
      *
      * @param string $idicon
-     * @param int    $size    width size
-     * @param int    $otherId icon for other document id
+     * @param int $size width size
+     * @param int $otherId icon for other document id
      *
      * @return string icon url
      */
@@ -5401,7 +5448,7 @@ create unique index i_docir on doc(initid, revision);";
         }
 
         if (preg_match(PREGEXPFILE, $idicon, $reg)) {
-            $rid=$otherId?:$this->id;
+            $rid = $otherId ?: $this->id;
             if ($idicon[0] === "!") {
                 if (!$size) {
                     $size = "20";
@@ -5522,7 +5569,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * declare a dependance between several attributes
      *
-     * @param string $in  attributes id use for compute $out attributes separates by commas
+     * @param string $in attributes id use for compute $out attributes separates by commas
      * @param string $out attributes id calculated by $in attributes separates by commas
      */
     final public function addParamRefresh($in, $out)
@@ -5566,7 +5613,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Special Refresh Generated for a single attribute
      *
-     * @param string $attrId     Attribute's name
+     * @param string $attrId Attribute's name
      * @param string $callMethod Method to apply
      *
      * @return string Error message or empty string on succcess
@@ -5597,8 +5644,8 @@ create unique index i_docir on doc(initid, revision);";
      * recompute all computed attribut
      * and save the document in database if changes occurred
      *
-     * @api refresh document by calling specRefresh and update computed attributes
      * @return string information message
+     * @api refresh document by calling specRefresh and update computed attributes
      */
     final public function refresh()
     {
@@ -5671,7 +5718,7 @@ create unique index i_docir on doc(initid, revision);";
      * replace % tag of a link attribute
      *
      * @param string $link url to analyze
-     * @param int    $k    index
+     * @param int $k index
      *
      * @return bool|string
      */
@@ -5696,15 +5743,26 @@ create unique index i_docir on doc(initid, revision);";
                             // special link
                             switch ($link[$i]) {
                                 case "B": // baseurl
-                                    $urllink .= ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_BASEURL", "?");
+                                    $urllink .= ContextManager::getParameterValue(
+                                        \Anakeen\Core\Settings::NsSde,
+                                        "CORE_BASEURL",
+                                        "?"
+                                    );
                                     break;
 
                                 case "S": // standurl
-                                    $urllink .= ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_STANDURL", "?");
+                                    $urllink .= ContextManager::getParameterValue(
+                                        \Anakeen\Core\Settings::NsSde,
+                                        "CORE_STANDURL",
+                                        "?"
+                                    );
                                     break;
 
                                 case "U": // extern url
-                                    $urllink .= ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_EXTERNURL");
+                                    $urllink .= ContextManager::getParameterValue(
+                                        \Anakeen\Core\Settings::NsSde,
+                                        "CORE_EXTERNURL"
+                                    );
                                     break;
 
                                 case "I": // id
@@ -5809,15 +5867,15 @@ create unique index i_docir on doc(initid, revision);";
      *
      * use only for specific purpose. If need typed attributes use \Anakeen\Core\Internal\SmartElement::getAttribute()
      *
-     * @api convert flat attribute value to an array
-     * @see \Anakeen\Core\Internal\SmartElement::getAttributeValue
-     *
      * @param string $v value
      *
-     * @param bool   $force
+     * @param bool $force
      *
      * @return array
      * @throws \Anakeen\Database\Exception
+     * @api convert flat attribute value to an array
+     * @see \Anakeen\Core\Internal\SmartElement::getAttributeValue
+     *
      */
     public static function rawValueToArray($v, bool $force = false)
     {
@@ -5834,11 +5892,11 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * convert array value to flat attribute value
      *
-     * @api convert array value to flat attribute value
-     *
      * @param array $v
      *
      * @return string
+     * @api convert array value to flat attribute value
+     *
      */
     public static function arrayToRawValue($v)
     {
@@ -5852,12 +5910,12 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return an url to download for file attribute
      *
-     * @param string                  $attrid     attribute identifier
-     * @param int                     $index      set to row rank if it is in array else use -1
-     * @param bool                    $cache      set to true if file may be persistent in client cache
-     * @param bool                    $inline     set to true if file must be displayed in web browser
-     * @param string                  $otherValue use another file value instead of attribute value
-     * @param \Anakeen\Vault\FileInfo $info       extra file info
+     * @param string $attrid attribute identifier
+     * @param int $index set to row rank if it is in array else use -1
+     * @param bool $cache set to true if file may be persistent in client cache
+     * @param bool $inline set to true if file must be displayed in web browser
+     * @param string $otherValue use another file value instead of attribute value
+     * @param \Anakeen\Vault\FileInfo $info extra file info
      *
      * @return string the url anchor
      */
@@ -5917,7 +5975,7 @@ create unique index i_docir on doc(initid, revision);";
                 );
             }
             if ($inline) {
-                $url.="?inline=true";
+                $url .= "?inline=true";
             }
 
             return $url;
@@ -5928,17 +5986,17 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return an html anchor to a document
      *
-     * @api return an html anchor to a document
-     *
-     * @param int         $id       identifier of document
-     * @param string      $target   window target
-     * @param bool        $htmllink must be true else return nothing
-     * @param bool|string $title    should we override default title
-     * @param bool        $js       should we add a javascript contextual menu
-     * @param string      $docrev   style of link (default:latest, other values: fixed or state(xxx))
-     * @param bool        $viewIcon set to true to have icon in html link
+     * @param int $id identifier of document
+     * @param string $target window target
+     * @param bool $htmllink must be true else return nothing
+     * @param bool|string $title should we override default title
+     * @param bool $js should we add a javascript contextual menu
+     * @param string $docrev style of link (default:latest, other values: fixed or state(xxx))
+     * @param bool $viewIcon set to true to have icon in html link
      *
      * @return string the html anchor
+     * @api return an html anchor to a document
+     *
      */
     final public function getDocAnchor(
         $id,
@@ -5979,7 +6037,10 @@ create unique index i_docir on doc(initid, revision);";
                             $ul = htmlspecialchars($mDoc->urlWhatEncode($mUrl));
                             $specialUl = true;
                         } else {
-                            $ul = htmlspecialchars(ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_MAILACTIONURL"));
+                            $ul = htmlspecialchars(ContextManager::getParameterValue(
+                                \Anakeen\Core\Settings::NsSde,
+                                "CORE_MAILACTIONURL"
+                            ));
                             $ul .= "&amp;id=$id";
                         }
                         break;
@@ -6030,12 +6091,12 @@ create unique index i_docir on doc(initid, revision);";
      * return HTML formated value of an attribute
      *
      * @param \Anakeen\Core\SmartStructure\NormalAttribute $oattr
-     * @param string                                       $value  raw value
-     * @param string                                       $target html target in case of link
-     * @param bool                                         $htmllink
-     * @param int                                          $index
-     * @param bool                                         $entities
-     * @param bool                                         $abstract
+     * @param string $value raw value
+     * @param string $target html target in case of link
+     * @param bool $htmllink
+     * @param int $index
+     * @param bool $entities
+     * @param bool $abstract
      *
      * @return string the formated value
      */
@@ -6071,17 +6132,17 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return an html anchor to a document
      *
-     * @see \Anakeen\Core\Internal\SmartElement::getHtmlValue
-     *
      * @param string $attrid attribute identifier
      * @param string $target html target in case of link
-     * @param int    $htmllink
-     * @param int    $index
-     * @param bool   $entities
-     * @param bool   $abstract
+     * @param int $htmllink
+     * @param int $index
+     * @param bool $entities
+     * @param bool $abstract
      *
      * @return string
      * @throws \Anakeen\Exception
+     * @see \Anakeen\Core\Internal\SmartElement::getHtmlValue
+     *
      */
     final public function getHtmlAttrValue(
         $attrid,
@@ -6108,9 +6169,9 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Get a textual representation of the content of an attribute
      *
-     * @param string $attrId        logical name of the attr
+     * @param string $attrId logical name of the attr
      * @param        $index
-     * @param array  $configuration value config array : dateFormat => 'US' 'ISO', decimalSeparator => '.',
+     * @param array $configuration value config array : dateFormat => 'US' 'ISO', decimalSeparator => '.',
      *                              multipleSeparator => array(0 => 'arrayLine', 1 => 'multiple')
      *                              (defaultValue : dateFormat : 'US', decimalSeparator : '.',
      *                              multiple => array(0 => "\n", 1 => ", "))
@@ -6130,10 +6191,10 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * get value for open document text template
      *
-     * @param string $attrid   attribute identifier
-     * @param string $target   unused
-     * @param bool   $htmllink unused
-     * @param int    $index    index rank in case of multiple attribute value
+     * @param string $attrid attribute identifier
+     * @param string $target unused
+     * @param bool $htmllink unused
+     * @param int $index index rank in case of multiple attribute value
      *
      * @return string XML fragment
      */
@@ -6160,10 +6221,10 @@ create unique index i_docir on doc(initid, revision);";
      * return open document text format for attribute value
      *
      * @param \Anakeen\Core\SmartStructure\NormalAttribute $oattr
-     * @param string                                       $value
-     * @param string                                       $target   unused
-     * @param bool                                         $htmllink unused
-     * @param int                                          $index    index rank in case of multiple attribute value
+     * @param string $value
+     * @param string $target unused
+     * @param bool $htmllink unused
+     * @param int $index index rank in case of multiple attribute value
      *
      * @return string XML fragment
      */
@@ -6214,7 +6275,7 @@ create unique index i_docir on doc(initid, revision);";
      * Control Access privilege for document for current user
      *
      * @param string $aclname identifier of the privilege to test
-     * @param bool   $strict  set tio true to test without notion of account susbstitute
+     * @param bool $strict set tio true to test without notion of account susbstitute
      *
      * @return string empty means access granted else it is an error message (access unavailable)
      */
@@ -6254,12 +6315,12 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Control Access privilege for document for current user
      *
-     * @api control document access
-     *
      * @param string $aclName identifier of the privilege to test
-     * @param bool   $strict  set tio true to test without notion of account susbstitute
+     * @param bool $strict set tio true to test without notion of account susbstitute
      *
      * @return bool return true if access $aclName is granted, false else
+     * @api control document access
+     *
      */
     public function hasPermission($aclName, $strict = false)
     {
@@ -6269,8 +6330,8 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * verify that the document exists and is not in trash (not a zombie)
      *
-     * @api verify that the document exists and is not in trash
      * @return bool
+     * @api verify that the document exists and is not in trash
      */
     final public function isAlive()
     {
@@ -6359,7 +6420,10 @@ create unique index i_docir on doc(initid, revision);";
             }
             if (!empty($v["using"])) {
                 if ($v["using"][0] == "@") {
-                    $v["using"] = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, substr($v["using"], 1));
+                    $v["using"] = ContextManager::getParameterValue(
+                        \Anakeen\Core\Settings::NsSde,
+                        substr($v["using"], 1)
+                    );
                 }
                 $t[] = sprintf("CREATE $unique INDEX %s$id on  doc$id using %s(%s);\n", $k, $v["using"], $v["on"]);
             } else {
@@ -6453,9 +6517,9 @@ create unique index i_docir on doc(initid, revision);";
      * the format of the string which define default values is like
      * [US_ROLE|director][US_SOCIETY|alwaysNet]...
      *
-     * @param array $tdefval      the default values
-     * @param bool  $method       set to false if don't want interpreted values
-     * @param bool  $forcedefault force default values
+     * @param array $tdefval the default values
+     * @param bool $method set to false if don't want interpreted values
+     * @param bool $forcedefault force default values
      *
      * @throws \Anakeen\Exception
      */
@@ -6479,8 +6543,8 @@ create unique index i_docir on doc(initid, revision);";
                 } elseif (!$oattr->inArray()) {
                     $ok = true;
                 } elseif ($oattr->fieldSet->type === "array") {
-                    if (($tdefval[$oattr->fieldSet->id]??null) !== null) {
-                        $ok=false;
+                    if (($tdefval[$oattr->fieldSet->id] ?? null) !== null) {
+                        $ok = false;
                     } else {
                         if ($oattr->fieldSet->getOption("empty") !== "yes" && $oattr->fieldSet->format !== "empty") {
                             $ok = true;
@@ -6607,14 +6671,14 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * generate HTML code for view doc
      *
-     * @param string $layout       layout to use to view document
-     * @param string $target       window target name for hyperlink destination
-     * @param bool   $ulink        if false hyperlink are not generated
-     * @param bool   $abstract     if true only abstract attribute are generated
-     * @param bool   $changelayout if true the internal layout ($this->lay) will be replace by the new \layout
+     * @param string $layout layout to use to view document
+     * @param string $target window target name for hyperlink destination
+     * @param bool $ulink if false hyperlink are not generated
+     * @param bool $abstract if true only abstract attribute are generated
+     * @param bool $changelayout if true the internal layout ($this->lay) will be replace by the new \layout
      *
-     * @throws \Exception
      * @return string genererated template . If target is binary, return file path of temporary generated file
+     * @throws \Exception
      */
     final public function viewDoc(
         $layout = "FDL:VIEWBODYCARD",
@@ -6728,11 +6792,11 @@ create unique index i_docir on doc(initid, revision);";
      * default construct layout for view card containt
      *
      * @templateController default controller view
+     * @param string $target window target name for hyperlink destination
+     * @param bool $ulink if false hyperlink are not generated
+     * @param bool $abstract if true only abstract attribute are generated
      * @deprecated
      *
-     * @param string $target   window target name for hyperlink destination
-     * @param bool   $ulink    if false hyperlink are not generated
-     * @param bool   $abstract if true only abstract attribute are generated
      */
     final public function viewdefaultcard($target = "_self", $ulink = true, $abstract = false)
     {
@@ -6745,9 +6809,9 @@ create unique index i_docir on doc(initid, revision);";
      * set V_<attrid> and L_<attrid> keys for current layout
      * the keys are in uppercase letters
      *
-     * @param string $target   HTML target for links
-     * @param bool   $ulink    set to true to have HTML hyperlink when it is possible
-     * @param bool   $abstract set to true to restrict to abstract attributes
+     * @param string $target HTML target for links
+     * @param bool $ulink set to true to have HTML hyperlink when it is possible
+     * @param bool $abstract set to true to restrict to abstract attributes
      */
     final public function viewattr($target = "_self", $ulink = true, $abstract = false)
     {
@@ -6780,7 +6844,13 @@ create unique index i_docir on doc(initid, revision);";
                                     $values = $va;
                                     $ovalues = array();
                                     foreach ($values as $ka => $vaa) {
-                                        $ovalues[] = htmlspecialchars_decode($this->GetOOoValue($oa, $vaa, "_self", false, 0), ENT_QUOTES);
+                                        $ovalues[] = htmlspecialchars_decode($this->GetOOoValue(
+                                            $oa,
+                                            $vaa,
+                                            "_self",
+                                            false,
+                                            0
+                                        ), ENT_QUOTES);
                                     }
                                     $tmkeys[$kindex]["V_" . strtoupper($kaid)] = $ovalues;
                                     $oa->setOption("multiple", "yes"); //  needto have values like first level
@@ -6805,7 +6875,10 @@ create unique index i_docir on doc(initid, revision);";
                             $ovalues = array();
                             $v->setOption("multiple", "no");
                             foreach ($values as $ka => $va) {
-                                $ovalues[] = htmlspecialchars_decode($this->GetOOoValue($v, $va, "_self", false, 0), ENT_QUOTES);
+                                $ovalues[] = htmlspecialchars_decode(
+                                    $this->GetOOoValue($v, $va, "_self", false, 0),
+                                    ENT_QUOTES
+                                );
                             }
                             $v->setOption("multiple", "yes");
                             $this->lay->setColumn("V_" . strtoupper($v->id), $ovalues);
@@ -6830,8 +6903,8 @@ create unique index i_docir on doc(initid, revision);";
      * produce alse V_TITLE key to have a HTML link to document (for HTML layout)
      *
      * @param string $target
-     * @param bool   $ulink    for the V_TITLE key
-     * @param bool   $abstract unused
+     * @param bool $ulink for the V_TITLE key
+     * @param bool $abstract unused
      */
     final public function viewprop(
         $target = "_self",
@@ -6870,9 +6943,9 @@ create unique index i_docir on doc(initid, revision);";
      * The logical name is affected only if it's not an empty string or NULL:
      * if empty or NULL, then the affectation is silently bypassed.
      *
-     * @param string $name       new \logical name
-     * @param bool   $reset      set to true to accept change
-     * @param bool   $verifyOnly if true only verify syntax and unicity
+     * @param string $name new \logical name
+     * @param bool $reset set to true to accept change
+     * @param bool $verifyOnly if true only verify syntax and unicity
      *
      * @return string error message if cannot be
      */
@@ -6940,8 +7013,8 @@ create unique index i_docir on doc(initid, revision);";
      * get vault file name or server path of filename
      *
      * @param string $attrid identifier of file attribute
-     * @param bool   $path   false return original file name (basename) , true the real path
-     * @param int    $index  in case of array of files
+     * @param bool $path false return original file name (basename) , true the real path
+     * @param int $index in case of array of files
      *
      * @return string the file name of the attribute
      */
@@ -6959,7 +7032,7 @@ create unique index i_docir on doc(initid, revision);";
      * get vault file name or server path of filename
      *
      * @param string $fileid value of file attribute
-     * @param bool   $path   false return original file name (basename) , true the real path
+     * @param bool $path false return original file name (basename) , true the real path
      *
      * @return string the file name of the attribute
      */
@@ -7034,7 +7107,7 @@ create unique index i_docir on doc(initid, revision);";
      * return a property of vault file value
      *
      * @param string $filesvalue the file value : like application/pdf|12345
-     * @param string $key        one of property id_file, name, size, public_access, mime_t, mime_s, cdate, mdate, teng_state, teng_lname, teng_vid, teng_comment, path
+     * @param string $key one of property id_file, name, size, public_access, mime_t, mime_s, cdate, mdate, teng_state, teng_lname, teng_vid, teng_comment, path
      * @param string $returnType if "array" return indexed array else return Anakeen\Vault\FileInfo object
      *
      * @return array|string|\Anakeen\Vault\FileInfo value of property or array of all properties if no key
@@ -7069,12 +7142,12 @@ create unique index i_docir on doc(initid, revision);";
 
     /**
      *
-     * @param string  &$xml              content xml (empty if $outfile is not empty
-     * @param boolean  $withfile         include files in base64 encoded
-     * @param string   $outfile          if not empty means content is put into this file
-     * @param bool     $wident           set true to ident xml
-     * @param bool     $flat             set to true if don't want structure
-     * @param array    $exportAttributes to export only a part of attributes
+     * @param string  &$xml content xml (empty if $outfile is not empty
+     * @param boolean $withfile include files in base64 encoded
+     * @param string $outfile if not empty means content is put into this file
+     * @param bool $wident set true to ident xml
+     * @param bool $flat set to true if don't want structure
+     * @param array $exportAttributes to export only a part of attributes
      *
      * @return string error message (empty if no error)
      */
@@ -7141,7 +7214,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return title of document in latest revision
      *
-     * @param string $id  identifier of document
+     * @param string $id identifier of document
      * @param string $def default value if document not found
      *
      * @return string
@@ -7156,8 +7229,8 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @api get document's title
      *
-     * @param string  $id     identifier of document (if not set use current document)
-     * @param string  $def    default value if document not found
+     * @param string $id identifier of document (if not set use current document)
+     * @param string $def default value if document not found
      * @param boolean $latest search title in latest revision
      *
      * @return string
@@ -7208,12 +7281,12 @@ create unique index i_docir on doc(initid, revision);";
      * Same as ::getTitle()
      * the < & > characters as replace by entities
      *
-     * @param string $id     docuemnt identifier to set else use current document title
-     * @param string $def    default value if document not found
-     * @param bool   $latest force use latest revision of document
+     * @param string $id docuemnt identifier to set else use current document title
+     * @param string $def default value if document not found
+     * @param bool $latest force use latest revision of document
      *
-     * @see \Anakeen\Core\Internal\SmartElement::getTitle
      * @return string
+     * @see \Anakeen\Core\Internal\SmartElement::getTitle
      */
     public function getHTMLTitle($id = "-1", $def = "", $latest = false)
     {
@@ -7242,14 +7315,14 @@ create unique index i_docir on doc(initid, revision);";
      * @searchLabel today
      * @searchType  date
      * @searchType  timestamp
-     * @api         get date
-     *
-     * @param int        $daydelta  to have the current date more or less day (-1 means yesterday, 1 tomorrow)
-     * @param int|string $dayhour   hours of day
-     * @param int|string $daymin    minutes of day
-     * @param bool       $getlocale whether to return locale date or not
+     * @param int $daydelta to have the current date more or less day (-1 means yesterday, 1 tomorrow)
+     * @param int|string $dayhour hours of day
+     * @param int|string $daymin minutes of day
+     * @param bool $getlocale whether to return locale date or not
      *
      * @return string YYYY-MM-DD or DD/MM/YYYY (depend of CORE_LCDATE parameter) or locale dateDD/MM/YYYY or locale date
+     * @api         get date
+     *
      */
     public static function getDate($daydelta = 0, $dayhour = "", $daymin = "", $getlocale = false)
     {
@@ -7292,8 +7365,8 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return the today date and time with european format DD/MM/YYYY HH:MM
      *
-     * @param int  $hourdelta to have the current date more or less hour  (-1 means one hour before, 1 one hour after)
-     * @param bool $second    if true format DD/MM/YYYY HH:MM
+     * @param int $hourdelta to have the current date more or less hour  (-1 means one hour before, 1 one hour after)
+     * @param bool $second if true format DD/MM/YYYY HH:MM
      *
      * @return string DD/MM/YYYY HH:MM or YYYY-MM-DD HH:MM (depend of CORE_LCDATE parameter)
      */
@@ -7343,14 +7416,14 @@ create unique index i_docir on doc(initid, revision);";
      * Each of the traversed docid **must** be a docid or an account, and **must not** be multiple.\n
      * Elsewhere, the returned value is $def
      * @endwarning
-     * @see \Anakeen\Core\Internal\SmartElement::getRValue
-     *
-     * @param int    $docid  document identifier
+     * @param int $docid document identifier
      * @param string $attrid attributes identifier chain (separated by ':')
-     * @param string $def    $def default return value
-     * @param bool   $latest always last revision of document
+     * @param string $def $def default return value
+     * @param bool $latest always last revision of document
      *
      * @return array|string
+     * @see \Anakeen\Core\Internal\SmartElement::getRValue
+     *
      */
     final public function getDocValue($docid, $attrid, $def = " ", $latest = false)
     {
@@ -7375,13 +7448,13 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return value of an property for the document referenced
      *
-     * @see \Anakeen\Core\Internal\SmartElement::getPropertyValue
-     *
-     * @param int    $docid  document identifier
+     * @param int $docid document identifier
      * @param string $propid property identifier
-     * @param bool   $latest always last revision of document if true
+     * @param bool $latest always last revision of document if true
      *
      * @return string
+     * @see \Anakeen\Core\Internal\SmartElement::getPropertyValue
+     *
      */
     final public function getDocProp($docid, $propid, $latest = false)
     {
@@ -7460,12 +7533,12 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * attach timer to a document
      *
-     * @param \Anakeen\SmartStructures\Timer\TimerHooks &$timer    the timer document
-     * @param \Anakeen\Core\Internal\SmartElement       &$origin   the document which comes from the attachement
-     * @param string                                     $execdate date to execute first action YYYY-MM-DD HH:MM:SS
+     * @param \Anakeen\SmartStructures\Timer\TimerHooks &$timer the timer document
+     * @param \Anakeen\Core\Internal\SmartElement       &$origin the document which comes from the attachement
+     * @param string $execdate date to execute first action YYYY-MM-DD HH:MM:SS
      *
-     * @api Attach timer to a document
      * @return string error - empty if no error -
+     * @api Attach timer to a document
      */
     final public function attachTimer(&$timer, $origin = null, $execdate = null)
     {
@@ -7485,7 +7558,10 @@ create unique index i_docir on doc(initid, revision);";
                 if ($dyn) {
                     $this->addATag("DYNTIMER");
                 }
-                $this->addHistoryEntry(sprintf(_("attach timer %s [%d]"), $timer->title, $timer->id), \DocHisto::NOTICE);
+                $this->addHistoryEntry(
+                    sprintf(_("attach timer %s [%d]"), $timer->title, $timer->id),
+                    \DocHisto::NOTICE
+                );
                 $this->addLog("attachtimer", array(
                     "timer" => $timer->id
                 ));
@@ -7501,8 +7577,8 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @param \Anakeen\SmartStructures\Timer\TimerHooks &$timer the timer document
      *
-     * @api Unattach timer of a document
      * @return string error - empty if no error -
+     * @api Unattach timer of a document
      */
     final public function unattachTimer(&$timer)
     {
@@ -7565,8 +7641,8 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @param \Anakeen\Core\Internal\SmartElement &$origin if set unattach all timer which comes from this origin
      *
-     * @api Unattach all times of the document
      * @return string error - empty if no error -
+     * @api Unattach all times of the document
      */
     final public function unattachAllTimers($origin = null)
     {
@@ -7596,8 +7672,8 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return all activated document timer
      *
-     * @api Get all timer attached to the document
      * @return array of doctimer values
+     * @api Get all timer attached to the document
      */
     final public function getAttachedTimers()
     {
@@ -7723,7 +7799,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Get the list of compatible search methods for a given attribute type
      *
-     * @param string $attrId   attribute name
+     * @param string $attrId attribute name
      * @param string $attrType empty string to returns all methods or attribute type
      *                         (e.g. 'date', 'docid', 'docid("IUSER")', etc.) to restrict search to methods supporting this type
      *
@@ -7737,7 +7813,11 @@ create unique index i_docir on doc(initid, revision);";
             $attrType = $pType['type'];
         }
 
-        $collator = new \Collator(ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 'CORE_LANG', 'fr_FR'));
+        $collator = new \Collator(ContextManager::getParameterValue(
+            \Anakeen\Core\Settings::NsSde,
+            'CORE_LANG',
+            'fr_FR'
+        ));
 
         $compatibleMethods = array();
 
@@ -7809,8 +7889,8 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Check if a specific method from a specific class is a valid search method
      *
-     * @param string|\stdClass $className  the class name
-     * @param string           $methodName the method name
+     * @param string|\stdClass $className the class name
+     * @param string $methodName the method name
      *
      * @return bool boolean 'true' if valid, boolean 'false' is not valid
      */
@@ -7864,8 +7944,8 @@ create unique index i_docir on doc(initid, revision);";
     }
 
     /**
-     * @api Hook to add values used in general searches
      * @return string[]
+     * @api Hook to add values used in general searches
      */
     protected function getCustomSearchValues()
     {
