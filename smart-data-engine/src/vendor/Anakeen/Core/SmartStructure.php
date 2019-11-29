@@ -336,6 +336,11 @@ create unique index idx_idfam on docfam(id);";
                 return \ErrorCode::getError('DOC0120', $idp, $this->getTitle(), $this->name);
             }
         }
+        if ($oa) {
+            if ($oa->isMultiple() && ! is_array($val)) {
+                return \ErrorCode::getError('DOC0137', $this->name, $idp, $val);
+            }
+        }
 
 
         if (!empty($val) && $oa && ($oa->type == "date" || $oa->type == "timestamp")) {
@@ -660,10 +665,9 @@ create unique index idx_idfam on docfam(id);";
 
         $txval[strtolower($idp)] = $val;
         $this->$tval = $txval;
-
         $tdefattr = array();
         foreach ($txval as $k => $v) {
-            if ($k && ($v !== '')) {
+            if ($k && ($v !== null)) {
                 $tdefattr[$k] = $v;
             }
         }

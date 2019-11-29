@@ -711,12 +711,9 @@ class ImportSmartConfiguration
 
         $inherit = $attrNode->getAttribute("inherit");
         if ($inherit === "true") {
-            $data[2] = "";
+            $data[2] = null;
         } else {
             if ($callsNodes->length === 0) {
-                if ($nodeValue === "") {
-                    $nodeValue=null;
-                }
                 $data[2] = $nodeValue;
             } else {
                 $data[2] = $this->getCallableString($attrNode);
@@ -726,7 +723,6 @@ class ImportSmartConfiguration
         if ($reset === "true") {
             $data[3] = "force=yes";
         }
-
         return $data;
     }
 

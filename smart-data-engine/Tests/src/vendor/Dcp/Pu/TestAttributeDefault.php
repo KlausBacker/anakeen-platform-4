@@ -19,6 +19,7 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
     protected static function getCommonImportFile()
     {
         self::importConfigurationFile(__DIR__ . "/../../Anakeen/Pu/Config/Inputs/tst_007.struct.xml");
+        self::importConfigurationFile(__DIR__ . "/../../Anakeen/Pu/Config/Inputs/tst_008.struct.xml");
         return "PU_data_dcp_familydefault.ods";
     }
 
@@ -165,7 +166,7 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
             $this->assertEquals(
                 $expectedvalue,
                 $value,
-                sprintf("not the expected default value attribute %s", $attrid)
+                sprintf("not the expected default value parameter \"%s\"", $attrid)
             );
         }
     }
@@ -236,7 +237,7 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
                     "TST_P2" => "10",
                     "TST_P3" => "::oneMore(TST_P2)",
                     "TST_P4" => "40",
-                    'TST_P6' => '7689'
+                    'TST_P6' => '34'
                 )
             )
         );
@@ -742,95 +743,100 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
                 "one"
             ),
             array(
-                "TST_007",
+                "TST_008",
                 "tst_p0",
                 "{red}"
             ),
             array(
-                "TST_007",
+                "TST_008",
                 "tst_p1",
                 "23"
             ),
             array(
-                "TST_007",
+                "TST_008",
                 "tst_p2",
                 23 + 28
             ),
             array(
-                "TST_007",
+                "TST_008",
                 "tst_p3s",
                 '{Hola,Hombre}'
             ),
             array(
-                "TST_007",
+                "TST_008",
                 "tst_p4s",
                 '{122,156}'
             ),
             array(
-                "TST_007",
+                "TST_008",
                 "tst_p5s",
-                ''
+                '{Hello}'
             ),
             array(
-                "TST_007a",
+                "TST_008",
+                "tst_p6s",
+                '{Hola,Bienvenido}'
+            ),
+            array(
+                "TST_008a",
                 "tst_p0",
                 "{red}"
             ),
             array(
-                "TST_007a",
+                "TST_008a",
                 "tst_p1",
                 "78"
             ),
             array(
-                "TST_007a",
+                "TST_008a",
                 "tst_p2",
                 78 + 28
             ),
             array(
-                "TST_007a",
+                "TST_008a",
                 "tst_p3s",
                 '{Hola,Hombre}'
             ),
             array(
-                "TST_007a",
+                "TST_008a",
                 "tst_p4s",
                 '{122,156}'
             ),
             array(
-                "TST_007a",
+                "TST_008a",
                 "tst_p5s",
-                ''
+                '{Hello}'
             ),
 
             array(
-                "TST_007b",
+                "TST_008b",
                 "tst_p0",
                 "{red}"
             ),
             array(
-                "TST_007b",
+                "TST_008b",
                 "tst_p1",
                 "78"
             ),
             array(
-                "TST_007b",
+                "TST_008b",
                 "tst_p2",
                 78 + 28
             ),
             array(
-                "TST_007b",
+                "TST_008b",
                 "tst_p3s",
                 '{Hola,Hombre}'
             ),
             array(
-                "TST_007b",
+                "TST_008b",
                 "tst_p4s",
                 '{122,156}'
             ),
             array(
-                "TST_007b",
+                "TST_008b",
                 "tst_p5s",
-                ''
+                '{Hello}'
             )
         );
     }

@@ -236,6 +236,11 @@ class ErrorCodeDOC
      */
     const DOC0136 = 'Element "%s", field "%s" clear value is not granted';
     /**
+     * @errorCode when update  smart structure  parameter
+     * @see       \Anakeen\Core\SmartStructure::setParam
+     */
+    const DOC0137 = 'cannot set smart structure ("%s") parameter "%s". Need array value and has single value "%s"';
+    /**
      * @errorCode the smart element cannot be inserted in folder target
      * @note when DOC has defined a folder target
      */

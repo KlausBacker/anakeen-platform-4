@@ -1563,7 +1563,7 @@ class ImportDocumentDescription
         if (!$this->doc) {
             return;
         }
-        $check = new \CheckInitial();
+        $check = new \CheckInitial($this);
         $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
         if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
             $this->tcr[$this->nLine]["msg"] = sprintf("Element can't be perfectly analyze, some error might occur or be corrected when importing");
@@ -1575,8 +1575,8 @@ class ImportDocumentDescription
             return;
         }
 
-        if (!isset($data[2])) {
-            $data[2] = '';
+        if (!array_key_exists(2, $data)) {
+            $data[2] = null;
         }
         $attrid = trim(strtolower($data[1]));
         $newValue = $data[2];
@@ -1594,7 +1594,8 @@ class ImportDocumentDescription
             );
         } else {
             if ($force || ($previousValue === null)) {
-                $this->doc->setParam($attrid, $newValue, false);
+                $err=$this->doc->setParam($attrid, $newValue, false);
+                $this->tcr[$this->nLine]["err"] = $err;
                 $this->tcr[$this->nLine]["msg"] = "reset default parameter";
             }
             $this->tcr[$this->nLine]["msg"] .= sprintf("add default value %s %s", $attrid, $data[2]);
@@ -2438,11 +2439,47 @@ class ImportDocumentDescription
      * @param $attrId
      * @return bool|DocAttr
      */
-    public function getImportedAttribute($famId, $attrId)
+    public function getImportedDocAttr($famId, $attrId)
     {
         if (isset($this->importedAttribute[$famId][$attrId])) {
             return $this->importedAttribute[$famId][$attrId];
         }
         return false;
+    }
+
+    /**
+     * @param $attrId
+     * @return \Anakeen\Core\SmartStructure\BasicAttribute|\Anakeen\Core\SmartStructure\NormalAttribute|false|null
+     */
+    public function getSmartField($attrId)
+    {
+        if ($this->doc) {
+            /** @var \Anakeen\Core\SmartStructure\DocAttr $dbattr */
+            $dbattr = $this->getImportedDocAttr($this->doc->id, $attrId);
+
+            if ($dbattr) {
+                $oa = new \Anakeen\Core\SmartStructure\NormalAttribute(
+                    $dbattr->id,
+                    $dbattr->docid,
+                    $dbattr->labeltext,
+                    $dbattr->type,
+                    "",
+                    false,
+                    0,
+                    "",
+                    \Anakeen\Core\SmartStructure\BasicAttribute::READWRITE_ACCESS
+                );
+                $oa->usefor = $dbattr->usefor;
+                $oa->options = $dbattr->options;
+                if ($dbattr->frameid) {
+                    $pField = $this->getImportedDocAttr($this->doc->id, $dbattr->frameid);
+                    $oa->fieldSet = $pField;
+                }
+                return $oa;
+            } else {
+                return $this->doc->getAttribute($attrId);
+            }
+        }
+        return null;
     }
 }

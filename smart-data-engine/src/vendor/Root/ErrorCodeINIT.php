@@ -38,4 +38,9 @@ class ErrorCodeINIT
      * @errorCode unknow attribute found in INITIAL key or in already set parameter
      */
     const INIT0006 = 'the parameter value reference "%s" is not a parameter but an attribut in "%s" family';
+    /**
+     * @errorCode when set  smart structure  parameter
+     * @see       \Anakeen\Core\SmartStructure::setParam
+     */
+    const INIT0007 = 'cannot set smart structure ("%s") parameter "%s". Need array value (json encoded) and has single value "%s"';
 }

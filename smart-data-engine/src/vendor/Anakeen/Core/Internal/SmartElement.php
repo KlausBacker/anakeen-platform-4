@@ -1584,10 +1584,9 @@ create unique index i_docir on doc(initid, revision);";
         if (!$paramAttr) {
             return $def;
         }
-        $r = $this->getParameterFamilyRawValue($idp, $def);
+        $r = $this->getParameterFamilyRawValue($idp, '');
         if ($paramAttr->phpfunc != "" && $paramAttr->phpfile == "" && $paramAttr->type !== "enum") {
             // case cell is computed
-
             $this->_paramValue[$idp] = $r;
             if ($paramAttr->inArray()) {
                 $attributes_array = $this->attributes->getArrayElements($paramAttr->fieldSet->id);
@@ -1613,8 +1612,11 @@ create unique index i_docir on doc(initid, revision);";
                 }
             }
         } else {
-            if ($paramAttr->inArray()) {
+            if ($r !== '') {
+                $r = $this->getValueMethod($r);
+            } elseif ($paramAttr->inArray()) {
                 $ra = $this->getParameterFamilyRawValue($paramAttr->fieldSet->id, "");
+
                 if (is_string($ra)) {
                     $ra = $this->getValueMethod($ra);
                 }
@@ -1625,10 +1627,10 @@ create unique index i_docir on doc(initid, revision);";
                     }
                     $r=Postgres::arrayToString($rs);
                 } else {
-                    $r="";
+                    $r=$def;
                 }
-            } elseif ($r) {
-                $r = $this->getValueMethod($r);
+            } else {
+                 $r=$def;
             }
         }
 
