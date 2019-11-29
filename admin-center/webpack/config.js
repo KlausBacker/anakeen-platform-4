@@ -1,8 +1,9 @@
 const path = require("path");
+const webpack = require("webpack");
 const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 const { lib } = require("@anakeen/webpack-conf");
 
-const { vueLoader, typeScriptLoader, addKendoGlobal, addJqueryGlobal } = require("@anakeen/webpack-conf/parts");
+const { vueLoader, typeScriptLoader, addKendoGlobal, addJqueryGlobal, addVueGlobal } = require("@anakeen/webpack-conf/parts");
 
 const BASE_DIR = path.resolve(__dirname, "../");
 const PUBLIC_PATH = path.join(BASE_DIR, "src/public");
@@ -13,6 +14,7 @@ const modeDev = {
 
 const conf = {
   moduleName: "admin",
+  libName: "adminGlobal",
   entry: {
     AdminAccountManager: [
       path.resolve(BASE_DIR, "src/vendor/Anakeen/AdminCenter/IHM/HubComponent/AdminCenterAccounts/index.js")
@@ -57,9 +59,7 @@ const conf = {
     typeScriptLoader(),
     addKendoGlobal([/kendo.pdf/, /kendo.excel/], true),
     addJqueryGlobal(),
-    {
-      externals: [{ vue: "vue" }]
-    },
+    addVueGlobal(),
     {
       resolve: {
         extensions: [".js", ".vue", ".json", ".ts", ".tsx"]
