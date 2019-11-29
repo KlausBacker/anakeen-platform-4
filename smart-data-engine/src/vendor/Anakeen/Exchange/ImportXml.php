@@ -221,12 +221,12 @@ class ImportXml
              * @var \DomElement $item
              */
             foreach ($n as $item) {
-                if ($item->getAttribute("xsi:nil") === "true") {
+                if (!$v->inArray() && $item->getAttribute("xsi:nil") === "true") {
                     if ($v->getOption("multiple") === "yes") {
-                        $val[] = "{}";
+                        $val[] = null;
                     } else {
                         if ($v->inArray()) {
-                            $val[] = DELVALUE;
+                            $val[] = null;
                         } else {
                             $val[] = DELVALUE;
                         }
@@ -270,8 +270,12 @@ class ImportXml
                                     }
                                 }
                             }
-                            if ($v->getOption("multiple") == "yes" && $id) {
-                                $id = explode(",", $id);
+                            if ($v->getOption("multiple") == "yes") {
+                                if ($id) {
+                                    $id = explode(",", $id);
+                                } else {
+                                    $id=[];
+                                }
                             }
                             $val[] = $id;
                             break;
@@ -309,7 +313,7 @@ class ImportXml
                     $rawval = SmartElement::arrayToRawValue($rawval);
                 }
             } else {
-                if (count($val) === 1 && $val[0] === DELVALUE) {
+                if (count($val) === 1 && $val[0] === null) {
                     $rawval = "{}";
                 } else {
                     $rawval = SmartElement::arrayToRawValue($val);
