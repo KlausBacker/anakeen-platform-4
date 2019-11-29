@@ -87,7 +87,7 @@ class Hub
                 ],
                 [
                     "key" => "smartElement",
-                    "smartElement" => \Anakeen\Ui\UIGetAssetPath::getCssSmartElement()
+                    "path" => UIGetAssetPath::getCssSmartElement()
                 ]
             ]
         ];
