@@ -1,4 +1,4 @@
-import Vue from "vue";
+import { Vue } from "vue-property-decorator";
 import "@progress/kendo-ui/js/kendo.treelist";
 import "@progress/kendo-ui/js/kendo.columnmenu";
 import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";

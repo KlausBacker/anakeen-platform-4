@@ -23,12 +23,7 @@ export default {
   name: "ank-dev-hub-instanciation",
   extends: HubElement, // ou mixins: [ HubElementMixins ],
   components: {
-    "dev-hub-instanciation": () =>
-      new Promise(resolve => {
-        import("../../sections/Hub/HubAdminInstanciation/HubAdminInstanciation.vue").then(Component => {
-          resolve(Component.default);
-        });
-      })
+    "dev-hub-instanciation": () => import("../../sections/Hub/HubAdminInstanciation/HubAdminInstanciation.vue")
   },
   data() {
     return {

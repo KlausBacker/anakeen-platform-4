@@ -1,6 +1,6 @@
 import "@progress/kendo-ui/js/kendo.popup";
 import "@progress/kendo-ui/js/kendo.grid";
-import Vue from "vue";
+import { Vue } from "vue-property-decorator";
 
 import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 import { DropdownsInstaller } from "@progress/kendo-dropdowns-vue-wrapper";
@@ -22,11 +22,7 @@ export default {
   components: {
     "ank-se-grid": AnkSEGrid,
     "ank-hub-mockup": AnkHubMockup,
-    "smart-element": () => {
-      return AnkSmartElement.then(AnkSmartElement => {
-        return AnkSmartElement.default;
-      });
-    },
+    "smart-element": () => AnkSmartElement,
     "ank-splitter": AnkSplitter
   },
   props: ["hubId", "hubComponentSelected"],

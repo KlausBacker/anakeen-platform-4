@@ -1,5 +1,5 @@
-import AnkSETabs from "@anakeen/user-interfaces/components/lib/AnkSETabs";
-import AnkTab from "@anakeen/user-interfaces/components/lib/AnkTab";
+import AnkSETabs from "@anakeen/user-interfaces/components/lib/AnkSmartElementTabs.esm";
+import AnkTab from "@anakeen/user-interfaces/components/lib/AnkTab.esm";
 
 export default {
   name: "router-tabs",

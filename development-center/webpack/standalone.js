@@ -1,17 +1,12 @@
 const path = require('path');
 const {prod, dev} = require("@anakeen/webpack-conf");
-const { vueLoader,   addKendoGlobal,
-  addDll } = require("@anakeen/webpack-conf/parts");
+const {
+  vueLoader,
+  addKendoGlobal
+   } = require("@anakeen/webpack-conf/parts");
 
 const BASE_DIR = path.resolve(__dirname, '../');
 const PUBLIC_PATH =  path.join(BASE_DIR, "src/public");
-const USER_INTERFACES = path.resolve(
-  BASE_DIR,
-  "..",
-  "node_modules",
-  "@anakeen",
-  "user-interfaces"
-);
 
 module.exports = () => {
   const conf = {
@@ -28,47 +23,11 @@ module.exports = () => {
       /node_modules\/vue/
     ],
     customParts :[
-      addDll({
-        context: BASE_DIR,
-        manifest: path.join(
-          USER_INTERFACES,
-          "src",
-          "public",
-          "Anakeen",
-          "assets",
-          "legacy",
-          "KendoUI-manifest.json"
-        )
-      }),
-      addDll({
-        context: BASE_DIR,
-        manifest: path.join(
-          USER_INTERFACES,
-          "src",
-          "public",
-          "Anakeen",
-          "ankDll",
-          "legacy",
-          "vueDll-manifest.json"
-        )
-      }),
-      addDll({
-        context: BASE_DIR,
-        manifest: path.join(
-          USER_INTERFACES,
-          "src",
-          "public",
-          "Anakeen",
-          "ankDll",
-          "legacy",
-          "ankKendoDll-manifest.json"
-        )
-      }),
       vueLoader(),
       addKendoGlobal([
         /kendo.pdf/,
         /kendo.excel/
-      ]),
+      ], true),
       {
         resolve: {
           alias: {

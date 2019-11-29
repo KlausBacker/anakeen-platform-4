@@ -1,4 +1,4 @@
-import Vue from "vue";
+import { Vue } from "vue-property-decorator";
 import Axios from "axios";
 
 import WorkflowRights from "devComponents/WorkflowRights/WorkflowRights.vue";

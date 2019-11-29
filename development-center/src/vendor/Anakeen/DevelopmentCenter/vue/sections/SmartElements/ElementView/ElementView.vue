@@ -26,9 +26,7 @@
   import AnkSmartElement from "@anakeen/user-interfaces/components/lib/AnkSmartElement.esm";
   export default {
     name: "ElementView",
-    components: {
-      AnkSmartElement
-    },
+    components: {"ank-smart-element" : () => AnkSmartElement},
     props: ["initid", "viewId"],
     watch: {
       initid(newValue) {

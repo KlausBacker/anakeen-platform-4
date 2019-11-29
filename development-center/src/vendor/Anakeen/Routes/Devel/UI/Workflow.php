@@ -45,14 +45,6 @@ class Workflow
                 [
                     "key" =>"kendo",
                     "path" => UIGetAssetPath::getJSKendoPath()
-                ],
-                [
-                    "key" => "kendoDLL",
-                    "path" => UIGetAssetPath::getJSKendoComponentPath()
-                ],
-                [
-                    "key" => "vueDll",
-                    "path" => UIGetAssetPath::getJSVueComponentPath()
                 ]
             ],
             "JS" => [
