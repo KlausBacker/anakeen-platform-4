@@ -35,9 +35,12 @@ const generateLibWebpackConf = ({
   excludeBabel = false,
   customParts = []
 }) => {
+  if (!libName) {
+    throw new Error("You need to provide a property libname");
+  }
   const outputConfig = {
     output: {
-      library: libName ? libName : "[name]",
+      library: libName,
       libraryTarget: "umd",
       libraryExport: "default"
     }
