@@ -171,7 +171,7 @@
         <hge_component_tag>ank-admin-enum-manager</hge_component_tag>
         <hub_execution_roles name="AC_FUNCADMIN,AC_ENUMMANAGER">document multiple</hub_execution_roles>
     </hubconfigurationgeneric>
-    <hubconfigurationgeneric name="HGEA_STRUCTURE">
+    <!-- <hubconfigurationgeneric name="HGEA_STRUCTURE">
         <hub_station_id name="ADMINCENTER">Admin Center</hub_station_id>
         <hub_title>ADMINSTRUCTURE</hub_title>
         <hub_order>12</hub_order>
@@ -188,7 +188,7 @@
         </hge_jsassets>
         <hge_component_tag>ank-admin-structure</hge_component_tag>
         <hub_execution_roles name="AC_FUNCADMIN,AC_STRUCTUREMANAGER">document multiple</hub_execution_roles>
-    </hubconfigurationgeneric>
+    </hubconfigurationgeneric> -->
     <hubconfigurationgeneric name="HGEA_TRASH">
         <hub_station_id name="ADMINCENTER">Admin Center</hub_station_id>
         <hub_title>ADMINTRASH</hub_title>

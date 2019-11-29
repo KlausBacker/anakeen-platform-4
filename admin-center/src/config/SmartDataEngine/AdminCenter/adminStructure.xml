@@ -41,5 +41,25 @@
                 <sde:access ns="AdminCenter">AdminStructure</sde:access>
             </sde:requiredAccess>
         </sde:route>
+        <sde:route name="getSmartStructuresParameters">
+            <sde:callable>Anakeen\Routes\Admin\Structure\StructureParameters</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/admin/smart-structures/{structure}/parameters/</sde:pattern>
+            <sde:description>Get Smart Structure parameters</sde:description>
+            <sde:requiredAccess operator="or">
+                <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminStructure</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="updateSmartStructuresDefaultValue">
+            <sde:callable>Anakeen\Routes\Admin\Structure\StructureUpdateDefaultValue</sde:callable>
+            <sde:method>PUT</sde:method>
+            <sde:pattern>/api/v2/admin/smart-structures/{structure}/update/</sde:pattern>
+            <sde:description>Update Smart Structure default value</sde:description>
+            <sde:requiredAccess operator="or">
+                <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminStructure</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
     </sde:routes>
 </sde:config>
