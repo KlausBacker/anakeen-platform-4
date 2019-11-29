@@ -243,15 +243,7 @@ create unique index idx_idfam on docfam(id);";
      */
     final public function getParameterRawValue($idp, $def = "")
     {
-        $pValue = $this->getXValue("param", $idp);
-        if ($pValue === '') {
-            $defsys = $this->getDefValue($idp);
-            if ($defsys !== '') {
-                return $defsys;
-            }
-            return $def;
-        }
-        return $pValue;
+        return $this->getXValue("param", $idp, $def);
     }
 
     /**
@@ -554,11 +546,11 @@ create unique index idx_idfam on docfam(id);";
         }
 
         $tval2 = $this->$tval;
-        $v = isset($tval2[strtolower($idp)]) ? $tval2[strtolower($idp)] : '';
+        $v =  $tval2[strtolower($idp)]?? null;
         if ($v === "-") {
             return $def;
         }
-        if ($v !== "") {
+        if ($v !== null) {
             return $v;
         }
         return $def;
