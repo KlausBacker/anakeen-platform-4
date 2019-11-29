@@ -406,7 +406,7 @@ export default Backbone.View.extend({
     if (buttonConfig.createLabel) {
       var documentModel = this.model.getDocumentModel();
 
-      import("../../widgets/attributes/docid/wCreateDocument").then(() => {
+      import("../../widgets/attributes/docid/wCreateDocument" /* webpackChunkName: "createDocument" */).then(() => {
         var $bdw = $('<div class="dcpDocid-create-window"/>');
         var $dcp = $bdw
           .dcpCreateDocument(

@@ -6,7 +6,9 @@ import $ from "jquery";
 import globalController from "./widgets/globalController/index";
 
 globalController.then(() => {
-  return import("@anakeen/user-interfaces/components/lib/AnkController.esm").then(AnakeenController => {
+  return import(
+    "@anakeen/user-interfaces/components/lib/AnkController.esm" /* webpackChunkName: "mainController" */
+  ).then(AnakeenController => {
     AnakeenController.default.on("controllerReady", controller => {
       //Trigger an event when translation loaded
 

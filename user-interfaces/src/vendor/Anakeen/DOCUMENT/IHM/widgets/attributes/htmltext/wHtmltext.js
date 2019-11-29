@@ -28,7 +28,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
       this.popupWindows = {};
 
       if (this.getMode() === "write") {
-        import("../../../../../../../../webpackConfig/ckeditor/ckeditor")
+        import("../../../../../../../../webpackConfig/ckeditor/ckeditor" /* webpackChunkName: "ckeditor" */)
           .then(ckeditorPromise => {
             return ckeditorPromise.default.then(() => {
               if (!window.dcp || !window.dcp.ckEditorCustoCSS) {

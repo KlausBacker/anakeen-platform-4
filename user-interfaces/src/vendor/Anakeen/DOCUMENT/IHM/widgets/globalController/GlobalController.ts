@@ -103,7 +103,7 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
 
   public init() {
     if (!this._isReady) {
-      return import("./ControllerDispatcher")
+      return import("./ControllerDispatcher"  /* webpackChunkName: "ControllerDispatcher" */ )
         .then(controllerDispatcher => {
           this._dispatcher = new controllerDispatcher.default();
           this._domObserver = new MutationObserver(mutations => this._onRemoveDOMController(mutations));
