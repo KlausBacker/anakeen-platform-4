@@ -60,7 +60,9 @@ exports.scssLoader = ({ filename, minify = false, removeJS = false, includePaths
             {
               loader: "sass-loader",
               options: {
-                includePaths
+                sassOptions: {
+                  includePaths
+                }
               }
             }
           ]

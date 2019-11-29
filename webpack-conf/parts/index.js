@@ -1,4 +1,4 @@
-const kendo = require("./kendo");
+const global = require("./global");
 const loaders = require("./loaders");
 const outputs = require("./outputs");
 
@@ -17,7 +17,8 @@ exports.extractAssets = outputs.extractAssets;
 exports.generateNamedChunk = outputs.generateNamedChunk;
 exports.generateHashModuleName = outputs.generateHashModuleName;
 exports.progressPlugin = outputs.progressPlugin;
-exports.addKendoGlobal = kendo.addKendoGlobal;
-exports.addJqueryGlobal = kendo.addJqueryGlobal;
+exports.addKendoGlobal = global.addKendoGlobal;
+exports.addJqueryGlobal = global.addJqueryGlobal;
+exports.addVueGlobal = global.addVueGlobal;
 exports.dllPlugin = outputs.dllPlugin;
 exports.addDll = outputs.addDll;
