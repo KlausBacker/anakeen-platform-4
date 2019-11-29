@@ -22,7 +22,7 @@
   "devDependencies": {
     "@anakeen/user-interfaces": "3.0.0",
     "@anakeen/webpack-conf": "1.2.1",
-    "@progress/kendo-ui": "^2019.2.710",
+    "@progress/kendo-ui": "^2019.3.1113",
     "jquery": "^3.3.1",
     "rollup": "^1.27.5",
     "rollup-plugin-cleaner": "^1.0.0",
@@ -34,19 +34,19 @@
     "rollup-plugin-string": "^3.0.0",
     "rollup-plugin-typescript2": "^0.25.2",
     "rollup-plugin-vue": "^5.1.4",
-    "ts-loader": "^6.0.4",
-    "typescript": "^3.5.3",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.2",
     "vue": "2.6.10",
     "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "2.6.10",
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
-    "@progress/kendo-layout-vue-wrapper": "^2019.2.621",
+    "@progress/kendo-layout-vue-wrapper": "^2019.3.1023",
     "axios": "^0.19.0",
-    "core-js": "3.1.4",
-    "splitpanes": "^1.14.2",
+    "core-js": "3.4.5",
+    "splitpanes": "^1.14.5",
     "vue-class-component": "^7.0.2",
-    "vue-property-decorator": "^8.2.1"
+    "vue-property-decorator": "^8.3.0"
   }
 }

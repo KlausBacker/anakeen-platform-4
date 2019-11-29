@@ -14,22 +14,22 @@
     "@anakeen/anakeen-cli": "1.2.0",
     "@anakeen/internal-components": "1.0.2",
     "@anakeen/user-interfaces": "3.0.0",
-    "@progress/kendo-buttons-vue-wrapper": "^2019.2.621",
-    "@progress/kendo-charts-vue-wrapper": "^2019.2.621",
-    "@progress/kendo-dropdowns-vue-wrapper": "^2019.2.621",
-    "@progress/kendo-inputs-vue-wrapper": "^2019.2.621",
-    "@progress/kendo-layout-vue-wrapper": "^2019.2.621",
-    "@progress/kendo-ui": "2019.3.917",
+    "@progress/kendo-buttons-vue-wrapper": "^2019.3.1023",
+    "@progress/kendo-charts-vue-wrapper": "^2019.3.1023",
+    "@progress/kendo-dropdowns-vue-wrapper": "^2019.3.1023",
+    "@progress/kendo-inputs-vue-wrapper": "^2019.3.1023",
+    "@progress/kendo-layout-vue-wrapper": "^2019.3.1023",
+    "@progress/kendo-ui": "2019.3.1113",
     "@types/jquery": "^3.3.30",
     "jquery": "^3.3.1",
-    "ts-loader": "^6.0.4",
-    "typescript": "^3.5.3",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.2",
     "vue": "2.6.10"
   },
   "dependencies": {
     "@anakeen/hub-components": "1.0.2",
     "@anakeen/webpack-conf": "1.2.1",
-    "core-js": "3.1.4",
+    "core-js": "3.4.5",
     "vue-template-compiler": "2.6.10"
   }
 }
