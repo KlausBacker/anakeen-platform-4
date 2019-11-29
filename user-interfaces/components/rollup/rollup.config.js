@@ -18,7 +18,7 @@ const OUTPUT_DIR = path.resolve(BASE_PATH, "lib");
 const MONOREPO_PATH = path.resolve(BASE_PATH, "../..");
 
 // rollup.config.js
-export default {
+const conf = {
   input: {
     AnkAuthent: path.resolve(BASE_PATH, "src/AnkAuthent/index.ts"),
     AnkController: path.resolve(BASE_PATH, "src/AnkController/index.ts"),
@@ -51,9 +51,6 @@ export default {
     modulesDir: path.resolve(MONOREPO_PATH, "node_modules")
   }),
   plugins: [
-    cleaner({
-      targets: [OUTPUT_DIR]
-    }),
     progress(),
     json(),
     Scss(),
@@ -80,3 +77,13 @@ export default {
     })
   ]
 };
+
+if (process.env.CLEAN) {
+  conf.plugins.push(
+    cleaner({
+      targets: [OUTPUT_DIR]
+    })
+  );
+}
+
+export default conf;
