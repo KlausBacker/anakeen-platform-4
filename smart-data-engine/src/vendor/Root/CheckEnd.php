@@ -229,7 +229,7 @@ class CheckEnd extends CheckData
             if (!$oa) {
                 $this->addError(ErrorCode::getError('DFLT0005', $attrid, $this->doc->name));
             } else {
-                if ($oa->usefor === "Q") {
+                if ($oa->usefor === "Q" && !$oa->inArray()) {
                     $this->addError(ErrorCode::getError('DFLT0010', $attrid, $this->doc->name));
                 } elseif (is_string($def)) {
                     $oParse = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
