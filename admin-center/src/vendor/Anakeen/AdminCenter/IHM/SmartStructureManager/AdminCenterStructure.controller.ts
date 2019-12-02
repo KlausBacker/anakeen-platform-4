@@ -5,6 +5,7 @@ import { Component, Watch } from "vue-property-decorator";
 import DefaultValues from "./SmartStructureDefaultValues/SmartStructureManagerDefaultValues.vue";
 import Info from "./SmartStructureInformations/SmartStructureManagerInformations.vue";
 import SSList from "./SmartStructureList/SSList.vue";
+import Parameters from "./SmartStructureParameters/SmartStructureManagerParameters.vue";
 
 @Component({
   components: {
@@ -12,7 +13,8 @@ import SSList from "./SmartStructureList/SSList.vue";
     "ank-tabs": AnkTabs,
     "ss-list": SSList,
     "ssm-default-values": DefaultValues,
-    "ssm-info": Info
+    "ssm-info": Info,
+    "ssm-parameters": Parameters
   }
 })
 export default class AdminCenterStructureController extends Vue {
@@ -39,6 +41,9 @@ export default class AdminCenterStructureController extends Vue {
     switch (this.selectedTab) {
       case "defaultValues":
         this.$refs.defaultComp.$refs.defaultGridContent.kendoWidget().dataSource.read();
+        break;
+      case "parameters":
+        this.$refs.paramsComp.$refs.parametersGridContent.kendoWidget().dataSource.read();
         break;
     }
     // this.$refs.ssmTabs.selectSs(this.selectedTab);

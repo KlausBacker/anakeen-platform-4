@@ -54,8 +54,18 @@
         <sde:route name="updateSmartStructuresDefaultValue">
             <sde:callable>Anakeen\Routes\Admin\Structure\StructureUpdateDefaultValue</sde:callable>
             <sde:method>PUT</sde:method>
-            <sde:pattern>/api/v2/admin/smart-structures/{structure}/update/</sde:pattern>
+            <sde:pattern>/api/v2/admin/smart-structures/{structure}/update/default/</sde:pattern>
             <sde:description>Update Smart Structure default value</sde:description>
+            <sde:requiredAccess operator="or">
+                <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminStructure</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="updateSmartStructuresParameters">
+            <sde:callable>Anakeen\Routes\Admin\Structure\StructureUpdateParameter</sde:callable>
+            <sde:method>PUT</sde:method>
+            <sde:pattern>/api/v2/admin/smart-structures/{structure}/update/parameter/</sde:pattern>
+            <sde:description>Update Smart Structure parameter</sde:description>
             <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>
                 <sde:access ns="AdminCenter">AdminStructure</sde:access>

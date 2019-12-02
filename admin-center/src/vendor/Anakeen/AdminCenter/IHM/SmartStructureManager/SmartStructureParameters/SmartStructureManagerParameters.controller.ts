@@ -16,7 +16,7 @@ Vue.use(DataSourceInstaller);
     "smart-form": AnkSmartForm
   }
 })
-export default class SmartStructureManagerDefaultValuesController extends Vue {
+export default class SmartStructureManagerParametersController extends Vue {
   public smartForm: object = {};
   public unsupportedType = ["frame", "tab", "array"];
   public $refs!: {
@@ -29,7 +29,7 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
   })
   public ssName;
   public finalData = {
-    fieldId: "",
+    parameterId: "",
     structureId: this.ssName,
     value: "",
     valueType: "value",
@@ -42,19 +42,17 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
   @Watch("ssName")
   public watchSsName(newValue) {
     if (newValue) {
-      this.$refs.defaultGridContent.kendoWidget().dataSource.read();
+      this.$refs.parametersGridContent.kendoWidget().dataSource.read();
       this.finalData.structureId = newValue;
     }
   }
 
   public onEditClick(e) {
     const row = $(e.target).closest("tr")[0];
-    // const sf = row.children[0].textContent;
     const rawValue = row.children[2].innerText;
     const parentValue = row.children[1].textContent;
-    // Object containing type & typeFormat 
-    const type = JSON.parse(row.children[4].textContent);
-    this.finalData.fieldId = row.children[5].innerText
+    const type = row.children[4].textContent;
+    this.finalData.parameterId = row.children[5].innerText
     // In case of enumerate, fetch his data
     const enumData = [];
     this.finalData.value = rawValue;
@@ -141,8 +139,7 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
                 enumItems: enumData,
                 label: "Value",
                 name: "ssm_value",
-                type: `${type.type}`,
-                typeFormat: `${type.typeFormat}`
+                type: `${type}`
               },
               {
                 label: "Advanced value",
@@ -255,31 +252,30 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
     }
     return `<ul>${str}</ul>`;
   }
-  protected parseDefaultValuesData(response) {
+  protected parseParametersData(response) {
     const result = [];
     if (response && response.data && response.data.data) {
-      const defaultValue = response.data.data.defaultValues;
-      const fields = response.data.data.fields;
-      Object.keys(defaultValue).map(item => {
-        const field = fields.find(element => element.id === item);
-        // ToDo : Manage multiple value
-        if (!this.unsupportedType.includes(field.simpletype)) {
-          const {type, typeFormat} = this.formatType(field.simpletype, field.type)
-          if (field) {
+      const paramsValues = response.data.data.paramsValues;
+      const params = response.data.data.params;
+      Object.keys(paramsValues).map(item => {
+        const param = params[item];
+        if (!this.unsupportedType.includes(param.type)) {
+          if (param) {
+            const type = param.type;
             // ToDo : Refactor as a function
             let rawValue: object = {};
             let displayValue: object = {};
-            if(Array.isArray(defaultValue[item].result)) {
-              for (let i = 0; i < defaultValue[item].result.length; i++) {
-                const element = defaultValue[item].result[i];
+            if(Array.isArray(paramsValues[item].result)) {
+              for (let i = 0; i < paramsValues[item].result.length; i++) {
+                const element = paramsValues[item].result[i];
                 rawValue[i] = element.value;
                 displayValue[i] = element.displayValue;
               }
-            } else if (defaultValue[item].result instanceof Object) {
-              if(defaultValue[item].result.value && defaultValue[item].result.displayValue)
+            } else if (paramsValues[item].result instanceof Object) {
+              if(paramsValues[item].result.value && paramsValues[item].result.displayValue)
               {
-                rawValue = defaultValue[item].result.value;
-                displayValue = defaultValue[item].result.displayValue;
+                rawValue = paramsValues[item].result.value;
+                displayValue = paramsValues[item].result.displayValue;
               }
               else {
                 rawValue = null;
@@ -288,40 +284,20 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
             }
             result.push({
               displayValue,
-              fieldId: item,
-              label: this.formatLabel(field, fields),
-              parentValue: defaultValue[item].parentConfigurationValue ? defaultValue[item].parentConfigurationValue : null,
+              label: param.labelText,
+              parameterId: item,
+              parentValue: paramsValues[item].parentConfigurationValue ? paramsValues[item].parentConfigurationValue : null,
               rawValue,
-              type: JSON.stringify({type, typeFormat})
+              type
             });
           }
+        } else {
+          // ToDo : Manage Error
         }
       });
       return result;
     }
     return [];
-  }
-  /**
-   * Create the 'label' parents architecture
-   * @param field 
-   * @param fieldsList 
-   */
-  protected formatLabel(field, fieldsList) {
-    // TODO : Revoir avec la nouvelle structure de données
-    
-    // Construct label /w parent architecture
-    let constructingLabel = [field.labeltext]
-    if (field.parentId) {
-      const parentField = fieldsList.find(element => element.id === field.parentId)
-      constructingLabel.push(parentField.labeltext)
-      this.formatLabel(parentField, fieldsList)
-    }
-    constructingLabel = constructingLabel.reverse();
-    if(constructingLabel[constructingLabel.length -1] !== null)
-    {
-      return constructingLabel.join(" / ");
-    }
-    return constructingLabel[0];
   }
   protected formatType(simpleType, longType) {
     const type = simpleType;
@@ -334,9 +310,9 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
   // protected formatValuesLabels() {
     
   // }
-  protected getDefaultValues(options) {
+  protected getParameters(options) {
     this.$http
-      .get(`/api/v2/admin/smart-structures/${this.ssName}/defaults/`, {
+      .get(`/api/v2/admin/smart-structures/${this.ssName}/parameters/`, {
         params: options.data,
         paramsSerializer: kendo.jQuery.param
       })
@@ -352,11 +328,11 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
     e.element.addClass("k-textbox filter-input");
   }
   private updateData(data){
-    const url = `/api/v2/admin/smart-structures/${data.structureId}/update/default/`;
+    const url = `/api/v2/admin/smart-structures/${data.structureId}/update/parameter/`;
     this.$http
       .put(url, {params: JSON.stringify(data)})
       .then(response => {
-        this.$refs.defaultGridData.kendoDataSource.read();
+        this.$refs.parametersGridData.kendoDataSource.read();
         this.$modal.hide("ssm-modal");
       })
       .catch(response => {

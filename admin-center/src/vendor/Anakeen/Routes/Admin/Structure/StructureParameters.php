@@ -28,52 +28,40 @@ class StructureParameters extends StructureFields
         $dataFields = parent::doRequest();
         $data["properties"] = $dataFields["properties"];
         $data["uri"] = URLUtils::generateURL(Settings::ApiV2 . sprintf("admin/smart-structures/%s/parameters/", $this->structureName));
-        $data["defaultValues"] = $this->getConfigParameterValues($this->structure);
+        $data["paramsValues"] = $this->getConfigParameters($this->structure);
 
-        $data["fields"] = $dataFields["fields"];
-
+        $data["params"] = $this->structure->getParamAttributes();
         return $data;
     }
 
-    protected static function getConfigParameterValues(SmartStructure $structure)
+    protected static function getConfigParameters(SmartStructure $structure)
     {
         $configParams = $structure->getOwnParams();
         if ($structure->fromid) {
             $parentStruct=SEManager::getFamily($structure->fromid);
-            $configParentValues = $parentStruct->getParams();
+            $configParentParameters = $parentStruct->getParams();
         } else {
-            $configParentValues=[];
+            $configParentParameters=[];
         }
         $data = [];
         $element = SEManager::createTemporaryDocument($structure->name, true);
 
         $formater=new FormatCollection($element);
 
-
-        $fields = $structure->getNormalAttributes();
-        foreach ($fields as $oa) {
+        $paramAttributes = $structure->getParamAttributes();
+        foreach ($paramAttributes as $oa) {
             if ($oa->id === SmartStructure\Attributes::HIDDENFIELD) {
                 continue;
             }
-            $isMultiple = $oa->isMultiple();
 
-
-            $data[$oa->id]["configurationValue"]=$configParams[$oa->id]??null;
+            $data[$oa->id]["configurationParameter"]=$configParams[$oa->id]??null;
             if ($structure->fromid) {
-                $data[$oa->id]["parentConfigurationValue"] = $configParentValues[$oa->id] ?? null;
+                $data[$oa->id]["parentConfigurationParameters"] = $configParentParameters[$oa->id] ?? null;
             }
-
-
-            $data[$oa->id]["result"]= json_decode(json_encode($formater->getInfo($oa, $element->getRawValue($oa->id), $element)), true);
-
-            $data[$oa->id]["configurationValue"]=$configParams[$oa->id]??null;
-            /*
-                "configurationValue" => ,
-                "type" => $oa->type,
-                "value" => $isMultiple ? $element->getMultipleRawValues($field) : $element->getRawValue($field),
-                "displayValue" => $formater->getInfo($oa, $element->getRawValue($field), $element)
-            ];*/
+            $data[$oa->id]["result"]= json_decode(json_encode($formater->getInfo($oa, $element->getParamValue($oa->id), $element)), true);
+            $data[$oa->id]["configurationParameter"]=$configParams[$oa->id]??null;
         }
+        
         return $data;
     }
 }

@@ -20,12 +20,12 @@
             </template>
             <ssm-default-values :ssName="selectedSS" class="ssm-default-values" ref="defaultComp"></ssm-default-values>
           </ank-tab>
-          <!--        <ank-tab :closable="false" name="parameters">-->
-          <!--          <template slot="label">-->
-          <!--            <span class="ssm-parameters-title">Parameters</span>-->
-          <!--          </template>-->
-          <!--          <ssm-parameters class="ssm-parameters"></ssm-parameters>-->
-          <!--        </ank-tab>-->
+          <ank-tab :closable="false" name="parameters">
+            <template slot="label">
+              <span class="ssm-parameters-title">Parameters</span>
+            </template>
+            <ssm-parameters :ssName="selectedSS" class="ssm-parameters" ref="paramsComp"></ssm-parameters>
+          </ank-tab>
         </ank-tabs>
       </div>
     </div>

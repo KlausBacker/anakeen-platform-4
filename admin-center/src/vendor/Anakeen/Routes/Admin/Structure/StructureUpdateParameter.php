@@ -6,11 +6,11 @@ use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure;
 
 /**
- * Update Structure Default Value
+ * Update Structure Parameters
  *
- * @note Used by route : PUT /api/v2/admin/smart-structures/{structure}/update/default/
+ * @note Used by route : PUT /api/v2/admin/smart-structures/{structure}/update/parameter/
  */
-class StructureUpdateDefaultValue extends StructureFields
+class StructureUpdateParameter extends StructureFields
 {
     /**
      * @var SmartStructure $structure
@@ -19,7 +19,7 @@ class StructureUpdateDefaultValue extends StructureFields
 
     private $data = [
         "structureId" => "",
-        "fieldId" => "",
+        "parameterId" => "",
         "value" => "",
         "valueType" => "",
     ];
@@ -27,7 +27,7 @@ class StructureUpdateDefaultValue extends StructureFields
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $this->initData($request->getParsedBody()["params"], $args);
-        $err = $this->manageNewDefValue();
+        $err = $this->manageNewParameter();
         if ($err !== "") {
             return $response->withStatus(500, $err)->write($err);
         }
@@ -42,15 +42,15 @@ class StructureUpdateDefaultValue extends StructureFields
         $this->data["structure"] = SEManager::getFamily($this->data["structureId"]);
     }
 
-    private function manageNewDefValue()
+    private function manageNewParameter()
     {
         $err = "";
         if ($this->data["valueType"] === "no_value") {
-            $err = $this->data["structure"]->setDefValue($this->data["fieldId"], null);
+            $err = $this->data["structure"]->setParam($this->data["parameterId"], null);
         } elseif ($this->data["valueType"] === "value" && $this->data["value"] === "") {
-            $err = $this->data["structure"]->setDefValue($this->data["fieldId"], "");
+            $err = $this->data["structure"]->setParam($this->data["parameterId"], "");
         } else {
-            $err = $this->data["structure"]->setDefValue($this->data["fieldId"], $this->data["value"]);
+            $err = $this->data["structure"]->setParam($this->data["parameterId"], $this->data["value"]);
         }
 
         if ($err !== "") {
