@@ -2,7 +2,7 @@ const path = require("path");
 const { useCache } = require("./common");
 
 const { prod, dev, legacy } = require("@anakeen/webpack-conf");
-const { vueLoader, addKendoGlobal } = require("@anakeen/webpack-conf/parts");
+const { vueLoader, addKendoGlobal, addJqueryGlobal } = require("@anakeen/webpack-conf/parts");
 
 const BASE_DIR = path.resolve(__dirname, "../");
 const PUBLIC_PATH = path.join(BASE_DIR, "/src/public");
@@ -49,6 +49,7 @@ module.exports = () => {
     customParts: [
       useCache,
       addKendoGlobal([/kendo.pdf/, /kendo.excel/], true),
+      addJqueryGlobal(),
       {
         resolve: {
           extensions: [".js"],

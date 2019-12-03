@@ -38,15 +38,6 @@ class IuserChangeGroup extends DefaultConfigEditRender
         return $js;
     }
 
-    public function getJsDeps($legacy = false)
-    {
-        $js =  parent::getJsDeps($legacy);
-        $kendoDll = UIGetAssetPath::getJSKendoComponentPath();
-        $js["kendoDll"] = $kendoDll;
-        return $js;
-    }
-
-
     protected function getAllMyGroups(\Anakeen\Core\Internal\SmartElement $smartElement)
     {
         /* @var Iuser $smartElement */

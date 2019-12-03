@@ -4,7 +4,7 @@ import ConditionTableFields from "./Table Components/ConditionTableFields";
 import ConditionTableFunctions from "./Table Components/ConditionTableFunctions";
 import ConditionTableKeywords from "./Table Components/ConditionTableKeywords";
 import ConditionTableRightP from "./Table Components/ConditionTableRightP";
-import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin";
+import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
 
 export default {
   name: "search-conditions",

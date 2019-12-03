@@ -28,7 +28,6 @@ class SearchViewRender extends DefaultView
     {
         $js = parent::getJsReferences($document);
 
-        $js["kendoDLL"] = UIGetAssetPath::getJSKendoComponentPath();
         $js["dSearch"] = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev": "legacy")["Dsearch"]["js"];
 
         return $js;

@@ -18,7 +18,8 @@
   </ank-se-grid>
 </template>
 <script>
-import AnkSEGrid, { AnkSEGridExportButton } from "../../../../../../components/lib/AnkSmartElementGrid.esm";
+import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementGrid.esm";
+import AnkSEGridExportButton from "@anakeen/user-interfaces/components/lib/AnkSmartElementGridExportButton.esm"
 export default {
   name: "search-ui-view",
   components: {
