@@ -78,6 +78,7 @@ const conf = {
   ]
 };
 
+// eslint-disable-next-line no-undef
 if (process.env.CLEAN) {
   conf.plugins.push(
     cleaner({

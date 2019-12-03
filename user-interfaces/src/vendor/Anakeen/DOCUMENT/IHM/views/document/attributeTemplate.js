@@ -103,7 +103,7 @@ export default {
     var currentTemplate = this;
     if (attributeModel.get("isValueAttribute")) {
       var attrValue = attributeModel.get("attributeValue");
-      return _.isEmpty(attrValue) || (attrValue.value === "" || attrValue.value === null);
+      return _.isEmpty(attrValue) || attrValue.value === "" || attrValue.value === null;
     }
     if (!attributeModel.get("content") || attributeModel.get("content").length === 0) {
       return true;
