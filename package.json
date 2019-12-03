@@ -25,24 +25,19 @@
     "dependencies": {
         "@commitlint/config-conventional": "^8.0.0",
         "commitlint": "^8.0.0",
-        "eslint": "^6.4.0",
+        "eslint": "^6.7.2",
         "eslint-plugin-prettier": "^3.1.0",
-        "husky": "^3.0.0",
-        "jquery": "3.4.1",
-        "prettier": "^1.18.2",
-        "tslint": "^5.18.0",
-        "tslint-config-prettier": "^1.18.0",
-        "typescript": "^3.6.3",
-        "yarn-version-bump": "^0.0.3"
+        "husky": "^3.1.0",
+        "prettier": "^1.19.1"
     },
     "husky": {
         "hooks": {
-            "pre-push": "make lint-JS && make lint",
+            "pre-push": "pwd && make lint-JS && make lint",
             "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
         }
     },
     "devDependencies": {
-        "@typescript-eslint/eslint-plugin": "^2.3.0",
-        "@typescript-eslint/parser": "^2.3.0"
+        "@typescript-eslint/eslint-plugin": "^2.10.0",
+        "@typescript-eslint/parser": "^2.10.0"
     }
 }

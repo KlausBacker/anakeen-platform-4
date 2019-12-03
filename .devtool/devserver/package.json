@@ -10,7 +10,7 @@
     "express": "^4.16.4",
     "express-http-proxy": "^1.6.0",
     "graceful-fs": "^4.2.3",
-    "rollup": "^1.27.5",
+    "rollup": "^1.27.8",
     "ts-loader": "^6.2.1",
     "webpack-dev-middleware": "^3.7.2",
     "webpack-merge": "^4.2.1"

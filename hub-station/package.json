@@ -57,7 +57,7 @@
     "@progress/kendo-ui": "2019.3.1113",
     "@types/node": "^12.12.14",
     "axios": "^0.19.0",
-    "core-js": "3.4.5",
+    "core-js": "3.4.7",
     "hard-source-webpack-plugin": "^0.13.1",
     "ts-loader": "^6.2.1",
     "typescript": "^3.7.2",

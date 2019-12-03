@@ -22,14 +22,12 @@
     "@progress/kendo-ui": "2019.3.1113",
     "@types/jquery": "^3.3.30",
     "jquery": "^3.3.1",
-    "ts-loader": "^6.2.1",
-    "typescript": "^3.7.2",
     "vue": "2.6.10"
   },
   "dependencies": {
     "@anakeen/hub-components": "1.0.2",
     "@anakeen/webpack-conf": "1.2.1",
-    "core-js": "3.4.5",
+    "core-js": "3.4.7",
     "vue-template-compiler": "2.6.10"
   }
 }
