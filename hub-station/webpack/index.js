@@ -5,7 +5,8 @@ const {
   vueLoader,
   typeScriptLoader,
   addKendoGlobal,
-  addJqueryGlobal
+  addJqueryGlobal,
+  addVueGlobal
 } = require("@anakeen/webpack-conf/parts");
 
 const BASE_DIR = path.resolve(__dirname, "../");
@@ -15,16 +16,7 @@ module.exports = () => {
   const conf = {
     moduleName: "hub",
     entry: {
-      hub: [path.resolve(BASE_DIR, "src/vendor/Anakeen/Hub/IHM/JS/hub.js")],
-      /*hubAdmin: [
-        path.resolve(BASE_DIR, "src/vendor/Anakeen/Hub/IHM/JS/hubAdmin.js")
-      ],
-      hubInstanciation: [
-        path.resolve(
-          BASE_DIR,
-          "src/vendor/Anakeen/Hub/IHM/JS/hubInstanciation.js"
-        )
-      ]*/
+      hub: [path.resolve(BASE_DIR, "src/vendor/Anakeen/Hub/IHM/JS/hub.js")]
     },
     excludeBabel: [
       /node_modules\/axios/,
@@ -36,7 +28,7 @@ module.exports = () => {
     customParts: [
       useCache,
       addJqueryGlobal(),
-      addKendoGlobal([/kendo.pdf/, /kendo.excel/]),
+      addKendoGlobal([/kendo.pdf/, /kendo.excel/], true),
       vueLoader(),
       typeScriptLoader(),
       {
