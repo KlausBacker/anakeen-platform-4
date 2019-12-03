@@ -24,11 +24,9 @@ export default class TeTaskInfo extends Vue {
 
   public deleteTask() {
     this.deleting = true;
-    this.$http
-      .delete("/api/admin/transformationengine/tasks/" + this.taskData.tid)
-      .then(() => {
-        this.$emit("task-deleted", this.taskData.tid);
-      });
+    this.$http.delete("/api/admin/transformationengine/tasks/" + this.taskData.tid).then(() => {
+      this.$emit("task-deleted", this.taskData.tid);
+    });
   }
 
   public mounted() {
@@ -37,11 +35,9 @@ export default class TeTaskInfo extends Vue {
 
   protected updateTaskInfo() {
     this.deleting = false;
-    this.$http
-      .get("/api/admin/transformationengine/tasks/" + this.taskData.tid)
-      .then(response => {
-        this.data = response.data.data;
-        this.data.info.cdate = this.taskData.cdate;
-      });
+    this.$http.get("/api/admin/transformationengine/tasks/" + this.taskData.tid).then(response => {
+      this.data = response.data.data;
+      this.data.info.cdate = this.taskData.cdate;
+    });
   }
 }

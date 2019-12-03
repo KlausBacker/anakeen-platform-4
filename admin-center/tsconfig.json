@@ -16,5 +16,6 @@
     "./src/**/*.vue",
     "./src/**/*.ts"
   ],
+  "exclude": ["node_modules"],
   "files": ["./vue-shims.d.ts", "./vue-type-shims.d.ts", "./kendo-shims.d.ts"]
 }

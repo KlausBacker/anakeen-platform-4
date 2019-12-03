@@ -14,6 +14,7 @@ const commonConfig = ({ mode, moduleName, manifestPath }) => {
     },
     parts.generateHashModuleName(),
     parts.checkDuplicatePackage(),
+    parts.sourceMapLoader(),
     parts.clean(),
     parts.extractAssets({
       filename: `${mode}.json`,
@@ -34,9 +35,12 @@ const generateLibWebpackConf = ({
   excludeBabel = false,
   customParts = []
 }) => {
+  if (!libName) {
+    throw new Error("You need to provide a property libname");
+  }
   const outputConfig = {
     output: {
-      library: libName ? libName : moduleName,
+      library: libName,
       libraryTarget: "umd",
       libraryExport: "default"
     }
@@ -67,8 +71,7 @@ const analyzeAndReturnWebpackConf = ({
   buildPath,
   excludeBabel = [],
   withoutBabel = false,
-  customParts = [],
-  deps = false
+  customParts = []
 }) => {
   if (!relativeOutputPath) {
     relativeOutputPath = path.join(vendorName, moduleName, mode, "/");
@@ -91,9 +94,6 @@ const analyzeAndReturnWebpackConf = ({
   if (mode === "dev") {
     conf.output.filename = "[name].js";
   }
-  if (deps) {
-    conf.output.library = `anakeen_${moduleName}_[name]`;
-  }
 
   const elements = [
     conf,
@@ -105,15 +105,6 @@ const analyzeAndReturnWebpackConf = ({
       manifestPath
     })
   ];
-
-  if (deps) {
-    elements.push(
-      parts.dllPlugin({
-        path: path.resolve(buildPath, relativeOutputPath, "[name]-manifest.json"),
-        name: conf.output.library
-      })
-    );
-  }
 
   if (!withoutBabel) {
     if (mode === "prod") {
@@ -183,32 +174,6 @@ module.exports = {
       entry,
       relativeOutputPath,
       buildPath,
-      customParts
-    });
-  },
-  deps: ({
-    vendorName,
-    mode = "legacy",
-    moduleName,
-    manifestPath,
-    entry,
-    relativeOutputPath,
-    buildPath,
-    excludeBabel = [],
-    withoutBabel = false,
-    customParts = []
-  }) => {
-    return analyzeAndReturnWebpackConf({
-      vendorName,
-      mode,
-      deps: true,
-      moduleName,
-      manifestPath,
-      entry,
-      relativeOutputPath,
-      buildPath,
-      excludeBabel,
-      withoutBabel,
       customParts
     });
   },

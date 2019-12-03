@@ -12,19 +12,13 @@
   </hub-element-layout>
 </template>
 <script>
-import Vue from "vue";
 import HubElement from "@anakeen/hub-components/components/lib/HubElement";
 
 export default {
   name: "ank-admin-mail-manager",
   extends: HubElement, // ou mixins: [ HubElementMixins ],
   components: {
-    "admin-center-mail": () =>
-      new Promise(resolve => {
-        import("../../Mail/AdminCenterMail.vue").then(Component => {
-          resolve(Component.default);
-        });
-      })
+    "admin-center-mail": () =>import("../../Mail/AdminCenterMail.vue")
   }
 };
 </script>

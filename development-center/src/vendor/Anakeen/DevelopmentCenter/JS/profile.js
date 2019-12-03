@@ -1,4 +1,4 @@
-import Vue from "vue";
+import { Vue } from "vue-property-decorator";
 import Axios from "axios";
 
 import Profil from "../vue/components/profile/profile";

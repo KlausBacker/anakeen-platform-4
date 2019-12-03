@@ -1,9 +1,7 @@
-import Vue from "vue";
 import Component from "vue-class-component";
-import { Prop } from "vue-property-decorator";
+import { Prop, Vue } from "vue-property-decorator";
 
 declare var $;
-declare var kendo;
 
 @Component({
   name: "admin-center-parameter-editor"
@@ -12,11 +10,7 @@ export default class ParameterEditorController extends Vue {
   // Input type to use in template
   get parameterInputType() {
     const parameterType = this.editedItem.type.toLowerCase();
-    if (
-      parameterType === "number" ||
-      parameterType === "integer" ||
-      parameterType === "double"
-    ) {
+    if (parameterType === "number" || parameterType === "integer" || parameterType === "double") {
       return "number";
     } else if (parameterType.startsWith("enum")) {
       return "enum";
@@ -38,9 +32,7 @@ export default class ParameterEditorController extends Vue {
   // Value to display in the editor. If the parameter has no value, display initial system value (if possible)
   get inputSelectedValue() {
     if (this.editedItem.value) {
-      this.inputIsJson = ParameterEditorController.isJson(
-        this.editedItem.value
-      );
+      this.inputIsJson = ParameterEditorController.isJson(this.editedItem.value);
       return this.editedItem.value;
     } else if (this.editedItem.initialValue) {
       return this.editedItem.initialValue;
@@ -116,10 +108,7 @@ export default class ParameterEditorController extends Vue {
           },
           autoFocus: false,
           close: () => {
-            if (
-              this.parameterInputType === "json" &&
-              ParameterEditorController.isJson(this.editedItem.value)
-            ) {
+            if (this.parameterInputType === "json" && ParameterEditorController.isJson(this.editedItem.value)) {
               // this.jsonEditor.destroy();
             } else if (this.parameterInputType === "enum") {
               kendoDropdown.destroy();
@@ -150,10 +139,7 @@ export default class ParameterEditorController extends Vue {
   public modifyParameter() {
     // Get new value to save depending on the parameter type
     let newValue;
-    if (
-      this.parameterInputType === "json" &&
-      ParameterEditorController.isJson(this.editedItem.value)
-    ) {
+    if (this.parameterInputType === "json" && ParameterEditorController.isJson(this.editedItem.value)) {
       newValue = $(".parameter-new-value", this.$el).val();
     } else if (this.parameterInputType === "enum") {
       newValue = $("select.enum-drop-down", this.$el).val();
@@ -165,10 +151,7 @@ export default class ParameterEditorController extends Vue {
       newValue = " ";
     }
     if (newValue) {
-      if (
-        this.parameterInputType === "json" &&
-        !ParameterEditorController.isJson(newValue)
-      ) {
+      if (this.parameterInputType === "json" && !ParameterEditorController.isJson(newValue)) {
         $(".parameter-new-value", this.$el).css("border-color", "red");
         this.isNotJson = true;
         return false;

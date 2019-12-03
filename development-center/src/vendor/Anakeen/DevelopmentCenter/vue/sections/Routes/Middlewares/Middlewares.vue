@@ -12,7 +12,7 @@
   ></ss-treelist>
 </template>
 <script>
-import Vue from "vue";
+import { Vue } from "vue-property-decorator";
 import SsTreelist from "../../../components/SSTreeList/SSTreeList.vue";
 
 Vue.use(SsTreelist.name, SsTreelist);

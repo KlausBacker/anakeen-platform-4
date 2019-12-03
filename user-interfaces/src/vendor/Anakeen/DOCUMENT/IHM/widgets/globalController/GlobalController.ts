@@ -9,10 +9,10 @@ import EVENTS_LIST = AnakeenController.SmartElement.EVENTS_LIST;
 import ControllerOptions = AnakeenController.Types.IControllerOptions;
 import ControllerNotFoundError from "./ControllerNotFoundError";
 // @ts-ignore
-import moduleTemplate from "!!raw-loader!./utils/templates/module.js.mustache";
-import * as $ from "jquery";
-import * as Mustache from "mustache";
-import * as _ from "underscore";
+import moduleTemplate from "./utils/templates/module.mustache.js";
+import $ from "jquery";
+import Mustache from "mustache";
+import _ from "underscore";
 import ControllerDispatcher from "./ControllerDispatcher";
 import SmartElementController from "./SmartElementController";
 import load from "./utils/ScriptLoader.js";
@@ -90,10 +90,9 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
   /**
    * Constructor of the GlobalController. The GlobalController is a Singleton
    */
-  // @ts-ignore
   public constructor(autoInit = true) {
+    super(!GlobalController._selfController);
     if (!GlobalController._selfController) {
-      super();
       GlobalController._selfController = this;
       if (autoInit && !this._isReady) {
         this.init();
@@ -104,21 +103,27 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
 
   public init() {
     if (!this._isReady) {
-      const controllerDispatcher = require("./ControllerDispatcher").default;
-      this._dispatcher = new controllerDispatcher();
-      this._domObserver = new MutationObserver(mutations => this._onRemoveDOMController(mutations));
-      this._domObserver.observe(document, { subtree: true, childList: true });
-      this._isReady = true;
-      this._dispatcher.on("injectCurrentSmartElementJS", (controller, event, properties, jsEvent) => {
-        this._injectSmartElementJS(jsEvent);
-      });
-      this._dispatcher.on("renderCss", (controller, event, properties, css) => {
-        this._onRenderCss(css);
-      });
-      this.setVerbose(this._verbose);
-      this.emit("controllerReady", this);
-      this._logVerbose("Global Anakeen Controller ready", "Global");
+      return import("./ControllerDispatcher"  /* webpackChunkName: "ControllerDispatcher" */ )
+        .then(controllerDispatcher => {
+          this._dispatcher = new controllerDispatcher.default();
+          this._domObserver = new MutationObserver(mutations => this._onRemoveDOMController(mutations));
+          this._domObserver.observe(document, { subtree: true, childList: true });
+          this._isReady = true;
+          this._dispatcher.on("injectCurrentSmartElementJS", (controller, event, properties, jsEvent) => {
+            this._injectSmartElementJS(jsEvent);
+          });
+          this._dispatcher.on("renderCss", (controller, event, properties, css) => {
+            this._onRenderCss(css);
+          });
+          this.setVerbose(this._verbose);
+          this.emit("controllerReady", this);
+          this._logVerbose("Global Anakeen Controller ready", "Global");
+        })
+        .then(() => {
+          return this;
+        });
     }
+    return Promise.resolve(this);
   }
 
   public on(eventName: string, callback: AnakeenController.BusEvents.ListenableEventCallable) {

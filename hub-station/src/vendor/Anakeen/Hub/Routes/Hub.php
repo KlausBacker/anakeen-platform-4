@@ -52,28 +52,9 @@ class Hub
                 [
                     "key" => "kendo",
                     "path" => UIGetAssetPath::getJSKendoPath()
-                ],
-                [
-                    "key" => "kendoDLL",
-                    "path" => UIGetAssetPath::getJSKendoComponentPath()
-                ],
-                [
-                    "key" => "vueDll",
-                    "path" => UIGetAssetPath::getJSVueComponentPath()
-                ],
-                [
-                    "key" => "hub",
-                    "path" => UIGetAssetPath::getElementAssets(
-                        "hubVendor",
-                        UIGetAssetPath::isInDebug() ? "dev" : "legacy"
-                    )["hubVendor"]["js"]
                 ]
             ],
             "JS" => [
-                [
-                    "key" => "smartElementController",
-                    "path" => UIGetAssetPath::getJSSmartElementControllerPath()
-                ],
                 [
                     "key" => "hub",
                     "path" => UIGetAssetPath::getElementAssets(
@@ -83,10 +64,6 @@ class Hub
                 ]
             ],
             "JS_LEGACY" => [
-                [
-                    "key" => "smartElementController",
-                    "path" => UIGetAssetPath::getJSSmartElementControllerPath(true)
-                ],
                 [
                     "key" => "hub",
                     "path" => UIGetAssetPath::getElementAssets(
@@ -107,6 +84,10 @@ class Hub
                 [
                     "key" => "component",
                     "path" => UIGetAssetPath::getCssSmartWebComponents()
+                ],
+                [
+                    "key" => "smartElement",
+                    "path" => UIGetAssetPath::getCssSmartElement()
                 ]
             ]
         ];

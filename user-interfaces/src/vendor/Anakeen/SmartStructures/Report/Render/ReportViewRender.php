@@ -46,8 +46,6 @@ class ReportViewRender extends DefaultView
     public function getJsReferences(SmartElement $document = null)
     {
         $js = parent::getJsReferences($document);
-
-        $js["kendoDLL"] = UIGetAssetPath::getJSKendoComponentPath();
         $js["dSearch"] = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev": "legacy")["Dsearch"]["js"];
 
         return $js;

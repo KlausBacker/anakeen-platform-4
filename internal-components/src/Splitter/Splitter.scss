@@ -1,5 +1,5 @@
 .splitter-wrapper {
-  & /deep/ {
+  & .deep {
     .k-splitbar.k-splitbar-horizontal[role="separator"],
     .k-ghost-splitbar-horizontal {
       &:active,

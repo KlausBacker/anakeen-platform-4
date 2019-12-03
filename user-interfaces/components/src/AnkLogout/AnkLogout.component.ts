@@ -1,10 +1,9 @@
-import Vue from "vue";
+import "@progress/kendo-ui/js/kendo.progressbar";
 import { Component, Mixins, Prop } from "vue-property-decorator";
 import EventUtilsMixin from "../../mixins/AnkVueComponentMixin/EventUtilsMixin";
 import I18nMixin from "../../mixins/AnkVueComponentMixin/I18nMixin";
 import ReadyMixin from "../../mixins/AnkVueComponentMixin/ReadyMixin";
-import VueSetup from "../setup.js";
-Vue.use(VueSetup);
+
 @Component({
   name: "ank-logout"
 })

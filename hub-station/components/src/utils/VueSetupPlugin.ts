@@ -1,5 +1,5 @@
-import VueEventBus from "./VueEventBus";
 import HubElementLayout from "../HubElement/HubElementLayout/HubElementLayout.vue";
+import VueEventBus from "./VueEventBus";
 
 export default function install(Vue) {
   if (!Vue.prototype.$_hubEventBus) {

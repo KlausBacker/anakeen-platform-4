@@ -6,6 +6,7 @@
       <excludeFolder url="file://$MODULE_DIR$/.devtool/docker/Docker/Volumes/_private" />
       <excludeFolder url="file://$MODULE_DIR$/admin-center/lib" />
       <excludeFolder url="file://$MODULE_DIR$/admin-center/src/public/Anakeen/accountManager" />
+      <excludeFolder url="file://$MODULE_DIR$/admin-center/src/public/Anakeen/admin" />
       <excludeFolder url="file://$MODULE_DIR$/admin-center/src/public/Anakeen/i18nManager" />
       <excludeFolder url="file://$MODULE_DIR$/admin-center/src/public/Anakeen/manifest" />
       <excludeFolder url="file://$MODULE_DIR$/admin-center/src/public/Anakeen/parameterManager" />

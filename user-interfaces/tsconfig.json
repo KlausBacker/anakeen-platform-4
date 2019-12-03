@@ -1,9 +1,12 @@
 {
   "compilerOptions": {
+    "declaration": true,
+    "declarationDir": "./components/lib/types",
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "strict": true,
-    "target": "es5",
+    "target": "esnext",
+    "module": "esnext",
     "importHelpers": true,
     "noImplicitAny": false,
     "moduleResolution": "node",

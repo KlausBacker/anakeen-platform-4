@@ -1,17 +1,16 @@
 import AnkPaneSplitter from "@anakeen/internal-components/lib/PaneSplitter";
-import AnkSmartForm from "@anakeen/user-interfaces/components/lib/AnkSmartForm";
+import AnkSmartForm from "@anakeen/user-interfaces/components/lib/AnkSmartForm.esm";
 import "@progress/kendo-ui/js/kendo.grid";
 import "@progress/kendo-ui/js/kendo.switch";
 import * as _ from "underscore";
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
-import { exists } from 'fs';
-import { runInThisContext } from 'vm';
+import { Component, Vue } from "vue-property-decorator";
 
 @Component({
   components: {
-    "ank-smart-form": AnkSmartForm,
-    "ank-split-panes": AnkPaneSplitter,
+    "ank-smart-form": () => {
+      return AnkSmartForm;
+    },
+    "ank-split-panes": AnkPaneSplitter
   }
 })
 export default class AdminCenterEnumController extends Vue {
@@ -20,7 +19,7 @@ export default class AdminCenterEnumController extends Vue {
   public actualKey: string = "";
   public acualLabel: string = "";
   public language: string = "";
-  
+
   public kendoGrid: any = null;
   // Store data to send to the server
   public modifications: any = {};
@@ -55,7 +54,7 @@ export default class AdminCenterEnumController extends Vue {
           },
           enum_array_translation: {
             template: `<a data-role="adminRouterLink" class="translate-button" href="#">Translate</a>`
-          },
+          }
         }
       },
       structure: [
@@ -89,17 +88,17 @@ export default class AdminCenterEnumController extends Vue {
                   label: "Active",
                   name: "enum_array_active",
                   type: "enum",
-                  "enumItems": [
+                  enumItems: [
                     {
-                      "key": "disable",
-                      "label": "Disable"
+                      key: "disable",
+                      label: "Disable"
                     },
                     {
-                      "key": "enable",
-                      "label": "Enable"
+                      key: "enable",
+                      label: "Enable"
                     }
                   ]
-                },
+                }
               ]
             }
           ]
@@ -141,7 +140,7 @@ export default class AdminCenterEnumController extends Vue {
         case "addLine": {
           // If user's clicking on the "+" button
           if (this.smartFormDataCounter <= 0) {
-            //@ts-ignore
+            // @ts-ignore
             this.modifications[index] = { key: "", label: "", active: "enable", eorder: index + 1 };
           }
           // If lines are added by the SmartForm's initial build
@@ -156,8 +155,8 @@ export default class AdminCenterEnumController extends Vue {
         }
         case "moveLine": {
           // '+1' because array's index start at 0 but eorder column in db starts at 1
-          const fromLine = index["fromLine"] + 1;
-          const toLine = index["toLine"] + 1;
+          const fromLine = index.fromLine + 1;
+          const toLine = index.toLine + 1;
           this.changeEnumOrder(fromLine, toLine);
           break;
         }
@@ -170,21 +169,27 @@ export default class AdminCenterEnumController extends Vue {
       // Manage actions for already existing rows
       this.disableInitialDataRowAction();
       // Add event listeners on "Translate" buttons
-      let translateButtons = document.getElementsByClassName("translate-button");
+      const translateButtons = document.getElementsByClassName("translate-button");
       for (let i = 0; i < translateButtons.length; i++) {
-          const key = translateButtons[i].closest("[data-line]").querySelector("[name=enum_array_key]").getAttribute("value");
-          const selectedEnum = this.selectedEnum;
-          const language = this.language;
-        //@ts-ignore
-        translateButtons[i].setAttribute("href", `/admin/i18n/${language}?section=Enum&msgctxt=${selectedEnum}&msgid=${key}`)
+        const key = translateButtons[i]
+          .closest("[data-line]")
+          .querySelector("[name=enum_array_key]")
+          .getAttribute("value");
+        const selectedEnum = this.selectedEnum;
+        const language = this.language;
+        // @ts-ignore
+        translateButtons[i].setAttribute(
+          "href",
+          `/admin/i18n/${language}?section=Enum&msgctxt=${selectedEnum}&msgid=${key}`
+        );
       }
-    };
+    }
   }
 
   public updateModifications(event, smartElement, smartField, values, index) {
     if (values.current[index] !== undefined) {
       // @ts-ignore
-      let entryToUpdate = Object.values(this.modifications).find(entry => entry.eorder == index + 1);
+      const entryToUpdate = Object.values(this.modifications).find(entry => entry.eorder == index + 1);
       switch (smartField.id) {
         case "enum_array_key": {
           // @ts-ignore
@@ -216,8 +221,8 @@ export default class AdminCenterEnumController extends Vue {
             valid = false;
             return;
           }
-        })
-      })
+        });
+      });
       if (valid) {
         const data = {
           data: this.modifications,
@@ -232,24 +237,28 @@ export default class AdminCenterEnumController extends Vue {
           title: false,
           content: "<center><h4>Please fill all fields</h4></center>",
           size: "small",
-          actions: [{
-            text: "OK",
-          }],
+          actions: [
+            {
+              text: "OK"
+            }
+          ],
           closable: false,
           animation: {
             open: {
               effects: "fade:in",
               duration: 150
-            },
+            }
           },
-          visible: false,
-        })
-        $(this.$refs.smartFormAlert).data("kendoDialog").open();
+          visible: false
+        });
+        $(this.$refs.smartFormAlert)
+          .data("kendoDialog")
+          .open();
       }
     }
   }
   public mounted() {
-    let that = this;
+    const that = this;
 
     this.$http
       .get(`/api/v2/ui/users/current`)
@@ -260,15 +269,15 @@ export default class AdminCenterEnumController extends Vue {
         columns: [
           {
             field: "enumerate",
-            title: "Enumerate",
+            title: "Enumerate"
           },
           {
             field: "label",
-            title: "Label",
+            title: "Label"
           },
           {
             field: "structures",
-            title: "Structure",
+            title: "Structure"
           },
           {
             field: "fields",
@@ -322,20 +331,23 @@ export default class AdminCenterEnumController extends Vue {
             string: {
               contains: "Contains"
             }
-          },
+          }
         },
-        filterMenuInit: function (e) {
-          $(e.container).find('.k-primary').click(function (event) {
-            let val = $(e.container).find('[title="Value"]').val()
-            if (val == "") {
-              // @ts-ignore
-              that.kendoGrid.dataSource.filter({});
-            }
-          })
-        },
+        filterMenuInit(e) {
+          $(e.container)
+            .find(".k-primary")
+            .click(function(event) {
+              const val = $(e.container)
+                .find('[title="Value"]')
+                .val();
+              if (val == "") {
+                // @ts-ignore
+                that.kendoGrid.dataSource.filter({});
+              }
+            });
+        }
       })
       .data("kendoGrid");
-
   }
 
   private getRow(rowIndex) {
@@ -347,7 +359,7 @@ export default class AdminCenterEnumController extends Vue {
     for (let i = 0; i < this.smartFormModel.size; i++) {
       this.keysArray.push(this.smartFormModel[i].key);
       this.labelArray.push(this.smartFormModel[i].label);
-      this.activeArray.push(this.smartFormModel[i].active)
+      this.activeArray.push(this.smartFormModel[i].active);
     }
   }
 
@@ -365,36 +377,33 @@ export default class AdminCenterEnumController extends Vue {
     // Remove the "duplicate selected line" button
     document.querySelectorAll("[Title='Dupliquer la ligne sélectionnée']")[0].remove();
     // Remove the "delete line" button
-    delButtonsList.forEach((deleteButton) => {
+    delButtonsList.forEach(deleteButton => {
       deleteButton.remove();
-    })
+    });
     // Remove the "select line" button
-    selectButtonsList.forEach((selectButton) => {
+    selectButtonsList.forEach(selectButton => {
       selectButton.remove();
-    })
+    });
     // Make "keys" read-only for already existing enums and no deletables
-    enumArrayKeyInputs.forEach((enumArrayKeyInput) => {
+    enumArrayKeyInputs.forEach(enumArrayKeyInput => {
       enumArrayKeyInput.setAttribute("disabled", "");
       enumArrayKeyInput.nextElementSibling.remove();
-    })
+    });
   }
 
   private changeEnumOrder(fromLine, toLine) {
-    for (let i in this.modifications) {
+    for (const i in this.modifications) {
       if (this.modifications.hasOwnProperty(i)) {
         if (fromLine > toLine) {
           if (this.modifications[i].eorder < fromLine && this.modifications[i].eorder >= toLine) {
             Number(this.modifications[i].eorder++);
-          }
-          else if (this.modifications[i].eorder == fromLine) {
+          } else if (this.modifications[i].eorder == fromLine) {
             this.modifications[i].eorder = toLine;
           }
-        }
-        else if (fromLine < toLine) {
+        } else if (fromLine < toLine) {
           if (this.modifications[i].eorder > fromLine && this.modifications[i].eorder <= toLine) {
             Number(this.modifications[i].eorder--);
-          }
-          else if (this.modifications[i].eorder == fromLine) {
+          } else if (this.modifications[i].eorder == fromLine) {
             this.modifications[i].eorder = toLine;
           }
         }

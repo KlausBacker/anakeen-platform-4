@@ -30,11 +30,9 @@ export default class TeConfig extends Vue {
   private testStepNumber: number = 0;
 
   public recordConfig() {
-    this.$http
-      .put("/api/admin/transformationengine/config/", this.info)
-      .then(response => {
-        this.info = response.data.data;
-      });
+    this.$http.put("/api/admin/transformationengine/config/", this.info).then(response => {
+      this.info = response.data.data;
+    });
   }
 
   public checkConfig() {
@@ -69,9 +67,7 @@ export default class TeConfig extends Vue {
         this.testStepNumber = info.stepNumber;
         this.kProgress.element.find(".k-item").removeClass("k-state-failed");
         this.kProgress.element.find(".k-item").removeClass("k-state-running");
-        $(
-          this.kProgress.element.find(".k-item").get(info.stepNumber - 1)
-        ).addClass("k-state-running");
+        $(this.kProgress.element.find(".k-item").get(info.stepNumber - 1)).addClass("k-state-running");
 
         if (info.message) {
           this.progressMessages.push(info.message);
@@ -94,9 +90,7 @@ export default class TeConfig extends Vue {
         this.testRunning = false;
 
         this.kProgress.element.find(".k-item").removeClass("k-state-running");
-        $(
-          this.kProgress.element.find(".k-item").get(this.testStepNumber - 1)
-        ).addClass("k-state-failed");
+        $(this.kProgress.element.find(".k-item").get(this.testStepNumber - 1)).addClass("k-state-failed");
         this.progressMessages.push(info.message);
       });
   }

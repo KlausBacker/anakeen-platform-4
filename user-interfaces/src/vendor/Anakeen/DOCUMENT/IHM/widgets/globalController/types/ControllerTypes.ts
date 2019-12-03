@@ -78,8 +78,10 @@ export namespace AnakeenController {
       // tslint:disable-next-line:variable-name
       protected _events: IListenableEvents;
 
-      constructor() {
-        this._events = {};
+      constructor(initEvent: boolean = true) {
+        if (initEvent) {
+          this._events = {};
+        }
       }
 
       public getEventsList(): IListenableEvents {

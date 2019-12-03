@@ -3,13 +3,14 @@ import searchUISEGridProcess from "./searchUISEGrid";
 import reportViewGridProcess from "../../Report/Render/reportViewGrid";
 import searchUIEventEditProcess from "./searchUIEventEdit";
 import searchUIEventViewProcess from "./searchUIEventView";
-import ankController from "../../../../../../components/lib/AnkController";
 import SearchConditions from "./Refactor/SearchConditions.vue";
+import setup from "@anakeen/user-interfaces/components/lib/setup.esm";
 
 import Vue from "vue";
+Vue.use(setup);
 
-ankController.on("controllerReady", inner => {
-  inner.registerFunction("dSearch", controller => {
+window.ank.smartElement.globalController.registerFunction("dSearch", controller => {
+  Vue.$_globalI18n.recordCatalog().then(() => {
     searchUISEGridProcess(controller);
     reportViewGridProcess(controller);
     searchUIEventEditProcess(controller);

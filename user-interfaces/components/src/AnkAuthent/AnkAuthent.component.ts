@@ -1,16 +1,18 @@
 /* tslint:disable:object-literal-sort-keys */
+import "@progress/kendo-ui/js/kendo.button";
+import "@progress/kendo-ui/js/kendo.core";
+import "@progress/kendo-ui/js/kendo.dropdownlist";
+import "@progress/kendo-ui/js/kendo.window";
+
 import axios from "axios";
-import Vue from "vue";
 import { Component, Mixins, Prop } from "vue-property-decorator";
 const a4Password = () => import("./AnkAuthentPassword/AnkAuthentPassword.vue");
 import EventUtilsMixin from "../../mixins/AnkVueComponentMixin/EventUtilsMixin";
 import I18nMixin from "../../mixins/AnkVueComponentMixin/I18nMixin";
 import ReadyMixin from "../../mixins/AnkVueComponentMixin/ReadyMixin";
 
-import VueSetup from "../setup.js";
 // eslint-disable-next-line no-unused-vars
 import { IAuthent } from "./IAuthent";
-Vue.use(VueSetup);
 
 // noinspection JSUnusedGlobalSymbols
 @Component({
