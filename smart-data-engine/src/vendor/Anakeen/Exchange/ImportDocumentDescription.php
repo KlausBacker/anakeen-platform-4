@@ -514,7 +514,10 @@ class ImportDocumentDescription
         if ($value === "") {
             $value = true;
         }
-        $err = $this->doc->addATag($data[1], $value);
+        $err = "";
+        if (!$this->analyze) {
+            $err = $this->doc->addATag($data[1], $value);
+        }
         if (!$err) {
             $this->tcr[$this->nLine]["msg"] = sprintf("change application tag to '%s'", $this->doc->atags);
         } else {
@@ -877,12 +880,16 @@ class ImportDocumentDescription
 
                 case 'default':
                     $this->tcr[$this->nLine]["msg"] .= sprintf("Reset defaults values");
-                    $this->doc->defaultvalues = '{}';
+                    if ($this->doc) {
+                        $this->doc->defaultvalues = '{}';
+                    }
                     break;
 
                 case 'parameters':
                     $this->tcr[$this->nLine]["msg"] .= sprintf("Reset parameters values");
-                    $this->doc->param = '';
+                    if ($this->doc) {
+                        $this->doc->param = '';
+                    }
                     break;
 
                 case 'enums':
@@ -897,7 +904,9 @@ class ImportDocumentDescription
                     if ($this->analyze) {
                         return;
                     }
-                    $this->doc->resetPropertiesParameters();
+                    if ($this->doc) {
+                        $this->doc->resetPropertiesParameters();
+                    }
                     break;
 
                 case 'structure':
@@ -1165,7 +1174,6 @@ class ImportDocumentDescription
      */
     protected function doIcon(array $data)
     {
-
         if (empty($data[1])) {
             $this->tcr[$this->nLine]["msg"] = sprintf("No Icon specified");
         } elseif (($this->doc && $this->doc->icon == "") || (isset($data[2]) && $data[2] === "force=yes")) {
@@ -1555,7 +1563,7 @@ class ImportDocumentDescription
         if (!$this->doc) {
             return;
         }
-        $check = new \CheckInitial();
+        $check = new \CheckInitial($this);
         $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
         if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
             $this->tcr[$this->nLine]["msg"] = sprintf("Element can't be perfectly analyze, some error might occur or be corrected when importing");
@@ -1567,8 +1575,8 @@ class ImportDocumentDescription
             return;
         }
 
-        if (!isset($data[2])) {
-            $data[2] = '';
+        if (!array_key_exists(2, $data)) {
+            $data[2] = null;
         }
         $attrid = trim(strtolower($data[1]));
         $newValue = $data[2];
@@ -1586,7 +1594,8 @@ class ImportDocumentDescription
             );
         } else {
             if ($force || ($previousValue === null)) {
-                $this->doc->setParam($attrid, $newValue, false);
+                $err=$this->doc->setParam($attrid, $newValue, false);
+                $this->tcr[$this->nLine]["err"] = $err;
                 $this->tcr[$this->nLine]["msg"] = "reset default parameter";
             }
             $this->tcr[$this->nLine]["msg"] .= sprintf("add default value %s %s", $attrid, $data[2]);
@@ -1614,10 +1623,10 @@ class ImportDocumentDescription
             $this->tcr[$this->nLine]["action"] = "ignored";
             return;
         }
-
-        if (!isset($data[2])) {
+        if (!array_key_exists(2, $data)) {
             $data[2] = '';
         }
+
         $attrid = trim(strtolower($data[1]));
         $defv = $data[2];
         $opt = (isset($data[3])) ? trim(strtolower($data[3])) : null;
@@ -2194,10 +2203,10 @@ class ImportDocumentDescription
             if (!$this->tcr[$this->nLine]["err"]) {
                 if ($data[0] == "PARAM") {
                     $oattr->usefor = 'Q';
-                    // parameters
+                // parameters
                 } elseif ($data[0] == "OPTION") {
                     $oattr->usefor = 'O';
-                    // options
+                // options
                 } else {
                     $oattr->usefor = 'N';
                     // normal
@@ -2430,11 +2439,47 @@ class ImportDocumentDescription
      * @param $attrId
      * @return bool|DocAttr
      */
-    public function getImportedAttribute($famId, $attrId)
+    public function getImportedDocAttr($famId, $attrId)
     {
         if (isset($this->importedAttribute[$famId][$attrId])) {
             return $this->importedAttribute[$famId][$attrId];
         }
         return false;
+    }
+
+    /**
+     * @param $attrId
+     * @return \Anakeen\Core\SmartStructure\BasicAttribute|\Anakeen\Core\SmartStructure\NormalAttribute|false|null
+     */
+    public function getSmartField($attrId)
+    {
+        if ($this->doc) {
+            /** @var \Anakeen\Core\SmartStructure\DocAttr $dbattr */
+            $dbattr = $this->getImportedDocAttr($this->doc->id, $attrId);
+
+            if ($dbattr) {
+                $oa = new \Anakeen\Core\SmartStructure\NormalAttribute(
+                    $dbattr->id,
+                    $dbattr->docid,
+                    $dbattr->labeltext,
+                    $dbattr->type,
+                    "",
+                    false,
+                    0,
+                    "",
+                    \Anakeen\Core\SmartStructure\BasicAttribute::READWRITE_ACCESS
+                );
+                $oa->usefor = $dbattr->usefor;
+                $oa->options = $dbattr->options;
+                if ($dbattr->frameid) {
+                    $pField = $this->getImportedDocAttr($this->doc->id, $dbattr->frameid);
+                    $oa->fieldSet = $pField;
+                }
+                return $oa;
+            } else {
+                return $this->doc->getAttribute($attrId);
+            }
+        }
+        return null;
     }
 }

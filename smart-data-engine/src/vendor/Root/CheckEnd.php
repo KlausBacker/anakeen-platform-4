@@ -229,7 +229,9 @@ class CheckEnd extends CheckData
             if (!$oa) {
                 $this->addError(ErrorCode::getError('DFLT0005', $attrid, $this->doc->name));
             } else {
-                if (is_string($def)) {
+                if ($oa->usefor === "Q" && !$oa->inArray()) {
+                    $this->addError(ErrorCode::getError('DFLT0010', $attrid, $this->doc->name));
+                } elseif (is_string($def)) {
                     $oParse = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
                     $strucFunc = $oParse->parse($def);
                     $error = $oParse->getError();
@@ -265,21 +267,7 @@ class CheckEnd extends CheckData
              * it has been defined or updated in the current import session.
             */
             if (is_object($this->importer)) {
-                /** @var \Anakeen\Core\SmartStructure\DocAttr $dbattr */
-                $dbattr = $this->importer->getImportedAttribute($this->doc->id, $attrid);
-                if ($dbattr) {
-                    $oa = new \Anakeen\Core\SmartStructure\NormalAttribute(
-                        $dbattr->id,
-                        $dbattr->docid,
-                        $dbattr->labeltext,
-                        $dbattr->type,
-                        "",
-                        false,
-                        0,
-                        "",
-                        \Anakeen\Core\SmartStructure\BasicAttribute::READWRITE_ACCESS
-                    );
-                }
+                $oa = $this->importer->getSmartField($attrid);
             }
             /*
              * Otherwise, try to get the attribute from the family's class
@@ -290,17 +278,21 @@ class CheckEnd extends CheckData
             if (!$oa) {
                 $this->addError(ErrorCode::getError('INIT0005', $attrid, $this->doc->name));
             } else {
-                if ($oa->usefor != 'Q') {
+                if ($oa->usefor !== 'Q') {
                     // TODO : cannot test here because DEFAULT set parameters systematicaly
-                    // $this->addError(ErrorCode::getError('INIT0006', $attrid, $this->doc->name));
+                    $this->addError(ErrorCode::getError('INIT0006', $attrid, $this->doc->name));
                 } else {
-                    $oParse = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
-                    $strucFunc = $oParse->parse($def);
-                    $error = $oParse->getError();
-                    if (!$error) {
-                        $err = $this->verifyMethod($strucFunc, $oa, "Parameters");
-                        if ($err) {
-                            $this->addError(ErrorCode::getError('INIT0004', $attrid, $this->doc->name, $err));
+                    if (is_string($def)) {
+                        if ($this->doc->seemsMethod($def)) {
+                            $oParse = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
+                            $strucFunc = $oParse->parse($def);
+                            $error = $oParse->getError();
+                            if (!$error) {
+                                $err = $this->verifyMethod($strucFunc, $oa, "Parameters");
+                                if ($err) {
+                                    $this->addError(ErrorCode::getError('INIT0004', $attrid, $this->doc->name, $err));
+                                }
+                            }
                         }
                     }
                 }

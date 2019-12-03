@@ -543,6 +543,10 @@ class ImportSmartConfiguration
         $data = [];
         $nodeAttributes = $this->getNode($config, "defaults");
         if ($nodeAttributes) {
+            $reset = $nodeAttributes->getAttribute("reset");
+            if ($reset === "true") {
+                $data[] = ["RESET", "default"];
+            }
             foreach ($nodeAttributes->childNodes as $attrNode) {
                 if (!is_a($attrNode, \DOMElement::class)) {
                     continue;
@@ -704,16 +708,21 @@ class ImportSmartConfiguration
         $data[1] = $attrNode->getAttribute("field");
         $callsNodes = $this->getNodes($attrNode, "field-callable");
 
-        if ($callsNodes->length === 0) {
-            $data[2] = $nodeValue;
+
+        $inherit = $attrNode->getAttribute("inherit");
+        if ($inherit === "true") {
+            $data[2] = null;
         } else {
-            $data[2] = $this->getCallableString($attrNode);
+            if ($callsNodes->length === 0) {
+                $data[2] = $nodeValue;
+            } else {
+                $data[2] = $this->getCallableString($attrNode);
+            }
         }
         $reset = $attrNode->getAttribute("reset");
         if ($reset === "true") {
             $data[3] = "force=yes";
         }
-
         return $data;
     }
 

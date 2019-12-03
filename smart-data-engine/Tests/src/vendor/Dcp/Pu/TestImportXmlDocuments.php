@@ -60,7 +60,7 @@ class TestImportXmlDocuments extends TestCaseDcpCommonFamily
         $doc = SEManager::getDocument($docName);
         $this->assertNotEmpty($doc, "Smart Element $docName not create");
         foreach ($expectedValues as $fielid => $expValue) {
-            $this->assertEquals($expValue,$doc->getRawValue($fielid), $fielid);
+            $this->assertEquals($expValue, $doc->getRawValue($fielid), $fielid);
         }
     }
 
@@ -120,8 +120,10 @@ class TestImportXmlDocuments extends TestCaseDcpCommonFamily
         $folders = $doc->getParentFolderIds();
         foreach ($folderNames as $folder) {
             $fid = \Anakeen\Core\SEManager::getIdFromName($folder);
-            $this->assertTrue(in_array($fid, $folders),
-                sprintf("folder %s not found in %s", $folder, print_r($folders, true)));
+            $this->assertTrue(
+                in_array($fid, $folders),
+                sprintf("folder %s not found in %s", $folder, print_r($folders, true))
+            );
         }
     }
 
