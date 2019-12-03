@@ -195,16 +195,17 @@ export default {
       var attrId = $(this).data("attrid"),
         displayLabel = $(this).data("displaylabel") === true,
         currentAttributeModel = documentModel.get("attributes").get(attrId),
-        attrContent = "NO VIEW FOR " + attrId,
+        attrContent = "",
         viewImport = null,
+        currentElement = $(this),
         // guess if the template is the true version (without template, only the widget)
-        originalView = $(this).data("originalview") === true;
+        originalView = currentElement.data("originalview") === true;
 
       if (currentAttributeModel) {
         try {
           if (_.isFunction(callBackView)) {
             // When called from vColumn to render widget in a cell
-            callBackView.apply($(this));
+            callBackView.apply(currentElement);
             attrContent = "";
           } else {
             switch (currentAttributeModel.get("type")) {
@@ -248,6 +249,7 @@ export default {
                 });
 
                 attrContent = view.$el;
+                currentElement.append(attrContent);
                 return view.render();
               })
             );
