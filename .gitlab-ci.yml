@@ -89,7 +89,7 @@ user-interfaces-buildJS:
   tags:
   - a4ppm
   script:
-    - make -C user-interfaces buildDLL
+    - make -C user-interfaces buildComponent
   artifacts:
     paths:
       - user-interfaces/src/public/Anakeen/ankDll/

@@ -113,6 +113,10 @@ buildJS: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build smart structures $@${RESET_COLOR}\n"
 	$(YARN_BIN) buildSmartStructures
 
+buildComponent: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}Build ank component $@${RESET_COLOR}\n"
+	$(YARN_BIN) lib:rollup
+
 buildJS-test: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
 	make -f pojs.make compile
