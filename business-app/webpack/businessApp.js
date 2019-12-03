@@ -38,6 +38,4 @@ const conf = {
   moduleName: "businessApp"
 };
 
-conf.customParts = [...conf.customParts, ...dllPart];
-
 module.exports = conf;

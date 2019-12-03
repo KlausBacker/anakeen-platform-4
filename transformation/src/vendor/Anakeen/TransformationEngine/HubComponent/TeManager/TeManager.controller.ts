@@ -1,6 +1,6 @@
 import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 import { LayoutInstaller } from "@progress/kendo-layout-vue-wrapper";
-import "@progress/kendo-ui/kendo.splitter";
+import "@progress/kendo-ui/js/kendo.splitter";
 
 import { Component, Vue } from "vue-property-decorator";
 
