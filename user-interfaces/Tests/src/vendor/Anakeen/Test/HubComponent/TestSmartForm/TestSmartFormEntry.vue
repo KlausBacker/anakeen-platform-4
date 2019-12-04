@@ -18,12 +18,7 @@ export default {
   name: "ank-test-smart-form",
   extends: HubElement, // ou mixins: [ HubElementMixins ],
   components: {
-    "test-smart-form": () =>
-      new Promise(resolve => {
-        import("../../TestSmartForm/TestSmartForm.vue").then(Component => {
-          resolve(Component.default);
-        });
-      })
+    "test-smart-form": () => import("../../TestSmartForm/TestSmartForm.vue")
   },
 
   created() {

@@ -17,7 +17,7 @@ import { Component, Vue, Watch } from "vue-property-decorator";
   components: {
     VJsoneditor,
     SmartFormExamples,
-    "ank-smart-form": AnkSmartForm,
+    "ank-smart-form": () => AnkSmartForm,
     "ank-split-panes": AnkPaneSplitter
   }
 })
@@ -95,12 +95,6 @@ export default class TestSmartFormController extends Vue {
     this.$refs.smartFormRef.$on("ready", (event, data) => {
       console.log("ready", event, data);
     });
-    /*
-    this.$refs.smartFormRef.$on("smartFieldChange", (event, data) => {
-      console.log("change", event, data);
-    });
-
-     */
 
     this.$refs.smartFormRef.$on("beforeSave", (event, data) => {
       console.log("beforeSave", event, data);
