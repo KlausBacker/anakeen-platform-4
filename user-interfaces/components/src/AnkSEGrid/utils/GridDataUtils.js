@@ -1,3 +1,4 @@
+import kendo from "@progress/kendo-ui/js/kendo.core";
 import GridEvent from "./GridEvent";
 import AbstractGridUtil from "./AbstractGridUtil";
 import ActionTemplate from "../templates/GridAction.template.kd";

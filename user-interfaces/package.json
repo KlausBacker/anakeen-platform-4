@@ -9,9 +9,6 @@
     "user interface",
     "component"
   ],
-  "main": "./components/lib/ankComponents.esm.js",
-  "module": "./components/lib/ankComponents.esm.js",
-  "types": "./components/lib/types/index.d.ts",
   "scripts": {
     "beautify": "npx eslint ./src --fix",
     "lib:rollup": "CLEAN=true npx rollup -c ./components/rollup/rollup.config.js",

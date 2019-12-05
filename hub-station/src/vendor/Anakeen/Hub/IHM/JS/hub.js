@@ -1,15 +1,18 @@
 import Vue from "vue";
 import $ from "jquery";
+import kendo from "@progress/kendo-ui/js/kendo.progressbar";
 
 import setup from "@anakeen/user-interfaces/components/lib/setup.esm";
 import HubMain from "../Components/Hub/Hub.vue";
 import HubLoading from "../Components/Hub/HubComponentStatus/HubComponentLoading.vue";
 import HubError from "../Components/Hub/HubComponentStatus/HubComponentError.vue";
-import Store from "../Components/HubStateManager";
+import store from "../Components/HubStateManager";
 import HubEntry from "@anakeen/hub-components/lib/HubEntriesUtil";
 
 //Share vue between all hub elements
 window.vue = Vue;
+window.hub = window.hub || {};
+window.hub.store = window.hub.store || store;
 
 Vue.use(setup);
 
@@ -25,36 +28,44 @@ Vue.$_globalI18n.recordCatalog().then(() => {
   hubConf
     .fetchConfiguration()
     .then(() => {
-      hubConf.loadAssets().then(() => {
-        Object.keys(window.ank.hub).map(currentKey => {
-          Vue.component(currentKey, () => {
-            const componentConfig = {
-              component: window.ank.hub[currentKey].promise,
-              loading: HubLoading,
-              error: HubError,
-              delay: 100
+      hubConf
+        .loadAssets()
+        .then(() => {
+          const components = Object.keys(window.ank.hub).reduce((acc, currentKey) => {
+            acc[currentKey] = () => {
+              const componentConfig = {
+                component: window.ank.hub[currentKey].promise,
+                loading: HubLoading,
+                error: HubError,
+                delay: 100
+              };
+              if (window.ank.hub[currentKey].timeout) {
+                componentConfig["timeout"] = parseInt(window.ank.hub[currentKey].timeout);
+              }
+              return componentConfig;
             };
-            if (window.ank.hub[currentKey].timeout) {
-              componentConfig["timeout"] = parseInt(window.ank.hub[currentKey].timeout);
+            return acc;
+          }, {});
+          window.hub.components = components;
+          return components;
+        })
+        .then(components => {
+          components["hub-main"] = HubMain;
+          new Vue({
+            el: "#ank-hub",
+            components: { "hub-main": HubMain },
+            template: "<hub-main :initialData='initialData'/>",
+            store: store,
+            data() {
+              return {
+                initialData: hubConf.data
+              };
+            },
+            mounted() {
+              enableLoader(false);
             }
-            return componentConfig;
           });
         });
-        new Vue({
-          el: "#ank-hub",
-          components: { "hub-main": HubMain },
-          template: "<hub-main :initialData='initialData'/>",
-          store: Store,
-          data() {
-            return {
-              initialData: hubConf.data
-            };
-          },
-          mounted() {
-            enableLoader(false);
-          }
-        });
-      });
     })
     .catch(error => {
       // Display an error message

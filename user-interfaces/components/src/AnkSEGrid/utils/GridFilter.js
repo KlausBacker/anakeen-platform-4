@@ -1,3 +1,5 @@
+import $ from "jquery";
+
 /**
  * Functions to display column filters by type
  */

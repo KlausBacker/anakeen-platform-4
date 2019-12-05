@@ -7,8 +7,8 @@
   "author": "Anakeen",
   "license": "SEE LICENSE IN LICENSE",
   "scripts": {
-    "lint:fix": "npx eslint ./ --fix && npx tslint ./src/**/*.ts --fix",
-    "lint": "npx eslint ./ && npx tslint ./src/**/*.ts",
+    "lint:fix": "npx eslint ./ --fix",
+    "lint": "npx eslint ./",
     "prettier": "prettier --check ./src/**/*.{js,ts}",
     "prettier:fix": "prettier --write ./src/**/*.{js,ts}",
     "build": "npx rollup -c ./rollup/rollup.config.js"

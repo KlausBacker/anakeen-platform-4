@@ -1,3 +1,4 @@
+import $ from "jquery";
 // JS asset for the edit render of hub configuration
 
 import "./HubConfiguration.css";

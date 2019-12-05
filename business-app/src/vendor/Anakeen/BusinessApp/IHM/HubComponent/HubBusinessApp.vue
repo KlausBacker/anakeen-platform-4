@@ -99,7 +99,8 @@ export default class HubBusinessApp extends Vue {
   }
   public created() {
     // @ts-ignore
-    this.getStore().registerModule(this.businessAppName, BusinessAppModule());
+    const store = this.getStore() || window.hub.store;
+    store.registerModule(this.businessAppName, BusinessAppModule());
     this.subRouting();
   }
 

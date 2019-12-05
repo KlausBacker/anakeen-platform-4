@@ -7,21 +7,24 @@ import HubDock from "../../HubDock/HubDock.vue";
 import HubDockEntry from "../../HubDock/HubDockEntry/HubDockEntry.vue";
 import { HubElementDisplayTypes } from "../../HubElement/HubElementTypes";
 import HubLabel from "../../HubLabel/HubLabel.vue";
-import {
-  DockPosition,
-  IHubStationPropConfig,
-  InnerDockPosition
-} from "../HubStationsTypes";
+import { DockPosition, IHubStationPropConfig, InnerDockPosition } from "../HubStationsTypes";
 
 const urlJoin = require("url-join");
 
+// @ts-ignore
+console.log(window.hub.components);
+
 @Component({
   components: {
-    "ank-identity": AnkIdentity,
-    "ank-logout": AnkLogout,
-    "hub-dock": HubDock,
-    "hub-dock-entry": HubDockEntry,
-    "hub-label": HubLabel
+    // @ts-ignore
+    ...window.hub.components,
+    ...{
+      "ank-identity": AnkIdentity,
+      "ank-logout": AnkLogout,
+      "hub-dock": HubDock,
+      "hub-dock-entry": HubDockEntry,
+      "hub-label": HubLabel
+    }
   },
   name: "hub-station-dock"
 })
@@ -87,9 +90,7 @@ export default class HubStationDock extends Vue {
         } else if (posa < posb) {
           return -1;
         } else if (posa === posb) {
-          const sortTitle = a.entryOptions.name.localeCompare(
-            b.entryOptions.name
-          );
+          const sortTitle = a.entryOptions.name.localeCompare(b.entryOptions.name);
           if (sortTitle > 0) {
             return 1;
           } else if (sortTitle < 0) {
@@ -123,11 +124,7 @@ export default class HubStationDock extends Vue {
   // noinspection JSMethodCanBeStatic
   protected isSelectedEntry(entry) {
     if (entry && entry.entryOptions && entry.entryOptions.route) {
-      return (
-        HubStationDock.normalizeUrl(this.activeRoute).indexOf(
-          this.getEntryRoute(entry)
-        ) > -1
-      );
+      return HubStationDock.normalizeUrl(this.activeRoute).indexOf(this.getEntryRoute(entry)) > -1;
     } else if (entry && entry.entryOptions) {
       return entry.entryOptions.activated;
     }
@@ -160,19 +157,13 @@ export default class HubStationDock extends Vue {
     };
     const currentComponent = this.$refs[ref][index];
     if (currentComponent) {
-      const layout = walk(
-        this.$refs[ref][index],
-        v => v.$options.name === "HubElementLayout"
-      );
+      const layout = walk(this.$refs[ref][index], v => v.$options.name === "HubElementLayout");
       if (layout && layout.$slots && layout.$slots.hubContent) {
         const data = Object.assign({}, entry, {
           hubContentLayout: layout
         });
         data.entryOptions = data.entryOptions || {};
-        data.entryOptions.completeRoute = urlJoin(
-          this.rootUrl,
-          entry.entryOptions.route
-        );
+        data.entryOptions.completeRoute = urlJoin(this.rootUrl, entry.entryOptions.route);
         // @ts-ignore
         this.rootHubStation.panes.push(data);
       }

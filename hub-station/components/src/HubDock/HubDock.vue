@@ -14,11 +14,14 @@
     :style="dockStyle"
   >
     <div
-      class="hub-dock-content-wrapper"
       ref="dockEl"
+      class="hub-dock-content-wrapper"
       :style="dockWrapperStyle"
     >
-      <div class="hub-dock-transition-wrapper" :style="dockWrapperStyle">
+      <div
+        class="hub-dock-transition-wrapper"
+        :style="dockWrapperStyle"
+      >
         <div
           ref="dockContent"
           class="hub-dock-content-outside"
@@ -27,13 +30,13 @@
         >
           <div class="hub-dock-content">
             <div class="hub-dock-section hub-dock-header">
-              <slot name="header"></slot>
+              <slot name="header" />
             </div>
             <div class="hub-dock-section hub-dock-center">
-              <slot></slot>
+              <slot />
             </div>
             <div class="hub-dock-section hub-dock-footer">
-              <slot name="footer"></slot>
+              <slot name="footer" />
             </div>
           </div>
         </div>
@@ -42,7 +45,7 @@
           class="hub-dock-collapse-button"
           @click="toggleDock"
         >
-          <i :class="`fa fa-${faCollapseIcon}`"></i>
+          <i :class="`fa fa-${faCollapseIcon}`" />
         </div>
       </div>
     </div>
@@ -56,5 +59,7 @@
 @import "./VueBar.scss";
 </style>
 <!-- Global CSS -->
-<style lang="scss"></style>
-<script lang="ts" src="./HubDock.component.ts"></script>
+<style lang="scss">
+</style>
+<script lang="ts" src="./HubDock.component.ts">
+</script>

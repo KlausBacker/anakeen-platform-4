@@ -1,3 +1,5 @@
+import $ from "jquery";
+
 /*
 Research result in consult mode
  */
