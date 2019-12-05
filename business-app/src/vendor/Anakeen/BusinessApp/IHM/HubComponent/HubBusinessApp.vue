@@ -28,7 +28,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import HubElement from "@anakeen/hub-components/components/lib/HubElement";
+import HubElement from "@anakeen/hub-components/components/lib/AnkHub.esm";
 import BusinessApp from "../BusinessApp/BusinessApp.vue";
 import BusinessAppModule from "./businessAppModule.js";
 

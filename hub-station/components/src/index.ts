@@ -7,3 +7,4 @@ import HubStation from "./HubStation/HubStation.vue";
 const HubElementMixin: VueClass<ElementMixin> = Mixins(ElementMixin);
 export { HubStation, HubElement, HubElementMixin };
 
+export default HubElement;

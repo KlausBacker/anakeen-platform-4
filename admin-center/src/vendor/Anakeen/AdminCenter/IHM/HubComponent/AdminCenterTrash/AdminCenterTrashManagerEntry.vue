@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import HubElement from "@anakeen/hub-components/components/lib/HubElement";
+import HubElement from "@anakeen/hub-components/components/lib/AnkHub.esm";
 
 export default {
   name: "ank-admin-trash-manager",

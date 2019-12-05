@@ -14,7 +14,7 @@
   </hub-element-layout>
 </template>
 <script>
-import HubElement from "@anakeen/hub-components/components/lib/HubElement";
+import HubElement from "@anakeen/hub-components/components/lib/AnkHub.esm";
 import { setupVue, syncRouter } from "../../setup.js";
 import routeStore from "./storeModule.js";
 export default {

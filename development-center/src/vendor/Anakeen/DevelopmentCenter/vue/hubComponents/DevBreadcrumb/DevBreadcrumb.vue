@@ -32,7 +32,7 @@
 }
 </style>
 <script>
-import HubElement from "@anakeen/hub-components/components/lib/HubElement";
+import HubElement from "@anakeen/hub-components/components/lib/AnkHub.esm";
 import { interceptDOMLinks } from "../../setup.js";
 export default {
   name: "ank-dev-breadcrumb",
