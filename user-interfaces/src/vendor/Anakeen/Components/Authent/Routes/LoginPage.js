@@ -1,3 +1,4 @@
+import kendo from "@progress/kendo-ui/js/kendo.core";
 import axios from "axios";
 import Vue from "vue";
 import Login from "./LoginPage.vue";

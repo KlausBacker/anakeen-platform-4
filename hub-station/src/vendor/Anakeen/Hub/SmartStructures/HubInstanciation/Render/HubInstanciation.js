@@ -1,3 +1,5 @@
+import $ from "jquery";
+
 window.ank.smartElement.globalController.registerFunction("hubInstanciationRender", controller => {
   controller.addEventListener(
     "smartFieldReady",

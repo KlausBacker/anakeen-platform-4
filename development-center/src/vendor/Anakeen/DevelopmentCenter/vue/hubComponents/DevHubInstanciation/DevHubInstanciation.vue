@@ -6,17 +6,17 @@
     <template v-slot:hubContent>
       <div class="dev-hub-instanciation">
         <dev-hub-instanciation
-          :hubInstanceSelected="hubInstanceSelected"
-          @hubInstanceSelected="onHubInstanceSelected"
-          :hubComponentSelected="hubComponentSelected"
-          @hubComponentSelected="onHubComponentSelected"
-        ></dev-hub-instanciation>
+                :hubInstanceSelected="hubInstanceSelected"
+                @hubInstanceSelected="onHubInstanceSelected"
+                :hubComponentSelected="hubComponentSelected"
+                @hubComponentSelected="onHubComponentSelected"
+        />
       </div>
     </template>
   </hub-element-layout>
 </template>
 <script>
-import HubElement from "@anakeen/hub-components/components/lib/HubElement";
+import HubElement from "@anakeen/hub-components/components/lib/AnkHubElement.esm";
 import { setupVue } from "../../setup.js";
 
 export default {

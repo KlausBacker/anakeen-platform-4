@@ -3,13 +3,20 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "strict": true,
-    "target": "es6",
+    "target": "esnext",
+    "module": "esnext",
     "importHelpers": true,
     "noUnusedLocals": true,
     "noImplicitAny": false,
     "sourceMap": true,
     "moduleResolution": "node",
-    "lib": ["dom", "es6"]
+    "lib": ["dom", "es6"],
+    "esModuleInterop": true
   },
-  "include": ["src/**/*.ts"]
+  "include": ["components/src/**/*.ts"],
+  "files": [
+    "./vue-shims.d.ts",
+    "./vue-type-shims.d.ts",
+    "./kendo-shims.d.ts"
+  ]
 }

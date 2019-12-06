@@ -21,7 +21,7 @@ class SEManager
      * @param bool       $latest
      * @param bool       $useCache
      *
-     * @return \Anakeen\Core\Internal\SmartElement
+     * @return \Anakeen\Core\Internal\SmartElement | null
      * @throws Exception
      * @api Get document object from identifier
      */

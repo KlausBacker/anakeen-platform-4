@@ -1,3 +1,4 @@
+import kendo from "@progress/kendo-ui/js/kendo.core";
 import AbstractGridUtil from "./AbstractGridUtil";
 import GridFilter from "./GridFilter";
 import GridEvent from "./GridEvent";

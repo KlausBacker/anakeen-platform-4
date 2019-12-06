@@ -15,7 +15,7 @@ interface IBusinessAppCollectionProp {
 @Component({
   components: {
     "ank-se-list": AnkSEList,
-    "ank-se-tab": AnkSETab,
+    "ank-se-tab": () => AnkSETab,
     "ank-tab": AnkTab,
     "ank-tabs": AnkTabs,
     "ank-welcome": Welcome

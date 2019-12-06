@@ -25,7 +25,7 @@
     "document-register-element": "^1.13.1",
     "hard-source-webpack-plugin": "^0.13.1",
     "ts-loader": "^6.2.1",
-    "typescript": "^3.7.2"
+    "typescript": "^3.7.3"
   },
   "dependencies": {
     "@anakeen/internal-components": "1.0.2",

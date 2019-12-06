@@ -9,9 +9,6 @@
     "user interface",
     "component"
   ],
-  "main": "./components/lib/ankComponents.esm.js",
-  "module": "./components/lib/ankComponents.esm.js",
-  "types": "./components/lib/types/index.d.ts",
   "scripts": {
     "beautify": "npx eslint ./src --fix",
     "lib:rollup": "CLEAN=true npx rollup -c ./components/rollup/rollup.config.js",
@@ -73,7 +70,7 @@
     "rollup-plugin-progress": "^1.1.1",
     "rollup-plugin-scss": "^1.0.2",
     "rollup-plugin-string": "^3.0.0",
-    "rollup-plugin-typescript2": "^0.25.2",
+    "rollup-plugin-typescript2": "^0.25.3",
     "rollup-plugin-vue": "^5.1.4",
     "v-jsoneditor": "^1.2.3",
     "vue-m-loader": "^1.0.1",
@@ -86,7 +83,7 @@
   },
   "dependencies": {
     "@anakeen/theme-variables": "1.0.0",
-    "@progress/kendo-theme-bootstrap": "^4.6.0",
+    "@progress/kendo-theme-bootstrap": "^4.7.0",
     "@progress/kendo-ui": "^2019.3.917",
     "axios": "^0.19.0",
     "backbone": "^1.4.0",

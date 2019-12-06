@@ -1,4 +1,4 @@
-import HubElement from "@anakeen/hub-components/components/lib/HubElement";
+import HubElement from "@anakeen/hub-components/components/lib/AnkHubElement.esm";
 import { setupVue } from "../../setup";
 export default {
   name: "ank-dev-search",

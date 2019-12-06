@@ -17,7 +17,7 @@
   </hub-element-layout>
 </template>
 <script>
-import HubElement from "@anakeen/hub-components/components/lib/HubElement";
+import HubElement from "@anakeen/hub-components/components/lib/AnkHubElement.esm";
 import { Watch } from "vue-property-decorator";
 
 export default {

@@ -14,9 +14,9 @@ development-center/src/public/
 development-center/webpack/
 hub-station/node_modules/
 hub-station/src/public/
-hub-station/webpack/
+hub-station/components/rollup/
 hub-station/components/lib
-hub-station/components/webpack/
+hub-station/webpack/
 internal-components/node_modules/
 internal-components/webpack/
 internal-components/lib/
@@ -37,10 +37,11 @@ user-interfaces/node_modules/
 user-interfaces/webpackConfig/
 user-interfaces/lib/
 user-interfaces/components/lib
-user-interfaces/components/webpack
+user-interfaces/components/rollup
 user-interfaces/components/public
 test-tools/node_modules/
 test-tools/src/public/
 test-tools/components/lib
 test-tools/components/webpack/
 workflow/node_modules
+webpack-conf/

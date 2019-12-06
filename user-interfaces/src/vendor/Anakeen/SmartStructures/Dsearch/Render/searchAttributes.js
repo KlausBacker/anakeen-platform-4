@@ -1,3 +1,5 @@
+import $ from "jquery";
+
 /*
 Return attributes list information from a family which can be used as criteria
  */
