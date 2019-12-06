@@ -160,23 +160,27 @@
 
 }
 
+//k-radio input need to have a fixed square size
+.dcpAttribute__content .dcpAttribute__value--edit.dcpAttribute__value.k-radio {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+//k-checkbox input need to have a fixed square size
+.dcpAttribute__content .dcpAttribute__value--edit.dcpAttribute__value.k-checkbox {
+  width: 1.2rem;
+  height: 1.2rem;
+}
 
 .dcpAttribute__value--enumbuttons.orientation-horizontal {
   width: 100%;
-  padding: 0 2rem 0  0;
   display: flex;
   flex-direction: row;
   flex-flow: row wrap;
   height: auto;
 }
 
-.dcpAttribute__value.dcpAttribute__value--edit.form-control.k-radio {
-  height: 1.33333rem;
-  margin-top: 0.5rem;
-  background-color: $ank-ui-radio-color-bg;
-  border-color: $ank-ui-radio-border-selected;
-}
-
+//horizontal checkbox are not aligned with label
 .dcpAttribute__value--enumbuttons.orientation-horizontal,
 .dcpAttribute__value--enumbuttons.orientation-bool {
   border-top-right-radius: $border-radius-base;
@@ -184,20 +188,10 @@
 
   border:none;
   .k-checkbox{
-    &:before {
-      top: 0.6rem;
-      width: 0.6rem;
-      height: 0.6rem;
-      color: $ank-ui-radio-color-checked;
-    }
+     margin-top: 0.6rem;
   }
   .k-radio {
-    &:before {
-      top: 0.6rem;
-      width: 0.6rem;
-      height: 0.6rem;
-      color: $ank-ui-radio-color-checked;
-    }
+     margin-top: 0.6rem;
   }
 }
 
