@@ -1,23 +1,34 @@
 // Vue class based component export
-
 import AnkIdentity from "@anakeen/user-interfaces/components/lib/AnkIdentity.esm";
 import AnkLogout from "@anakeen/user-interfaces/components/lib/AnkLogout.esm";
 import { Component, Inject, Prop, Vue } from "vue-property-decorator";
 import HubDock from "../../HubDock/HubDock.vue";
 import HubDockEntry from "../../HubDock/HubDockEntry/HubDockEntry.vue";
 import { HubElementDisplayTypes } from "../../HubElement/HubElementTypes";
-import HubLabel from "../../HubLabel/HubLabel.vue";
+// eslint-disable-next-line no-unused-vars
 import { DockPosition, IHubStationPropConfig, InnerDockPosition } from "../HubStationsTypes";
+import HubLabel from "../../HubLabel/HubLabel.vue";
 
 const urlJoin = require("url-join");
 
-// @ts-ignore
-console.log(window.hub.components);
+declare global {
+  interface Window {
+    ank: {
+      hub: [];
+    };
+  }
+}
+
+window.ank = window.ank || {};
+window.ank.hub = window.ank.hub || {};
+const customComponents = Object.keys(window.ank.hub).reduce((acc, currentComponent) => {
+  acc[currentComponent] = () => window.ank.hub[currentComponent].promise;
+  return acc;
+}, {});
 
 @Component({
   components: {
-    // @ts-ignore
-    ...window.hub.components,
+    ...(customComponents || {}),
     ...{
       "ank-identity": AnkIdentity,
       "ank-logout": AnkLogout,
@@ -66,8 +77,10 @@ export default class HubStationDock extends Vue {
   public dockContent!: IHubStationPropConfig[];
   @Prop({ default: DockPosition.LEFT, type: String })
   public position!: DockPosition;
-  @Prop({ default: "", type: String }) public rootUrl!: string;
-  @Prop({ default: "", type: String }) public activeRoute!: string;
+  @Prop({ default: "", type: String })
+  public rootUrl!: string;
+  @Prop({ default: "", type: String })
+  public activeRoute!: string;
   // endregion props
 
   public dockIsCollapsed: boolean = true;

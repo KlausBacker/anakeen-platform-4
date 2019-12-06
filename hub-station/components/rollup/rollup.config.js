@@ -20,7 +20,10 @@ const MONOREPO_PATH = path.resolve(BASE_PATH, "../..");
 // rollup.config.js
 const conf = {
   input: {
-    AnkHub: path.resolve(BASE_PATH, "src/index.ts")
+    AnkHubElement: path.resolve(BASE_PATH, "src/HubElement/index.ts"),
+    AnkHubElementMixin: path.resolve(BASE_PATH, "src/HubElement/Mixins/HubElementMixin.ts"),
+    AnkHubStation: path.resolve(BASE_PATH, "src/HubStation/index.ts"),
+    AnkHubUtil: path.resolve(BASE_PATH, "src/utils/HubEntriesUtil.ts")
   },
   output: {
     dir: OUTPUT_DIR,

@@ -8,6 +8,7 @@ use Anakeen\Core\SEManager;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Search\SearchElements;
 use Anakeen\SmartElementManager;
+use Anakeen\Ui\Exception;
 use SmartStructure\Fields\Hubconfiguration as Fields;
 use SmartStructure\Fields\Role as RoleFields;
 use SmartStructure\Fields\Hubinstanciation as InstanceFields;
@@ -34,7 +35,6 @@ class MainConfiguration extends \Anakeen\Components\Grid\Routes\GridContent
      * @return \Slim\Http\response
      * @throws \Anakeen\Core\DocManager\Exception
      * @throws \Anakeen\Search\Exception
-     * @throws \Dcp\SearchDoc\Exception
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
@@ -42,10 +42,11 @@ class MainConfiguration extends \Anakeen\Components\Grid\Routes\GridContent
 
         $this->hubInstance = SmartElementManager::getDocument($this->structureName);
 
+        if (!$this->hubInstance || !$this->hubInstance->isAlive()) {
+            throw new Exception("Unable to find ".$this->structureName);
+        }
 
         $search = new SearchElements("HUBCONFIGURATION");
-
-
         $search->overrideAccessControl();
         $search->addFilter("%s = '%s'", Fields::hub_station_id, $this->hubInstance->initid);
         $search->setOrder(Fields::hub_docker_position . ',' . Fields::hub_order);

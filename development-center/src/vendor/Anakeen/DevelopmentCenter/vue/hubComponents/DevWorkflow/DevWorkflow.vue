@@ -15,7 +15,7 @@
   </hub-element-layout>
 </template>
 <script>
-import HubElement from "@anakeen/hub-components/components/lib/AnkHub.esm";
+import HubElement from "@anakeen/hub-components/components/lib/AnkHubElement.esm";
 import { setupVue, syncRouter } from "../../setup.js";
 import workflowStore from "./storeModule.js";
 export default {

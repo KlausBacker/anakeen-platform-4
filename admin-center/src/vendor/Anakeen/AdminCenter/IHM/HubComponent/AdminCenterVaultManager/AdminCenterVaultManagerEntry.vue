@@ -12,7 +12,7 @@
   </hub-element-layout>
 </template>
 <script>
-import HubElement from "@anakeen/hub-components/components/lib/AnkHub.esm";
+import HubElement from "@anakeen/hub-components/components/lib/AnkHubElement.esm";
 
 export default {
   name: "ank-admin-vault-manager",

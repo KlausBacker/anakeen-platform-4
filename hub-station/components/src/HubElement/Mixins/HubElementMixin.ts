@@ -15,6 +15,9 @@ export default class HubElementMixin extends Vue {
   @Prop({ required: true, type: Boolean, default: true })
   public isDockCollapsed!: boolean;
   @Prop() public parentPath!: string;
+  $_hubEventBus: any;
+  $ankHubRouter: any;
+  $store: any;
 
   public resolveHubSubPath(subPath) {
     return urlJoin(this.parentPath, subPath);

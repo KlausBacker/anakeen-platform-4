@@ -4,12 +4,14 @@
     "experimentalDecorators": true,
     "strict": true,
     "target": "esnext",
+    "module": "esnext",
     "importHelpers": true,
     "noUnusedLocals": true,
     "noImplicitAny": false,
     "sourceMap": true,
     "moduleResolution": "node",
-    "lib": ["dom", "es6"]
+    "lib": ["dom", "es6"],
+    "esModuleInterop": true
   },
   "include": ["components/src/**/*.ts"],
   "files": [

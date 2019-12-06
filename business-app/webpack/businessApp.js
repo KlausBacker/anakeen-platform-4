@@ -4,7 +4,8 @@ const {
   vueLoader,
   typeScriptLoader,
   addKendoGlobal,
-  addJqueryGlobal
+  addJqueryGlobal,
+  addVueGlobal
 } = require("@anakeen/webpack-conf/parts");
 
 const BASE_DIR = path.resolve(__dirname, "../");
@@ -17,6 +18,7 @@ const conf = {
     typeScriptLoader(),
     addKendoGlobal([/kendo.pdf/, /kendo.excel/], true),
     addJqueryGlobal(),
+    addVueGlobal(),
     {
       resolve: {
         extensions: [".js", ".vue", ".json", ".ts", ".tsx"]

@@ -12,7 +12,7 @@
   </hub-element-layout>
 </template>
 <script>
-import HubElement from "@anakeen/hub-components/components/lib/AnkHub.esm";
+import HubElement from "@anakeen/hub-components/components/lib/AnkHubElement.esm";
 import AdminCenterEnum from "../../Enum/AdminCenterEnum";
 
 export default {

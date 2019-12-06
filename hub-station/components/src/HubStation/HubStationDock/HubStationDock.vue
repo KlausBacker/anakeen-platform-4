@@ -1,5 +1,10 @@
 <template>
-  <hub-dock :position="position" @dockResized="resizeWindow" ref="innerDock" :expandable="isExpandable">
+  <hub-dock
+    ref="innerDock"
+    :position="position"
+    :expandable="isExpandable"
+    @dockResized="resizeWindow"
+  >
     <template slot="header">
       <hub-dock-entry
         v-for="(entry, index) in getDock(InnerDockPosition.HEADER, dockContent)"
@@ -11,13 +16,13 @@
         @dockEntrySelected="onEntrySelected($event, entry)"
       >
         <component
-          ref="headerComponents"
-          @hook:mounted="onComponentMounted(entry, 'headerComponents', index)"
           :is="entry.component.name"
+          ref="headerComponents"
           v-bind="entry.component.props"
-          :entryOptions="entry.entryOptions"
-          :isDockCollapsed="dockIsCollapsed"
-        ></component>
+          :entry-options="entry.entryOptions"
+          :is-dock-collapsed="dockIsCollapsed"
+          @hook:mounted="onComponentMounted(entry, 'headerComponents', index)"
+        />
       </hub-dock-entry>
     </template>
     <hub-dock-entry
@@ -30,13 +35,13 @@
       @dockEntrySelected="onEntrySelected($event, entry)"
     >
       <component
-        ref="centerComponents"
-        @hook:mounted="onComponentMounted(entry, 'centerComponents', index)"
         :is="entry.component.name"
+        ref="centerComponents"
         v-bind="entry.component.props"
-        :entryOptions="entry.entryOptions"
-        :isDockCollapsed="dockIsCollapsed"
-      ></component>
+        :entry-options="entry.entryOptions"
+        :is-dock-collapsed="dockIsCollapsed"
+        @hook:mounted="onComponentMounted(entry, 'centerComponents', index)"
+      />
     </hub-dock-entry>
     <template slot="footer">
       <hub-dock-entry
@@ -49,19 +54,15 @@
         @dockEntrySelected="onEntrySelected($event, entry)"
       >
         <component
-          ref="footerComponents"
-          @hook:mounted="onComponentMounted(entry, 'footerComponents', index)"
           :is="entry.component.name"
+          ref="footerComponents"
           v-bind="entry.component.props"
-          :entryOptions="entry.entryOptions"
-          :isDockCollapsed="dockIsCollapsed"
-        ></component>
+          :entry-options="entry.entryOptions"
+          :is-dock-collapsed="dockIsCollapsed"
+          @hook:mounted="onComponentMounted(entry, 'footerComponents', index)"
+        />
       </hub-dock-entry>
     </template>
   </hub-dock>
 </template>
-<!-- CSS to this component only -->
-<style scoped lang="scss"></style>
-<!-- Global CSS -->
-<style lang="scss"></style>
 <script lang="ts" src="./HubStationDock.component.ts"></script>

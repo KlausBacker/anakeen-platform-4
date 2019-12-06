@@ -12,18 +12,13 @@
   </hub-element-layout>
 </template>
 <script>
-import HubElement from "@anakeen/hub-components/components/lib/AnkHub.esm";
+import HubElement from "@anakeen/hub-components/components/lib/AnkHubElement.esm";
 
 export default {
   name: "ank-admin-account",
   extends: HubElement, // ou mixins: [ HubElementMixins ],
   components: {
-    "admin-center-account": () =>
-      new Promise(resolve => {
-        import("../../Account/AdminCenterAccount.vue").then(Component => {
-          resolve(Component.default);
-        });
-      })
+    "admin-center-account": () => import("../../Account/AdminCenterAccount.vue")
   },
   data() {
     return {

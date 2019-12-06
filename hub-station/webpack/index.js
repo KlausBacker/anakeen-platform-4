@@ -34,13 +34,13 @@ module.exports = () => {
       {
         resolve: {
           alias: {
-            "@anakeen/hub-components/lib/HubStation": path.resolve(
+            "@anakeen/hub-components/lib/AnkHubStation.esm": path.resolve(
               BASE_DIR,
-              "components/src/HubStation/HubStation.vue"
+              "components/lib/AnkHubStation.esm.js"
             ),
-            "@anakeen/hub-components/lib/HubEntriesUtil": path.resolve(
+            "@anakeen/hub-components/lib/AnkHubUtil.esm": path.resolve(
               BASE_DIR,
-              "components/src/utils/HubEntriesUtil.js"
+              "components/lib/AnkHubUtil.esm.js"
             )
           }
         }
