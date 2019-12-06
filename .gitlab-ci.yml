@@ -138,7 +138,7 @@ hub-station-buildJS:
   tags:
   - a4ppm
   script:
-    - make -C hub-station buildDLL
+    - make -C hub-station lib
   artifacts:
     paths:
       - hub-station/components/lib/
