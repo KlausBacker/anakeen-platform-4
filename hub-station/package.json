@@ -24,10 +24,6 @@
     "/src/**/*",
     "yarn.lock"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git@gitlab.anakeen.com:Anakeen/Users/charles.bonnissent/anakeen-hub.git"
-  },
   "keywords": [
     "hub",
     "station"
@@ -36,6 +32,7 @@
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
     "@anakeen/internal-components": "1.0.2",
+    "@anakeen/user-interfaces": "3.0.0",
     "@progress/kendo-buttons-vue-wrapper": "^2019.3.1023",
     "@progress/kendo-datasource-vue-wrapper": "^2019.3.1023",
     "@progress/kendo-dropdowns-vue-wrapper": "^2019.3.1023",
@@ -43,17 +40,16 @@
     "@progress/kendo-ui": "2019.3.1113",
     "@types/navigo": "^7.0.1",
     "@types/url-join": "^4.0.0",
+    "axios": "^0.19.0",
     "fg-loadcss": "^2.1.0",
+    "jquery": "^3.3.1",
     "little-loader": "^0.2.0",
     "navigo": "^7.1.2",
     "url-join": "^4.0.1",
-    "vuebar": "^0.0.20",
-    "@anakeen/user-interfaces": "3.0.0",
-    "axios": "^0.19.0",
-    "jquery": "^3.3.1",
     "vue": "2.6.10",
     "vue-class-component": "^7.0.2",
     "vue-property-decorator": "^8.3.0",
+    "vuebar": "^0.0.20",
     "vuex": "^3.1.2"
   },
   "devDependencies": {
@@ -69,7 +65,7 @@
     "rollup-plugin-progress": "^1.1.1",
     "rollup-plugin-scss": "^1.0.2",
     "rollup-plugin-string": "^3.0.0",
-    "rollup-plugin-typescript2": "^0.25.2",
+    "rollup-plugin-typescript2": "^0.25.3",
     "rollup-plugin-vue": "^5.1.4"
   },
   "peerDependencies": {
