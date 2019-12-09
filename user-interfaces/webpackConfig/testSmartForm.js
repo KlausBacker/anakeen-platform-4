@@ -47,6 +47,4 @@ const conf = {
   ]
 };
 
-conf.customParts = [...conf.customParts];
-
 module.exports = conf;

@@ -11,8 +11,6 @@ const {
 } = require("@anakeen/webpack-conf/parts");
 const testSmartForm = require("./testSmartForm");
 
-// const EsmWebpackPlugin = require("@purtuga/esm-webpack-plugin");
-
 const BASE_DIR = path.resolve(__dirname, "../");
 const PUBLIC_PATH = path.join(BASE_DIR, "Tests/src/public");
 
