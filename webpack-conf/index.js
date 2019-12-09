@@ -16,6 +16,7 @@ const commonConfig = ({ mode, moduleName, manifestPath }) => {
     parts.checkDuplicatePackage(),
     parts.sourceMapLoader(),
     parts.clean(),
+    parts.excludeChunkFromMinification(),
     parts.extractAssets({
       filename: `${mode}.json`,
       path: path.resolve(manifestPath, moduleName)

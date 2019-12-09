@@ -155,22 +155,10 @@ export default class HubStationDock extends Vue {
     return "";
   }
 
-  protected onComponentMounted(entry, ref, index) {
-    const walk = (vueInstance, cbFilter) => {
-      if (cbFilter(vueInstance)) {
-        return vueInstance;
-      } else {
-        let i = 0;
-        let result = null;
-        while (!result && i < vueInstance.$children.length) {
-          result = walk(vueInstance.$children[i++], cbFilter);
-        }
-        return result;
-      }
-    };
-    const currentComponent = this.$refs[ref][index];
+  protected onComponentMounted(entry, ref) {
+    const currentComponent = this.$refs[ref][0];
     if (currentComponent) {
-      const layout = walk(this.$refs[ref][index], v => v.$options.name === "HubElementLayout");
+      const layout = currentComponent.$children[0];
       if (layout && layout.$slots && layout.$slots.hubContent) {
         const data = Object.assign({}, entry, {
           hubContentLayout: layout

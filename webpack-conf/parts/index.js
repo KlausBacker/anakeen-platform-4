@@ -10,6 +10,7 @@ exports.vueLoader = loaders.vueLoader;
 exports.jsModernLoader = loaders.jsModernLoader;
 exports.jsLegacyLoader = loaders.jsLegacyLoader;
 exports.sourceMapLoader = loaders.sourceMapLoader;
+exports.excludeChunkFromMinification = loaders.excludeChunkFromMinification;
 //Utilities part
 exports.checkDuplicatePackage = outputs.checkDuplicatePackage;
 exports.clean = outputs.clean;
