@@ -297,7 +297,6 @@ exports.excludeChunkFromMinification = () => {
           sourceMap: true, // Must be set to true if using source-maps in production
           chunkFilter: chunk => {
             // Exclude uglification for the `vendor` chunk
-            console.log(chunk.name);
             return chunk.name === "vendors~ckeditor4";
           }
         })

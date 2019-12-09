@@ -34,7 +34,7 @@
     },
     "husky": {
         "hooks": {
-            "pre-push": "pwd && make lint-JS && make lint",
+            "pre-push": "make lint-JS && make lint",
             "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
         }
     },

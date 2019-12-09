@@ -10,6 +10,7 @@ Vue.use(VueSetupPlugin);
 import { DockPosition, IHubStationConfig, IHubStationDockConfigs, IHubStationPropConfig } from "./HubStationsTypes";
 
 const urlJoin = require("url-join");
+const uuidv4 = require("uuid/v4");
 
 declare global {
   interface Window {
@@ -99,11 +100,17 @@ class HubStation extends Mixins(AnkI18NMixin) {
   }
 
   private static organizeData(config: IHubStationPropConfig[]): IHubStationDockConfigs {
+    // add a uuid at each dock element
+    const configUUID = config.map(currentConfigElement => {
+      currentConfigElement.uuid = uuidv4();
+      return currentConfigElement;
+    });
+
     return {
-      bottom: config.filter(c => c.position.dock === DockPosition.BOTTOM),
-      left: config.filter(c => c.position.dock === DockPosition.LEFT),
-      right: config.filter(c => c.position.dock === DockPosition.RIGHT),
-      top: config.filter(c => c.position.dock === DockPosition.TOP)
+      bottom: configUUID.filter(c => c.position.dock === DockPosition.BOTTOM),
+      left: configUUID.filter(c => c.position.dock === DockPosition.LEFT),
+      right: configUUID.filter(c => c.position.dock === DockPosition.RIGHT),
+      top: configUUID.filter(c => c.position.dock === DockPosition.TOP)
     };
   }
 

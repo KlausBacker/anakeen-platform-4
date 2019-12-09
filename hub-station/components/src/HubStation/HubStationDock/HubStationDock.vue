@@ -7,9 +7,9 @@
   >
     <template slot="header">
       <hub-dock-entry
-        v-for="(entry, index) in getDock(InnerDockPosition.HEADER, dockContent)"
-        :key="`${position.toLowerCase()}-header-${index}`"
-        :name="`${position.toLowerCase()}-header-${index}`"
+        v-for="(entry) in getDock(InnerDockPosition.HEADER, dockContent)"
+        :key="`${position.toLowerCase()}-header-${entry.uuid}`"
+        :name="`${position.toLowerCase()}-header-${entry.uuid}`"
         :selectable="isSelectableEntry(entry)"
         :selected="isSelectedEntry(entry)"
         :data-entry-route="getEntryRoute(entry)"
@@ -17,18 +17,18 @@
       >
         <component
           :is="entry.component.name"
-          ref="headerComponents"
+          :ref="`headerComponents-${entry.uuid}`"
           v-bind="entry.component.props"
           :entry-options="entry.entryOptions"
           :is-dock-collapsed="dockIsCollapsed"
-          @hook:mounted="onComponentMounted(entry, 'headerComponents', index)"
+          @hook:mounted="onComponentMounted(entry, `headerComponents-${entry.uuid}`)"
         />
       </hub-dock-entry>
     </template>
     <hub-dock-entry
-      v-for="(entry, index) in getDock(InnerDockPosition.CENTER, dockContent)"
-      :key="`${position.toLowerCase()}-center-${index}`"
-      :name="`${position.toLowerCase()}-center-${index}`"
+      v-for="(entry) in getDock(InnerDockPosition.CENTER, dockContent)"
+      :key="`${position.toLowerCase()}-center-${entry.uuid}`"
+      :name="`${position.toLowerCase()}-center-${entry.uuid}`"
       :selectable="isSelectableEntry(entry)"
       :selected="isSelectedEntry(entry)"
       :data-entry-route="getEntryRoute(entry)"
@@ -36,18 +36,18 @@
     >
       <component
         :is="entry.component.name"
-        ref="centerComponents"
+        :ref="`centerComponents-${entry.uuid}`"
         v-bind="entry.component.props"
         :entry-options="entry.entryOptions"
         :is-dock-collapsed="dockIsCollapsed"
-        @hook:mounted="onComponentMounted(entry, 'centerComponents', index)"
+        @hook:mounted="onComponentMounted(entry, `centerComponents-${entry.uuid}`)"
       />
     </hub-dock-entry>
     <template slot="footer">
       <hub-dock-entry
-        v-for="(entry, index) in getDock(InnerDockPosition.FOOTER, dockContent)"
-        :key="`${position.toLowerCase()}-footer-${index}`"
-        :name="`${position.toLowerCase()}-footer-${index}`"
+        v-for="(entry) in getDock(InnerDockPosition.FOOTER, dockContent)"
+        :key="`${position.toLowerCase()}-footer-${entry.uuid}`"
+        :name="`${position.toLowerCase()}-footer-${entry.uuid}`"
         :selectable="isSelectableEntry(entry)"
         :selected="isSelectedEntry(entry)"
         :data-entry-route="getEntryRoute(entry)"
@@ -55,11 +55,11 @@
       >
         <component
           :is="entry.component.name"
-          ref="footerComponents"
+          :ref="`footerComponents-${entry.uuid}`"
           v-bind="entry.component.props"
           :entry-options="entry.entryOptions"
           :is-dock-collapsed="dockIsCollapsed"
-          @hook:mounted="onComponentMounted(entry, 'footerComponents', index)"
+          @hook:mounted="onComponentMounted(entry, `footerComponents-${entry.uuid}`)"
         />
       </hub-dock-entry>
     </template>
