@@ -2,8 +2,7 @@ import AnkPaneSplitter from "@anakeen/internal-components/lib/PaneSplitter";
 import "@progress/kendo-ui/js/kendo.button";
 import "@progress/kendo-ui/js/kendo.filtercell";
 import "@progress/kendo-ui/js/kendo.grid.js";
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import WflData from "./WorkflowData/WorkflowData.vue";
 import WflList from "./WorkflowList/WorkflowList.vue";
 
@@ -29,6 +28,8 @@ export default class AdminCenterWorkflowController extends Vue {
   }
 
   public get getGraphUrl() {
-    return `/api/v2/admin/workflows/image/${this.selectedWfl}.svg?orientation=${this.wflOrient}&useLabel=${this.wflUseLabel}&forceUpdate=${this.force}`;
+    return `/api/v2/admin/workflows/image/${this.selectedWfl}.svg?orientation=${this.wflOrient}&useLabel=${
+      this.wflUseLabel
+    }&forceUpdate=${this.force}`;
   }
 }

@@ -22,7 +22,7 @@
     }
 </style>
 <script>
-  import HubElement from "@anakeen/hub-components/components/lib/HubElement";
+  import HubElement from "@anakeen/hub-components/components/lib/AnkHubElement.esm";
   export default {
     name: "ank-dev-breadcrumb",
     extends: HubElement,

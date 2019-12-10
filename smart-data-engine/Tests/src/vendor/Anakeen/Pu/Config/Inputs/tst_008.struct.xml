@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:enumerates>
+        <smart:enum-configuration name="tst_colors">
+            <smart:enum name="red" label="Rouge"/>
+            <smart:enum name="yellow" label="Jaune"/>
+            <smart:enum name="green" label="Vert"/>
+            <smart:enum name="blue" label="Bleu"/>
+        </smart:enum-configuration>
+
+    </smart:enumerates>
+    <smart:structure-configuration name="TST_008" label="Test n°8">
+        <smart:class>Anakeen\Pu\SmartStructures\TestDefault007</smart:class>
+        <smart:tag name="vendor">Anakeen</smart:tag>
+        <smart:fields>
+            <smart:field-set name="tst_f_title" type="frame" label="Titre" access="ReadWrite">
+                <smart:field-text name="tst_title" label="Le titre" access="ReadWrite" is-title="true"/>
+
+            </smart:field-set>
+        </smart:fields>
+        <smart:parameters>
+            <smart:field-set name="tst_p_info" type="frame" label="Titre" access="ReadWrite">
+                <smart:field-enum name="tst_p0" relation="tst_colors" multiple="true" access="ReadWrite"/>
+                <smart:field-int name="tst_p1" access="ReadWrite"/>
+                <smart:field-int name="tst_p2" access="ReadWrite"/>
+                <smart:field-set name="tst_t_ps" access="ReadWrite" type="array">
+                    <smart:field-text name="tst_p3s" access="ReadWrite"/>
+                    <smart:field-int name="tst_p4s" access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-set name="tst_t_p2s" access="ReadWrite" type="array">
+                    <smart:field-text name="tst_p5s" access="ReadWrite"/>
+                    <smart:field-int name="tst_p6s" access="ReadWrite"/>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:parameters>
+
+        <smart:defaults>
+            <smart:initial field="tst_p0">["red"]</smart:initial>
+            <smart:initial field="tst_p1">23</smart:initial>
+            <smart:initial field="tst_p2">
+                <smart:field-callable function="::simpleAdd"/>
+                <smart:field-argument type="field">tst_p1</smart:field-argument>
+                <smart:field-argument type="string">28</smart:field-argument>
+            </smart:initial>
+            <smart:initial field="tst_p5s">["Hello"]</smart:initial>
+            <smart:initial field="tst_p6s">["Hola", "Bienvenido"]</smart:initial>
+            <smart:initial field="tst_t_ps">
+                [{"tst_p3s":"Hola", "tst_p4s":122},{"tst_p3s":"Hombre", "tst_p4s":156}]
+            </smart:initial>
+        </smart:defaults>
+        <smart:accesses/>
+    </smart:structure-configuration>
+
+    <smart:structure-configuration name="TST_008a" label="Test n°7a">
+        <smart:extends ref="TST_008"/>
+        <smart:tag name="vendor">Anakeen</smart:tag>
+
+        <smart:defaults>
+            <smart:initial field="tst_p1">78</smart:initial>
+        </smart:defaults>
+        <smart:accesses/>
+    </smart:structure-configuration>
+
+    <!-- TEST 7A -->
+
+    <smart:structure-configuration name="TST_008a" label="Test n°7a">
+        <smart:extends ref="TST_008"/>
+
+        <smart:defaults>
+        </smart:defaults>
+        <smart:accesses/>
+    </smart:structure-configuration>
+
+
+    <!-- TEST 7B -->
+
+    <smart:structure-configuration name="TST_008b" label="Test n°7b">
+        <smart:extends ref="TST_008a"/>
+        <smart:defaults>
+            <smart:initial field="tst_p1">67569</smart:initial>
+        </smart:defaults>
+        <smart:accesses/>
+    </smart:structure-configuration>
+
+    <smart:structure-configuration name="TST_008b" label="Test n°7b">
+        <smart:defaults>
+            <smart:initial reset="true" field="tst_p1" inherit="true"/>
+        </smart:defaults>
+        <smart:accesses/>
+    </smart:structure-configuration>
+</smart:config>

@@ -3,9 +3,8 @@ import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 import { DropdownsInstaller } from "@progress/kendo-dropdowns-vue-wrapper";
 import "@progress/kendo-ui/js/kendo.grid.js";
 import "@progress/kendo-ui/js/kendo.toolbar.js";
-import Vue from "vue";
 import Component from "vue-class-component";
-import { Prop, Watch } from "vue-property-decorator";
+import { Prop, Vue, Watch } from "vue-property-decorator";
 
 Vue.use(ButtonsInstaller);
 Vue.use(DropdownsInstaller);

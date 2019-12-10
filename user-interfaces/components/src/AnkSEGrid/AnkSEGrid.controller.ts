@@ -1,7 +1,8 @@
-import Vue from "vue";
-
 import "@progress/kendo-ui/js/kendo.filtercell";
 import "@progress/kendo-ui/js/kendo.grid";
+import "@progress/kendo-ui/js/kendo.resizable";
+import $ from "jquery";
+import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
 import GridColumnsButton from "./Components/GridColumnsButton/GridColumnsButton.vue";
 import GridExpandButton from "./Components/GridExpandButton/GridExpandButton.vue";
@@ -14,7 +15,6 @@ import GridEvent from "./utils/GridEvent";
 import GridExportUtils from "./utils/GridExportUtils.js";
 import GridFilter from "./utils/GridFilter";
 
-import VueSetup from "../setup.js";
 // eslint-disable-next-line no-unused-vars
 import { IGrid } from "./IAnkSEGrid";
 import GridError from "./utils/GridError";
@@ -22,7 +22,6 @@ import GridKendoUtils from "./utils/GridKendoUtils";
 import GridVueUtil from "./utils/GridVueUtil";
 
 const COMPLETE_FIELDS_INFO_URL = "/api/v2/grid/columns/<collection>";
-Vue.use(VueSetup);
 
 export const AnkSEGridExpandButton = GridExpandButton;
 export const AnkSEGridPager = GridPager;

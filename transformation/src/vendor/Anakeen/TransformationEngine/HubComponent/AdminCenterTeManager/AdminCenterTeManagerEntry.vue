@@ -11,18 +11,14 @@
   </hub-element-layout>
 </template>
 <script>
-import HubElement from "@anakeen/hub-components/components/lib/HubElement";
+import HubElement from "@anakeen/hub-components/components/lib/AnkHubElement.esm";
 
 export default {
   name: "ank-admin-te-manager",
-  extends: HubElement, // ou mixins: [ HubElementMixins ],
+  extends: HubElement,
   components: {
-    "admin-center-te": resolve => {
-      import("../TeManager/TeManager.vue").then(Component => {
-        resolve(Component.default);
-      });
+    "admin-center-te": () => import("../TeManager/TeManager.vue")
     }
-  }
 };
 </script>
 <style>

@@ -8,9 +8,11 @@
   "dependencies": {
     "@anakeen/webpack-conf": "1.2.1",
     "express": "^4.16.4",
-    "express-http-proxy": "^1.5.1",
-    "graceful-fs": "^4.2.0",
-    "webpack-dev-middleware": "^3.6.2",
+    "express-http-proxy": "^1.6.0",
+    "graceful-fs": "^4.2.3",
+    "rollup": "^1.27.8",
+    "ts-loader": "^6.2.1",
+    "webpack-dev-middleware": "^3.7.2",
     "webpack-merge": "^4.2.1"
   }
 }

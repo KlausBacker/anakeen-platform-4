@@ -77,14 +77,8 @@ stub: install-deps
 buildJS: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build JS $@${RESET_COLOR}\n"
 	$(YARN_BIN) lib
-	$(YARN_BIN) buildVendor
 	$(YARN_BIN) buildJsRender
 	$(YARN_BIN) buildJs
-
-buildDLL: install-deps
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build dll $@${RESET_COLOR}\n"
-	$(YARN_BIN) lib
-	$(YARN_BIN) buildVendor
 
 ########################################################################################################################
 ##

@@ -1,3 +1,5 @@
+import kendo from "@progress/kendo-ui/js/kendo.core";
+import $ from "jquery";
 import "@progress/kendo-ui/js/kendo.treeview";
 import "./changeGroupView.css";
 

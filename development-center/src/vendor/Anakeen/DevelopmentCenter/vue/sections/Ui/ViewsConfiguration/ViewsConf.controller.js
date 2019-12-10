@@ -1,4 +1,4 @@
-import Vue from "vue";
+import { Vue } from "vue-property-decorator";
 import "@progress/kendo-ui/js/kendo.toolbar.js";
 import "@progress/kendo-ui/js/kendo.grid.js";
 import "@progress/kendo-ui/js/kendo.filtercell.js";

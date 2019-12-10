@@ -1,32 +1,43 @@
-import VueAxiosPlugin from "@anakeen/internal-components/lib/AxiosPlugin";
-import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin";
+import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
 // Vue class based component export
 import { Component, Mixins, Prop, Provide, Vue, Watch } from "vue-property-decorator";
 import { HubElementDisplayTypes } from "../HubElement/HubElementTypes";
 import VueSetupPlugin from "../utils/VueSetupPlugin";
 import Router from "./HubRouter";
-import HubStationDock from "./HubStationDock/HubStationDock.vue";
-
 Vue.use(VueSetupPlugin);
 
 // eslint-disable-next-line no-unused-vars
 import { DockPosition, IHubStationConfig, IHubStationDockConfigs, IHubStationPropConfig } from "./HubStationsTypes";
 
 const urlJoin = require("url-join");
+const uuidv4 = require("uuid/v4");
 
-Vue.use(VueAxiosPlugin);
+declare global {
+  interface Window {
+    ank: {
+      hub: [];
+    };
+  }
+}
+
+window.ank = window.ank || {};
+window.ank.hub = window.ank.hub || {};
+const customComponents = Object.keys(window.ank.hub).reduce((acc, currentComponent) => {
+  acc[currentComponent] = () => window.ank.hub[currentComponent].promise;
+  return acc;
+}, {});
 
 @Component({
-  components: {
-    "hub-station-dock": resolve => {
-      // @ts-ignore
-      Vue.$_globalI18n.recordCatalog().finally(() => {
-        resolve(HubStationDock);
-      });
+  ...(customComponents || {}),
+  ...{
+    components: {
+      "hub-station-dock": () => import("./HubStationDock/HubStationDock.vue")
     }
   }
 })
-export default class HubStation extends Mixins(AnkI18NMixin) {
+class HubStation extends Mixins(AnkI18NMixin) {
+  $ankHubRouter: any;
+  $_hubEventBus: any;
   // region computed
   get isHeaderEnabled() {
     return this.configData.top.length;
@@ -89,11 +100,17 @@ export default class HubStation extends Mixins(AnkI18NMixin) {
   }
 
   private static organizeData(config: IHubStationPropConfig[]): IHubStationDockConfigs {
+    // add a uuid at each dock element
+    const configUUID = config.map(currentConfigElement => {
+      currentConfigElement.uuid = uuidv4();
+      return currentConfigElement;
+    });
+
     return {
-      bottom: config.filter(c => c.position.dock === DockPosition.BOTTOM),
-      left: config.filter(c => c.position.dock === DockPosition.LEFT),
-      right: config.filter(c => c.position.dock === DockPosition.RIGHT),
-      top: config.filter(c => c.position.dock === DockPosition.TOP)
+      bottom: configUUID.filter(c => c.position.dock === DockPosition.BOTTOM),
+      left: configUUID.filter(c => c.position.dock === DockPosition.LEFT),
+      right: configUUID.filter(c => c.position.dock === DockPosition.RIGHT),
+      top: configUUID.filter(c => c.position.dock === DockPosition.TOP)
     };
   }
 
@@ -107,7 +124,7 @@ export default class HubStation extends Mixins(AnkI18NMixin) {
   };
 
   public $refs!: {
-    [key: string]: HubStationDock | any;
+    [key: string]: any;
   };
 
   // region props
@@ -226,22 +243,25 @@ export default class HubStation extends Mixins(AnkI18NMixin) {
       );
     }
     // @ts-ignore
-    const routesPanels = this._l(this.panes.filter(pane => this.alreadyVisited[pane.entryOptions.route]), pane => {
-      return createElement(
-        "div",
-        {
-          attrs: {
-            "data-route": pane.entryOptions.route
+    const routesPanels = this._l(
+      this.panes.filter(pane => this.alreadyVisited[pane.entryOptions.route]),
+      pane => {
+        return createElement(
+          "div",
+          {
+            attrs: {
+              "data-route": pane.entryOptions.route
+            },
+            class: {
+              "hub-station-route-content": true,
+              "route-active": pane.entryOptions.route === this.activeRoute
+            },
+            key: pane.entryOptions.route
           },
-          class: {
-            "hub-station-route-content": true,
-            "route-active": pane.entryOptions.route === this.activeRoute
-          },
-          key: pane.entryOptions.route
-        },
-        pane.hubContentLayout.$slots.hubContent
-      );
-    });
+          pane.hubContentLayout.$slots.hubContent
+        );
+      }
+    );
     centerSections.push(
       createElement(
         "section",
@@ -394,8 +414,7 @@ export default class HubStation extends Mixins(AnkI18NMixin) {
     if (configs && configs.length) {
       configs.forEach(cfg => {
         if (cfg.component && cfg.component.name) {
-          const component = Vue.component(cfg.component.name);
-          if (component && cfg.entryOptions && cfg.entryOptions.route) {
+          if (cfg.entryOptions && cfg.entryOptions.route) {
             const priority =
               cfg.entryOptions.activatedOrder === null || cfg.entryOptions.activatedOrder === undefined
                 ? Number.NEGATIVE_INFINITY
@@ -422,3 +441,5 @@ export default class HubStation extends Mixins(AnkI18NMixin) {
 
   // endregion methods
 }
+
+export default HubStation;

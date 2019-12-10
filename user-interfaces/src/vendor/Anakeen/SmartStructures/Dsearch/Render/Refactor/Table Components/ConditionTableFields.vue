@@ -8,7 +8,7 @@ import "@progress/kendo-ui/js/kendo.combobox";
 import BaseComponent from "./ConditionTableBaseComponent.vue";
 import searchAttributes from "../../searchAttributes";
 
-import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin";
+import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
 
 export default {
   name: "condition-table-fields",

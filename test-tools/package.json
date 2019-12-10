@@ -29,17 +29,17 @@
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
     "chai": "^4.2.0",
-    "mocha": "^6.2.0",
+    "mocha": "^6.2.2",
     "node-fetch": "^2.6.0",
-    "typescript": "^3.5.3"
+    "typescript": "^3.7.3"
   },
   "devDependencies": {
-    "@anakeen/anakeen-cli": "1.2.0-RC.2019.1.16",
+    "@anakeen/anakeen-cli": "1.2.0-RC.2019.1.17",
     "@anakeen/webpack-conf": "1.2.1",
-    "@types/node": "^12.6.2",
+    "@types/node": "^12.12.14",
     "fg-loadcss": "^2.1.0",
     "hard-source-webpack-plugin": "^0.13.1",
-    "ts-loader": "^6.0.4",
+    "ts-loader": "^6.2.1",
     "webpack-merge": "^4.2.1",
     "webpack-node-externals": "^1.7.2"
   }

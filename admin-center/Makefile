@@ -25,7 +25,7 @@ CHECK_VERSION=node ./../.devtool/ci/check/checkVersionNpmApp.js
 ########################################################################################################################
 
 node_modules:
-	${YARN_BIN} install
+	${YARN_BIN} install --frozen-lock
 
 
 install-deps: node_modules
@@ -76,7 +76,7 @@ stub: install-deps
 
 buildJS: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build JS $@${RESET_COLOR}\n"
-	$(YARN_BIN) buildJs
+	$(YARN_BIN) buildJS
 
 ########################################################################################################################
 ##

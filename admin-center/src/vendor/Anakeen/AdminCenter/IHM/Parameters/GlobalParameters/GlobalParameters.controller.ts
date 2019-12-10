@@ -1,5 +1,5 @@
-import Vue from "vue";
 import Component from "vue-class-component";
+import { Vue } from "vue-property-decorator";
 const parameterEditor = () => import("../ParameterEditor/ParameterEditor.vue");
 
 declare var $;
@@ -180,9 +180,7 @@ export default class GlobalParametersController extends Vue {
       })
       .on("click", ".expand-btn", () => this.expand(true))
       .on("click", ".collapse-btn", () => this.expand(false))
-      .on("click", ".filter-btn", () =>
-        this.searchParameters($(".global-search-input", this.$el).val())
-      )
+      .on("click", ".filter-btn", () => this.searchParameters($(".global-search-input", this.$el).val()))
       .on("keyup", ".global-search-input", e => {
         if (e.key === "Enter") {
           this.searchParameters($(".global-search-input", this.$el).val());
@@ -213,29 +211,19 @@ export default class GlobalParametersController extends Vue {
   // Open editor window, passing the editedItem and the edition route url
   public openEditor(dataItem) {
     this.editedItem = dataItem;
-    this.editRoute =
-      "api/v2/admin/parameters/" +
-      this.editedItem.nameSpace +
-      "/" +
-      this.editedItem.name +
-      "/";
+    this.editRoute = "api/v2/admin/parameters/" + this.editedItem.nameSpace + "/" + this.editedItem.name + "/";
   }
 
   // Open a window displaying the entire value
   public displayValue(dataItem) {
-    const displayedValue = dataItem.value
-      ? dataItem.value
-      : "[no value for this parameter]";
+    const displayedValue = dataItem.value ? dataItem.value : "[no value for this parameter]";
 
     let template;
     if (dataItem.value && GlobalParametersController.isJson(dataItem.value)) {
       template =
-        '<pre class="value-displayer-content">' +
-        JSON.stringify(JSON.parse(displayedValue), null, 5) +
-        "</pre>";
+        '<pre class="value-displayer-content">' + JSON.stringify(JSON.parse(displayedValue), null, 5) + "</pre>";
     } else {
-      template =
-        '<p class="value-displayer-content">' + displayedValue + "</p>";
+      template = '<p class="value-displayer-content">' + displayedValue + "</p>";
     }
     this.valueDisplayer = $(".value-displayer")
       .kendoWindow({
@@ -286,9 +274,7 @@ export default class GlobalParametersController extends Vue {
 
       // Add icon to show filter effect to the user
       if (!$(".filterable-header", this.$el).children(".filter-icon").length) {
-        $(".filterable-header", this.$el).prepend(
-          $('<i class="material-icons filter-icon">filter_list</i>')
-        );
+        $(".filterable-header", this.$el).prepend($('<i class="material-icons filter-icon">filter_list</i>'));
       }
 
       // Expand treeList to show results
@@ -358,10 +344,7 @@ export default class GlobalParametersController extends Vue {
           treeState.push(index);
         }
       });
-      window.localStorage.setItem(
-        "admin.parameters.treeState",
-        JSON.stringify(treeState)
-      );
+      window.localStorage.setItem("admin.parameters.treeState", JSON.stringify(treeState));
     }, 0);
   }
 

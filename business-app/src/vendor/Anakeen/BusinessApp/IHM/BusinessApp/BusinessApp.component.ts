@@ -1,7 +1,7 @@
-import AnkSEList from "@anakeen/user-interfaces/components/lib/AnkSEList";
-import AnkSETab from "@anakeen/user-interfaces/components/lib/AnkSETab";
-import AnkTabs from "@anakeen/user-interfaces/components/lib/AnkSETabs";
-import AnkTab from "@anakeen/user-interfaces/components/lib/AnkTab";
+import AnkSEList from "@anakeen/user-interfaces/components/lib/AnkSmartElementList.esm";
+import AnkSETab from "@anakeen/user-interfaces/components/lib/AnkSmartElementTab.esm";
+import AnkTabs from "@anakeen/user-interfaces/components/lib/AnkSmartElementTabs.esm";
+import AnkTab from "@anakeen/user-interfaces/components/lib/AnkTab.esm";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import Welcome from "../Welcome/Welcome.vue";
 
@@ -15,7 +15,7 @@ interface IBusinessAppCollectionProp {
 @Component({
   components: {
     "ank-se-list": AnkSEList,
-    "ank-se-tab": AnkSETab,
+    "ank-se-tab": () => AnkSETab,
     "ank-tab": AnkTab,
     "ank-tabs": AnkTabs,
     "ank-welcome": Welcome

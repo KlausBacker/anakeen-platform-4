@@ -41,7 +41,7 @@
         <hge_jsassets>
             <hge_jsasset_type>MANIFEST</hge_jsasset_type>
             <hge_jsasset>
-                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("accountManager", "account-manager")
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("admin", "AdminAccountManager")
             </hge_jsasset>
         </hge_jsassets>
         <hge_component_tag>ank-admin-account</hge_component_tag>
@@ -59,7 +59,7 @@
         <hge_jsassets>
             <hge_jsasset_type>MANIFEST</hge_jsasset_type>
             <hge_jsasset>
-                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("parameterManager", "parameter-manager")
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("admin", "AdminParameterManager")
             </hge_jsasset>
         </hge_jsassets>
         <hge_component_tag>ank-admin-parameter</hge_component_tag>
@@ -77,7 +77,7 @@
         <hge_jsassets>
             <hge_jsasset_type>MANIFEST</hge_jsasset_type>
             <hge_jsasset>
-                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("tokenManager", "token-manager")
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("admin", "AdminTokenManager")
             </hge_jsasset>
         </hge_jsassets>
         <hge_component_tag>ank-hub-authentication-tokens</hge_component_tag>
@@ -95,7 +95,7 @@
         <hge_jsassets>
             <hge_jsasset_type>MANIFEST</hge_jsasset_type>
             <hge_jsasset>
-                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("vaultManager", "vault-manager")
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("admin", "AdminVaultManager")
             </hge_jsasset>
         </hge_jsassets>
         <hge_component_tag>ank-admin-vault-manager</hge_component_tag>
@@ -112,7 +112,7 @@
         <hub_expandable>TRUE</hub_expandable>
         <hge_jsassets>
             <hge_jsasset_type>MANIFEST</hge_jsasset_type>
-            <hge_jsasset>Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("i18nManager","i18n-manager")</hge_jsasset>
+            <hge_jsasset>Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("admin","Admini18nManager")</hge_jsasset>
         </hge_jsassets>
         <hge_component_tag>ank-admin-i18n</hge_component_tag>
         <hub_execution_roles name="AC_FUNCADMIN,AC_I18NMANAGER">document multiple</hub_execution_roles>
@@ -129,7 +129,7 @@
         <hge_jsassets>
             <hge_jsasset_type>MANIFEST</hge_jsasset_type>
             <hge_jsasset>
-                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("workflowManager", "workflow-manager")
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("admin", "AdminWorkflowManager")
             </hge_jsasset>
         </hge_jsassets>
         <hge_component_tag>ank-admin-workflow-manager</hge_component_tag>
@@ -147,7 +147,7 @@
         <hge_jsassets>
             <hge_jsasset_type>MANIFEST</hge_jsasset_type>
             <hge_jsasset>
-                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("mailManager", "mail-manager")
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("admin", "AdminMailManager")
             </hge_jsasset>
         </hge_jsassets>
         <hge_component_tag>ank-admin-mail-manager</hge_component_tag>
@@ -165,7 +165,7 @@
         <hge_jsassets>
             <hge_jsasset_type>MANIFEST</hge_jsasset_type>
             <hge_jsasset>
-                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("enumManager", "enum-manager")
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("admin", "AdminEnumManager")
             </hge_jsasset>
         </hge_jsassets>
         <hge_component_tag>ank-admin-enum-manager</hge_component_tag>
@@ -183,7 +183,7 @@
         <hge_jsassets>
             <hge_jsasset_type>MANIFEST</hge_jsasset_type>
             <hge_jsasset>
-                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("trashManager", "trash-manager")
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("admin", "AdminTrashManager")
             </hge_jsasset>
         </hge_jsassets>
         <hge_component_tag>ank-admin-trash-manager</hge_component_tag>

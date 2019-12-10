@@ -1,11 +1,14 @@
+import kendo from "@progress/kendo-ui/js/kendo.core";
+import axios from "axios";
 import Vue from "vue";
 import Login from "./LoginPage.vue";
-import LoadScript from "vue-m-loader";
 import I18nMixin from "../../../../../../components/mixins/AnkVueComponentMixin/I18nMixin";
 
 import VueI18n from "vue-i18n";
 
-Vue.use(LoadScript);
+Vue.http = Vue.prototype.$http = axios;
+Vue.jQuery = Vue.jquery = Vue.prototype.$ = kendo.jQuery;
+Vue.kendo = Vue.Kendo = Vue.prototype.$kendo = kendo;
 
 const i18nLoginPage = new VueI18n({
   locale: "fr-FR",

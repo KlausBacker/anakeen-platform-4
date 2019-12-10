@@ -12,6 +12,7 @@
           autocapitalize="off"
           autocorrect="off"
           spellcheck="false"
+          autofocus="true"
           :placeholder="translations.loginPlaceHolder"
           :validationmessage="translations.validationMessageIdentifier"
         />

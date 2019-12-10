@@ -1,11 +1,11 @@
-import Vue from "vue";
+import "@progress/kendo-ui/js/kendo.popup";
+import "@progress/kendo-ui/js/kendo.window";
+import $ from "jquery";
 const AuthentPassword = () => import("../AnkAuthent/AnkAuthentPassword/AnkAuthentPassword.vue");
 import { Component, Mixins, Prop } from "vue-property-decorator";
 import EventUtilsMixin from "../../mixins/AnkVueComponentMixin/EventUtilsMixin";
 import I18nMixin from "../../mixins/AnkVueComponentMixin/I18nMixin";
 import ReadyMixin from "../../mixins/AnkVueComponentMixin/ReadyMixin";
-import VueSetup from "../setup.js";
-Vue.use(VueSetup);
 
 @Component({
   components: {
@@ -237,7 +237,7 @@ export default class IdentityComponent extends Mixins(EventUtilsMixin, ReadyMixi
 
   // Close dialog window to change user's email
   public closeEmailModifierWindow() {
-    $(this.$refs.emailModifier)
+    kendo.jQuery(this.$refs.emailModifier)
       .data("kendoWindow")
       .close();
   }

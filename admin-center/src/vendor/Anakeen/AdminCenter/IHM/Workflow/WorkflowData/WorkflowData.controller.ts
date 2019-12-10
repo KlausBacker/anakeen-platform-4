@@ -4,8 +4,7 @@ import "@progress/kendo-ui/js/kendo.color.js";
 import "@progress/kendo-ui/js/kendo.colorpicker.js";
 import "@progress/kendo-ui/js/kendo.filtercell.js";
 import "@progress/kendo-ui/js/kendo.grid.js";
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 Vue.use(GridInstaller);
 Vue.use(DataSourceInstaller);
@@ -18,7 +17,8 @@ export default class WorkflowDataController extends Vue {
     wflGridContent: Grid;
   };
 
-  @Prop({ type: String, default: "" }) public wflName;
+  @Prop({ type: String, default: "" })
+  public wflName;
   @Watch("wflName")
   public watchWflName() {
     this.gridWidget.dataSource.read();
@@ -142,10 +142,14 @@ export default class WorkflowDataController extends Vue {
           if (items[item]) {
             switch (type) {
               case "mail":
-                str += `<li><a data-role="adminRouterLink" href="/admin/mail/?name=${items[item]}">${items[item]}</a></li>`;
+                str += `<li><a data-role="adminRouterLink" href="/admin/mail/?name=${items[item]}">${
+                  items[item]
+                }</a></li>`;
                 break;
               case "timer":
-                str += `<li><a data-role="adminRouterLink" href="/admin/timer/?name=${items[item]}">${items[item]}</a></li>`;
+                str += `<li><a data-role="adminRouterLink" href="/admin/timer/?name=${items[item]}">${
+                  items[item]
+                }</a></li>`;
                 break;
               default:
                 break;

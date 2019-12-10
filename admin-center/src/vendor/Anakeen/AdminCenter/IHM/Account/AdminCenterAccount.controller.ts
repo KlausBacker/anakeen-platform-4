@@ -1,5 +1,5 @@
 import AnkPaneSplitter from "@anakeen/internal-components/lib/PaneSplitter";
-import AnkSmartElement from "@anakeen/user-interfaces/components/lib/AnkSmartElement";
+import AnkSmartElement from "@anakeen/user-interfaces/components/lib/AnkSmartElement.esm";
 import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
 import { DropdownsInstaller } from "@progress/kendo-dropdowns-vue-wrapper";
@@ -8,8 +8,7 @@ import { TreeViewInstaller } from "@progress/kendo-treeview-vue-wrapper";
 import "@progress/kendo-ui/js/kendo.grid";
 import "@progress/kendo-ui/js/kendo.toolbar";
 import "@progress/kendo-ui/js/kendo.treeview";
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 
 Vue.use(ButtonsInstaller);
 Vue.use(GridInstaller);
@@ -18,9 +17,10 @@ Vue.use(DropdownsInstaller);
 Vue.use(DataSourceInstaller);
 declare var $;
 declare var kendo;
+
 @Component({
   components: {
-    AnkSmartElement,
+    AnkSmartElement: () => AnkSmartElement,
     "ank-split-panes": AnkPaneSplitter
   }
 })

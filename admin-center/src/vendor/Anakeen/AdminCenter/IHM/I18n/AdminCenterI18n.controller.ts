@@ -3,10 +3,7 @@ import "@progress/kendo-ui/js/kendo.button";
 import "@progress/kendo-ui/js/kendo.filtercell";
 import "@progress/kendo-ui/js/kendo.grid.js";
 import "@progress/kendo-ui/js/kendo.toolbar.js";
-import * as _ from "underscore";
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
-import { cpus } from 'os';
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 Vue.use(ButtonsInstaller);
 declare var kendo;
@@ -20,15 +17,18 @@ export default class I18nManagerController extends Vue {
       return str.replace(/\\n/g, "\n");
     }
   }
-  @Prop({ type: Array, default: [] }) public i18nFilters: Array<Object>;
-  @Prop({ type: String, default: "" }) public lang: string;
+  @Prop({ type: Array, default: [] })
+  public i18nFilters: Array<Object>;
+  @Prop({ type: String, default: "" })
+  public lang: string;
 
-  @Watch('i18nFilters', { immediate: true, deep: true })
-  public watchI18nFilters(value) {
+  @Watch("i18nFilters", { immediate: true, deep: true })
+  public watchI18nFilters() {
     this.filters = this.i18nFilters;
     if (this.$refs.i18nGrid) {
-      //Refresh dataSource to re execute mounted()->dataBound()->setFilters()
-      $(this.$refs.i18nGrid).data("kendoGrid").dataSource.read();
+      $(this.$refs.i18nGrid)
+        .data("kendoGrid")
+        .dataSource.read();
     }
   }
   public filters = [];
@@ -170,8 +170,8 @@ export default class I18nManagerController extends Vue {
 
               return `<div class="input-group">
                 <textarea rows="1" cols="50" wrap="hard" class='form-control overriden-translation-input-singular filter-locale' aria-label='Small'>${I18nManagerController.formatForTextarea(
-                rowData.override[0]
-              )}</textarea>
+                  rowData.override[0]
+                )}</textarea>
                 <div class="input-group-append">
                     
                 </div>
@@ -179,8 +179,8 @@ export default class I18nManagerController extends Vue {
             <hr/>
             <div class="input-group">
                 <textarea rows="1" cols="50" wrap="hard" class='form-control overriden-translation-input-plural filter-locale' aria-label='Small'>${I18nManagerController.formatForTextarea(
-                rowData.override[1]
-              )}</textarea>
+                  rowData.override[1]
+                )}</textarea>
                 <div class="input-group-append">
                     <button class='confirm-override-translation-plural btn btn-outline-secondary' disabled><i class='fa fa-check'></i></button>
                     <button class='cancel-override-translation-plural btn btn-outline-secondary'><i class='fa fa-times'></i></button>
@@ -189,8 +189,8 @@ export default class I18nManagerController extends Vue {
             } else {
               return `<div class="input-group">
                   <textarea rows="1" cols="50" wrap="hard" class='form-control overriden-translation-input-singular filter-locale'>${I18nManagerController.formatForTextarea(
-                rowData.override
-              )}</textarea>
+                    rowData.override
+                  )}</textarea>
                   <div class="input-group-append">
                       <button class='confirm-override-translation-singular btn btn-outline-secondary' disabled><i class='fa fa-check'></i></button>
                       <button class='cancel-override-translation-singular btn btn-outline-secondary'><i class='fa fa-times'></i></button>
@@ -273,7 +273,9 @@ export default class I18nManagerController extends Vue {
   }
 
   private setFilters() {
-    $(this.$refs.i18nGrid).data("kendoGrid").dataSource.filter(this.filters);
+    $(this.$refs.i18nGrid)
+      .data("kendoGrid")
+      .dataSource.filter(this.filters);
     this.filters = [];
   }
   private setEventSingularConfirm() {

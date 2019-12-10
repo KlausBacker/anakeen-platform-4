@@ -1,5 +1,5 @@
 import "./testRender.scss";
-import ankSmartController from "@anakeen/user-interfaces/components/lib/AnkController";
+import ankSmartController from "@anakeen/user-interfaces/components/lib/AnkController.esm";
 
 ankSmartController.registerFunction("structureTestRender", scopedController => {
   let insideControllerid;

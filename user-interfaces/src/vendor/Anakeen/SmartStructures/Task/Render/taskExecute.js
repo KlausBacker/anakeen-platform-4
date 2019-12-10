@@ -1,4 +1,6 @@
 import "./task.css";
+import $ from "jquery";
+
 window.ank.smartElement.globalController.registerFunction("taskRenderCommon", controller => {
   controller.addEventListener("actionClick", (event, smartElementObject, data) => {
     if (data.eventId === "task") {

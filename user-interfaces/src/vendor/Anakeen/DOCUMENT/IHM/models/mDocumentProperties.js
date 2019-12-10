@@ -1,8 +1,5 @@
-/*global define*/
-define(["underscore", "backbone"], function(_, Backbone) {
-  "use strict";
+import Backbone from "backbone";
 
-  return Backbone.Model.extend({
-    typeModel: "ddui:properties"
-  });
+export default Backbone.Model.extend({
+  typeModel: "ddui:properties"
 });

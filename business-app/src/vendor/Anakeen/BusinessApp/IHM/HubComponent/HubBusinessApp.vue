@@ -28,7 +28,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import HubElement from "@anakeen/hub-components/components/lib/HubElement";
+import HubElement from "@anakeen/hub-components/components/lib/AnkHubElement.esm";
 import BusinessApp from "../BusinessApp/BusinessApp.vue";
 import BusinessAppModule from "./businessAppModule.js";
 
@@ -99,7 +99,8 @@ export default class HubBusinessApp extends Vue {
   }
   public created() {
     // @ts-ignore
-    this.getStore().registerModule(this.businessAppName, BusinessAppModule());
+    const store = this.getStore() || window.hub.store;
+    store.registerModule(this.businessAppName, BusinessAppModule());
     this.subRouting();
   }
 

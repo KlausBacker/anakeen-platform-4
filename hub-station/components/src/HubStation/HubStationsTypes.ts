@@ -45,6 +45,7 @@ export interface IHubStationPropConfig {
   position: IHubStationConfigPosition;
   component: IHubStationConfigComponentDef;
   entryOptions: IHubStationEntryOptions;
+  uuid: string;
 }
 
 interface IHubStationAssets {

@@ -1,22 +1,18 @@
-define(["underscore", "dcpDocument/models/mAttribute", "dcpDocument/collections/contentAttributes"], function(
-  _,
-  AttributeModel,
-  CollectionContentAttributes
-) {
-  "use strict";
+import _ from "underscore";
+import AttributeModel from "./mAttribute";
+import CollectionContentAttributes from "../collections/contentAttributes";
 
-  return AttributeModel.extend({
-    typeModel: "ddui:structureAttribute",
-    defaults: {
-      content: []
-    },
+export default AttributeModel.extend({
+  typeModel: "ddui:structureAttribute",
+  defaults: {
+    content: []
+  },
 
-    setContentCollection: function mAttributesetContentCollection(attributes) {
-      var collection = new CollectionContentAttributes();
-      _.each(attributes, function(currentChild) {
-        collection.push(currentChild);
-      });
-      this.set("content", collection);
-    }
-  });
+  setContentCollection: function mAttributesetContentCollection(attributes) {
+    var collection = new CollectionContentAttributes();
+    _.each(attributes, function(currentChild) {
+      collection.push(currentChild);
+    });
+    this.set("content", collection);
+  }
 });

@@ -1,4 +1,4 @@
-import Vue from "vue";
+import { Vue } from "vue-property-decorator";
 import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
 
 Vue.use(DataSourceInstaller);

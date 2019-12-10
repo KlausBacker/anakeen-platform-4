@@ -1,3 +1,9 @@
+.dcpDocument--edit, .dcpDocument--create {
+  .dcpAttribute__value--enumlabel {
+    background-color: $ank-ui-doc-edit-attribute-bg;
+  }
+}
+
 .dcpAttribute--type--enum .dcpAttribute__value--multiple .dcpAttribute__content__value {
   display: block;
   float: left;
@@ -38,20 +44,13 @@
 
 .input-group.dcpAttribute__value--multiple {
   border-radius: $ank-ui-doc-edit-attribute-border-radius;
-  &:hover {
-   // border: $A4-ui-doc-edit-attribute-hover-border;
-   // box-shadow: $A4-ui-doc-edit-attribute-hover-shadow;
-  }
+
   .input-group-addon, .k-multiselect-wrap {
     border:none;
   }
 
   .k-multiselect-wrap, .k-multiselect.k-widget {
     border-radius: $ank-ui-doc-edit-attribute-border-radius 0 0 $ank-ui-doc-edit-attribute-border-radius;
-
-    &.k-state-hover {
-     //  border-radius: 0 $A4-ui-doc-edit-attribute-border-radius $A4-ui-doc-edit-attribute-border-radius 0;
-    }
 
     &.k-state-focused {
       border-radius: 0 $ank-ui-doc-edit-attribute-border-radius $ank-ui-doc-edit-attribute-border-radius 0;
@@ -75,17 +74,9 @@
   min-height: $ank-ui-input-height;
 }
 
-.dcpAttribute__content .k-multiselect .k-button {
-
-}
-
 .dcpAttribute__content .k-multiselect-wrap {
   border-radius: inherit;
   min-height: calc( #{$ank-ui-input-height} - 0px);
-
-  .k-button {
-    //padding: 0.125rem 1.25rem;
-  }
 }
 
 .dcpAttribute__content.has-error .k-dropdown-wrap {
@@ -117,12 +108,6 @@
 }
 
 .dcpAttribute__content .dcpAttribute__value--enumlabel {
-  input[type=radio], input[type=checkbox] {
-    height: auto;
-    width: auto;
-    background-color: transparent;
-    border: none;
-  }
 
   input.dcpAttribute__value--enum--other {
     height: $ank-ui-input-height;
@@ -158,12 +143,9 @@
 
 .dcpAttribute__value--enumlabel {
   font-weight: normal;
-
 }
 
 .dcpAttribute__value--enumlabel.selected {
-  //background-color: $A4-ui-color-selected;
-  //color: $A4-ui-color-text-colored;
   .dcpAttribute__value--enumlabel--text {
     font-weight: bold;
   }
@@ -178,39 +160,38 @@
 
 }
 
+//k-radio input need to have a fixed square size
+.dcpAttribute__content .dcpAttribute__value--edit.dcpAttribute__value.k-radio {
+  width: 1.2rem;
+  height: 1.2rem;
+}
 
+//k-checkbox input need to have a fixed square size
+.dcpAttribute__content .dcpAttribute__value--edit.dcpAttribute__value.k-checkbox {
+  width: 1.2rem;
+  height: 1.2rem;
+}
 
 .dcpAttribute__value--enumbuttons.orientation-horizontal {
   width: 100%;
-  padding: 0 2rem 0  0;
   display: flex;
   flex-direction: row;
   flex-flow: row wrap;
   height: auto;
 }
 
-
+//horizontal checkbox are not aligned with label
 .dcpAttribute__value--enumbuttons.orientation-horizontal,
 .dcpAttribute__value--enumbuttons.orientation-bool {
   border-top-right-radius: $border-radius-base;
   border-bottom-right-radius: $border-radius-base;
 
   border:none;
-  .k-checkbox-label {
-    &:before {
-      top: 6px;
-    }
-    &:after {
-      top: 6px + 3px;
-    }
+  .k-checkbox{
+     margin-top: 0.6rem;
   }
-  .k-radio-label {
-    &:before {
-      top: 5px;
-    }
-    &:after {
-      top: 5px + 3px;
-    }
+  .k-radio {
+     margin-top: 0.6rem;
   }
 }
 
@@ -243,17 +224,9 @@
     display: inline-block;
     vertical-align: middle;
     text-align: left;
-
     margin: 0 0 0 0.3em;
+  }
 
-  }
-  input[type=radio], input[type=checkbox] {
-    margin-right: 0.5em;
-    margin-top: 0;
-    float: none;
-    display: inline-block;
-    vertical-align: middle;
-  }
 }
 
 .dcpAttribute__value--enumbuttons.orientation-bool .dcpAttribute__value--enumlabel {
@@ -293,22 +266,7 @@
   label.dcpAttribute__value--enumlabel--text {
     line-height: 2;
   }
-  .k-checkbox-label {
-    &:before {
-      top: 4px;
-    }
-    &:after {
-      top: 4px + 2px;
-    }
-  }
-  .k-radio-label {
-    &:before {
-      top: 3px;
-    }
-    &:after {
-      top: 3px + 3px;
-    }
-  }
+
 }
 
 .dcpAttribute__value--enumbuttons.orientation-vertical .dcpAttribute__value--enumlabel {
@@ -333,20 +291,10 @@ label.dcpAttribute__value--enumlabel--text {
   line-height: $ank-ui-input-height;
 }
 
-.dcpAttribute__value--enumbuttons {
-  .k-radio, .k-checkbox {
-    display: inline;
-    width: 0;
-    position: absolute;
-
-  }
-
-}
-
 .dcpAttribute__value--enumbuttons .dcpAttribute__value--enumlabel--other.dcpAttribute__value--enumlabel {
   text-overflow: initial;
   padding-top: 0;
-  .k-checkbox-label {
+  .k-checkbox {
     &:before {
       top: 7px;
     }
@@ -354,7 +302,7 @@ label.dcpAttribute__value--enumlabel--text {
       top: 7px + 3px;
     }
   }
-  .k-radio-label {
+  .k-radio {
     &:before {
       top: 6px;
     }

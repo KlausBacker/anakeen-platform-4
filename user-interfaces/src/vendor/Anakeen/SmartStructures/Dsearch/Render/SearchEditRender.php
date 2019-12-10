@@ -29,7 +29,6 @@ class SearchEditRender extends DefaultEdit
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $js = parent::getJsReferences($document);
-        $js["kendoDLL"] = UIGetAssetPath::getJSKendoComponentPath();
         $js["dSearch"] = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev": "legacy")["Dsearch"]["js"];
         return $js;
     }

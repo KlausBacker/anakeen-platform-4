@@ -2,7 +2,7 @@ const path = require("path");
 const { useCache } = require("./common");
 
 const { prod, dev, legacy } = require("@anakeen/webpack-conf");
-const { vueLoader, addDll } = require("@anakeen/webpack-conf/parts");
+const { vueLoader, addKendoGlobal, addJqueryGlobal } = require("@anakeen/webpack-conf/parts");
 
 const BASE_DIR = path.resolve(__dirname, "../");
 const PUBLIC_PATH = path.join(BASE_DIR, "/src/public");
@@ -48,26 +48,8 @@ module.exports = () => {
     excludeBabel: [/node_modules\/style-loader/],
     customParts: [
       useCache,
-      addDll({
-        context: BASE_DIR,
-        manifest: path.join(
-          PUBLIC_PATH,
-          "Anakeen",
-          "assets",
-          "legacy",
-          "KendoUI-manifest.json"
-        )
-      }),
-      addDll({
-        context: BASE_DIR,
-        manifest: path.join(
-          PUBLIC_PATH,
-          "Anakeen",
-          "ankDll",
-          "legacy",
-          "ankKendoDll-manifest.json"
-        )
-      }),
+      addKendoGlobal([/kendo.pdf/, /kendo.excel/], true),
+      addJqueryGlobal(),
       {
         resolve: {
           extensions: [".js"],

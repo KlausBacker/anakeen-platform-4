@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Preferences">
+    <option name="remoteHostId" value="CUSTOM" />
+    <option name="remoteName" value="gitlab" />
+    <option name="customFileUrlAtCommitTemplate" value="{remote:url}/commit/{commit}/{file:path}/{file:name}#L{line:start}-L{line:end}" />
+    <option name="customFileUrlOnBranchTemplate" value="{remote:url}/blob/{branch}/{file:path}/{file:name}#L{line:start}-L{line:end}" />
+    <option name="customCommitUrlTemplate" value="{remote:url}/commit/{commit}" />
+  </component>
+</project>

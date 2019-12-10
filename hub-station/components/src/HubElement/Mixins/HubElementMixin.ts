@@ -1,10 +1,9 @@
 // mixin.js
-const urlJoin = require("url-join");
+import urlJoin from "url-join";
 import Navigo from "navigo";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { IHubStationEntryOptions } from "../../HubStation/HubStationsTypes";
 import VueSetupPlugin from "../../utils/VueSetupPlugin";
-// import { HubElementDisplayTypes } from "../HubElementTypes";
 
 Vue.use(VueSetupPlugin);
 
@@ -13,8 +12,12 @@ Vue.use(VueSetupPlugin);
 export default class HubElementMixin extends Vue {
   @Prop() public entryOptions!: IHubStationEntryOptions;
   // @Prop() public displayType!: HubElementDisplayTypes;
-  @Prop({ required: true, type: Boolean, default: true }) public isDockCollapsed!: boolean;
+  @Prop({ required: true, type: Boolean, default: true })
+  public isDockCollapsed!: boolean;
   @Prop() public parentPath!: string;
+  $_hubEventBus: any;
+  $ankHubRouter: any;
+  $store: any;
 
   public resolveHubSubPath(subPath) {
     return urlJoin(this.parentPath, subPath);

@@ -1,4 +1,5 @@
-const Mustache = require("mustache");
+import Mustache from "mustache";
+import $ from "jquery";
 
 window.ank.smartElement.globalController.registerFunction("taskRenderEdit", controller => {
   controller.addEventListener(

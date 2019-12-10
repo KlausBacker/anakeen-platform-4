@@ -1,14 +1,14 @@
 import "@progress/kendo-ui/js/kendo.popup";
 import "@progress/kendo-ui/js/kendo.grid";
-import Vue from "vue";
+import { Vue } from "vue-property-decorator";
 
 import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 import { DropdownsInstaller } from "@progress/kendo-dropdowns-vue-wrapper";
 import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
 const urlJoin = require("url-join");
 
-import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSEGrid";
-import AnkSmartElement from "@anakeen/user-interfaces/components/lib/AnkSmartElement";
+import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementGrid.esm";
+import AnkSmartElement from "@anakeen/user-interfaces/components/lib/AnkSmartElement.esm";
 import AnkHubMockup from "./HubAdminMockUp.vue";
 import AnkSplitter from "@anakeen/internal-components/lib/Splitter";
 
@@ -22,7 +22,7 @@ export default {
   components: {
     "ank-se-grid": AnkSEGrid,
     "ank-hub-mockup": AnkHubMockup,
-    "smart-element": AnkSmartElement,
+    "smart-element": () => AnkSmartElement,
     "ank-splitter": AnkSplitter
   },
   props: ["hubId", "hubComponentSelected"],

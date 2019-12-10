@@ -10,7 +10,7 @@ class SmartElementManager extends \Anakeen\Core\SEManager
      * @param int|string $documentIdentifier
      * @param bool       $latest
      * @param bool       $useCache
-     * @return SmartElement
+     * @return Core\Internal\SmartElement | null
      * @throws Core\DocManager\Exception
      * @throws Exception
      */

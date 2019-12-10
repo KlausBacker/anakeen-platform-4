@@ -11,13 +11,13 @@ module.exports = () => {
   const conf = {
     moduleName: "theme",
     entry: {
-      bootstrap: [path.resolve(__dirname, "./scss/bootstrap.scss")],
-      ckeditor: [path.resolve(__dirname, "./scss/ckeditor.scss")],
-      components: [path.resolve(__dirname, "./scss/components.scss")],
-      kendo: [path.resolve(__dirname, "./scss/kendo.scss")],
-      smartElement: [path.resolve(__dirname, "./scss/smartElement.scss")],
-      login: [path.resolve(__dirname, "./scss/login.scss")],
-      colors: [path.resolve(__dirname, "./scss/colors.scss")]
+      bootstrap: [path.resolve(__dirname, "../components/scss/bootstrap.scss")],
+      ckeditor: [path.resolve(__dirname, "../components/scss/ckeditor.scss")],
+      components: [path.resolve(__dirname, "../components/scss/components.scss")],
+      kendo: [path.resolve(__dirname, "../components/scss/kendo.scss")],
+      smartElement: [path.resolve(__dirname, "../components/scss/smartElement.scss")],
+      login: [path.resolve(__dirname, "../components/scss/login.scss")],
+      colors: [path.resolve(__dirname, "../components/scss/colors.scss")]
     },
     withoutBabel: true,
     buildPath: PUBLIC_PATH

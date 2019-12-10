@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:enumerates>
+        <smart:enum-configuration name="tst_colors">
+            <smart:enum name="red" label="Rouge"/>
+            <smart:enum name="yellow" label="Jaune"/>
+            <smart:enum name="green" label="Vert"/>
+            <smart:enum name="blue" label="Bleu"/>
+        </smart:enum-configuration>
+
+    </smart:enumerates>
+    <smart:structure-configuration name="TST_007" label="Test n°7">
+        <smart:class>Anakeen\Pu\SmartStructures\TestDefault007</smart:class>
+        <smart:tag name="vendor">Anakeen</smart:tag>
+        <smart:fields>
+            <smart:field-set name="tst_f_title" type="frame" label="Titre" access="ReadWrite">
+                <smart:field-text name="tst_title" label="Le titre" access="ReadWrite" is-title="true"/>
+                <smart:field-enum name="tst_e0" relation="tst_colors" multiple="true" access="ReadWrite"/>
+                <smart:field-int name="tst_n0" access="ReadWrite"/>
+                <smart:field-int name="tst_n1" access="ReadWrite"/>
+                <smart:field-int name="tst_n2" access="ReadWrite"/>
+                <smart:field-int name="tst_n3" access="ReadWrite"/>
+                <smart:field-int name="tst_n4" access="ReadWrite"/>
+                <smart:field-int name="tst_n5" access="ReadWrite"/>
+                <smart:field-int name="tst_n6" access="ReadWrite"/>
+                <smart:field-int name="tst_n7" access="ReadWrite"/>
+                <smart:field-int name="tst_n8" access="ReadWrite"/>
+                <smart:field-int name="tst_n9" access="ReadWrite"/>
+                <smart:field-text name="tst_t0" access="ReadWrite"/>
+                <smart:field-longtext name="tst_t1" access="ReadWrite"/>
+                <smart:field-text name="tst_t2" access="ReadWrite"/>
+                <smart:field-text name="tst_t3" access="ReadWrite"/>
+                <smart:field-text name="tst_t4" access="ReadWrite"/>
+                <smart:field-text name="tst_t5" access="ReadWrite"/>
+                <smart:field-set name="tst_t_t1" access="ReadWrite" type="array">
+                    <smart:field-text name="tst_ts" access="ReadWrite"/>
+                    <smart:field-int name="tst_is" access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-set name="tst_t_t2" access="ReadWrite" type="array">
+                    <smart:field-longtext name="tst_lts" access="ReadWrite"/>
+                    <smart:field-double name="tst_ds" access="ReadWrite"/>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:fields>
+
+        <smart:defaults>
+            <smart:default field="tst_t_t1">
+                [{"tst_ts":"Hola", "tst_is":12},{"tst_ts":"Hombre", "tst_is":56}]
+            </smart:default>
+            <smart:default field="tst_e0">
+                ["red","green"]
+            </smart:default>
+
+            <smart:default field="tst_ts">Never</smart:default>
+            <smart:default field="tst_is">-1</smart:default>
+            <smart:default field="tst_lts">Loooong texte</smart:default>
+            <smart:default field="tst_ds">12.567</smart:default>
+            <smart:default field="tst_title">Hello</smart:default>
+            <smart:default field="tst_n0">0</smart:default>
+            <smart:default field="tst_n1">
+                <smart:field-callable function="::isOne"/>
+            </smart:default>
+            <smart:default field="tst_n2">
+                <smart:field-callable function="::oneMore"/>
+                <smart:field-argument type="field">tst_n1</smart:field-argument>
+            </smart:default>
+            <smart:default field="tst_n6">
+                <smart:field-callable function="::simpleAdd"/>
+                <smart:field-argument type="string">34</smart:field-argument>
+                <smart:field-argument type="string">-28</smart:field-argument>
+            </smart:default>
+            <smart:default field="tst_n7">
+                <smart:field-callable function="::simpleAdd"/>
+                <smart:field-argument type="string">4</smart:field-argument>
+                <smart:field-argument type="field">tst_n2</smart:field-argument>
+                <smart:field-argument type="field">tst_n1</smart:field-argument>
+            </smart:default>
+            <smart:default field="tst_t0">Hello World : C'est l'été.</smart:default>
+            <smart:default field="tst_t1"><![CDATA[Des œufs à 12€,
+et des brouettes.]]>
+            </smart:default>
+            <smart:default field="tst_t2">
+                <smart:field-callable function="::commaConcat"/>
+                <smart:field-argument type="string">Début</smart:field-argument>
+                <smart:field-argument type="field">tst_t0</smart:field-argument>
+                <smart:field-argument type="string">Fin</smart:field-argument>
+            </smart:default>
+            <smart:default field="tst_t3">
+                <smart:field-callable function="Anakeen\Pu\SmartStructures\TestStaticDefault::semiColumnConcat"/>
+                <smart:field-argument type="string">[</smart:field-argument>
+                <smart:field-argument type="field">tst_t2</smart:field-argument>
+                <smart:field-argument type="string">]</smart:field-argument>
+            </smart:default>
+            <smart:default field="tst_t4">Quatre</smart:default>
+
+        </smart:defaults>
+        <smart:accesses/>
+    </smart:structure-configuration>
+
+    <smart:structure-configuration name="TST_007a" label="Test n°7a">
+        <smart:extends ref="TST_007"/>
+        <smart:tag name="vendor">Anakeen</smart:tag>
+
+        <smart:defaults>
+            <smart:default field="tst_t_t2">[]</smart:default>
+            <smart:default field="tst_title">Hello</smart:default>
+            <smart:default field="tst_n0">1</smart:default>
+            <smart:default field="tst_n1">002</smart:default>
+            <smart:default field="tst_n2">32</smart:default>
+            <smart:default field="tst_t1"><![CDATA[Des œufs à 14€,
+ça a augmenté.]]>
+            </smart:default>
+            <smart:default field="tst_t0">Hello World : C'est l'hivers.</smart:default>
+            <smart:default field="tst_t4"/>
+        </smart:defaults>
+        <smart:accesses/>
+    </smart:structure-configuration>
+
+    <!-- TEST 7A -->
+
+    <smart:structure-configuration name="TST_007a" label="Test n°7a">
+        <smart:extends ref="TST_007"/>
+
+        <smart:defaults>
+            <smart:default reset="true" inherit="true" field="tst_n2"/>
+        </smart:defaults>
+        <smart:accesses/>
+    </smart:structure-configuration>
+
+
+
+</smart:config>
