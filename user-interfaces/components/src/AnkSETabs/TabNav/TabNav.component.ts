@@ -17,14 +17,17 @@ const firstUpperCase = str => {
         const classes = ctx.data.class;
         if (classes) {
           if (typeof classes === "object") {
-            vnodes.forEach(
-              vnode =>
-                (vnode.data.class = Object.keys(classes)
-                  .filter(classe => classes[classe])
-                  .join(" "))
-            );
+            vnodes.forEach(vnode => {
+              vnode.data = vnode.data || {};
+              vnode.data.class = Object.keys(classes)
+                .filter(classe => classes[classe])
+                .join(" ");
+            });
           } else if (typeof classes === "string") {
-            vnodes.forEach(vnode => (vnode.data.class = classes));
+            vnodes.forEach(vnode => {
+              vnode.data = vnode.data || {};
+              vnode.data.class = classes;
+            });
           }
         }
         return vnodes;
@@ -69,9 +72,12 @@ export default class TabsNav extends Vue {
   // Root Vue tabs component
   @Inject("rootTabs") public readonly rootTabs!: Vue;
 
-  @Prop({ default: noop, type: Function }) public readonly onTabClick!: (...args: any[]) => void;
-  @Prop({ default: noop, type: Function }) public readonly onTabRemove!: (...args: any[]) => void;
-  @Prop({ type: Array }) public readonly panes!: Vue[];
+  @Prop({ default: noop, type: Function })
+  public readonly onTabClick!: (...args: any[]) => void;
+  @Prop({ default: noop, type: Function })
+  public readonly onTabRemove!: (...args: any[]) => void;
+  @Prop({ type: Array })
+  public readonly panes!: Vue[];
 
   public $refs!: {
     nav: HTMLElement;
@@ -113,10 +119,10 @@ export default class TabsNav extends Vue {
     const sizeName = this.sizeName;
     const navSize = this.$refs.nav[`scroll${firstUpperCase(sizeName)}`];
     const containerSize = this.$refs.navScroll[`offset${firstUpperCase(sizeName)}`];
-    const currentOffset = this.navOffset;
+    let currentOffset = this.navOffset;
     // @ts-ignore
     if (containerSize < navSize || this.rootTabs.forceScrollNavigation) {
-      const currentOffset = this.navOffset;
+      currentOffset = this.navOffset;
 
       this.scrollable = this.scrollable || {};
       this.scrollable.prev = currentOffset;

@@ -22,7 +22,7 @@
   </hub-element-layout>
 </template>
 <script>
-import HubElement from "@anakeen/hub-components/components/lib/HubElement";
+import HubElement from "@anakeen/hub-components/components/lib/AnkHubElement.esm";
 import { setupVue } from "../../setup.js";
 import securityStore from "./storeModule.js";
 export default {

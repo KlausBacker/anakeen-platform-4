@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* tslint:disable:variable-name ordered-imports */
 // @ts-ignore
-import StaticErrorTemplate from "!!raw-loader!./utils/templates/SEError.html.mustache";
+import StaticErrorTemplate from "./utils/templates/SEError.mustache.js";
 import { AnakeenController } from "./types/ControllerTypes";
 import ListenableEvent = AnakeenController.BusEvents.ListenableEvent;
 import ISmartElementAPI = AnakeenController.SmartElement.ISmartElementAPI;
@@ -9,41 +9,41 @@ import ISmartField = AnakeenController.SmartElement.ISmartField;
 import ISmartElement = AnakeenController.SmartElement.ISmartElement;
 import Listenable = AnakeenController.BusEvents.Listenable;
 // @ts-ignore
-import LoadingTemplate from "!!raw-loader!./utils/templates/SELoading.html.mustache";
+import LoadingTemplate from "./utils/templates/SELoading.mustache.js";
 import * as Backbone from "backbone";
 // @ts-ignore
-import AttributeInterface = require("dcpDocument/controllerObjects/attributeInterface");
+import AttributeInterface from "../../controllerObjects/attributeInterface";
 // @ts-ignore
-import MenuInterface = require("dcpDocument/controllerObjects/menuInterface");
+import MenuInterface from "../../controllerObjects/menuInterface";
 // @ts-ignore
-import TransitionInterface = require("dcpDocument/controllerObjects/transitionInterface");
+import TransitionInterface from "../../controllerObjects/transitionInterface";
 // @ts-ignore
-import i18n = require("dcpDocument/i18n/documentCatalog");
+import i18n from "../../i18n/documentCatalog";
 // @ts-ignore
-import Model = require("dcpDocument/models/mDocument");
+import Model from "../../models/mDocument";
 // @ts-ignore
-import MenuModel = require("dcpDocument/models/mMenu");
+import MenuModel from "../../models/mMenu";
 // @ts-ignore
-import TransitionModel = require("dcpDocument/models/mTransition");
+import TransitionModel from "../../models/mTransition";
 // @ts-ignore
-import Router = require("dcpDocument/routers/router.js");
+import Router from "../../routers/router.js";
 // @ts-ignore
-import View = require("dcpDocument/views/document/vDocument");
+import View from "../../views/document/vDocument";
 // @ts-ignore
-import TransitionView = require("dcpDocument/views/workflow/vTransition");
-import "dcpDocument/widgets/widget";
-import "dcpDocument/widgets/window/wConfirm";
-import "dcpDocument/widgets/window/wLoading";
-import "dcpDocument/widgets/window/wNotification";
+import TransitionView from "../../views/workflow/vTransition";
+import "../../widgets/widget";
+import "../../widgets/window/wConfirm";
+import "../../widgets/window/wLoading";
+import "../../widgets/window/wNotification";
 import SmartElementProperties = AnakeenController.Types.SmartElementProperties;
 import ViewData = AnakeenController.Types.IViewData;
 import DOMReference = AnakeenController.Types.DOMReference;
 import ListenableEventCallable = AnakeenController.BusEvents.ListenableEventCallable;
 import ListenableEventOptions = AnakeenController.BusEvents.IListenableEventOptions;
 import IControllerOptions = AnakeenController.Types.IControllerOptions;
-import * as $ from "jquery";
-import * as Mustache from "mustache";
-import * as _ from "underscore";
+import $ from "jquery";
+import Mustache from "mustache";
+import _ from "underscore";
 import SmartElementEvent = AnakeenController.SmartElement.SmartElementEvent;
 
 const DEFAULT_OPTIONS: IControllerOptions = {

@@ -3,7 +3,7 @@ import { Component, Vue } from "vue-property-decorator";
 // A mixin to indicate if the component is ready
 @Component
 export default class AnkVueReadyMixin extends Vue {
-  private _ank_ready: boolean = false;
+  private _ank_ready = false;
 
   public isReady() {
     return this._ank_ready;

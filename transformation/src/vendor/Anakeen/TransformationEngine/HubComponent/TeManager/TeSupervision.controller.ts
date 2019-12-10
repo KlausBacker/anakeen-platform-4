@@ -102,14 +102,11 @@ export default class TeSupervision extends Vue {
               }
             },
             template: item => {
-              const callError =
-                item.callreturn && item.callreturn.substr(0, 5) === "ERROR";
+              const callError = item.callreturn && item.callreturn.substr(0, 5) === "ERROR";
               return $("<span/>")
                 .text(item.status)
                 .addClass(
-                  "cell-status-value cell-status--" +
-                    item.status +
-                    (callError ? " cell-status--CALLERROR" : "")
+                  "cell-status-value cell-status--" + item.status + (callError ? " cell-status--CALLERROR" : "")
                 )
                 .get(0).outerHTML;
             },

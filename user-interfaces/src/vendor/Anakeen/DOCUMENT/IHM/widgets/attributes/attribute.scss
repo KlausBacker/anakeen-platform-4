@@ -8,7 +8,6 @@
   position: inherit;
 }
 
-
 .dcpAttribute__content .input-group-addon .btn,
 .dcpAttribute__content .k-state-default >.k-select,
 .dcpAttribute__value2 .k-select {
@@ -19,8 +18,6 @@
       background-color:transparent;
     }
 }
-
-
 
 .dcpAttribute__content__buttons.input-group-addon {
   border:0;
@@ -34,7 +31,6 @@
     text-decoration: none;
   }
 }
-
 
 .dcpDocument--view .dcpAttribute__content .dcpAttribute__content__buttons {
   float: right;
@@ -67,10 +63,6 @@
   }
 }
 
-.dcpAttribute__content .k-widget > .k-state-default {
-  //border-radius: $border-radius-base 0 0 $border-radius-base;
-}
-
 .dcpAttribute__content .input-group .dcpAttribute__content__nobutton,
 .dcpAttribute__content .input-group .dcpAttribute__value.dcpAttribute__content__nobutton,
 .dcpAttribute__content .form-control.dcpAttribute__value.dcpAttribute__value--edit.dcpAttribute__content__nobutton .k-state-default.dcpAttribute__content__nobutton,
@@ -84,10 +76,7 @@
 .dcpArray__content__cell .input-group input.form-control,
 .dcpAttribute__content .input-group .k-autocomplete {
   height: calc( #{$ank-ui-input-height} - 2px);
-  border:none;
 }
-
-
 
 .dcpAttribute__content > .input-group {
   border: $ank-ui-doc-edit-attribute-border;
@@ -101,11 +90,9 @@
   }
 }
 
-
 .dcpAttribute--focus {
   &.dcpAttribute__content > .input-group {
     border-color: $ank-ui-doc-edit-attribute-focus-color;
-
     box-shadow: $ank-ui-doc-edit-attribute-focus-shadow;
   }
 
@@ -134,25 +121,15 @@
     }
   }
   .input-group .k-widget.form-control:not(:first-child):not(:last-child) .k-dropdown-wrap {
-     // border-radius: $border-radius-base;
       border:none;
-
   }
 }
 
 .dcpAttribute__content--widget {
-
-  .k-dropdown-wrap,
-   .input-group > .k-widget {
-    //border-radius: $border-radius-base;
-  }
   .input-group .k-widget.form-control:not(:first-child):not(:last-child) .k-multiselect-wrap,
   .k-widget.form-control > .k-multiselect-wrap,
   .k-widget > .k-state-default {
     border:none;
-    //border-top-right-radius:  $border-radius-base;
-    //border-bottom-right-radius:  $border-radius-base;
-
   }
 }
 .dcpAttribute__content .input-group-addon button,
@@ -208,9 +185,6 @@ iframe.dcpAttribute__value--endflash {
   width: 100%;
   display: inline-block;
 }
-
-
-
 
 .dcpAttribute__content .input-group-addon button.dcpAttribute__content__button--extra,
 .dcpArray__content__cell .input-group-addon button.dcpAttribute__content__button--extra {

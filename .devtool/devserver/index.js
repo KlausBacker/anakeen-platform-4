@@ -1,4 +1,5 @@
 const webpack = require("webpack");
+const rollup = require("rollup");
 const webpackDevMiddleware = require("webpack-dev-middleware");
 const express = require("express");
 const app = express();
@@ -6,26 +7,8 @@ const proxy = require("express-http-proxy");
 const config = require("./config.perso.js");
 const merge = require("webpack-merge");
 
-config.getDllConfig().forEach(currentElement => {
-  currentElement.webpack.forEach(currentConfig => {
-    if (currentConfig.mode !== "development") {
-      return;
-    }
-    if (currentElement.context) {
-      currentConfig.context = currentElement.context;
-    }
-    //Run a webpack watcher to reinit file when needed
-    const compiler = webpack(currentConfig);
-    compiler.watch({}, () => {
-      console.log(`build of ${currentConfig.name} done`);
-    });
-    //If there is a path a add rule to express to handle the file
-    if (currentElement.path) {
-      app.get(currentElement.path.url, (req, res) => {
-        res.sendFile(currentElement.path.local);
-      });
-    }
-  });
+config.getRollupConfig().forEach(currentElement => {
+  const compiler = rollup.watch(currentElement);
 });
 
 config.getConfig().forEach(currentConfig => {

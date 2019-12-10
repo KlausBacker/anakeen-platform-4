@@ -10,8 +10,5 @@ if (
   window.ank.hub["ank-business-app"]
 ) {
   // @ts-ignore
-  window.ank.hub["ank-business-app"].resolve(
-    HubBusinessAppEntry,
-    "ank-business-app"
-  );
+  window.ank.hub["ank-business-app"].resolve(HubBusinessAppEntry, "ank-business-app");
 }

@@ -1,4 +1,4 @@
-import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSEGrid";
+import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementGrid.esm";
 import ElementView from "../../SmartElements/ElementView/ElementView.vue";
 import ProfileView from "devComponents/profile/profile.vue";
 import Splitter from "@anakeen/internal-components/lib/Splitter.js";

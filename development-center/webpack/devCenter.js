@@ -1,10 +1,12 @@
 const path = require("path");
-const { dontParse, dllPart, useCache  } = require("./common.part");
+const { dontParse, useCache  } = require("./common.part");
 
 const {
   vueLoader,
   typeScriptLoader,
-  addFalseKendoGlobal
+  addKendoGlobal,
+  addJqueryGlobal,
+  addVueGlobal
 } = require("@anakeen/webpack-conf/parts");
 
 const BASE_DIR = path.resolve(__dirname, "../");
@@ -12,6 +14,7 @@ const PUBLIC_PATH = path.join(BASE_DIR, "src/public");
 
 const conf = {
   moduleName: "DevCenter",
+  libName: "DevCenter",
   entry: {
     "vendor-selector": [path.resolve(BASE_DIR, "src/vendor/Anakeen/DevelopmentCenter/vue/hubComponents/DevBreadcrumb/index.js")],
     "breadcrumb": [path.resolve(BASE_DIR, "src/vendor/Anakeen/DevelopmentCenter/vue/hubComponents/DevVendorSelector/index.js")],
@@ -33,7 +36,9 @@ const conf = {
     useCache,
     vueLoader(),
     typeScriptLoader(),
-    addFalseKendoGlobal([/kendo.pdf/, /kendo.excel/]),
+    addKendoGlobal([/kendo.pdf/, /kendo.excel/], true),
+    addJqueryGlobal(),
+    addVueGlobal(),
     {
       resolve: {
         extensions: [".js", ".vue", ".json", ".ts", ".tsx"]
@@ -49,6 +54,6 @@ const conf = {
   ]
 };
 
-conf.customParts = [...conf.customParts, ...dllPart];
+conf.customParts = [...conf.customParts];
 
 module.exports = conf;

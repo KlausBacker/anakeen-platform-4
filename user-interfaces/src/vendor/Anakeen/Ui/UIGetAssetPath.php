@@ -65,26 +65,6 @@ class UIGetAssetPath
         return $assets["KendoUI"]["js"];
     }
 
-    /**
-     * @return mixed
-     * @throws Exception
-     */
-    public static function getJSKendoComponentPath()
-    {
-        $assets = self::getElementAssets("ankDll", self::isInDebug()? "dev":"legacy");
-        return $assets["ankKendoDll"]["js"];
-    }
-
-    /**
-     * @return mixed
-     * @throws Exception
-     */
-    public static function getJSVueComponentPath()
-    {
-        $assets = self::getElementAssets("ankDll", self::isInDebug()? "dev":"legacy");
-        return $assets["vueDll"]["js"];
-    }
-
 
     /**
      * @return mixed
@@ -146,22 +126,6 @@ class UIGetAssetPath
     public static function getCssSmartWebComponents()
     {
         return self::getCss("components");
-    }
-
-    /**
-     * @param bool $legacy
-     * @return mixed
-     * @throws Exception
-     */
-    public static function getJSSmartElementControllerPath($legacy = false)
-    {
-        $name = "smartElementController";
-        if (self::isInDebug()) {
-            $paths = self::getElementAssets("smartElement", "dev");
-        } else {
-            $paths = self::getElementAssets("smartElement", $legacy ? "legacy" : "prod");
-        }
-        return $paths[$name]["js"];
     }
 
     /**

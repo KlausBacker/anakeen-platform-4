@@ -89,7 +89,7 @@ user-interfaces-buildJS:
   tags:
   - a4ppm
   script:
-    - make -C user-interfaces buildDLL
+    - make -C user-interfaces buildComponent
   artifacts:
     paths:
       - user-interfaces/src/public/Anakeen/ankDll/
@@ -138,7 +138,7 @@ hub-station-buildJS:
   tags:
   - a4ppm
   script:
-    - make -C hub-station buildDLL
+    - make -C hub-station lib
   artifacts:
     paths:
       - hub-station/components/lib/

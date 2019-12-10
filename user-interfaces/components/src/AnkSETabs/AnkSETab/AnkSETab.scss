@@ -4,14 +4,13 @@
   width: 100%;
   overflow-y: hidden;
   background-color: white;
-  outline:solid red 2px;
 
 
   .ank-loading {
     background: transparent;
     margin-top: 3px;
 
-    /deep/ {
+    ::v-deep {
       .main-logo *, .text-logo * {
         fill: black !important;
       }
@@ -19,7 +18,7 @@
   }
 
   .ank-se-tab-element {
-    /deep/ {
+    ::v-deep {
       > .smart-element-wrapper {
         height: 100%;
 

@@ -22,13 +22,13 @@
     "@anakeen/theme-variables": "1.0.0-RC.2019.1.16",
     "@anakeen/user-interfaces": "3.0.0-RC.2019.1.16",
     "@types/jquery": "^3.3.30",
-    "@types/kendo-ui": "^2019.1.1",
+    "@types/kendo-ui": "^2019.3.1",
     "vue": "2.6.10",
-    "vue-property-decorator": "^8.2.1"
+    "vue-property-decorator": "^8.3.0"
   },
   "devDependencies": {
     "@anakeen/anakeen-cli": "1.2.0-RC.2019.1.16",
     "@anakeen/webpack-conf": "1.2.1",
-    "typescript": "^3.5.3"
+    "typescript": "^3.7.3"
   }
 }

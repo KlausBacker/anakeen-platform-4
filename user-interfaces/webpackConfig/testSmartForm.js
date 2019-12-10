@@ -1,10 +1,13 @@
 const path = require("path");
-const { dontParse, dllPart, useCache } = require("./dllcommon.part");
+
+const { useCache } = require("./common");
 
 const {
   vueLoader,
   typeScriptLoader,
-  addFalseKendoGlobal
+  addKendoGlobal,
+  addJqueryGlobal,
+  addVueGlobal
 } = require("@anakeen/webpack-conf/parts");
 
 const BASE_DIR = path.resolve(__dirname, "../");
@@ -21,12 +24,21 @@ const conf = {
     ]
   },
   buildPath: PUBLIC_PATH,
-  excludeBabel: dontParse,
+  excludeBabel: [
+    /node_modules\/axios/,
+    /node_modules\/@progress\/.*/,
+    /node_modules\/css-loader/,
+    /node_modules\/vue/,
+    /node_modules\/jsoneditor/,
+    /node_modules\/brace/
+  ],
   customParts: [
     useCache,
     vueLoader(),
     typeScriptLoader(),
-    addFalseKendoGlobal([/kendo.pdf/, /kendo.excel/]),
+    addJqueryGlobal(),
+    addVueGlobal(),
+    addKendoGlobal([/kendo.pdf/, /kendo.excel/], true),
     {
       resolve: {
         extensions: [".js", ".vue", ".json", ".ts", ".tsx"]
@@ -34,7 +46,5 @@ const conf = {
     }
   ]
 };
-
-conf.customParts = [...conf.customParts, ...dllPart];
 
 module.exports = conf;

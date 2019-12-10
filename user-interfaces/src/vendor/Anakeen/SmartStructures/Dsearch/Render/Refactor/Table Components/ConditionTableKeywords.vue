@@ -20,7 +20,7 @@ import KeywordsTime from "./KeywordsComponents/KeywordsTime";
 import KeywordsTimestamp from "./KeywordsComponents/KeywordsTimestamp";
 import KeywordsWid from "./KeywordsComponents/KeywordsWid";
 import KeywordsDefault from "./KeywordsComponents/KeywordsDefault";
-import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin";
+import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
 
 export default {
   name: "condition-table-keywords",

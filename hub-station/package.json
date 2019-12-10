@@ -1,17 +1,13 @@
 {
   "name": "@anakeen/hub-components",
   "version": "1.0.2-RC.2019.1.16",
-  "autorelease": true,
   "description": "Anakeen Hub Components",
   "main": "components/lib/hub-components.common.min.js",
   "scripts": {
     "beautify": "npx eslint ./ --fix",
     "lint": "npx eslint ./",
-    "lib:dev": "npx webpack --env development --config ./components/webpack/index.js",
+    "lib:dev": "CLEAN=true npx rollup -c ./components/rollup/rollup.config.js",
     "lib": "yarn run lib:dev",
-    "buildVendor:legacy": "conf=DEV npx webpack --config ./webpack/hubVendor.js",
-    "buildVendor:dev": "conf=LEGACY npx webpack --config ./webpack/hubVendor.js",
-    "buildVendor": "yarn run buildVendor:dev && yarn run buildVendor:legacy",
     "buildJs:prod": "conf=PROD npx webpack --config ./webpack/index.js",
     "buildJs:dev": "conf=DEV npx webpack --config ./webpack/index.js",
     "buildJs:legacy": "conf=LEGACY npx webpack --config ./webpack/index.js",
@@ -19,8 +15,7 @@
     "buildJsRender:prod": "conf=PROD npx webpack --config ./webpack/render.js",
     "buildJsRender:dev": "conf=DEV npx webpack --config ./webpack/render.js",
     "buildJsRender:legacy": "conf=LEGACY npx webpack --config ./webpack/render.js",
-    "buildJsRender": "yarn run buildJsRender:prod && yarn run buildJsRender:dev && yarn run buildJsRender:legacy",
-    "watch": "webpack --watch --env development --config ./components/webpack/index.js"
+    "buildJsRender": "yarn run buildJsRender:prod && yarn run buildJsRender:dev && yarn run buildJsRender:legacy"
   },
   "files": [
     "/components/**/*",
@@ -29,10 +24,6 @@
     "/src/**/*",
     "yarn.lock"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git@gitlab.anakeen.com:Anakeen/Users/charles.bonnissent/anakeen-hub.git"
-  },
   "keywords": [
     "hub",
     "station"
@@ -40,36 +31,44 @@
   "author": "Anakeen",
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
-    "@anakeen/internal-components": "1.0.2-RC.2019.1.16",
+    "@anakeen/internal-components": "1.0.2",
+    "@anakeen/user-interfaces": "3.0.0",
+    "@progress/kendo-buttons-vue-wrapper": "^2019.3.1023",
+    "@progress/kendo-datasource-vue-wrapper": "^2019.3.1023",
+    "@progress/kendo-dropdowns-vue-wrapper": "^2019.3.1023",
+    "@progress/kendo-layout-vue-wrapper": "^2019.3.1023",
+    "@progress/kendo-ui": "2019.3.1113",
     "@types/navigo": "^7.0.1",
     "@types/url-join": "^4.0.0",
+    "axios": "^0.19.0",
+    "fg-loadcss": "^2.1.0",
+    "jquery": "^3.3.1",
+    "little-loader": "^0.2.0",
     "navigo": "^7.1.2",
     "url-join": "^4.0.1",
-    "little-loader": "^0.2.0",
+    "uuid": "^3.3.3",
+    "vue": "2.6.10",
+    "vue-class-component": "^7.0.2",
+    "vue-property-decorator": "^8.3.0",
     "vuebar": "^0.0.20",
-    "fg-loadcss": "^2.1.0"
+    "vuex": "^3.1.2"
   },
   "devDependencies": {
     "@anakeen/anakeen-cli": "1.2.0-RC.2019.1.16",
     "@anakeen/user-interfaces": "3.0.0-RC.2019.1.16",
     "@anakeen/webpack-conf": "1.2.1",
-    "@progress/kendo-buttons-vue-wrapper": "^2019.2.621",
-    "@progress/kendo-datasource-vue-wrapper": "^2019.2.621",
-    "@progress/kendo-dropdowns-vue-wrapper": "^2019.2.621",
-    "@progress/kendo-layout-vue-wrapper": "^2019.2.621",
-    "@progress/kendo-ui": "2019.3.917",
-    "@types/node": "^12.6.2",
-    "axios": "^0.19.0",
-    "core-js": "3.1.4",
+    "@types/node": "^12.12.14",
     "hard-source-webpack-plugin": "^0.13.1",
-    "typescript": "^3.5.3",
-    "ts-loader": "^6.0.4",
-    "vue": "2.6.10",
-    "vue-class-component": "^7.0.2",
-    "vue-property-decorator": "^8.2.1",
-    "vuex": "^3.1.0",
-    "webpack-merge": "^4.2.1",
-    "webpack-node-externals": "^1.7.2"
+    "rollup": "^1.27.8",
+    "rollup-plugin-cleaner": "^1.0.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-json": "^4.0.0",
+    "rollup-plugin-postcss": "^2.0.3",
+    "rollup-plugin-progress": "^1.1.1",
+    "rollup-plugin-scss": "^1.0.2",
+    "rollup-plugin-string": "^3.0.0",
+    "rollup-plugin-typescript2": "^0.25.3",
+    "rollup-plugin-vue": "^5.1.4"
   },
   "peerDependencies": {
     "@anakeen/user-interfaces": "3.0.0-RC.2019.1.16",
@@ -77,7 +76,7 @@
     "jquery": "^3.3.1",
     "vue": "2.6.10",
     "vue-class-component": "^7.0.2",
-    "vue-property-decorator": "^8.2.1",
+    "vue-property-decorator": "^8.3.0",
     "vuex": "^3.1.0"
   }
 }

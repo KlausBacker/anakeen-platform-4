@@ -24,16 +24,12 @@ class RenderDefault implements IRenderConfig
 
     public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
-        return array(
-            "bootstrap" => \Anakeen\Ui\UIGetAssetPath::getCssBootstrap(),
-            "kendo" => \Anakeen\Ui\UIGetAssetPath::getCssKendo(),
-            "smartElement" => \Anakeen\Ui\UIGetAssetPath::getCssSmartElement()
-        );
+        return [];
     }
 
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
-        return array();
+        return [];
     }
 
     public function getMessages(\Anakeen\Core\Internal\SmartElement $document)
@@ -60,12 +56,7 @@ class RenderDefault implements IRenderConfig
         return $jsRef;
     }
 
-    public function getControllerJs($legacy = false)
-    {
-        return UIGetAssetPath::getJSSmartElementControllerPath($legacy);
-    }
-
-    public function getCoreJs($legacy = false)
+    public function getSmartElementJs($legacy = false)
     {
         return UIGetAssetPath::getJSSmartElementPath($legacy);
     }

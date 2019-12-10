@@ -14,7 +14,7 @@
   </ank-se-grid>
 </template>
 <script>
-import AnkSEGrid from "../../../../../../components/lib/AnkSEGrid";
+import AnkSEGrid from "../../../../../../components/lib/AnkSmartElementGrid.esm";
 
 export default {
   name: "SearchUISEGrid",

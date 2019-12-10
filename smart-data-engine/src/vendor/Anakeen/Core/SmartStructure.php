@@ -118,7 +118,11 @@ create unique index idx_idfam on docfam(id);";
                     /** @noinspection PhpIncludeInspection */
                     require_once($attFileClass);
                 } else {
-                    throw new \Anakeen\Exception(sprintf("Cannot access fields definition for %s (#%s) structure", $this->name, $this->id));
+                    throw new \Anakeen\Exception(sprintf(
+                        "Cannot access fields definition for %s (#%s) structure",
+                        $this->name,
+                        $this->id
+                    ));
                 }
             }
             $this->attributes = new $adoc();
@@ -145,6 +149,7 @@ create unique index idx_idfam on docfam(id);";
             $this->_xtparam = null;
         });
     }
+
     /**
      * return i18n title for family
      * based on name
@@ -226,9 +231,9 @@ create unique index idx_idfam on docfam(id);";
     //~~~~~~~~~~~~~~~~~~~~~~~~~ PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-
     /**
-     * return family parameter
+     * return structure parameter as is set in database
+     * not perform computed methods.
      *
      * @param string $idp parameter identifier
      * @param string $def default value if parameter not found or if it is null
@@ -238,15 +243,7 @@ create unique index idx_idfam on docfam(id);";
      */
     final public function getParameterRawValue($idp, $def = "")
     {
-        $pValue = $this->getXValue("param", $idp);
-        if ($pValue === '') {
-            $defsys = $this->getDefValue($idp);
-            if ($defsys !== '') {
-                return $defsys;
-            }
-            return $def;
-        }
-        return $pValue;
+        return $this->getXValue("param", $idp, $def);
     }
 
     /**
@@ -255,9 +252,9 @@ create unique index idx_idfam on docfam(id);";
      * @param string $idp
      * @param string $def
      *
-     * @see \Anakeen\Core\Internal\SmartElement::getParameterFamilyValue_
      * @return bool|string
      * @throws \Anakeen\Database\Exception
+     * @see \Anakeen\Core\Internal\SmartElement::getParameterFamilyValue_
      */
     protected function getParameterFamilyRawValue($idp, $def)
     {
@@ -291,8 +288,8 @@ create unique index idx_idfam on docfam(id);";
      * the parameter must be in an array or of a type '*list' like enumlist or textlist
      *
      * @param string $idAttr identifier of list parameter
-     * @param string $def    default value returned if parameter not found or if is empty
-     * @param int    $index  rank in case of multiple value
+     * @param string $def default value returned if parameter not found or if is empty
+     * @param int $index rank in case of multiple value
      *
      * @return array|string the list of parameter values
      * @throws \Anakeen\Database\Exception
@@ -313,9 +310,9 @@ create unique index idx_idfam on docfam(id);";
     /**
      * set family parameter value
      *
-     * @param string $idp   parameter identifier
-     * @param string $val   value of the parameter
-     * @param bool   $check set to false when construct family
+     * @param string $idp parameter identifier
+     * @param string $val value of the parameter
+     * @param bool $check set to false when construct family
      *
      * @return string error message
      */
@@ -329,6 +326,11 @@ create unique index idx_idfam on docfam(id);";
             $oa = $this->getAttribute($idp); // never use getAttribute if not check
             if (!$oa) {
                 return \ErrorCode::getError('DOC0120', $idp, $this->getTitle(), $this->name);
+            }
+        }
+        if ($oa) {
+            if ($oa->isMultiple() && ! is_array($val)) {
+                return \ErrorCode::getError('DOC0137', $this->name, $idp, $val);
             }
         }
 
@@ -364,15 +366,15 @@ create unique index idx_idfam on docfam(id);";
                 if (is_array($val)) {
                     $tDates = $val;
                 } else {
-                    $tDates=[$val];
+                    $tDates = [$val];
                 }
                 foreach ($tDates as $k => $date) {
                     $tDates[$k] = Date::stringDateToIso($date, $dateFormat);
                 }
                 if (is_array($val)) {
-                    $val=$tDates;
+                    $val = $tDates;
                 } else {
-                    $val=$tDates[0];
+                    $val = $tDates[0];
                 }
             } else {
                 return sprintf(_("local config for date not found"));
@@ -442,7 +444,13 @@ create unique index idx_idfam on docfam(id);";
                     if ($oa->phpconstraint) {
                         //print_r2($aid."[$ka]".$oa->phpconstraint);
                         $map[$aid] = $av;
-                        $err = $this->applyMethod($oa->phpconstraint, null, $oa->isMultiple() ? $ka : -1, array(), $map);
+                        $err = $this->applyMethod(
+                            $oa->phpconstraint,
+                            null,
+                            $oa->isMultiple() ? $ka : -1,
+                            array(),
+                            $map
+                        );
                     }
                 }
             }
@@ -494,7 +502,7 @@ create unique index idx_idfam on docfam(id);";
      *
      * @param string $idp parameter identifier
      * @param string $val value of the default
-     * @param bool   $check
+     * @param bool $check
      *
      * @return string error message
      */
@@ -523,7 +531,7 @@ create unique index idx_idfam on docfam(id);";
     /**
      * return family default value
      *
-     * @param string $X   column name
+     * @param string $X column name
      * @param string $idp parameter identifier
      * @param string $def default value if parameter not found or if it is null
      *
@@ -538,11 +546,11 @@ create unique index idx_idfam on docfam(id);";
         }
 
         $tval2 = $this->$tval;
-        $v = isset($tval2[strtolower($idp)]) ? $tval2[strtolower($idp)] : '';
-        if ($v == "-") {
+        $v =  $tval2[strtolower($idp)]?? null;
+        if ($v === "-") {
             return $def;
         }
-        if ($v !== "") {
+        if ($v !== null) {
             return $v;
         }
         return $def;
@@ -582,7 +590,11 @@ create unique index idx_idfam on docfam(id);";
         $this->$Xval = array();
         $inhIds = array();
         if ($this->attributes !== null && isset($this->attributes->fromids) && is_array($this->attributes->fromids)) {
-            $sql = sprintf("select id,%s from docfam where id in (%s)", pg_escape_string($X), implode(',', $this->attributes->fromids));
+            $sql = sprintf(
+                "select id,%s from docfam where id in (%s)",
+                pg_escape_string($X),
+                implode(',', $this->attributes->fromids)
+            );
             DbManager::query($sql, $rx, false, false);
             foreach ($rx as $r) {
                 $XS[$r["id"]] = $r[$X];
@@ -594,11 +606,10 @@ create unique index idx_idfam on docfam(id);";
         }
 
         $txval = array();
-
         foreach ($inhIds as $famId) {
             $txvalh = $this->explodeX($XS[$famId]);
             foreach ($txvalh as $aid => $dval) {
-                $txval[$aid] = ($dval == '-') ? null : $dval;
+                $txval[$aid] = ($dval === '-') ? null : $dval;
             }
         }
         if ($this->isComplete()) {
@@ -638,7 +649,7 @@ create unique index idx_idfam on docfam(id);";
     public function setXValue($X, $idp, $val)
     {
         $tval = "_xt$X";
-        if (is_string($val) && json_decode($val)) {
+        if (is_string($val) && json_decode($val) !== null) {
             $val = json_decode($val);
         }
 
@@ -646,10 +657,9 @@ create unique index idx_idfam on docfam(id);";
 
         $txval[strtolower($idp)] = $val;
         $this->$tval = $txval;
-
         $tdefattr = array();
         foreach ($txval as $k => $v) {
-            if ($k && ($v !== '')) {
+            if ($k && ($v !== null)) {
                 $tdefattr[$k] = $v;
             }
         }
@@ -722,7 +732,10 @@ create unique index idx_idfam on docfam(id);";
      */
     public function getXmlSchema($linkInclude = false)
     {
-        $lay = new \Anakeen\Layout\TextLayout(sprintf("%s/vendor/Anakeen/Core/Layout/family_schema.xml", DEFAULT_PUBDIR));
+        $lay = new \Anakeen\Layout\TextLayout(sprintf(
+            "%s/vendor/Anakeen/Core/Layout/family_schema.xml",
+            DEFAULT_PUBDIR
+        ));
         $lay->set("famname", strtolower($this->name));
         $lay->set("famtitle", strtolower($this->getTitle()));
         $lay->set("include", $linkInclude);
@@ -809,7 +822,7 @@ create unique index idx_idfam on docfam(id);";
      * Get a property's parameter's value
      *
      * @param string $propName The property's name
-     * @param string $pName    The parameter's name
+     * @param string $pName The parameter's name
      *
      * @return bool|string boolean false on error, string containing the parameter's value
      */
@@ -839,8 +852,8 @@ create unique index idx_idfam on docfam(id);";
      * want to make the change persistent.
      *
      * @param string $propName The property's name
-     * @param string $pName    The parameter's name
-     * @param string $pValue   The parameter's value
+     * @param string $pName The parameter's name
+     * @param string $pValue The parameter's value
      *
      * @return bool boolean false on error, or boolean true on success
      */

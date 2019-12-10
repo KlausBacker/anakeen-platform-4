@@ -2,6 +2,7 @@ const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const FixStyleOnlyEntriesPlugin = require("webpack-fix-style-only-entries");
+const TerserPlugin = require("terser-webpack-plugin");
 
 /**
  * Add a basic loader for css rules
@@ -9,7 +10,7 @@ const FixStyleOnlyEntriesPlugin = require("webpack-fix-style-only-entries");
  * @param exclude
  * @returns {{module: {rules: {test: RegExp, use: string[], exclude: *}[]}}}
  */
-exports.cssLoader = exclude => ({
+exports.cssLoader = (exclude = []) => ({
   module: {
     rules: [
       {
@@ -60,7 +61,9 @@ exports.scssLoader = ({ filename, minify = false, removeJS = false, includePaths
             {
               loader: "sass-loader",
               options: {
-                includePaths
+                sassOptions: {
+                  includePaths
+                }
               }
             }
           ]
@@ -118,7 +121,8 @@ exports.typescriptLoader = (customOptions = {}) => {
         {
           test: /\.ts$/,
           loader: "ts-loader",
-          options
+          options,
+          exclude: /node_modules/
         }
       ]
     }
@@ -184,7 +188,15 @@ const configureBabelLoader = ({ browserlist, exclude = [], useBuiltIns = "usage"
       loader: "babel-loader",
       options: {
         babelrc: false,
-        exclude: [/node_modules\/core-js/],
+        exclude: [
+          //Add known no need for parsing library
+          /node_modules\/core-js/,
+          /node_modules\/axios/,
+          /node_modules\/ckeditor4/,
+          /node_modules\/@progress\/.*/,
+          /node_modules\/css-loader/,
+          /node_modules\/vue/
+        ],
         cacheDirectory: true,
         presets: [
           [
@@ -206,6 +218,7 @@ const configureBabelLoader = ({ browserlist, exclude = [], useBuiltIns = "usage"
   if (exclude) {
     conf.use.options.exclude = [...conf.use.options.exclude, ...exclude];
   }
+  console.log(conf.use.options.exclude);
   return conf;
 };
 
@@ -258,4 +271,37 @@ exports.jsLegacyLoader = exclude => {
       ]
     }
   };
+};
+
+exports.sourceMapLoader = () => {
+  return {
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          use: ["source-map-loader"],
+          enforce: "pre"
+        }
+      ]
+    }
+  };
+};
+
+exports.excludeChunkFromMinification = () => {
+  const optimization = {
+    optimization: {
+      minimizer: [
+        new TerserPlugin({
+          cache: false,
+          parallel: true,
+          sourceMap: true, // Must be set to true if using source-maps in production
+          chunkFilter: chunk => {
+            // Exclude uglification for the `vendor` chunk
+            return chunk.name === "vendors~ckeditor4";
+          }
+        })
+      ]
+    }
+  };
+  return optimization;
 };

@@ -1,7 +1,14 @@
 <template>
   <div class="hub-station-main">
-    <hub-station :config="config" @hubNotify="onNotify" />
-    <ank-notifier ref="ankNotifier" position="top-right" defaultType="notice" />
+    <hub-station
+      :config="config"
+      @hubNotify="onNotify"
+    />
+    <ank-notifier
+      ref="ankNotifier"
+      position="top-right"
+      default-type="notice"
+    />
   </div>
 </template>
 
@@ -10,5 +17,4 @@
 @import "./Hub.scss";
 </style>
 <!-- Global CSS -->
-<style lang="scss"></style>
 <script src="./Hub.controller.js"></script>

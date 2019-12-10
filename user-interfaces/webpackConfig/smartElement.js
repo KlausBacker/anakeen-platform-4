@@ -5,8 +5,8 @@ const { prod, dev, legacy } = require("@anakeen/webpack-conf");
 const webpack = require("webpack");
 const {
   cssLoader,
-  addFalseKendoGlobal,
-  addDll,
+  addKendoGlobal,
+  addJqueryGlobal,
   typeScriptLoader
 } = require("@anakeen/webpack-conf/parts");
 
@@ -22,41 +22,12 @@ module.exports = () => {
           __dirname,
           "../src/vendor/Anakeen/DOCUMENT/IHM/mainDocument.js"
         )
-      ],
-      smartElementController: [
-        path.resolve(
-          __dirname,
-          "../src/vendor/Anakeen/DOCUMENT/IHM/widgets/globalController/index.ts"
-        )
       ]
     },
     buildPath: PUBLIC_PATH,
     excludeBabel: [/node_modules\/ckeditor/],
     customParts: [
       useCache,
-      {
-        resolve: {
-          extensions: [".js"],
-          alias: {
-            "@anakeen/user-interfaces": BASE_DIR,
-            dcpContextRoot: "",
-            dcpDocument: path.resolve(
-              BASE_DIR,
-              "src/vendor/Anakeen/DOCUMENT/IHM/"
-            ),
-            dcpExternals: path.resolve(
-              BASE_DIR,
-              "src/public/uiAssets/externals/"
-            ),
-            datatables: "datatables.net",
-            "datatables-bootstrap": "datatables.net-bs4",
-            "kendo-culture-fr":
-              "@progress/kendo-ui/js/cultures/kendo.culture.fr-FR",
-            tooltip: "bootstrap/js/src/tooltip",
-            documentCkEditor: path.resolve(__dirname, "./ckeditor/ckeditor.js")
-          }
-        }
-      },
       {
         plugins: [
           new webpack.ProvidePlugin({
@@ -66,20 +37,11 @@ module.exports = () => {
       },
       typeScriptLoader({
         compilerOptions: {
-          declaration: false
+          declaration: true
         }
       }),
-      addDll({
-        context: BASE_DIR,
-        manifest: path.join(
-          PUBLIC_PATH,
-          "Anakeen",
-          "assets",
-          "legacy",
-          "KendoUI-manifest.json"
-        )
-      }),
-      addFalseKendoGlobal([/dcpExternals\/KendoUI\/KendoUI/]),
+      addKendoGlobal([/kendo.pdf/, /kendo.excel/], true),
+      addJqueryGlobal(),
       cssLoader()
     ]
   };

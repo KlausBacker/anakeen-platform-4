@@ -12,7 +12,7 @@
         <hge_jsassets>
             <hge_jsasset_type>MANIFEST</hge_jsasset_type>
             <hge_jsasset>
-                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("teManager", "te-manager")
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("adminTe", "AdminTeManager")
             </hge_jsasset>
         </hge_jsassets>
         <hge_component_libname>AdminTeManager</hge_component_libname>

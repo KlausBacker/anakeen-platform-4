@@ -1,6 +1,5 @@
-import Vue from "vue";
 import Component from "vue-class-component";
-import { Prop } from "vue-property-decorator";
+import { Prop, Vue } from "vue-property-decorator";
 const parameterEditor = () => import("../ParameterEditor/ParameterEditor.vue");
 
 declare var $;
@@ -212,10 +211,7 @@ export default class UserParametersController extends Vue {
 
         // Display user search
         $(".user-search", this.$el).css("display", "");
-        $(".parameters-div", this.$el).attr(
-          "style",
-          (i, s) => s + "display: none !important;"
-        );
+        $(".parameters-div", this.$el).attr("style", (i, s) => s + "display: none !important;");
 
         // Focus on search input
         $(".user-search-input", this.$el).focus();
@@ -250,9 +246,7 @@ export default class UserParametersController extends Vue {
       })
       .on("click", ".expand-btn", () => this.expand(true))
       .on("click", ".collapse-btn", () => this.expand(false))
-      .on("click", ".filter-btn", () =>
-        this.searchParameters($(".global-search-input", this.$el).val())
-      )
+      .on("click", ".filter-btn", () => this.searchParameters($(".global-search-input", this.$el).val()))
       .on("keyup", ".global-search-input", e => {
         if (e.key === "Enter") {
           this.searchParameters($(".global-search-input", this.$el).val());
@@ -313,28 +307,14 @@ export default class UserParametersController extends Vue {
   public openEditor(dataItem) {
     this.editedItem = dataItem;
     this.editRoute =
-      "api/v2/admin/parameters/" +
-      this.actualLogin +
-      "/" +
-      dataItem.nameSpace +
-      "/" +
-      dataItem.name +
-      "/";
+      "api/v2/admin/parameters/" + this.actualLogin + "/" + dataItem.nameSpace + "/" + dataItem.name + "/";
   }
 
   // Send a request to the server to remove the user definition of the passed parameter
   // to restore the system value of this parameter for the user
   public deleteParameter(dataItem) {
     this.$http
-      .delete(
-        "api/v2/admin/parameters/" +
-          this.actualLogin +
-          "/" +
-          dataItem.nameSpace +
-          "/" +
-          dataItem.name +
-          "/"
-      )
+      .delete("api/v2/admin/parameters/" + this.actualLogin + "/" + dataItem.nameSpace + "/" + dataItem.name + "/")
       .then(() => {
         // Show a confirmation window to notify the user of the modification
         this.deleteConfirmationWindow = $(".delete-confirmation-window")
@@ -457,12 +437,8 @@ export default class UserParametersController extends Vue {
       });
 
       // Add icon to show filter effect to the user
-      if (
-        !$(".user-filterable-header", this.$el).children(".filter-icon").length
-      ) {
-        $(".user-filterable-header", this.$el).prepend(
-          $('<i class="material-icons filter-icon">filter_list</i>')
-        );
+      if (!$(".user-filterable-header", this.$el).children(".filter-icon").length) {
+        $(".user-filterable-header", this.$el).prepend($('<i class="material-icons filter-icon">filter_list</i>'));
       }
 
       // Expand treeList to display all results
@@ -526,31 +502,22 @@ export default class UserParametersController extends Vue {
     // setTimeout(function, 0) to add CSS classes when all DOM content has been updated
     setTimeout(() => {
       const treeState = [];
-      const treeList = $(".user-parameters-tree", this.$el).data(
-        "kendoTreeList"
-      );
+      const treeList = $(".user-parameters-tree", this.$el).data("kendoTreeList");
       const items = treeList.items();
       items.each((index, item) => {
         if ($(item).attr("aria-expanded") === "true") {
           treeState.push(index);
         }
       });
-      window.localStorage.setItem(
-        "admin.user-parameters.treeState",
-        JSON.stringify(treeState)
-      );
+      window.localStorage.setItem("admin.user-parameters.treeState", JSON.stringify(treeState));
     }, 0);
   }
 
   // Restore the user parameters tree state from localStorage, if it exists
   public restoreTreeState() {
-    const treeState = window.localStorage.getItem(
-      "admin.user-parameters.treeState"
-    );
+    const treeState = window.localStorage.getItem("admin.user-parameters.treeState");
     if (treeState) {
-      const treeList = $(".user-parameters-tree", this.$el).data(
-        "kendoTreeList"
-      );
+      const treeList = $(".user-parameters-tree", this.$el).data("kendoTreeList");
       const $rows = $("tr", treeList.tbody);
       $.each($rows, (idx, row) => {
         if (treeState.includes(idx)) {

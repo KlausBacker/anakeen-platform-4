@@ -10,25 +10,6 @@
                 <sde:access ns="AnakeenHub">HubUser</sde:access>
             </sde:requiredAccess>
         </sde:route>
-
-        <sde:route name="hubAdmin">
-            <sde:callable>Anakeen\Hub\Routes\HubInstanciation</sde:callable>
-            <sde:method>GET</sde:method>
-            <sde:pattern>/hub/admin/</sde:pattern>
-            <sde:description>Get Hub administration page</sde:description>
-            <sde:requiredAccess>
-                <sde:access ns="AnakeenHub">HubAdmin</sde:access>
-            </sde:requiredAccess>
-        </sde:route>
-        <sde:route name="hubStationAdmin">
-            <sde:callable>Anakeen\Hub\Routes\HubAdmin</sde:callable>
-            <sde:method>GET</sde:method>
-            <sde:pattern>/hub/admin/{hubId}</sde:pattern>
-            <sde:description>Get Hub Station administration page</sde:description>
-            <sde:requiredAccess>
-                <sde:access ns="AnakeenHub">HubAdmin</sde:access>
-            </sde:requiredAccess>
-        </sde:route>
         <sde:route name="hubAdmConfigStruct">
             <sde:callable>Anakeen\Hub\Routes\HubAdmConfigStruct</sde:callable>
             <sde:method>GET</sde:method>

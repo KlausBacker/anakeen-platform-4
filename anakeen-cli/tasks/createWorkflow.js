@@ -57,6 +57,18 @@ exports.createWorkflowModel = ({
       srcPath = moduleInfo.buildInfo.buildPath.find(currentPath => {
         //Check current path
         const smartPath = path.join(currentPath, basePath);
+        if (!fs.existsSync(smartPath)) {
+          new Promise((resolve, reject) => {
+            fsUtils.mkpdir(smartPath, err => {
+              if (err) {
+                reject({
+                  fileAlreadyExist: true
+                });
+              }
+              resolve(smartPath);
+            });
+          });
+        }
         try {
           return fs.existsSync(smartPath) && fs.statSync(smartPath).isDirectory();
         } catch (e) {

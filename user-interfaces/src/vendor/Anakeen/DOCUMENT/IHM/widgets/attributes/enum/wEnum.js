@@ -1,22 +1,10 @@
-/*global define */
-(function umdRequire(root, factory) {
-  "use strict";
+import $ from "jquery";
+import _ from "underscore";
+import Mustache from "mustache";
+import i18n from "../../../i18n/documentCatalog";
+import "../wAttribute";
 
-  if (typeof define === "function" && define.amd) {
-    define([
-      "jquery",
-      "underscore",
-      "mustache",
-      "dcpDocument/i18n/documentCatalog",
-      "dcpDocument/widgets/attributes/wAttribute"
-    ], factory);
-  } else {
-    //noinspection JSUnresolvedVariable
-    factory(window.jQuery, window._, window.Mustache);
-  }
-})(window, function require_wenum($, _, Mustache, i18n) {
-  "use strict";
-
+(function() {
   var localeCompareSupportsLocales = (function testLocaleCompareSupportsLocales() {
     try {
       "foo".localeCompare("bar", "i");
@@ -1267,6 +1255,4 @@
       this._super();
     }
   });
-
-  return $.fn.dcpEnum;
-});
+})();

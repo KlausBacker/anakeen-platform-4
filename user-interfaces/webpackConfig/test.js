@@ -5,15 +5,14 @@ const {
   vueLoader,
   typeScriptLoader,
   cssLoader,
-  addDll
+  addKendoGlobal,
+  addJqueryGlobal,
+  addVueGlobal
 } = require("@anakeen/webpack-conf/parts");
 const testSmartForm = require("./testSmartForm");
 
-// const EsmWebpackPlugin = require("@purtuga/esm-webpack-plugin");
-
 const BASE_DIR = path.resolve(__dirname, "../");
 const PUBLIC_PATH = path.join(BASE_DIR, "Tests/src/public");
-const USER_INTERFACES = path.join(BASE_DIR, "/src/public");
 
 module.exports = () => {
   const conf = {
@@ -31,16 +30,9 @@ module.exports = () => {
       useCache,
       vueLoader(),
       typeScriptLoader(),
-      addDll({
-        context: BASE_DIR,
-        manifest: path.join(
-          USER_INTERFACES,
-          "Anakeen",
-          "assets",
-          "legacy",
-          "KendoUI-manifest.json"
-        )
-      }),
+      addKendoGlobal([/kendo.pdf/, /kendo.excel/], true),
+      addJqueryGlobal(),
+      addVueGlobal(),
       cssLoader()
     ]
   };

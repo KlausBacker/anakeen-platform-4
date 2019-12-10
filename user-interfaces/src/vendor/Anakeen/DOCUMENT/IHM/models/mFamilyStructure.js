@@ -1,16 +1,15 @@
-define(["underscore", "backbone"], function require_structure(_, Backbone) {
-  "use strict";
+import _ from "underscore";
+import Backbone from "backbone";
 
-  return Backbone.Model.extend({
-    typeModel: "ddui:familyStructure",
-    idAttribute: "familyId",
+export default Backbone.Model.extend({
+  typeModel: "ddui:familyStructure",
+  idAttribute: "familyId",
 
-    url: function mFamilyStructure_url() {
-      var urlStructure = _.template("/api/v2/smart-structures/<%- familyId %>/views/structure");
+  url: function mFamilyStructure_url() {
+    var urlStructure = _.template("/api/v2/smart-structures/<%- familyId %>/views/structure");
 
-      return urlStructure({
-        familyId: this.get("familyId")
-      });
-    }
-  });
+    return urlStructure({
+      familyId: this.get("familyId")
+    });
+  }
 });

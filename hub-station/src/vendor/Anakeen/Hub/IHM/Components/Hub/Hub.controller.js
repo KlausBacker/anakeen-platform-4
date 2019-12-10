@@ -1,12 +1,11 @@
 import AnkNotifier from "@anakeen/internal-components/lib/Notifier";
-import HubStation from "@anakeen/hub-components/lib/HubStation";
 
 //noinspection JSUnusedGlobalSymbols
 export default {
   name: "ank-hub",
   components: {
     AnkNotifier,
-    HubStation
+    HubStation: () => import("@anakeen/hub-components/lib/AnkHubStation.esm")
   },
   props: {
     initialData: {
