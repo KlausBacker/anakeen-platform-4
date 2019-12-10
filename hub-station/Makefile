@@ -80,6 +80,10 @@ buildJS: install-deps
 	$(YARN_BIN) buildJsRender
 	$(YARN_BIN) buildJs
 
+lib: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}Build JS lib $@${RESET_COLOR}\n"
+	$(YARN_BIN) lib
+
 ########################################################################################################################
 ##
 ## Build
