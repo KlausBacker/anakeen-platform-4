@@ -20,7 +20,7 @@ use Anakeen\Routes\Core\Lib\DocumentDataFormatter;
 class StructureFields
 {
     protected $structureName = "";
-    protected $sqlFilter = "usefor != 'Q'";
+    protected $sqlFilter = "(usefor != 'Q' or usefor is null)";
 
     /**
      * @var SmartStructure $structure
@@ -85,7 +85,6 @@ class StructureFields
         $dbAttrs = [];
         DbManager::query($sql, $dbAttrs);
         $sql = sprintf("select * from docattr where docid in (%s) and {$this->sqlFilter} and id ~ '^:' order by ordered", implode(',', $fromids));
-
         DbManager::query($sql, $dbModAttr);
 
         foreach ($dbAttrs as $k => $v) {
@@ -198,19 +197,30 @@ class StructureFields
                         "phpfile" => "phpfile"];
                     foreach ($types as $type => $oType) {
                         if ($modAttr[$type]) {
-                            $before = $parentStructure->getAttribute($oa->id)->$oType;
+                            $parentField=$parentStructure->getAttribute($oa->id);
+                            $before="";
+                            $after="";
+                            if ($parentField) {
+                                if (property_exists($parentField, $oType)) {
+                                    $before = $parentField->$oType;
+                                }
+                            }
                             switch ($type) {
                                 case "needed":
                                     $after = $oa->needed ? "Y" : "N";
                                     break;
                                 case "title":
                                     $after = $oa->isInTitle ? "Y" : "N";
+                                    $oType="isInTitle";
                                     break;
                                 case "abstract":
                                     $after = $oa->isInAbstract ? "Y" : "N";
+                                    $oType="isInAbstract";
                                     break;
                                 default:
-                                    $after = $oa->$oType;
+                                    if (property_exists($oa, $oType)) {
+                                        $after = $oa->$oType;
+                                    }
                             }
 
                             if ($before != $after) {

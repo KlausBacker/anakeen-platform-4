@@ -18,11 +18,12 @@ class SEManager
      * Get document object identified by its identifier
      *
      * @param int|string $documentIdentifier
-     * @param bool       $latest
-     * @param bool       $useCache
+     * @param bool $latest
+     * @param bool $useCache
      *
      * @return \Anakeen\Core\Internal\SmartElement | null
      * @throws Exception
+     * @throws \Anakeen\Database\Exception
      * @api Get document object from identifier
      */
     public static function getDocument($documentIdentifier, $latest = true, $useCache = true)
@@ -60,10 +61,12 @@ class SEManager
      * Get family object identified by its identifier
      *
      * @param int|string $familyIdentifier
-     * @param bool       $useCache to use and to add family in cache if not
+     * @param bool $useCache to use and to add family in cache if not
      *
      * @return \Anakeen\Core\SmartStructure return null if id not match a family identifier
      * @throws Exception
+     * @throws \Anakeen\Core\Exception
+     * @throws \Anakeen\Database\Exception
      * @api Get document object from identifier
      */
     public static function getFamily($familyIdentifier, $useCache = true)
@@ -100,6 +103,7 @@ class SEManager
      *
      * @return int|null identifier relative to latest revision
      * @throws Exception
+     * @throws \Anakeen\Database\Exception
      */
     protected static function getLatestDocumentId($initid)
     {
@@ -136,6 +140,7 @@ class SEManager
      * @param string $name document identificator
      *
      * @return int|null initial document identifier
+     * @throws \Anakeen\Database\Exception
      */
     public static function getInitIdFromIdOrName($name)
     {
@@ -158,6 +163,7 @@ class SEManager
      * @param string $name document identificator
      *
      * @return int|null initial document identifier
+     * @throws \Anakeen\Database\Exception
      */
     public static function getInitIdFromName($name)
     {
@@ -180,6 +186,7 @@ class SEManager
      *
      * @return int|null identifier relative to latest revision
      * @throws Exception
+     * @throws \Anakeen\Database\Exception
      */
     public static function getRevisedDocumentId($initid, $revision)
     {
@@ -253,6 +260,8 @@ class SEManager
      *
      * @return \Anakeen\Core\Internal\SmartElement
      * @throws Exception
+     * @throws \Anakeen\Core\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public static function initializeDocument($structureIdentifier)
     {
@@ -302,10 +311,13 @@ class SEManager
      * The document is not yet recorded to database and has no identifier
      *
      * @param int|string $structureIdentifier
-     * @param bool       $useDefaultValues
+     * @param bool $useDefaultValues
      *
      * @return \Anakeen\Core\Internal\SmartElement
      * @throws Exception
+     * @throws \Anakeen\Core\Exception
+     * @throws \Anakeen\Database\Exception
+     * @throws \Anakeen\Exception
      */
     public static function createDocument($structureIdentifier, $useDefaultValues = true)
     {
@@ -335,9 +347,13 @@ class SEManager
      * this document has no profile. It will be destroyed by dynacaseDbCleaner wsh program
      *
      * @param int|string $familyIdentifier
-     * @param bool       $useDefaultValues
+     * @param bool $useDefaultValues
      *
      * @return \Anakeen\Core\Internal\SmartElement
+     * @throws Exception
+     * @throws \Anakeen\Core\Exception
+     * @throws \Anakeen\Database\Exception
+     * @throws \Anakeen\Exception
      */
     public static function createTemporaryDocument($familyIdentifier, $useDefaultValues = true)
     {
@@ -359,9 +375,11 @@ class SEManager
      * retrieve raw values directly from database
      *
      * @param int|string $documentIdentifier
-     * @param bool       $latest
+     * @param bool $latest
      *
      * @return string[] indexed properties and attributes values
+     * @throws \Anakeen\Database\Exception
+     * @throws Exception
      * @api Get indexed array with property values and attribute values
      */
     public static function getRawDocument($documentIdentifier, $latest = true)
@@ -394,6 +412,8 @@ class SEManager
      *
      * @return \Anakeen\Core\Internal\SmartElement
      * @throws Exception APIDM0104, APIDM0105
+     * @throws \Anakeen\Core\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public static function getDocumentFromRawDocument(array $rawDocument)
     {
@@ -421,9 +441,11 @@ class SEManager
      * No use \Anakeen\Core\Internal\SmartElement::getCustomTitle(), so dynamic title cannot be get with this method
      *
      * @param int|string $documentIdentifier
-     * @param bool       $latest
+     * @param bool $latest
      *
      * @return string|null
+     * @throws \Anakeen\Database\Exception
+     * @throws Exception
      * @see \Anakeen\Core\Internal\SmartElement::getTitle()
      *
      */
@@ -447,10 +469,12 @@ class SEManager
      * No use any cache
      *
      * @param int|string $documentIdentifier
-     * @param bool       $latest
-     * @param array      $returnProperties list properties to return, if empty return all properties.
+     * @param bool $latest
+     * @param array $returnProperties list properties to return, if empty return all properties.
      *
      * @return string[] indexed array of properties
+     * @throws \Anakeen\Database\Exception
+     * @throws Exception
      */
     public static function getDocumentProperties($documentIdentifier, array $returnProperties, $latest = true)
     {
@@ -478,11 +502,13 @@ class SEManager
      * Retrieve raw value of document directly from database
      *
      * @param string|int $documentIdentifier
-     * @param string     $dataIdentifier attribute or property identifier
-     * @param bool       $latest
-     * @param bool       $useCache       if true use cache object if exists
+     * @param string $dataIdentifier attribute or property identifier
+     * @param bool $latest
+     * @param bool $useCache if true use cache object if exists
      *
      * @return string the value
+     * @throws Exception
+     * @throws \Anakeen\Database\Exception
      */
     public static function getRawValue($documentIdentifier, $dataIdentifier, $latest = true, $useCache = true)
     {
@@ -519,11 +545,13 @@ class SEManager
      * Retrieve raw value of document
      *
      * @param string|int $documentIdentifier
-     * @param string[]   $dataIdentifiers list of attribute or property identifiers
-     * @param bool       $latest
-     * @param bool       $useCache        if true use cache object if exists
+     * @param string[] $dataIdentifiers list of attribute or property identifiers
+     * @param bool $latest
+     * @param bool $useCache if true use cache object if exists
      *
      * @return array|null the values indexed by attribute or property identifiers, null if not found
+     * @throws Exception
+     * @throws \Anakeen\Database\Exception
      */
     public static function getRawData($documentIdentifier, array $dataIdentifiers, $latest = true, $useCache = true)
     {
@@ -570,9 +598,11 @@ class SEManager
      * Return numerical id
      *
      * @param int|string $documentIdentifier document identifier
-     * @param bool       $latest             if true search latest id
+     * @param bool $latest if true search latest id
      *
      * @return int
+     * @throws Exception
+     * @throws \Anakeen\Database\Exception
      */
     public static function getIdentifier($documentIdentifier, $latest)
     {
@@ -600,6 +630,7 @@ class SEManager
      *
      * @return int (return 0 if not found)
      * @throws Exception
+     * @throws \Anakeen\Database\Exception
      * @api Get document identifier fro logical name
      */
     public static function getIdFromName($documentName)
@@ -650,6 +681,7 @@ class SEManager
      * @param int $documentId
      *
      * @return string|null return null if id not found
+     * @throws \Anakeen\Database\Exception
      * @api Get logical name of a document
      */
     public static function getNameFromId($documentId)
@@ -676,9 +708,10 @@ class SEManager
      * Get Family Id
      *
      * @param string $famName familyName
-     * @param bool   $reset
+     * @param bool $reset
      *
      * @return int return 0 if id not found
+     * @throws \Anakeen\Database\Exception
      */
     public static function getFamilyIdFromName($famName, $reset = false)
     {
@@ -737,6 +770,8 @@ class SEManager
      * @param int|string $documentId document identifier
      *
      * @return null|int
+     * @throws Exception
+     * @throws \Anakeen\Database\Exception
      */
     public static function getFromId($documentId)
     {
@@ -770,6 +805,8 @@ class SEManager
      * @param int|string $documentId document identifier
      *
      * @return null|string
+     * @throws Exception
+     * @throws \Anakeen\Database\Exception
      */
     public static function getFromName($documentId)
     {
