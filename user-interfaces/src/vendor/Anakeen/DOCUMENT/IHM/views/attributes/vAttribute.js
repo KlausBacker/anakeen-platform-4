@@ -607,7 +607,12 @@ export default Backbone.View.extend({
       const fieldValues = this.model.getDocumentModel().getValues();
       autocompleteUrl = autocompleteUrl.replace(/\{([a-z0-9_]+)\}/gu, (c, p1) => {
         const fieldValue = fieldValues[p1];
-        if (fieldValue) {
+        if (p1 === this.model.id) {
+          // Get current input value
+          if (options.data.filter && options.data.filter.filters.length > 0) {
+            return options.data.filter.filters[0].value || "";
+          }
+        } else if (fieldValue) {
           if (fieldValue.value !== null && fieldValue.value !== undefined) {
             return fieldValue.value;
           }
@@ -649,6 +654,7 @@ export default Backbone.View.extend({
       const outputs = this.model.get("autocomplete").outputs;
       if (outputs) {
         let outputKeys = Object.keys(outputs);
+        this.model.set("helpOutputs", outputKeys);
         outputKeys.forEach(key => {
           const outputField = this.model
             .getDocumentModel()

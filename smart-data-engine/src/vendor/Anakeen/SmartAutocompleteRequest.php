@@ -32,6 +32,10 @@ class SmartAutocompleteRequest
         $this->httpRequest = $httpRequest;
     }
 
+    /**
+     * Get input form value where autocomplete is attached
+     * @return string
+     */
     public function getFilterValue(): string
     {
         if (!empty($this->contentParameters["filter"]["filters"][0]["value"])) {
