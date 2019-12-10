@@ -25,9 +25,8 @@ class Groups
         $searchAccount = new \Anakeen\Accounts\SearchAccounts();
         $searchAccount->setTypeFilter(\Anakeen\Accounts\SearchAccounts::groupType);
         if ($filter !== null) {
-            $searchAccount->addFilter("lastname ~* '%s' OR login ~* '%s'", preg_quote($filter));
+            $searchAccount->addFilter("lastname ~* '%s' OR login ~* '%s'", preg_quote($filter), preg_quote($filter));
         }
-
         $groups = [];
         //First iteration
         foreach ($searchAccount->search() as $currentAccount) {
