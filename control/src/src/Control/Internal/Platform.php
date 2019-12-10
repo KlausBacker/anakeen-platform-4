@@ -35,6 +35,9 @@ class Platform
 
     public static function getStatusInfo() {
         self::initPlatformContext();
+        if (!class_exists("\Anakeen\Script\System")) {
+            return "Platform is not initialized";
+        }
         return \Anakeen\Script\System::getStatusInfo();
     }
 
