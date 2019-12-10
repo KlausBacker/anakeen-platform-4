@@ -4,16 +4,16 @@ import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
 import { Grid, GridInstaller } from "@progress/kendo-grid-vue-wrapper";
 import "@progress/kendo-ui/js/kendo.filtercell.js";
 import "@progress/kendo-ui/js/kendo.grid.js";
-import Vue from "vue";
 import VModal from "vue-js-modal";
-import { Component, Prop, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch} from "vue-property-decorator";
 
 Vue.use(VModal);
 Vue.use(GridInstaller);
 Vue.use(DataSourceInstaller);
+
 @Component({
   components: {
-    "smart-form": AnkSmartForm
+    "smart-form": AnkSmartForm,
   }
 })
 export default class SmartStructureManagerParametersController extends Vue {
@@ -38,6 +38,10 @@ export default class SmartStructureManagerParametersController extends Vue {
     title: "",
     width: "50%"
   };
+  // ToDo
+  protected rawValue;
+  protected parentValue;
+  protected type;
 
   @Watch("ssName")
   public watchSsName(newValue) {
@@ -49,16 +53,18 @@ export default class SmartStructureManagerParametersController extends Vue {
 
   public onEditClick(e) {
     const row = $(e.target).closest("tr")[0];
-    const rawValue = row.children[2].innerText;
-    const parentValue = row.children[1].textContent;
-    const type = row.children[4].textContent;
+    this.rawValue = row.children[2].innerText;
+    this.parentValue = row.children[1].textContent;
+    this.type = row.children[4].textContent;
     this.finalData.parameterId = row.children[5].innerText
+    this.finalData.value = this.rawValue;
+    this.$modal.show("ssm-modal");
     // In case of enumerate, fetch his data
     const enumData = [];
-    this.finalData.value = rawValue;
-    if(type.type === "enum") {
+    console.log("TYPE:", this.type)
+    if(this.type === "enum") {
       this.$http
-      .get(`/api/v2/admin/enumdata/${type.typeFormat}`)
+      .get(`/api/v2/admin/enumdata/${this.type.typeFormat}`)
       .then(response => {
         if (response.status === 200 && response.statusText === "OK") {
           response.data.data.forEach(element => {
@@ -75,93 +81,96 @@ export default class SmartStructureManagerParametersController extends Vue {
         console.error(response);
       });
     }
-    this.$modal.show("ssm-modal", {
-      config: {
-        menu: [
-          {
-            beforeContent: '<div class="fa fa-times" />',
-            htmlLabel: "",
-            iconUrl: "",
-            id: "cancel",
-            important: false,
-            label: "Cancel",
-            target: "_self",
-            type: "itemMenu",
-            url: "#action/ssmanager.cancel",
-            visibility: "visible"
-          },
-          {
-            beforeContent: '<div class="fa fa-save" />',
-            htmlLabel: "",
-            iconUrl: "",
-            id: "submit",
-            important: false,
-            label: "Submit",
-            target: "_self",
-            type: "itemMenu",
-            url: "#action/ssmanager.save",
-            visibility: "visible"
-          }
-        ],
-        structure: [
-          {
-            content: [
-              {
-                enumItems: [
-                  {
-                    key: "inherited",
-                    label: "Inherited"
-                  },
-                  {
-                    key: "value",
-                    label: "Value"
-                  },
-                  {
-                    key: "advanced_value",
-                    label: "Advanced Value"
-                  },
-                  {
-                    key: "no_value",
-                    label: "Erase field"
-                  }
-                ],
-                label: "Type",
-                name: "ssm_type",
-                type: "enum"
-              },
-              {
-                display: "read",
-                label: "Inherited",
-                name: "ssm_inherited_value",
-                type: "text",
-              },
-              {
-                enumItems: enumData,
-                label: "Value",
-                name: "ssm_value",
-                type: `${type}`
-              },
-              {
-                label: "Advanced value",
-                name: "ssm_advanced_value",
-                type: "longtext"
-              }
-            ],
-            label: "Default value",
-            name: "ssm_default_value",
-            type: "frame"
-          }
-        ],
-        title: "Edit value form",
-        values: {
-          ssm_advanced_value: "",
-          ssm_inherited_value: `${parentValue}`,
-          ssm_type: "value",
-          ssm_value: `${rawValue}`
+    
+    this.$modal.show("ssm-modal");
+    this.smartForm = {
+      menu: [
+        {
+          beforeContent: '<div class="fa fa-times" />',
+          htmlLabel: "",
+          iconUrl: "",
+          id: "cancel",
+          important: false,
+          label: "Cancel",
+          target: "_self",
+          type: "itemMenu",
+          url: "#action/ssmanager.cancel",
+          visibility: "visible"
+        },
+        {
+          beforeContent: '<div class="fa fa-save" />',
+          htmlLabel: "",
+          iconUrl: "",
+          id: "submit",
+          important: false,
+          label: "Submit",
+          target: "_self",
+          type: "itemMenu",
+          url: "#action/ssmanager.save",
+          visibility: "visible"
         }
+      ],
+      structure: [
+        {
+          content: [
+            {
+              enumItems: [
+                {
+                  key: "inherited",
+                  label: "Inherited"
+                },
+                {
+                  key: "value",
+                  label: "Value"
+                },
+                {
+                  key: "advanced_value",
+                  label: "Advanced Value"
+                },
+                {
+                  key: "no_value",
+                  label: "Erase field"
+                }
+              ],
+              label: "Type",
+              name: "ssm_type",
+              type: "enum"
+            },
+            {
+              display: "read",
+              label: "Inherited",
+              name: "ssm_inherited_value",
+              type: "text",
+            },
+            {
+              enumItems: enumData,
+              label: "Value",
+              name: "ssm_value",
+              type: `${this.type}`
+            },
+            {
+              label: "Advanced value",
+              name: "ssm_advanced_value",
+              type: "longtext"
+            }
+          ],
+          label: "Default value",
+          name: "ssm_default_value",
+          type: "frame"
+        }
+      ],
+      title: "Edit value form",
+      values: {
+        ssm_advanced_value: "",
+        ssm_inherited_value: `${this.parentValue}`,
+        ssm_type: "value",
+        ssm_value: `${this.rawValue}`
       }
-    });
+    }
   }
+  // public showSmartForm() {
+    
+  // }
   public ssmFormReady() {
     this.$refs.ssmForm.hideSmartField("ssm_inherited_value");
     this.$refs.ssmForm.hideSmartField("ssm_advanced_value");
@@ -209,9 +218,9 @@ export default class SmartStructureManagerParametersController extends Vue {
         break;
     }
   }
-  public beforeEdit(data) {
-    this.smartForm = data.params.config;
-  }
+  // public beforeEdit(data) {
+  //   this.smartForm = data.params.config;
+  // }
   public displayData(colId) {
     return dataItem => {
       switch (colId) {
@@ -291,6 +300,7 @@ export default class SmartStructureManagerParametersController extends Vue {
               type
             });
           }
+          console.log(result);
         } else {
           // ToDo : Manage Error
         }
@@ -323,6 +333,28 @@ export default class SmartStructureManagerParametersController extends Vue {
         options.error(response);
       });
     return [];
+  }
+  protected getEnum(enumerate){
+    const returnVal = [];
+    this.$http
+    .get(`/api/v2/admin/enumdata/${enumerate}`)
+    .then(response => {
+      if (response.status === 200 && response.statusText === "OK") {
+        response.data.data.forEach(element => {
+          returnVal.push({
+            key: element.key,
+            label: element.label
+          })
+        })
+      } else {
+        throw new Error(response.data);
+      }
+    })
+    .catch(response => {
+      console.error(response);
+    });
+
+    return returnVal;
   }
   protected autoFilterCol(e) {
     e.element.addClass("k-textbox filter-input");
