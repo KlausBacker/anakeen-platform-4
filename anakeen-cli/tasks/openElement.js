@@ -2,7 +2,7 @@ const gulp = require("gulp");
 const urlJoin = require("url-join");
 const fs = require("fs");
 const signale = require("signale");
-const opn = require("opn");
+const opn = require("open");
 const sax = require("sax");
 
 exports.openElement = ({ filePath, lineNumber, columnNumber, contextUrl }) => {
