@@ -43,5 +43,10 @@ test-tools/node_modules/
 test-tools/src/public/
 test-tools/components/lib
 test-tools/components/webpack/
+workflow/node_modules
+webpack-conf/
+test-tools/node_modules/
+test-tools/src/public/
+test-tools/components/lib
+test-tools/components/webpack/
 test-tools/test
-workflow/node_moduleswebpack-conf/
