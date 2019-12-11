@@ -219,7 +219,7 @@ const builder = {
     }
   },
   settingPath: {
-    description: "path where the smart structure will be added",
+    description: "path where the setting will be added",
     type: "string",
     default: () => {
       if (moduleData.buildInfo) {
@@ -232,7 +232,7 @@ const builder = {
         return arg;
       }
       if (!fs.statSync(arg).isDirectory()) {
-        throw new Error("Unable to find the smart structure directory " + arg);
+        throw new Error("Unable to find the setting directory " + arg);
       }
       return arg;
     }

@@ -41,6 +41,62 @@ const createBuildXML = ({ moduleName, vendorName }, isSmartStructure) => {
         "acli:source": {
           $: { path: "src" }
         },
+        "acli:po-config": {
+          "acli:po-struct": {
+            $: {
+              source: path.join("src/vendor", vendorNamePascalCase, moduleNamePascalCase, "SmartStructures/**/*xml")
+            }
+          },
+          "acli:po-enum": {
+            $: {
+              source: path.join("src/vendor", vendorNamePascalCase, moduleNamePascalCase, "Enumerates/**/*xml")
+            }
+          },
+          "acli:po-cvdoc": {
+            $: {
+              source: path.join(
+                "src/vendor",
+                vendorNamePascalCase,
+                moduleNamePascalCase,
+                "Settings/100-ViewControls/**/*xml"
+              )
+            }
+          },
+          "acli:po-workflow": {
+            $: {
+              source: path.join(
+                "src/vendor",
+                vendorNamePascalCase,
+                moduleNamePascalCase,
+                "SmartStructures/**/Workflow/**/*xml"
+              )
+            }
+          },
+          "acli:po-mustache": {
+            $: {
+              source: path.join("src/vendor", vendorNamePascalCase, moduleNamePascalCase, "**/*mustache"),
+              target: `${moduleNamePascalCase}-Mustache`
+            }
+          },
+          "acli:po-php": {
+            $: {
+              source: path.join("src/vendor", vendorNamePascalCase, moduleNamePascalCase, "**/*php"),
+              target: `${moduleNamePascalCase}-php`
+            }
+          },
+          "acli:po-js": {
+            $: {
+              source: path.join("src/vendor", vendorNamePascalCase, moduleNamePascalCase, "**/*js"),
+              target: `${moduleNamePascalCase}-js`
+            }
+          },
+          "acli:po-vuejs": {
+            $: {
+              source: path.join("src/vendor", vendorNamePascalCase, moduleNamePascalCase, "**/*.?(vue|js)"),
+              target: `${moduleNamePascalCase}-VueJs`
+            }
+          }
+        },
         "acli:stub-config": {
           "acli:stub-struct": {
             $: { source: path.join("src/vendor", vendorNamePascalCase, moduleNamePascalCase, "SmartStructures") }
