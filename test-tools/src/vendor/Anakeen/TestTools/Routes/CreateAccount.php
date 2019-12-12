@@ -6,10 +6,13 @@ use Anakeen\Core\AccountManager;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 use Anakeen\SmartElementManager;
+use SmartStructure\Igroup;
+use SmartStructure\Iuser;
+use SmartStructure\Role;
 
 class CreateAccount
 {
-    /** @var SmartElement */
+    /** @var Igroup|Iuser|Role */
     protected $smartElement;
 
     const USER_TYPE = "user";
@@ -27,7 +30,7 @@ class CreateAccount
         \Slim\Http\response $response,
         $args
     ) {
-        
+
         $this->initParameters($request, $args);
 
         return ApiV2Response::withData($response, AccountInfos::formatAccount($this->smartElement->getAccount()));
@@ -62,6 +65,15 @@ class CreateAccount
             if (isset($requestData['users']) && $type === self::GROUP_TYPE) {
                 $this->addUsersToGroup($this->smartElement, $requestData['users']);
             }
+
+            if (isset($requestData['roles']) && $type !== self::ROLE_TYPE) {
+                $u= $this->smartElement->getAccount();
+                foreach ($requestData['roles'] as $role) {
+                    $u->addRole($role);
+                }
+                $u->synchroAccountDocument();
+            }
+
         } else {
             $exception = new Exception("ANKTEST007", $this->smartElement->getRawValue("us_login"));
             $exception->setHttpStatus("500", "Cannot create account");
@@ -89,8 +101,14 @@ class CreateAccount
         return $user;
     }
 
+    /**
+     * @param string[] $requestData
+     * @return Igroup
+     * @throws \Anakeen\Core\DocManager\Exception
+     */
     protected function createGroup($requestData)
     {
+        /** @var Igroup $group */
         $group = SmartElementManager::createDocument("IGROUP");
 
         if (isset($requestData['login'])) {
@@ -102,6 +120,12 @@ class CreateAccount
         return $group;
     }
 
+    /**
+     * @param Igroup $group
+     * @param string[] $users
+     * @throws Exception
+     * @throws \Anakeen\Core\Exception
+     */
     protected function addUsersToGroup($group, $users)
     {
         if (isset($users) && is_array($users)) {
@@ -119,7 +143,7 @@ class CreateAccount
             }
         }
     }
-    
+
     protected function createRole($requestData)
     {
         $create = SmartElementManager::createDocument("ROLE");

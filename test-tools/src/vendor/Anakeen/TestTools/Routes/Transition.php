@@ -6,12 +6,13 @@ use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 use Anakeen\SmartElement;
 use Anakeen\SmartElementManager;
+use SmartStructure\Wdoc;
 
 class Transition
 {
     /** @var SmartElement */
     protected $smartElement;
-    /** @var SmartElement */
+    /** @var Wdoc */
     protected $workflow;
     protected $transition;
     protected $askValues;

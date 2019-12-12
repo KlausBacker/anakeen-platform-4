@@ -61,8 +61,7 @@ class SmartFieldValue
         foreach ($this->values as $sFId => $sFvalue) {
             $realValue = $this->smartElement->getAttributeValue($sFId);
 
-            if ($realValue === $sFvalue) {
-            } else {
+            if ($realValue !== $sFvalue) {
                 $exception = new Exception("ANKTEST016", $realValue, $sFvalue);
                 $exception->setHttpStatus("400", "Values not equal");
                 throw $exception;

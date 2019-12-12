@@ -2,6 +2,7 @@
 
 namespace Anakeen\TestTools\Routes;
 
+use Anakeen\Core\SmartStructure\SmartFieldValueException;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 use Anakeen\SmartElement;

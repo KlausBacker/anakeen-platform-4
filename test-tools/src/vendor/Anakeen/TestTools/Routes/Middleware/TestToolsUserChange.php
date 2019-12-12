@@ -5,8 +5,8 @@ namespace Anakeen\TestTools\Routes\Middleware;
 use Anakeen\Core\AccountManager;
 use Anakeen\Core\ContextManager;
 use Anakeen\Router\Exception;
-use \Slim\Http\request;
-use \Slim\Http\response;
+use Slim\Http\request;
+use Slim\Http\response;
 
 class TestToolsUserChange
 {
@@ -18,7 +18,7 @@ class TestToolsUserChange
         if (!empty($this->login)) {
             $account = AccountManager::getAccount($this->login);
             if (null === $account) {
-                throw new Exception(sprintf("No account for login %s", $this->login));
+                throw new Exception(sprintf("No account for login \"%s\"", $this->login));
             }
             ContextManager::sudo($account);
         }

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import fetch, { RequestInit as FetchRequestInit } from "node-fetch";
 import Account from "./utils/Account";
 // eslint-disable-next-line no-unused-vars
@@ -9,13 +10,13 @@ export interface ISmartElementProps {
 }
 
 export interface ISmartElementValues {
-  [fieldId: string]: { value: string, displayValue: string, [other: string]: any };
+  [fieldId: string]: { value: string; displayValue: string; [other: string]: any };
 }
 
 export interface IAccountData {
-  type: string,
-  login: string,
-  roles: string[]
+  type: string;
+  login: string;
+  roles: string[];
 }
 
 export default abstract class AbstractContext {
@@ -26,18 +27,16 @@ export default abstract class AbstractContext {
 
   public async getAccount(login: string | IAccountData) {
     if (typeof login === "string") {
-      const response = await this.fetchApi(
-        `/api/v2/test-tools/account/${login}/`
-      );
+      const response = await this.fetchApi(`/api/v2/test-tools/account/${login}/`);
       const responseJson = await response.json();
       if (responseJson.success && responseJson.data) {
         return new Account(responseJson.data, (url, ...args) => this.fetchApi(url, ...args));
       } else {
-        let msg: string = 'unknown error';
-        if(responseJson.success === false) {
+        let msg: string = "unknown error";
+        if (responseJson.success === false) {
           msg = responseJson.message;
         }
-        throw new Error(`unable to get login ${login}: ${msg}`);
+        throw new Error(`Unable to get login ${login}: ${msg}`);
       }
     }
   }
@@ -49,24 +48,26 @@ export default abstract class AbstractContext {
         `/api/v2/smart-elements/${seName}.json?fields=document.properties.all,document.attributes.all`
       );
       const responseJson = await response.json();
-  
+
       if (responseJson.success && responseJson.data && responseJson.data.document) {
         return new SmartElement(responseJson.data.document, (url, ...args) => this.fetchApi(url, ...args));
       } else {
-        let msg: string = 'unknown error';
-        if(responseJson.success === false && !seValues) {
+        let msg: string = "unknown error";
+        if (responseJson.success === false && !seValues) {
           msg = responseJson.message;
           throw new Error(`unable to get SE ${seName}: ${msg}`);
         }
-        if(responseJson.success === false && seValues) {
+        if (responseJson.success === false && seValues) {
           msg = responseJson.message;
           throw new Error(`unable to create SE ${seName}: ${msg}`);
         }
+
+        throw new Error(responseJson);
       }
     }
   }
 
-  public async abstract clean();
+  public abstract async clean();
 
   protected async fetchApi(url: string, init?: FetchRequestInit) {
     let headers = this.credentials.getBasicHeader();

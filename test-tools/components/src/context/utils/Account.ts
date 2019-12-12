@@ -64,23 +64,20 @@ export default class Account {
     } else {
       login = group.login;
     }
-    const requestData: { [key: string]: any } = {accountlogin: this.login};
-    const response = await this.fetchApi(
-      `/api/v2/test-tools/groups/${login}/`,
-      {
-        body: JSON.stringify(requestData),
-        method: "put",
-        headers: {
-          "Content-Type": "application/json"
-        }
+    const requestData: { [key: string]: any } = { accountlogin: this.login };
+    const response = await this.fetchApi(`/api/v2/test-tools/groups/${login}/`, {
+      body: JSON.stringify(requestData),
+      method: "put",
+      headers: {
+        "Content-Type": "application/json"
       }
-    );  
+    });
     const responseJson = await response.json();
     if (responseJson.success && responseJson.data) {
       return new Account(responseJson.data, (url, ...args) => this.fetchApi(url, ...args));
     } else {
-      let msg: string = 'unknown error';
-      if(responseJson.success === false) {
+      let msg: string = "unknown error";
+      if (responseJson.success === false) {
         msg = responseJson.message;
       }
       throw new Error(`unable to add to group ${group}: ${msg}`);
@@ -94,23 +91,20 @@ export default class Account {
     } else {
       login = group.login;
     }
-    const requestData: { [key: string]: any } = {accountlogin: this.login};
-    const response = await this.fetchApi(
-      `/api/v2/test-tools/groups/${login}/`,
-      {
-        body: JSON.stringify(requestData),
-        method: "delete",
-        headers: {
-          "Content-Type": "application/json"
-        }
+    const requestData: { [key: string]: any } = { accountlogin: this.login };
+    const response = await this.fetchApi(`/api/v2/test-tools/groups/${login}/`, {
+      body: JSON.stringify(requestData),
+      method: "delete",
+      headers: {
+        "Content-Type": "application/json"
       }
-    );
+    });
     const responseJson = await response.json();
     if (responseJson.success && responseJson.data) {
       return new Account(responseJson.data, (url, ...args) => this.fetchApi(url, ...args));
     } else {
-      let msg: string = 'unknown error';
-      if(responseJson.success === false) {
+      let msg: string = "unknown error";
+      if (responseJson.success === false) {
         msg = responseJson.message;
       }
       throw new Error(`unable to remove from group ${group}: ${msg}`);
@@ -124,23 +118,20 @@ export default class Account {
     } else {
       login = role.login;
     }
-    const requestData: { [key: string]: any } = {accountlogin: this.login};
-    const response = await this.fetchApi(
-      `/api/v2/test-tools/roles/${login}/`,
-      {
-        body: JSON.stringify(requestData),
-        method: "put",
-        headers: {
-          "Content-Type": "application/json"
-        }
+    const requestData: { [key: string]: any } = { accountlogin: this.login };
+    const response = await this.fetchApi(`/api/v2/test-tools/roles/${login}/`, {
+      body: JSON.stringify(requestData),
+      method: "put",
+      headers: {
+        "Content-Type": "application/json"
       }
-    );
+    });
     const responseJson = await response.json();
     if (responseJson.success && responseJson.data) {
       return new Account(responseJson.data, (url, ...args) => this.fetchApi(url, ...args));
     } else {
-      let msg: string = 'unknown error';
-      if(responseJson.success === false) {
+      let msg: string = "unknown error";
+      if (responseJson.success === false) {
         msg = responseJson.message || responseJson.exceptionMessage;
       }
       throw new Error(`unable to add role ${role}: ${msg}`);
@@ -154,23 +145,20 @@ export default class Account {
     } else {
       login = role.login;
     }
-    const requestData: { [key: string]: any } = {accountlogin: this.login};
-    const response = await this.fetchApi(
-      `/api/v2/test-tools/roles/${login}/`,
-      {
-        body: JSON.stringify(requestData),
-        method: "delete",
-        headers: {
-          "Content-Type": "application/json"
-        }
+    const requestData: { [key: string]: any } = { accountlogin: this.login };
+    const response = await this.fetchApi(`/api/v2/test-tools/roles/${login}/`, {
+      body: JSON.stringify(requestData),
+      method: "delete",
+      headers: {
+        "Content-Type": "application/json"
       }
-    );
+    });
     const responseJson = await response.json();
     if (responseJson.success && responseJson.data) {
       return new Account(responseJson.data, (url, ...args) => this.fetchApi(url, ...args));
     } else {
-      let msg: string = 'unknown error';
-      if(responseJson.success === false) {
+      let msg: string = "unknown error";
+      if (responseJson.success === false) {
         msg = responseJson.message;
       }
       throw new Error(`unable to remove role ${role}: ${msg}`);

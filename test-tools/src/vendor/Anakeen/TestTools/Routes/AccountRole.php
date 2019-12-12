@@ -11,6 +11,10 @@ class AccountRole
     protected $request;
     protected $result;
     protected $role;
+    /**
+     * @var array|object|null
+     */
+    protected $requestData=[];
 
     /**
      * @param \Slim\Http\request $request
@@ -73,9 +77,8 @@ class AccountRole
                 array_push($roles, $role->id);
                 $err = $account->setRoles($roles);
                 if (!empty($err)) {
-                    $exception = new Exception("ANKTEST008", $accountLogin, $role->getAttributeValue("us_login"));
+                    $exception = new Exception("ANKTEST008", $accountLogin, $role->login);
                     $exception->setHttpStatus("500", "Cannot add user to group");
-                    $exception->setUserMessage(err);
                     throw $exception;
                 }
             }
@@ -101,9 +104,8 @@ class AccountRole
                 }
                 $account->setRoles($keepAccountRole);
                 if (!empty($err)) {
-                    $exception = new Exception("ANKTEST008", $accountLogin, $role->getAttributeValue("us_login"));
+                    $exception = new Exception("ANKTEST008", $accountLogin, $role->login);
                     $exception->setHttpStatus("500", "Cannot remove account role");
-                    $exception->setUserMessage(err);
                     throw $exception;
                 }
             }

@@ -45,7 +45,6 @@ class State
         if (empty($this->smartElement)) {
             $exception = new Exception("ANKTEST001", $args['docid']);
             $exception->setHttpStatus("500", "Cannot update Smart Element");
-            $exception->setUserMessage(err);
             throw $exception;
         }
 

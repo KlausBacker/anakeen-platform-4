@@ -1,11 +1,13 @@
+/* eslint-disable no-unused-vars */
 import { ISmartElementValues } from "../AbstractContext";
-import { searchParams, ITestOptions, StateInfos, SmartField  } from "../../utils/routes";
+import { searchParams, ITestOptions, StateInfos, SmartField } from "../../utils/routes";
 
 export default class SmartElement {
   private static BASE_API: string = "/api/v2/test-tools/";
   private static UPDATE_API: string = SmartElement.BASE_API + "smart-elements/<docid>/";
   private static SET_API: string = SmartElement.BASE_API + "smart-elements/<docid>/workflows/states/<state>/";
-  private static CHANGE_API: string = SmartElement.BASE_API + "smart-elements/<docid>/workflows/transitions/<transition>/";
+  private static CHANGE_API: string =
+    SmartElement.BASE_API + "smart-elements/<docid>/workflows/transitions/<transition>";
   protected properties: any;
   protected smartFields: any;
 
@@ -18,9 +20,12 @@ export default class SmartElement {
   }
 
   public async changeState(stateInfo: StateInfos, options?: ITestOptions): Promise<SmartElement> {
-    const baseUrl = SmartElement.CHANGE_API.replace(/<docid>/g, this.properties.initid).replace(/<transition>/g, stateInfo.transition);
+    const baseUrl = SmartElement.CHANGE_API.replace(/<docid>/g, this.properties.initid).replace(
+      /<transition>/g,
+      stateInfo.transition
+    );
     const searchParameters = searchParams(options);
-    const url = `${baseUrl}?${searchParameters}`
+    const url = `${baseUrl}?${searchParameters}`;
     const response = await this.fetchApi(url, {
       headers: {
         "Content-Type": "application/json"
@@ -32,18 +37,18 @@ export default class SmartElement {
     if (responseJson.success && responseJson.data && responseJson.data.document) {
       return new SmartElement(responseJson.data.document, (url, ...args) => this.fetchApi(url, ...args));
     } else {
-      let msg: string = 'unknown error';
-      if(responseJson.success === false) {
-        msg = responseJson.message || responseJson.exceptionMessage;
+      let msg: string = "unknown error";
+      if (responseJson.success === false) {
+        msg = responseJson.message || responseJson.exceptionMessage || responseJson.error;
       }
-      throw new Error(`unable to change state ${stateInfo}: ${msg}`);
+      throw new Error(`unable to pass transition ${stateInfo.transition}: ${msg} (${url}`);
     }
   }
 
   public async setState(newState: string, options?: ITestOptions): Promise<SmartElement> {
     const baseUrl = SmartElement.SET_API.replace(/<docid>/g, this.properties.initid).replace(/<state>/g, newState);
     const searchParameters = searchParams(options);
-    const url = `${baseUrl}?${searchParameters}`
+    const url = `${baseUrl}?${searchParameters}`;
     const response = await this.fetchApi(url, {
       headers: {
         "Content-Type": "application/json"
@@ -54,8 +59,8 @@ export default class SmartElement {
     if (responseJson.success && responseJson.data && responseJson.data.document) {
       return new SmartElement(responseJson.data.document, (url, ...args) => this.fetchApi(url, ...args));
     } else {
-      let msg: string = 'unknown error';
-      if(responseJson.success === false) {
+      let msg: string = "unknown error";
+      if (responseJson.success === false) {
         msg = responseJson.message;
       }
       throw new Error(`unable to set state ${newState}: ${msg}`);
@@ -65,7 +70,7 @@ export default class SmartElement {
   public async updateValues(seValues: ISmartElementValues, options?: ITestOptions): Promise<SmartElement> {
     const baseUrl = SmartElement.UPDATE_API.replace(/<docid>/g, this.properties.initid);
     const searchParameters = searchParams(options);
-    const url = `${baseUrl}?${searchParameters}`
+    const url = `${baseUrl}?${searchParameters}`;
     const response = await this.fetchApi(url, {
       body: JSON.stringify(seValues),
       headers: {
@@ -77,8 +82,8 @@ export default class SmartElement {
     if (responseJson.success && responseJson.data && responseJson.data.document) {
       return new SmartElement(responseJson.data.document, (url, ...args) => this.fetchApi(url, ...args));
     } else {
-      let msg: string = 'unknown error';
-      if(responseJson.success === false) {
+      let msg: string = "unknown error";
+      if (responseJson.success === false) {
         msg = responseJson.message || responseJson.exceptionMessage;
       }
       throw new Error(`unable to update value for ${seValues}: ${msg}`);
@@ -87,32 +92,32 @@ export default class SmartElement {
 
   public async getPropertyValue(propertyName: string, options?: ITestOptions): Promise<any> {
     const searchParameters = searchParams(options);
-    searchParameters.set('fields', `document.properties.${propertyName}`);
+    searchParameters.set("fields", `document.properties.${propertyName}`);
     const url = `${SmartElement.BASE_API}smart-elements/${this.properties.initid}.json?${searchParameters}`;
     const response = await this.fetchApi(url);
     const responseJson = await response.json();
     if (responseJson.success && responseJson.data && responseJson.data.document) {
       return responseJson.data.document.properties[propertyName];
     } else {
-      let msg: string = 'unknown error';
-      if(responseJson.success === false) {
+      let msg: string = "unknown error";
+      if (responseJson.success === false) {
         msg = responseJson.message;
       }
       throw new Error(`unable to get value for property ${propertyName}: ${msg}`);
     }
   }
 
-  public async getValue(fieldId: string, options?: ITestOptions): Promise<{ value: any, displayValue: string }> {
+  public async getValue(fieldId: string, options?: ITestOptions): Promise<{ value: any; displayValue: string }> {
     const searchParameters = searchParams(options);
-    searchParameters.set('fields', `document.attributes.${fieldId}`);
+    searchParameters.set("fields", `document.attributes.${fieldId}`);
     const url = `${SmartElement.BASE_API}smart-elements/${this.properties.initid}.json?${searchParameters}`;
     const response = await this.fetchApi(url);
     const responseJson = await response.json();
     if (responseJson.success && responseJson.data && responseJson.data.document) {
       return responseJson.data.document.attributes[fieldId];
     } else {
-      let msg: string = 'unknown error';
-      if(responseJson.success === false) {
+      let msg: string = "unknown error";
+      if (responseJson.success === false) {
         msg = responseJson.message;
       }
       throw new Error(`unable to get value for attribute ${fieldId}: ${msg}`);
@@ -121,17 +126,15 @@ export default class SmartElement {
 
   public async getValues(options?: ITestOptions): Promise<{ [fieldId: string]: any }> {
     const searchParameters = searchParams(options);
-    searchParameters.set('fields', `document.attributes.all`);
-    const response = await this.fetchApi(
-      `/api/v2/smart-elements/${this.properties.initid}.json?${searchParameters}`
-    );
+    searchParameters.set("fields", `document.attributes.all`);
+    const response = await this.fetchApi(`/api/v2/smart-elements/${this.properties.initid}.json?${searchParameters}`);
     const responseJson = await response.json();
 
     if (responseJson.success && responseJson.data && responseJson.data.document) {
       return responseJson.data.document.attributes;
     } else {
-      let msg: string = 'unknown error';
-      if(responseJson.success === false) {
+      let msg: string = "unknown error";
+      if (responseJson.success === false) {
         msg = responseJson.message;
       }
       throw new Error(`unable to get all attributes : ${msg}`);
@@ -140,17 +143,15 @@ export default class SmartElement {
 
   public async getPropertiesValues(options?: ITestOptions): Promise<{ [fieldId: string]: any }> {
     const searchParameters = searchParams(options);
-    searchParameters.set('fields', `document.properties.all`);
-    const response = await this.fetchApi(
-      `/api/v2/smart-elements/${this.properties.initid}.json?${searchParameters}`
-    );
+    searchParameters.set("fields", `document.properties.all`);
+    const response = await this.fetchApi(`/api/v2/smart-elements/${this.properties.initid}.json?${searchParameters}`);
     const responseJson = await response.json();
 
     if (responseJson.success && responseJson.data && responseJson.data.document) {
       return responseJson.data.document.properties;
     } else {
-      let msg: string = 'unknown error';
-      if(responseJson.success === false) {
+      let msg: string = "unknown error";
+      if (responseJson.success === false) {
         msg = responseJson.message;
       }
       throw new Error(`unable to get all values : ${msg}`);
@@ -171,8 +172,8 @@ export default class SmartElement {
     if (responseJson.success && responseJson.data && responseJson.data.document) {
       return new SmartElement(responseJson.data.document, (url, ...args) => this.fetchApi(url, ...args));
     } else {
-      let msg: string = 'unknown error';
-      if(responseJson.success === false) {
+      let msg: string = "unknown error";
+      if (responseJson.success === false) {
         msg = responseJson.message;
       }
       throw new Error(`unable to destroy SE : ${msg}`);

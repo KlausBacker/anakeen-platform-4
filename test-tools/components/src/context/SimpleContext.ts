@@ -34,14 +34,15 @@ export default class SimpleContext extends AbstractContext {
           method: "post"
         });
         const responseJson = await response.json();
+        // console.log(url, requestData, JSON.stringify(responseJson, null, 2));
         if (responseJson.success && responseJson.data) {
           return new Account(responseJson.data, (url, ...args) => this.fetchApi(url, ...args));
         } else {
-          let msg: string = 'unknown error';
-          if(responseJson.success === false) {
-            msg = responseJson.message || responseJson.exceptionMessage;
+          let msg: string = "unknown error";
+          if (responseJson.success === false) {
+            msg = responseJson.message || responseJson.exceptionMessage || responseJson.error;
           }
-          throw new Error(`unable to get login ${login}: ${msg}`);
+          throw new Error(`Unable to get login ${login.login}: ${msg} : ${url}`);
         }
       }
     }
@@ -71,12 +72,12 @@ export default class SimpleContext extends AbstractContext {
         if (responseJson.success && responseJson.data && responseJson.data.document) {
           return new SmartElement(responseJson.data.document, (url, ...args) => this.fetchApi(url, ...args));
         } else {
-          let msg: string = 'unknown error';
-          if(responseJson.success === false && !seValues) {
+          let msg: string = "unknown error";
+          if (responseJson.success === false && !seValues) {
             msg = responseJson.message;
             throw new Error(`unable to get SE ${seName}: ${msg}`);
           }
-          if(responseJson.success === false && seValues) {
+          if (responseJson.success === false && seValues) {
             msg = responseJson.message;
             throw new Error(`unable to create SE ${seName}: ${msg}`);
           }
@@ -87,12 +88,11 @@ export default class SimpleContext extends AbstractContext {
 
   public async clean() {
     const url = SimpleContext.CLEAN_API.replace(/%s/g, this.testTagUid);
-    const response = await this.fetchApi(url, {
+    await this.fetchApi(url, {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
       method: "delete"
     });
-    const responseText = await response.text();
   }
 }

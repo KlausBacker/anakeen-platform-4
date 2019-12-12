@@ -2,6 +2,7 @@
 
 namespace Anakeen\TestTools\Routes;
 
+use Anakeen\Core\Account;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 use Anakeen\Accounts\SearchAccounts;
@@ -34,7 +35,7 @@ class AccountInfos
         }
     }
 
-    public static function formatAccount($account)
+    public static function formatAccount(Account $account)
     {
         return [
             "login" => $account->login,

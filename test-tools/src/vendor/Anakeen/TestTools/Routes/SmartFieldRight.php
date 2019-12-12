@@ -46,7 +46,6 @@ class SmartFieldRight
         if (empty($this->smartElement)) {
             $exception = new Exception("ANKTEST001", $seId);
             $exception->setHttpStatus("500", "Cannot get smart element");
-            $exception->setUserMessage(err);
             throw $exception;
         }
 
@@ -64,8 +63,7 @@ class SmartFieldRight
             throw $exception;
         }
 
-        if ($this->acl === "none" || $this->acl === "read" || $this->acl === "write") {
-        } else {
+        if ($this->acl !== "none" && $this->acl !== "read" && $this->acl !== "write") {
             $exception = new Exception("ANKTEST010", 'acl');
             $exception->setHttpStatus("500", "acl must be none, read, write");
             throw $exception;

@@ -104,16 +104,15 @@
             </smart:field-hook>
 
             <smart:field-hook type="constraint" event="onPreStore" field="us_passwd1">
-                <smart:field-callable function="::testForcePassword"/>
+                <smart:field-callable function="::constraintPassword"/>
                 <smart:field-argument type="field">us_passwd1</smart:field-argument>
                 <smart:field-return/>
             </smart:field-hook>
 
             <smart:field-hook type="constraint" event="onPreStore" field="us_passwd2">
-                <smart:field-callable function="::ConstraintPassword"/>
+                <smart:field-callable function="::equalPassword"/>
                 <smart:field-argument type="field">us_passwd1</smart:field-argument>
                 <smart:field-argument type="field">us_passwd2</smart:field-argument>
-                <smart:field-argument type="field">us_login</smart:field-argument>
                 <smart:field-return/>
             </smart:field-hook>
 

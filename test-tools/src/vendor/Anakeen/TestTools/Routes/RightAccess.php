@@ -45,7 +45,6 @@ class RightAccess
         if (empty($this->smartElement)) {
             $exception = new Exception("ANKTEST001", $seId);
             $exception->setHttpStatus("500", "Cannot get smart element");
-            $exception->setUserMessage(err);
             throw $exception;
         }
 

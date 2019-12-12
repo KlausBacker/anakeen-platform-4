@@ -26,7 +26,7 @@ class SmartElementClean
         $this->initParameters($request, $args);
 
         $this->cleanSmartElement();
-        
+
         return ApiV2Response::withMessages($response, $this->errors);
     }
 
@@ -46,7 +46,7 @@ class SmartElementClean
         $search->addFilter('atags is not null');
         $search->addFilter("atags ->> 'ank_test' = '%s'", pg_escape_string($this->tag));
         $search->search();
-        
+
         $list = $search->getResults();
         $this->errors = [];
 
