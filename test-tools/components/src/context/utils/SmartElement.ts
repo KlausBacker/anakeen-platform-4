@@ -91,6 +91,9 @@ export default class SmartElement {
   }
 
   public async getPropertyValue(propertyName: string, options?: ITestOptions): Promise<any> {
+    if (this.properties && this.properties[propertyName] !== undefined) {
+      return this.properties[propertyName];
+    }
     const searchParameters = searchParams(options);
     searchParameters.set("fields", `document.properties.${propertyName}`);
     const url = `${SmartElement.BASE_API}smart-elements/${this.properties.initid}.json?${searchParameters}`;

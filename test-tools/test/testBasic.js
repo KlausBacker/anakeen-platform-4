@@ -31,6 +31,7 @@ describe("Test basique :", function() {
   //On init un contexte de test
   //On créé les éléments qu'on va utiliser
   before(async () => {
+
     testContext = currentContext.initTest();
 
     // 1- Accounts
@@ -228,6 +229,8 @@ describe("Test basique :", function() {
       await expect(seBill)
         .for(billLogin)
         .have.transitionRight("t_wfam_bill_e1_e2");
+    });
+    it("transitionNotRight", async () => {
       await expect(seBill)
         .for(simpleuserLogin)
         .have.not.transitionRight("t_wfam_bill_e1_e2");
@@ -241,7 +244,7 @@ describe("Test basique :", function() {
         .smartFieldRight("us_meid", "none");
       await expect(seZooUser1)
         .for(zooUser1Login)
-        .smartFieldRight("us_meid", "write");
+        .smartFieldRight("us_login", "read");
       await expect(seZooUser1)
         .for(zooUser1Login)
         .smartFieldRight("us_fr_intranet", "none");

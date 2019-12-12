@@ -2,10 +2,10 @@
 
 namespace Anakeen\TestTools\Routes;
 
+use Anakeen\Core\SEManager;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 use Anakeen\SmartElement;
-use Anakeen\SmartElementManager;
 use SmartStructure\Wdoc;
 
 class TransitionAccess
@@ -30,9 +30,8 @@ class TransitionAccess
 
         $this->initParameters($request, $args);
 
-        $this->checkTransition();
 
-        return ApiV2Response::withData($response, $this->getSmartElementdata());
+        return ApiV2Response::withData($response, $this->checkTransition());
     }
 
     protected function initParameters(\Slim\Http\request $request, $args)
@@ -44,7 +43,7 @@ class TransitionAccess
             throw $exception;
         }
 
-        $this->smartElement = SmartElementManager::getDocument($docid);
+        $this->smartElement = SEManager::getDocument($docid);
         if (empty($this->smartElement)) {
             $exception = new Exception("ANKTEST001", $docid);
             $exception->setHttpStatus("500", sprintf("Cannot get Smart Element %s", $docid));
@@ -65,7 +64,7 @@ class TransitionAccess
             throw $exception;
         }
 
-        $this->workflow = SmartElementManager::getDocument($wid);
+        $this->workflow = SEManager::getDocument($wid);
         if (empty($this->workflow)) {
             $exception = new Exception("ANKTEST001", $this->smartElement->id);
             $exception->setHttpStatus("404", "Cannot find workflow");
@@ -78,17 +77,11 @@ class TransitionAccess
     protected function checkTransition()
     {
         $err = $this->workflow->control($this->transition);
-        if (empty($err)) {
-            $exception = new Exception("ANKTEST012", "control");
-            $exception->setHttpStatus("404", "Cannot control workflow");
-            throw $exception;
+        if (!empty($err)) {
+            throw new Exception("ANKTEST012", $err);
         }
+        return "Access granted";
     }
 
-    protected function getSmartElementdata()
-    {
-        $smartElementData = new \Anakeen\Routes\Core\Lib\DocumentApiData($this->smartElement);
-        $smartElementData->setFields(["document.properties.all", "document.attributes.all"]);
-        return $smartElementData->getDocumentData();
-    }
+
 }

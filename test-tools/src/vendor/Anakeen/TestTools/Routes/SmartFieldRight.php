@@ -2,6 +2,7 @@
 
 namespace Anakeen\TestTools\Routes;
 
+use Anakeen\Core\ContextManager;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 use Anakeen\Core\SmartStructure\FieldAccessManager;
@@ -28,9 +29,8 @@ class SmartFieldRight
     ) {
         $this->initParameters($request, $args);
 
-        $this->testSmartFieldRight();
 
-        return ApiV2Response::withData($response, $this->getSmartElementdata());
+        return ApiV2Response::withData($response, $this->testSmartFieldRight());
     }
 
     protected function initParameters(\Slim\Http\request $request, $args)
@@ -68,6 +68,8 @@ class SmartFieldRight
             $exception->setHttpStatus("500", "acl must be none, read, write");
             throw $exception;
         }
+
+        return "Access Field granted";
     }
 
     protected function testSmartFieldRight()
@@ -98,16 +100,14 @@ class SmartFieldRight
                 if (FieldAccessManager::hasWriteAccess($this->smartElement, $smartfieldAttr) === false) {
                     $exception = new Exception("ANKTEST011", 'write');
                     $exception->setHttpStatus("400", "smartfieldAttr not allowed");
+                    $exception->setData([
+                        "field" => $smartfieldAttr->id,
+                        "user" => ContextManager::getCurrentUser()->login]);
                     throw $exception;
                 }
                 break;
         }
     }
-    
-    protected function getSmartElementdata()
-    {
-        $smartElementData = new \Anakeen\Routes\Core\Lib\DocumentApiData($this->smartElement);
-        $smartElementData->setFields(["document.properties.all", "document.attributes.all"]);
-        return $smartElementData->getDocumentData();
-    }
+
+
 }
