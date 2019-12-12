@@ -7,6 +7,8 @@ const semver = require("semver");
 const signale = require("signale");
 const tar = require("tar");
 const rimraf = require("rimraf");
+const fetch = require("node-fetch");
+const urlJoin = require("url-join");
 
 const GenericError = require(path.resolve(__dirname, "GenericError.js"));
 const { RepoXML } = require(path.resolve(__dirname, "RepoXML.js"));
@@ -16,6 +18,7 @@ const { RepoContentXML } = require(path.resolve(__dirname, "RepoContentXML.js"))
 const SHA256Digest = require(path.resolve(__dirname, "SHA256Digest"));
 const Utils = require(path.resolve(__dirname, "Utils.js"));
 const { HTTPCredentialStore } = require(path.resolve(__dirname, "HTTPCredentialStore.js"));
+const { checkFile } = require("@anakeen/anakeen-module-validation");
 
 const fs_stat = util.promisify(fs.stat);
 const fs_mkdir = util.promisify(fs.mkdir);
@@ -23,16 +26,42 @@ const fs_readdir = util.promisify(fs.readdir);
 
 class ComposeError extends GenericError {}
 
+const REPO_NAME = "repo.xml";
+const REPO_LOCK_NAME = "repo.lock.xml";
+
 class Compose {
   constructor(options = {}) {
     if (typeof options !== "object") {
       options = {};
     }
-    this.$ = {
-      debug: options.hasOwnProperty("debug") && options.debug === true,
-      frozenLockfile: options.hasOwnProperty("frozenLockfile") && options["frozenLockfile"] === true,
-      latest: options.hasOwnProperty("latest") && options.latest === true
-    };
+    this.modeDebug = options.hasOwnProperty("debug") && options.debug === true;
+    this.frozenLockfile = options.hasOwnProperty("frozenLockfile") && options.frozenLockfile === true;
+    this.latest = options.hasOwnProperty("latest") && options.latest === true;
+    this.cwd = options.cwd;
+    this.currentRepoPath = path.resolve(this.cwd, REPO_NAME);
+    this.currentLockPath = path.resolve(this.cwd, REPO_LOCK_NAME);
+    this.credentialStore = new HTTPCredentialStore(this.cwd);
+  }
+
+  /**
+   * Check if the repo exist and the XML files are valid
+   * @returns {Promise<Compose>}
+   */
+  async checkIfInitialized() {
+    if (!fs.existsSync(this.currentRepoPath)) {
+      throw new ComposeError(`There is no compose repository at this path ${this.currentRepoPath}`);
+    }
+    const check = checkFile(this.currentRepoPath);
+    if (!check.ok) {
+      throw new ComposeError(`The repo file is not valid ${this.currentRepoPath} : ${check.error}`);
+    }
+    if (fs.existsSync(this.currentLockPath)) {
+      const checkLock = checkFile(this.currentLockPath);
+      if (!checkLock.ok) {
+        throw new ComposeError(`The repo file is not valid ${this.currentLockPath} : ${checkLock.error}`);
+      }
+    }
+    return this;
   }
 
   /**
@@ -40,17 +69,15 @@ class Compose {
    * @returns {Promise<void>}
    */
   async loadContext() {
-    if (typeof this.repoXML !== "undefined") {
-      throw new ComposeError(`repoXML already loaded!`);
+    if (!this.repoXML) {
+      this.repoXML = new RepoXML(this.currentRepoPath, this.credentialStore);
+      await this.repoXML.load();
     }
-    this.repoXML = new RepoXML("repo.xml");
-    await this.repoXML.load();
 
-    if (typeof this.repoLockXML !== "undefined") {
-      throw new ComposeError(`repoLockXML already loaded!`);
+    if (!this.repoLockXML) {
+      this.repoLockXML = new RepoLockXML(this.currentLockPath);
+      await this.repoLockXML.load();
     }
-    this.repoLockXML = new RepoLockXML("repo.lock.xml");
-    await this.repoLockXML.load();
   }
 
   /**
@@ -63,7 +90,7 @@ class Compose {
   }
 
   debug(msg, options = {}) {
-    if (this.$.debug) {
+    if (this.modeDebug) {
       if (typeof msg === "object") {
         console.dir(msg, options);
       } else {
@@ -125,40 +152,38 @@ class Compose {
   async init({ localRepo, localSrc }) {
     let stats;
 
-    if (await Utils.fileExists("repo.xml")) {
+    localRepo = path.resolve(this.cwd, localRepo);
+    localSrc = path.resolve(this.cwd, localSrc);
+
+    if (await Utils.fileExists(this.currentRepoPath)) {
       throw new Error(`File 'repo.xml' already exists`);
     }
-
-    try {
-      stats = await fs_stat(localRepo);
-    } catch (e) {
+    const checkRepo = async repo => {
       try {
-        await fs_mkdir(localRepo, { recursive: true });
-        stats = await fs_stat(localRepo);
+        stats = await fs_stat(repo);
       } catch (e) {
-        throw new Error(`Could not create localRepo directory '${localRepo}': ${e}`);
+        try {
+          await fs_mkdir(repo, { recursive: true });
+          stats = await fs_stat(repo);
+        } catch (e) {
+          throw new Error(`Could not create localRepo directory '${repo}': ${e}`);
+        }
       }
-    }
-    if (!stats.isDirectory()) {
-      throw new Error(`localRepo '${localRepo}' is not a directory`);
-    }
-
-    try {
-      stats = await fs_stat(localSrc);
-    } catch (e) {
-      try {
-        await fs_mkdir(localSrc, { recursive: true });
-        stats = await fs_stat(localSrc);
-      } catch (e) {
-        throw new Error(`Could not create localRepo directory '${localSrc}': ${e}`);
+      if (!stats.isDirectory()) {
+        throw new Error(`localRepo '${repo}' is not a directory`);
       }
-    }
-    if (!stats.isDirectory()) {
-      throw new Error(`localRepo '${localSrc}' is not a directory`);
-    }
+    };
 
-    const repoXML = new RepoXML("repo.xml");
-    repoXML.setData(Compose.repoXMLTemplate({ localRepo, localSrc }));
+    await checkRepo(localRepo);
+    await checkRepo(localSrc);
+
+    const repoXML = new RepoXML(this.currentRepoPath);
+    repoXML.setData(
+      Compose.repoXMLTemplate({
+        localRepo: path.relative(path.dirname(this.currentRepoPath), localRepo),
+        localSrc: path.relative(path.dirname(this.currentRepoPath), localSrc)
+      })
+    );
     await repoXML.save();
   }
 
@@ -173,7 +198,7 @@ class Compose {
     await this.loadContext();
     await this.repoXML.addAppRegistry({ name, url });
     if (authUser) {
-      let httpCredentialStore = new HTTPCredentialStore();
+      let httpCredentialStore = new HTTPCredentialStore(this.cwd);
       await httpCredentialStore.loadCredentialStore();
       await httpCredentialStore.setCredential(url, authUser, authPassword);
       await httpCredentialStore.saveCredentialStore();
@@ -181,12 +206,22 @@ class Compose {
     await this.commitContext();
   }
 
+  async checkRegistry({ url, authUser, authPassword }) {
+    const response = await fetch(url, {
+      headers: { Authorization: "Basic " + Buffer.from(authUser + ":" + authPassword).toString("base64") }
+    });
+    if (!response.ok) {
+      new Error(`Unexpected HTTP status ${response.status} ('${response.statusText}')`);
+    }
+    return true;
+  }
+
   /**
    * @param {string} moduleName Module's name
    * @param {string} moduleVersion Module's semver version
    * @param {string} registryName Registry's unique name/identifier from which the module is to be downloaded.
    */
-  async addModule({ name: moduleName, version: moduleVersion, registry: registryName }) {
+  async addModule({ moduleName: moduleName, moduleVersion: moduleVersion, registry: registryName }) {
     await this.loadContext();
 
     await this.repoXML.addModule({
@@ -214,13 +249,18 @@ class Compose {
    * @private
    */
   async _installSemverModule({ name: moduleName, version: moduleVersion, registry: registryName }) {
-    const lockExists = await Utils.fileExists("repo.lock.xml");
-    if (lockExists === true && this.$.frozenLockfile) {
+    const lockExists = await Utils.fileExists(this.frozenLockfile);
+    if (lockExists === true && this.frozenLockfile) {
       throw new ComposeError(`Cannot install module '${moduleName}' while using '--frozen-lock' option`);
     }
 
     const appRegistry = this.repoXML.getRegistryByName(registryName);
-    const ping = await appRegistry.ping();
+    let ping = false;
+    try {
+      ping = await appRegistry.ping();
+    } catch (e) {
+      throw new ComposeError(e.message);
+    }
     if (!ping) {
       throw new ComposeError(`Registry '${registryName}' does not seems to be valid`);
     }
@@ -267,12 +307,12 @@ class Compose {
       if (!moduleInfo.hasOwnProperty(type)) {
         continue;
       }
-      const url = [appRegistry.getModuleVersionURL(moduleName, moduleVersion), type, moduleInfo[type]].join("/");
+      const url = urlJoin(appRegistry.getModuleVersionURL(moduleName, moduleVersion), type, moduleInfo[type]);
       let pathname;
       if (type === "app") {
-        pathname = [localRepo, moduleInfo[type]].join("/");
+        pathname = path.join(this.cwd, localRepo, moduleInfo[type]);
       } else if (type === "src") {
-        pathname = [localSrc, moduleInfo[type]].join("/");
+        pathname = path.join(this.cwd, localSrc, moduleInfo[type]);
       } else {
         throw new ComposeError(`Unrecognized resource type '${type}'`);
       }
@@ -342,7 +382,7 @@ class Compose {
         case "app":
           basename = path.basename(url);
           dirname = this.repoXML.getConfigLocalRepo();
-          rmList.push({ type: "file", path: path.join(dirname, basename) });
+          rmList.push({ type: "file", path: path.join(this.cwd, dirname, basename) });
           break;
         case "src":
           basename = path.basename(url, ".src");
@@ -351,7 +391,7 @@ class Compose {
             type: "file",
             path: path.join(dirname, basename + ".src")
           });
-          rmList.push({ type: "dir", path: path.join(dirname, basename) });
+          rmList.push({ type: "dir", path: path.join(this.cwd, dirname, basename) });
           break;
       }
     }
@@ -375,7 +415,7 @@ class Compose {
   async unpackSrc(archive, moduleName) {
     const basename = moduleName;
     const dirname = path.dirname(archive);
-    const pathname = path.normalize([dirname, basename].join("/"));
+    const pathname = path.join(dirname, basename);
     if (await Utils.fileExists(pathname)) {
       await Compose.rm_Rf(pathname);
     }
@@ -387,16 +427,16 @@ class Compose {
   }
 
   async genRepoContentXML(repoDir) {
-    const repoContentXML = new RepoContentXML([repoDir, "content.xml"].join("/"));
+    const repoContentXML = new RepoContentXML(path.join(this.cwd, repoDir, "content.xml"));
     repoContentXML.reset();
 
-    let moduleFileList = await fs_readdir(repoDir);
+    let moduleFileList = await fs_readdir(path.join(this.cwd, repoDir));
     moduleFileList = moduleFileList.filter(filename => {
       return filename.match(/\.app$/);
     });
     for (let i = 0; i < moduleFileList.length; i++) {
       const moduleFile = moduleFileList[i];
-      await repoContentXML.addModuleFile([repoDir, moduleFile].join("/"));
+      await repoContentXML.addModuleFile(path.join(this.cwd, repoDir, moduleFile));
     }
 
     await repoContentXML.save();
@@ -410,7 +450,7 @@ class Compose {
   async install() {
     await this.loadContext();
 
-    if (this.$.frozenLockfile) {
+    if (this.frozenLockfile) {
       signale.note("Frozen lock file option activated : removing .app and source files from repository");
       const localRepo = this.repoXML.getConfigLocalRepo();
       const localSrc = this.repoXML.getConfigLocalSrc();
@@ -421,14 +461,14 @@ class Compose {
         return filename.match(/\.app$/);
       });
       for (let i = 0; i < apps.length; i++) {
-        const app = [localRepo, apps[i]].join("/");
+        const app = path.join(this.cwd, localRepo, apps[i]);
         await Compose.rm_Rf(app);
       }
 
       //Removing src files
       let sources = await fs_readdir(localSrc);
       for (let i = 0; i < sources.length; i++) {
-        const source = [localSrc, sources[i]].join("/");
+        const source = path.join(this.cwd, localSrc, sources[i]);
         await Compose.rm_Rf(source);
       }
 
@@ -473,7 +513,7 @@ class Compose {
             lockedModule: bimod.locked
           });
         } else {
-          if (this.$.frozenLockfile) {
+          if (this.frozenLockfile) {
             throw new ComposeError(
               `Locked version '${bimod.locked.$.version}' does not satisfies requested semver version '${bimod.required.$.version}'`
             );
@@ -496,7 +536,7 @@ class Compose {
       signale.note(`Found ${count} orphan locked module(s)`);
       for (let i = 0; i < triage.orphanLockedList.length; i++) {
         const module = triage.orphanLockedList[i];
-        if (this.$.frozenLockfile) {
+        if (this.frozenLockfile) {
           throw new ComposeError(
             `Cannot remove orphan locked module '${module.$.name}' while using '--frozen-lockfile' option`
           );
@@ -534,7 +574,7 @@ class Compose {
       const src = resource.$.src;
       const sha256 = resource.$.sha256;
       const basename = path.basename(new URL(src).pathname);
-      const pathname = [resourceDir[type], basename].join("/");
+      const pathname = path.join(this.cwd, resourceDir[type], basename);
 
       let localIsOutdated = true;
       if (await Utils.fileExists(pathname)) {
@@ -572,7 +612,7 @@ class Compose {
 
   async _updateLocalResource({ type, src, pathname, moduleName }) {
     signale.note(`Downloading '${src}' to '${pathname}'...`);
-    const httpAgent = new HTTPAgent({ debug: this.$.debug });
+    const httpAgent = new HTTPAgent({ debug: this.modeDebug, credentialStore: this.credentialStore });
     await httpAgent.downloadFileTo(src, pathname);
     if (type === "src") {
       signale.note(`Unpacking '${type}' from '${src}' into '${pathname}'`);
@@ -633,7 +673,7 @@ class Compose {
       moduleList = this.repoXML.getModuleList().map(module => {
         return {
           name: module.$.name,
-          version: this.$.latest ? "latest" : module.$.version,
+          version: this.latest ? "latest" : module.$.version,
           registry: module.$.registry
         };
       });
@@ -643,7 +683,7 @@ class Compose {
         const module = this.repoXML.getModuleByName(moduleAtVersion.name);
         moduleList[i] = {
           name: module.name,
-          version: this.$.latest ? "latest" : moduleAtVersion.version !== "" ? moduleAtVersion.version : module.version,
+          version: this.latest ? "latest" : moduleAtVersion.version !== "" ? moduleAtVersion.version : module.version,
           registry: module.registry
         };
       }

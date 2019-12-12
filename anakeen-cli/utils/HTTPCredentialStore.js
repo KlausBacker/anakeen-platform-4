@@ -1,43 +1,59 @@
 const path = require("path");
-const os = require("os");
+const fs = require("fs");
 
 const XMLLoader = require(path.resolve(__dirname, "XMLLoader.js"));
 const GenericError = require(path.resolve(__dirname, "GenericError.js"));
 const Utils = require(path.resolve(__dirname, "Utils.js"));
+const { checkFile } = require("@anakeen/anakeen-module-validation");
 
 class HTTPCredentialStoreError extends GenericError {}
 
+const CREDENTIAL_NAME = ".anakeen-cli.credentials.xml";
+
 class HTTPCredentialStore extends XMLLoader {
-  constructor() {
+  constructor(currentPath) {
     super();
-    this.credentialFilename = ".anakeen-cli.credentials";
-    this.defaultCredentialFilename = path.join(os.homedir(), this.credentialFilename);
+    const checkIfFileExist = file => {
+      if (!fs.existsSync(path.dirname(file))) {
+        return false;
+      }
+      if (fs.existsSync(file)) {
+        return file;
+      }
+      if (
+        path.resolve(path.dirname(file), "..", CREDENTIAL_NAME) === path.resolve(path.dirname(file), CREDENTIAL_NAME)
+      ) {
+        return false;
+      }
+      return checkIfFileExist(path.resolve(path.dirname(file), "..", CREDENTIAL_NAME));
+    };
+
+    this.cwd = currentPath;
+    this.credentialStoreFile = checkIfFileExist(path.join(this.cwd, CREDENTIAL_NAME));
     this.credentials = {};
   }
 
   /**
    * Load credentials to given file
-   * @param {string} credentialStoreFile
    * @returns {Promise<HTTPCredentialStore>}
    */
-  async loadCredentialStoreFile(credentialStoreFile) {
+  async loadCredentialStore() {
     try {
-      if (await Utils.fileExists(credentialStoreFile)) {
-        await this.loadFromFile(credentialStoreFile);
+      if (await Utils.fileExists(this.credentialStoreFile)) {
+        const checkCredential = checkFile(this.credentialStoreFile);
+        if (checkCredential.error) {
+          // noinspection ExceptionCaughtLocallyJS
+          throw new HTTPCredentialStoreError(checkCredential.error);
+        }
+        await this.loadFromFile(this.credentialStoreFile);
       } else {
         this.data = { credentials: { credential: [] } };
       }
     } catch (e) {
       throw new HTTPCredentialStoreError(e.message);
     }
-    if (!this.data.hasOwnProperty("credentials")) {
-      throw new HTTPCredentialStoreError(`Could not find /credentials node in '${credentialStoreFile}'`);
-    }
     if (!(typeof this.data.credentials === "object")) {
       this.data.credentials = { credential: [] };
-    }
-    if (!this.data.credentials.hasOwnProperty("credential")) {
-      throw new HTTPCredentialStoreError(`Could not find /credentials/credential node in '${credentialStoreFile}'`);
     }
     if (!(typeof this.data.credentials.credential === "object" && Array.isArray(this.data.credentials.credential))) {
       this.data.credentials.credential = [];
@@ -62,11 +78,17 @@ class HTTPCredentialStore extends XMLLoader {
 
   /**
    * Save credentials to given file
-   * @param {string} credentialStoreFile
    * @returns {Promise<HTTPCredentialStore>}
    */
-  async saveCredentialStoreFile(credentialStoreFile) {
-    this.data = { credentials: { credential: [] } };
+  async saveCredentialStore() {
+    this.data = {
+      credentials: {
+        $: {
+          xmlns: "https://platform.anakeen.com/4/schemas/compose-credentials/1.0"
+        },
+        credential: []
+      }
+    };
     for (let url in this.credentials) {
       if (this.credentials.hasOwnProperty(url)) {
         this.data.credentials.credential.push({
@@ -78,75 +100,15 @@ class HTTPCredentialStore extends XMLLoader {
         });
       }
     }
+    if (!this.credentialStoreFile) {
+      this.credentialStoreFile = path.join(this.cwd, CREDENTIAL_NAME);
+    }
     try {
-      await this.saveToFile(credentialStoreFile);
+      await this.saveToFile(this.credentialStoreFile);
     } catch (e) {
       throw new HTTPCredentialStoreError(e.message);
     }
     return this;
-  }
-
-  /**
-   * Recursively find the location of a `.anakeen-cli.credentials` file
-   * starting from the given directory up to the filesystem's root
-   * @param {string} dir
-   * @returns {Promise<null|*>} returns null if no file was found
-   */
-  async findCredentialLocationRecurse(dir) {
-    let credentialFilename = path.join(dir, this.credentialFilename);
-    if (await Utils.fileExists(credentialFilename)) {
-      return credentialFilename;
-    }
-    const pathElmts = path.parse(dir);
-    if (dir === pathElmts.root) {
-      /* We have reached the filesystem's root and the file was not found */
-      return null;
-    }
-    return await this.findCredentialLocationRecurse(path.resolve(dir, ".."));
-  }
-
-  /**
-   * Find and return the location of the `.anakeen-cli.credentials` file
-   * @returns {Promise<null|*>} returns null if no file was found
-   */
-  async findCredentialLocation() {
-    let localLocation = path.join(process.cwd(), this.credentialFilename);
-    if (await Utils.fileExists(localLocation)) {
-      return localLocation;
-    }
-    let homeLocation = path.join(os.homedir(), this.credentialFilename);
-    if (await Utils.fileExists(homeLocation)) {
-      return homeLocation;
-    }
-    let credentialFilename = await this.findCredentialLocationRecurse(process.cwd());
-    if (credentialFilename !== null) {
-      return credentialFilename;
-    }
-    return null;
-  }
-
-  /**
-   * Load credentials
-   * @returns {Promise<HTTPCredentialStore>}
-   */
-  async loadCredentialStore() {
-    let credentialStoreFile = await this.findCredentialLocation();
-    if (credentialStoreFile === null) {
-      credentialStoreFile = this.defaultCredentialFilename;
-    }
-    return await this.loadCredentialStoreFile(credentialStoreFile);
-  }
-
-  /**
-   * Save credentials
-   * @returns {Promise<HTTPCredentialStore>}
-   */
-  async saveCredentialStore() {
-    let credentialStoreFile = await this.findCredentialLocation();
-    if (credentialStoreFile === null) {
-      credentialStoreFile = this.defaultCredentialFilename;
-    }
-    return await this.saveCredentialStoreFile(credentialStoreFile);
   }
 
   /**

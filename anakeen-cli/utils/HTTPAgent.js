@@ -7,7 +7,6 @@ const HttpsProxyAgent = require("https-proxy-agent");
 
 const GenericError = require(path.resolve(__dirname, "GenericError.js"));
 const Tmp = require(path.resolve(__dirname, "Tmp.js"));
-const { HTTPCredentialStore } = require(path.resolve(__dirname, "HTTPCredentialStore.js"));
 const Utils = require(path.resolve(__dirname, "Utils.js"));
 
 const fs_rename = util.promisify(fs.rename);
@@ -27,6 +26,9 @@ class HTTPAgent {
     }
 
     this._debug = options.hasOwnProperty("debug") && options.debug === true;
+    if (options.credentialStore) {
+      this.credentialStore = options.credentialStore;
+    }
   }
 
   setAuthorizationHeader(headers, authUser, authPassword) {
@@ -48,11 +50,12 @@ class HTTPAgent {
 
   async getHeadersForUrl(url) {
     let headers = {};
-    let httpCredentialStore = new HTTPCredentialStore();
-    await httpCredentialStore.loadCredentialStore();
-    let credential = httpCredentialStore.getCredentialForUrl(url);
-    if (credential !== null) {
-      this.setAuthorizationHeader(headers, credential.authUser, credential.authPassword);
+    if (this.credentialStore) {
+      await this.credentialStore.loadCredentialStore();
+      let credential = this.credentialStore.getCredentialForUrl(url);
+      if (credential !== null) {
+        this.setAuthorizationHeader(headers, credential.authUser, credential.authPassword);
+      }
     }
     return headers;
   }

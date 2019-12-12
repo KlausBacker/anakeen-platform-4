@@ -12,9 +12,10 @@ class RepoXMLRegistryNotFoundError extends RepoXMLError {}
 class RepoXMLModuleNotFoundError extends RepoXMLError {}
 
 class RepoXML extends XMLLoader {
-  constructor(filename) {
+  constructor(filename, credentialStore) {
     super();
     this.filename = filename;
+    this.credentialStore = credentialStore;
   }
 
   /**
@@ -73,16 +74,24 @@ class RepoXML extends XMLLoader {
    * @returns {RepoXML}
    */
   addAppRegistry({ name, url }) {
-    if (this.registryExists(name)) {
-      throw new RepoXMLError(`Registry with name/identifier '${name}' already exists`);
-    }
-
     url = Utils.normalizeUrl(url);
 
     let newRegistry = { $: { name, url } };
 
     const registryList = this._getRegistryList();
-    registryList.push(newRegistry);
+
+    const registries = registryList.reduce(
+      (acc, currentRegistry) => {
+        if (currentRegistry.$.name !== name) {
+          acc.push(currentRegistry);
+        }
+        acc.push(currentRegistry);
+        return acc;
+      },
+      [newRegistry]
+    );
+
+    this._setRegistryList(registries);
 
     return this;
   }
@@ -188,6 +197,19 @@ class RepoXML extends XMLLoader {
     return this.data.compose.registries[0].registry;
   }
 
+  _setRegistryList(list) {
+    this.data.compose.registries[0].registry = list;
+  }
+
+  getRegistryList() {
+    return this.data.compose.registries[0].registry.map(currentRegistry => {
+      return {
+        name: currentRegistry.$.name,
+        url: currentRegistry.$.url
+      };
+    });
+  }
+
   /**
    * Check if a registry exists in 'repo.xml'
    * @param {string} registryName Registry's name
@@ -218,7 +240,7 @@ class RepoXML extends XMLLoader {
         throw new RepoXMLError(`Malformed registry at index #${i}`);
       }
       if (registry.$.name === name) {
-        return new AppRegistry(registry.$);
+        return new AppRegistry({ ...registry.$, ...{ credentialStore: this.credentialStore } });
       }
     }
     throw new RepoXMLRegistryNotFoundError(`Registry with name '${name}' not found in 'repo.xml'`);

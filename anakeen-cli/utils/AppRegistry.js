@@ -10,10 +10,12 @@ class AppRegistry {
   /**
    * @param {string} url Registry's base URL
    */
-  constructor({ url }) {
+  constructor({ url, credentialStore }) {
     this._index = undefined;
     this.url = url.trim().replace(/\/+$/, "");
-    this.agent = new HTTPAgent();
+    this.agent = new HTTPAgent({
+      credentialStore
+    });
   }
 
   /**
@@ -63,13 +65,8 @@ class AppRegistry {
    * @returns {Promise<boolean>}
    */
   async ping() {
-    try {
-      await this.refreshIndex();
-    } catch (e) {
-      console.error(e);
-      return false;
-    }
-    return true;
+    const index = await this.refreshIndex();
+    return !!index;
   }
 
   /**
