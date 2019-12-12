@@ -24,7 +24,7 @@
                 <xs:element name="registries">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="registry" maxOccurs="unbounded">
+                            <xs:element name="registry" maxOccurs="unbounded" minOccurs="0">
                                 <xs:complexType>
                                     <xs:attribute name="name"/>
                                     <xs:attribute name="url"/>
@@ -37,7 +37,7 @@
                 <xs:element name="dependencies">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="module" maxOccurs="unbounded">
+                            <xs:element name="module" maxOccurs="unbounded" minOccurs="0">
                                 <xs:complexType>
                                     <xs:attribute name="name"/>
                                     <xs:attribute name="version"/>
