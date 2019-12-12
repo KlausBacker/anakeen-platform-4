@@ -1319,7 +1319,9 @@ create unique index i_docir on doc(initid, revision);";
             return $err;
         }
         if (!$skipConstraint) {
+            $this->disableAccessControl();
             $err = $this->verifyAllConstraints(false, $constraint);
+            $this->restoreAccessControl();
         }
         if ($err == '') {
             $create = false;
