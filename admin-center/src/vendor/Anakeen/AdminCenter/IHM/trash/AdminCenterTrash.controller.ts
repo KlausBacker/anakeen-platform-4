@@ -143,7 +143,7 @@ export default class AdminCenterTrashController extends Vue {
               close: thisPointer.onClose,
               content: { template: this.content },
               iframe: false,
-              title: `"${e.data.row.title.value}" : Confirmation deletion`
+              title: `"${e.data.row.title.value}" : Confirm deletion`
             })
             .data("kendoWindow")
             .center()
