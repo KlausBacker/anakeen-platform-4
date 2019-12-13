@@ -18,33 +18,28 @@ export default class SimpleContext extends AbstractContext {
     this.testTagUid = uuid();
   }
 
-  public async getAccount(login: string | IAccountData) {
-    if (typeof login === "string") {
-      return super.getAccount(login);
+  public async createAccount({ type = "user", login = "", roles = [] }: IAccountData): Promise<Account | undefined> {
+    const url = SimpleContext.ACCOUNT_CREATION_API;
+    const userInfo = { type, login, roles };
+    const requestData: { [key: string]: any } = Object.assign({}, userInfo);
+    requestData.tag = this.testTagUid;
+    const response = await this.fetchApi(url, {
+      body: JSON.stringify(requestData),
+      headers: {
+        "Content-Type": "application/json"
+      },
+      method: "post"
+    });
+    const responseJson = await response.json();
+    // console.log(url, requestData, JSON.stringify(responseJson, null, 2));
+    if (responseJson.success && responseJson.data) {
+      return new Account(responseJson.data, (url, ...args) => this.fetchApi(url, ...args));
     } else {
-      const url = SimpleContext.ACCOUNT_CREATION_API;
-      if (login && typeof login === "object") {
-        const requestData: { [key: string]: any } = Object.assign({}, login);
-        requestData.tag = this.testTagUid;
-        const response = await this.fetchApi(url, {
-          body: JSON.stringify(requestData),
-          headers: {
-            "Content-Type": "application/json"
-          },
-          method: "post"
-        });
-        const responseJson = await response.json();
-        // console.log(url, requestData, JSON.stringify(responseJson, null, 2));
-        if (responseJson.success && responseJson.data) {
-          return new Account(responseJson.data, (url, ...args) => this.fetchApi(url, ...args));
-        } else {
-          let msg: string = "unknown error";
-          if (responseJson.success === false) {
-            msg = responseJson.message || responseJson.exceptionMessage || responseJson.error;
-          }
-          throw new Error(`Unable to get login ${login.login}: ${msg} : ${url}`);
-        }
+      let msg: string = "unknown error";
+      if (responseJson.success === false) {
+        msg = responseJson.message || responseJson.exceptionMessage || responseJson.error;
       }
+      throw new Error(`Unable to get login ${userInfo.login}: ${msg} : ${url}`);
     }
   }
 
@@ -88,11 +83,13 @@ export default class SimpleContext extends AbstractContext {
 
   public async clean() {
     const url = SimpleContext.CLEAN_API.replace(/%s/g, this.testTagUid);
-    await this.fetchApi(url, {
+    const response = await this.fetchApi(url, {
       headers: {
         "Content-Type": "application/json"
       },
       method: "delete"
     });
+    // const responseJson = await response.json();
+    console.log(JSON.stringify(response, null, 2));
   }
 }

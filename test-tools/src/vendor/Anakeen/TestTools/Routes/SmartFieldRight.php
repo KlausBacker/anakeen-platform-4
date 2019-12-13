@@ -68,46 +68,48 @@ class SmartFieldRight
             $exception->setHttpStatus("500", "acl must be none, read, write");
             throw $exception;
         }
-
-        return "Access Field granted";
     }
 
     protected function testSmartFieldRight()
     {
         $smartfieldAttr = $this->smartElement->getAttribute(strtolower($this->smartfieldId));
         if (empty($smartfieldAttr)) {
-            $exception = new Exception("ANKTEST004", 'smartfieldAttr');
-            $exception->setHttpStatus("400", "smartfieldAttr not allowed");
-            throw $exception;
+            throw new Exception("ANKTEST004", 'smartfieldAttr');
         }
 
         switch ($this->acl) {
             case 'none':
                 if (FieldAccessManager::hasReadAccess($this->smartElement, $smartfieldAttr) === true) {
                     $exception = new Exception("ANKTEST011", 'none');
-                    $exception->setHttpStatus("400", "smartfieldAttr not allowed");
+                    $exception->setData([
+                        "field" => $smartfieldAttr->id,
+                        "user" => ContextManager::getCurrentUser()->login
+                    ]);
                     throw $exception;
                 }
                 break;
             case 'read':
                 if (FieldAccessManager::hasReadAccess($this->smartElement, $smartfieldAttr) === false) {
                     $exception = new Exception("ANKTEST011", 'read');
-                    $exception->setHttpStatus("400", "smartfieldAttr not allowed");
+                    $exception->setData([
+                        "field" => $smartfieldAttr->id,
+                        "user" => ContextManager::getCurrentUser()->login
+                    ]);
                     throw $exception;
                 }
                 break;
             case 'write':
                 if (FieldAccessManager::hasWriteAccess($this->smartElement, $smartfieldAttr) === false) {
                     $exception = new Exception("ANKTEST011", 'write');
-                    $exception->setHttpStatus("400", "smartfieldAttr not allowed");
                     $exception->setData([
                         "field" => $smartfieldAttr->id,
-                        "user" => ContextManager::getCurrentUser()->login]);
+                        "user" => ContextManager::getCurrentUser()->login
+                    ]);
                     throw $exception;
                 }
                 break;
         }
+
+        return "Access Field granted";
     }
-
-
 }

@@ -16,9 +16,9 @@ interface AccountProps {
 }
 
 export default class Account {
-  protected id!: string | number;
-  protected fid!: string | number;
-  protected login!: string;
+  public id!: string | number;
+  public fid!: string | number;
+  public login!: string;
   protected data: any;
   protected type!: string;
   protected roles!: IRole[];

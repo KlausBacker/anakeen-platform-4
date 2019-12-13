@@ -10,13 +10,13 @@ export interface ISmartElementProps {
 }
 
 export interface ISmartElementValues {
-  [fieldId: string]: { value: string; displayValue: string; [other: string]: any };
+  [fieldId: string]: { value: string; displayValue: string; [other: string]: any } | string;
 }
 
 export interface IAccountData {
-  type: string;
+  type?: "user" | "role" | "group";
   login: string;
-  roles: string[];
+  roles?: string[];
 }
 
 export default abstract class AbstractContext {
@@ -25,19 +25,17 @@ export default abstract class AbstractContext {
     this.credentials = credentials;
   }
 
-  public async getAccount(login: string | IAccountData) {
-    if (typeof login === "string") {
-      const response = await this.fetchApi(`/api/v2/test-tools/account/${login}/`);
-      const responseJson = await response.json();
-      if (responseJson.success && responseJson.data) {
-        return new Account(responseJson.data, (url, ...args) => this.fetchApi(url, ...args));
-      } else {
-        let msg: string = "unknown error";
-        if (responseJson.success === false) {
-          msg = responseJson.message;
-        }
-        throw new Error(`Unable to get login ${login}: ${msg}`);
+  public async getAccount(login: string): Promise<Account> {
+    const response = await this.fetchApi(`/api/v2/test-tools/account/${login}/`);
+    const responseJson = await response.json();
+    if (responseJson.success && responseJson.data) {
+      return new Account(responseJson.data, (url, ...args) => this.fetchApi(url, ...args));
+    } else {
+      let msg: string = "unknown error";
+      if (responseJson.success === false) {
+        msg = responseJson.message;
       }
+      throw new Error(`Unable to get login ${login}: ${msg}`);
     }
   }
 

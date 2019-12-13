@@ -26,12 +26,12 @@ describe("Test basique :", function() {
   let accountsManagerUser;
   let seBill;
   let seSimpleUser;
-  //let seZooUser1;
+  let seBilltoBeDeleted;
+  let seZooUser1;
 
   //On init un contexte de test
   //On créé les éléments qu'on va utiliser
   before(async () => {
-
     testContext = currentContext.initTest();
 
     // 1- Accounts
@@ -41,27 +41,21 @@ describe("Test basique :", function() {
     zooUser1Login = "zoo.user1";
     accountsManagerUserLogin = "accounts_manager_user1";
 
-    simpleUser = await testContext.getAccount({
-      login: simpleuserLogin,
-      type: "user",
-      roles: []
+    simpleUser = await testContext.createAccount({
+      login: simpleuserLogin
     });
 
-    simpleUser2 = await testContext.getAccount({
-      login: simpleuser2Login,
-      type: "user",
-      roles: []
+    await testContext.createAccount({
+      login: simpleuser2Login
     });
 
-    billUser = await testContext.getAccount({
+    await testContext.createAccount({
       login: billLogin,
-      type: "user",
       roles: ["bill_writer", "bill_reader"]
     });
 
-    accountsManagerUser = await testContext.getAccount({
+    accountsManagerUser = await testContext.createAccount({
       login: accountsManagerUserLogin,
-      type: "user",
       roles: ["accounts_manager_role"]
     });
 

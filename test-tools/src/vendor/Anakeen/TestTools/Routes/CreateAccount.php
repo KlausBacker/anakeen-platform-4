@@ -73,7 +73,6 @@ class CreateAccount
                 }
                 $u->synchroAccountDocument();
             }
-
         } else {
             $exception = new Exception("ANKTEST007", $this->smartElement->getRawValue("us_login"));
             $exception->setHttpStatus("500", "Cannot create account");

@@ -82,6 +82,4 @@ class TransitionAccess
         }
         return "Access granted";
     }
-
-
 }

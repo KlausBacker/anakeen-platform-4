@@ -43,10 +43,12 @@ class SmartElementClean
     protected function cleanSmartElement()
     {
         $search = new SearchElements('');
+        $search->overrideAccessControl();
         $search->addFilter('atags is not null');
         $search->addFilter("atags ->> 'ank_test' = '%s'", pg_escape_string($this->tag));
         $search->search();
 
+        print_r($search->getResults());
         $list = $search->getResults();
         $this->errors = [];
 
