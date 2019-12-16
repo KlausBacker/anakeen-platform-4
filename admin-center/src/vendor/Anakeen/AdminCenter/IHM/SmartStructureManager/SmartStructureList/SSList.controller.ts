@@ -1,6 +1,5 @@
 import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 Vue.use(DataSourceInstaller);
 @Component({

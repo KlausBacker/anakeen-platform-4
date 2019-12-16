@@ -12,17 +12,19 @@
     </hub-element-layout>
 </template>
 <script>
-  import HubElement from "@anakeen/hub-components/components/lib/HubElement";
+  import HubElement from "@anakeen/hub-components/components/lib/AnkHubElement.esm";
 
   export default {
     name: "ank-admin-structure",
     extends: HubElement, // ou mixins: [ HubElementMixins ],
     components: {
-      "admin-center-structure": resolve =>
+    "admin-center-structure": () =>
+      new Promise(resolve => {
         import("../../SmartStructureManager/AdminCenterStructure.vue").then(Component => {
           resolve(Component.default);
-        })
-    }
+        });
+      })
+  },
   };
 </script>
 <style>

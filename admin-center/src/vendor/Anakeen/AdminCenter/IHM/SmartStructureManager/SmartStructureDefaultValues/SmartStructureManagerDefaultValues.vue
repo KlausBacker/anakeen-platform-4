@@ -30,9 +30,16 @@
       <kendo-grid-column :hidden="true" :title="'<b>Field ID</b>'" :field="'fieldId'"></kendo-grid-column>
       <kendo-grid-column :title="''" width="6.5rem" :command="{click:onEditClick, text: 'Modify' }"></kendo-grid-column>
     </kendo-grid>
-    <modal name="ssm-modal" width="50%" height="50%" @opened="showSmartForm">
-      <smart-form :config="smartForm" @actionClick="formClickMenu" ref="ssmForm" @ready="ssmFormReady" @smartFieldChange="ssmFormChange"></smart-form>
-    </modal>
+
+    <transition name="modal">
+      <div v-show="showModal" class="modal-mask">
+        <div class="modal-wrapper" @click="showModal = false">
+          <div class="modal-container" @click.stop>
+            <smart-form :config="smartForm" @actionClick="formClickMenu" ref="ssmForm" @ready="ssmFormReady" @smartFieldChange="ssmFormChange"></smart-form>
+          </div>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 <style lang="scss">

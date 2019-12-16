@@ -1,7 +1,6 @@
-import AnkTabs from "@anakeen/user-interfaces/components/lib/AnkSETabs";
-import AnkTab from "@anakeen/user-interfaces/components/lib/AnkTab";
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
+import AnkTabs from "@anakeen/user-interfaces/components/lib/AnkSmartElementTabs.esm";
+import AnkTab from "@anakeen/user-interfaces/components/lib/AnkTab.esm";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import DefaultValues from "./SmartStructureDefaultValues/SmartStructureManagerDefaultValues.vue";
 import Info from "./SmartStructureInformations/SmartStructureManagerInformations.vue";
 import SSList from "./SmartStructureList/SSList.vue";

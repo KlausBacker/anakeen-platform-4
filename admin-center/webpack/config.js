@@ -44,6 +44,9 @@ const conf = {
     ],
     AdminWorkflowManager: [
       path.resolve(BASE_DIR, "src/vendor/Anakeen/AdminCenter/IHM/HubComponent/AdminCenterWorkflow/index.js")
+    ],
+    AdminStructureManager: [
+      path.resolve(BASE_DIR, "src/vendor/Anakeen/AdminCenter/IHM/HubComponent/AdminCenterStructureManager/index.js")
     ]
   },
   buildPath: PUBLIC_PATH,
@@ -67,7 +70,7 @@ const conf = {
         extensions: [".js", ".vue", ".json", ".ts", ".tsx"]
       }
     }
-  ]
+  ],
 };
 
 module.exports = () => {

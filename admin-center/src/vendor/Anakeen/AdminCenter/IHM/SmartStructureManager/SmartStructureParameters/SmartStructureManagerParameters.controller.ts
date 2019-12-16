@@ -1,5 +1,5 @@
-import ankSmartController from "@anakeen/user-interfaces/components/lib/AnkController";
-import AnkSmartForm from "@anakeen/user-interfaces/components/lib/AnkSmartForm";
+import ankSmartController from "@anakeen/user-interfaces/components/lib/AnkController.esm";
+import AnkSmartForm from "@anakeen/user-interfaces/components/lib/AnkSmartForm.esm";
 import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
 import { Grid, GridInstaller } from "@progress/kendo-grid-vue-wrapper";
 import "@progress/kendo-ui/js/kendo.filtercell.js";
@@ -13,7 +13,7 @@ Vue.use(DataSourceInstaller);
 
 @Component({
   components: {
-    "smart-form": AnkSmartForm,
+    "smart-form": () => AnkSmartForm,
   }
 })
 export default class SmartStructureManagerParametersController extends Vue {

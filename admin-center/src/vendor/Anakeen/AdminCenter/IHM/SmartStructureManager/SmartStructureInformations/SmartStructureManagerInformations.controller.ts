@@ -1,5 +1,4 @@
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import PropertiesView from "./PropertiesView/PropertiesView.vue";
 
 @Component({

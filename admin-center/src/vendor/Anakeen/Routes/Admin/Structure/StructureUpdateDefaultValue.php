@@ -50,7 +50,9 @@ class StructureUpdateDefaultValue extends StructureFields
         } elseif ($this->data["valueType"] === "value" && $this->data["value"] === "") {
             $err = $this->data["structure"]->setDefValue($this->data["fieldId"], "");
         } else {
+            error_log(json_encode($this->data["value"]));
             $err = $this->data["structure"]->setDefValue($this->data["fieldId"], $this->data["value"]);
+            error_log($err);
         }
 
         if ($err !== "") {

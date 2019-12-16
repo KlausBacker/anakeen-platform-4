@@ -183,7 +183,7 @@
         <hge_jsassets>
             <hge_jsasset_type>MANIFEST</hge_jsasset_type>
             <hge_jsasset>
-                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("structureManager", "structure-manager")
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("admin", "AdminStructureManager")
             </hge_jsasset>
         </hge_jsassets>
         <hge_component_tag>ank-admin-structure</hge_component_tag>
