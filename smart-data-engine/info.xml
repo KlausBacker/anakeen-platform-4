@@ -11,8 +11,6 @@
     <parameters>
         <param name="client_name" label="client name" type="text"/>
         <param name="core_db" label="database postgresql service name" type="text" needed="Y"/>
-        <param name="authtype" label="authenticate default mode" default="basic" type="enum" values="basic|html"
-               needed="Y"/>
         <param name="core_admin_passwd" label="Admin password" default="anakeen" type="text" volatile="Y" onedit="H"/>
     </parameters>
 
