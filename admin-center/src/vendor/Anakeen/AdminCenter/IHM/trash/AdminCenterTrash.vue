@@ -20,7 +20,7 @@
         @grid-data-bound="onGridDataBound"
       />
       <div class="trash-se-parent">
-        <div v-if="!selectedTrash" class="trash-empty">
+        <div v-if="!selectedTrashBool" class="trash-empty">
           <span class="material-icons">delete</span>
           <p>Select Smart Element</p>
         </div>
