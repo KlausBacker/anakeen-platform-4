@@ -9,6 +9,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
@@ -29,6 +30,7 @@ class CliUpdateModule extends CliCommand
             ->addArgument('module', InputArgument::OPTIONAL, "Module name to update")
             ->addOption("force", null, InputOption::VALUE_NONE, "Force downgrade")
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Not launch job')
+            ->addOption('background-job', null, InputOption::VALUE_NONE, 'job run directly and wait the end')
             // the full command description shown when running the command with
             // the "--help" option
             ->setHelp('This command update all modules or one if module name is set');
@@ -60,9 +62,23 @@ class CliUpdateModule extends CliCommand
             if (!$helper->ask($input, $output, $question)) {
                 return;
             }
+
+            /** @var  ConsoleOutput $output */
             AskParameters::askParameters($module, $this->getHelper('question'), $input, $output);
+            if (!$input->getOption("background-job")) {
+                $output->writeln("Updating modules...");
+            }
             $module->recordJob($input->getOption("dry-run"));
-            $output->writeln("Job Recorded");
+            if ($input->getOption("dry-run")) {
+                $output->writeln("Job recorded.");
+            } else {
+                if ($input->getOption("background-job")) {
+                    $output->writeln("Background job running");
+                } else {
+                    ModuleJob::waitRunning($output);
+                    $output->writeln("Update complete.");
+                }
+            }
         }
     }
 

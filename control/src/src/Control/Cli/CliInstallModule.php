@@ -30,6 +30,7 @@ class CliInstallModule extends CliCommand
             ->addArgument('module', InputArgument::OPTIONAL, "Module name to install")
             ->addOption('file', null, InputOption::VALUE_OPTIONAL, '.app file to install.')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Not launch job')
+            ->addOption('background-job', null, InputOption::VALUE_NONE, 'job run directly and wait the end')
             // the full command description shown when running the command with
             // the "--help" option
             ->setHelp('This command install all modules or one if module name is set');
@@ -40,7 +41,7 @@ class CliInstallModule extends CliCommand
         parent::execute($input, $output);
 
         if (ModuleJob::isRunning()) {
-            throw new RuntimeException(sprintf("Job is already in progress. Wait or kill it"));
+            throw new RuntimeException(sprintf("Job is already in progress. background-job or kill it"));
         }
 
 
@@ -54,12 +55,12 @@ class CliInstallModule extends CliCommand
 
         $file = $input->getOption("file");
 
-        $force=false;
+        $force = false;
         $moduleName = $input->getArgument("module");
         if ($file) {
             $module = new ModuleManager("");
             $module->setFile($file);
-            $force=true;
+            $force = true;
         } elseif ($moduleName) {
             $module = new ModuleManager($moduleName);
         } else {
@@ -70,7 +71,7 @@ class CliInstallModule extends CliCommand
             $output->writeln("<info>No modules to install. All is up-to-date.</info>");
         } else {
             $section->clear();
-            $context=Context::getContext();
+            $context = Context::getContext();
             if ($context->warningMessage) {
                 $output->writeln(sprintf("<warning>%s</warning>", $context->warningMessage));
             }
@@ -82,11 +83,22 @@ class CliInstallModule extends CliCommand
                 return;
             }
             AskParameters::askParameters($module, $this->getHelper('question'), $input, $output);
+            if (!$input->getOption("background-job")) {
+                $output->writeln("Installing modules...");
+            }
             $module->recordJob($input->getOption("dry-run"));
             LibSystem::purgeTmpFiles();
-            $output->writeln("Job Recorded");
+            if ($input->getOption("dry-run")) {
+                $output->writeln("Job recorded.");
+            } else {
+                if ($input->getOption("background-job")) {
+                    $output->writeln("Background job running");
+                } else {
+                    ModuleJob::waitRunning($output);
+
+                    $output->writeln("Install complete.");
+                }
+            }
         }
-
     }
-
 }

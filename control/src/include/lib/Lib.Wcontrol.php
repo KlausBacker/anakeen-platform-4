@@ -213,7 +213,7 @@ function wcontrol_process(Process $process)
     if (chmod($tmpscript, 0700) === false) {
         return array(
             'ret' => false,
-            'output' => sprintf("Error setting execution mode on temporary script.", $tmpscript)
+            'output' => sprintf("Error setting execution mode on temporary script \"%s\".", $tmpscript)
         );
     }
     /* Use `/bin/sh` as system() would do */
@@ -224,9 +224,12 @@ function wcontrol_process(Process $process)
             'output' => sprintf("Error writing content to temporary script '%s'.", $tmpscript)
         );
     }
-    system(sprintf("%s 1> %s 2>&1 < /dev/null", escapeshellarg($tmpscript) , escapeshellarg($tmpfile)) , $ret);
+
+    $command = sprintf("%s 1> %s 2>&1 < /dev/null", escapeshellarg($tmpscript), escapeshellarg($tmpfile));
+    system($command, $ret);
     
     $output = file_get_contents($tmpfile);
+
     unlink($tmpfile);
     unlink($tmpscript);
     
