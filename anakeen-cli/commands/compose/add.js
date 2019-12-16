@@ -48,6 +48,10 @@ exports.handler = async argv => {
     if (argv.registry === "") {
       await compose.loadContext();
       const registry = await compose.repoXML.getRegistryList();
+      if (registry.length === 0) {
+        signale.error("There is no registry, you have to had one with addAppRegistry");
+        process.exit(3);
+      }
       if (registry.length === 1) {
         // concurrent modif is not possible is this case
         // eslint-disable-next-line require-atomic-updates
