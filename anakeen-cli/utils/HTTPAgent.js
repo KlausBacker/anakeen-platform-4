@@ -66,14 +66,12 @@ class HTTPAgent {
     //Analyze proxy
     if (this.httpProxy || this.httpsProxy) {
       const urlObject = new URL(url);
-      console.log(urlObject.protocol, process.env);
       if (urlObject.protocol === "https") {
         options.agent = this.httpsProxy || this.httpProxy;
       } else {
         options.agent = this.httpProxy || this.httpsProxy;
       }
     }
-    console.log(options);
     return await fetch(url, options);
   }
 
