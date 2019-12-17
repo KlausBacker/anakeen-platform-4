@@ -1,6 +1,6 @@
 {
   "name": "development-center",
-  "version": "2.2.0-RC.2019.1.18",
+  "version": "2.2.0-RC.2019.1.19",
   "autorelease": true,
   "description": "Developement Center for Anakeen Platform",
   "main": "index.js",
@@ -22,15 +22,15 @@
     "developement"
   ],
   "devDependencies": {
-    "@anakeen/anakeen-cli": "1.2.0-RC.2019.1.18",
+    "@anakeen/anakeen-cli": "1.2.0-RC.2019.1.19",
     "@anakeen/webpack-conf": "1.2.1",
     "copy-webpack-plugin": "^5.0.5",
     "hard-source-webpack-plugin": "^0.13.1"
   },
   "dependencies": {
-    "@anakeen/hub-components": "1.0.2-RC.2019.1.18",
-    "@anakeen/internal-components": "1.0.2-RC.2019.1.18",
-    "@anakeen/user-interfaces": "3.0.0-RC.2019.1.18",
+    "@anakeen/hub-components": "1.0.2-RC.2019.1.19",
+    "@anakeen/internal-components": "1.0.2-RC.2019.1.19",
+    "@anakeen/user-interfaces": "3.0.0-RC.2019.1.19",
     "@progress/kendo-buttons-vue-wrapper": "^2019.3.1023",
     "@progress/kendo-datasource-vue-wrapper": "^2019.3.1023",
     "@progress/kendo-dropdowns-vue-wrapper": "^2019.3.1023",
