@@ -127,7 +127,7 @@ class TrashConfig extends GridConfig
             "actionConfigs" => [
                 ["action" => "restore", "title" => "Restore"],
                 ["action" => "display", "title" => "Display"],
-                ["action" => "delete", "title" => "Delete"],
+                ["action" => "delete", "title" => "Delete from trash"],
             ]
         ];
         $originalConfig["footer"] = [];

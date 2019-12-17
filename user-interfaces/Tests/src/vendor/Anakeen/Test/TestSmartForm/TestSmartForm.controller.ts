@@ -91,9 +91,10 @@ export default class TestSmartFormController extends Vue {
       this.hasError = true;
     }
   }
-  public mounted() {
+
+  public initForm() {
     this.$refs.smartFormRef.$on("ready", (event, data) => {
-      console.log("ready", event, data);
+      console.log("ready", event, data.title);
     });
 
     this.$refs.smartFormRef.$on("beforeSave", (event, data) => {

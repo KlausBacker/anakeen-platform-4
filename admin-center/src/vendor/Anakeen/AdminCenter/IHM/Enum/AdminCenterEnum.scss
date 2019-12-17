@@ -8,13 +8,13 @@
     flex-direction: column;
     height: 100%;
 
-    .k-grid-content.k-auto-scrollable {
-      height: 100%;
+    .k-grid-content {
+      height: 100% !important;
       min-height: 0;
     }
 
     .k-grid.k-widget.k-display-block {
-      display: flex;
+      display: flex !important;
       flex-direction: column;
       height: 100%;
     }
