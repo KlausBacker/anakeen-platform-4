@@ -14,6 +14,9 @@ import { Component, Vue } from "vue-property-decorator";
   }
 })
 export default class AdminCenterEnumController extends Vue {
+  public $refs!: {
+    [key: string]: any;
+  };
   // Useful for translate's filters
   public selectedEnum: string = "";
   public actualKey: string = "";
@@ -132,6 +135,8 @@ export default class AdminCenterEnumController extends Vue {
       });
       that.smartFormModel.size = that.smartFormDataCounter;
       that.buildInitialFormData();
+    }).catch(() => {
+      kendo.ui.progress($(".enum-form-wrapper", this.$el), false);
     });
   }
 
