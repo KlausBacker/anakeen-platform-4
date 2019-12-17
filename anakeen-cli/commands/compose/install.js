@@ -27,7 +27,9 @@ exports.builder = {
 exports.handler = async argv => {
   signale.start(`Installing modules from 'repo.xml'...`);
   try {
-    await new Compose(argv).checkIfInitialized().install(argv);
+    const compose = await new Compose(argv);
+    await compose.checkIfInitialized();
+    await compose.install(argv);
   } catch (e) {
     signale.error(e);
     process.exit(1);

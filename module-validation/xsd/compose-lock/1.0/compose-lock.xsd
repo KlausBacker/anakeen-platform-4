@@ -5,13 +5,40 @@
     <xs:element name="compose-lock">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="module" maxOccurs="unbounded" minOccurs="0">
+                <xs:element name="module" minOccurs="0">
                     <xs:complexType>
-                        <xs:attribute name="name"/>
-                        <xs:attribute name="version"/>
-                        <xs:attribute name="registry"/>
-                        <xs:attribute name="src"/>
-                        <xs:attribute name="sha256"/>
+                        <xs:sequence>
+                            <xs:element name="resources" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="app">
+                                            <xs:complexType>
+                                                <xs:simpleContent>
+                                                    <xs:extension base="xs:string">
+                                                        <xs:attribute type="xs:string" name="src"/>
+                                                        <xs:attribute type="xs:string" name="sha256"/>
+                                                        <xs:attribute type="xs:string" name="path"/>
+                                                    </xs:extension>
+                                                </xs:simpleContent>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="src">
+                                            <xs:complexType>
+                                                <xs:simpleContent>
+                                                    <xs:extension base="xs:string">
+                                                        <xs:attribute type="xs:string" name="src"/>
+                                                        <xs:attribute type="xs:string" name="sha256"/>
+                                                        <xs:attribute type="xs:string" name="path"/>
+                                                    </xs:extension>
+                                                </xs:simpleContent>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute type="xs:string" name="name"/>
+                        <xs:attribute type="xs:string" name="version"/>
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>

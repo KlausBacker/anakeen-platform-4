@@ -118,7 +118,7 @@ class RepoLockXML extends XMLLoader {
    * @param {string} name Module's name
    * @param {string} version Module's semver version
    * @param {string} src URL from which the module has been downloaded
-   * @param {[{ type, src, sha256 }]} resources
+   * @param {[{ type, src, sha256, pathname }]} resources
    * @returns {RepoLockXML}
    */
   addModule({ name, version, resources }) {
@@ -141,7 +141,8 @@ class RepoLockXML extends XMLLoader {
       newModule.resources[r.type].push({
         $: {
           src: r.src,
-          sha256: r.sha256
+          sha256: r.sha256,
+          path: r.pathname
         }
       });
     }
@@ -159,6 +160,9 @@ class RepoLockXML extends XMLLoader {
     return this.data["compose-lock"].module;
   }
 
+  swipeModuleList() {
+    this.data["compose-lock"].module = [];
+  }
   /**
    * @param {string} name
    * @returns {*}|undefined

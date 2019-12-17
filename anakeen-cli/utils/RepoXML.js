@@ -85,13 +85,18 @@ class RepoXML extends XMLLoader {
         if (currentRegistry.$.name !== name) {
           acc.push(currentRegistry);
         }
-        acc.push(currentRegistry);
         return acc;
       },
       [newRegistry]
     );
 
-    this._setRegistryList(registries);
+    const orderedRegistries = registries.sort((moduleA, moduleB) => {
+      if (moduleA.name < moduleB.name) return -1;
+      if (moduleA.name > moduleB.name) return 1;
+      return 0;
+    });
+
+    this._setRegistryList(orderedRegistries);
 
     return this;
   }
@@ -106,14 +111,27 @@ class RepoXML extends XMLLoader {
     if (!this.registryExists(registry)) {
       throw new RepoXMLError(`Registry '${registry}' does not exists`);
     }
-    if (this.moduleExists(name)) {
-      throw new RepoXMLError(`Module '${name}' already exists in dependencies`);
-    }
 
     let newModule = { $: { name, version, registry } };
 
     const moduleList = this.getModuleList();
-    moduleList.push(newModule);
+    const newList = moduleList.reduce(
+      (acc, currentModule) => {
+        if (currentModule.$.name !== name) {
+          acc.push(currentModule);
+        }
+        return acc;
+      },
+      [newModule]
+    );
+
+    const orderedList = newList.sort((moduleA, moduleB) => {
+      if (moduleA.name < moduleB.name) return -1;
+      if (moduleA.name > moduleB.name) return 1;
+      return 0;
+    });
+
+    this._setModuleList(orderedList);
 
     return this;
   }
@@ -199,6 +217,10 @@ class RepoXML extends XMLLoader {
 
   _setRegistryList(list) {
     this.data.compose.registries[0].registry = list;
+  }
+
+  _setModuleList(list) {
+    this.data.compose.dependencies[0].module = list;
   }
 
   getRegistryList() {

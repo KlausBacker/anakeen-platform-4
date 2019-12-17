@@ -25,6 +25,7 @@ const fs_mkdir = util.promisify(fs.mkdir);
 const fs_readdir = util.promisify(fs.readdir);
 
 class ComposeError extends GenericError {}
+class ComposeLockError extends GenericError {}
 
 const REPO_NAME = "repo.xml";
 const REPO_LOCK_NAME = "repo.lock.xml";
@@ -211,7 +212,7 @@ class Compose {
       headers: { Authorization: "Basic " + Buffer.from(authUser + ":" + authPassword).toString("base64") }
     });
     if (!response.ok) {
-      new Error(`Unexpected HTTP status ${response.status} ('${response.statusText}')`);
+      throw new Error(`Unexpected HTTP status ${response.status} ('${response.statusText}')`);
     }
     return true;
   }
@@ -224,11 +225,8 @@ class Compose {
   async addModule({ moduleName: moduleName, moduleVersion: moduleVersion, registry: registryName }) {
     await this.loadContext();
 
-    await this.repoXML.addModule({
-      name: moduleName,
-      version: moduleVersion,
-      registry: registryName
-    });
+    //Throw an exception if the registry doesn't exist
+    await this.repoXML.getRegistryByName(registryName);
 
     await this._installSemverModule({
       name: moduleName,
@@ -249,11 +247,6 @@ class Compose {
    * @private
    */
   async _installSemverModule({ name: moduleName, version: moduleVersion, registry: registryName }) {
-    const lockExists = await Utils.fileExists(this.frozenLockfile);
-    if (lockExists === true && this.frozenLockfile) {
-      throw new ComposeError(`Cannot install module '${moduleName}' while using '--frozen-lock' option`);
-    }
-
     const appRegistry = this.repoXML.getRegistryByName(registryName);
     let ping = false;
     try {
@@ -275,6 +268,12 @@ class Compose {
     await this._installAndLockModuleVersion({
       name: module.name,
       version: module.version,
+      registry: registryName
+    });
+
+    await this.repoXML.addModule({
+      name: module.name,
+      version: `^${module.version}`,
       registry: registryName
     });
   }
@@ -341,14 +340,16 @@ class Compose {
       newModule.resources.push({
         type: "app",
         src: resources.app.src,
-        sha256: resources.app.sha256
+        sha256: resources.app.sha256,
+        pathname: path.basename(resources.app.pathname)
       });
     }
     if (typeof resources.src !== "undefined") {
       newModule.resources.push({
         type: "src",
         src: resources.src.src,
-        sha256: resources.src.sha256
+        sha256: resources.src.sha256,
+        pathname: path.basename(resources.src.pathname)
       });
     }
 
@@ -445,107 +446,100 @@ class Compose {
   }
 
   /**
+   * Install the element if needed
+   *
    * @returns {Promise<void>}
    */
   async install() {
     await this.loadContext();
 
-    if (this.frozenLockfile) {
-      signale.note("Frozen lock file option activated : removing .app and source files from repository");
-      const localRepo = this.repoXML.getConfigLocalRepo();
-      const localSrc = this.repoXML.getConfigLocalSrc();
-
-      //Removing app files
-      let apps = await fs_readdir(localRepo);
-      apps = apps.filter(filename => {
-        return filename.match(/\.app$/);
-      });
-      for (let i = 0; i < apps.length; i++) {
-        const app = path.join(this.cwd, localRepo, apps[i]);
-        await Compose.rm_Rf(app);
-      }
-
-      //Removing src files
-      let sources = await fs_readdir(localSrc);
-      for (let i = 0; i < sources.length; i++) {
-        const source = path.join(this.cwd, localSrc, sources[i]);
-        await Compose.rm_Rf(source);
-      }
-
-      signale.note("Done.");
-    }
-
     const moduleLockList = this.repoLockXML.getModuleList();
     const moduleList = this.repoXML.getModuleList();
 
-    const triage = Compose.triageList(moduleList, moduleLockList);
-    this.debug({ triage: triage }, { depth: 20 });
+    const organizedLockList = moduleLockList.reduce((acc, currentLockElement) => {
+      acc[currentLockElement.$.name] = currentLockElement;
+      return acc;
+    }, {});
 
-    /*
-     * (1) Process new modules (not yet locked)
-     */
-    let count = triage.notLockedList.length;
-    if (count > 0) {
-      signale.note(`Found ${count} new module(s) to install`);
-      for (let i = 0; i < triage.notLockedList.length; i++) {
-        const module = triage.notLockedList[i];
-        await this._installSemverModule({
+    //Analyze the lock and the demand part and deduce the module to install
+    const analyzedList = moduleList.reduce(
+      (acc, currentElement) => {
+        if (
+          organizedLockList[currentElement.$.name] &&
+          semver.satisfies(organizedLockList[currentElement.$.name].$.version, currentElement.$.version)
+        ) {
+          acc.alreadyLocked[currentElement.$.name] = organizedLockList[currentElement.$.name];
+          signale.note(`Found ${currentElement.$.name} locked with ${currentElement.$.version}`);
+          return acc;
+        }
+        acc.toInstall[currentElement.$.name] = currentElement;
+        return acc;
+      },
+      {
+        toInstall: {},
+        alreadyLocked: {}
+      }
+    );
+
+    //Check if it's lock file mode and there is things to install
+    if (this.frozenLockfile && Object.keys(analyzedList.toInstall).length > 0) {
+      throw new ComposeLockError(
+        `Some modules to install are not in the lockfile ( ${Object.keys(analyzedList.toInstall).join(
+          " "
+        )} ), try without the frozen lock option`
+      );
+    }
+
+    //Install the elements
+    //Swipe the lockfile to reconstruct it during the install
+    this.repoLockXML.swipeModuleList();
+    signale.note(`Found ${Object.keys(analyzedList.toInstall).length} new module(s) to install`);
+    await Object.values(analyzedList.toInstall).reduce((acc, module) => {
+      return acc.then(async () => {
+        return await this._installSemverModule({
           name: module.$.name,
           version: module.$.version,
           registry: module.$.registry
         });
-      }
-    }
+      });
+    }, Promise.resolve());
 
-    /*
-     * (2) Process existing modules (already locked)
-     */
-    count = triage.lockedList.length;
-    if (count > 0) {
-      signale.note(`Found ${count} locked module(s) to install`);
-      for (let i = 0; i < triage.lockedList.length; i++) {
-        const bimod = triage.lockedList[i];
-        if (semver.satisfies(bimod.locked.$.version, bimod.required.$.version)) {
-          signale.note(
-            `Installing module '${bimod.locked.$.name}' with version '${bimod.locked.$.version}' from lock file`
-          );
-          await this._installModuleFromLock({
-            lockedModule: bimod.locked
-          });
-        } else {
-          if (this.frozenLockfile) {
-            throw new ComposeError(
-              `Locked version '${bimod.locked.$.version}' does not satisfies requested semver version '${bimod.required.$.version}'`
-            );
-          }
-          signale.note(`Installing module '${bimod.required.$.name}' with version '${bimod.required.$.version}'`);
-          await this._installSemverModule({
-            name: bimod.required.$.name,
-            version: bimod.required.$.version,
-            registry: bimod.required.$.registry
-          });
+    //Cleaning part
+    //Add the keeped module to the lockfile
+    Object.values(analyzedList.alreadyLocked).map(currentLocked => {
+      moduleList.push(currentLocked);
+    });
+    //Destroy all the elements, that are not in the lock file
+    //Agregate all lockfile path
+    const toKeep = this.repoLockXML.getModuleList().reduce(
+      (acc, currentModule) => {
+        //Aggregate the app part
+        if (currentModule.ressources && currentModule.ressources.app) {
+          acc.app = [
+            ...acc.app,
+            ...currentModule.ressources.app.map(currentApp => {
+              return currentApp.$.path;
+            })
+          ];
         }
-      }
-    }
-
-    /*
-     * (3) Process orphans
-     */
-    count = triage.orphanLockedList.length;
-    if (count > 0) {
-      signale.note(`Found ${count} orphan locked module(s)`);
-      for (let i = 0; i < triage.orphanLockedList.length; i++) {
-        const module = triage.orphanLockedList[i];
-        if (this.frozenLockfile) {
-          throw new ComposeError(
-            `Cannot remove orphan locked module '${module.$.name}' while using '--frozen-lockfile' option`
-          );
+        //Aggregate the src part
+        if (currentModule.ressources && currentModule.ressources.src) {
+          acc.src = [
+            ...acc.src,
+            ...currentModule.ressources.src.map(currentApp => {
+              return currentApp.$.path;
+            })
+          ];
         }
-        this.repoLockXML.deleteModuleByName(module.$.name);
+        return acc;
+      },
+      {
+        app: [],
+        src: []
       }
-    }
+    );
 
-    this.debug({ repoLockXML: this.repoLockXML }, { depth: 20 });
+    console.log(toKeep);
 
     await this.commitContext();
   }
