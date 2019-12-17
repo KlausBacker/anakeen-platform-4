@@ -66,6 +66,7 @@ class AppRegistry {
     try {
       await this.refreshIndex();
     } catch (e) {
+      console.error(e);
       return false;
     }
     return true;

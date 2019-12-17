@@ -298,7 +298,7 @@ $.widget("dcp.dcpAttribute", {
         };
       }
     }
-    if (this.options.helpOutputs) {
+    if (this.options.helpOutputs || (this.options.autocomplete && this.options.autocomplete.url)) {
       this.options.hasAutocomplete = true;
     }
 

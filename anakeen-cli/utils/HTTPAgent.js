@@ -3,6 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const util = require("util");
 const fetch = require("node-fetch");
+const HttpsProxyAgent = require("https-proxy-agent");
 
 const GenericError = require(path.resolve(__dirname, "GenericError.js"));
 const Tmp = require(path.resolve(__dirname, "Tmp.js"));
@@ -18,6 +19,13 @@ class HTTPAgent {
     if (typeof options !== "object") {
       throw new HTTPAgentError(`'options' is not an object (found ${typeof options} instead)`);
     }
+    if (process.env.http_proxy) {
+      this.httpProxy = new HttpsProxyAgent(process.env.http_proxy);
+    }
+    if (process.env.https_proxy) {
+      this.httpsProxy = new HttpsProxyAgent(process.env.https_proxy);
+    }
+
     this._debug = options.hasOwnProperty("debug") && options.debug === true;
   }
 
@@ -52,9 +60,21 @@ class HTTPAgent {
   async fetch(url) {
     url = Utils.normalizeUrl(url);
     const headers = await this.getHeadersForUrl(url);
-    return await fetch(url, {
-      headers: headers
-    });
+    const options = {
+      headers
+    };
+    //Analyze proxy
+    if (this.httpProxy || this.httpsProxy) {
+      const urlObject = new URL(url);
+      console.log(urlObject.protocol, process.env);
+      if (urlObject.protocol === "https") {
+        options.agent = this.httpsProxy || this.httpProxy;
+      } else {
+        options.agent = this.httpProxy || this.httpsProxy;
+      }
+    }
+    console.log(options);
+    return await fetch(url, options);
   }
 
   /**
@@ -72,9 +92,20 @@ class HTTPAgent {
     this.debug(`[HTTPAgent] Downloading '${url}' to temporary file '${tmpName}'`);
 
     const headers = await this.getHeadersForUrl(url);
-    const response = await fetch(url, {
-      headers: headers
-    });
+    const options = {
+      headers
+    };
+    //Analyze proxy
+    if (this.httpProxy || this.httpsProxy) {
+      const urlObject = new URL(url);
+      if (urlObject.protocol === "https") {
+        options.agent = this.httpsProxy || this.httpProxy;
+      } else {
+        options.agent = this.httpProxy || this.httpsProxy;
+      }
+    }
+    console.log(options);
+    const response = await fetch(url, options);
     const outputStream = fs.createWriteStream(tmpName);
     await new Promise((resolve, reject) => {
       try {

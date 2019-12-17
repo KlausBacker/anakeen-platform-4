@@ -570,13 +570,28 @@ export default Backbone.View.extend({
       event = { prevent: false };
     //Add helperResonse event (can be used to reprocess the content of the request)
     success = _.wrap(success, function vAttributeAutoCompleteSuccess(success, content) {
-      var options = {},
+      let options = {},
+        autocompleteOptions = currentView.model.get("autocomplete") || {},
         event = { prevent: false };
       options.data = content;
       currentView.model.trigger("helperResponse", event, currentView.model.id, options, index);
       if (event.prevent) {
         return success([]);
       }
+      if (autocompleteOptions.outputs && content && content.length > 0) {
+        let outputKeys = Object.keys(autocompleteOptions.outputs);
+        content.map(responseItem => {
+          let formValues = {};
+          outputKeys.forEach(key => {
+            if (responseItem.values) {
+              const keyRespName = autocompleteOptions.outputs[key];
+              formValues[key] = responseItem.values[keyRespName];
+            }
+          });
+          responseItem.values = formValues;
+        });
+      }
+
       success(content);
     });
 
@@ -586,8 +601,74 @@ export default Backbone.View.extend({
     if (event.prevent) {
       return this;
     }
-    autocompleteUrl = "/api/v2/smart-elements/" + (documentModel.id || "0") + "/autocomplete/" + this.model.id;
 
+    if (this.model.get("autocomplete")) {
+      autocompleteUrl = this.model.get("autocomplete").url;
+      const fieldValues = this.model.getDocumentModel().getValues();
+      autocompleteUrl = autocompleteUrl.replace(/\{([a-z0-9_]+)\}/gu, (c, p1) => {
+        const fieldValue = fieldValues[p1];
+        if (p1 === this.model.id) {
+          // Get current input value
+          if (options.data.filter && options.data.filter.filters.length > 0) {
+            return options.data.filter.filters[0].value || "";
+          }
+        } else if (fieldValue) {
+          if (fieldValue.value !== null && fieldValue.value !== undefined) {
+            return fieldValue.value;
+          }
+        }
+        return "";
+      });
+
+      const inputs = this.model.get("autocomplete").inputs;
+      if (inputs) {
+        let inputKeys = Object.keys(inputs);
+        options.data.inputs = {};
+        inputKeys.forEach(key => {
+          let values = this.model.getDocumentModel().getValues();
+          const inputField = this.model
+            .getDocumentModel()
+            .get("attributes")
+            .get(key);
+          if (!inputField) {
+            throw new Error(`Form autocomplete input field "${key}" not found.`);
+          }
+          if (values && values[key]) {
+            options.data.inputs[inputs[key]] = values[key];
+            if (index >= 0) {
+              const parentId = this.model.attributes.parent;
+              const parentInfo = this.model
+                .getDocumentModel()
+                .get("attributes")
+                .get(parentId);
+              const parentInputId = inputField.attributes.parent;
+
+              if (parentId === parentInputId && parentInfo.attributes.type === "array") {
+                options.data.inputs[inputs[key]] = values[key][index];
+              }
+            }
+          }
+        });
+      }
+
+      const outputs = this.model.get("autocomplete").outputs;
+      if (outputs) {
+        let outputKeys = Object.keys(outputs);
+        this.model.set("helpOutputs", outputKeys);
+        outputKeys.forEach(key => {
+          const outputField = this.model
+            .getDocumentModel()
+            .get("attributes")
+            .get(key);
+          if (!outputField) {
+            throw new Error(`Form autocomplete output field "${key}" not found.`);
+          }
+        });
+      }
+    }
+    if (!autocompleteUrl) {
+      autocompleteUrl = "/api/v2/smart-elements/" + (documentModel.id || "0") + "/autocomplete/" + this.model.id;
+    }
     options.data.fromid = documentModel.get("properties").get("family").id;
     options.data.fieldInfo = this.model.toData();
     $.ajax({

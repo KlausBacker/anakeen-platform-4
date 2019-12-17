@@ -280,7 +280,7 @@ class Autocomplete
                 $index = intval($this->contentParameters["index"]);
             }
         }
-        $attributes = $this->contentParameters["attributes"];
+        $attributes = $this->contentParameters["attributes"]??[];
         $attrName = strtolower($name);
 
         if (isset($attributes[$attrName])) {

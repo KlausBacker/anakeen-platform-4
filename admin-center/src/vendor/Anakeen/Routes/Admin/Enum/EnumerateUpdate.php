@@ -11,6 +11,7 @@ use String\sprintf;
 class EnumerateUpdate
 {
     private $id = '';
+
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $this->parseParams($request, $args);
@@ -20,16 +21,11 @@ class EnumerateUpdate
     protected function doRequest(\Slim\Http\request $request)
     {
         $modifications = $request->getParsedBody()["data"];
-        $enumName = $request->getParsedBody()["enumName"];
         $this->deleteEnums();
         foreach ($modifications as $newData) {
-            $key = $newData["key"];
-            $label = $newData["label"];
-            $active = $newData["active"];
-            $eorder = $newData["eorder"];
-
-            $this->addEnum($key, $label, $active, $eorder);
+            $this->addEnum($newData["key"], $newData["label"], $newData["active"], $newData["eorder"]);
         }
+        return $modifications;
     }
 
     private function parseParams(\Slim\Http\request $request, $args)
@@ -47,12 +43,25 @@ class EnumerateUpdate
             $queryPattern = <<<'SQL'
 INSERT INTO docenum (name, key, label, disabled, eorder) VALUES ('%s', '%s', '%s', '%s', '%s')
 SQL;
-            $query =sprintf($queryPattern, pg_escape_string($this->id), pg_escape_string($key), pg_escape_string($label), pg_escape_string($activeChar), pg_escape_string($eorder));
+            $query = sprintf(
+                $queryPattern,
+                pg_escape_string($this->id),
+                pg_escape_string($key),
+                pg_escape_string($label),
+                pg_escape_string($activeChar),
+                pg_escape_string($eorder)
+            );
         } else {
             $queryPattern = <<<'SQL'
 INSERT INTO docenum (name, key, label, eorder) VALUES ('%s', '%s', '%s', '%s')
 SQL;
-            $query = sprintf($queryPattern, pg_escape_string($this->id), pg_escape_string($key), pg_escape_string($label), pg_escape_string($eorder));
+            $query = sprintf(
+                $queryPattern,
+                pg_escape_string($this->id),
+                pg_escape_string($key),
+                pg_escape_string($label),
+                pg_escape_string($eorder)
+            );
         }
         DbManager::query($query, $output);
     }

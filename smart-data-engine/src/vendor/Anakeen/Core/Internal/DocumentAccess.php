@@ -358,6 +358,7 @@ class DocumentAccess
             $pfamid = $pdoc->getRawValue("DPDOC_FAMID");
         }
         if ($pfamid > 0) {
+            $this->document->disableAccessControl();
             if ($this->document->profid != $this->document->id) {
                 $this->document->profid = $this->document->id; //private profil
                 $this->document->modify(true, array(
@@ -492,6 +493,7 @@ class DocumentAccess
                 'views'
             ), true);
             $err .= $this->computeDProfilExt($pdoc->id, $fromdocidvalues);
+            $this->document->restoreAccessControl();
         }
         unset($this->document->uperm); // force recompute privileges
         return $err;
