@@ -43,19 +43,11 @@ class DeleteInfo
 
 
         foreach ($relatedElements as $item) {
-            if ($item["doctype"] !== "Z" && $item["doctype"] !== "F") {
+            if ($item["doctype"] !== "Z") {
                 array_push($arr['data'], $item);
             }
         };
 
-        return ApiV2Response::withData($response, count($arr["data"]));
-
-
-        // $nbRelatedElements = count($relatedElements);
-
-        // $data = $nbRelatedElements;
-        // $data = $result[0]["count"];
-
-        // return ApiV2Response::withData($response, $data);
+        return ApiV2Response::withData($response, $arr["data"]);
     }
 }

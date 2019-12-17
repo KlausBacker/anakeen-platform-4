@@ -14,6 +14,9 @@ import { Component, Vue } from "vue-property-decorator";
   }
 })
 export default class AdminCenterEnumController extends Vue {
+  public $refs!: {
+    [key: string]: any;
+  };
   // Useful for translate's filters
   public selectedEnum: string = "";
   public actualKey: string = "";
@@ -120,7 +123,9 @@ export default class AdminCenterEnumController extends Vue {
     this.activeArray = [];
     this.selectedEnum = this.kendoGrid.dataItem($(e.currentTarget).closest("tr")).enumerate;
     const that = this;
+    kendo.ui.progress($(".enum-form-wrapper", this.$el), true);
     this.$http.get(`/api/v2/admin/enumdata/${this.selectedEnum}`).then(response => {
+      kendo.ui.progress($(".enum-form-wrapper", this.$el), false);
       const enumData = response.data.data;
       this.modifications = {};
       enumData.forEach((value, index) => {
@@ -130,6 +135,8 @@ export default class AdminCenterEnumController extends Vue {
       });
       that.smartFormModel.size = that.smartFormDataCounter;
       that.buildInitialFormData();
+    }).catch(() => {
+      kendo.ui.progress($(".enum-form-wrapper", this.$el), false);
     });
   }
 
@@ -225,8 +232,7 @@ export default class AdminCenterEnumController extends Vue {
       });
       if (valid) {
         const data = {
-          data: this.modifications,
-          enumName: this.selectedEnum
+          data: this.modifications
         };
         this.$http.post(`/api/v2/admin/enumupdate/${this.selectedEnum}`, data).then(() => {
           // @ts-ignore
@@ -259,7 +265,6 @@ export default class AdminCenterEnumController extends Vue {
   }
   public mounted() {
     const that = this;
-
     this.$http
       .get(`/api/v2/ui/users/current`)
       .then(response => (this.language = response.data.locale === "fr_FR.UTF-8" ? "fr" : "en"));

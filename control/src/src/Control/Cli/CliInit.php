@@ -60,10 +60,15 @@ class CliInit extends CliCommand
 
         $wiff = \WIFF::getInstance();
 
-        $contextPath = sprintf("%s/platform", realpath($wiff->getWiffRoot() . "../"));
+        $rootContextPath = sprintf(realpath($wiff->getWiffRoot() . "../"));
+        $contextPath = sprintf("%s/platform", $rootContextPath);
         if (!is_dir($contextPath)) {
-            $output->writeln("<info>mkdir $contextPath</info>");
-            mkdir($contextPath);
+            if (!is_writable($contextPath)) {
+                throw new RuntimeException(sprintf("The directory %s is not writable", $rootContextPath));
+            } else {
+                $output->writeln("<info>mkdir $contextPath</info>");
+                mkdir($contextPath);
+            }
         }
 
         AskParameters::setParameters([
