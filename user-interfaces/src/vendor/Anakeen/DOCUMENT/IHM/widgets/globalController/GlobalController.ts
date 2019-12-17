@@ -24,6 +24,10 @@ interface IAsset {
 
 type CssAssetList = IAsset[];
 
+/**
+ * Chain promises list
+ * @param promisesList
+ */
 const chainPromise = (...promisesList) =>
   promisesList.reduce((acc, curr) => {
     return acc.then(() => {
@@ -35,6 +39,10 @@ const chainPromise = (...promisesList) =>
       }
     });
   }, Promise.resolve());
+
+const ERROR_CODES = {
+  FUNCTION_NOT_FOUND: "FUNCTION_NOT_FOUND"
+};
 
 export default class GlobalController extends AnakeenController.BusEvents.Listenable {
   /**
@@ -80,7 +88,7 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
    * Verbose mode of the controller
    */
   private _verbose: boolean = false;
-  private _scripts: { [scriptPath: string]: (controller: SmartElementController) => void } = {};
+  private _scripts: { [scriptPath: string]: Array<(controller: SmartElementController) => void> } = {};
 
   private _isReady: boolean = false;
 
@@ -456,9 +464,19 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
                   );
                   const functionKey = currentJS.function || currentJS.key;
                   if (Array.isArray(functionKey)) {
-                    functionKey.forEach(functionName => {
-                      this._registerScript(currentJS.path, this._getRegisteredFunction(functionName));
+                    const functions = functionKey.map(key => {
+                      const scriptFunction = this._getRegisteredFunction(key);
+                      if (typeof scriptFunction !== "function") {
+                        // Set error function for missing script function
+                        return () =>
+                          Promise.reject({
+                            errorCode: ERROR_CODES.FUNCTION_NOT_FOUND,
+                            message: `Missing executable function for key "${key}" in script "${currentJS.path}"`
+                          });
+                      }
+                      return scriptFunction;
                     });
+                    this._registerScript(currentJS.path, ...functions);
                   } else {
                     this._registerScript(currentJS.path, this._getRegisteredFunction(functionKey));
                   }
@@ -487,23 +505,31 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
       const customJS = _.pluck(event.js, "path");
       const promises = customJS.map(jsPath => {
         const promisify = Promise.resolve();
-        if (typeof this._scripts[jsPath] === "function") {
+        if (Array.isArray(this._scripts[jsPath])) {
           // eslint-disable-next-line no-useless-catch
           try {
             const scopedController = this.getScopedController(event.controller.uid) as SmartElementController;
             // Restrict the js to the current smart element view
             // @ts-ignore
             scopedController._defaultPersistent = false;
-            const returnFunction: any = this._scripts[jsPath].call(this, scopedController);
+            const results = [];
+            this._scripts[jsPath].forEach(scriptFunction => {
+              results.push(Promise.resolve().then(() => scriptFunction.call(this, scopedController)));
+            });
             // If returnFunction is Promise => handle async operation, else immediately resolve
             return () =>
               promisify
                 .then(() => {
                   // @ts-ignore
                   scopedController._defaultPersistent = true;
-                  return returnFunction;
+                  return Promise.all(results);
                 })
                 .catch(err => {
+                  if (err && typeof err === "object" && err.errorCode === ERROR_CODES.FUNCTION_NOT_FOUND) {
+                    console.error(err.message);
+                    return Promise.resolve();
+                  }
+                  console.error(err);
                   throw err;
                 });
           } catch (err) {
@@ -523,8 +549,8 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
    * @param scriptFunction
    * @private
    */
-  private _registerScript(scriptUrl: string, scriptFunction: (controller: SmartElementController) => void) {
-    if (typeof scriptUrl === "string" && typeof scriptFunction === "function") {
+  private _registerScript(scriptUrl: string, ...scriptFunction: Array<(controller: SmartElementController) => void>) {
+    if (typeof scriptUrl === "string" && Array.isArray(scriptFunction)) {
       this._scripts[scriptUrl] = scriptFunction;
     }
     this.emit("_internal::scriptReady", scriptUrl);
