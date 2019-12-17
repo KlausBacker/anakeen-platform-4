@@ -465,7 +465,7 @@ class Compose {
       signale.note(`Found ${count} locked module(s) to install`);
       for (let i = 0; i < triage.lockedList.length; i++) {
         const bimod = triage.lockedList[i];
-        if (semver.satisfies(semver.coerce(bimod.locked.$.version), bimod.required.$.version)) {
+        if (semver.satisfies(bimod.locked.$.version, bimod.required.$.version)) {
           signale.note(
             `Installing module '${bimod.locked.$.name}' with version '${bimod.locked.$.version}' from lock file`
           );

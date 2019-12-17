@@ -102,7 +102,6 @@ class HTTPAgent {
         options.agent = this.httpProxy || this.httpsProxy;
       }
     }
-    console.log(options);
     const response = await fetch(url, options);
     const outputStream = fs.createWriteStream(tmpName);
     await new Promise((resolve, reject) => {
