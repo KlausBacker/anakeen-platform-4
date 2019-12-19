@@ -280,7 +280,9 @@ class ExportAccounts
                          */
                         $groups = $xpath->query(sprintf('//accounts/groups/group/reference[text()=%s]/..', self::xpathLiteral($reference)))->item(0);
                         // $groups->setAttribute("level", $group["order"]);
-                        $groups->parentNode->appendChild($groups);
+                        if ($groups) {
+                            $groups->parentNode->appendChild($groups);
+                        }
                     }
                 }
             }
