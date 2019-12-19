@@ -30,7 +30,7 @@ class CliInstallModule extends CliCommand
             ->addArgument('module', InputArgument::OPTIONAL, "Module name to install")
             ->addOption('file', null, InputOption::VALUE_OPTIONAL, '.app file to install.')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Not launch job')
-            ->addOption('background-job', null, InputOption::VALUE_NONE, 'job run directly and wait the end')
+            ->addOption('background-job', null, InputOption::VALUE_NONE, 'job run in background task')
             // the full command description shown when running the command with
             // the "--help" option
             ->setHelp('This command install all modules or one if module name is set');
@@ -41,7 +41,7 @@ class CliInstallModule extends CliCommand
         parent::execute($input, $output);
 
         if (ModuleJob::isRunning()) {
-            throw new RuntimeException(sprintf("Job is already in progress. background-job or kill it"));
+            throw new RuntimeException(sprintf("Job is already in progress. wait or kill it"));
         }
 
 

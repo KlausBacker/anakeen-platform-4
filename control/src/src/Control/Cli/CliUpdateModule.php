@@ -30,7 +30,7 @@ class CliUpdateModule extends CliCommand
             ->addArgument('module', InputArgument::OPTIONAL, "Module name to update")
             ->addOption("force", null, InputOption::VALUE_NONE, "Force downgrade")
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Not launch job')
-            ->addOption('background-job', null, InputOption::VALUE_NONE, 'job run directly and wait the end')
+            ->addOption('background-job', null, InputOption::VALUE_NONE, 'Job run in background task')
             // the full command description shown when running the command with
             // the "--help" option
             ->setHelp('This command update all modules or one if module name is set');
