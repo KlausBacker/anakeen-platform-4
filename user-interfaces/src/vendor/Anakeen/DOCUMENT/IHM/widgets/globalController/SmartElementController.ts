@@ -1574,7 +1574,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     this._model.listenTo(this._model, "uploadFile", (event, attrid, options) => {
       try {
         const currentAttribute = this.getSmartField(attrid);
-        event.prevent = !this._triggerAttributeControllerEvent(
+        event.promise = this._triggerAttributeControllerEvent(
           "smartFieldUploadFile",
           event,
           currentAttribute,

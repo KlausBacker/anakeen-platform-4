@@ -23,11 +23,13 @@
           <ank-se-grid-action action="consultMailTemplate" title="Display"></ank-se-grid-action>
         </ank-se-grid-actions>
       </ank-se-grid>
-      <div v-if="!selectedMail" class="mail-empty">
-        <span class="material-icons">email</span>
-        <p>Select mail template</p>
+      <div class="mail-form-wrapper">
+        <div v-show="!selectedMail" class="mail-empty">
+          <span class="material-icons">email</span>
+          <p>Select mail template</p>
+        </div>
+        <ank-smart-element v-show="selectedMail" class="mail-smart-element" ref="mailSmartElement"></ank-smart-element>
       </div>
-      <ank-smart-element v-else class="mail-smart-element" ref="mailSmartElement"></ank-smart-element>
     </ank-split-panes>
   </div>
 </template>
