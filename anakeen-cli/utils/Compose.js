@@ -469,6 +469,8 @@ class Compose {
           semver.satisfies(organizedLockList[currentElement.$.name].$.version, currentElement.$.version)
         ) {
           acc.alreadyLocked[currentElement.$.name] = organizedLockList[currentElement.$.name];
+          //Check if the lock is valid (all file here and sha good)
+          this.repoLockXML.checkIfModuleIsValid({name : currentElement.$.name, this.})
           signale.note(`Found ${currentElement.$.name} locked with ${currentElement.$.version}`);
           return acc;
         }
@@ -613,47 +615,6 @@ class Compose {
       await this.unpackSrc(pathname, moduleName);
     }
     signale.note(`Done.`);
-  }
-
-  /**
-   * @param {Array} moduleList
-   * @param {Array} moduleLockList
-   * @returns {{orphanLockedList: Array, notLockedList: Array, lockedList: Array}}
-   */
-  static triageList(moduleList, moduleLockList) {
-    const notLockedList = [];
-    const lockedList = [];
-    const orphanLockedList = [];
-
-    for (let i = 0; i < moduleList.length; i++) {
-      const module = moduleList[i];
-      const lockedModule = Compose.isModuleInList(module.$.name, moduleLockList);
-      if (lockedModule) {
-        lockedList.push({
-          required: module,
-          locked: lockedModule
-        });
-      } else {
-        notLockedList.push(module);
-      }
-    }
-    for (let i = 0; i < moduleLockList.length; i++) {
-      const module = moduleLockList[i];
-      const lockedModule = Compose.isModuleInList(module.$.name, moduleList);
-      if (!lockedModule) {
-        orphanLockedList.push(module);
-      }
-    }
-    return { notLockedList, lockedList, orphanLockedList };
-  }
-
-  static isModuleInList(moduleName, moduleList) {
-    for (let i = 0; i < moduleList.length; i++) {
-      if (moduleList[i].$.name === moduleName) {
-        return moduleList[i];
-      }
-    }
-    return undefined;
   }
 
   /**

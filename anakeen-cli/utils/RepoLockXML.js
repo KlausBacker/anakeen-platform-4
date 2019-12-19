@@ -1,6 +1,7 @@
 const path = require("path");
 const util = require("util");
 const fs = require("fs");
+const SHA256Digest = require(path.resolve(__dirname, "SHA256Digest"));
 
 const fs_access = util.promisify(fs.access);
 
@@ -151,6 +152,32 @@ class RepoLockXML extends XMLLoader {
     moduleList.push(newModule);
 
     return this;
+  }
+
+  async checkIfModuleIsValid({ name, appPath, srcPath }) {
+    const currentModule = this.getModuleByName(name);
+    const appGood = await currentModule.resources.app.reduce(async (acc, currentApp) => {
+      //if one of the ressource is false, all the module is invalid
+      const previousResult = await acc;
+      if (previousResult === false) {
+        return acc;
+      }
+      const sha = await SHA256Digest(path.join(appPath, currentApp.$.path));
+      return sha === currentApp.$.sha256;
+    }, Promise.resolve(true));
+
+    if (appGood === false) {
+      return false;
+    }
+    return await currentModule.resources.src.reduce(async (acc, currentSrc) => {
+      //if one of the ressource is false, all the module is invalid
+      const previousResult = await acc;
+      if (previousResult === false) {
+        return acc;
+      }
+      const sha = await SHA256Digest(path.join(srcPath, currentSrc.$.path));
+      return sha === currentSrc.$.sha256;
+    }, Promise.resolve(true));
   }
 
   /**
