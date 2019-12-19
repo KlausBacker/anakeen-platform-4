@@ -37,13 +37,12 @@ class RenderDefault implements IRenderConfig
         return [];
     }
 
-    public function getJsDeps($legacy = false)
+    public function getJsDeps()
     {
         $pubExternalPath = "/uiAssets/externals";
         $pubInternalPath = "/uiAssets/anakeen";
         $version = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         $jsRef = [
-            "polyfill" => UIGetAssetPath::getJsPolyfill(),
             "kendoui" => UIGetAssetPath::getJSKendoPath()
         ];
 
@@ -56,9 +55,9 @@ class RenderDefault implements IRenderConfig
         return $jsRef;
     }
 
-    public function getSmartElementJs($legacy = false)
+    public function getSmartElementJs()
     {
-        return UIGetAssetPath::getJSSmartElementPath($legacy);
+        return UIGetAssetPath::getJSSmartElementPath();
     }
 
     public function getTemplates(\Anakeen\Core\Internal\SmartElement $document = null)

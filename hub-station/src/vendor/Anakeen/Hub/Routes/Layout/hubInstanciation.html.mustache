@@ -22,14 +22,11 @@
     {{#JS_DEPS}}
         <script type="text/javascript" data-id="{{key}}" src="{{path}}"></script>
     {{/JS_DEPS}}
-    {{#JS}}
-    <script type="module" data-id="{{key}}" src="{{path}}"></script>
-    {{/JS}}
 </head>
 <body>
 <div class="ank-hub-main" id="ank-hub-instanciation"></div>
-{{#JS_LEGACY}}
-<script nomodule data-id="{{key}}" src="{{path}}"></script>
-{{/JS_LEGACY}}
+{{#JS}}
+    <script data-id="{{key}}" src="{{path}}"></script>
+{{/JS}}
 </body>
 </html>

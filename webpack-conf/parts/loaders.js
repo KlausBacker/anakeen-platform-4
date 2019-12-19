@@ -135,7 +135,7 @@ exports.typescriptLoader = (customOptions = {}) => {
  * @param exclude
  * @returns {{resolve: {extensions: string[], alias: {vue$: string}}, plugins: VueLoaderPlugin[], module: {rules: *[]}}}
  */
-exports.vueLoader = exclude => {
+exports.vueLoader = (exclude = [])=> {
   return {
     resolve: {
       extensions: [".js", ".vue", ".json"],
@@ -218,7 +218,6 @@ const configureBabelLoader = ({ browserlist, exclude = [], useBuiltIns = "usage"
   if (exclude) {
     conf.use.options.exclude = [...conf.use.options.exclude, ...exclude];
   }
-  console.log(conf.use.options.exclude);
   return conf;
 };
 
@@ -245,27 +244,9 @@ exports.jsModernLoader = exclude => {
             "last 2 Firefox versions",
             "not Firefox < 54",
             "last 2 Edge versions",
-            "not Edge < 15"
+            "not Edge < 15",
+            "Firefox ESR"
           ],
-          exclude
-        })
-      ]
-    }
-  };
-};
-
-/**
- * Add rules for babel for old browser (99% and IE11)
- *
- * @param exclude
- * @returns {{module: {rules: {test: RegExp, use: {loader: string, options: {presets: *[][], babelrc: boolean, plugins: string[], exclude: RegExp[], cacheDirectory: boolean}}}[]}}}
- */
-exports.jsLegacyLoader = exclude => {
-  return {
-    module: {
-      rules: [
-        configureBabelLoader({
-          browserlist: ["> 1%", "last 2 versions", "Firefox ESR", "Firefox >= 45"],
           exclude
         })
       ]

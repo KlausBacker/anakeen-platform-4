@@ -13,9 +13,6 @@
     {{#JS_DEPS}}
     <script type="text/javascript" {{#noModule}}nomodule{{/noModule}} data-id="{{key}}" src="{{path}}"></script>
     {{/JS_DEPS}}
-    {{#JS}}
-    <script type="module" data-id="{{key}}" src="{{path}}"></script>
-    {{/JS}}
 
 </head>
 <body style="width: 100%; height: 100%;">
@@ -25,9 +22,8 @@
 <script>
     window.ankGridSearchId = {{previewId}}
 </script>
-{{#JS_LEGACY}}
-    <script nomodule data-id="{{key}}" src="{{path}}"></script>
-{{/JS_LEGACY}}
-
+{{#JS}}
+    <script data-id="{{key}}" src="{{path}}"></script>
+{{/JS}}
 </body>
 </html>

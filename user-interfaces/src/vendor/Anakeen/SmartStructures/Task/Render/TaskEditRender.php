@@ -88,7 +88,7 @@ HTML;
     {
         $js = parent::getJsReferences();
 
-        $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "legacy");
+        $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "prod");
         $js["taskRenderEdit"] = $path["TaskEdit"]["js"];
         $js = $this->getCommonJSReferences($js);
         return $js;

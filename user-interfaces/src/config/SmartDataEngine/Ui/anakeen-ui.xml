@@ -9,13 +9,6 @@
       <sde:requiredAccess/>
       <sde:authenticated>true</sde:authenticated>
     </sde:route>
-    <sde:route name="AnkComponents">
-      <sde:callable>Anakeen\Routes\Ui\AnkComponents</sde:callable>
-      <sde:method>GET</sde:method>
-      <sde:pattern>/ui/components/ank-components</sde:pattern>
-      <sde:description>Fetch Anakeen Web Components</sde:description>
-      <sde:authenticated>false</sde:authenticated>
-    </sde:route>
     <sde:route name="Transaction">
       <sde:callable>Anakeen\Routes\Ui\Transaction\Transactions</sde:callable>
       <sde:method>GET</sde:method>

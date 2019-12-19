@@ -10,12 +10,10 @@
     "lib": "yarn run lib:dev",
     "buildJs:prod": "conf=PROD npx webpack --config ./webpack/index.js",
     "buildJs:dev": "conf=DEV npx webpack --config ./webpack/index.js",
-    "buildJs:legacy": "conf=LEGACY npx webpack --config ./webpack/index.js",
-    "buildJs": "yarn run buildJs:prod && yarn run buildJs:dev && yarn run buildJs:legacy",
+    "buildJs": "yarn run buildJs:prod && yarn run buildJs:dev",
     "buildJsRender:prod": "conf=PROD npx webpack --config ./webpack/render.js",
     "buildJsRender:dev": "conf=DEV npx webpack --config ./webpack/render.js",
-    "buildJsRender:legacy": "conf=LEGACY npx webpack --config ./webpack/render.js",
-    "buildJsRender": "yarn run buildJsRender:prod && yarn run buildJsRender:dev && yarn run buildJsRender:legacy"
+    "buildJsRender": "yarn run buildJsRender:prod && yarn run buildJsRender:dev"
   },
   "files": [
     "/components/**/*",

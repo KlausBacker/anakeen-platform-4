@@ -1,6 +1,6 @@
 const path = require("path");
 const { useCache } = require("./common");
-const { legacy, dev } = require("@anakeen/webpack-conf");
+const { prod, dev } = require("@anakeen/webpack-conf");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const { clean } = require("@anakeen/webpack-conf/parts");
 
@@ -102,5 +102,5 @@ module.exports = () => {
     ]
   };
 
-  return [legacy(conf), dev({ ...conf })];
+  return [prod(conf), dev({ ...conf })];
 };
