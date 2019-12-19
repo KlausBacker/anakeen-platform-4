@@ -39,7 +39,7 @@ trait TaskRender
 
     public function getCommonJSReferences($js)
     {
-        $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "legacy");
+        $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "prod");
         $js["taskRenderCommon"] = $path["TaskCommon"]["js"];
         return $js;
     }

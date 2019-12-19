@@ -61,21 +61,9 @@ class UIGetAssetPath
      */
     public static function getJSKendoPath()
     {
-        $assets = self::getElementAssets("assets", self::isInDebug()? "dev":"legacy");
+        $assets = self::getElementAssets("assets", self::isInDebug()? "dev":"prod");
         return $assets["KendoUI"]["js"];
     }
-
-
-    /**
-     * @return mixed
-     * @throws Exception
-     */
-    public static function getJsPolyfill()
-    {
-        $assets = self::getElementAssets("polyfill", "legacy");
-        return $assets["polyfill"]["js"];
-    }
-
 
     public static function getCssKendo()
     {
@@ -108,17 +96,16 @@ class UIGetAssetPath
 
     /**
      * Return the asset ank web components path. By default, the route path is returned.
-     * @param bool $legacy
      * @return string - the asset path
      * @throws Exception
      */
-    public static function getSmartWebComponentsPath($legacy = false)
+    public static function getSmartWebComponentsPath()
     {
         $name = "ank-components";
         if (self::isInDebug()) {
             $paths = self::getElementAssets("ank-components", "dev");
         } else {
-            $paths = self::getElementAssets("ank-components", $legacy ? "legacy" : "prod");
+            $paths = self::getElementAssets("ank-components", "prod");
         }
         return $paths[$name]["js"];
     }
@@ -129,17 +116,16 @@ class UIGetAssetPath
     }
 
     /**
-     * @param bool $legacy
      * @return mixed
      * @throws Exception
      */
-    public static function getJSSmartElementPath($legacy = false)
+    public static function getJSSmartElementPath()
     {
         $name = "smartElement";
         if (self::isInDebug()) {
             $paths = self::getElementAssets("smartElement", "dev");
         } else {
-            $paths = self::getElementAssets("smartElement", $legacy ? "legacy" : "prod");
+            $paths = self::getElementAssets("smartElement", "prod");
         }
         return $paths[$name]["js"];
     }
@@ -150,17 +136,16 @@ class UIGetAssetPath
     }
 
     /**
-     * @param bool $legacy
      * @return mixed
      * @throws Exception
      */
-    public static function getJSSmartElementWidgetPath($legacy = false)
+    public static function getJSSmartElementWidgetPath()
     {
         $name = "smartElementWidget";
         if (self::isInDebug()) {
             $paths = self::getElementAssets("smartElement", "dev");
         } else {
-            $paths = self::getElementAssets("smartElement", $legacy ? "legacy" : "prod");
+            $paths = self::getElementAssets("smartElement", "prod");
         }
         return $paths[$name]["js"];
     }

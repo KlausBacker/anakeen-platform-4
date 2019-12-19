@@ -111,9 +111,6 @@ const analyzeAndReturnWebpackConf = ({
     if (mode === "prod") {
       elements.push(parts.jsModernLoader(excludeBabel));
     }
-    if (mode === "legacy") {
-      elements.push(parts.jsLegacyLoader(excludeBabel));
-    }
   }
   return merge([...elements, ...customParts]);
 };
@@ -132,30 +129,6 @@ module.exports = {
   }) => {
     return analyzeAndReturnWebpackConf({
       vendorName,
-      moduleName,
-      manifestPath,
-      entry,
-      relativeOutputPath,
-      buildPath,
-      excludeBabel,
-      withoutBabel,
-      customParts
-    });
-  },
-  legacy: ({
-    vendorName,
-    moduleName,
-    manifestPath,
-    entry,
-    relativeOutputPath,
-    buildPath,
-    excludeBabel = [],
-    withoutBabel = false,
-    customParts = []
-  }) => {
-    return analyzeAndReturnWebpackConf({
-      vendorName,
-      mode: "legacy",
       moduleName,
       manifestPath,
       entry,

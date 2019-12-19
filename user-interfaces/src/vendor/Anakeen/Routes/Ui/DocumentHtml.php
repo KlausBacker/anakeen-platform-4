@@ -176,9 +176,6 @@ class DocumentHtml
         $data["JS"] = [
             ["key" => "smartElement", "path" => $render->getSmartElementJs()]
         ];
-        $data["JS_LEGACY"] = [
-            ["key" => "smartElement", "path" => $render->getSmartElementJs(true)]
-        ];
         return $data;
     }
 

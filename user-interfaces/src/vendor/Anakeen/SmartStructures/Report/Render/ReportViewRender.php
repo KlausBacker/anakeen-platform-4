@@ -46,7 +46,7 @@ class ReportViewRender extends DefaultView
     public function getJsReferences(SmartElement $document = null)
     {
         $js = parent::getJsReferences($document);
-        $js["dSearch"] = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev": "legacy")["Dsearch"]["js"];
+        $js["dSearch"] = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev": "prod")["Dsearch"]["js"];
 
         return $js;
     }

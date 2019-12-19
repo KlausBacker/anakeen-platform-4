@@ -1,7 +1,7 @@
 const path = require("path");
 const { useCache  } = require("./common");
 
-const { prod, dev, legacy } = require("@anakeen/webpack-conf");
+const { prod, dev } = require("@anakeen/webpack-conf");
 const webpack = require("webpack");
 const {
   cssLoader,
@@ -51,8 +51,5 @@ module.exports = () => {
   if (process.env.conf === "DEV") {
     return dev(conf);
   }
-  if (process.env.conf === "LEGACY") {
-    return legacy(conf);
-  }
-  return [prod(conf), dev(conf), legacy(conf)];
+  return [prod(conf), dev(conf)];
 };
