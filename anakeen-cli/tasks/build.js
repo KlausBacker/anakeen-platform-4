@@ -16,9 +16,6 @@ const buildPipe = (exports.buildPipe = async ({ sourcePath, autoRelease = false,
   let version = moduleInfo.moduleInfo.version;
   let release = "";
 
-  if (autoRelease === "") {
-    autoRelease = "dev";
-  }
   if (autoRelease) {
     let dNow = new Date()
       .toISOString()
