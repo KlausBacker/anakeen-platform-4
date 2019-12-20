@@ -107,23 +107,22 @@ export default class AdminCenterTrashController extends Vue {
         this.$http.get("/api/v2/admin/trash/" + this.selectedTrash).then(response => {
           const data = response.data.data;
           thisPointer.NbReference = response.data.data.length;
+          const deleteReference = `<p ref='content_confirm' class='content-confirm' ><span style='color:red;font-weight: bold; font-size: larger'>Warning</span>: you are about to <span style='font-weight: bold; font-size: larger'>definitively</span> delete this Smart Element which is referenced in <b>`;
+          const deleteButtonForm = `<div class='button_wrapper'> <button class='k-cancel' ref='cancel'>Cancel</button><button class='k-delete' ref='deleteElement'>Delete from trash</button> </div>`;
           if (Number(thisPointer.NbReference) === 0) {
             this.content =
-              "<p ref='content_confirm' class='content-confirm' >Warning : you are about to definitively delete this Smart Element which is not referenced in any other Smart Element</p> <div class='button_wrapper'> <button class='k-cancel' ref='cancel'>Cancel</button><button class='k-delete' ref='deleteElement'>Delete from trash</button> </div>";
+              "<span ref='content_confirm' class='content-confirm' ><span style='color:red;font-weight: bold; font-size: larger'>Warning</span>: you are about to <span style='font-weight: bold; font-size: larger'>definitively</span> delete this Smart Element which is not referenced in any other Smart Element</p> <div class='button_wrapper'> <button class='k-cancel' ref='cancel'>Cancel</button><button class='k-delete' ref='deleteElement'>Delete from trash</button> </div>";
           } else if (Number(thisPointer.NbReference) <= 2) {
             let str = "";
             data.forEach(item => {
               str += `<li>${item.stitle}</li>`
             });
             this.content =
-              "<p ref='content_confirm' class='content-confirm' >Warning : you are about to definitively delete this Smart Element which is referenced in <b>" +
-              `<ul>${str}</ul>` +
-              "<div class='button_wrapper'> <button class='k-cancel' ref='cancel'>Cancel</button><button class='k-delete' ref='deleteElement'>Delete from trash</button> </div>";
+              `${deleteReference}<ul>${str}</ul>` + deleteButtonForm;
           } else {
             this.content =
-              "<p ref='content_confirm' class='content-confirm' >Warning : you are about to definitively delete this Smart Element which is referenced in <b>" +
-              thisPointer.NbReference +
-              "</b> other Smart Elements</p> <div class='button_wrapper'> <button class='k-cancel' ref='cancel'>Cancel</button><button class='k-delete' ref='deleteElement'>Delete from trash</button> </div>";
+              deleteReference + thisPointer.NbReference +
+              "</b> other Smart Elements</p>" + deleteButtonForm;
           }
           $(thisPointer.$refs.confirm)
             .kendoWindow({
