@@ -452,6 +452,10 @@ migration-tools-build:
     PACKAGE_PATH: migration-tools
     PACKAGE_NAME: migration-tools
     MODE: "app"
+  artifacts:
+    paths:
+      - build/${PACKAGE_PATH}
+    expire_in: 1 day
   only:
     refs:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
@@ -801,6 +805,8 @@ workflow-publish:
 .registry:
   <<: *pull-cache
   stage: registry
+  variables:
+    GIT_STRATEGY: none
   tags:
     - a4ppm
   script:
@@ -847,7 +853,7 @@ smart-data-engine-integration-register:
     changes:
       - smart-data-engine/**/*
   dependencies:
-    - smart-data-engine-build
+    - smart-data-engine-integration-build
 
 workflow-register:
   extends: .registry
@@ -873,7 +879,7 @@ workflow-integration-register:
     changes:
       - workflow/**/*
   dependencies:
-    - workflow-build
+    - workflow-integration-build
 
 security-register:
   extends: .registry
@@ -899,7 +905,7 @@ security-integration-register:
     changes:
       - security/**/*
   dependencies:
-    - security-build
+    - security-integration-build
 
 user-interfaces-register:
   extends: .registry
@@ -925,7 +931,7 @@ user-interfaces-integration-register:
     changes:
       - user-interfaces/**/*
   dependencies:
-    - user-interfaces-build
+    - user-interfaces-integration-build
 
 migration-tools-register:
   extends: .registry
@@ -951,7 +957,7 @@ migration-tools-integration-register:
     changes:
       - migration-tools/**/*
   dependencies:
-    - migration-tools-build
+    - migration-tools-integration-build
 
 hub-station-register:
   extends: .registry
@@ -1089,6 +1095,8 @@ transformation-integration-register:
 .registry-control:
   <<: *pull-cache
   stage: registry
+  variables:
+    GIT_STRATEGY: none
   tags:
     - a4ppm
   script:
@@ -1144,6 +1152,8 @@ control-integration-register:
 .registry-te:
   <<: *pull-cache
   stage: registry
+  variables:
+    GIT_STRATEGY: none
   tags:
     - a4ppm
   script:
