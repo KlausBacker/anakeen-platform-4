@@ -17,17 +17,20 @@ Vue.use(DataSourceInstaller);
   }
 })
 export default class SmartStructureManagerParametersController extends Vue {
-  public smartForm: object = {};
-  public unsupportedType = ["frame", "tab", "array"];
-  public $refs!: {
-    [key: string]: any;
-  };
- 
   @Prop({
     default: "",
     type: String
   })
   public ssName;
+  public smartForm: object = {};
+  public unsupportedType = ["frame", "tab", "array"];
+  public $refs!: {
+    [key: string]: any;
+  };
+
+  public smartFormModal = this.$refs.smartFormModal;
+  public showModal = false;
+
   public finalData = {
     parameterId: "",
     structureId: this.ssName,
@@ -58,10 +61,9 @@ export default class SmartStructureManagerParametersController extends Vue {
     this.type = row.children[4].textContent;
     this.finalData.parameterId = row.children[5].innerText
     this.finalData.value = this.rawValue;
-    this.$modal.show("ssm-modal");
     // In case of enumerate, fetch his data
     const enumData = [];
-    console.log("TYPE:", this.type)
+    //console.log("TYPE:", this.type)
     if(this.type === "enum") {
       this.$http
       .get(`/api/v2/admin/enumdata/${this.type.typeFormat}`)
@@ -82,7 +84,7 @@ export default class SmartStructureManagerParametersController extends Vue {
       });
     }
     
-    this.$modal.show("ssm-modal");
+    this.showModal = true;
     this.smartForm = {
       menu: [
         {
@@ -168,12 +170,13 @@ export default class SmartStructureManagerParametersController extends Vue {
       }
     }
   }
-  // public showSmartForm() {
-    
-  // }
   public ssmFormReady() {
-    this.$refs.ssmForm.hideSmartField("ssm_inherited_value");
-    this.$refs.ssmForm.hideSmartField("ssm_advanced_value");
+    if(this.$refs.ssmForm.getSmartField("ssm_inherited_value")){
+      this.$refs.ssmForm.hideSmartField("ssm_inherited_value");
+    }
+    if(this.$refs.ssmForm.getSmartField("ssm_advanced_value")){
+      this.$refs.ssmForm.hideSmartField("ssm_advanced_value");
+    }
   }
   public ssmFormChange(e, smartStructure, smartField, values, index) {
     const smartForm = this.$refs.ssmForm;
@@ -211,16 +214,13 @@ export default class SmartStructureManagerParametersController extends Vue {
   public formClickMenu(e, se, params) {
     switch (params.eventId) {
       case "ssmanager.cancel":
-        this.$modal.hide("ssm-modal");
+        this.showModal = false;
         break;
       case "ssmanager.save":
         this.updateData(this.finalData);
         break;
     }
   }
-  // public beforeEdit(data) {
-  //   this.smartForm = data.params.config;
-  // }
   public displayData(colId) {
     return dataItem => {
       switch (colId) {
@@ -300,7 +300,7 @@ export default class SmartStructureManagerParametersController extends Vue {
               type
             });
           }
-          console.log(result);
+          // console.log(result);
         } else {
           // ToDo : Manage Error
         }
@@ -317,9 +317,6 @@ export default class SmartStructureManagerParametersController extends Vue {
     }
     return {type, typeFormat}
   }
-  // protected formatValuesLabels() {
-    
-  // }
   protected getParameters(options) {
     this.$http
       .get(`/api/v2/admin/smart-structures/${this.ssName}/parameters/`, {
@@ -365,7 +362,7 @@ export default class SmartStructureManagerParametersController extends Vue {
       .put(url, {params: JSON.stringify(data)})
       .then(response => {
         this.$refs.parametersGridData.kendoDataSource.read();
-        this.$modal.hide("ssm-modal");
+        this.showModal = false;
       })
       .catch(response => {
         console.error("UpdateDataResError", response);

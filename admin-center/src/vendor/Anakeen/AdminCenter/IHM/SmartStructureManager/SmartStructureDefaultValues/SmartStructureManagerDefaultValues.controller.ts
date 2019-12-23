@@ -15,41 +15,40 @@ Vue.use(DataSourceInstaller);
   }
 })
 export default class SmartStructureManagerDefaultValuesController extends Vue {
-  public smartForm: object = {};
-  public smartFormModal = this.$refs.smartFormModal;
-  public showModal = false;
-
-  public unsupportedType = ["frame", "tab"/* , "array" */];
-  public $refs!: {
-    [key: string]: any;
-  };
- 
   @Prop({
     default: "",
     type: String
   })
   public ssName;
+
+  public smartForm: object = {};
+  public smartFormModal = this.$refs.smartFormModal;
+  public showModal = false;
+  // Useful, in pair with smartFormDisplayManager, to format or not finalData.value as an array
+  public isValArray = false;
+  public smartFormDisplayManager = {
+    ssm_array: "none",
+    ssm_value: "write"
+  }  
+  public unsupportedType = ["frame", "tab"/* , "array" */];
+  public $refs!: {
+    [key: string]: any;
+  };
+ 
   public finalData = {
     fieldId: "",
     structureId: this.ssName,
     value: "",
     valueType: "value",
-  }
-  // Usefull, in pair with smartFormDisplayManager, to format or not finalData.value as an array
-  public isValArray = false;
-  public smartFormDisplayManager = {
-    ssm_array: "none",
-    ssm_value: "write"
-  }
-
+  }  
   public smartFormArrayStructure = {};
   public smartFormArrayValues = {};
- 
-  // Data fetched from main grid
+  
+  // Grid data
   protected rawValue;
   protected displayValue;
   protected parentValue;
-  protected type; 
+  protected type;
 
   @Watch("ssName")
   public watchSsName(newValue) {
@@ -69,8 +68,6 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
     // this.type = {type: 'abcd', typeFormat: 'efgh'}
     this.type = JSON.parse(row.children[4].textContent);
     this.finalData.fieldId = row.children[5].innerText;
-    // console.log(this.smartFormArrayValues);
-    // console.log(this.smartFormArrayStructure);
     this.finalData.value = this.getArrayDefaultValue(this.finalData.fieldId);
     this.showModal = true;
     this.showSmartForm();
@@ -200,8 +197,12 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
     // console.log(JSON.stringify(this.smartForm, null, 2))
   }
   public ssmFormReady() {
+    if(this.$refs.ssmForm.getSmartField("ssm_inherited_value")){
       this.$refs.ssmForm.hideSmartField("ssm_inherited_value");
+    }
+    if(this.$refs.ssmForm.getSmartField("ssm_advanced_value")){
       this.$refs.ssmForm.hideSmartField("ssm_advanced_value");
+    }
   }
   public ssmFormChange(e, smartStructure, smartField, values, index) {
     const smartForm = this.$refs.ssmForm;
@@ -250,6 +251,25 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
         const newValue = values.current[i].value;
         this.smartFormArrayValues[smartField.id][i] = newValue
       }
+    } else {
+      this.finalData.value = smartForm.getValue("ssm_value").value
+    }
+  }
+  public ssmArrayChange(e, smartElement, smartField, type, options) {
+    if(type === "removeLine") {
+      let columns = [];
+      // Get column's name
+      Object.values(this.smartFormArrayStructure).forEach(values => {
+        Object.values(values).forEach(element => {
+          columns.push(element.label);
+        });
+      });
+      // Remove the specific value
+      Object.keys(this.smartFormArrayValues).forEach(key => {
+        if(columns.includes(key)) {
+          this.smartFormArrayValues[key].splice(options, 1);
+        }
+      })
     }
   }
   public formClickMenu(e, se, params) {
@@ -260,6 +280,7 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
       case "ssmanager.save":
         this.formatArrayFinalValue(this.finalData.fieldId);
         this.updateData(this.finalData);
+        this.smartForm = {};
         break;
     }
   }
@@ -274,7 +295,7 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
         default:
           return this.displayMultiple(dataItem[colId]);
       }
-    };
+    }
   }
   public displayMultiple(data) {
     if (data instanceof Object) {
@@ -304,20 +325,22 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
     return `<ul>${str}</ul>`;
   }
   protected parseDefaultValuesData(response) {
-    console.log(response.data.data);
+    // console.log(response.data.data);
     const result = [];
     if (response && response.data && response.data.data) {
       const defaultValues = response.data.data.defaultValues;
       const fields = response.data.data.fields;
+      // Browse each default value
       Object.keys(defaultValues).map(item => {
         const defaultVal = defaultValues[item];
         const field = fields.find(element => element.id === item);
         const parentField = fields.find(element => element.id === field.parentId);
         if (!this.unsupportedType.includes(field.simpletype)) {
           const {type, typeFormat} = this.formatType(field.simpletype, field.type);
-          
+
           // Manage multiple values
           if(parentField.type === "array"){
+            // console.log("MultiplePreparation -> IS_ARRAY");
             this.prepareSmartFormArray(defaultVal, field, parentField);
           }
           if (field) {
@@ -325,18 +348,30 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
             let rawValue: object = {};
             let displayValue: object = {};
             if(Array.isArray(defaultValues[item].result)) {
+              // console.log("parsing -> ARRAY");
               for (let i = 0; i < defaultValues[item].result.length; i++) {
                 const element = defaultValues[item].result[i];
-                rawValue[i] = element.value;
-                displayValue[i] = element.displayValue;
+                // rawValue[i] = element.value;
+                // displayValue[i] = element.displayValue;
+                result.push({
+                  displayValue: element.displayValue,
+                  fieldId: item,
+                  label: this.formatLabel(field, fields),
+                  parentValue: defaultValues[item].parentConfigurationValue ? defaultValues[item].parentConfigurationValue : null,
+                  rawValue: element.value,
+                  type: JSON.stringify({type, typeFormat})
+                });
               }
+              return;
             } else if (defaultValues[item].result instanceof Object) {
+              // console.log("parsing -> OBJECT");
               if(defaultValues[item].result.value && defaultValues[item].result.displayValue)
               {
                 rawValue = defaultValues[item].result.value;
                 displayValue = defaultValues[item].result.displayValue;
               }
               else {
+                // console.log("parsing -> NO_VAL");
                 rawValue = null;
                 displayValue = null;
               }
@@ -464,8 +499,6 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
     e.element.addClass("k-textbox filter-input");
   }
   private isDefValMultiple() {
-    console.log("Value", this.smartFormArrayValues);
-    console.log("Structure", this.smartFormArrayStructure);
     if(this.isValArray && this.smartFormDisplayManager.ssm_array === "write"){
       return true;
     }
@@ -507,7 +540,7 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
       }
       actualValue = formattedValues;
     } else {
-      actualValue = this.rawValue;
+      actualValue = this.finalData.value;
     }
     this.finalData.value = JSON.parse(JSON.stringify(actualValue));
   }

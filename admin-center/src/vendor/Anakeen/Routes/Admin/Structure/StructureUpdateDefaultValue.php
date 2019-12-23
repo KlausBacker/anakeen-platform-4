@@ -44,7 +44,7 @@ class StructureUpdateDefaultValue extends StructureFields
 
     private function manageNewDefValue()
     {
-        if(is_array($this->data["value"])){
+        if (is_array($this->data["value"])) {
             $finalValue = $this->formatArray($this->data["value"]);
         } else {
             $finalValue = $this->data["value"];
@@ -56,7 +56,6 @@ class StructureUpdateDefaultValue extends StructureFields
         } elseif ($this->data["valueType"] === "value" && $this->data["value"] === "") {
             $err = $this->data["structure"]->setDefValue($this->data["fieldId"], "");
         } else {
-            error_log(json_encode($this->data["value"]));
             $err = $this->data["structure"]->setDefValue($this->data["fieldId"], $finalValue);
             error_log($err);
         }
@@ -67,9 +66,10 @@ class StructureUpdateDefaultValue extends StructureFields
         return $this->data["structure"]->modify();
     }
 
-    private function formatArray($arrayToFormat) {
+    private function formatArray($arrayToFormat)
+    {
         $formattedArray = [];
-        for ($i=0; $i < count($arrayToFormat); $i++) { 
+        for ($i=0; $i < count($arrayToFormat); $i++) {
             $formattedArray[$i] = [];
             foreach ($arrayToFormat[$i] as $line) {
                 foreach ($line as $key => $value) {

@@ -35,7 +35,7 @@
       <div v-show="showModal" class="modal-mask">
         <div class="modal-wrapper" @click="showModal = false">
           <div class="modal-container" @click.stop>
-            <smart-form :config="smartForm" @actionClick="formClickMenu" ref="ssmForm" @ready="ssmFormReady" @smartFieldChange="ssmFormChange"></smart-form>
+            <smart-form :config="smartForm" @actionClick="formClickMenu" ref="ssmForm" @ready="ssmFormReady" @smartFieldChange="ssmFormChange" @smartFieldArrayChange="ssmArrayChange"></smart-form>
           </div>
         </div>
       </div>
