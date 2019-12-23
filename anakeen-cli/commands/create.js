@@ -14,7 +14,7 @@ signale.config({
 
 const builder = {
   sourcePath: {
-    description: "path to the package [Mandatory]",
+    description: "path to the package",
     alias: "s",
     default: ".",
     type: "string",
