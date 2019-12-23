@@ -392,11 +392,26 @@ class ModuleManager
         }
     }
 
-    public function recordJob($justRecord = false)
+    public static function runJob()
+    {
+        $command = sprintf("%s/anakeen-control dojob", realpath(__DIR__ . "/../../../"));
+        exec("$command > /dev/null 2>&1", $result, $status);
+
+        if ($status !== 0) {
+            $error=JobLog::getLastError();
+            throw new RuntimeException("Exec Script Error\n".$error);
+        }
+    }
+
+    public function recordJob($justRecord = false, $background = true)
     {
         ModuleJob::initJobTask($this);
         if ($justRecord === false) {
-            self::runJobInBackground();
+            if ($background === true) {
+                self::runJobInBackground();
+            } else {
+                self::runJob();
+            }
         }
     }
 

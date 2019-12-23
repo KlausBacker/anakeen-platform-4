@@ -48,23 +48,18 @@ class CliStatus extends CliJsonCommand
             $output->writeln(json_encode($jobStatus, JSON_PRETTY_PRINT));
         } else {
 
-            /** @var ConsoleOutput $output */
-            $output->getFormatter()->setStyle('running', new OutputFormatterStyle('cyan', null, ['blink']));
-            $output->getFormatter()->setStyle('interrupted', new OutputFormatterStyle('red', null, ['blink']));
-            $output->getFormatter()->setStyle('doing', new OutputFormatterStyle('cyan', null, ['blink']));
-            $output->getFormatter()->setStyle('todo', new OutputFormatterStyle('yellow'));
-            $output->getFormatter()->setStyle('installed', new OutputFormatterStyle('green'));
-            $output->getFormatter()->setStyle('done', new OutputFormatterStyle('green'));
+            self::formatJobStatusOutput($output);
+
             $section = $output->section();
             if ($watch > 0) {
                 while (true) {
                     $section->clear();
-                    self::writeJobStatus($section, $jobStatus);
+                    self::displayJobStatus($section, $jobStatus);
                     sleep($watch);
                     $jobStatus = ModuleJob::getJobStatus();
                 }
             } else {
-                self::writeJobStatus($section, $jobStatus);
+                self::displayJobStatus($section, $jobStatus);
                 if (ModuleJob::hasFailed()) {
                     $helper = $this->getHelper('question');
                     $output->writeln("<info>The last job has failed.</info>");
@@ -93,7 +88,17 @@ class CliStatus extends CliJsonCommand
         }
     }
 
-    protected function writeJobStatus(ConsoleSectionOutput $section, $data)
+    public static function formatJobStatusOutput(ConsoleOutput $output)
+    {
+        $output->getFormatter()->setStyle('running', new OutputFormatterStyle('cyan', null, ['blink']));
+        $output->getFormatter()->setStyle('interrupted', new OutputFormatterStyle('red', null, ['blink']));
+        $output->getFormatter()->setStyle('doing', new OutputFormatterStyle('cyan', null, ['blink']));
+        $output->getFormatter()->setStyle('todo', new OutputFormatterStyle('yellow'));
+        $output->getFormatter()->setStyle('installed', new OutputFormatterStyle('green'));
+        $output->getFormatter()->setStyle('done', new OutputFormatterStyle('green'));
+    }
+
+    public static function displayJobStatus(ConsoleSectionOutput $section, $data)
     {
         if (!empty($data["tasks"])) {
             $table = new Table($section);
