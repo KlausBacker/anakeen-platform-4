@@ -4,8 +4,8 @@ import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
 import { Grid, GridInstaller } from "@progress/kendo-grid-vue-wrapper";
 import "@progress/kendo-ui/js/kendo.filtercell.js";
 import "@progress/kendo-ui/js/kendo.grid.js";
-import { Component, Prop, Vue, Watch} from "vue-property-decorator";
- 
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
 Vue.use(GridInstaller);
 Vue.use(DataSourceInstaller);
 
@@ -29,21 +29,19 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
   public smartFormDisplayManager = {
     ssm_array: "none",
     ssm_value: "write"
-  }  
+  };
   public unsupportedType = ["frame", "tab"/* , "array" */];
   public $refs!: {
     [key: string]: any;
   };
- 
   public finalData = {
     fieldId: "",
     structureId: this.ssName,
     value: "",
-    valueType: "value",
-  }  
+    valueType: "value"
+  };
   public smartFormArrayStructure = {};
   public smartFormArrayValues = {};
-  
   // Grid data
   protected rawValue;
   protected displayValue;
@@ -59,7 +57,7 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
       this.finalData.structureId = newValue;
     }
   }
-  public onEditClick(e) { 
+  public onEditClick(e) {
     // Fetch data from grid
     const row = $(e.target).closest("tr")[0];
     this.rawValue = row.children[2].innerText;
@@ -86,12 +84,12 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
 
     // In case of enumerate, fetch his data
     let enumData = [];
-    if(this.type.type === "enum") {
+    if (this.type.type === "enum") {
       enumData = this.getEnum(this.type.typeFormat);
     }
 
     // In case of array default value, manage array/field display
-    if(this.smartFormArrayStructure.hasOwnProperty(this.finalData.fieldId)) {
+    if (this.smartFormArrayStructure.hasOwnProperty(this.finalData.fieldId)) {
       this.smartFormDisplayManager.ssm_array = "write";
       this.smartFormDisplayManager.ssm_value = "none";
       this.isValArray = true;
@@ -103,117 +101,117 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
 
     // SmartForm Generation
     this.smartForm = {
-        menu: [
-          {
-            beforeContent: '<div class="fa fa-times" />',
-            htmlLabel: "",
-            iconUrl: "",
-            id: "cancel",
-            important: false,
-            label: "Cancel",
-            target: "_self",
-            type: "itemMenu",
-            url: "#action/document.delete",
-            visibility: "visible"
-          },
-          {
-            beforeContent: '<div class="fa fa-save" />',
-            htmlLabel: "",
-            iconUrl: "",
-            id: "submit",
-            important: false,
-            label: "Submit",
-            target: "_self",
-            type: "itemMenu",
-            url: "#action/ssmanager.save",
-            visibility: "visible"
-          }
-        ],
-        structure: [
-          {
-            content: [
-              {
-                enumItems: [
-                  {
-                    key: "inherited",
-                    label: "Inherited"
-                  },
-                  {
-                    key: "value",
-                    label: "Value"
-                  },
-                  {
-                    key: "advanced_value",
-                    label: "Advanced Value"
-                  },
-                  {
-                    key: "no_value",
-                    label: "Erase field"
-                  }
-                ],
-                label: "Type",
-                name: "ssm_type",
-                type: "enum"
-              },
-              {
-                display: "read",
-                label: "Inherited",
-                name: "ssm_inherited_value",
-                type: "text",
-              },
-              {
-                display: this.smartFormDisplayManager.ssm_value,
-                enumItems: enumData,
-                label: "Value",
-                name: "ssm_value",
-                type: `${this.type.type}`,
-                typeFormat: `${this.type.typeFormat}`
-              },
-              {
-                label: "Advanced value",
-                name: "ssm_advanced_value",
-                type: "longtext",
-              },
-              {
-                // ToDo : Change index by parent's id name
-                content: this.smartFormArrayStructure[Object.keys(this.smartFormArrayStructure)[0]],
-                display: this.smartFormDisplayManager.ssm_array,
-                label: "Array",
-                name: "ssm_array",
-                type: "array",
-              }
-            ],
-            label: "Default value",
-            name: "ssm_default_value",
-            type: "frame"
-          }
-        ],
-        title: "Edit value form",
-        values: this.smartFormArrayValues
-    }
+      menu: [
+        {
+          beforeContent: '<div class="fa fa-times" />',
+          htmlLabel: "",
+          iconUrl: "",
+          id: "cancel",
+          important: false,
+          label: "Cancel",
+          target: "_self",
+          type: "itemMenu",
+          url: "#action/document.delete",
+          visibility: "visible"
+        },
+        {
+          beforeContent: '<div class="fa fa-save" />',
+          htmlLabel: "",
+          iconUrl: "",
+          id: "submit",
+          important: false,
+          label: "Submit",
+          target: "_self",
+          type: "itemMenu",
+          url: "#action/ssmanager.save",
+          visibility: "visible"
+        }
+      ],
+      structure: [
+        {
+          content: [
+            {
+              enumItems: [
+                {
+                  key: "inherited",
+                  label: "Inherited"
+                },
+                {
+                  key: "value",
+                  label: "Value"
+                },
+                {
+                  key: "advanced_value",
+                  label: "Advanced Value"
+                },
+                {
+                  key: "no_value",
+                  label: "Erase field"
+                }
+              ],
+              label: "Type",
+              name: "ssm_type",
+              type: "enum"
+            },
+            {
+              display: "read",
+              label: "Inherited",
+              name: "ssm_inherited_value",
+              type: "text",
+            },
+            {
+              display: this.smartFormDisplayManager.ssm_value,
+              enumItems: enumData,
+              label: "Value",
+              name: "ssm_value",
+              type: `${this.type.type}`,
+              typeFormat: `${this.type.typeFormat}`
+            },
+            {
+              label: "Advanced value",
+              name: "ssm_advanced_value",
+              type: "longtext",
+            },
+            {
+              // ToDo : Change index by parent's id name
+              content: this.smartFormArrayStructure[Object.keys(this.smartFormArrayStructure)[0]],
+              display: this.smartFormDisplayManager.ssm_array,
+              label: "Array",
+              name: "ssm_array",
+              type: "array",
+            }
+          ],
+          label: "Default value",
+          name: "ssm_default_value",
+          type: "frame"
+        }
+      ],
+      title: "Edit value form",
+      values: this.smartFormArrayValues
+    };
     // console.log("ArrayStructure:", this.smartFormArrayStructure);
     // console.log("ArrayValue:", this.smartFormArrayValues);
     // console.log("===", this.smartFormArrayStructure[Object.keys(this.smartFormArrayStructure)[0]])
     // console.log(JSON.stringify(this.smartForm, null, 2))
   }
   public ssmFormReady() {
-    if(this.$refs.ssmForm.getSmartField("ssm_inherited_value")){
+    if (this.$refs.ssmForm.getSmartField("ssm_inherited_value")) {
       this.$refs.ssmForm.hideSmartField("ssm_inherited_value");
     }
-    if(this.$refs.ssmForm.getSmartField("ssm_advanced_value")){
+    if (this.$refs.ssmForm.getSmartField("ssm_advanced_value")) {
       this.$refs.ssmForm.hideSmartField("ssm_advanced_value");
     }
   }
   public ssmFormChange(e, smartStructure, smartField, values, index) {
     const smartForm = this.$refs.ssmForm;
-    
+
     switch (smartForm.getValue("ssm_type").value) {
       case "inherited":
         smartForm.hideSmartField("ssm_advanced_value");
         smartForm.hideSmartField("ssm_value");
         smartForm.hideSmartField("ssm_array");
         smartForm.showSmartField("ssm_inherited_value");
-        this.finalData.valueType =smartForm.getValue("ssm_type").value
+        this.finalData.valueType = smartForm.getValue("ssm_type").value;
         this.finalData.value = smartForm.getValue("ssm_inherited_value").value;
         this.isValArray = false;
         break;
@@ -246,17 +244,17 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
         break;
     }
 
-    if(this.isDefValMultiple()){
+    if (this.isDefValMultiple()) {
       for (let i = 0; i < values.current.length; i++) {
         const newValue = values.current[i].value;
-        this.smartFormArrayValues[smartField.id][i] = newValue
+        this.smartFormArrayValues[smartField.id][i] = newValue;
       }
     } else {
-      this.finalData.value = smartForm.getValue("ssm_value").value
+      this.finalData.value = smartForm.getValue("ssm_value").value;
     }
   }
   public ssmArrayChange(e, smartElement, smartField, type, options) {
-    if(type === "removeLine") {
+    if (type === "removeLine") {
       let columns = [];
       // Get column's name
       Object.values(this.smartFormArrayStructure).forEach(values => {
@@ -266,10 +264,10 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
       });
       // Remove the specific value
       Object.keys(this.smartFormArrayValues).forEach(key => {
-        if(columns.includes(key)) {
+        if (columns.includes(key)) {
           this.smartFormArrayValues[key].splice(options, 1);
         }
-      })
+      });
     }
   }
   public formClickMenu(e, se, params) {
@@ -295,7 +293,7 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
         default:
           return this.displayMultiple(dataItem[colId]);
       }
-    }
+    };
   }
   public displayMultiple(data) {
     if (data instanceof Object) {
@@ -336,10 +334,10 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
         const field = fields.find(element => element.id === item);
         const parentField = fields.find(element => element.id === field.parentId);
         if (!this.unsupportedType.includes(field.simpletype)) {
-          const {type, typeFormat} = this.formatType(field.simpletype, field.type);
+          const { type, typeFormat } = this.formatType(field.simpletype, field.type);
 
           // Manage multiple values
-          if(parentField.type === "array"){
+          if (parentField.type === "array") {
             // console.log("MultiplePreparation -> IS_ARRAY");
             this.prepareSmartFormArray(defaultVal, field, parentField);
           }
@@ -347,7 +345,7 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
             // ToDo : Refactor as a function
             let rawValue: object = {};
             let displayValue: object = {};
-            if(Array.isArray(defaultValues[item].result)) {
+            if (Array.isArray(defaultValues[item].result)) {
               // console.log("parsing -> ARRAY");
               for (let i = 0; i < defaultValues[item].result.length; i++) {
                 const element = defaultValues[item].result[i];
@@ -357,20 +355,20 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
                   displayValue: element.displayValue,
                   fieldId: item,
                   label: this.formatLabel(field, fields),
-                  parentValue: defaultValues[item].parentConfigurationValue ? defaultValues[item].parentConfigurationValue : null,
+                  parentValue: defaultValues[item].parentConfigurationValue
+                    ? defaultValues[item].parentConfigurationValue
+                    : null,
                   rawValue: element.value,
-                  type: JSON.stringify({type, typeFormat})
+                  type: JSON.stringify({ type, typeFormat })
                 });
               }
               return;
             } else if (defaultValues[item].result instanceof Object) {
               // console.log("parsing -> OBJECT");
-              if(defaultValues[item].result.value && defaultValues[item].result.displayValue)
-              {
+              if (defaultValues[item].result.value && defaultValues[item].result.displayValue) {
                 rawValue = defaultValues[item].result.value;
                 displayValue = defaultValues[item].result.displayValue;
-              }
-              else {
+              } else {
                 // console.log("parsing -> NO_VAL");
                 rawValue = null;
                 displayValue = null;
@@ -380,9 +378,11 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
               displayValue,
               fieldId: item,
               label: this.formatLabel(field, fields),
-              parentValue: defaultValues[item].parentConfigurationValue ? defaultValues[item].parentConfigurationValue : null,
+              parentValue: defaultValues[item].parentConfigurationValue
+                ? defaultValues[item].parentConfigurationValue
+                : null,
               rawValue,
-              type: JSON.stringify({type, typeFormat})
+              type: JSON.stringify({ type, typeFormat })
             });
           }
         }
@@ -393,7 +393,7 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
   }
   protected prepareSmartFormArray(defaultVal, field, parentField) {
     // Prepare data and structure
-    const {type, typeFormat} = this.formatType(field.simpletype, field.type);
+    const { type, typeFormat } = this.formatType(field.simpletype, field.type);
     const column = {
       "enumItems": [],
       "label": field.id,
@@ -404,28 +404,28 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
     const values = {};
     // debugger;
     // Define array if not already done
-    if(!this.smartFormArrayStructure[parentField.id]){
+    if (!this.smartFormArrayStructure[parentField.id]) {
       this.smartFormArrayStructure[parentField.id] = [];
     }
-    if(!this.smartFormArrayValues[parentField.id]){
+    if (!this.smartFormArrayValues[parentField.id]) {
       this.smartFormArrayValues[parentField.id] = [];
     }
     // In case of enum type, fetch associate data
-    if(field.simpletype === "enum") {
+    if (field.simpletype === "enum") {
       column.enumItems = this.getEnum(typeFormat);
       column.typeFormat = "";
     }
 
-    if(defaultVal && defaultVal.result && defaultVal.result.length > 0) {
-      if(!values[field.id]) {
+    if (defaultVal && defaultVal.result && defaultVal.result.length > 0) {
+      if (!values[field.id]) {
         values[field.id] = [];
       }
       defaultVal.result.forEach(element => {
-        if(field.simpleType !== "enum"){
-          if(element.value && element.displayValue){
-            values[field.id].push(element.value)
+        if (field.simpleType !== "enum") {
+          if (element.value && element.displayValue) {
+            values[field.id].push(element.value);
           } else {
-            values[field.id].push("")
+            values[field.id].push("");
           }
         }
       });
@@ -436,15 +436,14 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
   protected formatLabel(field, fieldsList) {
     // TODO : Revoir avec la nouvelle structure de données
     // Construct label /w parent architecture
-    let constructingLabel = [field.labeltext]
+    let constructingLabel = [field.labeltext];
     if (field.parentId && field.type !== "array") {
-      const parentField = fieldsList.find(element => element.id === field.parentId)
-      constructingLabel.push(parentField.labeltext)
-      this.formatLabel(parentField, fieldsList)
+      const parentField = fieldsList.find(element => element.id === field.parentId);
+      constructingLabel.push(parentField.labeltext);
+      this.formatLabel(parentField, fieldsList);
     }
     constructingLabel = constructingLabel.reverse();
-    if(constructingLabel[constructingLabel.length -1] !== null)
-    {
+    if (constructingLabel[constructingLabel.length - 1] !== null) {
       return constructingLabel.join(" / ");
     }
     return constructingLabel[0];
@@ -452,10 +451,10 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
   protected formatType(simpleType, longType) {
     const type = simpleType;
     let typeFormat = '';
-    if(type === 'docid' || type === 'enum'){
+    if (type === "docid" || type === "enum") {
       typeFormat = longType.match(/"([^"]*)"/)[1];
     }
-    return {type, typeFormat}
+    return { type, typeFormat };
   }
   protected getDefaultValues(options) {
     this.$http
@@ -473,25 +472,25 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
       });
     return [];
   }
-  protected getEnum(enumerate){
+  protected getEnum(enumerate) {
     const returnVal = [];
     this.$http
-    .get(`/api/v2/admin/enumdata/${enumerate}`)
-    .then(response => {
-      if (response.status === 200 && response.statusText === "OK") {
-        response.data.data.forEach(element => {
-          returnVal.push({
-            key: element.key,
-            label: element.label
-          })
-        })
-      } else {
-        throw new Error(response.data);
-      }
-    })
-    .catch(response => {
-      console.error(response);
-    });
+      .get(`/api/v2/admin/enumdata/${enumerate}`)
+      .then(response => {
+        if (response.status === 200 && response.statusText === "OK") {
+          response.data.data.forEach(element => {
+            returnVal.push({
+              key: element.key,
+              label: element.label
+            });
+          });
+        } else {
+          throw new Error(response.data);
+        }
+      })
+      .catch(response => {
+        console.error(response);
+      });
 
     return returnVal;
   }
@@ -499,25 +498,25 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
     e.element.addClass("k-textbox filter-input");
   }
   private isDefValMultiple() {
-    if(this.isValArray && this.smartFormDisplayManager.ssm_array === "write"){
+    if (this.isValArray && this.smartFormDisplayManager.ssm_array === "write") {
       return true;
     }
     return false;
   }
-  private getArrayDefaultValue(fieldId){
+  private getArrayDefaultValue(fieldId) {
     const value = this.smartFormArrayValues.hasOwnProperty(fieldId)
-    ? this.smartFormArrayValues[fieldId]
-    : this.rawValue
+      ? this.smartFormArrayValues[fieldId]
+      : this.rawValue;
     return value;
   }
   /**
    * Return array values prepared structure for the back 'setDefValue()' : [{colName: value}, {colName: value}, ...]
-   * @param fieldId 
+   * @param fieldId
    */
-  private formatArrayFinalValue(fieldId){
+  private formatArrayFinalValue(fieldId) {
     let actualValue;
 
-    if(this.smartFormArrayStructure.hasOwnProperty(fieldId)) {
+    if (this.smartFormArrayStructure.hasOwnProperty(fieldId)) {
       let numberOfLine;
       let formattedValues = [];
       // Get childrens as they are column's name
@@ -526,16 +525,16 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
       // Fetch column's values
       actualValue = [];
       children.forEach(child => {
-        actualValue.push(this.smartFormArrayValues[child.name])
+        actualValue.push(this.smartFormArrayValues[child.name]);
       });
 
       // Format
       numberOfLine = actualValue[0].length;
       for (let i = 0; i < numberOfLine; i++) {
-        formattedValues[i] = []
+        formattedValues[i] = [];
         for (let j = 0; j < children.length; j++) {
-          const childName = children[j].name
-          formattedValues[i].push({[childName]: actualValue[j][i]});
+          const childName = children[j].name;
+          formattedValues[i].push({ [childName]: actualValue[j][i] });
         }
       }
       actualValue = formattedValues;
@@ -544,17 +543,17 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
     }
     this.finalData.value = JSON.parse(JSON.stringify(actualValue));
   }
-  private updateData(data){
+  private updateData(data) {
     console.log("BeforeSendData", JSON.stringify(data));
     const url = `/api/v2/admin/smart-structures/${data.structureId}/update/default/`;
     this.$http
-      .put(url, {params: JSON.stringify(data)})
+      .put(url, { params: JSON.stringify(data) })
       .then(response => {
         this.$refs.defaultGridData.kendoDataSource.read();
         this.showModal = false;
       })
       .catch(response => {
         console.error("UpdateDataResError", response);
-      })
+      });
   }
 }

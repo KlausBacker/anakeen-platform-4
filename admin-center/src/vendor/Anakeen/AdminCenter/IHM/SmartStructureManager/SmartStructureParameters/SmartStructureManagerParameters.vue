@@ -1,12 +1,13 @@
 <template>
   <div class="ssm-parameters-grid">
-    <kendo-datasource ref="parametersGridData"
-                      class="parameters-grid-data"
-                      :transport-read="getParameters"
-                      :schema-data="parseParametersData"
-                      :sort="[{ field: 'label', dir: 'asc'}]">
-    </kendo-datasource>
-    <kendo-grid
+    <kendo-datasource
+      ref="parametersGridData"
+      class="parameters-grid-data"
+      :transport-read="getParameters"
+      :schema-data="parseParametersData"
+      :sort="[{ field: 'label', dir: 'asc' }]"
+    />
+    <!-- <kendo-grid
       ref="parametersGridContent"
       class="parameters-grid-content"
       :data-source-ref="'parametersGridData'"
@@ -29,8 +30,15 @@
       <kendo-grid-column :hidden="true" :title="'<b>Type</b>'" :field="'type'"></kendo-grid-column>
       <kendo-grid-column :hidden="true" :title="'<b>Field ID</b>'" :field="'parameterId'"></kendo-grid-column>
       <kendo-grid-column :title="''" width="6.5rem" :command="{click:onEditClick, text: 'Modify'}"></kendo-grid-column>
-    </kendo-grid>
-    <transition name="modal">
+    </kendo-grid> -->
+    <smart-form
+      ref="ssmForm"
+      :config="generateSmartForm"
+      @actionClick="formClickMenu"
+      @ready="ssmFormReady"
+      @smartFieldChange="ssmFormChange"
+    />
+    <!-- <transition name="modal">
       <div v-show="showModal" class="modal-mask">
         <div class="modal-wrapper" @click="showModal = false">
           <div class="modal-container" @click.stop>
@@ -38,7 +46,7 @@
           </div>
         </div>
       </div>
-    </transition>
+    </transition> -->
   </div>
 </template>
 <style lang="scss">
