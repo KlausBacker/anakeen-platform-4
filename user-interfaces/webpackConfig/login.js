@@ -1,6 +1,6 @@
 const path = require("path");
 const { useCache } = require("./common");
-const { prod, legacy, dev } = require("@anakeen/webpack-conf");
+const { prod, dev } = require("@anakeen/webpack-conf");
 const {
   vueLoader,
   typeScriptLoader
@@ -37,8 +37,5 @@ module.exports = () => {
   if (process.env.conf === "DEV") {
     return dev(conf);
   }
-  if (process.env.conf === "LEGACY") {
-    return legacy(conf);
-  }
-  return [prod(conf), legacy(conf), dev(conf)];
+  return [prod(conf), dev(conf)];
 };

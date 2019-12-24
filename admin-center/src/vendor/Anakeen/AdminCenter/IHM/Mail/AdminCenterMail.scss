@@ -14,17 +14,24 @@
 
   }
 
-  .mail-empty {
+  .mail-form-wrapper {
     display: flex;
     height: 100%;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    background-color: #dedede;
-    font-size: 1.5rem;
-    color: #a4a4a4;
-    > span {
-      font-size: 5rem;
+
+    .mail-empty {
+      display: flex;
+      height: 100%;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      background-color: #dedede;
+      font-size: 1.5rem;
+      color: #a4a4a4;
+
+      > span {
+        font-size: 5rem;
+      }
     }
   }
 
@@ -36,6 +43,7 @@
   .splitter-wrapper-right-content {
     overflow: hidden !important;
   }
+
   .mail-smart-element {
     height: 100%;
   }
@@ -44,12 +52,15 @@
     .k-grid, .grid-widget-wrapper {
       height: 100%;
     }
+
     .k-dropdown-operator {
       display: none;
     }
+
     .splitter-wrapper-right-content {
       overflow: hidden !important;
     }
+
     .k-pager-sizes {
       display: flex !important;
     }

@@ -13,21 +13,18 @@
     {{#JS_DEPS}}
     <script type="text/javascript" {{#noModule}}nomodule{{/noModule}} data-id="{{key}}" src="{{path}}"></script>
     {{/JS_DEPS}}
-    {{#JS}}
-    <script type="module" data-id="{{key}}" src="{{path}}"></script>
-    {{/JS}}
+
 
 </head>
 <body class="login-page">
 
 <div id="login"></div>
 
-
-{{#JS_LEGACY}}
-    <script nomodule data-id="{{key}}" src="{{path}}"></script>
-{{/JS_LEGACY}}
 <script>
 window.nsSde = '{{nsSde}}';
 </script>
+{{#JS}}
+    <script data-id="{{key}}" src="{{path}}"></script>
+{{/JS}}
 </body>
 </html>

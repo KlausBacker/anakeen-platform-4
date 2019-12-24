@@ -17,30 +17,12 @@ class TestAllTypeGridPage
                 [
                     "key" => "kendo",
                     "path" => UIGetAssetPath::getJSKendoPath()
-                ],
-                [
-                    "key" => "kendoDLL",
-                    "path" => UIGetAssetPath::getJSKendoComponentPath()
-                ],
-                [
-                    "key" => "vueDll",
-                    "path" => UIGetAssetPath::getJSVueComponentPath()
                 ]
             ],
             "JS" => [
                 [
                     "key" =>"ankcomponents",
                     "path" => \Anakeen\Ui\UIGetAssetPath::getSmartWebComponentsPath()
-                ]
-            ],
-            "JS_LEGACY" => [
-                [
-                    "key" => "polyfill",
-                    "path" => \Anakeen\Ui\UIGetAssetPath::getPolyfill()
-                ],
-                [
-                    "key" =>"ankcomponents",
-                    "path" => \Anakeen\Ui\UIGetAssetPath::getSmartWebComponentsPath(true)
                 ]
             ],
             "CSS" => [

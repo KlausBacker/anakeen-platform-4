@@ -11,16 +11,12 @@
     {{#JS_DEPS}}
     <script type="text/javascript" data-id="{{key}}" src="{{path}}"></script>
     {{/JS_DEPS}}
-    {{#JS}}
-    <script type="module" data-id="{{key}}" src="{{path}}"></script>
-    {{/JS}}
 </head>
 <body style="height: 100vh; width: 100vw; font-size: 12px;">
 <div id="test-all-page"></div>
-
-{{#JS_LEGACY}}
-<script nomodule data-id="{{key}}" src="{{path}}"></script>
-{{/JS_LEGACY}}
+{{#JS}}
+    <script data-id="{{key}}" src="{{path}}"></script>
+{{/JS}}
 
 </body>
 </html>

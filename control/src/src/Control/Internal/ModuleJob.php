@@ -3,9 +3,12 @@
 
 namespace Control\Internal;
 
-
 use Control\Cli\AskParameters;
+use Control\Cli\CliStatus;
 use Control\Exception\RuntimeException;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\ConsoleSectionOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 
 require_once __DIR__ . "/../../../include/lib/Lib.Cli.php";
 
@@ -27,7 +30,7 @@ class ModuleJob
 
     protected static function getRunDir()
     {
-        $wiff=\WIFF::getInstance();
+        $wiff = \WIFF::getInstance();
         $rundir = $wiff->run_dir;
         if (!is_dir($rundir)) {
             if (!mkdir($rundir)) {
@@ -62,14 +65,14 @@ class ModuleJob
                 $status["status"] = ModuleJob::INITIALIZED_STATUS;
                 $status["message"] = "Ready to install modules";
             } else {
-                $platformStatus=Platform::getStatusInfo();
+                $platformStatus = Platform::getStatusInfo();
                 $status["status"] = ModuleJob::READY_STATUS;
                 if ($platformStatus) {
-                    if ($platformStatus["maintenance"]??null) {
+                    if ($platformStatus["maintenance"] ?? null) {
                         $status["status"] = ModuleJob::MAINTENANCE_STATUS;
                     }
-                    if ($platformStatus["error"]??null) {
-                        $status["error"] = $platformStatus["error"]??"";
+                    if ($platformStatus["error"] ?? null) {
+                        $status["error"] = $platformStatus["error"] ?? "";
                     } else {
                         $status["message"] = $platformStatus["status"];
                     }
@@ -84,9 +87,19 @@ class ModuleJob
     {
         $file = self::getJobFile();
         if (file_exists($file)) {
-            $content = file_get_contents($file);
+            $fp = fopen($file, "r");
+            if (flock($fp, LOCK_EX)) {
+                $content = "";
+                while (!feof($fp)) {
+                    $content .= fread($fp, 8192);
+                }
+                flock($fp, LOCK_UN);
+            } else {
+                throw new RuntimeException(sprintf("Cannot lock job file \"%s\"", $file));
+            }
+            fclose($fp);
             if (!$content) {
-                throw new RuntimeException(sprintf("Corrupted job file : \"%s\"", $file));
+                return null;
             }
         } else {
             return null;
@@ -96,10 +109,27 @@ class ModuleJob
     }
 
 
-    public static function putJobData($data)
+    protected static function putJobData($data)
     {
         $file = self::getJobFile();
-        file_put_contents($file, json_encode($data, JSON_PRETTY_PRINT));
+
+        $fp = fopen($file, "w+");
+        if ($fp === false) {
+            return false;
+        }
+
+        if (flock($fp, LOCK_EX)) {
+            ftruncate($fp, 0);
+            fwrite($fp, json_encode($data, JSON_PRETTY_PRINT));
+            fflush($fp);
+            flock($fp, LOCK_UN);
+        } else {
+            throw new RuntimeException(sprintf("Cannot lock job file \"%s\"", $file));
+        }
+
+        fclose($fp);
+
+        return true;
     }
 
     protected static function archiveJobFile($copy = false)
@@ -113,10 +143,67 @@ class ModuleJob
         return sprintf("%s/pid", self::getRunDir());
     }
 
+    public static function waitRunning(ConsoleOutput $output)
+    {
+        $verbose = $output->getVerbosity() === OutputInterface::VERBOSITY_VERBOSE;
+        if ($verbose) {
+            CliStatus::formatJobStatusOutput($output);
+            /** @var ConsoleSectionOutput $section */
+            $section = $output->section();
+        } else {
+            $section = null;
+        }
+        declare(ticks=1);
+        $warningQuit = function () use ($output) {
+            $output->writeln("\r<info>Display status interrupted.</info>");
+            $output->writeln("<warning>Job continue running in background task</warning>");
+            exit;
+        };
+        // Catch Ctrl-C signal
+        pcntl_signal(SIGINT, $warningQuit);
+
+        $waitInterval = 500000;
+        do {
+            $jobStatus = self::getJobStatus();
+            $status = $jobStatus["status"] ?? "";
+            usleep($waitInterval);
+            print ".";
+        } while ($status === self::MAINTENANCE_STATUS);
+
+        do {
+            $jobStatus = self::getJobStatus();
+            $status = $jobStatus["status"] ?? "";
+            usleep($waitInterval);
+            print ".";
+        } while ($status === self::READY_STATUS);
+
+        if ($verbose) {
+            print "\r";
+        }
+        do {
+            $jobStatus = self::getJobStatus();
+            $status = $jobStatus["status"] ?? "";
+            //print_r($jobStatus);
+            usleep($waitInterval);
+            if ($section) {
+                $section->clear();
+                CliStatus::displayJobStatus($section, $jobStatus);
+            } else {
+                print ".";
+            };
+        } while ($status === self::RUNNING_STATUS);
+
+        print "\r";
+        if ($status !== self::READY_STATUS) {
+            print "\n";
+            throw new RuntimeException("$status :" . JobLog::getLastError());
+        }
+    }
+
     public static function recordJobTask($data)
     {
         $jobFile = self::getJobFile();
-        if (!file_put_contents($jobFile, json_encode($data, JSON_PRETTY_PRINT))) {
+        if (!self::putJobData($data)) {
             throw new RuntimeException(sprintf("Cannot write job file \"%s\"", $jobFile));
         }
     }
@@ -179,8 +266,11 @@ class ModuleJob
         $pid = intval(file_get_contents($pidFile));
         if (!posix_kill($pid, 0)) {
             JobLog::writeInterruption();
-            $err=posix_strerror(posix_get_last_error());
-            throw new RuntimeException("[$err] Seems job process is died. \n Try to remove \"./control/%spid\" file.", \WIFF::run_dir);
+            $err = posix_strerror(posix_get_last_error());
+            throw new RuntimeException(
+                "[$err] Seems job process is died. \n Try to remove \"./control/%spid\" file.",
+                \WIFF::run_dir
+            );
         }
         return true;
     }
@@ -191,7 +281,7 @@ class ModuleJob
         if (file_exists($jobFile)) {
             $data = self::getJobData();
 
-            $status = $data["status"]??"";
+            $status = $data["status"] ?? "";
             if ($status === self::ERROR_STATUS || $status === self::INTERRUPTED_STATUS || $status === self::FAILED_STATUS) {
                 return true;
             }
@@ -211,8 +301,11 @@ class ModuleJob
         $pid = intval(file_get_contents($pidFile));
         if ($pid) {
             if (!posix_kill(-($pid), SIGTERM)) {
-                throw new RuntimeException(sprintf("Fail to kill process.May be process \"%s\" not exists.\nIf it process not exists, you could delete \"./control/%spid\" file", \WIFF::run_dir,
-                    $pid));
+                throw new RuntimeException(sprintf(
+                    "Fail to kill process.May be process \"%s\" not exists.\nIf it process not exists, you could delete \"./control/%spid\" file",
+                    \WIFF::run_dir,
+                    $pid
+                ));
             }
             return $pid;
         }
@@ -240,7 +333,7 @@ class ModuleJob
 
             JobLog::clearLog();
 
-            self::$jobData = json_decode(file_get_contents($jobFile), true);
+            self::$jobData = self::getJobData();
             if (!self::$jobData) {
                 throw new RuntimeException(sprintf("Unreadable job file \"%s\"", $jobFile));
             }
@@ -295,7 +388,7 @@ class ModuleJob
         $moduleName = self::$jobData["moduleArg"] ?? "";
         $moduleFileName = self::$jobData["file"] ?? "";
         $action = self::$jobData["action"];
-        $module=null;
+        $module = null;
         if ($action !== "restore") {
             if ($moduleFileName) {
                 $module = new ModuleManager("");
@@ -307,7 +400,7 @@ class ModuleJob
                 $module = new ModuleManager("");
             }
         }
-        $jobStatus=true;
+        $jobStatus = true;
         switch ($action) {
             case "install":
                 $module->prepareInstall(true);
@@ -344,6 +437,8 @@ class ModuleJob
             AskParameters::removeAskes();
         } else {
             JobLog::setStatus("", "", ModuleJob::FAILED_STATUS);
+
+            throw new RuntimeException(JobLog::getLastError());
         }
     }
 
@@ -395,19 +490,41 @@ class ModuleJob
                 echo sprintf("Unregistering module '%s'.\n", $module->name);
                 $ret = $context->removeModule($module->name);
                 if ($ret === false) {
-                    JobLog::setError($module->name, $module->needphase,
-                        sprintf("Error: could not unregister module '%s' from context: %s\n", $module->name, $context->errorMessage));
+                    JobLog::setError(
+                        $module->name,
+                        $module->needphase,
+                        sprintf(
+                            "Error: could not unregister module '%s' from context: %s\n",
+                            $module->name,
+                            $context->errorMessage
+                        )
+                    );
                     return false;
                 }
                 $ret = $context->deleteFilesFromModule($module->name);
                 if ($ret === false) {
-                    JobLog::setError($module->name, $module->needphase, sprintf("Error: could not delete files for module '%s': %s\n", $module->name, $context->errorMessage));
+                    JobLog::setError(
+                        $module->name,
+                        $module->needphase,
+                        sprintf(
+                            "Error: could not delete files for module '%s': %s\n",
+                            $module->name,
+                            $context->errorMessage
+                        )
+                    );
                     return false;
                 }
                 $ret = $context->deleteManifestForModule($module->name);
                 if ($ret === false) {
-                    JobLog::setError($module->name, $module->needphase,
-                        sprintf("Error: could not delete manifest file for module '%s': %s\n", $module->name, $context->errorMessage));
+                    JobLog::setError(
+                        $module->name,
+                        $module->needphase,
+                        sprintf(
+                            "Error: could not delete manifest file for module '%s': %s\n",
+                            $module->name,
+                            $context->errorMessage
+                        )
+                    );
                     return false;
                 }
 
@@ -429,9 +546,7 @@ class ModuleJob
                         throw new RuntimeException($module->errorMessage);
                     }
                     if (!empty($module->warningMessage)) {
-
                         JobLog::setWarning($module->name, "download", $module->warningMessage);
-
                     }
 
                     JobLog::setStatus($module->name, "download", ModuleJob::DONE_STATUS);
@@ -484,7 +599,6 @@ class ModuleJob
                     if ($ret === false) {
                         throw new RuntimeException(sprintf("Error: could not store parameter '%s'!\n", $param->name));
                     }
-
                 }
             }
             /**
@@ -498,7 +612,6 @@ class ModuleJob
                 });
             }
             if (!empty(self::$jobData["options"]["nopre"])) {
-
                 $phaseList = array_filter($phaseList, function ($v) {
                     return !preg_match("/^pre-/", $v);
                 });
@@ -516,14 +629,30 @@ class ModuleJob
                             JobLog::setStatus($module->name, $phaseName, ModuleJob::RUNNING_STATUS);
                             $ret = $context->deleteFilesFromModule($module->name);
                             if ($ret === false) {
-                                JobLog::setError($module->name, $phaseName,
-                                    sprintf("Error: could not delete old files for module '%s' in '%s': %s", $module->name, $context->root, $context->errorMessage));
+                                JobLog::setError(
+                                    $module->name,
+                                    $phaseName,
+                                    sprintf(
+                                        "Error: could not delete old files for module '%s' in '%s': %s",
+                                        $module->name,
+                                        $context->root,
+                                        $context->errorMessage
+                                    )
+                                );
                                 return false;
                             }
                             $ret = $module->unpack($context->root);
                             if ($ret === false) {
-                                JobLog::setError($module->name, $phaseName,
-                                    sprintf("Error: could not unpack module '%s' in '%s': %s", $module->name, $context->root, $module->errorMessage));
+                                JobLog::setError(
+                                    $module->name,
+                                    $phaseName,
+                                    sprintf(
+                                        "Error: could not unpack module '%s' in '%s': %s",
+                                        $module->name,
+                                        $context->root,
+                                        $module->errorMessage
+                                    )
+                                );
                                 return false;
                             }
                             JobLog::setStatus($module->name, $phaseName, ModuleJob::DONE_STATUS);
@@ -537,8 +666,16 @@ class ModuleJob
                             JobLog::setStatus($module->name, $phaseName, ModuleJob::RUNNING_STATUS);
                             $ret = $module->unpack($context->root);
                             if ($ret === false) {
-                                JobLog::setError($module->name, $phaseName,
-                                    sprintf("Error: could not unpack module '%s' in '%s': %s", $module->name, $context->root, $module->errorMessage));
+                                JobLog::setError(
+                                    $module->name,
+                                    $phaseName,
+                                    sprintf(
+                                        "Error: could not unpack module '%s' in '%s': %s",
+                                        $module->name,
+                                        $context->root,
+                                        $module->errorMessage
+                                    )
+                                );
                                 return false;
                             }
                             JobLog::setStatus($module->name, "unpack", ModuleJob::DONE_STATUS);
@@ -548,25 +685,43 @@ class ModuleJob
                         break;
 
                     case 'unregister-module':
-
                         if (JobLog::getStatus($module->name, $phaseName) !== ModuleJob::DONE_STATUS) {
                             JobLog::setStatus($module->name, $phaseName, ModuleJob::RUNNING_STATUS);
                             $ret = $context->removeModule($module->name);
                             if ($ret === false) {
-                                JobLog::setError($module->name, $phaseName,
-                                    sprintf("Error: could not remove module '%s' in '%s': %s\n", $module->name, $context->root, $context->errorMessage));
+                                JobLog::setError(
+                                    $module->name,
+                                    $phaseName,
+                                    sprintf(
+                                        "Error: could not remove module '%s' in '%s': %s\n",
+                                        $module->name,
+                                        $context->root,
+                                        $context->errorMessage
+                                    )
+                                );
                                 return false;
                             }
                             $ret = $context->deleteFilesFromModule($module->name);
                             if ($ret === false) {
-                                JobLog::setError($module->name, $phaseName,
-                                    sprintf("Error: could not delete files for module '%s' in '%s': %s\n", $module->name, $context->root, $context->errorMessage));
+                                JobLog::setError(
+                                    $module->name,
+                                    $phaseName,
+                                    sprintf(
+                                        "Error: could not delete files for module '%s' in '%s': %s\n",
+                                        $module->name,
+                                        $context->root,
+                                        $context->errorMessage
+                                    )
+                                );
                                 return false;
                             }
                             $ret = $context->deleteManifestForModule($module->name);
                             if ($ret === false) {
-
-                                JobLog::setError($module->name, $phaseName, sprintf("Error: could not delete manifest"));
+                                JobLog::setError(
+                                    $module->name,
+                                    $phaseName,
+                                    sprintf("Error: could not delete manifest")
+                                );
                                 return false;
                             }
 
@@ -581,8 +736,15 @@ class ModuleJob
                             JobLog::setStatus($module->name, $phaseName, ModuleJob::RUNNING_STATUS);
                             $ret = $context->purgeUnreferencedParametersValue();
                             if ($ret === false) {
-                                JobLog::setError($module->name, $phaseName,
-                                    sprintf("Error: could not purge unreferenced parameters value in '%s': %s\n", $context->root, $context->errorMessage));
+                                JobLog::setError(
+                                    $module->name,
+                                    $phaseName,
+                                    sprintf(
+                                        "Error: could not purge unreferenced parameters value in '%s': %s\n",
+                                        $context->root,
+                                        $context->errorMessage
+                                    )
+                                );
                                 return false;
                             }
                             JobLog::setStatus($module->name, $phaseName, ModuleJob::DONE_STATUS);
@@ -604,14 +766,30 @@ class ModuleJob
             if ($type === 'upgrade') {
                 $ret = $context->removeModuleInstalled($module->name);
                 if ($ret === false) {
-                    JobLog::setError($module->name, "", sprintf("Error: Could not remove old installed module '%s': %s\n", $module->name, $context->errorMessage));
+                    JobLog::setError(
+                        $module->name,
+                        "",
+                        sprintf(
+                            "Error: Could not remove old installed module '%s': %s\n",
+                            $module->name,
+                            $context->errorMessage
+                        )
+                    );
 
                     return false;
                 }
             }
             $ret = $module->setStatus('installed');
             if ($ret === false) {
-                JobLog::setError($module->name, "", sprintf("Error: Could not set installed status on module '%s': %s\n", $module->name, $module->errorMessage));
+                JobLog::setError(
+                    $module->name,
+                    "",
+                    sprintf(
+                        "Error: Could not set installed status on module '%s': %s\n",
+                        $module->name,
+                        $module->errorMessage
+                    )
+                );
                 return false;
             }
             $module->cleanupDownload();
@@ -652,12 +830,26 @@ class ModuleJob
 
         // -------- Remove reference to module ------------
         $label = "Remove reference to module";
-        JobLog::setProcess($module->name, "uninstall", ["label" => $label, "status" => ModuleJob::RUNNING_STATUS], $index);
+        JobLog::setProcess(
+            $module->name,
+            "uninstall",
+            ["label" => $label, "status" => ModuleJob::RUNNING_STATUS],
+            $index
+        );
         $ret = $context->removeModule($module->name);
         if ($ret === false) {
             JobLog::setStatus($module->name, "uninstall", ModuleJob::FAILED_STATUS);
-            JobLog::setProcess($module->name, "uninstall", ["label" => $label, "status" => ModuleJob::FAILED_STATUS], $index);
-            throw new RuntimeException(sprintf("Error removing module  '%s' : %s.", $moduleManager->getName(), $context->errorMessage));
+            JobLog::setProcess(
+                $module->name,
+                "uninstall",
+                ["label" => $label, "status" => ModuleJob::FAILED_STATUS],
+                $index
+            );
+            throw new RuntimeException(sprintf(
+                "Error removing module  '%s' : %s.",
+                $moduleManager->getName(),
+                $context->errorMessage
+            ));
         }
         JobLog::setProcess($module->name, "uninstall", ["label" => $label, "status" => ModuleJob::DONE_STATUS], $index);
 
@@ -665,13 +857,27 @@ class ModuleJob
         // -------- Remove files of module ------------
         $index++;
         $label = "Remove files of module";
-        JobLog::setProcess($module->name, "uninstall", ["label" => $label, "status" => ModuleJob::RUNNING_STATUS], $index);
+        JobLog::setProcess(
+            $module->name,
+            "uninstall",
+            ["label" => $label, "status" => ModuleJob::RUNNING_STATUS],
+            $index
+        );
 
         $ret = $context->deleteFilesFromModule($module->name);
         if ($ret === false) {
             JobLog::setStatus($module->name, "uninstall", ModuleJob::FAILED_STATUS);
-            JobLog::setProcess($module->name, "uninstall", ["label" => $label, "status" => ModuleJob::FAILED_STATUS], $index);
-            throw new RuntimeException(sprintf("Error removing files from module  '%s' : %s.", $moduleManager->getName(), $context->errorMessage));
+            JobLog::setProcess(
+                $module->name,
+                "uninstall",
+                ["label" => $label, "status" => ModuleJob::FAILED_STATUS],
+                $index
+            );
+            throw new RuntimeException(sprintf(
+                "Error removing files from module  '%s' : %s.",
+                $moduleManager->getName(),
+                $context->errorMessage
+            ));
         }
         JobLog::setProcess($module->name, "uninstall", ["label" => $label, "status" => ModuleJob::DONE_STATUS], $index);
 
@@ -679,13 +885,27 @@ class ModuleJob
         // -------- Remove manifest of module ------------
         $index++;
         $label = "Remove manifest of module";
-        JobLog::setProcess($module->name, "uninstall", ["label" => $label, "status" => ModuleJob::RUNNING_STATUS], $index);
+        JobLog::setProcess(
+            $module->name,
+            "uninstall",
+            ["label" => $label, "status" => ModuleJob::RUNNING_STATUS],
+            $index
+        );
 
         $ret = $context->deleteManifestForModule($module->name);
         if ($ret === false) {
             JobLog::setStatus($module->name, "uninstall", ModuleJob::FAILED_STATUS);
-            JobLog::setProcess($module->name, "uninstall", ["label" => $label, "status" => ModuleJob::FAILED_STATUS], $index);
-            throw new RuntimeException(sprintf("Error removing manifest from module  '%s' : %s.", $moduleManager->getName(), $context->errorMessage));
+            JobLog::setProcess(
+                $module->name,
+                "uninstall",
+                ["label" => $label, "status" => ModuleJob::FAILED_STATUS],
+                $index
+            );
+            throw new RuntimeException(sprintf(
+                "Error removing manifest from module  '%s' : %s.",
+                $moduleManager->getName(),
+                $context->errorMessage
+            ));
         }
         JobLog::setProcess($module->name, "uninstall", ["label" => $label, "status" => ModuleJob::DONE_STATUS], $index);
 
@@ -703,7 +923,6 @@ class ModuleJob
             JobLog::setStatus($module->name, $phase->name, ModuleJob::RUNNING_STATUS);
             $ret = self::executeProcessList($processList);
             if ($ret !== true) {
-
                 JobLog::writeInterruption(ModuleJob::FAILED_STATUS);
             } else {
                 JobLog::setStatus($module->name, $phase->name, ModuleJob::DONE_STATUS);
@@ -722,7 +941,6 @@ class ModuleJob
     protected static function executeProcessList($processList)
     {
         foreach ($processList as & $process) {
-
             self::$processIndex++;
             $command = $process->getAttribute("command");
             if ($command) {
@@ -735,7 +953,6 @@ class ModuleJob
                 continue;
             }
             if ($configStatus !== ModuleJob::DONE_STATUS) {
-
                 $processInfo = [
                     "name" => $process->getName(),
                     "label" => $process->label,
@@ -749,7 +966,6 @@ class ModuleJob
                     $processInfo["error"] = $exec['output'];
                     $processInfo["status"] = ModuleJob::FAILED_STATUS;
                 } else {
-
                     $processInfo["status"] = ModuleJob::DONE_STATUS;
                 }
 
@@ -758,8 +974,12 @@ class ModuleJob
                     return false;
                 }
             } else {
-
-                JobLog::displayOutput($process->phase->module->name, $process->phase->name, "process", "<warning>SKIP</warning>");
+                JobLog::displayOutput(
+                    $process->phase->module->name,
+                    $process->phase->name,
+                    "process",
+                    "<warning>SKIP</warning>"
+                );
             }
         }
         return true;

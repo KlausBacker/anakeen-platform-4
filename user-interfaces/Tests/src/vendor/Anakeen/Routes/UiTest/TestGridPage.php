@@ -28,7 +28,6 @@ class TestGridPage
                 ]
             ],
             "JS" => [],
-            "JS_LEGACY" => [],
             "CSS" => [
                 [
                     "key" => "bootstrap",

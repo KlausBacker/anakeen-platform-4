@@ -42,12 +42,6 @@ class SearchViewGridRender
                     "path" =>  UIGetAssetPath::getElementAssets("ank-components", UIGetAssetPath::isInDebug() ? "dev" : "prod")["search-view-grid-render"]["js"]
                 ],
             ],
-            "JS_LEGACY" => [
-                [
-                    "key" => "search-view-grid-render",
-                    "path" =>  UIGetAssetPath::getElementAssets("ank-components", UIGetAssetPath::isInDebug() ? "dev" : "legacy")["search-view-grid-render"]["js"]
-                ],
-            ],
             "CSS" => [
                 [
                     "key" => "bootstrap",

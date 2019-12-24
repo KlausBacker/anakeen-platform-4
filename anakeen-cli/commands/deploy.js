@@ -36,7 +36,6 @@ exports.builder = controlArguments({
   },
   autoRelease: {
     description: "prefix for version minor part. Add current timestamp",
-    default: "dev",
     type: "string",
     implies: "sourcePath"
   },
