@@ -10,9 +10,6 @@
     {{#JS_DEPS}}
     <script type="text/javascript" data-id="{{key}}" src="{{path}}"></script>
     {{/JS_DEPS}}
-    {{#JS}}
-    <script type="module" data-id="{{key}}" src="{{path}}"></script>
-    {{/JS}}
     <style lang="css">
         html {
             height: 100vh;
@@ -30,10 +27,8 @@
 <div id="test-grid-page" style="height: calc(100% - 1px)">
 
 </div>
-
-{{#JS_LEGACY}}
-<script nomodule data-id="{{key}}" src="{{path}}"></script>
-{{/JS_LEGACY}}
-
+{{#JS}}
+    <script data-id="{{key}}" src="{{path}}"></script>
+{{/JS}}
 </body>
 </html>

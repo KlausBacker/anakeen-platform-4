@@ -186,6 +186,9 @@ class ShellManager
                 'm' => preg_replace('/^([^\n]*).*/s', '\1', $e->getMessage())
             );
             self::sendEmailError($errMsg, $expand);
+            if ($callStack) {
+                self::writeError($errMsg);
+            }
         } else {
             self::writeError($errMsg);
         }

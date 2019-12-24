@@ -60,9 +60,9 @@ export default $.widget("dcp.dcpDocumentHistory", $.dcp.dcpDialog, {
 
     this.element.html(this.htmlCaneva());
     import("datatables.net" /* webpackChunkName: "datatabale" */).then(function dcpDocumentWHistory_initTable() {
-      import("datatables.net-bs4/css/dataTables.bootstrap4.css" /* webpackChunkName: "datatabale bootstrap" */).then(
-        widget._initDatatable
-      );
+      import(
+        "datatables.net-bs4/css/dataTables.bootstrap4.css" /* webpackChunkName: "datatabale bootstrap" */
+      ).then(() => widget._initDatatable());
     });
 
     this.element.data("dcpDocumentHistory", this);

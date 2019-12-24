@@ -1,7 +1,7 @@
 const path = require("path");
 const { useCache } = require("./common");
 
-const { prod, dev, legacy } = require("@anakeen/webpack-conf");
+const { prod, dev } = require("@anakeen/webpack-conf");
 const { vueLoader, addKendoGlobal, addJqueryGlobal } = require("@anakeen/webpack-conf/parts");
 
 const BASE_DIR = path.resolve(__dirname, "../");
@@ -75,8 +75,5 @@ module.exports = () => {
   if (process.env.conf === "DEV") {
     return dev(conf);
   }
-  if (process.env.conf === "LEGACY") {
-    return legacy(conf);
-  }
-  return [prod(conf), dev(conf), legacy(conf)];
+  return [prod(conf), dev(conf)];
 };

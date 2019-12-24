@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/user-interfaces",
-  "version": "3.0.0-RC.2019.1.21",
+  "version": "3.0.0-RC.2019.1.22",
   "autorelease": true,
   "description": "A package for the user interface of anakeen-platform",
   "keywords": [
@@ -14,25 +14,19 @@
     "lib:rollup": "CLEAN=true npx rollup -c ./components/rollup/rollup.config.js",
     "buildLogin:prod": "conf=PROD npx webpack --config ./webpackConfig/login.js",
     "buildLogin:dev": "conf=DEV npx webpack --config ./webpackConfig/login.js",
-    "buildLogin:legacy": "conf=LEGACY npx webpack --config ./webpackConfig/login.js",
-    "buildLogin": "yarn run buildLogin:prod && yarn run buildLogin:dev && yarn run buildLogin:legacy",
+    "buildLogin": "yarn run buildLogin:prod && yarn run buildLogin:dev",
     "buildSmartElement:prod": "conf=PROD npx webpack --config ./webpackConfig/smartElement.js",
     "buildSmartElement:dev": "conf=DEV npx webpack --config ./webpackConfig/smartElement.js",
-    "buildSmartElement:legacy": "conf=LEGACY npx webpack --config ./webpackConfig/smartElement.js",
-    "buildSmartElement": "yarn run buildSmartElement:prod && yarn run buildSmartElement:dev && yarn run buildSmartElement:legacy",
+    "buildSmartElement": "yarn run buildSmartElement:prod && yarn run buildSmartElement:dev",
     "buildSmartStructures:prod": "conf=PROD npx webpack --config ./webpackConfig/smartStructures.js",
     "buildSmartStructures:dev": "conf=DEV npx webpack --config ./webpackConfig/smartStructures.js",
-    "buildSmartStructures:legacy": "conf=LEGACY npx webpack --config ./webpackConfig/smartStructures.js",
-    "buildSmartStructures": "yarn run buildSmartStructures:prod && yarn run buildSmartStructures:dev && yarn run buildSmartStructures:legacy",
+    "buildSmartStructures": "yarn run buildSmartStructures:prod && yarn run buildSmartStructures:dev",
     "buildTest:prod": "conf=PROD npx webpack --config ./webpackConfig/test.js",
     "buildTest:dev": "conf=DEV npx webpack --config ./webpackConfig/test.js",
-    "buildTest:legacy": "conf=LEGACY npx webpack --config ./webpackConfig/test.js",
-    "buildTest": "yarn run buildTest:prod && yarn run buildTest:dev && yarn run buildTest:legacy",
+    "buildTest": "yarn run buildTest:prod && yarn run buildTest:dev",
     "buildAsset:dev": "conf=DEV npx webpack --config ./webpackConfig/assets.js",
-    "buildAsset:legacy": "conf=LEGACY npx webpack --config ./webpackConfig/assets.js",
-    "buildAsset": "yarn run buildAsset:dev && yarn run buildAsset:legacy",
+    "buildAsset": "yarn run buildAsset:dev",
     "buildCss": " npx webpack --config ./webpackConfig/buildCss.js",
-    "buildPolyfill": "conf=LEGACY npx webpack --config ./webpackConfig/polyfill.js",
     "lint": "npx eslint ./src"
   },
   "files": [
@@ -52,7 +46,7 @@
   "license": "SEE LICENSE IN LICENSE",
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/user-interfaces.git",
   "devDependencies": {
-    "@anakeen/anakeen-cli": "1.2.0-RC.2019.1.21",
+    "@anakeen/anakeen-cli": "1.2.0-RC.2019.1.22",
     "@anakeen/webpack-conf": "1.2.1",
     "@types/backbone": "^1.4.0",
     "@types/jquery": "^3.3.29",
@@ -82,7 +76,7 @@
     "vue": "2.6.10"
   },
   "dependencies": {
-    "@anakeen/theme-variables": "1.0.0-RC.2019.1.21",
+    "@anakeen/theme-variables": "1.0.0-RC.2019.1.22",
     "@progress/kendo-theme-bootstrap": "^4.7.0",
     "@progress/kendo-ui": "^2019.3.917",
     "axios": "^0.19.0",

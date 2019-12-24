@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/business-app",
-  "version": "1.0.2-RC.2019.1.21",
+  "version": "1.0.2-RC.2019.1.22",
   "autorelease": true,
   "description": "Anakeen Hub Business App",
   "main": "src/vendor/Anakeen/BusinessApp/IHM/index.js",
@@ -14,20 +14,19 @@
     "buildJs": "yarn run buildJs:prod && yarn run buildJs:dev",
     "buildJsRender:prod": "conf=PROD npx webpack --config ./webpack/render.js",
     "buildJsRender:dev": "conf=DEV npx webpack --config ./webpack/render.js",
-    "buildJsRender:legacy": "conf=LEGACY npx webpack --config ./webpack/render.js",
-    "buildJsRender": "yarn run buildJsRender:prod && yarn run buildJsRender:dev && yarn run buildJsRender:legacy"
+    "buildJsRender": "yarn run buildJsRender:prod && yarn run buildJsRender:dev"
   },
   "dependencies": {
-    "@anakeen/hub-components": "1.0.2-RC.2019.1.21",
-    "@anakeen/theme-variables": "1.0.0-RC.2019.1.21",
-    "@anakeen/user-interfaces": "3.0.0-RC.2019.1.21",
+    "@anakeen/hub-components": "1.0.2-RC.2019.1.22",
+    "@anakeen/theme-variables": "1.0.0-RC.2019.1.22",
+    "@anakeen/user-interfaces": "3.0.0-RC.2019.1.22",
     "@types/jquery": "^3.3.30",
     "@types/kendo-ui": "^2019.3.1",
     "vue": "2.6.10",
     "vue-property-decorator": "^8.3.0"
   },
   "devDependencies": {
-    "@anakeen/anakeen-cli": "1.2.0-RC.2019.1.21",
+    "@anakeen/anakeen-cli": "1.2.0-RC.2019.1.22",
     "@anakeen/webpack-conf": "1.2.1",
     "typescript": "^3.7.3"
   }

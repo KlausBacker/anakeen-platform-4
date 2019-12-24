@@ -843,30 +843,34 @@ export default Backbone.Model.extend({
       currentModel.listenTo(value, "uploadFile", function mDocumentListenUploadfileStart(event, attrid, options) {
         var attr, attrValue;
         currentModel.trigger("uploadFile", event, attrid, options);
+        return EventPromiseUtils.getBeforeEventPromise(
+          event,
+          () => {
+            attr = currentModel.get("attributes").get(attrid);
 
-        if (!event.prevent) {
-          attr = currentModel.get("attributes").get(attrid);
+            currentModel._uploadingFile++;
 
-          currentModel._uploadingFile++;
-
-          if (attr) {
-            attrValue = attr.get("attributeValue");
-            if (options.index >= 0) {
-              attrValue = _.clone(attrValue);
-              attrValue[options.index] = {
-                value: "-^-",
-                displayValue: "Uploading"
-              };
-            } else {
-              attrValue = { value: "--", displayValue: "Uploading" };
+            if (attr) {
+              attrValue = attr.get("attributeValue");
+              if (options.index >= 0) {
+                attrValue = _.clone(attrValue);
+                attrValue[options.index] = {
+                  value: "-^-",
+                  displayValue: "Uploading"
+                };
+              } else {
+                attrValue = { value: "--", displayValue: "Uploading" };
+              }
+              // Use Silent to not redraw widget - it will be redraw at the end of uploading
+              attr.set("attributeValue", attrValue, { silent: true });
+              currentModel.trigger("changeValue", {
+                attributeId: attrid
+              });
             }
-            // Use Silent to not redraw widget - it will be redraw at the end of uploading
-            attr.set("attributeValue", attrValue, { silent: true });
-            currentModel.trigger("changeValue", {
-              attributeId: attrid
-            });
-          }
-        }
+          },
+          () => {},
+          { noPropagatePromiseArg: true }
+        );
       });
 
       //Propagate the event uploadFile to the model

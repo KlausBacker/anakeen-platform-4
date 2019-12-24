@@ -47,9 +47,9 @@ export default $.widget("dcp.dcpRevisionDiff", $.dcp.dcpDialog, {
 
     this.element.html(this.htmlCaneva());
     import("datatables.net" /* webpackChunkName: "datatabale" */).then(function dcpDocumentWHistory_initTable() {
-      import("datatables.net-bs4/css/dataTables.bootstrap4.css" /* webpackChunkName: "datatabale bootstrap" */).then(
-        currentWidget._initDatatable
-      );
+      import(
+        "datatables.net-bs4/css/dataTables.bootstrap4.css" /* webpackChunkName: "datatabale bootstrap" */
+      ).then(() => currentWidget._initDatatable());
     });
 
     this.element.data("dcpRevisionDiff", this);

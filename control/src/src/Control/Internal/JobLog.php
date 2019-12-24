@@ -60,7 +60,7 @@ class JobLog
             $msg = ["module" => $moduleName, "phase" => $phaseName, "task" => $key, "value" => $value, "date" => $now];
             $data["log"][] = $msg;
 
-        ModuleJob::putJobData($data);
+        ModuleJob::recordJobTask($data);
     }
 
 
@@ -143,7 +143,7 @@ class JobLog
             }
         }
 
-        ModuleJob::putJobData($data);
+        ModuleJob::recordJobTask($data);
         self::addLog("", "", "Interrupted process");
     }
 
@@ -164,7 +164,7 @@ class JobLog
             }
         }
 
-        ModuleJob::putJobData($data);
+        ModuleJob::recordJobTask($data);
     }
 
 
@@ -217,6 +217,26 @@ class JobLog
     {
         self::setKey("", "", "log", []);
     }
+    public static function getLastError()
+    {
+        $data = ModuleJob::getJobData();
+        $error= self::getError($data);
+        return $error;
+    }
+
+    protected static function getError(array $data) {
+        if (!empty($data["error"])) {
+            return $data["error"];
+        }
+        foreach ($data as $datum) {
+            if (is_array($datum)) {
+                $error=self::getError($datum);
+                if ($error) {
+                    return $error;
+                }
+            }
+        }
+}
 
 
 }

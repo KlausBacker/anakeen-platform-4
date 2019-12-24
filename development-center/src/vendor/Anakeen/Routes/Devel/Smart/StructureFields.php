@@ -100,6 +100,9 @@ class StructureFields
          * @var SmartStructure\NormalAttribute $oa
          */
         foreach ($oAttrs as $oa) {
+            if (!$oa) {
+                continue;
+            }
             if ($this->checkAttribute($oa) === false) {
                 continue;
             }

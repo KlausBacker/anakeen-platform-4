@@ -48,7 +48,7 @@ class StructureDefaultValues extends StructureFields
 
         $fields = $structure->getAttributes();
         foreach ($fields as $field => $oa) {
-            if ($field === SmartStructure\Attributes::HIDDENFIELD) {
+            if (!$oa || $field === SmartStructure\Attributes::HIDDENFIELD) {
                 continue;
             }
             $isMultiple = $oa->isMultiple();
