@@ -1,6 +1,6 @@
 {
   "name": "transformation",
-  "version": "2.0.1-RC.2019.1.21",
+  "version": "2.0.1-RC.2019.1.22",
   "main": "index.js",
   "author": "Anakeen",
   "license": "SEE LICENSE IN LICENSE",
@@ -11,9 +11,9 @@
     "buildJs": "yarn run buildJs:tedock:prod && yarn run buildJs:tedock:dev"
   },
   "devDependencies": {
-    "@anakeen/anakeen-cli": "1.2.0-RC.2019.1.21",
-    "@anakeen/internal-components": "1.0.2-RC.2019.1.21",
-    "@anakeen/user-interfaces": "3.0.0-RC.2019.1.21",
+    "@anakeen/anakeen-cli": "1.2.0-RC.2019.1.22",
+    "@anakeen/internal-components": "1.0.2-RC.2019.1.22",
+    "@anakeen/user-interfaces": "3.0.0-RC.2019.1.22",
     "@progress/kendo-buttons-vue-wrapper": "^2019.3.1023",
     "@progress/kendo-charts-vue-wrapper": "^2019.3.1023",
     "@progress/kendo-dropdowns-vue-wrapper": "^2019.3.1023",
@@ -25,7 +25,7 @@
     "vue": "2.6.10"
   },
   "dependencies": {
-    "@anakeen/hub-components": "1.0.2-RC.2019.1.21",
+    "@anakeen/hub-components": "1.0.2-RC.2019.1.22",
     "@anakeen/webpack-conf": "1.2.1",
     "core-js": "3.4.7",
     "vue-template-compiler": "2.6.10"
