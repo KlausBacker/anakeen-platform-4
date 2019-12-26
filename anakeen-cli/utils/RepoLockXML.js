@@ -156,27 +156,36 @@ class RepoLockXML extends XMLLoader {
 
   async checkIfModuleIsValid({ name, appPath, srcPath }) {
     const currentModule = this.getModuleByName(name);
-    const appGood = await currentModule.resources.app.reduce(async (acc, currentApp) => {
+    const ressources = currentModule.resources[0];
+    const appGood = await ressources.app.reduce(async (acc, currentApp) => {
       //if one of the ressource is false, all the module is invalid
       const previousResult = await acc;
       if (previousResult === false) {
         return acc;
       }
-      const sha = await SHA256Digest(path.join(appPath, currentApp.$.path));
-      return sha === currentApp.$.sha256;
+      try {
+        const sha = await SHA256Digest.hash(path.join(appPath, currentApp.$.path));
+        return sha === currentApp.$.sha256;
+      } catch (e) {
+        return false;
+      }
     }, Promise.resolve(true));
 
     if (appGood === false) {
       return false;
     }
-    return await currentModule.resources.src.reduce(async (acc, currentSrc) => {
+    return await ressources.src.reduce(async (acc, currentSrc) => {
       //if one of the ressource is false, all the module is invalid
       const previousResult = await acc;
       if (previousResult === false) {
         return acc;
       }
-      const sha = await SHA256Digest(path.join(srcPath, currentSrc.$.path));
-      return sha === currentSrc.$.sha256;
+      try {
+        const sha = await SHA256Digest.hash(path.join(srcPath, currentSrc.$.path));
+        return sha === currentSrc.$.sha256;
+      } catch (e) {
+        return false;
+      }
     }, Promise.resolve(true));
   }
 
@@ -188,7 +197,7 @@ class RepoLockXML extends XMLLoader {
   }
 
   swipeModuleList() {
-    this.data["compose-lock"].module = [];
+    this.data["compose-lock"].module.length = 0;
   }
   /**
    * @param {string} name

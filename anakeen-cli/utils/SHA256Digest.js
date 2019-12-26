@@ -4,7 +4,7 @@ const util = require("util");
 const access = util.promisify(fs.access);
 
 class SHA256Digest {
-  static async file(filename) {
+  static async hash(filename) {
     const hash = crypto.createHash("sha256");
 
     //Test if file exist

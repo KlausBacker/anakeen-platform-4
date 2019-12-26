@@ -20,9 +20,11 @@ const Utils = require(path.resolve(__dirname, "Utils.js"));
 const { HTTPCredentialStore } = require(path.resolve(__dirname, "HTTPCredentialStore.js"));
 const { checkFile } = require("@anakeen/anakeen-module-validation");
 
+const fs_unlink = util.promisify(fs.unlink);
 const fs_stat = util.promisify(fs.stat);
 const fs_mkdir = util.promisify(fs.mkdir);
 const fs_readdir = util.promisify(fs.readdir);
+const glob = util.promisify(require("glob"));
 
 class ComposeError extends GenericError {}
 class ComposeLockError extends GenericError {}
@@ -273,7 +275,7 @@ class Compose {
 
     await this.repoXML.addModule({
       name: module.name,
-      version: `^${module.version}`,
+      version: moduleVersion !== "latest" ? moduleVersion : `^${module.version}`,
       registry: registryName
     });
   }
@@ -324,7 +326,7 @@ class Compose {
       resources[type] = {
         name: moduleInfo[type],
         src: url,
-        sha256: await SHA256Digest.file(pathname),
+        sha256: await SHA256Digest.hash(pathname),
         pathname: pathname
       };
     }
@@ -453,7 +455,10 @@ class Compose {
   async install() {
     await this.loadContext();
 
-    const moduleLockList = this.repoLockXML.getModuleList();
+    const localRepo = this.repoXML.getConfigLocalRepo();
+    const localSrc = this.repoXML.getConfigLocalSrc();
+
+    let moduleLockList = this.repoLockXML.getModuleList();
     const moduleList = this.repoXML.getModuleList();
 
     const organizedLockList = moduleLockList.reduce((acc, currentLockElement) => {
@@ -461,74 +466,93 @@ class Compose {
       return acc;
     }, {});
 
+    const moduleToInstall = {};
+    const moduleLocked = {};
+
     //Analyze the lock and the demand part and deduce the module to install
-    const analyzedList = moduleList.reduce(
-      (acc, currentElement) => {
-        if (
-          organizedLockList[currentElement.$.name] &&
-          semver.satisfies(organizedLockList[currentElement.$.name].$.version, currentElement.$.version)
-        ) {
-          acc.alreadyLocked[currentElement.$.name] = organizedLockList[currentElement.$.name];
-          //Check if the lock is valid (all file here and sha good)
-          this.repoLockXML.checkIfModuleIsValid({name : currentElement.$.name, this.})
-          signale.note(`Found ${currentElement.$.name} locked with ${currentElement.$.version}`);
-          return acc;
+    //It's async for the sha part, so we wait with an await
+    await Promise.all(
+      moduleList.map(async currentElement => {
+        this.debug(`${currentElement.$.name} : check range ${currentElement.$.version}`);
+        if (organizedLockList[currentElement.$.name]) {
+          this.debug(
+            `${currentElement.$.name} : there is a lock with version ${
+              organizedLockList[currentElement.$.name].$.version
+            }`
+          );
         }
-        acc.toInstall[currentElement.$.name] = currentElement;
-        return acc;
-      },
-      {
-        toInstall: {},
-        alreadyLocked: {}
-      }
+        if (
+          //Module is in the locked list
+          organizedLockList[currentElement.$.name] &&
+          //semver is good
+          semver.satisfies(organizedLockList[currentElement.$.name].$.version, currentElement.$.version) &&
+          //File is here and sha1 is good
+          (await this.repoLockXML.checkIfModuleIsValid({
+            name: currentElement.$.name,
+            appPath: path.join(this.cwd, localRepo),
+            srcPath: path.join(this.cwd, localSrc)
+          }))
+        ) {
+          this.debug(`${currentElement.$.name} : We need to install it`);
+          //This module must be installed
+          return (moduleLocked[currentElement.$.name] = organizedLockList[currentElement.$.name]);
+        }
+        //This module is locked, semver is good and files are good, we keep it
+        this.debug(`${currentElement.$.name} : The lock is good, we keep it`);
+        return (moduleToInstall[currentElement.$.name] = currentElement);
+      })
     );
 
     //Check if it's lock file mode and there is things to install
-    if (this.frozenLockfile && Object.keys(analyzedList.toInstall).length > 0) {
+    if (this.frozenLockfile && Object.keys(moduleToInstall).length > 0) {
+      //We are frozen and all the module are not good, so it's a fail
       throw new ComposeLockError(
-        `Some modules to install are not in the lockfile ( ${Object.keys(analyzedList.toInstall).join(
-          " "
-        )} ), try without the frozen lock option`
+        `Some modules to install are not in the lockfile or have not the good semver or the good sha1 ( ${Object.keys(
+          moduleToInstall
+        ).join(" ")} ), try without the frozen lock option`
       );
     }
 
     //Install the elements
     //Swipe the lockfile to reconstruct it during the install
     this.repoLockXML.swipeModuleList();
-    signale.note(`Found ${Object.keys(analyzedList.toInstall).length} new module(s) to install`);
-    await Object.values(analyzedList.toInstall).reduce((acc, module) => {
-      return acc.then(async () => {
+    signale.note(`Found ${Object.keys(moduleToInstall).length} new module(s) to install`);
+    //Install is async so we launch a bunch of promises and wait for the result
+    await Promise.all(
+      Object.values(moduleToInstall).map(async module => {
         return await this._installSemverModule({
           name: module.$.name,
           version: module.$.version,
           registry: module.$.registry
         });
-      });
-    }, Promise.resolve());
+      })
+    );
 
     //Cleaning part
-    //Add the keeped module to the lockfile
-    Object.values(analyzedList.alreadyLocked).map(currentLocked => {
-      moduleList.push(currentLocked);
+    //Add the keeped lock module to the lockfile
+    Object.values(moduleLocked).map(currentLocked => {
+      moduleLockList.push(currentLocked);
     });
+
     //Destroy all the elements, that are not in the lock file
     //Agregate all lockfile path
     const toKeep = this.repoLockXML.getModuleList().reduce(
       (acc, currentModule) => {
-        //Aggregate the app part
-        if (currentModule.ressources && currentModule.ressources.app) {
+        //Aggregate the app part // Tricky the code generate not the same structure than the parsing :faceplam:
+        const resources = currentModule.resources[0] || currentModule.resources;
+        if (resources && resources.app) {
           acc.app = [
             ...acc.app,
-            ...currentModule.ressources.app.map(currentApp => {
+            ...resources.app.map(currentApp => {
               return currentApp.$.path;
             })
           ];
         }
         //Aggregate the src part
-        if (currentModule.ressources && currentModule.ressources.src) {
+        if (resources && resources.src) {
           acc.src = [
             ...acc.src,
-            ...currentModule.ressources.src.map(currentApp => {
+            ...resources.src.map(currentApp => {
               return currentApp.$.path;
             })
           ];
@@ -541,7 +565,27 @@ class Compose {
       }
     );
 
-    console.log(toKeep);
+    //Find all the files
+    const filesInApp = await glob(path.join(this.cwd, localRepo, "*"));
+    // Deduce files to destroy
+    const appFileToDestroy = filesInApp.filter(currentPath => {
+      const fileName = path.basename(currentPath);
+      //The file is content.xml or an element to keep
+      return !(fileName === "content.xml" || toKeep.app.includes(fileName));
+    });
+    const filesInSrc = await glob(path.join(this.cwd, localSrc, "*"), { nodir: true });
+    // Deduce files to destroy
+    const srcFilesToDestroy = filesInSrc.filter(currentPath => {
+      const fileName = path.basename(currentPath);
+      //The file is an element to keep
+      return !toKeep.src.includes(fileName);
+    });
+    await Promise.all(
+      [...srcFilesToDestroy, ...appFileToDestroy].map(async currentPath => {
+        this.debug(`Suppress file ${currentPath}`);
+        return await fs_unlink(currentPath);
+      })
+    );
 
     await this.commitContext();
   }
@@ -574,7 +618,7 @@ class Compose {
 
       let localIsOutdated = true;
       if (await Utils.fileExists(pathname)) {
-        const localSha256 = await SHA256Digest.file(pathname);
+        const localSha256 = await SHA256Digest.hash(pathname);
         localIsOutdated = localSha256 !== sha256;
       }
 
