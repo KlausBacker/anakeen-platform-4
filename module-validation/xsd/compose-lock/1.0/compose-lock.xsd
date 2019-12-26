@@ -5,7 +5,7 @@
     <xs:element name="compose-lock">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="module" minOccurs="0">
+                <xs:element name="module" minOccurs="0" maxOccurs="unbounded">
                     <xs:complexType>
                         <xs:sequence>
                             <xs:element name="resources" minOccurs="0">

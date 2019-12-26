@@ -38,10 +38,6 @@ exports.builder = {
 };
 
 exports.handler = async argv => {
-  signale.start(
-    `Adding 'app' module '${argv.moduleName}' with version '${argv.moduleVersion}' ` +
-      `from registry '${argv.registry}'...`
-  );
   try {
     const compose = await new Compose(argv);
     await compose.checkIfInitialized();
@@ -62,7 +58,12 @@ exports.handler = async argv => {
       signale.error("You have to specify or add a registry");
       process.exit(2);
     }
+    signale.start(
+      `Adding 'app' module '${argv.moduleName}' with version '${argv.moduleVersion}' ` +
+        `from registry '${argv.registry}'...`
+    );
     await compose.addModule(argv);
+    await compose.install(argv);
   } catch (e) {
     signale.error(e);
     process.exit(1);

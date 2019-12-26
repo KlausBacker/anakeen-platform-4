@@ -212,25 +212,31 @@ class Compose {
     //Throw an exception if the registry doesn't exist
     await this.repoXML.getRegistryByName(registryName);
 
-    await this._installSemverModule({
-      name: moduleName,
-      version: moduleVersion,
+    const moduleToAdd = await this._getModuleRefFromRegistry({
+      moduleName,
+      moduleVersion,
+      registryName
+    });
+
+    await this.repoXML.addModule({
+      name: moduleToAdd.name,
+      version: moduleVersion !== "latest" ? moduleVersion : `^${moduleToAdd.version}`,
       registry: registryName
     });
 
-    await this.commitContext();
+    return moduleToAdd;
   }
 
   /**
-   * Install a module that is present in the 'repo.xml'
+   * Get the version of the registry (need access to registry)
    *
-   * @param {string} moduleName Module's name
-   * @param {string} moduleVersion SemVer version
-   * @param {string} registryName Registry's name
-   * @returns {Promise<void>}
+   * @param moduleName
+   * @param moduleVersion
+   * @param registryName
+   * @returns {Promise<{name, version}>}
    * @private
    */
-  async _installSemverModule({ name: moduleName, version: moduleVersion, registry: registryName }) {
+  async _getModuleRefFromRegistry({ moduleName, moduleVersion, registryName }) {
     const appRegistry = this.repoXML.getRegistryByName(registryName);
     let ping = false;
     try {
@@ -247,7 +253,21 @@ class Compose {
         `No module '${moduleName}' found satisfying version '${moduleVersion}' on registry '${registryName}'`
       );
     }
-    const module = moduleList.slice(0, 1)[0];
+    //Get the first element of the array ?¿
+    return moduleList[0];
+  }
+
+  /**
+   * Install a module that is present in the 'repo.xml'
+   *
+   * @param {string} moduleName Module's name
+   * @param {string} moduleVersion SemVer version
+   * @param {string} registryName Registry's name
+   * @returns {Promise<void>}
+   * @private
+   */
+  async _installSemverModule({ name: moduleName, version: moduleVersion, registry: registryName }) {
+    const module = await this._getModuleRefFromRegistry({ moduleName, moduleVersion, registryName });
 
     await this._installAndLockModuleVersion({
       name: module.name,
