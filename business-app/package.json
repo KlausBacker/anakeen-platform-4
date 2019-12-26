@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/business-app",
-  "version": "1.0.2-RC.2019.1.22",
+  "version": "1.0.2-RC.2019.1.23",
   "autorelease": true,
   "description": "Anakeen Hub Business App",
   "main": "src/vendor/Anakeen/BusinessApp/IHM/index.js",
@@ -17,16 +17,16 @@
     "buildJsRender": "yarn run buildJsRender:prod && yarn run buildJsRender:dev"
   },
   "dependencies": {
-    "@anakeen/hub-components": "1.0.2-RC.2019.1.22",
-    "@anakeen/theme-variables": "1.0.0-RC.2019.1.22",
-    "@anakeen/user-interfaces": "3.0.0-RC.2019.1.22",
+    "@anakeen/hub-components": "1.0.2-RC.2019.1.23",
+    "@anakeen/theme-variables": "1.0.0-RC.2019.1.23",
+    "@anakeen/user-interfaces": "3.0.0-RC.2019.1.23",
     "@types/jquery": "^3.3.30",
     "@types/kendo-ui": "^2019.3.1",
     "vue": "2.6.10",
     "vue-property-decorator": "^8.3.0"
   },
   "devDependencies": {
-    "@anakeen/anakeen-cli": "1.2.0-RC.2019.1.22",
+    "@anakeen/anakeen-cli": "1.2.0-RC.2019.1.23",
     "@anakeen/webpack-conf": "1.2.1",
     "typescript": "^3.7.3"
   }
