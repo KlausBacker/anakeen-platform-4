@@ -2,11 +2,9 @@ const console = require("console");
 const path = require("path");
 const util = require("util");
 const fs = require("fs");
-const URL = require("url").URL;
 const semver = require("semver");
 const signale = require("signale");
 const tar = require("tar");
-const rimraf = require("rimraf");
 const fetch = require("node-fetch");
 const urlJoin = require("url-join");
 
@@ -20,11 +18,11 @@ const Utils = require(path.resolve(__dirname, "Utils.js"));
 const { HTTPCredentialStore } = require(path.resolve(__dirname, "HTTPCredentialStore.js"));
 const { checkFile } = require("@anakeen/anakeen-module-validation");
 
-const fs_unlink = util.promisify(fs.unlink);
 const fs_stat = util.promisify(fs.stat);
 const fs_mkdir = util.promisify(fs.mkdir);
 const fs_readdir = util.promisify(fs.readdir);
 const glob = util.promisify(require("glob"));
+const rimraf = util.promisify(require("rimraf"));
 
 class ComposeError extends GenericError {}
 class ComposeLockError extends GenericError {}
@@ -129,22 +127,6 @@ class Compose {
         dependencies: {}
       }
     };
-  }
-
-  /**
-   * @param {string} pathname
-   * @returns {Promise<*>}
-   */
-  static async rm_Rf(pathname) {
-    return new Promise((resolve, reject) => {
-      rimraf(pathname, { glob: false }, err => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(pathname);
-        }
-      });
-    });
   }
 
   /**
@@ -286,17 +268,6 @@ class Compose {
 
     const appRegistry = this.repoXML.getRegistryByName(registryName);
 
-    /* Remove previous module's resources */
-    const lockedModule = this.repoLockXML.getModuleByName(moduleName);
-    if (lockedModule) {
-      if (lockedModule.$.version === moduleVersion) {
-        signale.note(`Module '${moduleName}' with version '${moduleVersion}' is up-to-date`);
-        return;
-      } else {
-        await this.deleteModuleResources(lockedModule);
-      }
-    }
-
     const moduleInfo = await appRegistry.getModuleVersionInfo(moduleName, moduleVersion);
     this.debug({ moduleInfo });
 
@@ -402,7 +373,7 @@ class Compose {
     for (let elmt of rmList) {
       if (await Utils.fileExists(elmt.path)) {
         signale.note(`Removing ${elmt.type} '${elmt.path}'...`);
-        await Compose.rm_Rf(elmt.path);
+        await rimraf(elmt.path);
       }
     }
   }
@@ -420,7 +391,7 @@ class Compose {
     const dirname = path.dirname(archive);
     const pathname = path.join(dirname, basename);
     if (await Utils.fileExists(pathname)) {
-      await Compose.rm_Rf(pathname);
+      await rimraf(pathname);
     }
     await fs_mkdir(pathname, { recursive: true });
     return tar.x({
@@ -493,12 +464,12 @@ class Compose {
             srcPath: path.join(this.cwd, localSrc)
           }))
         ) {
-          this.debug(`${currentElement.$.name} : We need to install it`);
-          //This module must be installed
+          this.debug(`${currentElement.$.name} : The lock is good, we keep it`);
+          //This module is locked, semver is good and files are good, we keep it
           return (moduleLocked[currentElement.$.name] = organizedLockList[currentElement.$.name]);
         }
-        //This module is locked, semver is good and files are good, we keep it
-        this.debug(`${currentElement.$.name} : The lock is good, we keep it`);
+        this.debug(`${currentElement.$.name} : We need to install it`);
+        //This module must be installed
         return (moduleToInstall[currentElement.$.name] = currentElement);
       })
     );
@@ -583,64 +554,11 @@ class Compose {
     await Promise.all(
       [...srcFilesToDestroy, ...appFileToDestroy].map(async currentPath => {
         this.debug(`Suppress file ${currentPath}`);
-        return await fs_unlink(currentPath);
+        return await rimraf(currentPath);
       })
     );
 
     await this.commitContext();
-  }
-
-  async _installModuleFromLock({ lockedModule }) {
-    const localRepo = this.repoXML.getConfigLocalRepo();
-    const localSrc = this.repoXML.getConfigLocalSrc();
-
-    const resourceDir = {
-      app: localRepo,
-      src: localSrc
-    };
-
-    for (let type of ["app", "src"]) {
-      if (
-        !lockedModule.hasOwnProperty("resources") ||
-        !Array.isArray(lockedModule.resources) ||
-        lockedModule.resources.length <= 0 ||
-        !lockedModule.resources[0].hasOwnProperty(type) ||
-        !Array.isArray(lockedModule.resources[0][type]) ||
-        lockedModule.resources[0][type].length <= 0
-      ) {
-        continue;
-      }
-      const resource = lockedModule.resources[0][type][0];
-      const src = resource.$.src;
-      const sha256 = resource.$.sha256;
-      const basename = path.basename(new URL(src).pathname);
-      const pathname = path.join(this.cwd, resourceDir[type], basename);
-
-      let localIsOutdated = true;
-      if (await Utils.fileExists(pathname)) {
-        const localSha256 = await SHA256Digest.hash(pathname);
-        localIsOutdated = localSha256 !== sha256;
-      }
-
-      if (!localIsOutdated && type === "src" && !Compose._srcUnpackDirExists(pathname)) {
-        localIsOutdated = true;
-      }
-
-      if (localIsOutdated) {
-        signale.note(`Updating outdated resource '${pathname}' from lock src '${src}'`);
-        await this._updateLocalResource({
-          type,
-          src,
-          pathname,
-          moduleName: lockedModule.$.name
-        });
-      } else {
-        signale.note(`Local resource '${pathname}' is up-to-date`);
-      }
-    }
-
-    signale.note(`Generating 'content.xml' in '${localRepo}'...`);
-    await this.genRepoContentXML(localRepo);
   }
 
   static _srcUnpackDirExists(srcPathname) {
