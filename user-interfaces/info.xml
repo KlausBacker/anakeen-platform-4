@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="user-interfaces" version="3.0.0-RC.2019.1.22" vendor="Anakeen" license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0">
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="user-interfaces" version="3.0.0-RC.2019.1.23" vendor="Anakeen" license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0">
 
     <description>Anakeen Platform : User interfaces</description>
     <requires>
-        <module name="smart-data-engine" version="^2.1.0-RC.2019.1.22"/>
+        <module name="smart-data-engine" version="^2.1.0-RC.2019.1.23"/>
     </requires>
     <replaces>
         <module name="anakeen-theme"/>
