@@ -28,7 +28,8 @@ class Platform
      * @return array
      * @throws \Anakeen\Database\Exception
      */
-    public static function getUserStats() {
+    public static function getUserStats()
+    {
         $stats=[];
 
         try {
@@ -49,7 +50,8 @@ class Platform
     /**
      * @return array
      */
-    public static function getStatusInfo() {
+    public static function getStatusInfo()
+    {
         try {
             self::initPlatformContext();
         } catch (Exception $e) {
@@ -62,5 +64,4 @@ class Platform
         }
         return \Anakeen\Script\System::getStatusInfo();
     }
-
 }
