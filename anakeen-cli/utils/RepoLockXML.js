@@ -1,6 +1,7 @@
 const path = require("path");
 const util = require("util");
 const fs = require("fs");
+const SHA256Digest = require(path.resolve(__dirname, "SHA256Digest"));
 
 const fs_access = util.promisify(fs.access);
 
@@ -118,7 +119,7 @@ class RepoLockXML extends XMLLoader {
    * @param {string} name Module's name
    * @param {string} version Module's semver version
    * @param {string} src URL from which the module has been downloaded
-   * @param {[{ type, src, sha256 }]} resources
+   * @param {[{ type, src, sha256, pathname }]} resources
    * @returns {RepoLockXML}
    */
   addModule({ name, version, resources }) {
@@ -141,7 +142,8 @@ class RepoLockXML extends XMLLoader {
       newModule.resources[r.type].push({
         $: {
           src: r.src,
-          sha256: r.sha256
+          sha256: r.sha256,
+          path: r.pathname
         }
       });
     }
@@ -152,6 +154,41 @@ class RepoLockXML extends XMLLoader {
     return this;
   }
 
+  async checkIfModuleIsValid({ name, appPath, srcPath }) {
+    const currentModule = this.getModuleByName(name);
+    const ressources = currentModule.resources[0];
+    const appGood = await ressources.app.reduce(async (acc, currentApp) => {
+      //if one of the ressource is false, all the module is invalid
+      const previousResult = await acc;
+      if (previousResult === false) {
+        return acc;
+      }
+      try {
+        const sha = await SHA256Digest.hash(path.join(appPath, currentApp.$.path));
+        return sha === currentApp.$.sha256;
+      } catch (e) {
+        return false;
+      }
+    }, Promise.resolve(true));
+
+    if (appGood === false) {
+      return false;
+    }
+    return await ressources.src.reduce(async (acc, currentSrc) => {
+      //if one of the ressource is false, all the module is invalid
+      const previousResult = await acc;
+      if (previousResult === false) {
+        return acc;
+      }
+      try {
+        const sha = await SHA256Digest.hash(path.join(srcPath, currentSrc.$.path));
+        return sha === currentSrc.$.sha256;
+      } catch (e) {
+        return false;
+      }
+    }, Promise.resolve(true));
+  }
+
   /**
    * @returns {Array|*}
    */
@@ -159,6 +196,9 @@ class RepoLockXML extends XMLLoader {
     return this.data["compose-lock"].module;
   }
 
+  swipeModuleList() {
+    this.data["compose-lock"].module.length = 0;
+  }
   /**
    * @param {string} name
    * @returns {*}|undefined

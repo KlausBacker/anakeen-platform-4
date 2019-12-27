@@ -10,10 +10,12 @@ class AppRegistry {
   /**
    * @param {string} url Registry's base URL
    */
-  constructor({ url }) {
+  constructor({ url, credentialStore }) {
     this._index = undefined;
     this.url = url.trim().replace(/\/+$/, "");
-    this.agent = new HTTPAgent();
+    this.agent = new HTTPAgent({
+      credentialStore
+    });
   }
 
   /**
@@ -63,13 +65,8 @@ class AppRegistry {
    * @returns {Promise<boolean>}
    */
   async ping() {
-    try {
-      await this.refreshIndex();
-    } catch (e) {
-      console.error(e);
-      return false;
-    }
-    return true;
+    const index = await this.refreshIndex();
+    return !!index;
   }
 
   /**
@@ -113,14 +110,24 @@ class AppRegistry {
       });
     }
 
-    /* Order by descending version */
-    index.sort((a, b) => {
-      return semver.compare(b.version, a.version);
-    });
-
-    /* If "latest" requested, return the one with highest version */
+    /* If "latest" requested, return the one with highest version not in RC mode */
     if (filterVersion === "latest" && index.length > 0) {
-      index = index.slice(0, 1);
+      //Suppress pre release from analysis
+      index = index.filter(currentIndex => {
+        return !semver.prerelease(currentIndex.version);
+      });
+      //Get the greater index
+      return [
+        index.reduce(
+          (acc, currentIndex) => {
+            if (semver.gt(acc.version, currentIndex.version)) {
+              return acc;
+            }
+            return currentIndex;
+          },
+          { version: "0.0.1", name: undefined }
+        )
+      ];
     }
 
     return index;
