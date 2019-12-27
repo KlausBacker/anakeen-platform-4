@@ -29,7 +29,7 @@ exports.handler = async argv => {
   try {
     const compose = await new Compose(argv);
     await compose.checkIfInitialized();
-    await compose.install(argv);
+    await compose.install({});
   } catch (e) {
     signale.error(e);
     process.exit(1);

@@ -209,6 +209,17 @@ class Compose {
   async addModule({ moduleName: moduleName, moduleVersion: moduleVersion, registry: registryName }) {
     await this.loadContext();
 
+    if (!registryName || !moduleVersion) {
+      //We don't know the version or the registry, maybe the module is already registred
+      let module = this.repoXML.getModuleByName(moduleName);
+      if (!registryName) {
+        registryName = module.registry;
+      }
+      if (!moduleVersion) {
+        moduleVersion = module.version;
+      }
+    }
+
     //Throw an exception if the registry doesn't exist
     await this.repoXML.getRegistryByName(registryName);
 
@@ -254,7 +265,7 @@ class Compose {
       );
     }
     //Get the first element of the array ?¿
-    return moduleList[0];
+    return moduleList[moduleList.length - 1];
   }
 
   /**
@@ -443,14 +454,24 @@ class Compose {
    *
    * @returns {Promise<void>}
    */
-  async install() {
+  async install({ withoutLockFile = false, latest = false }) {
+    let moduleLockList = [];
     await this.loadContext();
 
     const localRepo = this.repoXML.getConfigLocalRepo();
     const localSrc = this.repoXML.getConfigLocalSrc();
 
-    let moduleLockList = this.repoLockXML.getModuleList();
-    const moduleList = this.repoXML.getModuleList();
+    if (withoutLockFile === false) {
+      moduleLockList = this.repoLockXML.getModuleList();
+    }
+    let moduleList = this.repoXML.getModuleList();
+    if (latest) {
+      //Process the module list to push all semver requirement to latest
+      moduleList = moduleList.map(currentModule => {
+        currentModule.$.version = "latest";
+        return currentModule;
+      });
+    }
 
     const organizedLockList = moduleLockList.reduce((acc, currentLockElement) => {
       acc[currentLockElement.$.name] = currentLockElement;
@@ -597,58 +618,6 @@ class Compose {
       await this.unpackSrc(pathname, moduleName);
     }
     signale.note(`Done.`);
-  }
-
-  /**
-   * @param {[{string}]} moduleList List of module's name[@version]
-   * @returns {Promise<void>}
-   */
-  async upgrade(moduleList = []) {
-    await this.loadContext();
-
-    if (moduleList.length <= 0) {
-      moduleList = this.repoXML.getModuleList().map(module => {
-        return {
-          name: module.$.name,
-          version: this.latest ? "latest" : module.$.version,
-          registry: module.$.registry
-        };
-      });
-    } else {
-      for (let i = 0; i < moduleList.length; i++) {
-        const moduleAtVersion = this.parseNameAtVersion(moduleList[i]);
-        const module = this.repoXML.getModuleByName(moduleAtVersion.name);
-        moduleList[i] = {
-          name: module.name,
-          version: this.latest ? "latest" : moduleAtVersion.version !== "" ? moduleAtVersion.version : module.version,
-          registry: module.registry
-        };
-      }
-    }
-
-    this.debug(moduleList, { depth: 20 });
-
-    for (let i = 0; i < moduleList.length; i++) {
-      const module = moduleList[i];
-      signale.note(`Installing '${module.name}' with version '${module.version}'`);
-      await this._installSemverModule({
-        name: module.name,
-        version: module.version,
-        registry: module.registry
-      });
-
-      //Update repo.xml
-      const lockModule = this.repoLockXML.getModuleByName(module.name);
-      this.repoXML.updateModule({
-        name: module.name,
-        version: lockModule.$.version,
-        registry: module.registry
-      });
-    }
-
-    this.debug(this.repoLockXML.data, { depth: 20 });
-
-    await this.commitContext();
   }
 
   /**
