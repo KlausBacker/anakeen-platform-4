@@ -1,10 +1,8 @@
 <?php
 
-
 namespace Control\Internal;
 
-
-class Exception
+class Exception extends \Exception
 {
 
 }
