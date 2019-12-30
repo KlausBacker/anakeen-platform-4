@@ -192,6 +192,7 @@ class StructureFields
                         "options" => "options",
                         "link" => "link",
                         "needed" => "needed",
+                        "frameid" => "frameid",
                         "title" => "title",
                         "abstract" => "abstract",
                         "elink" => "elink",
@@ -206,19 +207,26 @@ class StructureFields
                             if ($parentField) {
                                 if (property_exists($parentField, $oType)) {
                                     $before = $parentField->$oType;
+                                } elseif ($oType === "frameid") {
+                                    $before = $parentField->fieldSet->id;
                                 }
                             }
                             switch ($type) {
+                                case "frameid":
+                                    $after = ($oa->fieldSet)?$oa->fieldSet->id:"";
+                                    break;
                                 case "needed":
                                     $after = $oa->needed ? "Y" : "N";
                                     break;
                                 case "title":
                                     $after = $oa->isInTitle ? "Y" : "N";
-                                    $oType="isInTitle";
                                     break;
                                 case "abstract":
                                     $after = $oa->isInAbstract ? "Y" : "N";
-                                    $oType="isInAbstract";
+                                    break;
+                                case "labeltext":
+                                    $after = $oa->labelText;
+                                    $oType="labeltext";
                                     break;
                                 default:
                                     if (property_exists($oa, $oType)) {
@@ -226,11 +234,11 @@ class StructureFields
                                     }
                             }
 
-                            if ($before != $after) {
-                                $dbAttrs[$oa->id][$type] = $oa->$oType;
-                                $dbAttrs[$oa->id]["overrides"][$type] = [
-                                    "before" => $parentStructure->getAttribute($oa->id)->$oType,
-                                    "after" => $oa->$oType
+                            if ($before !== $after) {
+                                $dbAttrs[$oa->id][$oType] = $after;
+                                $dbAttrs[$oa->id]["overrides"][$oType] = [
+                                    "before" => $before,
+                                    "after" => $after
                                 ];
                             }
                         }
@@ -267,6 +275,28 @@ class StructureFields
             $dbAttr["isTitle"] = $dbAttr["title"] === 'Y';
             $dbAttr["isAbstract"] = $dbAttr["abstract"] === 'Y';
             $dbAttr["isNeeded"] = $dbAttr["needed"] === 'Y';
+
+            if (isset($dbAttr["overrides"]["title"])) {
+                $dbAttr["overrides"]["isTitle"]=[
+                    "before" => $dbAttr["overrides"]["title"]["before"] === "Y",
+                    "after" => $dbAttr["overrides"]["title"]["after"] === "Y"
+                ];
+                unset($dbAttr["overrides"]["title"]);
+            }
+            if (isset($dbAttr["overrides"]["abstract"])) {
+                $dbAttr["overrides"]["isAbstract"]=[
+                    "before" => $dbAttr["overrides"]["abstract"]["before"] === "Y",
+                    "after" => $dbAttr["overrides"]["abstract"]["after"] === "Y"
+                ];
+                unset($dbAttr["overrides"]["abstract"]);
+            }
+            if (isset($dbAttr["overrides"]["needed"])) {
+                $dbAttr["overrides"]["isNeeded"]=[
+                    "before" => $dbAttr["overrides"]["needed"]["before"] === "Y",
+                    "after" => $dbAttr["overrides"]["needed"]["after"] === "Y"
+                ];
+                unset($dbAttr["overrides"]["needed"]);
+            }
 
             $dbAttr["optionValues"] = SmartStructure\BasicAttribute::optionsToArray($dbAttr["options"] ?: '');
             $dbAttr["structure"] = SEManager::getNameFromId($dbAttr["docid"]);
