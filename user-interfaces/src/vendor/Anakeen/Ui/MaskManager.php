@@ -96,6 +96,8 @@ class MaskManager
     {
         $oas = $this->smartElement->getAttributes();
         if (is_array($oas)) {
+            $this->smartElement->attributes->orderAttributes();
+            $oas=$this->smartElement->attributes->attr;
             foreach ($oas as $k => $v) {
                 if ($oas[$k]) {
                     $this->mVisibilities[$v->id] = self::propagateVisibility(
