@@ -54,7 +54,10 @@ class StructureFields
 
         $data["properties"]["parents"] = StructureInfo::getParents($this->structure);
         $data["fields"] = $this->getFieldsConfig($this->structure);
-        $data["uri"] = URLUtils::generateURL(Settings::ApiV2 . sprintf("devel/smart/structures/%s/fields/", $this->structureName));
+        $data["uri"] = URLUtils::generateURL(Settings::ApiV2 . sprintf(
+            "devel/smart/structures/%s/fields/",
+            $this->structureName
+        ));
         return $data;
     }
 
@@ -81,10 +84,16 @@ class StructureFields
         }
 
         $ancestrors = array_reverse($ancestrors, true);
-        $sql = sprintf("select * from docattr where docid in (%s) and {$this->sqlFilter} and type != 'menu' and id !~ '^:' order by ordered", implode(',', $fromids));
+        $sql = sprintf(
+            "select * from docattr where docid in (%s) and {$this->sqlFilter} and type != 'menu' and id !~ '^:' order by ordered",
+            implode(',', $fromids)
+        );
         $dbAttrs = [];
         DbManager::query($sql, $dbAttrs);
-        $sql = sprintf("select * from docattr where docid in (%s) and {$this->sqlFilter} and id ~ '^:' order by ordered", implode(',', $fromids));
+        $sql = sprintf(
+            "select * from docattr where docid in (%s) and {$this->sqlFilter} and id ~ '^:' order by ordered",
+            implode(',', $fromids)
+        );
         DbManager::query($sql, $dbModAttr);
 
         foreach ($dbAttrs as $k => $v) {
@@ -151,7 +160,11 @@ class StructureFields
                         if ($oa->ordered !== $reg[1]) {
                             $dbAttrs[$oa->id]["overrides"][] = "ordered";
                         }
-                        $dbAttrs[$oa->id]["options"] = preg_replace("/(relativeOrder=[a-zA-Z0-9_:]+)/", "", $dbAttrs[$oa->id]["options"]);
+                        $dbAttrs[$oa->id]["options"] = preg_replace(
+                            "/(relativeOrder=[a-zA-Z0-9_:]+)/",
+                            "",
+                            $dbAttrs[$oa->id]["options"]
+                        );
                     }
                 } else {
                     if (!empty($oa->ordered) && is_numeric($oa->ordered) && $ancestrors) {
@@ -198,12 +211,13 @@ class StructureFields
                         "elink" => "elink",
                         "phpfunc" => "phpfunc",
                         "phpconstraint" => "phpconstraint",
-                        "phpfile" => "phpfile"];
+                        "phpfile" => "phpfile"
+                    ];
                     foreach ($types as $type => $oType) {
                         if ($modAttr[$type]) {
-                            $parentField=$parentStructure->getAttribute($oa->id);
-                            $before="";
-                            $after="";
+                            $parentField = $parentStructure->getAttribute($oa->id);
+                            $before = "";
+                            $after = "";
                             if ($parentField) {
                                 if (property_exists($parentField, $oType)) {
                                     $before = $parentField->$oType;
@@ -213,7 +227,7 @@ class StructureFields
                             }
                             switch ($type) {
                                 case "frameid":
-                                    $after = ($oa->fieldSet)?$oa->fieldSet->id:"";
+                                    $after = ($oa->fieldSet) ? $oa->fieldSet->id : "";
                                     break;
                                 case "needed":
                                     $after = $oa->needed ? "Y" : "N";
@@ -226,7 +240,7 @@ class StructureFields
                                     break;
                                 case "labeltext":
                                     $after = $oa->labelText;
-                                    $oType="labeltext";
+                                    $oType = "labeltext";
                                     break;
                                 default:
                                     if (property_exists($oa, $oType)) {
@@ -277,25 +291,29 @@ class StructureFields
             $dbAttr["isNeeded"] = $dbAttr["needed"] === 'Y';
 
             if (isset($dbAttr["overrides"]["title"])) {
-                $dbAttr["overrides"]["isTitle"]=[
+                $dbAttr["overrides"]["isTitle"] = [
                     "before" => $dbAttr["overrides"]["title"]["before"] === "Y",
                     "after" => $dbAttr["overrides"]["title"]["after"] === "Y"
                 ];
                 unset($dbAttr["overrides"]["title"]);
             }
             if (isset($dbAttr["overrides"]["abstract"])) {
-                $dbAttr["overrides"]["isAbstract"]=[
+                $dbAttr["overrides"]["isAbstract"] = [
                     "before" => $dbAttr["overrides"]["abstract"]["before"] === "Y",
                     "after" => $dbAttr["overrides"]["abstract"]["after"] === "Y"
                 ];
                 unset($dbAttr["overrides"]["abstract"]);
             }
             if (isset($dbAttr["overrides"]["needed"])) {
-                $dbAttr["overrides"]["isNeeded"]=[
+                $dbAttr["overrides"]["isNeeded"] = [
                     "before" => $dbAttr["overrides"]["needed"]["before"] === "Y",
                     "after" => $dbAttr["overrides"]["needed"]["after"] === "Y"
                 ];
                 unset($dbAttr["overrides"]["needed"]);
+            }
+            if (isset($dbAttr["overrides"]["frameid"])) {
+                $dbAttr["overrides"]["parentId"] = $dbAttr["overrides"]["frameid"];
+                unset($dbAttr["overrides"]["frameid"]);
             }
 
             $dbAttr["optionValues"] = SmartStructure\BasicAttribute::optionsToArray($dbAttr["options"] ?: '');
@@ -321,8 +339,8 @@ class StructureFields
                 $fieldData["autocomplete"] = $fieldData["properties"]["autocomplete"];
             } elseif (strlen($fieldData["phpfile"]) > 2 && $fieldData["phpfunc"]) {
                 $fieldData["autocomplete"] = sprintf("[%s] : %s", $fieldData["phpfile"], $fieldData["phpfunc"]);
-            } elseif (strlen($fieldData["phpfunc"])> 2) {
-                $fieldData["computed"]=$fieldData["phpfunc"];
+            } elseif (strlen($fieldData["phpfunc"]) > 2) {
+                $fieldData["computed"] = $fieldData["phpfunc"];
             }
         }
 
