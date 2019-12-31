@@ -146,6 +146,7 @@ class ModuleJob
     public static function waitRunning(ConsoleOutput $output)
     {
         $verbose = $output->getVerbosity() === OutputInterface::VERBOSITY_VERBOSE;
+        $veryVerbose = $output->getVerbosity() === OutputInterface::VERBOSITY_VERY_VERBOSE;
         if ($verbose) {
             CliStatus::formatJobStatusOutput($output);
             /** @var ConsoleSectionOutput $section */
@@ -164,39 +165,81 @@ class ModuleJob
 
         $waitInterval = 500000;
         do {
+            // In case of previous fail
+            usleep($waitInterval);
             $jobStatus = self::getJobStatus();
             $status = $jobStatus["status"] ?? "";
-            usleep($waitInterval);
-            print ".";
+            if ($veryVerbose) {
+                print $status." - ";
+            } else {
+                print ".";
+            }
         } while ($status === self::MAINTENANCE_STATUS);
 
         do {
+            usleep($waitInterval);
             $jobStatus = self::getJobStatus();
             $status = $jobStatus["status"] ?? "";
-            usleep($waitInterval);
-            print ".";
+            if ($status === self::READY_STATUS && !isset($jobStatus["tasks"])) {
+                // The job is already finished
+                break;
+            }
+            if ($veryVerbose) {
+                print $status." - ";
+            } else {
+                print ".";
+            }
         } while ($status === self::READY_STATUS);
 
-        if ($verbose) {
+        if ($verbose || $veryVerbose) {
             print "\r";
         }
+
         do {
             $jobStatus = self::getJobStatus();
             $status = $jobStatus["status"] ?? "";
-            //print_r($jobStatus);
             usleep($waitInterval);
-            if ($section) {
+            if ($veryVerbose === true) {
+                self::displayLog($jobStatus);
+            } elseif ($verbose && $section) {
                 $section->clear();
                 CliStatus::displayJobStatus($section, $jobStatus);
             } else {
                 print ".";
-            };
+            }
         } while ($status === self::RUNNING_STATUS);
 
-        print "\r";
+        print "\n";
         if ($status !== self::READY_STATUS) {
-            print "\n";
             throw new RuntimeException("$status :" . JobLog::getLastError());
+        }
+    }
+
+    protected static function displayLog(array $jobStatus)
+    {
+        static $index = 0;
+
+        $logs=$jobStatus["log"]??[];
+
+
+        $newlogs=array_slice($logs, $index);
+        $index=count($logs);
+
+        foreach ($newlogs as $log) {
+            if (is_array($log["value"])) {
+                $log["value"] = implode(", ", $log["value"]);
+            }
+            $row = [
+                sprintf("[%s]  %s", $log["date"], $log["module"]),
+                sprintf("%s", $log["phase"]),
+                sprintf("%s", $log["task"]),
+                sprintf("%s", $log["value"])
+            ];
+
+            if ($log["task"] === "error") {
+                array_unshift($row, "ERROR");
+            }
+            print implode(" - ", $row)."\n";
         }
     }
 
