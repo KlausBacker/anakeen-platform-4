@@ -183,26 +183,8 @@ export default class AdminCenterAccountController extends Vue {
   public mounted() {
     this.$nextTick(() => {
       this.groupId = window.localStorage.getItem("admin.account.groupSelected.id");
-      this.fetchConfig();
       this.bindTree();
     });
-  }
-
-  // Get the config of the creation toolbar
-  public fetchConfig() {
-    this.$http
-      .get("api/v2/admin/account/config/")
-      .then(response => {
-        if (response.status === 200 && response.statusText === "OK") {
-          this.options = response.data;
-          // this.bindToolbars(response.data);
-        } else {
-          throw new Error(response.data);
-        }
-      })
-      .catch(error => {
-        console.error("Unable to get options", error);
-      });
   }
 
   // Bind the tree events
