@@ -149,7 +149,6 @@ export default class AdminCenterAccountController extends Vue {
       }
     }
   });
-  public userModeSelected: boolean = false;
   public displayGroupDocument: boolean = false;
   public selectedGroupDocumentId: boolean = false;
   public selectedGroupLogin: boolean = false;
@@ -262,12 +261,15 @@ export default class AdminCenterAccountController extends Vue {
     if (this.$refs.filterTree.value) {
       filterTitle = this.$refs.filterTree.value.toLowerCase();
     }
-    if (filterTitle !== undefined) {
-      this.filter(this.groupTree, filterTitle);
-    } else {
-      this.showAll(this.groupTree);
-      this.expandAll();
-    }
+
+    const treeview = this.$refs.groupTreeView.kendoWidget();
+    kendo.ui.progress($(this.$refs.groupTreeView.$el), true);
+    treeview.dataSource.read().then(() => {
+      kendo.ui.progress($(this.$refs.groupTreeView.$el), false);
+      if (filterTitle !== undefined) {
+        this.filter(this.groupTree, filterTitle);
+      }
+    });
   }
 
   // filter treeview datasource and expand until leaf is reached if a matching item is found
