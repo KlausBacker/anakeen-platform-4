@@ -2,7 +2,7 @@
     <div class="parameters-parent">
         <router-tabs ref="tabsComponent" :tabs="tabs" @tab-selected="onTabSelected">
             <template v-slot="slotProps">
-                <component :is="slotProps.tab.component" :ssName="ssName"></component>
+                <component :is="slotProps.tab.component" :ssName="ssName"/>
             </template>
         </router-tabs>
     </div>
@@ -18,8 +18,7 @@
     components: {
       RouterTabs,
       "ss-parameters-fields": resolve => import("./ParametersFields").then(module => resolve(module.default)),
-      "ss-parameters-values": resolve => import("./ParametersValues").then(module => resolve(module.default)),
-      "ss-parameters-default-values": resolve => import("./ParametersDefaultValue").then(module => resolve(module.default)),
+      "ss-parameters-values": resolve => import("./ParametersValues").then(module => resolve(module.default))
     },
     props: ["ssName", "ssDetails"],
     mounted() {
@@ -41,12 +40,6 @@
             label: "Parameters Values",
             url: "values",
             component: "ss-parameters-values",
-          },
-          {
-            name: "SmartStructures::parameters::defaultParamValues",
-            label: "Default Parameters Values",
-            url: "defaults",
-            component: "ss-parameters-default-values",
           }
         ]
       }
