@@ -320,8 +320,19 @@ class RouterLib
 
         $patternInfos = $sParser->parse($pattern);
         $regExps = self::parseInfoToRegExp($patternInfos);
+
         foreach ($regExps as $regExp) {
             if (preg_match($regExp, $url)) {
+                return true;
+            }
+
+            // second try with encoded parts
+            $encodeParts=array_map(function ($item) {
+                return urlencode($item);
+            }, explode("/", $url));
+            $encodedUrl=implode("/", $encodeParts);
+
+            if (preg_match($regExp, $encodedUrl)) {
                 return true;
             }
         }
