@@ -70,6 +70,15 @@ export default {
             initValue: this.initialFieldType === "docid" ? this.initValue : ""
           }
         },
+        account: {
+          componentName: "condition-table-keywords-docid",
+          props: {
+            famid: this.famid,
+            field: this.field,
+            operator: this.operator,
+            initValue: this.initialFieldType === "account" ? this.initValue : ""
+          }
+        },
         wid: {
           componentName: "condition-table-keywords-wid",
           props: {

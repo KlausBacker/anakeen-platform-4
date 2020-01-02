@@ -162,14 +162,20 @@
 
 //k-radio input need to have a fixed square size
 .dcpAttribute__content .dcpAttribute__value--edit.dcpAttribute__value.k-radio {
-  width: 1.2rem;
-  height: 1.2rem;
+  width: 1.25rem;
+  flex-shrink: 0;
+  height: 1.25rem;
+  &:before {
+    width: 50%;
+    height: 50%;
+  }
 }
 
 //k-checkbox input need to have a fixed square size
 .dcpAttribute__content .dcpAttribute__value--edit.dcpAttribute__value.k-checkbox {
-  width: 1.2rem;
-  height: 1.2rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
 }
 
 .dcpAttribute__value--enumbuttons.orientation-horizontal {
@@ -178,6 +184,11 @@
   flex-direction: row;
   flex-flow: row wrap;
   height: auto;
+  padding-top: 0;
+  padding-bottom: 0;
+  min-height: 2.5rem;
+
+
 }
 
 //horizontal checkbox are not aligned with label
@@ -187,12 +198,6 @@
   border-bottom-right-radius: $border-radius-base;
 
   border:none;
-  .k-checkbox{
-     margin-top: 0.6rem;
-  }
-  .k-radio {
-     margin-top: 0.6rem;
-  }
 }
 
 .dcpAttribute__value--enumbuttons.dcpAttribute__content__nobutton.orientation-horizontal,
@@ -213,6 +218,7 @@
 
 .dcpAttribute__value--enumbuttons.orientation-horizontal .dcpAttribute__value--enumlabel {
   display: flex;
+  align-items: center;
   white-space: nowrap;
   width: 10rem;
 
@@ -264,13 +270,15 @@
   border:none;
 
   label.dcpAttribute__value--enumlabel--text {
-    line-height: 2;
+
   }
 
 }
 
 .dcpAttribute__value--enumbuttons.orientation-vertical .dcpAttribute__value--enumlabel {
-  display: block;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   text-align: left;
   white-space: nowrap;
   border-radius: inherit;
@@ -278,9 +286,11 @@
   padding-top: 0.2em;
   .dcpAttribute__value--enumlabel--text {
     overflow: hidden;
+    display: block;
     text-overflow: ellipsis;
-    width: calc(100% - 1em);
+    flex: 1;
     margin: 0;
+    margin-left: 0.5em;
   }
 
 }
@@ -314,12 +324,6 @@ label.dcpAttribute__value--enumlabel--text {
     width: 0;
   }
 
-}
-
-.dcpAttribute__value--enumbuttons.orientation-vertical .dcpAttribute__value--enumlabel .dcpAttribute__value--enumlabel--text {
-  margin-left: 0.5em;
-  display: inline-block;
-  vertical-align: middle;
 }
 
 .dcpAttribute__value--enumbuttons.orientation-bool .dcpAttribute__value--enumlabel--text {
