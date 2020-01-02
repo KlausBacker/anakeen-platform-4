@@ -25,10 +25,6 @@ export default class AnkVueI18nMixin extends Vue {
 
     if (this.$_globalI18n.sharedVueI18n) {
       this._i18n = this.$_globalI18n.sharedVueI18n;
-      if (this.$_globalI18n.loaded) {
-        // Shared catalog already loaded
-        this.$emit("localeLoaded");
-      }
     } else {
       this.$_globalI18n.sharedVueI18n = this._i18n;
       this.$_globalI18n.recordCatalog();
@@ -44,5 +40,12 @@ export default class AnkVueI18nMixin extends Vue {
       this.$emit("localeChanged", lang);
     });
     this.$i18n.locale = this.$_globalI18n.locale;
+  }
+
+  public mounted() {
+    if (this.$_globalI18n.loaded) {
+      // Shared catalog already loaded
+      this.$emit("localeLoaded");
+    }
   }
 }
