@@ -7,7 +7,7 @@ authtype=`"$DIR"/programs/config.php --get authentMode`
 
 if [ "$authtype" = "" ]; then
     authtype=`"$WIFF_ROOT"/anakeen-control get --module authtype`
-    "$DIR"/programs/config.php --set authentMode "$authtype"
+    "$DIR"/programs/config.php --set authentMode "basic"
 fi
 
 
