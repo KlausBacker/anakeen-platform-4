@@ -18,6 +18,10 @@ export default {
       type: String,
       default: () => ""
     },
+    columnListKey: {
+      type: String,
+      default: () => ""
+    },
     items: {
       type: Array,
       default: () => []
@@ -81,8 +85,8 @@ export default {
   data() {
     return {
       remoteDataSource: "",
-      columnSizeTab: window.localStorage.getItem("ss-list-column-size-conf-" + this.ssName)
-        ? JSON.parse(window.localStorage.getItem("ss-list-column-size-conf-" + this.ssName))
+      columnSizeTab: window.localStorage.getItem("ss-list-column-size-conf-" + this.columnListKey)
+        ? JSON.parse(window.localStorage.getItem("ss-list-column-size-conf-" + this.columnListKey))
         : [],
       filters: "",
       operatorconfig: "contains",
@@ -130,7 +134,7 @@ export default {
         this.$refs.ssTreelist.kendoWidget().resize();
       }
     });
-    const columns = window.localStorage.getItem("ss-list-column-conf-" + this.ssName);
+    const columns = window.localStorage.getItem("ss-list-column-conf-" + this.columnListKey);
     if (columns) {
       JSON.parse(columns).forEach(item => {
         if (item.hidden) {
@@ -171,14 +175,14 @@ export default {
     },
     onColumnHide(e) {
       window.localStorage.setItem(
-        "ss-list-column-conf-" + this.$route.name,
+        "ss-list-column-conf-" + this.columnListKey,
         JSON.stringify(this.$refs.ssTreelist.kendoWidget().columns)
       );
       this.filterShow(e.column.field, false);
     },
     onColumnShow(e) {
       window.localStorage.setItem(
-        "ss-list-column-conf-" + this.$route.name,
+        "ss-list-column-conf-" + this.columnListKey,
         JSON.stringify(this.$refs.ssTreelist.kendoWidget().columns)
       );
       this.filterShow(e.column.field);

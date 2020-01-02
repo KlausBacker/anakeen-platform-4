@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="https://platform.anakeen.com/4/schemas/compose-credentials/1.0"
+        elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="credentials">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="credential" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:attribute type="xs:string" name="url" use="required"/>
+                        <xs:attribute type="xs:string" name="authUser" use="required"/>
+                        <xs:attribute type="xs:string" name="authPassword" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

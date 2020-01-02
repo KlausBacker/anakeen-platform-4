@@ -21,4 +21,25 @@
             </sql-assert-not-empty>
         </check>
     </action>
+    <action id="defaultParameter" label="Delete default values for smart parameters">
+        <condition>
+            <sql-assert-not-empty label="verify default paramaters values exists">
+                select a1.id, a2.type, docfam.defaultvalues->>a1.id as defval from docfam, docattr a1, docattr a2 where
+                a1.docid= docfam.id and a1.usefor = 'Q' and a1.frameid = a2.id and docfam.defaultvalues->>a1.id is not
+                null and a2.type !~ 'array';
+            </sql-assert-not-empty>
+        </condition>
+        <process>
+            <php label="Delete default parameters"
+                 callable="Anakeen\Database\Migration\DefaultParameterValues::removeValues()"/>
+        </process>
+        <check>
+            <sql-assert-empty label="verify default paramaters values not exists anymore">
+                select a1.id, a2.type, docfam.defaultvalues->>a1.id as defval from docfam, docattr a1, docattr a2 where
+                a1.docid= docfam.id and a1.usefor = 'Q' and a1.frameid = a2.id and docfam.defaultvalues->>a1.id is not
+                null and a2.type !~ 'array';
+            </sql-assert-empty>
+        </check>
+    </action>
+
 </migration>

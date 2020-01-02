@@ -35,6 +35,10 @@ class ErrorCodeAUTH
      */
     const AUTH0013 = 'Cannot find user "%s"';
     /**
+     * @errorCode when try to recover password - need user to has email
+     */
+    const AUTH0014 = 'User "%s" has no mail address';
+    /**
      * @errorCode mistmatch between login and token
      */
     const AUTH0020 = 'Invalid access.';

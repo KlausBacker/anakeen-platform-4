@@ -18,7 +18,8 @@ exports.sfType = {
   fieldimage: "image",
   fielddocid: "docid",
   fieldaccount: "account",
-  fieldxml: "xml"
+  fieldxml: "xml",
+  fieldjson: "json"
 };
 
 exports.po_langs = ["fr", "en"];

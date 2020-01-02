@@ -12,6 +12,9 @@
     <!-- compose -->
     <public uri="./xsd/compose/1.0/compose.xsd" publicId="https://platform.anakeen.com/4/schemas/compose/1.0"/>
     <uri uri="./xsd/compose/1.0/compose.xsd" name="https://platform.anakeen.com/4/schemas/compose/1.0" />
+    <!-- compose.credentials -->
+    <public uri="./xsd/compose-credentials/1.0/config.xsd" publicId="https://platform.anakeen.com/4/schemas/compose-credentials/1.0"/>
+    <uri uri="./xsd/compose-credentials/1.0/config.xsd" name="https://platform.anakeen.com/4/schemas/compose-credentials/1.0" />
     <!-- compose.lock -->
     <public uri="./xsd/compose/1.0/compose-lock.xsd" publicId="https://platform.anakeen.com/4/schemas/compose-lock/1.0"/>
     <uri uri="./xsd/compose/1.0/compose-lock.xsd" name="https://platform.anakeen.com/4/schemas/compose-lock/1.0" />

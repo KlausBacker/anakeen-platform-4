@@ -8,6 +8,10 @@ $menu-before-width: 1rem;
   border-radius: 0;
   flex-grow: 1;
 
+  .k-state-disabled[data-original-title] {
+    /* To activate tooltip on over */
+    pointer-events: initial;
+  }
   .menu__element.k-menu-horizontal {
     padding: 0.5rem 0 0.5rem 0;
   }

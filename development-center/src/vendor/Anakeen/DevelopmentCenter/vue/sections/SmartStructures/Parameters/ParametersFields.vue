@@ -3,11 +3,13 @@
     ref="paramList"
     :items="getItems(this.columnSizeTab)"
     :url="url"
-    :getValues="getValues"
-    :columnTemplate="columnTemplate"
+    :get-values="getValues"
+    :column-template="columnTemplate"
     :messages="messages"
-    :inlineFilters="true"
-  ></ss-treelist>
+    column-list-key="paramfields"
+    :ss-name="ssName"
+    :inline-filters="true"
+  />
 </template>
 <script>
 import { Vue } from "vue-property-decorator";
@@ -20,14 +22,8 @@ export default {
   props: ["ssName"],
   data() {
     return {
-      columnSizeTab: window.localStorage.getItem(
-        "param-list-column-size-conf-" + this.ssName
-      )
-        ? JSON.parse(
-            window.localStorage.getItem(
-              "param-list-column-size-conf-" + this.ssName
-            )
-          )
+      columnSizeTab: window.localStorage.getItem("param-list-column-size-conf-" + this.ssName)
+        ? JSON.parse(window.localStorage.getItem("param-list-column-size-conf-" + this.ssName))
         : [],
       items: [
         { name: "id", label: "Identification", hidden: false },
@@ -76,15 +72,10 @@ export default {
           if (dataItem[colId] === null || dataItem[colId] === undefined) {
             return "";
           }
-          if (
-            dataItem[colId] &&
-            (colId === "optionValues" || colId === "properties")
-          ) {
+          if (dataItem[colId] && (colId === "optionValues" || colId === "properties")) {
             let str = "";
             Object.keys(dataItem[colId].toJSON()).forEach(item => {
-              str += `<li><span><b>${item}</b></span> : <span>${
-                dataItem[colId][item]
-              }</span></li>`;
+              str += `<li><span><b>${item}</b></span> : <span>${dataItem[colId][item]}</span></li>`;
             });
             return str;
           }
@@ -107,14 +98,12 @@ export default {
   },
   mounted() {
     if (this.$refs.paramList) {
-      this.$refs.paramList.$refs.ssTreelist
-        .kendoWidget()
-        .bind("columnResize", e => {
-          window.localStorage.setItem(
-            "param-list-column-size-conf-" + this.ssName,
-            JSON.stringify(this.$refs.paramList.onColumnResize(e))
-          );
-        });
+      this.$refs.paramList.$refs.ssTreelist.kendoWidget().bind("columnResize", e => {
+        window.localStorage.setItem(
+          "param-list-column-size-conf-" + this.ssName,
+          JSON.stringify(this.$refs.paramList.onColumnResize(e))
+        );
+      });
     }
   }
 };
