@@ -3,7 +3,6 @@
 
 namespace Control\Internal;
 
-
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\ConsoleSectionOutput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -16,7 +15,7 @@ class JobLog
     /** @var ConsoleSectionOutput[] */
     protected static $outputSection = null;
 
-    protected static function setKey($moduleName, $phaseName, $key, $value, $adding = false, $keyLog="")
+    protected static function setKey($moduleName, $phaseName, $key, $value, $adding = false, $keyLog = "")
     {
         $data = ModuleJob::getJobData();
 
@@ -55,10 +54,10 @@ class JobLog
         }
 
         if ($key === "log" && $keyLog) {
-            $key=$keyLog;
+            $key = $keyLog;
         }
-            $msg = ["module" => $moduleName, "phase" => $phaseName, "task" => $key, "value" => $value, "date" => $now];
-            $data["log"][] = $msg;
+        $msg = ["module" => $moduleName, "phase" => $phaseName, "task" => $key, "value" => $value, "date" => $now];
+        $data["log"][] = $msg;
 
         ModuleJob::recordJobTask($data);
     }
@@ -198,7 +197,7 @@ class JobLog
         self::setKey($moduleName, $phaseName, "warning", $status);
     }
 
-    public static function addLog($moduleName, $phaseName, $msg, $keyLog="")
+    public static function addLog($moduleName, $phaseName, $msg, $keyLog = "")
     {
         self::setKey($moduleName, $phaseName, "log", $msg, true, $keyLog);
     }
@@ -217,26 +216,37 @@ class JobLog
     {
         self::setKey("", "", "log", []);
     }
+
+    /**
+     * @return string the last error message (empty if no errors)
+     * @throws \Control\Exception\RuntimeException
+     */
     public static function getLastError()
     {
         $data = ModuleJob::getJobData();
-        $error= self::getError($data);
-        return $error;
+        if ($data === null) {
+            return "";
+        }
+        return self::getError($data);
     }
 
-    protected static function getError(array $data) {
+    /**
+     * @param array $data
+     * @return string
+     */
+    protected static function getError(array $data)
+    {
         if (!empty($data["error"])) {
             return $data["error"];
         }
         foreach ($data as $datum) {
             if (is_array($datum)) {
-                $error=self::getError($datum);
+                $error = self::getError($datum);
                 if ($error) {
                     return $error;
                 }
             }
         }
-}
-
-
+        return "";
+    }
 }
