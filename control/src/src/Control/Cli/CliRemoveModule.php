@@ -6,11 +6,10 @@ use Control\Internal\Context;
 use Control\Internal\LibSystem;
 use Control\Internal\ModuleJob;
 use Control\Internal\ModuleManager;
-use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
@@ -64,9 +63,8 @@ class CliRemoveModule extends CliCommand
         }
         $module->recordJob();
         LibSystem::purgeTmpFiles();
-        $output->writeln("Job Recorded");
-
-
+        /** @var  ConsoleOutput $output */
+        ModuleJob::waitRunning($output);
+        $output->writeln("Deletion complete.");
     }
-
 }

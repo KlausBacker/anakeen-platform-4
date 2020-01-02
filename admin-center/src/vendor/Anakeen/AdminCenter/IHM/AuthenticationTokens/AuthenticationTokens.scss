@@ -38,6 +38,9 @@
       .k-filtercell .k-autocomplete {
         width: 100%;
       }
+      .k-grid-content {
+        height: auto ! important;
+      }
       .cell--token {
         font-family: monospace;
       }

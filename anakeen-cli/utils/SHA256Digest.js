@@ -1,12 +1,18 @@
 const fs = require("fs");
 const crypto = require("crypto");
+const util = require("util");
+const access = util.promisify(fs.access);
 
 class SHA256Digest {
-  static async file(filename) {
+  static async hash(filename) {
     const hash = crypto.createHash("sha256");
+
+    //Test if file exist
+    await access(filename);
+
     const inputStream = fs.createReadStream(filename);
 
-    return await new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       inputStream.on("data", chunk => {
         hash.update(chunk);
       });

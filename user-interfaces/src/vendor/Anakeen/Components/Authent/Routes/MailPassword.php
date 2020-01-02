@@ -10,6 +10,7 @@ use Anakeen\Core\SEManager;
 use Anakeen\Router\Exception;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Core\Utils\Gettext;
+use SmartStructure\Iuser;
 
 /**
  * Class MailPassword
@@ -61,6 +62,7 @@ class MailPassword
         if ($user->isAffected()) {
             \Anakeen\Core\ContextManager::initContext($user, \Anakeen\Core\Internal\AuthenticatorManager::$session);
 
+            /** @var Iuser $userDocument */
             $userDocument = SEManager::getDocument($user->fid);
             $mailTemplateId = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "AUTHENT_MAILASKPWD");
             /**
@@ -71,6 +73,14 @@ class MailPassword
                 throw new Exception('AUTH0010', $mailTemplateId);
             }
 
+            if (! $userDocument->getMail()) {
+                $e = new Exception('AUTH0014', $userDocument->getTitle());
+                $e->setUserMessage(sprintf(
+                    Gettext::___("User \"%s\" has no email address. Is is mandatory to apply forget password process", "authent"),
+                    $userDocument->getTitle()
+                ));
+                throw $e;
+            }
 
             $description = "Reset password";
             $context = array(

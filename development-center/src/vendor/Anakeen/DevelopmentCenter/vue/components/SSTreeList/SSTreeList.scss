@@ -94,9 +94,8 @@
     .overrided:after {
       font-family: "WebComponentsIcons";
       content: '\e905';
-      font-size: 18px;
       margin-left: .6rem;
-      color: red;
+      color: var(--primary);
     }
 
     .is-overrided {
