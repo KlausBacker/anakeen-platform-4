@@ -43,6 +43,10 @@ class DocumentApiData
      */
     public $iconSize = 32;
     protected $documentId;
+    /**
+     * @var \Anakeen\Core\Internal\SmartElement
+     */
+    protected $localSe;
 
     /**
      * DocumentData constructor.
@@ -340,7 +344,14 @@ class DocumentApiData
                 $defaultValue = $this->_document->getFamilyDocument()->getDefValue($attribute->id);
             }
             if ($defaultValue) {
-                $defaultValue = $this->_document->applyMethod($defaultValue, $defaultValue);
+                if ($this->_document->doctype === "C") {
+                    if (!$this->localSe || $this->localSe->fromid !== $this->_document->id) {
+                        $this->localSe = SEManager::initializeDocument($this->_document->id);
+                    }
+                    $defaultValue = $this->localSe->applyMethod($defaultValue, $defaultValue);
+                } else {
+                    $defaultValue = $this->_document->applyMethod($defaultValue, $defaultValue);
+                }
             }
 
             $formatDefaultValue = $this->documentFormater->getFormatCollection()->getInfo($attribute, $defaultValue, $this->_document);
