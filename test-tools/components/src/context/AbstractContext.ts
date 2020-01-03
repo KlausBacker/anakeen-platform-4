@@ -40,28 +40,22 @@ export default abstract class AbstractContext {
   }
 
   // eslint-disable-next-line no-unused-vars
-  public async getSmartElement(seName: string | ISmartElementProps, seValues?: ISmartElementValues) {
-    if (typeof seName === "string") {
-      const response = await this.fetchApi(
-        `/api/v2/smart-elements/${seName}.json?fields=document.properties.all,document.attributes.all`
-      );
-      const responseJson = await response.json();
+  public async getSmartElement(seName: string) {
+    const response = await this.fetchApi(
+      `/api/v2/smart-elements/${seName}.json?fields=document.properties.all,document.attributes.all`
+    );
+    const responseJson = await response.json();
 
-      if (responseJson.success && responseJson.data && responseJson.data.document) {
-        return new SmartElement(responseJson.data.document, (url, ...args) => this.fetchApi(url, ...args));
-      } else {
-        let msg: string = "unknown error";
-        if (responseJson.success === false && !seValues) {
-          msg = responseJson.message;
-          throw new Error(`unable to get SE ${seName}: ${msg}`);
-        }
-        if (responseJson.success === false && seValues) {
-          msg = responseJson.message;
-          throw new Error(`unable to create SE ${seName}: ${msg}`);
-        }
-
-        throw new Error(responseJson);
+    if (responseJson.success && responseJson.data && responseJson.data.document) {
+      return new SmartElement(responseJson.data.document, (url, ...args) => this.fetchApi(url, ...args));
+    } else {
+      let msg: string = "unknown error";
+      if (responseJson.success === false) {
+        msg = responseJson.message;
+        throw new Error(`unable to get SE ${seName}: ${msg}`);
       }
+
+      throw new Error(responseJson);
     }
   }
 

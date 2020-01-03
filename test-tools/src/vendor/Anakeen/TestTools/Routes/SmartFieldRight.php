@@ -79,7 +79,8 @@ class SmartFieldRight
 
         switch ($this->acl) {
             case 'none':
-                if (FieldAccessManager::hasReadAccess($this->smartElement, $smartfieldAttr) === true) {
+                if (FieldAccessManager::hasReadAccess($this->smartElement, $smartfieldAttr) === true ||
+                    FieldAccessManager::hasWriteAccess($this->smartElement, $smartfieldAttr) === true) {
                     $exception = new Exception("ANKTEST011", 'none');
                     $exception->setData([
                         "field" => $smartfieldAttr->id,

@@ -132,11 +132,32 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
     const target: SmartElement = this._obj;
     const options = getCommonOptions(this);
     const value = await target.getValue(smartField, options);
+    let rawValue;
 
     const expectedMessage = 'expected value for "' + smartField + '" is #{exp} but was #{act}';
-    const notExpectedMessage = "expected value is not #{exp} but was #{act}";
+    const notExpectedMessage = 'expected value for "' + smartField + '" is not #{exp} but was #{act}';
 
-    this.assert(value.value === expectedValue, expectedMessage, notExpectedMessage, expectedValue, value.value);
+    if (Array.isArray(value)) {
+      rawValue = value.map(v => {
+        if (Array.isArray(v)) {
+          return value.map(v => {
+            return v.value;
+          });
+        } else {
+          return v.value;
+        }
+      });
+      this.assert(
+        rawValue.toString() === expectedValue.toString(),
+        expectedMessage,
+        notExpectedMessage,
+        expectedValue,
+        rawValue
+      );
+    } else {
+      rawValue = value.value;
+      this.assert(rawValue === expectedValue, expectedMessage, notExpectedMessage, expectedValue, rawValue);
+    }
   });
 
   chai.Assertion.addMethod("values", async function(this: Chai.AssertionStatic, smartFieldValues: object) {
@@ -198,7 +219,7 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
   //   );
   // });
 
-  chai.Assertion.addMethod("canSave", async function(this: Chai.AssertionStatic, values: ISmartElementValues) {
+  chai.Assertion.addMethod("canUpdateValues", async function(this: Chai.AssertionStatic, values: ISmartElementValues) {
     const target: SmartElement = this._obj;
     let success = false;
     let error = "";
@@ -215,7 +236,7 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
     this.assert(success, expectedMessage, notExpectedMessage, true, error);
   });
 
-  chai.Assertion.addMethod("canChangeState", async function(
+  chai.Assertion.addMethod("canExecuteTransition", async function(
     this: Chai.AssertionStatic,
     transition: string,
     askValues?: object
@@ -224,7 +245,7 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
     let success = false;
     let error = "";
     try {
-      await target.changeState({ transition, askValues }, { dryRun: true });
+      await target.executeTransition({ transition, askValues }, { dryRun: true });
       success = true;
     } catch (e) {
       error = e.message;
@@ -238,13 +259,13 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
 
   chai.Assertion.addMethod("viewControl", async function(
     this: Chai.AssertionStatic,
-    smartElementLogicalName: string | SmartElement
+    cvLogicalName: string | SmartElement
   ) {
     const target: SmartElement = this._obj;
     const options = getCommonOptions(this);
     const cvId = await target.getPropertyValue("viewController", options);
 
-    const baseUrl = `/api/v2/smart-elements/${smartElementLogicalName}.json`;
+    const baseUrl = `/api/v2/smart-elements/${cvLogicalName}.json`;
     const searchParameters = searchParams(options);
     const url = `${baseUrl}?${searchParameters}`;
 
@@ -289,14 +310,14 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
 
   chai.Assertion.addMethod("fieldAccess", async function(
     this: Chai.AssertionStatic,
-    smartElementLogicalName: string | SmartElement
+    fallLogicalName: string | SmartElement
   ) {
     const target: SmartElement = this._obj;
     const security = await target.getPropertyValue("security");
     const fallId = security.fieldAccess ? security.fieldAccess.id : -1;
 
     const options = getCommonOptions(this);
-    const baseUrl = `/api/v2/smart-elements/${smartElementLogicalName}.json`;
+    const baseUrl = `/api/v2/smart-elements/${fallLogicalName}.json`;
     const searchParameters = searchParams(options);
     const url = `${baseUrl}?${searchParameters}`;
 

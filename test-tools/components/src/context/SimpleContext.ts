@@ -65,11 +65,8 @@ export default class SimpleContext extends AbstractContext {
         return new SmartElement(responseJson.data.document, (url, ...args) => this.fetchApi(url, ...args));
       } else {
         let msg: string = "unknown error";
-        if (responseJson.success === false && !seValues) {
-          msg = responseJson.message;
-          throw new Error(`unable to get SE ${seName}: ${msg}`);
-        }
-        if (responseJson.success === false && seValues) {
+
+        if (responseJson.success === false) {
           msg = responseJson.message;
           throw new Error(`unable to create SE ${seName}: ${msg}`);
         }
