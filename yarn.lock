@@ -1036,21 +1036,7 @@
   resolved "https://registry.yarnpkg.com/@types/navigo/-/navigo-7.0.1.tgz#63d1bd0f898f87f645d16f230e9350930ec32160"
   integrity sha512-auXcoS/pc39onGyf6fr2V3J3BEHUqH0a1Sa1psuGrVkCat+2D592DA7hdXY73lwCUyhGPzkf0lrcE5jH0OFeJg==
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 "@types/node@*":
-=======
-"@types/node-fetch@^2.5.2":
-  version "2.5.2"
-  resolved "https://registry.yarnpkg.com/@types/node-fetch/-/node-fetch-2.5.2.tgz#76906dea5b3d6901e50e63e15249c9bcd6e9676e"
-  integrity sha512-djYYKmdNRSBtL1x4CiE9UJb9yZhwtI1VC+UxZD0psNznrUj80ywsxKlEGAE+QL1qvLjPbfb24VosjkYM6W4RSQ==
-  dependencies:
-    "@types/node" "*"
-
-=======
->>>>>>> fix(test-tools): revert yarn.lock
-"@types/node@*", "@types/node@^12.12.14":
->>>>>>> fix(test-tools): add haveProfile assertion
   version "12.12.14"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.12.14.tgz#1c1d6e3c75dba466e0326948d56e8bd72a1903d2"
   integrity sha512-u/SJDyXwuihpwjXy7hOOghagLEV1KdAST6syfnOk6QZAMzZuWZqXy5aYYZbh8Jdpd4escVFP0MvftHNDb9pruA==
