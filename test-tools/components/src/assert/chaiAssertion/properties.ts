@@ -100,6 +100,17 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
     this.assert(locked !== 0, expectedMessage, notExpectedMessage, true, locked);
   });
 
+  chai.Assertion.addMethod("title", async function(this: Chai.AssertionStatic, expectedTitle: string) {
+    const target: SmartElement = this._obj;
+    const options = getCommonOptions(this);
+    const title = await target.getPropertyValue("title", options);
+
+    const expectedMessage = "expected title is #{exp} but was #{act}";
+    const notExpectedMessage = "expected title is not #{exp} but was #{act}";
+
+    this.assert(title === expectedTitle, expectedMessage, notExpectedMessage, expectedTitle, title);
+  });
+
   chai.Assertion.addMethod("state", async function(this: Chai.AssertionStatic, stateReference: string) {
     const target: SmartElement = this._obj;
     const options = getCommonOptions(this);
@@ -122,7 +133,7 @@ export default function chaiPropertyPlugin(chai: Chai.ChaiStatic) {
     const options = getCommonOptions(this);
     const value = await target.getValue(smartField, options);
 
-    const expectedMessage = "expected value is #{exp} but was #{act}";
+    const expectedMessage = 'expected value for "' + smartField + '" is #{exp} but was #{act}';
     const notExpectedMessage = "expected value is not #{exp} but was #{act}";
 
     this.assert(value.value === expectedValue, expectedMessage, notExpectedMessage, expectedValue, value.value);
