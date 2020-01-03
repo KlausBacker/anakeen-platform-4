@@ -3,14 +3,16 @@ const webpack = require("webpack");
 const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 const { lib } = require("@anakeen/webpack-conf");
 
-const { vueLoader, typeScriptLoader, addKendoGlobal, addJqueryGlobal, addVueGlobal } = require("@anakeen/webpack-conf/parts");
+const {
+  vueLoader,
+  typeScriptLoader,
+  addKendoGlobal,
+  addJqueryGlobal,
+  addVueGlobal
+} = require("@anakeen/webpack-conf/parts");
 
 const BASE_DIR = path.resolve(__dirname, "../");
 const PUBLIC_PATH = path.join(BASE_DIR, "src/public");
-
-const modeDev = {
-  mode: process.env.dev === "DEV" ? "dev" : "prod"
-};
 
 const conf = {
   moduleName: "admin",
@@ -69,5 +71,11 @@ const conf = {
 };
 
 module.exports = () => {
-  return lib({ ...conf, ...modeDev });
+  if (process.env.conf === "PROD") {
+    return lib({ ...conf, ...{ mode: "prod" } });
+  }
+  if (process.env.conf === "DEV") {
+    return lib({ ...conf, ...{ mode: "dev" } });
+  }
+  return [lib({ ...conf, ...{ mode: "prod" } }), lib({ ...conf, ...{ mode: "dev" } })];
 };
