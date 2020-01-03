@@ -65,7 +65,6 @@
     "rollup-plugin-postcss": "^2.0.3",
     "rollup-plugin-progress": "^1.1.1",
     "rollup-plugin-scss": "^2.1.0",
-    "rollup-plugin-string": "^3.0.0",
     "rollup-plugin-typescript2": "^0.25.3",
     "rollup-plugin-vue": "^5.1.4",
     "v-jsoneditor": "^1.2.3",

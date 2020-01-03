@@ -11,7 +11,7 @@
     "lint": "npx eslint ./",
     "prettier": "prettier --check ./src/**/*.{js,ts}",
     "prettier:fix": "prettier --write ./src/**/*.{js,ts}",
-    "build": "npx rollup -c ./rollup/rollup.config.js"
+    "build": "CLEAN=true npx rollup -c ./rollup/rollup.config.js"
   },
   "files": [
     "lib",

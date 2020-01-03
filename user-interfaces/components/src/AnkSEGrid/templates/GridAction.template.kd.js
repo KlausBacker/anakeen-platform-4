@@ -1,4 +1,4 @@
-# if (!iconClass && !text) {#
+export default `# if (!iconClass && !text) {#
 <a role="button" href="##" class="k-button k-grid-#: name#">
     #: name#
 </a>
@@ -15,4 +15,4 @@
     <span class="#: iconClass#"></span>
     <span class="action-label">#: text#</span>
 </a>
-# } #
+# } #`;

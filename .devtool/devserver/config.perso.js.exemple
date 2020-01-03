@@ -1,42 +1,33 @@
 const path = require("path");
-
 const BASE_DIR = path.resolve(__dirname, "../../");
 
 module.exports.getConfig = () => {
-  const configAdmin = require(path.resolve(BASE_DIR, "admin-center/webpack/index"))();
+  //const configAdmin = require(path.resolve(BASE_DIR, "admin-center/webpack/index"))();
   const configBusinessApp = require(path.resolve(BASE_DIR, "business-app/webpack/index"))();
-  const configDevCenter = require(path.resolve(BASE_DIR, "development-center/webpack/index"))();
-  const configHub = require(path.resolve(BASE_DIR, 'hub-station/webpack/index'))();
-  const configHubVendor = require(path.resolve(BASE_DIR, 'hub-station/webpack/hubVendor'))();
-  const configUISmartElement = require(path.resolve(BASE_DIR, "user-interfaces/webpackConfig/smartElement"))();
-  const configUISmartStructure = require(path.resolve(BASE_DIR, "user-interfaces/webpackConfig/smartStructures"))();
-  const configTestUi = require(path.resolve(BASE_DIR, "user-interfaces/webpackConfig/test"))();
+  //const configDevCenter = require(path.resolve(BASE_DIR, "development-center/webpack/index"))();
+  //const configHub = require(path.resolve(BASE_DIR, "hub-station/webpack/index"))();
+  //const configLogin = require(path.resolve(BASE_DIR, "user-interfaces/webpackConfig/login"))();
+  //const configUISmartElement = require(path.resolve(BASE_DIR, "user-interfaces/webpackConfig/smartElement"))();
+  //const configUISmartStructure = require(path.resolve(BASE_DIR, "user-interfaces/webpackConfig/smartStructures"))();
+  //const configUICSS = require(path.resolve(BASE_DIR, "user-interfaces/webpackConfig/buildCss"))();
+  //const configTestUi = require(path.resolve(BASE_DIR, "user-interfaces/webpackConfig/test"))();
   return [
-    ...configHub
+    //...configAdmin
+     ...configBusinessApp,
+    // ...configDevCenter,
+    //...configHub,
+    //...configLogin
+    //...configUICSS,
+    //...configTestUi
   ];
 };
 
-module.exports.getDllConfig = () => {
-  const configHubVendor = require(path.resolve(BASE_DIR, "hub-station/webpack/hubVendor"))();
-  const configComponent = require(path.resolve(BASE_DIR, "user-interfaces/components/webpack/"))();
+module.exports.getRollupConfig = () => {
   return [
-    {
-      webpack: configHubVendor,
-      context: path.resolve(BASE_DIR, "hub-station/"),
-      path: {
-        url: /Anakeen\/hubVendor\/dev\/hubVendor\.js$/,
-        local: path.resolve(BASE_DIR, "hub-station/src/public/Anakeen/hubVendor/dev/hubVendor.js")
-      }
-    },
-    {
-      webpack: configComponent
-    }
+    require(path.resolve(BASE_DIR, "user-interfaces/components/rollup/rollup.config.js")),
+    //require(path.resolve(BASE_DIR, "internal-components/rollup/rollup.config.js")),
+    //require(path.resolve(BASE_DIR, "hub-station/components/rollup/rollup.config.js"))
   ];
-};
-
-module.exports.getDeps = () => {
-  return {
-  }
 };
 
 // choose your sourcemap favorite flavour : https://webpack.js.org/configuration/devtool/
@@ -45,4 +36,3 @@ module.exports.devtool = "eval";
 module.exports.platformUrl = "localhost:8080";
 
 module.exports.devServerPort = "8888";
-
