@@ -3,7 +3,9 @@
     <requires>
     </requires>
     <post-install>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/TestTools/Accounts/110-AnakeenTestToolsRoles.xml"/>
     </post-install>
     <post-upgrade>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/TestTools/Accounts/110-AnakeenTestToolsRoles.xml"/>
     </post-upgrade>
 </module>

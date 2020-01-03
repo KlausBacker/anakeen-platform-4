@@ -28,10 +28,13 @@
   "author": "Anakeen",
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
+    "@types/chai": "^4.2.3",
+    "base-64": "^0.1.0",
     "chai": "^4.2.0",
     "mocha": "^6.2.2",
     "node-fetch": "^2.6.0",
-    "typescript": "^3.7.4"
+    "typescript": "^3.7.4",
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "@anakeen/anakeen-cli": "1.2.0",

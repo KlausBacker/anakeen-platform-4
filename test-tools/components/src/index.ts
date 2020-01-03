@@ -1,12 +1,7 @@
 const packageInfo = require("../../package.json");
 
-import Accounts from "./Utils/Accounts";
-import SmartElements from "./Utils/SmartElements";
-
-export { Accounts, SmartElements };
-
-export default {
-  Accounts,
-  SmartElements,
-  version: packageInfo.version
-};
+export { default as Context } from "./context/Context";
+export { default as Account } from "./context/utils/Account";
+export { default as SmartElement } from "./context/utils/SmartElement";
+export { default as AnakeenAssertion } from "./assert/chaiAssertion";
+export const version: string = packageInfo.version;

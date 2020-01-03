@@ -5,7 +5,7 @@
             <accounts:displayName>Bill Reader</accounts:displayName>
         </accounts:role>
         <accounts:role name="bill_writer">
-            <accounts:displayName>Bill Reader</accounts:displayName>
+            <accounts:displayName>Bill Writer</accounts:displayName>
         </accounts:role>
     </accounts:roles>
 </accounts:accounts>

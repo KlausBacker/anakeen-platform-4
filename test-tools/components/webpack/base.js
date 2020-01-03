@@ -19,13 +19,7 @@ module.exports = config => ({
     rules: [
       {
         test: /\.ts$/,
-        loader: "ts-loader",
-        options: {
-          compilerOptions: {
-            declaration: true,
-            declarationDir: "./lib/types"
-          }
-        }
+        loader: "ts-loader"
       }
     ]
   },
