@@ -8,19 +8,16 @@ const config = require("./config.perso.js");
 const merge = require("webpack-merge");
 
 config.getRollupConfig().forEach(currentElement => {
-  const compiler = rollup.watch(currentElement);
+  console.log(currentElement);
+  const compiler = rollup.watch(currentElement.default);
+  compiler.on('event', event => {
+    console.log("ROLLUP ", event);
+  });
 });
 
 config.getConfig().forEach(currentConfig => {
   if (currentConfig.mode !== "development") {
     return;
-  }
-  if (config.getDeps) {
-    const alias = {
-      alias: config.getDeps()
-    };
-    currentConfig.resolve = currentConfig.resolve || {};
-    currentConfig.resolve = merge(currentConfig.resolve, alias);
   }
   if (config.devtool) {
     currentConfig.devtool = config.devtool;
