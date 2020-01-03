@@ -2,7 +2,7 @@ const path = require("path");
 const BASE_DIR = path.resolve(__dirname, "../../");
 
 module.exports.getConfig = () => {
-  //const configAdmin = require(path.resolve(BASE_DIR, "admin-center/webpack/index"))();
+  //const configAdmin = require(path.resolve(BASE_DIR, "admin-center/webpack/config"))();
   const configBusinessApp = require(path.resolve(BASE_DIR, "business-app/webpack/index"))();
   //const configDevCenter = require(path.resolve(BASE_DIR, "development-center/webpack/index"))();
   //const configHub = require(path.resolve(BASE_DIR, "hub-station/webpack/index"))();
