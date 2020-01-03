@@ -43,39 +43,35 @@ export default class SimpleContext extends AbstractContext {
     }
   }
 
-  public async getSmartElement(seName: string | ISmartElementProps, seValues?: ISmartElementValues) {
-    if (typeof seName === "string") {
-      return super.getSmartElement(seName);
-    } else {
-      // Creation or get (UPSERT mode)
-      const ssName = seName.smartStructure;
-      const requestData = { document: { attributes: {}, options: { tag: "" } } };
-      if (ssName) {
-        const url = SimpleContext.CREATION_API.replace(/%s/g, ssName);
-        if (seValues && typeof seValues === "object") {
-          requestData.document.attributes = seValues;
+  public async createSmartElement(seName: ISmartElementProps, seValues?: ISmartElementValues) {
+    // Creation
+    const ssName = seName.smartStructure;
+    const requestData = { document: { attributes: {}, options: { tag: "" } } };
+    if (ssName) {
+      const url = SimpleContext.CREATION_API.replace(/%s/g, ssName);
+      if (seValues && typeof seValues === "object") {
+        requestData.document.attributes = seValues;
+      }
+      requestData.document.options.tag = this.testTagUid;
+      const response = await this.fetchApi(url, {
+        body: JSON.stringify(requestData),
+        headers: {
+          "Content-Type": "application/json"
+        },
+        method: "post"
+      });
+      const responseJson = await response.json();
+      if (responseJson.success && responseJson.data && responseJson.data.document) {
+        return new SmartElement(responseJson.data.document, (url, ...args) => this.fetchApi(url, ...args));
+      } else {
+        let msg: string = "unknown error";
+        if (responseJson.success === false && !seValues) {
+          msg = responseJson.message;
+          throw new Error(`unable to get SE ${seName}: ${msg}`);
         }
-        requestData.document.options.tag = this.testTagUid;
-        const response = await this.fetchApi(url, {
-          body: JSON.stringify(requestData),
-          headers: {
-            "Content-Type": "application/json"
-          },
-          method: "post"
-        });
-        const responseJson = await response.json();
-        if (responseJson.success && responseJson.data && responseJson.data.document) {
-          return new SmartElement(responseJson.data.document, (url, ...args) => this.fetchApi(url, ...args));
-        } else {
-          let msg: string = "unknown error";
-          if (responseJson.success === false && !seValues) {
-            msg = responseJson.message;
-            throw new Error(`unable to get SE ${seName}: ${msg}`);
-          }
-          if (responseJson.success === false && seValues) {
-            msg = responseJson.message;
-            throw new Error(`unable to create SE ${seName}: ${msg}`);
-          }
+        if (responseJson.success === false && seValues) {
+          msg = responseJson.message;
+          throw new Error(`unable to create SE ${seName}: ${msg}`);
         }
       }
     }
@@ -90,6 +86,7 @@ export default class SimpleContext extends AbstractContext {
       method: "delete"
     });
     // const responseJson = await response.json();
-    console.log(JSON.stringify(response, null, 2));
+    // console.log(JSON.stringify(response, null, 2));
+    return response;
   }
 }
