@@ -30,8 +30,7 @@ export default Backbone.View.extend({
   className: "dcpDocument container-fluid",
 
   events: {
-    'click a[href^="#action/"], a[data-action], button[data-action]': "propagateActionClick",
-    'click .dcpDocument__body a[href^="#"]': "handleHashClick"
+    'click a[href^="#action/"], a[data-action], button[data-action]': "propagateActionClick"
   },
 
   /**
@@ -925,22 +924,6 @@ export default Backbone.View.extend({
         return this;
       }
     );
-  },
-
-  handleHashClick: function vDocumenthandleHashClick(event) {
-    var $target = $(event.currentTarget),
-      href = $target.attr("href");
-
-    if (!href || !href.substring || href.substring(0, 7) === "#action") {
-      return;
-    }
-
-    event.preventDefault();
-    if (event.stopPropagation) {
-      event.stopPropagation();
-    }
-
-    window.location.hash = href;
   },
 
   /**

@@ -106,17 +106,6 @@ export default $.widget("dcp.dcpMenu", {
             } else {
               target = $elementA.attr("target") || "_self";
 
-              if ($elementA.attr("href") && $elementA.attr("href").substring(0, 1) === "#") {
-                href =
-                  window.location.protocol +
-                  "//" +
-                  window.location.hostname +
-                  (window.location.port ? ":" + window.location.port : "") +
-                  (window.location.pathname ? window.location.pathname : "/") +
-                  (window.location.search ? window.location.search : "") +
-                  $elementA.attr("href");
-              }
-
               if (target === "_self") {
                 window.location.href = href;
               } else {
