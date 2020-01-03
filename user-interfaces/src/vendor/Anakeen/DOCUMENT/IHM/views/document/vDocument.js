@@ -62,7 +62,7 @@ export default Backbone.View.extend({
    */
   cleanAndRender: function vDocumentCleanAndRender() {
     this.trigger("loaderShow", i18n.___("Rendering", "ddui"), 70);
-    $(".dcpStaticErrorMessage").attr("hidden", true);
+    this.$el.find(".dcpStaticErrorMessage").attr("hidden", true);
     this.$el.show();
     this.$el[0].className = this.$el[0].className.replace(/\bdcpFamily.*\b/g, "");
     this.$el.removeClass("dcpDocument--view").removeClass("dcpDocument--edit");
@@ -246,7 +246,7 @@ export default Backbone.View.extend({
                 currentView.trigger("partRender");
               });
 
-              this.kendoTabs = this.$(".dcpDocument__tabs").kendoTabStrip({
+              this.kendoTabs = this.$el.find(".dcpDocument__tabs").kendoTabStrip({
                 tabPosition: tabPlacement,
                 animation: {
                   open: {
@@ -326,18 +326,16 @@ export default Backbone.View.extend({
                 }
               }
             }
-            $(window.document)
-              .on("drop.v" + this.model.cid + " dragover.v" + this.model.cid, function vDocumentPreventDragDrop(e) {
+            $(window.document).on(
+              "drop.v" + this.model.cid + " dragover.v" + this.model.cid,
+              function vDocumentPreventDragDrop(e) {
                 e.preventDefault();
-              })
-              .on("redrawErrorMessages.v" + this.model.cid, function vDocumentRedrawErrorMessages() {
-                documentView.redrawTootips();
-              });
+              }
+            );
             $(window).on(
               "resize.v" + this.model.cid,
               _.debounce(
                 function vDocumentResizeDebounce() {
-                  documentView.redrawTootips();
                   documentView.scrollTobVisibleTab();
                 },
                 100,
@@ -356,14 +354,13 @@ export default Backbone.View.extend({
             this.$el.show();
 
             if (tabPlacement === "left") {
-              this.$(".dcpTab__content").css(
-                "width",
-                "calc(100% - " + ($(".dcpDocument__tabs__list").width() + 30) + "px)"
-              );
+              this.$el
+                .find(".dcpTab__content")
+                .css("width", "calc(100% - " + ($(".dcpDocument__tabs__list").width() + 30) + "px)");
             }
 
             _.delay(function vDocumentEndLoading() {
-              $(".dcpLoading--init").removeClass("dcpLoading--init");
+              $el.find(".dcpLoading--init").removeClass("dcpLoading--init");
 
               if (documentView.model.getOption("stickyTabs") !== undefined) {
                 var menuHeight = 0;
@@ -402,6 +399,11 @@ export default Backbone.View.extend({
     return this;
   },
 
+  /**
+   * select a tab
+   *
+   * @param tabId
+   */
   selectTab: function VDocumentSelectTab(tabId) {
     if (tabId) {
       if (!Number.isInteger(tabId)) {
@@ -419,6 +421,9 @@ export default Backbone.View.extend({
     }
   },
 
+  /**
+   *
+   */
   resizeForFooter: function vDocumentresizeForFooter() {
     var $footer = this.$el.find(".dcpDocument__footer");
     if ($footer.length > 0) {
@@ -439,6 +444,9 @@ export default Backbone.View.extend({
     }
   },
 
+  /**
+   * Scroll to the top placement
+   */
   scrollTabList: function vDocumentScrollTabList() {
     var kendoTabStrip = this.kendoTabs.data("kendoTabStrip");
 
@@ -520,7 +528,7 @@ export default Backbone.View.extend({
    */
   showHistory: function vDocumentShowHistory(docid) {
     var scope = this;
-    var $target = $('<div class="document-history"/>');
+    var $target = this.$el.find('<div class="document-history"/>');
     this.historyWidget = $target
       .dcpDocumentHistory({
         documentId: docid || this.model.get("properties").get("initid"),
@@ -606,7 +614,7 @@ export default Backbone.View.extend({
   showTransitionGraph: function vDocumentShowtransitionGraph() {
     var documentView = this;
     var transitionGraph = {};
-    var $target = $('<div class="dcpTransitionGraph"/>');
+    var $target = this.$el.find('<div class="dcpTransitionGraph"/>');
     //Init transition model
     transitionGraph.model = new ModelTransitionGraph({
       documentId: this.model.id,
@@ -636,7 +644,7 @@ export default Backbone.View.extend({
    */
   showProperties: function vDocumentShowProperties(docid) {
     var scope = this;
-    var $target = $('<div class="document-properties"/>');
+    var $target = this.$el.find('<div class="document-properties"/>');
 
     this.propertiesWidget = $target
       .dcpDocumentProperties({

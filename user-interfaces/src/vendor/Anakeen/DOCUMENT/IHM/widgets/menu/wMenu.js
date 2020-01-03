@@ -10,7 +10,9 @@ export default $.widget("dcp.dcpMenu", {
   },
 
   kendoMenuWidget: null,
+
   _create: function wMenuCreate() {
+    this.menuUID = _.uniqueId("menuWidget");
     this._tooltips = [];
     this.popupWindows = [];
     if (this.options.menus && this.options.menus.length > 0) {
@@ -274,20 +276,20 @@ export default $.widget("dcp.dcpMenu", {
      * Fix menu when no see header
      */
     const wrapper = this.element.closest("[data-controller]");
-    wrapper.off("scroll.ddui"); // reset
+    wrapper.off("scroll.dcpMenu" + this.menuUID); // reset
     if (this.element.prop("nodeName").toUpperCase() === "NAV") {
-      wrapper.on("scroll.ddui", function wMenuScroll() {
+      wrapper.on("scroll.dcpMenu" + this.menuUID, function wMenuScroll() {
         if (wrapper.scrollTop() > $mainElement.position().top) {
           if (!$mainElement.data("isFixed")) {
             $mainElement.data("isFixed", "1");
             $mainElement.parent().addClass("menu--fixed");
-            $(window.document).trigger("redrawErrorMessages");
+            scopeWidget._trigger("redrawErrorMessages");
           }
         } else {
           if ($mainElement.data("isFixed")) {
             $mainElement.data("isFixed", null);
             $mainElement.parent().removeClass("menu--fixed");
-            $(window.document).trigger("redrawErrorMessages");
+            scopeWidget._trigger("redrawErrorMessages");
           }
         }
       });
@@ -304,8 +306,8 @@ export default $.widget("dcp.dcpMenu", {
         items: [] // List items
       }
     ]);
-    $(window).on("resize.dcpMenu", _.bind(this.inhibitBarMenu, this));
-    $(window).on("resize.dcpMenu", _.debounce(_.bind(this.updateResponsiveMenu, this), 100, false));
+    $(window).on("resize.dcpMenu" + this.menuUID, _.debounce(_.bind(this.inhibitBarMenu, this), 100));
+    $(window).on("resize.dcpMenu" + this.menuUID, _.debounce(_.bind(this.updateResponsiveMenu, this), 100, false));
   },
 
   callMenu: function callMenu($menuItem) {
@@ -616,7 +618,8 @@ export default $.widget("dcp.dcpMenu", {
     if (kendoWidget) {
       kendoWidget.destroy();
     }
-    $(window).off(".dcpMenu");
+    $(window).off(".dcpMenu" + this.menuUID);
+    this.element.closest("[data-controller]").off(".dcpMenu" + this.menuUID);
     _.each(this.popupWindows, function wMenuDestroyPopup(pWindow) {
       pWindow.destroy();
     });
