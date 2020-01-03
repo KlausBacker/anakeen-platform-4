@@ -46,7 +46,11 @@ export default Backbone.View.extend({
     this.listenTo(this.model, "actionAttributeLink", this.doStandardAction);
     this.listenTo(this.model, "loadDocument", this.loadDocument);
     this.listenTo(this.model, "displayCloseDocument", this.displayCloseDocument);
-    this.listenTo(this.model, "redrawErrorMessages", this.redrawTootips);
+    this.listenTo(
+      this.model,
+      "redrawErrorMessages",
+      _.debounce(() => this.redrawTootips(), 250)
+    );
     this.listenTo(this.model, "doSelectTab", this.selectTab);
     this.listenTo(this.model, "doDrawTab", this.drawTab);
     this.listenTo(this.model, "dduiDocumentReady", this.cleanAndRender);
@@ -447,13 +451,12 @@ export default Backbone.View.extend({
    * Change placement of tooltips
    */
   redrawTootips: function vDocumentredrawTootips() {
-    var $tooltips = $(".tooltip:visible");
+    var $tooltips = this.$el.find(".tooltip:visible");
 
-    $tooltips.each(function() {
+    $tooltips.each(function redrawAToolTip() {
       var bTooltip = $(this).data("bs.tooltip");
       if (bTooltip) {
-        bTooltip.hide();
-        bTooltip.show();
+        bTooltip.update();
       }
     });
   },
