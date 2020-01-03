@@ -63,7 +63,6 @@ export default {
       },
       columnTemplate(colId) {
         return dataItem => {
-          console.log(dataItem["id"], colId, dataItem["declaration"], dataItem[colId]);
           if (dataItem[colId] === null || dataItem[colId] === undefined) {
             return "";
           }
@@ -78,7 +77,6 @@ export default {
           let cellData = kendo.htmlEncode(dataItem[colId]);
           if (dataItem["declaration"] === "overrided" && dataItem["overrides"]) {
             Object.keys(dataItem["overrides"].toJSON()).forEach(item => {
-              console.log(dataItem["id"], "over", item, colId);
               if (item === colId) {
                 className = " overrided";
               }
@@ -89,7 +87,6 @@ export default {
             let overrides = dataItem["overrides"].toJSON();
             Object.keys(overrides).forEach(item => {
               cellDataOver.push( `<span>${kendo.htmlEncode(item)}: (before : <i>${kendo.htmlEncode(overrides[item].before)}</i>) => (after: <i>${kendo.htmlEncode(overrides[item].after)})</i></span>`);
-              console.log(dataItem["id"], "over", item, colId);
 
               cellData = cellDataOver.join("<hr/>");
             });
