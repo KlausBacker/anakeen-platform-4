@@ -19,7 +19,7 @@ export default class SmartElement {
     this.fetchApi = fetch;
   }
 
-  public async changeState(stateInfo: StateInfos, options?: ITestOptions): Promise<SmartElement> {
+  public async executeTransition(stateInfo: StateInfos, options?: ITestOptions): Promise<SmartElement> {
     const baseUrl = SmartElement.CHANGE_API.replace(/<docid>/g, this.properties.initid).replace(
       /<transition>/g,
       stateInfo.transition

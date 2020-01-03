@@ -1,5 +1,3 @@
-import fetch from "node-fetch";
-
 interface IRole {
   id: string;
   login: string;

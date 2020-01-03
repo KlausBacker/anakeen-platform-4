@@ -63,7 +63,7 @@ describe("Test basique :", function() {
 
     // 2 - Smart Elements
 
-    seBill = await testContext.getSmartElement(
+    seBill = await testContext.createSmartElement(
       {
         smartStructure: "DEVBILL"
       },
@@ -73,7 +73,7 @@ describe("Test basique :", function() {
       }
     );
 
-    seBilltoBeDeleted = await testContext.getSmartElement(
+    seBilltoBeDeleted = await testContext.createSmartElement(
       {
         smartStructure: "DEVBILL"
       },
@@ -125,9 +125,9 @@ describe("Test basique :", function() {
 
     it("4 : testTransitionStateAssert", async () => {
       await expect(seBill).to.have.state("wfam_bill_e1");
-      await expect(seBill).canChangeState("t_wfam_bill_e1_e2");
+      await expect(seBill).canExecuteTransition("t_wfam_bill_e1_e2");
       await expect(seBill).to.have.state("wfam_bill_e1");
-      await expect(seBill).not.canChangeState("t_wfam_bill_e1_e3");
+      await expect(seBill).not.canExecuteTransition("t_wfam_bill_e1_e3");
       await expect(seBill).to.have.state("wfam_bill_e1");
     });
 
@@ -151,9 +151,9 @@ describe("Test basique :", function() {
       await expect(seDeleted).is.not.alive();
     });
 
-    it("9 : testAssertCanSave", async () => {
+    it("9 : testAssertCanUpdateValues", async () => {
       await expect(seBill).to.have.value("bill_title", "Test State Smart Element Is Updated");
-      await expect(seBill).canSave({ bill_title: "expectedValue" });
+      await expect(seBill).canUpdateValues({ bill_title: "expectedValue" });
       await expect(seBill).to.have.value("bill_title", "Test State Smart Element Is Updated");
     });
   });

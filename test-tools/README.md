@@ -144,7 +144,7 @@ Attribut
 
 Comportement
 
-* canChangeState(transition: string, askValues?: object)
+* canExecuteTransition(transition: string, askValues?: object)
 * canSave(values: ISmartElementValues)
 
 **Descriptions des méthodes :**
@@ -293,12 +293,12 @@ it("value", async () => {
 **Comportement**
 
 
-* `canChangeState(transition: string, askValues?: object)` permet de vérifier qu'un utilisateur peut faire un changement d'état, un revert est automatiquement exécuté pour revenir à l'état d'origine. 2 argument : la référence de la transition et un objet ask facultatif.
+* `canExecuteTransition(transition: string, askValues?: object)` permet de vérifier qu'un utilisateur peut faire un changement d'état, un revert est automatiquement exécuté pour revenir à l'état d'origine. 2 argument : la référence de la transition et un objet ask facultatif.
 Exemple : 
 ```js
 it("testTransitionStateAssert", async () => {
     await expect(seBill).to.have.state("wfam_bill_e1");
-    await expect(seBill).canChangeState("t_wfam_bill_e1_e2");
+    await expect(seBill).canExecuteTransition("t_wfam_bill_e1_e2");
     await expect(seBill).to.have.state("wfam_bill_e1");
 });
 ```

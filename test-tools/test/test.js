@@ -116,9 +116,9 @@ describe("Test d'assertions :", () => {
 
     // it("4 : testTransitionStateAssert", async () => {
     //   await expect(seBill).to.have.state("wfam_bill_e1");
-    //   await expect(seBill).canChangeState("t_wfam_bill_e1_e2");
+    //   await expect(seBill).canExecuteTransition("t_wfam_bill_e1_e2");
     //   await expect(seBill).to.have.state("wfam_bill_e1");
-    //   await expect(seBill).not.canChangeState("t_wfam_bill_e1_e3");
+    //   await expect(seBill).not.canExecuteTransition("t_wfam_bill_e1_e3");
     //   await expect(seBill).to.have.state("wfam_bill_e1");
     // });
 
