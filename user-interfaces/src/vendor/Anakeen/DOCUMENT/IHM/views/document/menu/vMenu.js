@@ -7,6 +7,7 @@ export default Backbone.View.extend({
   className: "dcpDocument",
 
   events: {
+    dcpmenuredrawerrormessages: "redrawErrorMessages",
     dcpmenuexternallinkselected: "externalLinkSelected",
     dcpmenushowmessage: "showMessage",
     dcpmenureload: "reloadDocument"
@@ -60,6 +61,10 @@ export default Backbone.View.extend({
         return this;
       }
     );
+  },
+
+  redrawErrorMessages: function vMenuRedrawMessageError() {
+    this.model.trigger("redrawErrorMessages");
   },
 
   showMessage: function vMenushowMessage(event, options) {
