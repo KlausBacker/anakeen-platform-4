@@ -463,7 +463,7 @@ class Context extends ContextProperties
 
         $wiff = WIFF::getInstance();
 
-        $xml = $wiff->loadContextsDOMDocument();
+        $xml = $wiff->loadContextsDOMDocument(0, false);
         if ($xml === false) {
             $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $wiff->errorMessage);
             return array();

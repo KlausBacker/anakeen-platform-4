@@ -7,7 +7,7 @@
 class DOMDocumentCache extends DOMDocument
 {
     private $originalHashId = null;
-    public function load($filename, $options = 0)
+    public function load($filename, $options = null)
     {
         $ret = parent::load($filename, $options);
         if ($ret === false) {

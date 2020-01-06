@@ -3,6 +3,7 @@
 namespace Anakeen\SmartStructures\Dsearch\Routes;
 
 use Anakeen\Core\SEManager;
+use Anakeen\Exception;
 use Anakeen\Router\ApiV2Response;
 
 class Relations
@@ -28,7 +29,21 @@ class Relations
         $fdoc = SEManager::getFamily($this->_family);
         foreach ($fdoc->getNormalAttributes() as $myAttribute) {
             if ($myAttribute->id == $this->_attrid) {
-                $s = new \Anakeen\Search\Internal\SearchSmartData("", $myAttribute->format);
+                $relationId="";
+                if ($myAttribute->format) {
+                    $relationId=$myAttribute->format;
+                } elseif ($myAttribute->type === "account") {
+                    $relationId="IUSER";
+                    if ($myAttribute->getOption("match") === "group") {
+                        $relationId="IGROUP";
+                    } elseif ($myAttribute->getOption("match") === "role") {
+                        $relationId="ROLE";
+                    }
+                }
+                if (!$relationId) {
+                    throw new Exception("Not valid relation field");
+                }
+                $s = new \Anakeen\Search\Internal\SearchSmartData("", $relationId);
                 if ($slice !== null) {
                     $s->setSlice($slice);
                 }

@@ -28,15 +28,19 @@
   "author": "Anakeen",
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
+    "@types/chai": "^4.2.3",
+    "base-64": "^0.1.0",
     "chai": "^4.2.0",
     "mocha": "^6.2.2",
     "node-fetch": "^2.6.0",
-    "typescript": "^3.7.3"
+    "typescript": "^3.7.4",
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "@anakeen/anakeen-cli": "1.2.0-RC.2019.1.25",
     "@anakeen/webpack-conf": "1.2.1",
-    "@types/node": "^12.12.14",
+    "core-js": "3.6.1",
+    "@types/node": "^13.1.2",
     "fg-loadcss": "^2.1.0",
     "hard-source-webpack-plugin": "^0.13.1",
     "ts-loader": "^6.2.1",

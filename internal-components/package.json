@@ -11,7 +11,7 @@
     "lint": "npx eslint ./",
     "prettier": "prettier --check ./src/**/*.{js,ts}",
     "prettier:fix": "prettier --write ./src/**/*.{js,ts}",
-    "build": "npx rollup -c ./rollup/rollup.config.js"
+    "build": "CLEAN=true npx rollup -c ./rollup/rollup.config.js"
   },
   "files": [
     "lib",
@@ -20,32 +20,31 @@
     "yarn.lock"
   ],
   "devDependencies": {
-    "@anakeen/user-interfaces": "3.0.0-RC.2019.1.25",
     "@anakeen/webpack-conf": "1.2.1",
-    "@progress/kendo-ui": "^2019.3.1113",
-    "jquery": "^3.3.1",
-    "rollup": "^1.27.8",
+    "core-js": "3.6.1",
+    "rollup": "^1.27.14",
     "rollup-plugin-cleaner": "^1.0.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-postcss": "^2.0.3",
     "rollup-plugin-progress": "^1.1.1",
-    "rollup-plugin-scss": "^1.0.2",
+    "rollup-plugin-scss": "^2.1.0",
     "rollup-plugin-string": "^3.0.0",
     "rollup-plugin-typescript2": "^0.25.3",
     "rollup-plugin-vue": "^5.1.4",
     "ts-loader": "^6.2.1",
-    "typescript": "^3.7.3",
-    "vue": "2.6.10",
+    "typescript": "^3.7.4",
     "vue-style-loader": "^4.1.2",
-    "vue-template-compiler": "2.6.10",
+    "vue-template-compiler": "2.6.11",
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
     "@progress/kendo-layout-vue-wrapper": "^2019.3.1023",
+    "@progress/kendo-ui": "2019.3.1113",
     "axios": "^0.19.0",
-    "core-js": "3.4.7",
+    "jquery": "3.4.1",
     "splitpanes": "^1.14.5",
+    "vue": "2.6.11",
     "vue-class-component": "^7.0.2",
     "vue-property-decorator": "^8.3.0"
   }

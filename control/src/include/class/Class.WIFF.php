@@ -89,9 +89,9 @@ class WIFF extends WiffCommon
         $varDir=$wiff_root . WIFF::var_dir;
 
         if (!is_dir($varDir)) {
-            mkdir ($varDir);
+            mkdir($varDir);
         }
-        if (file_exists( $this->params_filepath)) {
+        if (file_exists($this->params_filepath)) {
             $this->update_host = $this->getParam('ac-update-host');
             $this->update_url = $this->getParam('ac-update-path');
             $this->update_file = $this->getParam('ac-update-file');
@@ -287,20 +287,20 @@ EOF;
         $escapedWiffRoot = str_replace(array(
             "\\",
             "\""
-        ) , array(
+        ), array(
             "\\\\",
             "\\\""
-        ) , rtrim(self::getWiffRoot(), '/'));
+        ), rtrim(self::getWiffRoot(), '/'));
         $content = str_replace('{WIFF_ROOT}', $escapedWiffRoot, $template) . "\n";
         
-        @$accessFile = fopen(sprintf('%s/.htaccess', self::getWiffRoot()) , 'w');
+        @$accessFile = fopen(sprintf('%s/.htaccess', self::getWiffRoot()), 'w');
         fwrite($accessFile, $content);
         fclose($accessFile);
     }
     
     public function createHtpasswdFile($login, $password)
     {
-        @$passwordFile = fopen(sprintf('%s/.htpasswd', self::getWiffRoot()) , 'w');
+        @$passwordFile = fopen(sprintf('%s/.htpasswd', self::getWiffRoot()), 'w');
         fwrite($passwordFile, sprintf("%s:{SHA}%s", $login, base64_encode(sha1($password, true))));
         fclose($passwordFile);
     }
@@ -359,7 +359,7 @@ EOF;
             return false;
         }
         
-        $cmd = sprintf('tar -C %s -zxf %s --strip-components 1 2>&1', escapeshellarg($destDir) , escapeshellarg($archiveFile));
+        $cmd = sprintf('tar -C %s -zxf %s --strip-components 1 2>&1', escapeshellarg($destDir), escapeshellarg($archiveFile));
         
         $ret = null;
         exec($cmd, $output, $ret);
@@ -372,7 +372,7 @@ EOF;
     }
     private function checkPreUpdate($archiveFile)
     {
-        require_once (__DIR__.'/Class.String.php');
+        require_once(__DIR__.'/Class.String.php');
         
         $tempDir = Control\Internal\LibSystem::tempnam(null, 'WIFF_checkPreUpdate');
         if ($tempDir === false) {
@@ -408,15 +408,16 @@ EOF;
             $newVersion.= "-" . trim($lines[0]);
         }
         
-        $cmd = sprintf("%s %s %s 2>&1", escapeshellarg($preUpdateFile) , escapeshellarg($this->getWiffRoot()) , escapeshellarg($tempDir));
+        $cmd = sprintf("%s %s %s 2>&1", escapeshellarg($preUpdateFile), escapeshellarg($this->getWiffRoot()), escapeshellarg($tempDir));
         $this->log(LOG_INFO, sprintf("Executing pre-update script with command: %s", $cmd));
         exec($cmd, $output, $ret);
         if ($ret !== 0) {
-            $message = sprintf('<p style="font-weight: bold">Pre-update verification for anakeen-control %s failed with:</p></p><pre style="font-weight: bold; color: red; white-space: pre-wrap;">%s</pre>', $newVersion, join("<br/>", array_map(function ($s)
-            {
-                return htmlspecialchars($s, ENT_QUOTES);
-            }
-            , $output)));
+            $message = sprintf('<p style="font-weight: bold">Pre-update verification for anakeen-control %s failed with:</p></p><pre style="font-weight: bold; color: red; white-space: pre-wrap;">%s</pre>', $newVersion, join("<br/>", array_map(
+                function ($s) {
+                    return htmlspecialchars($s, ENT_QUOTES);
+                },
+                $output
+            )));
             $this->errorMessage = (string)new \String\HTML($message);
             $this->log(LOG_ERR, sprintf("pre-update script '%s' returned with error: %s", $preUpdateFile, $this->errorMessage));
             $this->rm_Rf($tempDir);
@@ -432,7 +433,7 @@ EOF;
      */
     public function getRepoList($checkValidity = true)
     {
-        require_once (__DIR__.'/Class.Repository.php');
+        require_once(__DIR__.'/Class.Repository.php');
         
         $repoList = array();
         
@@ -445,7 +446,6 @@ EOF;
         $repositories = $xml->getElementsByTagName('access');
         
         if ($repositories->length > 0) {
-            
             foreach ($repositories as $repository) {
                 $repoList[] = new Repository($repository, null, array(
                     'checkValidity' => ($checkValidity === true)
@@ -460,7 +460,7 @@ EOF;
      */
     public function getRepo($name)
     {
-        require_once (__DIR__.'/Class.Repository.php');
+        require_once(__DIR__.'/Class.Repository.php');
         
         if ($name == '') {
             $this->errorMessage = "A name must be provided.";
@@ -506,7 +506,7 @@ EOF;
      */
     public function createRepo($name, $description, $protocol, $host, $path, $default, $authenticated, $login, $password, $returnRepoValidation = true)
     {
-        require_once (__DIR__.'/Class.Repository.php');
+        require_once(__DIR__.'/Class.Repository.php');
         
         if ($name == '') {
             $this->errorMessage = "A name must be provided.";
@@ -607,8 +607,18 @@ EOF;
         }
         $description = sprintf("%s://%s/%s", $protocol, $host, $path);
         
-        $ret = $this->createRepo($name, $description, $protocol, $host, $path, /* default */
-        ($default ? 'yes' : 'no') , $authenticated, $authUser, $authPassword, false);
+        $ret = $this->createRepo(
+            $name,
+            $description,
+            $protocol,
+            $host,
+            $path, /* default */
+            ($default ? 'yes' : 'no'),
+            $authenticated,
+            $authUser,
+            $authPassword,
+            false
+        );
         if ($ret === false) {
             return false;
         }
@@ -732,7 +742,7 @@ EOF;
      */
     public function modifyRepo($name, $description, $protocol, $host, $path, $default, $authenticated, $login, $password)
     {
-        require_once (__DIR__.'/Class.Repository.php');
+        require_once(__DIR__.'/Class.Repository.php');
         
         if ($name == '') {
             $this->errorMessage = "A name must be provided.";
@@ -787,7 +797,7 @@ EOF;
      */
     public function deleteRepo($name)
     {
-        require_once (__DIR__.'/Class.Repository.php');
+        require_once(__DIR__.'/Class.Repository.php');
         
         $xml = $this->loadParamsDOMDocument();
         if ($xml === false) {
@@ -845,10 +855,10 @@ EOF;
      * full-blown Context objects (default: bool(false))
      * @return Context[] array of object Context or bool(false) on error
      */
-    public function getContextList( $verifyContextList=true)
+    public function getContextList($verifyContextList = true)
     {
-        require_once (__DIR__.'/Class.Repository.php');
-        require_once (__DIR__.'/Class.Context.php');
+        require_once(__DIR__.'/Class.Repository.php');
+        require_once(__DIR__.'/Class.Context.php');
 
         $contextList = array();
         
@@ -872,7 +882,7 @@ EOF;
                     $repoList[] = new Repository($repository);
                 }
                 
-                $contextClass = new Context($context->getAttribute('name') , $context->getElementsByTagName('description')->item(0)->nodeValue, $context->getAttribute('root') , $repoList, $context->getAttribute('url') , $context->getAttribute('register'));
+                $contextClass = new Context($context->getAttribute('name'), $context->getElementsByTagName('description')->item(0)->nodeValue, $context->getAttribute('root'), $repoList, $context->getAttribute('url'), $context->getAttribute('register'));
                 $contextClass->isValid();
                 if ($verifyContextList && !$contextClass->isWritable()) {
                     $this->errorMessage = sprintf("Apache users does not have write rights for context '%s'.", $contextClass->name);
@@ -885,8 +895,7 @@ EOF;
         }
         
         $collator = new Collator(Locale::getDefault());
-        usort($contextList, function ($context1, $context2) use ($collator)
-        {
+        usort($contextList, function ($context1, $context2) use ($collator) {
             /** @var Collator $collator */
             return $collator->compare($context1->name, $context2->name);
         });
@@ -927,8 +936,8 @@ EOF;
      */
     public function getContext($name, $verifyWriteAccess = true)
     {
-        require_once (__DIR__.'/Class.Repository.php');
-        require_once (__DIR__.'/Class.Context.php');
+        require_once(__DIR__.'/Class.Repository.php');
+        require_once(__DIR__.'/Class.Context.php');
         
         $xml = $this->loadContextsDOMDocument();
         if ($xml === false) {
@@ -942,7 +951,6 @@ EOF;
         $context = $xpath->query($query);
         
         if ($context->length >= 1) {
-            
             $repoList = array();
             /**
              * @var DOMElement $contextNode
@@ -955,7 +963,7 @@ EOF;
             }
             
             $this->errorMessage = null;
-            $context = new Context($contextNode->getAttribute('name') , $contextNode->getElementsByTagName('description')->item(0)->nodeValue, $contextNode->getAttribute('root') , $repoList, $contextNode->getAttribute('url') , $contextNode->getAttribute('register'));
+            $context = new Context($contextNode->getAttribute('name'), $contextNode->getElementsByTagName('description')->item(0)->nodeValue, $contextNode->getAttribute('root'), $repoList, $contextNode->getAttribute('url'), $contextNode->getAttribute('register'));
             
             if (!$context->isWritable() && $verifyWriteAccess === true) {
                 $this->errorMessage = sprintf("Context '%s' configuration is not writable.", $context->name);
@@ -1172,7 +1180,7 @@ EOF;
     public function getParam($paramName, $strict = false, $withHidden = false)
     {
 
-        if (!file_exists( $this->params_filepath)) {
+        if (!file_exists($this->params_filepath)) {
             return false;
         }
         $plist = $this->getParamList($withHidden);
@@ -1292,7 +1300,7 @@ EOF;
             $this->errorMessage = sprintf("Already locked.");
             return false;
         }
-        $fh = fopen(sprintf("%s.lock", $this->contexts_filepath) , "a+");
+        $fh = fopen(sprintf("%s.lock", $this->contexts_filepath), "a+");
         if ($fh === false) {
             $this->errorMessage = sprintf("Could not open '%s' for lock.", sprintf("%s.lock", $this->contexts_filepath));
             return false;
@@ -1389,7 +1397,7 @@ EOF;
             return "concat(" . str_replace(array(
                 "'',",
                 ",''"
-            ) , "", "'" . implode("',\"'\",'", explode("'", $str)) . "'") . ")";
+            ), "", "'" . implode("',\"'\",'", explode("'", $str)) . "'") . ")";
         }
     }
     /**
@@ -1407,7 +1415,7 @@ EOF;
             $path = getcwd() . DIRECTORY_SEPARATOR . $path;
         }
         $sep = preg_quote(DIRECTORY_SEPARATOR, '/');
-        if (!preg_match(sprintf('/^[%sa-zA-Z0-9._-]*$/', $sep) , $path)) {
+        if (!preg_match(sprintf('/^[%sa-zA-Z0-9._-]*$/', $sep), $path)) {
             $this->errorMessage = sprintf("path name should contain only [%sa-zA-Z0-9._-] characters.", DIRECTORY_SEPARATOR);
             return false;
         }
@@ -1417,13 +1425,12 @@ EOF;
     
     public function validateDOMDocument(DOMDocument $dom, $urn)
     {
-        require_once (__DIR__.'/Class.XMLSchemaCatalogValidator.php');
+        require_once(__DIR__.'/Class.XMLSchemaCatalogValidator.php');
         try {
             $validator = new \XMLSchemaCatalogValidator\Validator($this->xsd_catalog_xml);
             $validator->loadDOMDocument($dom);
             $validator->validate($urn);
-        }
-        catch(\XMLSchemaCatalogValidator\Exception $e) {
+        } catch (\XMLSchemaCatalogValidator\Exception $e) {
             return $e->getMessage();
         }
         return '';
@@ -1454,13 +1461,12 @@ EOF;
         return true;
     }
     
-    public function loadContextsDOMDocument($options = 0)
+    public function loadContextsDOMDocument(int $options = 0, $useCache = true)
     {
         require_once __DIR__.'/Class.DOMDocumentCacheFactory.php';
         try {
-            $dom = DOMDocumentCacheFactory::load($this->contexts_filepath, $options);
-        }
-        catch(Exception $e) {
+            $dom = DOMDocumentCacheFactory::load($this->contexts_filepath, $options, $useCache);
+        } catch (Exception $e) {
             $this->errorMessage = $e->getMessage();
             return false;
         }
@@ -1472,8 +1478,7 @@ EOF;
         require_once __DIR__.'/Class.DOMDocumentCacheFactory.php';
         try {
             $dom = DOMDocumentCacheFactory::load($this->params_filepath, $options);
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             $this->errorMessage = $e->getMessage();
             return false;
         }
@@ -1484,8 +1489,7 @@ EOF;
     {
         try {
             $ret = $dom->commit();
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             $this->errorMessage = $e->getMessage();
             return false;
         }
@@ -1554,7 +1558,7 @@ EOF;
                 if ($file == "." || $file == "..") {
                     continue;
                 };
-                $recursive_ret = ($recursive_ret && $this->rm_Rf(sprintf("%s%s%s", $path, DIRECTORY_SEPARATOR, $file) , $err_list));
+                $recursive_ret = ($recursive_ret && $this->rm_Rf(sprintf("%s%s%s", $path, DIRECTORY_SEPARATOR, $file), $err_list));
             }
             
             $s = stat($path);

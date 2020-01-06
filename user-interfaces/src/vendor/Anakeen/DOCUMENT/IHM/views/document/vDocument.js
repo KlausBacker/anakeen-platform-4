@@ -30,8 +30,7 @@ export default Backbone.View.extend({
   className: "dcpDocument container-fluid",
 
   events: {
-    'click a[href^="#action/"], a[data-action], button[data-action]': "propagateActionClick",
-    'click .dcpDocument__body a[href^="#"]': "handleHashClick"
+    'click a[href^="#action/"], a[data-action], button[data-action]': "propagateActionClick"
   },
 
   /**
@@ -46,7 +45,11 @@ export default Backbone.View.extend({
     this.listenTo(this.model, "actionAttributeLink", this.doStandardAction);
     this.listenTo(this.model, "loadDocument", this.loadDocument);
     this.listenTo(this.model, "displayCloseDocument", this.displayCloseDocument);
-    this.listenTo(this.model, "redrawErrorMessages", this.redrawTootips);
+    this.listenTo(
+      this.model,
+      "redrawErrorMessages",
+      _.debounce(() => this.redrawTootips(), 250)
+    );
     this.listenTo(this.model, "doSelectTab", this.selectTab);
     this.listenTo(this.model, "doDrawTab", this.drawTab);
     this.listenTo(this.model, "dduiDocumentReady", this.cleanAndRender);
@@ -58,7 +61,7 @@ export default Backbone.View.extend({
    */
   cleanAndRender: function vDocumentCleanAndRender() {
     this.trigger("loaderShow", i18n.___("Rendering", "ddui"), 70);
-    $(".dcpStaticErrorMessage").attr("hidden", true);
+    this.$el.find(".dcpStaticErrorMessage").attr("hidden", true);
     this.$el.show();
     this.$el[0].className = this.$el[0].className.replace(/\bdcpFamily.*\b/g, "");
     this.$el.removeClass("dcpDocument--view").removeClass("dcpDocument--edit");
@@ -242,7 +245,7 @@ export default Backbone.View.extend({
                 currentView.trigger("partRender");
               });
 
-              this.kendoTabs = this.$(".dcpDocument__tabs").kendoTabStrip({
+              this.kendoTabs = this.$el.find(".dcpDocument__tabs").kendoTabStrip({
                 tabPosition: tabPlacement,
                 animation: {
                   open: {
@@ -322,18 +325,16 @@ export default Backbone.View.extend({
                 }
               }
             }
-            $(window.document)
-              .on("drop.v" + this.model.cid + " dragover.v" + this.model.cid, function vDocumentPreventDragDrop(e) {
+            $(window.document).on(
+              "drop.v" + this.model.cid + " dragover.v" + this.model.cid,
+              function vDocumentPreventDragDrop(e) {
                 e.preventDefault();
-              })
-              .on("redrawErrorMessages.v" + this.model.cid, function vDocumentRedrawErrorMessages() {
-                documentView.redrawTootips();
-              });
+              }
+            );
             $(window).on(
               "resize.v" + this.model.cid,
               _.debounce(
                 function vDocumentResizeDebounce() {
-                  documentView.redrawTootips();
                   documentView.scrollTobVisibleTab();
                 },
                 100,
@@ -352,14 +353,13 @@ export default Backbone.View.extend({
             this.$el.show();
 
             if (tabPlacement === "left") {
-              this.$(".dcpTab__content").css(
-                "width",
-                "calc(100% - " + ($(".dcpDocument__tabs__list").width() + 30) + "px)"
-              );
+              this.$el
+                .find(".dcpTab__content")
+                .css("width", "calc(100% - " + ($(".dcpDocument__tabs__list").width() + 30) + "px)");
             }
 
             _.delay(function vDocumentEndLoading() {
-              $(".dcpLoading--init").removeClass("dcpLoading--init");
+              $el.find(".dcpLoading--init").removeClass("dcpLoading--init");
 
               if (documentView.model.getOption("stickyTabs") !== undefined) {
                 var menuHeight = 0;
@@ -398,6 +398,11 @@ export default Backbone.View.extend({
     return this;
   },
 
+  /**
+   * select a tab
+   *
+   * @param tabId
+   */
   selectTab: function VDocumentSelectTab(tabId) {
     if (tabId) {
       if (!Number.isInteger(tabId)) {
@@ -415,6 +420,9 @@ export default Backbone.View.extend({
     }
   },
 
+  /**
+   *
+   */
   resizeForFooter: function vDocumentresizeForFooter() {
     var $footer = this.$el.find(".dcpDocument__footer");
     if ($footer.length > 0) {
@@ -435,6 +443,9 @@ export default Backbone.View.extend({
     }
   },
 
+  /**
+   * Scroll to the top placement
+   */
   scrollTabList: function vDocumentScrollTabList() {
     var kendoTabStrip = this.kendoTabs.data("kendoTabStrip");
 
@@ -447,13 +458,12 @@ export default Backbone.View.extend({
    * Change placement of tooltips
    */
   redrawTootips: function vDocumentredrawTootips() {
-    var $tooltips = $(".tooltip:visible");
+    var $tooltips = this.$el.find(".tooltip:visible");
 
-    $tooltips.each(function() {
+    $tooltips.each(function redrawAToolTip() {
       var bTooltip = $(this).data("bs.tooltip");
       if (bTooltip) {
-        bTooltip.hide();
-        bTooltip.show();
+        bTooltip.update();
       }
     });
   },
@@ -517,7 +527,7 @@ export default Backbone.View.extend({
    */
   showHistory: function vDocumentShowHistory(docid) {
     var scope = this;
-    var $target = $('<div class="document-history"/>');
+    var $target = this.$el.find('<div class="document-history"/>');
     this.historyWidget = $target
       .dcpDocumentHistory({
         documentId: docid || this.model.get("properties").get("initid"),
@@ -603,7 +613,7 @@ export default Backbone.View.extend({
   showTransitionGraph: function vDocumentShowtransitionGraph() {
     var documentView = this;
     var transitionGraph = {};
-    var $target = $('<div class="dcpTransitionGraph"/>');
+    var $target = this.$el.find('<div class="dcpTransitionGraph"/>');
     //Init transition model
     transitionGraph.model = new ModelTransitionGraph({
       documentId: this.model.id,
@@ -633,7 +643,7 @@ export default Backbone.View.extend({
    */
   showProperties: function vDocumentShowProperties(docid) {
     var scope = this;
-    var $target = $('<div class="document-properties"/>');
+    var $target = this.$el.find('<div class="document-properties"/>');
 
     this.propertiesWidget = $target
       .dcpDocumentProperties({
@@ -914,22 +924,6 @@ export default Backbone.View.extend({
         return this;
       }
     );
-  },
-
-  handleHashClick: function vDocumenthandleHashClick(event) {
-    var $target = $(event.currentTarget),
-      href = $target.attr("href");
-
-    if (!href || !href.substring || href.substring(0, 7) === "#action") {
-      return;
-    }
-
-    event.preventDefault();
-    if (event.stopPropagation) {
-      event.stopPropagation();
-    }
-
-    window.location.hash = href;
   },
 
   /**
