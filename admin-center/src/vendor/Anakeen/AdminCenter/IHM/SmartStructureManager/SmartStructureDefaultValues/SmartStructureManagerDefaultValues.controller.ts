@@ -205,52 +205,56 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
   public ssmFormChange(e, smartStructure, smartField, values, index) {
     const smartForm = this.$refs.ssmForm;
 
-    switch (smartForm.getValue("ssm_type").value) {
-      case "inherited":
-        smartForm.hideSmartField("ssm_advanced_value");
-        smartForm.hideSmartField("ssm_value");
-        smartForm.hideSmartField("ssm_array");
-        smartForm.showSmartField("ssm_inherited_value");
-        this.finalData.valueType = smartForm.getValue("ssm_type").value;
-        this.finalData.value = smartForm.getValue("ssm_inherited_value").value;
-        this.isValArray = false;
-        break;
-      case "value":
-        smartForm.hideSmartField("ssm_advanced_value");
-        smartForm.showSmartField("ssm_value");
-        smartForm.showSmartField("ssm_array");
-        smartForm.hideSmartField("ssm_inherited_value");
-        this.finalData.value = this.getArrayDefaultValue(this.finalData.fieldId);
-        this.finalData.valueType = smartForm.getValue("ssm_type").value;
-        this.isValArray = true;
-        break;
-      case "advanced_value":
-        smartForm.showSmartField("ssm_advanced_value");
-        smartForm.hideSmartField("ssm_value");
-        smartForm.hideSmartField("ssm_array");
-        smartForm.hideSmartField("ssm_inherited_value");
-        this.finalData.value = smartForm.getValue("ssm_advanced_value").value;
-        this.finalData.valueType = smartForm.getValue("ssm_type").value;
-        this.isValArray = false;
-        break;
-      case "no_value":
-        smartForm.hideSmartField("ssm_advanced_value");
-        smartForm.hideSmartField("ssm_value");
-        smartForm.hideSmartField("ssm_array");
-        smartForm.hideSmartField("ssm_inherited_value");
-        this.finalData.valueType = smartForm.getValue("ssm_type").value;
-        this.finalData.value = "";
-        this.isValArray = false;
-        break;
-    }
-
-    if (this.isDefValMultiple()) {
-      for (let i = 0; i < values.current.length; i++) {
-        const newValue = values.current[i].value;
-        this.smartFormArrayValues[smartField.id][i] = newValue;
-      }
+    if(smartField.id === "ssm_type") {
+        switch (smartForm.getValue("ssm_type").value) {
+          case "inherited":
+            smartForm.hideSmartField("ssm_advanced_value");
+            smartForm.hideSmartField("ssm_value");
+            smartForm.hideSmartField("ssm_array");
+            smartForm.showSmartField("ssm_inherited_value");
+            this.finalData.valueType = smartForm.getValue("ssm_type").value;
+            console.log(smartForm.getValue("ssm_inherited_value"));
+            this.finalData.value = smartForm.getValue("ssm_inherited_value").value;
+            this.isValArray = false;
+            break;
+          case "value":
+            smartForm.hideSmartField("ssm_advanced_value");
+            smartForm.showSmartField("ssm_value");
+            smartForm.showSmartField("ssm_array");
+            smartForm.hideSmartField("ssm_inherited_value");
+            this.finalData.value = this.getArrayDefaultValue(this.finalData.fieldId);
+            this.finalData.valueType = smartForm.getValue("ssm_type").value;
+            this.isValArray = true;
+            break;
+          case "advanced_value":
+            smartForm.showSmartField("ssm_advanced_value");
+            smartForm.hideSmartField("ssm_value");
+            smartForm.hideSmartField("ssm_array");
+            smartForm.hideSmartField("ssm_inherited_value");
+            this.finalData.value = smartForm.getValue("ssm_advanced_value").value;
+            this.finalData.valueType = smartForm.getValue("ssm_type").value;
+            this.isValArray = false;
+            break;
+          case "no_value":
+            smartForm.hideSmartField("ssm_advanced_value");
+            smartForm.hideSmartField("ssm_value");
+            smartForm.hideSmartField("ssm_array");
+            smartForm.hideSmartField("ssm_inherited_value");
+            this.finalData.valueType = smartForm.getValue("ssm_type").value;
+            this.finalData.value = "";
+            this.isValArray = false;
+            break;
+        }
+        console.log(this.finalData);
     } else {
-      this.finalData.value = smartForm.getValue("ssm_value").value;
+      if (this.isDefValMultiple()) {
+        for (let i = 0; i < values.current.length; i++) {
+          const newValue = values.current[i].value;
+          this.smartFormArrayValues[smartField.id][i] = newValue;
+        }
+      } else {
+        this.finalData.value = smartForm.getValue("ssm_value").value;
+      }
     }
   }
   public ssmArrayChange(e, smartElement, smartField, type, options) {

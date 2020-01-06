@@ -17,16 +17,12 @@ class StructureUpdateParameter extends StructureFields
      */
     protected $structure = null;
 
-    private $data = [
-        "structureId" => "",
-        "parameterId" => "",
-        "value" => "",
-        "valueType" => "",
-    ];
+    private $data = [];
     
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $this->initData($request->getParsedBody()["params"], $args);
+        // $err = "";
         $err = $this->manageNewParameter();
         if ($err !== "") {
             return $response->withStatus(500, $err)->write($err);
@@ -38,24 +34,44 @@ class StructureUpdateParameter extends StructureFields
     {
         foreach (json_decode($dataFromFront) as $key => $value) {
             $this->data[$key] = $value;
+            if(is_null($this->structure)) {
+                $this->structure = SEManager::getFamily($this->data[$key]->structureId);
+            }
         }
-        $this->data["structure"] = SEManager::getFamily($this->data["structureId"]);
     }
 
     private function manageNewParameter()
     {
         $err = "";
-        if ($this->data["valueType"] === "no_value") {
-            $err = $this->data["structure"]->setParam($this->data["parameterId"], null);
-        } elseif ($this->data["valueType"] === "value" && $this->data["value"] === "") {
-            $err = $this->data["structure"]->setParam($this->data["parameterId"], "");
-        } else {
-            $err = $this->data["structure"]->setParam($this->data["parameterId"], $this->data["value"]);
-        }
+        foreach ($this->data as $parameterId => $parameterData) {
+            if($err === "") {
+                if ($parameterData->valueType === "no_value") {
+                    $err = $this->structure->setParam($parameterData->parameterId, null);
+                } elseif ($parameterData->valueType === "value" && $parameterData->value === "") {
+                    $err = $this->structure->setParam($parameterData->parameterId, "");
+                } else {
+                    $err = $this->structure->setParam($parameterData->parameterId, $parameterData->value);
+                }
 
-        if ($err !== "") {
-            return $err;
+                if($err !== "") {
+                    return $err;
+                }
+                $err = $this->structure->modify();
+            }
         }
-        return $this->data["structure"]->modify();
+        return $err;
+
+        // if ($this->data["valueType"] === "no_value") {
+        //     $err = $this->data["structure"]->setParam($this->data["parameterId"], null);
+        // } elseif ($this->data["valueType"] === "value" && $this->data["value"] === "") {
+        //     $err = $this->data["structure"]->setParam($this->data["parameterId"], "");
+        // } else {
+        //     $err = $this->data["structure"]->setParam($this->data["parameterId"], $this->data["value"]);
+        // }
+
+        // if ($err !== "") {
+        //     return $err;
+        // }
+        // return $this->data["structure"]->modify();
     }
 }

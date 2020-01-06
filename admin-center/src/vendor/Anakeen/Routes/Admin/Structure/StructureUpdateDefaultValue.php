@@ -52,12 +52,11 @@ class StructureUpdateDefaultValue extends StructureFields
 
         $err = "";
         if ($this->data["valueType"] === "no_value") {
-            $err = $this->data["structure"]->setDefValue($this->data["fieldId"], null);
+            $err = $this->data["structure"]->setDefValue($this->data["fieldId"], "NULL");
         } elseif ($this->data["valueType"] === "value" && $this->data["value"] === "") {
             $err = $this->data["structure"]->setDefValue($this->data["fieldId"], "");
         } else {
             $err = $this->data["structure"]->setDefValue($this->data["fieldId"], $finalValue);
-            error_log($err);
         }
 
         if ($err !== "") {

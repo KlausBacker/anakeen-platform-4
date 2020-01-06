@@ -55,8 +55,9 @@
   }
 }
 
-.k-grid-norecords {
+.no-records {
   flex: 1;
+  background-color: #FAFAFA;
   .empty-ssm-grid {
     flex: 1;
     justify-content: center;
@@ -70,6 +71,9 @@
     }
 
     .empty-ssm-grid-icon > i {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       font-size: 10rem;
       color: #A4A4A4 !important;
     }

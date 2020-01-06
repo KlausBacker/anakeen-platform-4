@@ -30,14 +30,26 @@
       <kendo-grid-column :hidden="true" :title="'<b>Type</b>'" :field="'type'"></kendo-grid-column>
       <kendo-grid-column :hidden="true" :title="'<b>Field ID</b>'" :field="'parameterId'"></kendo-grid-column>
       <kendo-grid-column :title="''" width="6.5rem" :command="{click:onEditClick, text: 'Modify'}"></kendo-grid-column>
-    </kendo-grid> -->
+    </kendo-grid>-->
     <smart-form
+      v-if="haveParameters"
       ref="ssmForm"
       :config="generateSmartForm"
       @actionClick="formClickMenu"
       @ready="ssmFormReady"
       @smartFieldChange="ssmFormChange"
     />
+    <div class="no-records" v-else>
+      <div class="empty-ssm-grid">
+      <div class="empty-ssm-grid-icon">
+        <i class="material-icons">grid_off</i>
+      </div>
+      <div class="empty-ssm-grid-text">
+        <span>No parameters to display for this Smart Structure</span>
+      </div>
+    </div>
+    </div>
+    
     <!-- <transition name="modal">
       <div v-show="showModal" class="modal-mask">
         <div class="modal-wrapper" @click="showModal = false">
@@ -46,7 +58,7 @@
           </div>
         </div>
       </div>
-    </transition> -->
+    </transition>-->
   </div>
 </template>
 <style lang="scss">

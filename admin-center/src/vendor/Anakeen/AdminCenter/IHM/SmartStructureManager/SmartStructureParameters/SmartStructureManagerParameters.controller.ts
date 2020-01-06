@@ -22,20 +22,21 @@ export default class SmartStructureManagerParametersController extends Vue {
     type: String
   })
   public ssName;
+  public haveParameters: boolean = false;
   public smartForm: object = {};
-  public unsupportedType = ["frame", "tab", "array"];
+  public unsupportedType = ["frame", "tab"/* , "array" */];
   public $refs!: {
     [key: string]: any;
   };
 
   public paramValues = [];
-  public finalData = {
-    parameterId: "",
-    structureId: this.ssName,
-    value: "",
-    valueType: "value"
-  };
-  // ToDo
+  public finalData = {}; 
+  // {
+  //   parameterId: "",
+  //   structureId: this.ssName,
+  //   value: "",
+  //   valueType: "value"
+  // };
   protected rawValue;
   protected parentValue;
   protected type;
@@ -43,8 +44,8 @@ export default class SmartStructureManagerParametersController extends Vue {
   @Watch("ssName")
   public watchSsName(newValue) {
     if (newValue) {
-      // this.$refs.parametersGridContent.kendoWidget().dataSource.read();
-      this.finalData.structureId = newValue;
+      this.$refs.parametersGridData.kendoDataSource.read();
+      this.finalData = {};
     }
   }
   @Watch("paramValues")
@@ -53,44 +54,81 @@ export default class SmartStructureManagerParametersController extends Vue {
       this.paramValues = newValue[0];
     }
   }
-
   get generateSmartForm() {
     let enumData = [];
-    let structure = [];
+    let parametersStructure = [];
     let parametersEnum = [];
     let values = {};
+    let parametersRenderOptions = {};
     // Generate dynamic smartform content
     if (this.paramValues.length) {
       parametersEnum = [];
       this.paramValues.forEach(parameter => {
-        console.log("Parameter", parameter);
-
         // ToDo : Demander à Eric la différence entre 'enum' et 'enumLabel' dans la réponse de l'API
         // ToDo : Faire passer les données d'enum et récup les entrées d'enum associées
         // if (parameter.type === "enum") {
         //   enumData = this.getEnum(this.type.typeFormat);
         // }
-        parametersEnum.push({
-          key: parameter.parameterId,
-          label: parameter.label
+        // Generate SmartForm structure
+        parametersStructure.push({
+            content: [
+              {
+                enumItems: [
+                  {
+                    key: "inherited",
+                    label: "Inherited"
+                  },
+                  {
+                    key: "value",
+                    label: "Value"
+                  },
+                  {
+                    key: "advanced_value",
+                    label: "Advanced Value"
+                  },
+                  {
+                    key: "no_value",
+                    label: "Erase field"
+                  }
+                ],
+                label: "Type",
+                name: `${parameter.parameterId}-type`,
+                type: "enum"
+              },
+              {
+                display: "read",
+                label: "Inherited",
+                name: `${parameter.parameterId}-inherited_value`,
+                type: "text"
+              },
+              {
+                enumItems: `${enumData}`,
+                label: "Value",
+                name: `${parameter.parameterId}-value`,
+                type: `${parameter.type}`
+              },
+              {
+                label: "Advanced value",
+                name: `${parameter.parameterId}-advanced_value`,
+                type: "longtext"
+              }
+            ],
+            label: `${parameter.label}`,
+            name: `${parameter.parameterId}-default_value`,
+            type: "frame"
         });
+        // Manage SmartForm values
+        values[parameter.parameterId+"-value"] = parameter.rawValue;
+        values[parameter.parameterId+"-type"] = "value";
+        // Manage SmartForm renderOptions
+        // parametersRenderOptions[parameter.parameterId+"-default_value"] = {
+        //   collapse: "collapse"
+        // }
+
       });
     }
-
     return {
       menu: [
-        {
-          beforeContent: '<div class="fa fa-times" />',
-          htmlLabel: "",
-          iconUrl: "",
-          id: "cancel",
-          important: false,
-          label: "Cancel",
-          target: "_self",
-          type: "itemMenu",
-          url: "#action/ssmanager.cancel",
-          visibility: "visible"
-        },
         {
           beforeContent: '<div class="fa fa-save" />',
           htmlLabel: "",
@@ -100,124 +138,84 @@ export default class SmartStructureManagerParametersController extends Vue {
           label: "Submit",
           target: "_self",
           type: "itemMenu",
-          url: "#action/ssmanager.save",
+          url: "#action/document.save",
+          // url: "#action/ssmanager.save",
           visibility: "visible"
         }
       ],
-      structure: [
-        {
-          content: [
-            {
-              enumItems: parametersEnum,
-              label: "Parameter",
-              name: "ssm_parameter",
-              type: "enum"
-            },
-            {
-              enumItems: [
-                {
-                  key: "inherited",
-                  label: "Inherited"
-                },
-                {
-                  key: "value",
-                  label: "Value"
-                },
-                {
-                  key: "advanced_value",
-                  label: "Advanced Value"
-                },
-                {
-                  key: "no_value",
-                  label: "Erase field"
-                }
-              ],
-              label: "Type",
-              name: `ssm_type`,
-              type: "enum"
-            },
-            {
-              display: "read",
-              label: "Inherited",
-              name: `ssm_inherited_value`,
-              type: "text"
-            },
-            {
-              enumItems: `${enumData}`,
-              label: "Value",
-              name: `ssm_value`,
-              type: "text"/* `${selectedParam.type}` */
-            },
-            {
-              label: "Advanced value",
-              name: `ssm_advanced_value`,
-              type: "longtext"
-            }
-          ],
-          label: "Hello"/* `${selectedParam.label}` */,
-          name: `ssm_default_value`,
-          type: "frame"
-        }
-      ],
+      structure: parametersStructure,
       title: "Parameters edition",
-      values: {
-        ssm_advanced_value: "",
-        ssm_inherited_value: "",
-        ssm_type: "value",
-        ssm_value: ""
-      }
+      renderOptions: {
+        fields: parametersRenderOptions
+      },
+      values: values 
     };
   }
   public ssmFormReady() {
-    if (this.$refs.ssmForm.getSmartField("ssm_inherited_value")) {
-      this.$refs.ssmForm.hideSmartField("ssm_inherited_value");
-    }
-    if (this.$refs.ssmForm.getSmartField("ssm_advanced_value")) {
-      this.$refs.ssmForm.hideSmartField("ssm_advanced_value");
+    if(this.paramValues) {
+      this.paramValues.forEach(parameter => {
+        // Prepare finalData model
+        this.finalData[parameter.parameterId] = {
+          parameterId: parameter.parameterId,
+          structureId: this.ssName,
+          value: parameter.rawValue,
+          valueType: this.$refs.ssmForm.getValue(`${parameter.parameterId}-type`).value
+        }
+        if(this.$refs.ssmForm.getSmartField(`${parameter.parameterId}-inherited_value`)) {
+          this.$refs.ssmForm.hideSmartField(`${parameter.parameterId}-inherited_value`);
+        }
+        if(this.$refs.ssmForm.getSmartField(`${parameter.parameterId}-advanced_value`)) {
+          this.$refs.ssmForm.hideSmartField(`${parameter.parameterId}-advanced_value`);
+        }
+      })
     }
   }
   public ssmFormChange(e, smartStructure, smartField, values, index) {
-    // ToDo : Manage parameter selection to fill fields with appropriate values
     const smartForm = this.$refs.ssmForm;
-    switch (smartForm.getValue("ssm_type").value) {
-      case "inherited":
-        smartForm.hideSmartField("ssm_advanced_value");
-        smartForm.hideSmartField("ssm_value");
-        smartForm.showSmartField("ssm_inherited_value");
-        this.finalData.valueType = smartForm.getValue("ssm_type").value;
-        this.finalData.value = smartForm.getValue("ssm_inherited_value").value;
-        break;
-      case "value":
-        smartForm.hideSmartField("ssm_advanced_value");
-        smartForm.showSmartField("ssm_value");
-        smartForm.hideSmartField("ssm_inherited_value");
-        this.finalData.valueType = smartForm.getValue("ssm_type").value;
-        this.finalData.value = smartForm.getValue("ssm_value").value;
-        break;
-      case "advanced_value":
-        smartForm.showSmartField("ssm_advanced_value");
-        smartForm.hideSmartField("ssm_value");
-        smartForm.hideSmartField("ssm_inherited_value");
-        this.finalData.valueType = smartForm.getValue("ssm_type").value;
-        this.finalData.value = smartForm.getValue("ssm_advanced_value").value;
-        break;
-      case "no_value":
-        this.$refs.ssmForm.hideSmartField("ssm_advanced_value");
-        this.$refs.ssmForm.hideSmartField("ssm_value");
-        this.$refs.ssmForm.hideSmartField("ssm_inherited_value");
-        this.finalData.valueType = smartForm.getValue("ssm_type").value;
-        this.finalData.value = "";
-        break;
+    if(this.paramValues) {
+      this.paramValues.forEach(parameter => {
+        switch (smartForm.getValue(`${parameter.parameterId}-type`).value) {
+        case "inherited":
+          smartForm.hideSmartField(`${parameter.parameterId}-advanced_value`);
+          smartForm.hideSmartField(`${parameter.parameterId}-value`);
+          smartForm.showSmartField(`${parameter.parameterId}-inherited_value`);
+          this.finalData[parameter.parameterId].valueType = smartForm.getValue(`${parameter.parameterId}-type`).value;
+          this.finalData[parameter.parameterId].value = smartForm.getValue(`${parameter.parameterId}-inherited_value`) !== null
+          ? smartForm.getValue(`${parameter.parameterId}-inherited_value`).value
+          : "";
+          break;
+        case "value":
+          smartForm.hideSmartField(`${parameter.parameterId}-advanced_value`);
+          smartForm.showSmartField(`${parameter.parameterId}-value`);
+          smartForm.hideSmartField(`${parameter.parameterId}-inherited_value`);
+          this.finalData[parameter.parameterId].valueType = smartForm.getValue(`${parameter.parameterId}-type`).value;
+          this.finalData[parameter.parameterId].value = smartForm.getValue(`${parameter.parameterId}-value`).value;
+          break;
+        case "advanced_value":
+          smartForm.showSmartField(`${parameter.parameterId}-advanced_value`);
+          smartForm.hideSmartField(`${parameter.parameterId}-value`);
+          smartForm.hideSmartField(`${parameter.parameterId}-inherited_value`);
+          this.finalData[parameter.parameterId].valueType = smartForm.getValue(`${parameter.parameterId}-type`).value;
+          this.finalData[parameter.parameterId].value = smartForm.getValue(`${parameter.parameterId}-advanced_value`) !== null
+          ? smartForm.getValue(`${parameter.parameterId}-advanced_value`).value
+          :"";
+          break;
+        case "no_value":
+          this.$refs.ssmForm.hideSmartField(`${parameter.parameterId}-advanced_value`);
+          this.$refs.ssmForm.hideSmartField(`${parameter.parameterId}-value`);
+          this.$refs.ssmForm.hideSmartField(`${parameter.parameterId}-inherited_value`);
+          this.finalData[parameter.parameterId].valueType = smartForm.getValue(`${parameter.parameterId}-type`).value;
+          this.finalData[parameter.parameterId].value = "";
+          break;
+        }
+      })
     }
+    // console.log("FINALDATA", this.finalData);
   }
   public formClickMenu(e, se, params) {
-    switch (params.eventId) {
-      case "ssmanager.cancel":
-        break;
-      case "ssmanager.save":
+      if(params.eventId === "document.save"){
         this.updateData(this.finalData);
-        break;
-    }
+      }
   }
   public displayData(colId) {
     return dataItem => {
@@ -298,7 +296,6 @@ export default class SmartStructureManagerParametersController extends Vue {
               type
             });
           }
-          // console.log(result);
         } else {
           // ToDo : Manage Error
         }
@@ -324,6 +321,11 @@ export default class SmartStructureManagerParametersController extends Vue {
       })
       .then(response => {
         this.paramValues = [];
+        if(Array.isArray(response.data.data.params)) {
+          this.haveParameters = false;
+        } else {
+          this.haveParameters = true
+        }
         options.success(response);
       })
       .catch(response => {
@@ -353,15 +355,12 @@ export default class SmartStructureManagerParametersController extends Vue {
 
     return returnVal;
   }
-  // protected autoFilterCol(e) {
-  //   e.element.addClass("k-textbox filter-input");
-  // }
   private updateData(data) {
     const url = `/api/v2/admin/smart-structures/${data.structureId}/update/parameter/`;
     this.$http
       .put(url, { params: JSON.stringify(data) })
       .then(response => {
-        this.$refs.parametersGridData.kendoDataSource.read();
+        // this.$refs.parametersGridData.kendoDataSource.read();
       })
       .catch(response => {
         console.error("UpdateDataResError", response);
