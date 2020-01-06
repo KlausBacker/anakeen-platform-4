@@ -9,21 +9,26 @@ require_once __DIR__.'/Class.DOMDocumentCache.php';
 class DOMDocumentCacheFactory
 {
     private static $cache = array();
+
     /**
      * @param $filename
      * @param int $options
+     * @param bool $useCache
      * @return bool|DOMDocumentCache
      * @throws Exception
      */
-    public static function load($filename, $options = 0)
+    public static function load($filename, $options = 0, $useCache = true)
     {
         $realFilename = realpath($filename);
+
         if (!file_exists($realFilename)) {
             return false;
         }
-        $dom = self::cacheGet($realFilename);
-        if ($dom !== false) {
-            return $dom;
+        if ($useCache) {
+            $dom = self::cacheGet($realFilename);
+            if ($dom !== false) {
+                return $dom;
+            }
         }
         $dom = new DOMDocumentCache();
         $dom->preserveWhiteSpace = false;
@@ -45,17 +50,7 @@ class DOMDocumentCacheFactory
         }
         return self::$cache[$filename];
     }
-    private static function cacheUnset(DOMDocument & $dom)
-    {
-        foreach (self::$cache as $filename => $obj) {
-            if ($dom === $obj) {
-                $dom = self::$cache[$filename];
-                unset(self::$cache[$filename]);
-                return $dom;
-            }
-        }
-        return false;
-    }
+
     private static function lastXMLError()
     {
         if (($err = libxml_get_last_error()) === false) {

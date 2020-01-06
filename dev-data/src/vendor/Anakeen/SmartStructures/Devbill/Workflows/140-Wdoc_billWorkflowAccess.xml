@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:workflow="https://platform.anakeen.com/4/schemas/workflow/1.0">
-    <workflow:config xmlns:workflow="https://platform.anakeen.com/4/schemas/workflow/1.0" name="WDOC_BILL" structure="DEVBILL" model="WFAM_BILL">
-        <workflow:steps/>
-    </workflow:config>
+    <smart:access-configuration name="WDOC_BILL"
+                                profil-type="WFAM_BILL"
+                                access-structure="DEV_BILL">
+        <smart:element-access access="t_wfam_bill_e1_e2" account="bill_writer"/>
+    </smart:access-configuration>
 </smart:config>

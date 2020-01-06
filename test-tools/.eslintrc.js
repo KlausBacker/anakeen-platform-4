@@ -3,7 +3,8 @@ module.exports = {
     node: true,
     es6: true,
     browser: true,
-    commonjs: true
+    commonjs: true,
+    mocha: true
   },
   extends: "eslint:recommended",
   parserOptions: {

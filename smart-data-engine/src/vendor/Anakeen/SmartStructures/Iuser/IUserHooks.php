@@ -461,14 +461,19 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
         return '';
     }
 
-    public function constraintPassword($pwd1, $pwd2, $login)
+    public function constraintPassword($pwd1)
     {
-        if ($this->testForcePassword($pwd1)) {
-            return '';
+        if ($pwd1 !== "") {
+            return $this->testForcePassword($pwd1);
         }
+        return "";
+    }
+
+    public function equalPassword($pwd1, $pwd2)
+    {
         $err = "";
 
-        if ($pwd1 <> $pwd2) {
+        if ($pwd1 !== $pwd2) {
             $err = ___("The 2 passwords are not the same", "smart iuser");
         }
 

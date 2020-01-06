@@ -1026,7 +1026,7 @@ msgstr "WID : cycle '%s' introuvable"
 
 msgctxt "dcp"
 msgid "Whoops, looks like something went wrong"
-msgstr "Une erreur s'est produite, si celle-ci persiste veuillez contacter le support avec l'identifiant suivant : "
+msgstr "Une erreur s'est produite, si celle-ci persiste veuillez contacter le support avec l'identifiant en début de ligne"
 
 msgctxt "autocomplete"
 msgid "Workflow must be set"

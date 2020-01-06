@@ -1,0 +1,8 @@
+<accounts:accounts xmlns:accounts="https://platform.anakeen.com/4/schemas/account/1.0">
+    <accounts:roles>
+        <accounts:role name="test_user_role">
+            <accounts:displayName>Test user</accounts:displayName>
+            <accounts:structure name="TT_TESTUSER"/>
+        </accounts:role>
+    </accounts:roles>
+</accounts:accounts>

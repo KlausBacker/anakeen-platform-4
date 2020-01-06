@@ -1,8 +1,8 @@
 import kendo from "@progress/kendo-ui/js/kendo.core";
 import GridEvent from "./GridEvent";
 import AbstractGridUtil from "./AbstractGridUtil";
-import ActionTemplate from "../templates/GridAction.template.kd";
-import ActionMenuTemplate from "../templates/GridActionMenu.template.kd";
+import ActionTemplate from "../templates/GridAction.template.kd.js";
+import ActionMenuTemplate from "../templates/GridActionMenu.template.kd.js";
 
 function isset(jsObj) {
   return !(jsObj === null || jsObj === undefined);

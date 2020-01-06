@@ -274,10 +274,14 @@ class Compose {
    * @param {string} moduleName Module's name
    * @param {string} moduleVersion SemVer version
    * @param {string} registryName Registry's name
+   * @param {boolean} noUpdateRepo, only for refresh, we not update the repo.xml
    * @returns {Promise<void>}
    * @private
    */
-  async _installSemverModule({ name: moduleName, version: moduleVersion, registry: registryName }) {
+  async _installSemverModule(
+    { name: moduleName, version: moduleVersion, registry: registryName },
+    noUpdateRepo = false
+  ) {
     const module = await this._getModuleRefFromRegistry({ moduleName, moduleVersion, registryName });
 
     await this._installAndLockModuleVersion({
@@ -285,6 +289,10 @@ class Compose {
       version: module.version,
       registry: registryName
     });
+
+    if (noUpdateRepo) {
+      return;
+    }
 
     await this.repoXML.addModule({
       name: module.name,
@@ -358,11 +366,6 @@ class Compose {
     }
 
     this.repoLockXML.addOrUpdateModule(newModule);
-
-    signale.note(`Generating 'content.xml' in '${localRepo}'...`);
-    const appList = await this.genRepoContentXML(localRepo);
-
-    this.debug({ appList: appList }, { depth: 20 });
 
     this.debug({ repoXML: this.repoXML.data }, { depth: 20 });
     this.debug({ repoLockXML: this.repoLockXML.data }, { depth: 20 });
@@ -456,6 +459,7 @@ class Compose {
    */
   async install({ withoutLockFile = false, latest = false }) {
     let moduleLockList = [];
+    //region prepare data
     await this.loadContext();
 
     const localRepo = this.repoXML.getConfigLocalRepo();
@@ -477,8 +481,11 @@ class Compose {
       acc[currentLockElement.$.name] = currentLockElement;
       return acc;
     }, {});
+    //endregion prepare data
 
+    //region analyze data and lock
     const moduleToInstall = {};
+    const moduleToRefresh = {};
     const moduleLocked = {};
 
     //Analyze the lock and the demand part and deduce the module to install
@@ -497,17 +504,30 @@ class Compose {
           //Module is in the locked list
           organizedLockList[currentElement.$.name] &&
           //semver is good
-          semver.satisfies(organizedLockList[currentElement.$.name].$.version, currentElement.$.version) &&
-          //File is here and sha1 is good
-          (await this.repoLockXML.checkIfModuleIsValid({
-            name: currentElement.$.name,
-            appPath: path.join(this.cwd, localRepo),
-            srcPath: path.join(this.cwd, localSrc)
-          }))
+          semver.satisfies(organizedLockList[currentElement.$.name].$.version, currentElement.$.version)
         ) {
-          this.debug(`${currentElement.$.name} : The lock is good, we keep it`);
-          //This module is locked, semver is good and files are good, we keep it
-          return (moduleLocked[currentElement.$.name] = organizedLockList[currentElement.$.name]);
+          if (
+            //File is here and sha1 is good
+            await this.repoLockXML.checkIfModuleIsValid({
+              name: currentElement.$.name,
+              appPath: path.join(this.cwd, localRepo),
+              srcPath: path.join(this.cwd, localSrc)
+            })
+          ) {
+            this.debug(`${currentElement.$.name} : The lock is good, the files are here, we keep it`);
+            //This module is locked, semver is good and files are good, we keep it
+            return (moduleLocked[currentElement.$.name] = organizedLockList[currentElement.$.name]);
+          } else {
+            this.debug(`${currentElement.$.name} : The lock is good, the files not good, we refresh it`);
+            if (this.frozenLockfile) {
+              this.debug(`${currentElement.$.name} : Mode frozen lock we keep the exact ref of the lock`);
+              const refreshElement = JSON.parse(JSON.stringify(currentElement));
+              refreshElement.$.version = organizedLockList[currentElement.$.name].$.version;
+              return (moduleToRefresh[currentElement.$.name] = refreshElement);
+            } else {
+              return (moduleToInstall[currentElement.$.name] = currentElement);
+            }
+          }
         }
         this.debug(`${currentElement.$.name} : We need to install it`);
         //This module must be installed
@@ -524,10 +544,28 @@ class Compose {
         ).join(" ")} ), try without the frozen lock option`
       );
     }
+    //endregion analyze data and lock
 
-    //Install the elements
+    //region Install the elements
     //Swipe the lockfile to reconstruct it during the install
     this.repoLockXML.swipeModuleList();
+    if (Object.keys(moduleToRefresh).length > 0) {
+      signale.note(`Found ${Object.keys(moduleToRefresh).length} new module(s) to refresh`);
+      //Refresh all modules to refresh
+      //Install is async so we launch a bunch of promises and wait for the result
+      await Promise.all(
+        Object.values(moduleToRefresh).map(async module => {
+          return await this._installSemverModule(
+            {
+              name: module.$.name,
+              version: module.$.version,
+              registry: module.$.registry
+            },
+            true
+          );
+        })
+      );
+    }
     signale.note(`Found ${Object.keys(moduleToInstall).length} new module(s) to install`);
     //Install is async so we launch a bunch of promises and wait for the result
     await Promise.all(
@@ -539,8 +577,9 @@ class Compose {
         });
       })
     );
+    //endregion Install the elements
 
-    //Cleaning part
+    //region Clean
     //Add the keeped lock module to the lockfile
     Object.values(moduleLocked).map(currentLocked => {
       moduleLockList.push(currentLocked);
@@ -598,7 +637,18 @@ class Compose {
         return await rimraf(currentPath);
       })
     );
+    //endregion Clean
 
+    //region generate repo.xml
+    //Generate local repo xml
+    //Add local app
+
+    signale.note(`Generating 'content.xml' in '${localRepo}'...`);
+    const appList = await this.genRepoContentXML(localRepo);
+    this.debug({ appList: appList }, { depth: 20 });
+
+    //endregion generate repo.xml
+    //ommit XML
     await this.commitContext();
   }
 

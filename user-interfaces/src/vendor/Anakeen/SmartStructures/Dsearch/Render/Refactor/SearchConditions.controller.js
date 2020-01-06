@@ -90,8 +90,12 @@ export default {
       ];
     }
   },
-  mounted() {
+
+  created() {
     this.$on("localeLoaded", this.initTranslation);
+  },
+
+  mounted() {
     this.controllerProxy(
       "addEventListener",
       "smartFieldChange",

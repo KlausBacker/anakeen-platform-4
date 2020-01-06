@@ -1,4 +1,4 @@
-<a class="k-button k-button-icon k-grid-_subcommands">
+export default `<a class="k-button k-button-icon k-grid-_subcommands">
     <ul class="actionMenu">
         <li><i class="#: iconClass#"></i>
             <ul class="subactionsItems">
@@ -23,4 +23,4 @@
             </ul>
         </li>
     </ul>
-</a>
+</a>`;

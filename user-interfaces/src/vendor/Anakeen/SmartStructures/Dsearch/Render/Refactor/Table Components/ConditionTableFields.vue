@@ -15,9 +15,18 @@ export default {
   extends: BaseComponent,
   mixins: [AnkI18NMixin],
   props: {
-    controllerProxy: Function,
-    famid: Number,
-    initValue: ""
+    controllerProxy: {
+      type: Function,
+      default: () => () => {}
+    },
+    famid: {
+      type: Number,
+      default: 0
+    },
+    initValue: {
+      type: String,
+      default: ""
+    }
   },
   data() {
     return {

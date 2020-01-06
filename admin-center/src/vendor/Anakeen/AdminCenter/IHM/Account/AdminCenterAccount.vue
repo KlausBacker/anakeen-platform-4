@@ -6,7 +6,7 @@
           <div class="accountManager_treeViewPart_wrapper_topPart">
             <div class="accountManager_treeViewPart_wrapper_topPart_btnPart">
               <kendo-toolbar ref="treeToolbar" class="tree-toolbar">
-                <kendo-toolbar-item type="button" icon="refresh" @click="() => updateTreeData()"></kendo-toolbar-item>
+                <kendo-toolbar-item type="button" icon="refresh" @click="updateTreeData"></kendo-toolbar-item>
                 <kendo-toolbar-item type="button" icon="arrow-60-up" @click="collapseAll"></kendo-toolbar-item>
                 <kendo-toolbar-item type="button" icon="arrow-60-down" @click="expandAll"></kendo-toolbar-item>
               </kendo-toolbar>

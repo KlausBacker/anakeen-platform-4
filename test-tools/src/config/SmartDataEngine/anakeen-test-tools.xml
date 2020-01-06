@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+  <sde:routes namespace="AnakeenTestTools">
+    <sde:route name="TestCreateSmartElement">
+      <sde:callable>Anakeen\TestTools\Routes\SmartElementCreation</sde:callable>
+      <sde:method>POST</sde:method>
+      <sde:pattern>/api/v2/test-tools/smart-structures/{structure}/smart-elements/</sde:pattern>
+      <sde:description>Create smart element of structure</sde:description>
+      <sde:requiredAccess>
+        <sde:access ns="AnakeenTestTools">TestUser</sde:access>
+      </sde:requiredAccess>
+    </sde:route>
+    <sde:route name="TestCleanSmartElement">
+      <sde:callable>Anakeen\TestTools\Routes\SmartElementClean</sde:callable>
+      <sde:method>DELETE</sde:method>
+      <sde:pattern>/api/v2/test-tools/context/{tag}/</sde:pattern>
+      <sde:description>Clean test env</sde:description>
+      <sde:requiredAccess>
+        <sde:access ns="AnakeenTestTools">TestUser</sde:access>
+      </sde:requiredAccess>
+    </sde:route>
+    <sde:route name="TestDeleteSmartElement">
+      <sde:callable>Anakeen\TestTools\Routes\SmartElementDelete</sde:callable>
+      <sde:method>DELETE</sde:method>
+      <sde:pattern>/api/v2/test-tools/smart-elements/{seId}/</sde:pattern>
+      <sde:description>Delete a smart element</sde:description>
+      <sde:requiredAccess>
+        <sde:access ns="AnakeenTestTools">TestUser</sde:access>
+      </sde:requiredAccess>
+    </sde:route>
+    <sde:route name="TestUpdateSmartElement">
+      <sde:callable>Anakeen\TestTools\Routes\SmartElementUpdate</sde:callable>
+      <sde:method>PUT</sde:method>
+      <sde:pattern>/api/v2/test-tools/smart-elements/{seId}/</sde:pattern>
+      <sde:description>Update a Smart Element</sde:description>
+      <sde:requiredAccess>
+        <sde:access ns="AnakeenTestTools">TestUser</sde:access>
+      </sde:requiredAccess>
+    </sde:route>
+    <sde:route name="TestGetAccount">
+      <sde:callable>Anakeen\TestTools\Routes\AccountInfos</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/api/v2/test-tools/account/{login}/</sde:pattern>
+      <sde:description>Get account informations</sde:description>
+      <sde:requiredAccess>
+        <sde:access ns="AnakeenTestTools">TestUser</sde:access>
+      </sde:requiredAccess>
+    </sde:route>
+    <sde:route name="TestCreateAccount">
+      <sde:callable>Anakeen\TestTools\Routes\CreateAccount</sde:callable>
+      <sde:method>POST</sde:method>
+      <sde:pattern>/api/v2/test-tools/accounts/</sde:pattern>
+      <sde:description>Create account</sde:description>
+      <sde:requiredAccess>
+        <sde:access ns="AnakeenTestTools">TestUser</sde:access>
+      </sde:requiredAccess>
+    </sde:route>
+    <sde:route name="TestAccountGroup">
+      <sde:callable>Anakeen\TestTools\Routes\AccountGroup</sde:callable>
+      <sde:method>PUT</sde:method>
+      <sde:method>DELETE</sde:method>
+      <sde:pattern>/api/v2/test-tools/groups/{group}/</sde:pattern>
+      <sde:description>Add or remove account to a group</sde:description>
+      <sde:requiredAccess>
+        <sde:access ns="AnakeenTestTools">TestUser</sde:access>
+      </sde:requiredAccess>
+    </sde:route>
+    <sde:route name="TestAccountRole">
+      <sde:callable>Anakeen\TestTools\Routes\AccountRole</sde:callable>
+      <sde:method>PUT</sde:method>
+      <sde:method>DELETE</sde:method>
+      <sde:pattern>/api/v2/test-tools/roles/{role}/</sde:pattern>
+      <sde:description>Add or remove role to an account</sde:description>
+      <sde:requiredAccess>
+        <sde:access ns="AnakeenTestTools">TestUser</sde:access>
+      </sde:requiredAccess>
+    </sde:route>
+    <sde:route name="TestChangeTransition">
+      <sde:callable>Anakeen\TestTools\Routes\Transition</sde:callable>
+      <sde:method>PUT</sde:method>
+      <sde:pattern>/api/v2/test-tools/smart-elements/{docid}/workflows/transitions/{transition}</sde:pattern>
+      <sde:description>Change a transition</sde:description>
+      <sde:requiredAccess>
+        <sde:access ns="AnakeenTestTools">TestUser</sde:access>
+      </sde:requiredAccess>
+    </sde:route>
+    <sde:route name="TestAccessTransition">
+      <sde:callable>Anakeen\TestTools\Routes\TransitionAccess</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/api/v2/test-tools/smart-elements/{docid}/workflows/transitions/right/{transition}</sde:pattern>
+      <sde:description>Control transition access</sde:description>
+      <sde:requiredAccess>
+        <sde:access ns="AnakeenTestTools">TestUser</sde:access>
+      </sde:requiredAccess>
+    </sde:route>
+    <sde:route name="TestSetState">
+      <sde:callable>Anakeen\TestTools\Routes\State</sde:callable>
+      <sde:method>PUT</sde:method>
+      <sde:pattern>/api/v2/test-tools/smart-elements/{docid}/workflows/states/{state}/</sde:pattern>
+      <sde:description>Set a transition</sde:description>
+      <sde:requiredAccess>
+        <sde:access ns="AnakeenTestTools">TestUser</sde:access>
+      </sde:requiredAccess>
+    </sde:route>
+    <sde:route name="TestRightAccess">
+      <sde:callable>Anakeen\TestTools\Routes\RightAccess</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/api/v2/test-tools/smart-elements/{seId}/rights/{acl}</sde:pattern>
+      <sde:description>Test right access</sde:description>
+      <sde:requiredAccess>
+        <sde:access ns="AnakeenTestTools">TestUser</sde:access>
+      </sde:requiredAccess>
+    </sde:route>
+    <sde:route name="TestViewAccess">
+      <sde:callable>Anakeen\TestTools\Routes\ViewAccess</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/api/v2/test-tools/smart-elements/{seId}/views/{viewId}</sde:pattern>
+      <sde:description>Test view access</sde:description>
+      <sde:requiredAccess>
+        <sde:access ns="AnakeenTestTools">TestUser</sde:access>
+      </sde:requiredAccess>
+    </sde:route>
+    <sde:route name="TestGetDocument">
+      <sde:priority>1</sde:priority>
+      <sde:callable>Anakeen\Routes\Core\DocumentData</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/api/v2/test-tools/smart-elements/{docid:[^/.]+}[.json]</sde:pattern>
+      <sde:pattern>/api/v2/test-tools/smart-structures/{family}/smart-elements/{docid:[^/.]+}[.json]</sde:pattern>
+      <sde:description>Get data for a SE</sde:description>
+      <sde:requiredAccess/>
+    </sde:route>
+    <sde:route name="TestSmartFieldRight">
+      <sde:callable>Anakeen\TestTools\Routes\SmartFieldRight</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/api/v2/test-tools/smart-elements/{seId}/smartfields/{smartfield}/right/{acl}</sde:pattern>
+      <sde:description>Get smartfield right</sde:description>
+      <sde:requiredAccess>
+        <sde:access ns="AnakeenTestTools">TestUser</sde:access>
+      </sde:requiredAccess>
+    </sde:route>
+    <sde:route name="TestSmartFieldValue">
+      <sde:callable>Anakeen\TestTools\Routes\SmartFieldValue</sde:callable>
+      <sde:method>PUT</sde:method>
+      <sde:pattern>/api/v2/test-tools/smart-elements/{seId}/smartfields/values</sde:pattern>
+      <sde:description>Get smartfield values</sde:description>
+      <sde:requiredAccess>
+        <sde:access ns="AnakeenTestTools">TestUser</sde:access>
+      </sde:requiredAccess>
+    </sde:route>
+  </sde:routes>
+
+  <sde:middlewares namespace="AnakeenTestToolsMiddleWares">
+    <sde:middleware name="Middleware:TestToolsUserChange">
+      <sde:priority>0</sde:priority>
+      <sde:callable>Anakeen\TestTools\Routes\Middleware\TestToolsUserChange</sde:callable>
+      <sde:method>ANY</sde:method>
+      <sde:pattern>[/api/v2/test-tools/{args:.*}]</sde:pattern>
+      <sde:description>Test with an user</sde:description>
+      <sde:requiredAccess/>
+    </sde:middleware>
+    <sde:middleware name="Middleware:TestToolsDryRun">
+      <sde:priority>0</sde:priority>
+      <sde:callable>Anakeen\TestTools\Routes\Middleware\TestToolsDryRun</sde:callable>
+      <sde:method>ANY</sde:method>
+      <sde:pattern>[/api/v2/test-tools/{args:.*}]</sde:pattern>
+      <sde:description>Test can save and revert after</sde:description>
+      <sde:requiredAccess/>
+    </sde:middleware>
+  </sde:middlewares>
+  
+  <sde:accesses namespace="AnakeenTestTools">
+    <sde:access name="TestUser">
+      <sde:description>Test administrator access</sde:description>
+    </sde:access>
+    <sde:route-access ref="TestUser" account="test_user_role" />
+  </sde:accesses>
+
+</sde:config>
