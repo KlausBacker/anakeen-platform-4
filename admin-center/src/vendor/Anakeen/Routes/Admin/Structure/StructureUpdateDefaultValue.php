@@ -23,7 +23,7 @@ class StructureUpdateDefaultValue extends StructureFields
         "value" => "",
         "valueType" => "",
     ];
-    
+
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $this->initData($request->getParsedBody()["params"], $args);
@@ -68,7 +68,7 @@ class StructureUpdateDefaultValue extends StructureFields
     private function formatArray($arrayToFormat)
     {
         $formattedArray = [];
-        for ($i=0; $i < count($arrayToFormat); $i++) {
+        for ($i = 0; $i < count($arrayToFormat); $i++) {
             $formattedArray[$i] = [];
             foreach ($arrayToFormat[$i] as $line) {
                 foreach ($line as $key => $value) {
@@ -77,5 +77,9 @@ class StructureUpdateDefaultValue extends StructureFields
             }
         }
         return $formattedArray;
+    }
+    public static function hello($myNumber)
+    {
+        return $myNumber;
     }
 }

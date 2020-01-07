@@ -35,6 +35,7 @@
       v-if="haveParameters"
       ref="ssmForm"
       :config="generateSmartForm"
+      :options="{ force: true }"
       @actionClick="formClickMenu"
       @ready="ssmFormReady"
       @smartFieldChange="ssmFormChange"

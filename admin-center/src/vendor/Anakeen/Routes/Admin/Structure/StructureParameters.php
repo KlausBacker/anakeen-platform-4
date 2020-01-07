@@ -38,15 +38,15 @@ class StructureParameters extends StructureFields
     {
         $configParams = $structure->getOwnParams();
         if ($structure->fromid) {
-            $parentStruct=SEManager::getFamily($structure->fromid);
+            $parentStruct = SEManager::getFamily($structure->fromid);
             $configParentParameters = $parentStruct->getParams();
         } else {
-            $configParentParameters=[];
+            $configParentParameters = [];
         }
         $data = [];
         $element = SEManager::createTemporaryDocument($structure->name, true);
 
-        $formater=new FormatCollection($element);
+        $formater = new FormatCollection($element);
 
         $paramAttributes = $structure->getParamAttributes();
         foreach ($paramAttributes as $oa) {
@@ -54,14 +54,14 @@ class StructureParameters extends StructureFields
                 continue;
             }
 
-            $data[$oa->id]["configurationParameter"]=$configParams[$oa->id]??null;
+            $data[$oa->id]["configurationParameter"] = $configParams[$oa->id] ?? null;
             if ($structure->fromid) {
                 $data[$oa->id]["parentConfigurationParameters"] = $configParentParameters[$oa->id] ?? null;
             }
-            $data[$oa->id]["result"]= json_decode(json_encode($formater->getInfo($oa, $element->getParamValue($oa->id), $element)), true);
-            $data[$oa->id]["configurationParameter"]=$configParams[$oa->id]??null;
+            $data[$oa->id]["result"] = json_decode(json_encode($formater->getInfo($oa, $element->getParamValue($oa->id), $element)), true);
+            $data[$oa->id]["configurationParameter"] = $configParams[$oa->id] ?? null;
         }
-        
+
         return $data;
     }
 }

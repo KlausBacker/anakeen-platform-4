@@ -4,6 +4,8 @@ namespace Anakeen\Routes\Admin\Structure;
 
 use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure;
+use ReflectionMethod;
+use ReflectionException;
 
 /**
  * Update Structure Parameters
@@ -18,13 +20,13 @@ class StructureUpdateParameter extends StructureFields
     protected $structure = null;
 
     private $data = [];
-    
+
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $this->initData($request->getParsedBody()["params"], $args);
-        // $err = "";
         $err = $this->manageNewParameter();
         if ($err !== "") {
+            error_log($err);
             return $response->withStatus(500, $err)->write($err);
         }
         return $response->withStatus(200);
@@ -32,46 +34,53 @@ class StructureUpdateParameter extends StructureFields
 
     protected function initData($dataFromFront, $args)
     {
+        error_log(var_export(json_decode($dataFromFront), true));
         foreach (json_decode($dataFromFront) as $key => $value) {
             $this->data[$key] = $value;
-            if(is_null($this->structure)) {
+            if (is_null($this->structure)) {
                 $this->structure = SEManager::getFamily($this->data[$key]->structureId);
             }
         }
     }
-
     private function manageNewParameter()
     {
         $err = "";
-        foreach ($this->data as $parameterId => $parameterData) {
-            if($err === "") {
+        foreach ($this->data as $parameterData) {
+            if ($err === "") {
                 if ($parameterData->valueType === "no_value") {
                     $err = $this->structure->setParam($parameterData->parameterId, null);
                 } elseif ($parameterData->valueType === "value" && $parameterData->value === "") {
                     $err = $this->structure->setParam($parameterData->parameterId, "");
+                } elseif ($parameterData->valueType === "advanced_value") {
+                    $err = $this->manageAdvancedValue($parameterData->parameterId, $parameterData->value);
                 } else {
+                    error_log(gettype($parameterData->value));
+                    error_log($parameterData->value);
                     $err = $this->structure->setParam($parameterData->parameterId, $parameterData->value);
                 }
 
-                if($err !== "") {
+                if ($err !== "") {
                     return $err;
                 }
                 $err = $this->structure->modify();
             }
         }
         return $err;
-
-        // if ($this->data["valueType"] === "no_value") {
-        //     $err = $this->data["structure"]->setParam($this->data["parameterId"], null);
-        // } elseif ($this->data["valueType"] === "value" && $this->data["value"] === "") {
-        //     $err = $this->data["structure"]->setParam($this->data["parameterId"], "");
-        // } else {
-        //     $err = $this->data["structure"]->setParam($this->data["parameterId"], $this->data["value"]);
-        // }
-
-        // if ($err !== "") {
-        //     return $err;
-        // }
-        // return $this->data["structure"]->modify();
+    }
+    private function manageAdvancedValue($parameterId, $advancedValue)
+    {
+        $oParse = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
+        $structureFunction = $oParse->parse($advancedValue);
+        $funcError = $oParse->getError();
+        if ($funcError === "") {
+            try {
+                $refMeth = new ReflectionMethod($structureFunction->className, $structureFunction->methodName);
+                return $this->structure->setParam($parameterId, $structureFunction->funcCall);
+            } catch (\ReflectionException $refErr) {
+                return $refErr->getMessage();
+            }
+        } else {
+            return $funcError;
+        }
     }
 }
