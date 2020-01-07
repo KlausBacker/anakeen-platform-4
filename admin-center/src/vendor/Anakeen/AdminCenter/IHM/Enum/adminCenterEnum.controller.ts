@@ -376,19 +376,23 @@ export default class AdminCenterEnumController extends Vue {
   }
 
   private disableInitialDataRowAction() {
-    const delButtonsList = document.querySelectorAll("[Title='Delete line']");
-    const selectButtonsList = document.querySelectorAll("[Title='Select line']");
     const enumArrayKeyInputs = document.querySelectorAll("[name='enum_array_key']");
+    const delButtonsList = $(".dcpArray__content__tollCell__delete");
+    const selectButtonsList = $(".dcpArray__content__toolCell__check");
     // Remove the "duplicate selected line" button
-    document.querySelectorAll("[Title='Dupliquer la ligne sélectionnée']")[0].remove();
+    $(".dcpArray__button--copy")[0].remove();
     // Remove the "delete line" button
-    delButtonsList.forEach(deleteButton => {
-      deleteButton.remove();
+    // @ts-ignore
+    delButtonsList.each((key,val) => {
+      val.remove();
     });
     // Remove the "select line" button
-    selectButtonsList.forEach(selectButton => {
-      selectButton.remove();
+    // @ts-ignore
+    selectButtonsList.each((key,val) => {
+      val.remove();
     });
+
+
     // Make "keys" read-only for already existing enums and no deletables
     enumArrayKeyInputs.forEach(enumArrayKeyInput => {
       enumArrayKeyInput.setAttribute("disabled", "");
