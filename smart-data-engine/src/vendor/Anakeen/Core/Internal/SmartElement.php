@@ -6429,9 +6429,9 @@ create unique index i_docir on doc(initid, revision);";
                         substr($v["using"], 1)
                     );
                 }
-                $t[] = sprintf("CREATE $unique INDEX %s$id on  doc$id using %s(%s);\n", $k, $v["using"], $v["on"]);
+                $t[] = sprintf("CREATE $unique INDEX if not exists \"%s%d\" on doc%d using %s(%s);\n", $k, $id, $id, $v["using"], $v["on"]);
             } else {
-                $t[] = sprintf("CREATE $unique INDEX %s$id on  doc$id(%s);\n", $k, $v["on"]);
+                $t[] = sprintf("CREATE $unique INDEX if not exists \"%s%d\" on doc%d(%s);\n", $k, $id, $id, $v["on"]);
             }
         }
         return $t;
