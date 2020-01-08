@@ -21,7 +21,8 @@ exports.builder = controlArguments({
         throw new Error("Unable to find the file " + arg);
       }
       return arg;
-    }
+    },
+    conflicts: ["sourcePath"]
   },
   sourcePath: {
     description: "path of the info.xml for the autorelease mode",
@@ -32,7 +33,8 @@ exports.builder = controlArguments({
         throw new Error("Unable to find the source directory " + arg);
       }
       return arg;
-    }
+    },
+    conflicts: ["appPath"]
   },
   autoRelease: {
     description: "prefix for version minor part. Add current timestamp",
@@ -51,17 +53,19 @@ exports.handler = function(argv) {
     let checkPromise = Promise.resolve();
     signale.time("deploy");
     let task;
-    if (argv.sourcePath) {
+    if (argv.sourcePath && !argv.appPath) {
       signale.info("source mode");
       if (!argv.noCheck) {
         checkPromise = check.handler(argv, true);
       }
       buildAndDeploy(argv);
       task = gulp.task("buildAndDeploy");
-    } else {
+    } else if (argv.appPath && !argv.sourcePath) {
       signale.info("app deploy mode " + argv.appPath);
       deploy(argv);
       task = gulp.task("deploy");
+    } else {
+      signale.error("You must use either '--appPath' or '--sourcePath' option");
     }
     checkPromise
       .then(() => {
