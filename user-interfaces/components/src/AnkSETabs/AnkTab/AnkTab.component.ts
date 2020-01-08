@@ -5,7 +5,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 export default class Tab extends Vue {
   @Prop({ default: "", type: String }) public label!: string;
   @Prop({ default: false, type: Boolean }) public disabled!: boolean;
-  @Prop({ type: String }) public name!: string;
+  @Prop({ type: String, required: true }) public name!: string;
   @Prop({ default: false, type: Boolean }) public closable!: boolean;
   @Prop({ default: false, type: Boolean }) public lazy!: boolean;
 
@@ -14,7 +14,6 @@ export default class Tab extends Vue {
     this.$parent.$emit("tabLabelChanged");
   }
 
-  public index: any = null;
   public loaded: boolean = false;
 
   get selectedTab() {
@@ -37,6 +36,6 @@ export default class Tab extends Vue {
   }
 
   get paneName() {
-    return this.name || this.index;
+    return this.name;
   }
 }
