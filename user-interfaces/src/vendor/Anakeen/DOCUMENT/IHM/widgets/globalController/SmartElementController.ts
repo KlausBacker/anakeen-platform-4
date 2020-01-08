@@ -84,7 +84,7 @@ interface ISmartElementModel extends Backbone.Model {
 
   getServerProperties(): any;
 
-  getValues(): any;
+  getValues(onlyModified?:boolean): any;
 
   unautolock(): Promise<any>;
 
@@ -489,9 +489,9 @@ export default class SmartElementController extends AnakeenController.BusEvents.
    *
    * @returns {*|{}}
    */
-  public getValues() {
+  public getValues(onlyModified= false) {
     this.checkInitialisedModel();
-    return this._model.getValues();
+    return this._model.getValues(onlyModified);
   }
 
   /**
