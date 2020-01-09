@@ -59,7 +59,7 @@ export default class ParameterEditorController extends Vue {
   public editRoute;
   public jsonValue: object = {};
   // Saved value sent by the server in response
-  public responseValue: string = "";
+  public responseValue: string | null = null;
   // Memorize kendo widgets
   public editionWindow: any = null;
   public confirmationWindow: any = null;
@@ -68,6 +68,8 @@ export default class ParameterEditorController extends Vue {
   public isNotJson: boolean = false;
   // Open the parameter editor with corresponding fields
   public openEditor() {
+    this.responseValue = null;
+
     if (this.editedItem) {
       let kendoDropdown = null;
       // Init kendoDropDown if edited item is an enum
@@ -138,7 +140,7 @@ export default class ParameterEditorController extends Vue {
   // Send request to modify parameter in server
   public modifyParameter() {
     // Get new value to save depending on the parameter type
-    let newValue;
+    let newValue = null;
     if (this.parameterInputType === "json" && ParameterEditorController.isJson(this.editedItem.value)) {
       newValue = $(".parameter-new-value", this.$el).val();
     } else if (this.parameterInputType === "enum") {
@@ -147,10 +149,8 @@ export default class ParameterEditorController extends Vue {
       $(".parameter-new-value", this.$el).css("border-color", "");
       newValue = $(".parameter-new-value", this.$el).val();
     }
-    if (newValue === "") {
-      newValue = " ";
-    }
-    if (newValue) {
+
+    if (newValue !== null) {
       if (this.parameterInputType === "json" && !ParameterEditorController.isJson(newValue)) {
         $(".parameter-new-value", this.$el).css("border-color", "red");
         this.isNotJson = true;
