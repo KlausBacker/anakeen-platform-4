@@ -1,12 +1,18 @@
 .ssm-default-grid {
-  flex: 1;
   display: flex;
-  min-height: 0;
+  flex-direction: column;
+  height: 100%;
+  // flex: 1;
+  // display: flex;
+  // min-height: 0;
   /deep/ {
     .default-grid-content {
-      flex: 1;
-      min-height: 0;
-      background-color: var(--white);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      // flex: 1;
+      // min-height: 0;
+      // background-color: var(--white);
 
       .k-header {
         background-color: #F5F5F5;
@@ -34,14 +40,22 @@
             border: none;
           }
         }
-
-        .k-grid-content {
-          flex: 1;
-          min-height: 0;
-          overflow-y: auto;
-          background-color: var(--white);
-        }
       }
+        // .k-grid-content {
+        //   flex: 1;
+        //   min-height: 0;
+        //   overflow-y: auto;
+        //   background-color: var(--white);
+        // }
+        .k-grid-content.k-auto-scrollable {
+          height: 100%;
+          min-height: 0;
+        }
+        .k-grid.k-widget.k-display-block {
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+        }
     }
   }
 }

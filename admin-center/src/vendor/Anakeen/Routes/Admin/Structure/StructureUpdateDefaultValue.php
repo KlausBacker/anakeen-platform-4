@@ -4,6 +4,7 @@ namespace Anakeen\Routes\Admin\Structure;
 
 use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure;
+use ReflectionMethod;
 
 /**
  * Update Structure Default Value
@@ -17,18 +18,14 @@ class StructureUpdateDefaultValue extends StructureFields
      */
     protected $structure = null;
 
-    private $data = [
-        "structureId" => "",
-        "fieldId" => "",
-        "value" => "",
-        "valueType" => "",
-    ];
+    private $data = [];
 
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $this->initData($request->getParsedBody()["params"], $args);
         $err = $this->manageNewDefValue();
         if ($err !== "") {
+            error_log($err);
             return $response->withStatus(500, $err)->write($err);
         }
         return $response->withStatus(200);
@@ -38,8 +35,13 @@ class StructureUpdateDefaultValue extends StructureFields
     {
         foreach (json_decode($dataFromFront) as $key => $value) {
             $this->data[$key] = $value;
+            if ($key === "value") {
+            }
+            if (is_null($this->structure) && $key === "structureId") {
+                // error_log(var_export($this->data[$key], true));
+                $this->structure = SEManager::getFamily($value);
+            }
         }
-        $this->data["structure"] = SEManager::getFamily($this->data["structureId"]);
     }
 
     private function manageNewDefValue()
@@ -52,17 +54,19 @@ class StructureUpdateDefaultValue extends StructureFields
 
         $err = "";
         if ($this->data["valueType"] === "no_value") {
-            $err = $this->data["structure"]->setDefValue($this->data["fieldId"], "NULL");
+            $err = $this->structure->setDefValue($this->data["fieldId"], "");
         } elseif ($this->data["valueType"] === "value" && $this->data["value"] === "") {
-            $err = $this->data["structure"]->setDefValue($this->data["fieldId"], "");
+            $err = $this->structure->setDefValue($this->data["fieldId"], "");
+        } elseif ($this->data["valueType"] === "advanced_value") {
+            $err = $this->manageAdvancedValue($this->data["fieldId"], $this->data["value"]);
         } else {
-            $err = $this->data["structure"]->setDefValue($this->data["fieldId"], $finalValue);
+            $err = $this->structure->setDefValue($this->data["fieldId"], $finalValue);
         }
 
         if ($err !== "") {
             return $err;
         }
-        return $this->data["structure"]->modify();
+        return $this->structure->modify();
     }
 
     private function formatArray($arrayToFormat)
@@ -77,6 +81,24 @@ class StructureUpdateDefaultValue extends StructureFields
             }
         }
         return $formattedArray;
+    }
+
+    private function manageAdvancedValue($defaultValueId, $advancedValue)
+    {
+        $oParse = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
+        $structureFunction = $oParse->parse($advancedValue);
+        $funcError = $oParse->getError();
+        if ($funcError === "") {
+            try {
+                $refMeth = new ReflectionMethod($structureFunction->className, $structureFunction->methodName);
+                error_log(var_export($structureFunction->funcCall, true));
+                return $this->structure->setDefValue($defaultValueId, $structureFunction->funcCall);
+            } catch (\ReflectionException $refErr) {
+                return $refErr->getMessage();
+            }
+        } else {
+            return $funcError;
+        }
     }
     public static function hello($myNumber)
     {

@@ -41,15 +41,15 @@ class StructureDefaultValues extends StructureFields
     {
         $configDefValues = $structure->getOwnDefValues();
         if ($structure->fromid) {
-            $parentStruct=SEManager::getFamily($structure->fromid);
+            $parentStruct = SEManager::getFamily($structure->fromid);
             $configParentValues = $parentStruct->getDefValues();
         } else {
-            $configParentValues=[];
+            $configParentValues = [];
         }
         $data = [];
         $element = SEManager::createTemporaryDocument($structure->name, true);
 
-        $formater=new FormatCollection($element);
+        $formater = new FormatCollection($element);
 
 
         $fields = $structure->getNormalAttributes();
@@ -60,15 +60,15 @@ class StructureDefaultValues extends StructureFields
             $isMultiple = $oa->isMultiple();
 
 
-            $data[$oa->id]["configurationValue"]=$configDefValues[$oa->id]??null;
+            $data[$oa->id]["configurationValue"] = $configDefValues[$oa->id] ?? null;
             if ($structure->fromid) {
                 $data[$oa->id]["parentConfigurationValue"] = $configParentValues[$oa->id] ?? null;
             }
 
 
-            $data[$oa->id]["result"]= json_decode(json_encode($formater->getInfo($oa, $element->getRawValue($oa->id), $element)), true);
+            $data[$oa->id]["result"] = json_decode(json_encode($formater->getInfo($oa, $element->getRawValue($oa->id), $element)), true);
 
-            $data[$oa->id]["configurationValue"]=$configDefValues[$oa->id]??null;
+            $data[$oa->id]["configurationValue"] = $configDefValues[$oa->id] ?? null;
             /*
                 "configurationValue" => ,
                 "type" => $oa->type,

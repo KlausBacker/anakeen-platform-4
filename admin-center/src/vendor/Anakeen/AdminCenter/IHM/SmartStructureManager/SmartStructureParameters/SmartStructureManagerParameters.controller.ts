@@ -285,7 +285,7 @@ export default class SmartStructureManagerParametersController extends Vue {
           // ToDo : Refactor as multiple functions
           if (param) {
             const configParam = paramsValues[item].configurationParameter;
-            let type = param.type;
+            const type = param.type;
             let isAdvancedValue = false;
             let rawValue: object = {};
             let displayValue: object = {};

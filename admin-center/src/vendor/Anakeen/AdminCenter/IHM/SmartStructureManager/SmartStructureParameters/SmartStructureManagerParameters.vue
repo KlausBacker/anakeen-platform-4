@@ -40,17 +40,17 @@
       @ready="ssmFormReady"
       @smartFieldChange="ssmFormChange"
     />
-    <div class="no-records" v-else>
+    <div v-else class="no-records">
       <div class="empty-ssm-grid">
-      <div class="empty-ssm-grid-icon">
-        <i class="material-icons">grid_off</i>
-      </div>
-      <div class="empty-ssm-grid-text">
-        <span>No parameters to display for this Smart Structure</span>
+        <div class="empty-ssm-grid-icon">
+          <i class="material-icons">grid_off</i>
+        </div>
+        <div class="empty-ssm-grid-text">
+          <span>No parameters to display for this Smart Structure</span>
+        </div>
       </div>
     </div>
-    </div>
-    
+
     <!-- <transition name="modal">
       <div v-show="showModal" class="modal-mask">
         <div class="modal-wrapper" @click="showModal = false">
