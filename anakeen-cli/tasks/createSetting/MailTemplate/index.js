@@ -9,7 +9,7 @@ exports.writeTemplate = (installPath, argv) => {
     } else {
       fsUtils
         .writeTemplate(
-          path.resolve(installPath, `250-${argv.settingFileName}.xml`),
+          path.resolve(installPath, `250-MailTemplate${argv.settingFileName}.xml`),
           path.resolve(__dirname, "xml", "MailTemplate.xml"),
           Object.assign({}, argv, {
             nameLabel: argv.name.replace(/([A-Z])/g, "$1").trim(),

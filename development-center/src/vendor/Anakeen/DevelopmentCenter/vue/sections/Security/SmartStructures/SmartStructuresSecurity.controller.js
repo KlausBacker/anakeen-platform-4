@@ -17,6 +17,11 @@ export default {
       return this.ssList.filter(item => this.alreadyClicked(item));
     }
   },
+  watch: {
+    ssName(newValue) {
+      this.selectedStructure = newValue;
+    }
+  },
   data() {
     return {
       selectedStructure: this.ssName,

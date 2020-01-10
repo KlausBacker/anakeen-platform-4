@@ -63,7 +63,7 @@ class CliInit extends CliCommand
         $rootContextPath = sprintf(realpath($wiff->getWiffRoot() . "../"));
         $contextPath = sprintf("%s/platform", $rootContextPath);
         if (!is_dir($contextPath)) {
-            if (!is_writable($contextPath)) {
+            if (!is_writable($rootContextPath)) {
                 throw new RuntimeException(sprintf("The directory %s is not writable", $rootContextPath));
             } else {
                 $output->writeln("<info>mkdir $contextPath</info>");

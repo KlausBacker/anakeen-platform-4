@@ -9,7 +9,7 @@ exports.writeTemplate = (installPath, argv) => {
     } else {
       fsUtils
         .writeTemplate(
-          path.resolve(installPath, `220-${argv.settingFileName}.xml`),
+          path.resolve(installPath, `220-ViewControl${argv.settingFileName}.xml`),
           path.resolve(__dirname, "xml", "ViewControl.xml"),
           Object.assign({}, argv, {
             nameLabel: argv.name.replace(/([A-Z])/g, "$1").trim(),

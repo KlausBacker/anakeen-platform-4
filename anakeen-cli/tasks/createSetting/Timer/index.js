@@ -9,7 +9,7 @@ exports.writeTemplate = (installPath, argv) => {
     } else {
       fsUtils
         .writeTemplate(
-          path.resolve(installPath, `260-${argv.settingFileName}.xml`),
+          path.resolve(installPath, `260-Timer${argv.settingFileName}.xml`),
           path.resolve(__dirname, "xml", "Timer.xml"),
           Object.assign({}, argv, {
             nameLabel: argv.name.replace(/([A-Z])/g, "$1").trim(),
