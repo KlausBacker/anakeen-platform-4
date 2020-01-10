@@ -129,6 +129,14 @@ class Context extends ContextProperties
         return true;
     }
 
+    public function dirExists()
+    {
+        if (!is_dir($this->root)) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Import archive in Context
      *
