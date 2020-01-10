@@ -311,8 +311,10 @@ class ModuleJob
             JobLog::writeInterruption();
             $err = posix_strerror(posix_get_last_error());
             throw new RuntimeException(
-                "[$err] Seems job process is died. \n Try to remove \"./control/%spid\" file.",
-                \WIFF::run_dir
+                sprintf(
+                    "[$err] Seems job process is died. \n Try to remove \"./control/%spid\" file.",
+                    \WIFF::run_dir
+                )
             );
         }
         return true;
