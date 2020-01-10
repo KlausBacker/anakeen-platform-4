@@ -527,7 +527,7 @@ export default Backbone.View.extend({
    */
   showHistory: function vDocumentShowHistory(docid) {
     var scope = this;
-    var $target = this.$el.find('<div class="document-history"/>');
+    var $target = $('<div class="document-history"/>');
     this.historyWidget = $target
       .dcpDocumentHistory({
         documentId: docid || this.model.get("properties").get("initid"),
