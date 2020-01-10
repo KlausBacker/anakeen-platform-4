@@ -139,7 +139,12 @@ create unique index idx_idfam on docfam(id);";
         $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
             return \Anakeen\Core\SmartStructure\SmartStructureImport::refreshPhpPgDoc($this->dbaccess, $this->id);
         })->addListener(SmartHooks::POSTIMPORT, function () {
-            return $this->updateWorkflowAttributes();
+            $err = $this->updateWorkflowAttributes();
+            if (!$err) {
+                $se = SEManager::initializeDocument($this->id);
+                $err = $se->getHooks()->trigger(\Anakeen\SmartHooks::POSTSTRUCTUREIMPORT, $this);
+            }
+            return $err;
         })->addListener(SmartHooks::PREDELETE, function () {
             return ___("Structure cannot be deleted", "sde");
         })->addListener(SmartHooks::PRECREATED, function () {
@@ -329,7 +334,7 @@ create unique index idx_idfam on docfam(id);";
             }
         }
         if ($oa) {
-            if ($oa->isMultiple() && ! is_array($val)) {
+            if ($oa->isMultiple() && !is_array($val)) {
                 return \ErrorCode::getError('DOC0137', $this->name, $idp, $val);
             }
         }
@@ -546,7 +551,7 @@ create unique index idx_idfam on docfam(id);";
         }
 
         $tval2 = $this->$tval;
-        $v =  $tval2[strtolower($idp)]?? null;
+        $v = $tval2[strtolower($idp)] ?? null;
         if ($v === "-") {
             return $def;
         }

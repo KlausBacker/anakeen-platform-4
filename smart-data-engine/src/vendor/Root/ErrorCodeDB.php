@@ -139,4 +139,15 @@ class ErrorCodeDB
      * @errorCode pg array syntax error
      */
     const DB0209 = 'malformed postgresql array literal : invalid null char in "%s"';
+
+    /**
+     * @see \Anakeen\Database\SmartIndex::setColumns()
+     * @errorCode Only column of smart element table can be use for indexes (not use frame or tab)
+     */
+    const DB0210 = 'Index must reference a smart field of "%s" structure: column "%s" not exists';
+    /**
+     * @errorCode At least on column must be set in definition index
+     * @see \Anakeen\Database\SmartIndex::setColumns()
+     */
+    const DB0211 = 'Index must reference at least one smart field of "%s" structure: no columns set';
 }

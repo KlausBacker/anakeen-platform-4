@@ -3,6 +3,7 @@
 namespace Anakeen;
 
 use Anakeen\Core\Internal\SmartElement;
+use Anakeen\Core\SmartStructure;
 
 interface SmartHooks
 {
@@ -116,6 +117,10 @@ interface SmartHooks
      * @see \Anakeen\Core\Internal\SmartElement::refresh()
      */
     const POSTREFRESH = "postRefresh";
+    /**
+     * Call when SmartStructure is imported
+     */
+    const POSTSTRUCTUREIMPORT = "postStructureImport";
 
     public function registerHooks();
 }
