@@ -643,7 +643,7 @@ export default Backbone.View.extend({
    */
   showProperties: function vDocumentShowProperties(docid) {
     var scope = this;
-    var $target = this.$el.find('<div class="document-properties"/>');
+    var $target = $('<div class="document-properties"/>');
 
     this.propertiesWidget = $target
       .dcpDocumentProperties({
