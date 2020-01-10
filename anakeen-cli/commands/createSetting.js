@@ -219,28 +219,18 @@ const builder = {
     }
   },
   settingPath: {
-    description: "path where the setting will be added",
+    description: "path to the directory where the setting file will be added",
     type: "string",
     default: () => {
       if (moduleData.buildInfo) {
         return defaultPath();
       }
       return "";
-    },
-    coerce: arg => {
-      if (!arg) {
-        return arg;
-      }
-      if (!fs.statSync(arg).isDirectory()) {
-        throw new Error("Unable to find the setting directory " + arg);
-      }
-      return arg;
     }
   },
-  inSelfDirectory: {
-    description: "add a directory for the new setting (not compatible with settingPath)",
-    default: true,
-    type: "boolean"
+  settingFileName: {
+    description: "name of the setting file",
+    type: "string"
   }
 };
 

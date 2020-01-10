@@ -15,7 +15,7 @@ exports.createSetting = ({
   associatedSmartStructure,
   associatedWorkflow,
   type,
-  inSelfDirectory = true,
+  settingFileName,
   insertIntoInfo = true
 }) => {
   return gulp.task("createSetting", async () => {
@@ -61,25 +61,24 @@ exports.createSetting = ({
 
       settingPath = path.join(srcPath, basePath);
     }
-    //Create the directory if needed
     let directoryPromise = Promise.resolve(settingPath);
     const Name = camelCase(name, { pascalCase: true });
-
-    // a suppr
-    // const Name = name.charAt(0).toUpperCase() + name.slice(1);
-    if (inSelfDirectory) {
-      const namePascalCase = camelCase(Name, { pascalCase: true });
-
-      const settingDirectory = path.join(settingPath, namePascalCase);
-      directoryPromise = new Promise((resolve, reject) => {
-        fsUtils.mkpdir(settingDirectory, err => {
-          if (err) {
-            reject(err);
-          }
-          resolve(settingDirectory);
-        });
-      });
+    if (!settingFileName) {
+      // set default value of settingFileName to the name of the setting
+      settingFileName = camelCase(Name, { pascalCase: true });
+    } else {
+      // set value by user's value
+      settingFileName = camelCase(settingFileName, { pascalCase: true });
     }
+    // create the directory as needed
+    directoryPromise = new Promise((resolve, reject) => {
+      fsUtils.mkpdir(settingPath, err => {
+        if (err) {
+          reject(err);
+        }
+        resolve(settingPath);
+      });
+    });
     return directoryPromise
       .then(currentPath => {
         return generateSetting(currentPath, {
@@ -91,7 +90,7 @@ exports.createSetting = ({
           associatedSmartStructure,
           associatedWorkflow,
           type,
-          inSelfDirectory,
+          settingFileName,
           insertIntoInfo
         });
       })
