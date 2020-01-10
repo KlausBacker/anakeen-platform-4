@@ -882,11 +882,30 @@ EOF;
                     $repoList[] = new Repository($repository);
                 }
                 
-                $contextClass = new Context($context->getAttribute('name'), $context->getElementsByTagName('description')->item(0)->nodeValue, $context->getAttribute('root'), $repoList, $context->getAttribute('url'), $context->getAttribute('register'));
+                $contextClass = new Context(
+                    $context->getAttribute('name'),
+                    $context->getElementsByTagName('description')->item(0)->nodeValue,
+                    $context->getAttribute('root'),
+                    $repoList,
+                    $context->getAttribute('url'),
+                    $context->getAttribute('register')
+                );
                 $contextClass->isValid();
-                if ($verifyContextList && !$contextClass->isWritable()) {
-                    $this->errorMessage = sprintf("Apache users does not have write rights for context '%s'.", $contextClass->name);
-                    return false;
+                if ($verifyContextList) {
+                    if (!$contextClass->dirExists()) {
+                        $this->errorMessage = sprintf(
+                            "Directory '%s' not exists.",
+                            $contextClass->root
+                        );
+                        return false;
+                    }
+                    if (!$contextClass->isWritable()) {
+                        $this->errorMessage = sprintf(
+                            "Apache users does not have write rights for directory '%s'.",
+                            $contextClass->root
+                        );
+                        return false;
+                    }
                 }
 
                 
