@@ -432,7 +432,7 @@ class ModuleJob
         JobLog::setStatus("", "", ModuleJob::RUNNING_STATUS);
         $moduleName = self::$jobData["moduleArg"] ?? "";
         $moduleFileName = self::$jobData["file"] ?? "";
-        $action = self::$jobData["action"];
+        $action = self::$jobData["action"] ?? "";
         $module = null;
         if ($action !== "restore") {
             if ($moduleFileName) {
