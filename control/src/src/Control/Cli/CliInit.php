@@ -34,10 +34,10 @@ class CliInit extends CliCommand
     {
         $pgService = $input->getOption("pg-service");
         if (!$pgService) {
-             throw new InvalidOptionException(sprintf('"pg-service" option is needed'));
+            throw new InvalidOptionException(sprintf('"pg-service" option is needed'));
         }
 
-        set_error_handler(function ($errno, $errstr, $errfile, $errline ) {
+        set_error_handler(function ($errno, $errstr, $errfile, $errline) {
             throw new \ErrorException($errstr, $errno, 0, $errfile, $errline);
         });
 
@@ -63,12 +63,13 @@ class CliInit extends CliCommand
         $rootContextPath = sprintf(realpath($wiff->getWiffRoot() . "../"));
         $contextPath = sprintf("%s/platform", $rootContextPath);
         if (!is_dir($contextPath)) {
-            if (!is_writable($rootContextPath)) {
-                throw new RuntimeException(sprintf("The directory %s is not writable", $rootContextPath));
-            } else {
-                $output->writeln("<info>mkdir $contextPath</info>");
-                mkdir($contextPath);
+            $output->writeln("<info>mkdir $contextPath</info>");
+            if (!mkdir($contextPath)) {
+                throw new RuntimeException(sprintf("Cannot create platform directory '%s'", $contextPath));
             }
+        }
+        if (!is_writable($contextPath)) {
+            throw new RuntimeException(sprintf("The platform directory '%s' is not writable", $contextPath));
         }
 
         AskParameters::setParameters([
