@@ -1,21 +1,42 @@
 .dcpAttribute__content--longtext .dcpAttribute__content__value {
-  white-space:pre-line;
+  white-space: pre-line;
 }
 .dcpAttribute__content--longtext textarea {
-  resize:vertical;
+  resize: vertical;
   min-height: $ank-ui-input-height;
-  border:none;
+  border: none;
 }
 
 .dcpAttribute__content--longtext textarea.form-control.k-textbox {
-  padding-left : 1em;
-  padding-top : 0.4em;
+  padding-left: 1em;
+  padding-top: 0.4em;
 }
-
 
 .dcpAttribute__content.dcpAttribute__content--longtext .input-group-addon {
   .dcpAttribute__content__button--delete {
-    height:2rem;
+    height: 2rem;
     left: -2rem;
+  }
+}
+
+.dcpDocument--edit,
+.dcpDocument--create {
+  .dcpAttribute__content.dcpAttribute__content--longtext {
+    textarea.form-control.k-textbox {
+      padding: 0.5rem 0.75rem;
+      border: none;
+    }
+    .k-autocomplete.dcpAttribute__value.dcpAttribute__value--edit.k-textbox {
+      height: auto;
+    }
+  }
+}
+
+.dcpDocument--view {
+  .dcpAttribute__content.dcpAttribute__content--json {
+    .dcpAttribute__content__value {
+      white-space: pre;
+      font-family: monospace;
+    }
   }
 }

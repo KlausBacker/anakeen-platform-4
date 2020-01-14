@@ -32,19 +32,16 @@
 }
 
 .dcpAttribute__content--htmltext {
-
   .cke_wysiwyg_div {
     padding: 0.5rem;
-
   }
-
 
   a.cke_toolbox_collapser {
     float: none;
     height: 26px;
     flex-basis: 1rem;
     min-width: 1rem;
-    margin:0;
+    margin: 0;
     border-style: none dotted none none;
     vertical-align: middle;
     display: flex;
@@ -74,8 +71,6 @@
   .cke.cke_float {
     border-top: solid 0.2rem transparent;
     border-bottom: solid 0.2rem transparent;
-    //border-width: 0.2rem;
-    //border-style:solid;
 
     .cke_inner {
       border: $ank-ui-doc-edit-attribute-hover-border;
@@ -87,4 +82,22 @@
       background: transparent;
     }
   }
+}
+
+.dcpDocument--edit,
+.dcpDocument--create {
+  .dcpAttribute__content.dcpAttribute__content--htmltext {
+    .cke_top {
+      padding: 0;
+    }
+
+    .k-autocomplete.form-control {
+      height: auto;
+    }
+  }
+}
+
+.dcpDocument--view .dcpAttribute__content--htmltext .dcpAttribute__value--read {
+  /* No bold for htmltext */
+  font-family: inherit;
 }

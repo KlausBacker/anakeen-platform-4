@@ -1,5 +1,5 @@
 $tabstrip-tabs-color: #428bca;
-$tabFiwWidth:10em;
+$tabFiwWidth: 10em;
 
 .dcpDocument__tabs {
   .dcpDocument__tabs__list {
@@ -14,27 +14,24 @@ $tabFiwWidth:10em;
     padding: $dcp-set-padding;
   }
 
-   .dcpFrame {
-    margin-bottom:$dcp-set-padding;
+  .dcpFrame {
+    margin-bottom: $dcp-set-padding;
   }
 
-   .dcpFrame:first-child {
-    margin-top:$dcp-set-padding;
-
+  .dcpFrame:first-child {
+    margin-top: $dcp-set-padding;
   }
-   .dcpFrame .dcpArray {
-    margin-bottom:$dcp-set-padding;
-    margin-left:0;
+  .dcpFrame .dcpArray {
+    margin-bottom: $dcp-set-padding;
+    margin-left: 0;
     margin-right: 0;
   }
-  .dcpFrame__content
-  {
-    padding:$dcp-set-padding;
+  .dcpFrame__content {
+    padding: $dcp-set-padding;
   }
 
- .dcpFrame .dcpArray:last-child
-  {
-    margin-bottom:0;
+  .dcpFrame .dcpArray:last-child {
+    margin-bottom: 0;
   }
 }
 
@@ -42,7 +39,6 @@ $tabFiwWidth:10em;
 .dcpDocument__tabs .dcpTab__label .k-link {
   overflow: hidden;
   white-space: nowrap;
-  //padding: 10px 0.5em 0 0.5em;
   text-align: center;
   width: 100%;
   box-sizing: border-box;
@@ -50,13 +46,12 @@ $tabFiwWidth:10em;
 
 .dcpLabel__text {
   overflow: hidden;
-  text-overflow: ellipsis
+  text-overflow: ellipsis;
 }
 
 .k-tabstrip .k-item.k-state-active {
-  margin-bottom : -1px;
+  margin-bottom: -1px;
 }
-
 
 .k-tabstrip-items .dcpTab__label .k-state-active {
   background-color: transparent;
@@ -70,26 +65,22 @@ $tabFiwWidth:10em;
   min-width: $tabFiwWidth;
 }
 .dcpTab__content--loading {
-  text-align:center;
-  padding:2em;
+  text-align: center;
+  padding: 2em;
 }
 .dcpTab__content--loading .fa {
   padding: 1em;
 }
 
-
 .dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select {
-  //width: 2em;
-  //padding-right: 1px;
   min-width: calc(#{$tabFiwWidth} + 2.2em + 2px);
 }
 
 .dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select {
   .k-input {
-    padding:0;
+    padding: 0;
     min-width: $tabFiwWidth;
     text-align: left;
-
   }
   .k-combobox {
     width: 100%;
@@ -100,34 +91,21 @@ $tabFiwWidth:10em;
     text-align: left;
 
     &:before {
-      padding-bottom:0;
+      padding-bottom: 0;
     }
   }
   .k-select {
     border-style: solid;
-    // border-color: $nav-tabs-border-color  $nav-tabs-border-color transparent $nav-tabs-border-color;
     border-color: transparent;
     border-radius: 0 $border-radius-base 0 0;
     border-width: 1px;
     margin-right: -4px;
-    //height: ~"calc(100% + 9px)";
     margin-top: 2px;
     box-sizing: border-box;
     padding: 5px 4px 4px 4px;
     width: 2.2em;
-    background-color:$body-bg;
+    background-color: $body-bg;
   }
-}
-
-
-.dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select.k-state-active .k-select {
-
-  // border-color: transparent transparent transparent $nav-tabs-border-color;
-  //border-radius: 0 $border-radius-base;
-}
-
-.dcpLabel__count {
-
 }
 
 .dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select .k-select:hover {
@@ -144,39 +122,35 @@ $tabFiwWidth:10em;
 }
 
 .dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select.k-state-active.k-state-disabled {
-  //color:$text-color;
   border-color: $nav-tabs-border-color;
-
 }
 
 .dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select .k-select .k-icon {
   margin-top: 2px;
-
 }
 
 .dcpDocument__tabs.k-tabstrip {
-  padding:1.1666rem;
+  padding: 1.1666rem;
   .dcpTab__label.k-item.k-state-hover {
     background-color: lighten($nav-link-hover-bg, 10%);
   }
   .k-bare.k-tabstrip-next,
   .k-bare.k-tabstrip-prev {
     height: 3rem;
-    background: $ank-ui-tab-active-bg ! important;
-    width:3rem;
+    background: $ank-ui-tab-active-bg !important;
+    width: 3rem;
     border-radius: $border-radius $border-radius 0 0;
-
   }
   .k-bare.k-tabstrip-next {
     right: 1.1666rem;
     border-style: solid solid none solid;
-    border-color: $ank-ui-doc-edit-attribute-color-border ! important;
+    border-color: $ank-ui-doc-edit-attribute-color-border !important;
   }
 
   .k-bare.k-tabstrip-prev {
     left: 1.1666rem;
     border-style: solid solid none solid;
-    border-color: $ank-ui-doc-edit-attribute-color-border ! important;
+    border-color: $ank-ui-doc-edit-attribute-color-border !important;
   }
 }
 
@@ -185,13 +159,10 @@ $tabFiwWidth:10em;
     position: sticky;
     z-index: 4;
     top: 2rem;
-    margin-right: 0!important;
-    margin-left: 0!important;
-
+    margin-right: 0 !important;
+    margin-left: 0 !important;
     background: $body-bg;
-
     border-bottom: solid 1px $nav-tabs-border-color;
-
   }
   .k-bare.k-tabstrip-next,
   .k-bare.k-tabstrip-prev {
@@ -201,36 +172,18 @@ $tabFiwWidth:10em;
   }
 
   .k-bare.k-tabstrip-next {
-    right:0;
+    right: 0;
   }
   .k-bare.k-tabstrip-prev {
     left: -1.1666rem;
   }
 }
 
-.menu__select_container {
-  // select list container for select tab
-}
-
-.menu__select_container .k-list-container{
-
-}
-
-.dcpLabel__select-hide {
-  // ul of select list container for select tab
-}
-
 .dcpLabel__select-hide li {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  max-width:18em;
-}
-
-
-
-.dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select:hover {
-  //background-color: $nav-link-hover-bg;
+  max-width: 18em;
 }
 
 .dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select .k-combobox .k-input {
@@ -251,7 +204,6 @@ $tabFiwWidth:10em;
   box-shadow: none;
   outline: none;
   background-color: transparent;
-
 }
 
 .dcpTab__label__select {
@@ -277,5 +229,106 @@ $tabFiwWidth:10em;
 }
 
 .k-tabstrip-left .k-tabstrip-items .k-complete {
-  display: none
+  display: none;
+}
+
+.dcpDocument--view,
+.dcpDocument--edit,
+.dcpDocument--create {
+  .dcpDocument__tabs .dcpTab__label .k-link {
+    padding: $ank-ui-tab-padding;
+  }
+
+  // Tab
+  @mixin dcpTabLabelStyle() {
+    font-family: $ank-ui-label-font-variant;
+    font-size: $ank-ui-label-font-size;
+    line-height: $ank-ui-label-font-line-height;
+    color: $ank-ui-color-font-document;
+    background-color: $ank-ui-tab-inactive-bg;
+    margin-right: $ank-ui-tab-space;
+    border-color: #e1e1e1;
+    border-style: solid;
+    border-width: 1px 1px 0 1px;
+  }
+
+  .dcpDocument__tabs {
+    .dcpDocument__tabs__list {
+      border-bottom: none;
+      padding-left: 1.166rem;
+    }
+  }
+
+  .dcpDocument__tabs .dcpTab__label {
+    border-bottom: none;
+    &.k-item {
+      @include dcpTabLabelStyle;
+      &:hover {
+      }
+      .k-link {
+        height: 100%;
+        justify-content: center;
+      }
+    }
+  }
+
+  .dcpDocument__tabs--fixed.k-tabstrip-scrollable > .dcpDocument__tabs__list {
+    margin-bottom: -1px;
+  }
+
+  // Active tab
+  .dcpDocument__tabs .dcpTab__label.dcpLabel--active {
+    font-family: $ank-ui-title-font-variant;
+    font-size: $ank-ui-title-size;
+    line-height: $ank-ui-title-font-line-height;
+    color: $ank-ui-color-font-title;
+    background-color: $ank-ui-tab-active-bg;
+    margin-bottom: -2px;
+    //
+    &:before {
+      @include A4ClientTabDecoration;
+    }
+  }
+
+  .dcpDocument__tabs.k-tabstrip > .dcpTab__content {
+    margin: 0;
+    background-color: $ank-ui-tab-active-bg;
+    border-style: solid solid solid solid;
+    border-color: $ank-ui-doc-edit-attribute-color-border;
+    border-width: 1px;
+    padding: 0;
+    min-height: 0;
+  }
+
+  .dcpDocument__tabs .dcpDocument__tabs__list.k-tabstrip-items {
+    height: $ank-ui-tabs-height;
+  }
+
+  .dcpDocument__tabs .dcpFrame__content {
+    padding-left: 1.6667rem;
+  }
+
+  // Left placement
+  .dcpDocument__tabs.dcpDocument__tabs--left {
+    .dcpDocument__tabs__list {
+      border: none;
+      .dcpTab__label {
+        margin: 0;
+        border-width: 1px 0 1px 1px;
+      }
+
+      //active tab
+      .dcpLabel--active {
+        border-width: 1px;
+        border-right-color: $ank-ui-tab-active-bg;
+        margin-right: -2px !important;
+      }
+    }
+
+    //Rotate anakeen icon and put on left side in case of
+    .dcpTab__label.dcpLabel--active:before {
+      left: 0;
+      transform: rotate(270deg);
+    }
+  }
 }

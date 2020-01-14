@@ -1,5 +1,60 @@
 //noinspection CssUnknownTarget
+$panel-default-border: #ddd;
+
+$border-radius-base: $ank-ui-doc-edit-attribute-border-radius;
+$border-radius-inset : $ank-ui-doc-edit-attribute-border-radius / 2;
+$border-radius-large: 6px;
+$border-radius-small: 3px;
+
+$btn-default-border: #ccc;
+$btn-danger-color: #fff;
+$btn-success-color: #fff;
+
+$input-border-focus: $ank-ui-doc-edit-attribute-hover-border;
+
+$screen-sm: 768px;
+$screen-sm-min: $screen-sm;
+
+$screen-md: 992px;
+$screen-md-min: $screen-md;
+
+$screen-xs: 480px;
+//** Deprecated `$screen-xs-min` as of v3.2.0
+$screen-xs-min: $screen-xs;
+
+// Small screen / tablet
+//** Deprecated `$screen-sm` as of v3.0.1
+$screen-sm: 768px;
+$screen-sm-min: $screen-sm;
+
+// So media queries don't overlap when required, provide a maximum
+$screen-xs-max: ($screen-sm-min - 1);
+
+$gray-base: #000;
+$gray-darker: lighten($gray-base, 13.5%); // #222
+$gray-dark: lighten($gray-base, 20%); // #333
+$gray: lighten($gray-base, 33.5%); // #555
+$gray-light: lighten($gray-base, 46.7%); // #777
+$gray-lighter: lighten($gray-base, 93.5%); // #eee
+
+$padding-base-vertical: 0.5rem;
+$nav-link-hover-bg: $gray-lighter;
+// END OLD VARIABLES
+$documentHeaderHeight: 2.5rem;
+// Bootstrap variables
+// Gutter between label and content attribute
+$grid-gutter-width: 0.416rem;
+// Width limit to view label up to content
+$grid-float-breakpoint: 40rem;
+
+$font-size-base: $ank-ui-font-base-size;
+$line-height-base: $ank-ui-line-height;
+$panel-body-padding: $font-size-base/2;
+$padding-base-vertical: $font-size-base*0.20;
+$padding-base-horizontal: 2*$padding-base-vertical;
+
 @import "menu/menu";
+@import "../attributes/frame/vFrame";
 @import "../attributes/attribute";
 @import "../attributes/attributeDescription";
 @import "../attributes/attributeResponsive";
@@ -26,7 +81,6 @@
 @import "../../widgets/history/revisiondiff";
 @import "../../widgets/properties/properties";
 @import "../../widgets/workflow/transition";
-
 
 .dcpDocument__body {
   padding-top: 1.166rem;
@@ -57,7 +111,7 @@
 }
 
 .window-dialog .dcpDocument__header {
-  display:none; // No see header if inside a dialog window
+  display: none; // No see header if inside a dialog window
 }
 
 .dcpDocument__header__icon {
@@ -76,7 +130,6 @@
 .dcpDocument__footer {
   background-color: darken($body-bg, 5%);
   text-align: center;
-  // padding: 3px;
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -122,7 +175,7 @@
 
 .confirm--buttons button {
   min-width: 12rem;
-  margin-left:1rem;
+  margin-left: 1rem;
 }
 
 .dcpDocument {
@@ -155,16 +208,14 @@
   opacity: 0;
 }
 
-
 .k-widget.k-window.k-window-maximized {
-    max-width: 100vw;
-    max-height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
   // Bug of Kendo Ui Maximize ?
-    height: 100vh ! important;
-    width: 100vw ! important;
-    border: none;
+  height: 100vh !important;
+  width: 100vw !important;
+  border: none;
 }
-
 
 .k-window .dcpLoading {
   top: auto;
@@ -185,14 +236,6 @@
   color: $warning;
 }
 
-.dcpDocument__header__lock {
-  // color:$success;
-}
-
-.dcpDocument__header--readonly .dcpDocument__header__lock {
-  // color:$error;
-}
-
 .dcpDocument__emblem__lock--temporary {
   color: lighten($gray, 30%);
 }
@@ -210,19 +253,60 @@
 }
 
 .dcpDocument__header--fixed .dcpDocument__header__revision,
-.dcpDocument__header--deleted .dcpDocument__header__revision
-{
+.dcpDocument__header--deleted .dcpDocument__header__revision {
   padding-right: 2em;
   padding-left: 2em;
   font-size: $ank-ui-header-title-size;
 }
 
 .dcpDocument__header--fixed .dcpDocument__header__revdate,
-.dcpDocument__header--deleted .dcpDocument__header__revdate
-{
+.dcpDocument__header--deleted .dcpDocument__header__revdate {
   padding-right: 2em;
   font-size: $ank-ui-header-title-size;
 }
 
-//static error message
+$ank-ui-color-body-background: #fbfbfb;
+
+.document {
+  font-family: $ank-ui-font;
+  background-color: $ank-ui-color-body-background;
+  color: $ank-ui-color-font-document;
+}
+
+.dcpDocument__body {
+  padding-left: 0;
+  padding-right: 0;
+  .k-icon {
+    color: $ank-ui-color-picto;
+  }
+}
+
+.dcpDocument__header {
+  min-height: 3.75rem;
+  display: flex;
+  align-items: center;
+
+  img.dcpDocument__header__icon {
+    height: 1.666rem/1.5;
+    width: auto;
+  }
+}
+
+.dcpDocument__header .dcpDocument__header__title {
+  color: $ank-ui-color-text;
+  margin: $ank-ui-header-title-margin;
+  text-decoration: none;
+  font-family: $ank-ui-title-font-variant;
+  font-weight: normal;
+  flex: 1;
+}
+
+.dcpDocument__header__family {
+  font-style: normal !important;
+  font-weight: lighter;
+}
+
+.card-default {
+  border: none;
+}
 

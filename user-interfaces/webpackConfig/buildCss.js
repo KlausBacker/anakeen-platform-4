@@ -15,7 +15,7 @@ module.exports = () => {
       ckeditor: [path.resolve(__dirname, "../components/scss/ckeditor.scss")],
       components: [path.resolve(__dirname, "../components/scss/components.scss")],
       kendo: [path.resolve(__dirname, "../components/scss/kendo.scss")],
-      smartElement: [path.resolve(__dirname, "../components/scss/smartElement.scss")],
+      smartElement: [path.resolve(__dirname, "../components/scss/AnkSmartElement.scss")],
       login: [path.resolve(__dirname, "../components/scss/login.scss")],
       colors: [path.resolve(__dirname, "../components/scss/colors.scss")]
     },
