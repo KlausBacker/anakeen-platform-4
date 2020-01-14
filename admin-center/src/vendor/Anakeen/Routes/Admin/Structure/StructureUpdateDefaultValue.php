@@ -38,7 +38,6 @@ class StructureUpdateDefaultValue extends StructureFields
             if ($key === "value") {
             }
             if (is_null($this->structure) && $key === "structureId") {
-                // error_log(var_export($this->data[$key], true));
                 $this->structure = SEManager::getFamily($value);
             }
         }
@@ -74,10 +73,14 @@ class StructureUpdateDefaultValue extends StructureFields
         $formattedArray = [];
         for ($i = 0; $i < count($arrayToFormat); $i++) {
             $formattedArray[$i] = [];
-            foreach ($arrayToFormat[$i] as $line) {
-                foreach ($line as $key => $value) {
-                    $formattedArray[$i][$key] = $value;
+            if (is_array($arrayToFormat[$i])) {
+                foreach ($arrayToFormat[$i] as $line) {
+                    foreach ($line as $key => $value) {
+                        $formattedArray[$i][$key] = $value;
+                    }
                 }
+            } else {
+                $formattedArray = json_encode($arrayToFormat);
             }
         }
         return $formattedArray;
@@ -91,7 +94,6 @@ class StructureUpdateDefaultValue extends StructureFields
         if ($funcError === "") {
             try {
                 $refMeth = new ReflectionMethod($structureFunction->className, $structureFunction->methodName);
-                error_log(var_export($structureFunction->funcCall, true));
                 return $this->structure->setDefValue($defaultValueId, $structureFunction->funcCall);
             } catch (\ReflectionException $refErr) {
                 return $refErr->getMessage();

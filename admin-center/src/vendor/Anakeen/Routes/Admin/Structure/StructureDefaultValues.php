@@ -29,17 +29,70 @@ class StructureDefaultValues extends StructureFields
         $dataFields = parent::doRequest();
         $data["properties"] = $dataFields["properties"];
         $data["uri"] = URLUtils::generateURL(Settings::ApiV2 . sprintf("admin/smart-structures/%s/defaults/", $this->structureName));
-        $data["defaultValues"] = $this->getConfigParameterValues($this->structure);
-
-
         $data["fields"] = $dataFields["fields"];
+        $data["defaultValues"] = $this->getConfigDefaultValues($this->structure, $data["fields"]);
 
         return $data;
     }
 
-    protected static function getConfigParameterValues(SmartStructure $structure)
+    protected static function getConfigDefaultValues(SmartStructure $structure, $dataFields)
     {
-        $configDefValues = $structure->getOwnDefValues();
+        $tempConfigDefValues = $structure->getOwnDefValues();
+        $configDefValues = [];
+
+        foreach ($tempConfigDefValues as $key => $value) {
+            $configDefValues[$key] = [];
+            if (is_array($value)) {
+                foreach ($value as $k => $v) {
+                    if (!is_array($v)) {
+                        if (is_int($v)) {
+                            // Check if the value is a structure or not
+                            foreach ($dataFields as $dataFieldValue) {
+                                if ($dataFieldValue["id"] === $key) {
+                                    if ($dataFieldValue["simpletype"] === "docid") {
+                                        error_log(var_export($k, true));
+                                        $configDefValues[$key][$k] = [
+                                            "displayValue" => SEManager::getTitle($v),
+                                            "rawValue" => $v
+                                        ];
+                                    } else {
+                                        $configDefValues[$key][$k] = [
+                                            "displayValue" => $v,
+                                            "rawValue" => $v
+                                        ];
+                                    }
+                                    continue;
+                                }
+                            }
+                        } else {
+                            $configDefValues[$key][$k] = [
+                                "displayValue" => $v,
+                                "rawValue" => $v
+                            ];
+                        }
+                    } else {
+                        $configDefValues[$key][$k] = $v;
+                    }
+                }
+            } else {
+                if (is_int($value)) {
+                    // Check if the value is a structure or not
+                    foreach ($dataFields as $dataFieldValue) {
+                        if ($dataFieldValue["id"] === $key) {
+                            if ($dataFieldValue["simpletype"] === "docid") {
+                                $configDefValues[$key] = SEManager::getTitle($value);
+                            } else {
+                                $configDefValues[$key] = $value;
+                            }
+                            continue;
+                        }
+                    }
+                } else {
+                    $configDefValues[$key] = $value;
+                }
+            }
+        }
+
         if ($structure->fromid) {
             $parentStruct = SEManager::getFamily($structure->fromid);
             $configParentValues = $parentStruct->getDefValues();
@@ -57,24 +110,12 @@ class StructureDefaultValues extends StructureFields
             if ($oa->id === SmartStructure\Attributes::HIDDENFIELD) {
                 continue;
             }
-            $isMultiple = $oa->isMultiple();
-
 
             $data[$oa->id]["configurationValue"] = $configDefValues[$oa->id] ?? null;
             if ($structure->fromid) {
                 $data[$oa->id]["parentConfigurationValue"] = $configParentValues[$oa->id] ?? null;
             }
-
-
             $data[$oa->id]["result"] = json_decode(json_encode($formater->getInfo($oa, $element->getRawValue($oa->id), $element)), true);
-
-            $data[$oa->id]["configurationValue"] = $configDefValues[$oa->id] ?? null;
-            /*
-                "configurationValue" => ,
-                "type" => $oa->type,
-                "value" => $isMultiple ? $element->getMultipleRawValues($field) : $element->getRawValue($field),
-                "displayValue" => $formater->getInfo($oa, $element->getRawValue($field), $element)
-            ];*/
         }
         return $data;
     }

@@ -170,7 +170,7 @@ export default class SmartStructureManagerParametersController extends Vue {
     }
   }
   public manageHiddenFields(parameter) {
-     this.$refs.ssmForm.getSmartFields().forEach(sf => {
+    this.$refs.ssmForm.getSmartFields().forEach(sf => {
       const splitted = sf.id.split("-");
       if (
         splitted[0] === parameter.parameterId &&
@@ -178,9 +178,9 @@ export default class SmartStructureManagerParametersController extends Vue {
         splitted[1] !== "default_value" &&
         this.finalData[parameter.parameterId].valueType !== splitted[1]
       ) {
-      this.$refs.ssmForm.hideSmartField(`${splitted[0]}-${splitted[1]}`);
-    }
-  });
+        this.$refs.ssmForm.hideSmartField(`${splitted[0]}-${splitted[1]}`);
+      }
+    });
   }
   public ssmFormChange(e, smartStructure, smartField, values, index) {
     const smartForm = this.$refs.ssmForm;
@@ -203,9 +203,9 @@ export default class SmartStructureManagerParametersController extends Vue {
             smartForm.hideSmartField(`${parameter.parameterId}-inherited_value`);
             this.finalData[parameter.parameterId].valueType = smartForm.getValue(`${parameter.parameterId}-type`).value;
             this.finalData[parameter.parameterId].value =
-            smartForm.getValue(`${parameter.parameterId}-value`) !== null
-              ? smartForm.getValue(`${parameter.parameterId}-value`).value
-              : "";
+              smartForm.getValue(`${parameter.parameterId}-value`) !== null
+                ? smartForm.getValue(`${parameter.parameterId}-value`).value
+                : "";
             break;
           case "advanced_value":
             smartForm.showSmartField(`${parameter.parameterId}-advanced_value`);
@@ -227,7 +227,6 @@ export default class SmartStructureManagerParametersController extends Vue {
         }
       });
     }
-    // console.log("FINALDATA", this.finalData);
   }
   public formClickMenu(e, se, params) {
     if (params.eventId === "document.save") {
@@ -302,7 +301,11 @@ export default class SmartStructureManagerParametersController extends Vue {
               }
             } else if (paramsValues[item].result instanceof Object) {
               if (paramsValues[item].result.value && paramsValues[item].result.displayValue) {
-                if (configParam && typeof configParam !== "undefined" && configParam !== paramsValues[item].result.value) {
+                if (
+                  configParam &&
+                  typeof configParam !== "undefined" &&
+                  configParam !== paramsValues[item].result.value
+                ) {
                   rawValue = configParam;
                   isAdvancedValue = true;
                 } else {

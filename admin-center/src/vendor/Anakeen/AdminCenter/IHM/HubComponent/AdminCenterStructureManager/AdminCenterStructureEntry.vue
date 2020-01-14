@@ -25,6 +25,18 @@
         });
       })
   },
+  methods: {
+    // https://documentation.ap4.anakeen.com/hub-station/composants/hubElement.html#proprietes
+    handleBadFormatUpdate() {
+      this.hubNotify({
+        type: "error",
+        content: {
+          textContent: "NEIN !!!",
+          title: "Test error"
+        }
+      })
+    }
+  }
   };
 </script>
 <style>
