@@ -465,6 +465,22 @@ class Compose {
     const localRepo = this.repoXML.getConfigLocalRepo();
     const localSrc = this.repoXML.getConfigLocalSrc();
 
+    //Create it if doesn't exist
+    try {
+      await fs_mkdir(path.join(this.cwd, localRepo));
+    } catch (e) {
+      if (e.code !== "EEXIST") {
+        throw new ComposeError(`Unable to create local repo ${path.join(this.cwd, localRepo)} : ${JSON.stringify(e)}`);
+      }
+    }
+    try {
+      await fs_mkdir(path.join(this.cwd, localSrc));
+    } catch (e) {
+      if (e.code !== "EEXIST") {
+        throw new ComposeError(`Unable to create local repo ${path.join(this.cwd, localSrc)} : ${JSON.stringify(e)}`);
+      }
+    }
+
     if (withoutLockFile === false) {
       moduleLockList = this.repoLockXML.getModuleList();
     }
