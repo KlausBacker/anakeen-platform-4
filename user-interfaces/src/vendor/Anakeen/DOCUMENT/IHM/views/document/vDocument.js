@@ -872,12 +872,12 @@ export default Backbone.View.extend({
    */
   loadDocument: function vDocumentLoadDocument(options, callbacks) {
     callbacks = callbacks || {};
-
     this.model
       .fetchDocument({
         initid: options.initid,
         viewId: options.viewId,
-        revision: options.revision
+        revision: options.revision,
+        customClientData: options.customClientData
       })
       .then(callbacks.success, callbacks.error);
   },
@@ -906,13 +906,18 @@ export default Backbone.View.extend({
     }
 
     action = $target.data("action") || $target.attr("href");
-    options = action.substring(8).split(":");
+    const data = action.substring(8).split(/({(.+))/g);
+    if (data[1]) {
+      options = data[0].split(":").slice(0, -1);
+      options.customClientData = JSON.parse(data[1]);
+    } else {
+      options = action.substring(8).split(":");
+    }
     eventOptions = {
       target: event.target,
       eventId: options.shift(),
       options: options
     };
-
     this.model.trigger("internalLinkSelected", internalEvent, eventOptions);
 
     return EventPromiseUtils.getBeforeEventPromise(
@@ -935,7 +940,6 @@ export default Backbone.View.extend({
    */
   doStandardAction: function vDocumentdoStandardAction(event, options) {
     var eventArgs = options.options;
-
     if (options.eventId === "document.save") {
       return this.saveDocument();
     }
@@ -973,7 +977,8 @@ export default Backbone.View.extend({
       return this.loadDocument({
         initid: eventArgs[0],
         viewId: eventArgs[1],
-        revision: eventArgs[2]
+        revision: eventArgs[2],
+        customClientData: eventArgs.customClientData
       });
     }
     if (options.eventId === "document.lock") {
