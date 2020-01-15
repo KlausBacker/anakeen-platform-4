@@ -68,6 +68,7 @@ export default class Tabs extends Vue {
   protected onSelectedTabDataChange() {
     if (this.$refs.nav) {
       this.$nextTick(() => {
+        window.dispatchEvent(new Event("resize"));
         // @ts-ignore
         this.$refs.nav.$nextTick(() => {
           // @ts-ignore

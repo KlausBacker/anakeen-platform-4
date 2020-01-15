@@ -170,7 +170,7 @@ class ModuleJob
             $jobStatus = self::getJobStatus();
             $status = $jobStatus["status"] ?? "";
             if ($veryVerbose) {
-                print $status." - ";
+                print $status . " - ";
             } else {
                 print ".";
             }
@@ -185,7 +185,7 @@ class ModuleJob
                 break;
             }
             if ($veryVerbose) {
-                print $status." - ";
+                print $status . " - ";
             } else {
                 print ".";
             }
@@ -219,11 +219,11 @@ class ModuleJob
     {
         static $index = 0;
 
-        $logs=$jobStatus["log"]??[];
+        $logs = $jobStatus["log"] ?? [];
 
 
-        $newlogs=array_slice($logs, $index);
-        $index=count($logs);
+        $newlogs = array_slice($logs, $index);
+        $index = count($logs);
 
         foreach ($newlogs as $log) {
             if (is_array($log["value"])) {
@@ -239,7 +239,7 @@ class ModuleJob
             if ($log["task"] === "error") {
                 array_unshift($row, "ERROR");
             }
-            print implode(" - ", $row)."\n";
+            print implode(" - ", $row) . "\n";
         }
     }
 
@@ -311,8 +311,10 @@ class ModuleJob
             JobLog::writeInterruption();
             $err = posix_strerror(posix_get_last_error());
             throw new RuntimeException(
-                "[$err] Seems job process is died. \n Try to remove \"./control/%spid\" file.",
-                \WIFF::run_dir
+                sprintf(
+                    "[$err] Seems job process is died. \n Try to remove \"./control/%spid\" file.",
+                    \WIFF::run_dir
+                )
             );
         }
         return true;
@@ -430,7 +432,7 @@ class ModuleJob
         JobLog::setStatus("", "", ModuleJob::RUNNING_STATUS);
         $moduleName = self::$jobData["moduleArg"] ?? "";
         $moduleFileName = self::$jobData["file"] ?? "";
-        $action = self::$jobData["action"];
+        $action = self::$jobData["action"] ?? "";
         $module = null;
         if ($action !== "restore") {
             if ($moduleFileName) {
@@ -1030,7 +1032,6 @@ class ModuleJob
 
     public static function getParameterAnswer($moduleName, $paramName)
     {
-
         $data = ModuleJob::getJobData();
 
         $parameters = $data["parameters"];

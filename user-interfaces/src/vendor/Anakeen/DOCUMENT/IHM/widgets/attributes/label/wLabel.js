@@ -45,7 +45,13 @@ $.widget("dcp.dcpLabel", {
         }
 
         action = $this.data("action") || $this.attr("href");
-        options = action.substring(8).split(":");
+        const data = action.substring(8).split(/({(.+))/g);
+        if (data[1]) {
+          options = data[0].split(":").slice(0, -1);
+          options.customClientData = JSON.parse(data[1]);
+        } else {
+          options = action.substring(8).split(":");
+        }
         eventOptions = {
           target: event.target,
           index: -1,

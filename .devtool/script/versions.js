@@ -96,7 +96,7 @@ exports.versions = [
     moduleName: "dev-data"
   }
 ];
-exports.RC = "27";
+exports.RC = "28";
 exports.release = "2019.1";
 exports.modulePath = [
   "admin-center",

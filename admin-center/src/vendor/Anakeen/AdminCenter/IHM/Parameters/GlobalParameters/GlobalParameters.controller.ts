@@ -323,7 +323,7 @@ export default class GlobalParametersController extends Vue {
   // When editor is closed, update modified value, and reset editedItem and editedRoute
   public updateAtEditorClose(newValue) {
     setTimeout(() => {
-      if (newValue) {
+      if (newValue !== null && newValue !== undefined) {
         this.editedItem.set("value", newValue);
       }
 

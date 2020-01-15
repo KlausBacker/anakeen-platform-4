@@ -6,6 +6,7 @@ use Anakeen\Core\AccountManager;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\Internal\SmartElement;
+use Anakeen\Core\Utils\Postgres;
 use \SmartStructure\Fields\Fieldaccesslayerlist as myAttributes;
 
 /**
@@ -27,7 +28,7 @@ trait ExtendedControl
      * Special control in case of dynamic controlled profil
      *
      * @param string $aclname
-     * @param bool   $strict
+     * @param bool $strict
      *
      * @return string
      */
@@ -84,9 +85,20 @@ trait ExtendedControl
             $this->doc->disableAccessControl();
             foreach ($extendedAcls as $extendedAcl) {
                 if (!empty($extendedAcl["attrid"])) {
-                    $extuid = $this->doc->getRawValue($extendedAcl["attrid"]);
-                    if ($extuid) {
-                        $this->computedAcl[$extendedAcl["acl"]][] = AccountManager::getIdFromSEId($extuid);
+                    $oa = $this->doc->getAttribute($extendedAcl["attrid"]);
+                    $rawValue = $this->doc->getRawValue($oa->id);
+
+                    if ($rawValue) {
+                        if ($oa->isMultiple() === false) {
+                            $extuids = [$rawValue];
+                        } else {
+                            $extuids = Postgres::stringToFlatArray($rawValue);
+                        }
+                        foreach ($extuids as $extuid) {
+                            if ($extuid) {
+                                $this->computedAcl[$extendedAcl["acl"]][] = AccountManager::getIdFromSEId($extuid);
+                            }
+                        }
                     }
                 } else {
                     $this->computedAcl[$extendedAcl["acl"]][] = $extendedAcl["userid"];
@@ -109,7 +121,7 @@ trait ExtendedControl
     /**
      * Call original control method
      * @param string $aclname
-     * @param bool   $strict
+     * @param bool $strict
      * @return string
      */
     protected function originalControl($aclname, $strict = false)

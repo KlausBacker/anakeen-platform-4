@@ -52,7 +52,7 @@ export default {
     if (this.$store) {
       this.$store.registerModule(["smartStructures"], structureStore);
     }
-    const pattern = `/${this.entryOptions.route}(?:/(\\w+)(?:/(\\w+)(?:/(\\w+))?)?)?`;
+    const pattern = `^/${this.entryOptions.route}(?:/(\\w+)(?:/(\\w+)(?:/(\\w+))?)?)?`;
     this.getRouter()
       .on(new RegExp(pattern), (...params) => {
         const ssName = params[0];

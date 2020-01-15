@@ -380,10 +380,10 @@ export namespace AnakeenController {
 
       /**
        * Get all the values
-       *
+       * @param onlyModified if true , returns only modified values
        * @returns {*|{}}
        */
-      getValues();
+      getValues(onlyModified?: boolean);
 
       /**
        * Get customData from render view model
