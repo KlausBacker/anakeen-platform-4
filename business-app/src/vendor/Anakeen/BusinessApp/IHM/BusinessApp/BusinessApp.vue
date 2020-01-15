@@ -54,11 +54,11 @@
           :viewId="tab.viewId || '!defaultConsultation'"
           :revision="tab.revision"
           ref="seTab"
-          @seTabAfterSave="onAfterSave"
-          @seTabAfterDelete="onAfterDelete"
-          @seTabActionClick="onActionClick"
-          @seTabDisplayError="onDisplayError"
-          @seTabDisplayMessage="onDisplayMessage"
+          @SmartElementTabAfterSave="onAfterSave"
+          @SmartElementTabAfterDelete="onAfterDelete"
+          @SmartElementTabActionClick="onActionClick"
+          @SmartElementTabDisplayError="onDisplayError"
+          @SmartElementTabDisplayMessage="onDisplayMessage"
         >
         </ank-se-tab>
       </ank-tabs>
