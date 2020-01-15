@@ -116,7 +116,7 @@ export default class SETab extends Vue {
     this.$refs.smartElement.$on("close", isDirtyCb);
     SmartElementEvents.forEach(eventName => {
       this.$refs.smartElement.$on(eventName, (...args) => {
-        this.$emit(`seTab${capitalize(eventName)}`, ...args);
+        this.$emit(`SmartElementTab${capitalize(eventName)}`, ...args);
       });
     });
   }

@@ -5,7 +5,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 export default class Tab extends Vue {
   @Prop({ default: "", type: String }) public label!: string;
   @Prop({ default: false, type: Boolean }) public disabled!: boolean;
-  @Prop({ type: String, required: true }) public name!: string;
+  @Prop({ type: String, required: true }) public tabId!: string;
   @Prop({ default: false, type: Boolean }) public closable!: boolean;
   @Prop({ default: false, type: Boolean }) public lazy!: boolean;
 
@@ -36,6 +36,6 @@ export default class Tab extends Vue {
   }
 
   get paneName() {
-    return this.name;
+    return this.tabId;
   }
 }

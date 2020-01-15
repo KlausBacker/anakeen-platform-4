@@ -3,7 +3,7 @@
     :class="{
       'ank-tabs-nav-wrap': true,
       scrollable: scrollable,
-      [`is-${rootTabs.tabPosition}`]: true
+      'is-top': true
     }"
     @wheel="onScrollNav"
   >
@@ -47,7 +47,7 @@
           >{{ slotProps.item.label }}</span
         >
         <span
-          v-if="slotProps.item.isClosable || rootTabs.editable"
+          v-if="slotProps.item.isClosable"
           class="ank-tab-item-close"
           @click="onClickRemove(slotProps.item, $event)"
         >
@@ -59,7 +59,7 @@
       <div
         :class="{
           'ank-tabs-nav': true,
-          [`is-${rootTabs.tabPosition}`]: true
+          'is-top': true
         }"
         ref="nav"
         :style="navStyle"
@@ -71,10 +71,10 @@
           v-for="(pane, index) in panes"
           :class="{
             'ank-tab-item': true,
-            [`is-${rootTabs.tabPosition}`]: true,
+            'is-top': true,
             'is-active': pane.active,
             'is-disabled': pane.disabled,
-            'is-closable': pane.isClosable || rootTabs.editable,
+            'is-closable': pane.isClosable,
             'is-focus': isFocus,
             'is-dirty': !!pane.isDirty
           }"
@@ -107,7 +107,7 @@
             pane.label
           }}</span>
           <span
-            v-if="pane.isClosable || rootTabs.editable"
+            v-if="pane.isClosable"
             class="ank-tab-item-close"
             @click="onClickRemove(pane, $event)"
           >
