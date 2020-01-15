@@ -20,7 +20,8 @@
         class="ank-tabs-new-tab"
         @click="onTabAdd"
       >
-        <i class="k-icon k-i-plus">add</i>
+        <i class="k-icon k-i-plus"/>
+
       </span>
     </div>
     <div class="ank-tabs-contents">
