@@ -111,7 +111,7 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
 
   public init() {
     if (!this._isReady) {
-      return import("./ControllerDispatcher"  /* webpackChunkName: "ControllerDispatcher" */ )
+      return import("./ControllerDispatcher" /* webpackChunkName: "ControllerDispatcher" */)
         .then(controllerDispatcher => {
           this._dispatcher = new controllerDispatcher.default();
           this._domObserver = new MutationObserver(mutations => this._onRemoveDOMController(mutations));
@@ -299,9 +299,15 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
       this._logVerbose("verbose mode enabled", "Global");
       // Log events
       EVENTS_LIST.forEach(event => {
-        this._dispatcher.on(event, controller => {
+        this._dispatcher.on(event, (controller, ...args) => {
+          let fieldId = "";
+          if (event.indexOf("smartField") === 0) {
+            if (args[2].prototype === "AttributePrototype") {
+              fieldId = args[2].id;
+            }
+          }
           const seProps = controller.getProperties();
-          this._logVerbose(`Smart element "${seProps.initid}" event ${event} triggered`, "Event");
+          this._logVerbose(`Smart element "${seProps.initid}" event ${event} triggered`, "Event", fieldId);
         });
       });
     }
@@ -439,6 +445,7 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
    */
   private _injectSmartElementJS(event) {
     const injectPromise = event.js.reduce((acc, currentJS) => {
+      console;
       const currentPath = currentJS.path;
       // inject js if not alredy exist
       if ($(`script[data-src="${currentPath}"], script[src="${currentPath}"]`).length === 0) {
@@ -479,7 +486,12 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
                     });
                     this._registerScript(currentJS.path, ...functions);
                   } else {
-                    this._registerScript(currentJS.path, this._getRegisteredFunction(functionKey));
+                    const registeredFunction = this._getRegisteredFunction(functionKey);
+                    if (registeredFunction) {
+                      this._registerScript(currentJS.path, this._getRegisteredFunction(functionKey));
+                    } else {
+                      this.emit("_internal::scriptReady", currentJS.path);
+                    }
                   }
                 }
               },
@@ -565,7 +577,7 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
     if (this._verbose) {
       let strCategories = "";
       if (categories && categories.length) {
-        strCategories = `[${categories.join("][")}]`;
+        strCategories = `[${categories.filter(c => !!c).join("][")}]`;
       }
       const logMsg = `[Smart Element Controller]${strCategories} : ${message}`;
       window.console.log(logMsg);
