@@ -2,14 +2,8 @@
 .ank-tabs {
   display: flex;
 
-  &.ank-tabs--top,
-  &.ank-tabs--bottom {
+  &.ank-tabs--top {
     flex-direction: column;
-  }
-
-  &.ank-tabs--left,
-  &.ank-tabs--right {
-    flex-direction: row;
   }
 
   .ank-tabs-header {

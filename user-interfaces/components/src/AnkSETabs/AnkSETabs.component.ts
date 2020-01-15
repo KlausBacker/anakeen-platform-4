@@ -2,7 +2,7 @@ import { Component, Prop, Provide, Vue, Watch } from "vue-property-decorator";
 import SETabsNav from "./TabNav/TabNav.vue";
 import SETabsEvent from "./TabsEvent";
 // eslint-disable-next-line no-unused-vars
-import { TabPosition, TabTypes } from "./TabsTypes";
+import { TabTypes } from "./TabsTypes";
 
 @Component({
   components: {
@@ -17,13 +17,10 @@ export default class Tabs extends Vue {
   @Prop({ type: String }) public type!: TabTypes;
   @Prop({ default: false, type: Boolean }) public closable!: boolean;
   @Prop({ default: false, type: Boolean }) public addable!: boolean;
-  @Prop({ default: false, type: Boolean }) public editable!: boolean;
   @Prop({ default: false, type: Boolean }) public sortable!: boolean;
   @Prop({ default: "12rem", type: String }) public minTabSize!: string;
   @Prop({ default: false, type: Boolean })
   public forceScrollNavigation!: boolean;
-  @Prop({ default: TabPosition.TOP, type: String })
-  public tabPosition!: TabPosition;
   @Prop({ default: true, type: Boolean }) public tabsList!: boolean;
 
   @Provide("rootTabs") public rootTabs = this;

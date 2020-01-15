@@ -3,21 +3,21 @@
     :class="{
       'ank-tabs': true,
       [`ank-tabs--${type}`]: true,
-      [`ank-tabs--${tabPosition}`]: true
+      'ank-tabs--top': true
     }"
   >
-    <div :class="{ 'ank-tabs-header': true, [`is-${tabPosition}`]: true }">
+    <div :class="{ 'ank-tabs-header': true }">
       <tabs-nav
-         ref="nav"
+        ref="nav"
         :panes="panes"
-        :class="{ 'ank-tabs-header-inner': true, [`is-${tabPosition}`]: true }"
-        :onTabClick="onTabClick"
-        :onTabRemove="onTabRemove"
+        :class="{ 'ank-tabs-header-inner': true }"
+        :on-tab-click="onTabClick"
+        :on-tab-remove="onTabRemove"
         @tabListSelected="onTabListSelected"
-      ></tabs-nav>
+      />
       <span
+        v-if="addable"
         class="ank-tabs-new-tab"
-        v-if="editable || addable"
         @click="onTabAdd"
       >
         <i class="k-icon k-i-plus">add</i>
@@ -33,5 +33,5 @@
 @import "./AnkSETabs.scss";
 </style>
 <!-- Global CSS -->
-<style lang="scss"></style>
+<style lang="scss"/>
 <script lang="ts" src="./AnkSETabs.component.ts"></script>
