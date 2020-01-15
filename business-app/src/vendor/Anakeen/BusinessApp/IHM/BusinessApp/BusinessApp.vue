@@ -30,7 +30,7 @@
         @tabRemove="onTabRemove"
         @tabClick="onTabClick"
       >
-        <ank-tab v-if="hasWelcomeTab" :closable="false" name="welcome">
+        <ank-tab v-if="hasWelcomeTab" :closable="false" tabId="welcome">
           <template slot="label">
             <span
               class="ank-business-app-welcome-title"
