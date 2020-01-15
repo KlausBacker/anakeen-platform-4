@@ -60,6 +60,61 @@ export default Backbone.View.extend({
             resolve(currentView);
             return currentView;
           }
+          const onDone = () => {
+            if (currentView.customView) {
+              data.customTemplate = currentView.customView;
+              data.customLineCallback = function vArray_callCustomLine(index) {
+                return attributeTemplate.customArrayRowView(index, currentView.model, currentView);
+              };
+            }
+
+            try {
+              promisesColumn.push(
+                new Promise(
+                  _.bind(function onArrayReady(resolve, reject) {
+                    try {
+                      currentView.$el.dcpArray(data).one("dcparraywidgetready", resolve);
+                      attributeTemplate.insertDescription(currentView);
+                    } catch (e) {
+                      reject(e);
+                    }
+                  }, this)
+                )
+              );
+            } catch (e) {
+              if (window.dcp.logger) {
+                window.dcp.logger(e);
+              } else {
+                console.error(e);
+              }
+            }
+
+            Promise.all(promisesColumn).then(function renderDone() {
+              currentView.$el.attr("data-attrid", currentView.model.id);
+              currentView.model.trigger("renderDone", {
+                model: currentView.model,
+                $el: currentView.$el,
+                options: {
+                  customTemplate: !!currentView.customView
+                }
+              });
+              if (
+                currentView.$el.find(
+                  '.dcpCustomTemplate[data-attrid="' +
+                    currentView.model.id +
+                    '"] .dcpCustomTemplate--content[data-attrid="' +
+                    currentView.model.id +
+                    '"]'
+                ).length > 0
+              ) {
+                // it's a fake array view because template declare itself inside
+                currentView.stopListening(currentView.model, "addWidgetLine");
+                currentView.stopListening(currentView.model, "removeWidgetLine");
+                currentView.undelegateEvents();
+              }
+              resolve(currentView);
+            });
+          };
           EventPromiseUtils.getBeforeEventPromise(event, () => {
             currentView.$el.addClass("dcpAttribute--visibility--" + currentView.model.get("visibility"));
             if (currentView.options.originalView !== true) {
@@ -135,61 +190,9 @@ export default Backbone.View.extend({
             }
             $(window).on("resize.v" + this.model.cid, _.bind(this.setResponsiveClasse, this));
             _.defer(_.bind(this.setResponsiveClasse, this));
-          }).finally(() => {
-            if (currentView.customView) {
-              data.customTemplate = currentView.customView;
-              data.customLineCallback = function vArray_callCustomLine(index) {
-                return attributeTemplate.customArrayRowView(index, currentView.model, currentView);
-              };
-            }
-
-            try {
-              promisesColumn.push(
-                new Promise(
-                  _.bind(function onArrayReady(resolve, reject) {
-                    try {
-                      currentView.$el.dcpArray(data).one("dcparraywidgetready", resolve);
-                      attributeTemplate.insertDescription(currentView);
-                    } catch (e) {
-                      reject(e);
-                    }
-                  }, this)
-                )
-              );
-            } catch (e) {
-              if (window.dcp.logger) {
-                window.dcp.logger(e);
-              } else {
-                console.error(e);
-              }
-            }
-
-            Promise.all(promisesColumn).then(function renderDone() {
-              currentView.$el.attr("data-attrid", currentView.model.id);
-              currentView.model.trigger("renderDone", {
-                model: currentView.model,
-                $el: currentView.$el,
-                options: {
-                  customTemplate: !!currentView.customView
-                }
-              });
-              if (
-                currentView.$el.find(
-                  '.dcpCustomTemplate[data-attrid="' +
-                    currentView.model.id +
-                    '"] .dcpCustomTemplate--content[data-attrid="' +
-                    currentView.model.id +
-                    '"]'
-                ).length > 0
-              ) {
-                // it's a fake array view because template declare itself inside
-                currentView.stopListening(currentView.model, "addWidgetLine");
-                currentView.stopListening(currentView.model, "removeWidgetLine");
-                currentView.undelegateEvents();
-              }
-              resolve(currentView);
-            });
-          });
+          })
+            .then(onDone)
+            .catch(onDone);
         } catch (e) {
           reject(e);
         }

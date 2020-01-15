@@ -148,7 +148,7 @@ export default Backbone.View.extend({
           },
           () => {}
         );
-        renderPromise.finally(() =>
+        const promiseEnd = () => {
           Promise.all(promiseAttributes)
             .then(function allRenderDone() {
               currentView.model.trigger("renderDone", {
@@ -163,8 +163,9 @@ export default Backbone.View.extend({
               }
               resolve(currentView);
             })
-            .catch(reject)
-        );
+            .catch(reject);
+        };
+        renderPromise.then(promiseEnd).catch(promiseEnd);
       }, this)
     );
   },
