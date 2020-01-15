@@ -319,7 +319,7 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
               const controllerUID = controllerIDs[j];
               try {
                 const controller = this.getScopedController(controllerUID) as SmartElementController;
-                controller.tryToDestroy({ testDirty: false }).finally(() => {
+                const onDestroy = () => {
                   this._logVerbose(
                     `remove scoped controller (${controllerUID}) for smart element "${
                       controller.getProperties().initid
@@ -328,7 +328,8 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
                   );
                   this._dispatcher.removeController(controllerUID);
                   this._cleanCss();
-                });
+                };
+                controller.tryToDestroy({ testDirty: false }).then(onDestroy).catch(onDestroy);
               } catch (e) {
                 // Nothing to do : the element is already destroyed
                 if (!(e instanceof ControllerNotFoundError)) {
