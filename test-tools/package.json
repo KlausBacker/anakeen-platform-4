@@ -37,7 +37,7 @@
     "uuid": "^3.3.3"
   },
   "devDependencies": {
-    "@anakeen/anakeen-cli": "1.2.0-RC.2019.1.27",
+    "@anakeen/anakeen-cli": "1.2.0-RC.2019.1.28",
     "@anakeen/webpack-conf": "1.2.1",
     "core-js": "3.6.1",
     "@types/node": "^13.1.2",
