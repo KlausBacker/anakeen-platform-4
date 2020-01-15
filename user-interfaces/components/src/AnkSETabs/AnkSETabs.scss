@@ -11,8 +11,7 @@
     position: relative;
     align-items: center;
 
-    &.is-top,
-    &.is-bottom {
+    &.is-top {
       flex-direction: row;
       .ank-tabs-new-tab {
         margin-left: 0.5rem;
