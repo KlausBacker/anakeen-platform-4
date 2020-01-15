@@ -1,7 +1,6 @@
 .dcpAttribute {
   margin-right: 0;
   margin-left: 0;
-
 }
 
 .dcpAttribute__value--read {
@@ -9,25 +8,25 @@
 }
 
 .dcpAttribute__content .input-group-addon .btn,
-.dcpAttribute__content .k-state-default >.k-select,
+.dcpAttribute__content .k-state-default > .k-select,
 .dcpAttribute__value2 .k-select {
+  background-color: $ank-ui-color-btn-tool-bg;
 
-    background-color: $ank-ui-color-btn-tool-bg;
-
-    &.dcpAttribute__content__button--delete {
-      background-color:transparent;
-    }
+  &.dcpAttribute__content__button--delete {
+    background-color: transparent;
+  }
 }
 
 .dcpAttribute__content__buttons.input-group-addon {
-  border:0;
+  border: 0;
 }
 .dcpAttribute__value--read .dcpAttribute__content__value {
   word-wrap: break-word;
 }
 
 .dcpAttribute__value {
-  a:hover, a:focus {
+  a:hover,
+  a:focus {
     text-decoration: none;
   }
 }
@@ -65,7 +64,9 @@
 
 .dcpAttribute__content .input-group .dcpAttribute__content__nobutton,
 .dcpAttribute__content .input-group .dcpAttribute__value.dcpAttribute__content__nobutton,
-.dcpAttribute__content .form-control.dcpAttribute__value.dcpAttribute__value--edit.dcpAttribute__content__nobutton .k-state-default.dcpAttribute__content__nobutton,
+.dcpAttribute__content
+  .form-control.dcpAttribute__value.dcpAttribute__value--edit.dcpAttribute__content__nobutton
+  .k-state-default.dcpAttribute__content__nobutton,
 .dcpAttribute__content .k-widget > .k-state-default.dcpAttribute__content__nobutton,
 .dcpAttribute__content .dcpAttribute__content__nobutton > .k-state-default {
   border-bottom-right-radius: $border-radius-base;
@@ -75,7 +76,7 @@
 .dcpAttribute__content .input-group input.form-control,
 .dcpArray__content__cell .input-group input.form-control,
 .dcpAttribute__content .input-group .k-autocomplete {
-  height: calc( #{$ank-ui-input-height} - 2px);
+  height: calc(#{$ank-ui-input-height} - 2px);
 }
 
 .dcpAttribute__content > .input-group {
@@ -86,7 +87,6 @@
   &:hover {
     border: $ank-ui-doc-edit-attribute-hover-border;
     box-shadow: $ank-ui-doc-edit-attribute-hover-shadow;
-
   }
 }
 
@@ -105,23 +105,22 @@
 .dcpArray__content__cell .input-group-addon {
   padding: 0;
   border-right: 0;
-  border-left:0;
-  display:flex;
+  border-left: 0;
+  display: flex;
 }
 
 .dcpAttribute__content,
 .dcpArray__content__cell {
   .input-group-addon:first-child {
     border-radius: $border-radius-base 0 0 $border-radius-base;
-    border:none;
+    border: none;
     > button.btn {
       border-top-left-radius: $border-radius-inset;
       border-bottom-left-radius: $border-radius-inset;
-
     }
   }
   .input-group .k-widget.form-control:not(:first-child):not(:last-child) .k-dropdown-wrap {
-      border:none;
+    border: none;
   }
 }
 
@@ -129,7 +128,7 @@
   .input-group .k-widget.form-control:not(:first-child):not(:last-child) .k-multiselect-wrap,
   .k-widget.form-control > .k-multiselect-wrap,
   .k-widget > .k-state-default {
-    border:none;
+    border: none;
   }
 }
 .dcpAttribute__content .input-group-addon button,
@@ -196,27 +195,27 @@ iframe.dcpAttribute__value--endflash {
   position: relative;
   .dcpAttribute__content__button--delete {
     color: $gray-light;
-    background-color:transparent;
+    background-color: transparent;
     position: absolute;
     left: -2rem;
     z-index: 3;
     top: 0;
 
     .char-close {
-      border-radius:50%;
-      height:1rem;
-      width:1rem;
+      border-radius: 50%;
+      height: 1rem;
+      width: 1rem;
       line-height: 1rem;
       vertical-align: middle;
       display: inline-block;
 
       &.char-close::before {
         font-family: "WebComponentsIcons";
-        content: '\e11b';
+        content: "\e11b";
       }
     }
 
-    cursor:pointer;
+    cursor: pointer;
 
     &:hover {
       .char-close {
@@ -231,7 +230,7 @@ iframe.dcpAttribute__value--endflash {
 * no delete button on IE10
 */
 //noinspection CssInvalidPseudoSelector
-.dcpAttribute__content input[type=text]::-ms-clear {
+.dcpAttribute__content input[type="text"]::-ms-clear {
   display: none;
 }
 
@@ -269,4 +268,107 @@ iframe.dcpAttribute__value--endflash {
 
 .dcpCustomTemplate--content--value .dcpAttribute__content {
   padding-top: 0;
+}
+
+// Attribute
+.dcpDocument--edit,
+.dcpDocument--create {
+  .dcpAttribute__label.dcpAttribute__left {
+    min-height: 1.833rem;
+  }
+
+  .dcpAttribute__content .k-dropdown-wrap .k-select {
+    padding: 0;
+    height: 100%;
+    left: 0;
+    right: auto;
+    border: none;
+    width: 1.9rem;
+  }
+
+  .dcpAttribute__content .input-group-addon button {
+    border: none;
+    min-width: 2rem;
+    height: 100%;
+    padding: 0;
+  }
+
+  .dcpLabel {
+    color: $ank-ui-color-label;
+    padding: $ank-ui-doc-edit-label-padding;
+  }
+
+  .dcpAttribute {
+    margin-bottom: 1.6666rem;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .dcpAttribute__content .k-dropdown-wrap input.k-input {
+    border: none;
+  }
+
+  .dcpAttribute__content .k-dropdown,
+  .dcpAttribute__content .k-multiselect,
+  .dcpAttribute__content .k-combobox {
+    border: none;
+  }
+}
+
+// Consultation
+.dcpDocument--view {
+  .dcpAttribute {
+    margin-bottom: 1.6666rem;
+  }
+
+  .dcpAttribute__content {
+    border-bottom: $ank-ui-doc-read-attribute-border;
+    padding: $ank-ui-doc-read-attribute-value-padding;
+  }
+
+  .dcpAttribute__content__link {
+    color: $ank-ui-color-text;
+  }
+
+  .dcpAttribute__value--read {
+    font-family: $ank-ui-value-font-variant;
+    .dcpAttribute__value--icon {
+      vertical-align: middle;
+      margin-right: $ank-ui-doc-read-attribute-picto-space;
+    }
+  }
+
+  .dcpLabel {
+    padding: $ank-ui-doc-read-label-padding;
+  }
+}
+
+//Buttons
+// Buttons
+.dcpArray__add {
+  color: $ank-ui-button1-color-text;
+  background-color: $ank-ui-button1-color-background;
+  border-radius: $ank-ui-button1-border-radius;
+  font-size: $ank-ui-button-font-size;
+  &:hover {
+    color: $ank-ui-button1-hover-color-text;
+    background-color: $ank-ui-button1-hover-color-background;
+  }
+}
+
+.dcpAttribute__content .input-group-addon button:last-child {
+  border-right: none;
+}
+
+.dcpAttribute__content .input-group-addon button {
+  border-right: 1px solid #ccc;
+}
+
+.dcpAttribute__content .input-group-addon button,
+.dcpArray__content__cell .input-group-addon button {
+  border: none;
+  min-width: 2em;
+  height: 100%;
+  padding: 0;
 }

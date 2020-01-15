@@ -6,8 +6,9 @@
 
 ini_set("max_execution_time", "0");
 ini_set("memory_limit", -1);
-chdir(__DIR__);
-
+if (chdir(__DIR__) === false) {
+    throw new \Exception(sprintf("Error: could not chdir to platform directory '%s'", __DIR__));
+}
 require __DIR__ . '/vendor/Anakeen/autoload.php';
 
 // TODO To delete when legacy functions will have disappeared

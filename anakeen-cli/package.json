@@ -5,12 +5,14 @@
   "description": "The cli tool to init, build and deploy anakeen-platform projects",
   "main": "index.js",
   "bin": {
-    "anakeen-cli": "./index.js"
+    "anakeen-cli": "./index.js",
+    "anakeen-cli-completion": "./completion.js"
   },
   "scripts": {
     "beautify": "npx eslint ./ --fix",
     "lint": "npx eslint ./",
-    "anakeen-cli": "./index.js"
+    "anakeen-cli": "./index.js",
+    "anakeen-cli-completion": "./completion.js"
   },
   "license": "MIT",
   "dependencies": {

@@ -2,7 +2,7 @@
 /**
  * Anakeen Smart Element component object
  */
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import SmartElementController from "../../../src/vendor/Anakeen/DOCUMENT/IHM/widgets/globalController/SmartElementController";
 import { AnakeenController } from "../../../src/vendor/Anakeen/DOCUMENT/IHM/widgets/globalController/types/ControllerTypes";
 import AnakeenGlobalController from "../AnkController";
@@ -47,9 +47,30 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
     if (this.initialData.initid.toString() !== "0") {
       this._initController(this.initialData);
     }
+    this.$emit("smartElementMounted");
+  }
+  @Watch('initid')
+  protected watchInitId() {
+    this.updateComponent();
+  }
+  @Watch('viewId')
+  protected watchViewId() {
+    this.updateComponent();
+  }
+  @Watch('browserHistory')
+  protected watchBrowserHistory() {
+    this.updateComponent();
+  }
+  @Watch('customClientData', { deep: true })
+  protected watchCustomClientData() {
+    this.updateComponent();
+  }
+  @Watch('revision')
+  protected watchRevision() {
+    this.updateComponent();
   }
 
-  public updated() {
+  protected updateComponent() {
     if (this.initialData.initid.toString() !== "0") {
       if (!this.isLoaded()) {
         this._initController(this.initialData);
@@ -58,7 +79,6 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
       }
     }
   }
-
   /**
    * True when internal widget is loaded
    * @returns {boolean}

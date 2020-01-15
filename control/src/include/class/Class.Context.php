@@ -129,6 +129,14 @@ class Context extends ContextProperties
         return true;
     }
 
+    public function dirExists()
+    {
+        if (!is_dir($this->root)) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Import archive in Context
      *
@@ -395,7 +403,6 @@ class Context extends ContextProperties
      */
     public function deactivateAllRepo()
     {
-
         require_once('class/Class.WIFF.php');
 
         $wiff = WIFF::getInstance();
@@ -432,7 +439,6 @@ class Context extends ContextProperties
      */
     public function getModuleList()
     {
-
         $availableModuleList = $this->getAvailableModuleList();
         if ($availableModuleList === false) {
             $this->errorMessage = sprintf("Could not get available module list.");
@@ -640,10 +646,10 @@ class Context extends ContextProperties
      * Merge two module lists, sort and keep modules with highest version-release
      *   (kinda sort|uniq).
      *
-     * @param first array of module Objects
-     * @param second array of module Objects
+     * @param array $list1 first array of module Objects
+     * @param array $list2 second array of module Objects
      *
-     * @return array containing unique module Objects
+     * @return array|false containing unique module Objects
      *
      */
     public function mergeModuleList(&$list1, &$list2)
@@ -737,7 +743,7 @@ class Context extends ContextProperties
      * @param string $name Module name
      * @param bool   $status
      *
-     * @return Module or boolean false
+     * @return Module|false or boolean false
      *
      */
     public function getModule($name, $status = false)
@@ -858,7 +864,7 @@ class Context extends ContextProperties
      *
      * @param string $name
      *
-     * @return Module
+     * @return Module|false
      */
     public function getModuleAvail($name)
     {
@@ -970,7 +976,7 @@ class Context extends ContextProperties
      * @param bool  $local
      * @param bool  $installed
      *
-     * @return array containing a list of Module objects ordered by their
+     * @return array|false containing a list of Module objects ordered by their
      *         install order, or false in case of error
      *
      */
@@ -1036,8 +1042,12 @@ class Context extends ContextProperties
                             if ($this->cmpModuleByVersionAsc($satisfyingMod, $currentInstalledMod) > 0) {
                                 $satisfyingMod->needphase = 'upgrade';
                             } else {
-                                $this->errorMessage = sprintf("Module \"%s\" (%s) required by \"%s\" is not compatible with current set of installed and available modules.",
-                                    $reqModName, $reqModVersion, $mod->name);
+                                $this->errorMessage = sprintf(
+                                    "Module \"%s\" (%s) required by \"%s\" is not compatible with current set of installed and available modules.",
+                                    $reqModName,
+                                    $reqModVersion,
+                                    $mod->name
+                                );
                                 return false;
                             }
                             // Keep the satisfying module as the required module for install/upgrade
@@ -1076,12 +1086,20 @@ class Context extends ContextProperties
                          * Do not warn/err if an installed module has a broken
                          * dependency when archiving or restoring a context.
                         */
-                        $this->log(LOG_INFO, sprintf("Module '%s' (%s) required by '%s' could not be found in repositories.", $reqModName,
-                            $reqModVersion, $mod->name));
+                        $this->log(LOG_INFO, sprintf(
+                            "Module '%s' (%s) required by '%s' could not be found in repositories.",
+                            $reqModName,
+                            $reqModVersion,
+                            $mod->name
+                        ));
                         continue;
                     }
-                    $this->errorMessage = sprintf("Module '%s' (%s) required by '%s' could not be found in repositories.", $reqModName,
-                        $reqModVersion, $mod->name);
+                    $this->errorMessage = sprintf(
+                        "Module '%s' (%s) required by '%s' could not be found in repositories.",
+                        $reqModName,
+                        $reqModVersion,
+                        $mod->name
+                    );
                     return false;
                 }
 
@@ -1221,9 +1239,16 @@ class Context extends ContextProperties
         if (count($brokenDeps) > 0) {
             $errList = array();
             foreach ($brokenDeps as $elmt) {
-                $errList[] = sprintf("Module '%s' (version %s) would break installed module '%s' (version %s) which requires '%s' (version %s %s)", $elmt['brokenBy']->name,
-                    $elmt['brokenBy']->version, $elmt['brokenModule']->name, $elmt['brokenModule']->version, $elmt['brokenBy']->name, $elmt['brokenRequirement']['comp'],
-                    $elmt['brokenRequirement']['version']);
+                $errList[] = sprintf(
+                    "Module '%s' (version %s) would break installed module '%s' (version %s) which requires '%s' (version %s %s)",
+                    $elmt['brokenBy']->name,
+                    $elmt['brokenBy']->version,
+                    $elmt['brokenModule']->name,
+                    $elmt['brokenModule']->version,
+                    $elmt['brokenBy']->name,
+                    $elmt['brokenRequirement']['comp'],
+                    $elmt['brokenRequirement']['version']
+                );
             }
             return join("\n", $errList);
         }
@@ -1238,7 +1263,7 @@ class Context extends ContextProperties
      *
      * @return bool
      */
-    function listContains(array $list, $name)
+    public function listContains(array $list, $name)
     {
         foreach ($list as $module) {
             if ($module->name == $name) {
@@ -1256,7 +1281,7 @@ class Context extends ContextProperties
      *
      * @return bool
      */
-    function recursiveOrdering(array & $list, array & $orderList)
+    public function recursiveOrdering(array & $list, array & $orderList)
     {
         $count = count($list);
         foreach ($list as $key => $mod) {
@@ -1433,7 +1458,7 @@ class Context extends ContextProperties
      *
      * @param string $paramName
      *
-     * @return array
+     * @return array|false
      */
     public function getParameters()
     {
@@ -1591,7 +1616,6 @@ class Context extends ContextProperties
      */
     public function uploadModule()
     {
-
         $tmpfile = Control\Internal\LibSystem::tempnam(null, 'WIFF_downloadLocalFile');
         if ($tmpfile === false) {
             $this->errorMessage = sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . "Error creating temporary file.");
@@ -2309,9 +2333,15 @@ class Context extends ContextProperties
 
             if (!is_link($fpath) && is_dir($fpath)) {
                 if ($mentry['type'] != 'd') {
-                    $this->log(LOG_WARNING,
-                        __CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Type mismatch for file '%s' from module '%s': type is 'd' while manifest says '%s'.", $fpath, $moduleName,
-                            $mentry['type']));
+                    $this->log(
+                        LOG_WARNING,
+                        __CLASS__ . "::" . __FUNCTION__ . " " . sprintf(
+                            "Type mismatch for file '%s' from module '%s': type is 'd' while manifest says '%s'.",
+                            $fpath,
+                            $moduleName,
+                            $mentry['type']
+                        )
+                    );
                     continue;
                 }
                 if ($stat['nlink'] > 2 || count(scandir($fpath)) > 2) {
@@ -2351,8 +2381,11 @@ class Context extends ContextProperties
 
         foreach ($manifestLines as $line) {
             $minfo = array();
-            if (!preg_match("|^(?P<type>.)(?P<mode>.........)\s+(?P<uid>.*?)/(?P<gid>.*?)\s+(?P<size>\d+)\s+(?P<date>\d\d\d\d-\d\d-\d\d\s+\d\d:\d\d(?::\d\d)?)\s+(?P<name>.*?)(?P<link>\s+->\s+.*?)?$|",
-                $line, $minfo)) {
+            if (!preg_match(
+                "|^(?P<type>.)(?P<mode>.........)\s+(?P<uid>.*?)/(?P<gid>.*?)\s+(?P<size>\d+)\s+(?P<date>\d\d\d\d-\d\d-\d\d\s+\d\d:\d\d(?::\d\d)?)\s+(?P<name>.*?)(?P<link>\s+->\s+.*?)?$|",
+                $line,
+                $minfo
+            )) {
                 continue;
             }
             array_push($manifestEntries, $minfo);

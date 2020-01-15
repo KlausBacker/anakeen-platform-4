@@ -1382,7 +1382,7 @@ export default Backbone.Model.extend({
         globalCallback.error({ eventPrevented: true });
       }
     );
-    return beforeClosePromise.finally(() => globalCallback.promise);
+    return beforeClosePromise.then(() => globalCallback.promise).catch(() => globalCallback.promise);
   },
 
   saveDocument: function mDocumentSaveDocument(attributes, options) {
@@ -1463,7 +1463,7 @@ export default Backbone.Model.extend({
       }
     );
 
-    return beforeValidatePromise.finally(() => globalCallback.promise);
+    return beforeValidatePromise.then(() => globalCallback.promise).catch(() => globalCallback.promise);
   },
 
   deleteDocument: function mDocumentDelete(options) {
@@ -1529,7 +1529,7 @@ export default Backbone.Model.extend({
       }
     );
 
-    return preventPromise.finally(() => globalCallback.promise);
+    return preventPromise.then(() => globalCallback.promise).catch(() => globalCallback.promise);
   },
 
   restoreDocument: function mDocumentRestoreDocument(options) {
@@ -1608,7 +1608,7 @@ export default Backbone.Model.extend({
       }
     );
 
-    return preventPromise.finally(() => globalCallback.promise);
+    return preventPromise.then(() => globalCallback.promise).catch(() => globalCallback.promise);
   },
 
   /**

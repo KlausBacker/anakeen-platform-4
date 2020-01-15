@@ -25,9 +25,14 @@ new Vue({
   components: {
     Login: function(resolve) {
       // Download locale catalog before display components
-      Vue.$_globalI18n.recordCatalog(i18nLoginPage).finally(() => {
-        resolve(Login);
-      });
+      Vue.$_globalI18n
+        .recordCatalog(i18nLoginPage)
+        .then(() => {
+          resolve(Login);
+        })
+        .catch(() => {
+          resolve(Login);
+        });
     }
   },
   data: {

@@ -2,6 +2,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import AnkLoading from "../../AnkLoading/AnkLoading.vue";
 import AnkSmartElement from "../../AnkSmartElement/AnkSmartElement.vue";
 import { SmartElementEvents } from "../../AnkSmartElement/SmartElementEvents";
+import $ from "jquery";
 
 const capitalize = str => {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -78,6 +79,7 @@ export default class SETab extends Vue {
     if (this.$refs.smartElement) {
       this.bindSmartElementEvents();
     }
+    this.$emit("smartElementTabMounted");
   }
 
   public close() {

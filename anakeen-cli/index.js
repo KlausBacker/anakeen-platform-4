@@ -1,27 +1,24 @@
 #!/usr/bin/env node
 
 const { autoconf } = require("./utils/autoconf");
-const signale = require("signale");
 const yargs = require("yargs");
+const path = require("path");
+const { analyzePathForCommand } = require("./utils/completion");
 
 (async () => {
   const config = (await autoconf()) || {};
+  const commandList = await analyzePathForCommand(path.resolve(__dirname, "commands"), "", true);
   return yargs
     .config(config)
     .commandDir("commands")
-    .command({
-      command: "*",
-      handler: argv => {
-        if (argv._[0]) {
-          signale.error("Unknown commmand", argv._[0]);
-        } else {
-          signale.error("You need to specify a command");
-        }
-        yargs.showHelp();
-      }
-    })
     .alias("h", "help")
-    .showHelpOnFail(true)
+    .check(argv => {
+      const currentCommand = argv._[0];
+      if (commandList.indexOf(currentCommand) === -1) {
+        throw new Error(`Unknown command ${argv._[0]}`);
+      }
+      return true;
+    })
     .detectLocale(false)
     .version().argv;
 })();

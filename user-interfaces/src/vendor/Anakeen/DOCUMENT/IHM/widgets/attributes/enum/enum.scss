@@ -342,7 +342,7 @@ label.dcpAttribute__value--enumlabel--text {
   }
 }
 
-.dcpAttribute__content--enum input.dcpAttribute__value--edit:not([aria-activedescendant]) {
+.dcpAttribute__content--enum > input.dcpAttribute__value--edit:not([aria-activedescendant]) {
   color: $error;
 
 }

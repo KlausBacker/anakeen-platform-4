@@ -8,25 +8,25 @@ function curPageURL()
 {
     $pageURL = 'http';
     if ($_SERVER["HTTPS"] == "on") {
-        $pageURL.= "s";
+        $pageURL .= "s";
     }
-    $pageURL.= "://";
+    $pageURL .= "://";
     if ($_SERVER["SERVER_PORT"] != "80") {
-        $pageURL.= $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"] . $_SERVER["REQUEST_URI"];
+        $pageURL .= $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"] . $_SERVER["REQUEST_URI"];
     } else {
-        $pageURL.= $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
+        $pageURL .= $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
     }
     return $pageURL;
 }
 
-require_once __DIR__.'/Class.WiffCommon.php';
+require_once __DIR__ . '/Class.WiffCommon.php';
 
 /**
  */
 class WIFF extends WiffCommon
 {
     const logIdent = 'anakeen-control';
-    
+
     const contexts_filepath = 'conf/contexts.xml';
     const params_filepath = 'conf/params.xml';
     const archived_contexts_dir = 'archived-contexts/';
@@ -34,29 +34,29 @@ class WIFF extends WiffCommon
     const run_dir = 'var/run/';
     const xsd_catalog_xml = 'xsd/catalog.xml';
     const log_filepath = 'log/wiff.log';
-    const var_dir="var";
-    
+    const var_dir = "var";
+
     public $update_host;
     public $update_url;
     public $update_file;
     public $update_login;
     public $update_password;
-    
+
     public $contexts_filepath = '';
     public $params_filepath = '';
     public $archived_contexts_dir = '';
     public $archived_tmp_dir = '';
     public $xsd_catalog_xml = '';
     public $log_filepath = '';
-    
+
     public $errorMessage = null;
-    
+
     public $authInfo = array();
-    
+
     private static $instance;
-    
+
     private static $lock = null;
-    
+
     public $errorStatus = "";
     /**
      * @var Logger
@@ -77,7 +77,7 @@ class WIFF extends WiffCommon
         if ($wiff_root !== false) {
             $wiff_root = $wiff_root . DIRECTORY_SEPARATOR;
         }
-        $this->root=$wiff_root;
+        $this->root = $wiff_root;
         $this->contexts_filepath = $wiff_root . WIFF::contexts_filepath;
         $this->params_filepath = $wiff_root . WIFF::params_filepath;
         $this->archived_contexts_dir = $wiff_root . WIFF::archived_contexts_dir;
@@ -86,7 +86,7 @@ class WIFF extends WiffCommon
         $this->log_filepath = $wiff_root . WIFF::log_filepath;
         $this->run_dir = $wiff_root . WIFF::run_dir;
 
-        $varDir=$wiff_root . WIFF::var_dir;
+        $varDir = $wiff_root . WIFF::var_dir;
 
         if (!is_dir($varDir)) {
             mkdir($varDir);
@@ -99,12 +99,12 @@ class WIFF extends WiffCommon
             $this->update_password = $this->getParam('ac-update-password');
         }
     }
-    
+
     public function __destruct()
     {
         $this->unlock();
     }
-    
+
     public static function getInstance()
     {
         if (!isset(self::$instance)) {
@@ -116,9 +116,10 @@ class WIFF extends WiffCommon
         if (!isset(self::$logger)) {
             self::$instance->initLogger();
         }
-        
+
         return self::$instance;
     }
+
     /**
      * @TODO: Create php error message management class
      * Get php upload error message
@@ -169,6 +170,7 @@ class WIFF extends WiffCommon
         }
         return $message;
     }
+
     /**
      * Get WIFF version
      * @return string
@@ -181,7 +183,7 @@ class WIFF extends WiffCommon
         }
 
         $version = json_decode(file_get_contents($wiff_root . 'version.json'), true);
-        
+
         return $version["version"];
     }
 
@@ -207,19 +209,20 @@ class WIFF extends WiffCommon
         }
         $url = $pUrl['scheme'] . "://";
         if (isset($pUrl['user']) && $pUrl['user'] != '') {
-            $url.= urlencode($pUrl['user']) . ":" . urlencode($pUrl['pass']) . "@";
+            $url .= urlencode($pUrl['user']) . ":" . urlencode($pUrl['pass']) . "@";
         }
         if (isset($pUrl['host']) && $pUrl['host'] != '') {
-            $url.= $pUrl['host'];
+            $url .= $pUrl['host'];
         }
         if (isset($pUrl['port']) && $pUrl['port'] != '') {
-            $url.= ":" . $pUrl['port'];
+            $url .= ":" . $pUrl['port'];
         }
         if (isset($pUrl['path']) && $pUrl['path'] != '') {
-            $url.= $pUrl['path'];
+            $url .= $pUrl['path'];
         }
         return $url . "/";
     }
+
     /**
      * Get current available WIFF version
      * @return string
@@ -229,10 +232,13 @@ class WIFF extends WiffCommon
         $tmpfile = $this->downloadUrl($this->getUpdateBaseURL() . 'content.xml');
 
         if ($tmpfile === false) {
-            $this->errorMessage = $this->errorMessage ? ('Error when retrieving repository for wiff update :: ' . $this->errorMessage) : 'Error when retrieving repository for wiff update.';
+            $this->errorMessage = $this->errorMessage ? (sprintf(
+                "Error when retrieving repository for anakeen-control update :: %s",
+                $this->errorMessage
+            )) : 'Error when retrieving repository for anakeen-control update.';
             return false;
         }
-        
+
         $xml = new DOMDocument();
         $ret = $xml->load($tmpfile);
         if ($ret === false) {
@@ -240,13 +246,13 @@ class WIFF extends WiffCommon
             $this->errorMessage = sprintf("Error loading XML file '%s'.", $tmpfile);
             return false;
         }
-        
+
         $xpath = new DOMXPath($xml);
-        
+
         $modules = $xpath->query("/repo/modules/module");
-        
+
         $return = false;
-        
+
         foreach ($modules as $module) {
             /**
              * @var DOMElement $module
@@ -258,22 +264,21 @@ class WIFF extends WiffCommon
                 $return = $version . '-' . $release;
             }
         }
-        
+
         unlink($tmpfile);
-        
+
         return $return;
     }
 
 
-    
     public function createPasswordFile($login, $password)
     {
         $this->createHtpasswdFile($login, $password);
         $this->createHtaccessFile();
-        
+
         return true;
     }
-    
+
     public function createHtaccessFile()
     {
         $template = <<<'EOF'
@@ -292,23 +297,24 @@ EOF;
             "\\\""
         ), rtrim(self::getWiffRoot(), '/'));
         $content = str_replace('{WIFF_ROOT}', $escapedWiffRoot, $template) . "\n";
-        
+
         @$accessFile = fopen(sprintf('%s/.htaccess', self::getWiffRoot()), 'w');
         fwrite($accessFile, $content);
         fclose($accessFile);
     }
-    
+
     public function createHtpasswdFile($login, $password)
     {
         @$passwordFile = fopen(sprintf('%s/.htpasswd', self::getWiffRoot()), 'w');
         fwrite($passwordFile, sprintf("%s:{SHA}%s", $login, base64_encode(sha1($password, true))));
         fclose($passwordFile);
     }
+
     /**
      * Compare WIFF versions using PHP's version_compare()
-     * @return int|string
      * @param string $v1
      * @param string $v2
+     * @return int|string
      */
     private function compareVersion($v1, $v2)
     {
@@ -316,7 +322,7 @@ EOF;
         $v2 = $this->explodeVersion($v2);
         return version_compare($v1, $v2);
     }
-    
+
     public static function explodeVersion($v)
     {
         $array = explode(".", $v);
@@ -330,6 +336,7 @@ EOF;
         }
         return $v;
     }
+
     /**
      * Download latest WIFF file archive
      * @return bool|string
@@ -338,19 +345,18 @@ EOF;
     {
         return $this->downloadUrl($this->getUpdateBaseURL() . $this->update_file);
     }
+
     /**
      * Unpack archive in specified destination directory
      * @return string containing the given destination dir pr false in case of error
      */
     private function unpack($archiveFile, $destDir = null)
     {
-
-        
         if (!is_file($archiveFile) || !is_readable($archiveFile)) {
             $this->errorMessage = sprintf("Archive file '%s' does not exists or is not readable.", $archiveFile);
             return false;
         }
-        
+
         if ($destDir === null) {
             $destDir = $this->getWiffRoot();
         }
@@ -358,68 +364,95 @@ EOF;
             $this->errorMessage = sprintf("Unpack directory '%s' does not exists or is not writable.", $destDir);
             return false;
         }
-        
-        $cmd = sprintf('tar -C %s -zxf %s --strip-components 1 2>&1', escapeshellarg($destDir), escapeshellarg($archiveFile));
-        
+
+        $cmd = sprintf(
+            'tar -C %s -zxf %s --strip-components 1 2>&1',
+            escapeshellarg($destDir),
+            escapeshellarg($archiveFile)
+        );
+
         $ret = null;
         exec($cmd, $output, $ret);
         if ($ret != 0) {
             $this->errorMessage = sprintf("Error executing command [%s]: %s", $cmd, join("\n", $output));
             return false;
         }
-        
+
         return true;
     }
+
     private function checkPreUpdate($archiveFile)
     {
-        require_once(__DIR__.'/Class.String.php');
-        
+        require_once(__DIR__ . '/Class.String.php');
+
         $tempDir = Control\Internal\LibSystem::tempnam(null, 'WIFF_checkPreUpdate');
         if ($tempDir === false) {
             $this->errorMessage = sprintf(__METHOD__ . " " . "Error creating temporary file.");
             return false;
         }
-        
+
         unlink($tempDir);
         if (mkdir($tempDir, 0700) === false) {
             $this->errorMessage = sprintf(__METHOD__ . " " . "Error creating temporary directory.");
             return false;
         }
-        
-        $this->log(LOG_INFO, sprintf("Unpacking update file '%s' into temporary directory '%s'.", $archiveFile, $tempDir));
+
+        $this->log(
+            LOG_INFO,
+            sprintf("Unpacking update file '%s' into temporary directory '%s'.", $archiveFile, $tempDir)
+        );
         if ($this->unpack($archiveFile, $tempDir) === false) {
-            $this->errorMessage = sprintf(__METHOD__ . " " . "Error unpacking update into temporary directory '%s': %s", $tempDir, $this->errorMessage);
+            $this->errorMessage = sprintf(
+                __METHOD__ . " " . "Error unpacking update into temporary directory '%s': %s",
+                $tempDir,
+                $this->errorMessage
+            );
             $this->rm_Rf($tempDir);
             return false;
         }
-        
+
         $preUpdateFile = $tempDir . DIRECTORY_SEPARATOR . 'pre-update';
         $this->log(LOG_INFO, sprintf("Checking for pre-update script '%s'.", $preUpdateFile));
         if (!is_file($preUpdateFile)) {
             $this->rm_Rf($tempDir);
             return true;
         }
-        
+
         $newVersion = '';
         if (($lines = file($tempDir . DIRECTORY_SEPARATOR . 'VERSION')) !== false) {
             $newVersion = trim($lines[0]);
         }
         if (($lines = file($tempDir . DIRECTORY_SEPARATOR . 'RELEASE')) !== false) {
-            $newVersion.= "-" . trim($lines[0]);
+            $newVersion .= "-" . trim($lines[0]);
         }
-        
-        $cmd = sprintf("%s %s %s 2>&1", escapeshellarg($preUpdateFile), escapeshellarg($this->getWiffRoot()), escapeshellarg($tempDir));
+
+        $cmd = sprintf(
+            "%s %s %s 2>&1",
+            escapeshellarg($preUpdateFile),
+            escapeshellarg($this->getWiffRoot()),
+            escapeshellarg($tempDir)
+        );
         $this->log(LOG_INFO, sprintf("Executing pre-update script with command: %s", $cmd));
         exec($cmd, $output, $ret);
         if ($ret !== 0) {
-            $message = sprintf('<p style="font-weight: bold">Pre-update verification for anakeen-control %s failed with:</p></p><pre style="font-weight: bold; color: red; white-space: pre-wrap;">%s</pre>', $newVersion, join("<br/>", array_map(
-                function ($s) {
-                    return htmlspecialchars($s, ENT_QUOTES);
-                },
-                $output
-            )));
+            $message = sprintf(
+                'Pre-update verification for anakeen-control %s failed with: %s',
+                $newVersion,
+                join(
+                    "<br/>",
+                    array_map(
+                        function ($s) {
+                            return htmlspecialchars($s, ENT_QUOTES);
+                        },
+                        $output
+                    )
+                )
+            );
             $this->errorMessage = (string)new \String\HTML($message);
-            $this->log(LOG_ERR, sprintf("pre-update script '%s' returned with error: %s", $preUpdateFile, $this->errorMessage));
+            $this->log(
+                LOG_ERR,
+                sprintf("pre-update script '%s' returned with error: %s", $preUpdateFile, $this->errorMessage)
+            );
             $this->rm_Rf($tempDir);
             return false;
         }
@@ -429,22 +462,22 @@ EOF;
 
     /**
      * Get global repository list
-     * @return Repository[] array of object Repository
+     * @return Repository[]|false array of object Repository
      */
     public function getRepoList($checkValidity = true)
     {
-        require_once(__DIR__.'/Class.Repository.php');
-        
+        require_once(__DIR__ . '/Class.Repository.php');
+
         $repoList = array();
-        
+
         $xml = $this->loadParamsDOMDocument();
         if ($xml === false) {
             $this->errorMessage = sprintf("Error loading XML file '%s'.", $this->params_filepath);
             return false;
         }
-        
+
         $repositories = $xml->getElementsByTagName('access');
-        
+
         if ($repositories->length > 0) {
             foreach ($repositories as $repository) {
                 $repoList[] = new Repository($repository, null, array(
@@ -452,27 +485,28 @@ EOF;
                 ));
             }
         }
-        
+
         return $repoList;
     }
+
     /**
      * Get repository from global repo list
      */
     public function getRepo($name)
     {
-        require_once(__DIR__.'/Class.Repository.php');
-        
+        require_once(__DIR__ . '/Class.Repository.php');
+
         if ($name == '') {
             $this->errorMessage = "A name must be provided.";
             return false;
         }
-        
+
         $xml = $this->loadParamsDOMDocument();
         if ($xml === false) {
             $this->errorMessage = sprintf("Error loading XML file '%s'.", $this->params_filepath);
             return false;
         }
-        
+
         $xPath = new DOMXPath($xml);
         // Get repository with this name from WIFF repositories
         $wiffRepoList = $xPath->query("/wiff/repositories/access[@name='" . $name . "']");
@@ -485,11 +519,12 @@ EOF;
          * @var DOMElement $repository
          */
         $repository = $wiffRepoList->item(0);
-        
+
         $repositoryObject = new Repository($repository);
-        
+
         return $repositoryObject;
     }
+
     /**
      * Add repository to global repo list
      * @param $name
@@ -504,21 +539,31 @@ EOF;
      * @param $returnRepoValidation
      * @return boolean
      */
-    public function createRepo($name, $description, $protocol, $host, $path, $default, $authenticated, $login, $password, $returnRepoValidation = true)
-    {
-        require_once(__DIR__.'/Class.Repository.php');
-        
+    public function createRepo(
+        $name,
+        $description,
+        $protocol,
+        $host,
+        $path,
+        $default,
+        $authenticated,
+        $login,
+        $password,
+        $returnRepoValidation = true
+    ) {
+        require_once(__DIR__ . '/Class.Repository.php');
+
         if ($name == '') {
             $this->errorMessage = "A name must be provided.";
             return false;
         }
-        
+
         $xml = $this->loadParamsDOMDocument();
         if ($xml === false) {
             $this->errorMessage = sprintf("Error loading XML file '%s'.", $this->params_filepath);
             return false;
         }
-        
+
         $xPath = new DOMXPath($xml);
         // Get repository with this name from WIFF repositories
         $wiffRepoList = $xPath->query("/wiff/repositories/access[@name='" . $name . "']");
@@ -533,7 +578,7 @@ EOF;
          * @var DOMElement $repository
          */
         $repository = $xml->getElementsByTagName('repositories')->item(0)->appendChild($node);
-        
+
         $repository->setAttribute('name', $name);
         $repository->setAttribute('description', $description);
         $repository->setAttribute('protocol', $protocol);
@@ -543,18 +588,18 @@ EOF;
         $repository->setAttribute('authenticated', $authenticated);
         $repository->setAttribute('login', $login);
         $repository->setAttribute('password', $password);
-        
+
         $repositoryObject = new Repository($repository);
-        
+
         $isValid = $repositoryObject->isValid();
         if (!$isValid) {
-            $url=sprintf("%s://%s/%s", $protocol, $host, $path);
+            $url = sprintf("%s://%s/%s", $protocol, $host, $path);
             $this->errorMessage = sprintf("Repository has no valid content.xml '%s'", $url);
             return false;
         }
 
         $repository->setAttribute('label', $repositoryObject->label);
-        
+
         $ret = $this->commitDOMDocument($xml);
         if ($ret === false) {
             $this->errorMessage = sprintf("Error writing file '%s': %s", $this->params_filepath, $this->errorMessage);
@@ -562,10 +607,11 @@ EOF;
         }
         return ($returnRepoValidation ? $isValid : true);
     }
+
     public function createRepoUrl($name, $url, $authUser = null, $authPassword = null, $default = false)
     {
         $pURL = parse_url($url);
-        
+
         $useUrlEmbeddedUserPass = false;
         $authenticated = 'no';
         if ($authUser !== null) {
@@ -583,7 +629,7 @@ EOF;
                 $authPassword = '';
             }
         }
-        
+
         $protocol = '';
         if (isset($pURL['scheme'])) {
             $protocol = $pURL['scheme'];
@@ -592,21 +638,21 @@ EOF;
         if (isset($pURL['host'])) {
             $host = $pURL['host'];
             if (isset($pURL['port'])) {
-                $host.= ':' . $pURL['port'];
+                $host .= ':' . $pURL['port'];
             }
         }
         $path = '';
         if (isset($pURL['path'])) {
             $path = $pURL['path'];
             if (isset($pURL['query'])) {
-                $path.= '?' . $pURL['query'];
+                $path .= '?' . $pURL['query'];
             }
             if (isset($pURL['fragment'])) {
-                $path.= '#' . $pURL['fragment'];
+                $path .= '#' . $pURL['fragment'];
             }
         }
         $description = sprintf("%s://%s/%s", $protocol, $host, $path);
-        
+
         $ret = $this->createRepo(
             $name,
             $description,
@@ -624,6 +670,7 @@ EOF;
         }
         return true;
     }
+
     /**
      * Change all parameters in one go
      * @param array $request
@@ -662,6 +709,7 @@ EOF;
         }
         return $paramList;
     }
+
     /**
      * Change Dynacase-control parameters
      * @param string $name : Name of the parameters to change
@@ -674,7 +722,7 @@ EOF;
             $this->errorMessage = "A name must be provided";
             return false;
         }
-        
+
         $xml = $this->loadParamsDOMDocument();
         if ($xml === false) {
             $this->errorMessage = sprintf("Error loading XML file '%s'.", $this->params_filepath);
@@ -727,6 +775,7 @@ EOF;
         }
         return true;
     }
+
     /**
      * Add repository to global repo list
      * @param string $name
@@ -740,21 +789,30 @@ EOF;
      * @param string $password
      * @return boolean
      */
-    public function modifyRepo($name, $description, $protocol, $host, $path, $default, $authenticated, $login, $password)
-    {
-        require_once(__DIR__.'/Class.Repository.php');
-        
+    public function modifyRepo(
+        $name,
+        $description,
+        $protocol,
+        $host,
+        $path,
+        $default,
+        $authenticated,
+        $login,
+        $password
+    ) {
+        require_once(__DIR__ . '/Class.Repository.php');
+
         if ($name == '') {
             $this->errorMessage = "A name must be provided.";
             return false;
         }
-        
+
         $xml = $this->loadParamsDOMDocument();
         if ($xml === false) {
             $this->errorMessage = sprintf("Error loading XML file '%s'.", $this->params_filepath);
             return false;
         }
-        
+
         $xPath = new DOMXPath($xml);
         // Get repository with this name from WIFF repositories
         $wiffRepoList = $xPath->query("/wiff/repositories/access[@name='" . $name . "']");
@@ -766,12 +824,12 @@ EOF;
         // Add repository to this context
         //        $node = $xml->createElement('access');
         //        $repository = $xml->getElementsByTagName('repositories')->item(0)->appendChild($node);
-        
+
         /**
          * @var DOMElement $repository
          */
         $repository = $wiffRepoList->item(0);
-        
+
         $repository->setAttribute('name', $name);
         $repository->setAttribute('description', $description);
         $repository->setAttribute('protocol', $protocol);
@@ -781,7 +839,7 @@ EOF;
         $repository->setAttribute('authenticated', $authenticated);
         $repository->setAttribute('login', $login);
         $repository->setAttribute('password', $password);
-        
+
         $repositoryObject = new Repository($repository);
         $ret = $this->commitDOMDocument($xml);
         if ($ret === false) {
@@ -790,6 +848,7 @@ EOF;
         }
         return $repositoryObject->isValid();
     }
+
     /**
      * Delete repository from global repo list
      * @param string $name
@@ -797,14 +856,14 @@ EOF;
      */
     public function deleteRepo($name)
     {
-        require_once(__DIR__.'/Class.Repository.php');
-        
+        require_once(__DIR__ . '/Class.Repository.php');
+
         $xml = $this->loadParamsDOMDocument();
         if ($xml === false) {
             $this->errorMessage = sprintf("Error loading XML file '%s'.", $this->params_filepath);
             return false;
         }
-        
+
         $xPath = new DOMXPath($xml);
         // Get repository with this name from WIFF repositories
         $wiffRepoList = $xPath->query("/wiff/repositories/access[@name='" . $name . "']");
@@ -815,22 +874,23 @@ EOF;
         }
         // Delete repository from this context
         $xml->getElementsByTagName('repositories')->item(0)->removeChild($wiffRepoList->item(0));
-        
+
         $ret = $this->commitDOMDocument($xml);
         if ($ret === false) {
             $this->errorMessage = sprintf("Error writing file '%s': %s", $this->params_filepath, $this->errorMessage);
             return false;
         }
-        
+
         return true;
     }
-    
+
     public function setAuthInfo($request)
     {
         //echo 'REQUEST'.print_r($request[0]->name,true);
         //echo 'SET AuthInfo Size'.count($request);
         $this->authInfo = $request;
     }
+
     /**
      * @param $repoName
      * @return bool|StdClass
@@ -853,24 +913,24 @@ EOF;
     /**
      * Get Context list
      * full-blown Context objects (default: bool(false))
-     * @return Context[] array of object Context or bool(false) on error
+     * @return Context[]|false array of object Context or bool(false) on error
      */
     public function getContextList($verifyContextList = true)
     {
-        require_once(__DIR__.'/Class.Repository.php');
-        require_once(__DIR__.'/Class.Context.php');
+        require_once(__DIR__ . '/Class.Repository.php');
+        require_once(__DIR__ . '/Class.Context.php');
 
         $contextList = array();
-        
+
         $xml = $this->loadContextsDOMDocument();
         if ($xml === false) {
             $this->errorMessage = sprintf("Error loading 'contexts.xml' [001]: %s", $this->errorMessage);
             return false;
         }
-        
+
         $xpath = new DOMXpath($xml);
         $contexts = $xpath->query("/contexts/context");
-        
+
         if ($contexts->length > 0) {
             foreach ($contexts as $context) {
                 /**
@@ -881,25 +941,44 @@ EOF;
                 foreach ($repositories as $repository) {
                     $repoList[] = new Repository($repository);
                 }
-                
-                $contextClass = new Context($context->getAttribute('name'), $context->getElementsByTagName('description')->item(0)->nodeValue, $context->getAttribute('root'), $repoList, $context->getAttribute('url'), $context->getAttribute('register'));
+
+                $contextClass = new Context(
+                    $context->getAttribute('name'),
+                    $context->getElementsByTagName('description')->item(0)->nodeValue,
+                    $context->getAttribute('root'),
+                    $repoList,
+                    $context->getAttribute('url'),
+                    $context->getAttribute('register')
+                );
                 $contextClass->isValid();
-                if ($verifyContextList && !$contextClass->isWritable()) {
-                    $this->errorMessage = sprintf("Apache users does not have write rights for context '%s'.", $contextClass->name);
-                    return false;
+                if ($verifyContextList) {
+                    if (!$contextClass->dirExists()) {
+                        $this->errorMessage = sprintf(
+                            "Directory '%s' not exists.",
+                            $contextClass->root
+                        );
+                        return false;
+                    }
+                    if (!$contextClass->isWritable()) {
+                        $this->errorMessage = sprintf(
+                            "Apache users does not have write rights for directory '%s'.",
+                            $contextClass->root
+                        );
+                        return false;
+                    }
                 }
 
-                
+
                 $contextList[] = $contextClass;
             }
         }
-        
+
         $collator = new Collator(Locale::getDefault());
         usort($contextList, function ($context1, $context2) use ($collator) {
             /** @var Collator $collator */
             return $collator->compare($context1->name, $context2->name);
         });
-        
+
         if (is_dir($this->archived_tmp_dir)) {
             if (!is_writable($this->archived_tmp_dir)) {
                 $this->errorMessage = sprintf("Directory '%s' is not writable.", $this->archived_tmp_dir);
@@ -912,7 +991,7 @@ EOF;
             }
         }
 
-        
+
         return $contextList;
     }
 
@@ -932,24 +1011,24 @@ EOF;
      * Get Context by name
      * @param string $name context name
      * @param bool $verifyWriteAccess (default false)
-     *@return Context|false Context or boolean false
+     * @return Context|false Context or boolean false
      */
     public function getContext($name, $verifyWriteAccess = true)
     {
-        require_once(__DIR__.'/Class.Repository.php');
-        require_once(__DIR__.'/Class.Context.php');
-        
+        require_once(__DIR__ . '/Class.Repository.php');
+        require_once(__DIR__ . '/Class.Context.php');
+
         $xml = $this->loadContextsDOMDocument();
         if ($xml === false) {
             $this->errorMessage = sprintf("Error loading '%s': %s", $this->contexts_filepath, $this->errorMessage);
             return false;
         }
-        
+
         $xpath = new DOMXPath($xml);
-        
+
         $query = "/contexts/context[@name = '" . $name . "']";
         $context = $xpath->query($query);
-        
+
         if ($context->length >= 1) {
             $repoList = array();
             /**
@@ -957,26 +1036,33 @@ EOF;
              */
             $contextNode = $context->item(0);
             $repositories = $contextNode->getElementsByTagName('access');
-            
+
             foreach ($repositories as $repository) {
                 $repoList[] = new Repository($repository);
             }
-            
+
             $this->errorMessage = null;
-            $context = new Context($contextNode->getAttribute('name'), $contextNode->getElementsByTagName('description')->item(0)->nodeValue, $contextNode->getAttribute('root'), $repoList, $contextNode->getAttribute('url'), $contextNode->getAttribute('register'));
-            
+            $context = new Context(
+                $contextNode->getAttribute('name'),
+                $contextNode->getElementsByTagName('description')->item(0)->nodeValue,
+                $contextNode->getAttribute('root'),
+                $repoList,
+                $contextNode->getAttribute('url'),
+                $contextNode->getAttribute('register')
+            );
+
             if (!$context->isWritable() && $verifyWriteAccess === true) {
                 $this->errorMessage = sprintf("Context '%s' configuration is not writable.", $context->name);
                 return false;
             }
-            
+
             return $context;
         }
-        
+
         $this->errorMessage = sprintf("Context '%s' not found.", $name);
         return false;
     }
-    
+
     public function isWritable()
     {
         if (!is_writable($this->contexts_filepath) || !is_writable($this->params_filepath)) {
@@ -984,13 +1070,14 @@ EOF;
         }
         return true;
     }
+
     /**
      * Create Context
-     * @return object Context or boolean false
      * @param string $name context name
      * @param string $root context root folder
      * @param string $desc context description
      * @param string $url context url
+     * @return object|false Context or boolean false
      */
     public function createContext($name, $root, $desc, $url)
     {
@@ -1040,27 +1127,31 @@ EOF;
         // Write contexts XML
         $xml = $this->loadContextsDOMDocument();
         if ($xml === false) {
-            $this->errorMessage = sprintf("Error loading '%s' [003]: %s", $this->contexts_filepath, $this->errorMessage);
+            $this->errorMessage = sprintf(
+                "Error loading '%s' [003]: %s",
+                $this->contexts_filepath,
+                $this->errorMessage
+            );
             return false;
         }
         $xml->formatOutput = true;
-        
+
         $node = $xml->createElement('context');
         /**
          * @var DOMElement $context
          */
         $context = $xml->getElementsByTagName('contexts')->item(0)->appendChild($node);
-        
+
         $context->setAttribute('name', $name);
-        
+
         $context->setAttribute('root', $root);
-        
+
         $context->setAttribute('url', $url);
-        
+
         $descriptionNode = $xml->createElement('description', $desc);
-        
+
         $context->appendChild($descriptionNode);
-        
+
         $moduleNode = $xml->createElement('modules');
         $context->appendChild($moduleNode);
         // Save XML to file
@@ -1069,16 +1160,17 @@ EOF;
             $this->errorMessage = sprintf("Error saving 'contexts.xml': %s", $this->errorMessage);
             return false;
         }
-        
+
         return $this->getContext($name);
     }
+
     /**
      * Save Context
      * @param string $name
      * @param string $root
      * @param string $desc
      * @param string $url
-     * @return object Context or boolean false
+     * @return object|false Context or boolean false
      */
     public function saveContext($name, $root, $desc, $url)
     {
@@ -1089,9 +1181,9 @@ EOF;
             return false;
         }
         $xml->formatOutput = true;
-        
+
         $xpath = new DOMXPath($xml);
-        
+
         $query = "/contexts/context[@root = " . self::xpathLiteral($root) . "]";
         /**
          * @var DOMElement $context
@@ -1106,10 +1198,10 @@ EOF;
             $this->errorMessage = sprintf("Could not find context with root = '%s'.", $root);
             return false;
         }
-        
+
         $context->setAttribute('name', $name);
         $context->setAttribute('url', $url);
-        
+
         $query = "/contexts/context[@root = " . self::xpathLiteral($root) . "]/description";
         $res = $xpath->query($query);
         if ($res === false) {
@@ -1121,7 +1213,7 @@ EOF;
             $this->errorMessage = sprintf("Could not find description for context with root = '%s'.", $root);
             return false;
         }
-        
+
         $description->nodeValue = $desc;
         // Save XML to file
         $ret = $this->commitDOMDocument($xml);
@@ -1129,13 +1221,14 @@ EOF;
             $this->errorMessage = sprintf("Error saving 'contexts.xml': %s", $this->errorMessage);
             return false;
         }
-        
+
         return $this->getContext($name);
     }
+
     /**
      * Get parameters list
      * @param bool $withHidden true to get hidden parameters too
-     * @return array containing 'key' => 'value' pairs
+     * @return array |false containing 'key' => 'value' pairs
      */
     public function getParamList($withHidden = false)
     {
@@ -1143,17 +1236,21 @@ EOF;
          * Default params' values
         */
         $plist = array();
-        
+
         $xml = $this->loadParamsDOMDocument();
         if ($xml === false) {
             $this->errorMessage = sprintf("Error loading XML file '%s'.", $this->params_filepath);
             return false;
         }
-        
+
         $xpath = new DOMXpath($xml);
         $params = $xpath->query("/wiff/parameters/param");
         if ($params === null) {
-            $this->errorMessage = sprintf("Error executing XPath query '%s' on file '%s'.", "/wiff/parameters/param", $this->params_filepath);
+            $this->errorMessage = sprintf(
+                "Error executing XPath query '%s' on file '%s'.",
+                "/wiff/parameters/param",
+                $this->params_filepath
+            );
             return false;
         }
         foreach ($params as $param) {
@@ -1167,40 +1264,41 @@ EOF;
             $paramValue = $param->getAttribute('value');
             $plist[$paramName] = $paramValue;
         }
-        
+
         return $plist;
     }
+
     /**
      * Get a specific parameter value
-     * @return string the value of the parameter or false in case of errors
      * @param string $paramName the parameter name
      * @param boolean $strict if not found, should method report an error
      * @param bool $withHidden true to get hidden parameters
+     * @return string the value of the parameter or false in case of errors
      */
     public function getParam($paramName, $strict = false, $withHidden = false)
     {
-
         if (!file_exists($this->params_filepath)) {
             return false;
         }
         $plist = $this->getParamList($withHidden);
-        
+
         if (array_key_exists($paramName, $plist)) {
             return $plist[$paramName];
         }
-        
+
         if ($strict) {
             $this->errorMessage = sprintf("Parameter '%s' not found in contexts parameters.", $paramName);
         }
         return false;
     }
+
     /**
      * Set a specific parameter value
-     * @return string return the value or false in case of errors
      * @param string $paramName the name of the parameter to set
      * @param string $paramValue the value of the parameter to set
      * @param bool $create
      * @param string $mode Mode of param (hidden or visible)
+     * @return string return the value or false in case of errors
      */
     public function setParam($paramName, $paramValue, $create = true, $mode = "visible")
     {
@@ -1209,16 +1307,20 @@ EOF;
             $this->errorMessage = sprintf("Error loading XML file '%s'.", $this->params_filepath);
             return false;
         }
-        
+
         $xpath = new DOMXpath($xml);
         $params = $xpath->query("/wiff/parameters/param[@name='$paramName']");
         if ($params === null) {
-            $this->errorMessage = sprintf("Error executing XPath query '%s' on file '%s'.", "/wiff/parameters/param[@name='$paramName']", $this->params_filepath);
+            $this->errorMessage = sprintf(
+                "Error executing XPath query '%s' on file '%s'.",
+                "/wiff/parameters/param[@name='$paramName']",
+                $this->params_filepath
+            );
             return false;
         }
-        
+
         $found = false;
-        
+
         foreach ($params as $param) {
             /**
              * @var DOMElement $param
@@ -1226,7 +1328,7 @@ EOF;
             $found = true;
             $param->setAttribute('value', $paramValue);
         }
-        
+
         if (!$found && $create) {
             $param = $xml->createElement('param');
             $param = $xml->getElementsByTagName('parameters')->item(0)->appendChild($param);
@@ -1234,16 +1336,17 @@ EOF;
             $param->setAttribute('value', $paramValue);
             $param->setAttribute('mode', $mode);
         }
-        
+
         $ret = $this->commitDOMDocument($xml);
         if ($ret === false) {
             $this->errorStatus = false;
             $this->errorMessage = sprintf("Error writing file '%s': %s", $this->params_filepath, $this->errorMessage);
             return false;
         }
-        
+
         return $paramValue;
     }
+
     /**
      * download the file pointed by the URL to a temporary file
      * @param string $url the URL of the file to retrieve
@@ -1253,8 +1356,8 @@ EOF;
      */
     public function downloadUrl($url, $opts = array())
     {
-        require_once __DIR__.'/Class.WWWUserAgent.php';
-        
+        require_once __DIR__ . '/Class.WWWUserAgent.php';
+
         if ($url == '') {
             $this->errorMessage = 'Download URL must not be empty';
             return false;
@@ -1269,11 +1372,11 @@ EOF;
         }
         return $file;
     }
-    
+
     public function expandParamValue($paramName)
     {
         $paramName = preg_replace('/@(\w+?)/', '\1', $paramName);
-        
+
         $contextName = getenv("WIFF_CONTEXT_NAME");
         if ($contextName === false) {
             $this->errorMessage = sprintf(__METHOD__ . " " . "WIFF_CONTEXT_NAME env var not defined!");
@@ -1286,13 +1389,16 @@ EOF;
         }
         $paramValue = $context->getParamByName($paramName);
         if ($paramValue === false) {
-            $this->errorMessage = sprintf(__METHOD__ . " " . "Could not get value for param with name '%s'.", $paramName);
+            $this->errorMessage = sprintf(
+                __METHOD__ . " " . "Could not get value for param with name '%s'.",
+                $paramName
+            );
             return false;
         }
-        
+
         return $paramValue;
     }
-    
+
     public function lock($blocking = true, &$lockerPid = null)
     {
         $this->errorMessage = '';
@@ -1302,12 +1408,15 @@ EOF;
         }
         $fh = fopen(sprintf("%s.lock", $this->contexts_filepath), "a+");
         if ($fh === false) {
-            $this->errorMessage = sprintf("Could not open '%s' for lock.", sprintf("%s.lock", $this->contexts_filepath));
+            $this->errorMessage = sprintf(
+                "Could not open '%s' for lock.",
+                sprintf("%s.lock", $this->contexts_filepath)
+            );
             return false;
         }
         $op = LOCK_EX;
         if (!$blocking) {
-            $op|= LOCK_NB;
+            $op |= LOCK_NB;
         }
         $ret = flock($fh, $op);
         if ($ret === false) {
@@ -1317,7 +1426,10 @@ EOF;
                 $lockerPid = $pid;
                 $this->errorMessage = sprintf("Already locked by process with pid '%s'.", $lockerPid);
             } else {
-                $this->errorMessage = sprintf("Could not get lock on '%s'.", sprintf("%s.lock", $this->contexts_filepath));
+                $this->errorMessage = sprintf(
+                    "Could not get lock on '%s'.",
+                    sprintf("%s.lock", $this->contexts_filepath)
+                );
             }
             fclose($fh);
             return false;
@@ -1329,7 +1441,7 @@ EOF;
         self::$lock = $fh;
         return true;
     }
-    
+
     public function unlock()
     {
         $this->errorMessage = '';
@@ -1342,15 +1454,16 @@ EOF;
         fflush(self::$lock);
         $ret = flock(self::$lock, LOCK_UN);
         if ($ret == false) {
-            $this->errorMessage = sprintf("Could not release lock on '%s'.", sprintf("%s.lock", $this->contexts_filepath));
+            $this->errorMessage = sprintf(
+                "Could not release lock on '%s'.",
+                sprintf("%s.lock", $this->contexts_filepath)
+            );
             return false;
         }
         fclose(self::$lock);
         self::$lock = null;
         return true;
     }
-
-
 
 
     /**
@@ -1365,16 +1478,11 @@ EOF;
         }
         return $wiff_root;
     }
-    
 
 
-    
-
-
-    
-    static function anonymizeUrl($url)
+    public static function anonymizeUrl($url)
     {
-        require_once __DIR__.'/Class.WWWUserAgent.php';
+        require_once __DIR__ . '/Class.WWWUserAgent.php';
         return WWW\UserAgent::anonymizeUrl($url);
     }
 
@@ -1389,17 +1497,18 @@ EOF;
      * @param $str
      * @return string
      */
-    static function xpathLiteral($str)
+    public static function xpathLiteral($str)
     {
         if (strpos($str, "'") === false) {
             return "'" . $str . "'";
         } else {
             return "concat(" . str_replace(array(
-                "'',",
-                ",''"
-            ), "", "'" . implode("',\"'\",'", explode("'", $str)) . "'") . ")";
+                    "'',",
+                    ",''"
+                ), "", "'" . implode("',\"'\",'", explode("'", $str)) . "'") . ")";
         }
     }
+
     /**
      * Check for invalid/unsupported chars in context directory
      *
@@ -1416,16 +1525,19 @@ EOF;
         }
         $sep = preg_quote(DIRECTORY_SEPARATOR, '/');
         if (!preg_match(sprintf('/^[%sa-zA-Z0-9._-]*$/', $sep), $path)) {
-            $this->errorMessage = sprintf("path name should contain only [%sa-zA-Z0-9._-] characters.", DIRECTORY_SEPARATOR);
+            $this->errorMessage = sprintf(
+                "path name should contain only [%sa-zA-Z0-9._-] characters.",
+                DIRECTORY_SEPARATOR
+            );
             return false;
         }
         return true;
     }
 
-    
+
     public function validateDOMDocument(DOMDocument $dom, $urn)
     {
-        require_once(__DIR__.'/Class.XMLSchemaCatalogValidator.php');
+        require_once(__DIR__ . '/Class.XMLSchemaCatalogValidator.php');
         try {
             $validator = new \XMLSchemaCatalogValidator\Validator($this->xsd_catalog_xml);
             $validator->loadDOMDocument($dom);
@@ -1435,12 +1547,12 @@ EOF;
         }
         return '';
     }
+
     /**
      * Cleanup all contexts or a specific context by it's name
      */
     public function cleanup($contextName = '')
     {
-        $contextList = array();
         if ($contextName == '') {
             $contextList = $this->getContextList();
         } else {
@@ -1460,10 +1572,10 @@ EOF;
         }
         return true;
     }
-    
+
     public function loadContextsDOMDocument(int $options = 0, $useCache = true)
     {
-        require_once __DIR__.'/Class.DOMDocumentCacheFactory.php';
+        require_once __DIR__ . '/Class.DOMDocumentCacheFactory.php';
         try {
             $dom = DOMDocumentCacheFactory::load($this->contexts_filepath, $options, $useCache);
         } catch (Exception $e) {
@@ -1472,10 +1584,10 @@ EOF;
         }
         return $dom;
     }
-    
+
     public function loadParamsDOMDocument($options = 0)
     {
-        require_once __DIR__.'/Class.DOMDocumentCacheFactory.php';
+        require_once __DIR__ . '/Class.DOMDocumentCacheFactory.php';
         try {
             $dom = DOMDocumentCacheFactory::load($this->params_filepath, $options);
         } catch (Exception $e) {
@@ -1484,8 +1596,8 @@ EOF;
         }
         return $dom;
     }
-    
-    public function commitDOMDocument(DOMDocumentCache & $dom)
+
+    public function commitDOMDocument(DOMDocumentCache &$dom)
     {
         try {
             $ret = $dom->commit();
@@ -1495,10 +1607,10 @@ EOF;
         }
         return $ret;
     }
-    
+
     private function initLogger()
     {
-        require_once __DIR__.'/Class.Logger.php';
+        require_once __DIR__ . '/Class.Logger.php';
         self::$logger = new Logger(self::logIdent);
         if ($this->getParam('local-log', false, true) == 'yes') {
             self::$logger->setLogFile($this->log_filepath);
@@ -1507,14 +1619,14 @@ EOF;
             self::$logger->setSyslogFacility($facility);
         }
     }
-    
+
     public function log($pri, $msg)
     {
         if (isset(self::$logger)) {
             self::$logger->log($pri, $msg);
         }
     }
-    
+
     public function clearLog()
     {
         if (!file_exists($this->log_filepath)) {
@@ -1522,7 +1634,7 @@ EOF;
         }
         return file_put_contents($this->log_filepath, '');
     }
-    
+
     public function streamLog()
     {
         $fh = fopen($this->log_filepath, 'r');
@@ -1533,51 +1645,58 @@ EOF;
         fclose($fh);
         return $ret;
     }
-    
+
     public function rm_Rf($path, &$err_list = array())
     {
         if (!is_array($err_list)) {
             $err = sprintf(__METHOD__ . " " . "err_list is not an array.");
-            $this->errorMessage.= $err;
+            $this->errorMessage .= $err;
             $this->log(LOG_ERR, $err);
             return false;
         }
-        
+
         $filetype = filetype($path);
         if ($filetype === false) {
-            $this->errorMessage.= sprintf(__METHOD__ . " " . "Could not get type for file '%s'.\n", $path);
+            $this->errorMessage .= sprintf(__METHOD__ . " " . "Could not get type for file '%s'.\n", $path);
             $err = sprintf("Could not get type for file '%s'.", $path);
             array_push($err_list, $err);
             $this->log(LOG_ERR, $this->errorMessage);
             return false;
         }
-        
+
         if ($filetype == 'dir') {
             $recursive_ret = true;
             foreach (scandir($path) as $file) {
                 if ($file == "." || $file == "..") {
                     continue;
-                };
-                $recursive_ret = ($recursive_ret && $this->rm_Rf(sprintf("%s%s%s", $path, DIRECTORY_SEPARATOR, $file), $err_list));
+                }
+                $recursive_ret = ($recursive_ret && $this->rm_Rf(
+                    sprintf("%s%s%s", $path, DIRECTORY_SEPARATOR, $file),
+                    $err_list
+                ));
             }
-            
+
             $s = stat($path);
             if ($s === false) {
-                $this->errorMessage.= sprintf(__METHOD__ . " " . "Could not stat dir '%s'.\n", $path);
+                $this->errorMessage .= sprintf(__METHOD__ . " " . "Could not stat dir '%s'.\n", $path);
                 $err = sprintf("Could not stat dir '%s'.", $path);
                 array_push($err_list, $err);
                 $this->log(LOG_ERR, $this->errorMessage);
                 return false;
             }
-            
+
             if ($s['nlink'] > 2) {
-                $this->errorMessage = sprintf(__METHOD__ . " " . "Won't remove dir '%s' as it contains %s files.\n", $path, $s['nlink'] - 2);
+                $this->errorMessage = sprintf(
+                    __METHOD__ . " " . "Won't remove dir '%s' as it contains %s files.\n",
+                    $path,
+                    $s['nlink'] - 2
+                );
                 $err = sprintf("Won't remove dir '%s' as it contains %s files.", $path, $s['nlink'] - 2);
                 array_push($err_list, $err);
                 $this->log(LOG_ERR, $this->errorMessage);
                 return false;
             }
-            
+
             $ret = @rmdir($path);
             if ($ret === false) {
                 $this->errorMessage = sprintf(__METHOD__ . " " . "Error removing dir '%s'.\n", $path);
@@ -1586,28 +1705,33 @@ EOF;
                 $this->log(LOG_ERR, $this->errorMessage);
                 return false;
             }
-            
+
             return ($ret && $recursive_ret);
         }
-        
+
         $ret = unlink($path);
         if ($ret === false) {
-            $this->errorMessage = sprintf(__METHOD__ . " " . "Error removing file '%s' (filetype=%s).\n", $path, $filetype);
+            $this->errorMessage = sprintf(
+                __METHOD__ . " " . "Error removing file '%s' (filetype=%s).\n",
+                $path,
+                $filetype
+            );
             $err = sprintf("Error removing file '%s' (filetype=%s).", $path, $filetype);
             array_push($err_list, $err);
             $this->log(LOG_ERR, $this->errorMessage);
             return false;
         }
-        
+
         return $ret;
     }
+
     /**
      * Return the first line of a file and remove trailing CR/LF.
      *
      * @param $file
      * @return string|bool(false) The first line without trailing CR/LF or bool(false) on failure
      */
-    static function readFirstLine($file)
+    public static function readFirstLine($file)
     {
         if (($fh = fopen($file, 'r')) === false) {
             return false;

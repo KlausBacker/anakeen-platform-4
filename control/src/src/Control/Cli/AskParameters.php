@@ -99,10 +99,18 @@ class AskParameters
     public static function setParameters(array $parameters)
     {
         $askFilePath = sprintf("%s/%s", Context::getControlPath(), self::askFile);
-        file_put_contents($askFilePath, json_encode($parameters, JSON_PRETTY_PRINT));
+        if (!is_dir(sprintf("%s/%s", Context::getControlPath(), "conf"))) {
+            if (mkdir(sprintf("%s/%s", Context::getControlPath(), "conf"), 0755) === false) {
+                throw new \RuntimeException(sprintf("Error: could not create 'conf' directory"));
+            }
+        }
+        if (file_put_contents($askFilePath, json_encode($parameters, JSON_PRETTY_PRINT)) === false) {
+            throw new \RuntimeException(sprintf("Error: could not save content to '%s'", $askFilePath));
+        }
     }
 
-    public static function removeAskes() {
+    public static function removeAskes()
+    {
         $askFilePath = sprintf("%s/%s", Context::getControlPath(), self::askFile);
         if (is_file($askFilePath)) {
             unlink($askFilePath);

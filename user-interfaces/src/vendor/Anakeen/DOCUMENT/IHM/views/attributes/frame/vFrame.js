@@ -148,7 +148,7 @@ export default Backbone.View.extend({
           },
           () => {}
         );
-        renderPromise.finally(() =>
+        const promiseEnd = () => {
           Promise.all(promiseAttributes)
             .then(function allRenderDone() {
               currentView.model.trigger("renderDone", {
@@ -163,8 +163,9 @@ export default Backbone.View.extend({
               }
               resolve(currentView);
             })
-            .catch(reject)
-        );
+            .catch(reject);
+        };
+        renderPromise.then(promiseEnd).catch(promiseEnd);
       }, this)
     );
   },
@@ -330,7 +331,13 @@ export default Backbone.View.extend({
     }
 
     action = $target.data("action") || $target.attr("href");
-    options = action.substring(8).split(":");
+    const data = action.substring(8).split(/({(.+))/g);
+    if (data[1]) {
+      options = data[0].split(":").slice(0, -1);
+      options.customClientData = JSON.parse(data[1]);
+    } else {
+      options = action.substring(8).split(":");
+    }
     eventOptions = {
       target: event.target,
       index: -1,
