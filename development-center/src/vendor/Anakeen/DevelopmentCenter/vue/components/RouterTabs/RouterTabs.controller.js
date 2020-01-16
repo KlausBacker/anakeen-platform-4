@@ -1,10 +1,10 @@
-import AnkSETabs from "@anakeen/user-interfaces/components/lib/AnkSmartElementTabs.esm";
+import AnkTabs from "@anakeen/user-interfaces/components/lib/AnkTabs.esm";
 import AnkTab from "@anakeen/user-interfaces/components/lib/AnkTab.esm";
 
 export default {
   name: "router-tabs",
   components: {
-    "ank-se-tabs": AnkSETabs,
+    "ank-tabs": AnkTabs,
     AnkTab
   },
   props: {

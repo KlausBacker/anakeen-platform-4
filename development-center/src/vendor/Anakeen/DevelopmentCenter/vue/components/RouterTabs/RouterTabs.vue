@@ -1,5 +1,5 @@
 <template>
-  <ank-se-tabs v-model="selected" class="router-tabs">
+  <ank-tabs v-model="selected" class="router-tabs">
     <ank-tab
       class="router-tab"
       v-for="(tab, index) in tabs"
@@ -10,7 +10,7 @@
     >
       <slot :tab="tab"></slot>
     </ank-tab>
-  </ank-se-tabs>
+  </ank-tabs>
 </template>
 <!-- CSS to this component only -->
 <style scoped lang="scss">
