@@ -31,8 +31,8 @@
 </template>
 <!-- CSS to this component only -->
 <style scoped lang="scss">
-@import "./AnkSETabs.scss";
+@import "./AnkTabs.scss";
 </style>
 <!-- Global CSS -->
 <style lang="scss"/>
-<script lang="ts" src="./AnkSETabs.component.ts"></script>
+<script lang="ts" src="./AnkTabs.component.ts"></script>
