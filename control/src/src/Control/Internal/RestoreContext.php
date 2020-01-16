@@ -55,7 +55,7 @@ class RestoreContext
         );
 
         $cmds[] = sprintf(
-            "pg_restore %s --no-owner --use-list %s %s | PGSERVICE=\"%s\" psql -q -v ON_ERROR_STOP=1",
+            "pg_restore %s --no-owner -f- --use-list %s %s | PGSERVICE=\"%s\" psql -q -v ON_ERROR_STOP=1",
             $this->cleanDatabase ? "-c --if-exists" : "",
             escapeshellarg($fileList),
             escapeshellarg($dbFDump),
