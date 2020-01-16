@@ -48,6 +48,22 @@ class RestoreContext
 
         $cmds=[];
 
+        if ($this->cleanDatabase) {
+            $sqlClean = <<<SQL
+DROP SCHEMA IF EXISTS public CASCADE;  
+CREATE SCHEMA public;
+DROP SCHEMA IF EXISTS family CASCADE;
+SQL;
+            $cleanDocCmd = sprintf(
+                "PGSERVICE=\"%s\" psql -q -c %s",
+                $this->pgService,
+                escapeshellarg($sqlClean)
+            );
+
+            JobLog::addLog("restoring", self::PHASE_PGRESTORE, $cleanDocCmd);
+            System::bashExec([$cleanDocCmd]);
+        }
+
         $cmds[] = sprintf(
             "pg_restore %s -l | grep -v 'COMMENT - EXTENSION' > %s",
             escapeshellarg($dbFDump),
