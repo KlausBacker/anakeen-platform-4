@@ -190,7 +190,7 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin,
     if (opts && opts.order) {
       this.orderBy = opts.order;
     } else {
-      this.orderBy = "title:asc";
+      this.orderBy = this.order;
     }
 
     this.dataSource.page(1);
