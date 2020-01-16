@@ -187,7 +187,7 @@ export default class BusinessApp extends Vue {
     const index = this.tabs.findIndex(t => t.tabId === tabRemoved);
     const vueTab = this.$refs.seTab[index];
     if (vueTab && vueTab.close) {
-      vueTab.close().then(() => {
+      vueTab.closeSmartElement().then(() => {
         closeTab(index);
       });
     }
