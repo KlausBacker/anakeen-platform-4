@@ -88,7 +88,7 @@ export default class SETab extends Vue {
     this.$emit("smartElementTabMounted");
   }
 
-  public close() {
+  public closeSmartElement() {
     // @ts-ignore
     if (this.$refs.smartElement && this.$refs.smartElement.isLoaded()) {
       try {

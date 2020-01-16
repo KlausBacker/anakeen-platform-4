@@ -29,7 +29,6 @@ export default class Tabs extends Vue {
   public selectedTab: string = this.value || this.selected;
 
   public setSelectedTab(tabName) {
-    console.log(this.selectedTab);
     let isDefaultPrevented = false;
     if (this.selectedTab) {
       const event = new SETabsEvent(this.selectedTab);
