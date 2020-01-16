@@ -45,7 +45,7 @@ class System
             throw new \Control\Exception\RuntimeException(sprintf("Cannot write bash file %s", escapeshellarg($bashFile)));
         }
 
-        chmod($bashFile, 0766);
+        chmod($bashFile, 0700);
         exec("$bashFile 2>&1", $output, $retval);
         if ($retval !== 0) {
             $err = sprintf("%s\n[%s] %s", implode("\n", $bashlines), $retval, implode("\n", $output));
