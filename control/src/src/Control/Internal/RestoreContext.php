@@ -7,7 +7,6 @@ use Control\Exception\RuntimeException;
 
 class RestoreContext
 {
-
     const PHASE_PGRESTORE = "restore-database";
     const PHASE_RECONFIGURE = "reconfigure-parameters";
 
@@ -42,25 +41,28 @@ class RestoreContext
 
     public function restoreDatacase()
     {
-
         JobLog::setStatus("restoring", self::PHASE_PGRESTORE, ModuleJob::RUNNING_STATUS);
 
         $dbFDump = $this->getDbDumpFile();
-        $fileList = sprintf("/tmp/%s", uniqid("pgr"));
+        $fileList = \Control\Internal\LibSystem::tempnam(null, "pgr");
 
-        $cmd = sprintf(
-            "pg_restore %s -l | grep -v 'COMMENT - EXTENSION' > %s && pg_restore %s --no-owner --use-list %s %s  | PGSERVICE=\"%s\" psql -q -v ON_ERROR_STOP=1  2>&1",
+        $cmds=[];
+
+        $cmds[] = sprintf(
+            "pg_restore %s -l | grep -v 'COMMENT - EXTENSION' > %s",
             escapeshellarg($dbFDump),
-            escapeshellarg($fileList),
-            $this->cleanDatabase ? "-c" : "",
+            escapeshellarg($fileList)
+        );
+
+        $cmds[] = sprintf(
+            "pg_restore %s --no-owner --use-list %s %s | PGSERVICE=\"%s\" psql -q -v ON_ERROR_STOP=1",
+            $this->cleanDatabase ? "-c --if-exists" : "",
             escapeshellarg($fileList),
             escapeshellarg($dbFDump),
             $this->pgService
         );
-
-        System::exec($cmd);
-
-        unlink($dbFDump);
+        JobLog::addLog("restoring", self::PHASE_PGRESTORE, implode("\n", $cmds));
+        System::bashExec($cmds);
 
         JobLog::setStatus("restoring", self::PHASE_PGRESTORE, ModuleJob::DONE_STATUS);
     }
@@ -68,7 +70,6 @@ class RestoreContext
 
     public function reconfigureModules()
     {
-
         JobLog::setStatus("restoring", self::PHASE_RECONFIGURE, ModuleJob::RUNNING_STATUS);
 
         $context = Context::getContext();
@@ -98,7 +99,6 @@ class RestoreContext
                         $processInfo["error"] = $exec['output'];
                         $processInfo["status"] = ModuleJob::FAILED_STATUS;
                     } else {
-
                         $processInfo["status"] = ModuleJob::DONE_STATUS;
                     }
 
