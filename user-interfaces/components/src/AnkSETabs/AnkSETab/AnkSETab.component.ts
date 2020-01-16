@@ -76,6 +76,12 @@ export default class SETab extends Vue {
   };
 
   public mounted() {
+    if (this.identifier && this.lazy) {
+      this.$http.get(`/api/v2/smart-elements/${this.identifier}.json`).then(response => {
+        this.elementTitle = response.data.data.document.properties.title;
+        this.elementIcon = `<img src="${response.data.data.document.properties.icon}"/>`;
+      });
+    }
     if (this.$refs.smartElement) {
       this.bindSmartElementEvents();
     }
