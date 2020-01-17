@@ -5,7 +5,7 @@
       v-for="(tab, index) in tabs"
       :key="index"
       :label="tab.label"
-      :name="tab.name"
+      :tabId="tab.name"
       :lazy="true"
     >
       <slot :tab="tab"></slot>
