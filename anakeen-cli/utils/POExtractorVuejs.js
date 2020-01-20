@@ -2,7 +2,7 @@ const VueI18NExtract = require("vue-i18n-extract").default;
 const PO_LANGS = require("./appConst").po_langs;
 const fs = require("fs");
 
-exports.vueJSExtract = ({ globFile, targetName, info }) => {
+exports.vueJSExtract = ({ globFile, targetName, info, verbose, log }) => {
   return Promise.all(
     PO_LANGS.map(lang => {
       return new Promise(resolve => {
@@ -21,6 +21,9 @@ exports.vueJSExtract = ({ globFile, targetName, info }) => {
         let recordedLocales = JSON.parse(fs.readFileSync(baseLocale));
 
         globFile.addGlob.forEach(pattern => {
+          if (verbose) {
+            log(`Analyze VUEJS Path: [${lang}]${pattern} : ✓`);
+          }
           const report = VueI18NExtract.createI18NReport(pattern, baseLocale);
           report.missingKeys.forEach(function(miss) {
             const key = miss.path;
@@ -30,6 +33,9 @@ exports.vueJSExtract = ({ globFile, targetName, info }) => {
           });
         });
 
+        if (verbose) {
+          log(`Write: ${baseLocale} : ✓`, "success");
+        }
         fs.writeFileSync(baseLocale, JSON.stringify(recordedLocales, null, 2));
 
         resolve();
