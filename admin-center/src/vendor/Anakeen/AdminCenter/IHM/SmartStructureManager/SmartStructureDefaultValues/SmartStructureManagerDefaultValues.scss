@@ -1,18 +1,23 @@
-.ssm-default-grid {
+.ssm-default-values {
   display: flex;
   flex-direction: column;
   height: 100%;
-  // flex: 1;
-  // display: flex;
-  // min-height: 0;
-  /deep/ {
+  // /deep/ {
     .default-grid-content {
-      display: flex;
+      display: flex !important;
       flex-direction: column;
-      height: 100%;
-      // flex: 1;
-      // min-height: 0;
-      // background-color: var(--white);
+      height: 100% !important;
+
+      .k-grid-content {
+        height: 100% !important;
+        min-height: 0;
+        flex: 1
+      }
+      .k-grid.k-widget{
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
 
       .k-header {
         background-color: #F5F5F5;
@@ -41,23 +46,8 @@
           }
         }
       }
-        // .k-grid-content {
-        //   flex: 1;
-        //   min-height: 0;
-        //   overflow-y: auto;
-        //   background-color: var(--white);
-        // }
-        .k-grid-content.k-auto-scrollable {
-          height: 100%;
-          min-height: 0;
-        }
-        .k-grid.k-widget.k-display-block {
-          display: flex;
-          flex-direction: column;
-          height: 100%;
-        }
     }
-  }
+  // }
 }
 
 .k-filtercell {
@@ -111,7 +101,6 @@
 .modal-container {
   display: flex;
   width: 50%;
-  min-height: 50%;
   height: auto;
   margin: 0px auto;
   background-color: #fff;
@@ -129,6 +118,5 @@
 
 .modal-enter .modal-container,
 .modal-leave-active .modal-container {
-  -webkit-transform: scale(1.1);
   transform: scale(1.1);
 }

@@ -22,19 +22,13 @@ export default class SmartStructureManagerParametersController extends Vue {
   public ssName;
   public haveParameters: boolean = false;
   public smartForm: object = {};
-  public unsupportedType = ["frame", "tab" /* , "array" */];
+  public unsupportedType = ["frame", "tab"];
   public $refs!: {
     [key: string]: any;
   };
 
   public paramValues = [];
   public finalData = {};
-  // {
-  //   parameterId: "",
-  //   structureId: this.ssName,
-  //   value: "",
-  //   valueType: "value"
-  // };
   protected rawValue;
   protected parentValue;
   protected type;
@@ -62,12 +56,6 @@ export default class SmartStructureManagerParametersController extends Vue {
     if (this.paramValues.length) {
       parametersEnum = [];
       this.paramValues.forEach(parameter => {
-        // ToDo : Demander à Eric la différence entre 'enum' et 'enumLabel' dans la réponse de l'API
-        // ToDo : Faire passer les données d'enum et récup les entrées d'enum associées
-        // if (parameter.type === "enum") {
-        //   enumData = this.getEnum(this.type.typeFormat);
-        // }
-
         // Manage SmartForm values
         if (parameter.isAdvancedValue) {
           values[parameter.parameterId + "-type"] = "advanced_value";
@@ -76,10 +64,6 @@ export default class SmartStructureManagerParametersController extends Vue {
           values[parameter.parameterId + "-type"] = "value";
           values[parameter.parameterId + "-value"] = parameter.rawValue;
         }
-        // Manage SmartForm renderOptions
-        // parametersRenderOptions[parameter.parameterId+"-default_value"] = {
-        //   collapse: "collapse"
-        // }
         // Generate SmartForm structure
         parametersStructure.push({
           content: [
@@ -142,7 +126,6 @@ export default class SmartStructureManagerParametersController extends Vue {
           target: "_self",
           type: "itemMenu",
           url: "#action/document.save",
-          // url: "#action/ssmanager.save",
           visibility: "visible"
         }
       ],
@@ -253,7 +236,7 @@ export default class SmartStructureManagerParametersController extends Vue {
     } else if (data !== null && data !== undefined) {
       return data;
     } else {
-      return "" /* "None".fontcolor("ced4da") */;
+      return "";
     }
   }
   public recursiveData(items, str) {
@@ -281,7 +264,6 @@ export default class SmartStructureManagerParametersController extends Vue {
       Object.keys(paramsValues).map(item => {
         const param = params[item];
         if (!this.unsupportedType.includes(param.type)) {
-          // ToDo : Refactor as multiple functions
           if (param) {
             const configParam = paramsValues[item].configurationParameter;
             const type = param.type;
@@ -329,8 +311,6 @@ export default class SmartStructureManagerParametersController extends Vue {
               isAdvancedValue
             });
           }
-        } else {
-          // ToDo : Manage Error
         }
       });
       this.paramValues.push(result);

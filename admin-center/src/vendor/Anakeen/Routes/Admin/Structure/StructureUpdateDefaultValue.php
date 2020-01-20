@@ -102,8 +102,4 @@ class StructureUpdateDefaultValue extends StructureFields
             return $funcError;
         }
     }
-    public static function hello($myNumber)
-    {
-        return $myNumber;
-    }
 }

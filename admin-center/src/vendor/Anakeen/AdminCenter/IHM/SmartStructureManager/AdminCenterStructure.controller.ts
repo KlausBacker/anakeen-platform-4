@@ -42,11 +42,9 @@ export default class AdminCenterStructureController extends Vue {
         this.$refs.defaultComp.$refs.defaultGridContent.kendoWidget().dataSource.read();
         break;
       case "parameters":
-        // this.$refs.paramsComp.$refs.parametersGridContent.kendoWidget().dataSource.read();
         this.$refs.paramsComp.$refs.parametersGridData.kendoDataSource.read();
         break;
     }
-    // this.$refs.ssmTabs.selectSs(this.selectedTab);
   }
   protected gotoParentStructure(structureId){
     this.selectedSS = structureId.toString();

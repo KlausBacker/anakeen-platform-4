@@ -8,12 +8,22 @@
     flex-direction: column;
     flex: 1;
     height: 100%;
+    // width: 100%;
     /deep/ {
       .ssm-tabs-parent {
+        display: flex;
         flex: 1;
         overflow: hidden;
         min-height: 0;
         height: 100%;
+        
+        .ssm-tabs {
+          width: 100%;
+
+          .ank-tabs-contents {
+            min-height: 0;
+          }
+        }
       }
 
       .ssm-content__empty {

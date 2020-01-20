@@ -46,7 +46,7 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
   // Config
   public smartFormArrayStructure = {};
   public smartFormArrayValues = {};
-  public unsupportedType = ["frame", "tab" /* , "array" */];
+  public unsupportedType = ["frame", "tab"];
   public $refs!: {
     [key: string]: any;
   };
@@ -322,7 +322,6 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
         this.showModal = false;
         break;
       case "document.save":
-        // this.finalFormatValue(this.finalData.fieldId, this.finalData.parentFieldId);
         this.updateData(this.finalData);
         break;
     }
@@ -347,7 +346,7 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
     } else if (data !== null && data !== undefined) {
       return data;
     } else {
-      return "" /* "None".fontcolor("ced4da") */;
+      return "";
     }
   }
   public recursiveData(items, str) {
@@ -384,7 +383,6 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
             this.prepareSmartFormArray(defaultVal, field, parentField);
           }
           if (field) {
-            // ToDo : Refactor as multiple functions
             const configDefVal = defaultVal.configurationValue;
             let isAdvancedValue = false;
             let rawValue = "";
@@ -416,7 +414,6 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
                 });
               });
               return;
-              // } else if (defaultVal.result instanceof Object) {
             } else if (configDefVal instanceof Object) {
               if (defaultVal.result.value && defaultVal.result.displayValue) {
                 if (configDefVal && typeof configDefVal !== "undefined" && configDefVal != defaultVal.result.value) {
@@ -514,7 +511,6 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
     if (!values[field.id]) {
       values[field.id] = [];
     }
-    // if (defaultVal && defaultVal.result && defaultVal.result.length > 0) {
     if (defaultVal && defaultVal.result && Array.isArray(defaultVal.result)) {
       defaultVal.result.forEach(element => {
         if (field.simpleType !== "enum") {
@@ -636,7 +632,11 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
           formattedValues[i].push({ [childName]: actualValue[j][i] });
         }
       }
-      actualValue = formattedValues;
+      if (formattedValues.length !== 0) {
+        actualValue = formattedValues;
+      } else {
+        actualValue = "";
+      }
     } else if (Array.isArray(this.initialDefVal[fieldId].configurationValue)) {
       // Single array default value
       const initialConfigValues = this.initialDefVal[fieldId].configurationValue;
@@ -646,7 +646,6 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
       actualValue = [];
       initialConfigValues.forEach(configValue => {
         if (updatedInitialValue == configValue.rawValue) {
-          // ToDo : If already updated, stop process
           if (isNaN(parseInt(newValue, 10))) {
             // If newVal string is a real string ...
             actualValue.push(newValue);
