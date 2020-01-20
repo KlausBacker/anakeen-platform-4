@@ -386,7 +386,11 @@ class ErrorCodeATTR
      */
     const ATTR1404 = 'syntax error in constraint "%s" for "%s" Smart Field : %s';
     /**
-     * @errorCode  database type are incompatible with attribute type declaration
+     * @errorCode  the arg of the constraint must defined a field if exists
+     */
+    const ATTR1405 = 'error in constraint "%s" for "%s" Smart Field : "%s": Smart Field argument "%s" not exists';
+    /**
+     * @errorCode  database type are incompatible with Smart Field type declaration
      */
     const ATTR1700 = 'database document column are erronous : %s';
     /**

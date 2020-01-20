@@ -381,6 +381,15 @@ class CheckEnd extends CheckData
                 } else {
                     if ($strucFunc->className && (!$refMeth->isStatic())) {
                         $this->addError(ErrorCode::getError('ATTR1403', $phpLongName, $oa->id));
+                    } else {
+                        foreach ($oParse->inputs as $input) {
+                            if ($input->type === "any") {
+                                $oi=$this->doc->getAttribute($input->name);
+                                if (! $oi) {
+                                    $this->addError(ErrorCode::getError('ATTR1405', $phpLongName, $this->doc->name, $oa->id, $input->name));
+                                }
+                            }
+                        }
                     }
                 }
             } catch (Exception $e) {
