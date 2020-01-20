@@ -1,4 +1,4 @@
-import AnkTabs from "@anakeen/user-interfaces/components/lib/AnkSmartElementTabs.esm";
+import AnkTabs from "@anakeen/user-interfaces/components/lib/AnkTabs.esm";
 import AnkTab from "@anakeen/user-interfaces/components/lib/AnkTab.esm";
 import { Component, Vue, Watch } from "vue-property-decorator";
 import DefaultValues from "./SmartStructureDefaultValues/SmartStructureManagerDefaultValues.vue";
