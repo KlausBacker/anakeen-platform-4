@@ -1,0 +1,82 @@
+.ssm-parameters-grid {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  height: 100%;
+  /deep/ {
+    .parameters-grid-content {
+      flex: 1;
+      min-height: 0;
+      background-color: var(--white);
+
+      .k-header {
+        background-color: #F5F5F5;
+      }
+      .k-filter-row {
+        background-color: #F5F5F5;
+      }
+      .k-command-cell {
+        text-align: center;
+
+        .k-button {
+          color: #157efb;
+          font-weight: bold;
+          background-color: transparent;
+          box-shadow: none;
+          border: none;
+          padding-right: 0.5rem;
+          padding-left: 0.5rem;
+
+          &:hover {
+            color: white;
+            font-weight: bold;
+            background-color: #157efb;
+            box-shadow: none;
+            border: none;
+          }
+        }
+
+        .k-grid-content {
+          flex: 1;
+          min-height: 0;
+          overflow-y: auto;
+          background-color: var(--white);
+        }
+      }
+    }
+  }
+}
+
+.k-filtercell {
+  display: flex;
+  width: auto;
+  .filter-input {
+    flex: 1;
+    width: 100%;
+  }
+}
+
+.no-records {
+  flex: 1;
+  background-color: #FAFAFA;
+  .empty-ssm-grid {
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    .empty-ssm-grid-text {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #A4A4A4 !important;
+    }
+
+    .empty-ssm-grid-icon > i {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 10rem;
+      color: #A4A4A4 !important;
+    }
+  }
+}
