@@ -42,7 +42,6 @@ export default Backbone.View.extend({
                   "</div>"
               )
             );
-          currentView.$el.attr("id", currentView.model.id);
           currentView.$el.attr("data-attrid", currentView.model.id);
 
           hasOneContent = currentView.model.get("content").some(function vTabContentIsDisplayable(value) {
