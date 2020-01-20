@@ -3,12 +3,12 @@ const path = require("path");
 
 const { Compose } = require(path.resolve(__dirname, "../../utils/Compose.js"));
 
-exports.description = "Add a local path with app";
+exports.description = "Add a local glob with app";
 
 exports.builder = {
   localPath: {
     alias: "p",
-    description: "Path with the local app",
+    description: "Glob with the local app",
     type: "string",
     demandOption: true
   },

@@ -1,0 +1,16 @@
+# Instruction for installation and upgrade
+
+## Installation
+
+* Unzip this file
+* Change the owner to apache2 : `chown -R www-data: control/`
+* Add the local repository with the command : `control/anakeen-control registry add local {{{path}}}`
+* Init the context : `control/anakeen-control init pg-service=<pg-service-name> password=<admin-password>`
+* Launch the install : `control/anakeen-control install`
+
+# Upgrade
+
+* Suppress the old local repository : `{{{path}}}`
+* Unzip this file
+* If you have new modules, launch install : `control/anakeen-control install`
+* Launch the upgrade : `control/anakeen-control upgrade`
