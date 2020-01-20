@@ -8,19 +8,19 @@
       </div>
       <div class="ssm-tabs-parent" v-else>
         <ank-tabs class="ssm-tabs" ref="ssmTabs" v-model="selectedTab" @tabClick="onTabClick">
-          <ank-tab :closable="false" name="informations">
+          <ank-tab :closable="false" tab-id="informations">
             <template slot="label">
               <span class="ssm-informations-title">Informations</span>
             </template>
             <ssm-info class="ssm-info" :ssName="selectedSS" @parent-structure-selected="gotoParentStructure"></ssm-info>
           </ank-tab>
-          <ank-tab :closable="false" name="defaultValues">
+          <ank-tab :closable="false" tab-id="defaultValues">
             <template slot="label">
               <span class="ssm-informations-title">Default Values</span>
             </template>
             <ssm-default-values :ssName="selectedSS" class="ssm-default-values" ref="defaultComp"></ssm-default-values>
           </ank-tab>
-          <ank-tab :closable="false" name="parameters">
+          <ank-tab :closable="false" tab-id="parameters">
             <template slot="label">
               <span class="ssm-parameters-title">Parameters</span>
             </template>
