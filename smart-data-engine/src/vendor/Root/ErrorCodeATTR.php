@@ -5,69 +5,69 @@
 */
 
 /**
- * Error codes used to checking family attribute structure
+ * Error codes used to checking family Smart Field structure
  * @class ErrorCodeATTR
  * @see   ErrorCode
- * @brief List all error code for document's attribute errors
+ * @brief List all error code for document's Smart Field errors
  * It is triggered by 'ATTR', 'PARAM', 'MODATTR' keywords
  */
 class ErrorCodeATTR
 {
     /**
-     * @errorCode  Attribute identicator is limit to 63 alphanum characters
+     * @errorCode  Smart Field identicator is limit to 63 alphanum characters
      */
-    const ATTR0100 = 'syntax error for attribute "%s"';
+    const ATTR0100 = 'syntax error for Smart Field "%s"';
     /**
-     * @errorCode  Attribute identifier cannot be equal to a reserved postgresql word
+     * @errorCode  Smart Field identifier cannot be equal to a reserved postgresql word
      */
-    const ATTR0101 = 'attribute identifier "%s" use a reserved word';
+    const ATTR0101 = 'Smart Field identifier "%s" use a reserved word';
     /**
-     * @errorCode  Attribute identifier is required
+     * @errorCode  Smart Field identifier is required
      */
-    const ATTR0102 = 'attribute identifier is not set';
+    const ATTR0102 = 'Smart Field identifier is not set';
     /**
-     * @errorCode  Attribute identifier cannot be equal to a doc properties name
+     * @errorCode  Smart Field identifier cannot be equal to a doc properties name
      */
-    const ATTR0103 = 'attribute identifier "%s" use a property identificator';
+    const ATTR0103 = 'Smart Field identifier "%s" use a property identificator';
     /**
-     * @errorCode  UPDTATTR : Use only if attribute is recorded before
+     * @errorCode  UPDTATTR : Use only if Smart Field is recorded before
      */
-    const ATTR0104 = 'Cannot update unknow attribute identifier "%s" ';
+    const ATTR0104 = 'Cannot update unknow Smart Field identifier "%s" ';
     /**
-     * @errorCode  Attribute identicator is limit to 63 alphanum characters
+     * @errorCode  Smart Field identicator is limit to 63 alphanum characters
      */
-    const ATTR0200 = 'syntax error for structure "%s" attribute "%s"';
+    const ATTR0200 = 'syntax error for structure "%s" Smart Field "%s"';
     /**
-     * @errorCode  Attribute structure identifier is required
+     * @errorCode  Smart Field structure identifier is required
      */
-    const ATTR0201 = 'attribute structure is not set for attribute "%s"';
+    const ATTR0201 = 'Smart Field structure is not set for Smart Field "%s"';
     /**
-     * @errorCode  Attribute structure must reference other attribute
+     * @errorCode  Smart Field structure must reference other Smart Field
      */
-    const ATTR0202 = 'attribute structure is same as attribute "%s"';
+    const ATTR0202 = 'Smart Field structure is same as Smart Field "%s"';
     /**
-     * @errorCode  Attribute structure must reference an attribute
+     * @errorCode  Smart Field structure must reference an Smart Field
      */
-    const ATTR0203 = 'attribute structure reference is not an attribute for "%s", family "%s"';
+    const ATTR0203 = 'Smart Field structure reference is not an Smart Field for "%s", family "%s"';
     /**
-     * @errorCode  Attribute structure must compatible with level hierarchy
+     * @errorCode  Smart Field structure must compatible with level hierarchy
      * @note       a tab has no parent,
      * a frame must have only tab parent,
-     * another attribute must have only frame parent or array parent
+     * another Smart Field must have only frame parent or array parent
      */
-    const ATTR0204 = 'attribute structure "%s" is not possible for "%s"';
+    const ATTR0204 = 'Smart Field structure "%s" is not possible for "%s"';
     /**
-     * @errorCode  Attribute structure must reference a frame or array attribute for normal attribute
+     * @errorCode  Smart Field structure must reference a frame or array Smart Field for normal Smart Field
      */
-    const ATTR0205 = 'this attribute structure "%s" is not a allowed for normal attribute"%s"';
+    const ATTR0205 = 'this Smart Field structure "%s" is not a allowed for normal Smart Field"%s"';
     /**
-     * @errorCode  Attribute structure must be empty for tab attribute
+     * @errorCode  Smart Field structure must be empty for tab Smart Field
      */
-    const ATTR0206 = 'attribute structure "%s" is forbidden for a tab  attribute for "%s"';
+    const ATTR0206 = 'Smart Field structure "%s" is forbidden for a tab  Smart Field for "%s"';
     /**
-     * @errorCode  Attribute structure must reference a tab attribute or nothing
+     * @errorCode  Smart Field structure must reference a tab Smart Field or nothing
      */
-    const ATTR0207 = 'this attribute structure "%s" is not a allowed for frame attribute "%s"';
+    const ATTR0207 = 'this Smart Field structure "%s" is not a allowed for frame Smart Field "%s"';
     /**
      * @errorCode  Parameter structure must reference a parameter
      */
@@ -88,101 +88,101 @@ class ErrorCodeATTR
      */
     const ATTR0211 = 'parameter "%s" must not have a phpfunc with output variables';
     /**
-     * @errorCode  Attribute order must reference an attribute family
+     * @errorCode  Smart Field order must reference an Smart Field family
      */
-    const ATTR0212 = 'the attribute "%s" has incorrect order  : "%s" (must be numeric or reference an attribute)';
+    const ATTR0212 = 'the Smart Field "%s" has incorrect order  : "%s" (must be numeric or reference an Smart Field)';
     /**
-     * @errorCode  Attribute order reference is not in the current frame
+     * @errorCode  Smart Field order reference is not in the current frame
      */
-    const ATTR0213 = 'the attribute "%s" has incorrect order  : parent is "%s" must be "%s": out of field';
+    const ATTR0213 = 'the Smart Field "%s" has incorrect order  : parent is "%s" must be "%s": out of field';
 
     /**
      * @errorCode A parent id reference a child id
      */
-    const ATTR0214 = 'the attribute "%s" has a loop reference for parent ';
+    const ATTR0214 = 'the Smart Field "%s" has a loop reference for parent ';
     /**
-     * @errorCode  Attribute isTitle is Y or N
+     * @errorCode  Smart Field isTitle is Y or N
      */
-    const ATTR0400 = 'invalid value "%s" for isTitle in attribute "%s"';
+    const ATTR0400 = 'invalid value "%s" for isTitle in Smart Field "%s"';
     /**
-     * @errorCode  Attribute isTitle must not be Y for structured attributes
+     * @errorCode  Smart Field isTitle must not be Y for structured Smart Fields
      */
-    const ATTR0401 = 'isTitle cannot be set for structured attribute "%s"';
+    const ATTR0401 = 'isTitle cannot be set for structured Smart Field "%s"';
     /**
-     * @errorCode  Attribute isAbstract is Y or N
+     * @errorCode  Smart Field isAbstract is Y or N
      */
-    const ATTR0500 = 'invalid value "%s" for isAbstract in attribute "%s"';
+    const ATTR0500 = 'invalid value "%s" for isAbstract in Smart Field "%s"';
     /**
-     * @errorCode  Attribute isAbstract must not be Y for structured attributes
+     * @errorCode  Smart Field isAbstract must not be Y for structured Smart Fields
      */
-    const ATTR0501 = 'isAbstract cannot be set for structured attribute "%s"';
+    const ATTR0501 = 'isAbstract cannot be set for structured Smart Field "%s"';
     /**
-     * @errorCode  Attribute type is required
+     * @errorCode  Smart Field type is required
      */
-    const ATTR0600 = 'type is not defined for attribute "%s"';
+    const ATTR0600 = 'type is not defined for Smart Field "%s"';
     /**
-     * @errorCode  Attribute type is not available
+     * @errorCode  Smart Field type is not available
      */
-    const ATTR0601 = 'unrecognized attribute type "%s" (attribute "%s"), type is one of %s';
+    const ATTR0601 = 'unrecognized Smart Field type "%s" (Smart Field "%s"), type is one of %s';
     /**
      * @errorCode  a type is can be only a alpha characters
      * example text, double, money("%.02f $")
      */
-    const ATTR0602 = 'syntax error for type "%s" in attribute "%s"';
+    const ATTR0602 = 'syntax error for type "%s" in Smart Field "%s"';
     /**
      * @errorCode  the format string must contains only one %s variable
      */
-    const ATTR0603 = 'bad output format "%s" in attribute "%s" ';
+    const ATTR0603 = 'bad output format "%s" in Smart Field "%s" ';
     /**
      * @errorCode the basic type set in a MODATTR cannot be changed
      */
-    const ATTR0604 = 'incompatible redefinition of type for "%s" attribute (family "%s"). New type "%s" is not compatible with origin "%s"';
+    const ATTR0604 = 'incompatible redefinition of type for "%s" Smart Field (family "%s"). New type "%s" is not compatible with origin "%s"';
     /**
-     * @errorCode a MODATTR attribute is not defined in its ancestor
-     * Cannot modify an attribute which has not defined before
+     * @errorCode a MODATTR Smart Field is not defined in its ancestor
+     * Cannot modify an Smart Field which has not defined before
      */
-    const ATTR0605 = 'attribute modification for "%s" attribute (family "%s") is not found in ancestor';
+    const ATTR0605 = 'Smart Field modification for "%s" Smart Field (family "%s") is not found in ancestor';
     /**
-     * @errorCode a enum MODATTR attribute cannot redefine its items
+     * @errorCode a enum MODATTR Smart Field cannot redefine its items
      * If need redefine, a ATTR must be used (not a MODATTR) to redefine the attribut and cut inheritance
      */
-    const ATTR0606 = 'enum attribute modification for "%s" attribute (family "%s"): the enum items cannot be redefined';
+    const ATTR0606 = 'enum Smart Field modification for "%s" Smart Field (family "%s"): the enum items cannot be redefined';
     /**
-     * @errorCode The attribute's order must be a number or an attribute id reference
+     * @errorCode The Smart Field's order must be a number or an Smart Field id reference
      */
-    const ATTR0700 = 'the order "%s" must be a number or an attribute reference in attribute "%s"';
+    const ATTR0700 = 'the order "%s" must be a number or an Smart Field reference in Smart Field "%s"';
     /**
-     * @errorCode  The attribute's order is required when  attribute is not a frame or a tab
+     * @errorCode  The Smart Field's order is required when  Smart Field is not a frame or a tab
      */
-    const ATTR0702 = 'the order is required in attribute "%s"';
+    const ATTR0702 = 'the order is required in Smart Field "%s"';
     /**
-     * @errorCode  The attribute's access must be defined
+     * @errorCode  The Smart Field's access must be defined
      */
     const ATTR0800 = 'the access is required in field "%s"';
     /**
-     * @errorCode  The attribute's access is limited to defined visibilities (H,R,...)
+     * @errorCode  The Smart Field's access is limited to defined visibilities (H,R,...)
      */
     const ATTR0801 = 'the access "%s" in field "%s" must be one of %s';
     /**
-     * @errorCode  The U visibility can be applied only on array attribute
+     * @errorCode  The U visibility can be applied only on array Smart Field
      */
-    const ATTR0802 = 'the U visibility is reserved to array, in attribute "%s"';
+    const ATTR0802 = 'the U visibility is reserved to array, in Smart Field "%s"';
     /**
-     * @errorCode  The attribute's access is limited to defined visibilities (Read, Write)
+     * @errorCode  The Smart Field's access is limited to defined visibilities (Read, Write)
      */
     const ATTR0803 = 'the access "%s" in field is incorrect';
     /**
      * @errorCode  property isNeeded is Y or N
      */
-    const ATTR0900 = 'invalid value "%s" for isNeeded in attribute "%s"';
+    const ATTR0900 = 'invalid value "%s" for isNeeded in Smart Field "%s"';
     /**
-     * @errorCode  property isNeeded must not be Y for structured attributes
+     * @errorCode  property isNeeded must not be Y for structured Smart Fields
      */
-    const ATTR0901 = 'isNeeded cannot be set for structured attribute "%s"';
+    const ATTR0901 = 'isNeeded cannot be set for structured Smart Field "%s"';
     /**
-     * @errorCode  property isNeeded cannot be used when attribute is included in an array
+     * @errorCode  property isNeeded cannot be used when Smart Field is included in an array
      */
-    const ATTR0902 = 'isNeeded cannot be set for  attribute included in array "%s"';
+    const ATTR0902 = 'isNeeded cannot be set for  Smart Field included in array "%s"';
     /**
      * @errorCode  property isNeeded cannot be used when parameter is included in an array
      */
@@ -190,7 +190,7 @@ class ErrorCodeATTR
     /**
      * @errorCode  syntaxt error in method describe in link
      */
-    const ATTR1000 = 'method syntax error in link "%s" for attribute "%s":%s';
+    const ATTR1000 = 'method syntax error in link "%s" for Smart Field "%s":%s';
     /**
      * @errorCode  call method in link property must be defined in file method or in another class if precised
      * @see        ATTR1260
@@ -202,15 +202,15 @@ class ErrorCodeATTR
     /**
      * @errorCode  Method use in link must have @apiExpose tag comment in their description
      */
-    const ATTR1002 = 'method "%s" in attribute link "%s" is not an exposable method';
+    const ATTR1002 = 'method "%s" in Smart Field link "%s" is not an exposable method';
     /**
      * @errorCode  The input help file must exists before declared it
      */
-    const ATTR1100 = 'the input help file "%s" not exists, in attribute "%s"';
+    const ATTR1100 = 'the input help file "%s" not exists, in Smart Field "%s"';
     /**
      * @errorCode  The input help file must be a correct PHP file
      */
-    const ATTR1101 = 'the input help file "%s" is not parsable, in attribute "%s" : %s';
+    const ATTR1101 = 'the input help file "%s" is not parsable, in Smart Field "%s" : %s';
     /**
      * @errorCode  The autocomplete response results indexes must be compatioble with description
      */
@@ -218,16 +218,16 @@ class ErrorCodeATTR
     /**
      * @errorCode  The option name are composed only of alpha characters
      */
-    const ATTR1500 = 'the option name "%s" is not valid in attribute "%s"';
+    const ATTR1500 = 'the option name "%s" is not valid in Smart Field "%s"';
     /**
      * @errorCode  The syntax option is : optname=optvalue
      * @note       example : elabel=enter a value
      */
-    const ATTR1501 = 'the option "%s" must have = sign, in attribute "%s"';
+    const ATTR1501 = 'the option "%s" must have = sign, in Smart Field "%s"';
     /**
      * @errorCode  the phpfunc must be a call to a valid function or method
      */
-    const ATTR1200 = 'syntax error in phpfunc attribute  "%s" : %s';
+    const ATTR1200 = 'syntax error in phpfunc Smart Field  "%s" : %s';
     /**
      * @errorCode  function must have 2 parenthesis one open and one close
      */
@@ -249,13 +249,13 @@ class ErrorCodeATTR
      */
     const ATTR1205 = 'simple quote syntax error (character %d) in function "%s"';
     /**
-     * @errorCode  output attributes must be declared after semicolumn characters
+     * @errorCode  output Smart Fields must be declared after semicolumn characters
      * @note
      * example : test():MY_TEST1, MY_TEST2
      */
-    const ATTR1206 = 'no output attribute, missing ":" character in function "%s"';
+    const ATTR1206 = 'no output Smart Field, missing ":" character in function "%s"';
     /**
-     * @errorCode  output attributes must represent attribute name with a comma separator
+     * @errorCode  output Smart Fields must represent Smart Field name with a comma separator
      * @note
      *  example :test():MY_TEST1, MY_TEST2
      *  test(My_TEST2):MY_TEST1
@@ -279,7 +279,7 @@ class ErrorCodeATTR
      */
     const ATTR1211 = 'not enough argument call to use function "%s" (need %d arguments)';
     /**
-     * @errorCode  the method use for computed must declarer an existed attribute
+     * @errorCode  the method use for computed must declarer an existed Smart Field
      * @note       triggered in \Anakeen\Core\Internal\SmartElement::specRefreshGen()
      */
     const ATTR1212 = 'unknow output attribut for method "%s" in family "%s"';
@@ -287,7 +287,7 @@ class ErrorCodeATTR
      * @errorCode  declaration of call method is not correct
      * @note       example : ::test()  or myClass::test()
      */
-    const ATTR1250 = 'syntax error in method call (phpfunc) for attribute "%s" : %s';
+    const ATTR1250 = 'syntax error in method call (phpfunc) for Smart Field "%s" : %s';
     /**
      * @errorCode  call of a method mudt contains '::' characters
      * @note       example : ::test()  or myClass::test()
@@ -307,7 +307,7 @@ class ErrorCodeATTR
      */
     const ATTR1254 = 'only one output is possible in method "%s"';
     /**
-     * @errorCode  generally when it is in constraint attribute
+     * @errorCode  generally when it is in constraint Smart Field
      */
     const ATTR1255 = 'no output is possible in method "%s"';
     /**
@@ -317,20 +317,20 @@ class ErrorCodeATTR
     /**
      * @errorCode  call method in phpfunc property must be defined in file method or in another class if precised
      */
-    const ATTR1260 = 'method  "%s" (context : "%s") is not found for "%s" attribute';
+    const ATTR1260 = 'method  "%s" (context : "%s") is not found for "%s" Smart Field';
     /**
      * @errorCode  call method require more arguments
      */
-    const ATTR1261 = 'not enough argument call to use method "%s" (context "%s", need %d arguments) for "%s" attribute';
+    const ATTR1261 = 'not enough argument call to use method "%s" (context "%s", need %d arguments) for "%s" Smart Field';
     /**
-     * @errorCode  the phpfunc is not correct generally detected on inherited attributes
+     * @errorCode  the phpfunc is not correct generally detected on inherited Smart Fields
      */
-    const ATTR1262 = 'syntax error in method "%s" phpfunc for "%s" attribute : %s';
+    const ATTR1262 = 'syntax error in method "%s" phpfunc for "%s" Smart Field : %s';
     /**
      * @errorCode  the phpfunc method must be static if a classname is set
      * @note       example : myClass::myStaticMethod()
      */
-    const ATTR1263 = 'method "%s" (context : "%s") is not static phpfunc for "%s" attribute';
+    const ATTR1263 = 'method "%s" (context : "%s") is not static phpfunc for "%s" Smart Field';
     /**
      * @errorCode  call method in phpfunc property must be defined in file method or in another class if precised
      * @see        ATTR1260
@@ -342,22 +342,22 @@ class ErrorCodeATTR
     /**
      * @errorCode  call method in phpfunc property must be defined in file method or in another class if precised
      */
-    const ATTR1266 = 'method  "%s" (context "%s" defined in parent family "%s") is not found for "%s" attribute';
+    const ATTR1266 = 'method  "%s" (context "%s" defined in parent family "%s") is not found for "%s" Smart Field';
     /**
      * @errorCode  enum declaration must be a set of key value
      * @note       example : yellow|Yellow color,red|Red color
      */
-    const ATTR1270 = 'syntax error in enum declaration near "%s"  for "%s" attribute';
+    const ATTR1270 = 'syntax error in enum declaration near "%s"  for "%s" Smart Field';
     /**
      * @errorCode  the enum key must be a simple word without accent
      * @note       example : yellow|Yellow color,red|Red color
      */
-    const ATTR1271 = 'key must not have accent characters in enum declaration "%s"  for "%s" attribute';
+    const ATTR1271 = 'key must not have accent characters in enum declaration "%s"  for "%s" Smart Field';
     /**
      * @errorCode  the enum key is required
      * @note       example : yellow|Yellow color,red|Red color
      */
-    const ATTR1272 = 'key must not be empty in enum declaration "%s"  for "%s" attribute';
+    const ATTR1272 = 'key must not be empty in enum declaration "%s"  for "%s" Smart Field';
     /**
      * @errorCode  the enum callable is not found
      * @note       example : Test\One::myItems
@@ -367,35 +367,35 @@ class ErrorCodeATTR
      * @errorCode  declaration of call constraint is not correct
      * @note       example : ::isInteger(MY_ATTR)  or myClass::isSpecial(MY_ATTR)
      */
-    const ATTR1400 = 'syntax error in constraint call for attribute "%s" : %s';
+    const ATTR1400 = 'syntax error in constraint call for Smart Field "%s" : %s';
     /**
      * @errorCode  call method in constraint require more arguments
      */
-    const ATTR1401 = 'not enough argument call to use constraint "%s" (need %d arguments, given %d) for "%s" attribute';
+    const ATTR1401 = 'not enough argument call to use constraint "%s" (need %d arguments, given %d) for "%s" Smart Field';
     /**
      * @errorCode  call constraint method must be defined in file method or in another class if precised
      */
-    const ATTR1402 = 'constraint method "%s" is not found for "%s" attribute';
+    const ATTR1402 = 'constraint method "%s" is not found for "%s" Smart Field';
     /**
      * @errorCode  the phpfunc method must be static if a classname is set
      * @note       example : myClass::myStaticMethod()
      */
-    const ATTR1403 = 'method "%s" is not static phpfunc for "%s" attribute';
+    const ATTR1403 = 'method "%s" is not static phpfunc for "%s" Smart Field';
     /**
-     * @errorCode  the constraint is not correct generally detected on inherited attributes
+     * @errorCode  the constraint is not correct generally detected on inherited Smart Fields
      */
-    const ATTR1404 = 'syntax error in constraint "%s" for "%s" attribute : %s';
+    const ATTR1404 = 'syntax error in constraint "%s" for "%s" Smart Field : %s';
     /**
      * @errorCode  database type are incompatible with attribute type declaration
      */
     const ATTR1700 = 'database document column are erronous : %s';
     /**
      * @errorCode  due to postgresql limit, sql column number is limited
-     * @note       declaration for an attribute can create more than one sql column
+     * @note       declaration for an Smart Field can create more than one sql column
      */
-    const ATTR1701 = 'too many attributes : %d (maximum sql column is %d)';
+    const ATTR1701 = 'too many Smart Fields : %d (maximum sql column is %d)';
     /**
-     * @errorCode The value of the attribute will not be computed because the visibility is 'I'
+     * @errorCode The value of the Smart Field will not be computed because the visibility is 'I'
      */
-    const ATTR1800 = "value of attribute \"%s\" with phpfunc \"%s\" will not be computed because visibility is \"I\".";
+    const ATTR1800 = "value of Smart Field \"%s\" with phpfunc \"%s\" will not be computed because visibility is \"I\".";
 }
