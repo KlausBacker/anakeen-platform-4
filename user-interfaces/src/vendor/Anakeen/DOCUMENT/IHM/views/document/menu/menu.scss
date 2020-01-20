@@ -7,7 +7,9 @@ $menu-before-width: 1rem;
   border-right: 0;
   border-radius: 0;
   flex-grow: 1;
-
+  .k-widget {
+      border-width: 1px !important;
+  }
   .k-state-disabled[data-original-title] {
     /* To activate tooltip on over */
     pointer-events: initial;
