@@ -171,11 +171,15 @@ const mergeAllKeysFound = elements => {
 exports.xmlStructure2Pot = ({ globFile, info, potPath, verbose, log }) => {
   //Find all the files in glob rules
   const srcPath = info.sourcePath;
+  if (verbose) {
+    log(`Analyze Path: ${globFile.addGlob} `);
+  }
   return parseAndConcatGlob({ globFile, srcPath }).then(allFilesFound => {
     if (verbose) {
       allFilesFound.ignoredFiles.forEach(currentFile => {
-        log(`Analyze : ${currentFile} : in ignore conf`);
+        log(`Analyze STRUCTURE: ${currentFile} : in ignore conf`);
       });
+      log(`Analyze STRUCTURE Path: ${globFile.addGlob} `);
     }
     //Analyze all the files
     const stripPrefix = xml2js.processors.stripPrefix;
@@ -185,8 +189,8 @@ exports.xmlStructure2Pot = ({ globFile, info, potPath, verbose, log }) => {
     return Promise.all(
       allFilesFound.filesToAnalyze.map(currentFilePath => {
         return new Promise((resolve, reject) => {
-          if (verbose) {
-            log(`Analyze : ${currentFilePath} : ✓`);
+          if (verbose && verbose.length > 1) {
+            log(`Analyze STRUCTURE: ${currentFilePath} : ✓`);
           }
           let values = {};
           xml2js.parseString(
@@ -267,14 +271,17 @@ exports.xmlEnum2Pot = ({ globFile, info, potPath, verbose, log }) => {
     };
     if (verbose) {
       allFilesFound.ignoredFiles.forEach(currentFile => {
-        log(`Analyze : ${currentFile} : in ignore conf`);
+        log(`Analyze ENUM: ${currentFile} : in ignore conf`);
       });
+    }
+    if (verbose) {
+      log(`Analyze ENUM Path: ${globFile.addGlob} `);
     }
     return Promise.all(
       allFilesFound.filesToAnalyze.map(currentFilePath => {
         return new Promise((resolve, reject) => {
-          if (verbose) {
-            log(`Analyze : ${currentFilePath} : ✓`);
+          if (verbose && verbose.length > 1) {
+            log(`Analyze ENUM: ${currentFilePath} : ✓`);
           }
           let enums = {};
           xml2js.parseString(
@@ -342,8 +349,9 @@ exports.xmlCVDOC2Pot = ({ globFile, info, potPath, verbose, log }) => {
   return parseAndConcatGlob({ globFile, srcPath }).then(allFilesFound => {
     if (verbose) {
       allFilesFound.ignoredFiles.forEach(currentFile => {
-        log(`Analyze : ${currentFile} : in ignore conf`);
+        log(`Analyze CV: ${currentFile} : in ignore conf`);
       });
+      log(`Analyze Path: ${globFile.addGlob} `);
     }
     //Analyze all the files
     const stripPrefix = xml2js.processors.stripPrefix;
@@ -353,8 +361,8 @@ exports.xmlCVDOC2Pot = ({ globFile, info, potPath, verbose, log }) => {
     return Promise.all(
       allFilesFound.filesToAnalyze.map(currentFilePath => {
         return new Promise((resolve, reject) => {
-          if (verbose) {
-            log(`Analyze : ${currentFilePath} : ✓`);
+          if (verbose && verbose.length > 1) {
+            log(`Analyze CV: ${currentFilePath} : ✓`);
           }
           let views = {};
           xml2js.parseString(
@@ -429,8 +437,9 @@ exports.xmlWorkflow2Pot = ({ globFile, info, potPath, verbose, log }) => {
   return parseAndConcatGlob({ globFile, srcPath }).then(allFilesFound => {
     if (verbose) {
       allFilesFound.ignoredFiles.forEach(currentFile => {
-        log(`Analyze : ${currentFile} : in ignore conf`);
+        log(`Analyze WORKFLOW: ${currentFile} : in ignore conf`);
       });
+      log(`Analyze Path: ${globFile.addGlob} `);
     }
     //Analyze all the files
     const stripPrefix = xml2js.processors.stripPrefix;
@@ -439,8 +448,8 @@ exports.xmlWorkflow2Pot = ({ globFile, info, potPath, verbose, log }) => {
     };
     return Promise.all(
       allFilesFound.filesToAnalyze.map(currentFilePath => {
-        if (verbose) {
-          log(`Analyze : ${currentFilePath} : ✓`);
+        if (verbose && verbose.length > 1) {
+          log(`Analyze WORKFLOW: ${currentFilePath} : ✓`);
         }
         return new Promise((resolve, reject) => {
           let views = {};
@@ -533,14 +542,22 @@ exports.xmlWorkflow2Pot = ({ globFile, info, potPath, verbose, log }) => {
  * @param srcPath
  * @param potPath
  * @param prefix
+ * @param verbose
+ * @param log
  * @returns {Promise<[any , any , any , any , any , any , any , any , any , any]>}
  */
-exports.msgmerge = ({ element, srcPath, potPath, prefix }) => {
+exports.msgmerge = ({ element, srcPath, potPath, prefix, verbose, log }) => {
   return Promise.all(
     PO_LANGS.map(lang => {
+      const localeDir = `${srcPath}/locale/${lang}/LC_MESSAGES/src`;
+      if (!fs.existsSync(localeDir)) {
+        //dir exists
+        fs.mkdirSync(localeDir, { recursive: true });
+      }
+
       return new Promise((resolve, reject) => {
         const tmpPo = `${potPath}/${element.smartName}_${lang}.po`;
-        const basePo = `${srcPath}/locale/${lang}/LC_MESSAGES/src/${prefix}${element.smartName}_${lang}.po`;
+        const basePo = `${localeDir}/${prefix}${element.smartName}_${lang}.po`;
         let command;
         if (fs.existsSync(basePo)) {
           command = `msgmerge  --sort-output -o "${tmpPo}"  "${basePo}" "${element.path}"`;
@@ -553,6 +570,9 @@ exports.msgmerge = ({ element, srcPath, potPath, prefix }) => {
           }
           //Copy po to the final place
           fs.copyFileSync(tmpPo, basePo);
+          if (verbose) {
+            log(`Write: ${basePo}`, "success");
+          }
           resolve(basePo);
         });
       });
@@ -566,7 +586,7 @@ exports.msgmerge = ({ element, srcPath, potPath, prefix }) => {
  * @param srcPath
  * @returns {Promise<any>}
  */
-exports.msgmergeMustache = ({ element, srcPath }) => {
+exports.msgmergeMustache = ({ element, srcPath, log, verbose }) => {
   return new Promise((resolve, reject) => {
     const tmpPot = element.path;
     const basePo = `${srcPath}/locale/${element.lang}/LC_MESSAGES/src/mustache-${element.targetName}_${element.lang}.po`;
@@ -582,6 +602,9 @@ exports.msgmergeMustache = ({ element, srcPath }) => {
       }
       //Copy po to the final place
       fs.copyFileSync(element.tmpPo, basePo);
+      if (verbose) {
+        log(`Write: ${basePo}`, "success");
+      }
       resolve(basePo);
     });
   });
@@ -599,6 +622,9 @@ exports.php2Po = ({ globFile, targetName, info, potPath, verbose, log }) => {
   const srcPath = info.sourcePath;
 
   return parseAndConcatGlob({ globFile, srcPath }).then(files => {
+    if (verbose) {
+      log(`Analyze PHP Path: ${globFile.addGlob} `);
+    }
     return Promise.all(
       PO_LANGS.map(lang => {
         return new Promise((resolve, reject) => {
@@ -607,17 +633,17 @@ exports.php2Po = ({ globFile, targetName, info, potPath, verbose, log }) => {
           );
           const tmpPot = path.resolve(`${potPath}/${targetName}_${lang}.pot`);
           const tmpPo = path.resolve(`${potPath}/${targetName}_${lang}.po`);
-          if (verbose) {
+          if (verbose && verbose.length > 1) {
             files.ignoredFiles.forEach(currentFile => {
-              log(`Analyze : ${currentFile} : in ignore conf`);
+              log(`Analyze PHP : ${currentFile} : in ignore conf`);
             });
             files.filesToAnalyze.forEach(currentFile => {
-              log(`Analyze : ${currentFile} : ✓`);
+              log(`Analyze PHP : ${currentFile} : ✓`);
             });
           }
           //join files
           const fileList = files.filesToAnalyze.reduce((acc, currentValue) => {
-            return acc + " " + currentValue;
+            return acc + ' "' + currentValue + '"';
           }, "");
           if (fileList.length === 0) {
             return resolve();
@@ -644,6 +670,9 @@ exports.php2Po = ({ globFile, targetName, info, potPath, verbose, log }) => {
                     return reject(err);
                   }
                   fs.copyFileSync(tmpPo, basePo);
+                  if (verbose) {
+                    log(`Write: ${basePo}`, "success");
+                  }
                   resolve();
                 });
               }
@@ -667,18 +696,21 @@ exports.js2Po = ({ globFile, targetName, info, potPath, verbose, log }) => {
   const srcPath = info.sourcePath;
 
   return parseAndConcatGlob({ globFile, srcPath }).then(files => {
+    if (verbose) {
+      log(`Analyze JS Path: ${globFile.addGlob} `);
+    }
     return Promise.all(
       PO_LANGS.map(lang => {
         return new Promise((resolve, reject) => {
           const basePo = `${info.buildInfo.buildPath[0]}/locale/${lang}/js/src/js_${targetName}_${lang}.po`;
           const tmpPot = `${potPath}/js_${targetName}_${lang}.pot`;
           const tmpPo = `${potPath}/js_${targetName}_${lang}.po`;
-          if (verbose) {
+          if (verbose && verbose.length > 1) {
             files.ignoredFiles.forEach(currentFile => {
-              log(`Analyze : ${currentFile} : in ignore conf`);
+              log(`Analyze JS: ${currentFile} : in ignore conf`);
             });
             files.filesToAnalyze.forEach(currentFile => {
-              log(`Analyze : ${currentFile} : ✓`);
+              log(`Analyze JS: ${currentFile} : ✓`);
             });
           }
           //join files
@@ -710,6 +742,9 @@ exports.js2Po = ({ globFile, targetName, info, potPath, verbose, log }) => {
                     return reject(err);
                   }
                   fs.copyFileSync(tmpPo, basePo);
+                  if (verbose) {
+                    log(`Write: ${basePo}`, "success");
+                  }
                   resolve();
                 });
               }

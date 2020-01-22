@@ -40,15 +40,12 @@ const firstUpperCase = str => {
 export default class TabsNav extends Vue {
   public get sizeName() {
     // @ts-ignore
-    return ["top", "bottom"].indexOf(this.rootTabs.tabPosition) !== -1 ? "width" : "height";
+    return "width";
   }
 
   public get navStyle() {
-    const dir =
-      // @ts-ignore
-      ["top", "bottom"].indexOf(this.rootTabs.tabPosition) !== -1 ? "X" : "Y";
     return {
-      transform: `translate${dir}(-${this.navOffset}px)`
+      transform: `translateX-${this.navOffset}px)`
     };
   }
 
@@ -93,7 +90,7 @@ export default class TabsNav extends Vue {
     return {
       "ank-tab-label": true,
       // @ts-ignore
-      [`is-${this.rootTabs.tabPosition}`]: true,
+      'is-top': true,
       "is-active": pane.active,
       // @ts-ignore
       "is-closable": pane.isClosable || this.rootTabs.editable,

@@ -18,6 +18,11 @@
                                     <xs:attribute name="path"/>
                                 </xs:complexType>
                             </xs:element>
+                            <xs:element name="localApp" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:attribute name="path"/>
+                                </xs:complexType>
+                            </xs:element>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>

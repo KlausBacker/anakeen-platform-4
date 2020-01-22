@@ -1,0 +1,49 @@
+.smart-structure-infos-card {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--white);
+  padding: 0.5rem;
+  border: 1px solid rgb(210, 210, 210);
+  justify-content: center;
+  height: 100%;
+
+  /deep/ {
+    .infos-card-title {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .infos-card-content {
+      min-height: 0;
+      overflow-y: auto;
+      display: flex;
+      flex: 1;
+      font-size: 1.1rem;
+      border: 1px solid rgb(210, 210, 210);
+
+      .card-content-item-label {
+        font-weight: bold;
+        margin-right: 0.5rem;
+      }
+
+      .se-property-family {
+        color: #157efb;
+        font-weight: bold;
+        text-transform: uppercase;
+        background-color: transparent;
+        box-shadow: none;
+        border: none;
+        padding-right: 0.5rem;
+        padding-left: 0.5rem;
+
+        &:hover {
+          color: white;
+          font-weight: bold;
+          background-color: #157efb;
+          box-shadow: none;
+          border: none;
+        }
+      }
+    }
+  }
+}

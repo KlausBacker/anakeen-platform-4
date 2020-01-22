@@ -110,6 +110,12 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin,
     this.$emit("se-list-filter-input", customEvent);
   }
 
+  @Watch("order")
+  public onOrderPropChange(newVal) {
+    this.orderBy = newVal;
+    this.refreshList();
+  }
+
   public created() {
     this.initDataSource();
   }
@@ -190,7 +196,7 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin,
     if (opts && opts.order) {
       this.orderBy = opts.order;
     } else {
-      this.orderBy = "title:asc";
+      this.orderBy = this.order;
     }
 
     this.dataSource.page(1);

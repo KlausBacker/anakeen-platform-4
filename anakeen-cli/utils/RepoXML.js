@@ -4,6 +4,7 @@ const GenericError = require(path.resolve(__dirname, "GenericError.js"));
 const XMLLoader = require(path.resolve(__dirname, "XMLLoader.js"));
 const Utils = require(path.resolve(__dirname, "Utils.js"));
 const { AppRegistry } = require(path.resolve(__dirname, "AppRegistry.js"));
+const { checkFile } = require("@anakeen/anakeen-module-validation");
 
 class RepoXMLError extends GenericError {}
 
@@ -24,7 +25,10 @@ class RepoXML extends XMLLoader {
    */
   async loadFromFile(filename) {
     await super.loadFromFile(filename);
-    this.checkStructure();
+    const check = checkFile(filename);
+    if (!check.ok) {
+      throw new RepoXMLError(`The repo file is not valid ${filename} : ${check.error}`);
+    }
     return this;
   }
 
@@ -37,35 +41,29 @@ class RepoXML extends XMLLoader {
     return await this.saveToFile(this.filename);
   }
 
-  checkStructure() {
-    if (!this.data.hasOwnProperty("compose")) {
-      throw new RepoXMLError(`Could not find /compose node in '${this.filename}'`);
-    }
-    if (!this.data.compose.hasOwnProperty("registries")) {
-      this.data.compose.registries = [];
-    }
-    if (!Array.isArray(this.data.compose.registries)) {
-      throw new RepoXMLError(`/compose/registries is not an array...`);
-    }
-    if (typeof this.data.compose.registries[0] !== "object") {
-      this.data.compose.registries[0] = { registry: [] };
-    } else if (!this.data.compose.registries[0].hasOwnProperty("registry")) {
-      throw new RepoXMLError(`Malformed /compose/registries node`);
-    }
-    if (typeof this.data.compose.dependencies[0] !== "object") {
-      this.data.compose.dependencies[0] = { module: [] };
-    } else if (!this.data.compose.dependencies[0].hasOwnProperty("module")) {
-      throw new RepoXMLError(`Malformed /compose/dependencies node`);
-    }
-    return this;
-  }
-
   getConfigLocalRepo() {
     return this.data.compose.config[0].localRepo[0].$.path;
   }
 
   getConfigLocalSrc() {
     return this.data.compose.config[0].localSrc[0].$.path;
+  }
+
+  addAppLocalPath({ localPath }) {
+    this.data.compose.config[0].localApp = [
+      {
+        $: {
+          path: localPath
+        }
+      }
+    ];
+  }
+
+  getAppLocalPath() {
+    const app = this.data.compose.config[0].localApp || [];
+    return app.map(currentApp => {
+      return currentApp.$.path;
+    });
   }
 
   /**
@@ -169,7 +167,7 @@ class RepoXML extends XMLLoader {
    * @returns {Array|*}
    */
   getModuleList() {
-    return this.data.compose.dependencies[0].module;
+    return this.data.compose.dependencies[0].module || [];
   }
 
   /**
@@ -212,18 +210,27 @@ class RepoXML extends XMLLoader {
    * @returns {Array|*}
    */
   _getRegistryList() {
-    return this.data.compose.registries[0].registry;
+    return this.data.compose.registries[0].registry || [];
   }
 
   _setRegistryList(list) {
+    if (!this.data.compose.registries[0].registry) {
+      this.data.compose.registries[0] = { registry: [] };
+    }
     this.data.compose.registries[0].registry = list;
   }
 
   _setModuleList(list) {
+    if (!this.data.compose.dependencies[0].module) {
+      this.data.compose.dependencies[0] = { module: [] };
+    }
     this.data.compose.dependencies[0].module = list;
   }
 
   getRegistryList() {
+    if (!this.data.compose.registries[0]) {
+      return [];
+    }
     return this.data.compose.registries[0].registry.map(currentRegistry => {
       return {
         name: currentRegistry.$.name,

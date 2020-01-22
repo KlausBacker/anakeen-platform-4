@@ -15,6 +15,7 @@
     <post-upgrade>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/AdminCenter/Accounts/110-AdminCenterRoles.xml"/>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/AdminCenter/Accounts/111-AdminManagerProfile.xml"/>
+        
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/AdminCenter/Config/hubConfiguration.xml"/>
         <process command="./ank.php --script=migrateAdminPlugins"/>
     </post-upgrade>

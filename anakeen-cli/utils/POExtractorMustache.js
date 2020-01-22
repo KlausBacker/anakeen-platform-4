@@ -42,6 +42,9 @@ module.exports = ({ globFile, targetName, info, potPath, verbose, log }) => {
   const srcPath = info.sourcePath;
 
   return parseAndConcatGlob({ globFile, srcPath }).then(files => {
+    if (verbose) {
+      log(`Analyze Path: ${globFile.addGlob} `);
+    }
     return Promise.all(
       PO_LANGS.map(lang => {
         const tmpPot = `${potPath}/mustache_${targetName}_${lang}.pot`;
@@ -53,7 +56,7 @@ module.exports = ({ globFile, targetName, info, potPath, verbose, log }) => {
           });
         }
         const keys = files.filesToAnalyze.reduce((acc, currentFile) => {
-          if (verbose) {
+          if (verbose && verbose.length > 1) {
             log(`Analyze : ${currentFile} : ✓`);
           }
           const currentFileContent = fs.readFileSync(currentFile, {

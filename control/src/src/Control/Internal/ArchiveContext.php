@@ -388,7 +388,6 @@ class ArchiveContext
             }
         }
 
-
         JobLog::setStatus("archiving", self::PHASE_VAULTS, ModuleJob::DONE_STATUS);
         return true;
     }
@@ -398,6 +397,12 @@ class ArchiveContext
      */
     public function setOutputFile($outputFile): void
     {
+        $f=@fopen($outputFile, "a+");
+        if (!$f) {
+            throw new RuntimeException(sprintf("Output archive file %s is not writable", escapeshellarg($outputFile)));
+        } else {
+            fclose($f);
+        }
         $this->outputFile = $outputFile;
     }
 

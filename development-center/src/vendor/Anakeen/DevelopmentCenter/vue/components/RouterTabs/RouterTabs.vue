@@ -1,16 +1,16 @@
 <template>
-  <ank-se-tabs v-model="selected" class="router-tabs">
+  <ank-tabs v-model="selected" class="router-tabs">
     <ank-tab
       class="router-tab"
       v-for="(tab, index) in tabs"
       :key="index"
       :label="tab.label"
-      :name="tab.name"
+      :tabId="tab.name"
       :lazy="true"
     >
       <slot :tab="tab"></slot>
     </ank-tab>
-  </ank-se-tabs>
+  </ank-tabs>
 </template>
 <!-- CSS to this component only -->
 <style scoped lang="scss">

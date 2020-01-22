@@ -4188,48 +4188,59 @@ create unique index i_docir on doc(initid, revision);";
                     $inputs = array_merge($inputs, $parseMethod->inputs);
                     foreach ($inputs as $ki => $input) {
                         $args[$ki] = null;
-                        if ($input->type == "string") {
-                            $args[$ki] = $input->name;
-                        } else {
-                            $mapped = (isset($mapArgs[strtolower($input->name)])) ? $mapArgs[strtolower($input->name)]
-                                : null;
-                            if ($mapped) {
-                                if (is_object($mapped)) {
-                                    $args[$ki] = &$mapArgs[strtolower($input->name)];
-                                } else {
-                                    $args[$ki] = $mapped;
-                                }
-                            } elseif ($attr = $this->getAttribute($input->name)) {
-                                if ($attr->usefor == 'Q') {
-                                    if ($attr->inArray()) {
-                                        $pas = $this->rawValueToArray($this->getFamilyParameterValue($input->name));
-                                        if ($index == -1) {
-                                            $args[$ki] = $pas;
+                        switch ($input->type) {
+                            case "string":
+                                $args[$ki] = $input->name;
+                                break;
+                            case "index":
+                                $args[$ki] = $index;
+                                break;
+                            case "this":
+                                $args[$ki] = $this;
+                                break;
+                            case "property":
+                                $args[$ki] = $this->getPropertyValue($input->name);
+                                break;
+                            default:
+                                $mapped = (isset($mapArgs[strtolower($input->name)])) ? $mapArgs[strtolower($input->name)]
+                                    : null;
+                                if ($mapped) {
+                                    if (is_object($mapped)) {
+                                        $args[$ki] = &$mapArgs[strtolower($input->name)];
+                                    } else {
+                                        $args[$ki] = $mapped;
+                                    }
+                                } elseif ($attr = $this->getAttribute($input->name)) {
+                                    if ($attr->usefor == 'Q') {
+                                        if ($attr->inArray()) {
+                                            $pas = $this->rawValueToArray($this->getFamilyParameterValue($input->name));
+                                            if ($index == -1) {
+                                                $args[$ki] = $pas;
+                                            } else {
+                                                $args[$ki] = isset($pas[$index]) ? $pas[$index] : null;
+                                            }
                                         } else {
-                                            $args[$ki] = isset($pas[$index]) ? $pas[$index] : null;
+                                            $args[$ki] = $this->getFamilyParameterValue($input->name);
                                         }
                                     } else {
-                                        $args[$ki] = $this->getFamilyParameterValue($input->name);
-                                    }
-                                } else {
-                                    if ($attr->inArray()) {
-                                        $args[$ki] = $this->getMultipleRawValues($input->name, "", $index);
-                                        if ($index >= 0 && is_array($args[$ki])) {
-                                            $args[$ki] = Postgres::arrayToString($args[$ki]);
+                                        if ($attr->inArray()) {
+                                            $args[$ki] = $this->getMultipleRawValues($input->name, "", $index);
+                                            if ($index >= 0 && is_array($args[$ki])) {
+                                                $args[$ki] = Postgres::arrayToString($args[$ki]);
+                                            }
+                                        } else {
+                                            $args[$ki] = $this->getRawValue($input->name);
                                         }
+                                    }
+                                } else {
+                                    if ($input->name == 'THIS') {
+                                        $args[$ki] = &$this;
+                                    } elseif ($input->name == 'K') {
+                                        $args[$ki] = $index;
                                     } else {
-                                        $args[$ki] = $this->getRawValue($input->name);
+                                        $args[$ki] = $input->name; // not an attribute just text
                                     }
                                 }
-                            } else {
-                                if ($input->name == 'THIS') {
-                                    $args[$ki] = &$this;
-                                } elseif ($input->name == 'K') {
-                                    $args[$ki] = $index;
-                                } else {
-                                    $args[$ki] = $input->name; // not an attribute just text
-                                }
-                            }
                         }
                     }
                     $value = call_user_func_array($callable, $args);

@@ -43,8 +43,17 @@ const deleteFolderRecursive = path => {
 exports.po = ({ sourcePath, verbose }) => {
   const potPath = path.join(sourcePath, TMPPO);
   const interactive = new Signale({ scope: "po" });
-  const log = message => {
-    interactive.info(message);
+  const log = (message, type = "info") => {
+    switch (type) {
+      case "success":
+        interactive.success(message);
+        break;
+      case "debug":
+        interactive.debug(message);
+        break;
+      default:
+        interactive.info(message);
+    }
   };
 
   /**
@@ -96,7 +105,7 @@ exports.po = ({ sourcePath, verbose }) => {
       });
       return Promise.all(
         files.map(element => {
-          return msgmergeMustache({ element, srcPath });
+          return msgmergeMustache({ element, srcPath, verbose, log });
         })
       );
     });
@@ -193,7 +202,7 @@ exports.po = ({ sourcePath, verbose }) => {
       poEntry = poConfig[0]["po-php"];
     }
     if (!poEntry || poEntry.length === 0) {
-      log("No JS glob");
+      log("No PHP glob");
       return Promise.resolve();
     }
 
@@ -245,7 +254,7 @@ exports.po = ({ sourcePath, verbose }) => {
       //Concat files
       return Promise.all(
         files.map(element => {
-          return msgmerge({ element, srcPath, potPath, prefix: "enum" });
+          return msgmerge({ element, srcPath, potPath, verbose, log, prefix: "enum" });
         })
       );
     });
@@ -273,7 +282,7 @@ exports.po = ({ sourcePath, verbose }) => {
     return xmlStructure2Pot({ globFile, info, potPath, verbose, log }).then(files => {
       return Promise.all(
         files.map(element => {
-          return msgmerge({ element, srcPath, potPath, prefix: "" });
+          return msgmerge({ element, srcPath, potPath, verbose, log, prefix: "" });
         })
       );
     });
@@ -302,7 +311,7 @@ exports.po = ({ sourcePath, verbose }) => {
     return xmlCVDOC2Pot({ globFile, info, potPath, verbose, log }).then(files => {
       return Promise.all(
         files.map(element => {
-          return msgmerge({ element, srcPath, potPath, prefix: "cvdoc_" });
+          return msgmerge({ element, srcPath, potPath, verbose, log, prefix: "cvdoc_" });
         })
       );
     });
@@ -331,7 +340,7 @@ exports.po = ({ sourcePath, verbose }) => {
     return xmlWorkflow2Pot({ globFile, info, potPath, verbose, log }).then(files => {
       return Promise.all(
         files.map(element => {
-          return msgmerge({ element, srcPath, potPath, prefix: "workflow_" });
+          return msgmerge({ element, srcPath, potPath, verbose, log, prefix: "workflow_" });
         })
       );
     });

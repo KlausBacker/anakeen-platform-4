@@ -90,8 +90,11 @@
             </xs:documentation>
         </xs:annotation>
         <xs:restriction base="xs:string">
+            <xs:enumeration value="property"/>
             <xs:enumeration value="field"/>
             <xs:enumeration value="string"/>
+            <xs:enumeration value="index"/>
+            <xs:enumeration value="this"/>
         </xs:restriction>
     </xs:simpleType>
 

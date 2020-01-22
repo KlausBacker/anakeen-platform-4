@@ -23,6 +23,7 @@ const fs_mkdir = util.promisify(fs.mkdir);
 const fs_readdir = util.promisify(fs.readdir);
 const glob = util.promisify(require("glob"));
 const rimraf = util.promisify(require("rimraf"));
+const fs_copyFile = util.promisify(fs.copyFile);
 
 class ComposeError extends GenericError {}
 class ComposeLockError extends GenericError {}
@@ -50,7 +51,7 @@ class Compose {
    */
   async checkIfInitialized() {
     if (!fs.existsSync(this.currentRepoPath)) {
-      throw new ComposeError(`There is no compose repository at this path ${this.currentRepoPath}`);
+      throw new ComposeError(`There is no repo.xml at this path ${this.currentRepoPath}, you should use init command`);
     }
     const check = checkFile(this.currentRepoPath);
     if (!check.ok) {
@@ -191,6 +192,18 @@ class Compose {
     await this.commitContext();
   }
 
+  /**
+   * Add a local path for the install command
+   *
+   * @param localPath
+   * @returns {Promise<void>}
+   */
+  async addLocalPath({ localPath }) {
+    await this.loadContext();
+    this.repoXML.addAppLocalPath({ localPath });
+    await this.commitContext();
+  }
+
   async checkRegistry({ url, authUser, authPassword }) {
     const response = await fetch(url, {
       headers: { Authorization: "Basic " + Buffer.from(authUser + ":" + authPassword).toString("base64") }
@@ -302,8 +315,8 @@ class Compose {
   }
 
   async _installAndLockModuleVersion({ name: moduleName, version: moduleVersion, registry: registryName }) {
-    const localRepo = await this.repoXML.getConfigLocalRepo();
-    const localSrc = await this.repoXML.getConfigLocalSrc();
+    const localRepo = this._convertPathToAbsolute(this.repoXML.getConfigLocalRepo());
+    const localSrc = this._convertPathToAbsolute(this.repoXML.getConfigLocalSrc());
 
     const appRegistry = this.repoXML.getRegistryByName(registryName);
 
@@ -321,9 +334,9 @@ class Compose {
       const url = urlJoin(appRegistry.getModuleVersionURL(moduleName, moduleVersion), type, moduleInfo[type]);
       let pathname;
       if (type === "app") {
-        pathname = path.join(this.cwd, localRepo, moduleInfo[type]);
+        pathname = path.join(localRepo, moduleInfo[type]);
       } else if (type === "src") {
-        pathname = path.join(this.cwd, localSrc, moduleInfo[type]);
+        pathname = path.join(localSrc, moduleInfo[type]);
       } else {
         throw new ComposeError(`Unrecognized resource type '${type}'`);
       }
@@ -389,17 +402,17 @@ class Compose {
       switch (type) {
         case "app":
           basename = path.basename(url);
-          dirname = this.repoXML.getConfigLocalRepo();
-          rmList.push({ type: "file", path: path.join(this.cwd, dirname, basename) });
+          dirname = this._convertPathToAbsolute(this.repoXML.getConfigLocalRepo());
+          rmList.push({ type: "file", path: path.join(dirname, basename) });
           break;
         case "src":
           basename = path.basename(url, ".src");
-          dirname = this.repoXML.getConfigLocalSrc();
+          dirname = this._convertPathToAbsolute(this.repoXML.getConfigLocalSrc());
           rmList.push({
             type: "file",
             path: path.join(dirname, basename + ".src")
           });
-          rmList.push({ type: "dir", path: path.join(this.cwd, dirname, basename) });
+          rmList.push({ type: "dir", path: path.join(dirname, basename) });
           break;
       }
     }
@@ -435,16 +448,16 @@ class Compose {
   }
 
   async genRepoContentXML(repoDir) {
-    const repoContentXML = new RepoContentXML(path.join(this.cwd, repoDir, "content.xml"));
+    const repoContentXML = new RepoContentXML(path.join(this._convertPathToAbsolute(repoDir), "content.xml"));
     repoContentXML.reset();
 
-    let moduleFileList = await fs_readdir(path.join(this.cwd, repoDir));
+    let moduleFileList = await fs_readdir(this._convertPathToAbsolute(repoDir));
     moduleFileList = moduleFileList.filter(filename => {
       return filename.match(/\.app$/);
     });
     for (let i = 0; i < moduleFileList.length; i++) {
       const moduleFile = moduleFileList[i];
-      await repoContentXML.addModuleFile(path.join(this.cwd, repoDir, moduleFile));
+      await repoContentXML.addModuleFile(path.join(this._convertPathToAbsolute(repoDir), moduleFile));
     }
 
     await repoContentXML.save();
@@ -462,22 +475,22 @@ class Compose {
     //region prepare data
     await this.loadContext();
 
-    const localRepo = this.repoXML.getConfigLocalRepo();
-    const localSrc = this.repoXML.getConfigLocalSrc();
+    const localRepo = this._convertPathToAbsolute(this.repoXML.getConfigLocalRepo());
+    const localSrc = this._convertPathToAbsolute(this.repoXML.getConfigLocalSrc());
 
     //Create it if doesn't exist
     try {
-      await fs_mkdir(path.join(this.cwd, localRepo));
+      await fs_mkdir(localRepo);
     } catch (e) {
       if (e.code !== "EEXIST") {
-        throw new ComposeError(`Unable to create local repo ${path.join(this.cwd, localRepo)} : ${JSON.stringify(e)}`);
+        throw new ComposeError(`Unable to create local repo ${localRepo} : ${JSON.stringify(e)}`);
       }
     }
     try {
-      await fs_mkdir(path.join(this.cwd, localSrc));
+      await fs_mkdir(localSrc);
     } catch (e) {
       if (e.code !== "EEXIST") {
-        throw new ComposeError(`Unable to create local repo ${path.join(this.cwd, localSrc)} : ${JSON.stringify(e)}`);
+        throw new ComposeError(`Unable to create local repo ${localSrc} : ${JSON.stringify(e)}`);
       }
     }
 
@@ -504,6 +517,11 @@ class Compose {
     const moduleToRefresh = {};
     const moduleLocked = {};
 
+    if (!moduleList || moduleList.length === 0) {
+      signale.note(`No module to install`);
+      return;
+    }
+
     //Analyze the lock and the demand part and deduce the module to install
     //It's async for the sha part, so we wait with an await
     await Promise.all(
@@ -526,8 +544,8 @@ class Compose {
             //File is here and sha1 is good
             await this.repoLockXML.checkIfModuleIsValid({
               name: currentElement.$.name,
-              appPath: path.join(this.cwd, localRepo),
-              srcPath: path.join(this.cwd, localSrc)
+              appPath: localRepo,
+              srcPath: localSrc
             })
           ) {
             this.debug(`${currentElement.$.name} : The lock is good, the files are here, we keep it`);
@@ -633,14 +651,14 @@ class Compose {
     );
 
     //Find all the files
-    const filesInApp = await glob(path.join(this.cwd, localRepo, "*"));
+    const filesInApp = await glob(path.join(localRepo, "*"));
     // Deduce files to destroy
     const appFileToDestroy = filesInApp.filter(currentPath => {
       const fileName = path.basename(currentPath);
       //The file is content.xml or an element to keep
       return !(fileName === "content.xml" || toKeep.app.includes(fileName));
     });
-    const filesInSrc = await glob(path.join(this.cwd, localSrc, "*"), { nodir: true });
+    const filesInSrc = await glob(path.join(localSrc, "*"), { nodir: true });
     // Deduce files to destroy
     const srcFilesToDestroy = filesInSrc.filter(currentPath => {
       const fileName = path.basename(currentPath);
@@ -657,7 +675,27 @@ class Compose {
 
     //region generate repo.xml
     //Generate local repo xml
-    //Add local app
+
+    //region handle localApp
+    const localPath = this.repoXML.getAppLocalPath();
+    //Find app
+    await Promise.all(
+      localPath.map(async currentPath => {
+        //Find app
+        this.debug(`LocalApp : search for app in ${currentPath}`);
+        const appPath = await glob(path.join(currentPath, "/**/*.app"), { absolute: true });
+        //Copy app
+        this.debug(`LocalApp : found ${appPath.join(" ")} in ${path.join(currentPath, "/**/*.app")}`);
+        return await Promise.all(
+          appPath.map(async currentPath => {
+            this.debug(`LocalApp : copy ${currentPath} to ${path.join(localRepo, path.basename(currentPath))}`);
+            await fs_copyFile(currentPath, path.join(localRepo, path.basename(currentPath)));
+          })
+        );
+      })
+    );
+    //Copy app
+    //endregion handle localApp
 
     signale.note(`Generating 'content.xml' in '${localRepo}'...`);
     const appList = await this.genRepoContentXML(localRepo);
@@ -701,6 +739,13 @@ class Compose {
       version = tokens[1];
     }
     return { name, version };
+  }
+
+  _convertPathToAbsolute(currentPath) {
+    if (path.isAbsolute(currentPath)) {
+      return currentPath;
+    }
+    return path.join(this.cwd, currentPath);
   }
 }
 
