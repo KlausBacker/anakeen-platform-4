@@ -26,9 +26,9 @@ class SearchElements
      * Note:
      * - The setStart() and setSlice() parameters are not used when counting with this method.
      *
+     * @return int the number of results
      * @api send query search and only count results
      *
-     * @return int the number of results
      */
     public function onlyCount()
     {
@@ -42,6 +42,8 @@ class SearchElements
     /**
      * add join condition
      *
+     * @param string $jointure
+     * @return SearchElements
      * @api Add join condition
      * @code
      * $s=new searchDoc();
@@ -53,8 +55,6 @@ class SearchElements
      * $s->distinct=true;
      * $result= $s->search();
      * @endcode
-     * @param string $jointure
-     * @return SearchElements
      */
     public function join($jointure)
     {
@@ -66,10 +66,10 @@ class SearchElements
      * count results
      * ::search must be call before
      *
-     * @see \Anakeen\Search\Internal\SearchSmartData::search()
+     * @return int
      * @api count results after query search is sended
      *
-     * @return int
+     * @see \Anakeen\Search\Internal\SearchSmartData::search()
      */
     public function count()
     {
@@ -99,10 +99,10 @@ class SearchElements
 
     /**
      * set maximum number of document to return
-     * @api set maximum number of document to return
      * @param int $slice the limit ('ALL' means no limit)
      *
      * @return $this
+     * @api set maximum number of document to return
      */
     public function setSlice($slice)
     {
@@ -114,10 +114,10 @@ class SearchElements
 
     /**
      * set offset where start the result window
-     * @api set offset where start the result window
      * @param int $start the offset (0 is the begin)
      *
      * @return $this
+     * @api set offset where start the result window
      */
     public function setStart($start)
     {
@@ -130,13 +130,13 @@ class SearchElements
     /**
      * use different order , default is title
      *
-     * @api set order to sort results
-     *
-     * @param string $order        the new order, empty means no order
+     * @param string $order the new order, empty means no order
      * @param string $orderbyLabel string of comma separated columns names on
      *                             which the order should be performed on their label instead of their value (e.g. order enum by their label instead of their key)
      *
      * @return void
+     * @api set order to sort results
+     *
      */
     public function setOrder($order, $orderbyLabel = '')
     {
@@ -145,10 +145,10 @@ class SearchElements
 
     /**
      * use folder or search document to search within it
-     * @api use folder or search document
      * @param int $dirid identifier of the collection
      *
      * @return $this
+     * @api use folder or search document
      */
     public function useCollection($dirid)
     {
@@ -191,9 +191,9 @@ class SearchElements
 
     /**
      * add a filter to not return confidential document if current user cannot see it
-     * @api add a filter to not return confidential
      * @param boolean $exclude set to true to exclude confidential
      * @return $this
+     * @api add a filter to not return confidential
      */
     public function excludeConfidential($exclude = true)
     {
@@ -203,11 +203,11 @@ class SearchElements
 
     /**
      * add a condition in filters
-     * @api add a new condition in filters
-     * @param string $filter  the filter string
-     * @param mixed  ...$args arguments of the filter string (arguments are escaped to avoid sql injection)
+     * @param string $filter the filter string
+     * @param mixed ...$args arguments of the filter string (arguments are escaped to avoid sql injection)
      * @return void
      * @throws Exception
+     * @api add a new condition in filters
      */
     public function addFilter($filter, ...$args)
     {
@@ -216,8 +216,8 @@ class SearchElements
 
     /**
      * no use access view control in filters
-     * @api no add view access criteria in final query
      * @return $this
+     * @api no add view access criteria in final query
      */
     public function overrideAccessControl()
     {
@@ -228,8 +228,8 @@ class SearchElements
     /**
      * send search
      * the query is sent to database
-     * @api send query
      * @return $this
+     * @api send query
      */
     public function search()
     {
@@ -252,9 +252,20 @@ class SearchElements
     }
 
     /**
+     * To disable search into child structure
+     * @param bool $excludeInheritedStructures set to true to search only elements on this structure
+     * @return $this
+     */
+    public function excludeInheritedStructures(bool $excludeInheritedStructures)
+    {
+        $this->searchData->only = $excludeInheritedStructures;
+        return $this;
+    }
+
+    /**
      * reset result offset
      * use it to redo a element list iteration
-     *
+     * @return $this
      */
     public function rewind()
     {
@@ -265,8 +276,8 @@ class SearchElements
     /**
      * return informations about query after search has been sent
      * array indexes are : query, err, count, delay
-     * @api get informations about query results
      * @return array of info
+     * @api get informations about query results
      */
     public function getSearchInfo()
     {
@@ -278,24 +289,25 @@ class SearchElements
      * can, be use in loop
      * ::search must be call before
      *
-     * @see SearchElements::search
-     *
+     * @return \Anakeen\Core\Internal\SmartElement |array|bool  false if this is the end
      * @api get next document results
      *
-     * @return \Anakeen\Core\Internal\SmartElement |array|bool  false if this is the end
+     * @see SearchElements::search
+     *
      */
     public function getNextElement()
     {
         return $this->searchData->getNextDoc();
     }
+
     /**
      * return where condition like : foo in ('x','y','z')
      *
      * @static
      *
-     * @param array  $values  set of values
-     * @param string $column  database column name
-     * @param bool   $integer set to true if database column is numeric type
+     * @param array $values set of values
+     * @param string $column database column name
+     * @param bool $integer set to true if database column is numeric type
      *
      * @return string
      */
