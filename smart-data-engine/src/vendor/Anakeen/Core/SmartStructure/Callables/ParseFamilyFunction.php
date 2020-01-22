@@ -111,12 +111,12 @@ class ParseFamilyFunction
         for ($i = 0; $i < strlen($this->inputString); $i++) {
             $c = $this->inputString[$i];
 
-            if ($c == '"') {
+            if ($c === '"') {
                 $this->parseDoubleQuote($i);
-            } elseif ($c == "'") {
+            } elseif ($c === "'") {
                 $this->parseSimpleQuote($i);
-            } elseif ($c == ',') {
-            } elseif ($c == ' ') {
+            } elseif ($c === ',') {
+            } elseif ($c === ' ') {
                 // skip
             } else {
                 $this->parseArgument($i);
@@ -134,7 +134,7 @@ class ParseFamilyFunction
 
             foreach ($outputs as $output) {
                 $output = trim($output);
-                if (preg_match("/(.*)\{(.*)\}/", $output, $reg)) {
+                if (preg_match("/(.*){(.*)}/", $output, $reg)) {
                     $this->outputs[$reg[2]] = $reg[1];
                 } else {
                     $this->outputs[count($this->outputs)] = $output;
@@ -153,7 +153,7 @@ class ParseFamilyFunction
 
     protected function isAlphaNumOutAttribute($s)
     {
-        return preg_match('/^[a-z_\?][a-z0-9_\[\]]*$/i', $s);
+        return preg_match('/^[a-z_?][a-z0-9_\[\]]*$/i', $s);
     }
 
     protected function isPHPName($s)
@@ -205,14 +205,19 @@ class ParseFamilyFunction
         $arg = trim($arg);
 
         $key = null;
+        $type = "any";
+
+        if (preg_match('/^(.*)::([a-z]+)$/i', $arg, $reg)) {
+            $arg = $reg[1];
+            $type = $reg[2];
+        }
+
         if (preg_match('/^{([a-z_][a-z0-9_]+)}(.*)$/i', $arg, $reg)) {
             $key = $reg[1];
             $arg = $reg[2];
         }
 
-        if (preg_match('/^[a-z_][a-z0-9_]*$/i', $arg)) {
-            $type = "any";
-        } else {
+        if ($type === "any" && !preg_match('/^[a-z_][a-z0-9_]*$/i', $arg)) {
             $arg = trim($arg, '"');
             $type = "string";
         }

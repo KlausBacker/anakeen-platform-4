@@ -2,14 +2,8 @@
 .ank-tabs {
   display: flex;
 
-  &.ank-tabs--top,
-  &.ank-tabs--bottom {
+  &.ank-tabs--top {
     flex-direction: column;
-  }
-
-  &.ank-tabs--left,
-  &.ank-tabs--right {
-    flex-direction: row;
   }
 
   .ank-tabs-header {
@@ -17,8 +11,7 @@
     position: relative;
     align-items: center;
 
-    &.is-top,
-    &.is-bottom {
+    &.is-top {
       flex-direction: row;
       .ank-tabs-new-tab {
         margin-left: 0.5rem;

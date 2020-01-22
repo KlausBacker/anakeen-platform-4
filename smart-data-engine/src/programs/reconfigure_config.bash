@@ -14,7 +14,6 @@ if [ -z "$vault_root" ]; then
 fi
 
 client_name=`"$WIFF_ROOT"/anakeen-control get --module client_name`
-vault_save=`"$WIFF_ROOT"/anakeen-control get --module vault_save`
 
 
 . "$INSTALLDIR/programs/libutil.sh"
@@ -26,15 +25,6 @@ if [ $RET -ne 0 ]; then
     exit $RET
 fi
 
-echo "Updating vault free_entries..."
-if [ "$vault_save" == "no" ]; then
-    PGSERVICE="$core_db" psql -c "UPDATE vaultdiskdirstorage set isfull = 't';"
-    RET=$?
-    if [ $RET -ne 0 ]; then
-	echo "Error reinitializing vault table"
-	exit $RET
-    fi
-fi
 echo "Updating vault r_path..."
 PGSERVICE="$core_db" psql -c "UPDATE vaultdiskfsstorage SET r_path = '$vault_root' || '/' || id_fs; "
 
@@ -43,7 +33,6 @@ if [ $RET -ne 0 ]; then
 echo "Error updating vault r_path"
     exit $RET
 fi
-
 
 echo "Setting DateStyle ..."
 CURRENT_DATABASE=`PGSERVICE="$core_db" psql -tA -c "SELECT current_database()"`

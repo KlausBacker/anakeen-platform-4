@@ -4,13 +4,14 @@ namespace Anakeen\Core;
 
 class AccountManager
 {
-    protected static $sysIds=[];
+    protected static $sysIds = [];
+
     public static function getIdFromLogin(string $login): int
     {
-        $sql=sprintf("select id from users where login='%s'", pg_escape_string($login));
+        $sql = sprintf("select id from users where login='%s'", pg_escape_string($login));
         DbManager::query($sql, $idUser, true, true);
         if (!$idUser) {
-            $idUser=0;
+            $idUser = 0;
         }
         return $idUser;
     }
@@ -24,13 +25,14 @@ class AccountManager
      */
     public static function getAccount(string $login)
     {
-        $u= new Account("");
+        $u = new Account("");
         $u->setLoginName($login);
         if ($u->isAffected()) {
             return $u;
         }
         return null;
     }
+
     /**
      * Return system id from SmartElement Id
      * @param int $fid
@@ -42,12 +44,28 @@ class AccountManager
         if (isset(self::$sysIds[$fid])) {
             return self::$sysIds[$fid];
         }
-        $sql=sprintf("select id from users where fid='%d'", $fid);
+        $sql = sprintf("select id from users where fid='%d'", $fid);
         DbManager::query($sql, $idUser, true, true);
         if (!$idUser) {
-            $idUser=0;
+            $idUser = 0;
         }
-        self::$sysIds[$fid]=$idUser;
-        return  self::$sysIds[$fid];
+        self::$sysIds[$fid] = $idUser;
+        return self::$sysIds[$fid];
+    }
+
+    /**
+     * return simple information about current user
+     * @param string $info "fid" (id of relative smart element), "id" (system id), "login"
+     * @return string|null
+     * @throws \Anakeen\Exception
+     */
+    public static function getCurrentUserInfo($info = "fid")
+    {
+        $u = ContextManager::getCurrentUser();
+        if ($u) {
+            $values = $u->getValues();
+            return $values[$info] ?? null;
+        }
+        return null;
     }
 }

@@ -1,6 +1,6 @@
 import AnkSEList from "@anakeen/user-interfaces/components/lib/AnkSmartElementList.esm";
 import AnkSETab from "@anakeen/user-interfaces/components/lib/AnkSmartElementTab.esm";
-import AnkTabs from "@anakeen/user-interfaces/components/lib/AnkSmartElementTabs.esm";
+import AnkTabs from "@anakeen/user-interfaces/components/lib/AnkTabs.esm";
 import AnkTab from "@anakeen/user-interfaces/components/lib/AnkTab.esm";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import Welcome from "../Welcome/Welcome.vue";
@@ -187,7 +187,7 @@ export default class BusinessApp extends Vue {
     const index = this.tabs.findIndex(t => t.tabId === tabRemoved);
     const vueTab = this.$refs.seTab[index];
     if (vueTab && vueTab.close) {
-      vueTab.close().then(() => {
+      vueTab.closeSmartElement().then(() => {
         closeTab(index);
       });
     }

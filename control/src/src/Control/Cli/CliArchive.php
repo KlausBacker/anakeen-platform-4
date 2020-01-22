@@ -42,12 +42,12 @@ class CliArchive extends CliCommand
         if (!$outputFile) {
             throw new InvalidOptionException("Argument \"file\" is mandatory");
         }
-        if (file_exists($outputFile) && !is_writable($outputFile)) {
-            throw new InvalidOptionException("Output file is not writable");
+
+        $f=@fopen($outputFile, "a+");
+        if (!$f) {
+            throw new InvalidOptionException(sprintf("Output archive file %s not writable", escapeshellarg($outputFile)));
         } else {
-            if (!file_put_contents($outputFile, "") === false) {
-                throw new InvalidOptionException("Output file is not writable");
-            }
+            fclose($f);
         }
 
         $tasks = [
@@ -83,6 +83,4 @@ class CliArchive extends CliCommand
             }
         }
     }
-
-
 }

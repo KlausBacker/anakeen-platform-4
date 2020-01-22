@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Family Document Class
  *
@@ -39,22 +40,22 @@ create unique index idx_idfam on docfam(id);";
     public $attr;
     public $specialmenu = "FDL:POPUPFAMDETAIL";
     public $addfields
-        = array(
-            "dfldid",
-            "cfldid",
-            "ccvid",
-            "cfallid",
-            "cprofid",
-            "ddocid",
-            "methods",
-            "defaultvalues",
-            "param",
-            "genversion",
-            "schar",
-            "maxrev",
-            "tagable",
-            "configuration"
-        );
+    = array(
+        "dfldid",
+        "cfldid",
+        "ccvid",
+        "cfallid",
+        "cprofid",
+        "ddocid",
+        "methods",
+        "defaultvalues",
+        "param",
+        "genversion",
+        "schar",
+        "maxrev",
+        "tagable",
+        "configuration"
+    );
     public $genversion;
     public $dfldid;
     public $cfldid;
@@ -72,26 +73,26 @@ create unique index idx_idfam on docfam(id);";
     private $_xtdefaultvalues; // dynamic used by ::getParams()
     private $_xtparam; // dynamic used by ::getDefValues()
     private $defaultSortProperties
-        = array(
-            'owner' => array(
-                'sort' => 'no',
-            ),
-            'title' => array(
-                'sort' => 'asc',
-            ),
-            'revision' => array(
-                'sort' => 'no',
-            ),
-            'initid' => array(
-                'sort' => 'desc',
-            ),
-            'mdate' => array(
-                'sort' => 'desc',
-            ),
-            'state' => array(
-                'sort' => 'asc',
-            )
-        );
+    = array(
+        'owner' => array(
+            'sort' => 'no',
+        ),
+        'title' => array(
+            'sort' => 'asc',
+        ),
+        'revision' => array(
+            'sort' => 'no',
+        ),
+        'initid' => array(
+            'sort' => 'desc',
+        ),
+        'mdate' => array(
+            'sort' => 'desc',
+        ),
+        'state' => array(
+            'sort' => 'asc',
+        )
+    );
     /**
      * @var bool bool(true) if object is "fully" instantiated using generated family class or bool(false) if object is instantiated
      * without generated class (e.g. when the family is imported and the generated class is not yet generated).
@@ -435,11 +436,13 @@ create unique index idx_idfam on docfam(id);";
 
                     case 'int':
                         if (!empty($av)) {
-                            if ((!is_numeric($av))) {
-                                $err = sprintf(_("value [%s] is not a number"), $av);
-                            }
-                            if (!$err && (!ctype_digit($av))) {
-                                $err = sprintf(_("value [%s] is not a integer"), $av);
+                            if (!is_int($av)) {
+                                if ((!is_numeric($av))) {
+                                    $err = sprintf(_("value [%s] is not a number"), $av);
+                                }
+                                if (!$err && (!ctype_digit($av))) {
+                                    $err = sprintf(_("value [%s] is not an integer"), $av);
+                                }
                             }
                         }
                         break;
@@ -775,7 +778,8 @@ create unique index idx_idfam on docfam(id);";
         foreach ($la as $k => $v) {
             if (($v->id != \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD) &&
                 ($v->type == 'frame' || $v->type == "tab") &&
-                ((!$v->fieldSet) || $v->fieldSet->id == \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD)) {
+                ((!$v->fieldSet) || $v->fieldSet->id == \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD)
+            ) {
                 $level1[] = array(
                     "level1name" => $k
                 );

@@ -42,7 +42,6 @@ export default Backbone.View.extend({
                   "</div>"
               )
             );
-          currentView.$el.attr("id", currentView.model.id);
           currentView.$el.attr("data-attrid", currentView.model.id);
 
           hasOneContent = currentView.model.get("content").some(function vTabContentIsDisplayable(value) {
@@ -50,8 +49,9 @@ export default Backbone.View.extend({
           });
 
           if (!hasOneContent) {
-            currentView.$el.append(currentView.model.getOption("showEmptyContent"));
-            currentView.$el.removeClass("dcpTab__content--loading");
+            var $emptyContent = $(`<div class="dcpTab--emptyContent"></div>`);
+            currentView.$el.append($emptyContent);
+            currentView.$el.find(".dcpTab--emptyContent").append(currentView.model.getOption("showEmptyContent"));
             currentView.model.trigger("renderDone", {
               model: currentView.model,
               $el: currentView.$el
@@ -87,7 +87,10 @@ export default Backbone.View.extend({
           promisesFrame = [];
         if (currentView.initializing === false) {
           currentView.initializing = true;
+          //Clean everything except empty content
+          var emptyContent = currentView.$el.find(".dcpTab--emptyContent").detach();
           currentView.$el.empty();
+          currentView.$el.append(emptyContent);
           if (currentView.originalView !== true) {
             if (currentView.model.getOption("template")) {
               customRender = attributeTemplate.renderCustomView(currentView.model);

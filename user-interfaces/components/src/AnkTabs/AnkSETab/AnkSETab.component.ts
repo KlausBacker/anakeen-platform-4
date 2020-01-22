@@ -76,13 +76,19 @@ export default class SETab extends Vue {
   };
 
   public mounted() {
+    if (this.identifier && this.lazy) {
+      this.$http.get(`/api/v2/smart-elements/${this.identifier}.json`).then(response => {
+        this.elementTitle = response.data.data.document.properties.title;
+        this.elementIcon = `<img src="${response.data.data.document.properties.icon}"/>`;
+      });
+    }
     if (this.$refs.smartElement) {
       this.bindSmartElementEvents();
     }
     this.$emit("smartElementTabMounted");
   }
 
-  public close() {
+  public closeSmartElement() {
     // @ts-ignore
     if (this.$refs.smartElement && this.$refs.smartElement.isLoaded()) {
       try {
@@ -116,7 +122,7 @@ export default class SETab extends Vue {
     this.$refs.smartElement.$on("close", isDirtyCb);
     SmartElementEvents.forEach(eventName => {
       this.$refs.smartElement.$on(eventName, (...args) => {
-        this.$emit(`seTab${capitalize(eventName)}`, ...args);
+        this.$emit(`SmartElementTab${capitalize(eventName)}`, ...args);
       });
     });
   }

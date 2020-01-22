@@ -12,8 +12,7 @@ $navListSize: 4rem;
     }
   }
 
-  &.is-top,
-  &.is-bottom {
+  &.is-top {
     overflow-y: hidden;
     overflow-x: hidden;
     //position: relative;
@@ -179,8 +178,7 @@ $navListSize: 4rem;
   }
 
   // TOP / BOTTOM common parts
-  &.is-top,
-  &.is-bottom {
+  &.is-top {
     flex-direction: row;
 
     .ank-tab-item {

@@ -29,7 +29,7 @@ class CliRestore extends CliCommand
             ->setDescription('Restore an archive of Anakeen Platform.')
             ->addOption('pg-service', null, InputOption::VALUE_REQUIRED, 'The new database service')
             ->addOption('vaults-path', null, InputOption::VALUE_REQUIRED, 'The vault-path to store archived vaults', $vaultPath)
-            ->addOption('force-clean', null, InputOption::VALUE_NONE, 'To use an exiting database')
+            ->addOption('force-clean', null, InputOption::VALUE_NONE, 'To use an exiting database (delete existing data before restore')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Not launch job')
             // the full command description shown when running the command with
             // the "--help" option
