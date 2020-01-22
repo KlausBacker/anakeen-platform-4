@@ -1120,6 +1120,8 @@ class ImportSmartConfiguration
             if ($type === "string") {
                 // Escape quote
                 $arg = '"' . str_replace('"', '\\"', $arg) . '"';
+            } else {
+                $arg .= '::'.$type;
             }
             if ($name) {
                 $arg = sprintf("{%s}%s", $name, $arg);

@@ -383,10 +383,14 @@ class CheckEnd extends CheckData
                         $this->addError(ErrorCode::getError('ATTR1403', $phpLongName, $oa->id));
                     } else {
                         foreach ($oParse->inputs as $input) {
-                            if ($input->type === "any") {
+                            if ($input->type === "field") {
                                 $oi=$this->doc->getAttribute($input->name);
                                 if (! $oi) {
                                     $this->addError(ErrorCode::getError('ATTR1405', $phpLongName, $this->doc->name, $oa->id, $input->name));
+                                }
+                            } elseif ($input->type === "property") {
+                                if (!isset(\Anakeen\Core\Internal\SmartElement::$infofields[$input->name])) {
+                                    $this->addError(ErrorCode::getError('ATTR1406', $phpLongName, $this->doc->name, $oa->id, $input->name));
                                 }
                             }
                         }

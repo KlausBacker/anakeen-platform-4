@@ -390,6 +390,10 @@ class ErrorCodeATTR
      */
     const ATTR1405 = 'error in constraint "%s" for "%s" Smart Field : "%s": Smart Field argument "%s" not exists';
     /**
+     * @errorCode  the arg of the constraint must be a valid property
+     */
+    const ATTR1406 = 'error in constraint "%s" for "%s" Smart Field : "%s": property argument "%s" not exists';
+    /**
      * @errorCode  database type are incompatible with Smart Field type declaration
      */
     const ATTR1700 = 'database document column are erronous : %s';
