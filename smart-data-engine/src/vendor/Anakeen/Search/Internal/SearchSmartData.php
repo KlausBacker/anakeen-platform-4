@@ -374,6 +374,15 @@ class SearchSmartData
         }
     }
 
+    /**
+     * Return the join condition
+     * @return string
+     */
+    public function getJoin()
+    {
+        return $this->join;
+    }
+
     protected function getJoinTable()
     {
         if ($this->join) {
@@ -386,6 +395,7 @@ class SearchSmartData
                 throw new Exception(sprintf("search join syntax error : %s", $this->join));
             }
         }
+        return "";
     }
 
     protected function getMainTable()
@@ -701,10 +711,6 @@ class SearchSmartData
         }
         if ($this->fromid) {
             return ["*"];
-            $fdoc = \Anakeen\Core\SEManager::createTemporaryDocument($this->fromid, false);
-            if ($fdoc->isAlive()) {
-                return array_merge($fdoc->fields, $fdoc->sup_fields);
-            }
         }
         return null;
     }
@@ -989,6 +995,16 @@ class SearchSmartData
         } else {
             throw new \Anakeen\Search\Exception(sprintf("Filter is neither a string nor an objet implementing \\Dcp\\Documentfilter interface."));
         }
+    }
+
+
+    /**
+     * Completly reset filter : the previous filters are removed
+     * @param array $filters
+     */
+    public function setFilters(array $filters)
+    {
+        $this->filters=$filters;
     }
 
 
