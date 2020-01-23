@@ -295,7 +295,7 @@ class DirLib
      * system only - used by core return array of documents
      *
      * @param string     $dbaccess   database specification
-     * @param array      $dirid      the array of id or single id of folder where search document
+     * @param array|int      $dirid      the array of id or single id of folder where search document
      * @param string     $start      the start index
      * @param string     $slice      the maximum number of returned document
      * @param array      $sqlfilters array of sql filter
