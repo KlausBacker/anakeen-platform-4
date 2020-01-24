@@ -27,15 +27,11 @@ class OrOperator implements ElementSearchFilter
     public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
         $originFilters=$search->getFilters();
-        $originalJoin=$search->getJoin();
         $previousJoin=null;
         foreach ($this->filters as $filter) {
             $search->join("");
             $search->addFilter($filter);
 
-            if ($originalJoin && $search->getJoin() !== $originalJoin) {
-                throw new Exception("FLT0010", $originalJoin, $search->getJoin());
-            }
             $currentJoint=$search->getJoin();
             if ($previousJoin !== null && $previousJoin !== $currentJoint) {
                 if (!$previousJoin || !$currentJoint) {
