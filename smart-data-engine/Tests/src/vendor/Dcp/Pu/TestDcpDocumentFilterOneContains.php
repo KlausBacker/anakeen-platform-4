@@ -2,7 +2,7 @@
 
 namespace Dcp\Pu;
 
-class TestDcpDocumentFilter_OneContains extends TestDcpDocumentFilter_common
+class TestDcpDocumentFilterOneContains extends TestDcpDocumentFiltercommon
 {
     const FAM = 'TEST_DCP_DOCUMENTFILTER_ONECONTAINS';
     protected static function getCommonImportFile()
@@ -13,9 +13,9 @@ class TestDcpDocumentFilter_OneContains extends TestDcpDocumentFilter_common
     }
     /**
      * @param $test
-     * @dataProvider data_OneContains
+     * @dataProvider dataOneContains
      */
-    public function test_OneContains($test)
+    public function testOneContains($test)
     {
         if (is_a($test["value"], LateNameResolver::class)) {
             $test["value"] = $test["value"]->value;
@@ -23,7 +23,7 @@ class TestDcpDocumentFilter_OneContains extends TestDcpDocumentFilter_common
         $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\OneContains($test["attr"], $test["value"], (isset($test["flags"]) ? $test["flags"] : 0)), $test["expected"]);
     }
     
-    public function data_OneContains()
+    public function dataOneContains()
     {
         return array(
             // A_TEXT
@@ -96,9 +96,9 @@ class TestDcpDocumentFilter_OneContains extends TestDcpDocumentFilter_common
     }
     /**
      * @param $test
-     * @dataProvider data_NoOneContains
+     * @dataProvider dataNoOneContains
      */
-    public function test_NoOneContains($test)
+    public function testNoOneContains($test)
     {
         if (is_a($test["value"], LateNameResolver::class)) {
             $test["value"] = $test["value"]->value;
@@ -106,7 +106,7 @@ class TestDcpDocumentFilter_OneContains extends TestDcpDocumentFilter_common
         $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\NoOneContains($test["attr"], $test["value"], (isset($test["flags"]) ? $test["flags"] : 0)), $test["expected"]);
     }
     
-    public function data_NoOneContains()
+    public function dataNoOneContains()
     {
         return array(
             // A_TEXT

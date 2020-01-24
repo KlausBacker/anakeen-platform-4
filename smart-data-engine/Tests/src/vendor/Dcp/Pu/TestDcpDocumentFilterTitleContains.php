@@ -2,7 +2,7 @@
 
 namespace Dcp\Pu;
 
-class TestDcpDocumentFilter_TitleContains extends TestDcpDocumentFilter_common
+class TestDcpDocumentFilterTitleContains extends TestDcpDocumentFiltercommon
 {
     const FAM = 'TEST_DCP_DOCUMENTFILTER_TITLECONTAINS';
     protected static function getCommonImportFile()
@@ -13,9 +13,9 @@ class TestDcpDocumentFilter_TitleContains extends TestDcpDocumentFilter_common
     }
     /**
      * @param $test
-     * @dataProvider data_TitleContains
+     * @dataProvider dataTitleContains
      */
-    public function test_TitleContains($test)
+    public function testTitleContains($test)
     {
         if (is_a($test["value"], LateNameResolver::class)) {
             $test["value"] = $test["value"]->value;
@@ -23,7 +23,7 @@ class TestDcpDocumentFilter_TitleContains extends TestDcpDocumentFilter_common
         $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\TitleContains($test["value"], $test["flags"]), $test["expected"]);
     }
     
-    public function data_TitleContains()
+    public function dataTitleContains()
     {
         return array(
             /* WORD */

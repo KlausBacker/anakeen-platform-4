@@ -2,7 +2,7 @@
 
 namespace Dcp\Pu;
 
-class TestDcpDocumentFilter_OneDocumentTitle extends TestDcpDocumentFilter_common
+class TestDcpDocumentFilterOneDocumentTitle extends TestDcpDocumentFiltercommon
 {
     const FAM = 'TEST_DCP_DOCUMENTFILTER_ONEDOCUMENTTITLE';
     protected static function getCommonImportFile()
@@ -23,9 +23,9 @@ class TestDcpDocumentFilter_OneDocumentTitle extends TestDcpDocumentFilter_commo
     }
     /**
      * @param $test
-     * @dataProvider data_OneDocumentTitle
+     * @dataProvider dataOneDocumentTitle
      */
-    public function test_OneDocumentTitle($test)
+    public function testOneDocumentTitle($test)
     {
         if (is_a($test["value"], LateNameResolver::class)) {
             $test["value"] = $test["value"]->value;
@@ -33,7 +33,7 @@ class TestDcpDocumentFilter_OneDocumentTitle extends TestDcpDocumentFilter_commo
         $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\OneDocumentTitle($test["attr"], $test["value"], (isset($test["flags"]) ? $test["flags"] : 0)), $test["expected"]);
     }
     
-    public function data_OneDocumentTitle()
+    public function dataOneDocumentTitle()
     {
         return array(
             // M_DOCID

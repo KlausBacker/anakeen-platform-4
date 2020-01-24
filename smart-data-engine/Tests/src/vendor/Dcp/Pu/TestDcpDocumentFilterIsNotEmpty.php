@@ -2,7 +2,7 @@
 
 namespace Dcp\Pu;
 
-class TestDcpDocumentFilter_IsNotEmpty extends TestCaseDcpCommonFamily
+class TestDcpDocumentFilterIsNotEmpty extends TestCaseDcpCommonFamily
 {
     protected static function getCommonImportFile()
     {
@@ -12,9 +12,9 @@ class TestDcpDocumentFilter_IsNotEmpty extends TestCaseDcpCommonFamily
     }
     /**
      * @param $test
-     * @dataProvider data_IsNotEmpty
+     * @dataProvider dataIsNotEmpty
      */
-    public function test_IsNotEmpty($test)
+    public function testIsNotEmpty($test)
     {
         $s = new \Anakeen\Search\Internal\SearchSmartData("", $test["fam"]);
         $s->addFilter(new \Anakeen\Search\Filters\IsNotEmpty($test["attr"]));
@@ -36,7 +36,7 @@ class TestDcpDocumentFilter_IsNotEmpty extends TestCaseDcpCommonFamily
         $this->assertEmpty($spurious, sprintf("Spurious elements in result: %s", join(", ", $spurious)));
     }
     
-    public function data_IsNotEmpty()
+    public function dataIsNotEmpty()
     {
         return array(
             array(

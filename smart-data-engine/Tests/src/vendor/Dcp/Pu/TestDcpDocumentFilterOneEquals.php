@@ -2,7 +2,9 @@
 
 namespace Dcp\Pu;
 
-class TestDcpDocumentFilter_OneEquals extends TestDcpDocumentFilter_common
+use Anakeen\Search\Filters\OneEquals;
+
+class TestDcpDocumentFilterOneEquals extends TestDcpDocumentFiltercommon
 {
     const FAM = 'TEST_DCP_DOCUMENTFILTER_ONEEQUALS';
     protected static function getCommonImportFile()
@@ -13,17 +15,17 @@ class TestDcpDocumentFilter_OneEquals extends TestDcpDocumentFilter_common
     }
     /**
      * @param $test
-     * @dataProvider data_OneEquals
+     * @dataProvider dataOneEquals
      */
-    public function test_OneEquals($test)
+    public function testOneEquals($test)
     {
         if (is_a($test["value"], LateNameResolver::class)) {
             $test["value"] = $test["value"]->value;
         }
-        $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\OneEquals($test["attr"], $test["value"], (isset($test["flags"]) ? $test["flags"] : 0)), $test["expected"]);
+        $this->common_testFilter($test["fam"], new OneEquals($test["attr"], $test["value"], (isset($test["flags"]) ? $test["flags"] : 0)), $test["expected"]);
     }
     
-    public function data_OneEquals()
+    public function dataOneEquals()
     {
         return array(
             // M_ENUM

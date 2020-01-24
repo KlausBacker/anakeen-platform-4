@@ -9,7 +9,7 @@ namespace Dcp\Pu;
 
 use Anakeen\Core\SEManager;
 
-class TestDcpDocumentFilter_HasApplicationTag extends TestDcpDocumentFilter_common
+class TestDcpDocumentFilterHasApplicationTag extends TestDcpDocumentFiltercommon
 {
     const FAM = 'TEST_DCP_DOCUMENTFILTER_HASAPPLICATIONTAG';
     protected static function getCommonImportFile()
@@ -34,9 +34,9 @@ class TestDcpDocumentFilter_HasApplicationTag extends TestDcpDocumentFilter_comm
     }
     /**
      * @param $test
-     * @dataProvider data_HasApplicationTag
+     * @dataProvider dataHasApplicationTag
      */
-    public function test_HasApplicationTag($test)
+    public function testHasApplicationTag($test)
     {
         if (is_a($test["value"], LateNameResolver::class)) {
             $test["value"] = $test["value"]->value;
@@ -44,7 +44,7 @@ class TestDcpDocumentFilter_HasApplicationTag extends TestDcpDocumentFilter_comm
         $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\HasApplicationTag($test["value"]), $test["expected"]);
     }
     
-    public function data_HasApplicationTag()
+    public function dataHasApplicationTag()
     {
         return array(
             array(

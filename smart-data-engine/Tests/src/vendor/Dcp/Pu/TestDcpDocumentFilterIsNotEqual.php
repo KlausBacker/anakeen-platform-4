@@ -2,7 +2,7 @@
 
 namespace Dcp\Pu;
 
-class TestDcpDocumentFilter_IsNotEqual extends TestDcpDocumentFilter_common
+class TestDcpDocumentFilterIsNotEqual extends TestDcpDocumentFiltercommon
 {
     protected static function getCommonImportFile()
     {
@@ -12,9 +12,9 @@ class TestDcpDocumentFilter_IsNotEqual extends TestDcpDocumentFilter_common
     }
     /**
      * @param $test
-     * @dataProvider data_IsNotEqual
+     * @dataProvider dataIsNotEqual
      */
-    public function test_IsNotEqual($test)
+    public function testIsNotEqual($test)
     {
         if (is_a($test["value"], LateNameResolver::class)) {
             $test["value"] = $test["value"]->value;
@@ -22,7 +22,7 @@ class TestDcpDocumentFilter_IsNotEqual extends TestDcpDocumentFilter_common
         $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\IsNotEqual($test["attr"], $test["value"]), $test["expected"]);
     }
     
-    public function data_IsNotEqual()
+    public function dataIsNotEqual()
     {
         return array(
             array(

@@ -5,7 +5,7 @@ namespace Dcp\Pu;
 use Anakeen\Search\Filters\OneGreaterThan;
 use Anakeen\Search\Filters\OneLesserThan;
 
-class TestDcpDocumentFilter_OneGreaterThan extends TestDcpDocumentFilter_common
+class TestDcpDocumentFilterOneGreaterThan extends TestDcpDocumentFiltercommon
 {
     const FAM = 'TEST_DCP_DOCUMENTFILTER_ONEGREATERTHAN';
     protected static function getCommonImportFile()
@@ -16,9 +16,9 @@ class TestDcpDocumentFilter_OneGreaterThan extends TestDcpDocumentFilter_common
     }
     /**
      * @param $test
-     * @dataProvider data_OneGreaterThan
+     * @dataProvider dataOneGreaterThan
      */
-    public function test_OneGreaterThan($test)
+    public function testOneGreaterThan($test)
     {
         if (is_a($test["value"], LateNameResolver::class)) {
             $test["value"] = $test["value"]->value;
@@ -26,7 +26,7 @@ class TestDcpDocumentFilter_OneGreaterThan extends TestDcpDocumentFilter_common
         $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\OneGreaterThan($test["attr"], $test["value"], (isset($test["flags"]) ? $test["flags"] : 0)), $test["expected"]);
     }
     
-    public function data_OneGreaterThan()
+    public function dataOneGreaterThan()
     {
         return array(
             array(
@@ -93,9 +93,9 @@ class TestDcpDocumentFilter_OneGreaterThan extends TestDcpDocumentFilter_common
     }
     /**
      * @param $test
-     * @dataProvider data_OneGreaterThanOrEqual
+     * @dataProvider dataOneGreaterThanOrEqual
      */
-    public function test_OneGreaterThanOrEqual($test)
+    public function testOneGreaterThanOrEqual($test)
     {
         if (is_a($test["value"], LateNameResolver::class)) {
             $test["value"] = $test["value"]->value;
@@ -103,7 +103,7 @@ class TestDcpDocumentFilter_OneGreaterThan extends TestDcpDocumentFilter_common
         $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\OneGreaterThan($test["attr"], $test["value"], (isset($test["flags"]) ? $test["flags"] : OneGreaterThan::EQUAL)), $test["expected"]);
     }
     
-    public function data_OneGreaterThanOrEqual()
+    public function dataOneGreaterThanOrEqual()
     {
         return array(
             array(
@@ -176,9 +176,9 @@ class TestDcpDocumentFilter_OneGreaterThan extends TestDcpDocumentFilter_common
     }
     /**
      * @param $test
-     * @dataProvider data_OneLesserThan
+     * @dataProvider dataOneLesserThan
      */
-    public function test_OneLesserThan($test)
+    public function testOneLesserThan($test)
     {
         if (is_a($test["value"], LateNameResolver::class)) {
             $test["value"] = $test["value"]->value;
@@ -186,7 +186,7 @@ class TestDcpDocumentFilter_OneGreaterThan extends TestDcpDocumentFilter_common
         $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\OneLesserThan($test["attr"], $test["value"], (isset($test["flags"]) ? $test["flags"] : 0)), $test["expected"]);
     }
     
-    public function data_OneLesserThan()
+    public function dataOneLesserThan()
     {
         return array(
             array(
@@ -253,9 +253,9 @@ class TestDcpDocumentFilter_OneGreaterThan extends TestDcpDocumentFilter_common
     }
     /**
      * @param $test
-     * @dataProvider data_OneLesserThanOrEqual
+     * @dataProvider dataOneLesserThanOrEqual
      */
-    public function test_OneLesserThanOrEqual($test)
+    public function testOneLesserThanOrEqual($test)
     {
         if (is_a($test["value"], LateNameResolver::class)) {
             $test["value"] = $test["value"]->value;
@@ -263,7 +263,7 @@ class TestDcpDocumentFilter_OneGreaterThan extends TestDcpDocumentFilter_common
         $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\OneLesserThan($test["attr"], $test["value"], (isset($test["flags"]) ? $test["flags"] : OneLesserThan::EQUAL)), $test["expected"]);
     }
     
-    public function data_OneLesserThanOrEqual()
+    public function dataOneLesserThanOrEqual()
     {
         return array(
             array(

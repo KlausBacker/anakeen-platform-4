@@ -7,7 +7,7 @@
 
 namespace Dcp\Pu;
 
-class TestDcpDocumentFilter_ContainsValues extends TestDcpDocumentFilter_common
+class TestDcpDocumentFilterContainsValues extends TestDcpDocumentFiltercommon
 {
     const FAM = 'TEST_DCP_DOCUMENTFILTER_CONTAINSVALUES';
     protected static function getCommonImportFile()
@@ -18,9 +18,9 @@ class TestDcpDocumentFilter_ContainsValues extends TestDcpDocumentFilter_common
     }
     /**
      * @param $test
-     * @dataProvider data_ContainsValues
+     * @dataProvider dataContainsValues
      */
-    public function test_ContainsValues($test)
+    public function testContainsValues($test)
     {
         if (is_a($test["value"], LateNameResolver::class)) {
             $test["value"] = $test["value"]->value;
@@ -28,7 +28,7 @@ class TestDcpDocumentFilter_ContainsValues extends TestDcpDocumentFilter_common
         $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\ContainsValues($test["attr"], $test["value"], (isset($test["flags"]) ? $test["flags"] : 0)), $test["expected"]);
     }
     
-    public function data_ContainsValues()
+    public function dataContainsValues()
     {
         return array(
             // M_ENUM

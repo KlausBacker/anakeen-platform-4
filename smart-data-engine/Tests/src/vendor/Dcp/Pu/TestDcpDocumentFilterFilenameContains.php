@@ -4,7 +4,7 @@ namespace Dcp\Pu;
 
 use Anakeen\Core\SEManager;
 
-class TestDcpDocumentFilter_FilenameContains extends TestDcpDocumentFilter_common
+class TestDcpDocumentFilterFilenameContains extends TestDcpDocumentFiltercommon
 {
     const FAM = 'TEST_DCP_DOCUMENTFILTER_FILENAMECONTAINS';
     protected static function getCommonImportFile()
@@ -65,9 +65,9 @@ class TestDcpDocumentFilter_FilenameContains extends TestDcpDocumentFilter_commo
     }
     /**
      * @param $test
-     * @dataProvider data_FilenameContains
+     * @dataProvider dataFilenameContains
      */
-    public function test_FilenameContains($test)
+    public function testFilenameContains($test)
     {
         if (is_a($test["value"], LateNameResolver::class)) {
             $test["value"] = $test["value"]->value;
@@ -75,7 +75,7 @@ class TestDcpDocumentFilter_FilenameContains extends TestDcpDocumentFilter_commo
         $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\FilenameContains($test["attr"], $test["value"], (isset($test["flags"]) ? $test["flags"] : 0)), $test["expected"]);
     }
     
-    public function data_FilenameContains()
+    public function dataFilenameContains()
     {
         return array(
             // S_FILE
@@ -174,9 +174,9 @@ class TestDcpDocumentFilter_FilenameContains extends TestDcpDocumentFilter_commo
     }
     /**
      * @param $test
-     * @dataProvider data_FilenameEquals
+     * @dataProvider dataFilenameEquals
      */
-    public function test_FilenameEquals($test)
+    public function testFilenameEquals($test)
     {
         if (is_a($test["value"], LateNameResolver::class)) {
             $test["value"] = $test["value"]->value;
@@ -184,7 +184,7 @@ class TestDcpDocumentFilter_FilenameContains extends TestDcpDocumentFilter_commo
         $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\FilenameEquals($test["attr"], $test["value"], (isset($test["flags"]) ? $test["flags"] : 0)), $test["expected"]);
     }
 
-    public function data_FilenameEquals()
+    public function dataFilenameEquals()
     {
         return array(
             // S_FILE

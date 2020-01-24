@@ -4,7 +4,7 @@ namespace Dcp\Pu;
 
 use Anakeen\Core\SEManager;
 
-class TestDcpDocumentFilter_IdentifiersIn extends TestDcpDocumentFilter_common
+class TestDcpDocumentFilterIdentifiersIn extends TestDcpDocumentFiltercommon
 {
     const FAM = 'TEST_DCP_DOCUMENTFILTER_IDENTIFIERSIN';
     protected static function getCommonImportFile()
@@ -33,9 +33,9 @@ class TestDcpDocumentFilter_IdentifiersIn extends TestDcpDocumentFilter_common
     }
     /**
      * @param $test
-     * @dataProvider data_IdentifiersIn
+     * @dataProvider dataIdentifiersIn
      */
-    public function test_IdentifiersIn($test)
+    public function testIdentifiersIn($test)
     {
         if (is_a($test["value"], LateNameResolver::class)) {
             $test["value"] = $test["value"]->value;
@@ -43,7 +43,7 @@ class TestDcpDocumentFilter_IdentifiersIn extends TestDcpDocumentFilter_common
         $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\IdentifiersIn($test["value"], (isset($test["flags"]) ? $test["flags"] : 0)), $test["expected"]);
     }
     
-    public function data_IdentifiersIn()
+    public function dataIdentifiersIn()
     {
         return array(
             // ID

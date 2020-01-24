@@ -12,25 +12,26 @@ class SuiteDcpFilter
     {
         $suite = new FrameworkDcp('Package');
 
-        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilter_Contains');
-        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilter_ContainsValues');
-        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilter_DocumentTitle');
-        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilter_FilenameContains');
-        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilter_HasApplicationTag');
-        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilter_HasUserTag');
-        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilter_IdentifiersIn');
-        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilter_IsEmpty');
-        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilter_IsEqual');
-        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilter_IsGreater');
-        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilter_IsLesser');
-        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilter_IsNotEmpty');
-        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilter_IsNotEqual');
-        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilter_NameEquals');
-        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilter_OneContains');
-        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilter_OneDocumentTitle');
-        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilter_OneEquals');
-        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilter_OneGreaterThan');
-        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilter_TitleContains');
+        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterContains');
+        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterContainsValues');
+        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterDocumentTitle');
+        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterFilenameContains');
+        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterHasApplicationTag');
+        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterHasUserTag');
+        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterIdentifiersIn');
+        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterIsEmpty');
+        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterIsEqual');
+        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterIsGreater');
+        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterIsLesser');
+        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterIsNotEmpty');
+        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterIsNotEqual');
+        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterNameEquals');
+        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterOneContains');
+        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterOneDocumentTitle');
+        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterOneEquals');
+        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterOneGreaterThan');
+        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterTitleContains');
+        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterOrOperator');
 
         // ...
         return $suite;

@@ -2,7 +2,7 @@
 
 namespace Dcp\Pu;
 
-class TestDcpDocumentFilter_Contains extends TestDcpDocumentFilter_common
+class TestDcpDocumentFilterContains extends TestDcpDocumentFiltercommon
 {
     protected static function getCommonImportFile()
     {
@@ -12,9 +12,9 @@ class TestDcpDocumentFilter_Contains extends TestDcpDocumentFilter_common
     }
     /**
      * @param $test
-     * @dataProvider data_Contains
+     * @dataProvider dataContains
      */
-    public function test_Contains($test)
+    public function testContains($test)
     {
         if (is_a($test["value"], LateNameResolver::class)) {
             $test["value"] = $test["value"]->value;
@@ -22,7 +22,7 @@ class TestDcpDocumentFilter_Contains extends TestDcpDocumentFilter_common
         $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\Contains($test["attr"], $test["value"]), $test["expected"]);
     }
     
-    public function data_Contains()
+    public function dataContains()
     {
         return array(
             array(
@@ -59,16 +59,16 @@ class TestDcpDocumentFilter_Contains extends TestDcpDocumentFilter_common
     }
     /**
      * @param $test
-     * @dataProvider data_ContainsNoCase
+     * @dataProvider dataContainsNoCase
      */
-    public function test_ContainsNoCase($test)
+    public function testContainsNoCase($test)
     {
         if (is_a($test["value"], LateNameResolver::class)) {
             $test["value"] = $test["value"]->value;
         }
         $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\Contains($test["attr"], $test["value"], \Anakeen\Search\Filters\Contains::NOCASE), $test["expected"]);
     }
-    public function data_ContainsNoCase()
+    public function dataContainsNoCase()
     {
         return array(
             array(
