@@ -64,6 +64,7 @@ export default class SmartStructureManagerParametersController extends Vue {
           values[parameter.parameterId + "-type"] = "value";
           values[parameter.parameterId + "-value"] = parameter.rawValue;
         }
+        console.log("Param", parameter);
         // Generate SmartForm structure
         parametersStructure.push({
           content: [
@@ -109,7 +110,7 @@ export default class SmartStructureManagerParametersController extends Vue {
             }
           ],
           label: `${parameter.label}`,
-          name: `${parameter.parameterId}-default_value`,
+          name: `${parameter.parameterId}`,
           type: "frame"
         });
       });
@@ -155,10 +156,13 @@ export default class SmartStructureManagerParametersController extends Vue {
   public manageHiddenFields(parameter) {
     this.$refs.ssmForm.getSmartFields().forEach(sf => {
       const splitted = sf.id.split("-");
+      console.log("this.finalData[parameter.parameterId].valueType", this.finalData[parameter.parameterId].valueType);
+      console.log("splitted", splitted[1]);
       if (
         splitted[0] === parameter.parameterId &&
         splitted[1] !== "type" &&
         splitted[1] !== "default_value" &&
+        typeof splitted[1] !== "undefined" &&
         this.finalData[parameter.parameterId].valueType !== splitted[1]
       ) {
         this.$refs.ssmForm.hideSmartField(`${splitted[0]}-${splitted[1]}`);
