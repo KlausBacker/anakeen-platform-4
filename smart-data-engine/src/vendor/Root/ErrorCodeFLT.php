@@ -44,8 +44,13 @@ class ErrorCodeFLT
      */
     const FLT0009 = "Value must be array.";
     /**
-     * @errorCode when use docrel and usertag table join per exemple
+     * @errorCode when use docrel and usertag table join by exemple
      * @see \Anakeen\Search\Filters\OrOperator
      */
     const FLT0010 = "The OR operator cannot be used with several filters which use different join ('%s' - '%s')";
+    /**
+     * @errorCode when use docrel join and isgreater by exemple
+     * @see \Anakeen\Search\Filters\OrOperator
+     */
+    const FLT0011 = "The OR operator cannot be used with several filters which use with join and no join conditions ('%s' - '%s')";
 }

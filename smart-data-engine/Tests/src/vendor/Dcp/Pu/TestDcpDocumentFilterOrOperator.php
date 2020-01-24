@@ -95,12 +95,45 @@ class TestDcpDocumentFilterOrOperator extends TestDcpDocumentFiltercommon
         );
     }
 
+    /**
+     * @param $fam
+     * @param $testTitle
+     * @param $testNumber
+     * @param $expected
+     * @dataProvider dataMixOneDocumentTitleOrOperator
+     */
+    public function testMixOneDocumentTitleOrOperator($fam, $testTitle, $testNumber, $expected)
+    {
+        $filters = [];
+        $filters[] = new \Anakeen\Search\Filters\TitleContains(
+            $testTitle["value"],
+            $testTitle["flags"] ?? null
+        );
+        $filters[] = new \Anakeen\Search\Filters\IsGreater(
+            $testNumber["attrid"],
+            $testNumber["value"],
+            $testNumber["flags"] ?? null
+        );
+
+
+        $filter = new \Anakeen\Search\Filters\OrOperator(
+            ...$filters
+        );
+
+        $this->common_testFilter(
+            $fam,
+            $filter,
+            $expected
+        );
+    }
 
     /**
      * @param $test
+     * @param $filterCode
+     * @param $errorCode
      * @dataProvider dataErrorOrOperator
      */
-    public function testErrorOrOperator($test, $errorCode)
+    public function testErrorOrOperator($test, $filterCode, $errorCode)
     {
         $filters = [];
         foreach ($test["values"] as $condition) {
@@ -111,11 +144,22 @@ class TestDcpDocumentFilterOrOperator extends TestDcpDocumentFiltercommon
                     $condition["flags"] ?? null
                 );
         }
-        $filters[] =
-            new \Anakeen\Search\Filters\HasUserTag(
-                1234,
-                "Hhoho"
-            );
+        switch ($filterCode["code"]) {
+            case "usertag":
+                $filters[] =
+                    new \Anakeen\Search\Filters\HasUserTag(
+                        1234,
+                        $filterCode["value"]
+                    );
+                break;
+            case "isgreater":
+                $filters[] =
+                    new \Anakeen\Search\Filters\IsGreater(
+                        $filterCode["attrid"],
+                        $filterCode["value"]
+                    );
+                break;
+        }
 
         $filter = new \Anakeen\Search\Filters\OrOperator(
             ...$filters
@@ -129,7 +173,7 @@ class TestDcpDocumentFilterOrOperator extends TestDcpDocumentFiltercommon
             );
             $this->assertTrue(false, "Exception must occurs here");
         } catch (\Anakeen\Search\Filters\Exception $e) {
-            $this->assertEquals($errorCode, $e->getDcpCode(), "No the good exception");
+            $this->assertEquals($errorCode, $e->getDcpCode(), "No the good exception " . $e->getMessage());
         }
     }
 
@@ -331,6 +375,26 @@ class TestDcpDocumentFilterOrOperator extends TestDcpDocumentFiltercommon
         );
     }
 
+
+    public function dataMixOneDocumentTitleOrOperator()
+    {
+        return array(
+            array(
+                "fam" => self::FAM,
+                "titleCond" => ["value" => "Hello"],
+                "numberCond" => ["value" => "2000", "attrid" => "tst_number"],
+                "expected" => [
+                    "TST_OPOR_1",
+                    "TST_OPOR_3",
+                    "TST_OPOR_4",
+                    "TST_OPOR_2",
+                    "TST_OPOR_5",
+                    "TST_OPOR_9",
+                ]
+            )
+        );
+    }
+
     public function dataErrorOrOperator()
     {
         return array(
@@ -341,8 +405,23 @@ class TestDcpDocumentFilterOrOperator extends TestDcpDocumentFiltercommon
                         ["value" => "Hello", "attrid" => "tst_docids"],
                         ["value" => "World", "attrid" => "tst_docids"]
                     ]
-                ]
-                ,"FLT0010"
+
+                ],
+                ["code"=> "usertag", "value"=>"HOho"],
+                "FLT0010"
+            ),
+
+            array(
+                [
+                    "fam" => self::FAM,
+                    "values" => [
+                        ["value" => "Hello", "attrid" => "tst_docids"],
+                        ["value" => "World", "attrid" => "tst_docids"]
+                    ]
+
+                ],
+                ["code"=> "isgreater", "attrid"=>"tst_number","value"=>"78"],
+                "FLT0011"
             )
         );
     }

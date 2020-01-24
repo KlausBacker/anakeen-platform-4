@@ -988,10 +988,14 @@ class SearchSmartData
             if (!is_a($filter, \Anakeen\Search\Filters\ElementSearchFilter::class)) {
                 throw new \Anakeen\Search\Exception(sprintf("Filter object does not implements \"%s\" interface.", \Anakeen\Search\Filters\ElementSearchFilter::class));
             }
+            $originalJoin=$this->getJoin();
             /**
              * @var \Anakeen\Search\Filters\ElementSearchFilter $filter
              */
             $filter->addFilter($this);
+            if ($originalJoin && $this->getJoin() !== $originalJoin) {
+                throw new Exception("SD0014", $originalJoin, $this->getJoin());
+            }
         } else {
             throw new \Anakeen\Search\Exception(sprintf("Filter is neither a string nor an objet implementing \\Dcp\\Documentfilter interface."));
         }

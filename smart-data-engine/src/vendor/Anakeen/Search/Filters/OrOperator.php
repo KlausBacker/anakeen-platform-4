@@ -28,13 +28,23 @@ class OrOperator implements ElementSearchFilter
     {
         $originFilters=$search->getFilters();
         $originalJoin=$search->getJoin();
+        $previousJoin=null;
         foreach ($this->filters as $filter) {
+            $search->join("");
             $search->addFilter($filter);
 
-            if ($originalJoin && $search->getJoin() !==$originalJoin) {
+            if ($originalJoin && $search->getJoin() !== $originalJoin) {
                 throw new Exception("FLT0010", $originalJoin, $search->getJoin());
             }
-            $originalJoin =  $search->getJoin();
+            $currentJoint=$search->getJoin();
+            if ($previousJoin !== null && $previousJoin !== $currentJoint) {
+                if (!$previousJoin || !$currentJoint) {
+                    throw new Exception("FLT0011", $previousJoin, $currentJoint);
+                } else {
+                    throw new Exception("FLT0010", $previousJoin, $currentJoint);
+                }
+            }
+            $previousJoin =  $search->getJoin();
         }
 
         $newFilters=$search->getFilters();
