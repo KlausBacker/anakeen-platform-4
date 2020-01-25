@@ -306,7 +306,6 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
       else if (smartField.id === "ssm_value") {
         // ToDo : Check if value is multiple and if there is multiple value in field
         if (this.actualDefValData.isMultiple === true && Array.isArray(values.current)) {
-          debugger;
           let multipleValue = []
           values.current.forEach(value => {
             multipleValue.push(value.value);
@@ -358,7 +357,6 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
   }
   public displayData(colId) {
     return dataItem => {
-      // console.log("DataItem", dataItem);
       switch (colId) {
         case "type":
           if (dataItem[colId]) {
@@ -371,7 +369,6 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
     };
   }
   public displayMultiple(data) {
-    // console.log("data", data);
     if (data instanceof Object) {
       const str = "";
       return this.recursiveData(data, str);
@@ -432,15 +429,6 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
               displayValue = [];
 
               if (isMultiple === true) {
-                // console.log("DefValue", defaultVal);
-                // if (defaultVal.configurationValue === null) {
-                //   console.log("Type ConfigDefVal", null);
-                // } else {
-                //   console.log("Type ConfigDefVal", typeof defaultVal.configurationValue);
-                // }
-                
-                // console.log("ActualField", field);
-                // console.log("===================================");
                 // ToDo : Get values from 'result'
                 resultDefVal.forEach(actualResultValue => {
                   if (typeof actualResultValue === "object") {
@@ -471,17 +459,20 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
                     displayValue = actualConfigValue;
                   }
 
-                  result.push({
-                    displayValue,
-                    fieldId: item,
-                    parentFieldId: parentField.id,
-                    label: this.formatLabel(field, fields),
-                    parentValue: defaultVal.parentConfigurationValue ? defaultVal.parentConfigurationValue : null,
-                    rawValue,
-                    type: JSON.stringify({ type, typeFormat }),
-                    isAdvancedValue,
-                    isMultiple
-                  });
+                  if((field.type === "array" && result[result.length - 1].fieldId !== item) || field.type !== "array") {
+                    result.push({
+                      displayValue,
+                      fieldId: item,
+                      parentFieldId: parentField.id,
+                      label: this.formatLabel(field, fields),
+                      parentValue: defaultVal.parentConfigurationValue ? defaultVal.parentConfigurationValue : null,
+                      rawValue,
+                      type: JSON.stringify({ type, typeFormat }),
+                      isAdvancedValue,
+                      isMultiple
+                    });
+                  }
+
                 })
               }
               if (isMultiple === false) {
