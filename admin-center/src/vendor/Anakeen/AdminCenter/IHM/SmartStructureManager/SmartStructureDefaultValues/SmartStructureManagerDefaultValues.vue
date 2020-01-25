@@ -66,6 +66,8 @@
       <kendo-grid-column
 :hidden="true" :title="'<b>Is Advanced Value</b>'" :field="'isAdvancedValue'" />
       <kendo-grid-column
+:hidden="true" :title="'<b>Is Multiple</b>'" :field="'isMultiple'" />
+      <kendo-grid-column
 :title="''" width="6.5rem"
 :command="{ click: onEditClick, text: 'Modify' }"
 />

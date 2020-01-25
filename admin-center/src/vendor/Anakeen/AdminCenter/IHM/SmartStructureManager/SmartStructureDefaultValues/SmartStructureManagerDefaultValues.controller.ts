@@ -33,7 +33,8 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
     type: {
       type: "",
       typeFormat: ""
-    }
+    },
+    isMultiple: false
   };
   public finalData = {
     fieldId: "",
@@ -77,6 +78,7 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
     this.finalData.fieldId = row.children[5].innerText;
     this.finalData.parentFieldId = row.children[6].innerText;
     this.finalData.isAdvancedValue = row.children[7].innerText;
+    this.actualDefValData.isMultiple = JSON.parse(row.children[8].innerHTML);
     this.finalData.value = this.getArrayDefaultValue(this.finalData.fieldId);
     this.showModal = true;
     this.showSmartForm();
@@ -189,7 +191,8 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
               label: "Value",
               name: "ssm_value",
               type: `${this.actualDefValData.type.type}`,
-              typeFormat: `${this.actualDefValData.type.typeFormat}`
+              typeFormat: `${this.actualDefValData.type.typeFormat}`,
+              multiple: this.actualDefValData.isMultiple
             },
             {
               display: this.smartFormDisplayManager.ssm_advanced_value,
@@ -299,7 +302,17 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
       }
       // @ts-ignore
       else if (smartField.id === "ssm_value") {
-        this.finalData.value = values.current.value;
+        // ToDo : Check if value is multiple and if there is multiple value in field
+        if (this.actualDefValData.isMultiple === true && Array.isArray(values.current)) {
+          debugger;
+          let multipleValue = []
+          values.current.forEach(value => {
+            multipleValue.push(value.value);
+          });
+          this.finalData.value = JSON.stringify(multipleValue);
+        } else {
+          this.finalData.value = values.current.value;
+        }
       } else {
         this.finalData.value = smartForm.getValue(`ssm_${this.finalData.valueType}`).value;
       }
@@ -337,6 +350,7 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
   }
   public displayData(colId) {
     return dataItem => {
+      // console.log("DataItem", dataItem);
       switch (colId) {
         case "type":
           if (dataItem[colId]) {
@@ -349,6 +363,7 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
     };
   }
   public displayMultiple(data) {
+    // console.log("data", data);
     if (data instanceof Object) {
       const str = "";
       return this.recursiveData(data, str);
@@ -393,39 +408,77 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
           }
           if (field) {
             const configDefVal = defaultVal.configurationValue;
+            const resultDefVal = defaultVal.result;
             let isAdvancedValue = false;
-            let rawValue = "";
+            let isMultiple = false;
+            let rawValue;
             let displayValue;
 
+            // Issue #386 : Manage multiple values
+            if (typeof field.optionValues["multiple"] !== "undefined" && field.optionValues["multiple"] === "yes") {
+              isMultiple = true;
+            }
+
             if (Array.isArray(configDefVal)) {
-              configDefVal.forEach(actualConfigValue => {
-                if (typeof actualConfigValue === "object") {
-                  if (actualConfigValue.displayValue && actualConfigValue.rawValue) {
-                    displayValue = actualConfigValue.displayValue;
-                    rawValue = actualConfigValue.rawValue;
+              rawValue = [];
+              displayValue = [];
+
+              if (isMultiple === true) {
+                // console.log("DefValue", defaultVal);
+                // if (defaultVal.configurationValue === null) {
+                //   console.log("Type ConfigDefVal", null);
+                // } else {
+                //   console.log("Type ConfigDefVal", typeof defaultVal.configurationValue);
+                // }
+                
+                // console.log("ActualField", field);
+                // console.log("===================================");
+                // ToDo : Get values from 'result'
+                resultDefVal.forEach(actualResultValue => {
+                  if (typeof actualResultValue === "object") {
+                    if (actualResultValue.displayValue && actualResultValue.value) {
+                      displayValue.push(actualResultValue.displayValue);
+                      rawValue.push(actualResultValue.value);
+                    } else {
+                      displayValue.push("");
+                      rawValue.push("");
+                    }
                   } else {
-                    displayValue = "";
-                    rawValue = "";
+                    rawValue.push(actualResultValue);
+                    displayValue.push(actualResultValue);
                   }
-                } else {
-                  rawValue = actualConfigValue;
-                  displayValue = actualConfigValue;
-                }
-                if(rawValue && rawValue.includes("::")) {
-                  isAdvancedValue = true;
-                }
-                result.push({
-                  displayValue,
-                  fieldId: item,
-                  parentFieldId: parentField.id,
-                  label: this.formatLabel(field, fields),
-                  parentValue: defaultVal.parentConfigurationValue ? defaultVal.parentConfigurationValue : null,
-                  rawValue,
-                  type: JSON.stringify({ type, typeFormat }),
-                  isAdvancedValue
-                });
-              });
-              return;
+                })
+              } else {
+                configDefVal.forEach(actualConfigValue => {
+                  if (typeof actualConfigValue === "object") {
+                    if (actualConfigValue.displayValue && actualConfigValue.rawValue) {
+                      displayValue = actualConfigValue.displayValue;
+                      rawValue = actualConfigValue.rawValue;
+                    } else {
+                      displayValue = "";
+                      rawValue = "";
+                    }
+                  } else {
+                    rawValue = actualConfigValue;
+                    displayValue = actualConfigValue;
+                  }
+
+                  result.push({
+                    displayValue,
+                    fieldId: item,
+                    parentFieldId: parentField.id,
+                    label: this.formatLabel(field, fields),
+                    parentValue: defaultVal.parentConfigurationValue ? defaultVal.parentConfigurationValue : null,
+                    rawValue,
+                    type: JSON.stringify({ type, typeFormat }),
+                    isAdvancedValue,
+                    isMultiple
+                  });
+                })
+              }
+              if (isMultiple === false) {
+                return;
+              }
             } else if (configDefVal instanceof Object) {
               if (defaultVal.result.value && defaultVal.result.displayValue) {
                 if (configDefVal && typeof configDefVal !== "undefined" && configDefVal != defaultVal.result.value) {
@@ -488,7 +541,8 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
               parentValue: defaultVal.parentConfigurationValue ? defaultVal.parentConfigurationValue : null,
               rawValue,
               type: JSON.stringify({ type, typeFormat }),
-              isAdvancedValue
+              isAdvancedValue,
+              isMultiple
             });
           }
         }
