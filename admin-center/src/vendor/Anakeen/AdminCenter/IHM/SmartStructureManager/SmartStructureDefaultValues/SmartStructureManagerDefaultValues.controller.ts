@@ -27,6 +27,7 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
   // Data
   public initialDefVal = {};
   public actualDefValData = {
+    label: "",
     rawValue: "",
     displayValue: "",
     parentValue: "",
@@ -71,6 +72,7 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
   public onEditClick(e) {
     // Get clicked default value data
     const row = $(e.target).closest("tr")[0];
+    this.actualDefValData.label = row.children[0].innerText;
     this.actualDefValData.parentValue = row.children[1].textContent;
     this.actualDefValData.rawValue = row.children[2].innerText;
     this.actualDefValData.displayValue = row.children[3].innerText;
@@ -134,10 +136,22 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
           iconUrl: "",
           id: "cancel",
           important: false,
-          label: "Cancel",
+          label: "Close",
           target: "_self",
           type: "itemMenu",
           url: "#action/document.delete",
+          visibility: "visible"
+        },
+        {
+          beforeContent: '<div class="fa fa-trash" />',
+          htmlLabel: "",
+          iconUrl: "",
+          id: "erase",
+          important: false,
+          label: "Erase default value",
+          target: "_self",
+          type: "itemMenu",
+          url: "#action/ssmanager.erase",
           visibility: "visible"
         },
         {
@@ -146,7 +160,7 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
           iconUrl: "",
           id: "submit",
           important: false,
-          label: "Submit",
+          label: "Update default value",
           target: "_self",
           type: "itemMenu",
           url: "#action/document.save",
@@ -170,10 +184,6 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
                   key: "advanced_value",
                   label: "Advanced Value"
                 },
-                {
-                  key: "no_value",
-                  label: "Erase field"
-                }
               ],
               label: "Type",
               name: "ssm_type",
@@ -213,7 +223,7 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
           type: "frame"
         }
       ],
-      title: "Edit value form",
+      title: this.actualDefValData.label,
       values: this.smartFormArrayValues
     };
   }
@@ -284,14 +294,6 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
           this.finalData.value = smartForm.getValue("ssm_advanced_value").value;
           this.finalData.valueType = smartForm.getValue("ssm_type").value;
           break;
-        case "no_value":
-          smartForm.hideSmartField("ssm_advanced_value");
-          smartForm.hideSmartField("ssm_value");
-          smartForm.hideSmartField("ssm_array");
-          smartForm.hideSmartField("ssm_inherited_value");
-          this.finalData.valueType = smartForm.getValue("ssm_type").value;
-          this.finalData.value = "";
-          break;
       }
     } else {
       if (this.isValArray) {
@@ -341,6 +343,12 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
     switch (params.eventId) {
       case "document.delete":
         this.showModal = false;
+        break;
+      case "ssmanager.erase":
+        this.finalData.valueType = "no_value";
+        this.finalData.value = "";
+        this.showModal = false;
+        this.updateData(this.finalData);
         break;
       case "document.save":
         this.finalData.valueType = smartForm.getValue("ssm_type").value;
