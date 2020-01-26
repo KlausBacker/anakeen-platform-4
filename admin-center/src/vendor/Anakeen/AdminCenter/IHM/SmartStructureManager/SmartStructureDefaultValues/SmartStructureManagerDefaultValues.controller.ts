@@ -324,12 +324,11 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
       else if (smartField.id === "ssm_value") {
         // ToDo : Check if value is multiple and if there is multiple value in field
         if (this.actualDefValData.isMultiple === true && Array.isArray(values.current)) {
-          debugger;
-          let multipleValue = []
+          let multipleValue = [];
           values.current.forEach(value => {
             multipleValue.push(value.value);
           });
-          this.finalData.value = JSON.stringify(multipleValue);
+          this.finalData.value = JSON.parse(JSON.stringify(multipleValue));
         } else {
           this.finalData.value = values.current.value;
         }
@@ -515,17 +514,20 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
                     displayValue = actualConfigValue;
                   }
 
-                  result.push({
-                    displayValue,
-                    fieldId: item,
-                    parentFieldId: parentField.id,
-                    label: this.formatLabel(field, fields),
-                    parentValue: defaultVal.parentConfigurationValue ? defaultVal.parentConfigurationValue : null,
-                    rawValue,
-                    type: JSON.stringify({ type, typeFormat }),
-                    isAdvancedValue,
-                    isMultiple
-                  });
+                  if ((field.type === "array" && result[result.length - 1].fieldId !== item) || field.type !== "array") {
+                    result.push({
+                      displayValue,
+                      fieldId: item,
+                      parentFieldId: parentField.id,
+                      label: this.formatLabel(field, fields),
+                      parentValue: defaultVal.parentConfigurationValue ? defaultVal.parentConfigurationValue : null,
+                      rawValue,
+                      type: JSON.stringify({ type, typeFormat }),
+                      isAdvancedValue,
+                      isMultiple
+                    });
+                  }
+
                 })
               }
               if (isMultiple === false) {
