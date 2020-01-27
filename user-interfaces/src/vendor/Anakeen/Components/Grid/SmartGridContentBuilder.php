@@ -168,7 +168,7 @@ class SmartGridContentBuilder
 
     /**
      * Returns the content data
-     * 
+     *
      * @return array - the data
      */
     public function getContent()
@@ -218,5 +218,4 @@ class SmartGridContentBuilder
         }
         return $df->getData();
     }
-
 }
