@@ -1,0 +1,30 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=827846 to learn about workspace recommendations.
+  // Extension identifier format: ${publisher}.${name}. Example: vscode.csharp
+
+  // List of extensions which should be recommended for users of this workspace.
+  "recommendations": [
+    // XML plugins
+    "redhat.vscode-xml",
+
+    // Server deploy plugins
+    "mkloubert.vs-deploy",
+
+    // Linter plugins
+    "dbaeumer.vscode-eslint",
+    "ikappas.phpcs",
+    "esbenp.prettier-vscode",
+
+    // PHP plugins
+    "bmewburn.vscode-intelephense-client",
+    // XDebug
+    "felixfbecker.php-debug",
+    // For php doc comment generation
+    "rexshi.phpdoc-comment-vscode-plugin",
+
+    // Vue plugins
+    "octref.vetur"
+  ],
+  // List of extensions recommended by VS Code that should not be recommended for users of this workspace.
+  "unwantedRecommendations": []
+}

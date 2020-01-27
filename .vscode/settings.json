@@ -1,0 +1,123 @@
+{
+  "deploy": {
+    "packages": [
+      {
+        "name": "Anakeen Platform 4",
+        "description": "Anakeen Platform 4 monorepo",
+        "files": ["**/*.php", "**/*.xml"],
+        "deployOnSave": false,
+        "deployOnChange": false
+      }
+    ],
+    "targets": [
+      {
+        "type": "local",
+        "name": "Docker Volumes",
+        "dir": ".devtool/docker/Docker/Volumes/_private/php/var/www/html/platform",
+        "mappings": [
+          {
+            "source": "admin-center/src",
+            "target": "/"
+          },
+          {
+            "source": "business-app/src",
+            "target": "/"
+          },
+          {
+            "source": "control/src",
+            "target": "/"
+          },
+          {
+            "source": "dev-data/src",
+            "target": "/"
+          },
+          {
+            "source": "development-center/src",
+            "target": "/"
+          },
+          {
+            "source": "hub-station/src",
+            "target": "/"
+          },
+          {
+            "source": "internal-components/src",
+            "target": "/"
+          },
+          {
+            "source": "migration-tools/src",
+            "target": "/"
+          },
+          {
+            "source": "security/src",
+            "target": "/"
+          },
+          {
+            "source": "smart-data-engine/src",
+            "target": "/"
+          },
+          {
+            "source": "smart-data-engine/Tests/src",
+            "target": "/"
+          },
+          {
+            "source": "test-tools/src",
+            "target": "/"
+          },
+          {
+            "source": "transformation/src",
+            "target": "/"
+          },
+          {
+            "source": "user-interfaces/src",
+            "target": "/"
+          },
+          {
+            "source": "user-interfaces/Tests/src",
+            "target": "/"
+          },
+          {
+            "source": "workflow/src",
+            "target": "/"
+          }
+        ]
+      }
+    ]
+  },
+
+  // PHPCS config
+  "phpcs.standard": ".devtool/ci/check/checkPHP/anakeenPhpCs.xml",
+  "phpcs.composerJsonPath": ".devtool/ci/check/checkPHP/composer.json",
+
+  // Default formatter
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  // XML configuration
+  "xml.catalogs": [
+    "module-validation/catalog.xml"
+  ],
+
+  // PHP exclude
+  "intelephense.files.exclude": [
+    "**/.git/**",
+    "**/.svn/**",
+    "**/.hg/**",
+    "**/CVS/**",
+    "**/.DS_Store/**",
+    "**/node_modules/**",
+    "**/bower_components/**",
+    "**/vendor/**/{Test,test,Tests,tests}/**",
+
+    // custom exclude
+    ".devtool/docker/Docker/Volumes/**",
+    ".devtool/ci/check/checkPHP/vendor/**"
+  ]
+}
