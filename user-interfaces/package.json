@@ -80,8 +80,13 @@
   },
   "dependencies": {
     "@anakeen/theme-variables": "1.0.0-RC.2020.1.4",
+    "@progress/kendo-data-query": "^1.5.2",
     "@progress/kendo-theme-bootstrap": "4.8.0",
     "@progress/kendo-ui": "2019.3.1113",
+    "@progress/kendo-vue-animation": "^0.4.2",
+    "@progress/kendo-vue-grid": "^0.4.2",
+    "@progress/kendo-vue-intl": "^0.4.2",
+    "@progress/kendo-vue-popup": "^0.4.2",
     "axios": "^0.19.0",
     "backbone": "^1.4.0",
     "bootstrap": "^4.4.1",

@@ -29,6 +29,7 @@ const conf = {
     AnkSmartElementGridColumnsButton: path.resolve(BASE_PATH, "src/AnkSEGrid/SmartGridColumns.ts"),
     AnkSmartElementGridExportButton: path.resolve(BASE_PATH, "src/AnkSEGrid/SmartGridExport.ts"),
     AnkSmartElementGridExpandButton: path.resolve(BASE_PATH, "src/AnkSEGrid/SmartGridExpand.ts"),
+    AnkSmartElementVueGrid: path.resolve(BASE_PATH, "src/AnkSEGridNew/SmartGrid.ts"),
     AnkSmartElementList: path.resolve(BASE_PATH, "src/AnkSEList/index.ts"),
     AnkTabs: path.resolve(BASE_PATH, "src/AnkTabs/Tabs.ts"),
     AnkSmartElementTab: path.resolve(BASE_PATH, "src/AnkTabs/SmartElementTab.ts"),
