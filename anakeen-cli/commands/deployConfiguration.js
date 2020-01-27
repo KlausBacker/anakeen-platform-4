@@ -73,7 +73,8 @@ exports.builder = {
   },
   includeFiles: {
     alias: "f",
-    description: "glob instructrion of files to include in the deployment",
+    description:
+      "glob instructrion of files to include in the deployment.  The files will be zipped and sent to the server in which it will be unzipped and placed at the same path it was locally",
     type: "string"
   }
 };

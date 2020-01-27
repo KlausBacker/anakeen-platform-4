@@ -41,7 +41,7 @@ const postFile = async ({
     if (listFiles) {
       listFiles.forEach(item => {
         const stream = fs.createReadStream(item);
-        zip.file(item.split("Anakeen")[1], stream);
+        zip.file(item.split("src")[1], stream);
       });
       const data = await zip.generateAsync({ type: "nodebuffer" });
       const urlFile = `${urlJoin(contextUrl, INCLUDE_FILE_API)}?verbose=${verbose}&dryRun=${dryRun}`;
@@ -151,7 +151,7 @@ const postGlobFile = async ({
     if (listFiles) {
       listFiles.forEach(item => {
         const stream = fs.createReadStream(item);
-        zip.file(item.split("Anakeen")[1], stream);
+        zip.file(item.split("src")[1], stream);
       });
       const data = await zip.generateAsync({ type: "nodebuffer" });
       const urlFile = `${urlJoin(contextUrl, INCLUDE_FILE_API)}?verbose=${verbose}&dryRun=${dryRun}`;

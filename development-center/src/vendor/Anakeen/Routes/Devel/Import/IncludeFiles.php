@@ -56,7 +56,7 @@ class IncludeFiles extends ImportAnyConfiguration
                 $fileInfo = pathinfo($filePath);
                 if (isset($fileInfo["extension"])) {
                     $contextPath = ContextManager::getRootDirectory();
-                    $dirPath = sprintf("%s/%s%s", $contextPath, "vendor/Anakeen", dirname($filePath));
+                    $dirPath = sprintf("%s/%s", $contextPath, dirname($filePath));
                     if (!$this->dryRun) {
                         if (!is_dir($dirPath)) {
                             if (mkdir($dirPath, 0755, true) === false) {
