@@ -10,6 +10,7 @@ const {
   addVueGlobal
 } = require("@anakeen/webpack-conf/parts");
 const testSmartForm = require("./testSmartForm");
+const testSmartGrid = require("./testSmartGrid");
 
 const BASE_DIR = path.resolve(__dirname, "../");
 const PUBLIC_PATH = path.join(BASE_DIR, "Tests/src/public");
@@ -37,15 +38,17 @@ module.exports = () => {
     ]
   };
   if (process.env.conf === "PROD") {
-    return [prod(conf), lib(testSmartForm)];
+    return [prod(conf), lib(testSmartForm), lib(testSmartGrid)];
   }
   if (process.env.conf === "DEV") {
-    return [dev(conf), lib({ ...testSmartForm, ...{ mode: "dev" } })];
+    return [dev(conf), lib({ ...testSmartForm, ...{ mode: "dev" } }), lib({ ...testSmartGrid, ...{ mode: "dev" } })];
   }
   return [
     prod(conf),
     dev(conf),
     lib(testSmartForm),
-    lib({ ...testSmartForm, ...{ mode: "dev" } })
+    lib({ ...testSmartForm, ...{ mode: "dev" } }),
+    lib(testSmartGrid),
+    lib({ ...testSmartGrid, ...{ mode: "dev" } })
   ];
 };
