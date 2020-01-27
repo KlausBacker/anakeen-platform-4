@@ -438,6 +438,7 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
             let isMultiple = false;
             let rawValue;
             let displayValue;
+            let label = this.formatLabel(field, fields);
 
             // Issue #386 : Manage multiple values
             if (typeof field.optionValues["multiple"] !== "undefined" && field.optionValues["multiple"] === "yes") {
@@ -449,7 +450,6 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
               displayValue = [];
 
               if (isMultiple === true) {
-                // ToDo : Get values from 'result'
                 resultDefVal.forEach(actualResultValue => {
                   if (typeof actualResultValue === "object") {
                     if (actualResultValue.displayValue && actualResultValue.value) {
@@ -484,7 +484,7 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
                       displayValue,
                       fieldId: item,
                       parentFieldId: parentField.id,
-                      label: this.formatLabel(field, fields),
+                      label,
                       parentValue: defaultVal.parentConfigurationValue ? defaultVal.parentConfigurationValue : null,
                       rawValue,
                       type: JSON.stringify({ type, typeFormat }),
@@ -556,7 +556,7 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
               displayValue,
               fieldId: item,
               parentFieldId: parentField.id,
-              label: this.formatLabel(field, fields),
+              label,
               parentValue: defaultVal.parentConfigurationValue ? defaultVal.parentConfigurationValue : null,
               rawValue,
               type: JSON.stringify({ type, typeFormat }),
@@ -622,10 +622,10 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
       this.formatLabel(parentField, fieldsList);
     }
     constructingLabel = constructingLabel.reverse();
-    if (constructingLabel[constructingLabel.length - 1] !== null) {
+    if (constructingLabel[constructingLabel.length - 1] !== null && constructingLabel.length > 1) {
       return constructingLabel.join(" / ");
     }
-    return constructingLabel[0];
+    return constructingLabel[0] + " | (ARRAY)";
   }
   protected formatType(simpleType, longType) {
     const type = simpleType;
