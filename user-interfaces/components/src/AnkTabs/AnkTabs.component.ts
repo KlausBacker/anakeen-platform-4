@@ -42,7 +42,6 @@ export default class Tabs extends Vue {
   }
 
   public created() {
-    console.log(this.selectedTab);
     if (!this.selectedTab) {
       this.setSelectedTab("0");
     }
