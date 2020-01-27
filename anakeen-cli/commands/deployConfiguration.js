@@ -70,6 +70,12 @@ exports.builder = {
     alias: "p",
     type: "string",
     required: true
+  },
+  includeFiles: {
+    alias: "f",
+    description:
+      "glob instruction of files to include in the deployment.  The files will be zipped and sent to the server in which it will be unzipped and placed at the same path it was locally",
+    type: "string"
   }
 };
 
@@ -86,7 +92,9 @@ exports.handler = function(argv) {
     let task;
     if (argv.sourcePath) {
       signale.info("Source file mode");
-
+      if (argv.includeFiles) {
+        signale.info("With included files");
+      }
       if (!argv.noCheck) {
         checkPromise = checkConfigFile.handler(argv, true);
       }
@@ -94,6 +102,9 @@ exports.handler = function(argv) {
       task = gulp.task("deployConfiguration");
     } else if (argv.glob) {
       signale.info("Glob file mode");
+      if (argv.includeFiles) {
+        signale.info("With included files");
+      }
       if (!argv.noCheck) {
         checkPromise = checkConfigFile.handler(argv, true);
       }
