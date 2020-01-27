@@ -73,7 +73,7 @@ exports.builder = {
   },
   includeFiles: {
     alias: "f",
-    description: "list of files to include in the deployment",
+    description: "glob instructrion of files to include in the deployment",
     type: "string"
   }
 };
