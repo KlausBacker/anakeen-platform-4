@@ -18,7 +18,17 @@ class StandardDocumentTitleFilter extends StandardAttributeFilter implements Ele
             'account',
         );
 
-    public function __construct($attrId, $value)
+    /**
+     * StandardDocumentTitleFilter constructor.
+     * @param $attrId
+     * @param $value
+     * @param int $options <p>
+     * Bitmask consisting of
+     * <b>\Anakeen\Search\Filters\StandardDocumentTitleFilter::$MATCH_REGEXP</b>,
+     * <b>\Anakeen\Search\Filters\StandardDocumentTitleFilter::$NOCASE</b>,
+     * </p>
+     */
+    public function __construct($attrId, $value, $options = 0)
     {
         parent::__construct($attrId);
         $this->value = $value;
@@ -56,6 +66,11 @@ class StandardDocumentTitleFilter extends StandardAttributeFilter implements Ele
         return $this;
     }
 
+    /**
+     * @param NormalAttribute $attr
+     * @param $value
+     * @return string
+     */
     protected function _filter(NormalAttribute & $attr, $value)
     {
         $leftOperand = 'docrel.ctitle';
