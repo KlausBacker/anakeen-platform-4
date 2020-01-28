@@ -124,11 +124,11 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
       });
     }
     // Manage child/parent data display
-    if (this.isValArray === true) {
-      this.smartFormDisplayManager.ssm_advanced_value = "none";
-    } else {
-      this.smartFormDisplayManager.ssm_advanced_value = "write";
-    }
+    // if (this.isValArray === true) {
+    //   this.smartFormDisplayManager.ssm_advanced_value = "none";
+    // } else {
+    //   this.smartFormDisplayManager.ssm_advanced_value = "write";
+    // }
     // SmartForm Generation
     this.smartForm = {
       menu: [
@@ -230,16 +230,30 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
         if (this.$refs.ssmForm.getSmartField("ssm_advanced_value")) {
           this.$refs.ssmForm.showSmartField("ssm_advanced_value");
         }
-        if (this.$refs.ssmForm.getSmartField("ssm_value")) {
-          this.$refs.ssmForm.hideSmartField("ssm_value");
+        if (this.isValArray) {
+          if (this.$refs.ssmForm.getSmartField("ssm_array")) {
+            this.$refs.ssmForm.hideSmartField("ssm_array");
+          }
+        } else {
+          if (this.$refs.ssmForm.getSmartField("ssm_value")) {
+            this.$refs.ssmForm.hideSmartField("ssm_value");
+          }
         }
+        this.finalData.valueType = "advanced_value";
         break;
       case "value":
         if (this.$refs.ssmForm.getSmartField("ssm_advanced_value")) {
           this.$refs.ssmForm.hideSmartField("ssm_advanced_value");
         }
-        if (this.$refs.ssmForm.getSmartField("ssm_value")) {
-          this.$refs.ssmForm.showSmartField("ssm_value");
+
+        if (this.isValArray) {
+          if (this.$refs.ssmForm.getSmartField("ssm_array")) {
+            this.$refs.ssmForm.showSmartField("ssm_array");
+          }
+        } else {
+          if (this.$refs.ssmForm.getSmartField("ssm_value")) {
+            this.$refs.ssmForm.showSmartField("ssm_value");
+            }
         }
         break;
     }
@@ -289,7 +303,6 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
           this.smartFormArrayValues[smartField.id][i] = newValue;
         }
       }
-
       // @ts-ignore
       else if (smartField.id === "ssm_value") {
         this.finalData.value = values.current.value;
@@ -317,11 +330,13 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
     }
   }
   public formClickMenu(e, se, params) {
+    const smartForm = this.$refs.ssmForm;
     switch (params.eventId) {
       case "document.delete":
         this.showModal = false;
         break;
       case "document.save":
+        this.finalData.valueType = smartForm.getValue("ssm_type").value;
         this.updateData(this.finalData);
         break;
     }
@@ -402,6 +417,9 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
                   rawValue = actualConfigValue;
                   displayValue = actualConfigValue;
                 }
+                if(rawValue && rawValue.includes("::")) {
+                  isAdvancedValue = true;
+                }
                 result.push({
                   displayValue,
                   fieldId: item,
@@ -418,7 +436,6 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
               if (defaultVal.result.value && defaultVal.result.displayValue) {
                 if (configDefVal && typeof configDefVal !== "undefined" && configDefVal != defaultVal.result.value) {
                   rawValue = configDefVal;
-                  isAdvancedValue = true;
                 } else {
                   rawValue = defaultVal.result.value;
                 }
@@ -466,6 +483,9 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
                 }
               }
             }
+            if(rawValue && rawValue.includes("::")) {
+              isAdvancedValue = true;
+            }
             result.push({
               displayValue,
               fieldId: item,
@@ -476,6 +496,9 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
               type: JSON.stringify({ type, typeFormat }),
               isAdvancedValue
             });
+
+            if (item === "hba_title") {
+            }
           }
         }
       });
@@ -483,7 +506,6 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
     }
     return [];
   }
-
   protected prepareSmartFormArray(defaultVal, field, parentField) {
     // Prepare data and structure
     const { type, typeFormat } = this.formatType(field.simpletype, field.type);
