@@ -11,6 +11,9 @@ class DefaultGridController implements SmartGridController
         if (isset($collectionId)) {
             $configBuilder->setCollection($collectionId);
         }
+        if (isset($clientConfig["pageable"])) {
+            $configBuilder->setPageable($clientConfig["pageable"]);
+        }
         if (isset($clientConfig["columns"])) {
             $configBuilder->setColumns($clientConfig["columns"]);
         } else {
@@ -23,14 +26,26 @@ class DefaultGridController implements SmartGridController
 
     public static function getGridContent($collectionId, $clientConfig)
     {
-        $contentBuilder = new SmartGridContentBuilder("DEVBILL");
-        $contentBuilder
-        ->addProperty("title")
-        ->addField("bill_title")
-        ->addField("bill_author")
-        ->addAbstract("my_custom_column", function ($smartElement) {
-            return $smartElement->getTitle();
-        });
+        $contentBuilder = new SmartGridContentBuilder();
+        if (isset($collectionId)) {
+            $contentBuilder->setCollection($collectionId);
+        }
+        if (isset($clientConfig["pageable"]["pageSize"])) {
+            $contentBuilder->setPageSize($clientConfig["pageable"]["pageSize"]);
+        }
+        if (isset($clientConfig["page"])) {
+            $contentBuilder->setPage($clientConfig["page"]);
+        }
+        if (isset($clientConfig["columns"])) {
+            foreach ($clientConfig["columns"] as $column) {
+                $contentBuilder->addColumn($column);
+            }
+        }
+        if (isset($clientConfig["sort"])) {
+            foreach ($clientConfig["sort"] as $sort) {
+                $contentBuilder->addSort($sort["field"], $sort["dir"]);
+            }
+        }
         return $contentBuilder->getContent();
     }
 

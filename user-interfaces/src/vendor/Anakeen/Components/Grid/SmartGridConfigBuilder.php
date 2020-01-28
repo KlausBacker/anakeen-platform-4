@@ -25,6 +25,7 @@ class SmartGridConfigBuilder
     protected $actions = false;
     protected $toolbarActions = false;
     protected $footer = false;
+    protected $pageable = false;
 
     /**
      * @var  int
@@ -349,6 +350,11 @@ class SmartGridConfigBuilder
         return $this;
     }
 
+    public function setPageable($pageable)
+    {
+        $this->pageable = $pageable;
+    }
+
     protected function getDisplayableProperties()
     {
         $properties = \Anakeen\Core\Internal\SmartElement::$infofields;
@@ -396,7 +402,7 @@ class SmartGridConfigBuilder
                 return ["pageSize" => intval($pageSlice), "pageSizes" => [intval($pageSlice)]];
             }
         }
-        return false;
+        return $this->pageable;
     }
 
     protected function getReferenceStructure($structureIdentifier = null)

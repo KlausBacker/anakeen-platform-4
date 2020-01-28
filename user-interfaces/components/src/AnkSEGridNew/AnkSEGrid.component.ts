@@ -17,6 +17,18 @@ interface SmartGridColumn {
   filterable: boolean | object;
 }
 
+const DEFAULT_PAGER = {
+  buttonCount: 0,
+  pageSize: 10,
+  pageSizes: [10, 20, 50]
+};
+
+const DEFAULT_SORT = {
+  mode: "multiple",
+  showIndexes: true,
+  allowUnsort: false
+};
+
 @Component({
   components: {
     "kendo-grid-vue": Grid,
@@ -36,7 +48,7 @@ export default class GridController extends Vue {
   })
   public columns: SmartGridColumn[];
   @Prop({
-    default: () => [],
+    default: "",
     type: String
   })
   public controller: string;
@@ -75,13 +87,10 @@ export default class GridController extends Vue {
   })
   public emptyCell;
   @Prop({
-    default: () => ({
-      mode: "multiple",
-      showIndexes: true
-    }),
-    type: [String, Boolean, Object]
+    default: () => DEFAULT_SORT,
+    type: [Boolean, Object]
   })
-  public sortable: string | boolean | object;
+  public sortable: boolean | object;
 
   @Prop({
     default: "menu",
@@ -100,15 +109,10 @@ export default class GridController extends Vue {
   public reorderable: boolean;
 
   @Prop({
-    default: true,
-    type: Boolean
+    default: () => DEFAULT_PAGER,
+    type: [Boolean, Object]
   })
-  public pageable: boolean;
-  @Prop({
-    default: () => [10, 20, 50],
-    type: [Boolean, Array]
-  })
-  public pageSizes: boolean | Array<number>;
+  public pageable: boolean | any;
 
   @Prop({
     default: true,
@@ -132,9 +136,33 @@ export default class GridController extends Vue {
   })
   public persistSelection: boolean;
 
-  public columnsList: any = [];
+  public columnsList: any = this.columns;
   public dataItems: any = [];
   public isLoading: boolean = false;
+  public currentSort: any = null;
+  public currentPage: any = {
+    total: null,
+    skip: 0,
+    take:
+      this.pageable && this.pageable !== true
+        ? this.pageable.pageSize || DEFAULT_PAGER.pageSize
+        : DEFAULT_PAGER.pageSize
+  };
+  public pager: any = this.pageable === true ? DEFAULT_PAGER : this.pageable;
+
+  public get gridInfo() {
+    return {
+      columns: this.columns,
+      controller: this.controller,
+      collection: this.collection,
+      pageable: this.pager,
+      page: (this.currentPage.skip + this.currentPage.take) / this.currentPage.take,
+      sortable: this.sortable,
+      sort: this.currentSort,
+      filterable: this.filterable,
+      filter: this.currentFilter
+    };
+  }
 
   async created() {
     this.isLoading = true;
@@ -164,20 +192,29 @@ export default class GridController extends Vue {
   protected async _loadGridConfig() {
     const url = this._getOperationUrl("config");
     const response = await this.$http.get(url, {
-      params: {
-        columns: this.columns
+      params: this.gridInfo
+    });
       }
     });
     this.columnsList = response.data.data.columns;
+    if (response.data.data.pageable === true) {
+      this.pager = DEFAULT_PAGER;
+    } else if (response.data.data.pageable === false) {
+      this.pager = false;
+    } else {
+      this.pager = Object.assign({}, DEFAULT_PAGER, response.data.data.pageable);
+    }
   }
 
   protected async _loadGridContent() {
     const url = this._getOperationUrl("content");
     const response = await this.$http.get(url, {
-      params: {
-        columns: this.columns
-      }
+      params: this.gridInfo
     });
+    const pager = response.data.data.requestParameters.pager;
+    this.currentPage.total = pager.total;
+    this.currentPage.skip = pager.skip;
+    this.currentPage.take = pager.take;
     this.dataItems = response.data.data.content;
   }
 
@@ -206,5 +243,21 @@ export default class GridController extends Vue {
           return substr;
       }
     });
+  }
+
+  protected async onSortChange(sortEvt) {
+    const sort = sortEvt.sort;
+    this.currentSort = sortEvt.sort;
+    this.isLoading = true;
+    await this._loadGridContent();
+    this.isLoading = false;
+  }
+
+  protected async onPageChange(pagerEvt) {
+    this.currentPage = Object.assign({}, this.currentPage, pagerEvt.page);
+    this.pager = Object.assign({}, this.pager, { pageSize: pagerEvt.page.take });
+    this.isLoading = true;
+    await this._loadGridContent();
+    this.isLoading = false;
   }
 }

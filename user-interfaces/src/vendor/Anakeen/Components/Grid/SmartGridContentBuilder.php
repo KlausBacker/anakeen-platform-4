@@ -21,7 +21,7 @@ class SmartGridContentBuilder
     protected $searchElements = null;
 
     protected $fields = [];
-
+    protected $sort = [];
 
     protected $smartCollectionId = null;
 
@@ -34,13 +34,13 @@ class SmartGridContentBuilder
      * Page number
      * @var int
      */
-    protected $page = null;
+    protected $page = 1;
 
     /**
      * Page size
      * @var int
      */
-    protected $pageSize = null;
+    protected $pageSize = 10;
 
     /**
      * Collection element
@@ -98,18 +98,14 @@ class SmartGridContentBuilder
         }
     }
 
-    public function setPage($page)
+    public function addSort($colId, $direction)
     {
-        $this->page = $page;
-    }
-
-    public function setPageSize($pageSize)
-    {
-        $this->pageSize = $pageSize;
-    }
-
-    public function addSort($sort)
-    {
+        $this->sort[] = ["field" => $colId, "dir" => $direction];
+        $order = implode(",", array_map(function ($sort) {
+            return $sort["field"] . " " . $sort["dir"];
+        }, $this->sort));
+        $order .= ",id ASC";
+        $this->searchElements->setOrder($order);
     }
 
     public function addFilter($filter)
@@ -185,15 +181,43 @@ class SmartGridContentBuilder
         return $return;
     }
 
+    public function setPage($page)
+    {
+        $this->page = $page;
+        $this->setPager($this->page, $this->pageSize);
+    }
+
+
+    public function setPageSize($pageSize)
+    {
+        $this->pageSize = $pageSize;
+        $this->setPager($this->page, $this->pageSize);
+    }
+
     protected function getRequestParameters()
     {
-        return [];
+        return [
+            "pager" => [
+                "page" => $this->page,
+                "skip" => ($this->page * $this->pageSize) - $this->pageSize,
+                "take" => $this->pageSize,
+                "pageSize" => $this->pageSize,
+                "total" => $this->searchElements->onlyCount()
+            ]
+        ];
     }
 
     protected function initSearch($structureId = 0)
     {
         $this->searchElements = new SearchElements($structureId);
         $this->searchElements->excludeConfidential(true);
+        $this->setPager($this->page, $this->pageSize);
+    }
+
+    protected function setPager($page, $pageSize)
+    {
+        $this->searchElements->setSlice($pageSize);
+        $this->searchElements->setStart(($page - 1) * $pageSize);
     }
 
     protected function formatElement(SmartElement $element)
@@ -204,8 +228,17 @@ class SmartGridContentBuilder
                 if (isset($field["property"]) && $field["property"]) {
                     $df->addProperty($field["field"]);
                 } elseif (isset($field["abstract"]) && $field["abstract"]) {
-                    $df->getFormatCollection()->setDocumentRenderHook(function ($info, $se) use ($field) {
-                        $data = $field["dataFunction"]($se);
+                    $abstractDataFunction = function () {
+                        return [
+                            "value" => null,
+                            "displayValue" => null
+                        ];
+                    };
+                    if (isset($field["dataFunction"]) && is_callable($field["dataFunction"])) {
+                        $abstractDataFunction = $field["dataFunction"];
+                    }
+                    $df->getFormatCollection()->setDocumentRenderHook(function ($info, \Anakeen\Core\Internal\SmartElement $se) use ($abstractDataFunction, $field) {
+                        $data = $abstractDataFunction($se);
                         $info["abstract"] = [
                             $field["field"] => $data
                         ];

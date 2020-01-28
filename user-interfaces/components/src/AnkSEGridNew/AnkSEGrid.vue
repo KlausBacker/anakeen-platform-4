@@ -8,6 +8,14 @@
         :columns="columnsList"
         :data-items="dataItems"
         :cell-render="cellRenderFunction"
+        :take="currentPage.take"
+        :skip="currentPage.skip"
+        :total="currentPage.total"
+        :pageable="pager"
+        :sortable="sortable"
+        :sort="currentSort"
+        @sortchange="onSortChange"
+        @pagechange="onPageChange"
       >
       </kendo-grid-vue>
     </div>

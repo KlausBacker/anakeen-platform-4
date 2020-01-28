@@ -8,11 +8,15 @@
       <div class="test-smart-grid">
         <div class="grid-section grid-left">
           <h1>Old grid</h1>
-          <old-grid collection="DEVBILL"> </old-grid>
+          <old-grid :pageable="true" collection="DEVBILL"> </old-grid>
         </div>
         <div class="grid-section grid-right">
           <h1>New grid</h1>
-          <ank-smart-element-grid collection="DEVBILL" controller="DEFAULT_GRID_CONTROLLER" :columns="columns" />
+          <ank-smart-element-grid
+            collection="DEVBILL"
+            controller="DEFAULT_GRID_CONTROLLER"
+            :columns="columns"
+          />
         </div>
       </div>
     </template>
@@ -52,7 +56,12 @@ export default {
       routeUrl: () => {
         return this.entryOptions.completeRoute;
       },
-      columns: [{field: "title", property: true }, { field: "bill_title" }, { field: "bill_author"}, { field: "my_custom_column", abstract: true, withContext: true, context: ["Custom"]}]
+      columns: [
+        { field: "title", property: true },
+        { field: "bill_title" },
+        { field: "bill_author" },
+        { field: "my_custom_column", abstract: true, withContext: true, context: ["Custom"], sortable: false }
+      ]
     };
   }
 };
