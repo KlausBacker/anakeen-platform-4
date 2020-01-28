@@ -377,6 +377,7 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
   }
   public displayData(colId) {
     return dataItem => {
+      // console.log("dataItem", dataItem.fieldId);
       switch (colId) {
         case "type":
           if (dataItem[colId]) {
@@ -384,9 +385,27 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
           }
           break;
         default:
-          return this.displayMultiple(dataItem[colId]);
+          const type = JSON.parse(dataItem.type).type;
+          if (type === "array" && colId === "displayValue") {
+            return this.displayArray(dataItem.fieldId);
+          } else {
+            return this.displayMultiple(dataItem[colId]);
+          }
       }
     };
+  }
+  public displayArray(fieldId) {
+    let array = "<table>";
+    let columns = [];
+    console.log("FIELD_ID", fieldId);
+    this.smartFormArrayStructure[fieldId].forEach(element => {
+      array += `<th><b>${element.label}</b></th>`
+    });
+    // ToDo : Finish
+    console.log("ARRAY_VALUES", this.smartFormArrayValues)
+    array += "<tr><td>Jean</td><td>Biche</td></tr><tr><td>Jeanne</td><td>Biche</td></tr></table>"
+    // return "<table><th>Prénom</th><th>Bis</th><tr><td>Jean</td><td>Biche</td></tr><tr><td>Jeanne</td><td>Biche</td></tr></table>"
+    return array;
   }
   public displayMultiple(data) {
     if (data instanceof Object) {

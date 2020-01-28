@@ -76,7 +76,9 @@ class StructureUpdateDefaultValue extends StructureFields
     {
         $formattedArray = [];
         for ($i = 0; $i < count($arrayToFormat); $i++) {
-            $formattedArray[$i] = [];
+            if (!isset($formattedArray[$i])) {
+                $formattedArray[$i] = [];
+            }
             if (is_array($arrayToFormat[$i])) {
                 foreach ($arrayToFormat[$i] as $line) {
                     foreach ($line as $key => $value) {
