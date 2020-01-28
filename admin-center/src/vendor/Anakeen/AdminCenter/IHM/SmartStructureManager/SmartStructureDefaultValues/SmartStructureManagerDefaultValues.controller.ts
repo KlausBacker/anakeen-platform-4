@@ -477,7 +477,7 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
                 }
               }
             }
-            if(rawValue && rawValue.includes("::")) {
+            if(rawValue && typeof rawValue === "string" && rawValue.includes("::")) {
               isAdvancedValue = true;
             }
             result.push({
@@ -490,9 +490,6 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
               type: JSON.stringify({ type, typeFormat }),
               isAdvancedValue
             });
-
-            if (item === "hba_title") {
-            }
           }
         }
       });
@@ -616,9 +613,6 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
       this.smartFormArrayValues.hasOwnProperty(fieldId) && this.smartFormArrayStructure.hasOwnProperty(fieldId)
         ? this.smartFormArrayValues[fieldId]
         : this.actualDefValData.displayValue;
-    if (!isNaN(parseInt(value, 10))) {
-      value = parseInt(value, 10);
-    }
     return value;
   }
   /**
@@ -674,13 +668,7 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
         }
       });
     } else {
-      if (isNaN(parseInt(this.finalData.value, 10))) {
-        // If newVal string is a real string ...
         actualValue = this.finalData.value;
-      } else {
-        // ... or a number
-        actualValue = parseInt(this.finalData.value, 10);
-      }
     }
     this.finalData.value = JSON.parse(JSON.stringify(actualValue));
   }
@@ -700,8 +688,8 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
         };
         this.showModal = false;
       })
-      .catch(response => {
-        console.error("UpdateDataResError", response);
+      .catch(error => {
+        console.error("UpdateDefaultValueError", error.response);
       });
   }
 }
