@@ -4,6 +4,7 @@ namespace Anakeen\Routes\Admin\Structure;
 
 use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure;
+use Anakeen\Router\ApiV2Response;
 use ReflectionMethod;
 
 /**
@@ -25,10 +26,11 @@ class StructureUpdateDefaultValue extends StructureFields
         $this->initData($request->getParsedBody()["params"], $args);
         $err = $this->manageNewDefValue();
         if ($err !== "") {
-            error_log($err);
-            return $response->withStatus(500, $err)->write($err);
+            return $response
+                ->withJson(["success" => false, "data" => $err])
+                ->withStatus(500);
         }
-        return $response->withStatus(200);
+        return ApiV2Response::withData($response, $err);
     }
 
     protected function initData($dataFromFront, $args)

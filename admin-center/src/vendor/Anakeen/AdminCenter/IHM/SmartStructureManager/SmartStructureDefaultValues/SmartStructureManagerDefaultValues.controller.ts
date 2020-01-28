@@ -123,12 +123,6 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
         }
       });
     }
-    // Manage child/parent data display
-    // if (this.isValArray === true) {
-    //   this.smartFormDisplayManager.ssm_advanced_value = "none";
-    // } else {
-    //   this.smartFormDisplayManager.ssm_advanced_value = "write";
-    // }
     // SmartForm Generation
     this.smartForm = {
       menu: [
