@@ -26,12 +26,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
      *
      * @var array
      */
-    public $acls
-        = array(
-            "view",
-            "edit",
-            "delete"
-        );
+    protected static $basicAcls =[ "view", "edit", "delete"];
 
     public $usefor = 'SW';
     public $defDoctype = 'W';
@@ -78,15 +73,8 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
         // first construct acl array
-        if (is_array($this->transitions)) {
-            foreach ($this->transitions as $k => $trans) {
-                $this->extendedAcls[$k] = array(
-                    "name" => $k,
-                    "description" => $this->getTransitionLabel($k)
-                );
-                $this->acls[] = $k;
-            }
-        }
+        $this->setTransitionsAcls();
+
         if (isset($this->fromid)) {
             // it's a profil model itself
             $this->defProfFamId = $this->fromid;
@@ -105,6 +93,21 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                 $this->modify();
             }
         });
+    }
+
+    protected function setTransitionsAcls()
+    {
+        $this->acls = self::$basicAcls;
+        if (is_array($this->transitions)) {
+            $this->extendedAcls=[];
+            foreach ($this->transitions as $k => $trans) {
+                $this->extendedAcls[$k] = array(
+                    "name" => $k,
+                    "description" => $this->getTransitionLabel($k)
+                );
+                $this->acls[] = $k;
+            }
+        }
     }
 
     /**
@@ -1380,6 +1383,9 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
     protected function useWorkflowGraph($xmlFilePath)
     {
+        $this->transitions=[];
+        $this->cycle=[];
         XmlGraph::setWorkflowGraph($this, $xmlFilePath);
+        $this->setTransitionsAcls();
     }
 }
