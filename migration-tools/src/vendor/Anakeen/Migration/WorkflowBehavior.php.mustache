@@ -11,9 +11,9 @@ class {{Classname}} extends  {{Extends}}
 {
     public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
-        $this->useWorkflowGraph(__DIR__."/{{StructureName}}Graph.xml");
         parent::__construct($dbaccess, $id, $res, $dbid);
+        $this->useWorkflowGraph(__DIR__."/{{StructureName}}Graph.xml");
 
-        // @FIXME Insert Here transition coniguration
+        // @FIXME Insert Here transition configuration
     }
 }
