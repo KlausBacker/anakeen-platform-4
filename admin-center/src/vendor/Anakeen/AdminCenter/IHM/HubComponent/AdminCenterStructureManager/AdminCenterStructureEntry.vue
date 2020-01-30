@@ -6,7 +6,7 @@
     </nav>
     <template v-slot:hubContent>
       <div class="structure-parent">
-        <admin-center-structure></admin-center-structure>
+        <admin-center-structure v-model="selectedSS" @structure-selected="newSelectedSS"></admin-center-structure>
       </div>
     </template>
   </hub-element-layout>
@@ -18,7 +18,34 @@ export default {
   name: "ank-admin-structure",
   extends: HubElement, // ou mixins: [ HubElementMixins ],
   components: {
-      "admin-center-structure": () => import("../../SmartStructureManager/AdminCenterStructure.vue")
+    "admin-center-structure": () => import("../../SmartStructureManager/AdminCenterStructure.vue")
+  },
+  watch: {
+    selectedSS(newValue) {
+      this.navigate(this.routeUrl() + "/" + newValue);
+    },
+  },
+  created() {
+    this.subRouting();
+  },
+  data() {
+    const that = this;
+    return {
+      selectedSS: "",
+      routeUrl: () => {
+        return this.entryOptions.completeRoute;
+      },
+      subRouting: () => {
+        const url = (this.routeUrl() + "/:structureId").replace(/\/\/+/g, "/");
+
+        this.registerRoute(url, params => {
+          this.selectedSS = params.structureId;
+        }).resolve(window.location.pathname);
+      },
+      newSelectedSS(newValue) {
+        that.selectedSS = newValue;
+      }
+    };
   }
 };
 </script>
