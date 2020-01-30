@@ -322,7 +322,6 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
       }
       // @ts-ignore
       else if (smartField.id === "ssm_value") {
-        // ToDo : Check if value is multiple and if there is multiple value in field
         if (this.actualDefValData.isMultiple === true && Array.isArray(values.current)) {
           let multipleValue = [];
           values.current.forEach(value => {
@@ -377,7 +376,6 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
   }
   public displayData(colId) {
     return dataItem => {
-      // console.log("DataItem", dataItem);
       switch (colId) {
         case "type":
           if (dataItem[colId]) {
@@ -395,20 +393,28 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
     };
   }
   public displayArray(fieldId) {
-    let array = "<table>";
+    let arrayHtml = "<table>";
     let columns = [];
-    console.log("FIELD_ID", fieldId);
+    // Generate table header
+    arrayHtml += "<tr>"
     this.smartFormArrayStructure[fieldId].forEach(element => {
-      array += `<th><b>${element.label}</b></th>`
+      arrayHtml += `<th><b>${element.label}</b></th>`
+      columns.push(element.label);
     });
-    // ToDo : Finish
-    console.log("ARRAY_VALUES", this.smartFormArrayValues)
-    array += "<tr><td>Jean</td><td>Biche</td></tr><tr><td>Jeanne</td><td>Biche</td></tr></table>"
-    // return "<table><th>Prénom</th><th>Bis</th><tr><td>Jean</td><td>Biche</td></tr><tr><td>Jeanne</td><td>Biche</td></tr></table>"
-    return array;
+    arrayHtml += "</tr>"
+
+    // Generate table content
+    for (let i = 0; i < this.smartFormArrayValues[columns[0]].length; i++) {
+      arrayHtml += "<tr>"
+      columns.forEach(columnName => {
+          arrayHtml += `<td>${this.smartFormArrayValues[columnName][i]}</td>`
+      });
+      arrayHtml += "</tr>"
+    }
+    arrayHtml += "</table>";
+    return arrayHtml;
   }
   public displayMultiple(data) {
-    // console.log("data", data);
     if (data instanceof Object) {
       const str = "";
       return this.recursiveData(data, str);
@@ -464,27 +470,11 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
             if (typeof field.optionValues["multiple"] !== "undefined" && field.optionValues["multiple"] === "yes") {
               isMultiple = true;
             }
-
-            // Issue #386 : Manage multiple values
-            if (typeof field.optionValues["multiple"] !== "undefined" && field.optionValues["multiple"] === "yes") {
-              isMultiple = true;
-            }
-
             if (Array.isArray(configDefVal)) {
               rawValue = [];
               displayValue = [];
 
               if (isMultiple === true) {
-                // console.log("DefValue", defaultVal);
-                // if (defaultVal.configurationValue === null) {
-                //   console.log("Type ConfigDefVal", null);
-                // } else {
-                //   console.log("Type ConfigDefVal", typeof defaultVal.configurationValue);
-                // }
-                
-                // console.log("ActualField", field);
-                // console.log("===================================");
-                // ToDo : Get values from 'result'
                 resultDefVal.forEach(actualResultValue => {
                   if (typeof actualResultValue === "object") {
                     if (actualResultValue.displayValue && actualResultValue.value) {
@@ -519,7 +509,7 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
                       displayValue,
                       fieldId: item,
                       parentFieldId: parentField.id,
-                      label: this.formatLabel(field, fields),
+                      label,
                       parentValue: defaultVal.parentConfigurationValue ? defaultVal.parentConfigurationValue : null,
                       rawValue,
                       type: JSON.stringify({ type, typeFormat }),
@@ -660,7 +650,7 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
     if (constructingLabel[constructingLabel.length - 1] !== null && constructingLabel.length > 1) {
       return constructingLabel.join(" / ");
     }
-    return constructingLabel[0] + " | (ARRAY)";
+    return constructingLabel[0];
   }
   protected formatType(simpleType, longType) {
     const type = simpleType;
@@ -736,10 +726,6 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
       this.actualDefValData.displayValue = JSON.stringify(newDisplayValue);
       finalValue = JSON.stringify(newRawValue);
     }
-
-    if (!isNaN(parseInt(finalValue, 10))) {
-      finalValue = parseInt(finalValue, 10);
-    }
     return finalValue;
   }
   /**
@@ -783,25 +769,14 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
         actualValue = [];
         initialConfigValues.forEach(configValue => {
           if (updatedInitialValue == configValue.rawValue) {
-            if (isNaN(parseInt(newValue, 10))) {
-              // If newVal string is a real string ...
-              actualValue.push(newValue);
-            } else {
-              // ... or a number
-              actualValue.push(parseInt(newValue, 10));
-            }
+            actualValue.push(newValue);
+
           } else {
             actualValue.push(configValue.rawValue);
           }
         });
       } else {
-        if (isNaN(parseInt(this.finalData.value, 10))) {
-          // If newVal string is a real string ...
-          actualValue = this.finalData.value;
-        } else {
-          // ... or a number
-          actualValue = parseInt(this.finalData.value, 10);
-        }
+        actualValue = this.finalData.value;
       }
       this.finalData.value = JSON.parse(JSON.stringify(actualValue));
   }
