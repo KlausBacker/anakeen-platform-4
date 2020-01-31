@@ -3,7 +3,7 @@ const path = require("path");
 
 const { Compose } = require(path.resolve(__dirname, "../../utils/Compose.js"));
 
-exports.description = "Generate a control with current app";
+exports.description = "Generate an installer with current app repo";
 
 exports.builder = {
   localRepoName: {
