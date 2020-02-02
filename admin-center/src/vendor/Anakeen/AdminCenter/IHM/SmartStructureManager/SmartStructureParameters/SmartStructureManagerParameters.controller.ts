@@ -64,7 +64,7 @@ export default class SmartStructureManagerParametersController extends Vue {
           values[parameter.parameterId + "-type"] = "value";
           values[parameter.parameterId + "-value"] = parameter.rawValue;
         }
-        console.log("Param", parameter);
+        // console.log("Param", parameter);
         // Generate SmartForm structure
         parametersStructure.push({
           content: [
@@ -156,8 +156,8 @@ export default class SmartStructureManagerParametersController extends Vue {
   public manageHiddenFields(parameter) {
     this.$refs.ssmForm.getSmartFields().forEach(sf => {
       const splitted = sf.id.split("-");
-      console.log("this.finalData[parameter.parameterId].valueType", this.finalData[parameter.parameterId].valueType);
-      console.log("splitted", splitted[1]);
+      // console.log("this.finalData[parameter.parameterId].valueType", this.finalData[parameter.parameterId].valueType);
+      // console.log("splitted", splitted[1]);
       if (
         splitted[0] === parameter.parameterId &&
         splitted[1] !== "type" &&
@@ -266,42 +266,141 @@ export default class SmartStructureManagerParametersController extends Vue {
       const paramsValues = response.data.data.paramsValues;
       const params = response.data.data.params;
       Object.keys(paramsValues).map(item => {
+        const paramVal = paramsValues[item];
         const param = params[item];
+        // const parentField = param.fieldSet;
         if (!this.unsupportedType.includes(param.type)) {
           if (param) {
-            const configParam = paramsValues[item].configurationParameter;
+            // debugger;
+            const configParam = paramVal.configurationParameter;
+            const resultParam = paramVal.result;
             const type = param.type;
+            const typeFormat = param.format;
+            // 
             let isAdvancedValue = false;
-            let rawValue: object = {};
-            let displayValue: object = {};
-            if (Array.isArray(paramsValues[item].result)) {
-              for (let i = 0; i < paramsValues[item].result.length; i++) {
-                const element = paramsValues[item].result[i];
-                if (configParam && typeof configParam !== "undefined" && configParam !== element.value) {
-                  rawValue[i] = configParam;
-                  isAdvancedValue = true;
-                } else {
-                  rawValue[i] = element.value;
-                }
-                displayValue[i] = element.displayValue;
-              }
-            } else if (paramsValues[item].result instanceof Object) {
-              if (paramsValues[item].result.value && paramsValues[item].result.displayValue) {
-                if (
-                  configParam &&
-                  typeof configParam !== "undefined" &&
-                  configParam !== paramsValues[item].result.value
-                ) {
+            let rawValue;
+            let displayValue;
+
+            if (Array.isArray(configParam)) {
+              rawValue = [];
+              displayValue = [];
+
+                configParam.forEach(actualConfigParam => {
+                  if (typeof actualConfigParam === "object") {
+                    if (actualConfigParam.displayValue && actualConfigParam.rawValue) {
+                      displayValue = actualConfigParam.displayValue;
+                      rawValue = actualConfigParam.rawValue;
+                    } else {
+                      // displayValue = "";
+                      // rawValue = "";
+                    }
+                  } else {
+                    rawValue = actualConfigParam;
+                    displayValue = actualConfigParam;
+                  }
+
+                  if ((param.type === "array" && result[result.length - 1].fieldId !== item) || param.type !== "array") {
+                    result.push({
+                      displayValue,
+                      fieldId: item,
+                      // parentFieldId: parentField.id,
+                      label: param.labelText,
+                      parentValue: paramVal.parentConfigurationValue ? paramVal.parentConfigurationValue : null,
+                      rawValue,
+                      type: JSON.stringify({ type, typeFormat }),
+                      isAdvancedValue,
+                    });
+                  }
+
+                })
+            } else if (configParam instanceof Object) {
+              if (resultParam.value && resultParam.displayValue) {
+                if (configParam && typeof configParam !== "undefined" && configParam != resultParam.value) {
                   rawValue = configParam;
-                  isAdvancedValue = true;
                 } else {
-                  rawValue = paramsValues[item].result.value;
+                  rawValue = resultParam.value;
                 }
-                displayValue = paramsValues[item].result.displayValue;
+                displayValue = resultParam.displayValue;
+              } else if (resultParam[0] && resultParam[0].value && resultParam[0].displayValue) {
+                rawValue = resultParam[0].value;
+                displayValue = resultParam[0].displayValue;
               } else {
-                rawValue = null;
-                displayValue = null;
+                if (configParam && configParam.rawValue && configParam.displayValue) {
+                  rawValue = configParam.rawValue;
+                  displayValue = configParam.displayValue;
+                } else {
+                  rawValue = configParam;
+                  displayValue = configParam;
+                }
               }
+            } else {
+              if (configParam !== null) {
+                rawValue = configParam;
+                if (Array.isArray(resultParam)) {
+                  resultParam.forEach(defValElem => {
+                    if (defValElem && defValElem.value && defValElem.displayValue) {
+                      if (defValElem.displayValue == configParam) {
+                        rawValue = defValElem.value;
+                        displayValue = defValElem.displayValue;
+                      } else if (defValElem.value == configParam) {
+                        displayValue = defValElem.displayValue;
+                      } else {
+                        displayValue = configParam;
+                      }
+                    }
+                  });
+                } else if (resultParam && resultParam.displayValue) {
+                  displayValue = resultParam.displayValue;
+                } else {
+                  displayValue = configParam;
+                }
+              } else {
+                if (resultParam && resultParam.hasOwnProperty("displayValue") && resultParam.hasOwnProperty("value")) {
+                  rawValue = resultParam.value;
+                  displayValue = resultParam.displayValue;
+                } else {
+                  rawValue = null;
+                  displayValue = null;
+                }
+              }
+            }
+
+
+
+            // if (Array.isArray(paramsValues[item].result)) {
+            //   for (let i = 0; i < paramsValues[item].result.length; i++) {
+            //     const element = paramsValues[item].result[i];
+            //     if (configParam && typeof configParam !== "undefined" && configParam !== element.value) {
+            //       rawValue[i] = configParam;
+            //       isAdvancedValue = true;
+            //     } else {
+            //       rawValue[i] = element.value;
+            //     }
+            //     displayValue[i] = element.displayValue;
+            //   }
+            // } else if (paramsValues[item].result instanceof Object) {
+            //   if (paramsValues[item].result.value && paramsValues[item].result.displayValue) {
+            //     if (
+            //       configParam &&
+            //       typeof configParam !== "undefined" &&
+            //       configParam !== paramsValues[item].result.value
+            //     ) {
+            //       rawValue = configParam;
+            //       isAdvancedValue = true;
+            //     } else {
+            //       rawValue = paramsValues[item].result.value;
+            //     }
+            //     displayValue = paramsValues[item].result.displayValue;
+            //   } else {
+            //     rawValue = null;
+            //     displayValue = null;
+            //   }
+            // } else {
+
+            // }
+
+            if(rawValue && typeof rawValue === "string" && rawValue.includes("::")) {
+              isAdvancedValue = true;
             }
             result.push({
               displayValue,
@@ -343,6 +442,7 @@ export default class SmartStructureManagerParametersController extends Vue {
         } else {
           this.haveParameters = true;
         }
+        console.log("PARAM", response.data.data);
         options.success(response);
       })
       .catch(response => {

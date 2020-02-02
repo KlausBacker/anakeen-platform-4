@@ -446,7 +446,6 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
     if (response && response.data && response.data.data) {
       const defaultValues = response.data.data.defaultValues;
       const fields = response.data.data.fields;
-      console.log("response.data.data", response.data.data);
       // Browse each default value
       Object.keys(defaultValues).map(item => {
         const defaultVal = defaultValues[item];
