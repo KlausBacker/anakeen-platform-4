@@ -34,8 +34,9 @@ export default class SmartStructureManagerParametersController extends Vue {
   @Watch("ssName")
   public watchSsName(newValue) {
     if (newValue) {
-      this.$refs.parametersGridData.kendoDataSource.read();
+      this.smartForm = {};
       this.finalData = {};
+      this.paramValues = [];
       this.smartFormArrayValues = {};
       this.smartFormArrayStructure = {};
     }
@@ -54,8 +55,10 @@ export default class SmartStructureManagerParametersController extends Vue {
     let parametersRenderOptions = {};
     // Generate dynamic smartform content
     if (this.paramValues.length) {
-      parametersEnum = [];
       this.paramValues.forEach(parameter => {
+        if (parameter.type === "enum") {
+          enumData = this.getEnum(parameter.typeFormat);
+        }
         // Manage SmartForm values
         if (parameter.isAdvancedValue) {
           values[parameter.parameterId + "-type"] = "advanced_value";
@@ -110,7 +113,8 @@ export default class SmartStructureManagerParametersController extends Vue {
               enumItems: `${enumData}`,
               label: "Value",
               name: `${parameter.parameterId}-value`,
-              type: `${parameter.type}`
+              type: `${parameter.type}`,
+              typeFormat: parameter.typeFormat
             },
             {
               label: "Advanced value",
@@ -467,6 +471,7 @@ export default class SmartStructureManagerParametersController extends Vue {
                   : null,
                 rawValue,
                 type,
+                typeFormat,
                 isAdvancedValue
               });
             }
@@ -474,7 +479,6 @@ export default class SmartStructureManagerParametersController extends Vue {
         }
       });
       this.paramValues.push(result);
-      console.table(result);
       return result;
     }
     return [];
