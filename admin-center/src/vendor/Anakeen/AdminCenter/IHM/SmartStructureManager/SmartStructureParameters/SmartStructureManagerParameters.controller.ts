@@ -141,7 +141,7 @@ export default class SmartStructureManagerParametersController extends Vue {
               }
           ],
           "collapse": "collapse",
-        }
+          }
         }
       });
     }
@@ -187,6 +187,8 @@ export default class SmartStructureManagerParametersController extends Vue {
         this.manageHiddenFields(parameter);
       });
     }
+    console.log("ARRAY_STRUCTURE", this.smartFormArrayStructure);
+    console.log("ARRAY_VALUE", this.smartFormArrayValues);
   }
   public initArrayData(arrayParamId) {
     const children = this.smartFormArrayStructure[arrayParamId].map(child => child.label);
@@ -379,7 +381,6 @@ export default class SmartStructureManagerParametersController extends Vue {
         const paramVal = paramsValues[item];
         const param = paramsFields[item];
         const parentField = param.fieldSet;
-
         if (!this.unsupportedType.includes(param.type)) {
           if (param) {
             const configParam = paramVal.configurationParameter;
@@ -552,6 +553,7 @@ export default class SmartStructureManagerParametersController extends Vue {
         } else {
           this.haveParameters = true;
         }
+        console.log("PARAMS", response.data.data);
         options.success(response);
       })
       .catch(response => {
@@ -582,6 +584,8 @@ export default class SmartStructureManagerParametersController extends Vue {
     return returnVal;
   }
   private updateData(data) {
+    console.log("FINAL_OBJECT", data);
+    console.log("STRINGIFIED", JSON.stringify(data));
     const url = `/api/v2/admin/smart-structures/${this.ssName}/update/parameter/`;
     this.$http
       .put(url, { params: JSON.stringify(data) })
