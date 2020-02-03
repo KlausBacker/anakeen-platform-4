@@ -3,6 +3,7 @@
 namespace Anakeen\Routes\Admin\Structure;
 
 use Anakeen\Core\SEManager;
+use Anakeen\Exception;
 use Anakeen\Core\SmartStructure;
 use Anakeen\Router\ApiV2Response;
 use ReflectionMethod;
@@ -26,9 +27,10 @@ class StructureUpdateParameter extends StructureFields
         $this->initData($request->getParsedBody()["params"], $args);
         $err = $this->manageNewParameter();
         if ($err !== "") {
-            return $response
-                ->withJson(["success" => false, "data" => $err])
-                ->withStatus(500);
+            $exception = new Exception($err);
+            $exception->setHttpStatus(404);
+            $exception->setUserMessage($err);
+            throw $exception;
         }
         return ApiV2Response::withData($response, $err);
     }
@@ -51,8 +53,6 @@ class StructureUpdateParameter extends StructureFields
                     $err = $this->structure->setParam($parameterData->parameterId, null);
                 } elseif ($parameterData->valueType === "value" && $parameterData->value === "") {
                     $err = $this->structure->setParam($parameterData->parameterId, "");
-                } elseif ($parameterData->valueType === "advanced_value") {
-                    $err = $this->manageAdvancedValue($parameterData->parameterId, $parameterData->value);
                 } else {
                     $err = $this->structure->setParam($parameterData->parameterId, $parameterData->value);
                 }
