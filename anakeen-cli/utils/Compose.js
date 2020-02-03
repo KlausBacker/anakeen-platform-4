@@ -451,16 +451,16 @@ class Compose {
   }
 
   async genRepoContentXML(repoDir) {
-    const repoContentXML = new RepoContentXML(path.join(this._convertPathToAbsolute(repoDir), "content.xml"));
+    const repoContentXML = new RepoContentXML(path.join(repoDir, "content.xml"));
     repoContentXML.reset();
 
-    let moduleFileList = await fs_readdir(this._convertPathToAbsolute(repoDir));
+    let moduleFileList = await fs_readdir(repoDir);
     moduleFileList = moduleFileList.filter(filename => {
       return filename.match(/\.app$/);
     });
     for (let i = 0; i < moduleFileList.length; i++) {
       const moduleFile = moduleFileList[i];
-      await repoContentXML.addModuleFile(path.join(this._convertPathToAbsolute(repoDir), moduleFile));
+      await repoContentXML.addModuleFile(path.join(repoDir, moduleFile));
     }
 
     await repoContentXML.save();
