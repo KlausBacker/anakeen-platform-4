@@ -277,12 +277,7 @@
     </xs:complexType>
 
     <xs:simpleType name="semverType">
-        <xs:restriction base="xs:string">
-            <xs:pattern
-                    value="([=~&gt;&lt;\^])?(0|[1-9]\d*)\.(\*|x|0|[1-9]\d*)\.(\*|x|0|[1-9]\d*)(-(0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(\.(0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)?(\+[0-9a-zA-Z-]+(\.[0-9a-zA-Z-]+)*)?"/>
-
-            <xs:pattern value="\*"/>
-        </xs:restriction>
+        <xs:restriction base="xs:string"/>
     </xs:simpleType>
 
     <xs:complexType name="requiredModuleNodeType">
