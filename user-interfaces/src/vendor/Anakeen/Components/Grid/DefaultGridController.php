@@ -20,6 +20,10 @@ class DefaultGridController implements SmartGridController
             // use default columns for the collection
             $configBuilder->useDefaultColumns();
         }
+        if (isset($clientConfig["actions"])) {
+            $configBuilder->addRowAction($clientConfig["actions"]);
+        }
+
         $config = $configBuilder->getConfig();
         return $config;
     }

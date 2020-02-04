@@ -195,9 +195,16 @@ class SmartGridConfigBuilder
      * @param string $iconClass - iconClass to display
      * @return $this - the current instance
      */
-    public function addRowAction(string $action, string $title, $iconClass = false)
+    public function addRowAction(array $actions)
     {
-        array_push($this->actions, array("action" => $action, "title" => $title, "iconClass" => $iconClass));
+        foreach ($actions as $action) {
+            $iconClass = isset($action["iconClass"]) ? $action["iconClass"] : "";
+            array_push($this->actions, array(
+                "action" => $action["action"],
+                "title" => $action["title"],
+                "iconClass" => $iconClass
+            ));
+        }
         return $this;
     }
 
