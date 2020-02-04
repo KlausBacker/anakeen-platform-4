@@ -591,7 +591,6 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
           }
         }
       });
-      console.log("Def_Val_Result", result)
       return result;
     }
     return [];
@@ -740,8 +739,6 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
       if (this.smartFormArrayStructure.hasOwnProperty(fieldId)) {
         // Arrayception default value
         const children = this.smartFormArrayStructure[fieldId];
-        console.log("FIELDID", fieldId);
-        console.log("children", children);
 
         // Fetch column's values
         actualValue = [];
@@ -782,28 +779,25 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
         actualValue = this.finalData.value;
       }
       this.finalData.value = JSON.parse(JSON.stringify(actualValue));
-      console.log(this.finalData.value);
   }
   private updateData(data) {
-    console.log("DEFVAL_final_object", data);
-    console.log("DEFVAL_stringified", JSON.stringify(data));
     const url = `/api/v2/admin/smart-structures/${data.structureId}/update/default/`;
-    // this.$http
-    //   .put(url, { params: JSON.stringify(data) })
-    //   .then(response => {
-    //     this.$refs.defaultGridData.kendoDataSource.read();
-    //     this.finalData = {
-    //       fieldId: "",
-    //       parentFieldId: "",
-    //       structureId: this.ssName,
-    //       value: "",
-    //       valueType: "value",
-    //       isAdvancedValue: false
-    //     };
-    //     this.showModal = false;
-    //   })
-    //   .catch(error => {
-    //     console.error("UpdateDefaultValueError", error.response);
-    //   });
+    this.$http
+      .put(url, { params: JSON.stringify(data) })
+      .then(response => {
+        this.$refs.defaultGridData.kendoDataSource.read();
+        this.finalData = {
+          fieldId: "",
+          parentFieldId: "",
+          structureId: this.ssName,
+          value: "",
+          valueType: "value",
+          isAdvancedValue: false
+        };
+        this.showModal = false;
+      })
+      .catch(error => {
+        console.error("UpdateDefaultValueError", error.response);
+      });
   }
 }

@@ -187,8 +187,6 @@ export default class SmartStructureManagerParametersController extends Vue {
         this.manageHiddenFields(parameter);
       });
     }
-    console.log("ARRAY_STRUCTURE", this.smartFormArrayStructure);
-    console.log("ARRAY_VALUE", this.smartFormArrayValues);
   }
   public initArrayData(arrayParamId) {
     const children = this.smartFormArrayStructure[arrayParamId].map(child => child.label);
@@ -280,6 +278,23 @@ export default class SmartStructureManagerParametersController extends Vue {
           this.finalData[paramField].value = "";
         }
       }
+    }
+  }
+   public ssmArrayChange(e, smartElement, smartField, type, options) {
+    if (type === "removeLine") {
+      let columns = [];
+      // Get column's name
+      Object.values(this.smartFormArrayStructure).forEach(values => {
+        Object.values(values).forEach(element => {
+          columns.push(element.label);
+        });
+      });
+      // Remove the specific value
+      Object.keys(this.smartFormArrayValues).forEach(key => {
+        if (columns.includes(key)) {
+          this.smartFormArrayValues[key].splice(options, 1);
+        }
+      });
     }
   }
   public formatFinalArrayValue(paramField, values) {
@@ -553,7 +568,6 @@ export default class SmartStructureManagerParametersController extends Vue {
         } else {
           this.haveParameters = true;
         }
-        console.log("PARAMS", response.data.data);
         options.success(response);
       })
       .catch(response => {
@@ -584,16 +598,15 @@ export default class SmartStructureManagerParametersController extends Vue {
     return returnVal;
   }
   private updateData(data) {
-    console.log("FINAL_OBJECT", data);
-    console.log("STRINGIFIED", JSON.stringify(data));
     const url = `/api/v2/admin/smart-structures/${this.ssName}/update/parameter/`;
     this.$http
       .put(url, { params: JSON.stringify(data) })
       .then(response => {
-        this.$refs.parametersGridData.kendoDataSource.read();
         this.finalData = {};
+        this.paramValues = [];
         this.smartFormArrayValues = {};
         this.smartFormArrayStructure = {};
+        this.$refs.parametersGridData.kendoDataSource.read();
       })
       .catch(response => {
         console.error("UpdateDataResError", response);
