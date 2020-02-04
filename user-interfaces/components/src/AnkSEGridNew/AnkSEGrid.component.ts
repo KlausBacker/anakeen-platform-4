@@ -1,11 +1,11 @@
-import { Component, Prop, Watch, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 import AnkProgress from "./AnkProgress/AnkProgress.vue";
 import AnkActionMenu from "./AnkActionMenu/AnkActionMenu.vue";
+import AnkExportButton from "./AnkExportButton/AnkExportButton.vue";
 import { Grid } from "@progress/kendo-vue-grid";
 import { VNode } from "vue/types/umd";
-import ActionTemplate from "../AnkSEGrid/templates/GridAction.template.kd";
 import GridActions from "../AnkSEGrid/utils/GridActions";
-import { list } from "postcss";
+import GridEvent from "../AnkSEGrid/utils/GridEvent";
 
 const CONTROLLER_URL = "/api/v2/grid/controllers/{controller}/{op}/{collection}";
 
@@ -19,6 +19,12 @@ interface SmartGridColumn {
   hidden: boolean;
   sortable: boolean;
   filterable: boolean | object;
+}
+
+interface SmartGridActions {
+  action: string,
+  title: string,
+  iconClass: string
 }
 
 const DEFAULT_PAGER = {
@@ -37,12 +43,12 @@ const DEFAULT_SORT = {
   components: {
     "kendo-grid-vue": Grid,
     "ank-progress": AnkProgress,
-    "ank-action-menu": AnkActionMenu
+    "ank-action-menu": AnkActionMenu,
+    "ank-export-button": AnkExportButton
   },
   name: "ank-se-grid-vue"
 })
 export default class GridController extends Vue {
-
   @Prop({
     default: "",
     type: String
@@ -53,6 +59,11 @@ export default class GridController extends Vue {
     type: Array
   })
   public columns: SmartGridColumn[];
+  @Prop({
+    default: () => [],
+    type: Array
+  })
+  public actions: SmartGridActions[];
   @Prop({
     default: "",
     type: String
@@ -141,8 +152,19 @@ export default class GridController extends Vue {
     type: Boolean
   })
   public persistSelection: boolean;
+
   public gridActions: any = null;
+  public gridInstance: any = null;
+  public gridError: any = null;
+  public gridExport: any = null;
+  public collectionProperties: any = {};
+  public translations = {
+    uploadAllResults: "Upload all results",
+    uploadReport: "upload",
+    uploadSelection: "Upload selected items"
+  };
   public columnsList: any = this.columns;
+  public actionsList: any = this.actions;
   public dataItems: any = [];
   public isLoading: boolean = false;
   public currentSort: any = null;
@@ -159,13 +181,14 @@ export default class GridController extends Vue {
   public get gridInfo() {
     return {
       columns: this.columns,
+      actions: this.actions,
       controller: this.controller,
       collection: this.collection,
       pageable: this.pager,
       page: (this.currentPage.skip + this.currentPage.take) / this.currentPage.take,
       sortable: this.sortable,
       sort: this.currentSort,
-      filterable: this.filterable,
+      filterable: this.filterable
     };
   }
 
@@ -193,6 +216,7 @@ export default class GridController extends Vue {
         console.error("Persistent grid state is disabled, local storage is not supported by the current environment");
       }
     }
+    this.gridInstance = this;
   }
 
   protected async _loadGridConfig() {
@@ -208,10 +232,15 @@ export default class GridController extends Vue {
     } else {
       this.pager = Object.assign({}, DEFAULT_PAGER, response.data.data.pageable);
     }
-    if (response.data.data.actions) {
-      this.columnsList.push({ field: "actionMenu", abstract: true, withContext: true, context: ["Custom"], sortable: false });
-      const actions = this.formatActionMenu(response.data.data.actions);
-      this.columnsList.actions = actions;
+    if (response.data.data.actions.length > 0) {
+      this.columnsList.push({
+        field: "actionMenu",
+        abstract: true,
+        withContext: true,
+        context: ["Custom"],
+        sortable: false
+      });
+      this.actionsList = this.formatActionMenu(response.data.data.actions);
     }
   }
 
@@ -225,18 +254,23 @@ export default class GridController extends Vue {
     this.currentPage.skip = pager.skip;
     this.currentPage.take = pager.take;
     this.dataItems = response.data.data.content;
+    this.$emit("grid-data-bound", this.gridInstance);
   }
 
   protected cellRenderFunction(createElement, tdElement: VNode, props, listeners) {
     const columnConfig = this.columnsList[props.columnIndex];
     if (props.field === "actionMenu") {
-      if (this.columnsList.actions) {
-        return createElement(AnkActionMenu, {
-          props: {
-            actions: this.columnsList.actions,
-            gridComponent: this
-          }
-        }, props.dataItem.actionMenu);
+      if (this.actionsList.length > 0) {
+        return createElement(
+          AnkActionMenu,
+          {
+            props: {
+              actions: this.actionsList,
+              gridComponent: this
+            }
+          },
+          props.dataItem.actionMenu
+        );
       }
     } else {
       if (columnConfig.property) {
@@ -283,20 +317,20 @@ export default class GridController extends Vue {
 
   protected formatActionMenu(actions) {
     const actionsColumn = [];
-    const allActionsConfig : any = actions;
+    const allActionsConfig: any = actions;
     const subCommands = [];
     allActionsConfig.forEach((config, index, selfArray) => {
       if (selfArray.length <= 2 || index < 1) {
         actionsColumn.push({
           name: config.action,
           text: config.title,
-          iconClass: config.iconClass,
+          iconClass: config.iconClass
         });
       } else {
         subCommands.push({
           name: config.action,
           text: config.title,
-          iconClass: config.iconClass,
+          iconClass: config.iconClass
         });
       }
     });
@@ -310,4 +344,5 @@ export default class GridController extends Vue {
     }
     return actionsColumn;
   }
+
 }
