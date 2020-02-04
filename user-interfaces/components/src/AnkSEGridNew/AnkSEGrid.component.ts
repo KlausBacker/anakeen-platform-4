@@ -1,6 +1,8 @@
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Watch, Vue } from "vue-property-decorator";
 import AnkProgress from "./AnkProgress/AnkProgress.vue";
 import AnkActionMenu from "./AnkActionMenu/AnkActionMenu.vue";
+import AnkTextFilterCell from "./AnkTextFilterCell/AnkTextFilterCell.vue";
+import AnkGridCell from "./AnkGridCell/AnkGridCell.vue";
 import AnkExportButton from "./AnkExportButton/AnkExportButton.vue";
 import { Grid } from "@progress/kendo-vue-grid";
 import { VNode } from "vue/types/umd";
@@ -10,7 +12,7 @@ import GridError from "../AnkSEGrid/utils/GridError";
 
 const CONTROLLER_URL = "/api/v2/grid/controllers/{controller}/{op}/{collection}";
 
-interface SmartGridColumn {
+export interface SmartGridColumn {
   field: string;
   smartType: string;
   title: string;
@@ -19,7 +21,7 @@ interface SmartGridColumn {
   encoded: boolean;
   hidden: boolean;
   sortable: boolean;
-  filterable: boolean | object;
+  filterable: boolean | any;
   transaction: boolean | object;
 }
 
@@ -67,7 +69,7 @@ export default class GridController extends Vue {
   })
   public actions: SmartGridActions[];
   @Prop({
-    default: "",
+    default: "DEFAULT_GRID_CONTROLLER",
     type: String
   })
   public controller: string;
@@ -112,8 +114,8 @@ export default class GridController extends Vue {
   public sortable: boolean | object;
 
   @Prop({
-    default: "menu",
-    type: String
+    default: true,
+    type: Boolean
   })
   public filterable: boolean;
   @Prop({
@@ -173,6 +175,7 @@ export default class GridController extends Vue {
   public dataItems: any = [];
   public isLoading: boolean = false;
   public currentSort: any = null;
+  public currentFilter: any = { logic: "and", filters: [] };
   public currentPage: any = {
     total: null,
     skip: 0,
@@ -194,6 +197,7 @@ export default class GridController extends Vue {
       sortable: this.sortable,
       sort: this.currentSort,
       filterable: this.filterable,
+      filter: this.currentFilter,
       transaction: this.transaction
     };
   }
@@ -282,15 +286,54 @@ export default class GridController extends Vue {
         );
       }
     } else {
-      if (columnConfig.property) {
-        return createElement("td", props.dataItem.properties[columnConfig.field]);
-      } else if (columnConfig.abstract) {
-        return createElement("td", props.dataItem.abstract[columnConfig.field].displayValue);
-      } else {
-        return createElement("td", Object.assign({}, props.dataItem.attributes[columnConfig.field]).displayValue);
+      let renderElement = tdElement;
+      if (columnConfig) {
+        renderElement = createElement(AnkGridCell, {
+          props: {
+            ...props,
+            columnConfig
+          }
+        });
       }
+      if (this.$scopedSlots && this.$scopedSlots.cellTemplate) {
+        return this.$scopedSlots.cellTemplate({
+          renderElement,
+          props,
+          listeners,
+          columnConfig
+        });
+      }
+      return renderElement;
     }
     return tdElement;
+  }
+
+  protected headerCellRenderFunction(createElement, defaultRendering, props, listeners) {
+    const columnConfig = this.columnsList.find(c => c.field === props.field);
+    const children = [];
+    if (this.contextTitles && Array.isArray(columnConfig.context)) {
+      const contextTitle = columnConfig.context.join(` ${this.contextTitlesSeparator} `);
+      if (contextTitle) {
+        children.push(
+          createElement(
+            "div",
+            {
+              class: "smart-element-grid-header--subtitle"
+            },
+            [contextTitle]
+          )
+        );
+      }
+    }
+    children.push(defaultRendering);
+    return createElement(
+      "div",
+      {
+        href: "#",
+        class: "smart-element-grid-header-content"
+      },
+      children
+    );
   }
 
   protected _getOperationUrl(operation) {
@@ -322,6 +365,23 @@ export default class GridController extends Vue {
     this.isLoading = true;
     await this._loadGridContent();
     this.isLoading = false;
+  }
+
+  protected async onFilterChange(filterEvt) {
+    if (filterEvt.event) {
+      const filters = this.currentFilter.filters.filter(f => f.field !== filterEvt.event.field);
+      if (filterEvt.event.value) {
+        filters.push(filterEvt.event);
+      }
+      this.currentFilter.filters = filters;
+    }
+    this.isLoading = true;
+    await this._loadGridContent();
+    this.isLoading = false;
+  }
+
+  protected onColumnReorder(reorderEvt) {
+    console.log(reorderEvt);
   }
 
   protected formatActionMenu(actions) {

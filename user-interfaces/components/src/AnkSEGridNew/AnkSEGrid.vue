@@ -13,14 +13,20 @@
         :columns="columnsList"
         :data-items="dataItems"
         :cell-render="cellRenderFunction"
+        :header-cell-render="headerCellRenderFunction"
         :take="currentPage.take"
         :skip="currentPage.skip"
         :total="currentPage.total"
+        :resizable="resizable"
+        :reorderable="reorderable"
         :pageable="pager"
         :sortable="sortable"
         :sort="currentSort"
+        :filterable="filterable"
         @sortchange="onSortChange"
         @pagechange="onPageChange"
+        @filterchange="onFilterChange"
+        @columnreorder="onColumnReorder"
       >
       </kendo-grid-vue>
       <div class="smart-element-grid-footer">

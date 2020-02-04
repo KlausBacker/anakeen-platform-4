@@ -8,15 +8,17 @@
       <div class="test-smart-grid">
         <div class="grid-section grid-left">
           <h1>Old grid</h1>
-          <old-grid :pageable="true" collection="DEVBILL"> </old-grid>
+          <old-grid :pageable="true" collection="DEVBILL">
+            <old-grid-column field="title" :property="true"></old-grid-column>
+            <old-grid-column field="bill_title"></old-grid-column>
+            <old-grid-column field="bill_author"></old-grid-column>
+            <old-grid-column field="bill_billdate"></old-grid-column>
+          </old-grid>
         </div>
         <div class="grid-section grid-right">
           <h1>New grid</h1>
-          <ank-smart-element-grid
-            collection="DEVBILL"
-            controller="DEFAULT_GRID_CONTROLLER"
-            :columns="columns"
-          />
+          <ank-smart-element-grid collection="DEVBILL" :columns="columns" :reorderable="true" :resizable="false">
+          </ank-smart-element-grid>
         </div>
       </div>
     </template>
@@ -58,9 +60,10 @@ export default {
       },
       columns: [
         { field: "title", property: true },
-        { field: "bill_title" },
+        { field: "bill_title", title: "Titre interne" },
         { field: "bill_author" },
-        { field: "my_custom_column", abstract: true, withContext: true, context: ["Custom"], sortable: false }
+        { field: "bill_billdate" },
+        { field: "my_custom_column", abstract: true, withContext: true, context: ["Custom", "Other"], sortable: false }
       ]
     };
   }

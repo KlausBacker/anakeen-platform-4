@@ -18,6 +18,7 @@ class SmartGridControllerParameter
 
     public static function addConfiguration($path)
     {
+        static::deleteConfig($path);
         $configs = static::parseFileConfiguration($path);
         if (!empty($configs)) {
             static::addParameterConfig(...$configs);

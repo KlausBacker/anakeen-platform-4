@@ -1,61 +1,54 @@
 .smart-element-grid {
-  // position: relative;
-  height: 100%;
-  max-height: 100%;
-  width: 100%;
-
-  .smart-element-grid-wrapper {
-    margin: 0;
-    padding: 0;
-    border-width: 0;
-    min-height: 0;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-  .k-grid {
-    display: flex !important; // To override important kendo rule
-    flex: 1;
-
-    .grid-header-content {
-      position: relative;
+    // position: relative;
+    .smart-element-grid-wrapper {
+        min-height: 10rem;
     }
 
-    .grid-header--subtitle {
-      color: #666;
-      font-style: italic;
-      text-overflow: ellipsis;
-      overflow: hidden;
+    // none display for standard kendo cell to avoid flickering
+    .k-filtercell {
+        display: none;
     }
 
-    .grid-header--title {
-      text-overflow: ellipsis;
-      overflow: hidden;
-    }
-  }
-  .k-command-cell {
-    .k-button {
-      color: #157EFB;
+    .smart-element-grid-wrapper {
+        min-height: 10rem;
     }
 
-    .actionMenu {
-      & > .k-item > .k-link > .k-icon {
-        //color: #157EFB;
-      }
-    }
-  }
-  .smart-element-grid-wrapper {
-    min-height: 10rem;
-    display: flex;
-    flex: 1;
-  }
+    .k-grid {
+        display: flex !important; // To override important kendo rule
+        flex: 1;
 
-  .grid-widget-header {
-    display: flex;
-    justify-content: flex-end;
-    .k-pager-numbers-wrap {
-      display: none !important;
-    }
-  }
+        .smart-element-grid-header-content {
+            display: flex;
+            flex-direction: column;
+            position: relative;
 
+            .k-link {
+                flex: 1;
+            }
+        }
+
+        .smart-element-grid-header--subtitle {
+            color: #666;
+            font-style: italic;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .smart-element-grid-header--title {
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+    }
+
+    .k-command-cell {
+        .k-button {
+            color: #157EFB;
+        }
+
+        .actionMenu {
+            & > .k-item > .k-link > .k-icon {
+                //color: #157EFB;
+            }
+        }
+    }
 }
