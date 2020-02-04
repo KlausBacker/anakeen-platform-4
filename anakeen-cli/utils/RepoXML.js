@@ -38,6 +38,7 @@ class RepoXML extends XMLLoader {
   }
 
   async save() {
+    this._orderElement();
     return await this.saveToFile(this.filename);
   }
 
@@ -273,6 +274,19 @@ class RepoXML extends XMLLoader {
       }
     }
     throw new RepoXMLRegistryNotFoundError(`Registry with name '${name}' not found in 'repo.xml'`);
+  }
+
+  _orderElement() {
+    const module = this.getModuleList();
+    if (module && module.length) {
+      const orderedList = module.sort((moduleA, moduleB) => {
+        if (moduleA.name < moduleB.name) return -1;
+        if (moduleA.name > moduleB.name) return 1;
+        return 0;
+      });
+
+      this._setModuleList(orderedList);
+    }
   }
 }
 

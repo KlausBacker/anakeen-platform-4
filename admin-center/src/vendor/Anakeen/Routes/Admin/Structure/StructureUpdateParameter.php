@@ -3,9 +3,10 @@
 namespace Anakeen\Routes\Admin\Structure;
 
 use Anakeen\Core\SEManager;
+use Anakeen\Exception;
 use Anakeen\Core\SmartStructure;
+use Anakeen\Router\ApiV2Response;
 use ReflectionMethod;
-use ReflectionException;
 
 /**
  * Update Structure Parameters
@@ -26,15 +27,16 @@ class StructureUpdateParameter extends StructureFields
         $this->initData($request->getParsedBody()["params"], $args);
         $err = $this->manageNewParameter();
         if ($err !== "") {
-            error_log($err);
-            return $response->withStatus(500, $err)->write($err);
+            $exception = new Exception($err);
+            $exception->setHttpStatus(404);
+            $exception->setUserMessage($err);
+            throw $exception;
         }
-        return $response->withStatus(200);
+        return ApiV2Response::withData($response, $err);
     }
 
     protected function initData($dataFromFront, $args)
     {
-        error_log(var_export(json_decode($dataFromFront), true));
         foreach (json_decode($dataFromFront) as $key => $value) {
             $this->data[$key] = $value;
             if (is_null($this->structure)) {
@@ -51,11 +53,7 @@ class StructureUpdateParameter extends StructureFields
                     $err = $this->structure->setParam($parameterData->parameterId, null);
                 } elseif ($parameterData->valueType === "value" && $parameterData->value === "") {
                     $err = $this->structure->setParam($parameterData->parameterId, "");
-                } elseif ($parameterData->valueType === "advanced_value") {
-                    $err = $this->manageAdvancedValue($parameterData->parameterId, $parameterData->value);
                 } else {
-                    error_log(gettype($parameterData->value));
-                    error_log($parameterData->value);
                     $err = $this->structure->setParam($parameterData->parameterId, $parameterData->value);
                 }
 

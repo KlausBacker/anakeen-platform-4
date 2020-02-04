@@ -1,1 +1,0 @@
-Stubs of the dev center

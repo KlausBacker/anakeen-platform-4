@@ -72,4 +72,9 @@ class ErrorCodeSD
      * @see \Anakeen\Search\SearchElements::search()
      */
     const SD0013 = 'Search error :"%s"';
+    /**
+     * @errorCode when use docrel and usertag table join by exemple
+     * @see \Anakeen\Search\SearchElements::join()
+     */
+    const SD0014 = "The join cannot be used with several filters which use different join ('%s' - '%s')";
 }

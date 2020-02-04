@@ -24,7 +24,18 @@ class IsLesser extends StandardAttributeFilter implements ElementSearchFilter
         'timestamp',
         'time'
     );
-    public function __construct($attrId, $value)
+
+    /**
+     * IsLesser constructor.
+     * @param $attrId
+     * @param $value
+     * @param int $options <p>
+     * Bitmask consisting of
+     * <b>\Anakeen\Search\Filters\IsLesser::$EQUAL</b>,
+     * <b>\Anakeen\Search\Filters\IsLesser::$ALL</b>
+     * </p>
+     */
+    public function __construct($attrId, $value, $options = 0)
     {
         parent::__construct($attrId);
         $this->value = $value;
@@ -35,6 +46,12 @@ class IsLesser extends StandardAttributeFilter implements ElementSearchFilter
             $this->ALL = ($argv[0] & self::ALL);
         }
     }
+
+    /**
+     * @param Search\Internal\SearchSmartData $search
+     * @return \Anakeen\Core\SmartStructure\NormalAttribute
+     * @throws Exception
+     */
     public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData & $search)
     {
         $attr = parent::verifyCompatibility($search);

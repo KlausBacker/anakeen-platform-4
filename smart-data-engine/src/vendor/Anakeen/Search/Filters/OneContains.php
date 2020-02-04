@@ -20,7 +20,18 @@ class OneContains extends StandardAttributeFilter implements ElementSearchFilter
     protected $value = null;
     protected $ALL = false;
 
-    public function __construct($attrId, $value)
+    /**
+     * OneContains constructor.
+     * @param $attrId
+     * @param $value
+     * @param int $options <p>
+     * Bitmask consisting of
+     * <b>\Anakeen\Search\Filters\OneContains::$NOT</b>,
+     * <b>\Anakeen\Search\Filters\OneContains::$NOCASE</b>
+     * <b>\Anakeen\Search\Filters\OneContains::$ALL</b>
+     * </p>
+     */
+    public function __construct($attrId, $value, $options = 0)
     {
         parent::__construct($attrId);
         $this->value = $value;
@@ -33,6 +44,11 @@ class OneContains extends StandardAttributeFilter implements ElementSearchFilter
         }
     }
 
+    /**
+     * @param \Anakeen\Search\Internal\SearchSmartData $search
+     * @return NormalAttribute
+     * @throws Exception
+     */
     public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData & $search)
     {
         $attr = parent::verifyCompatibility($search);

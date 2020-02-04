@@ -30,6 +30,7 @@
     "gunzip-maybe": "^1.4.1",
     "https-proxy-agent": "^4.0.0",
     "inquirer": "^7.0.1",
+    "jszip": "^3.2.2",
     "libxmljs": "^0.19.7",
     "mustache": "^3.2.1",
     "node-fetch": "^2.3.0",

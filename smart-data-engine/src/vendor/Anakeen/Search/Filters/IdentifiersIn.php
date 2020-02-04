@@ -17,7 +17,16 @@ class IdentifiersIn extends StandardAttributeFilter implements ElementSearchFilt
     protected $compatibleType = array(
         'int'
     );
-    public function __construct($value)
+
+    /**
+     * IdentifiersIn constructor.
+     * @param $value
+     * @param int $options <p>
+     * Bitmask consisting of
+     * <b>\Anakeen\Search\Filters\IdentifiersIn::$INITID</b>,
+     * </p>
+     */
+    public function __construct($value, $options = 0)
     {
         parent::__construct('id');
         if (!is_array($value)) {
