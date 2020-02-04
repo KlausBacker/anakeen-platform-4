@@ -25,5 +25,4 @@
 <style lang="scss">
 @import "./AnkSEGrid.scss";
 </style>
-
 <script src="./AnkSEGrid.component.ts" lang="ts"></script>

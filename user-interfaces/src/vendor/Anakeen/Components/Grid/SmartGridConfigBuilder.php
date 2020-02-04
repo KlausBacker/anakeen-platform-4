@@ -17,12 +17,11 @@ use SmartStructure\Fields\Search;
 
 class SmartGridConfigBuilder
 {
-
     const DEFAULT_COLUMNS = ["title"];
     const DEFAULT_CONTENT_URL = "/api/v2/grid/content/%s?fields=%s";
 
     protected $fields = [];
-    protected $actions = false;
+    protected $actions = [];
     protected $toolbarActions = false;
     protected $footer = false;
     protected $pageable = false;
@@ -79,7 +78,7 @@ class SmartGridConfigBuilder
             "locales" => $this->getLocales(),
             "footer" => $this->getFooter(),
             // "toolbar" => [],
-            // "actions" => [],
+             "actions" => $this->getActions()
         );
         return $config;
     }
@@ -191,10 +190,14 @@ class SmartGridConfigBuilder
     /**
      * Add a row action in Smart Element Grid
      *
+     * @param string $action - Name of the action to perform
+     * @param string $title - Displayed title of the action
+     * @param string $iconClass - iconClass to display
      * @return $this - the current instance
      */
-    public function addRowAction()
+    public function addRowAction(string $action, string $title, $iconClass = false)
     {
+        array_push($this->actions, array("action" => $action, "title" => $title, "iconClass" => $iconClass));
         return $this;
     }
 

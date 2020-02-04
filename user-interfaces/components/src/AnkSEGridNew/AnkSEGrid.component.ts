@@ -1,7 +1,11 @@
 import { Component, Prop, Watch, Vue } from "vue-property-decorator";
 import AnkProgress from "./AnkProgress/AnkProgress.vue";
+import AnkActionMenu from "./AnkActionMenu/AnkActionMenu.vue";
 import { Grid } from "@progress/kendo-vue-grid";
 import { VNode } from "vue/types/umd";
+import ActionTemplate from "../AnkSEGrid/templates/GridAction.template.kd";
+import GridActions from "../AnkSEGrid/utils/GridActions";
+import { list } from "postcss";
 
 const CONTROLLER_URL = "/api/v2/grid/controllers/{controller}/{op}/{collection}";
 
@@ -32,11 +36,13 @@ const DEFAULT_SORT = {
 @Component({
   components: {
     "kendo-grid-vue": Grid,
-    "ank-progress": AnkProgress
+    "ank-progress": AnkProgress,
+    "ank-action-menu": AnkActionMenu
   },
   name: "ank-se-grid-vue"
 })
 export default class GridController extends Vue {
+
   @Prop({
     default: "",
     type: String
@@ -135,7 +141,7 @@ export default class GridController extends Vue {
     type: Boolean
   })
   public persistSelection: boolean;
-
+  public gridActions: any = null;
   public columnsList: any = this.columns;
   public dataItems: any = [];
   public isLoading: boolean = false;
@@ -160,12 +166,12 @@ export default class GridController extends Vue {
       sortable: this.sortable,
       sort: this.currentSort,
       filterable: this.filterable,
-      filter: this.currentFilter
     };
   }
 
   async created() {
     this.isLoading = true;
+    this.gridActions = new GridActions(this);
     try {
       await this._loadGridConfig();
       await this._loadGridContent();
@@ -194,8 +200,6 @@ export default class GridController extends Vue {
     const response = await this.$http.get(url, {
       params: this.gridInfo
     });
-      }
-    });
     this.columnsList = response.data.data.columns;
     if (response.data.data.pageable === true) {
       this.pager = DEFAULT_PAGER;
@@ -203,6 +207,11 @@ export default class GridController extends Vue {
       this.pager = false;
     } else {
       this.pager = Object.assign({}, DEFAULT_PAGER, response.data.data.pageable);
+    }
+    if (response.data.data.actions) {
+      this.columnsList.push({ field: "actionMenu", abstract: true, withContext: true, context: ["Custom"], sortable: false });
+      const actions = this.formatActionMenu(response.data.data.actions);
+      this.columnsList.actions = actions;
     }
   }
 
@@ -220,12 +229,22 @@ export default class GridController extends Vue {
 
   protected cellRenderFunction(createElement, tdElement: VNode, props, listeners) {
     const columnConfig = this.columnsList[props.columnIndex];
-    if (columnConfig.property) {
-      return createElement("td", props.dataItem.properties[columnConfig.field]);
-    } else if (columnConfig.abstract) {
-      return createElement("td", props.dataItem.abstract[columnConfig.field].displayValue);
+    if (props.field === "actionMenu") {
+      if (this.columnsList.actions) {
+        return createElement(AnkActionMenu, {
+          props: {
+            actions: this.columnsList.actions,
+          }
+        }, props.dataItem.actionMenu);
+      }
     } else {
-      return createElement("td", Object.assign({}, props.dataItem.attributes[columnConfig.field]).displayValue);
+      if (columnConfig.property) {
+        return createElement("td", props.dataItem.properties[columnConfig.field]);
+      } else if (columnConfig.abstract) {
+        return createElement("td", props.dataItem.abstract[columnConfig.field].displayValue);
+      } else {
+        return createElement("td", Object.assign({}, props.dataItem.attributes[columnConfig.field]).displayValue);
+      }
     }
     return tdElement;
   }
@@ -259,5 +278,35 @@ export default class GridController extends Vue {
     this.isLoading = true;
     await this._loadGridContent();
     this.isLoading = false;
+  }
+
+  protected formatActionMenu(actions) {
+    const actionsColumn = [];
+    const allActionsConfig : any = actions;
+    const subCommands = [];
+    allActionsConfig.forEach((config, index, selfArray) => {
+      if (selfArray.length <= 2 || index < 1) {
+        actionsColumn.push({
+          name: config.action,
+          text: config.title,
+          iconClass: config.iconClass,
+        });
+      } else {
+        subCommands.push({
+          name: config.action,
+          text: config.title,
+          iconClass: config.iconClass,
+        });
+      }
+    });
+    if (subCommands.length) {
+      actionsColumn.push({
+        name: "_subcommands",
+        text: "",
+        iconClass: "k-icon k-i-more-vertical",
+        subActions: subCommands
+      });
+    }
+    return actionsColumn;
   }
 }
