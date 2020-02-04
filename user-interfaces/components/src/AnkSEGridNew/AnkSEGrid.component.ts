@@ -234,6 +234,7 @@ export default class GridController extends Vue {
         return createElement(AnkActionMenu, {
           props: {
             actions: this.columnsList.actions,
+            gridComponent: this
           }
         }, props.dataItem.actionMenu);
       }

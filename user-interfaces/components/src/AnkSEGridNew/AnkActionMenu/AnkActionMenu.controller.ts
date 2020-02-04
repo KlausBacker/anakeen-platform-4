@@ -24,11 +24,15 @@ export default class AnkActionMenuController extends Vue {
   })
   public actions: object[];
 
-  public grid: any;
+  @Prop({
+    default: () => {},
+    type: Object
+  })
+  public gridComponent: any;
+
   public value = { action: "consult", title: "Consult" };
 
   public mounted() {
-    this.grid = this.$parent;
     const menu = this.$refs.actionMenu;
     const kendoMenuOptions = {
       openOnClick: {
@@ -82,8 +86,10 @@ export default class AnkActionMenuController extends Vue {
 
   public editAction(e) {
     e.preventDefault();
+    // index - 1 to start from 0
+    const index = e.item.closest("td").getAttribute("dataindex") - 1;
     const target = e.currentTarget || e.item || e.target;
-    const item = this.grid.dataItem.properties;
+    const item = this.gridComponent.dataItems[index].properties;
     const event = new GridEvent(
       {
         type: "edit",
@@ -101,11 +107,14 @@ export default class AnkActionMenuController extends Vue {
   }
 
   public consultAction(e) {
+
     if (typeof e.preventDefault === "function") {
       e.preventDefault();
     }
+    // index - 1 to start from 0
+    const index = e.item.closest("td").getAttribute("dataindex") - 1;
     const target = e.currentTarget || e.item || e.target;
-    const item = this.grid.dataItem.properties;
+    const item = this.gridComponent.dataItems[index].properties;
     const event = new GridEvent(
       {
         type: "consult",
@@ -124,9 +133,11 @@ export default class AnkActionMenuController extends Vue {
 
   public customAction(e, actionType) {
     e.preventDefault();
+    // index - 1 to start from 0
+    const index = e.item.closest("td").getAttribute("dataindex") - 1;
     const target = e.currentTarget || e.item || e.target;
     if (actionType) {
-      const item = this.grid.dataItem.properties;
+      const item = this.gridComponent.dataItems[index].properties;
       const event = new GridEvent({ type: actionType, row: item }, target, false, "GridActionEvent");
       this.$emit("action-click", event);
     }
