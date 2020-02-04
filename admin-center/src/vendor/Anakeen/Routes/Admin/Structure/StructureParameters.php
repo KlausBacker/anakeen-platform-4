@@ -59,7 +59,6 @@ class StructureParameters extends StructureFields
                 $data[$oa->id]["parentConfigurationParameters"] = $configParentParameters[$oa->id] ?? null;
             }
             $data[$oa->id]["result"] = json_decode(json_encode($formater->getInfo($oa, $element->getParamValue($oa->id), $element)), true);
-            $data[$oa->id]["configurationParameter"] = $configParams[$oa->id] ?? null;
         }
 
         return $data;

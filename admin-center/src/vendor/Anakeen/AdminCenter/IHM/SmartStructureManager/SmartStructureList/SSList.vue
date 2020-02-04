@@ -29,7 +29,7 @@
               'item-active': tab.name === selected || tab.id === selected
             }"
             :title="tab.title"
-            @click="onListItemClicked(tab)"
+            @click="onListItemClicked(tab.id)"
           >
             <img class="ss-list-item-icon" :src="tab.icon" />
             <div class="ss-list-item-title">{{ tab.title }} <br> ({{ tab.name }})</div>

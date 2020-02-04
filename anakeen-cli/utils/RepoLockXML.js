@@ -53,6 +53,7 @@ class RepoLockXML extends XMLLoader {
   }
 
   async save() {
+    this._orderElement();
     return await this.saveToFile(this.filename);
   }
 
@@ -217,6 +218,17 @@ class RepoLockXML extends XMLLoader {
     }
 
     return undefined;
+  }
+
+  _orderElement() {
+    const module = this.getModuleList();
+    if (module && module.length) {
+      module.sort((moduleA, moduleB) => {
+        if (moduleA.$.name < moduleB.$.name) return -1;
+        if (moduleA.$.name > moduleB.$.name) return 1;
+        return 0;
+      });
+    }
   }
 }
 

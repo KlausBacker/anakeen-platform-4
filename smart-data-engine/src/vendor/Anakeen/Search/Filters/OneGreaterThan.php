@@ -21,7 +21,17 @@ class OneGreaterThan extends StandardAttributeFilter implements ElementSearchFil
         );
     protected $value = null;
 
-    public function __construct($attrId, $value)
+    /**
+     * OneGreaterThan constructor.
+     * @param $attrId
+     * @param $value
+     * @param int $options <p>
+     * Bitmask consisting of
+     * <b>\Anakeen\Search\Filters\OneGreaterThan::$EQUAL</b>,
+     * <b>\Anakeen\Search\Filters\OneGreaterThan::$ALL</b>,
+     * </p>
+     */
+    public function __construct($attrId, $value, $options = 0)
     {
         parent::__construct($attrId);
         $this->value = $value;

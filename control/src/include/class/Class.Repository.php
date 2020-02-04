@@ -173,6 +173,9 @@ class Repository
     public function getUrl()
     {
         $hostSep = $this->host ? "/" : "";
+        if ($this->protocol === "file") {
+            $this->path = realpath($this->path);
+        }
         if ($this->baseurl) {
             $this->url = $this->baseurl;
             $this->displayUrl = $this->url;

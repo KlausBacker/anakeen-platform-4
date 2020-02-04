@@ -17,7 +17,17 @@ class Contains extends StandardAttributeFilter implements ElementSearchFilter
     protected $regexpPrefix='***=';
     protected $regexpPostfix='';
 
-    public function __construct($attrId, $value)
+    /**
+     * Contains constructor.
+     * @param string $attrId
+     * @param string $value
+     * @param int $options <p>
+     * Bitmask consisting of
+     * <b>\Anakeen\Search\Filters\Contains::$NOT</b>,
+     * <b>\Anakeen\Search\Filters\Contains::$NOCASE</b>
+     * </p>
+     */
+    public function __construct($attrId, $value, $options = 0)
     {
         parent::__construct($attrId);
         $this->value = $value;
@@ -29,6 +39,11 @@ class Contains extends StandardAttributeFilter implements ElementSearchFilter
         }
     }
 
+    /**
+     * @param \Anakeen\Search\Internal\SearchSmartData $search
+     * @return \Anakeen\Core\SmartStructure\NormalAttribute
+     * @throws Exception
+     */
     public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData & $search)
     {
         $attr = parent::verifyCompatibility($search);

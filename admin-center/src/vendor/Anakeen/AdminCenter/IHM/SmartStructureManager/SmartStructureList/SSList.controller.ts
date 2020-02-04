@@ -33,8 +33,9 @@ export default class SmartStructureListController extends Vue {
       this.filterList(newValue);
     }
   }
-  public onListItemClicked(tab) {
-    this.$emit("structure-selected", `${tab.id}`);
+  public onListItemClicked(ssId) {
+    this.$emit("structure-selected", `${ssId}`);
+    this.$parent.$emit("structure-selected", `${ssId}`);
   }
 
   public hasFilter() {

@@ -10,5 +10,11 @@
                 <sde:access ns="DevCenter">DevelAccess</sde:access>
             </sde:requiredAccess>
         </sde:route>
+        <sde:route name="includeFiles">
+            <sde:callable>Anakeen\Routes\Devel\Import\IncludeFiles</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/devel/import/include-files/</sde:pattern>
+            <sde:description>Get Zip included files</sde:description>
+        </sde:route>
     </sde:routes>
 </sde:config>

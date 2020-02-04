@@ -9,9 +9,9 @@ class {{wflName}}Behavior extends {{#parentName}}\SmartStructures\{{Parentname}}
 {
     public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
-        $this->useWorkflowGraph(__DIR__."/{{wflName}}Graph.xml");
         parent::__construct($dbaccess, $id, $res, $dbid);
+        $this->useWorkflowGraph(__DIR__."/{{wflName}}Graph.xml");
 
-        // @FIXME Insert Here transition coniguration
+        // @FIXME Insert Here transition configuration
     }
 }

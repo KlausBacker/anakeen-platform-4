@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/anakeen-cli",
-  "version": "1.2.0-RC.2019.1.29",
+  "version": "1.2.0-RC.2019.1.30",
   "autorelease": "true",
   "description": "The cli tool to init, build and deploy anakeen-platform projects",
   "main": "index.js",
@@ -16,7 +16,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@anakeen/anakeen-module-validation": "2.1.0-RC.2019.1.29",
+    "@anakeen/anakeen-module-validation": "2.1.0-RC.2019.1.30",
     "@babel/core": "^7.0.0-0",
     "@babel/parser": "^7.7.7",
     "@babel/plugin-proposal-class-properties": "^7.7.4",
@@ -30,6 +30,7 @@
     "gunzip-maybe": "^1.4.1",
     "https-proxy-agent": "^4.0.0",
     "inquirer": "^7.0.1",
+    "jszip": "^3.2.2",
     "libxmljs": "^0.19.7",
     "mustache": "^3.2.1",
     "node-fetch": "^2.3.0",

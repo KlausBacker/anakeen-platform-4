@@ -18,7 +18,19 @@ class TitleContains extends StandardAttributeFilter implements ElementSearchFilt
     protected $compatibleType = array(
         'text'
     );
-    public function __construct($value)
+
+    /**
+     * TitleContains constructor.
+     * @param $value
+     * @param int $options <p>
+     * Bitmask consisting of
+     * <b>\Anakeen\Search\Filters\TitleContains::$NOT</b>,
+     * <b>\Anakeen\Search\Filters\TitleContains::$REGEXP</b>,
+     * <b>\Anakeen\Search\Filters\TitleContains::$NOCASE</b>,
+     * <b>\Anakeen\Search\Filters\TitleContains::$NODIACRITIC</b>,
+     * </p>
+     */
+    public function __construct($value, $options = 0)
     {
         parent::__construct('title');
         $this->value = $value;
@@ -50,6 +62,10 @@ class TitleContains extends StandardAttributeFilter implements ElementSearchFilt
         $search->addFilter($sql);
         return $this;
     }
+
+    /**
+     * @return string
+     */
     protected function _sqlInstruction()
     {
         $leftOperand = "title";

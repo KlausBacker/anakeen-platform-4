@@ -14,7 +14,18 @@ class FileContent extends StandardAttributeFilter implements ElementSearchFilter
     protected $NOT = false;
     protected $MATCH_REGEXP = false;
     protected $value = null;
-    public function __construct($attrId, $value)
+
+    /**
+     * FileContent constructor.
+     * @param $attrId
+     * @param $value
+     * @param int $options <p>
+     * Bitmask consisting of
+     * <b>\Anakeen\Search\Filters\FileContent::$NOT</b>,
+     * <b>\Anakeen\Search\Filters\FileContent::$MATCH_REGEXP</b>
+     * </p>
+     */
+    public function __construct($attrId, $value, $options = 0)
     {
         parent::__construct($attrId);
         $this->value = $value;
@@ -25,6 +36,12 @@ class FileContent extends StandardAttributeFilter implements ElementSearchFilter
             $this->MATCH_REGEXP = ($argv[0] & self::MATCH_REGEXP);
         }
     }
+
+    /**
+     * @param \Anakeen\Search\Internal\SearchSmartData $search
+     * @return NormalAttribute
+     * @throws Exception
+     */
     public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData & $search)
     {
         $attr = parent::verifyCompatibility($search);
@@ -47,6 +64,12 @@ class FileContent extends StandardAttributeFilter implements ElementSearchFilter
         $search->addFileFilter($this->_filter($attr, $this->value));
         return $this;
     }
+
+    /**
+     * @param NormalAttribute $attr
+     * @param $value
+     * @return string
+     */
     protected function _filter(NormalAttribute $attr, $value)
     {
         if ($this->NOT) {
@@ -63,6 +86,12 @@ class FileContent extends StandardAttributeFilter implements ElementSearchFilter
             }
         }
     }
+
+    /**
+     * @param NormalAttribute $attr
+     * @param $value
+     * @return string
+     */
     protected function _filterWord(NormalAttribute $attr, $value)
     {
         $attrVecId = sprintf("%s_vec", $attr->id);
@@ -73,11 +102,23 @@ class FileContent extends StandardAttributeFilter implements ElementSearchFilter
         }
         return $filter;
     }
+
+    /**
+     * @param NormalAttribute $attr
+     * @param $value
+     * @return string
+     */
     protected function _filterNotWord(NormalAttribute $attr, $value)
     {
         $filter = sprintf("NOT(%s)", $this->_filterWord($attr, $value));
         return $filter;
     }
+
+    /**
+     * @param NormalAttribute $attr
+     * @param $value
+     * @return string
+     */
     protected function _filterRegexp(NormalAttribute $attr, $value)
     {
         $attrTxtId = sprintf("%s_txt", $attr->id);
@@ -91,6 +132,12 @@ class FileContent extends StandardAttributeFilter implements ElementSearchFilter
         }
         return $filter;
     }
+
+    /**
+     * @param NormalAttribute $attr
+     * @param $value
+     * @return string
+     */
     protected function _filterNotRegexp(NormalAttribute $attr, $value)
     {
         $filter = sprintf("NOT(%s)", $this->_filterRegexp($attr, $value));

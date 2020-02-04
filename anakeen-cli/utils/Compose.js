@@ -7,6 +7,8 @@ const signale = require("signale");
 const tar = require("tar");
 const fetch = require("node-fetch");
 const urlJoin = require("url-join");
+const JSZip = require("jszip");
+const Mustache = require("mustache");
 
 const GenericError = require(path.resolve(__dirname, "GenericError.js"));
 const { RepoXML } = require(path.resolve(__dirname, "RepoXML.js"));
@@ -21,6 +23,7 @@ const { checkFile } = require("@anakeen/anakeen-module-validation");
 const fs_stat = util.promisify(fs.stat);
 const fs_mkdir = util.promisify(fs.mkdir);
 const fs_readdir = util.promisify(fs.readdir);
+const fs_readfile = util.promisify(fs.readFile);
 const glob = util.promisify(require("glob"));
 const rimraf = util.promisify(require("rimraf"));
 const fs_copyFile = util.promisify(fs.copyFile);
@@ -448,21 +451,80 @@ class Compose {
   }
 
   async genRepoContentXML(repoDir) {
-    const repoContentXML = new RepoContentXML(path.join(this._convertPathToAbsolute(repoDir), "content.xml"));
+    const repoContentXML = new RepoContentXML(path.join(repoDir, "content.xml"));
     repoContentXML.reset();
 
-    let moduleFileList = await fs_readdir(this._convertPathToAbsolute(repoDir));
+    let moduleFileList = await fs_readdir(repoDir);
     moduleFileList = moduleFileList.filter(filename => {
       return filename.match(/\.app$/);
     });
     for (let i = 0; i < moduleFileList.length; i++) {
       const moduleFile = moduleFileList[i];
-      await repoContentXML.addModuleFile(path.join(this._convertPathToAbsolute(repoDir), moduleFile));
+      await repoContentXML.addModuleFile(path.join(repoDir, moduleFile));
     }
 
     await repoContentXML.save();
 
     return moduleFileList;
+  }
+
+  /**
+   * Generate a control with the app inside
+   * @returns {Promise<void>}
+   */
+  async generateLocalControl({ localRepoName = "repo", controlTarget = "control.zip", customReadme = "" }) {
+    await this.loadContext();
+    signale.note(`Launch install to refresh repo`);
+    await this.install({});
+    const localRepo = this._convertPathToAbsolute(this.repoXML.getConfigLocalRepo());
+    const controlLock = this.repoLockXML.getModuleByName("anakeen-control");
+    if (controlLock === undefined) {
+      throw new ComposeError(
+        "You have no control in your repo.lock.xml, you should add it (compose install anakeen-control)"
+      );
+    }
+    const controlPath = path.join(localRepo, controlLock.resources[0].app[0].$.path);
+    const zipFile = await new JSZip.external.Promise((resolve, reject) => {
+      fs.readFile(controlPath, function(err, data) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(data);
+        }
+      });
+    }).then(data => {
+      return JSZip.loadAsync(data);
+    });
+    //add localRepo files
+    const appFile = await glob(path.join(localRepo, "/**/*.app"), { absolute: true });
+    appFile.map(currentApp => {
+      const stream = fs.createReadStream(currentApp);
+      zipFile.file(path.join(localRepoName, path.basename(currentApp)), stream);
+    });
+    zipFile.file(path.join(localRepoName, "content.xml"), fs.createReadStream(path.join(localRepo, "content.xml")));
+    const readPath = customReadme === "" ? path.join(__dirname, "templates", "README.md.mustache") : customReadme;
+    const tpl_readme = await fs_readfile(readPath, {
+      encoding: "utf-8"
+    });
+    zipFile.file(
+      "README.md",
+      Mustache.render(tpl_readme, {
+        path: localRepoName
+      })
+    );
+
+    return new Promise((resolve, reject) => {
+      zipFile
+        .generateNodeStream({ type: "nodebuffer", streamFiles: true })
+        .pipe(fs.createWriteStream(controlTarget))
+        .on("error", () => {
+          reject(`Unable to write ${controlTarget}`);
+        })
+        .on("finish", () => {
+          signale.note(`${controlTarget} done`);
+          resolve();
+        });
+    });
   }
 
   /**
@@ -680,12 +742,12 @@ class Compose {
     const localPath = this.repoXML.getAppLocalPath();
     //Find app
     await Promise.all(
-      localPath.map(async currentPath => {
+      localPath.map(async currentGlob => {
         //Find app
-        this.debug(`LocalApp : search for app in ${currentPath}`);
-        const appPath = await glob(path.join(currentPath, "/**/*.app"), { absolute: true });
+        this.debug(`LocalApp : search for app in ${currentGlob}`);
+        const appPath = await glob(currentGlob, { absolute: true });
         //Copy app
-        this.debug(`LocalApp : found ${appPath.join(" ")} in ${path.join(currentPath, "/**/*.app")}`);
+        this.debug(`LocalApp : found ${appPath.join(" ")} in ${currentGlob}`);
         return await Promise.all(
           appPath.map(async currentPath => {
             this.debug(`LocalApp : copy ${currentPath} to ${path.join(localRepo, path.basename(currentPath))}`);

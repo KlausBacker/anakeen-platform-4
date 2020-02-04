@@ -30,7 +30,17 @@ class ContainsValues extends StandardAttributeFilter implements ElementSearchFil
         'account'
     );
     protected $value = null;
-    public function __construct($attrId, $value)
+
+    /**
+     * ContainsValues constructor.
+     * @param string $attrId
+     * @param string $value
+     * @param int $options <p>
+     * Bitmask consisting of
+     * <b>\Anakeen\Search\Filters\ContainsValues::$NOT</b>,
+     * </p>
+     */
+    public function __construct($attrId, $value, $options = 0)
     {
         parent::__construct($attrId);
         $this->value = $value;
@@ -40,6 +50,12 @@ class ContainsValues extends StandardAttributeFilter implements ElementSearchFil
             $this->NOT = ($argv[0] & self::NOT);
         }
     }
+
+    /**
+     * @param \Anakeen\Search\Internal\SearchSmartData $search
+     * @return NormalAttribute
+     * @throws Exception
+     */
     public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData & $search)
     {
         $attr = parent::verifyCompatibility($search);
@@ -66,6 +82,12 @@ class ContainsValues extends StandardAttributeFilter implements ElementSearchFil
         $search->addFilter($this->_filter($attr, $value));
         return $this;
     }
+
+    /**
+     * @param NormalAttribute $attr
+     * @param $value
+     * @return string
+     */
     protected function _filter(NormalAttribute & $attr, $value)
     {
         $pgArray = SmartElement::arrayToRawValue($value);

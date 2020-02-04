@@ -4,6 +4,8 @@ namespace Anakeen\Routes\Admin\Structure;
 
 use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure;
+use Anakeen\Exception;
+use Anakeen\Router\ApiV2Response;
 use ReflectionMethod;
 
 /**
@@ -25,10 +27,12 @@ class StructureUpdateDefaultValue extends StructureFields
         $this->initData($request->getParsedBody()["params"], $args);
         $err = $this->manageNewDefValue();
         if ($err !== "") {
-            error_log($err);
-            return $response->withStatus(500, $err)->write($err);
+            $exception = new Exception($err);
+            $exception->setHttpStatus(404);
+            $exception->setUserMessage($err);
+            throw $exception;
         }
-        return $response->withStatus(200);
+        return ApiV2Response::withData($response, $err);
     }
 
     protected function initData($dataFromFront, $args)
@@ -72,7 +76,9 @@ class StructureUpdateDefaultValue extends StructureFields
     {
         $formattedArray = [];
         for ($i = 0; $i < count($arrayToFormat); $i++) {
-            $formattedArray[$i] = [];
+            if (!isset($formattedArray[$i])) {
+                $formattedArray[$i] = [];
+            }
             if (is_array($arrayToFormat[$i])) {
                 foreach ($arrayToFormat[$i] as $line) {
                     foreach ($line as $key => $value) {
