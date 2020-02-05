@@ -18,6 +18,7 @@ exports.sfType = {
   fieldimage: "image",
   fielddocid: "docid",
   fieldaccount: "account",
+  fieldpassword: "password",
   fieldxml: "xml",
   fieldjson: "json"
 };
