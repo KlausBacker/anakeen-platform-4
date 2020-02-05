@@ -268,10 +268,10 @@ exports.parseStub = ({ globFile, info, targetPath, log, verbose }) => {
           const currentKeys = Object.keys(currentEnumsDef);
           //Merge elements
           currentKeys.forEach(currentKey => {
-            if (acc[currentKey]) {
-              acc[currentKey] = {
-                ...acc[currentKey],
-                ...currentEnumsDef[currentKey]
+            if (acc[currentKey] && "fields" in acc[currentKey]) {
+              acc[currentKey].fields = {
+                ...acc[currentKey].fields,
+                ...currentEnumsDef[currentKey].fields
               };
             } else {
               acc[currentKey] = currentEnumsDef[currentKey];
