@@ -395,6 +395,10 @@ class ImportSmartConfiguration
 
         $prfDEsc = $this->getDescription($config);
 
+        if ($prfName && ($prfType === 'PFAM') && !$prfLabel) {
+            $prfLabel = sprintf('Profile %s', $prfName);
+        }
+
         if ($prfName && (($prfLabel && !$prfLink) || $prfDynamic)) {
             if (!$prfType) {
                 $prfType = "PDOC";
