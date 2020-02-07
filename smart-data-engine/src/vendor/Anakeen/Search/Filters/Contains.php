@@ -6,8 +6,10 @@ class Contains extends StandardAttributeFilter implements ElementSearchFilter
 {
     const NOT = 1;
     const NOCASE = 2;
+    const NODIACRITIC = 4;
     protected $NOT = false;
     protected $NOCASE = false;
+    private $NODIACRITIC = false;
     protected $value = null;
     protected $compatibleType = array(
         'text',
@@ -36,6 +38,11 @@ class Contains extends StandardAttributeFilter implements ElementSearchFilter
         if (isset($argv[0])) {
             $this->NOT = ($argv[0] & self::NOT);
             $this->NOCASE = ($argv[0] & self::NOCASE);
+            $this->NODIACRITIC = ($argv[0] & self::NODIACRITIC);
+            /* NODIACRITIC toggles NOCASE */
+            if ($this->NODIACRITIC) {
+                $this->NOCASE = true;
+            }
         }
     }
 
@@ -74,7 +81,15 @@ class Contains extends StandardAttributeFilter implements ElementSearchFilter
         */
         $value = $this->regexpPrefix . $this->value. $this->regexpPostfix;
 
-        $sql = sprintf("%s IS NOT NULL AND %s ~%s %s", pg_escape_identifier($attr->id), pg_escape_identifier($attr->id), ($this->NOCASE ? '*' : ''), pg_escape_literal($value));
+        $leftOperand = pg_escape_identifier($attr->id);
+        $operator = $this->NOCASE ? '~*' : '~';
+        $rightOperand = pg_escape_literal($value);
+
+        if ($this->NODIACRITIC) {
+            $leftOperand = sprintf("unaccent(%s)", $leftOperand);
+            $rightOperand = sprintf("unaccent(%s)", $rightOperand);
+        }
+        $sql = sprintf("%s IS NOT NULL AND %s %s %s", $leftOperand, $leftOperand, $operator, $rightOperand);
         if ($this->NOT) {
             $sql = sprintf("NOT(%s)", $sql);
         }
