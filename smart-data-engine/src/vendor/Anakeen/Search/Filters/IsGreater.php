@@ -36,10 +36,8 @@ class IsGreater extends StandardAttributeFilter implements ElementSearchFilter
     {
         parent::__construct($attrId);
         $this->value = $value;
-        $argv = func_get_args();
-        array_splice($argv, 0, 2);
-        if (isset($argv[0])) {
-            $this->EQUAL = ($argv[0] & self::EQUAL);
+        if (isset($options)) {
+            $this->EQUAL = ($options & self::EQUAL);
         }
     }
 

@@ -30,11 +30,9 @@ class Filename extends StandardAttributeFilter implements ElementSearchFilter
     {
         parent::__construct($attrId);
         $this->value = $value;
-        $argv = func_get_args();
-        array_splice($argv, 0, 2);
-        if (isset($argv[0])) {
-            $this->NOT = $this->NOT | ($argv[0] & self::NOT);
-            $this->EQUAL = $this->EQUAL | ($argv[0] & self::EQUAL);
+        if (isset($options)) {
+            $this->NOT = $this->NOT | ($options & self::NOT);
+            $this->EQUAL = $this->EQUAL | ($options & self::EQUAL);
         }
     }
 

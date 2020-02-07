@@ -35,11 +35,9 @@ class OneGreaterThan extends StandardAttributeFilter implements ElementSearchFil
     {
         parent::__construct($attrId);
         $this->value = $value;
-        $argv = func_get_args();
-        array_splice($argv, 0, 2);
-        if (isset($argv[0])) {
-            $this->EQUAL = $this->EQUAL | ($argv[0] & self::EQUAL);
-            $this->ALL = $this->ALL | ($argv[0] & self::ALL);
+        if (isset($options)) {
+            $this->EQUAL = $this->EQUAL | ($options & self::EQUAL);
+            $this->ALL = $this->ALL | ($options & self::ALL);
         }
     }
 

@@ -33,12 +33,11 @@ class Contains extends StandardAttributeFilter implements ElementSearchFilter
     {
         parent::__construct($attrId);
         $this->value = $value;
-        $argv = func_get_args();
-        array_splice($argv, 0, 2);
-        if (isset($argv[0])) {
-            $this->NOT = ($argv[0] & self::NOT);
-            $this->NOCASE = ($argv[0] & self::NOCASE);
-            $this->NODIACRITIC = ($argv[0] & self::NODIACRITIC);
+
+        if (isset($options)) {
+            $this->NOT = ($options & self::NOT);
+            $this->NOCASE = ($options & self::NOCASE);
+            $this->NODIACRITIC = ($options & self::NODIACRITIC);
             /* NODIACRITIC toggles NOCASE */
             if ($this->NODIACRITIC) {
                 $this->NOCASE = true;
