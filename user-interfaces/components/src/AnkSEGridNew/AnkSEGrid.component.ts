@@ -6,6 +6,7 @@ import { Grid } from "@progress/kendo-vue-grid";
 import { VNode } from "vue/types/umd";
 import GridActions from "../AnkSEGrid/utils/GridActions";
 import GridEvent from "../AnkSEGrid/utils/GridEvent";
+import GridError from "../AnkSEGrid/utils/GridError";
 
 const CONTROLLER_URL = "/api/v2/grid/controllers/{controller}/{op}/{collection}";
 
@@ -19,6 +20,7 @@ interface SmartGridColumn {
   hidden: boolean;
   sortable: boolean;
   filterable: boolean | object;
+  transaction: boolean | object;
 }
 
 interface SmartGridActions {
@@ -153,15 +155,18 @@ export default class GridController extends Vue {
   })
   public persistSelection: boolean;
 
+  public transaction: any = null;
   public gridActions: any = null;
   public gridInstance: any = null;
   public gridError: any = null;
   public gridExport: any = null;
   public collectionProperties: any = {};
   public translations = {
-    uploadAllResults: "Upload all results",
-    uploadReport: "upload",
-    uploadSelection: "Upload selected items"
+    downloadAllResults: "Download all results",
+    downloadReport: "Download",
+    downloadSelection: "Download selected items",
+    downloadAgain: "Retry",
+    downloadCancel: "Cancel"
   };
   public columnsList: any = this.columns;
   public actionsList: any = this.actions;
@@ -188,13 +193,16 @@ export default class GridController extends Vue {
       page: (this.currentPage.skip + this.currentPage.take) / this.currentPage.take,
       sortable: this.sortable,
       sort: this.currentSort,
-      filterable: this.filterable
+      filterable: this.filterable,
+      transaction: this.transaction
     };
   }
 
   async created() {
     this.isLoading = true;
     this.gridActions = new GridActions(this);
+    this.gridError = new GridError(this);
+
     try {
       await this._loadGridConfig();
       await this._loadGridContent();
@@ -254,6 +262,7 @@ export default class GridController extends Vue {
     this.currentPage.skip = pager.skip;
     this.currentPage.take = pager.take;
     this.dataItems = response.data.data.content;
+    console.log(this.dataItems);
     this.$emit("grid-data-bound", this.gridInstance);
   }
 
@@ -345,4 +354,153 @@ export default class GridController extends Vue {
     return actionsColumn;
   }
 
+  protected export(
+    exportAll = true,
+    directDownload = true,
+    onPolling = () => {},
+    pollingTime = 500,
+    onExport = this.doDefaultExport.bind(this)
+  ) {
+
+    let beforeEvent = this.sendBeforeExportEvent(onExport, onPolling);
+    if (!beforeEvent.isDefaultPrevented()) {
+
+      let exportCb = beforeEvent.onExport;
+      let pollingCb = beforeEvent.onPolling;
+      if (typeof onExport === "function") {
+
+        this.sendBeforePollingEvent();
+        let promise = this.createExportTransaction()
+          .then(transaction => {
+
+            this.transaction = transaction;
+
+            return this.doTransactionExport(transaction, this.gridInfo, exportCb, pollingCb, pollingTime, directDownload);
+          })
+          .then(result => {
+
+            return result ? result.data : true;
+          });
+        if (!directDownload) {
+          return promise;
+        }
+      } else {
+        this.gridError.error("Export failed: no export function are provided");
+        this.sendErrorEvent("Export failed: no export function are provided");
+      }
+    }
+  }
+
+  protected async doDefaultExport(transaction, queryParams, directDownload) {
+    const exportUrl = this._getOperationUrl("export");
+    await this.$http.get(exportUrl, {
+      params: this.gridInfo,
+      responseType: "blob"
+    }).then(response => this.downloadExportFile(response.data))
+          .catch(err => {
+            this.gridError.error(err);
+            this.sendErrorEvent(err);
+
+          });
+  }
+
+  protected downloadExportFile(blobFile) {
+    const blob = new Blob([blobFile], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+    const url = window.URL.createObjectURL(blob);
+    let link;
+    const existLink = $("a.seGridExportLink");
+    if (existLink.length) {
+      link = existLink[0];
+    } else {
+      link = document.createElement("a");
+      link.classList.add("seGridExportLink");
+
+      document.body.appendChild(link);
+    }
+    link.setAttribute("download", `${this.collectionProperties.title || this.collection || "data"}.xlsx`);
+    link.href = url;
+    link.click();
+  }
+
+  protected sendBeforeExportEvent(onExport, onPolling) {
+    const event = new GridEvent({
+      component: this,
+      type: "export"
+    });
+    event.onExport = onExport;
+    event.onPolling = onPolling;
+    this.$emit("before-grid-export", event);
+    return event;
+  }
+
+  protected sendBeforePollingEvent() {
+    const event = new GridEvent(null, null, false);
+    this.$emit("before-polling-grid-export", event);
+    return event;
+  }
+
+  protected sendErrorEvent(message) {
+    const event = new GridEvent(
+      {
+        message: message
+      },
+      null,
+      false
+    );
+    this.$emit("grid-export-error", event);
+    return event;
+  }
+
+
+  protected createExportTransaction() {
+    return this.$http
+      .post("/api/v2/grid/export")
+      .then(response => {
+        return response.data.data;
+      })
+      .catch(err => {
+        this.gridError.error(err);
+        this.sendErrorEvent(err);
+      });
+  }
+
+  protected doTransactionExport(transaction, queryParams, exportRequest, pollingRequest, pollingTime, directDownload) {
+    const transactionId = transaction.transactionId;
+    let file = exportRequest(transaction, queryParams, directDownload);
+    this.pollTransaction(transactionId, pollingRequest, pollingTime);
+
+    return file;
+  }
+
+  protected pollTransaction(transactionId, pollingCb, pollingTime) {
+    let timer = null;
+    const getStatus = () => {
+      this.$http
+        .get(`/api/v2/ui/transaction/${transactionId}/status`)
+        .then(response => {
+          const responseData = response.data.data;
+          if (responseData.transactionStatus === "PENDING" || responseData.transactionStatus === "CREATED") {
+            if (typeof pollingCb === "function") {
+              pollingCb(responseData);
+            }
+            timer = setTimeout(getStatus, pollingTime);
+          } else {
+            if (typeof pollingCb === "function") {
+
+              pollingCb(responseData);
+            }
+            if (timer) {
+              clearTimeout(timer);
+            }
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          if (timer) {
+            clearTimeout(timer);
+          }
+        });
+    };
+    getStatus();
+  }
 }

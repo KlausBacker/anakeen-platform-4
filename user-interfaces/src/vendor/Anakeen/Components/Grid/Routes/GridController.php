@@ -77,7 +77,8 @@ class GridController
                     $data = $controllerClass::getGridContent($collectionId, $clientConfig);
                     break;
                 case self::OPERATION_EXPORT:
-                    $data = $controllerClass::exportGridContent($collectionId, $clientConfig);
+                    $data = $controllerClass::exportGridContent($response, $collectionId, $clientConfig);
+                    return $data;
                     break;
                 default:
                     throw new Exception("GRID0010", $operationId);

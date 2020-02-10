@@ -199,9 +199,9 @@ class SmartGridContentBuilder
         return [
             "pager" => [
                 "page" => $this->page,
-                "skip" => ($this->page * $this->pageSize) - $this->pageSize,
+                "skip" => $this->pageSize !== "ALL" ? ($this->page * $this->pageSize) - $this->pageSize : 0,
                 "take" => $this->pageSize,
-                "pageSize" => $this->pageSize,
+                "pageSize" => $this->pageSize === "ALL" ? 10 : $this->pageSize,
                 "total" => $this->searchElements->onlyCount()
             ]
         ];
@@ -217,9 +217,10 @@ class SmartGridContentBuilder
     protected function setPager($page, $pageSize)
     {
         $this->searchElements->setSlice($pageSize);
-        $this->searchElements->setStart(($page - 1) * $pageSize);
+        if ($pageSize !== "ALL") {
+            $this->searchElements->setStart(($page - 1) * $pageSize);
+        }
     }
-
     protected function formatElement(SmartElement $element)
     {
         $df = new DocumentDataFormatter($element);

@@ -1,0 +1,212 @@
+.grid-export {
+  .export-total {
+    background: #157EFB;
+    color: #ffffff;
+  }
+
+  .k-menu-group.k-popup {
+    padding: 0;
+
+    .k-item {
+      padding: .5rem;
+    }
+  }
+
+  &.grid-export {
+    .k-grid-export {
+      height: 100%;
+
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+      background: transparent;
+
+      &:hover {
+        background: rgba(210, 210, 210, 0.5);
+      }
+    }
+  }
+
+  .k-menu-link {
+    display: initial;
+    width: auto;
+  }
+
+
+  .grid-export-menu {
+    padding: 0;
+
+    > .k-first > .k-link {
+      padding: 0;
+    }
+
+    .k-menu-expand-arrow {
+      display: none;
+    }
+  }
+
+  .export-total {
+    margin-left: .5rem;
+    border-radius: 1rem;
+    padding: 0 0.5rem;
+  }
+
+  .grid-export-status {
+    width: auto;
+
+    .material-icons {
+      font-size: 1.33333rem;
+    }
+
+
+    &.grid-export-status--pending, &.grid-export-status--success {
+      .material-icons {
+        color: #8AE234;
+      }
+    }
+
+    &.grid-export-status--error {
+      .material-icons {
+        color: red;
+      }
+    }
+
+    &.grid-export-status--pending {
+
+      .k-menu-group.k-popup {
+        li.k-item {
+          .k-link {
+            height: 100%;
+            width: 100%;
+            padding: .5rem;
+          }
+        }
+
+        li.k-item.k-first {
+          height: 5rem;
+          border-bottom: 1px #F1F1F1 solid;
+
+          .export-pending-header {
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .export-pending-title {
+              display: flex;
+              align-items: center;
+
+              & > .k-icon {
+                margin-right: .5rem;
+              }
+
+              & > .export-pending-title-text {
+                font-size: 1.1rem;
+                font-weight: bold;
+                text-transform: uppercase;
+              }
+            }
+
+            .export-pending-close {
+              background: transparent;
+              border: transparent;
+              padding-right: .5rem;
+
+              .k-icon {
+                margin-right: .5rem;
+              }
+
+              .export-pending-close-text {
+                text-decoration: underline;
+              }
+            }
+          }
+        }
+
+        .k-item.k-last {
+          .export-pending-details {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+
+            & > .grid-export-status-progress-bar-wrapper {
+              width: 100%;
+            }
+          }
+        }
+      }
+
+      .grid-export-status-progress-bar-wrapper {
+
+        &.grid-export-status-progress-bar-wrapper--indeterminate {
+          overflow: hidden;
+          // If indeterminate hide progress status
+          .grid-export-status-progress-bar-text {
+            display: none;
+          }
+
+          & > .grid-export-status-progress-bar {
+            position: relative;
+            width: 40%;
+            transition: width .2s ease;
+            animation: indeterminate 1.5s linear infinite;
+            @keyframes indeterminate {
+              0% {
+                left: -40%;
+              }
+              50% {
+                left: 50%;
+              }
+              100% {
+                left: 140%;
+              }
+            }
+          }
+
+        }
+
+        width: 11.25rem;
+        height: 1rem;
+        border-radius: .5rem;
+        background: #F1F1F1;
+        position: relative;
+
+        & > .grid-export-status-progress-bar-text {
+          font-size: .8rem;
+          position: absolute;
+          top: 0;
+          display: flex;
+          justify-content: center;
+          width: 100%;
+        }
+
+        & > .grid-export-status-progress-bar {
+          border-radius: inherit;
+          height: 100%;
+          width: 100%;
+          background: #8AE234;
+          transition: width .2s ease;
+        }
+      }
+    }
+  }
+
+  .grid-export-action-menu {
+    .k-icon {
+      margin: 0;
+    }
+  }
+
+  .grid-export-status--error {
+    .grid-export-status-icon{
+      margin: 0;
+    }
+  }
+
+  .grid-export-status--success {
+    .k-icon {
+      margin: 0;
+    }
+  }
+}
+

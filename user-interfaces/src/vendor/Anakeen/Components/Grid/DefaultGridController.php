@@ -2,9 +2,11 @@
 
 namespace Anakeen\Components\Grid;
 
+use Anakeen\Router\Exception;
+use Anakeen\Routes\Ui\Transaction\TransactionManager;
+
 class DefaultGridController implements SmartGridController
 {
-
     public static function getGridConfig($collectionId, $clientConfig)
     {
         $configBuilder = new SmartGridConfigBuilder();
@@ -53,7 +55,41 @@ class DefaultGridController implements SmartGridController
         return $contentBuilder->getContent();
     }
 
-    public static function exportGridContent($collectionId, $clientConfig)
+    public static function exportGridContent($response, $collectionId, $clientConfig)
     {
+        $exportBuilder = new SmartGridExport();
+        $gridConfig = static::getGridConfig($collectionId, $clientConfig);
+        $columns = $gridConfig["columns"];
+        $contentBuilder = new SmartGridContentBuilder();
+        if (isset($collectionId)) {
+            $contentBuilder->setCollection($collectionId);
+        }
+        if (isset($clientConfig["pageable"]["pageSize"])) {
+            $contentBuilder->setPageSize("ALL");
+        }
+        if (isset($exportBuilder->clientColumnsConfig)) {
+            foreach ($columns as $column) {
+                $contentBuilder->addColumn($column);
+            }
+        }
+        $data = $contentBuilder->getContent();
+        $exportBuilder->clientColumnsConfig = $columns;
+        $exportBuilder->selectedRows = isset($clientConfig["selectedRows"]) ? $clientConfig["selectedRows"] : [];
+        $exportBuilder->unselectedRows = isset($clientConfig["unselectedRows"]) ? $clientConfig["unselectedRows"] : [];
+        $transactionId = isset($clientConfig["transaction"]) ? $clientConfig["transaction"]["transactionId"] : null;
+        if (isset($transactionId)) {
+            if (empty($transactionId)) {
+                $exception = new Exception("TRANS0002");
+                $exception->setHttpStatus("400", "Transaction id missing");
+                throw $exception;
+            }
+            return TransactionManager::runTransaction($transactionId, function ($tId) use ($response, $exportBuilder, $data) {
+                $exportBuilder->transactionId = $tId;
+                return $exportBuilder->doExport($response, $data);
+            });
+        } else {
+            $transaction = TransactionManager::createTransaction();
+            return $transaction->getData();
+        }
     }
 }
