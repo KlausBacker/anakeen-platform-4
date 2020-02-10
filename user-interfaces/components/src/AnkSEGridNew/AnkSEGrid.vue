@@ -1,6 +1,11 @@
 <template>
   <ank-progress class="smart-element-grid" :loading="isLoading">
     <div class="smart-element-grid-wrapper">
+      <div class="smart-element-grid-header">
+        <slot name="gridHeader" direction="left" v-bind:gridComponent="gridInstance">
+          <ank-export-button text="Export" :gridComponent="gridInstance"></ank-export-button>
+        </slot>
+      </div>
       <kendo-grid-vue
         v-if="columnsList.length"
         ref="smartGridWidget"
@@ -18,6 +23,9 @@
         @pagechange="onPageChange"
       >
       </kendo-grid-vue>
+      <div class="smart-element-grid-footer">
+        <slot name="gridFooter" v-bind:gridComponent="gridInstance"> </slot>
+      </div>
     </div>
   </ank-progress>
 </template>
