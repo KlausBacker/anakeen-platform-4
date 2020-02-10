@@ -61,7 +61,10 @@ export default Backbone.View.extend({
    */
   cleanAndRender: function vDocumentCleanAndRender() {
     this.trigger("loaderShow", i18n.___("Rendering", "ddui"), 70);
-    this.$el.find(".dcpStaticErrorMessage").attr("hidden", true);
+    this.$el
+      .closest(".smart-element-wrapper")
+      .find(".dcpStaticErrorMessage")
+      .attr("hidden", true);
     this.$el.show();
     this.$el[0].className = this.$el[0].className.replace(/\bdcpFamily.*\b/g, "");
     this.$el.removeClass("dcpDocument--view").removeClass("dcpDocument--edit");
