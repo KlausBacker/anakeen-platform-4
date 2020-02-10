@@ -130,11 +130,11 @@ class DocumentList
      *
      * The restrict fields is used for restrict the return of the get request
      *
-     * @return array|null
+     * @return array
      */
     protected function getFields()
     {
-        return $this->returnFields;
+        return $this->returnFields ?: [];
     }
 
     /**
