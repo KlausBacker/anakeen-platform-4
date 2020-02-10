@@ -616,7 +616,7 @@ export default Backbone.View.extend({
   showTransitionGraph: function vDocumentShowtransitionGraph() {
     var documentView = this;
     var transitionGraph = {};
-    var $target = this.$el.find('<div class="dcpTransitionGraph"/>');
+    var $target = $('<div class="dcpTransitionGraph"/>');
     //Init transition model
     transitionGraph.model = new ModelTransitionGraph({
       documentId: this.model.id,
