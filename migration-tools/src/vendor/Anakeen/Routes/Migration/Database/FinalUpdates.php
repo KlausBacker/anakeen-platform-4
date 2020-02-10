@@ -2,13 +2,9 @@
 
 namespace Anakeen\Routes\Migration\Database;
 
-use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
-use Anakeen\Core\Internal\ContextParameterManager;
 use Anakeen\Core\SEManager;
-use Anakeen\Migration\Utils;
 use Anakeen\Router\ApiV2Response;
-use Anakeen\Router\Exception;
 
 /**
  * Class ConfigApplicationTransfert
@@ -43,6 +39,8 @@ class FinalUpdates
 
         // update fieldvalues column for workflows
         DbManager::query("update family.wdoc set id=id;");
+
+        InitTransfert::restoreRoles();
 
         DbManager::query("select setval('seq_id_users', (select max(id) from users))");
         DbManager::query("select setval('seq_id_acl', (select max(id) from acl))");
