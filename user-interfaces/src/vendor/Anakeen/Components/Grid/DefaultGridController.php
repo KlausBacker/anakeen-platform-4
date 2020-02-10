@@ -23,7 +23,9 @@ class DefaultGridController implements SmartGridController
             $configBuilder->useDefaultColumns();
         }
         if (isset($clientConfig["actions"])) {
-            $configBuilder->addRowAction($clientConfig["actions"]);
+            foreach ($clientConfig["actions"] as $action) {
+                $configBuilder->addRowAction($action);
+            }
         }
 
         $config = $configBuilder->getConfig();
