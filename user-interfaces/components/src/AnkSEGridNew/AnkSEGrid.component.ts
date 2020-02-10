@@ -243,6 +243,7 @@ export default class GridController extends Vue {
     if (response.data.data.actions.length > 0) {
       this.columnsList.push({
         field: "actionMenu",
+        title: " ",
         abstract: true,
         withContext: true,
         context: ["Custom"],
@@ -262,7 +263,6 @@ export default class GridController extends Vue {
     this.currentPage.skip = pager.skip;
     this.currentPage.take = pager.take;
     this.dataItems = response.data.data.content;
-    console.log(this.dataItems);
     this.$emit("grid-data-bound", this.gridInstance);
   }
 
