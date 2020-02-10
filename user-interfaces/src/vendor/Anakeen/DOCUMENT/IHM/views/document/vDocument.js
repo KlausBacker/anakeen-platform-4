@@ -442,7 +442,11 @@ export default Backbone.View.extend({
   scrollTobVisibleTab: function vDocumentscrollTobVisibleTab() {
     var kendoTabStrip = this.kendoTabs ? this.kendoTabs.data("kendoTabStrip") : null;
     if (kendoTabStrip && kendoTabStrip._scrollableModeActive) {
-      kendoTabStrip._scrollTabsToItem(this.kendoTabs.find("li.k-state-active"));
+      const tabActive = this.kendoTabs.find("li.k-state-active");
+      //Do it only if there at least one tab or the internal methods fails
+      if (tabActive.length > 0) {
+        kendoTabStrip._scrollTabsToItem(tabActive);
+      }
     }
   },
 
