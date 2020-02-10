@@ -27,6 +27,7 @@ class FinalUpdates
 
     protected function doRequest()
     {
+        \Anakeen\Database\Migration\DefaultParameterValues::removeValues();
         $data = [];
 
         // Transfert field access
