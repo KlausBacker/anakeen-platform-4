@@ -72,8 +72,7 @@ class CheckInitial extends CheckData
                     $err
                 ));
             }
-        }
-        if ($this->InitialValue) {
+        } elseif ($this->InitialValue) {
             $dbattr = $this->importer->getSmartField($this->InitialName);
             if ($dbattr) {
                 if ($dbattr->isMultiple() && !is_array($this->InitialValue)) {
