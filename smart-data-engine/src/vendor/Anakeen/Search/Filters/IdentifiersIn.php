@@ -35,10 +35,8 @@ class IdentifiersIn extends StandardAttributeFilter implements ElementSearchFilt
             );
         }
         $this->value = $value;
-        $argv = func_get_args();
-        array_splice($argv, 0, 1);
-        if (isset($argv[0])) {
-            $this->INITID = ($argv[0] & self::INITID);
+        if (isset($options)) {
+            $this->INITID = ($options & self::INITID);
         }
     }
     /**

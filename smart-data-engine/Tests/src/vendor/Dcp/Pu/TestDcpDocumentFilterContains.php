@@ -106,4 +106,58 @@ class TestDcpDocumentFilterContains extends TestDcpDocumentFiltercommon
             )
         );
     }
+    /**
+     * @param $test
+     * @dataProvider dataContainsNoDiacritic
+     */
+    public function testContainsNoDiacritic($test)
+    {
+        if (is_a($test["value"], LateNameResolver::class)) {
+            $test["value"] = $test["value"]->value;
+        }
+        $this->common_testFilter(
+            $test["fam"],
+            new \Anakeen\Search\Filters\Contains(
+                $test["attr"],
+                $test["value"],
+                \Anakeen\Search\Filters\Contains::NODIACRITIC
+            ),
+            $test["expected"]
+        );
+    }
+    public function dataContainsNoDiacritic()
+    {
+        return array(
+            array(
+                array(
+                    "fam" => "TEST_DCP_DOCUMENTFILTER_CONTAINS",
+                    "attr" => "S_TEXT",
+                    "value" => "hete",
+                    "expected" => array(
+                        "CONTAINS_5"
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => "TEST_DCP_DOCUMENTFILTER_CONTAINS",
+                    "attr" => "S_LONGTEXT",
+                    "value" => "hete",
+                    "expected" => array(
+                        "CONTAINS_5"
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => "TEST_DCP_DOCUMENTFILTER_CONTAINS",
+                    "attr" => "S_HTMLTEXT",
+                    "value" => "hete",
+                    "expected" => array(
+                        "CONTAINS_5"
+                    )
+                )
+            )
+        );
+    }
 }
