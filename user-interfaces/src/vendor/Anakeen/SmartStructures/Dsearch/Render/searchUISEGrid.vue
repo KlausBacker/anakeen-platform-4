@@ -10,18 +10,19 @@
     class="search-grid"
     :contextTitles="false"
     ref="searchGrid"
+    controller="REPORT_GRID_CONTROLLER"
   >
   </ank-se-grid>
 </template>
 <script>
-import AnkSEGrid from "../../../../../../components/lib/AnkSmartElementGrid.esm";
+import AnkSEGrid from "../../../../../../components/lib/AnkSmartElementVueGrid.esm";
 
 export default {
   name: "SearchUISEGrid",
   components: {
     "ank-se-grid": AnkSEGrid
   },
-  props: ["searchId"]
+  props: ["searchId"],
 };
 </script>
 <style lang="scss"></style>
