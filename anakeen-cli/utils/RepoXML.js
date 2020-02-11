@@ -125,8 +125,8 @@ class RepoXML extends XMLLoader {
     );
 
     const orderedList = newList.sort((moduleA, moduleB) => {
-      if (moduleA.name < moduleB.name) return -1;
-      if (moduleA.name > moduleB.name) return 1;
+      if (moduleA.$.name < moduleB.$.name) return -1;
+      if (moduleA.$.name > moduleB.$.name) return 1;
       return 0;
     });
 
@@ -168,7 +168,10 @@ class RepoXML extends XMLLoader {
    * @returns {Array|*}
    */
   getModuleList() {
-    return this.data.compose.dependencies[0].module || [];
+    if (this.data && this.data.compose && this.data.compose.dependencies && this.data.compose.dependencies[0] && this.data.compose.dependencies[0].module) {
+      return this.data.compose.dependencies[0].module;
+    }
+    return [];
   }
 
   /**
