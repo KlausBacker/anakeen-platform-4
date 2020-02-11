@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="transformation" version="2.0.1-RC.2019.1.30" vendor="Anakeen" license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3">
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="transformation" version="2.0.1-RC.2019.1.31" vendor="Anakeen" license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3">
     <description>Transformation Engine Client Library</description>
   <requires>
-    <module name="admin-center" version="^2.1.0-RC.2019.1.30"/>
+    <module name="admin-center" version="^2.1.0-RC.2019.1.31"/>
   </requires>
   <replaces>
   </replaces>

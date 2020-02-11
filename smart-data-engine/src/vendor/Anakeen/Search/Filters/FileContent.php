@@ -29,11 +29,9 @@ class FileContent extends StandardAttributeFilter implements ElementSearchFilter
     {
         parent::__construct($attrId);
         $this->value = $value;
-        $argv = func_get_args();
-        array_splice($argv, 0, 2);
-        if (isset($argv[0])) {
-            $this->NOT = ($argv[0] & self::NOT);
-            $this->MATCH_REGEXP = ($argv[0] & self::MATCH_REGEXP);
+        if (isset($options)) {
+            $this->NOT = ($options & self::NOT);
+            $this->MATCH_REGEXP = ($options & self::MATCH_REGEXP);
         }
     }
 

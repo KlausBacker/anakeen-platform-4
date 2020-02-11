@@ -127,11 +127,7 @@ export default class SmartStructureManagerParametersController extends Vue {
           type: "frame"
         });
 
-        if (this.smartFormArrayStructure.hasOwnProperty(parameter.parameterId)) {
-          parametersRenderOptions[parameter.parameterId] = {
-            "collapse": "collapse",
-          }
-        } else {
+        if (!["array", "htmltext"].includes(parameter.type)) {
           parametersRenderOptions[parameter.parameterId] = {
             "responsiveColumns": [
               {
@@ -139,8 +135,7 @@ export default class SmartStructureManagerParametersController extends Vue {
                   "minWidth": "50rem",
                   "grow": true
               }
-          ],
-          "collapse": "collapse",
+            ]
           }
         }
       });

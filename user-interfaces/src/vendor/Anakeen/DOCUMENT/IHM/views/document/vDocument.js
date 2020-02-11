@@ -61,7 +61,10 @@ export default Backbone.View.extend({
    */
   cleanAndRender: function vDocumentCleanAndRender() {
     this.trigger("loaderShow", i18n.___("Rendering", "ddui"), 70);
-    this.$el.find(".dcpStaticErrorMessage").attr("hidden", true);
+    this.$el
+      .closest(".smart-element-wrapper")
+      .find(".dcpStaticErrorMessage")
+      .attr("hidden", true);
     this.$el.show();
     this.$el[0].className = this.$el[0].className.replace(/\bdcpFamily.*\b/g, "");
     this.$el.removeClass("dcpDocument--view").removeClass("dcpDocument--edit");
@@ -439,7 +442,11 @@ export default Backbone.View.extend({
   scrollTobVisibleTab: function vDocumentscrollTobVisibleTab() {
     var kendoTabStrip = this.kendoTabs ? this.kendoTabs.data("kendoTabStrip") : null;
     if (kendoTabStrip && kendoTabStrip._scrollableModeActive) {
-      kendoTabStrip._scrollTabsToItem(this.kendoTabs.find("li.k-state-active"));
+      const tabActive = this.kendoTabs.find("li.k-state-active");
+      //Do it only if there at least one tab or the internal methods fails
+      if (tabActive.length > 0) {
+        kendoTabStrip._scrollTabsToItem(tabActive);
+      }
     }
   },
 
@@ -613,7 +620,7 @@ export default Backbone.View.extend({
   showTransitionGraph: function vDocumentShowtransitionGraph() {
     var documentView = this;
     var transitionGraph = {};
-    var $target = this.$el.find('<div class="dcpTransitionGraph"/>');
+    var $target = $('<div class="dcpTransitionGraph"/>');
     //Init transition model
     transitionGraph.model = new ModelTransitionGraph({
       documentId: this.model.id,

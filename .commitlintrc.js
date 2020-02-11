@@ -22,7 +22,8 @@ const Configuration = {
         "workflow",
         "tools",
         "i18n",
-        "test-tools"
+        "test-tools",
+        "migration-tools"
       ]
     ]
   }

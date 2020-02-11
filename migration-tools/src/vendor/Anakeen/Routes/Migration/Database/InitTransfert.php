@@ -18,7 +18,7 @@ class InitTransfert
     protected $structureName;
     protected $structure;
 
-    const delta= 200;
+    const delta = 800;
 
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
@@ -50,6 +50,7 @@ class InitTransfert
         $tools = file_get_contents(__DIR__ . "/../../../Migration/Tools.sql");
         DbManager::query($tools);
 
+        $this->moveRoles();
         $this->move1000();
         $this->moveIds();
 
@@ -77,7 +78,7 @@ class InitTransfert
                 $id = intval($id);
                 $sql = sprintf("alter table doc%d rename to doc%d", $id + self::delta, $id);
                 DbManager::query($sql);
-                $sql = sprintf("alter sequence seq_doc%d rename to seq_doc%d", $id + self::delta, $id);
+                $sql = sprintf("drop sequence if exists seq_doc%d", $id + self::delta);
                 DbManager::query($sql);
             }
         }
@@ -90,9 +91,9 @@ class InitTransfert
     protected function moveIds()
     {
         // @TODO Need to restore constraint after
-        $sql = "alter table docpermext drop constraint docpermext_docid_check";
+        $sql = "alter table docpermext drop constraint if exists docpermext_docid_check";
         DbManager::query($sql);
-        $sql = "alter table docperm drop constraint docperm_docid_check";
+        $sql = "alter table docperm drop constraint  if exists docperm_docid_check";
         DbManager::query($sql);
 
         Utils::importForeignTable("docname");
@@ -145,6 +146,42 @@ class InitTransfert
             DbManager::query($sql);
         }
     }
+
+    protected static function moveRoles()
+    {
+        $sql = <<<SQL
+update users set id = -id where id > 9;
+update groups set iduser = -iduser where iduser > 9;
+update groups set idgroup = -idgroup where iduser > 9;
+update doc127 set us_whatid = -(us_whatid::int) where us_whatid::int > 9;
+update doc128 set us_whatid = -(us_whatid::int) where us_whatid::int > 9;
+update doc130 set us_whatid = -(us_whatid::int) where us_whatid::int > 9;
+update permission set id_user = -id_user where id_user > 9;
+SQL;
+        DbManager::query($sql);
+    }
+
+
+    /**
+     * Call in Final Update
+     * @throws \Anakeen\Database\Exception
+     */
+    public static function restoreRoles()
+    {
+        DbManager::query("select max(id) from users", $delta, true, true);
+
+        $sql = <<<SQL
+update users set id = (-id + %d) where id < -9;
+update groups set iduser = (-iduser + %d) where iduser < -9;
+update groups set idgroup = (-idgroup + %d) where iduser < -9;
+update doc127 set us_whatid = (- us_whatid::int + %d) where us_whatid::int < -9;
+update doc128 set us_whatid = (- us_whatid::int + %d) where us_whatid::int < -9;
+update doc130 set us_whatid = (- us_whatid::int + %d) where us_whatid::int < -9;
+update permission set id_user = (-id_user + %d) where id_user < -9;
+SQL;
+        DbManager::query(sprintf($sql, $delta, $delta, $delta, $delta, $delta, $delta, $delta));
+    }
+
 
     protected static function getSqlAlterTable()
     {
@@ -205,10 +242,26 @@ SQL;
         $sqls[] = sprintf("update docpermext set docid=%d where docid=%d", $idTo, $idFrom);
         $sqls[] = sprintf("update users set fid=%d where fid=%d", $idTo, $idFrom);
 
-        $sqls[] = sprintf("update family.cvdoc set cv_mskid=array_replace(cv_mskid::int[], %d, %d)::int[]", $idFrom, $idTo);
-        $sqls[] = sprintf("update family.fieldaccesslayerlist set fall_layer=array_replace(fall_layer::int[], %d, %d)::int[]", $idFrom, $idTo);
-        $sqls[] = sprintf("update family.hubconfiguration set hub_station_id='%d' where hub_station_id::int = '%d'", $idTo, $idFrom);
-        $sqls[] = sprintf("update family.hubconfiguration set hub_execution_roles=array_replace(hub_execution_roles::int[], %d, %d)::int[]", $idFrom, $idTo);
+        $sqls[] = sprintf(
+            "update family.cvdoc set cv_mskid=array_replace(cv_mskid::int[], %d, %d)::int[]",
+            $idFrom,
+            $idTo
+        );
+        $sqls[] = sprintf(
+            "update family.fieldaccesslayerlist set fall_layer=array_replace(fall_layer::int[], %d, %d)::int[]",
+            $idFrom,
+            $idTo
+        );
+        $sqls[] = sprintf(
+            "update family.hubconfiguration set hub_station_id='%d' where hub_station_id::int = '%d'",
+            $idTo,
+            $idFrom
+        );
+        $sqls[] = sprintf(
+            "update family.hubconfiguration set hub_execution_roles=array_replace(hub_execution_roles::int[], %d, %d)::int[]",
+            $idFrom,
+            $idTo
+        );
         return $sqls;
     }
 }

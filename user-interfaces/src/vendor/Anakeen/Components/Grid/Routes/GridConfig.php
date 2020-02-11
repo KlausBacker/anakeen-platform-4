@@ -3,7 +3,7 @@
 namespace Anakeen\Components\Grid\Routes;
 
 use Anakeen\Core\Internal\SmartElement;
-use Anakeen\SmartElementManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
@@ -47,7 +47,7 @@ class GridConfig
     protected function parseRequestParams(\Slim\Http\Request $request, \Slim\Http\Response $response, $args)
     {
         $this->collectionId = $args["collectionId"];
-        $this->collectionDoc = SmartElementManager::getDocument($this->collectionId);
+        $this->collectionDoc = SEManager::getDocument($this->collectionId);
         if (!$this->collectionDoc) {
             $exception = new Exception("GRID0001", $this->collectionId);
             $exception->setHttpStatus("404", "Smart Element not found");
@@ -161,7 +161,7 @@ class GridConfig
                 }
                 break;
         }
-        $this->structureRef = SmartElementManager::getFamily($this->structureId);
+        $this->structureRef = SEManager::getFamily($this->structureId);
         if (!$this->structureRef) {
             $exception = new Exception("GRID0002", $this->structureId);
             $exception->setHttpStatus("404", "Searched Smart Structure not found");

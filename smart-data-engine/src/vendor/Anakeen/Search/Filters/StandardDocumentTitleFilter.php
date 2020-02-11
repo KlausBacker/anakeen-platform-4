@@ -32,11 +32,9 @@ class StandardDocumentTitleFilter extends StandardAttributeFilter implements Ele
     {
         parent::__construct($attrId);
         $this->value = $value;
-        $argv = func_get_args();
-        array_splice($argv, 0, 2);
-        if (isset($argv[0])) {
-            $this->MATCH_REGEXP = ($argv[0] & self::MATCH_REGEXP);
-            $this->NOCASE = ($argv[0] & self::NOCASE);
+        if (isset($options)) {
+            $this->MATCH_REGEXP = ($options & self::MATCH_REGEXP);
+            $this->NOCASE = ($options & self::NOCASE);
         }
     }
 

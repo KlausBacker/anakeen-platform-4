@@ -99,7 +99,9 @@ const createBuildXML = ({ moduleName, vendorName }, isSmartStructure) => {
         },
         "acli:stub-config": {
           "acli:stub-struct": {
-            $: { source: path.join("src/vendor", vendorNamePascalCase, moduleNamePascalCase, "SmartStructures") }
+            $: {
+              source: path.join("src/vendor", vendorNamePascalCase, moduleNamePascalCase, "SmartStructures/**/*xml")
+            }
           }
         }
       }
