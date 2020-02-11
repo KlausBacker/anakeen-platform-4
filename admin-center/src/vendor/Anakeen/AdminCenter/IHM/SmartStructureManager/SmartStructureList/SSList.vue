@@ -26,7 +26,7 @@
             :key="`tab-${tab.name}-${index}`"
             :class="{
               'ss-list-item': true,
-              'item-active': tab.name === selected || tab.id === selected
+              'item-active': tab.name == selected || tab.id == selected
             }"
             :title="tab.title"
             @click="onListItemClicked(tab.id)"
