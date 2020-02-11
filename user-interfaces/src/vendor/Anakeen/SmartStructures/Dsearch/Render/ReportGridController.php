@@ -24,7 +24,7 @@ class ReportGridController extends DefaultGridController
         }
         if (isset($clientConfig["actions"])) {
             foreach ($clientConfig["actions"] as $action) {
-                $configBuilder->addRowAction($clientConfig["actions"]);
+                $configBuilder->addRowAction($action);
             }
         }
         $configBuilder->addRowAction(array("action"=> "consult", "title"=> "Consult"));
