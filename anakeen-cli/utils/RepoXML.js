@@ -168,7 +168,13 @@ class RepoXML extends XMLLoader {
    * @returns {Array|*}
    */
   getModuleList() {
-    if (this.data && this.data.compose && this.data.compose.dependencies && this.data.compose.dependencies[0] && this.data.compose.dependencies[0].module) {
+    if (
+      this.data &&
+      this.data.compose &&
+      this.data.compose.dependencies &&
+      this.data.compose.dependencies[0] &&
+      this.data.compose.dependencies[0].module
+    ) {
       return this.data.compose.dependencies[0].module;
     }
     return [];
