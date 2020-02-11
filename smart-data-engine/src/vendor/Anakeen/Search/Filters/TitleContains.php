@@ -34,13 +34,11 @@ class TitleContains extends StandardAttributeFilter implements ElementSearchFilt
     {
         parent::__construct('title');
         $this->value = $value;
-        $argv = func_get_args();
-        array_splice($argv, 0, 1);
-        if (!empty($argv[0])) {
-            $this->NOT = ($argv[0] & self::NOT);
-            $this->REGEXP = ($argv[0] & self::REGEXP);
-            $this->NOCASE = ($argv[0] & self::NOCASE);
-            $this->NODIACRITIC = ($argv[0] & self::NODIACRITIC);
+        if (!empty($options)) {
+            $this->NOT = ($options & self::NOT);
+            $this->REGEXP = ($options & self::REGEXP);
+            $this->NOCASE = ($options & self::NOCASE);
+            $this->NODIACRITIC = ($options & self::NODIACRITIC);
             /* NODIACRITIC toggles NOCASE */
             if ($this->NODIACRITIC) {
                 $this->NOCASE = true;

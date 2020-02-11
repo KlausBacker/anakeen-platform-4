@@ -60,7 +60,7 @@ class CheckInitial extends CheckData
      */
     protected function checkInitialValue()
     {
-        if (preg_match('/^[a-z_0-9]*::/i', $this->InitialValue)) {
+        if (\Anakeen\Core\Internal\SmartElement::seemsMethod($this->InitialValue)) {
             $oParse = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
             $strucFunc = $oParse->parse($this->InitialValue, true);
             if ($err = $strucFunc->getError()) {
@@ -72,8 +72,7 @@ class CheckInitial extends CheckData
                     $err
                 ));
             }
-        }
-        if ($this->InitialValue) {
+        } elseif ($this->InitialValue) {
             $dbattr = $this->importer->getSmartField($this->InitialName);
             if ($dbattr) {
                 if ($dbattr->isMultiple() && !is_array($this->InitialValue)) {

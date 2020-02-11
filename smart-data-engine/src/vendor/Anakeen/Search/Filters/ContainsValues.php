@@ -44,10 +44,8 @@ class ContainsValues extends StandardAttributeFilter implements ElementSearchFil
     {
         parent::__construct($attrId);
         $this->value = $value;
-        $argv = func_get_args();
-        array_splice($argv, 0, 2);
-        if (isset($argv[0])) {
-            $this->NOT = ($argv[0] & self::NOT);
+        if (isset($options)) {
+            $this->NOT = ($options & self::NOT);
         }
     }
 

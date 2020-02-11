@@ -4128,7 +4128,7 @@ create unique index i_docir on doc(initid, revision);";
 
     public static function seemsMethod($method)
     {
-        return is_string($method) && preg_match('/([^:]*)::([^(]+)\(([^)]*)\)/', $method);
+        return is_string($method) && preg_match('/^([0-9a-z_\\\]*)::[a-z_]([0-9a-z_]*)\(([^)]*)\)/i', trim($method));
     }
 
     /**

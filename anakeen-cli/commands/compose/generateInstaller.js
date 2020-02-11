@@ -17,6 +17,11 @@ exports.builder = {
     default: "./control.zip",
     type: "string"
   },
+  addLocalApp: {
+    alias: "a",
+    description: "Glob to local app to add to the delivery",
+    type: "string"
+  },
   customReadme: {
     description: "Path to a custom mustache readme the path value will be updated",
     type: "string",

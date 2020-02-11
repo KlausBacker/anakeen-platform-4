@@ -5,7 +5,7 @@ namespace Anakeen\Ui;
 
 use Anakeen\Components\Grid\Operators;
 use Anakeen\Core\Internal\SmartElement;
-use Anakeen\SmartElementManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Router\Exception;
 use Anakeen\Routes\Core\DocumentList;
 use SmartStructure\Fields\Report;
@@ -125,7 +125,7 @@ class DataSource extends DocumentList
             $this->_searchDoc->fromid = -1;
             $this->smartElement = null;
         } else {
-            $doc = SmartElementManager::getDocument($this->smartElementId);
+            $doc = SEManager::getDocument($this->smartElementId);
             if (!$doc) {
                 $exception = new Exception('GRID0001', $this->smartElementId);
                 $exception->setHttpStatus("404", "Smart Element not found");
@@ -234,7 +234,7 @@ class DataSource extends DocumentList
 
                         return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy(
                             $orderBy,
-                            SmartElementManager::getFamily($famId)
+                            SEManager::getFamily($famId)
                         );
                     default:
                         return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($orderBy);

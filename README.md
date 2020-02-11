@@ -23,6 +23,7 @@ Ensuite quelques commandes :
 1.  Faire un `make app-autorelease` pour builder les dernières versions des paquets
 2.  En cas de première initialisation des conteneurs Docker :
     1. Se logger sur la registry d'images Docker de GitLab : `docker login gitlab.anakeen.com:4567` (avec login et mot de passe de votre compte [GitLab Anakeen](https://gitlab.anakeen.com/))
+    1. `make start-env`
     1. `make init-docker`
     1. Répondre aux questions
     1. patienter pendant l'installation avec la commande `make control-status`

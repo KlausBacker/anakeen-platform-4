@@ -43,7 +43,6 @@ class DataElementTransfert
     {
         $data = [];
 
-
         $data["count"] = count($this->transfertRequest($this->structure));
         $data["seqval"] = $this->updateSequence($this->structure);
         $data["properties"] = $this->getProperties();
@@ -93,15 +92,11 @@ class DataElementTransfert
         $propMapping = static::getPropMapping();
         $fields = $structure->getNormalAttributes();
         foreach ($fields as $field) {
+            if (in_array($field->type, ["action", "menu", "array"])) {
+                continue;
+            }
             if (!$field->isMultiple()) {
-                switch ($field->type) {
-                    case "action":
-                    case "menu":
-                    case "array":
-                        break;
-                    default:
-                        $propMapping[$field->id] = $field->id;
-                }
+                $propMapping[$field->id] = $field->id;
             }
 
             if ($field->isMultipleInArray()) {
