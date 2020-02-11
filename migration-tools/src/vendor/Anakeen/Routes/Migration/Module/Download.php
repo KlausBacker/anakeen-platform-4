@@ -30,16 +30,22 @@ class Download
     protected $outputFile;
     protected $outputPath;
 
+    protected $ignoreAccounts=false;
+    /**
+     * @var bool
+     */
+    protected $ignoreProfile=false;
+
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        $this->initParameters($args);
+        $this->initParameters($request, $args);
         $data = $this->doRequest();
 
         // return ApiV2Response::withData($response, $data);
         return ApiV2Response::withFile($response, $data);
     }
 
-    protected function initParameters($args)
+    protected function initParameters(\Slim\Http\request $request, $args)
     {
         $this->vendor = $args["vendor"];
 
@@ -49,10 +55,14 @@ class Download
         if ($moduleName) {
             $this->outputPath .= "/" . $moduleName;
         }
+
+        $this->ignoreAccounts = $request->getQueryParam("ignoreAccount") === "true";
+        $this->ignoreProfile = $request->getQueryParam("ignoreProfile") === "true";
     }
 
     protected function doRequest()
     {
+        ini_set("max_execution_time", 0);
         $this->zip = new \ZipArchive();
         $this->outputFile = sprintf("%s/%s.zip", ContextManager::getTmpDir(), $this->vendor);
         $ret = $this->zip->open($this->outputFile, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
@@ -66,9 +76,14 @@ class Download
             // Not necessary already set by App migration
             // $this->addRoutesConfig();
 
-            $this->addRoles();
-            $this->addGroups();
-            $this->addGlobalProfilesConfig();
+            if ($this->ignoreAccounts === false) {
+                $this->addRoles();
+                $this->addGroups();
+            }
+
+            if ($this->ignoreProfile === false) {
+                $this->addGlobalProfilesConfig();
+            }
             $this->zip->close();
         }
 

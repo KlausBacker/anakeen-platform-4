@@ -1,6 +1,9 @@
 <?php
 
 namespace {{VENDOR}}\{{MODULE}}\Routes\V1\{{classSubNs}};
+
+use Anakeen\Router\ApiV2Response;
+use Demat\Crud\V1v2;
 /**
  *
  * @description {{description}}
@@ -8,16 +11,25 @@ namespace {{VENDOR}}\{{MODULE}}\Routes\V1\{{classSubNs}};
  */
 class {{className}}
 {
+ /** @var \{{classSubNs}}\{{className}} */
+ protected $crudObject;
+ protected $identifier;
+
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
+    $this->crudObject=new \{{classSubNs}}\{{className}}();
         $this->initParameters($args, $request);
 $data = $this->doRequest($request);
-return $response->write($data);
+return ApiV2Response::withData($response,$data,V1v2::convertMsgs($this->crudObject) );
 }
+
 
 protected function initParameters($args, \Slim\Http\request $request)
 {
-//@FIXME HERE set parameters in protected fields
+    //@FIXME HERE set parameters in protected fields
+    $this->identifier = $args["identifier"] ?? "";
+    $this->crudObject->setContentParameters($request->getQueryParams());
+    $this->crudObject->setUrlParameters($args);
 }
 
 protected function doRequest(\Slim\Http\request $request)
@@ -26,38 +38,19 @@ protected function doRequest(\Slim\Http\request $request)
 $data = [];
 switch ($request->getMethod()) {
 case "GET":
-$data = $this->get();
+$data = $this->crudObject->read($this->identifier);
 break;
 case "POST":
-$data = $this->create();
+$data = $this->crudObject->create();
 break;
 case "PUT":
-$data = $this->update();
+$data = $this->crudObject->update($this->identifier);
 break;
 case "DELETE":
-$data = $this->delete();
+$data = $this->crudObject->delete($this->identifier);
 break;
 }
 return $data;
 }
 
-public function get()
-{
-return [];
-}
-
-public function create()
-{
-return [];
-}
-
-public function delete()
-{
-return [];
-}
-
-public function update()
-{
-return [];
-}
 }
