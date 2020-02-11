@@ -472,10 +472,21 @@ class Compose {
    * Generate a control with the app inside
    * @returns {Promise<void>}
    */
-  async generateLocalControl({ localRepoName = "repo", controlTarget = "control.zip", customReadme = "" }) {
+  async generateLocalControl({
+    localRepoName = "repo",
+    controlTarget = "control.zip",
+    customReadme = "",
+    addLocalApp = ""
+  }) {
     await this.loadContext();
-    signale.note(`Launch install to refresh repo`);
-    await this.install({});
+    signale.note(`Launch install to refresh repo and add custom app`);
+    if (addLocalApp) {
+      if (!path.isAbsolute(addLocalApp)) {
+        addLocalApp = path.resolve(process.cwd(), addLocalApp);
+      }
+      signale.note(`Add local app from ${addLocalApp}`);
+    }
+    await this.install({ customLocalPath: addLocalApp });
     const localRepo = this._convertPathToAbsolute(this.repoXML.getConfigLocalRepo());
     const controlLock = this.repoLockXML.getModuleByName("anakeen-control");
     if (controlLock === undefined) {
@@ -483,6 +494,7 @@ class Compose {
         "You have no control in your repo.lock.xml, you should add it (compose install anakeen-control)"
       );
     }
+    signale.note(`Open the control zip`);
     const controlPath = path.join(localRepo, controlLock.resources[0].app[0].$.path);
     const zipFile = await new JSZip.external.Promise((resolve, reject) => {
       fs.readFile(controlPath, function(err, data) {
@@ -495,10 +507,12 @@ class Compose {
     }).then(data => {
       return JSZip.loadAsync(data);
     });
+    signale.note(`Add app from ${localRepo}`);
     //add localRepo files
     const appFile = await glob(path.join(localRepo, "/**/*.app"), { absolute: true });
     appFile.map(currentApp => {
       const stream = fs.createReadStream(currentApp);
+      this.debug(`Add app ${currentApp}`);
       zipFile.file(path.join(localRepoName, path.basename(currentApp)), stream);
     });
     zipFile.file(path.join(localRepoName, "content.xml"), fs.createReadStream(path.join(localRepo, "content.xml")));
@@ -506,6 +520,7 @@ class Compose {
     const tpl_readme = await fs_readfile(readPath, {
       encoding: "utf-8"
     });
+    signale.note(`Add README.md`);
     zipFile.file(
       "README.md",
       Mustache.render(tpl_readme, {
@@ -513,6 +528,7 @@ class Compose {
       })
     );
 
+    signale.note(`Save the new zip`);
     return new Promise((resolve, reject) => {
       zipFile
         .generateNodeStream({ type: "nodebuffer", streamFiles: true })
@@ -524,6 +540,9 @@ class Compose {
           signale.note(`${controlTarget} done`);
           resolve();
         });
+    }).then(async () => {
+      signale.note(`Launch install to refresh repo and remove custom app`);
+      return await this.install({});
     });
   }
 
@@ -532,7 +551,7 @@ class Compose {
    *
    * @returns {Promise<void>}
    */
-  async install({ withoutLockFile = false, latest = false }) {
+  async install({ withoutLockFile = false, latest = false, customLocalPath = "" }) {
     let moduleLockList = [];
     //region prepare data
     await this.loadContext();
@@ -740,6 +759,9 @@ class Compose {
 
     //region handle localApp
     const localPath = this.repoXML.getAppLocalPath();
+    if (customLocalPath) {
+      localPath.push(customLocalPath);
+    }
     //Find app
     await Promise.all(
       localPath.map(async currentGlob => {
