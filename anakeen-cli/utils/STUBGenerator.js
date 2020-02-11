@@ -421,8 +421,76 @@ exports.parseWorkflowContants = ({ globFile, info, log, verbose }) => {
       });
     }
 
-    //Analyze Workflow  files
+    // Init js config parameters
+    const configs = info.buildInfo.build.config["stub-config"];
+    let jsConfig = null;
+    if (configs) {
+      const config = configs[0]["stub-wfl-js-config"];
+      if (config) {
+        jsConfig = {
+          target: config[0].$.target || "./constants/workflows/",
+          imports: []
+        };
 
+        const jsImports = config[0]["stub-js-import"];
+        let dirPath = jsConfig.target;
+        if (!fs.existsSync(dirPath)) {
+          fs.mkdirSync(dirPath);
+        }
+
+        if (jsImports) {
+          let parentDirs = path
+            .dirname(jsConfig.target)
+            .split(path.sep)
+            .filter(dirPath => {
+              return dirPath !== ".";
+            })
+            .map(() => {
+              return "..";
+            });
+
+          jsImports.forEach(importItem => {
+            let sourceParts = importItem.$.source.split(path.sep);
+            let sourcerelativePath = parentDirs.concat(sourceParts).join(path.sep);
+            let sourcePath = importItem.$.source;
+
+            if (!fs.existsSync(sourcePath)) {
+              let nodePath = require.resolve(sourcePath);
+              if (nodePath) {
+                sourcerelativePath = sourcePath;
+                sourcePath = nodePath;
+              } else {
+                throw new Error(`Unable to find the stub js import source "${sourcePath}"`);
+              }
+            }
+
+            jsConfig.imports.push({
+              name: importItem.$.name,
+              source: sourcePath,
+              relativeSource: sourcerelativePath,
+              exportedClass: []
+            });
+          });
+
+          jsConfig.imports.forEach(jsConfigItem => {
+            const jsContent = fs.readFileSync(jsConfigItem.source, {
+              encoding: "utf8"
+            });
+            let parse = babelParser.parse(jsContent, {
+              sourceType: "module",
+              plugins: ["classProperties"]
+            });
+            parse.program.body.forEach(parseNode => {
+              if (parseNode.type === "ExportNamedDeclaration") {
+                jsConfigItem.exportedClass.push(parseNode.declaration.id.name);
+              }
+            });
+          });
+        }
+      }
+    }
+
+    //Analyze Workflow  files
     return (
       Promise.all(
         files.filesToAnalyze.map(currentFilePath => {
@@ -547,8 +615,8 @@ exports.parseWorkflowContants = ({ globFile, info, log, verbose }) => {
             const workflow = Object.values(workflowData)[0];
 
             let pathParts = path.dirname(workflow.file).split(path.sep);
-            let jsBaseName = workflow.classname + ".php";
-            let target = pathParts.concat([jsBaseName]).join(path.sep);
+            let phpBaseName = workflow.classname + "__STUB.php";
+            let target = pathParts.concat([phpBaseName]).join(path.sep);
             let phpContent = mustache.render(tplPHP, workflow);
             fs.writeFileSync(target, phpContent);
             if (verbose) log("Write PHP workflow constants file: " + target);
@@ -562,13 +630,11 @@ exports.parseWorkflowContants = ({ globFile, info, log, verbose }) => {
 
           allWorkflowData.forEach(workflowData => {
             const workflow = Object.values(workflowData)[0];
-
-            let pathParts = path.dirname(workflow.file).split(path.sep);
             let jsBaseName = workflow.classname + ".js";
-            let target = pathParts.concat([jsBaseName]).join(path.sep);
-
+            let target = jsConfig.target.concat(jsBaseName);
             let jsContent = mustache.render(tplJS, workflow);
             jsContent = prettier.format(jsContent, { semi: true, parser: "babel" });
+
             fs.writeFileSync(target, jsContent);
             if (verbose) log("Write JS workflow constants file: " + target);
           });
@@ -587,9 +653,76 @@ exports.parseEnumContants = ({ globFile, info, log, verbose }) => {
         log(`Analyze : ${currentFile} : in ignore conf`);
       });
     }
+    // Init js config parameters
+    const configs = info.buildInfo.build.config["stub-config"];
+    let jsConfig = null;
+    if (configs) {
+      const config = configs[0]["stub-enum-js-config"];
+      if (config) {
+        jsConfig = {
+          target: config[0].$.target || "./constants/enumerates",
+          imports: []
+        };
+
+        const jsImports = config[0]["stub-js-import"];
+        let dirPath = jsConfig.target;
+        if (!fs.existsSync(dirPath)) {
+          fs.mkdirSync(dirPath);
+        }
+
+        if (jsImports) {
+          let parentDirs = path
+            .dirname(jsConfig.target)
+            .split(path.sep)
+            .filter(dirPath => {
+              return dirPath !== ".";
+            })
+            .map(() => {
+              return "..";
+            });
+
+          jsImports.forEach(importItem => {
+            let sourceParts = importItem.$.source.split(path.sep);
+            let sourcerelativePath = parentDirs.concat(sourceParts).join(path.sep);
+            let sourcePath = importItem.$.source;
+
+            if (!fs.existsSync(sourcePath)) {
+              let nodePath = require.resolve(sourcePath);
+              if (nodePath) {
+                sourcerelativePath = sourcePath;
+                sourcePath = nodePath;
+              } else {
+                throw new Error(`Unable to find the stub js import source "${sourcePath}"`);
+              }
+            }
+
+            jsConfig.imports.push({
+              name: importItem.$.name,
+              source: sourcePath,
+              relativeSource: sourcerelativePath,
+              exportedClass: []
+            });
+          });
+
+          jsConfig.imports.forEach(jsConfigItem => {
+            const jsContent = fs.readFileSync(jsConfigItem.source, {
+              encoding: "utf8"
+            });
+            let parse = babelParser.parse(jsContent, {
+              sourceType: "module",
+              plugins: ["classProperties"]
+            });
+            parse.program.body.forEach(parseNode => {
+              if (parseNode.type === "ExportNamedDeclaration") {
+                jsConfigItem.exportedClass.push(parseNode.declaration.id.name);
+              }
+            });
+          });
+        }
+      }
+    }
 
     //Analyze Enum  files
-
     return (
       Promise.all(
         files.filesToAnalyze.map(currentFilePath => {
@@ -667,14 +800,14 @@ exports.parseEnumContants = ({ globFile, info, log, verbose }) => {
         })
 
         // Generate constants enum PHP file
-        .then(allWorkflowData => {
+        .then(allEnumData => {
           const tplPHP = fs.readFileSync(__dirname + "/templates/enum.php.mustache", { encoding: "utf8" });
 
           // Write PHP file constants
-          allWorkflowData.forEach(enumData => {
+          allEnumData.forEach(enumData => {
             let pathParts = path.dirname(enumData.file).split(path.sep);
             enumData.classname = enumData.name.replace(/-/g, "_");
-            let targetBaseName = enumData.classname + ".php";
+            let targetBaseName = enumData.classname + "__STUB.php";
             let target = pathParts.concat([targetBaseName]).join(path.sep);
             let vendorIndex = pathParts.indexOf("vendor");
             if (vendorIndex >= 0) {
@@ -684,24 +817,23 @@ exports.parseEnumContants = ({ globFile, info, log, verbose }) => {
             fs.writeFileSync(target, mustache.render(tplPHP, enumData));
             if (verbose) log("Write PHP enum constants file: " + target);
           });
-          return Promise.all(allWorkflowData);
+          return Promise.all(allEnumData);
         })
         // Generate constants enum JS file
-        .then(allWorkflowData => {
+        .then(allEnumData => {
           // Write JS file stubs
           const tplJS = fs.readFileSync(__dirname + "/templates/enum.js.mustache", { encoding: "utf8" });
 
-          allWorkflowData.forEach(enumData => {
-            let pathParts = path.dirname(enumData.file).split(path.sep);
-            let targetBaseName = enumData.classname + ".js";
-            let target = pathParts.concat([targetBaseName]).join(path.sep);
-
+          allEnumData.forEach(enumData => {
+            let jsBaseName = enumData.classname + ".js";
+            let target = jsConfig.target.concat(jsBaseName);
             let jsContent = mustache.render(tplJS, enumData);
             jsContent = prettier.format(jsContent, { semi: true, parser: "babel" });
+
             fs.writeFileSync(target, jsContent);
             if (verbose) log("Write JS enum constants file: " + target);
           });
-          return Promise.all(allWorkflowData);
+          return Promise.all(allEnumData);
         })
     );
   });
