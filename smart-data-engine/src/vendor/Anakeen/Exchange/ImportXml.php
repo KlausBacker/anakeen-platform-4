@@ -316,7 +316,15 @@ class ImportXml
                 if (count($val) === 1 && $val[0] === null) {
                     $rawval = "{}";
                 } else {
-                    $rawval = SmartElement::arrayToRawValue($val);
+                    if ($v->isMultipleInArray()) {
+                        if ($v->type === "enum") {
+                            $rawval = sprintf("{%s}", implode(",", $val));
+                        } else {
+                            $rawval = SmartElement::arrayToRawValue($val);
+                        }
+                    } else {
+                        $rawval = SmartElement::arrayToRawValue($val);
+                    }
                 }
             }
             $tdoc[] = $rawval;
