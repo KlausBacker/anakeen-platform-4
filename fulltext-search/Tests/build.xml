@@ -1,5 +1,11 @@
 <?xml version="1.0" ?>
 <module:config xmlns:module="https://platform.anakeen.com/4/schemas/module/1.0">
     <module:source path="src" />
-
+    <module:po-config>
+        <module:po-enum source="src/**/*struct.xml"/>
+    </module:po-config>
+    <module:stub-config>
+        <module:stub-struct source="src/**/*struct.xml"/>
+        <module:stub-enumerate source="src/**/*struct.xml"/>
+    </module:stub-config>
 </module:config>

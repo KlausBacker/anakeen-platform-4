@@ -1,0 +1,48 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: enum TST_FS001-colors \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2020-02-12T13:56:33.170Z\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: src/vendor/Anakeen/Pu/FulltextSearch/Config/tst_enum001.struct.xml
+#, fuzzy
+msgctxt "TST_FS001-colors"
+msgid "blue"
+msgstr "Bleu"
+
+#: src/vendor/Anakeen/Pu/FulltextSearch/Config/tst_enum001.struct.xml
+#, fuzzy
+msgctxt "TST_FS001-colors"
+msgid "green"
+msgstr "Vert"
+
+#: src/vendor/Anakeen/Pu/FulltextSearch/Config/tst_enum001.struct.xml
+#, fuzzy
+msgctxt "TST_FS001-colors"
+msgid "lightblue"
+msgstr "Bleu"
+
+#: src/vendor/Anakeen/Pu/FulltextSearch/Config/tst_enum001.struct.xml
+#, fuzzy
+msgctxt "TST_FS001-colors"
+msgid "navyblue"
+msgstr "Bleu"
+
+#: src/vendor/Anakeen/Pu/FulltextSearch/Config/tst_enum001.struct.xml
+#, fuzzy
+msgctxt "TST_FS001-colors"
+msgid "red"
+msgstr "Rouge"
+
+#: src/vendor/Anakeen/Pu/FulltextSearch/Config/tst_enum001.struct.xml
+#, fuzzy
+msgctxt "TST_FS001-colors"
+msgid "yellow"
+msgstr "Jaune"

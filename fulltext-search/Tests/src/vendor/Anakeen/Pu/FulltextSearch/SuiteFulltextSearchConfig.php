@@ -18,6 +18,7 @@ class SuiteFulltextSearchConfig
 
         $suite->addTestSuite(PuSimpleSearch::class);
         $suite->addTestSuite(PuDateSearch::class);
+        $suite->addTestSuite(PuEnumSearch::class);
 
         return $suite;
     }

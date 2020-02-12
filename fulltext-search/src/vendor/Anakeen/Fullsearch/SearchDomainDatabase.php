@@ -28,7 +28,6 @@ class SearchDomainDatabase
 
         DbManager::query($sql);
 
-
         $this->createTable();
         $this->createIndex();
         $this->resetData();
@@ -76,9 +75,8 @@ SQL;
     protected function resetData()
     {
         $domain = new SearchDomain($this->domainName);
-        $currentLanguage=ContextManager::getLanguage();
-        var_dump($currentLanguage);
-        if ($domain->lang !==$currentLanguage) {
+        $currentLanguage = ContextManager::getLanguage();
+        if ($domain->lang !== $currentLanguage) {
             ContextManager::setLanguage($domain->lang);
         }
 
@@ -119,9 +117,9 @@ SQL;
                         switch ($oa->type) {
                             case "timestamp":
                             case "date":
-                                $dateFormat="%A %d %B %m %Y";
-                                if ($oa->type==="timestamp") {
-                                    $dateFormat.= " %H:%M:%S";
+                                $dateFormat = "%A %d %B %m %Y";
+                                if ($oa->type === "timestamp") {
+                                    $dateFormat .= " %H:%M:%S";
                                 }
                                 if ($oa->isMultiple() === false) {
                                     $data[$fieldInfo->weight][] = strftime($dateFormat, strtotime($rawValue));
@@ -133,6 +131,29 @@ SQL;
                                 }
                                 break;
                             case "enum":
+                                if ($oa->isMultiple() === false) {
+                                    $data[$fieldInfo->weight][] = str_replace("/", " ", $oa->getEnumLabel($rawValue));
+                                } else {
+                                    $rawValues = $se->getMultipleRawValues($oa->id);
+                                    foreach ($rawValues as $rawValue) {
+                                        if (is_array($rawValue)) {
+                                            foreach ($rawValue as $rawValueOne) {
+                                                $data[$fieldInfo->weight][] = str_replace(
+                                                    "/",
+                                                    " ",
+                                                    $oa->getEnumLabel($rawValueOne)
+                                                );
+                                            }
+                                        } else {
+                                            $data[$fieldInfo->weight][] = str_replace(
+                                                "/",
+                                                " ",
+                                                $oa->getEnumLabel($rawValue)
+                                            );
+                                        }
+                                    }
+                                }
+                                break;
                             case "account":
                             case "docid":
                                 $info = $fmt->getInfo($oa, $rawValue, $se);
@@ -195,7 +216,7 @@ SQL;
             $domain->stem
         ));
 
-        if ($domain->lang !==$currentLanguage) {
+        if ($domain->lang !== $currentLanguage) {
             ContextManager::setLanguage($currentLanguage);
         }
     }

@@ -29,10 +29,6 @@ class PuDateSearch extends FulltextSearchConfig
      */
     public function testContains($domain, $searchPatten, $expectedResults)
     {
-
-        DbManager::query("select * from searches.testdomaindateen", $r);
-        print_r($r);
-
         $s = new SearchElements();
 
         $filter = new FilterContains($domain, $searchPatten);
