@@ -49,6 +49,11 @@ class DefaultGridController implements SmartGridController
                 $contentBuilder->addColumn($column);
             }
         }
+        if (isset($clientConfig["filter"])) {
+            $filterLogic = $clientConfig["filter"]["logic"];
+            $filters = $clientConfig["filter"]["filters"];
+            $contentBuilder->addFilter($clientConfig["filter"]);
+        }
         if (isset($clientConfig["sort"])) {
             foreach ($clientConfig["sort"] as $sort) {
                 $contentBuilder->addSort($sort["field"], $sort["dir"]);

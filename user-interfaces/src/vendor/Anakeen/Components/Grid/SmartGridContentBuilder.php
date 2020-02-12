@@ -110,6 +110,18 @@ class SmartGridContentBuilder
 
     public function addFilter($filter)
     {
+        if (!empty($filter)) {
+            // First need flat filters
+            $flatFilters = static::getFlatLevelFilters($filter);
+
+            foreach ($flatFilters as $filter) {
+                $filterObject = Operators::getFilterObject($filter);
+                if (!empty($filterObject)) {
+                    $this->searchElements->addFilter($filterObject);
+                }
+            }
+        }
+        return $this;
     }
 
     public function addAbstract($colId, Closure $dataFunction)
@@ -192,6 +204,19 @@ class SmartGridContentBuilder
     {
         $this->pageSize = $pageSize;
         $this->setPager($this->page, $this->pageSize);
+    }
+
+    protected static function getFlatLevelFilters($filterArg)
+    {
+        $flatFilters = [];
+        if (!empty($filterArg["filters"])) {
+            foreach ($filterArg["filters"] as $filterElement) {
+                $flatFilters = array_merge($flatFilters, static::getFlatLevelFilters($filterElement));
+            }
+        } elseif (empty($filterArg["logic"]) && !empty($filterArg["field"])) {
+            $flatFilters[] = $filterArg;
+        }
+        return $flatFilters;
     }
 
     protected function getRequestParameters()

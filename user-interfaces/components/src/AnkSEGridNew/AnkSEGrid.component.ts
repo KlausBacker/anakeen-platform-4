@@ -4,6 +4,7 @@ import AnkActionMenu from "./AnkActionMenu/AnkActionMenu.vue";
 import AnkTextFilterCell from "./AnkTextFilterCell/AnkTextFilterCell.vue";
 import AnkGridCell from "./AnkGridCell/AnkGridCell.vue";
 import AnkExportButton from "./AnkExportButton/AnkExportButton.vue";
+import AnkGridHeaderCell from "./AnkGridHeaderCell/AnkGridHeaderCell.vue";
 import { Grid } from "@progress/kendo-vue-grid";
 import { VNode } from "vue/types/umd";
 import GridActions from "../AnkSEGrid/utils/GridActions";
@@ -26,9 +27,9 @@ export interface SmartGridColumn {
 }
 
 interface SmartGridActions {
-  action: string,
-  title: string,
-  iconClass: string
+  action: string;
+  title: string;
+  iconClass: string;
 }
 
 const DEFAULT_PAGER = {
@@ -40,7 +41,7 @@ const DEFAULT_PAGER = {
 const DEFAULT_SORT = {
   mode: "multiple",
   showIndexes: true,
-  allowUnsort: false
+  allowUnsort: true
 };
 
 @Component({
@@ -185,6 +186,7 @@ export default class GridController extends Vue {
         : DEFAULT_PAGER.pageSize
   };
   public pager: any = this.pageable === true ? DEFAULT_PAGER : this.pageable;
+  public sorter: any = this.sortable === true ? DEFAULT_PAGER : this.sortable;
 
   public get gridInfo() {
     return {
@@ -194,7 +196,7 @@ export default class GridController extends Vue {
       collection: this.collection,
       pageable: this.pager,
       page: (this.currentPage.skip + this.currentPage.take) / this.currentPage.take,
-      sortable: this.sortable,
+      sortable: this.sorter,
       sort: this.currentSort,
       filterable: this.filterable,
       filter: this.currentFilter,
@@ -310,30 +312,13 @@ export default class GridController extends Vue {
 
   protected headerCellRenderFunction(createElement, defaultRendering, props, listeners) {
     const columnConfig = this.columnsList.find(c => c.field === props.field);
-    const children = [];
-    if (this.contextTitles && Array.isArray(columnConfig.context)) {
-      const contextTitle = columnConfig.context.join(` ${this.contextTitlesSeparator} `);
-      if (contextTitle) {
-        children.push(
-          createElement(
-            "div",
-            {
-              class: "smart-element-grid-header--subtitle"
-            },
-            [contextTitle]
-          )
-        );
+    return createElement(AnkGridHeaderCell, {
+      props: { ...props, columnConfig, grid: this },
+      on: {
+        sortchange: this.onSortChange,
+        filterchange: this.onFilterChange
       }
-    }
-    children.push(defaultRendering);
-    return createElement(
-      "div",
-      {
-        href: "#",
-        class: "smart-element-grid-header-content"
-      },
-      children
-    );
+    });
   }
 
   protected _getOperationUrl(operation) {
@@ -368,10 +353,10 @@ export default class GridController extends Vue {
   }
 
   protected async onFilterChange(filterEvt) {
-    if (filterEvt.event) {
-      const filters = this.currentFilter.filters.filter(f => f.field !== filterEvt.event.field);
-      if (filterEvt.event.value) {
-        filters.push(filterEvt.event);
+    if (filterEvt) {
+      const filters = this.currentFilter.filters.filter(f => f.field !== filterEvt.field);
+      if (filterEvt.filters) {
+        filters.push(filterEvt);
       }
       this.currentFilter.filters = filters;
     }

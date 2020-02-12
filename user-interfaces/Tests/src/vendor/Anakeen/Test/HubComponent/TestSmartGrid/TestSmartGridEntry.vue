@@ -8,16 +8,39 @@
       <div class="test-smart-grid">
         <div class="grid-section grid-left">
           <h1>Old grid</h1>
-          <old-grid :pageable="true" collection="DEVBILL">
-            <old-grid-column field="title" :property="true"></old-grid-column>
-            <old-grid-column field="bill_title"></old-grid-column>
-            <old-grid-column field="bill_author"></old-grid-column>
-            <old-grid-column field="bill_billdate"></old-grid-column>
+          <old-grid :pageable="true" collection="TST_DDUI_ALLTYPE" :checkable="true">
+            <!-- <old-grid-column field="test_ddui_all__title"></old-grid-column> -->
+            <!-- <old-grid-column field="test_ddui_all__longtext"></old-grid-column> -->
+            <!-- <old-grid-column field="test_ddui_all__htmltext"></old-grid-column> -->
+            <!-- <old-grid-column field="test_ddui_all__integer"></old-grid-column> -->
+            <!-- <old-grid-column field="test_ddui_all__double"></old-grid-column> -->
+            <!-- <old-grid-column field="test_ddui_all__money"></old-grid-column> -->
+            <!-- <old-grid-column field="test_ddui_all__docid"></old-grid-column> -->
+            <!-- <old-grid-column field="test_ddui_all__account"></old-grid-column> -->
+            <!-- <old-grid-column field="test_ddui_all__date"></old-grid-column> -->
+            <!-- <old-grid-column field="test_ddui_all__time"></old-grid-column> -->
+            <!-- <old-grid-column field="test_ddui_all__timestamp"></old-grid-column> -->
+            <!-- <old-grid-column field="test_ddui_all__password"></old-grid-column> -->
+            <!-- <old-grid-column field="test_ddui_all__color"></old-grid-column> -->
+            <!-- <old-grid-column field="test_ddui_all__file"></old-grid-column> -->
+            <!-- <old-grid-column field="test_ddui_all__image"></old-grid-column> -->
+            <old-grid-column field="test_ddui_all__account_multiple"></old-grid-column>
+            <old-grid-column field="test_ddui_all__account_multiple_array"></old-grid-column>
+            <!-- <old-grid-column field="test_ddui_all__enumlist"></old-grid-column> -->
+            <!-- xml -->
+            <!-- json -->
           </old-grid>
         </div>
         <div class="grid-section grid-right">
           <h1>New grid</h1>
-          <ank-smart-element-grid collection="DEVBILL" :columns="columns" :reorderable="true" :resizable="false">
+          <ank-smart-element-grid
+            @rowActionClick="onRowActionClick"
+            collection="TST_DDUI_ALLTYPE"
+            :columns="columns"
+            :actions="actions"
+            :reorderable="true"
+            :resizable="true"
+          >
           </ank-smart-element-grid>
         </div>
       </div>
@@ -29,6 +52,10 @@
   height: 100%;
   background: white;
   display: flex;
+
+  .grid-section.grid-right {
+    flex: 2;
+  }
 
   .grid-section {
     flex: 1;
@@ -59,13 +86,35 @@ export default {
         return this.entryOptions.completeRoute;
       },
       columns: [
-        { field: "title", property: true },
-        { field: "bill_title", title: "Titre interne" },
-        { field: "bill_author" },
-        { field: "bill_billdate" },
-        { field: "my_custom_column", abstract: true, withContext: true, context: ["Custom", "Other"], sortable: false }
+        // { field: "title", property: true },
+        // { field: "test_ddui_all__title" },
+        // { field: "test_ddui_all__longtext" },
+        // { field: "test_ddui_all__htmltext" },
+        { field: "test_ddui_all__account_multiple" },
+        { field: "test_ddui_all__account_multiple_array" },
+        // { field: "test_ddui_all__integer" },
+        // { field: "test_ddui_all__docid" },
+        // { field: "test_ddui_all__account" },
+        // { field: "test_ddui_all__date" },
+        // { field: "test_ddui_all__color" },
+        // { field: "test_ddui_all__image" },
+        // { field: "test_ddui_all__timestamp" },
+        // { field: "test_ddui_all__money" },
+        // { field: "test_ddui_all__money" },
+        // { field: "bill_billdate" },
+        // { field: "bill_cost" }
+      ],
+      actions: [
+        { action: "consult", title: "Consult" },
+        { action: "edit", title: "Edit", iconClass: "fa fa-edit" },
+        { action: "delete", title: "Delete", iconClass: "fa fa-trash" }
       ]
     };
+  },
+  methods: {
+    onRowActionClick(evt) {
+      
+    }
   }
 };
 </script>
