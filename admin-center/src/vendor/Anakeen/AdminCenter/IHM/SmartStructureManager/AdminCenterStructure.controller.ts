@@ -43,16 +43,6 @@ export default class AdminCenterStructureController extends Vue {
       this.selectedSS = this.value;
     }
   }
-  protected onTabClick() {
-    switch (this.selectedTab) {
-      case "defaultValues":
-        this.$refs.defaultComp.$refs.defaultGridContent.kendoWidget().dataSource.read();
-        break;
-      case "parameters":
-        this.$refs.paramsComp.$refs.parametersGridData.kendoDataSource.read();
-        break;
-    }
-  }
   protected gotoParentStructure(structureId){
     this.selectedSS = structureId.toString();
   }

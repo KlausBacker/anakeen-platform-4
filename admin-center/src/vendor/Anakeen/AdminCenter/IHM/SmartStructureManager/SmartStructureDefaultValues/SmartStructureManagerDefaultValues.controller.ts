@@ -63,11 +63,14 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
   @Watch("ssName")
   public watchSsName(newValue) {
     if (newValue) {
+      this.$refs.defaultGridContent.kendoWidget().dataSource.read();
       this.smartFormArrayStructure = {};
       this.smartFormArrayValues = {};
-      this.$refs.defaultGridContent.kendoWidget().dataSource.read();
       this.finalData.structureId = newValue;
     }
+  }
+  public mounted() {
+    this.$refs.defaultGridContent.kendoWidget().dataSource.read();
   }
   public onEditClick(e) {
     // Get clicked default value data
