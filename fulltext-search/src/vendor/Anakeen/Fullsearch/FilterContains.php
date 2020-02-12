@@ -12,13 +12,18 @@ class FilterContains implements ElementSearchFilter
      * @var SearchDomain
      */
     protected $domain;
+    /**
+     * @var SearchDomainDatabase
+     */
+    protected $dbDomain;
 
     public function __construct($domainName, $searchPattern)
     {
-        $this->domainName=$domainName;
+        $this->domainName = $domainName;
         $this->searchPattern = $searchPattern;
 
         $this->domain = new SearchDomain($domainName);
+        $this->dbDomain = new SearchDomainDatabase($this->domainName);
     }
 
     /**
@@ -26,14 +31,24 @@ class FilterContains implements ElementSearchFilter
      */
     public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
-        $dbDomain = new SearchDomainDatabase($this->domainName);
         //("id = dochisto(id)");
-        $search->join(sprintf("id = %s(id)", $dbDomain->getTableName()));
+        $search->join(sprintf("id = %s(id)", $this->dbDomain->getTableName()));
         $search->addFilter(sprintf(
             "plainto_tsquery('%s', unaccent('%s')) @@ %s.v",
             pg_escape_string($this->domain->stem),
             pg_escape_string($this->searchPattern),
-            $dbDomain->getTableName()
+            $this->dbDomain->getTableName()
         ));
+    }
+
+    public function getRankOrder()
+    {
+        return sprintf(
+            "ts_rank_cd( %s.v, plainto_tsquery('%s', unaccent('%s'))) desc, %s.id",
+            $this->dbDomain->getTableName(),
+            pg_escape_string($this->domain->stem),
+            pg_escape_string($this->searchPattern),
+            $this->dbDomain->getTableName()
+        );
     }
 }

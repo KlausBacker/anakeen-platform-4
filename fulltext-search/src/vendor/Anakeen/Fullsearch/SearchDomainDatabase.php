@@ -45,9 +45,9 @@ class SearchDomainDatabase
     protected function createIndex()
     {
         $sql = <<<SQL
-CREATE INDEX if not exists vsearch_idx ON %s USING GIN (v);
+CREATE INDEX if not exists vsearch_idx_%s ON %s USING GIN (v);
 SQL;
-        DbManager::query(sprintf($sql, $this->getTableName()));
+        DbManager::query(sprintf($sql, $this->domainName, $this->getTableName()));
     }
 
     protected function createTable()
@@ -71,6 +71,10 @@ SQL;
     protected function resetData()
     {
         $domain = new SearchDomain($this->domainName);
+
+        $sql=sprintf("delete from %s", $this->getTableName());
+        DbManager::query($sql);
+
         $fmt = new FormatCollection();
         $fmt->setVerifyAttributeAccess(false);
 
@@ -98,7 +102,10 @@ SQL;
                         $data[$fieldInfo->weight][] = $se->title;
                     } else {
                         $oa = $structure->getAttribute($fieldInfo->field);
-                        $info = $fmt->getInfo($oa, $se->getRawValue($oa->id));
+                        $info = $fmt->getInfo($oa, $se->getRawValue($oa->id), $se);
+                        if ($info === null) {
+                            continue;
+                        }
                         if (is_array($info) === false) {
                             $data[$fieldInfo->weight][] = $info->displayValue;
                         } else {
@@ -129,6 +136,7 @@ SQL;
                 DbManager::query($sql);
             }
         }
+
 
         $sql = <<<SQL
 update %s set v = 
