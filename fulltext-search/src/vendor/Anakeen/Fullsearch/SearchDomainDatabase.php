@@ -134,45 +134,36 @@ SQL;
                                 if ($oa->isMultiple() === false) {
                                     $data[$fieldInfo->weight][] = str_replace("/", " ", $oa->getEnumLabel($rawValue));
                                 } else {
-                                    $rawValues = $se->getMultipleRawValues($oa->id);
+                                    $rawValues = \Anakeen\Core\Utils\Postgres::stringToFlatArray($rawValue);
                                     foreach ($rawValues as $rawValue) {
-                                        if (is_array($rawValue)) {
-                                            foreach ($rawValue as $rawValueOne) {
-                                                $data[$fieldInfo->weight][] = str_replace(
-                                                    "/",
-                                                    " ",
-                                                    $oa->getEnumLabel($rawValueOne)
-                                                );
-                                            }
-                                        } else {
-                                            $data[$fieldInfo->weight][] = str_replace(
-                                                "/",
-                                                " ",
-                                                $oa->getEnumLabel($rawValue)
-                                            );
-                                        }
+                                        $data[$fieldInfo->weight][] = str_replace(
+                                            "/",
+                                            " ",
+                                            $oa->getEnumLabel($rawValue)
+                                        );
                                     }
                                 }
                                 break;
                             case "account":
                             case "docid":
-                                $info = $fmt->getInfo($oa, $rawValue, $se);
-                                if ($info === null) {
-                                    continue;
-                                }
-                                if (is_array($info) === false) {
-                                    $data[$fieldInfo->weight][] = $info->displayValue;
+                                $docRevOption = $oa->getOption("docrev", "latest");
+
+                                if ($oa->isMultiple() === false) {
+                                    $data[$fieldInfo->weight][] = \DocTitle::getRelationTitle(
+                                        $rawValue,
+                                        $docRevOption === "latest",
+                                        $se,
+                                        $docRevOption
+                                    );
                                 } else {
-                                    //  ARRAY MULTIPLE
-                                    foreach ($info as $item) {
-                                        if (is_array($item) === false) {
-                                            $data[$fieldInfo->weight][] = $item->displayValue;
-                                        } else {
-                                            //  ARRAY MULTIPLE^2
-                                            foreach ($item as $datum) {
-                                                $data[$fieldInfo->weight][] = $datum->displayValue;
-                                            }
-                                        }
+                                    $rawValues = \Anakeen\Core\Utils\Postgres::stringToFlatArray($rawValue);
+                                    foreach ($rawValues as $rawValue) {
+                                        $data[$fieldInfo->weight][] = \DocTitle::getRelationTitle(
+                                            $rawValue,
+                                            $docRevOption === "latest",
+                                            $se,
+                                            $docRevOption
+                                        );
                                     }
                                 }
                                 break;
@@ -190,10 +181,10 @@ SQL;
                     "insert into %s (id, ta, tb, tc, td) values (%d, E'%s', E'%s', E'%s', E'%s')",
                     $this->getTableName(),
                     $se->id,
-                    pg_escape_string(implode(", ", $data["A"])),
-                    pg_escape_string(implode(", ", $data["B"])),
-                    pg_escape_string(implode(", ", $data["C"])),
-                    pg_escape_string(implode(", ", $data["D"]))
+                    pg_escape_string(preg_replace('/\s+/', ' ', implode(", ", $data["A"]))),
+                    pg_escape_string(preg_replace('/\s+/', ' ', implode(", ", $data["B"]))),
+                    pg_escape_string(preg_replace('/\s+/', ' ', implode(", ", $data["C"]))),
+                    pg_escape_string(preg_replace('/\s+/', ' ', implode(", ", $data["D"])))
                 );
                 DbManager::query($sql);
             }
