@@ -3,6 +3,7 @@
 
 namespace Anakeen\Fullsearch;
 
+use Anakeen\Core\ContextManager;
 use Anakeen\Core\Utils\Xml;
 use Anakeen\Exception;
 
@@ -51,7 +52,16 @@ class ImportSearchConfiguration
     {
         $this->domain = new SearchDomain();
         $this->domain->name = $this->dom->documentElement->getAttribute("name");
+        $this->domain->lang = substr($this->dom->documentElement->getAttribute("lang"), 0, 2);
         $this->domain->stem = $this->xpath->evaluate("string(sd:search-stem)");
+
+        $locales = ContextManager::getLocales();
+        foreach ($locales as $kLocale => $locale) {
+            if ($locale["locale"] === $this->domain->lang) {
+                $this->domain->lang = $kLocale;
+                break;
+            }
+        }
 
         $configs = $this->xpath->query("sd:search-config");
         foreach ($configs as $config) {

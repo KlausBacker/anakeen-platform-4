@@ -2,6 +2,7 @@
 
 namespace Anakeen\Fullsearch;
 
+use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\Internal\FormatCollection;
 use Anakeen\Core\SEManager;
@@ -11,6 +12,10 @@ use Anakeen\Search\SearchElements;
 class SearchDomainDatabase
 {
     const dbSchema = "searches";
+    /**
+     * @var string
+     */
+    protected $domainName;
 
     public function __construct(string $domainName)
     {
@@ -71,8 +76,13 @@ SQL;
     protected function resetData()
     {
         $domain = new SearchDomain($this->domainName);
+        $currentLanguage=ContextManager::getLanguage();
+        var_dump($currentLanguage);
+        if ($domain->lang !==$currentLanguage) {
+            ContextManager::setLanguage($domain->lang);
+        }
 
-        $sql=sprintf("delete from %s", $this->getTableName());
+        $sql = sprintf("delete from %s", $this->getTableName());
         DbManager::query($sql);
 
         $fmt = new FormatCollection();
@@ -102,24 +112,55 @@ SQL;
                         $data[$fieldInfo->weight][] = $se->title;
                     } else {
                         $oa = $structure->getAttribute($fieldInfo->field);
-                        $info = $fmt->getInfo($oa, $se->getRawValue($oa->id), $se);
-                        if ($info === null) {
+                        $rawValue = $se->getRawValue($oa->id);
+                        if (!$rawValue) {
                             continue;
                         }
-                        if (is_array($info) === false) {
-                            $data[$fieldInfo->weight][] = $info->displayValue;
-                        } else {
-                            //  ARRAY MULTIPLE
-                            foreach ($info as $item) {
-                                if (is_array($item) === false) {
-                                    $data[$fieldInfo->weight][] = $item->displayValue;
+                        switch ($oa->type) {
+                            case "timestamp":
+                            case "date":
+                                $dateFormat="%A %d %B %m %Y";
+                                if ($oa->type==="timestamp") {
+                                    $dateFormat.= " %H:%M:%S";
+                                }
+                                if ($oa->isMultiple() === false) {
+                                    $data[$fieldInfo->weight][] = strftime($dateFormat, strtotime($rawValue));
                                 } else {
-                                    //  ARRAY MULTIPLE^2
-                                    foreach ($item as $datum) {
-                                        $data[$fieldInfo->weight][] = $datum->displayValue;
+                                    $rawValues = $se->getMultipleRawValues($oa->id);
+                                    foreach ($rawValues as $rawValue) {
+                                        $data[$fieldInfo->weight][] = strftime($dateFormat, strtotime($rawValue));
                                     }
                                 }
-                            }
+                                break;
+                            case "enum":
+                            case "account":
+                            case "docid":
+                                $info = $fmt->getInfo($oa, $rawValue, $se);
+                                if ($info === null) {
+                                    continue;
+                                }
+                                if (is_array($info) === false) {
+                                    $data[$fieldInfo->weight][] = $info->displayValue;
+                                } else {
+                                    //  ARRAY MULTIPLE
+                                    foreach ($info as $item) {
+                                        if (is_array($item) === false) {
+                                            $data[$fieldInfo->weight][] = $item->displayValue;
+                                        } else {
+                                            //  ARRAY MULTIPLE^2
+                                            foreach ($item as $datum) {
+                                                $data[$fieldInfo->weight][] = $datum->displayValue;
+                                            }
+                                        }
+                                    }
+                                }
+                                break;
+                            default:
+                                if ($oa->isMultiple() === false) {
+                                    $data[$fieldInfo->weight][] = $rawValue;
+                                } else {
+                                    $data[$fieldInfo->weight][] = implode(", ", $se->getMultipleRawValues($oa->id));
+                                }
                         }
                     }
                 }
@@ -153,5 +194,9 @@ SQL;
             $domain->stem,
             $domain->stem
         ));
+
+        if ($domain->lang !==$currentLanguage) {
+            ContextManager::setLanguage($currentLanguage);
+        }
     }
 }

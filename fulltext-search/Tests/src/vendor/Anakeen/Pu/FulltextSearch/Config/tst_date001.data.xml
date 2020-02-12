@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documents>
+    <tst_date001 name="TST_EDATE_001">
+        <tst_f_title>
+            <tst_title>Date1</tst_title>
+            <tst_date>2020-02-23</tst_date>
+            <tst_time>14:45:43</tst_time>
+            <tst_timestamp>1920-12-13T16:05</tst_timestamp>
+
+            <tst_array>
+                <tst_dates>2010-02-23</tst_dates>
+                <tst_times>04:15</tst_times>
+                <tst_timestamps>1968-12-19T08:45</tst_timestamps>
+            </tst_array>
+            <tst_array>
+                <tst_dates>1903-08-14</tst_dates>
+                <tst_times>04:15</tst_times>
+                <tst_timestamps>2004-12-25T00:01</tst_timestamps>
+            </tst_array>
+
+        </tst_f_title>
+    </tst_date001>
+    <tst_date001 name="TST_EDATE_002">
+        <tst_f_title>
+            <tst_title>Date2</tst_title>
+            <tst_date>2020-02-22</tst_date>
+        </tst_f_title>
+    </tst_date001>
+    <tst_date001 name="TST_EDATE_003">
+        <tst_f_title>
+            <tst_title>Date3</tst_title>
+            <tst_date>2020-12-22</tst_date>
+        </tst_f_title>
+    </tst_date001>
+</documents>

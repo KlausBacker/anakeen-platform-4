@@ -17,6 +17,7 @@ class SuiteFulltextSearchConfig
         $suite = new FrameworkDcp();
 
         $suite->addTestSuite(PuSimpleSearch::class);
+        $suite->addTestSuite(PuDateSearch::class);
 
         return $suite;
     }

@@ -13,7 +13,10 @@ class SearchDomain implements \JsonSerializable
     public $stem;
     /** @var SearchConfig[] */
     public $configs = [];
-
+    /**
+     * @var string
+     */
+    public $lang;
 
     public function __construct(string $name = "")
     {
@@ -37,6 +40,7 @@ class SearchDomain implements \JsonSerializable
         $domainData = $domains[$name];
         $this->name = $domainData["name"];
         $this->stem = $domainData["stem"];
+        $this->lang = $domainData["lang"];
         foreach ($domainData["configs"] as $config) {
             $this->configs[] = new SearchConfig($config);
         }
@@ -68,6 +72,7 @@ class SearchDomain implements \JsonSerializable
     {
         return [
             "name" => $this->name,
+            "lang" => $this->lang,
             "stem" => $this->stem,
             "configs" => $this->configs
         ];
