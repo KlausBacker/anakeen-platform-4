@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:parameters namespace="Fullsearch">
+        <sde:parameter name="DOMAIN_CONFIG">
+            <sde:category>Full search</sde:category>
+            <sde:description>Search domains configuration</sde:description>
+            <sde:value>{}</sde:value>
+            <sde:type>json</sde:type>
+            <sde:access>readonly</sde:access>
+        </sde:parameter>
+
+    </sde:parameters>
+</sde:config>

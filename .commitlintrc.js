@@ -20,6 +20,7 @@ const Configuration = {
         "te",
         "ui",
         "workflow",
+	"fulltext",
         "tools",
         "i18n",
         "test-tools",

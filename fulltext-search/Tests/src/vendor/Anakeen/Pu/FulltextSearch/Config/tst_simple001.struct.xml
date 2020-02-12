@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:structure-configuration name="TST_SIMPLE001" label="Test n°1">
+        <smart:class>Anakeen\Pu\Config\DefaultInstanceBehavior</smart:class>
+        <smart:tag name="vendor">Anakeen</smart:tag>
+        <smart:fields>
+            <smart:field-set name="tst_f_title" type="frame" label="Titre" access="ReadWrite">
+                <smart:field-text name="tst_title" label="Le titre" access="ReadWrite" is-title="true"/>
+                <smart:field-longtext name="tst_desc" label="Description" access="ReadWrite"/>
+            </smart:field-set>
+        </smart:fields>
+    </smart:structure-configuration>
+</smart:config>

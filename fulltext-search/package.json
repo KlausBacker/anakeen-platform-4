@@ -1,0 +1,23 @@
+{
+  "name": "@anakeen/fulltext-search",
+  "version": "0.0.1",
+  "description": "Anakeen Platform Fulltext Search",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "anakeen",
+  "license": "SEE LICENSE IN LICENSE",
+  "dependencies": {},
+  "devDependencies": {
+    "@anakeen/anakeen-cli": "1.2.0"
+  },
+  "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/fulltext-search.git",
+  "keywords": [
+    "anakeen",
+    "platform",
+    "smart",
+    "fulltext",
+    "search"
+  ]
+}

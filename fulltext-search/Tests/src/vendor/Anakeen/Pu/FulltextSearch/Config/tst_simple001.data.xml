@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documents date="2018-02-12T13:16:49" author="Dynacase Platform Master" name="Custom &#039;&quot;export">
+    <tst_simple001 name="TST_ESIMPLE_001">
+        <tst_f_title>
+            <tst_title>Tous les ours ont un grand corps trapu et massif, des membres puissants.</tst_title>
+            <tst_desc>Les ours sont chassés depuis la préhistoire pour leur viande et leur fourrure. Ils ont
+                joué un rôle de premier plan dans la culture (mythologie, légendes, etc.) et les arts. À l'époque
+                moderne, les populations d'ours sont victimes de pressions (comme celles des éleveurs dans les
+                Pyrénées), de l'empiètement de l'homme sur son habitat naturel, de l'artificialisation et de la
+                fragmentation des forêts, ainsi que du commerce illicite, notamment le marché asiatique de la bile
+                d'ours. L'UICN a classé six espèces d'ours comme vulnérables ou menacées d'extinction. L'ours brun
+                pourrait disparaître dans certains pays européens. Le braconnage et le commerce international des
+                populations les plus en danger sont interdits, mais se pratiquent toujours.
+            </tst_desc>
+        </tst_f_title>
+    </tst_simple001>
+    <tst_simple001 name="TST_ESIMPLE_002">
+        <tst_f_title>
+            <tst_title>Le lion (Panthera leo) est une espèce de mammifères carnivores de la famille des félidés.
+            </tst_title>
+            <tst_desc>La femelle du lion est la lionne, son petit est le lionceau. Le mâle adulte, aisément
+                reconnaissable à
+                son importante crinière, accuse une masse moyenne qui peut être variable selon les zones géographiques
+                où il
+                se trouve, allant de 180 kg pour les lions de Kruger à 230 kg pour les lions de Transvaal. Certains
+                spécimens très rares peuvent dépasser exceptionnellement 250 kg. Un mâle adulte se nourrit de 7 kg de
+                viande
+                chaque jour contre 5 kg chez la femelle. Le lion est un animal grégaire, c'est-à-dire qu'il vit en
+                larges
+                groupes familiaux, contrairement aux autres félins. Son espérance de vie, à l'état sauvage, est comprise
+                entre 7 et 12 ans pour le mâle et 14 à 20 ans pour la femelle, mais il dépasse fréquemment les 30 ans en
+                captivité.
+                Le lion mâle ne chasse qu'occasionnellement, il est chargé de combattre les intrusions sur le territoire
+                et
+                les menaces contre la troupe. Le lion rugit. Il n'existe plus à l'état sauvage que 16 500 à 30 000
+                individus
+                dans la savane africaine, répartis en une dizaine de sous-espèces et environ 300 au parc national de Gir
+                Forest dans le nord-ouest de l'Inde. Il est surnommé « le roi des animaux » car sa crinière lui donne un
+                aspect semblable au Soleil, qui apparaît comme « le roi des astres ». Entre 1993 et 2017, leur
+                population a
+                baissé de 43 %
+            </tst_desc>
+        </tst_f_title>
+    </tst_simple001>
+</documents>
