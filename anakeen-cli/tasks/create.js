@@ -102,6 +102,31 @@ const createBuildXML = ({ moduleName, vendorName }, isSmartStructure) => {
             $: {
               source: path.join("src/vendor", vendorNamePascalCase, moduleNamePascalCase, "SmartStructures/**/*xml")
             }
+          },
+          "acli:stub-workflow": {
+            $: {
+              source: path.join("src/vendor", vendorNamePascalCase, moduleNamePascalCase, "Workflows/**/*Graph.xml")
+            }
+          },
+          "acli:stub-enumerate": {
+            $: {
+              source: path.join("src/vendor", vendorNamePascalCase, moduleNamePascalCase, "SmartStructures/**/*xml")
+            }
+          },
+          "acli:stub-struct-js-config": {
+            $: {
+              target: "constants/structures/SmartStructuresFields.js"
+            }
+          },
+          "acli:stub-struct-wfl-config": {
+            $: {
+              target: "constants/workflows/"
+            }
+          },
+          "acli:stub-struct-enum-config": {
+            $: {
+              target: "constants/enumerates/"
+            }
           }
         }
       }
