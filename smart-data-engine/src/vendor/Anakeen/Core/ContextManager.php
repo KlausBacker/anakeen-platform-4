@@ -44,8 +44,9 @@ class ContextManager
             $core_lang = self::getParameterValue(Settings::NsSde, "CORE_LANG", "fr_FR");
         }
         $lng = substr($core_lang, 0, 2);
-        if (preg_match('#^[a-z0-9_\.-]+$#i', $core_lang)
+        if (preg_match('#^[a-z0-9_.-]+$#i', $core_lang)
             && file_exists(DEFAULT_PUBDIR . "/locale/" . $lng . "/lang.php")) {
+            /** @noinspection PhpIncludeInspection */
             include(DEFAULT_PUBDIR . "/locale/" . $lng . "/lang.php");
         } else {
             include(DEFAULT_PUBDIR . "/locale/fr/lang.php");
@@ -62,6 +63,7 @@ class ContextManager
 
         if ($locales === null) {
             $lang = array();
+            /** @noinspection PhpIncludeInspection */
             include('CORE/lang.php');
             $locales = $lang;
         }
@@ -216,7 +218,7 @@ class ContextManager
      */
     public static function getLanguage()
     {
-        return self::$language;
+        return strtok(self::$language, ".");
     }
 
     /**
@@ -290,7 +292,6 @@ class ContextManager
      * @param string $code    error code (ref to error log)
      *
      * @return void
-     * @throws \Anakeen\Core\Exception
      * @api abort action execution
      */
     public static function exitError($texterr, $exit = true, $code = "")
