@@ -1,12 +1,13 @@
-.k-command-cell {
+.smart-element-grid-action-cell, .smart-element-grid-action-menu--content {
   margin-left: 0;
   padding-left: 0;
-  .actionMenu .k-button {
+  .k-button {
     background: transparent;
     border: none;
     padding: 0.5rem 0.75rem;
     text-transform: uppercase;
     font-weight: bold;
+    color: #157EFB;
 
     &:focus {
       box-shadow: none;
@@ -15,34 +16,16 @@
     &:hover {
       border-color: transparent #dddddd;
     }
-  }
 
-  overflow: visible !important;
-
-  .actionMenu {
-    .k-menu-expand-arrow {
-      display: none;
+    .smart-element-grid-action--label {
+      margin-left: .25rem;
     }
-
-    .k-menu-group.k-popup {
-      height: 100%;
-      width: 100%;
-      li.k-item {
-        .k-link {
-          height: 100%;
-          width: 100%;
-          padding: 0.5rem;
-        }
-      }
-
-      &.k-state-hover {
-        background: rgba(210, 210, 210, 0.5);
-      }
-    }
-  }
-  .subactionsItems {
-    z-index: 2;
-    position: relative;
   }
 }
 
+.smart-element-grid-action-menu--content {
+  padding: .5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}

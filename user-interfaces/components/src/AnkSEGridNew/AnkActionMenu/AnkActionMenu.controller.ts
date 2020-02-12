@@ -1,15 +1,14 @@
 import { Component, Prop, Watch, Vue } from "vue-property-decorator";
-import GridEvent from "../../AnkSEGrid/utils/GridEvent";
-import "@progress/kendo-ui/js/kendo.menu";
+import { Popup } from "@progress/kendo-vue-popup";
+import GridEvent from "../AnkGridEvent/AnkGridEvent";
 
-export const DEFAULT_ACTION_PROPS = {
-  edit: {},
-  consult: {},
-  custom: {}
-};
+const isStandardAction = action => action === "consult" || action === "edit";
 
 @Component({
-  name: "ank-se-grid-actions"
+  name: "ank-se-grid-actions",
+  components: {
+    Popup
+  }
 })
 export default class AnkActionMenuController extends Vue {
   @Prop({
@@ -25,121 +24,76 @@ export default class AnkActionMenuController extends Vue {
   public actions: object[];
 
   @Prop({
+    type: Object
+  })
+  public rowData: any;
+
+  @Prop({
     default: () => {},
     type: Object
   })
   public gridComponent: any;
 
-  public value = { action: "consult", title: "Consult" };
+  public showSecondaryActionsMenu: boolean = false;
+  public hoverPopup: boolean = false;
 
-  public mounted() {
-    const menu = this.$refs.actionMenu;
-    const kendoMenuOptions = {
-      openOnClick: {
-        rootMenuItems: true
-      },
-      select: e => this.onActionMenuClick(e)
-    };
-    $(menu).kendoMenu(kendoMenuOptions);
-  }
-
-  onActionMenuClick(e) {
-    const actionType = e.item.dataset.actiontype;
-    if (actionType) {
-      if (`${actionType}Action` !== "_subcommands") {
-        const kendoMenu = $(this.$refs.actionMenu).data("kendoMenu");
-        const $gridContent = $(".k-grid-content");
-        const $menu = $(e.sender.element[0]);
-        const threshold = 85;
-        const gridContentOffset = $gridContent.offset();
-        const menuOffset = $menu.offset();
-        const remainingSpace = gridContentOffset.top + $gridContent.height() - (menuOffset.top + $menu.height());
-        if (remainingSpace < threshold) {
-          kendoMenu.setOptions({
-            ...kendoMenu.options,
-            direction: "top"
-          });
-        } else {
-          kendoMenu.setOptions({
-            ...kendoMenu.options,
-            direction: "bottom"
-          });
-        }
+  public get primaryActions() {
+    if (this.actions) {
+      if (this.actions.length > 2) {
+        return [this.actions[0]];
+      } else {
+        return this.actions;
       }
-      const action = this.getAction(actionType);
-      action.click(e, actionType);
     }
-  }
-  public getAction(actionName) {
-    const actionMethod = `${actionName}Action`;
-    const actionObject: any = {};
-    // actionObject.title = this.grid.translations[actionName] || actionName;
-    actionObject.title = actionName;
-    actionObject.iconClass = DEFAULT_ACTION_PROPS[actionName] ? DEFAULT_ACTION_PROPS[actionName].iconClass : "";
-    if (typeof this[actionMethod] === "function") {
-      actionObject.click = this[actionMethod].bind(this);
-    } else {
-      actionObject.click = this.customAction.bind(this);
-    }
-    return actionObject;
+    return [];
   }
 
-  public editAction(e) {
-    e.preventDefault();
-    // index - 1 to start from 0
-    const index = e.item.closest("td").getAttribute("dataindex") - 1;
-    const target = e.currentTarget || e.item || e.target;
-    const item = this.gridComponent.dataItems[index].properties;
+  public get secondaryActions() {
+    if (this.actions) {
+      if (this.actions.length > 2) {
+        return this.actions.slice(1);
+      } else {
+        return [];
+      }
+    }
+    return [];
+  }
+
+  public created() {
+    window.addEventListener("click", () => {
+      if (!this.hoverPopup) {
+        this.showSecondaryActionsMenu = false;
+      }
+    });
+  }
+
+  public beforeDestroy() {
+    window.removeEventListener("click", () => {
+      if (!this.hoverPopup) {
+        this.showSecondaryActionsMenu = false;
+      }
+    });
+  }
+
+  protected onRowActionClick(evt, action) {
+    evt.preventDefault();
     const event = new GridEvent(
       {
-        type: "edit",
-        row: item
+        type: action.action,
+        row: JSON.parse(JSON.stringify(this.rowData))
       },
-      target,
-      true,
+      evt.target,
+      isStandardAction(action.action),
       "GridActionEvent"
     );
-    const id = item.initid || item.id;
-    this.$emit("action-click", event);
-    if (!event.isDefaultPrevented()) {
-      window.open(`/api/v2/smart-elements/${id}/views/!defaultEdition.html`, "_blank");
+    this.$emit("rowActionClick", event);
+    if (isStandardAction(action.action) && !event.isDefaultPrevented()) {
+      const viewId = action.action === "edit" ? "defaultEdition" : "defaultConsultation";
+      window.open(
+        `/api/v2/smart-elements/${this.rowData.properties.id || this.rowData.properties.initid}/views/!${viewId}.html`,
+        "_blank"
+      );
     }
-  }
-
-  public consultAction(e) {
-
-    if (typeof e.preventDefault === "function") {
-      e.preventDefault();
-    }
-    // index - 1 to start from 0
-    const index = e.item.closest("td").getAttribute("dataindex") - 1;
-    const target = e.currentTarget || e.item || e.target;
-    const item = this.gridComponent.dataItems[index].properties;
-    const event = new GridEvent(
-      {
-        type: "consult",
-        row: item
-      },
-      target,
-      true,
-      "GridActionEvent"
-    );
-    this.$emit("action-click", event);
-    const id = item.initid || item.id;
-    if (!event.isDefaultPrevented()) {
-      window.open(`/api/v2/smart-elements/${id}/views/!defaultConsultation.html`, "_blank");
-    }
-  }
-
-  public customAction(e, actionType) {
-    e.preventDefault();
-    // index - 1 to start from 0
-    const index = e.item.closest("td").getAttribute("dataindex") - 1;
-    const target = e.currentTarget || e.item || e.target;
-    if (actionType) {
-      const item = this.gridComponent.dataItems[index].properties;
-      const event = new GridEvent({ type: actionType, row: item }, target, false, "GridActionEvent");
-      this.$emit("action-click", event);
-    }
+    this.showSecondaryActionsMenu = false;
   }
 }

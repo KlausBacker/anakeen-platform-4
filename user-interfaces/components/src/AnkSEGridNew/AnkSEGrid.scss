@@ -5,8 +5,8 @@
     }
 
     // none display for standard kendo cell to avoid flickering
-    .k-filtercell {
-        display: none;
+    .k-filter-row {
+        display: none !important;
     }
 
     .smart-element-grid-wrapper {
@@ -16,39 +16,5 @@
     .k-grid {
         display: flex !important; // To override important kendo rule
         flex: 1;
-
-        .smart-element-grid-header-content {
-            display: flex;
-            flex-direction: column;
-            position: relative;
-
-            .k-link {
-                flex: 1;
-            }
-        }
-
-        .smart-element-grid-header--subtitle {
-            color: #666;
-            font-style: italic;
-            text-overflow: ellipsis;
-            overflow: hidden;
-        }
-
-        .smart-element-grid-header--title {
-            text-overflow: ellipsis;
-            overflow: hidden;
-        }
-    }
-
-    .k-command-cell {
-        .k-button {
-            color: #157EFB;
-        }
-
-        .actionMenu {
-            & > .k-item > .k-link > .k-icon {
-                //color: #157EFB;
-            }
-        }
     }
 }

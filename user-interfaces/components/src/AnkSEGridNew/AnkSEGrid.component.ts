@@ -248,14 +248,13 @@ export default class GridController extends Vue {
     }
     if (response.data.data.actions.length > 0) {
       this.columnsList.push({
-        field: "actionMenu",
+        field: "smart_element_grid_action_menu",
         title: " ",
         abstract: true,
-        withContext: true,
-        context: ["Custom"],
+        withContext: false,
         sortable: false
       });
-      this.actionsList = this.formatActionMenu(response.data.data.actions);
+      this.actionsList = response.data.data.actions;
     }
   }
 
@@ -274,21 +273,30 @@ export default class GridController extends Vue {
 
   protected cellRenderFunction(createElement, tdElement: VNode, props, listeners) {
     const columnConfig = this.columnsList[props.columnIndex];
-    if (props.field === "actionMenu") {
+    let renderElement = tdElement;
+    if (props.field === "smart_element_grid_action_menu") {
       if (this.actionsList.length > 0) {
-        return createElement(
-          AnkActionMenu,
-          {
-            props: {
-              actions: this.actionsList,
-              gridComponent: this
-            }
+        renderElement = createElement(AnkActionMenu, {
+          props: {
+            actions: this.actionsList,
+            rowData: props.dataItem,
+            gridComponent: this
           },
-          props.dataItem.actionMenu
-        );
+          on: {
+            rowActionClick: (...args) => this.$emit("rowActionClick", ...args)
+          }
+        });
+        if (this.$scopedSlots && this.$scopedSlots.actionTemplate) {
+          return this.$scopedSlots.actionTemplate({
+            renderElement,
+            props,
+            listeners,
+            columnConfig,
+            actions: this.actionsList
+          });
+        }
       }
     } else {
-      let renderElement = tdElement;
       if (columnConfig) {
         renderElement = createElement(AnkGridCell, {
           props: {
@@ -305,9 +313,8 @@ export default class GridController extends Vue {
           columnConfig
         });
       }
-      return renderElement;
     }
-    return tdElement;
+    return renderElement;
   }
 
   protected headerCellRenderFunction(createElement, defaultRendering, props, listeners) {
@@ -367,36 +374,6 @@ export default class GridController extends Vue {
 
   protected onColumnReorder(reorderEvt) {
     console.log(reorderEvt);
-  }
-
-  protected formatActionMenu(actions) {
-    const actionsColumn = [];
-    const allActionsConfig: any = actions;
-    const subCommands = [];
-    allActionsConfig.forEach((config, index, selfArray) => {
-      if (selfArray.length <= 2 || index < 1) {
-        actionsColumn.push({
-          name: config.action,
-          text: config.title,
-          iconClass: config.iconClass
-        });
-      } else {
-        subCommands.push({
-          name: config.action,
-          text: config.title,
-          iconClass: config.iconClass
-        });
-      }
-    });
-    if (subCommands.length) {
-      actionsColumn.push({
-        name: "_subcommands",
-        text: "",
-        iconClass: "k-icon k-i-more-vertical",
-        subActions: subCommands
-      });
-    }
-    return actionsColumn;
   }
 
   protected export(
