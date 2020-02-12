@@ -1,13 +1,56 @@
 <template>
-  <td class="smart-element-grid-cell">
-   <span v-if="columnConfig.property">{{dataItem.properties[field]}}</span>
-   <span v-else-if="columnConfig.abstract">{{dataItem.abstract[field].displayValue}}</span>
-   <div v-else>
-       <a v-if="columnConfig.smartType === 'docid'" href="#">
-           <img :src="dataItem.attributes[field].icon"/>
-           {{dataItem.attributes[field].displayValue}}
-       </a>
-       <span v-else>{{dataItem.attributes[field].displayValue}}</span>
+  <td
+    :class="
+      `smart-element-grid-cell smart-element-grid-cell--${columnConfig.smartType} smart-element-grid-cell--${field}`
+    "
+  >
+    <!-- Property display -->
+    <div class="smart-element-grid-cell-content" v-if="columnConfig.property">{{ dataItem.properties[field] }}</div>
+
+    <!-- Abstract display -->
+    <div class="smart-element-grid-cell-content" v-else-if="columnConfig.abstract">
+      {{ dataItem.abstract[field].displayValue }}
+    </div>
+
+    <!-- Smart Field display -->
+
+    <!-- Multiple case -->
+    <div
+      v-else-if="columnConfig.multiple || Array.isArray(dataItem.attributes[field])"
+      class="smart-element-grid-cell-content"
+    >
+      <div
+        class="smart-element-grid-cell-content-multiple-row"
+        v-for="(fieldValue, index) in dataItem.attributes[field]"
+        :key="index"
+      >
+        <div class="smart-element-grid-cell-content-multiple-row-content">
+          <div
+            class="smart-element-grid-cell-content-multiple-col"
+            v-for="(sublevel, subindex) in getSublevel(fieldValue)"
+            :key="`sublevel-${subindex}`"
+          >
+            <component
+              class="smart-element-grid-cell-content--value"
+              :is="componentName"
+              v-bind="$props"
+              :fieldValue="sublevel"
+            ></component>
+            <span class="smart-element-grid-cell-content-multiple-col-separator" v-if="subindex < getSublevel(fieldValue).length - 1">,&nbsp;</span>
+          </div>
+        </div>
+        <hr class="smart-element-grid-cell-content-multiple-row-separator" v-if="index < dataItem.attributes[field].length - 1" />
+      </div>
+    </div>
+
+    <!-- Simple case -->
+    <div class="smart-element-grid-cell-content" v-else>
+      <component
+        class="smart-element-grid-cell-content--value"
+        :is="componentName"
+        v-bind="$props"
+        :fieldValue="dataItem.attributes[field]"
+      ></component>
     </div>
   </td>
 </template>
