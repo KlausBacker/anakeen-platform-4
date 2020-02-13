@@ -4,6 +4,7 @@ import AnkActionMenu from "./AnkActionMenu/AnkActionMenu.vue";
 import AnkTextFilterCell from "./AnkTextFilterCell/AnkTextFilterCell.vue";
 import AnkGridCell from "./AnkGridCell/AnkGridCell.vue";
 import AnkExportButton from "./AnkExportButton/AnkExportButton.vue";
+import AnkGridExpandButton from "./AnkGridExpandButton/AnkGridExpandButton.vue";
 import AnkGridPager from "./AnkGridPager/AnkGridPager.vue";
 import AnkGridHeaderCell from "./AnkGridHeaderCell/AnkGridHeaderCell.vue";
 import { Grid } from "@progress/kendo-vue-grid";
@@ -51,6 +52,7 @@ const DEFAULT_SORT = {
     "ank-progress": AnkProgress,
     "ank-action-menu": AnkActionMenu,
     "ank-export-button": AnkExportButton,
+    "ank-expand-button": AnkGridExpandButton,
     "ank-grid-pager": AnkGridPager
   },
   name: "ank-se-grid-vue"
@@ -104,6 +106,11 @@ export default class GridController extends Vue {
   })
   public exportButton: boolean;
 
+  @Prop({
+    default: false,
+    type: Boolean
+  })
+  public expandable: boolean;
   @Prop({
     default: "-",
     type: String
@@ -246,6 +253,10 @@ export default class GridController extends Vue {
       }
     }
     this.gridInstance = this;
+  }
+  public onExpandClicked() {
+    // @ts-ignore
+    $(this.$refs.smartGridWidget.$el).toggleClass("grid-row-collapsed");
   }
 
   protected async _loadGridConfig() {
