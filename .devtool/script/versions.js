@@ -97,7 +97,7 @@ exports.versions = [
   }
 ];
 exports.RC = false;
-exports.release = "2019.1";
+exports.release = "2019.2";
 exports.modulePath = [
   "admin-center",
   "business-app",
