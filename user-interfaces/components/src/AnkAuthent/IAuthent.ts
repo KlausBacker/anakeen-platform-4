@@ -3,7 +3,7 @@ export interface IAuthent {
 
   initForgetElements();
 
-  getSearchArg(arg: string): any;
+  getSearchArg(arg: string): string;
 
-  authToken: any;
+  authToken: string | null;
 }

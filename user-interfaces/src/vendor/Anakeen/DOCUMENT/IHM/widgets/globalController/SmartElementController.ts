@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 /* tslint:disable:variable-name ordered-imports */
-// @ts-ignore
 import StaticErrorTemplate from "./utils/templates/SEError.mustache.js";
 import { AnakeenController } from "./types/ControllerTypes";
 import ListenableEvent = AnakeenController.BusEvents.ListenableEvent;
@@ -8,28 +7,17 @@ import ISmartElementAPI = AnakeenController.SmartElement.ISmartElementAPI;
 import ISmartField = AnakeenController.SmartElement.ISmartField;
 import ISmartElement = AnakeenController.SmartElement.ISmartElement;
 import Listenable = AnakeenController.BusEvents.Listenable;
-// @ts-ignore
 import LoadingTemplate from "./utils/templates/SELoading.mustache.js";
 import * as Backbone from "backbone";
-// @ts-ignore
 import AttributeInterface from "../../controllerObjects/attributeInterface";
-// @ts-ignore
 import MenuInterface from "../../controllerObjects/menuInterface";
-// @ts-ignore
 import TransitionInterface from "../../controllerObjects/transitionInterface";
-// @ts-ignore
 import i18n from "../../i18n/documentCatalog";
-// @ts-ignore
 import Model from "../../models/mDocument";
-// @ts-ignore
 import MenuModel from "../../models/mMenu";
-// @ts-ignore
 import TransitionModel from "../../models/mTransition";
-// @ts-ignore
 import Router from "../../routers/router.js";
-// @ts-ignore
 import View from "../../views/document/vDocument";
-// @ts-ignore
 import TransitionView from "../../views/workflow/vTransition";
 import "../../widgets/widget";
 import "../../widgets/window/wConfirm";
@@ -45,6 +33,7 @@ import $ from "jquery";
 import Mustache from "mustache";
 import _ from "underscore";
 import SmartElementEvent = AnakeenController.SmartElement.SmartElementEvent;
+import { ISmartFieldValue } from "./ISmartFieldValue";
 
 const DEFAULT_OPTIONS: IControllerOptions = {
   controllerPrefix: "smart-element-controller-",
@@ -63,6 +52,11 @@ class ErrorModelNonInitialized extends Error {
   }
 }
 
+interface IReturnPromise {
+  properties: ISmartElement;
+  promiseArguments: ISmartElement;
+}
+
 interface ISmartElementModel extends Backbone.Model {
   _customClientData: {};
   _formConfiguration: null;
@@ -70,13 +64,13 @@ interface ISmartElementModel extends Backbone.Model {
 
   getModelProperties(): SmartElementProperties;
 
-  fetchDocument(viewData?: ViewData, options?: any): Promise<any>;
+  fetchDocument(viewData?: ViewData, options?: any): Promise<IReturnPromise>;
 
   hasUploadingFile(): boolean;
 
-  saveDocument(): Promise<any>;
+  saveDocument(): Promise<void>;
 
-  restoreDocument(): Promise<any>;
+  restoreDocument(): Promise<void>;
 
   deleteDocument(): Promise<any>;
 
@@ -84,7 +78,7 @@ interface ISmartElementModel extends Backbone.Model {
 
   getServerProperties(): any;
 
-  getValues(onlyModified?:boolean): any;
+  getValues(onlyModified?: boolean): ISmartFieldValue[];
 
   unautolock(): Promise<any>;
 
@@ -119,7 +113,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
   protected $loading: JQuery & { dcpLoading(...args): JQuery };
   protected $notification: JQuery & { dcpNotification(...args): JQuery };
   protected _globalEventHandler: (...args: any[]) => any;
-  protected _defaultPersistent: boolean = true;
+  protected _defaultPersistent = true;
 
   constructor(dom: DOMReference, viewData: ViewData, options?: IControllerOptions, globalEventHandler?) {
     super();
@@ -139,9 +133,8 @@ export default class SmartElementController extends AnakeenController.BusEvents.
         viewId: "!defaultConsultation"
       });
     }
-    // @ts-ignore
     this._element = $(dom);
-    this.$ = selector => $(selector, this._element);
+    this.$ = (selector): JQuery => $(selector, this._element);
     this._initialized = {
       model: false,
       view: false
@@ -489,7 +482,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
    *
    * @returns {*|{}}
    */
-  public getValues(onlyModified= false) {
+  public getValues(onlyModified = false) {
     this.checkInitialisedModel();
     return this._model.getValues(onlyModified);
   }
@@ -2279,10 +2272,17 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     }
   }
 
-  private _registerOutputPromise(documentPromise, options) {
+  private _registerOutputPromise(
+    documentPromise,
+    options
+  ): Promise<{
+    element: JQuery<DOMReference>;
+    nextDocument: ISmartElement | {} | null;
+    previousDocument: ISmartElement | {} | null;
+  }> {
     return new Promise((resolve, reject) => {
       documentPromise.then(
-        values => {
+        (values: { documentProperties: ISmartElement }) => {
           if (options && _.isFunction(options.success)) {
             try {
               if (window.console.warn) {
@@ -2294,13 +2294,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
                 this.getProperties()
               );
             } catch (exception) {
-              // @ts-ignore
-              if (window.dcp.logger) {
-                // @ts-ignore
-                window.dcp.logger(exception);
-              } else {
-                console.error(exception);
-              }
+              console.error(exception);
             }
           }
           resolve({
@@ -2337,8 +2331,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
               }
               options.error.call($(this._element), values.documentProperties || {}, null, errorMessage);
             } catch (exception) {
-              // @ts-ignore
-              window.dcp.logger(exception);
+              console.error(exception);
             }
           }
           reject({

@@ -11,15 +11,20 @@ import EVENTS_LIST = AnakeenController.SmartElement.EVENTS_LIST;
 import ListenableEventCallable = AnakeenController.BusEvents.ListenableEventCallable;
 import ListenableEvent = AnakeenController.BusEvents.ListenableEvent;
 import SmartElementEvent = AnakeenController.SmartElement.SmartElementEvent;
+import { ISmartFieldValue } from "../../../src/vendor/Anakeen/DOCUMENT/IHM/widgets/globalController/ISmartFieldValue";
 
 @Component({
   name: "ank-smart-element"
 })
 export default class AnkSmartElement extends Vue implements AnakeenController.SmartElement.ISmartElementAPI {
-  get initialData() {
-    const data: ISmartElementValue = {
-      noRouter: !this.browserHistory
-    };
+  documentIsReady: boolean;
+  get initialData(): {
+    customClientData: object | null;
+    initid: string | number;
+    noRouter: boolean;
+    revision: number;
+    viewId: string;
+  } {
     return {
       customClientData: this.customClientData || null,
       initid: this.initid || 0,
@@ -29,48 +34,52 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
     };
   }
 
-  @Prop({ type: Boolean, default: false }) public browserHistory!: boolean;
-  @Prop({ type: [String, Number], default: 0 }) public initid!: string | number;
-  @Prop({ type: Object, default: null }) public customClientData!: object;
+  @Prop({ type: Boolean, default: false })
+  public browserHistory!: boolean;
+  @Prop({ type: [String, Number], default: 0 })
+  public initid!: string | number;
+  @Prop({ type: Object, default: null })
+  public customClientData!: object;
   @Prop({ type: String, default: "!defaultConsultation" })
   public viewId!: string;
-  @Prop({ type: Number, default: -1 }) public revision!: number;
+  @Prop({ type: Number, default: -1 })
+  public revision!: number;
 
   public smartElementWidget: SmartElementController = null;
   private controllerScopeId: string;
 
-  get smartFieldValues(): any {
+  get smartFieldValues(): ISmartFieldValue[] {
     return this.getValues();
   }
 
-  public mounted() {
+  public mounted(): void {
     if (this.initialData.initid.toString() !== "0") {
       this._initController(this.initialData);
     }
     this.$emit("smartElementMounted");
   }
-  @Watch('initid')
-  protected watchInitId() {
+  @Watch("initid")
+  protected watchInitId(): void {
     this.updateComponent();
   }
-  @Watch('viewId')
-  protected watchViewId() {
+  @Watch("viewId")
+  protected watchViewId(): void {
     this.updateComponent();
   }
-  @Watch('browserHistory')
-  protected watchBrowserHistory() {
+  @Watch("browserHistory")
+  protected watchBrowserHistory(): void {
     this.updateComponent();
   }
-  @Watch('customClientData', { deep: true })
-  protected watchCustomClientData() {
+  @Watch("customClientData", { deep: true })
+  protected watchCustomClientData(): void {
     this.updateComponent();
   }
-  @Watch('revision')
-  protected watchRevision() {
+  @Watch("revision")
+  protected watchRevision(): void {
     this.updateComponent();
   }
 
-  protected updateComponent() {
+  protected updateComponent(): void {
     if (this.initialData.initid.toString() !== "0") {
       if (!this.isLoaded()) {
         this._initController(this.initialData);
@@ -83,7 +92,7 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
    * True when internal widget is loaded
    * @returns {boolean}
    */
-  public isLoaded() {
+  public isLoaded(): boolean {
     return this.smartElementWidget !== null;
   }
 
@@ -91,8 +100,8 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
     eventType: SmartElementEvent | ListenableEvent,
     options?: object | ListenableEventCallable,
     callback?: ListenableEventCallable
-  ) {
-    const operation = () => this.smartElementWidget.addEventListener(eventType, options, callback);
+  ): void {
+    const operation = (): void => this.smartElementWidget.addEventListener(eventType, options, callback);
     if (this.isLoaded()) {
       operation();
     } else {
@@ -113,7 +122,6 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
         } else {
           console.error(error);
         }
-        // @ts-ignore
         if (!this.documentIsReady) {
           this.$emit("internalComponentError", {}, {}, { message: errorMessage });
         }
@@ -194,8 +202,8 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
     return this.smartElementWidget.getValue(smartFieldId, type);
   }
 
-  public getValues() {
-    return this.smartElementWidget.getValues();
+  public getValues(onlyModified = false): ISmartFieldValue[] {
+    return this.smartElementWidget.getValues(onlyModified);
   }
 
   public getCustomServerData() {

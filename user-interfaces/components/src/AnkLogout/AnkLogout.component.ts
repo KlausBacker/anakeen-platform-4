@@ -9,7 +9,7 @@ import ReadyMixin from "../../mixins/AnkVueComponentMixin/ReadyMixin";
 })
 export default class LogoutComponent extends Mixins(EventUtilsMixin, ReadyMixin, I18nMixin) {
   @Prop({ type: String, default: "" }) public title;
-  public logout() {
+  public logout(): void {
     kendo.ui.progress(kendo.jQuery("body"), true);
     const event = this.$emitCancelableEvent("beforeLogout");
     if (event.isDefaultPrevented()) {
@@ -33,12 +33,14 @@ export default class LogoutComponent extends Mixins(EventUtilsMixin, ReadyMixin,
         });
     }
   }
-  public get translations() {
+  public get translations(): {
+    title: string;
+  } {
     return {
-      title: this.$t("Logout.Logout")
+      title: this.$t("Logout.Logout") as string
     };
   }
-  public mounted() {
+  public mounted(): void {
     this._enableReady();
   }
 }
