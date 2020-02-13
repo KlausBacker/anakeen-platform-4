@@ -761,7 +761,7 @@ exports.parseEnumContants = ({ globFile, info, log, verbose }) => {
                 }
                 return false;
               };
-              const items = enumConfigNode.find("smart:enum", smartNs);
+              const items = enumConfigNode.find(".//smart:enum", smartNs);
               const enumItems = [];
               items.forEach(item => {
                 const itemName = attrValue(item, "name");

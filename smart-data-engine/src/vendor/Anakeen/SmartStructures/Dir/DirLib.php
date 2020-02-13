@@ -28,8 +28,11 @@ class DirLib
             $tok = ltrim($tok, " ");
             $tok = strtok($tok, " !=~@");
             if (!(strpos($tok, '.') > 0)) { // join is not in main table
-                if (($tok !== false) && ($tok !== "true") && ($tok !== "false") && (!in_array(ltrim($tok, "("), $props))) {
-                    return false;
+                $rightCol=ltrim($tok, "(");
+                if (($tok !== false) && ($tok !== "true") && ($tok !== "false") && (!in_array($rightCol, $props))) {
+                    if (preg_match('/^([a-z0-9_]+)$/', $rightCol)) {
+                        return false;
+                    }
                 }
             }
         }
@@ -699,7 +702,7 @@ class DirLib
         return ($tableid);
     }
 
-// --------------------------------------------------------------------
+    // --------------------------------------------------------------------
 
     /**
      * return array of subfolder id until sublevel 2 (RECURSIVE)
