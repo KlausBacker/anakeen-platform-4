@@ -3,7 +3,7 @@
 
     <description>Anakeen Platform : User interfaces</description>
     <requires>
-        <module name="smart-data-engine" version="^2.1.0"/>
+        <module name="smart-data-engine" version="^2.1.1"/>
     </requires>
     <replaces>
         <module name="anakeen-theme"/>

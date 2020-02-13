@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/anakeen-cli",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "autorelease": "true",
   "description": "The cli tool to init, build and deploy anakeen-platform projects",
   "main": "index.js",

@@ -46,7 +46,7 @@
   "license": "SEE LICENSE IN LICENSE",
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/user-interfaces.git",
   "devDependencies": {
-    "@anakeen/anakeen-cli": "1.2.0",
+    "@anakeen/anakeen-cli": "1.2.1",
     "@anakeen/webpack-conf": "1.2.1",
     "core-js": "3.6.1",
     "@types/backbone": "^1.4.0",
