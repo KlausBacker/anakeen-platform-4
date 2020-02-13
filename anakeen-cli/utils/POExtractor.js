@@ -307,13 +307,22 @@ exports.xmlEnum2Pot = ({ globFile, info, potPath, verbose, log }) => {
                     if (!currentConf.enum) {
                       return acc;
                     }
-                    const enums = currentConf.enum.reduce((acc, currentField) => {
-                      acc[currentField.$.name] = {
-                        enumItem: currentField.$,
-                        fileName: path.relative(srcPath, currentFilePath)
-                      };
-                      return acc;
-                    }, {});
+                    let enums = {};
+                    const extractEnumItem = enumList => {
+                      enumList.forEach(enumItem => {
+                        if (enumItem.$) {
+                          enums[enumItem.$.name] = {
+                            enumItem: enumItem.$,
+                            fileName: path.relative(srcPath, currentFilePath)
+                          };
+                        }
+                        if (enumItem.enum) {
+                          extractEnumItem(enumItem.enum);
+                        }
+                      });
+                    };
+                    extractEnumItem(currentConf.enum);
+
                     if (acc[enumName]) {
                       acc[enumName] = { ...acc[enumName], ...enums };
                     } else {

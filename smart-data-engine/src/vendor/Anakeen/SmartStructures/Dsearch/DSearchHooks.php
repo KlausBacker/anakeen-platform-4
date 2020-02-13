@@ -692,13 +692,13 @@ class DSearchHooks extends \SmartStructure\Search
 
                         if ($op == '=') {
                             if ($oa->repeat) {
-                                $cond = " " . $col . " ~ E'\\\\y(" . pg_escape_string(implode('|', $tkids)) . ")\\\\y' ";
+                                $cond = sprintf("%s && ARRAY['%s']", $col, implode("','", $tkids));
                             } else {
                                 $cond = " $col='" . implode("' or $col='", $tkids) . "'";
                             }
                         } elseif ($op == '!=') {
                             if ($oa->repeat) {
-                                $cond1 = " " . $col . " !~ E'\\\\y(" . pg_escape_string(implode('|', $tkids)) . ")\\\\y' ";
+                                $cond1 = sprintf("not(%s && ARRAY['%s'])", $col, implode("','", $tkids));
                             } else {
                                 $cond1 = " $col !='" . implode("' and $col != '", $tkids) . "'";
                             }
