@@ -63,6 +63,7 @@ export default class GridController extends Vue {
     type: String
   })
   public collection: string;
+
   @Prop({
     default: () => [],
     type: Array
@@ -172,6 +173,25 @@ export default class GridController extends Vue {
   })
   public persistSelection: boolean;
 
+  @Watch("dataItems")
+  public watchDataItems(val) {
+    Vue.nextTick(() => {
+      val.forEach(item => {
+        if (item.selected) {
+          // @ts-ignore
+          this.$refs.smartGridWidget.$children.forEach(child => {
+            if (child.dataItem) {
+              if (child.dataItem.properties.id === item.properties.id) {
+                child.$el.firstElementChild.firstElementChild.checked = item.selected;
+              }
+            }
+          });
+        }
+      });
+    });
+    this.$emit("grid-data-bound", this.gridInstance);
+  }
+
   public transaction: any = null;
   public gridActions: any = null;
   public gridInstance: any = null;
@@ -185,9 +205,11 @@ export default class GridController extends Vue {
     downloadAgain: "Retry",
     downloadCancel: "Cancel"
   };
+  public onlySelection: boolean = false;
   public columnsList: any = this.columns;
   public actionsList: any = this.actions;
   public dataItems: any = [];
+  public selectedRows: any = [];
   public isLoading: boolean = false;
   public currentSort: any = null;
   public currentFilter: any = { logic: "and", filters: [] };
@@ -214,7 +236,9 @@ export default class GridController extends Vue {
       sort: this.currentSort,
       filterable: this.filterable,
       filter: this.currentFilter,
-      transaction: this.transaction
+      transaction: this.transaction,
+      selectedRows: this.selectedRows,
+      onlySelection: this.onlySelection
     };
   }
 
@@ -234,9 +258,13 @@ export default class GridController extends Vue {
     try {
       await this._loadGridConfig();
       await this._loadGridContent();
+      this.dataItems = this.dataItems.map(item => {
+        return { ...item, selected: false };
+      });
       this.isLoading = false;
     } catch (error) {
       console.error(error);
+      this.isLoading = false;
     }
   }
 
@@ -297,6 +325,21 @@ export default class GridController extends Vue {
     this.$emit("grid-data-bound", this.gridInstance);
   }
 
+  protected onSelectionChange(event) {
+    this.dataItems.find(item => {
+      if (item.properties.id === event.dataItem.properties.id) {
+        const checkedValue = event.event.target.checked;
+        item.selected = checkedValue;
+        if (checkedValue && this.selectedRows.indexOf(item.properties.id) === -1) {
+          this.selectedRows.push(event.dataItem.properties.id);
+        } else {
+          this.selectedRows.splice(this.selectedRows.indexOf(item.properties.id), 1);
+        }
+      }
+    });
+    this._loadGridContent();
+  }
+
   protected cellRenderFunction(createElement, tdElement: VNode, props, listeners) {
     const columnConfig = this.columnsList[props.columnIndex];
     let renderElement = tdElement;
@@ -322,6 +365,8 @@ export default class GridController extends Vue {
           });
         }
       }
+    } else if (props.field === "ank-grid_selected_rows") {
+      return renderElement;
     } else {
       if (columnConfig) {
         renderElement = createElement(AnkGridCell, {
@@ -409,24 +454,26 @@ export default class GridController extends Vue {
     pollingTime = 500,
     onExport = this.doDefaultExport.bind(this)
   ) {
-
     let beforeEvent = this.sendBeforeExportEvent(onExport, onPolling);
     if (!beforeEvent.isDefaultPrevented()) {
-
       let exportCb = beforeEvent.onExport;
       let pollingCb = beforeEvent.onPolling;
       if (typeof onExport === "function") {
-
         this.sendBeforePollingEvent();
         let promise = this.createExportTransaction()
           .then(transaction => {
-
             this.transaction = transaction;
 
-            return this.doTransactionExport(transaction, this.gridInfo, exportCb, pollingCb, pollingTime, directDownload);
+            return this.doTransactionExport(
+              transaction,
+              this.gridInfo,
+              exportCb,
+              pollingCb,
+              pollingTime,
+              directDownload
+            );
           })
           .then(result => {
-
             return result ? result.data : true;
           });
         if (!directDownload) {
@@ -441,19 +488,20 @@ export default class GridController extends Vue {
 
   protected async doDefaultExport(transaction, queryParams, directDownload) {
     const exportUrl = this._getOperationUrl("export");
-    await this.$http.get(exportUrl, {
-      params: this.gridInfo,
-      responseType: "blob"
-    }).then(response => this.downloadExportFile(response.data))
-          .catch(err => {
-            this.gridError.error(err);
-            this.sendErrorEvent(err);
-
-          });
+    await this.$http
+      .get(exportUrl, {
+        params: this.gridInfo,
+        responseType: "blob"
+      })
+      .then(response => this.downloadExportFile(response.data))
+      .catch(err => {
+        this.gridError.error(err);
+        this.sendErrorEvent(err);
+      });
   }
 
   protected downloadExportFile(blobFile) {
-    const blob = new Blob([blobFile], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+    const blob = new Blob([blobFile], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
     const url = window.URL.createObjectURL(blob);
     let link;
     const existLink = $("a.seGridExportLink");

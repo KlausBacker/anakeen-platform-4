@@ -74,7 +74,7 @@ export default class GridExportButtonController extends Vue {
     });
     // this.gridComponent.kendoGrid.bind("dataBound", () => this.computeTotalExport());
     // this.gridComponent.kendoGrid.bind("change", () => this.computeTotalExport());
-    this.gridComponent.$on("before-polling-grid-export", () => this.displayExportPendingStatus(false));
+    this.gridComponent.$on("beforePollingGridExport", () => this.displayExportPendingStatus(false));
     this.gridComponent.$on("grid-export-error", this.displayExportErrorStatus);
   }
 
@@ -165,12 +165,14 @@ export default class GridExportButtonController extends Vue {
           this.gridComponent.export(true, true, this.doDefaultPolling);
           break;
         case "selection":
+          this.gridComponent.onlySelection = true;
           disabled = this.gridComponent.$(event.item).find(".k-state-disabled");
           if (!disabled.length) {
             this.gridComponent.export(false, true, this.doDefaultPolling);
           }
           break;
         case "all":
+          this.gridComponent.onlySelection = false;
           this.gridComponent.export(true, true, this.doDefaultPolling);
           break;
         case "quit":
