@@ -81,7 +81,10 @@ class DefaultGridController implements SmartGridController
         }
         $data = $contentBuilder->getContent();
         $exportBuilder->clientColumnsConfig = $columns;
-        $exportBuilder->selectedRows = isset($clientConfig["selectedRows"]) ? $clientConfig["selectedRows"] : [];
+        if (isset($clientConfig["onlySelection"]) && $clientConfig["onlySelection"]) {
+            $exportBuilder->onlySelect = true;
+            $exportBuilder->selectedRows = isset($clientConfig["selectedRows"]) ? $clientConfig["selectedRows"] : [];
+        }
         $exportBuilder->unselectedRows = isset($clientConfig["unselectedRows"]) ? $clientConfig["unselectedRows"] : [];
         $transactionId = isset($clientConfig["transaction"]) ? $clientConfig["transaction"]["transactionId"] : null;
         if (isset($transactionId)) {

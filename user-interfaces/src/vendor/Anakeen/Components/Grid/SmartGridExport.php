@@ -25,6 +25,7 @@ class SmartGridExport
     public $unselectedRows = [];
     protected $returnFields = [];
     public $transactionId;
+    public $onlySelect = false;
 
     public function doExport(\Slim\Http\response $response, $data)
     {
@@ -97,39 +98,41 @@ class SmartGridExport
             $maxHeightCoeff = 1;
             $row = [];
             $columnIndex = "A";
-            foreach ($this->clientColumnsConfig as $field) {
-                $fieldType = isset($field["property"]) ? "properties" : "attributes";
-                $fieldId = $field["field"];
-                $fieldConfig = $this->getFieldConfig($fieldId);
-                if ($fieldType === "attributes" && !isset($field["abstract"])) {
-                    if (is_object($datum[$fieldType][$fieldId])) {
-                        $row[] = $this->getCellFieldValue($datum[$fieldType][$fieldId], $fieldConfig);
-                    } elseif (is_array($datum[$fieldType][$fieldId])) {
-                        if (count($datum[$fieldType][$fieldId]) > $maxHeightCoeff) {
-                            $maxHeightCoeff = count($datum[$fieldType][$fieldId]);
+            if (!$this->onlySelect || in_array($datum["properties"]["id"], $this->selectedRows)) {
+                foreach ($this->clientColumnsConfig as $field) {
+                    $fieldType = isset($field["property"]) ? "properties" : "attributes";
+                    $fieldId = $field["field"];
+                    $fieldConfig = $this->getFieldConfig($fieldId);
+                    if ($fieldType === "attributes" && !isset($field["abstract"])) {
+                        if (is_object($datum[$fieldType][$fieldId])) {
+                            $row[] = $this->getCellFieldValue($datum[$fieldType][$fieldId], $fieldConfig);
+                        } elseif (is_array($datum[$fieldType][$fieldId])) {
+                            if (count($datum[$fieldType][$fieldId]) > $maxHeightCoeff) {
+                                $maxHeightCoeff = count($datum[$fieldType][$fieldId]);
+                            }
+                            $row[] = implode("\n", array_map(function ($item) use ($fieldConfig) {
+                                return $this->getCellFieldValue($item, $fieldConfig);
+                            }, $datum[$fieldType][$fieldId]));
                         }
-                        $row[] = implode("\n", array_map(function ($item) use ($fieldConfig) {
-                            return $this->getCellFieldValue($item, $fieldConfig);
-                        }, $datum[$fieldType][$fieldId]));
+                    } elseif ($fieldType === "properties" && !isset($field["abstract"])) {
+                        $row[] = $this->getCellPropertyValue($datum[$fieldType][$fieldId], $fieldId);
                     }
-                } elseif ($fieldType === "properties" && !isset($field["abstract"])) {
-                    $row[] = $this->getCellPropertyValue($datum[$fieldType][$fieldId], $fieldId);
+                    $this->setCellFormat(
+                        $sheet,
+                        $columnIndex . $rowIndex,
+                        $fieldConfig["smartType"]
+                    );
+                    $columnIndex++;
                 }
-                $this->setCellFormat(
-                    $sheet,
-                    $columnIndex . $rowIndex,
-                    $fieldConfig["smartType"]
-                );
-                $columnIndex++;
-            }
-            $sheet->getRowDimension($rowIndex)->setRowHeight(($maxHeightCoeff * $defaultHeight));
-            $sheet->fromArray($row, null, "A" . $rowIndex++);
+                $sheet->getRowDimension($rowIndex)->setRowHeight(($maxHeightCoeff * $defaultHeight));
+                $sheet->fromArray($row, null, "A" . $rowIndex++);
 
-            if (($rowIndex - 2) % $modulo === 0) {
-                TransactionManager::updateProgression($this->transactionId, [
-                    "exportedRows" => $rowIndex - 2,
-                    "totalRows" => $totalValues
-                ]);
+                if (($rowIndex - 2) % $modulo === 0) {
+                    TransactionManager::updateProgression($this->transactionId, [
+                        "exportedRows" => $rowIndex - 2,
+                        "totalRows" => $totalValues
+                    ]);
+                }
             }
         }
     }
