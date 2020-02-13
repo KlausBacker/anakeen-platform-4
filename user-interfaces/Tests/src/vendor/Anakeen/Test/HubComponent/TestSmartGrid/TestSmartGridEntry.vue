@@ -26,7 +26,7 @@
             <!-- <old-grid-column field="test_ddui_all__image"></old-grid-column> -->
             <old-grid-column field="test_ddui_all__account_multiple"></old-grid-column>
             <old-grid-column field="test_ddui_all__account_multiple_array"></old-grid-column>
-            <!-- <old-grid-column field="test_ddui_all__enumlist"></old-grid-column> -->
+            <old-grid-column field="test_ddui_all__enumlist"></old-grid-column>
             <!-- xml -->
             <!-- json -->
           </old-grid>
@@ -40,6 +40,7 @@
             :actions="actions"
             :reorderable="true"
             :resizable="true"
+            :footer="footer"
           >
           </ank-smart-element-grid>
         </div>
@@ -86,24 +87,28 @@ export default {
         return this.entryOptions.completeRoute;
       },
       columns: [
-        // { field: "title", property: true },
-        // { field: "test_ddui_all__title" },
+        { field: "title", property: true },
+        { field: "test_ddui_all__title" },
         // { field: "test_ddui_all__longtext" },
         // { field: "test_ddui_all__htmltext" },
-        { field: "test_ddui_all__account_multiple" },
-        { field: "test_ddui_all__account_multiple_array" },
-        // { field: "test_ddui_all__integer" },
-        // { field: "test_ddui_all__docid" },
-        // { field: "test_ddui_all__account" },
-        // { field: "test_ddui_all__date" },
-        // { field: "test_ddui_all__color" },
+        //{ field: "test_ddui_all__account_multiple" },
+        //{ field: "test_ddui_all__account_multiple_array" },
+        //{ field: "test_ddui_all__enumlist" },
+        { field: "test_ddui_all__docid" },
+        { field: "test_ddui_all__account" },
+        { field: "test_ddui_all__date" },
+        { field: "test_ddui_all__color" },
         // { field: "test_ddui_all__image" },
         // { field: "test_ddui_all__timestamp" },
-        // { field: "test_ddui_all__money" },
+        { field: "test_ddui_all__money" }
         // { field: "test_ddui_all__money" },
         // { field: "bill_billdate" },
         // { field: "bill_cost" }
       ],
+      footer: {
+        title: "Un superbe footer de colonne",
+        test_ddui_all__money: "On pourrait presque faire la somme là"
+      },
       actions: [
         { action: "consult", title: "Consult" },
         { action: "edit", title: "Edit", iconClass: "fa fa-edit" },
@@ -112,9 +117,7 @@ export default {
     };
   },
   methods: {
-    onRowActionClick(evt) {
-      
-    }
+    onRowActionClick(evt) {}
   }
 };
 </script>
