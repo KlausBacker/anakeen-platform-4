@@ -450,7 +450,9 @@ class SearchSmartData
                 $table = "doc$fromid";
             } elseif ($fromid == 0) {
                 if (DirLib::isSimpleFilter($this->getFilters())) {
-                    $table = "docread";
+                    if (!$this->dirid) {
+                        $table = "docread";
+                    }
                 }
             }
         }
