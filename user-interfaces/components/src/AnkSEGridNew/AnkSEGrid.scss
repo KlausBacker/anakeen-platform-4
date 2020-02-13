@@ -1,5 +1,41 @@
 .smart-element-grid {
   // position: relative;
+  height: 100%;
+  max-height: 100%;
+  width: 100%;
+
+  .k-grid-content {
+    height: 100%;
+
+    .k-master-row {
+      td {
+        word-break: break-all; // For firefox
+        word-break: break-word;
+      }
+    }
+  }
+  .grid-row-collapsed {
+    .k-grid-content {
+      .k-master-row {
+        td:not(:first-child):not(:last-child) {
+          white-space: nowrap;
+          overflow: hidden;
+          * {
+            font-size:unset;
+            display: inline;
+          }
+          br,
+          hr {
+            content: " ";
+            &:after {
+              content: " ";
+            }
+          }
+        }
+      }
+    }
+  }
+
   .smart-element-grid-wrapper {
     min-height: 10rem;
   }
@@ -7,12 +43,15 @@
   // none display for standard kendo cell to avoid flickering
   .k-filter-row {
     display: none !important;
-  }
 
-  .smart-element-grid-wrapper {
-    min-height: 10rem;
+    .smart-element-grid-header {
+      display: flex;
+      justify-content: flex-end;
+      .k-pager-numbers-wrap {
+        display: none !important;
+      }
+    }
   }
-
   .k-grid {
     display: flex !important; // To override important kendo rule
     flex: 1;
@@ -23,6 +62,11 @@
   height: auto !important;
 }
 
+    .grid-header-content {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
 .smart-element-grid-columns-footer {
   height: auto !important;
   .k-grid-header {

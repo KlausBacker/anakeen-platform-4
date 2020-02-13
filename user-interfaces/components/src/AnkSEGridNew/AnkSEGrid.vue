@@ -3,9 +3,11 @@
     <div class="smart-element-grid-wrapper">
       <div class="smart-element-grid-header">
         <slot name="gridHeader" direction="left" v-bind:gridComponent="gridInstance">
-          <ank-export-button text="Export" :gridComponent="gridInstance"></ank-export-button>
+          <ank-expand-button v-if="expandable" :gridComponent="gridInstance"></ank-expand-button>
+          <ank-export-button v-if="exportButton" text="Export" :gridComponent="gridInstance"></ank-export-button>
         </slot>
       </div>
+
       <kendo-grid-vue
         v-if="columnsList.length"
         ref="smartGridWidget"
@@ -23,6 +25,8 @@
         :sortable="sortable"
         :sort="currentSort"
         :filterable="filterable"
+        selectedField="ank-grid_selected_rows"
+        @selectionchange="onSelectionChange"
         @sortchange="onSortChange"
         @filterchange="onFilterChange"
         @columnreorder="onColumnReorder"

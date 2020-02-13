@@ -96,4 +96,16 @@ export default class AnkActionMenuController extends Vue {
     }
     this.showSecondaryActionsMenu = false;
   }
+
+  public customAction(e, actionType) {
+    e.preventDefault();
+    // index - 1 to start from 0
+    const index = e.item.closest("td").getAttribute("dataindex") - 1;
+    const target = e.currentTarget || e.item || e.target;
+    if (actionType) {
+      const item = this.gridComponent.dataItems[index].properties;
+      const event = new GridEvent({ type: actionType, row: item }, target, false, "GridActionEvent");
+      this.$emit("rowActionClick", event);
+    }
+  }
 }

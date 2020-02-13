@@ -5,6 +5,7 @@ import AnkTextFilterCell from "./AnkTextFilterCell/AnkTextFilterCell.vue";
 import AnkGridCell from "./AnkGridCell/AnkGridCell.vue";
 import AnkExportButton from "./AnkExportButton/AnkExportButton.vue";
 import AnkGridExpandButton from "./AnkGridExpandButton/AnkGridExpandButton.vue";
+
 import AnkGridPager from "./AnkGridPager/AnkGridPager.vue";
 import AnkGridHeaderCell from "./AnkGridHeaderCell/AnkGridHeaderCell.vue";
 import { Grid } from "@progress/kendo-vue-grid";
@@ -281,7 +282,9 @@ export default class GridController extends Vue {
       }
     }
     this.gridInstance = this;
+    this.$emit("gridReady");
   }
+
   public onExpandClicked() {
     // @ts-ignore
     $(this.$refs.smartGridWidget.$el).toggleClass("grid-row-collapsed");
@@ -289,40 +292,104 @@ export default class GridController extends Vue {
 
   protected async _loadGridConfig() {
     const url = this._getOperationUrl("config");
-    const response = await this.$http.get(url, {
-      params: this.gridInfo
-    });
-    this.columnsList = response.data.data.columns;
-    if (response.data.data.pageable === true) {
-      this.pager = DEFAULT_PAGER;
-    } else if (response.data.data.pageable === false) {
-      this.pager = false;
-    } else {
-      this.pager = Object.assign({}, DEFAULT_PAGER, response.data.data.pageable);
-    }
-    if (response.data.data.actions.length > 0) {
-      this.columnsList.push({
-        field: "smart_element_grid_action_menu",
-        title: " ",
-        abstract: true,
-        withContext: false,
-        sortable: false
-      });
-      this.actionsList = response.data.data.actions;
+    const event = new GridEvent(
+      {
+        url: url
+      },
+      null,
+      true // Cancelable
+    );
+    this.$emit("beforeConfig", event);
+    if (!event.isDefaultPrevented()) {
+      this.$http
+        .get(url, {
+          params: this.gridInfo
+        })
+        .then(response => {
+          this.columnsList = response.data.data.columns;
+          if (response.data.data.pageable === true) {
+            this.pager = DEFAULT_PAGER;
+          } else if (response.data.data.pageable === false) {
+            this.pager = false;
+          } else {
+            this.pager = Object.assign({}, DEFAULT_PAGER, response.data.data.pageable);
+          }
+          if (this.checkable) {
+            this.columnsList.unshift({
+              field: "ank-grid_selected_rows",
+              width: 35,
+              headerAttributes: {
+                class: "checkable-grid-header grid-cell-align-center toggle-all-rows",
+                "data-id": "ank-se-grid-checkable"
+              }
+            });
+          }
+          if (response.data.data.actions.length > 0) {
+            this.columnsList.push({
+              field: "smart_element_grid_action_menu",
+              title: " ",
+              abstract: true,
+              withContext: false,
+              sortable: false
+            });
+            this.actionsList = response.data.data.actions;
+          }
+          const config = response.data.data;
+          const responseEvent = new GridEvent(
+            {
+              config
+            },
+            null,
+            false
+          );
+          this.$emit("afterConfig", responseEvent);
+        })
+        .catch(error => {
+          console.error(error);
+          this.isLoading = false;
+        });
     }
   }
 
   protected async _loadGridContent() {
     const url = this._getOperationUrl("content");
-    const response = await this.$http.get(url, {
-      params: this.gridInfo
-    });
-    const pager = response.data.data.requestParameters.pager;
-    this.currentPage.total = pager.total;
-    this.currentPage.skip = pager.skip;
-    this.currentPage.take = pager.take;
-    this.dataItems = response.data.data.content;
-    this.$emit("grid-data-bound", this.gridInstance);
+    const event = new GridEvent(
+      {
+        url: url,
+        queryParams: this.gridInfo
+      },
+      null,
+      true // Cancelable
+    );
+    this.$emit("beforeContent", event);
+    if (!event.isDefaultPrevented()) {
+      this.$http
+        .get(url, {
+          params: this.gridInfo
+        })
+        .then(response => {
+          const pager = response.data.data.requestParameters.pager;
+          this.currentPage.total = pager.total;
+          this.currentPage.skip = pager.skip;
+          this.currentPage.take = pager.take;
+          this.dataItems = response.data.data.content;
+          this.dataItems.forEach(item => {
+            item.selected = this.selectedRows.indexOf(item.properties.id) !== -1;
+          });
+          const responseEvent = new GridEvent(
+            {
+              content: response.data.data
+            },
+            null,
+            false
+          );
+          this.$emit("afterContent", responseEvent);
+        })
+        .catch(error => {
+          console.error(error);
+          this.isLoading = false;
+        });
+    }
   }
 
   protected onSelectionChange(event) {
@@ -342,6 +409,16 @@ export default class GridController extends Vue {
 
   protected cellRenderFunction(createElement, tdElement: VNode, props, listeners) {
     const columnConfig = this.columnsList[props.columnIndex];
+    const event = new GridEvent(
+      {
+        rowData: props.dataItem,
+        columnConfig: columnConfig,
+      },
+      null,
+      false,
+      "GridCellRenderEvent"
+    );
+    this.$emit("beforeGridCellRender", event);
     let renderElement = tdElement;
     if (props.field === "smart_element_grid_action_menu") {
       if (this.actionsList.length > 0) {
@@ -525,13 +602,13 @@ export default class GridController extends Vue {
     });
     event.onExport = onExport;
     event.onPolling = onPolling;
-    this.$emit("before-grid-export", event);
+    this.$emit("beforeGridExport", event);
     return event;
   }
 
   protected sendBeforePollingEvent() {
     const event = new GridEvent(null, null, false);
-    this.$emit("before-polling-grid-export", event);
+    this.$emit("beforePollingGridExport", event);
     return event;
   }
 
@@ -546,7 +623,6 @@ export default class GridController extends Vue {
     this.$emit("grid-export-error", event);
     return event;
   }
-
 
   protected createExportTransaction() {
     return this.$http
@@ -582,7 +658,6 @@ export default class GridController extends Vue {
             timer = setTimeout(getStatus, pollingTime);
           } else {
             if (typeof pollingCb === "function") {
-
               pollingCb(responseData);
             }
             if (timer) {
