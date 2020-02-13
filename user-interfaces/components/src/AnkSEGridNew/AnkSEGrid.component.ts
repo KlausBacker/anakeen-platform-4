@@ -4,6 +4,7 @@ import AnkActionMenu from "./AnkActionMenu/AnkActionMenu.vue";
 import AnkTextFilterCell from "./AnkTextFilterCell/AnkTextFilterCell.vue";
 import AnkGridCell from "./AnkGridCell/AnkGridCell.vue";
 import AnkExportButton from "./AnkExportButton/AnkExportButton.vue";
+import AnkGridPager from "./AnkGridPager/AnkGridPager.vue";
 import AnkGridHeaderCell from "./AnkGridHeaderCell/AnkGridHeaderCell.vue";
 import { Grid } from "@progress/kendo-vue-grid";
 import { VNode } from "vue/types/umd";
@@ -49,7 +50,8 @@ const DEFAULT_SORT = {
     "kendo-grid-vue": Grid,
     "ank-progress": AnkProgress,
     "ank-action-menu": AnkActionMenu,
-    "ank-export-button": AnkExportButton
+    "ank-export-button": AnkExportButton,
+    "ank-grid-pager": AnkGridPager
   },
   name: "ank-se-grid-vue"
 })
@@ -208,6 +210,7 @@ export default class GridController extends Vue {
     this.isLoading = true;
     this.gridActions = new GridActions(this);
     this.gridError = new GridError(this);
+    this.$on("gridPageChange", this.onPageChange);
 
     try {
       await this._loadGridConfig();

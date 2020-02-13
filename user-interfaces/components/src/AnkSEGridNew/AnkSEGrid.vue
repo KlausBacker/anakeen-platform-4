@@ -19,18 +19,19 @@
         :total="currentPage.total"
         :resizable="resizable"
         :reorderable="reorderable"
-        :pageable="pager"
+        :pageable="false"
         :sortable="sortable"
         :sort="currentSort"
         :filterable="filterable"
         @sortchange="onSortChange"
-        @pagechange="onPageChange"
         @filterchange="onFilterChange"
         @columnreorder="onColumnReorder"
       >
       </kendo-grid-vue>
       <div class="smart-element-grid-footer">
-        <slot name="gridFooter" v-bind:gridComponent="gridInstance"> </slot>
+        <slot name="gridFooter" v-bind:gridComponent="gridInstance">
+          <ank-grid-pager v-if="pager" v-bind="pager" :gridComponent="gridInstance"></ank-grid-pager>
+        </slot>
       </div>
     </div>
   </ank-progress>

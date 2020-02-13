@@ -1,0 +1,62 @@
+.smart-element-grid-pager {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  padding: 0.375rem;
+  display: flex;
+  align-items: center;
+}
+
+.smart-element-grid-pager-nav,
+.smart-element-grid-pager-pageNumber {
+  border: none;
+  border-radius: 10%;
+  padding: 0.375rem;
+  min-width: calc(1 * (2px + 0.75rem + 1.5em));
+  height: calc(1 * (2px + 0.75rem + 1.5em));
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  text-align: center;
+  z-index: 1;
+  text-decoration: none;
+
+  &:hover {
+    background-color: #ebebeb;
+  }
+
+  &.smart-element-grid-pager-nav--disabled {
+    pointer-events: none;
+    &:hover {
+      background-color: transparent;
+    }
+    opacity: 0.65;
+    color: inherit;
+    cursor: default;
+  }
+}
+
+.smart-element-grid-pager-sizes {
+  margin: 0 1rem;
+  .smart-element-grid-pager-sizes--dropdown {
+    margin-right: 1rem;
+    width: 5.2rem;
+  }
+}
+
+.smart-element-grid-pager-info {
+  margin: 0 1rem;
+  text-align: right;
+  flex: 1;
+  color: #c8c8c8;
+}
+
+.smart-element-grid-pager-pageNumber--selected,
+.smart-element-grid-pager-pageNumber--selected:hover {
+  border-radius: 10%;
+  background-color: #157efb;
+  color: white;
+  z-index: 2;
+  cursor: default;
+}
