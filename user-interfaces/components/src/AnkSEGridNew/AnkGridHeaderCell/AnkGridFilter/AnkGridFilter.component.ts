@@ -7,11 +7,21 @@ import { default as AnkSmartFormDefinition } from "../../../AnkSmartForm/AnkSmar
 const FIELD_TYPE_OPERATOR = {
   docid: {
     eq: "docid",
-    neq: "docid"
+    neq: "docid",
+    "eq*": "docid",
+    "neq*": "docid"
   },
   account: {
     eq: "account",
-    neq: "account"
+    neq: "account",
+    "eq*": "account",
+    "neq*": "account"
+  },
+  enum: {
+    eq: "enum",
+    neq: "enum",
+    "eq*": "enum",
+    "neq*": "enum"
   },
   date: "date",
   int: "int",
@@ -179,35 +189,23 @@ export default class GridFilterCell extends Vue {
         const columnFilter = columnFilters[0];
         if (columnFilter.filters.length >= 1) {
           this.config.values.first_grid_filter_operator = columnFilter.filters[0].operator;
-          this.config.values.first_grid_filter_value = columnFilter.filters[0].value;
+          this.config.values.first_grid_filter_value = {
+            displayValue: columnFilter.filters[0].displayValue,
+            value: columnFilter.filters[0].value
+          };
         }
         if (columnFilter.filters.length >= 2) {
           this.config.values.second_grid_filter_operator = columnFilter.filters[1].operator;
-          this.config.values.second_grid_filter_value = columnFilter.filters[1].value;
+          this.config.values.second_grid_filter_value = {
+            value: columnFilter.filters[1].value,
+            displayValue: columnFilter.filters[1].displayValue
+          };
         }
       }
     }
     // apply filters type field
-    const firstValueField = this.config.structure[0].content.find(el => el.name === "first_grid_filter_value");
-    const secondValueField = this.config.structure[0].content.find(el => el.name === "second_grid_filter_value");
-    if (firstValueField) {
-      const type = getFilterValueType(this.columnConfig.smartType, this.config.values.first_grid_filter_operator);
-      if (!type) {
-        firstValueField.display = "none";
-      } else {
-        firstValueField.type = type;
-        firstValueField.display = "write";
-      }
-    }
-    if (secondValueField) {
-      const type = getFilterValueType(this.columnConfig.smartType, this.config.values.second_grid_filter_operator);
-      if (!type) {
-        secondValueField.display = "none";
-      } else {
-        secondValueField.type = type;
-        secondValueField.display = "write";
-      }
-    }
+    this.updateValueFieldType("first_grid_filter_value", this.config.values.first_grid_filter_operator);
+    this.updateValueFieldType("second_grid_filter_value", this.config.values.second_grid_filter_operator);
   }
 
   public mounted() {
@@ -233,14 +231,16 @@ export default class GridFilterCell extends Vue {
       filterResult.filters.push({
         field: this.field,
         operator: firstOperator.value,
-        value: firstValue ? firstValue.value : null
+        value: firstValue ? firstValue.value : null,
+        displayValue: firstValue ? firstValue.displayValue : null
       });
     }
     if (secondValue && (secondValue.value || isUnaryOperator(secondOperator.value))) {
       filterResult.filters.push({
         field: this.field,
         operator: secondOperator.value,
-        value: secondValue ? secondValue.value : null
+        value: secondValue ? secondValue.value : null,
+        displayValue: secondValue ? secondValue.displayValue : null
       });
     }
     if (filterResult.filters.length) {
@@ -251,23 +251,17 @@ export default class GridFilterCell extends Vue {
   }
 
   protected onSmartFieldChange(event, se, sf) {
-    const reg = /(first|second)_grid_filter_operator/;
-    const matches = sf.id.match(reg);
-    if (matches && matches.length > 1) {
-      const fieldNumber = matches[1];
-      const fieldValueId = `${fieldNumber}_grid_filter_value`;
-      const struct = this.config.structure[0].content.find(s => s.name === fieldValueId);
-      if (struct) {
-        const operatorValue = sf.getValue().value;
-        const type = getFilterValueType(this.columnConfig.smartType, operatorValue);
-        if (type) {
-          struct.type = type;
-          struct.display = "write";
-        } else {
-          struct.display = "none";
-        }
-        this.config.values[sf.id] = operatorValue;
-      }
+    if (sf.id === "first_grid_filter_operator" || sf.id === "second_grid_filter_operator") {
+      // Smart Form will reload so keep operator and filter values
+      ["first", "second"].forEach(item => {
+        const fieldValueId = `${item}_grid_filter_value`;
+        const fieldOperatorId = `${item}_grid_filter_operator`;
+        const operatorValue = this.$refs.smartForm.getValue(fieldOperatorId, "current");
+        const fieldValue = this.$refs.smartForm.getValue(fieldValueId, "current");
+        this.updateValueFieldType(fieldValueId, operatorValue.value);
+        this.config.values[fieldOperatorId] = operatorValue.value;
+        this.config.values[fieldValueId] = fieldValue;
+      });
     }
   }
 
@@ -276,4 +270,16 @@ export default class GridFilterCell extends Vue {
     this.$kendo.ui.progress(this.$(this.$refs.wrapper), false);
   }
 
+  protected updateValueFieldType(fieldValueId, fieldOperator) {
+    const valueField = this.config.structure[0].content.find(el => el.name === fieldValueId);
+    if (valueField) {
+      const type = getFilterValueType(this.columnConfig.smartType, fieldOperator);
+      if (!type) {
+        valueField.display = "none";
+      } else {
+        valueField.type = type;
+        valueField.display = "write";
+      }
+    }
+  }
 }
