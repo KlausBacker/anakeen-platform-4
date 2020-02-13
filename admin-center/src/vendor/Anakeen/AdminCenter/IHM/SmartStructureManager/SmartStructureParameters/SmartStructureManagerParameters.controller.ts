@@ -57,24 +57,22 @@ export default class SmartStructureManagerParametersController extends Vue {
     // Generate dynamic smartform content
     if (this.paramValues.length) {
       this.paramValues.forEach(parameter => {
-        if (parameter.type === "enum") {
-          enumData = this.getEnum(parameter.typeFormat);
-        }
         // Manage SmartForm values
         if (parameter.isAdvancedValue) {
           values[parameter.parameterId + "-type"] = "advanced_value";
           values[parameter.parameterId + "-advanced_value"] = parameter.rawValue;
           values[parameter.parameterId + "-value"] = parameter.displayValue;
         } else {
-          if (parameter.type === "array") {
             values[parameter.parameterId + "-type"] = "value";
+            if (parameter.type === "array") {
             Object.keys(this.smartFormArrayStructure[parameter.parameterId]).forEach(key => {
               const childId = this.smartFormArrayStructure[parameter.parameterId][key].name;
               values[childId] = this.smartFormArrayValues[childId];
             });
           } else {
-            values[parameter.parameterId + "-type"] = "value";
-            values[parameter.parameterId + "-value"] = parameter.rawValue;
+            if (parameter.rawValue !== null && parameter.rawValue.length > 0) {
+              values[parameter.parameterId + "-value"] = parameter.rawValue;
+            } 
           }
         }
         // Generate SmartForm structure
@@ -111,7 +109,7 @@ export default class SmartStructureManagerParametersController extends Vue {
             },
             {
               content: this.smartFormArrayStructure[parameter.parameterId],
-              enumItems: `${enumData}`,
+              enumItems: parameter.enumData,
               label: "Value",
               name: `${parameter.parameterId}-value`,
               type: `${parameter.type}`,
@@ -141,7 +139,6 @@ export default class SmartStructureManagerParametersController extends Vue {
         }
       });
     }
-
     return {
       menu: [
         {
@@ -279,7 +276,7 @@ export default class SmartStructureManagerParametersController extends Vue {
       }
     }
   }
-   public ssmArrayChange(e, smartElement, smartField, type, options) {
+  public ssmArrayChange(e, smartElement, smartField, type, options) {
     if (type === "removeLine") {
       let columns = [];
       // Get column's name
@@ -405,14 +402,15 @@ export default class SmartStructureManagerParametersController extends Vue {
             let isAdvancedValue = false;
             let rawValue;
             let displayValue;
+            let enumData = [];
 
             if (parentField.type === "array") {
               const parentConfigParam = paramsValues[parentField.id].configurationParameter;
               this.prepareSmartFormArray(paramVal, param, parentField.id, parentConfigParam);
             } else {
               if (Array.isArray(configParam)) {
-                rawValue = "";
-                displayValue = "";
+                rawValue = null;
+                displayValue = null;
               } else if (configParam instanceof Object) {
                 if (resultParam.value && resultParam.displayValue) {
                   if (configParam && typeof configParam !== "undefined" && configParam != resultParam.value) {
@@ -473,9 +471,13 @@ export default class SmartStructureManagerParametersController extends Vue {
                 if (resultParam.hasOwnProperty("value")) {
                   displayValue = resultParam.value;
                 } else {
-                  displayValue = "";
+                  displayValue = null;
                 }
                 isAdvancedValue = true;
+              }
+
+              if (type === "enum") {
+                enumData = this.getEnum(typeFormat);
               }
               result.push({
                 displayValue,
@@ -487,6 +489,7 @@ export default class SmartStructureManagerParametersController extends Vue {
                 rawValue,
                 type,
                 typeFormat,
+                enumData,
                 isAdvancedValue
               });
             }
@@ -581,10 +584,12 @@ export default class SmartStructureManagerParametersController extends Vue {
       .then(response => {
         if (response.status === 200 && response.statusText === "OK") {
           response.data.data.forEach(element => {
-            returnVal.push({
-              key: element.key,
-              label: element.label
-            });
+            if (element.key !== ".extendable") {
+              returnVal.push({
+                key: element.key,
+                label: element.label
+              });
+            }
           });
         } else {
           throw new Error(response.data);
@@ -593,7 +598,6 @@ export default class SmartStructureManagerParametersController extends Vue {
       .catch(response => {
         console.error(response);
       });
-
     return returnVal;
   }
   private updateData(data) {
