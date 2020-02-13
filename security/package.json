@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/security",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "main": "index.js",
   "author": "anakeen",
   "license": "SEE LICENSE IN LICENSE",
@@ -8,6 +8,6 @@
     "/constants/*.js"
   ],
   "devDependencies": {
-    "@anakeen/anakeen-cli": "1.2.0"
+    "@anakeen/anakeen-cli": "1.2.1"
   }
 }
