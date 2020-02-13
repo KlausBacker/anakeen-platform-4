@@ -25,5 +25,8 @@ class ErrorCodeFSEA
      * @errorCode The search domain reference is use to construct database table
      */
     const FSEA0004 = 'Search Domain name "%s" must contains only alphanum characters.';
-
+    /**
+     * @errorCode The search domain reference a structure name that not exists
+     */
+    const FSEA0005 = 'Search Domain "%s", structure "%s", field "%s" not found.';
 }

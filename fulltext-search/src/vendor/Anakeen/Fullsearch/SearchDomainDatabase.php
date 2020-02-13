@@ -110,6 +110,9 @@ SQL;
                         $data[$fieldInfo->weight][] = $se->title;
                     } else {
                         $oa = $structure->getAttribute($fieldInfo->field);
+                        if ($oa===false) {
+                            throw new Exception("FSEA0005", $this->domainName, $structureName, $fieldInfo->field);
+                        }
                         $rawValue = $se->getRawValue($oa->id);
                         if (!$rawValue) {
                             continue;
