@@ -138,15 +138,23 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
       });
       }
     } else {
-      Object.assign(this.smartFormArrayValues, {
-        ssm_advanced_value: `${this.actualDefValData.rawValue}`,
-        ssm_inherited_value: `${this.actualDefValData.parentValue}`,
-        ssm_type: "value",
-        ssm_value: {
-          displayValue: `${this.actualDefValData.displayValue}`,
-          value: `${this.finalData.value}`
-        }
-      });
+      if (this.actualDefValData.displayValue.length === 0 && this.finalData.value.length === 0) {
+        Object.assign(this.smartFormArrayValues, {
+          ssm_advanced_value: `${this.actualDefValData.rawValue}`,
+          ssm_inherited_value: `${this.actualDefValData.parentValue}`,
+          ssm_type: "value",
+        });
+      } else {
+        Object.assign(this.smartFormArrayValues, {
+          ssm_advanced_value: `${this.actualDefValData.rawValue}`,
+          ssm_inherited_value: `${this.actualDefValData.parentValue}`,
+          ssm_type: "value",
+          ssm_value: {
+            displayValue: this.actualDefValData.displayValue,
+            value: this.actualDefValData.rawValue
+          }
+        });
+      }
     }
     // SmartForm Generation
     this.smartForm = {
@@ -484,8 +492,8 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
                       displayValue.push(actualResultValue.displayValue);
                       rawValue.push(actualResultValue.value);
                     } else {
-                      displayValue.push("");
-                      rawValue.push("");
+                      displayValue.push(null);
+                      rawValue.push(null);
                     }
                   } else {
                     rawValue.push(actualResultValue);
@@ -499,8 +507,8 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
                       displayValue = actualConfigValue.displayValue;
                       rawValue = actualConfigValue.rawValue;
                     } else {
-                      displayValue = "";
-                      rawValue = "";
+                      displayValue = null;
+                      rawValue = null;
                     }
                   } else {
                     rawValue = actualConfigValue;
@@ -691,10 +699,12 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
       .then(response => {
         if (response.status === 200 && response.statusText === "OK") {
           response.data.data.forEach(element => {
-            returnVal.push({
-              key: element.key,
-              label: element.label
-            });
+            if (element.key !== ".extendable") {
+              returnVal.push({
+                key: element.key,
+                label: element.label
+              });
+            }
           });
         } else {
           throw new Error(response.data);
@@ -703,7 +713,6 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
       .catch(response => {
         console.error(response);
       });
-
     return returnVal;
   }
   protected autoFilterCol(e) {
