@@ -1,20 +1,36 @@
 .smart-element-grid {
-    // position: relative;
-    .smart-element-grid-wrapper {
-        min-height: 10rem;
-    }
+  // position: relative;
+  .smart-element-grid-wrapper {
+    min-height: 10rem;
+  }
 
-    // none display for standard kendo cell to avoid flickering
-    .k-filter-row {
-        display: none !important;
-    }
+  // none display for standard kendo cell to avoid flickering
+  .k-filter-row {
+    display: none !important;
+  }
 
-    .smart-element-grid-wrapper {
-        min-height: 10rem;
-    }
+  .smart-element-grid-wrapper {
+    min-height: 10rem;
+  }
 
-    .k-grid {
-        display: flex !important; // To override important kendo rule
-        flex: 1;
-    }
+  .k-grid {
+    display: flex !important; // To override important kendo rule
+    flex: 1;
+  }
+}
+
+.smart-element-grid-widget {
+  height: auto !important;
+}
+
+.smart-element-grid-columns-footer {
+  height: auto !important;
+  .k-grid-header {
+    display: none;
+  }
+
+  .k-grid-container {
+    overflow: hidden;
+    flex: 0;
+  }
 }

@@ -28,6 +28,12 @@
         @columnreorder="onColumnReorder"
       >
       </kendo-grid-vue>
+      <kendo-grid-vue
+        class="smart-element-grid-columns-footer"
+        v-if="footerData && footerData.length && columnsList.length"
+        :columns="columnsList"
+        :data-items="footerData"
+      ></kendo-grid-vue>
       <div class="smart-element-grid-footer">
         <slot name="gridFooter" v-bind:gridComponent="gridInstance">
           <ank-grid-pager v-if="pager" v-bind="pager" :gridComponent="gridInstance"></ank-grid-pager>

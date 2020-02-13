@@ -67,6 +67,11 @@ export default class GridController extends Vue {
   })
   public columns: SmartGridColumn[];
   @Prop({
+    default: () => ({}),
+    type: Object
+  })
+  public footer: { [key: string]: any };
+  @Prop({
     default: () => [],
     type: Array
   })
@@ -204,6 +209,13 @@ export default class GridController extends Vue {
       filter: this.currentFilter,
       transaction: this.transaction
     };
+  }
+
+  public get footerData() {
+    if (Object.keys(this.footer).length) {
+      return [this.footer];
+    }
+    return [];
   }
 
   async created() {
