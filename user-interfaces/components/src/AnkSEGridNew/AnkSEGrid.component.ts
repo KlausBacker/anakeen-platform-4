@@ -317,6 +317,7 @@ export default class GridController extends Vue {
           if (this.checkable) {
             this.columnsList.unshift({
               field: "ank-grid_selected_rows",
+              title: " ",
               width: 35,
               headerAttributes: {
                 class: "checkable-grid-header grid-cell-align-center toggle-all-rows",
@@ -330,7 +331,8 @@ export default class GridController extends Vue {
               title: " ",
               abstract: true,
               withContext: false,
-              sortable: false
+              sortable: false,
+              resizable: false
             });
             this.actionsList = response.data.data.actions;
           }
