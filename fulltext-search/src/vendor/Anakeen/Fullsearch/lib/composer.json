@@ -1,0 +1,7 @@
+{
+    "name": "anakeen-platform/fulltext",
+    "description": "fulltext libraries",
+    "require": {
+        "tmilos/lexer": "^1.0"
+    }
+}

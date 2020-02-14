@@ -33,10 +33,11 @@ class FilterContains implements ElementSearchFilter
     {
         //("id = dochisto(id)");
         $search->join(sprintf("id = %s(id)", $this->dbDomain->getTableName()));
+
         $search->addFilter(sprintf(
-            "plainto_tsquery('%s', unaccent('%s')) @@ %s.v",
-            pg_escape_string($this->domain->stem),
-            pg_escape_string($this->searchPattern),
+            "to_tsquery('%s', '%s') @@ %s.v",
+            "simple",
+            pg_escape_string(SearchDomainDatabase::patternToTsquery($this->domain->stem, $this->searchPattern)),
             $this->dbDomain->getTableName()
         ));
     }

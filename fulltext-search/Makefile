@@ -22,7 +22,10 @@ CHECK_VERSION=node ./../.devtool/ci/check/checkVersionNpmApp.js
 ## Deps
 ##
 ########################################################################################################################
-install-deps:
+src/vendor/Anakeen/Fullsearch/lib/vendor/:
+	cd $@/.. ; ${COMPOSER_BIN} install
+
+install-deps: src/vendor/Anakeen/Fullsearch/lib/vendor/
 	@${PRINT_COLOR} "${DEBUG_COLOR}Install deps${RESET_COLOR}\n"
 	${YARN_BIN} install --frozen-lock
 ########################################################################################################################

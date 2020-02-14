@@ -2,12 +2,17 @@
 
 namespace Anakeen\Fullsearch;
 
+require_once __DIR__ . "/lib/vendor/autoload.php";
+
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\Internal\FormatCollection;
 use Anakeen\Core\SEManager;
 use Anakeen\Exception;
 use Anakeen\Search\SearchElements;
+use Tmilos\Lexer\Config\LexerArrayConfig;
+use Tmilos\Lexer\Config\TokenDefn;
+use Tmilos\Lexer\Lexer;
 
 class SearchDomainDatabase
 {
@@ -110,7 +115,7 @@ SQL;
                         $data[$fieldInfo->weight][] = $se->title;
                     } else {
                         $oa = $structure->getAttribute($fieldInfo->field);
-                        if ($oa===false) {
+                        if ($oa === false) {
                             throw new Exception("FSEA0005", $this->domainName, $structureName, $fieldInfo->field);
                         }
                         $rawValue = $se->getRawValue($oa->id);
@@ -213,5 +218,113 @@ SQL;
         if ($domain->lang !== $currentLanguage) {
             ContextManager::setLanguage($currentLanguage);
         }
+    }
+
+    /**
+     * Convert web pattern to ts query,
+     * @param string $stem stemmer : french , english, ...
+     * @param string $pattern google like pattern
+     * @return string the ts query
+     * @throws \Anakeen\Database\Exception
+     */
+    public static function patternToTsquery($stem, $pattern)
+    {
+        $config = new LexerArrayConfig([]);
+
+        $config->addTokenDefinition(new TokenDefn("NOT", '\\s-', "u"));
+        $config->addTokenDefinition(new TokenDefn("OR", '\\sor\\s', "u"));
+        $config->addTokenDefinition(new TokenDefn("PHRASE", '"[^"]+"', "u"));
+        $config->addTokenDefinition(new TokenDefn("SPACES", "\\s+", "u"));
+        $config->addTokenDefinition(new TokenDefn("PLAIN", "[^\\s]+", "u"));
+
+        // lexer instance
+        $lexer = new Lexer($config);
+
+        $lexer->setInput($pattern);
+        $lexer->moveNext();
+
+        $parts = [];
+        $currentSequence = "";
+        while ($lexer->getLookahead()) {
+            $tokenName = $lexer->getLookahead()->getName();
+            if ($tokenName === "PLAIN" || $tokenName === "SPACES") {
+                $currentSequence .= $lexer->getLookahead()->getValue();
+            } else {
+                if ($currentSequence) {
+                    $parts[] = [
+                        "token" => "PLAIN",
+                        "value" => $currentSequence
+
+                    ];
+                    $currentSequence = "";
+                }
+                $parts[] = [
+                    "token" => $tokenName,
+                    "value" => $lexer->getLookahead()->getValue()
+                ];
+            }
+
+
+            $lexer->moveNext();
+        }
+        if ($currentSequence) {
+            $parts[] = [
+                "token" => "PLAIN",
+                "value" => $currentSequence
+
+            ];
+        }
+        $toQuery = [];
+        foreach ($parts as $k => $part) {
+            switch ($part["token"]) {
+                case "PLAIN":
+                    $toQuery[] = sprintf(
+                        "plainto_tsquery('%s', unaccent('%s')) as q%d",
+                        pg_escape_string($stem),
+                        $part["value"],
+                        $k
+                    );
+                    break;
+                case "PHRASE":
+                    $toQuery[] = sprintf(
+                        "phraseto_tsquery('%s', unaccent('%s')) as q%d",
+                        pg_escape_string($stem),
+                        trim($part["value"], '"'),
+                        $k
+                    );
+                    break;
+            }
+        }
+
+        $sql = sprintf("select %s", implode(", ", $toQuery));
+        DbManager::query($sql, $queryResults, false, true);
+
+        $finalQueryParts = [];
+        $previousWords = false;
+        foreach ($parts as $k => $part) {
+            switch ($part["token"]) {
+                case "PHRASE":
+                case "PLAIN":
+                    if (!empty($queryResults["q$k"])) {
+                        if ($previousWords === true) {
+                            $finalQueryParts[] = " & ";
+                        }
+
+                        $previousWords = true;
+                        $finalQueryParts[] = sprintf("(%s)", $queryResults["q$k"]);
+                    }
+                    break;
+                case "OR":
+                    $finalQueryParts[] = " | ";
+                    $previousWords = false;
+                    break;
+                case "NOT":
+                    $finalQueryParts[] = " & !";
+                    $previousWords = false;
+                    break;
+            }
+        }
+
+        return implode("", $finalQueryParts);
     }
 }

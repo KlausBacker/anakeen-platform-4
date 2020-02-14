@@ -16,11 +16,13 @@ class SuiteFulltextSearchConfig
     {
         $suite = new FrameworkDcp();
 
-        $suite->addTestSuite(PuSimpleSearch::class);
+        $suite->addTestSuite(PuPatternQuery::class);
+        $suite->addTestSuite(PuTextSearch::class);
         $suite->addTestSuite(PuDateSearch::class);
         $suite->addTestSuite(PuEnumSearch::class);
         $suite->addTestSuite(PuDocidSearch::class);
         $suite->addTestSuite(PuHtmltextSearch::class);
+        $suite->addTestSuite(PuPatternSearch::class);
 
         return $suite;
     }
