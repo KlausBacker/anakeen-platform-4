@@ -15,7 +15,6 @@ class PuHtmltextSearch extends FulltextSearchConfig
         self::importConfiguration(__DIR__ . "/Config/tst_htmltext001.struct.xml");
         self::importDocument(__DIR__ . "/Config/tst_htmltext001.data.xml");
         self::importSearchConfiguration(__DIR__ . "/Config/htmltestSearchDomainConfig.xml");
-
     }
 
     /**
@@ -36,6 +35,7 @@ class PuHtmltextSearch extends FulltextSearchConfig
         $s->addFilter($filter);
         $results = $s->getResults();
         $names = [];
+
         foreach ($results as $smartElement) {
             $names[] = $smartElement->name;
         }
@@ -46,7 +46,14 @@ class PuHtmltextSearch extends FulltextSearchConfig
     public function dataGetDocument()
     {
         return array(
-            ["testDomainHtmltext", "Vendredi", ["TST_EHTML_001"]],
+            ["testDomainHtml", "Ours", ["TST_EHTML_001"]],
+            ["testDomainHtml", "grimpeurs habiles", ["TST_EHTML_001"]],
+            ["testDomainHtml", "cheval", ["TST_EHTML_002"]],
+            ["testDomainHtml", "chevaux", ["TST_EHTML_002"]],
+            ["testDomainHtml", "sommaire", ["TST_EHTML_002"]],
+            ["testDomainHtml", "headline", []],
+            ["testDomainHtml", "title", []],
+            ["testDomainHtml", "h3", []],
 
         );
     }

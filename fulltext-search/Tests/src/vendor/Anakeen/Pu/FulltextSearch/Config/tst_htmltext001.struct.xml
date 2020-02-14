@@ -1,39 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
-    <smart:enumerates>
-    <smart:enum-configuration name="TST_FS001-colors">
-        <smart:enum name="red" label="Rouge"/>
-        <smart:enum name="yellow" label="Jaune"/>
-        <smart:enum name="green" label="Vert"/>
-        <smart:enum name="blue" label="Bleu">
-            <smart:enum name="lightblue" label="Bleu ciel"/>
-            <smart:enum name="navyblue" label="Bleu marine"/>
-        </smart:enum>
-    </smart:enum-configuration>
-        <smart:enum-configuration name="TST_FS001-countries">
-            <smart:enum name="AD" label="Andorre"/>
-            <smart:enum name="AE" label="Emirats Arabes unis"/>
-            <smart:enum name="AF" label="Afghanistan"/>
-            <smart:enum name="AG" label="Antigua et Barbade"/>
-            <smart:enum name="AI" label="Anguilla"/>
-            <smart:enum name="AL" label="Albanie"/>
-            <smart:enum name="AM" label="Arménie"/>
-            <smart:enum name="AN" label="Antilles néerlandaises"/>
-            <smart:enum name="AO" label="Angola"/>
-            <smart:enum name="AR" label="Argentine"/>
-            <smart:enum name="AS" label="Samoa américain"/>
-        </smart:enum-configuration>
-    </smart:enumerates>
-    <smart:structure-configuration name="TST_ENUM001" label="Test n°1">
+
+    <smart:structure-configuration name="TST_HTML001" >
         <smart:tag name="vendor">Anakeen</smart:tag>
         <smart:fields>
             <smart:field-set name="tst_f_title" type="frame" label="Titre" access="ReadWrite">
                 <smart:field-text name="tst_title"  access="ReadWrite" is-title="true"/>
-                <smart:field-enum name="tst_color" relation="TST_FS001-colors" access="ReadWrite"/>
-                <smart:field-enum name="tst_countries" multiple="true" relation="TST_FS001-countries" access="ReadWrite"/>
+                <smart:field-htmltext name="tst_html"  access="ReadWrite"/>
                 <smart:field-set name="tst_array" type="array"  access="ReadWrite">
-                    <smart:field-enum name="tst_colors" relation="TST_FS001-colors" access="ReadWrite"/>
-                    <smart:field-enum name="tst_countries2" multiple="true" relation="TST_FS001-countries" access="ReadWrite"/>
+                    <smart:field-htmltext name="tst_htmls"  access="ReadWrite"/>
                 </smart:field-set>
             </smart:field-set>
         </smart:fields>

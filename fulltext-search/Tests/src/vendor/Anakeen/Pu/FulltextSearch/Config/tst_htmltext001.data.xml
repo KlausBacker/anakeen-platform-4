@@ -1,49 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <documents>
-    <tst_enum001 name="TST_EENUM_001">
+    <tst_html001 name="TST_EHTML_001">
         <tst_f_title>
-            <tst_title>Enum1</tst_title>
-            <tst_color>red</tst_color>
-            <tst_countries>{AD,AG}</tst_countries>
+            <tst_title>Ours</tst_title>
+            <tst_html><![CDATA[<p>Les ours</p>]]></tst_html>
 
             <tst_array>
-                <tst_colors>green</tst_colors>
-                <tst_countries2>{AO,AR,AS}</tst_countries2>
+                <tst_htmls><![CDATA[<p>Les ours sont aidés par leur excellent sens de l'odorat, et malgré leur forte corpulence et une démarche maladroite, ils peuvent courir rapidement (jusqu'à <span title="13,8889 m/s">50</span>&#160;<abbr class="abbr" title="kilomètre par heure">km/h</abbr>) et sont des grimpeurs habiles comme d'excellents nageurs. Leurs <a href="/wiki/Dent" title="Dent">dents</a> sont utilisées pour la défense et comme outils et dépendent du régime de l'ours. Leurs <a href="/wiki/Griffe_(anatomie_animale)" class="mw-redirect" title="Griffe (anatomie animale)">griffes</a> sont employées pour déchirer, creuser et attraper. Sur leurs pattes arrière, ils peuvent avoir une démarche bipède.
+</p>
+]]></tst_htmls>
             </tst_array>
             <tst_array>
-                <tst_colors>blue</tst_colors>
-                <tst_countries2>{AO,AG,AS}</tst_countries2>
+                <tst_htmls><![CDATA[<h3><span class="mw-headline" id="Hivernation">Hivernation</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Ursidae&amp;veaction=edit&amp;section=9" class="mw-editsection-visualeditor" title="Modifier la section : Hivernation">modifier</a><span class="mw-editsection-divider"> | </span><a href="/w/index.php?title=Ursidae&amp;action=edit&amp;section=9" title="Modifier la section : Hivernation">modifier le code</a><span class="mw-editsection-bracket">]</span></span></h3>]]></tst_htmls>
             </tst_array>
         </tst_f_title>
-    </tst_enum001>
-    <tst_enum001 name="TST_EENUM_002">
+    </tst_html001>
+    <tst_html001 name="TST_EHTML_002">
         <tst_f_title>
-            <tst_title>Enum2</tst_title>
-            <tst_color>green</tst_color>
-            <tst_countries>{AI}</tst_countries>
+            <tst_title>Canassons</tst_title>
+            <tst_html><![CDATA[<p id="sous_titre_h1" class="noexcerpt"><i>Equus caballus</i></p>]]></tst_html>
 
             <tst_array>
-                <tst_colors>green</tst_colors>
-                <tst_countries2>{AL,AR,AD}</tst_countries2>
+                <tst_htmls><![CDATA[<p>Le <b>cheval</b> <style data-mw-deduplicate="TemplateStyles:r151431917">.mw-parser-output .prononciation>a{background:url("//upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Loudspeaker.svg/11px-Loudspeaker.svg.png")center left no-repeat;padding-left:15px;font-size:smaller}</style><sup class="prononciation noprint"><a href="/wiki/Fichier:LL-Q150_(fra)-Isabelle_Fabri%C3%A8s_(Culex)-cheval.wav" title="Fichier:LL-Q150 (fra)-Isabelle Fabriès (Culex)-cheval.wav">Écouter</a></sup> (<i><b>Equus ferus caballus</b></i> ou <i><b>Equus caballus</b></i>) est un grand <a href="/wiki/Mammif%C3%A8re" title="Mammifère">mammifère</a> <a href="/wiki/Herbivore" title="Herbivore">herbivore</a> et <a href="/wiki/Ongul%C3%A9s" class="mw-redirect" title="Ongulés">ongulé</a> à <a href="/wiki/Pied_(cheval)" title="Pied (cheval)">sabot</a> unique&#160;; c'est l'une des <a href="/wiki/Esp%C3%A8ce" title="Espèce">espèces</a> de la famille des <a href="/wiki/%C3%89quid%C3%A9s" class="mw-redirect" title="Équidés">Équidés</a> (<i>Equidae</i>), lesquelles ont <a href="/wiki/Histoire_%C3%A9volutive_des_%C3%89quid%C3%A9s" title="Histoire évolutive des Équidés">évolué</a>, au cours des derniers <a href="/wiki/%C3%89oc%C3%A8ne" title="Éocène">45 à 55 millions d'années</a>, à partir d'un petit mammifère possédant plusieurs doigts. À l'état naturel, les chevaux vivent en troupeaux, généralement sous la conduite d'un unique <a href="/wiki/%C3%89talon_(cheval)" title="Étalon (cheval)">étalon</a> reproducteur. Ils entretiennent des rapports sociaux et comptent sur leur vitesse pour échapper à leurs <a href="/wiki/Pr%C3%A9dateur" title="Prédateur">prédateurs</a>. Dotés d'un bon sens de l'équilibre, d'un fort <a href="/wiki/R%C3%A9ponse_combat-fuite" title="Réponse combat-fuite">instinct de fuite</a> et de grandes aptitudes de visualisation spatiale, ils possèdent un trait inhabituel dans le règne animal, étant capables d'entrer en sommeil léger tout en restant debout. Les femelles, nommées <a href="/wiki/Jument" title="Jument">juments</a>, mettent bas après onze mois de <a href="/wiki/Gestation" title="Gestation">gestation</a> un petit appelé <a href="/wiki/Poulain_(cheval)" class="mw-redirect" title="Poulain (cheval)">poulain</a>, capable de se lever et de courir peu de temps après sa naissance.
+</p>
+]]></tst_htmls>
             </tst_array>
             <tst_array>
-                <tst_colors>yellow</tst_colors>
-                <tst_countries2>{AE,AG,AM}</tst_countries2>
+                <tst_htmls><![CDATA[<div id="toc" class="toc"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none" /><div class="toctitle" lang="fr" dir="ltr"><h2>Sommaire</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>]]></tst_htmls>
             </tst_array>
         </tst_f_title>
-    </tst_enum001>
-    <tst_enum001 name="TST_EENUM_003">
-        <tst_f_title>
-            <tst_title>Enum3</tst_title>
-            <tst_color>lightblue</tst_color>
-            <tst_countries>{AG}</tst_countries>
-        </tst_f_title>
-    </tst_enum001>
-    <tst_enum001 name="TST_EENUM_004">
-        <tst_f_title>
-            <tst_title>Enum4</tst_title>
-            <tst_color>navyblue</tst_color>
-            <tst_countries>{AL}</tst_countries>
-        </tst_f_title>
-    </tst_enum001>
+    </tst_html001>
 </documents>
