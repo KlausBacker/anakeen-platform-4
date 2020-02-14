@@ -34,6 +34,7 @@ export default class SmartStructureManagerParametersController extends Vue {
   @Watch("ssName")
   public watchSsName(newValue) {
     if (newValue) {
+      this.$refs.parametersGridData.kendoDataSource.read();
       this.smartForm = {};
       this.finalData = {};
       this.paramValues = [];
@@ -163,6 +164,9 @@ export default class SmartStructureManagerParametersController extends Vue {
       },
       values: values
     };
+  }
+  public mounted() {
+    this.$refs.parametersGridData.kendoDataSource.read();
   }
   public ssmFormReady() {
     if (this.paramValues) {

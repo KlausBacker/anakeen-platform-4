@@ -27,11 +27,6 @@ class SearchViewGridRender
             "previewId" => $args["collectionId"],
             "JS_DEPS" => [
                 [
-                    "key" => "polyfill",
-                    "path" => UIGetAssetPath::getJsPolyfill(),
-                    "noModule" => true
-                ],
-                [
                     "key" => "kendo",
                     "path" => UIGetAssetPath::getJSKendoPath()
                 ]
@@ -39,7 +34,7 @@ class SearchViewGridRender
             "JS" => [
                 [
                     "key" => "search-view-grid-render",
-                    "path" =>  UIGetAssetPath::getElementAssets("ank-components", UIGetAssetPath::isInDebug() ? "dev" : "prod")["search-view-grid-render"]["js"]
+                    "path" =>  UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "prod")["search-view-grid-render"]["js"]
                 ],
             ],
             "CSS" => [
