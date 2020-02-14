@@ -6,6 +6,7 @@ use Anakeen\Components\Grid\Exceptions\Exception;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\Internal\FormatCollection;
 use Anakeen\Core\Internal\SmartElement;
+use Anakeen\Core\SEManager;
 use Anakeen\Routes\Core\Lib\DocumentDataFormatter;
 use Anakeen\Search\ElementList;
 use Anakeen\Search\SearchElements;
@@ -73,10 +74,18 @@ class SmartGridContentBuilder
     public function setCollection($collectionId)
     {
         if ($collectionId !== 0 && $collectionId !== -1) {
-            $this->smartCollection = SmartElementManager::getDocument($collectionId);
+            $this->smartCollection = SEManager::getDocument($collectionId);
             if (!$this->smartCollection) {
                 $exception = new Exception("GRID0001", $this->collectionId);
                 $exception->setHttpStatus("404", "Smart Element not found");
+                throw $exception;
+            }
+
+
+            $error=$this->smartCollection->control("execute");
+            if ($error) {
+                $exception = new Exception("GRID0015", $this->collectionId);
+                $exception->setHttpStatus("403", "Insufficient privileges");
                 throw $exception;
             }
             switch ($this->smartCollection->defDoctype) {

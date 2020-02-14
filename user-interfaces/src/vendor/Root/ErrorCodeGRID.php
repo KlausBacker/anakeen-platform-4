@@ -26,4 +26,5 @@ class ErrorCodeGRID
     const GRID0012 = 'Error, Smart Element Grid controller "%s" is already registered';
     const GRID0013 = 'Error, class is required';
     const GRID0014 = 'Class "%s" does not implement interface "%s"';
+    const GRID0015 = 'Error, unsufficient privileges to search for %s Smart Elements';
 }
