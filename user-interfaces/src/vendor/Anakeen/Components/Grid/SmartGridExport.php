@@ -165,7 +165,12 @@ class SmartGridExport
                     return $data->value;
                     break;
                 default:
-                    return $data->displayValue;
+                    if (is_array($data)) {
+                        foreach ($data as $datum) {
+                            return isset($datum->displayValue) ? $datum->displayValue : $datum->value;
+                        }
+                    }
+                    return isset($data->displayValue) ? $data->displayValue : $data->value;
             }
         } else {
             return isset($data->displayValue) ? $data->displayValue : $data->value;
