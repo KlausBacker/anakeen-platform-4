@@ -35,6 +35,7 @@ class PuPatternQuery extends FulltextSearchConfig
             ["french", "les caleçons", "'le' & 'calecon'"],
             ["french", "Février 2020", "'fevri' & '2020'"],
             ["english", "the bad -cats", "'bad' & !'cat'"],
+            ["english", "the bad -cats -dogs", "'bad' & !'cat' & !'dog'"],
             ["english", 'the "bad cats"', "'bad' <-> 'cat'"],
             ["english", 'the "bad or cats"', "'bad' <2> 'cat'"],
             ["english", 'the dogs or cats', "'dog' | 'cat'"],
@@ -47,7 +48,13 @@ class PuPatternQuery extends FulltextSearchConfig
             ["english", 'the "bad cats" or "other - dogs"', "'bad' <-> 'cat' | 'dog'"],
             ["english", '678 & chose', "'678' & 'chose'"],
             ["english", '""" )( dummy \\ query <->', "'dummi' & 'queri'"],
-            ["english", 'signal -"segmentation fault"', "'signal' & !( 'segment' <-> 'fault' )"]
+            ["english", 'signal -"segmentation fault"', "'signal' & !( 'segment' <-> 'fault' )"],
+            ["french", "les cale*", "'le' & 'cale':*"],
+            ["french", "les cale* long", "'le' & 'cale':* & 'long'"],
+            ["simple", "les cale*ons", "'les' & 'cale' & 'ons'"],
+            ["simple", "les 123*", "'les' & '123':*"],
+            ["simple", "les mar* -truite -saumon", "'les' & 'mar':* & !'truite' & !'saumon'"],
+            ["simple", "les truites or -saumon", "'les' & 'truites' | !'saumon'"],
         );
     }
 }

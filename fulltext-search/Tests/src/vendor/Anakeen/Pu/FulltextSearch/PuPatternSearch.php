@@ -16,9 +16,6 @@ class PuPatternSearch extends FulltextSearchConfig
         self::importSearchConfiguration(__DIR__ . "/Config/simpleSearchDomainConfig.xml");
     }
 
-
-
-
     /**
      * Test Simple Get Document
      * Order by default : title
@@ -45,16 +42,21 @@ class PuPatternSearch extends FulltextSearchConfig
     }
 
 
-
-
-
     public function dataGetDocument()
     {
         return array(
-            ["testDomainSimple", "lion", ["TST_ESIMPLE_002"]],
-            ["testDomainSimple", "ours", ["TST_ESIMPLE_003", "TST_ESIMPLE_001"]],
-            ["testDomainSimple", "saumon", ["TST_ESIMPLE_003", "TST_ESIMPLE_001"]],
-            ["testDomainSimple", "salmonidés", ["TST_ESIMPLE_004", "TST_ESIMPLE_003"]],
+            ["testDomainSimple", "lion or ours", ["TST_ESIMPLE_001", "TST_ESIMPLE_002", "TST_ESIMPLE_003"]],
+            ["testDomainSimple", "ours or saumon or truite or lion", ["TST_ESIMPLE_001", "TST_ESIMPLE_002", "TST_ESIMPLE_003", "TST_ESIMPLE_004"]],
+            ["testDomainSimple", "ours -saumon", []],
+            ["testDomainSimple", "ours -océan", ["TST_ESIMPLE_001"]],
+            ["testDomainSimple", '"espèces de poissons"', ["TST_ESIMPLE_003", "TST_ESIMPLE_004"]],
+            ["testDomainSimple", '"rivière maroc"', []],
+            ["testDomainSimple", '"rivière de l\'Atlas au Maroc"', ["TST_ESIMPLE_004"]],
+            ["testDomainSimple", 'rivière maroc', ["TST_ESIMPLE_004"]],
+            ["testDomainSimple", '15 or 1993', ["TST_ESIMPLE_002", "TST_ESIMPLE_004"]],
+            ["testDomainSimple", 'saumon -"espèces de poissons"', ["TST_ESIMPLE_001"]],
+            ["testDomainSimple", 'mar*', ["TST_ESIMPLE_001","TST_ESIMPLE_003", "TST_ESIMPLE_004"]],
+            ["testDomainSimple", 'mar* -truite -saumon', []],
         );
     }
 

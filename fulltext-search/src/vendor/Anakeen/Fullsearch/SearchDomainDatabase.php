@@ -8,6 +8,7 @@ use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\Internal\FormatCollection;
 use Anakeen\Core\SEManager;
+use Anakeen\Core\Utils\Strings;
 use Anakeen\Exception;
 use Anakeen\Search\SearchElements;
 use Tmilos\Lexer\Config\LexerArrayConfig;
@@ -231,15 +232,14 @@ SQL;
     {
         $config = new LexerArrayConfig([]);
 
-        $config->addTokenDefinition(new TokenDefn("NOT", '\\s-', "u"));
+        $config->addTokenDefinition(new TokenDefn("NOT", '(?:^|\\s)-', "u"));
         $config->addTokenDefinition(new TokenDefn("OR", '\\sor\\s', "u"));
         $config->addTokenDefinition(new TokenDefn("PHRASE", '"[^"]+"', "u"));
         $config->addTokenDefinition(new TokenDefn("SPACES", "\\s+", "u"));
+        $config->addTokenDefinition(new TokenDefn("STARTWITH", '[\\p{L}\\p{N}]+\\*(?:\\s|$)', "u"));
         $config->addTokenDefinition(new TokenDefn("PLAIN", "[^\\s]+", "u"));
 
-        // lexer instance
         $lexer = new Lexer($config);
-
         $lexer->setInput($pattern);
         $lexer->moveNext();
 
@@ -247,6 +247,7 @@ SQL;
         $currentSequence = "";
         while ($lexer->getLookahead()) {
             $tokenName = $lexer->getLookahead()->getName();
+            //print $tokenName.">".$lexer->getLookahead()->getValue()."\n";
             if ($tokenName === "PLAIN" || $tokenName === "SPACES") {
                 $currentSequence .= $lexer->getLookahead()->getValue();
             } else {
@@ -281,7 +282,7 @@ SQL;
                     $toQuery[] = sprintf(
                         "plainto_tsquery('%s', unaccent('%s')) as q%d",
                         pg_escape_string($stem),
-                        $part["value"],
+                        pg_escape_string($part["value"]),
                         $k
                     );
                     break;
@@ -289,7 +290,7 @@ SQL;
                     $toQuery[] = sprintf(
                         "phraseto_tsquery('%s', unaccent('%s')) as q%d",
                         pg_escape_string($stem),
-                        trim($part["value"], '"'),
+                        pg_escape_string(trim($part["value"], '"')),
                         $k
                     );
                     break;
@@ -300,28 +301,36 @@ SQL;
         DbManager::query($sql, $queryResults, false, true);
 
         $finalQueryParts = [];
-        $previousWords = false;
+        $needAddAndOperator = false;
         foreach ($parts as $k => $part) {
             switch ($part["token"]) {
                 case "PHRASE":
                 case "PLAIN":
                     if (!empty($queryResults["q$k"])) {
-                        if ($previousWords === true) {
+                        if ($needAddAndOperator === true) {
                             $finalQueryParts[] = " & ";
                         }
-
-                        $previousWords = true;
+                        $needAddAndOperator = true;
                         $finalQueryParts[] = sprintf("(%s)", $queryResults["q$k"]);
                     }
                     break;
                 case "OR":
                     $finalQueryParts[] = " | ";
-                    $previousWords = false;
+                    $needAddAndOperator = false;
                     break;
                 case "NOT":
-                    $finalQueryParts[] = " & !";
-                    $previousWords = false;
+                    if ($needAddAndOperator === true) {
+                        $finalQueryParts[] = " & ";
+                    }
+                    $finalQueryParts[] = "!";
+                    $needAddAndOperator = false;
                     break;
+                case "STARTWITH":
+                    if ($needAddAndOperator === true) {
+                        $finalQueryParts[] = " & ";
+                    }
+                    $finalQueryParts[] = sprintf("%s:* ", Strings::unaccent(trim($part["value"], " *")));
+                    $needAddAndOperator = true;
             }
         }
 
