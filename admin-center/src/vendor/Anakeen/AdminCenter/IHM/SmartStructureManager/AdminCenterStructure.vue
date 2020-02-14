@@ -7,7 +7,7 @@
         <span class="ssm-content__empty-text">Select a structure</span>
       </div>
       <div class="ssm-tabs-parent" v-else>
-        <ank-tabs class="ssm-tabs" ref="ssmTabs" v-model="selectedTab" @tabClick="onTabClick">
+        <ank-tabs class="ssm-tabs" ref="ssmTabs" v-model="selectedTab">
           <ank-tab :closable="false" tab-id="informations">
             <template slot="label">
               <span class="ssm-informations-title">Informations</span>

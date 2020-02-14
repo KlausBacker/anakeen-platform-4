@@ -165,8 +165,8 @@ class SearchSmartData
     /**
      * initialize with family
      *
-     * @param string     $dbaccess database coordinate
-     * @param int|string $fromid   family identifier to filter
+     * @param string $dbaccess database coordinate
+     * @param int|string $fromid family identifier to filter
      */
     public function __construct($dbaccess = '', $fromid = 0)
     {
@@ -267,7 +267,12 @@ class SearchSmartData
                     if (preg_match('/^\s*select\s+distinct(\s+|\(.*?\))/iu', $sql, $m)) {
                         $distinct = "distinct ";
                     }
-                    $sql = preg_replace('/^\s*select\s+(.*?)\s+from\s/iu', "select count($distinct$mainid) from ", $sql, 1);
+                    $sql = preg_replace(
+                        '/^\s*select\s+(.*?)\s+from\s/iu',
+                        "select count($distinct$mainid) from ",
+                        $sql,
+                        1
+                    );
                     if ($userid != 1) {
                         $sql .= sprintf(" and (%sviews && '%s')", $maintabledot, $this->getUserViewVector($userid));
                     }
@@ -367,7 +372,7 @@ class SearchSmartData
     {
         if (empty($jointure)) {
             $this->join = '';
-        } elseif (preg_match('/([a-z0-9_\-:]+)\s*(=|<|>|<=|>=)\s*([a-z0-9_\-:]+)\(([^\)]*)\)/', $jointure, $reg)) {
+        } elseif (preg_match('/([a-z0-9_\-:]+)\s*(=|<|>|<=|>=)\s*([a-z0-9_\-:".]+)\(([^)]*)\)/', $jointure, $reg)) {
             $this->join = $jointure;
         } else {
             throw new \Anakeen\Search\Exception("SD0001", $jointure);
@@ -386,11 +391,13 @@ class SearchSmartData
     protected function getJoinTable()
     {
         if ($this->join) {
-            if (preg_match('/(?P<attr>[a-z0-9_\-:]+)\s*(?P<operator>=|<|>|<=|>=)\s*(?P<family>[a-z0-9_\-:]+)\((?P<family_attr>[^\)]*)\)/', $this->join, $reg)) {
+            if (preg_match(
+                '/(?P<attr>[a-z0-9_\-:]+)\s*(?P<operator>=|<|>|<=|>=)\s*(?P<family>[a-z0-9_\-:.]+)\((?P<family_attr>[^)]*)\)/',
+                $this->join,
+                $reg
+            )) {
                 $joinid = \Anakeen\Core\SEManager::getFamilyIdFromName($reg['family']);
-                $jointable = ($joinid) ? "doc" . $joinid : $reg['family'];
-
-                return $jointable;
+                return ($joinid) ? "doc" . $joinid : $reg['family'];
             } else {
                 throw new Exception(sprintf("search join syntax error : %s", $this->join));
             }
@@ -443,13 +450,13 @@ class SearchSmartData
                 $table = "doc$fromid";
             } elseif ($fromid == 0) {
                 if (DirLib::isSimpleFilter($this->getFilters())) {
-                    $table = "docread";
+                    if (!$this->dirid) {
+                        $table = "docread";
+                    }
                 }
             }
         }
-        if ($this->dirid) {
-            $fld = \Anakeen\Core\SEManager::getDocument($this->dirid);
-        }
+
         return $table;
     }
 
@@ -578,7 +585,10 @@ class SearchSmartData
                     if ($this->fromid < -1) {
                         $this->only = true;
                     }
-                    \Anakeen\Core\DbManager::query(sprintf("select doctype from docfam where id=%d", abs($this->fromid)), $doctype, true, true);
+                    \Anakeen\Core\DbManager::query(sprintf(
+                        "select doctype from docfam where id=%d",
+                        abs($this->fromid)
+                    ), $doctype, true, true);
                     if ($doctype != 'C') {
                         $fromid = 0;
                     } else {
@@ -712,6 +722,9 @@ class SearchSmartData
         if ($this->fromid) {
             return ["*"];
         }
+        if (!$this->dirid) {
+            return ["*"];
+        }
         return null;
     }
 
@@ -745,7 +758,7 @@ class SearchSmartData
      * can be use only if collection set if a static folder
      *
      * @param bool $recursiveMode set to true to use search in sub folders when collection is folder
-     * @param int  $level         Indicate depth to inspect subfolders
+     * @param int $level Indicate depth to inspect subfolders
      *
      * @return void
      * @throws \Anakeen\Search\Exception
@@ -798,7 +811,7 @@ class SearchSmartData
     /**
      * use different order , default is title
      *
-     * @param string $order        the new order, empty means no order
+     * @param string $order the new order, empty means no order
      * @param string $orderbyLabel string of comma separated columns names on
      *                             which the order should be performed on their label instead of their value (e.g. order enum by their label instead of their key)
      *
@@ -941,7 +954,11 @@ class SearchSmartData
             if (!isset($this->cacheDocuments[$fromid])) {
                 $this->cacheDocuments[$fromid] = \Anakeen\Core\SEManager::createDocument($fromid, false);
                 if (empty($this->cacheDocuments[$fromid])) {
-                    throw new \Anakeen\Search\Exception(sprintf('Document "%s" has an unknow family "%s"', $v["id"], $fromid));
+                    throw new \Anakeen\Search\Exception(sprintf(
+                        'Document "%s" has an unknow family "%s"',
+                        $v["id"],
+                        $fromid
+                    ));
                 }
             }
         }
@@ -958,7 +975,7 @@ class SearchSmartData
      * add a condition in filters
      *
      * @param string $filter the filter string
-     * @param string $args   arguments of the filter string (arguments are escaped to avoid sql injection)
+     * @param string $args arguments of the filter string (arguments are escaped to avoid sql injection)
      *
      * @return void
      * @api add a new condition in filters
@@ -979,16 +996,23 @@ class SearchSmartData
                     // when use join filter like "zoo_espece.es_classe='Boo'"
                     $famid = \Anakeen\Core\SEManager::getFamilyIdFromName($reg['relname']);
                     if ($famid > 0) {
-                        $filter = preg_replace('/(\s|^|\()(?P<relname>[a-z0-9_\-]+)\./', '${1}doc' . $famid . '.', $filter);
+                        $filter = preg_replace(
+                            '/(\s|^|\()(?P<relname>[a-z0-9_\-]+)\./',
+                            '${1}doc' . $famid . '.',
+                            $filter
+                        );
                     }
                 }
                 $this->filters[] = $filter;
             }
         } elseif (is_object($filter)) {
             if (!is_a($filter, \Anakeen\Search\Filters\ElementSearchFilter::class)) {
-                throw new \Anakeen\Search\Exception(sprintf("Filter object does not implements \"%s\" interface.", \Anakeen\Search\Filters\ElementSearchFilter::class));
+                throw new \Anakeen\Search\Exception(sprintf(
+                    "Filter object does not implements \"%s\" interface.",
+                    \Anakeen\Search\Filters\ElementSearchFilter::class
+                ));
             }
-            $originalJoin=$this->getJoin();
+            $originalJoin = $this->getJoin();
             /**
              * @var \Anakeen\Search\Filters\ElementSearchFilter $filter
              */
@@ -1008,7 +1032,7 @@ class SearchSmartData
      */
     public function setFilters(array $filters)
     {
-        $this->filters=$filters;
+        $this->filters = $filters;
     }
 
 
@@ -1017,9 +1041,9 @@ class SearchSmartData
      *
      * @static
      *
-     * @param array  $values  set of values
-     * @param string $column  database column name
-     * @param bool   $integer set to true if database column is numeric type
+     * @param array $values set of values
+     * @param string $column database column name
+     * @param bool $integer set to true if database column is numeric type
      *
      * @return string
      */
@@ -1159,9 +1183,20 @@ class SearchSmartData
         $only = $this->only ? "only" : "";
         $maintable = $table; // can use join only on search
         if ($join) {
-            if (preg_match('/(?P<attr>[a-z0-9_\-:]+)\s*(?P<operator>=|<|>|<=|>=)\s*(?P<family>[a-z0-9_\-:]+)\((?P<family_attr>[^\)]*)\)/', $join, $reg)) {
+            if (preg_match(
+                '/(?P<attr>[a-z0-9_\-:]+)\s*(?P<operator>=|<|>|<=|>=)\s*(?P<family>[a-z0-9_\-:.]+)\((?P<family_attr>[^)]*)\)/',
+                $join,
+                $reg
+            )) {
                 $jointable = $this->getJoinTable();
-                $sqlfilters[] = sprintf("%s.%s %s %s.%s", $table, $reg['attr'], $reg['operator'], $jointable, $reg['family_attr']); // "id = dochisto(id)";
+                $sqlfilters[] = sprintf(
+                    "%s.%s %s %s.%s",
+                    $table,
+                    $reg['attr'],
+                    $reg['operator'],
+                    $jointable,
+                    $reg['family_attr']
+                ); // "id = dochisto(id)";
                 $maintable = $table;
                 $table .= ", " . $jointable;
             }
@@ -1317,10 +1352,19 @@ class SearchSmartData
                                         $sqlM = str_replace("from doc ", "from $only $table ", $sqlM);
                                     }
                                     $fldFromId = ($fromid == 0) ? $fld->getRawValue('se_famid', 0) : $fromid;
-                                    $sqlM = $this->injectFromClauseForOrderByLabel($fldFromId, $this->orderbyLabel, $sqlM);
+                                    $sqlM = $this->injectFromClauseForOrderByLabel(
+                                        $fldFromId,
+                                        $this->orderbyLabel,
+                                        $sqlM
+                                    );
                                     if ($sqlcond) {
                                         if ($this->join) {
-                                            $qsql[] = sprintf("select z.* from (%s) as z, %s where %s", $sqlM, $this->getJoinTable(), $sqlcond);
+                                            $qsql[] = sprintf(
+                                                "select z.* from (%s) as z, %s where %s",
+                                                $sqlM,
+                                                $this->getJoinTable(),
+                                                $sqlcond
+                                            );
                                         } else {
                                             //$qsql[] = sprintf("select * from (%s) as z where %s", $sqlM, $sqlcond);
 
@@ -1365,9 +1409,9 @@ class SearchSmartData
      * which will be used later when the "ORDER BY" directive will be
      * constructed.
      *
-     * @param int    $fromid The identifier of the family which the query is based on
+     * @param int $fromid The identifier of the family which the query is based on
      * @param string $column The name of the column on which the result is supposed to be be ordered
-     * @param string $sqlM   The SQL query in which an additional FROM relation should be injected
+     * @param string $sqlM The SQL query in which an additional FROM relation should be injected
      *
      * @return string The modified query
      */
@@ -1393,7 +1437,11 @@ class SearchSmartData
                 $where = sprintf("map_%s.key = coalesce(doc%s.%s, '')", $attr->id, $fromid, $attr->id);
 
                 $sqlM = preg_replace('/ where /i', ", $map where ($where) and ", $sqlM);
-                $this->orderby = preg_replace(sprintf('/\b%s\b/', preg_quote($column, "/")), sprintf("map_%s.label", $attr->id), $this->orderby);
+                $this->orderby = preg_replace(
+                    sprintf('/\b%s\b/', preg_quote($column, "/")),
+                    sprintf("map_%s.label", $attr->id),
+                    $this->orderby
+                );
                 break;
 
             case 'docid':
@@ -1406,7 +1454,11 @@ class SearchSmartData
                     if ($opt_doctitle == 'auto') {
                         $opt_doctitle = sprintf('%s_title', $attr->id);
                     }
-                    $this->orderby = preg_replace(sprintf('/\b%s\b/', preg_quote($column, "/")), $opt_doctitle, $this->orderby);
+                    $this->orderby = preg_replace(
+                        sprintf('/\b%s\b/', preg_quote($column, "/")),
+                        $opt_doctitle,
+                        $this->orderby
+                    );
                 }
         }
         return $sqlM;
