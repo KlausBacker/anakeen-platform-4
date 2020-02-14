@@ -1,13 +1,12 @@
 <template>
   <ank-progress class="smart-element-grid" :loading="isLoading">
     <div class="smart-element-grid-wrapper">
-      <div class="smart-element-grid-header">
+      <div class="smart-element-grid-header--toolbar">
         <slot name="gridHeader" direction="left" v-bind:gridComponent="gridInstance">
           <ank-expand-button v-if="expandable" :gridComponent="gridInstance"></ank-expand-button>
           <ank-export-button v-if="exportButton" text="Export" :gridComponent="gridInstance"></ank-export-button>
         </slot>
       </div>
-
       <kendo-grid-vue
         v-if="columnsList.length"
         ref="smartGridWidget"

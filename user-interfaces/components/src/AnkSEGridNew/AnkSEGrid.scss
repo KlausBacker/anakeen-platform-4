@@ -1,11 +1,9 @@
 .smart-element-grid {
   // position: relative;
-  height: 100%;
   max-height: 100%;
   width: 100%;
 
   .k-grid-content {
-    height: 100%;
 
     .k-master-row {
       td {
@@ -20,17 +18,17 @@
         td:not(:first-child):not(:last-child) {
           white-space: nowrap;
           overflow: hidden;
-          * {
-            font-size:unset;
-            display: inline;
-          }
-          br,
-          hr {
-            content: " ";
-            &:after {
-              content: " ";
-            }
-          }
+          //* {
+          //  font-size:unset;
+          //  display: inline;
+          //}
+          //br,
+          //hr {
+          //  content: " ";
+          //  &:after {
+          //    content: " ";
+          //  }
+          //}
         }
       }
     }
@@ -38,43 +36,54 @@
 
   .smart-element-grid-wrapper {
     min-height: 10rem;
+    height: 100%;
+    max-height: 100%;
+    width: 100%;
   }
 
   // none display for standard kendo cell to avoid flickering
   .k-filter-row {
     display: none !important;
-
-    .smart-element-grid-header {
-      display: flex;
-      justify-content: flex-end;
-      .k-pager-numbers-wrap {
-        display: none !important;
-      }
-    }
   }
   .k-grid {
     display: flex !important; // To override important kendo rule
     flex: 1;
   }
-}
-
-.smart-element-grid-widget {
-  height: auto !important;
-}
-
-    .grid-header-content {
-      display: flex;
-      flex-direction: column;
-      position: relative;
+  .k-grid-content {
+    overflow: auto;
+  }
+  .smart-element-grid-widget,
+  .smart-element-grid-wrapper {
+    max-height: 100%;
+    margin: 0;
+    padding: 0;
+    border-width: 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    .k-grid {
+      display: flex !important;
+      flex: 1;
+      .k-grid-content {
+        overflow:auto;
+      }
     }
-.smart-element-grid-columns-footer {
-  height: auto !important;
-  .k-grid-header {
-    display: none;
+  }
+  .grid-header-content {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .smart-element-grid-columns-footer {
+    height: auto !important;
+    .k-grid-header {
+      display: none;
+    }
+
+    .k-grid-container {
+      overflow: hidden;
+      flex: 0;
+    }
   }
 
-  .k-grid-container {
-    overflow: hidden;
-    flex: 0;
-  }
 }

@@ -1,5 +1,6 @@
 .smart-element-grid-header {
   display: flex;
+  position: relative;
 }
 
 .smart-element-grid-header-content {
@@ -23,7 +24,7 @@
 .smart-element-grid-header--title,
 .smart-element-grid-header-title-wrapper {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   text-overflow: ellipsis;
   overflow: hidden;
 }
@@ -42,10 +43,6 @@
     font-family: "WebComponentsIcons";
     letter-spacing: -0.4rem;
   }
-}
-
-.smart-element-grid-header-filter-button-wrapper {
-  padding: .5rem;
 }
 
 .smart-element-grid-header-filter--is-filtered {

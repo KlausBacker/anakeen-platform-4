@@ -30,7 +30,6 @@ export default class GridFilterCell extends Vue {
 
   @Prop({
     type: [Boolean, Object],
-    required: true
   })
   public sortable!: boolean | object;
 

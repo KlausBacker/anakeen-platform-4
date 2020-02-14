@@ -1,7 +1,7 @@
 <template>
   <div :class="{ 'smart-element-grid-header': true }">
     <div class="smart-element-grid-header-content">
-      <div v-if="hasSubtitle" class="smart-element-grid-header--subtitle">
+      <div v-show="hasSubtitle" class="smart-element-grid-header--subtitle">
         {{ subtitle }}
       </div>
       <div class="smart-element-grid-header--title">
