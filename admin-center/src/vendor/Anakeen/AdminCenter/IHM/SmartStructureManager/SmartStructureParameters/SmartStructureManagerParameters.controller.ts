@@ -42,39 +42,53 @@ export default class SmartStructureManagerParametersController extends Vue {
       this.smartFormArrayStructure = {};
     }
   }
-  @Watch("paramValues")
-  public watchParamValues(newValue) {
-    if (Array.isArray(newValue[0])) {
-      this.paramValues = newValue[0];
-    }
-  }
   get generateSmartForm() {
-    let enumData = [];
     let parametersStructure = [];
-    let parametersEnum = [];
     let values = {};
     let parametersRenderOptions = {};
     // Generate dynamic smartform content
     if (this.paramValues.length) {
       this.paramValues.forEach(parameter => {
-        if (parameter.type === "enum") {
-          enumData = this.getEnum(parameter.typeFormat);
-        }
         // Manage SmartForm values
+        values[parameter.parameterId + "-result"] = "<ul>";
         if (parameter.isAdvancedValue) {
           values[parameter.parameterId + "-type"] = "advanced_value";
           values[parameter.parameterId + "-advanced_value"] = parameter.rawValue;
           values[parameter.parameterId + "-value"] = parameter.displayValue;
+          if (parameter.displayValue.length > 0) {
+            for (let i = 0; i < parameter.displayValue.length; i++) {
+              values[
+                parameter.parameterId + "-result"
+              ] += `<li><b>${parameter.displayValue[i].displayValue}</b> - ${parameter.displayValue[i].value}</li>`;
+            }
+          }
         } else {
+          values[parameter.parameterId + "-type"] = "value";
           if (parameter.type === "array") {
-            values[parameter.parameterId + "-type"] = "value";
             Object.keys(this.smartFormArrayStructure[parameter.parameterId]).forEach(key => {
               const childId = this.smartFormArrayStructure[parameter.parameterId][key].name;
               values[childId] = this.smartFormArrayValues[childId];
             });
           } else {
-            values[parameter.parameterId + "-type"] = "value";
-            values[parameter.parameterId + "-value"] = parameter.rawValue;
+            if (parameter.rawValue !== null && parameter.rawValue.length > 0) {
+              if (parameter.isMultiple) {
+                if (!Array.isArray(values[parameter.parameterId])) {
+                  values[parameter.parameterId + "-value"] = [];
+                }
+                for (let i = 0; i < parameter.displayValue.length; i++) {
+                  values[parameter.parameterId + "-value"].push({
+                    displayValue: parameter.displayValue[i],
+                    value: parameter.rawValue[i]
+                  });
+                  values[
+                    parameter.parameterId + "-result"
+                  ] += `<li><a href="${window.location.origin}${parameter.url[i]}">${parameter.displayValue[i]}</a></li>`;
+                }
+              } else {
+                values[parameter.parameterId + "-value"] = parameter.rawValue;
+              }
+            }
+            values[parameter.parameterId + "-result"] += "</ul>";
           }
         }
         // Generate SmartForm structure
@@ -111,37 +125,43 @@ export default class SmartStructureManagerParametersController extends Vue {
             },
             {
               content: this.smartFormArrayStructure[parameter.parameterId],
-              enumItems: `${enumData}`,
+              enumItems: parameter.enumData,
               label: "Value",
               name: `${parameter.parameterId}-value`,
-              type: `${parameter.type}`,
-              typeFormat: parameter.typeFormat
+              type: parameter.type,
+              typeFormat: parameter.typeFormat,
+              multiple: parameter.isMultiple
             },
             {
               label: "Advanced value",
               name: `${parameter.parameterId}-advanced_value`,
               type: "longtext"
+            },
+            {
+              display: "read",
+              label: "Result",
+              name: `${parameter.parameterId}-result`,
+              type: "htmltext"
             }
           ],
-          label: `${parameter.label}`,
+          label: parameter.label,
           name: `${parameter.parameterId}`,
           type: "frame"
         });
 
         if (!["array", "htmltext"].includes(parameter.type)) {
           parametersRenderOptions[parameter.parameterId] = {
-            "responsiveColumns": [
+            responsiveColumns: [
               {
-                  "number": 2,
-                  "minWidth": "50rem",
-                  "grow": true
+                number: 3,
+                minWidth: "50rem",
+                grow: true
               }
             ]
-          }
+          };
         }
       });
     }
-
     return {
       menu: [
         {
@@ -200,7 +220,7 @@ export default class SmartStructureManagerParametersController extends Vue {
         const child = children[j];
         finalValue[i].push({
           [child]: this.smartFormArrayValues[child][i]
-        })
+        });
       }
     }
     return JSON.parse(JSON.stringify(finalValue));
@@ -211,11 +231,16 @@ export default class SmartStructureManagerParametersController extends Vue {
       if (
         splitted[0] === parameter.parameterId &&
         splitted[1] !== "type" &&
-        splitted[1] !== `${parameter.parameterId}` &&
         typeof splitted[1] !== "undefined" &&
         this.finalData[parameter.parameterId].valueType !== splitted[1]
       ) {
         this.$refs.ssmForm.hideSmartField(`${splitted[0]}-${splitted[1]}`);
+        if (
+          (Array.isArray(parameter.url) && parameter.url.length > 0 && splitted[1] === "result") ||
+          this.finalData[parameter.parameterId].valueType === "advanced_value"
+        ) {
+          this.$refs.ssmForm.showSmartField(`${splitted[0]}-result`);
+        }
       }
     });
   }
@@ -223,8 +248,8 @@ export default class SmartStructureManagerParametersController extends Vue {
     const smartForm = this.$refs.ssmForm;
     const paramField = smartField.id.split("-")[0];
 
-    if (this.smartFormArrayStructure){
-        if (smartField.id.includes("-type")) {
+    if (this.smartFormArrayStructure) {
+      if (smartField.id.includes("-type")) {
         switch (smartForm.getValue(smartField.id).value) {
           case "inherited":
             smartForm.hideSmartField(`${paramField}-advanced_value`);
@@ -267,10 +292,19 @@ export default class SmartStructureManagerParametersController extends Vue {
       } else {
         // If value is an array
         if (this.smartFormArrayValues.hasOwnProperty(paramField)) {
-          this.formatFinalArrayValue(paramField, values.current)
+          this.formatFinalArrayValue(paramField, values.current);
           // If value isn't an array
         } else if (smartField.id.includes("-value")) {
-          this.finalData[paramField].value = smartForm.getValue(`${paramField}-value`).value;
+          const paramInitValues = this.paramValues.find(param => param.parameterId === paramField);
+          if (paramInitValues.isMultiple === true) {
+            let multipleValue = [];
+            values.current.forEach(value => {
+              multipleValue.push(value.value);
+            });
+            this.finalData[paramField].value = multipleValue;
+          } else {
+            this.finalData[paramField].value = smartForm.getValue(`${paramField}-value`).value;
+          }
         } else if (smartField.id.includes("-advanced_value")) {
           this.finalData[paramField].value = smartForm.getValue(`${paramField}-advanced_value`).value;
         } else if (smartField.id.includes("-no_value")) {
@@ -279,7 +313,7 @@ export default class SmartStructureManagerParametersController extends Vue {
       }
     }
   }
-   public ssmArrayChange(e, smartElement, smartField, type, options) {
+  public ssmArrayChange(e, smartElement, smartField, type, options) {
     if (type === "removeLine") {
       let columns = [];
       // Get column's name
@@ -401,18 +435,58 @@ export default class SmartStructureManagerParametersController extends Vue {
             const resultParam = paramVal.result;
             const type = param.type;
             const typeFormat = param.format;
-            
             let isAdvancedValue = false;
+            let isMultiple = false;
             let rawValue;
             let displayValue;
+            let url = null;
+            let enumData = [];
 
+            if (param.hasOwnProperty("options") && param.options.includes("multiple=yes")) {
+              isMultiple = true;
+            }
             if (parentField.type === "array") {
               const parentConfigParam = paramsValues[parentField.id].configurationParameter;
               this.prepareSmartFormArray(paramVal, param, parentField.id, parentConfigParam);
             } else {
               if (Array.isArray(configParam)) {
-                rawValue = "";
-                displayValue = "";
+                rawValue = [];
+                displayValue = [];
+                url = [];
+
+                if (isMultiple === true) {
+                  resultParam.forEach(actualResultValue => {
+                    if (typeof actualResultValue === "object") {
+                      if (actualResultValue.displayValue && actualResultValue.value) {
+                        if (actualResultValue.hasOwnProperty("displayValue"))
+                          displayValue.push(actualResultValue.displayValue);
+                        if (actualResultValue.hasOwnProperty("value")) rawValue.push(actualResultValue.value);
+                        if (actualResultValue.hasOwnProperty("url")) url.push(actualResultValue.url);
+                      } else {
+                        displayValue.push(null);
+                        rawValue.push(null);
+                      }
+                    } else {
+                      rawValue.push(actualResultValue);
+                      displayValue.push(actualResultValue);
+                    }
+                  });
+                } else if (type !== "array") {
+                  configParam.forEach(actualConfigValue => {
+                    if (typeof actualConfigValue === "object") {
+                      if (actualConfigValue.displayValue && actualConfigValue.rawValue) {
+                        displayValue = actualConfigValue.displayValue;
+                        rawValue = actualConfigValue.rawValue;
+                      } else {
+                        displayValue = null;
+                        rawValue = null;
+                      }
+                    } else {
+                      rawValue = actualConfigValue;
+                      displayValue = actualConfigValue;
+                    }
+                  });
+                }
               } else if (configParam instanceof Object) {
                 if (resultParam.value && resultParam.displayValue) {
                   if (configParam && typeof configParam !== "undefined" && configParam != resultParam.value) {
@@ -421,7 +495,9 @@ export default class SmartStructureManagerParametersController extends Vue {
                     rawValue = resultParam.value;
                   }
                   displayValue = resultParam.displayValue;
-                } else if (resultParam[0] && resultParam[0].value && resultParam[0].displayValue) {
+                } else if (Array.isArray(resultParam) && resultParam[0].value && resultParam[0].displayValue) {
+                  resultParam.forEach(singleResult => {});
+
                   rawValue = resultParam[0].value;
                   displayValue = resultParam[0].displayValue;
                 } else {
@@ -437,6 +513,7 @@ export default class SmartStructureManagerParametersController extends Vue {
                 if (configParam !== null) {
                   rawValue = configParam;
                   if (Array.isArray(resultParam)) {
+                    displayValue = [];
                     resultParam.forEach(defValElem => {
                       if (defValElem && defValElem.value && defValElem.displayValue) {
                         if (defValElem.displayValue == configParam) {
@@ -470,12 +547,12 @@ export default class SmartStructureManagerParametersController extends Vue {
               }
 
               if (rawValue && typeof rawValue === "string" && rawValue.includes("::")) {
-                if (resultParam.hasOwnProperty("value")) {
-                  displayValue = resultParam.value;
-                } else {
-                  displayValue = "";
-                }
+                displayValue = resultParam;
                 isAdvancedValue = true;
+              }
+
+              if (type === "enum") {
+                enumData = this.getEnum(typeFormat);
               }
               result.push({
                 displayValue,
@@ -485,15 +562,18 @@ export default class SmartStructureManagerParametersController extends Vue {
                   ? paramsValues[item].parentConfigurationValue
                   : null,
                 rawValue,
+                url,
                 type,
                 typeFormat,
-                isAdvancedValue
+                enumData,
+                isAdvancedValue,
+                isMultiple
               });
             }
           }
         }
       });
-      this.paramValues.push(result);
+      this.paramValues = result;
       return result;
     }
     return [];
@@ -534,17 +614,18 @@ export default class SmartStructureManagerParametersController extends Vue {
           }
         });
         // Remove undefined/null values
-        finalConfigValue.push(configValue.filter(el => {
-          return el != null;
-        }))
+        finalConfigValue.push(
+          configValue.filter(el => {
+            return el != null;
+          })
+        );
       }
     }
     finalConfigValue.forEach(element => {
       values[field.id].push(element[0]);
-    })
+    });
     this.smartFormArrayStructure[parentId].push(column);
     Object.assign(this.smartFormArrayValues, values);
-
   }
   protected formatType(simpleType, longType) {
     const type = simpleType;
@@ -581,10 +662,12 @@ export default class SmartStructureManagerParametersController extends Vue {
       .then(response => {
         if (response.status === 200 && response.statusText === "OK") {
           response.data.data.forEach(element => {
-            returnVal.push({
-              key: element.key,
-              label: element.label
-            });
+            if (element.key !== ".extendable") {
+              returnVal.push({
+                key: element.key,
+                label: element.label
+              });
+            }
           });
         } else {
           throw new Error(response.data);
@@ -593,7 +676,6 @@ export default class SmartStructureManagerParametersController extends Vue {
       .catch(response => {
         console.error(response);
       });
-
     return returnVal;
   }
   private updateData(data) {

@@ -53,6 +53,8 @@ class StructureUpdateParameter extends StructureFields
                     $err = $this->structure->setParam($parameterData->parameterId, null);
                 } elseif ($parameterData->valueType === "value" && $parameterData->value === "") {
                     $err = $this->structure->setParam($parameterData->parameterId, "");
+                } elseif ($parameterData->valueType === "advanced_value") {
+                    $err = $this->manageAdvancedValue($parameterData->parameterId, $parameterData->value);
                 } else {
                     $err = $this->structure->setParam($parameterData->parameterId, $parameterData->value);
                 }
@@ -73,7 +75,7 @@ class StructureUpdateParameter extends StructureFields
         if ($funcError === "") {
             try {
                 $refMeth = new ReflectionMethod($structureFunction->className, $structureFunction->methodName);
-                return $this->structure->setParam($parameterId, $structureFunction->funcCall);
+                return $this->structure->setParam($parameterId, $structureFunction->funcCall, false);
             } catch (\ReflectionException $refErr) {
                 return $refErr->getMessage();
             }
