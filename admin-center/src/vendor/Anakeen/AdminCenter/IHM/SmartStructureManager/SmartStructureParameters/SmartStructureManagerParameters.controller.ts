@@ -42,12 +42,6 @@ export default class SmartStructureManagerParametersController extends Vue {
       this.smartFormArrayStructure = {};
     }
   }
-  @Watch("paramValues")
-  public watchParamValues(newValue) {
-    if (Array.isArray(newValue[0])) {
-      this.paramValues = newValue[0];
-    }
-  }
   get generateSmartForm() {
     let parametersStructure = [];
     let values = {};
@@ -241,7 +235,10 @@ export default class SmartStructureManagerParametersController extends Vue {
         this.finalData[parameter.parameterId].valueType !== splitted[1]
       ) {
         this.$refs.ssmForm.hideSmartField(`${splitted[0]}-${splitted[1]}`);
-        if ((Array.isArray(parameter.url) && parameter.url.length > 0 && splitted[1] === "result") || this.finalData[parameter.parameterId].valueType === "advanced_value") {
+        if (
+          (Array.isArray(parameter.url) && parameter.url.length > 0 && splitted[1] === "result") ||
+          this.finalData[parameter.parameterId].valueType === "advanced_value"
+        ) {
           this.$refs.ssmForm.showSmartField(`${splitted[0]}-result`);
         }
       }
@@ -576,7 +573,7 @@ export default class SmartStructureManagerParametersController extends Vue {
           }
         }
       });
-      this.paramValues.push(result);
+      this.paramValues = result;
       return result;
     }
     return [];
