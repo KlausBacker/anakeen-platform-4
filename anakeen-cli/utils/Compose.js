@@ -531,7 +531,7 @@ class Compose {
     signale.note(`Save the new zip`);
     return new Promise((resolve, reject) => {
       zipFile
-        .generateNodeStream({ type: "nodebuffer", streamFiles: true })
+        .generateNodeStream({ type: "nodebuffer", streamFiles: true, platform: "UNIX" })
         .pipe(fs.createWriteStream(controlTarget))
         .on("error", () => {
           reject(`Unable to write ${controlTarget}`);
