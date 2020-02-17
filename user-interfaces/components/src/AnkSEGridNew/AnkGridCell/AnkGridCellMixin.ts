@@ -1,5 +1,6 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { SmartGridColumn } from "../AnkSEGrid.component";
+import GridController from '../AnkSEGrid.component';
 
 @Component({})
 export default class GridFilterCell extends Vue {
@@ -55,4 +56,8 @@ export default class GridFilterCell extends Vue {
     type: Object
   })
   public fieldValue!: any;
+  @Prop({
+    type: Object
+  })
+  public gridComponent!: GridController;
 }

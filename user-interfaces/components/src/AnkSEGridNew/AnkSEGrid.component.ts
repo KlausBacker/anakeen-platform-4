@@ -1,7 +1,6 @@
 import { Component, Prop, Watch, Vue } from "vue-property-decorator";
 import AnkProgress from "./AnkProgress/AnkProgress.vue";
 import AnkActionMenu from "./AnkActionMenu/AnkActionMenu.vue";
-import AnkTextFilterCell from "./AnkTextFilterCell/AnkTextFilterCell.vue";
 import AnkGridCell from "./AnkGridCell/AnkGridCell.vue";
 import AnkExportButton from "./AnkExportButton/AnkExportButton.vue";
 import AnkGridExpandButton from "./AnkGridExpandButton/AnkGridExpandButton.vue";
@@ -123,7 +122,12 @@ export default class GridController extends Vue {
     default: "",
     type: String
   })
-  public emptyCell;
+  public emptyCellText;
+  @Prop({
+    default: "N/C",
+    type: String
+  })
+  public inexistentCellText;
   @Prop({
     default: () => DEFAULT_SORT,
     type: [Boolean, Object]
@@ -414,7 +418,7 @@ export default class GridController extends Vue {
     const event = new GridEvent(
       {
         rowData: props.dataItem,
-        columnConfig: columnConfig,
+        columnConfig: columnConfig
       },
       null,
       false,
@@ -448,12 +452,23 @@ export default class GridController extends Vue {
       return renderElement;
     } else {
       if (columnConfig) {
-        renderElement = createElement(AnkGridCell, {
+        const options = {
           props: {
             ...props,
-            columnConfig
-          }
-        });
+            columnConfig,
+            gridComponent: this
+          },
+          scopedSlots: {}
+        };
+        if (this.$scopedSlots && this.$scopedSlots.emptyCell) {
+          // @ts-ignore
+          options.scopedSlots.emptyCell = props => this.$scopedSlots.emptyCell({ renderElement, props, listeners, columnConfig });
+        }
+        if (this.$scopedSlots && this.$scopedSlots.inexistentCell) {
+          // @ts-ignore
+          options.scopedSlots.inexistentCell = props => this.$scopedSlots.inexistentCell({ renderElement, props, listeners, columnConfig });
+        }
+        renderElement = createElement(AnkGridCell, options);
       }
       if (this.$scopedSlots && this.$scopedSlots.cellTemplate) {
         return this.$scopedSlots.cellTemplate({

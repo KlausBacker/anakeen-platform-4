@@ -4,8 +4,23 @@
       `smart-element-grid-cell smart-element-grid-cell--${columnConfig.smartType} smart-element-grid-cell--${field}`
     "
   >
+    <!-- Inexistent case -->
+    <div class="smart-element-grid-cell-content" v-if="isInexistent">
+      <span class="smart-element-grid-cell-content--empty">
+        <slot name="inexistentCell">{{ gridComponent.inexistentCellText }}</slot>
+      </span>
+    </div>
+
+    <!-- Empty case -->
+    <div class="smart-element-grid-cell-content" v-else-if="isEmpty">
+      <span class="smart-element-grid-cell-content--empty">
+        <slot name="emptyCell">{{ gridComponent.emptyCellText }}</slot>
+      </span>
+    </div>
     <!-- Property display -->
-    <div class="smart-element-grid-cell-content" v-if="columnConfig.property">{{ dataItem.properties[field] }}</div>
+    <div class="smart-element-grid-cell-content" v-else-if="columnConfig.property">
+      {{ dataItem.properties[field] }}
+    </div>
 
     <!-- Abstract display -->
     <div class="smart-element-grid-cell-content" v-else-if="columnConfig.abstract">
@@ -36,10 +51,17 @@
               v-bind="$props"
               :fieldValue="sublevel"
             ></component>
-            <span class="smart-element-grid-cell-content-multiple-col-separator" v-if="subindex < getSublevel(fieldValue).length - 1">,&nbsp;</span>
+            <span
+              class="smart-element-grid-cell-content-multiple-col-separator"
+              v-if="subindex < getSublevel(fieldValue).length - 1"
+              >,&nbsp;</span
+            >
           </div>
         </div>
-        <hr class="smart-element-grid-cell-content-multiple-row-separator" v-if="index < dataItem.attributes[field].length - 1" />
+        <hr
+          class="smart-element-grid-cell-content-multiple-row-separator"
+          v-if="index < dataItem.attributes[field].length - 1"
+        />
       </div>
     </div>
 
