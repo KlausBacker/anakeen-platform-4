@@ -77,7 +77,7 @@ versions.versions
   .then(async () => {
     if (tag) {
       console.log("Add general tag");
-      return await exec(`git tag -f ${versions.release}${versions.RC ? "." + versions.RC : ""}`);
+      return await exec(`git tag -f v${versions.release}${versions.RC ? "." + versions.RC : ""}`);
     }
     return Promise.resolve();
   })
