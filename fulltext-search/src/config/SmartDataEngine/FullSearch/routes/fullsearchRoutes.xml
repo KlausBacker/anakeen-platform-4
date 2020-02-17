@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:routes namespace="FullSearch">
+        <sde:route name="RecordFileTextContent">
+            <sde:callable>Anakeen\Fullsearch\Route\RecordFileTextContent</sde:callable>
+            <sde:method>GET</sde:method>
+                <sde:pattern>/api/v2/fullsearch/domains/{domain}/smart-elements/{elementid}</sde:pattern>
+        </sde:route>
+    </sde:routes>
+</sde:config>

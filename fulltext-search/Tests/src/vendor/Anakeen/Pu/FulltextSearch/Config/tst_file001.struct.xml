@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:structure-configuration name="TST_FILE001" >
+        <smart:class>Anakeen\Pu\FulltextSearch\Config\FileTest</smart:class>
+        <smart:tag name="vendor">Anakeen</smart:tag>
+        <smart:fields>
+            <smart:field-set name="tst_f_title" type="frame" label="Titre" access="ReadWrite">
+                <smart:field-text name="tst_title" label="Le titre" access="ReadWrite" is-title="true"/>
+                <smart:field-file name="tst_file"  access="ReadWrite"/>
+                <smart:field-set name="tst_t_files" type="array" access="ReadWrite">
+                    <smart:field-file name="tst_files"  access="ReadWrite"/>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:fields>
+    </smart:structure-configuration>
+</smart:config>

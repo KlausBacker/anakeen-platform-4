@@ -4,6 +4,7 @@
 namespace Anakeen\Fullsearch;
 
 use Anakeen\Core\ContextManager;
+use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Exception;
 
 class SearchDomain implements \JsonSerializable
@@ -59,10 +60,19 @@ class SearchDomain implements \JsonSerializable
 
         ContextManager::setParameterValue(self::NSPARAM, "DOMAIN_CONFIG", json_encode($domains));
 
+
+    }
+
+
+    public function reindexSearchDataElement(SmartElement $se) {
+
+        $db=new SearchDomainDatabase($this->name);
+        $db->updateSmartElement($se);
+    }
+
+    public function reindexSearchData() {
         $db=new SearchDomainDatabase($this->name);
         $db->initialize();
-
-
     }
 
     /**

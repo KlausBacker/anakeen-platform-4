@@ -11,6 +11,11 @@
 
 
 
+    <post-install>
+    <process command="./ank.php --script=updateclass --class='Anakeen\Fullsearch\FileContentDatabase'">
+        <label>Initialize system database</label>
+    </process>
+    </post-install>
 
 
 </module>

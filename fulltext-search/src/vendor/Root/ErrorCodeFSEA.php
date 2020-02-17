@@ -29,4 +29,20 @@ class ErrorCodeFSEA
      * @errorCode The search domain reference a structure name that not exists
      */
     const FSEA0005 = 'Search Domain "%s", structure "%s", field "%s" not found.';
+    /**
+     * @errorCode The search domain reference a structure name that not exists
+     */
+    const FSEA0006 = 'Search Domain "%s", no structure config for "%s"';
+    /**
+     * @errorCode The result of TE not match a task id
+     */
+    const FSEA0007 = 'TE task not referenced "%s"';
+    /**
+     * @errorCode When try to get info from conversion
+     */
+    const FSEA0008 = 'TE task not found "%s"';
+    /**
+     * @errorCode The get result conversion
+     */
+    const FSEA0009 = 'TE file download error "%s"';
 }

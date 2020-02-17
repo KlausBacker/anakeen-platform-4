@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<smart:search-domain name="testDomainSimple" xmlns:smart="https://platform.anakeen.com/4/schemas/search-domain/1.0">
+<smart:search-domain name="testDomainFile" xmlns:smart="https://platform.anakeen.com/4/schemas/search-domain/1.0" lang="fr">
     <smart:search-stem>french</smart:search-stem>
-    <smart:search-config structure="TST_SIMPLE001" >
+    <smart:search-config structure="TST_FILE001" >
         <smart:title weight="A" />
-        <smart:file ref="tst_file" filename="true" filecontent="false" filetype="false" weight="B" />
+        <smart:file ref="tst_file" filename="true" filecontent="true" filetype="false" weight="B" />
+        <smart:file ref="tst_files" filename="true" filecontent="true" filetype="false" weight="D" />
     </smart:search-config>
 </smart:search-domain>

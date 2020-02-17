@@ -46,6 +46,7 @@ class ImportSearchConfiguration
 
 
         $this->domain->record();
+        $this->domain->reindexSearchData();
     }
 
     protected function analyzeXml()
@@ -90,6 +91,18 @@ class ImportSearchConfiguration
             $config->fields[] = new SearchFieldConfig(
                 "title",
                 $fieldNode->getAttribute("weight")
+            );
+        }
+
+        $fieldNodes = $this->xpath->query("sd:file", $configNode);
+        foreach ($fieldNodes as $fieldNode) {
+            /** @var \DOMElement $fieldNode */
+            $config->fields[] = new SearchFileConfig(
+                $fieldNode->getAttribute("ref"),
+                $fieldNode->getAttribute("weight"),
+                $fieldNode->getAttribute("filename")?:false,
+                $fieldNode->getAttribute("filecontent")?:false,
+                $fieldNode->getAttribute("filetype")?:false
             );
         }
 
