@@ -2,23 +2,19 @@
 // tslint:disable:max-classes-per-file
 
 import { Component, Vue } from "vue-property-decorator";
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type IAnkVueEventData = any;
-
 interface IAnkVueEventOptions {
   cancelable?: boolean;
-  data?: IAnkVueEventData;
-  target?: Element;
-  vueInstance?: Vue;
+  data?: any;
+  target?: any;
+  vueInstance?: any;
 }
 
 const DEFAULT_OPTIONS: IAnkVueEventOptions = { cancelable: true, data: null, target: null, vueInstance: null };
 class AnkVueEvent {
   public name: string;
-  public target: Element;
-  public data: IAnkVueEventData;
-  public detail: IAnkVueEventData;
+  public target: any;
+  public data: any;
+  public detail: any;
   private _defaultPrevented: boolean;
   private readonly _cancelable: boolean;
 
@@ -32,19 +28,19 @@ class AnkVueEvent {
     this.detail = this.data;
   }
 
-  public isDefaultPrevented(): boolean {
+  public isDefaultPrevented() {
     return this._cancelable && this._defaultPrevented;
   }
 
-  public preventDefault(): void {
+  public preventDefault() {
     this._defaultPrevented = true;
   }
 
-  public getData(): IAnkVueEventData {
+  public getData() {
     return this.data;
   }
 
-  public setData(...data): void {
+  public setData(...data) {
     this.data = data;
   }
 }
@@ -59,15 +55,15 @@ export default class AnkVueEventMixin extends Vue {
    * Send a cancelable vue event.
    * @param eventName
    * @param eventData
-   * @return AnkVueEvent
+   * @return {boolean} false if event is prevented
    */
-  public $emitCancelableEvent(eventName, ...eventData): AnkVueEvent {
+  public $emitCancelableEvent(eventName, ...eventData) {
     const event = new AnkVueEvent(eventName, { target: this.$el, vueInstance: this, data: eventData });
     this.$emit(eventName, event);
     return event;
   }
 
-  public $createEvent(eventName: string, opts: IAnkVueEventOptions = DEFAULT_OPTIONS): AnkVueEvent {
+  public $createEvent(eventName: string, opts: IAnkVueEventOptions = DEFAULT_OPTIONS) {
     return new AnkVueEvent(eventName, opts);
   }
 }

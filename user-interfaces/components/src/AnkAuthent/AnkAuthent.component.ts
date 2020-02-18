@@ -6,6 +6,7 @@ import "@progress/kendo-ui/js/kendo.window";
 
 import axios from "axios";
 import { Component, Mixins, Prop } from "vue-property-decorator";
+const a4Password = () => import("./AnkAuthentPassword/AnkAuthentPassword.vue");
 import EventUtilsMixin from "../../mixins/AnkVueComponentMixin/EventUtilsMixin";
 import I18nMixin from "../../mixins/AnkVueComponentMixin/I18nMixin";
 import ReadyMixin from "../../mixins/AnkVueComponentMixin/ReadyMixin";
@@ -16,30 +17,27 @@ import { IAuthent } from "./IAuthent";
 // noinspection JSUnusedGlobalSymbols
 @Component({
   components: {
-    "ank-password": () => import("./AnkAuthentPassword/AnkAuthentPassword.vue")
+    "ank-password": a4Password
   },
   name: "ank-authent"
 })
 export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin, I18nMixin) {
-  @Prop({ type: String, default: "" })
-  public nsSde;
-  @Prop({ type: String, default: "fr-FR, en-US" })
-  public authentLanguages;
-  @Prop({ type: String, default: "fr-FR" })
-  public defaultLanguage;
-  public login = "";
-  public authentError = "Error";
-  public forgetError = "Error";
-  public forgetSuccess = "";
-  public forgetStatusFailed = false;
-  public resetError = "";
-  public resetSuccess = "";
-  public resetStatusFailed = true;
-  public wrongPassword = false;
-  public resetPassword = false;
-  public pwd = "";
-  public resetPwd1 = "";
-  public resetPwd2 = "";
+  @Prop({ type: String, default: "" }) public nsSde;
+  @Prop({ type: String, default: "fr-FR, en-US" }) public authentLanguages;
+  @Prop({ type: String, default: "fr-FR" }) public defaultLanguage;
+  public login: string = "";
+  public authentError: string = "Error";
+  public forgetError: string = "Error";
+  public forgetSuccess: string = "";
+  public forgetStatusFailed: boolean = false;
+  public resetError: string = "";
+  public resetSuccess: string = "";
+  public resetStatusFailed: boolean = true;
+  public wrongPassword: boolean = false;
+  public resetPassword: boolean = false;
+  public pwd: string = "";
+  public resetPwd1: string = "";
+  public resetPwd2: string = "";
   public authent: IAuthent;
   public availableLanguagesLabel: object = {
     "en-US": "English",
@@ -60,40 +58,26 @@ export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin
     authentGoHome: HTMLElement;
   };
 
-  public get translations(): {
-    loginPlaceHolder: string;
-    passwordPlaceHolder: string;
-    validationMessagePassword: string;
-    validationMessageIdentifier: string;
-    helpContentTitle: string;
-    authentError: string;
-    unexpectedError: string;
-    forgetContentTitle: string;
-    forgetPlaceHolder: string;
-    passwordLabel: string;
-    resetPasswordLabel: string;
-    confirmPasswordLabel: string;
-    confirmPasswordError: string;
-  } {
+  public get translations() {
     return {
-      loginPlaceHolder: this.$t("authent.Enter your identifier") as string,
-      passwordPlaceHolder: this.$t("authent.Enter your password") as string,
-      validationMessagePassword: this.$t("authent.You must enter your password") as string,
-      validationMessageIdentifier: this.$t("authent.You must enter your identifier") as string,
-      helpContentTitle: this.$t("authent.Help to sign in") as string,
-      authentError: this.$t("authent.Authentication error") as string,
-      unexpectedError: this.$t("authent.Unexpected error") as string,
-      forgetContentTitle: this.$t("authent.Form to reset password") as string,
-      forgetPlaceHolder: this.$t("authent.Identifier or email address") as string,
-      passwordLabel: this.$t("authent.password :") as string,
-      resetPasswordLabel: this.$t("authent.New password :") as string,
-      confirmPasswordLabel: this.$t("authent.Confirm password :") as string,
-      confirmPasswordError: this.$t("authent.Confirm password are not same as new password") as string
+      loginPlaceHolder: this.$t("authent.Enter your identifier"),
+      passwordPlaceHolder: this.$t("authent.Enter your password"),
+      validationMessagePassword: this.$t("authent.You must enter your password"),
+      validationMessageIdentifier: this.$t("authent.You must enter your identifier"),
+      helpContentTitle: this.$t("authent.Help to sign in"),
+      authentError: this.$t("authent.Authentication error"),
+      unexpectedError: this.$t("authent.Unexpected error"),
+      forgetContentTitle: this.$t("authent.Form to reset password"),
+      forgetPlaceHolder: this.$t("authent.Identifier or email address"),
+      passwordLabel: this.$t("authent.password :"),
+      resetPasswordLabel: this.$t("authent.New password :"),
+      confirmPasswordLabel: this.$t("authent.Confirm password :"),
+      confirmPasswordError: this.$t("authent.Confirm password are not same as new password")
     };
   }
 
   // noinspection JSUnusedGlobalSymbols
-  public get availableLanguages(): { key: string; label: string } {
+  public get availableLanguages() {
     const languages = this.authentLanguages.split(",");
     return languages.map(lang => {
       // jscs:ignore requireShorthandArrowFunctions
@@ -104,7 +88,7 @@ export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin
     });
   }
 
-  public get redirectUri(): string {
+  public get redirectUri() {
     let uri = this.authent.getSearchArg("redirect_uri");
     if (!uri) {
       uri = "/";
@@ -112,7 +96,7 @@ export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin
     return uri.replace(/(https?:\/\/)|(\/)+/g, "$1$2");
   }
 
-  public beforeMount(): void {
+  public beforeMount() {
     const passKey = this.authent.getSearchArg("passkey");
     let currentLanguage = this.defaultLanguage;
     if (this.defaultLanguage === "auto") {
@@ -133,11 +117,11 @@ export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin
     }
   }
 
-  public created(): void {
+  public created() {
     this.authent = {
       authToken: null,
-      getSearchArg: (key): string => {
-        let result = "";
+      getSearchArg: key => {
+        let result = null;
         let tmp = [];
         location.search
           .substr(1)
@@ -152,10 +136,12 @@ export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin
         return result;
       },
 
-      initForgetElements: (): void => {
+      initForgetElements: () => {
         const $ = kendo.jQuery;
         const $forgetForm = $(this.$refs.authentForgetForm);
-        const forgetWindow = $(this.$refs.authentForgetForm)
+        let forgetWindow;
+
+        forgetWindow = $(this.$refs.authentForgetForm)
           .kendoWindow({
             visible: false,
             actions: ["Maximize", "Close"]
@@ -175,7 +161,7 @@ export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin
         $forgetForm.on("submit", this.forgetPassword);
       },
 
-      initResetPassword: (): void => {
+      initResetPassword: () => {
         const $ = kendo.jQuery;
         const $resetForm = $(this.$refs.authentResetPasswordForm);
 
@@ -186,15 +172,10 @@ export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin
     };
   }
 
-  public mounted(): void {
+  public mounted() {
     const $ = kendo.jQuery;
     const $connectForm = $(this.$refs.authentForm);
-    const helpWindow = $(this.$refs.authentHelpContent)
-      .kendoWindow({
-        visible: false,
-        actions: ["Maximize", "Close"]
-      })
-      .data("kendoWindow");
+    let helpWindow;
 
     $(this.$refs.authentHelpButton).kendoButton({
       click: () => {
@@ -220,6 +201,13 @@ export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin
         .value(lang);
     });
 
+    helpWindow = $(this.$refs.authentHelpContent)
+      .kendoWindow({
+        visible: false,
+        actions: ["Maximize", "Close"]
+      })
+      .data("kendoWindow");
+
     /**
      * Special custom warning if required fields are empty
      */
@@ -232,7 +220,7 @@ export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin
     this._enableReady();
   }
 
-  public createSession(event): void {
+  public createSession(event) {
     const $ = kendo.jQuery;
     $(this.$refs.authentForm);
     kendo.ui.progress($(this.$refs.authentForm), true);
@@ -298,7 +286,7 @@ export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin
     }
   }
 
-  public forgetPassword(event): void {
+  public forgetPassword(event) {
     const $ = kendo.jQuery;
 
     kendo.ui.progress($(this.$refs.authentForgetForm), true);
@@ -365,7 +353,7 @@ export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin
     }
   }
 
-  public applyResetPassword(event): void {
+  public applyResetPassword(event) {
     const $ = kendo.jQuery;
 
     event.preventDefault();
