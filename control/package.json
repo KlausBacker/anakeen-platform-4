@@ -1,6 +1,6 @@
 {
   "name": "anakeen-control",
-  "version": "3.0.0-RC.2020.01.2",
+  "version": "3.0.0-RC.2020.1.3",
   "main": "index.js",
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/users/eric.brison/anakeen-control.git",
   "author": "anakeen",
