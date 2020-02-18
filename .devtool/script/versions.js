@@ -89,9 +89,14 @@ exports.versions = [
     version: "2.0.2",
     modulePath: "dev-data",
     moduleName: "dev-data"
+  },
+  {
+    package: "@anakeen/anakeen-module-validation",
+    version: "2.1.0",
+    npmOnly: true
   }
 ];
-exports.RC = "1";
+exports.RC = "2";
 exports.release = "2020.01";
 exports.modulePath = [
   "admin-center",
