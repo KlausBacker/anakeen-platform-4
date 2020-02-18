@@ -82,7 +82,7 @@ class SmartGridContentBuilder
             }
 
 
-            $error=$this->smartCollection->control("execute");
+            $error = $this->smartCollection->control("execute");
             if ($error) {
                 $exception = new Exception("GRID0015", $this->collectionId);
                 $exception->setHttpStatus("403", "Insufficient privileges");
@@ -280,7 +280,9 @@ class SmartGridContentBuilder
                         return $info;
                     });
                 } else {
-                    $df->setAttributes([$field["field"]]);
+                    if ($element->getAttribute($field["field"])) {
+                        $df->setAttributes([$field["field"]]);
+                    }
                 }
             }
         }

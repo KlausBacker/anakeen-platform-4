@@ -243,7 +243,7 @@ class SmartGridConfigBuilder
                 $this->addAbstractColumn($column["field"], $column);
             } else {
                 // Give 2nd argument to mix the field with the client given data for overloading
-                $this->addField($column["field"], $column);
+                $this->addField($column["field"], $column, $column["structure"] ?? "");
             }
         }
         return $this;
