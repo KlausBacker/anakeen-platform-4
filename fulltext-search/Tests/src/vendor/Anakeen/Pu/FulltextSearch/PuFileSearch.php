@@ -10,12 +10,21 @@ use Anakeen\Fullsearch\IndexFile;
 use Anakeen\Fullsearch\SearchDomainDatabase;
 use Anakeen\Search\SearchElements;
 use Anakeen\TransformationEngine\Client;
+use Anakeen\TransformationEngine\ClientException;
 
 class PuFileSearch extends FulltextSearchConfig
 {
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
+
+        try {
+           new \Anakeen\TransformationEngine\Client();
+        } catch (ClientException $e) {
+            return;
+        }
+
+
         self::importConfiguration(__DIR__ . "/Config/tst_file001.struct.xml");
         self::importDocument(__DIR__ . "/Config/tst_file001.data.xml");
         self::importSearchConfiguration(__DIR__ . "/Config/fileSearchDomainConfig.xml");
@@ -52,8 +61,6 @@ class PuFileSearch extends FulltextSearchConfig
 
     protected static function waitForDomain($domain)
     {
-
-
         $waitings = IndexFile::getWaitingRequest();
         $ot = new \Anakeen\TransformationEngine\Client();
 
@@ -90,11 +97,12 @@ class PuFileSearch extends FulltextSearchConfig
      */
     public function testContains($domain, $searchPatten, $expectedResults)
     {
-
-        DbManager::query("select * from files.content", $r);
-       // print_r($r);
-        DbManager::query("select * from searches.testDomainFile", $r);
-        //print_r($r);
+        try {
+            new \Anakeen\TransformationEngine\Client();
+        } catch (ClientException $e) {
+            $this->markTestSkipped("NO TE configured: ".$e->getMessage());
+            return;
+        }
 
         $s = new SearchElements();
 
@@ -118,6 +126,7 @@ class PuFileSearch extends FulltextSearchConfig
             ["testDomainFile", "vétérinaire sanitaire", ["TST_EFILE_001"]],
             ["testDomainFile", "Le cheval de Przewalski", ["TST_EFILE_002"]],
             ["testDomainFile", "Liste Rouge des espèces menacées.", ["TST_EFILE_003", "TST_EFILE_004"]],
+            ["testDomainFile", "La pêche de Thor", ["TST_EFILE_004"]],
         );
     }
 }

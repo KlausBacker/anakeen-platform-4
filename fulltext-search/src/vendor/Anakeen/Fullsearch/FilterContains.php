@@ -3,6 +3,7 @@
 namespace Anakeen\Fullsearch;
 
 use Anakeen\Search\Filters\ElementSearchFilter;
+use Anakeen\Search\SearchElements;
 
 class FilterContains implements ElementSearchFilter
 {
@@ -16,6 +17,7 @@ class FilterContains implements ElementSearchFilter
      * @var SearchDomainDatabase
      */
     protected $dbDomain;
+    protected $pattern;
 
     public function __construct($domainName, $searchPattern)
     {
@@ -26,9 +28,7 @@ class FilterContains implements ElementSearchFilter
         $this->dbDomain = new SearchDomainDatabase($this->domainName);
     }
 
-    /**
-     * @inheritDoc
-     */
+
     public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
         //("id = dochisto(id)");
@@ -37,19 +37,33 @@ class FilterContains implements ElementSearchFilter
         $search->addFilter(sprintf(
             "to_tsquery('%s', '%s') @@ %s.v",
             "simple",
-            pg_escape_string(SearchDomainDatabase::patternToTsquery($this->domain->stem, $this->searchPattern)),
+            pg_escape_string($this->getPattern()),
             $this->dbDomain->getTableName()
         ));
     }
 
+    /**
+     * Return sql order to be set in setOrder
+     * @see SearchElements::setOrder()
+     * @return string
+     * @throws \Anakeen\Exception
+     */
     public function getRankOrder()
     {
         return sprintf(
-            "ts_rank_cd( %s.v, plainto_tsquery('%s', unaccent('%s'))) desc, %s.id",
+            "ts_rank_cd( %s.v, to_tsquery('%s', '%s')) desc, %s.id",
             $this->dbDomain->getTableName(),
-            pg_escape_string($this->domain->stem),
-            pg_escape_string($this->searchPattern),
+            "simple",
+            pg_escape_string($this->getPattern()),
             $this->dbDomain->getTableName()
         );
+    }
+
+    protected function getPattern()
+    {
+        if (!$this->pattern) {
+            $this->pattern = SearchDomainDatabase::patternToTsquery($this->domain->stem, $this->searchPattern);
+        }
+        return $this->pattern;
     }
 }

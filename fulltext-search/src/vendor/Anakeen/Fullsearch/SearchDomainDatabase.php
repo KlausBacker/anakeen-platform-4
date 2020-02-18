@@ -33,6 +33,11 @@ class SearchDomainDatabase
         $this->domain = new SearchDomain($this->domainName);
     }
 
+    /**
+     * Initialize and (re)index all data described in search domain
+     * @throws Exception
+     * @throws \Anakeen\Database\Exception
+     */
     public function initialize()
     {
         $sql = sprintf("create schema if not exists %s ", pg_escape_identifier(self::dbSchema));
@@ -44,6 +49,11 @@ class SearchDomainDatabase
         $this->resetData();
     }
 
+    /**
+     * Get database table name (with schema) where search data are recorded
+     * @return string
+     * @throws Exception
+     */
     public function getTableName()
     {
         if (!preg_match('/^([a-z0-9_]{1,64})$/i', $this->domainName)) {
@@ -56,227 +66,10 @@ class SearchDomainDatabase
         ));
     }
 
-
-    protected function createIndex()
-    {
-        $sql = <<<SQL
-CREATE INDEX if not exists vsearch_idx_%s ON %s USING GIN (v);
-SQL;
-        DbManager::query(sprintf($sql, $this->domainName, $this->getTableName()));
-    }
-
-    protected function createTable()
-    {
-        $sql = <<<SQL
-create table if not exists %s  (
-  id int references docread(id),
-  ta text default '',
-  tb text default '',
-  tc text default '',
-  td text default '',
-  v tsvector,
-  primary key (id)
-);
-SQL;
-        $sql = sprintf($sql, $this->getTableName());
-        DbManager::query($sql);
-    }
-
-
-    protected function resetData()
-    {
-        $currentLanguage = ContextManager::getLanguage();
-        if ($this->domain->lang !== $currentLanguage) {
-            ContextManager::setLanguage($this->domain->lang);
-        }
-
-        $sql = sprintf("delete from %s", $this->getTableName());
-        DbManager::query($sql);
-
-        $configs = $this->domain->configs;
-        foreach ($configs as $smartStructureSearchconfig) {
-            $fields = array_map(function ($item) {
-                /** @var SearchFieldConfig $item */
-                return $item->field;
-            }, $smartStructureSearchconfig->fields);
-
-            $structureName = $smartStructureSearchconfig->structure;
-            $structure = SEManager::getFamily($structureName);
-            if (!$structure) {
-                throw new Exception("FSEA0003", $this->domainName, $structureName);
-            }
-            $s = new SearchElements($structure->id);
-            $s->returnsOnly($fields);
-            $results = $s->getResults();
-
-            foreach ($results as $se) {
-                $this->updateSmartElementIndex($se, $smartStructureSearchconfig);
-            }
-        }
-
-
-        $sql = <<<SQL
-update %s set v = 
-setweight(to_tsvector('%s', unaccent(ta)), 'A') || 
-setweight(to_tsvector('%s', unaccent(tb)), 'B') || 
-setweight(to_tsvector('%s', unaccent(tc)), 'C') || 
-setweight(to_tsvector('%s', unaccent(td)), 'D');
-SQL;
-        DbManager::query(sprintf(
-            $sql,
-            $this->getTableName(),
-            $this->domain->stem,
-            $this->domain->stem,
-            $this->domain->stem,
-            $this->domain->stem
-        ));
-
-        if ($this->domain->lang !== $currentLanguage) {
-            ContextManager::setLanguage($currentLanguage);
-        }
-    }
-
-
-    public function updateSmartElement(SmartElement $se)
-    {
-        $configs = $this->domain->configs;
-        $config = "";
-        foreach ($configs as $smartStructureSearchconfig) {
-            if ($smartStructureSearchconfig->structure === $se->fromname) {
-                $config = $smartStructureSearchconfig;
-                break;
-            }
-        }
-        if (!$config) {
-            throw new Exception("FSEA0006", $this->domainName, $se->fromname);
-        }
-        // @TODO need delete other revision also if search config has no revision option
-        $sql = sprintf(
-            "delete from %s where id=%d",
-            $this->getTableName(),
-            $se->id
-        );
-        DbManager::query($sql);
-        $this->updateSmartElementIndex($se, $config);
-    }
-
     /**
+     * Update data index with file data set in files schema
+     * Call after TE result record file text conversion is done
      * @param SmartElement $se
-     * @param SearchConfig $config
-     * @throws Exception
-     * @throws \Anakeen\Database\Exception
-     */
-    protected function updateSmartElementIndex(SmartElement $se, $config)
-    {
-        $data = ["A" => [], "B" => [], "C" => [], "D" => []];
-        foreach ($config->fields as $fieldInfo) {
-            if ($fieldInfo->field === "title") {
-                // Not use getTitle here because is incomplete data
-                $data[$fieldInfo->weight][] = $se->title;
-            } else {
-                $oa = $se->getAttribute($fieldInfo->field);
-                if ($oa === false) {
-                    throw new Exception("FSEA0005", $this->domainName, $se, $fieldInfo->field);
-                }
-                $rawValue = $se->getRawValue($oa->id);
-                if (!$rawValue) {
-                    continue;
-                }
-                switch ($oa->type) {
-                    case "timestamp":
-                    case "date":
-                        $dateFormat = "%A %d %B %m %Y";
-                        if ($oa->type === "timestamp") {
-                            $dateFormat .= " %H:%M:%S";
-                        }
-                        if ($oa->isMultiple() === false) {
-                            $data[$fieldInfo->weight][] = strftime($dateFormat, strtotime($rawValue));
-                        } else {
-                            $rawValues = $se->getMultipleRawValues($oa->id);
-                            foreach ($rawValues as $rawValue) {
-                                $data[$fieldInfo->weight][] = strftime($dateFormat, strtotime($rawValue));
-                            }
-                        }
-                        break;
-                    case "enum":
-                        if ($oa->isMultiple() === false) {
-                            $data[$fieldInfo->weight][] = str_replace("/", " ", $oa->getEnumLabel($rawValue));
-                        } else {
-                            $rawValues = \Anakeen\Core\Utils\Postgres::stringToFlatArray($rawValue);
-                            foreach ($rawValues as $rawValue) {
-                                $data[$fieldInfo->weight][] = str_replace(
-                                    "/",
-                                    " ",
-                                    $oa->getEnumLabel($rawValue)
-                                );
-                            }
-                        }
-                        break;
-                    case "account":
-                    case "docid":
-                        $docRevOption = $oa->getOption("docrev", "latest");
-
-                        if ($oa->isMultiple() === false) {
-                            $data[$fieldInfo->weight][] = \DocTitle::getRelationTitle(
-                                $rawValue,
-                                $docRevOption === "latest",
-                                $se,
-                                $docRevOption
-                            );
-                        } else {
-                            $rawValues = \Anakeen\Core\Utils\Postgres::stringToFlatArray($rawValue);
-                            foreach ($rawValues as $rawValue) {
-                                $data[$fieldInfo->weight][] = \DocTitle::getRelationTitle(
-                                    $rawValue,
-                                    $docRevOption === "latest",
-                                    $se,
-                                    $docRevOption
-                                );
-                            }
-                        }
-                        break;
-                    case 'file':
-                        // @TODO Switch to file config field : filename, content, filetype
-                        if (is_a($fieldInfo, SearchFileConfig::class)) {
-
-                            /** @var SearchFileConfig $fieldInfo */
-                            if ($fieldInfo->filecontent === true) {
-                                if ($oa->isMultiple() === false) {
-                                    IndexFile::sendIndexRequest($se, $this->domainName, $fieldInfo);
-                                } else {
-                                    foreach ($se->getMultipleRawValues($oa->id) as $kf => $rawValue) {
-                                        IndexFile::sendIndexRequest($se, $this->domainName, $fieldInfo, $kf);
-                                    }
-                                }
-                            }
-                        }
-                        break;
-                    default:
-                        if ($oa->isMultiple() === false) {
-                            $data[$fieldInfo->weight][] = $rawValue;
-                        } else {
-                            $data[$fieldInfo->weight][] = implode(", ", $se->getMultipleRawValues($oa->id));
-                        }
-                }
-            }
-        }
-
-        $sql = sprintf(
-            "insert into %s (id, ta, tb, tc, td) values (%d, E'%s', E'%s', E'%s', E'%s')",
-            $this->getTableName(),
-            $se->id,
-            pg_escape_string(preg_replace('/\s+/', ' ', implode(", ", $data["A"]))),
-            pg_escape_string(preg_replace('/\s+/', ' ', implode(", ", $data["B"]))),
-            pg_escape_string(preg_replace('/\s+/', ' ', implode(", ", $data["C"]))),
-            pg_escape_string(preg_replace('/\s+/', ' ', implode(", ", $data["D"])))
-        );
-        DbManager::query($sql);
-    }
-
-
-    /**
-     * @param SmartElement $se
-     * @param SearchConfig $config
      * @throws Exception
      * @throws \Anakeen\Database\Exception
      */
@@ -308,7 +101,6 @@ SQL;
                             }
                         }
                         break;
-
                 }
             }
 
@@ -329,8 +121,9 @@ SQL;
             foreach ($weightFiles as $weight => $fileFields) {
                 if ($fileFields) {
                     $sqlset[] = sprintf(
-                        "setweight((select tsvector_agg(to_tsvector('%s', unaccent(textcontent))) from files.content where docid=%d and field in ('%s')), '%s')",
+                        "setweight((select to_tsvector('%s', unaccent(string_agg(textcontent, ', '))) from %s where docid=%d and field in ('%s')), '%s')",
                         $this->domain->stem,
+                        FileContentDatabase::DBTABLE,
                         $se->id,
                         implode("',', ", $fileFields),
                         pg_escape_string($weight)
@@ -351,23 +144,6 @@ SQL;
 
             DbManager::query($updSql);
         }
-    }
-
-    public static function updateWithFile($seId)
-    {
-        $sql = <<<SQL
-update searches.%s as s set v = 
-
-setweight(to_tsvector('%s', unaccent(ta)), 'A') || 
-setweight(to_tsvector('%s', unaccent(tb)), 'B') || 
-setweight(to_tsvector('%s', unaccent(tc)), 'C') || 
-setweight(to_tsvector('%s', unaccent(td)), 'D') ||
-setweight(tsvector_agg(to_tsvector(unaccent(f.textcontent))), 'D')
-
-from files.content as f
-where s.id = f.docid
-and 
-SQL;
     }
 
     /**
@@ -485,4 +261,230 @@ SQL;
 
         return implode("", $finalQueryParts);
     }
+
+    /**
+     * Reset indexing of all search data for the smart element
+     * @param SmartElement $se
+     * @throws Exception
+     * @throws \Anakeen\Database\Exception
+     */
+    public function updateSmartElement(SmartElement $se)
+    {
+        $configs = $this->domain->configs;
+        $config = "";
+        foreach ($configs as $smartStructureSearchconfig) {
+            if ($smartStructureSearchconfig->structure === $se->fromname) {
+                $config = $smartStructureSearchconfig;
+                break;
+            }
+        }
+        if (!$config) {
+            throw new Exception("FSEA0006", $this->domainName, $se->fromname);
+        }
+        // @TODO need delete other revision also if search config has no revision option
+        $sql = sprintf(
+            "delete from %s where id=%d",
+            $this->getTableName(),
+            $se->id
+        );
+        DbManager::query($sql);
+        $this->updateSmartElementIndex($se, $config);
+    }
+
+    protected function createIndex()
+    {
+        $sql = <<<SQL
+CREATE INDEX if not exists vsearch_idx_%s ON %s USING GIN (v);
+SQL;
+        DbManager::query(sprintf($sql, $this->domainName, $this->getTableName()));
+    }
+
+    protected function createTable()
+    {
+        $sql = <<<SQL
+create table if not exists %s  (
+  id int references docread(id),
+  ta text default '',
+  tb text default '',
+  tc text default '',
+  td text default '',
+  v tsvector,
+  primary key (id)
+);
+SQL;
+        $sql = sprintf($sql, $this->getTableName());
+        DbManager::query($sql);
+    }
+
+
+    protected function resetData()
+    {
+        $currentLanguage = ContextManager::getLanguage();
+        if ($this->domain->lang !== $currentLanguage) {
+            ContextManager::setLanguage($this->domain->lang);
+        }
+
+        $sql = sprintf("delete from %s", $this->getTableName());
+        DbManager::query($sql);
+
+        $configs = $this->domain->configs;
+        foreach ($configs as $smartStructureSearchconfig) {
+            $fields = array_map(function ($item) {
+                /** @var SearchFieldConfig $item */
+                return $item->field;
+            }, $smartStructureSearchconfig->fields);
+
+            $structureName = $smartStructureSearchconfig->structure;
+            $structure = SEManager::getFamily($structureName);
+            if (!$structure) {
+                throw new Exception("FSEA0003", $this->domainName, $structureName);
+            }
+            $s = new SearchElements($structure->id);
+            $s->returnsOnly($fields);
+            $results = $s->getResults();
+
+            foreach ($results as $se) {
+                $this->updateSmartElementIndex($se, $smartStructureSearchconfig);
+            }
+        }
+
+
+        $sql = <<<SQL
+update %s set v = 
+setweight(to_tsvector('%s', unaccent(ta)), 'A') || 
+setweight(to_tsvector('%s', unaccent(tb)), 'B') || 
+setweight(to_tsvector('%s', unaccent(tc)), 'C') || 
+setweight(to_tsvector('%s', unaccent(td)), 'D');
+SQL;
+        DbManager::query(sprintf(
+            $sql,
+            $this->getTableName(),
+            $this->domain->stem,
+            $this->domain->stem,
+            $this->domain->stem,
+            $this->domain->stem
+        ));
+
+        if ($this->domain->lang !== $currentLanguage) {
+            ContextManager::setLanguage($currentLanguage);
+        }
+    }
+
+
+
+
+    /**
+     * @param SmartElement $se
+     * @param SearchConfig $config
+     * @throws Exception
+     * @throws \Anakeen\Database\Exception
+     */
+    protected function updateSmartElementIndex(SmartElement $se, $config)
+    {
+        $data = ["A" => [], "B" => [], "C" => [], "D" => []];
+        foreach ($config->fields as $fieldInfo) {
+            if ($fieldInfo->field === "title") {
+                // Not use getTitle here because is incomplete data
+                $data[$fieldInfo->weight][] = $se->title;
+            } else {
+                $oa = $se->getAttribute($fieldInfo->field);
+                if ($oa === false) {
+                    throw new Exception("FSEA0005", $this->domainName, $se, $fieldInfo->field);
+                }
+                $rawValue = $se->getRawValue($oa->id);
+                if (!$rawValue) {
+                    continue;
+                }
+                switch ($oa->type) {
+                    case "timestamp":
+                    case "date":
+                        $dateFormat = "%A %d %B %m %Y";
+                        if ($oa->type === "timestamp") {
+                            $dateFormat .= " %H:%M:%S";
+                        }
+                        if ($oa->isMultiple() === false) {
+                            $data[$fieldInfo->weight][] = strftime($dateFormat, strtotime($rawValue));
+                        } else {
+                            $rawValues = $se->getMultipleRawValues($oa->id);
+                            foreach ($rawValues as $rawValue) {
+                                $data[$fieldInfo->weight][] = strftime($dateFormat, strtotime($rawValue));
+                            }
+                        }
+                        break;
+                    case "enum":
+                        if ($oa->isMultiple() === false) {
+                            $data[$fieldInfo->weight][] = str_replace("/", " ", $oa->getEnumLabel($rawValue));
+                        } else {
+                            $rawValues = \Anakeen\Core\Utils\Postgres::stringToFlatArray($rawValue);
+                            foreach ($rawValues as $rawValue) {
+                                $data[$fieldInfo->weight][] = str_replace(
+                                    "/",
+                                    " ",
+                                    $oa->getEnumLabel($rawValue)
+                                );
+                            }
+                        }
+                        break;
+                    case "account":
+                    case "docid":
+                        $docRevOption = $oa->getOption("docrev", "latest");
+
+                        if ($oa->isMultiple() === false) {
+                            $data[$fieldInfo->weight][] = \DocTitle::getRelationTitle(
+                                $rawValue,
+                                $docRevOption === "latest",
+                                $se,
+                                $docRevOption
+                            );
+                        } else {
+                            $rawValues = \Anakeen\Core\Utils\Postgres::stringToFlatArray($rawValue);
+                            foreach ($rawValues as $rawValue) {
+                                $data[$fieldInfo->weight][] = \DocTitle::getRelationTitle(
+                                    $rawValue,
+                                    $docRevOption === "latest",
+                                    $se,
+                                    $docRevOption
+                                );
+                            }
+                        }
+                        break;
+                    case 'file':
+                        // @TODO Switch to file config field : filename, content, filetype
+                        if (is_a($fieldInfo, SearchFileConfig::class)) {
+
+                            /** @var SearchFileConfig $fieldInfo */
+                            if ($fieldInfo->filecontent === true) {
+                                if ($oa->isMultiple() === false) {
+                                    IndexFile::sendIndexRequest($se, $this->domainName, $fieldInfo);
+                                } else {
+                                    foreach ($se->getMultipleRawValues($oa->id) as $kf => $rawValue) {
+                                        IndexFile::sendIndexRequest($se, $this->domainName, $fieldInfo, $kf);
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    default:
+                        if ($oa->isMultiple() === false) {
+                            $data[$fieldInfo->weight][] = $rawValue;
+                        } else {
+                            $data[$fieldInfo->weight][] = implode(", ", $se->getMultipleRawValues($oa->id));
+                        }
+                }
+            }
+        }
+
+        $sql = sprintf(
+            "insert into %s (id, ta, tb, tc, td) values (%d, E'%s', E'%s', E'%s', E'%s')",
+            $this->getTableName(),
+            $se->id,
+            pg_escape_string(preg_replace('/\s+/', ' ', implode(", ", $data["A"]))),
+            pg_escape_string(preg_replace('/\s+/', ' ', implode(", ", $data["B"]))),
+            pg_escape_string(preg_replace('/\s+/', ' ', implode(", ", $data["C"]))),
+            pg_escape_string(preg_replace('/\s+/', ' ', implode(", ", $data["D"])))
+        );
+        DbManager::query($sql);
+    }
+
+
 }

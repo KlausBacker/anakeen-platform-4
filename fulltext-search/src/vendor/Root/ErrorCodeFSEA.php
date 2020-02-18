@@ -45,4 +45,8 @@ class ErrorCodeFSEA
      * @errorCode The get result conversion
      */
     const FSEA0009 = 'TE file download error "%s"';
+    /**
+     * @errorCode When send file to TE
+     */
+    const FSEA0010 = 'TE send file  error "%s"';
 }

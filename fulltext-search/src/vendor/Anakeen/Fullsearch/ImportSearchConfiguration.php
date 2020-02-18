@@ -42,12 +42,17 @@ class ImportSearchConfiguration
 
     public function import()
     {
-        $this->analyzeXml();
-
-
-        $this->domain->record();
+        $this->recordConfig();
         $this->domain->reindexSearchData();
     }
+
+
+    public function recordConfig()
+    {
+        $this->analyzeXml();
+        $this->domain->record();
+    }
+
 
     protected function analyzeXml()
     {
@@ -100,9 +105,9 @@ class ImportSearchConfiguration
             $config->fields[] = new SearchFileConfig(
                 $fieldNode->getAttribute("ref"),
                 $fieldNode->getAttribute("weight"),
-                $fieldNode->getAttribute("filename")?:false,
-                $fieldNode->getAttribute("filecontent")?:false,
-                $fieldNode->getAttribute("filetype")?:false
+                $fieldNode->getAttribute("filename") ?: false,
+                $fieldNode->getAttribute("filecontent") ?: false,
+                $fieldNode->getAttribute("filetype") ?: false
             );
         }
 

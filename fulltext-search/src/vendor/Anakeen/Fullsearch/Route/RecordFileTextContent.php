@@ -7,6 +7,8 @@ use Anakeen\Core\SEManager;
 use Anakeen\Core\Utils\Date;
 use Anakeen\Core\Utils\FileMime;
 use Anakeen\Exception;
+use Anakeen\Fullsearch\IndexFile;
+use Anakeen\Fullsearch\SearchDomainDatabase;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\TransformationEngine\Client;
 use Anakeen\TransformationEngine\Manager;
@@ -53,21 +55,16 @@ class RecordFileTextContent
         if (!$this->taskid) {
             throw new Exception("No task identifier found");
         } else {
-            $filename = tempnam(ContextManager::getTmpDir(), 'txt-');
-            if ($filename === false) {
-                throw new Exception(sprintf("Error creating temporary file in '%s'.", ContextManager::getTmpDir()));
-            } else {
-                $err = Manager::downloadTEFile($this->taskid, $filename, $info);
+            $ot = new \Anakeen\TransformationEngine\Client();
 
-                if ($this->elementid) {
-                    $doc = SEManager::getDocument($this->elementid);
-                    if ($doc) {
-                        $doc->mdate = Date::getNow(true);
-                      //  $doc->modify(true, ["mdate"], true); // To update cache
-                    }
-                }
-                unlink($filename);
-            }
+
+            IndexFile::recordTeFileresult($this->taskid);
+
+            $se = SEManager::getDocument($this->elementid, false);
+            $d = new SearchDomainDatabase($this->domainName);
+            $d->updateSmartWithFiles($se);
+
+            $data["title"]=$se->getTitle();
         }
         return $data;
     }
