@@ -13,11 +13,11 @@ export default class AuthentPasswordComponent extends Vue {
   @Prop({ type: String, default: "Password" }) public label;
   @Prop({ type: String, default: "" }) public placeholder;
   @Prop({ type: String, default: "" }) public validationMessage;
-  public value = "";
-  public passInputType = "password";
+  public value: string = "";
+  public passInputType: string = "password";
   public pwdId: string = "pwd" + this._uid;
 
-  public get visibilityIcon(): string {
+  public get visibilityIcon() {
     if (this.passInputType === INPUT_TYPES.password) {
       return "fa-eye";
     } else if (this.passInputType === INPUT_TYPES.text) {
@@ -26,20 +26,20 @@ export default class AuthentPasswordComponent extends Vue {
     return "fa-eye";
   }
 
-  public $changePassword(): void {
+  public $changePassword() {
     this.$emit("input", this.value);
   }
 
-  public onPasswordInput(event): void {
+  public onPasswordInput(event) {
     this.displayCustomValidity(event);
     this.$changePassword();
   }
 
-  public onPasswordInvalid(event): void {
+  public onPasswordInvalid(event) {
     this.displayCustomValidity(event);
   }
 
-  public displayCustomValidity(event): void {
+  public displayCustomValidity(event) {
     if (event.target.value === "" && this.validationMessage) {
       event.target.setCustomValidity(this.validationMessage);
     } else {
@@ -47,14 +47,14 @@ export default class AuthentPasswordComponent extends Vue {
     }
   }
 
-  public revealPassword(): void {
+  public revealPassword() {
     if (this.passInputType === INPUT_TYPES.password) {
       this.passInputType = INPUT_TYPES.text;
     } else if (this.passInputType === INPUT_TYPES.text) {
       this.passInputType = INPUT_TYPES.password;
     }
   }
-  public setValue(value): void {
+  public setValue(value) {
     this.value = value;
   }
 }

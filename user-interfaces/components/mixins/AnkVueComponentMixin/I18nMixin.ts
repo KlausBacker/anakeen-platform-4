@@ -17,7 +17,7 @@ const i18n = new VueI18n({
 export default class AnkVueI18nMixin extends Vue {
   public _i18n: VueI18n;
 
-  public beforeCreate(): void {
+  public beforeCreate() {
     if (this.$root.$i18n && !this.$_globalI18n.sharedVueI18n) {
       // Use root catalog as shared catalog
       this.$_globalI18n.sharedVueI18n = this.$root.$i18n;
@@ -27,7 +27,6 @@ export default class AnkVueI18nMixin extends Vue {
       this._i18n = this.$_globalI18n.sharedVueI18n;
     } else {
       this.$_globalI18n.sharedVueI18n = this._i18n;
-      //We don't wait for the promise because we use the localChanged event
       this.$_globalI18n.recordCatalog();
     }
     this.$_globalI18n.i18nBus.$on("localeLoaded", () => {
@@ -43,7 +42,7 @@ export default class AnkVueI18nMixin extends Vue {
     this.$i18n.locale = this.$_globalI18n.locale;
   }
 
-  public mounted(): void {
+  public mounted() {
     if (this.$_globalI18n.loaded) {
       // Shared catalog already loaded
       this.$emit("localeLoaded");

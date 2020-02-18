@@ -4,14 +4,12 @@ import { Component, Mixins, Prop, Watch } from "vue-property-decorator";
 import EventUtilsMixin from "../../mixins/AnkVueComponentMixin/EventUtilsMixin";
 import I18nMixin from "../../mixins/AnkVueComponentMixin/I18nMixin";
 import ReadyMixin from "../../mixins/AnkVueComponentMixin/ReadyMixin";
-import { SEListCollection, Document } from "./ISeListCollection";
-import { AxiosResponse } from "axios";
 
 @Component({
   name: "ank-se-list"
 })
 export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin, I18nMixin) {
-  public get dataSourceItems(): any[] {
+  public get dataSourceItems() {
     if (this.dataSource) {
       const view = this.dataSource.view();
       if (view.length) {
@@ -25,22 +23,18 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin,
     }
     return [];
   }
-  public get translations(): {
-    itemsPerPageLabel: string;
-    noDataPagerLabel: string;
-    searchPlaceholder: string;
-  } {
+  public get translations() {
     const searchTranslated = this.$t("selist.Search in : {collection}", {
       collection: this.collectionLabel.toUpperCase()
     });
     const noDataTranslated = this.$t("selist.No {collection} to display", { collection: this.collectionLabel });
     return {
-      itemsPerPageLabel: this.$t("selist.Items per page") as string,
-      noDataPagerLabel: noDataTranslated as string,
-      searchPlaceholder: searchTranslated as string
+      itemsPerPageLabel: this.$t("selist.Items per page"),
+      noDataPagerLabel: noDataTranslated,
+      searchPlaceholder: searchTranslated
     };
   }
-  public get collectionLabel(): string {
+  public get collectionLabel() {
     if (this.label) {
       return this.label;
     } else if (this.collection && this.collection.title) {
@@ -51,23 +45,17 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin,
   }
   @Prop({ type: String, default: "/CORE/Images/anakeen-logo.svg" })
   public logoUrl;
-  @Prop({ type: String, default: "" })
-  public smartCollection;
-  @Prop({ type: String, default: "" })
-  public label;
+  @Prop({ type: String, default: "" }) public smartCollection;
+  @Prop({ type: String, default: "" }) public label;
   @Prop({
     default: "/components/selist/pager/{collection}/pages/{page}",
     type: String
   })
   public contentUrl;
-  @Prop({ type: String, default: "title:asc" })
-  public order;
-  @Prop({ type: Number, default: 1 })
-  public page;
-  @Prop({ type: String, default: "Aucun contenu" })
-  public emptyMessage;
-  @Prop({ type: Boolean, default: true })
-  public selectable;
+  @Prop({ type: String, default: "title:asc" }) public order;
+  @Prop({ type: Number, default: 1 }) public page;
+  @Prop({ type: String, default: "Aucun contenu" }) public emptyMessage;
+  @Prop({ type: Boolean, default: true }) public selectable;
 
   public $refs!: {
     wrapper: HTMLElement;
@@ -78,7 +66,7 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin,
   public collection: any = null;
   public dataSource: kendo.data.DataSource = null;
   public selectedItem: string | number = "";
-  public filterInput = "";
+  public filterInput: string = "";
   public orderBy: string = this.order;
   public pageSizeOptions: object = [
     {
@@ -109,13 +97,13 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin,
   };
 
   @Watch("page")
-  public onPagePropChange(newVal): void {
+  public onPagePropChange(newVal) {
     this.dataSource.page(newVal);
     this.refreshList();
   }
 
   @Watch("filterInput")
-  public onFilterInputDataChange(newVal, oldVal): void {
+  public onFilterInputDataChange(newVal, oldVal) {
     const customEvent = this.$createEvent("se-list-filter-input", {
       data: [{ filterInput: newVal, oldFilterInput: oldVal }]
     });
@@ -123,17 +111,17 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin,
   }
 
   @Watch("order")
-  public onOrderPropChange(newVal): void {
+  public onOrderPropChange(newVal) {
     this.orderBy = newVal;
     this.refreshList();
   }
 
-  public created(): void {
+  public created() {
     this.initDataSource();
   }
-  public mounted(): void {
+  public mounted() {
     kendo.ui.progress(kendo.jQuery(this.$refs.wrapper), true);
-    const ready = (): void => {
+    const ready = () => {
       if (this.$_globalI18n.loaded) {
         this.initWidgets();
       } else {
@@ -152,11 +140,11 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin,
     }
   }
 
-  public destroyed(): void {
+  public destroyed() {
     window.removeEventListener("resize", this.onResize);
   }
 
-  public filterList(filterValue): Promise<void> {
+  public filterList(filterValue) {
     const customEvent = this.$createEvent("se-list-filter-change", {
       data: [{ filterInput: filterValue }]
     });
@@ -174,7 +162,7 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin,
     }
   }
 
-  public clearListFilter(): Promise<void> {
+  public clearListFilter() {
     const customEvent = this.$createEvent("se-list-filter-change", {
       data: [{ filterInput: "" }]
     });
@@ -188,7 +176,7 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin,
       });
   }
 
-  public selectSe(seId): void {
+  public selectSe(seId) {
     if (this.selectable) {
       // tslint:disable-next-line:triple-equals
       const seSelected = this.dataSourceItems.find(i => i.properties.initid == seId);
@@ -203,7 +191,7 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin,
     }
   }
 
-  public setCollection(c, opts = null): Promise<void> {
+  public setCollection(c, opts = null) {
     this.collection = c;
     if (opts && opts.order) {
       this.orderBy = opts.order;
@@ -212,12 +200,14 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin,
     }
 
     this.dataSource.page(1);
-    return this.refreshList().catch(err => {
-      console.error(err);
-    });
+    return this.refreshList()
+      .then()
+      .catch(err => {
+        console.error(err);
+      });
   }
 
-  public refreshList(): Promise<void> {
+  public refreshList() {
     return new Promise((resolve, reject) => {
       if (this.collection && this.dataSource) {
         this.dataSource
@@ -232,14 +222,13 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin,
     });
   }
 
-  public scrollToActiveItem(): void {
+  public scrollToActiveItem() {
     const activeItem = this.$el.querySelector(".is-active");
     if (activeItem) {
       activeItem.scrollIntoView();
     }
   }
-
-  protected initWidgets(): void {
+  protected initWidgets() {
     this.initKendoWidgets();
     window.addEventListener("resize", this.onResize);
     kendo.ui.progress(kendo.jQuery(this.$refs.wrapper), false);
@@ -254,21 +243,21 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin,
       this._enableReady();
     }
   }
-  protected onResize(): void {
+  protected onResize() {
     if (this.$el.clientWidth) {
       this.componentClasses["is-compact"] = this.$el.clientWidth < 210;
       this.componentClasses["is-tiny"] = this.$el.clientWidth < 170;
     }
   }
 
-  protected onClickSE(item): void {
+  protected onClickSE(item) {
     const customEvent = this.$createEvent("se-clicked", { data: [item.properties] });
     this.$emit("se-clicked", customEvent);
     this.selectSe(item.properties.initid);
   }
 
   protected propageKendoDataSourceEvent(eventName, eventType = "") {
-    return (e): void => {
+    return e => {
       const customEvent = this.$createEvent(`${eventType}${eventType !== "" ? "-" : ""}se-list-${eventName}`, {
         cancelable: eventType === "before",
         data: [e]
@@ -283,6 +272,8 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin,
   }
 
   protected initDataSource() {
+    // tslint:disable-next-line:variable-name
+    const _this = this;
     this.dataSource = new kendo.data.DataSource({
       change: this.propageKendoDataSourceEvent("change"),
       error: this.propageKendoDataSourceEvent("error"),
@@ -291,12 +282,13 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin,
       requestEnd: this.propageKendoDataSourceEvent("request", "after"),
       requestStart: this.propageKendoDataSourceEvent("request", "before"),
       schema: {
-        total: (response): number => response.data.data.resultMax,
-        data: (response): Document[] => response.data.data.documents
+        total: response => response.data.data.resultMax,
+
+        data: response => response.data.data.documents
       },
       serverPaging: true,
       transport: {
-        read: (options): void => {
+        read: options => {
           if (options.data.collection) {
             const params = {
               filter: "",
@@ -310,13 +302,15 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin,
             const request = this.contentUrl
               .replace("{collection}", options.data.collection)
               .replace("{page}", options.data.page);
-            this.sendGetRequest(request, {
-              params
-            })
+            _this
+              .sendGetRequest(request, {
+                params
+              })
               .then(response => {
+                // @ts-ignore
                 const apiData = response.data.data;
                 if (apiData && apiData.collection && apiData.collection.properties) {
-                  this.collection = Object.assign({}, this.collection, apiData.collection.properties);
+                  _this.collection = Object.assign({}, _this.collection, apiData.collection.properties);
                 }
 
                 options.success(response);
@@ -332,7 +326,7 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin,
     });
   }
 
-  protected initKendoWidgets(): void {
+  protected initKendoWidgets() {
     kendo.jQuery(this.$refs.pager).kendoPager({
       change: this.onPagerChange,
       dataSource: this.dataSource,
@@ -363,7 +357,7 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin,
       .list.addClass("seList__pagination__list");
   }
 
-  protected onPagerChange(e): void {
+  protected onPagerChange(e) {
     const currentPage = this.dataSource.page();
     const newPage = e.index;
     const customEvent = this.$emitCancelableEvent("before-se-list-page-change", {
@@ -386,7 +380,7 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin,
     }
   }
 
-  protected sendGetRequest(url, conf): Promise<AxiosResponse<SEListCollection>> {
+  protected sendGetRequest(url, conf) {
     const element = kendo.jQuery(this.$refs.wrapper);
     kendo.ui.progress(element, true);
     return new Promise((resolve, reject) => {
@@ -403,7 +397,7 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin,
     });
   }
 
-  protected onSelectPageSize(e): void {
+  protected onSelectPageSize(e) {
     const counter = kendo.jQuery(this.$refs.pagerCounter).data("kendoDropDownList");
     const newPageSize = counter.dataItem(e.item).value;
     const customEvent = this.$emitCancelableEvent("before-se-list-pagesize-change", {

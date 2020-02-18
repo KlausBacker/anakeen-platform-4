@@ -91,5 +91,4 @@
 <style lang="scss">
 @import "./AnkSEList.scss";
 </style>
-<script src="./AnkSEList.component.ts" lang="ts">
-</script>
+<script src="./AnkSEList.component.ts" lang="ts"></script>
