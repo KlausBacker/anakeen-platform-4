@@ -17,7 +17,7 @@ export default class AnakeenLoadingController extends Vue {
   @Prop({ type: String, default: "18px" }) public height;
   @Prop({ type: Boolean, default: true }) public fullLabel;
 
-  public static get viewBox() {
+  public static get viewBox(): string {
     return "0 0 400 120";
   }
 }

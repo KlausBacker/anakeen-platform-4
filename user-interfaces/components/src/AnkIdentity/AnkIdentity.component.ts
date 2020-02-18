@@ -1,7 +1,6 @@
 import "@progress/kendo-ui/js/kendo.popup";
 import "@progress/kendo-ui/js/kendo.window";
 import $ from "jquery";
-const AuthentPassword = () => import("../AnkAuthent/AnkAuthentPassword/AnkAuthentPassword.vue");
 import { Component, Mixins, Prop } from "vue-property-decorator";
 import EventUtilsMixin from "../../mixins/AnkVueComponentMixin/EventUtilsMixin";
 import I18nMixin from "../../mixins/AnkVueComponentMixin/I18nMixin";
@@ -9,7 +8,7 @@ import ReadyMixin from "../../mixins/AnkVueComponentMixin/ReadyMixin";
 
 @Component({
   components: {
-    "ank-authent-password": AuthentPassword
+    "ank-authent-password": () => import("../AnkAuthent/AnkAuthentPassword/AnkAuthentPassword.vue")
   },
   name: "ank-identity"
 })
@@ -21,29 +20,29 @@ export default class IdentityComponent extends Mixins(EventUtilsMixin, ReadyMixi
   // Allow the user to change his password, or not
   @Prop({ type: Boolean, default: false }) public passwordAlterable;
   // User information
-  public login: string = "";
-  public initials: string = "";
-  public firstName: string = "";
-  public lastName: string = "";
-  public email: string = "";
+  public login = "";
+  public initials = "";
+  public firstName = "";
+  public lastName = "";
+  public email = "";
   public $refs!: {
     [key: string]: any;
   };
   // New information to modify on the server
-  public oldPassword: string = "";
-  public newEmail: string = "";
-  public newPassword: string = "";
-  public newPasswordConfirmation: string = "";
+  public oldPassword = "";
+  public newEmail = "";
+  public newPassword = "";
+  public newPasswordConfirmation = "";
 
   // Warning messages during email/password change
-  public emailWarningMessage: string = "";
-  public passwordWarningMessage: string = "";
+  public emailWarningMessage = "";
+  public passwordWarningMessage = "";
 
-  public getBaseComponent() {
+  public getBaseComponent(): JQuery {
     return kendo.jQuery(this.$refs["identity-component"]);
   }
   // Fetch user's information from the server
-  public fetchUser() {
+  public fetchUser(): Promise<void> {
     return this.$http.get("/api/v2/ui/users/current").then(response => {
       const customEvent = this.$emitCancelableEvent("beforeUserLoaded", {
         ...response.data.data
@@ -68,22 +67,22 @@ export default class IdentityComponent extends Mixins(EventUtilsMixin, ReadyMixi
   }
 
   // Catch the input event of the ank-authent-password component to update the old password
-  public updateOldPassword(data) {
+  public updateOldPassword(data): void {
     this.oldPassword = data;
   }
 
   // Catch the input event of the ank-authent-password component to update the new password
-  public updateNewPassword(data) {
+  public updateNewPassword(data): void {
     this.newPassword = data;
   }
 
   // Catch the input event of the ank-authent-password component to update the new password confirmation
-  public updateNewPasswordConfirmation(data) {
+  public updateNewPasswordConfirmation(data): void {
     this.newPasswordConfirmation = data;
   }
 
   // Send a request to change the password on the server
-  public modifyUserPassword() {
+  public modifyUserPassword(): void {
     const customEvent = this.$emitCancelableEvent("beforePasswordChange");
 
     if (!customEvent.isDefaultPrevented()) {
@@ -129,7 +128,7 @@ export default class IdentityComponent extends Mixins(EventUtilsMixin, ReadyMixi
   }
 
   // Send a request to change the email on the server
-  public modifyUserEmail() {
+  public modifyUserEmail(): void {
     const customEvent = this.$emitCancelableEvent("beforeMailAddressChange", {
       newEmail: this.newEmail
     });
@@ -180,7 +179,7 @@ export default class IdentityComponent extends Mixins(EventUtilsMixin, ReadyMixi
   }
 
   // Open or close the popup that allow the user to change his email and/or password
-  public toggleSettingsPopup() {
+  public toggleSettingsPopup(): void {
     if (this.emailAlterable || this.passwordAlterable) {
       kendo
         .jQuery(this.$refs.modificationPopup)
@@ -189,7 +188,7 @@ export default class IdentityComponent extends Mixins(EventUtilsMixin, ReadyMixi
     }
   }
   // Close the popup that allow the user to change his email and/or password
-  public closeSettingsPopup() {
+  public closeSettingsPopup(): void {
     if (this.emailAlterable || this.passwordAlterable) {
       kendo
         .jQuery(this.$refs.modificationPopup)
@@ -199,13 +198,13 @@ export default class IdentityComponent extends Mixins(EventUtilsMixin, ReadyMixi
   }
 
   // Open dialog window to change user's email
-  public openEmailModifierWindow() {
+  public openEmailModifierWindow(): void {
     this.closeSettingsPopup();
 
     // Init window to change the user's email (if allowed in the props)
     if (this.emailAlterable) {
       // Function called when th dialog is open and closed
-      const resetEmailChangeData = () => {
+      const resetEmailChangeData = (): void => {
         this.oldPassword = "";
         this.$refs.oldPasswordInputEmail.setValue("");
         this.newEmail = "";
@@ -236,14 +235,15 @@ export default class IdentityComponent extends Mixins(EventUtilsMixin, ReadyMixi
   }
 
   // Close dialog window to change user's email
-  public closeEmailModifierWindow() {
-    kendo.jQuery(this.$refs.emailModifier)
+  public closeEmailModifierWindow(): void {
+    kendo
+      .jQuery(this.$refs.emailModifier)
       .data("kendoWindow")
       .close();
   }
 
   // Open dialog to confirm the modification of the email
-  public openEmailModifiedWindow() {
+  public openEmailModifiedWindow(): void {
     const dialog = kendo.jQuery(this.$refs.emailModifiedWindow);
     dialog
       .kendoWindow({
@@ -262,20 +262,20 @@ export default class IdentityComponent extends Mixins(EventUtilsMixin, ReadyMixi
       .wrapper.addClass("identity-emailModified-window");
   }
   // Close dialog to confirm the modification of the email
-  public closeEmailModifiedWindow() {
+  public closeEmailModifiedWindow(): void {
     kendo
       .jQuery(this.$refs.emailModifiedWindow)
       .data("kendoWindow")
       .close();
   }
   // Open dialog window to change user's password
-  public openPasswordModifierWindow() {
+  public openPasswordModifierWindow(): void {
     this.closeSettingsPopup();
 
     // Init window to change the user's password (if allowed in the props)
     if (this.passwordAlterable) {
       // Function called when the dialog is open and closed
-      const resetPasswordChangeData = () => {
+      const resetPasswordChangeData = (): void => {
         this.oldPassword = "";
         this.$refs.oldPasswordInput.setValue("");
         this.newPassword = "";
@@ -310,14 +310,14 @@ export default class IdentityComponent extends Mixins(EventUtilsMixin, ReadyMixi
   }
 
   // Close dialog window to change user's password
-  public closePasswordModifierWindow() {
+  public closePasswordModifierWindow(): void {
     $(this.$refs.passwordModifier)
       .data("kendoWindow")
       .close();
   }
 
   // Open dialog to confirm the modification of the password
-  public openPasswordModifiedWindow() {
+  public openPasswordModifiedWindow(): void {
     const dialog = kendo.jQuery(this.$refs.passwordModifiedWindow);
     dialog
       .kendoWindow({
@@ -337,7 +337,7 @@ export default class IdentityComponent extends Mixins(EventUtilsMixin, ReadyMixi
   }
 
   // Close dialog to confirm the modification of the password
-  public closePasswordModifiedWindow() {
+  public closePasswordModifiedWindow(): void {
     $(this.$refs.passwordModifiedWindow)
       .data("kendoWindow")
       .close();
@@ -346,7 +346,7 @@ export default class IdentityComponent extends Mixins(EventUtilsMixin, ReadyMixi
   // Reset email modification warning message when a key is pressed, if this key is not enter
   // (Enter shouldn't remove the message because if the user validate a wrong email with enter,
   // the message should appear)
-  public removeEmailWarningMessage(event) {
+  public removeEmailWarningMessage(event): void {
     if (event.key !== "Enter") {
       this.emailWarningMessage = "";
     }
@@ -355,7 +355,7 @@ export default class IdentityComponent extends Mixins(EventUtilsMixin, ReadyMixi
   // Reset password modification warning message when a key is pressed, if this key is not enter
   // (Enter shouldn't remove the message because if the user validate a wrong password with enter,
   // the message should appear)
-  public updatePasswordChangeForm(event) {
+  public updatePasswordChangeForm(event): void {
     if (event.key !== "Enter") {
       this.passwordWarningMessage = "";
     }
@@ -364,7 +364,7 @@ export default class IdentityComponent extends Mixins(EventUtilsMixin, ReadyMixi
   }
 
   // Re color input borders to show if password and confirmation are different
-  public reColorInputs() {
+  public reColorInputs(): void {
     if (this.newPassword && this.newPasswordConfirmation) {
       if (this.newPassword === this.newPasswordConfirmation) {
         $(this.$refs.passwordModifier)
@@ -426,21 +426,21 @@ export default class IdentityComponent extends Mixins(EventUtilsMixin, ReadyMixi
     };
   }
 
-  public get displayName() {
+  public get displayName(): string {
     return this.firstName + " " + this.lastName;
   }
 
   // Email change validation button enabled only if the input is a correct email adress
-  public get emailChangeButtonDisabled() {
+  public get emailChangeButtonDisabled(): boolean {
     return !this.newEmail.match(/\S+@\S+\.\S+/) || !this.oldPassword;
   }
 
   // Password change validation button enabled only if the password matches the confirmation
-  public get passwordChangeButtonDisabled() {
+  public get passwordChangeButtonDisabled(): boolean {
     return this.newPassword !== this.newPasswordConfirmation || this.newPassword === "" || this.oldPassword === "";
   }
 
-  public mounted() {
+  public mounted(): void {
     // Init popup to allow email and/or password modification (if allowed in the props)
     if (this.emailAlterable || this.passwordAlterable) {
       kendo.jQuery(this.$refs.modificationPopup).kendoPopup({
