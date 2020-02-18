@@ -18,17 +18,6 @@
         td:not(:first-child):not(:last-child) {
           white-space: nowrap;
           overflow: hidden;
-          //* {
-          //  font-size:unset;
-          //  display: inline;
-          //}
-          //br,
-          //hr {
-          //  content: " ";
-          //  &:after {
-          //    content: " ";
-          //  }
-          //}
         }
       }
     }
@@ -41,13 +30,13 @@
     width: 100%;
   }
 
-  // none display for standard kendo cell to avoid flickering
+  // transform filter row in subheader row
   .k-filter-row {
-    display: none !important;
+    background: white;
+    border-color: transparent #DDDDDD;
   }
   .k-grid {
     display: flex !important; // To override important kendo rule
-    flex: 1;
   }
   .k-grid-content {
     overflow: auto;
@@ -63,17 +52,12 @@
     flex-direction: column;
     .k-grid {
       display: flex !important;
-      flex: 1;
       .k-grid-content {
         overflow:auto;
       }
     }
   }
-  .grid-header-content {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-  }
+
   .smart-element-grid-columns-footer {
     height: auto !important;
     .k-grid-header {

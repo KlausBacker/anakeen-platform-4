@@ -23,42 +23,37 @@ export default class GridFilterCell extends Mixins(AnkGridCellMixin) {
     }
   }
 
+  protected get isMultiple() {
+    return this.columnConfig.multiple || Array.isArray(this.cellValue);
+  }
+
+  protected get cellValue() {
+    if (this.fieldValue) {
+      return this.fieldValue;
+    } else if (this.dataItem) {
+      if (this.columnConfig.property) {
+        return this.dataItem.properties[this.field];
+      } else if (this.columnConfig.abstract) {
+        return this.dataItem.abstract[this.field];
+      } else {
+        return this.dataItem.attributes[this.field];
+      }
+    }
+    return null;
+  }
+
   protected get isEmpty() {
-    if (this.columnConfig.property) {
-      return !(this.dataItem && this.dataItem.properties && this.dataItem.properties[this.field]);
-    } else if (this.columnConfig.abstract) {
-      return !(
-        this.dataItem &&
-        this.dataItem.abstract &&
-        this.dataItem.abstract[this.field] &&
-        (this.dataItem.abstract[this.field].displayValue || this.dataItem.abstract[this.field].value)
-      );
+    if (this.isMultiple) {
+      return !this.cellValue.length;
+    } else if (this.columnConfig.property) {
+      return !this.cellValue;
     } else {
-      return !(
-        this.dataItem &&
-        this.dataItem.attributes &&
-        this.dataItem.attributes[this.field] &&
-        (this.dataItem.attributes[this.field].displayValue || this.dataItem.attributes[this.field].value)
-      );
+      return !(this.cellValue.diplayValue || this.cellValue.value);
     }
   }
 
   protected get isInexistent() {
-    if (this.columnConfig.property) {
-      return !(this.dataItem && this.dataItem.properties && this.dataItem.properties[this.field] !== undefined);
-    } else if (this.columnConfig.abstract) {
-      return !(
-        this.dataItem &&
-        this.dataItem.abstract &&
-        this.dataItem.abstract[this.field] !== undefined
-      );
-    } else {
-      return !(
-        this.dataItem &&
-        this.dataItem.attributes &&
-        this.dataItem.attributes[this.field] !== undefined
-      );
-    }
+    return !this.cellValue;
   }
 
   public get componentName() {

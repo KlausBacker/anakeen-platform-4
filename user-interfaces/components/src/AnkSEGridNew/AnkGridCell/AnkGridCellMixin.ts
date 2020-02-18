@@ -53,11 +53,16 @@ export default class GridFilterCell extends Vue {
   })
   public expanded!: boolean;
   @Prop({
-    type: Object
+    default: () => null
   })
   public fieldValue!: any;
   @Prop({
     type: Object
   })
   public gridComponent!: GridController;
+  @Prop({
+    type: String,
+    default: "td"
+  })
+  public tag!: string;
 }

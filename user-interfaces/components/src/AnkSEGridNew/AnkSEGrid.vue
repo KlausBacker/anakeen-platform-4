@@ -15,6 +15,7 @@
         :data-items="dataItems"
         :cell-render="cellRenderFunction"
         :header-cell-render="headerCellRenderFunction"
+        :filter-cell-render="subHeaderCellRenderFunction"
         :take="currentPage.take"
         :skip="currentPage.skip"
         :total="currentPage.total"
@@ -23,7 +24,7 @@
         :pageable="false"
         :sortable="sortable"
         :sort="currentSort"
-        :filterable="filterable"
+        :filterable="subHeader && Object.keys(subHeader).length"
         selectedField="ank-grid_selected_rows"
         @selectionchange="onSelectionChange"
         @sortchange="onSortChange"
@@ -31,12 +32,6 @@
         @columnreorder="onColumnReorder"
       >
       </kendo-grid-vue>
-      <kendo-grid-vue
-        class="smart-element-grid-columns-footer"
-        v-if="footerData && footerData.length && columnsList.length"
-        :columns="columnsList"
-        :data-items="footerData"
-      ></kendo-grid-vue>
       <div class="smart-element-grid-footer">
         <slot name="gridFooter" v-bind:gridComponent="gridInstance">
           <ank-grid-pager v-if="pager" v-bind="pager" :gridComponent="gridInstance"></ank-grid-pager>
@@ -48,6 +43,5 @@
 <!-- CSS to this component only -->
 <style lang="scss">
 @import "./AnkSEGrid.scss";
-
 </style>
 <script src="./AnkSEGrid.component.ts" lang="ts"></script>

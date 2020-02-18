@@ -17,15 +17,16 @@ const CONTROLLER_URL = "/api/v2/grid/controllers/{controller}/{op}/{collection}"
 
 export interface SmartGridColumn {
   field: string;
-  smartType: string;
-  title: string;
-  abstract: boolean;
-  property: boolean;
-  encoded: boolean;
-  hidden: boolean;
-  sortable: boolean;
-  filterable: boolean | any;
-  transaction: boolean | object;
+  smartType?: string;
+  title?: string;
+  abstract?: boolean;
+  multiple?: boolean;
+  property?: boolean;
+  encoded?: boolean;
+  hidden?: boolean;
+  sortable?: boolean;
+  filterable?: boolean | any;
+  transaction?: boolean | object;
 }
 
 interface SmartGridActions {
@@ -73,7 +74,7 @@ export default class GridController extends Vue {
     default: () => ({}),
     type: Object
   })
-  public footer: { [key: string]: any };
+  public subHeader: { [key: string]: any };
   @Prop({
     default: () => [],
     type: Array
@@ -177,6 +178,11 @@ export default class GridController extends Vue {
     type: Boolean
   })
   public persistSelection: boolean;
+  @Prop({
+    default: "5rem",
+    type: String
+  })
+  public maxRowHeight: string;
 
   @Watch("dataItems")
   public watchDataItems(val) {
@@ -245,13 +251,6 @@ export default class GridController extends Vue {
       selectedRows: this.selectedRows,
       onlySelection: this.onlySelection
     };
-  }
-
-  public get footerData() {
-    if (Object.keys(this.footer).length) {
-      return [this.footer];
-    }
-    return [];
   }
 
   async created() {
@@ -462,21 +461,28 @@ export default class GridController extends Vue {
         };
         if (this.$scopedSlots && this.$scopedSlots.emptyCell) {
           // @ts-ignore
-          options.scopedSlots.emptyCell = props => this.$scopedSlots.emptyCell({ renderElement, props, listeners, columnConfig });
+          options.scopedSlots.emptyCell = props =>
+            this.$scopedSlots.emptyCell({ renderElement, props, listeners, columnConfig });
         }
         if (this.$scopedSlots && this.$scopedSlots.inexistentCell) {
           // @ts-ignore
-          options.scopedSlots.inexistentCell = props => this.$scopedSlots.inexistentCell({ renderElement, props, listeners, columnConfig });
+          options.scopedSlots.inexistentCell = props =>
+            this.$scopedSlots.inexistentCell({ renderElement, props, listeners, columnConfig });
         }
         renderElement = createElement(AnkGridCell, options);
       }
       if (this.$scopedSlots && this.$scopedSlots.cellTemplate) {
-        return this.$scopedSlots.cellTemplate({
+        const scopeResult = this.$scopedSlots.cellTemplate({
           renderElement,
           props,
           listeners,
           columnConfig
         });
+        if (scopeResult) {
+          return scopeResult;
+        } else {
+          return renderElement;
+        }
       }
     }
     return renderElement;
@@ -491,6 +497,39 @@ export default class GridController extends Vue {
         filterchange: this.onFilterChange
       }
     });
+  }
+
+  protected subHeaderCellRenderFunction(createElement, defaultRendering, props, change) {
+    const columnConfig = this.columnsList.find(c => c.field === props.field);
+    const options = {
+      props: {
+        ...props,
+        columnConfig,
+        gridComponent: this,
+        tag: "div"
+      },
+      class: `smart-element-grid-column-footer smart-element-grid-column-footer--${columnConfig.field}`
+    };
+    if (this.subHeader && this.subHeader[columnConfig.field]) {
+      if (columnConfig.property) {
+        options.props.fieldValue = this.subHeader[columnConfig.field];
+      } else {
+        options.props.fieldValue = {
+          displayValue: this.subHeader[columnConfig.field],
+          value: this.subHeader[columnConfig.field]
+        };
+      }
+    } else {
+      if (columnConfig.property) {
+        options.props.fieldValue = null;
+      } else {
+        options.props.fieldValue = {
+          displayValue: null,
+          value: null
+        };
+      }
+    }
+    return createElement(AnkGridCell, options);
   }
 
   protected _getOperationUrl(operation) {
