@@ -1,8 +1,18 @@
+.smart-element-grid-action-cell--content{
+  display: flex;
+  flex-wrap: nowrap;
+
+  .smart-element-grid-action {
+    text-overflow: ellipsis;
+    flex-shrink: 1;
+  }
+}
+
 .smart-element-grid-action-cell, .smart-element-grid-action-menu--content {
   margin-left: 0;
   padding-left: 0;
 
-  .k-button {
+  .smart-element-grid-action, .smart-element-grid-action-menu {
     background: transparent;
     border: none;
     padding: 0.5rem 0.75rem;
@@ -18,21 +28,8 @@
       border-color: transparent #dddddd;
     }
 
-    .actionMenu {
-      li[data-actiontype="_subcommands"] {
-        .k-animation-container {
-          border: 1px black;
-          overflow: visible;
-        }
-      }
-
-      .k-menu-expand-arrow {
-        display: none;
-
-        .smart-element-grid-action--label {
-          margin-left: .25rem;
-        }
-      }
+    .smart-element-grid-action--label {
+      margin-left: .25rem;
     }
 
     .smart-element-grid-action-menu--content {
@@ -41,5 +38,8 @@
       flex-direction: column;
       align-items: flex-start;
     }
+  }
+  .smart-element-grid-action-menu {
+    padding-left: 0;
   }
 }
