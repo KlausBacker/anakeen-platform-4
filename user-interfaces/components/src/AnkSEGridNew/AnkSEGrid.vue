@@ -3,11 +3,10 @@
     <div class="smart-element-grid-wrapper">
       <div class="smart-element-grid-header--toolbar">
         <slot name="gridHeader" direction="left" v-bind:gridComponent="gridInstance">
-          <ank-expand-button v-if="defaultExpandable" :gridComponent="gridInstance"></ank-expand-button>
           <ank-columns-button v-if="defaultShownColumns" :gridComponent="gridInstance"></ank-columns-button>
           <ank-export-button
             v-if="defaultExportButton"
-            text="Download"
+            :text="this.$t('gridExportButton.Title')"
             :gridComponent="gridInstance"
           ></ank-export-button>
         </slot>
@@ -29,7 +28,7 @@
         :pageable="false"
         :sortable="sortable"
         :sort="currentSort"
-        :filterable="subHeader && Object.keys(subHeader).length"
+        :filterable="subHeader ? subHeader && Object.keys(subHeader).length > 0 : false"
         selectedField="ank-grid_selected_rows"
         @selectionchange="onSelectionChange"
         @sortchange="onSortChange"
@@ -40,6 +39,7 @@
       <div class="smart-element-grid-footer">
         <slot name="gridFooter" v-bind:gridComponent="gridInstance">
           <ank-grid-pager v-if="pager" v-bind="pager" :gridComponent="gridInstance"></ank-grid-pager>
+          <ank-expand-button v-if="defaultExpandable" :gridComponent="gridInstance"></ank-expand-button>
         </slot>
       </div>
     </div>

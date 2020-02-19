@@ -1,9 +1,7 @@
 .smart-element-grid-pager {
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  padding: 0.375rem;
   display: flex;
   align-items: center;
+  flex-grow: 1;
 }
 
 .smart-element-grid-pager-nav,
