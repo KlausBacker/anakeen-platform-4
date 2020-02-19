@@ -97,7 +97,22 @@ class SearchDomainDatabase
                         if (is_a($fieldInfo, SearchFileConfig::class)) {
                             /** @var SearchFileConfig $fieldInfo */
                             if ($fieldInfo->filecontent === true) {
-                                $weightFiles[$fieldInfo->weight][] = $fieldInfo->field;
+                                if ($oa->isMultiple() === false) {
+                                    if (preg_match(PREGEXPFILE, $rawValue, $reg)) {
+                                        if ($reg["vid"]) {
+                                            $weightFiles[$fieldInfo->weight][] = $reg["vid"];
+                                        }
+                                    }
+                                } else {
+                                    $rawValues=$se->getMultipleRawValues($oa->id);
+                                    foreach ($rawValues as $rawValue) {
+                                        if (preg_match(PREGEXPFILE, $rawValue, $reg)) {
+                                            if ($reg["vid"]) {
+                                                $weightFiles[$fieldInfo->weight][] = $reg["vid"];
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                         break;
@@ -121,11 +136,10 @@ SQL;
             foreach ($weightFiles as $weight => $fileFields) {
                 if ($fileFields) {
                     $sqlset[] = sprintf(
-                        "setweight((select to_tsvector('%s', unaccent(string_agg(textcontent, ', '))) from %s where docid=%d and field in ('%s')), '%s')",
+                        "setweight((select to_tsvector('%s', unaccent(string_agg(textcontent, ', '))) from %s where fileid in (%s)), '%s')",
                         $this->domain->stem,
                         FileContentDatabase::DBTABLE,
-                        $se->id,
-                        implode("',', ", $fileFields),
+                        implode(", ", $fileFields),
                         pg_escape_string($weight)
                     );
                 }
@@ -141,7 +155,6 @@ SQL;
                 implode(' || ', $sqlset),
                 $se->id
             );
-
             DbManager::query($updSql);
         }
     }
@@ -382,6 +395,8 @@ SQL;
     protected function updateSmartElementIndex(SmartElement $se, $config)
     {
         $data = ["A" => [], "B" => [], "C" => [], "D" => []];
+        $fileRequestSend=false;
+        $fileRequest=0;
         foreach ($config->fields as $fieldInfo) {
             if ($fieldInfo->field === "title") {
                 // Not use getTitle here because is incomplete data
@@ -398,7 +413,7 @@ SQL;
                 switch ($oa->type) {
                     case "timestamp":
                     case "date":
-                        $dateFormat = "%A %d %B %m %Y";
+                        $dateFormat = "%A %d %B %Y %m";
                         if ($oa->type === "timestamp") {
                             $dateFormat .= " %H:%M:%S";
                         }
@@ -455,10 +470,12 @@ SQL;
                             /** @var SearchFileConfig $fieldInfo */
                             if ($fieldInfo->filecontent === true) {
                                 if ($oa->isMultiple() === false) {
-                                    IndexFile::sendIndexRequest($se, $this->domainName, $fieldInfo);
+                                    $fileRequest++;
+                                    $fileRequestSend = IndexFile::sendIndexRequest($se, $this->domainName, $fieldInfo) || $fileRequestSend;
                                 } else {
                                     foreach ($se->getMultipleRawValues($oa->id) as $kf => $rawValue) {
-                                        IndexFile::sendIndexRequest($se, $this->domainName, $fieldInfo, $kf);
+                                        $fileRequest++;
+                                        $fileRequestSend = IndexFile::sendIndexRequest($se, $this->domainName, $fieldInfo, $kf) || $fileRequestSend;
                                     }
                                 }
                             }
@@ -484,6 +501,10 @@ SQL;
             pg_escape_string(preg_replace('/\s+/', ' ', implode(", ", $data["D"])))
         );
         DbManager::query($sql);
+
+        if ($fileRequest && !$fileRequestSend) {
+            $this->updateSmartWithFiles($se);
+        }
     }
 
 

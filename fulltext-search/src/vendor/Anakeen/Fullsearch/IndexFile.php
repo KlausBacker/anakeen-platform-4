@@ -33,20 +33,32 @@ class IndexFile
 
             if ($fileInfo) {
                 if (file_exists($fileInfo->path)) {
-                    $callback = sprintf("/api/v2/fullsearch/domains/%s/smart-elements/%d", $domainName, $se->id);
-                    $callurl = Manager::getOpenTeUrl($callback);
+                    if (!FileContentDatabase::isUptodate($fileInfo)) {
+                        $callback = sprintf("/api/v2/fullsearch/domains/%s/smart-elements/%d", $domainName, $se->id);
+                        $callurl = Manager::getOpenTeUrl($callback);
 
-                    //$mb=microtime(true);
-                    $err = $te->sendTransformation("utf8", "", $fileInfo->path, $callurl, $info);
+                        //$mb=microtime(true);
+                        $err = $te->sendTransformation("utf8", "", $fileInfo->path, $callurl, $info);
 
-                    // printf("\tSend %dms, %s\n",(microtime(true)-$mb) *1000, $fileInfo->name);
-                    if ($err) {
-                        throw new Exception("FSEA0010", $err);
+                        // printf("\tSend %dms, %s\n",(microtime(true)-$mb) *1000, $fileInfo->name);
+                        if ($err) {
+                            throw new Exception("FSEA0010", $err);
+                        }
+                        self::recordTeRequest(
+                            $info["tid"],
+                            $info["status"],
+                            $se->id,
+                            $fieldInfo->field,
+                            $fileInfo->id_file,
+                            $index
+                        );
+
+                        return true;
                     }
-                    self::recordTeRequest($info["tid"], $info["status"], $se->id, $fieldInfo->field, $fileInfo->id_file, $index);
                 }
             }
         }
+        return false;
     }
 
     protected static function recordTeRequest($tid, $status, $seid, $fieldid, $fileid, $index = -1)
