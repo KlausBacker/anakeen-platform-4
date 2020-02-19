@@ -1,4 +1,5 @@
 import "@progress/kendo-ui/js/kendo.button";
+import "@progress/kendo-ui/js/kendo.tooltip";
 import $ from "jquery";
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
@@ -25,15 +26,29 @@ export default class AnkGridExpandButtonController extends Vue {
     this.gridComponent = newValue;
     this.initButton();
   }
-
+  public get translations() {
+    return {
+      tooltip: this.$t("gridExpandButton.Tooltip")
+    };
+  }
   public initButton() {
     const options = this.getButtonOptions();
     this.button = $(this.$refs.expandButton)
       .kendoButton(options)
       .data("kendoButton");
     this.button.bind("click", () => {
+      $(this.$el).toggleClass("k-state-expand-active");
       this.gridComponent.onExpandClicked();
     });
+    $(".grid-expand-button")
+      .kendoTooltip({
+        width: 120,
+        position: "top",
+        autoHide: true,
+        showOn: "mouseenter",
+        content: this.translations.tooltip
+      })
+      .data("kendoTooltip");
   }
 
   private getButtonOptions() {

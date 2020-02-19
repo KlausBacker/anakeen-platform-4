@@ -10,7 +10,7 @@
       href="#"
       @click.prevent="firstPage"
     >
-      <span aria-label="Go to the first page" class="k-icon k-i-seek-w"></span>
+      <span aria-label="Go to the first page" class="k-icon k-i-seek-w" />
     </a>
     <a
       v-if="previousNext"
@@ -22,7 +22,7 @@
       href="#"
       @click.prevent="previousPage"
     >
-      <span aria-label="Go to the previous page" class="k-icon k-i-arrow-w"></span>
+      <span aria-label="Go to the previous page" class="k-icon k-i-arrow-w" />
     </a>
     <div class="smart-element-grid-pager-numbers">
       <a
@@ -36,14 +36,14 @@
         ...
       </a>
       <a
+        v-for="i in maxButtonsPages"
+        :key="i"
         :class="{
           'smart-element-grid-pager-pageNumber': true,
           'smart-element-grid-pager-pageNumber--selected': isCurrentPage(i)
         }"
         href="#"
-        v-for="i in maxButtonsPages"
         @click.prevent="goToPage(i)"
-        :key="i"
       >
         {{ i }}
       </a>
@@ -68,7 +68,7 @@
       href="#"
       @click.prevent="nextPage"
     >
-      <span aria-label="Go to the next page" class="k-icon k-i-arrow-e"></span>
+      <span aria-label="Go to the next page" class="k-icon k-i-arrow-e" />
     </a>
     <a
       v-if="previousNext"
@@ -80,19 +80,17 @@
       href="#"
       @click.prevent="lastPage"
     >
-      <span aria-label="Go to the last page" class="k-icon k-i-seek-e"></span>
+      <span aria-label="Go to the last page" class="k-icon k-i-seek-e" />
     </a>
 
-    <div class="smart-element-grid-pager-sizes" v-if="pageSizes">
-      <drop-down-list
-        class="smart-element-grid-pager-sizes--dropdown"
-        v-model="pageSize"
-        :data-items="pageSizes"
-      ></drop-down-list>
-      <span class="smart-element-grid-pager-sizes--label">items per page</span>
+    <div v-if="pageSizes" class="smart-element-grid-pager-sizes">
+      <drop-down-list v-model="pageSize" class="smart-element-grid-pager-sizes--dropdown" :data-items="pageSizes" />
+      <span class="smart-element-grid-pager-sizes--label"> {{ this.$t("gridPager.items per page") }}</span>
     </div>
 
-    <div v-if="info" class="smart-element-grid-pager-info">{{ beginPage }} - {{ endPage }} of {{ total }} items</div>
+    <div v-if="info" class="smart-element-grid-pager-info">
+      {{ this.$t("gridPager.{0} - {1} of {2} items", { 0: beginPage, 1: endPage, 2: total }) }}
+    </div>
   </div>
 </template>
 

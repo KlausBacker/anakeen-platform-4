@@ -1,4 +1,5 @@
 import "@progress/kendo-ui/js/kendo.button";
+import "@progress/kendo-ui/js/kendo.tooltip";
 import $ from "jquery";
 import { Component, Mixins, Prop, Watch } from "vue-property-decorator";
 import I18nMixin from "../../../mixins/AnkVueComponentMixin/I18nMixin";
@@ -46,7 +47,8 @@ export default class AnkGridColumnsButtonController extends Mixins(I18nMixin) {
       dialogTitle: this.$t("gridColumnsButton.Columns management"),
       display: this.$t("gridColumnsButton.Display"),
       label: this.$t("gridColumnsButton.Title"),
-      organize: this.$t("gridColumnsButton.Organize")
+      organize: this.$t("gridColumnsButton.Organize"),
+      tooltip: this.$t("gridColumnsButton.Tooltip")
     };
   }
   public mounted() {
@@ -57,6 +59,15 @@ export default class AnkGridColumnsButtonController extends Mixins(I18nMixin) {
     this.button.bind("click", () => {
       this.open();
     });
+    $(".columns-wrapper")
+      .kendoTooltip({
+        width: 120,
+        position: "bottom",
+        autoHide: true,
+        showOn: "mouseenter",
+        content: this.translations.tooltip
+      })
+      .data("kendoTooltip");
     this.kendoWindow = kendo
       .jQuery(this.$refs.kendoWindow)
       .kendoWindow({

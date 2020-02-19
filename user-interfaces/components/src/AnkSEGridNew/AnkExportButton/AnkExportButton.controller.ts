@@ -1,11 +1,12 @@
 import "@progress/kendo-ui/js/kendo.menu";
 import $ from "jquery";
 import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
+import { Component, Mixins, Prop, Watch } from "vue-property-decorator";
+import I18nMixin from "../../../mixins/AnkVueComponentMixin/I18nMixin";
 @Component({
   name: "ank-se-grid-export-button"
 })
-export default class GridExportButtonController extends Vue {
+export default class GridExportButtonController extends Mixins(I18nMixin) {
   public title = "";
   public actionMenu;
   public errorMenu;
@@ -63,12 +64,13 @@ export default class GridExportButtonController extends Vue {
   public export() {
     this.gridComponent.export(true, true, this.doDefaultPolling);
   }
-
+  public get exportTitle() {
+    return this.title === "" ? this.translations.title : this.title;
+  }
   @Watch("gridComponent")
   public watchGridComponent(newValue) {
     this.gridComponent = newValue;
     this.setupMenus();
-    this.title = this.gridComponent.translations.downloadReport;
     this.$on("grid-data-bound", data => {
       this.computeTotalExport(data);
     });
@@ -76,6 +78,15 @@ export default class GridExportButtonController extends Vue {
     // this.gridComponent.kendoGrid.bind("change", () => this.computeTotalExport());
     this.gridComponent.$on("beforePollingGridExport", () => this.displayExportPendingStatus(false));
     this.gridComponent.$on("grid-export-error", this.displayExportErrorStatus);
+  }
+  public get translations() {
+    return {
+      cancel: this.$t("gridExportButton.Cancel"),
+      title: this.$t("gridExportButton.Title"),
+      retry: this.$t("gridExportButton.Retry"),
+      exportAll: this.$t("gridExportButton.ExportAll"),
+      exportSelected: this.$t("gridExportButton.ExportSelected")
+    };
   }
 
   private setupMenus() {
@@ -91,14 +102,14 @@ export default class GridExportButtonController extends Vue {
         attr: {
           "data-export-action": "selection"
         },
-        text: this.gridComponent.translations.downloadSelection
+        text: this.translations.exportSelected
       });
     }
     actionSubmenus.push({
       attr: {
         "data-export-action": "all"
       },
-      text: this.gridComponent.translations.downloadAllResults
+      text: this.translations.exportAll
     });
     this.actionMenu.append(actionSubmenus, this.actionMenu.element.find(".k-item.k-first[data-export-menu=root]"));
   }
@@ -109,13 +120,13 @@ export default class GridExportButtonController extends Vue {
       attr: {
         "data-export-action": "retry"
       },
-      text: this.gridComponent.translations.downloadAgain
+      text: this.translations.retry
     });
     errorSubmenus.push({
       attr: {
         "data-export-action": "quit"
       },
-      text: this.gridComponent.translations.downloadCancel
+      text: this.translations.cancel
     });
     this.errorMenu.append(errorSubmenus, this.errorMenu.element.find(".k-item.k-first[data-export-menu=root]"));
   }

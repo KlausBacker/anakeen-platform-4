@@ -1,5 +1,5 @@
 <template>
-  <div ref="exportButtonWrapper" class="grid-export-button" :title="title">
+  <div ref="exportButtonWrapper" class="grid-export-button" :title="exportTitle">
     <div class="grid-export grid-toolbar-action grid-toolbar-export-action" ref="exportButton">
       <ul class="grid-export-action-menu grid-export-menu" ref="actionMenu" v-show="actionMenuVisible">
         <li data-export-menu="root">
