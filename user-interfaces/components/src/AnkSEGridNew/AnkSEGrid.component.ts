@@ -4,6 +4,7 @@ import AnkActionMenu from "./AnkActionMenu/AnkActionMenu.vue";
 import AnkGridCell from "./AnkGridCell/AnkGridCell.vue";
 import AnkExportButton from "./AnkExportButton/AnkExportButton.vue";
 import AnkGridExpandButton from "./AnkGridExpandButton/AnkGridExpandButton.vue";
+import AnkGridColumnsButton from "./AnkGridColumnsButton/AnkGridColumnsButton.vue";
 
 import AnkGridPager from "./AnkGridPager/AnkGridPager.vue";
 import AnkGridHeaderCell from "./AnkGridHeaderCell/AnkGridHeaderCell.vue";
@@ -54,7 +55,8 @@ const DEFAULT_SORT = {
     "ank-action-menu": AnkActionMenu,
     "ank-export-button": AnkExportButton,
     "ank-expand-button": AnkGridExpandButton,
-    "ank-grid-pager": AnkGridPager
+    "ank-grid-pager": AnkGridPager,
+    "ank-columns-button": AnkGridColumnsButton
   },
   name: "ank-se-grid-vue"
 })
@@ -106,13 +108,19 @@ export default class GridController extends Vue {
     default: false,
     type: Boolean
   })
-  public exportButton: boolean;
+  public defaultExportButton: boolean;
 
   @Prop({
     default: false,
     type: Boolean
   })
-  public expandable: boolean;
+  public defaultShownColumns: boolean;
+
+  @Prop({
+    default: false,
+    type: Boolean
+  })
+  public defaultExpandable: boolean;
   @Prop({
     default: "-",
     type: String
@@ -216,12 +224,13 @@ export default class GridController extends Vue {
     downloadAgain: "Retry",
     downloadCancel: "Cancel"
   };
-  public onlySelection: boolean = false;
+  public onlySelection = false;
+  public allColumns: any = this.columns;
   public columnsList: any = this.columns;
   public actionsList: any = this.actions;
   public dataItems: any = [];
   public selectedRows: any = [];
-  public isLoading: boolean = false;
+  public isLoading = false;
   public currentSort: any = null;
   public currentFilter: any = { logic: "and", filters: [] };
   public currentPage: any = {
@@ -293,6 +302,30 @@ export default class GridController extends Vue {
     $(this.$refs.smartGridWidget.$el).toggleClass("grid-row-collapsed");
   }
 
+  public async onSettingsChange(changes) {
+    if (changes) {
+      Object.keys(changes).forEach(colId => {
+        if (this.$refs.smartGridWidget) {
+          if (changes[colId].display === true) {
+            this.columns.map(function(column, index, tabColumns) {
+              if (column.field === colId) {
+                column.hidden = false;
+              }
+              return tabColumns;
+            });
+          } else if (changes[colId].display === false) {
+            this.columns.map(function(column, index, tabColumns) {
+              if (column.field === colId) {
+                column.hidden = true;
+              }
+              return tabColumns;
+            });
+          }
+        }
+      });
+    }
+    await this._loadGridConfig();
+  }
   protected async _loadGridConfig() {
     const url = this._getOperationUrl("config");
     const event = new GridEvent(
@@ -310,6 +343,12 @@ export default class GridController extends Vue {
         })
         .then(response => {
           this.columnsList = response.data.data.columns;
+          this.allColumns = response.data.data.columns;
+          this.columnsList = this.columnsList.filter(item => {
+            if (item.hidden === undefined || item.hidden === false) {
+              return item;
+            }
+          });
           if (response.data.data.pageable === true) {
             this.pager = DEFAULT_PAGER;
           } else if (response.data.data.pageable === false) {
@@ -587,13 +626,13 @@ export default class GridController extends Vue {
     pollingTime = 500,
     onExport = this.doDefaultExport.bind(this)
   ) {
-    let beforeEvent = this.sendBeforeExportEvent(onExport, onPolling);
+    const beforeEvent = this.sendBeforeExportEvent(onExport, onPolling);
     if (!beforeEvent.isDefaultPrevented()) {
-      let exportCb = beforeEvent.onExport;
-      let pollingCb = beforeEvent.onPolling;
+      const exportCb = beforeEvent.onExport;
+      const pollingCb = beforeEvent.onPolling;
       if (typeof onExport === "function") {
         this.sendBeforePollingEvent();
-        let promise = this.createExportTransaction()
+        const promise = this.createExportTransaction()
           .then(transaction => {
             this.transaction = transaction;
 
@@ -694,7 +733,7 @@ export default class GridController extends Vue {
 
   protected doTransactionExport(transaction, queryParams, exportRequest, pollingRequest, pollingTime, directDownload) {
     const transactionId = transaction.transactionId;
-    let file = exportRequest(transaction, queryParams, directDownload);
+    const file = exportRequest(transaction, queryParams, directDownload);
     this.pollTransaction(transactionId, pollingRequest, pollingTime);
 
     return file;

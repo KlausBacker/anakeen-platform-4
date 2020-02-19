@@ -2,7 +2,7 @@ import { Component, Prop, Watch, Vue } from "vue-property-decorator";
 import { Popup } from "@progress/kendo-vue-popup";
 import GridEvent from "../AnkGridEvent/AnkGridEvent";
 
-const isStandardAction = action => action === "consult" || action === "edit";
+const isStandardAction = action => action === "display" || action === "modify";
 
 @Component({
   name: "ank-se-grid-actions",
@@ -88,7 +88,7 @@ export default class AnkActionMenuController extends Vue {
     );
     this.$emit("rowActionClick", event);
     if (isStandardAction(action.action) && !event.isDefaultPrevented()) {
-      const viewId = action.action === "edit" ? "defaultEdition" : "defaultConsultation";
+      const viewId = action.action === "modify" ? "defaultEdition" : "defaultConsultation";
       window.open(
         `/api/v2/smart-elements/${this.rowData.properties.id || this.rowData.properties.initid}/views/!${viewId}.html`,
         "_blank"

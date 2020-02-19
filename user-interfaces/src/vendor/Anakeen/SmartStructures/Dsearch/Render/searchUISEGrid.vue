@@ -4,8 +4,8 @@
     :collection="searchId"
     class="search-grid"
     ref="searchGrid"
-    expandable
     controller="REPORT_GRID_CONTROLLER"
+    defaultExpandable
   >
   </ank-se-grid>
 </template>
@@ -17,7 +17,7 @@ export default {
   components: {
     "ank-se-grid": AnkSEGrid
   },
-  props: ["searchId"],
+  props: ["searchId"]
 };
 </script>
 <style lang="scss"></style>

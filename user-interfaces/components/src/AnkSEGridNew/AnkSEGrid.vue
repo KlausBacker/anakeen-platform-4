@@ -3,8 +3,13 @@
     <div class="smart-element-grid-wrapper">
       <div class="smart-element-grid-header--toolbar">
         <slot name="gridHeader" direction="left" v-bind:gridComponent="gridInstance">
-          <ank-expand-button v-if="expandable" :gridComponent="gridInstance"></ank-expand-button>
-          <ank-export-button v-if="exportButton" text="Export" :gridComponent="gridInstance"></ank-export-button>
+          <ank-expand-button v-if="defaultExpandable" :gridComponent="gridInstance"></ank-expand-button>
+          <ank-columns-button v-if="defaultShownColumns" :gridComponent="gridInstance"></ank-columns-button>
+          <ank-export-button
+            v-if="defaultExportButton"
+            text="Download"
+            :gridComponent="gridInstance"
+          ></ank-export-button>
         </slot>
       </div>
       <kendo-grid-vue

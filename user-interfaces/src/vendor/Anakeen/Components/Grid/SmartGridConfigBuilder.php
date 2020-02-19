@@ -3,13 +3,12 @@
 namespace Anakeen\Components\Grid;
 
 use Anakeen\Components\Grid\Exceptions\Exception;
-use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure;
 use Anakeen\Core\SmartStructure\BasicAttribute;
+use Anakeen\Core\Utils\Gettext;
 use Anakeen\Core\Utils\Strings;
 use Anakeen\SmartElementManager;
-use Anakeen\Ui\CallableMenu;
 use Closure;
 use SmartStructure\Fields\Dir;
 use SmartStructure\Fields\Report as ReportFields;
@@ -59,6 +58,7 @@ class SmartGridConfigBuilder
         if (!empty($fields)) {
             $this->setColumns($columns);
         }
+        return $this;
     }
 
     /**
@@ -70,7 +70,7 @@ class SmartGridConfigBuilder
     {
         $fields = $this->getFields();
         $contentUrl = $this->contentUrl ?: sprintf(self::DEFAULT_CONTENT_URL, $this->smartCollectionId, static::fieldsToUrl($fields));
-        $config = array(
+        return array(
             "columns" => $fields,
             "pageable" => $this->getPageable(),
             "collection" => $this->getCollectionInfo(),
@@ -80,7 +80,6 @@ class SmartGridConfigBuilder
             // "toolbar" => [],
              "actions" => $this->getActions()
         );
-        return $config;
     }
 
     /**
@@ -97,7 +96,7 @@ class SmartGridConfigBuilder
         if ($this->smartCollectionId !== 0 && $this->smartCollectionId !== -1) {
             $this->smartCollection = SmartElementManager::getDocument($collectionId);
             if (!$this->smartCollection) {
-                $exception = new Exception("GRID0001", $this->collectionId);
+                $exception = new Exception("GRID0001", $this->smartCollectionId);
                 $exception->setHttpStatus("404", "Smart Element not found");
                 throw $exception;
             }
@@ -162,10 +161,11 @@ class SmartGridConfigBuilder
     /**
      * Add a property as a Smart Element Grid column
      *
-     * @param  string $propertyName the name of the property
-     * @param  string $overload overload the configuration of the property
+     * @param string $propertyName the name of the property
+     * @param array $overload overload the configuration of the property
      *
      * @return $this - the current instance
+     * @throws Exception
      */
     public function addProperty(string $propertyName, $overload = [])
     {
@@ -176,10 +176,11 @@ class SmartGridConfigBuilder
     /**
      * Add a field as a Smart Element Grid column
      *
-     * @param  string $fieldId - the id of the field
-     * @param  string $overload overload the configuration of the property
-     * @param  string $structureName - the identifier of the structure containing the field, by default it is computed by the provided collection
+     * @param string $fieldId - the id of the field
+     * @param array $overload overload the configuration of the property
+     * @param string $structureName - the identifier of the structure containing the field, by default it is computed by the provided collection
      * @return $this - the current instance
+     * @throws Exception
      */
     public function addField(string $fieldId, $overload = [], $structureName = "")
     {
@@ -190,9 +191,7 @@ class SmartGridConfigBuilder
     /**
      * Add a row action in Smart Element Grid
      *
-     * @param string $action - Name of the action to perform
-     * @param string $title - Displayed title of the action
-     * @param string $iconClass - iconClass to display
+     * @param array $action - Name of the action to perform
      * @return $this - the current instance
      */
     public function addRowAction(array $action)
@@ -200,7 +199,7 @@ class SmartGridConfigBuilder
         $iconClass = isset($action["iconClass"]) ? $action["iconClass"] : "";
         array_push($this->actions, array(
                 "action" => $action["action"],
-                "title" => $action["title"],
+                "title" => sprintf(Gettext::___($action["title"], "smart-grid")),
                 "iconClass" => $iconClass
             ));
         return $this;
@@ -619,7 +618,7 @@ class SmartGridConfigBuilder
         }
 
 
-        $filterable = [
+        return [
             "operators" => [
                 "string" => $stringsOperators,
                 "date" => $stringsOperators,
@@ -629,13 +628,11 @@ class SmartGridConfigBuilder
                 "delay" => 9999999999 // Wait 115 days : only way to have the clear button easyly
             ]
         ];
-        return $filterable;
     }
 
     protected static function fieldsToUrl($fields)
     {
         return implode(",", array_map(function ($item) {
-            $fieldType = "attributes";
             if (isset($item["property"]) && $item["property"]) {
                 $fieldType = "properties";
             } else {
