@@ -6,32 +6,44 @@
     "
   >
     <!-- Inexistent case -->
-    <div class="smart-element-grid-cell-content" :style="{maxHeight: gridComponent.maxRowHeight }" v-if="isInexistent">
+    <div class="smart-element-grid-cell-content" :style="{ maxHeight: gridComponent.maxRowHeight }" v-if="isInexistent">
       <span class="smart-element-grid-cell-content--empty">
         <slot name="inexistentCell">{{ gridComponent.inexistentCellText }}</slot>
       </span>
     </div>
 
     <!-- Empty case -->
-    <div class="smart-element-grid-cell-content" :style="{maxHeight: gridComponent.maxRowHeight }" v-else-if="isEmpty">
+    <div class="smart-element-grid-cell-content" :style="{ maxHeight: gridComponent.maxRowHeight }" v-else-if="isEmpty">
       <span class="smart-element-grid-cell-content--empty">
         <slot name="emptyCell">{{ gridComponent.emptyCellText }}</slot>
       </span>
     </div>
     <!-- Property display -->
-    <div class="smart-element-grid-cell-content" :style="{maxHeight: gridComponent.maxRowHeight }" v-else-if="columnConfig.property">
+    <div
+      class="smart-element-grid-cell-content"
+      :style="{ maxHeight: gridComponent.maxRowHeight }"
+      v-else-if="columnConfig.property"
+    >
       {{ cellValue }}
     </div>
 
     <!-- Abstract display -->
-    <div class="smart-element-grid-cell-content" :style="{maxHeight: gridComponent.maxRowHeight }" v-else-if="columnConfig.abstract">
+    <div
+      class="smart-element-grid-cell-content"
+      :style="{ maxHeight: gridComponent.maxRowHeight }"
+      v-else-if="columnConfig.abstract"
+    >
       {{ cellValue.displayValue || cellValue.value }}
     </div>
 
     <!-- Smart Field display -->
 
     <!-- Multiple case -->
-    <div v-else-if="isMultiple" class="smart-element-grid-cell-content" :style="{maxHeight: gridComponent.maxRowHeight }">
+    <div
+      v-else-if="isMultiple"
+      class="smart-element-grid-cell-content"
+      :style="{ maxHeight: gridComponent.maxRowHeight * 2 }"
+    >
       <div class="smart-element-grid-cell-content-multiple-row" v-for="(fValue, index) in cellValue" :key="index">
         <div class="smart-element-grid-cell-content-multiple-row-content">
           <div
@@ -57,7 +69,7 @@
     </div>
 
     <!-- Simple case -->
-    <div class="smart-element-grid-cell-content" :style="{maxHeight: gridComponent.maxRowHeight }" v-else>
+    <div class="smart-element-grid-cell-content" :style="{ maxHeight: gridComponent.maxRowHeight }" v-else>
       <component
         class="smart-element-grid-cell-content--value"
         :is="componentName"

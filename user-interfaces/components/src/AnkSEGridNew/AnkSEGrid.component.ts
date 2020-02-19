@@ -374,7 +374,8 @@ export default class GridController extends Vue {
               abstract: true,
               withContext: false,
               sortable: false,
-              resizable: false
+              resizable: false,
+              width: 150
             });
             this.actionsList = response.data.data.actions;
           }
