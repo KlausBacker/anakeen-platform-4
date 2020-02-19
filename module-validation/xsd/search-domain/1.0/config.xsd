@@ -43,9 +43,6 @@
     <xs:complexType name="fileType">
         <xs:simpleContent>
             <xs:extension base="sd:fieldType">
-                <xs:attribute type="xs:boolean" name="filename" default="false"/>
-                <xs:attribute type="xs:boolean" name="filetype" default="false"/>
-                <xs:attribute type="xs:boolean" name="filecontent" default="false"/>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
