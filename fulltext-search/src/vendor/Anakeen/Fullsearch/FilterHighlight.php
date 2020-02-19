@@ -49,14 +49,14 @@ SQL;
             FileContentDatabase::DBTABLE,
             $seId,
             pg_escape_string($this->getPattern($pattern)),
-            $this->startSel, $this->stopSel,
+            $this->startSel,
+            $this->stopSel,
             $this->dbDomain->getTableName(),
-
             $seId
         );
         DbManager::query($sql, $r, true, true);
-        return $r;
 
+        return $r;
     }
 
 

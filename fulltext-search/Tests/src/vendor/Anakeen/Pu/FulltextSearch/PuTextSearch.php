@@ -2,12 +2,12 @@
 
 namespace Anakeen\Pu\FulltextSearch;
 
+use Anakeen\Core\SEManager;
 use Anakeen\Fullsearch\FilterContains;
 use Anakeen\Search\SearchElements;
 
 class PuTextSearch extends FulltextSearchConfig
 {
-
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
@@ -67,6 +67,23 @@ class PuTextSearch extends FulltextSearchConfig
         $this->assertEquals($expectedResults, $names, print_r($s->getSearchInfo(), true));
     }
 
+    /**
+     * @dataProvider dataHighLight
+     * @param $domain
+     * @param $searchPatten
+     * @param $expectedResults
+     */
+    public function testHighLight($domain, $searchPatten, $expectedResults)
+    {
+        $h = new \Anakeen\Fullsearch\FilterHighlight($domain);
+
+        foreach ($expectedResults as $seName => $result) {
+            $smartElement = SEManager::getDocument($seName);
+            $light = $h->highlight($smartElement->id, $searchPatten);
+            $this->assertContains($result, $light);
+        }
+    }
+
     public function dataGetDocument()
     {
         return array(
@@ -84,5 +101,43 @@ class PuTextSearch extends FulltextSearchConfig
             ["testDomainText", "ours", ["TST_ETEXT_001", "TST_ETEXT_003"]],
             ["testDomainText", "saumon", ["TST_ETEXT_003", "TST_ETEXT_001"]]
         );
+    }
+
+    public function dataHighLight()
+    {
+        return [
+            ["testDomainText", "lion", ["TST_ETEXT_002" => "La femelle du [lion] est la [lionne]"]],
+            [
+                "testDomainText",
+                "ours",
+                [
+                    "TST_ETEXT_003" => "par les animaux sauvages ([ours] notamment) lors de leur remontee",
+                    "TST_ETEXT_001" => "Tous les [ours] ont un grand corps trapu et massif",
+                ]
+            ],
+            [
+                "testDomainText",
+                "saumon",
+                [
+                    "TST_ETEXT_003" => "[Saumon]: est un nom vernaculaire",
+                    "TST_ETEXT_001" => "L'ours aime bien les [saumons] sauvages"
+                ]
+            ],
+            [
+                "testDomainText",
+                "salmonidés",
+                [
+                    "TST_ETEXT_004" => "especes de poissons de la famille des [salmonides]",
+                    "TST_ETEXT_003" => "especes de poissons de la famille des [salmonides]"
+                ]
+            ],
+            [
+                "testDomainText",
+                "rivières de l'Atlas",
+                [
+                    "TST_ETEXT_004" => "les [rivieres] de l'[Atlas] au Maroc"
+                ]
+            ],
+        ];
     }
 }

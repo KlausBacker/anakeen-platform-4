@@ -3,7 +3,7 @@
 
 * faire le filename et filetype
 
-* tests sur le highlight
+* tests sur le highlight [OK]
 
 * commit sur le te pour diminuer le sleep
 
