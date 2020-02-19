@@ -27,7 +27,7 @@ class ReportGridController extends DefaultGridController
                 $configBuilder->addRowAction($action);
             }
         }
-        $configBuilder->addRowAction(array("action"=> "consult", "title"=> "Consult"));
+        $configBuilder->addRowAction(array("action"=> "display", "title"=> "Display"));
         $config = $configBuilder->getConfig();
         return $config;
     }
