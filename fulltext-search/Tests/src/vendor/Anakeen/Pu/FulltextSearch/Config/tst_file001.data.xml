@@ -22,4 +22,9 @@
             <tst_title>Viking &amp; Pangolin et tortue</tst_title>
         </tst_f_title>
     </tst_file001>
+    <tst_file001 name="TST_EFILE_005">
+        <tst_f_title>
+            <tst_title>Nom de fichier</tst_title>
+        </tst_f_title>
+    </tst_file001>
 </documents>

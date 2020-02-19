@@ -2,7 +2,6 @@
 
 namespace Anakeen\Pu\FulltextSearch;
 
-use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Exception;
 use Anakeen\Fullsearch\FilterContains;
@@ -19,7 +18,7 @@ class PuFileSearch extends FulltextSearchConfig
         parent::setUpBeforeClass();
 
         try {
-           new \Anakeen\TransformationEngine\Client();
+            new \Anakeen\TransformationEngine\Client();
         } catch (ClientException $e) {
             return;
         }
@@ -27,17 +26,18 @@ class PuFileSearch extends FulltextSearchConfig
 
         self::importConfiguration(__DIR__ . "/Config/tst_file001.struct.xml");
         self::importDocument(__DIR__ . "/Config/tst_file001.data.xml");
+
+
         self::importSearchConfiguration(__DIR__ . "/Config/fileSearchDomainConfig.xml");
 
         $d = SEManager::getDocument("TST_EFILE_001", true, false);
-        $d->setFile("tst_file", __DIR__ . "/Config/Files/modalitedeconfinement.odt");
+        $d->setFile("tst_file", __DIR__ . "/Config/Files/modalite de confinement.odt");
         $d->store();
 
 
         $d = SEManager::getDocument("TST_EFILE_002", true, false);
         $d->setFile("tst_file", __DIR__ . "/Config/Files/cheval-sauvage.pdf");
         $d->store();
-
 
 
         $d = SEManager::getDocument("TST_EFILE_003", true, false);
@@ -53,12 +53,24 @@ class PuFileSearch extends FulltextSearchConfig
         $d->store();
 
 
+        $d = SEManager::getDocument("TST_EFILE_005", true, false);
+        $d->setFile("tst_filename", __DIR__ . "/Config/Files/Première lettre de l'alphabet.png");
+        $d->setFile("tst_filenames", __DIR__ . "/Config/Files/modalite de confinement.odt", "", 0);
+        $d->setFile("tst_filenames", __DIR__ . "/Config/Files/Test-spécial_du_nom-de-fichier.png", "", 1);
+        $d->store();
+
         self::waitForDomain("testDomainFile");
-
-
     }
 
 
+    /**
+     * Wait TE response for all files text extractions
+     * @param $domain
+     * @throws ClientException
+     * @throws Exception
+     * @throws \Anakeen\Core\DocManager\Exception
+     * @throws \Anakeen\Database\Exception
+     */
     protected static function waitForDomain($domain)
     {
         $waitings = IndexFile::getWaitingRequest();
@@ -82,7 +94,6 @@ class PuFileSearch extends FulltextSearchConfig
             $se = SEManager::getDocument($waiting->docid, false);
             $d = new SearchDomainDatabase($domain);
             $d->updateSmartWithFiles($se);
-
         }
     }
 
@@ -100,10 +111,10 @@ class PuFileSearch extends FulltextSearchConfig
         try {
             new \Anakeen\TransformationEngine\Client();
         } catch (ClientException $e) {
-            $this->markTestSkipped("NO TE configured: ".$e->getMessage());
+            $this->markTestSkipped("NO TE configured: " . $e->getMessage());
             return;
         }
-
+     
         $s = new SearchElements();
 
         $filter = new FilterContains($domain, $searchPatten);
@@ -127,6 +138,10 @@ class PuFileSearch extends FulltextSearchConfig
             ["testDomainFile", "Le cheval de Przewalski", ["TST_EFILE_002"]],
             ["testDomainFile", "Liste Rouge des espèces menacées.", ["TST_EFILE_003", "TST_EFILE_004"]],
             ["testDomainFile", "La pêche de Thor", ["TST_EFILE_004"]],
+            ["testDomainFile", "première lettre", ["TST_EFILE_005"]],
+            ["testDomainFile", "alphabet.png", ["TST_EFILE_005"]],
+            ["testDomainFile", "alphabet", ["TST_EFILE_005"]],
+            ["testDomainFile", "Test spécial", ["TST_EFILE_005"]],
         );
     }
 }

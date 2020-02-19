@@ -14,13 +14,10 @@ class SearchConfig implements \JsonSerializable
         if ($dataConfig) {
             $this->structure = $dataConfig["structure"];
             foreach ($dataConfig["fields"] as $fieldConfig) {
-                if (array_key_exists("filename", $fieldConfig)) {
+                if (array_key_exists("filecontent", $fieldConfig)) {
                     $this->fields[] = new SearchFileConfig(
                         $fieldConfig["field"],
-                        $fieldConfig["weight"],
-                        $fieldConfig["filename"],
-                        $fieldConfig["filecontent"],
-                        $fieldConfig["filetype"]
+                        $fieldConfig["weight"]
                     );
                 } else {
                     $this->fields[] = new SearchFieldConfig($fieldConfig["field"], $fieldConfig["weight"]);

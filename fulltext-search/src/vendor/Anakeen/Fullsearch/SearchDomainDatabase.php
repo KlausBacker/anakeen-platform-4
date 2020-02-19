@@ -78,7 +78,7 @@ class SearchDomainDatabase
         $configs = $this->domain->configs;
         foreach ($configs as $config) {
             $structureName = $config->structure;
-            if (! is_a($se, SEManager::getFamilyClassName($structureName))) {
+            if (!is_a($se, SEManager::getFamilyClassName($structureName))) {
                 continue;
             }
 
@@ -96,20 +96,19 @@ class SearchDomainDatabase
                     case 'file':
                         if (is_a($fieldInfo, SearchFileConfig::class)) {
                             /** @var SearchFileConfig $fieldInfo */
-                            if ($fieldInfo->filecontent === true) {
-                                if ($oa->isMultiple() === false) {
+
+                            if ($oa->isMultiple() === false) {
+                                if (preg_match(PREGEXPFILE, $rawValue, $reg)) {
+                                    if ($reg["vid"]) {
+                                        $weightFiles[$fieldInfo->weight][] = $reg["vid"];
+                                    }
+                                }
+                            } else {
+                                $rawValues = $se->getMultipleRawValues($oa->id);
+                                foreach ($rawValues as $rawValue) {
                                     if (preg_match(PREGEXPFILE, $rawValue, $reg)) {
                                         if ($reg["vid"]) {
                                             $weightFiles[$fieldInfo->weight][] = $reg["vid"];
-                                        }
-                                    }
-                                } else {
-                                    $rawValues=$se->getMultipleRawValues($oa->id);
-                                    foreach ($rawValues as $rawValue) {
-                                        if (preg_match(PREGEXPFILE, $rawValue, $reg)) {
-                                            if ($reg["vid"]) {
-                                                $weightFiles[$fieldInfo->weight][] = $reg["vid"];
-                                            }
                                         }
                                     }
                                 }
@@ -126,7 +125,7 @@ update searches.%s as s set v =
 setweight(to_tsvector('%s', unaccent(ta)), 'A') || 
 setweight(to_tsvector('%s', unaccent(tb)), 'B') || 
 setweight(to_tsvector('%s', unaccent(tc)), 'C') || 
-setweight(to_tsvector('%s', unaccent(td)), 'D') ||
+setweight(to_tsvector('%s', unaccent(td)), 'D') 
 
 %s
 
@@ -145,14 +144,63 @@ SQL;
                 }
             }
 
-            $updSql=sprintf(
+            if ($sqlset) {
+                $filedata=' || ' . implode(' || ', $sqlset);
+            } else {
+                $filedata='';
+            }
+
+            $updSql = sprintf(
                 $sql,
                 $this->domain->name,
                 $this->domain->stem,
                 $this->domain->stem,
                 $this->domain->stem,
                 $this->domain->stem,
-                implode(' || ', $sqlset),
+                $filedata,
+                $se->id
+            );
+            DbManager::query($updSql);
+        }
+    }
+
+    /**
+     * Update data vector index without file data
+     * @param SmartElement $se
+     * @throws Exception
+     * @throws \Anakeen\Database\Exception
+     */
+    protected function updateTsVector(SmartElement $se)
+    {
+        $configs = $this->domain->configs;
+        foreach ($configs as $config) {
+            $structureName = $config->structure;
+            if (!is_a($se, SEManager::getFamilyClassName($structureName))) {
+                continue;
+            }
+
+
+
+
+            $sql = <<<SQL
+update searches.%s as s set v = 
+
+setweight(to_tsvector('%s', unaccent(ta)), 'A') || 
+setweight(to_tsvector('%s', unaccent(tb)), 'B') || 
+setweight(to_tsvector('%s', unaccent(tc)), 'C') || 
+setweight(to_tsvector('%s', unaccent(td)), 'D') 
+
+where s.id = %d
+SQL;
+
+
+            $updSql = sprintf(
+                $sql,
+                $this->domain->name,
+                $this->domain->stem,
+                $this->domain->stem,
+                $this->domain->stem,
+                $this->domain->stem,
                 $se->id
             );
             DbManager::query($updSql);
@@ -384,8 +432,6 @@ SQL;
     }
 
 
-
-
     /**
      * @param SmartElement $se
      * @param SearchConfig $config
@@ -395,8 +441,8 @@ SQL;
     protected function updateSmartElementIndex(SmartElement $se, $config)
     {
         $data = ["A" => [], "B" => [], "C" => [], "D" => []];
-        $fileRequestSend=false;
-        $fileRequest=0;
+        $fileRequestSend = false;
+        $fileRequest = 0;
         foreach ($config->fields as $fieldInfo) {
             if ($fieldInfo->field === "title") {
                 // Not use getTitle here because is incomplete data
@@ -464,20 +510,36 @@ SQL;
                         }
                         break;
                     case 'file':
-                        // @TODO Switch to file config field : filename, content, filetype
                         if (is_a($fieldInfo, SearchFileConfig::class)) {
-
                             /** @var SearchFileConfig $fieldInfo */
-                            if ($fieldInfo->filecontent === true) {
-                                if ($oa->isMultiple() === false) {
+                            if ($oa->isMultiple() === false) {
+                                $fileRequest++;
+                                $fileRequestSend = IndexFile::sendIndexRequest(
+                                    $se,
+                                    $this->domainName,
+                                    $fieldInfo
+                                ) || $fileRequestSend;
+                            } else {
+                                foreach ($se->getMultipleRawValues($oa->id) as $kf => $rawValue) {
                                     $fileRequest++;
-                                    $fileRequestSend = IndexFile::sendIndexRequest($se, $this->domainName, $fieldInfo) || $fileRequestSend;
-                                } else {
-                                    foreach ($se->getMultipleRawValues($oa->id) as $kf => $rawValue) {
-                                        $fileRequest++;
-                                        $fileRequestSend = IndexFile::sendIndexRequest($se, $this->domainName, $fieldInfo, $kf) || $fileRequestSend;
-                                    }
+                                    $fileRequestSend = IndexFile::sendIndexRequest(
+                                        $se,
+                                        $this->domainName,
+                                        $fieldInfo,
+                                        $kf
+                                    ) || $fileRequestSend;
                                 }
+                            }
+                        } else {
+                            if ($oa->isMultiple() === false) {
+                                $rawValues = [$rawValue];
+                            } else {
+                                $rawValues = $se->getMultipleRawValues($oa->id);
+                            }
+                            foreach ($rawValues as $rawFileValue) {
+                                $filename = $se->vaultFilenameFromvalue($rawFileValue);
+                                $basename = preg_replace("/\\p{P}/", " ", $filename);
+                                $data[$fieldInfo->weight][] = sprintf("%s (%s)", $filename, $basename);
                             }
                         }
                         break;
@@ -501,11 +563,12 @@ SQL;
             pg_escape_string(preg_replace('/\s+/', ' ', implode(", ", $data["D"])))
         );
         DbManager::query($sql);
-
-        if ($fileRequest && !$fileRequestSend) {
+        if (!$fileRequest) {
+            // update vector without insert file content
+            $this->updateTsVector($se);
+        } elseif (!$fileRequestSend) {
+            // update vector with  file content extraction (already record)
             $this->updateSmartWithFiles($se);
         }
     }
-
-
 }

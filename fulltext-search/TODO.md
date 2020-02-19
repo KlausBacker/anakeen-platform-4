@@ -1,7 +1,7 @@
 
 * Enlever les fichiers qui ne sont plus utilisés de la table file.content ?
 
-* faire le filename et filetype
+* faire le filename   [OK]
 
 * tests sur le highlight [OK]
 

@@ -104,10 +104,7 @@ class ImportSearchConfiguration
             /** @var \DOMElement $fieldNode */
             $config->fields[] = new SearchFileConfig(
                 $fieldNode->getAttribute("ref"),
-                $fieldNode->getAttribute("weight"),
-                $fieldNode->getAttribute("filename") ?: false,
-                $fieldNode->getAttribute("filecontent") ?: false,
-                $fieldNode->getAttribute("filetype") ?: false
+                $fieldNode->getAttribute("weight")
             );
         }
 
