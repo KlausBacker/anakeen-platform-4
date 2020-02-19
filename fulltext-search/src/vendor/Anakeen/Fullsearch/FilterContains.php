@@ -32,7 +32,7 @@ class FilterContains implements ElementSearchFilter
     public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
         //("id = dochisto(id)");
-        $search->join(sprintf("id = %s(id)", $this->dbDomain->getTableName()));
+        $search->join(sprintf("id = %s(docid)", $this->dbDomain->getTableName()));
 
         $search->addFilter(sprintf(
             "to_tsquery('%s', '%s') @@ %s.v",
@@ -51,7 +51,7 @@ class FilterContains implements ElementSearchFilter
     public function getRankOrder()
     {
         return sprintf(
-            "ts_rank_cd( %s.v, to_tsquery('%s', '%s')) desc, %s.id",
+            "ts_rank_cd( %s.v, to_tsquery('%s', '%s')) desc, %s.docid",
             $this->dbDomain->getTableName(),
             "simple",
             pg_escape_string($this->getPattern()),

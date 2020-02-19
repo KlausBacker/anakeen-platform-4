@@ -11,6 +11,7 @@ class FulltextSearchConfig extends TestCaseConfig
     public static function importSearchConfiguration($xmlData)
     {
         $import=new ImportSearchConfiguration($xmlData);
-        $import->import();
+        $import->recordConfig();
+        $import->index();
     }
 }

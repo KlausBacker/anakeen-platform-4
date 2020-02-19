@@ -8,6 +8,7 @@ use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
+use Anakeen\Core\Utils\Date;
 use Anakeen\Core\Utils\Strings;
 use Anakeen\Exception;
 use Anakeen\Search\SearchElements;
@@ -34,7 +35,7 @@ class SearchDomainDatabase
     }
 
     /**
-     * Initialize and (re)index all data described in search domain
+     * Initialize : create table and index
      * @throws Exception
      * @throws \Anakeen\Database\Exception
      */
@@ -46,7 +47,6 @@ class SearchDomainDatabase
 
         $this->createTable();
         $this->createIndex();
-        $this->resetData();
     }
 
     /**
@@ -129,7 +129,7 @@ setweight(to_tsvector('%s', unaccent(td)), 'D')
 
 %s
 
-where s.id = %d
+where s.docid = %d
 SQL;
             $sqlset = [];
             foreach ($weightFiles as $weight => $fileFields) {
@@ -190,7 +190,7 @@ setweight(to_tsvector('%s', unaccent(tb)), 'B') ||
 setweight(to_tsvector('%s', unaccent(tc)), 'C') || 
 setweight(to_tsvector('%s', unaccent(td)), 'D') 
 
-where s.id = %d
+where s.docid = %d
 SQL;
 
 
@@ -342,14 +342,21 @@ SQL;
         if (!$config) {
             throw new Exception("FSEA0006", $this->domainName, $se->fromname);
         }
+        $currentLanguage = ContextManager::getLanguage();
+        if ($this->domain->lang !== $currentLanguage) {
+            ContextManager::setLanguage($this->domain->lang);
+        }
         // @TODO need delete other revision also if search config has no revision option
         $sql = sprintf(
-            "delete from %s where id=%d",
+            "delete from %s where docid=%d",
             $this->getTableName(),
             $se->id
         );
         DbManager::query($sql);
         $this->updateSmartElementIndex($se, $config);
+        if ($this->domain->lang !== $currentLanguage) {
+            ContextManager::setLanguage($currentLanguage);
+        }
     }
 
     protected function createIndex()
@@ -364,13 +371,14 @@ SQL;
     {
         $sql = <<<SQL
 create table if not exists %s  (
-  id int references docread(id),
+  docid int references docread(id),
   ta text default '',
   tb text default '',
   tc text default '',
   td text default '',
+  mdate timestamp,
   v tsvector,
-  primary key (id)
+  primary key (docid)
 );
 SQL;
         $sql = sprintf($sql, $this->getTableName());
@@ -378,15 +386,24 @@ SQL;
     }
 
 
-    protected function resetData()
+    /**
+     * Reindex all data described in search domain
+     * @throws Exception
+     * @throws \Anakeen\Core\DocManager\Exception
+     * @throws \Anakeen\Core\Exception
+     * @throws \Anakeen\Database\Exception
+     */
+    public function resetData(bool $clearDataBefore)
     {
         $currentLanguage = ContextManager::getLanguage();
         if ($this->domain->lang !== $currentLanguage) {
             ContextManager::setLanguage($this->domain->lang);
         }
 
-        $sql = sprintf("delete from %s", $this->getTableName());
-        DbManager::query($sql);
+        if ($clearDataBefore===true) {
+            $sql = sprintf("delete from %s", $this->getTableName());
+            DbManager::query($sql);
+        }
 
         $configs = $this->domain->configs;
         foreach ($configs as $smartStructureSearchconfig) {
@@ -401,30 +418,37 @@ SQL;
                 throw new Exception("FSEA0003", $this->domainName, $structureName);
             }
             $s = new SearchElements($structure->id);
+            $s->join(sprintf("id = %s(docid)", $this->getTableName()), "left outer");
+            $s->addFilter("%s.mdate > %s.mdate or %s.mdate is null", $s->getMainTable(), $this->getTableName(),  $this->getTableName());
+            $s->overrideAccessControl();
             $s->returnsOnly($fields);
-            $results = $s->getResults();
-
+            $results = $s->search()->getResults();
+            $count=$s->count();
+            $c=1;
             foreach ($results as $se) {
+                printf("%05d/%d %s)\n",$c++,$count, $structureName);
                 $this->updateSmartElementIndex($se, $smartStructureSearchconfig);
             }
         }
 
 
-        $sql = <<<SQL
+        if ($clearDataBefore === true) {
+            $sql = <<<SQL
 update %s set v = 
 setweight(to_tsvector('%s', unaccent(ta)), 'A') || 
 setweight(to_tsvector('%s', unaccent(tb)), 'B') || 
 setweight(to_tsvector('%s', unaccent(tc)), 'C') || 
 setweight(to_tsvector('%s', unaccent(td)), 'D');
 SQL;
-        DbManager::query(sprintf(
-            $sql,
-            $this->getTableName(),
-            $this->domain->stem,
-            $this->domain->stem,
-            $this->domain->stem,
-            $this->domain->stem
-        ));
+            DbManager::query(sprintf(
+                $sql,
+                $this->getTableName(),
+                $this->domain->stem,
+                $this->domain->stem,
+                $this->domain->stem,
+                $this->domain->stem
+            ));
+        }
 
         if ($this->domain->lang !== $currentLanguage) {
             ContextManager::setLanguage($currentLanguage);
@@ -512,22 +536,27 @@ SQL;
                     case 'file':
                         if (is_a($fieldInfo, SearchFileConfig::class)) {
                             /** @var SearchFileConfig $fieldInfo */
+                            $fileValues=[];
                             if ($oa->isMultiple() === false) {
-                                $fileRequest++;
-                                $fileRequestSend = IndexFile::sendIndexRequest(
-                                    $se,
-                                    $this->domainName,
-                                    $fieldInfo
-                                ) || $fileRequestSend;
+                                $fileValues[-1] = $fieldInfo;
                             } else {
                                 foreach ($se->getMultipleRawValues($oa->id) as $kf => $rawValue) {
-                                    $fileRequest++;
+                                    $fileValues = $se->getMultipleRawValues($oa->id);
+                                }
+                            }
+                            foreach ($fileValues as $kf => $rawValue) {
+                                $fileRequest++;
+                                try {
                                     $fileRequestSend = IndexFile::sendIndexRequest(
-                                        $se,
-                                        $this->domainName,
-                                        $fieldInfo,
-                                        $kf
-                                    ) || $fileRequestSend;
+                                            $se,
+                                            $this->domainName,
+                                            $fieldInfo,
+                                            $kf
+                                        ) || $fileRequestSend;
+                                } catch (Exception $e) {
+                                    if ($e->getDcpCode() !== "FSEA0010") {
+                                        throw $e;
+                                    }
                                 }
                             }
                         } else {
@@ -554,13 +583,16 @@ SQL;
         }
 
         $sql = sprintf(
-            "insert into %s (id, ta, tb, tc, td) values (%d, E'%s', E'%s', E'%s', E'%s')",
+            "delete from %s where docid=%d; insert into %s (docid, ta, tb, tc, td, mdate) values (%d, E'%s', E'%s', E'%s', E'%s', E'%s')",
+            $this->getTableName(),
+            $se->id,
             $this->getTableName(),
             $se->id,
             pg_escape_string(preg_replace('/\s+/', ' ', implode(", ", $data["A"]))),
             pg_escape_string(preg_replace('/\s+/', ' ', implode(", ", $data["B"]))),
             pg_escape_string(preg_replace('/\s+/', ' ', implode(", ", $data["C"]))),
-            pg_escape_string(preg_replace('/\s+/', ' ', implode(", ", $data["D"])))
+            pg_escape_string(preg_replace('/\s+/', ' ', implode(", ", $data["D"]))),
+            pg_escape_string(Date::getNow(true))
         );
         DbManager::query($sql);
         if (!$fileRequest) {

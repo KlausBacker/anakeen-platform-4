@@ -28,17 +28,13 @@ class FilterHighlight
         $this->dbDomain = new SearchDomainDatabase($this->domainName);
     }
 
-    /**
-     * @inheritDoc
-     */
+
     public function highlight($seId, $pattern)
     {
-        //("id = dochisto(id)");
-
         $sqlPattern=<<<SQL
 select ts_headline('%s', unaccent(ta || ' ' || tb || ' ' || tc || ' ' || td || coalesce((select string_agg(textcontent, ',') from %s where docid=%d), '')), 
                    to_tsquery('simple', '%s'), 'MaxFragments=1,StartSel=%s, StopSel=%s'
-) from %s where id=%d group by ta, tb, tc, td;
+) from %s where docid=%d group by ta, tb, tc, td;
 ;
 SQL;
 

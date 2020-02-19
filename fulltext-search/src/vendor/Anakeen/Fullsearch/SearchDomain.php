@@ -60,19 +60,28 @@ class SearchDomain implements \JsonSerializable
 
         ContextManager::setParameterValue(self::NSPARAM, "DOMAIN_CONFIG", json_encode($domains));
 
-
+        $dbDomain=new SearchDomainDatabase($this->name);
+        $dbDomain->initialize();
     }
 
 
-    public function reindexSearchDataElement(SmartElement $se) {
-
+    public function reindexSearchDataElement(SmartElement $se)
+    {
         $db=new SearchDomainDatabase($this->name);
         $db->updateSmartElement($se);
     }
 
-    public function reindexSearchData() {
+    public function reindexSearchData()
+    {
         $db=new SearchDomainDatabase($this->name);
         $db->initialize();
+        $db->resetData(true);
+    }
+    public function updateIndexSearchData()
+    {
+        $db=new SearchDomainDatabase($this->name);
+        $db->initialize();
+        $db->resetData(false);
     }
 
     /**

@@ -40,9 +40,8 @@ class ImportSearchConfiguration
         $this->xpath->registerNamespace(self::ns, self::NSURL);
     }
 
-    public function import()
+    public function index()
     {
-        $this->recordConfig();
         $this->domain->reindexSearchData();
     }
 
