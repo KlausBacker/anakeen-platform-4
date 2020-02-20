@@ -615,7 +615,7 @@ exports.parseWorkflowContants = ({ globFile, info, log, verbose }) => {
             const workflow = Object.values(workflowData)[0];
 
             let pathParts = path.dirname(workflow.file).split(path.sep);
-            let phpBaseName = workflow.classname + "__STUB.php";
+            let phpBaseName = workflow.classname + "Constant.php";
             let target = pathParts.concat([phpBaseName]).join(path.sep);
             let phpContent = mustache.render(tplPHP, workflow);
             fs.writeFileSync(target, phpContent);
@@ -807,7 +807,7 @@ exports.parseEnumContants = ({ globFile, info, log, verbose }) => {
           allEnumData.forEach(enumData => {
             let pathParts = path.dirname(enumData.file).split(path.sep);
             enumData.classname = enumData.name.replace(/-/g, "_");
-            let targetBaseName = enumData.classname + "__STUB.php";
+            let targetBaseName = enumData.classname + "Constant.php";
             let target = pathParts.concat([targetBaseName]).join(path.sep);
             let vendorIndex = pathParts.indexOf("vendor");
             if (vendorIndex >= 0) {
