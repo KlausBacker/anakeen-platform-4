@@ -114,6 +114,10 @@ class SearchSmartData
      */
     public $userid = 0;
     protected $dbaccess;
+    /**
+     * @var string
+     */
+    protected $joinType;
 
     private $debuginfo = [];
     private $join = "";
@@ -355,7 +359,8 @@ class SearchSmartData
      *
      * @param string $jointure
      *
-     * @throws \Anakeen\Exception
+     * @param string $joinType "inner" or "left outer"
+     * @throws Exception
      * @api Add join condition
      * @code
      *      $s=new searchSmartData();
@@ -368,7 +373,7 @@ class SearchSmartData
      *      $result= $s->search();
      * @endcode
      */
-    public function join($jointure)
+    public function join($jointure, $joinType = "inner")
     {
         if (empty($jointure)) {
             $this->join = '';
@@ -377,6 +382,11 @@ class SearchSmartData
         } else {
             throw new \Anakeen\Search\Exception("SD0001", $jointure);
         }
+        $joinType=strtolower($joinType);
+        if (!in_array($joinType, ["inner", "left outer"])) {
+            throw new \Anakeen\Search\Exception("SD0015", $joinType);
+        }
+        $this->joinType=$joinType;
     }
 
     /**
@@ -397,7 +407,16 @@ class SearchSmartData
                 $reg
             )) {
                 $joinid = \Anakeen\Core\SEManager::getFamilyIdFromName($reg['family']);
-                return ($joinid) ? "doc" . $joinid : $reg['family'];
+                $joinTable= ($joinid) ? "doc" . $joinid : $reg['family'];
+                $sqlJoinCond = sprintf(
+                    "%s.%s %s %s.%s",
+                    $this->getMainTable(),
+                    $reg['attr'],
+                    $reg['operator'],
+                    $joinTable,
+                    $reg['family_attr']
+                );
+                return sprintf("%s join %s on (%s)", $this->joinType, $joinTable, $sqlJoinCond);
             } else {
                 throw new Exception(sprintf("search join syntax error : %s", $this->join));
             }
@@ -405,7 +424,7 @@ class SearchSmartData
         return "";
     }
 
-    protected function getMainTable()
+    public function getMainTable()
     {
         $fromid = $this->fromid;
 
@@ -1189,16 +1208,8 @@ class SearchSmartData
                 $reg
             )) {
                 $jointable = $this->getJoinTable();
-                $sqlfilters[] = sprintf(
-                    "%s.%s %s %s.%s",
-                    $table,
-                    $reg['attr'],
-                    $reg['operator'],
-                    $jointable,
-                    $reg['family_attr']
-                ); // "id = dochisto(id)";
                 $maintable = $table;
-                $table .= ", " . $jointable;
+                $table .= " " . $jointable;
             }
         }
         $maintabledot = ($maintable && $maintable !== "doc") ? $maintable . '.' : '';
@@ -1360,7 +1371,7 @@ class SearchSmartData
                                     if ($sqlcond) {
                                         if ($this->join) {
                                             $qsql[] = sprintf(
-                                                "select z.* from (%s) as z, %s where %s",
+                                                "select z.* from (%s) as z %s where %s",
                                                 $sqlM,
                                                 $this->getJoinTable(),
                                                 $sqlcond
