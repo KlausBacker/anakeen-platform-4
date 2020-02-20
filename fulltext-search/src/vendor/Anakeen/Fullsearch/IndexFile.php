@@ -41,6 +41,7 @@ class IndexFile
                         $err = $te->sendTransformation("utf8", "", $fileInfo->path, $callurl, $info);
 
                         // printf("\tSend %dms, %s\n",(microtime(true)-$mb) *1000, $fileInfo->name);
+
                         if ($err) {
                             throw new Exception("FSEA0010", $err);
                         }

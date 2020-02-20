@@ -76,6 +76,7 @@ class PuFileSearch extends FulltextSearchConfig
         $waitings = IndexFile::getWaitingRequest();
         $ot = new \Anakeen\TransformationEngine\Client();
 
+        $elaspedTime=0;
         foreach ($waitings as $waiting) {
             $info = [];
             do {
@@ -84,8 +85,12 @@ class PuFileSearch extends FulltextSearchConfig
                 if ($err) {
                     throw new Exception($err);
                 }
-            } while ($info["status"] !== Client::TASK_STATE_ERROR && $info["status"] !== Client::TASK_STATE_SUCCESS);
+                $elaspedTime++;
+            } while ($info["status"] !== Client::TASK_STATE_ERROR && $info["status"] !== Client::TASK_STATE_SUCCESS || $elaspedTime> 60);
 
+            if ($elaspedTime > 60) {
+                throw new Exception("TE not respond in 60 seconds");
+            }
             if ($info["status"] !== Client::TASK_STATE_SUCCESS) {
                 throw new Exception($info["comment"]);
             }

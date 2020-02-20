@@ -65,12 +65,17 @@ stub: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Generate Stubs${RESET_COLOR}\n"
 	${ANAKEEN_CLI_BIN} generateStubs
 
+
 ########################################################################################################################
 ##
 ## Build
 ##
 ########################################################################################################################
-app: install-deps
+buildJS: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}Build JS $@${RESET_COLOR}\n"
+	$(YARN_BIN) buildJs
+
+app: install-deps buildJS
 	@${PRINT_COLOR} "${DEBUG_COLOR}Make app${RESET_COLOR}\n"
 	${ANAKEEN_CLI_BIN} build -t ${APP_OUTPUT_PATH}
 
@@ -95,7 +100,7 @@ app-all-autorelease: app-autorelease app-test-autorelease
 ## Deploy
 ##
 ########################################################################################################################
-deploy: install-deps
+deploy: install-deps buildJS
 	@${PRINT_COLOR} "${DEBUG_COLOR}Deploy${RESET_COLOR}\n"
 	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath . 
 

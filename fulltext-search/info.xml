@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="fulltext-search" version="0.0.1" vendor="Anakeen"
-        license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3"  >
+        license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3">
 
     <description>Fulltext search</description>
 
 
     <requires>
         <module name="smart-data-engine" version="^2.1.0"/>
+        <module name="admin-center" version="^2.1.0"/>
     </requires>
 
 
-
     <post-install>
-    <process command="./ank.php --script=updateclass --class='Anakeen\Fullsearch\FileContentDatabase'">
-        <label>Initialize system database</label>
-    </process>
+        <process command="./ank.php --script=updateclass --class='Anakeen\Fullsearch\FileContentDatabase'">
+            <label>Initialize system database</label>
+        </process>
+
+        <process
+                command="./ank.php --script=importAccounts --file=./vendor/Anakeen/Fullsearch/HubComponent/FullsearchRoles.xml"/>
+        <process
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Fullsearch/HubComponent/hubConfiguration.xml"/>
     </post-install>
 
 

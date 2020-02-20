@@ -1,0 +1,8 @@
+<accounts:accounts xmlns:accounts="https://platform.anakeen.com/4/schemas/account/1.0">
+    <accounts:roles>
+        <accounts:role name="fullsearch_administrator">
+            <accounts:displayName>Fullsearch administrator</accounts:displayName>
+            <accounts:structure name="AC_FULLSEARCHMANAGER"/>
+        </accounts:role>
+    </accounts:roles>
+</accounts:accounts>

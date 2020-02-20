@@ -15,7 +15,7 @@
 * Api Indexation multi-domain d'un smart element
 
 * Api de mise à jour incrémentale
-  * mono domaine
+  * mono domaine [OK]
   * multi-domaine
   
 * traitement de synonymes

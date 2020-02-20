@@ -28,12 +28,7 @@ class SearchDomain implements \JsonSerializable
 
     public function get($name)
     {
-        $domainsParam = ContextManager::getParameterValue(self::NSPARAM, "DOMAIN_CONFIG");
-        if ($domainsParam) {
-            $domains = json_decode($domainsParam, true);
-        } else {
-            $domains = [];
-        }
+        $domains=SearchDomainManager::getConfig();
         if (!isset($domains[$name])) {
             throw new Exception("FSEA0002", $name);
         }
@@ -50,16 +45,7 @@ class SearchDomain implements \JsonSerializable
 
     public function record()
     {
-        $domainsParam = ContextManager::getParameterValue(self::NSPARAM, "DOMAIN_CONFIG");
-        if ($domainsParam) {
-            $domains = json_decode($domainsParam, true);
-        } else {
-            $domains = [];
-        }
-        $domains[$this->name] = $this;
-
-        ContextManager::setParameterValue(self::NSPARAM, "DOMAIN_CONFIG", json_encode($domains));
-
+        SearchDomainManager::recordDomainConfig($this);
         $dbDomain=new SearchDomainDatabase($this->name);
         $dbDomain->initialize();
     }

@@ -3,14 +3,13 @@
 
 namespace Anakeen\Fullsearch;
 
-
 class SearchFieldConfig implements \JsonSerializable
 {
 
     public $field;
     public $weight;
 
-    public function __construct($field,$weight )
+    public function __construct($field, $weight)
     {
         $this->field=$field;
         $this->weight=$weight;

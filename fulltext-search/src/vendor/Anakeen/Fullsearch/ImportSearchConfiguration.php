@@ -101,7 +101,7 @@ class ImportSearchConfiguration
         $fieldNodes = $this->xpath->query("sd:file", $configNode);
         foreach ($fieldNodes as $fieldNode) {
             /** @var \DOMElement $fieldNode */
-            $config->fields[] = new SearchFileConfig(
+            $config->files[] = new SearchFileConfig(
                 $fieldNode->getAttribute("ref"),
                 $fieldNode->getAttribute("weight")
             );

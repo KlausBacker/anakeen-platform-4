@@ -8,20 +8,24 @@ class SearchConfig implements \JsonSerializable
     public $structure;
     /** @var SearchFieldConfig[] */
     public $fields = [];
+    /**
+     * @var SearchFileConfig[]
+     */
+    public $files = [];
 
     public function __construct($dataConfig = [])
     {
         if ($dataConfig) {
             $this->structure = $dataConfig["structure"];
             foreach ($dataConfig["fields"] as $fieldConfig) {
-                if (array_key_exists("filecontent", $fieldConfig)) {
-                    $this->fields[] = new SearchFileConfig(
-                        $fieldConfig["field"],
-                        $fieldConfig["weight"]
-                    );
-                } else {
-                    $this->fields[] = new SearchFieldConfig($fieldConfig["field"], $fieldConfig["weight"]);
-                }
+                $this->fields[] = new SearchFieldConfig($fieldConfig["field"], $fieldConfig["weight"]);
+            }
+
+            foreach ($dataConfig["files"] as $fieldConfig) {
+                $this->files[] = new SearchFileConfig(
+                    $fieldConfig["field"],
+                    $fieldConfig["weight"]
+                );
             }
         }
     }
@@ -31,10 +35,10 @@ class SearchConfig implements \JsonSerializable
      */
     public function jsonSerialize()
     {
-        $data = [
+        return [
             "structure" => $this->structure,
-            "fields" => $this->fields
+            "fields" => $this->fields,
+            "files" => $this->files
         ];
-        return $data;
     }
 }

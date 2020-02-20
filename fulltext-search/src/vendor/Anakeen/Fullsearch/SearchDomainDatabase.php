@@ -83,7 +83,7 @@ class SearchDomainDatabase
             }
 
             $weightFiles = ["A" => [], "B" => [], "C" => [], "D" => []];
-            foreach ($config->fields as $fieldInfo) {
+            foreach ($config->files as $fieldInfo) {
                 $oa = $se->getAttribute($fieldInfo->field);
                 if ($oa === false) {
                     continue;
@@ -92,29 +92,23 @@ class SearchDomainDatabase
                 if (!$rawValue) {
                     continue;
                 }
-                switch ($oa->type) {
-                    case 'file':
-                        if (is_a($fieldInfo, SearchFileConfig::class)) {
-                            /** @var SearchFileConfig $fieldInfo */
-
-                            if ($oa->isMultiple() === false) {
-                                if (preg_match(PREGEXPFILE, $rawValue, $reg)) {
-                                    if ($reg["vid"]) {
-                                        $weightFiles[$fieldInfo->weight][] = $reg["vid"];
-                                    }
-                                }
-                            } else {
-                                $rawValues = $se->getMultipleRawValues($oa->id);
-                                foreach ($rawValues as $rawValue) {
-                                    if (preg_match(PREGEXPFILE, $rawValue, $reg)) {
-                                        if ($reg["vid"]) {
-                                            $weightFiles[$fieldInfo->weight][] = $reg["vid"];
-                                        }
-                                    }
+                if ($oa->type === "file") {
+                    if ($oa->isMultiple() === false) {
+                        if (preg_match(PREGEXPFILE, $rawValue, $reg)) {
+                            if ($reg["vid"]) {
+                                $weightFiles[$fieldInfo->weight][] = $reg["vid"];
+                            }
+                        }
+                    } else {
+                        $rawValues = $se->getMultipleRawValues($oa->id);
+                        foreach ($rawValues as $rawValue) {
+                            if (preg_match(PREGEXPFILE, $rawValue, $reg)) {
+                                if ($reg["vid"]) {
+                                    $weightFiles[$fieldInfo->weight][] = $reg["vid"];
                                 }
                             }
                         }
-                        break;
+                    }
                 }
             }
 
@@ -145,9 +139,9 @@ SQL;
             }
 
             if ($sqlset) {
-                $filedata=' || ' . implode(' || ', $sqlset);
+                $filedata = ' || ' . implode(' || ', $sqlset);
             } else {
-                $filedata='';
+                $filedata = '';
             }
 
             $updSql = sprintf(
@@ -178,8 +172,6 @@ SQL;
             if (!is_a($se, SEManager::getFamilyClassName($structureName))) {
                 continue;
             }
-
-
 
 
             $sql = <<<SQL
@@ -400,7 +392,7 @@ SQL;
             ContextManager::setLanguage($this->domain->lang);
         }
 
-        if ($clearDataBefore===true) {
+        if ($clearDataBefore === true) {
             $sql = sprintf("delete from %s", $this->getTableName());
             DbManager::query($sql);
         }
@@ -419,14 +411,19 @@ SQL;
             }
             $s = new SearchElements($structure->id);
             $s->join(sprintf("id = %s(docid)", $this->getTableName()), "left outer");
-            $s->addFilter("%s.mdate > %s.mdate or %s.mdate is null", $s->getMainTable(), $this->getTableName(),  $this->getTableName());
+            $s->addFilter(
+                "%s.mdate > %s.mdate or %s.mdate is null",
+                $s->getMainTable(),
+                $this->getTableName(),
+                $this->getTableName()
+            );
             $s->overrideAccessControl();
             $s->returnsOnly($fields);
             $results = $s->search()->getResults();
-            $count=$s->count();
-            $c=1;
+            $count = $s->count();
+            $c = 1;
             foreach ($results as $se) {
-                printf("%05d/%d %s)\n",$c++,$count, $structureName);
+                //printf("%05d/%d %s)\n",$c++,$count, $structureName);
                 $this->updateSmartElementIndex($se, $smartStructureSearchconfig);
             }
         }
@@ -534,43 +531,17 @@ SQL;
                         }
                         break;
                     case 'file':
-                        if (is_a($fieldInfo, SearchFileConfig::class)) {
-                            /** @var SearchFileConfig $fieldInfo */
-                            $fileValues=[];
-                            if ($oa->isMultiple() === false) {
-                                $fileValues[-1] = $fieldInfo;
-                            } else {
-                                foreach ($se->getMultipleRawValues($oa->id) as $kf => $rawValue) {
-                                    $fileValues = $se->getMultipleRawValues($oa->id);
-                                }
-                            }
-                            foreach ($fileValues as $kf => $rawValue) {
-                                $fileRequest++;
-                                try {
-                                    $fileRequestSend = IndexFile::sendIndexRequest(
-                                            $se,
-                                            $this->domainName,
-                                            $fieldInfo,
-                                            $kf
-                                        ) || $fileRequestSend;
-                                } catch (Exception $e) {
-                                    if ($e->getDcpCode() !== "FSEA0010") {
-                                        throw $e;
-                                    }
-                                }
-                            }
+                        if ($oa->isMultiple() === false) {
+                            $rawValues = [$rawValue];
                         } else {
-                            if ($oa->isMultiple() === false) {
-                                $rawValues = [$rawValue];
-                            } else {
-                                $rawValues = $se->getMultipleRawValues($oa->id);
-                            }
-                            foreach ($rawValues as $rawFileValue) {
-                                $filename = $se->vaultFilenameFromvalue($rawFileValue);
-                                $basename = preg_replace("/\\p{P}/", " ", $filename);
-                                $data[$fieldInfo->weight][] = sprintf("%s (%s)", $filename, $basename);
-                            }
+                            $rawValues = $se->getMultipleRawValues($oa->id);
                         }
+                        foreach ($rawValues as $rawFileValue) {
+                            $filename = $se->vaultFilenameFromvalue($rawFileValue);
+                            $basename = preg_replace("/\\p{P}/", " ", $filename);
+                            $data[$fieldInfo->weight][] = sprintf("%s (%s)", $filename, $basename);
+                        }
+
                         break;
                     default:
                         if ($oa->isMultiple() === false) {
@@ -579,6 +550,46 @@ SQL;
                             $data[$fieldInfo->weight][] = implode(", ", $se->getMultipleRawValues($oa->id));
                         }
                 }
+            }
+        }
+
+        foreach ($config->files as $fieldInfo) {
+            $oa = $se->getAttribute($fieldInfo->field);
+            if ($oa === false) {
+                throw new Exception("FSEA0005", $this->domainName, $se, $fieldInfo->field);
+            }
+            $rawValue = $se->getRawValue($oa->id);
+            if (!$rawValue) {
+                continue;
+            }
+            switch ($oa->type) {
+                case 'file':
+                        /** @var SearchFileConfig $fieldInfo */
+                        $fileValues = [];
+                    if ($oa->isMultiple() === false) {
+                        $fileValues[-1] = $fieldInfo;
+                    } else {
+                        foreach ($se->getMultipleRawValues($oa->id) as $kf => $rawValue) {
+                            $fileValues = $se->getMultipleRawValues($oa->id);
+                        }
+                    }
+                    foreach ($fileValues as $kf => $rawValue) {
+                        $fileRequest++;
+                        try {
+                            $fileRequestSend = IndexFile::sendIndexRequest(
+                                $se,
+                                $this->domainName,
+                                $fieldInfo,
+                                $kf
+                            ) || $fileRequestSend;
+                        } catch (Exception $e) {
+                            if ($e->getDcpCode() !== "FSEA0010") {
+                                throw $e;
+                            }
+                        }
+                    }
+
+                    break;
             }
         }
 
