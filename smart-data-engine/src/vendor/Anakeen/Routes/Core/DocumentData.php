@@ -77,7 +77,8 @@ class DocumentData
         $this->initParameters($request, $args);
         if (!$this->checkId($this->documentId, $initid)) {
             // Redirect to other url
-            $document = SmartElementManager::getDocument($initid, false);
+            $document = SmartElementManager::getDocument($this->documentId, false, false);
+
             $location = \Anakeen\Routes\Core\Lib\DocumentUtils::getURI($document);
             return $response->withStatus(307)
                 ->withHeader("location", $location);
