@@ -52,7 +52,7 @@ class SmartGridContentBuilder
     /**
      * Constructor of SmartGridContentBuilder
      *
-     * @param  mixed $collectionId - Identifier of the collection (structure name/id, folder or report id),
+     * @param mixed $collectionId - Identifier of the collection (structure name/id, folder or report id),
      * it could be 0 for searching in all Smart Elements, or -1 for searching in all Smart Structures
      *
      *
@@ -66,7 +66,7 @@ class SmartGridContentBuilder
     /**
      * Set the smart collection which the smart element Smart Element Grid is based on
      *
-     * @param  mixed $collectionId - Identifier of the collection (structure name/id, folder or report id),
+     * @param mixed $collectionId - Identifier of the collection (structure name/id, folder or report id),
      * it could be 0 for searching in all Smart Elements, or -1 for searching in all Smart Structures
      *
      * @return $this - the current instance
@@ -173,7 +173,7 @@ class SmartGridContentBuilder
     /**
      * Set custom search
      *
-     * @param  SearchElements $search
+     * @param SearchElements $search
      *
      * @return $this - the current instance
      */
@@ -200,6 +200,14 @@ class SmartGridContentBuilder
             $return["content"][] = $this->formatElement($element);
         }
         return $return;
+    }
+
+    /**
+     * @return SearchElements
+     */
+    public function getSearch()
+    {
+        return $this->searchElements;
     }
 
     public function setPage($page)
@@ -255,6 +263,7 @@ class SmartGridContentBuilder
             $this->searchElements->setStart(($page - 1) * $pageSize);
         }
     }
+
     protected function formatElement(SmartElement $element)
     {
         $df = new DocumentDataFormatter($element);
@@ -262,30 +271,37 @@ class SmartGridContentBuilder
             if (isset($field["field"])) {
                 if (isset($field["property"]) && $field["property"]) {
                     $df->addProperty($field["field"]);
-                } elseif (isset($field["abstract"]) && $field["abstract"]) {
-                    $abstractDataFunction = function () {
-                        return [
-                            "value" => null,
-                            "displayValue" => null
-                        ];
-                    };
-                    if (isset($field["dataFunction"]) && is_callable($field["dataFunction"])) {
-                        $abstractDataFunction = $field["dataFunction"];
-                    }
-                    $df->getFormatCollection()->setDocumentRenderHook(function ($info, \Anakeen\Core\Internal\SmartElement $se) use ($abstractDataFunction, $field) {
-                        $data = $abstractDataFunction($se);
-                        $info["abstract"] = [
-                            $field["field"] => $data
-                        ];
-                        return $info;
-                    });
-                } else {
+                    $df->format();
+                } elseif (!isset($field["abstract"])) {
                     if ($element->getAttribute($field["field"])) {
                         $df->setAttributes([$field["field"]]);
                     }
                 }
             }
         }
+        $df->getFormatCollection()->setDocumentRenderHook(function ($info, \Anakeen\Core\Internal\SmartElement $se) {
+            foreach ($this->fields as $field) {
+                if (isset($field["field"])) {
+                    if (isset($field["abstract"]) && $field["abstract"]) {
+                        $abstractDataFunction = function () {
+                            return [
+                                "value" => null,
+                                "displayValue" => null
+                            ];
+                        };
+                        if (isset($field["dataFunction"]) && is_callable($field["dataFunction"])) {
+                            $abstractDataFunction = $field["dataFunction"];
+                        }
+                        $data = $abstractDataFunction($se);
+                        $info["abstract"] = array_merge($info['abstract'] ?? [], [
+                            $field["field"] => $data
+                        ]);
+                    }
+                }
+            }
+            return $info;
+        });
+
         return $df->getData();
     }
 }
