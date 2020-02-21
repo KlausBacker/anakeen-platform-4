@@ -1,4 +1,4 @@
-import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementGrid.esm";
+import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementVueGrid.esm";
 import Splitter from "@anakeen/internal-components/lib/Splitter.js";
 import ElementView from "../../SmartElements/ElementView/ElementView.vue";
 
@@ -18,6 +18,13 @@ export default {
   },
   data() {
     return {
+      actions: [{ action: "consultRole", title: "Display" }],
+      columns: [
+        { field: "id", hidden: true, title: "Identification", property: true },
+        { field: "title", property: true, title: "Title" },
+        { field: "role_login", title: "Reference (login)" },
+        { field: "name", title: "Logical name", property: true }
+      ],
       selectedRole: this.role,
       panes: [
         {
@@ -112,7 +119,7 @@ export default {
       switch (e.data.type) {
         case "consultRole":
           e.preventDefault();
-          profileId = e.data.row.name || e.data.row.id.toString();
+          profileId = e.data.row.properties.id.toString();
           this.$refs.rolesSplitter.disableEmptyContent();
           this.selectedRole = profileId;
           this.getRoute().then(route => {
