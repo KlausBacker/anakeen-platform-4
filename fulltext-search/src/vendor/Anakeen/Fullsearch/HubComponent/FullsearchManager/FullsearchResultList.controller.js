@@ -20,13 +20,13 @@ const componentInstance = Vue.component("template-component", {
   `,
   methods: {
     clickHandler: function(e) {
-      e.dataItem= this.dataItem;
-      this.$emit("custom", e );
+      e.dataItem = this.dataItem;
+      this.$emit("custom", e);
     },
-    getHighValue()  {
-      let encode=(kendo.htmlEncode(this.dataItem.highlights));
-      encode=encode.replace(/\[\[\[/g, "<em>");
-      encode=encode.replace(/]]]/g, "</em>");
+    getHighValue() {
+      let encode = kendo.htmlEncode(this.dataItem.highlights);
+      encode = encode.replace(/\[\[\[/g, "<em>");
+      encode = encode.replace(/]]]/g, "</em>");
       return encode;
     }
   }

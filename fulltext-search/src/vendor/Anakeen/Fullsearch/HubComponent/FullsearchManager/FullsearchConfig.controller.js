@@ -1,5 +1,4 @@
 import Vue from "vue";
-import { process } from "@progress/kendo-data-query";
 import { Grid } from "@progress/kendo-vue-grid";
 
 const componentInstance = Vue.component("template-component", {
@@ -9,14 +8,14 @@ const componentInstance = Vue.component("template-component", {
   template: `
       <section>
           <p><strong>Stemmer:</strong> {{dataItem.domainStem}}</p>
-          <p>
+          <div>
               <strong>Analyzed structures:</strong>
               <ul>
                   <li v-for="structure in dataItem.structures">
                       {{ structure.structure }}
                   </li>
               </ul>
-          </p>
+          </div>
       </section>`
 });
 
