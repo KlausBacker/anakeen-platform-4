@@ -1,5 +1,5 @@
 import Splitter from "@anakeen/internal-components/lib/Splitter.js";
-import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementGrid.esm";
+import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementVueGrid.esm";
 import PropertiesView from "devComponents/PropertiesView/PropertiesView.vue";
 import ElementView from "./ElementView/ElementView.vue";
 import RawElementView from "./RawElementView/RawElementView.vue";
@@ -86,22 +86,6 @@ export default {
     this.initFilters(window.location.search);
   },
   methods: {
-    cellRender(event) {
-      if (event.data) {
-        if (event.data.columnConfig) {
-          switch (event.data.columnConfig.field) {
-            case "fromid":
-              event.data.cellRender.html(`
-                <a data-role="develRouterLink" href="/devel/smartStructures/${event.data.cellData.name}/infos">${event.data.cellData.name}</a>
-              `);
-              break;
-          }
-        }
-        if (event.data.rowData.doctype && event.data.rowData.doctype === "C") {
-          event.data.cellRender.addClass("structure-type-cell");
-        }
-      }
-    },
     initFilters(searchUrl) {
       const computeFilters = () => {
         const re = /(name|title|initid|fromid)=([^&]+)/g;
@@ -168,7 +152,7 @@ export default {
       let seIdentifier;
       switch (event.data.type) {
         case "consult":
-          seIdentifier = event.data.row.name || event.data.row.initid;
+          seIdentifier = event.data.row.properties.name || event.data.row.properties.initid;
           this.$refs.splitter.disableEmptyContent();
           event.preventDefault();
           this.selectedElement = {
@@ -187,7 +171,7 @@ export default {
           });
           break;
         case "viewJSON":
-          seIdentifier = event.data.row.name || event.data.row.initid;
+          seIdentifier = event.data.row.properties.name || event.data.row.properties.initid;
           this.$refs.splitter.disableEmptyContent();
           event.preventDefault();
           this.selectedElement = {
@@ -195,7 +179,7 @@ export default {
             component: "element-raw",
             props: {
               elementId: seIdentifier,
-              elementType: docTypeString(event.data.row.doctype),
+              elementType: docTypeString(event.data.row.properties.doctype),
               formatType: "json"
             },
             name: seIdentifier,
@@ -206,7 +190,7 @@ export default {
           });
           break;
         case "viewXML":
-          seIdentifier = event.data.row.name || event.data.row.initid;
+          seIdentifier = event.data.row.properties.name || event.data.row.properties.initid;
           this.$refs.splitter.disableEmptyContent();
           event.preventDefault();
           this.selectedElement = {
@@ -214,7 +198,7 @@ export default {
             component: "element-raw",
             props: {
               elementId: seIdentifier,
-              elementType: docTypeString(event.data.row.doctype),
+              elementType: docTypeString(event.data.row.properties.doctype),
               formatType: "xml"
             },
             name: seIdentifier,
@@ -225,7 +209,7 @@ export default {
           });
           break;
         case "viewProps":
-          seIdentifier = event.data.row.name || event.data.row.initid;
+          seIdentifier = event.data.row.properties.name || event.data.row.properties.initid;
           this.$refs.splitter.disableEmptyContent();
           event.preventDefault();
           this.selectedElement = {
@@ -242,15 +226,15 @@ export default {
           });
           break;
         case "security":
-          if (event.data.row.profid) {
-            seIdentifier = event.data.row.name || event.data.row.initid;
+          if (event.data.row.properties.profid) {
+            seIdentifier = event.data.row.properties.name || event.data.row.properties.initid;
             this.$refs.splitter.disableEmptyContent();
             event.preventDefault();
             this.selectedElement = {
-              url: `${seIdentifier}/security?profileId=${event.data.row.profid}`,
+              url: `${seIdentifier}/security?profileId=${event.data.row.properties.profid}`,
               component: "element-security",
               props: {
-                profileId: event.data.row.profid,
+                profileId: event.data.row.properties.profid,
                 detachable: true
               },
               name: seIdentifier,
