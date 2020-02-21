@@ -522,8 +522,11 @@ class FormatCollection
             }
             $renderDoc = array();
             foreach ($this->fmtProps as $propName) {
-                $renderDoc["properties"][$propName] = $this->callPropertyRenderHook($this->getPropInfo($propName, $doc),
-                    $propName, $doc);
+                $renderDoc["properties"][$propName] = $this->callPropertyRenderHook(
+                    $this->getPropInfo($propName, $doc),
+                    $propName,
+                    $doc
+                );
             }
 
             foreach ($this->fmtAttrs as $attrid) {
@@ -551,8 +554,11 @@ class FormatCollection
                     }
                     $renderDoc["attributes"][$oa->id] = $this->callAttributeRenderHook($attributeInfo, $oa, $doc);
                 } else {
-                    $renderDoc["attributes"][$attrid] = $this->callAttributeRenderHook(new Format\UnknowAttributeValue($this->ncAttribute),
-                        null, $doc);
+                    $renderDoc["attributes"][$attrid] = $this->callAttributeRenderHook(
+                        new Format\UnknowAttributeValue($this->ncAttribute),
+                        null,
+                        $doc
+                    );
                 }
             }
 
@@ -951,8 +957,11 @@ class FormatCollection
                             $tvv = $this->rtrimNull($av);
                         } else {
                             // Not possible
-                            throw new Format\Exception(sprintf("Incorrect value for multiple x2 \"%s\" \"%s\"", $av,
-                                $value));
+                            throw new Format\Exception(sprintf(
+                                "Incorrect value for multiple x2 \"%s\" \"%s\"",
+                                $av,
+                                $value
+                            ));
                         }
                         if (count($tvv) == 0) {
                             $info[$k] = array();
@@ -1018,14 +1027,24 @@ class FormatCollection
                     break;
 
                 case 'thesaurus':
-                    $info = new Format\ThesaurusAttributeValue($oa, $value, $doc, $this->relationIconSize,
-                        $this->relationNoAccessText);
+                    $info = new Format\ThesaurusAttributeValue(
+                        $oa,
+                        $value,
+                        $doc,
+                        $this->relationIconSize,
+                        $this->relationNoAccessText
+                    );
                     break;
 
                 case 'docid':
                 case 'account':
-                    $info = new Format\DocidAttributeValue($oa, $value, $doc, $this->relationIconSize,
-                        $this->relationNoAccessText);
+                    $info = new Format\DocidAttributeValue(
+                        $oa,
+                        $value,
+                        $doc,
+                        $this->relationIconSize,
+                        $this->relationNoAccessText
+                    );
                     break;
 
                 case 'file':
