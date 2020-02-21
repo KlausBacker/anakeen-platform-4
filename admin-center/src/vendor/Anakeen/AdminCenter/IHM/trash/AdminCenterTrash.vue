@@ -8,15 +8,26 @@
       class="trash-splitter"
       local-storage-key="admin-center-trash-splitter"
     >
+      <!--      <ank-se-grid-->
+      <!--        ref="grid"-->
+      <!--        class="trash-grid"-->
+      <!--        :sortable="false"-->
+      <!--        :refresh="true"-->
+      <!--        :page-sizes="[50, 100, 200]"-->
+      <!--        url-config="/api/v2/admin/trash/config/"-->
+      <!--        :context-titles="false"-->
+      <!--        @action-click="selectTrash"-->
+      <!--        @grid-data-bound="onGridDataBound"-->
+      <!--      />-->
+
       <ank-se-grid
         ref="grid"
         class="trash-grid"
-        :sortable="false"
-        :refresh="true"
-        :page-sizes="[50, 100, 200]"
-        url-config="/api/v2/admin/trash/config/"
-        :context-titles="false"
-        @action-click="selectTrash"
+        controller="TRASH_GRID_CONTROLLER"
+        pageable
+        filterable
+        default-expandable
+        @rowActionClick="selectTrash"
         @grid-data-bound="onGridDataBound"
       />
       <div class="trash-se-parent">
@@ -24,7 +35,7 @@
           <span class="material-icons">delete</span>
           <p>Select Smart Element</p>
         </div>
-        <ank-smart-element class="trash-smart-element" ref="trashSmartElement" />
+        <ank-smart-element ref="trashSmartElement" class="trash-smart-element" />
       </div>
     </ank-split-panes>
   </div>

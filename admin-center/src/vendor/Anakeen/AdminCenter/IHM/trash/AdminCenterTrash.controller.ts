@@ -1,7 +1,7 @@
 /* eslint-disable no-case-declarations */
 import AnkPaneSplitter from "@anakeen/internal-components/lib/PaneSplitter";
 import SmartElement from "@anakeen/user-interfaces/components/lib/AnkSmartElement.esm";
-import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementGrid.esm";
+import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementVueGrid.esm";
 import { Component, Vue } from "vue-property-decorator";
 
 @Component({
@@ -15,10 +15,10 @@ export default class AdminCenterTrashController extends Vue {
   public $refs!: {
     [key: string]: any;
   };
-  public selectedTrash: string = "";
+  public selectedTrash = "";
   public NbReference: any = 0;
   public content: string;
-  public selectedTrashBool: boolean = false;
+  public selectedTrashBool = false;
 
   /*** 
     This function close the confirmation pop-up (for restore or delete one element) 
@@ -34,14 +34,14 @@ export default class AdminCenterTrashController extends Vue {
       /***
         When the user click on the "display" button
       ***/
-      case "display":
+      case "consult":
         this.selectedTrashBool = true;
         if (!$(".k-grid-display", e.target).hasClass("k-state-disabled")) {
-          this.selectedTrash = e.data.row.name || e.data.row.id.toString();
+          this.selectedTrash = e.data.row.properties.id.toString();
           this.$nextTick(() => {
-          this.$refs.trashSmartElement.fetchSmartElement({
-                initid: this.selectedTrash
-              });
+            this.$refs.trashSmartElement.fetchSmartElement({
+              initid: this.selectedTrash
+            });
           });
         }
         break;
@@ -50,7 +50,7 @@ export default class AdminCenterTrashController extends Vue {
         When the user click on the "restore" button
       ***/
       case "restore":
-        this.selectedTrash = e.data.row.name || e.data.row.id.toString();
+        this.selectedTrash = e.data.row.properties.id.toString();
         const contentRestore =
           "<p ref='content_confirm' class='content-confirm' >Warning : you are about to restore this element</p> <div class='button_wrapper'> <button class='k-cancel' ref='cancel'>Cancel</button><button class='k-restore' ref='deleteElement'>Restore Element</button> </div>";
 
@@ -70,7 +70,7 @@ export default class AdminCenterTrashController extends Vue {
                   const docid = this.selectedTrash;
 
                   this.$http.put("/api/v2/admin/trash/" + docid).then(response => {
-                    this.$refs.grid.reload();
+                    this.$refs.grid._loadGridContent();
                     if (this.selectedTrashBool && this.$refs.trashSmartElement.getProperty("id") === parseInt(docid)) {
                       this.$refs.trashSmartElement.fetchSmartElement({
                         initid: this.selectedTrash,
@@ -89,7 +89,7 @@ export default class AdminCenterTrashController extends Vue {
             close: this.onClose,
             content: { template: contentRestore },
             iframe: false,
-            title: "Confirm restoration of : " + e.data.row.title.value
+            title: "Confirm restoration of : " + e.data.row.properties.title
           })
           .data("kendoWindow")
           .center()
@@ -101,7 +101,7 @@ export default class AdminCenterTrashController extends Vue {
         When the user click on the "delete" button
       ***/
       case "delete":
-        this.selectedTrash = e.data.row.name || e.data.row.id.toString();
+        this.selectedTrash = e.data.row.properties.id.toString();
         const thisPointer = this;
 
         this.$http.get("/api/v2/admin/trash/" + this.selectedTrash).then(response => {
@@ -115,14 +115,12 @@ export default class AdminCenterTrashController extends Vue {
           } else if (Number(thisPointer.NbReference) <= 2) {
             let str = "";
             data.forEach(item => {
-              str += `<li>${item.stitle}</li>`
+              str += `<li>${item.stitle}</li>`;
             });
-            this.content =
-              `${deleteReference}<ul>${str}</ul>` + deleteButtonForm;
+            this.content = `${deleteReference}<ul>${str}</ul>` + deleteButtonForm;
           } else {
             this.content =
-              deleteReference + thisPointer.NbReference +
-              "</b> other Smart Elements</p>" + deleteButtonForm;
+              deleteReference + thisPointer.NbReference + "</b> other Smart Elements</p>" + deleteButtonForm;
           }
           $(thisPointer.$refs.confirm)
             .kendoWindow({
@@ -139,7 +137,7 @@ export default class AdminCenterTrashController extends Vue {
                   click: e => {
                     const docid = this.selectedTrash;
                     this.$http.delete("/api/v2/admin/trash/" + docid).then(response => {
-                      this.$refs.grid.reload();
+                      this.$refs.grid._loadGridContent();
                     });
 
                     $(this.$refs.confirm)
@@ -152,7 +150,7 @@ export default class AdminCenterTrashController extends Vue {
               close: thisPointer.onClose,
               content: { template: this.content },
               iframe: false,
-              title: `"${e.data.row.title.value}" : Confirm deletion`
+              title: `"${e.data.row.properties.title}" : Confirm deletion`
             })
             .data("kendoWindow")
             .center()
