@@ -17,6 +17,7 @@
         <!-- import default configuration of admin center -->
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/DevelopmentCenter/Config/develConfiguration.xml"/>
                 <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/elements-grid-controller.xml" />
+                <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/masks-grid-controller.xml" />
     </post-install>
 
     <post-upgrade>
