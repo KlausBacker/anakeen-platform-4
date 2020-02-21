@@ -1,4 +1,4 @@
-import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementGrid.esm";
+import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementVueGrid.esm";
 import ElementView from "../../SmartElements/ElementView/ElementView.vue";
 import ProfileView from "devComponents/profile/profile.vue";
 import Splitter from "@anakeen/internal-components/lib/Splitter.js";
@@ -125,10 +125,9 @@ export default {
       return Promise.resolve([{ url: filterUrl }]);
     },
     actionClick(event) {
-      const controlName = event.data.row.name;
+      const controlName = event.data.row.properties.name || event.data.row.properties.id.toString();
       switch (event.data.type) {
         case "consult":
-          event.preventDefault();
           this.$refs.controlSplitter.disableEmptyContent();
           this.selectedControl = {
             url: `/element/${controlName}`,
@@ -141,11 +140,10 @@ export default {
           };
           this.getRoute().then(route => {
             this.$emit("navigate", route);
-            this.getSelected(event.data.row.name);
+            this.getSelected(event.data.row.properties.name);
           });
           break;
         case "permissions":
-          event.preventDefault();
           this.$refs.controlSplitter.disableEmptyContent();
           this.selectedControl = {
             url: `/permissions/${controlName}`,
@@ -160,7 +158,7 @@ export default {
           };
           this.getRoute().then(route => {
             this.$emit("navigate", route);
-            this.getSelected(event.data.row.name);
+            this.getSelected(event.data.row.properties.name);
           });
           break;
         default:
