@@ -298,7 +298,7 @@ class FormatCollection
      * @param \DocumentList $l
      * @return \Anakeen\Core\Internal\FormatCollection
      */
-    public function useCollection(\DocumentList & $l)
+    public function useCollection(\DocumentList &$l)
     {
         $this->dl = $l;
         return $this;
@@ -351,8 +351,8 @@ class FormatCollection
      * add a property to render
      * by default id and title are rendered
      * @param string $props
-     * @throws Format\Exception
      * @return \Anakeen\Core\Internal\FormatCollection
+     * @throws Format\Exception
      */
     public function addProperty($props)
     {
@@ -399,6 +399,16 @@ class FormatCollection
         return $this;
     }
 
+
+    /**
+     * return the recorded attribute callback
+     * @return \Closure
+     */
+    public function getAttributeRenderHook()
+    {
+        return $this->renderAttributeHook;
+    }
+
     /**
      * apply a callback on each document returned
      * to modify render
@@ -409,6 +419,16 @@ class FormatCollection
     {
         $this->renderDocumentHook = $hookFunction;
         return $this;
+    }
+
+
+    /**
+     * return the recorded document callback
+     * @return \Closure
+     */
+    public function getDocumentRenderHook()
+    {
+        return $this->renderDocumentHook;
     }
 
     /**
@@ -423,6 +443,12 @@ class FormatCollection
         return $this;
     }
 
+
+    public function getPropertyRenderHook()
+    {
+        return $this->renderPropertyHook;
+    }
+
     protected function callHookStatus($s)
     {
         if ($this->hookStatus) {
@@ -434,9 +460,9 @@ class FormatCollection
     }
 
     /**
-     * @param Format\StandardAttributeValue|null               $info
+     * @param Format\StandardAttributeValue|null $info
      * @param \Anakeen\Core\SmartStructure\BasicAttribute|null $oa
-     * @param \Anakeen\Core\Internal\SmartElement              $doc
+     * @param \Anakeen\Core\Internal\SmartElement $doc
      * @return Format\StandardAttributeValue
      */
     protected function callAttributeRenderHook($info, $oa, \Anakeen\Core\Internal\SmartElement $doc)
@@ -449,7 +475,7 @@ class FormatCollection
     }
 
     /**
-     * @param array                               $info
+     * @param array $info
      * @param \Anakeen\Core\Internal\SmartElement $doc
      * @return array
      */
@@ -464,8 +490,8 @@ class FormatCollection
 
     /**
      * @param Format\StandardAttributeValue|string|null $info
-     * @param string                                    $propId
-     * @param \Anakeen\Core\Internal\SmartElement       $doc
+     * @param string $propId
+     * @param \Anakeen\Core\Internal\SmartElement $doc
      * @return Format\StandardAttributeValue
      */
     protected function callPropertyRenderHook($info, $propId, \Anakeen\Core\Internal\SmartElement $doc)
@@ -479,8 +505,8 @@ class FormatCollection
 
     /**
      * return formatted document list to be easily exported in other format
-     * @throws Format\Exception
      * @return array
+     * @throws Format\Exception
      */
     public function render()
     {
@@ -496,7 +522,8 @@ class FormatCollection
             }
             $renderDoc = array();
             foreach ($this->fmtProps as $propName) {
-                $renderDoc["properties"][$propName] = $this->callPropertyRenderHook($this->getPropInfo($propName, $doc), $propName, $doc);
+                $renderDoc["properties"][$propName] = $this->callPropertyRenderHook($this->getPropInfo($propName, $doc),
+                    $propName, $doc);
             }
 
             foreach ($this->fmtAttrs as $attrid) {
@@ -524,7 +551,8 @@ class FormatCollection
                     }
                     $renderDoc["attributes"][$oa->id] = $this->callAttributeRenderHook($attributeInfo, $oa, $doc);
                 } else {
-                    $renderDoc["attributes"][$attrid] = $this->callAttributeRenderHook(new Format\UnknowAttributeValue($this->ncAttribute), null, $doc);
+                    $renderDoc["attributes"][$attrid] = $this->callAttributeRenderHook(new Format\UnknowAttributeValue($this->ncAttribute),
+                        null, $doc);
                 }
             }
 
@@ -923,7 +951,8 @@ class FormatCollection
                             $tvv = $this->rtrimNull($av);
                         } else {
                             // Not possible
-                            throw new Format\Exception(sprintf("Incorrect value for multiple x2 \"%s\" \"%s\"", $av, $value));
+                            throw new Format\Exception(sprintf("Incorrect value for multiple x2 \"%s\" \"%s\"", $av,
+                                $value));
                         }
                         if (count($tvv) == 0) {
                             $info[$k] = array();
@@ -989,12 +1018,14 @@ class FormatCollection
                     break;
 
                 case 'thesaurus':
-                    $info = new Format\ThesaurusAttributeValue($oa, $value, $doc, $this->relationIconSize, $this->relationNoAccessText);
+                    $info = new Format\ThesaurusAttributeValue($oa, $value, $doc, $this->relationIconSize,
+                        $this->relationNoAccessText);
                     break;
 
                 case 'docid':
                 case 'account':
-                    $info = new Format\DocidAttributeValue($oa, $value, $doc, $this->relationIconSize, $this->relationNoAccessText);
+                    $info = new Format\DocidAttributeValue($oa, $value, $doc, $this->relationIconSize,
+                        $this->relationNoAccessText);
                     break;
 
                 case 'file':
@@ -1055,10 +1086,10 @@ class FormatCollection
     }
 
     /**
-     * @param array|\stdClass                              $info
+     * @param array|\stdClass $info
      * @param \Anakeen\Core\SmartStructure\NormalAttribute $oAttr
-     * @param int                                          $index
-     * @param array                                        $configuration
+     * @param int $index
+     * @param array $configuration
      * @return string
      */
     public static function getDisplayValue($info, $oAttr, $index = -1, $configuration = array())
