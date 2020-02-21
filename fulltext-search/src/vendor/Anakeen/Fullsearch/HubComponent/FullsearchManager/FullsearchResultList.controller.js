@@ -1,4 +1,5 @@
 import Vue from "vue";
+import kendo from "@progress/kendo-ui/js/kendo.core";
 import { Grid } from "@progress/kendo-vue-grid";
 
 const componentInstance = Vue.component("template-component", {
@@ -8,7 +9,7 @@ const componentInstance = Vue.component("template-component", {
   template: `
       <td  @click="clickHandler">
           <div v-if="dataItem.properties">
-              <p><img :src="dataItem.properties.icon"/><b>{{dataItem.properties.title}}</b> </p>
+              <p><img alt="icon" :src="dataItem.properties.icon"/><b>{{dataItem.properties.title}}</b> </p>
           <p v-html="getHighValue()" class="highlight"></p>
           </div>
 
@@ -62,9 +63,7 @@ export default {
   },
 
   created() {},
-  mounted() {
-    console.log(this.$refs.grid);
-  },
+  mounted() {},
   methods: {
     onRowClick(event) {
       this.selectedID = event.dataItem.properties.initid;
