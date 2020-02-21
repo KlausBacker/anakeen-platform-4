@@ -132,6 +132,7 @@ class SmartGridConfigBuilder
         $relation = $options["relation"] ?? "";
         $encoded = $options["encoded"] ?? false;
         $sortable = $options["sortable"] ?? false;
+        $hidden = $options["hidden"] ?? false;
         $filterable = false;
         if (isset($options["filterable"])) {
             if ($options["filterable"] === true) {
@@ -152,7 +153,8 @@ class SmartGridConfigBuilder
             "abstract" => true,
             "property" => false,
             "sortable" => $sortable,
-            "filterable" => $filterable
+            "filterable" => $filterable,
+            "hidden" => $hidden
         ];
         $this->fields[] = $data;
         return $this;
@@ -481,6 +483,7 @@ class SmartGridConfigBuilder
                     "encoded" => false,
                     "sortable" => false,
                     "filterable" => static::getFieldFilterableConfig($field),
+                    "hidden" => false
                 ];
                 $isSortable = static::isFieldSortable($fieldId, $structureRef);
                 if ($isSortable) {
