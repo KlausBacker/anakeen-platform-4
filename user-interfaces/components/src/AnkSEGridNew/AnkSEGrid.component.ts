@@ -62,7 +62,7 @@ const DEFAULT_SORT = {
 })
 export default class GridController extends Vue {
   @Prop({
-    default: "",
+    default: "0",
     type: String
   })
   public collection: string;
