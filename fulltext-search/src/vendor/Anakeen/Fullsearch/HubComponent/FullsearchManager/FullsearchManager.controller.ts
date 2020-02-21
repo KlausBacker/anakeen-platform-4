@@ -17,7 +17,9 @@ import { Component, Vue } from "vue-property-decorator";
   }
 })
 export default class FullsearchManagerController extends Vue {
-  public domainConfig: IDomainConfig = {
-    name: ""
-  };
+  public domainConfig = "";
+
+  protected onSelectedDomain(selectedDomain): void {
+    this.domainConfig = selectedDomain;
+  }
 }

@@ -1,11 +1,10 @@
 <template>
   <div class="fullsearch-list">
-
     <kendo-grid
       ref="grid"
-      :detail="detailTemplate"
+      :cell-render="cellTemplate"
       :style="{ height: '100%' }"
-      :data-items="gridData"
+      :data-items="gridItems"
       :filterable="false"
       :resizable="false"
       :reorderable="false"
@@ -15,15 +14,14 @@
       :expand-field="'expanded'"
       :columns="columns"
       :selected-field="selectedField"
-      @rowclick="onRowClick"
-      @expandchange="expandChange"
+      @custom="onRowClick"
     >
     </kendo-grid>
   </div>
 </template>
 
 <style lang="scss">
-@import "./FullsearchConfig.scss";
+@import "./FullsearchResultList.scss";
 </style>
 
-<script src="./FullsearchConfig.controller.js" ></script>
+<script src="./FullsearchResultList.controller.js"></script>

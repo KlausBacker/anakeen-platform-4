@@ -4,7 +4,14 @@
         <sde:route name="RecordFileTextContent">
             <sde:callable>Anakeen\Fullsearch\Route\RecordFileTextContent</sde:callable>
             <sde:method>GET</sde:method>
-                <sde:pattern>/api/v2/fullsearch/domains/{domain}/smart-elements/{elementid}</sde:pattern>
+            <sde:pattern>/api/v2/fullsearch/domains/{domain}/smart-elements/{elementid}</sde:pattern>
+            <sde:description>Use by TE to record file text extraction</sde:description>
+        </sde:route>
+
+        <sde:route name="SearchElements">
+            <sde:callable>Anakeen\Fullsearch\Route\SearchElements</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/fullsearch/domains/{domain}/smart-elements/</sde:pattern>
         </sde:route>
     </sde:routes>
 </sde:config>

@@ -61,13 +61,16 @@ class SearchDomain implements \JsonSerializable
     {
         $db=new SearchDomainDatabase($this->name);
         $db->initialize();
-        $db->resetData(true);
+        $db->recordData(true);
     }
-    public function updateIndexSearchData()
+    public function updateIndexSearchData(\Closure $onUpdate = null)
     {
         $db=new SearchDomainDatabase($this->name);
         $db->initialize();
-        $db->resetData(false);
+        if ($onUpdate) {
+            $db->onUpdate($onUpdate);
+        }
+        $db->recordData(false);
     }
 
     /**

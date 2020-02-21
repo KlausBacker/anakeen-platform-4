@@ -27,6 +27,11 @@ class SearchDomainDatabase
      * @var SearchDomain
      */
     protected $domain;
+    /**
+     * @var \Closure
+     */
+    protected $updateHook;
+
 
     public function __construct(string $domainName)
     {
@@ -47,6 +52,10 @@ class SearchDomainDatabase
 
         $this->createTable();
         $this->createIndex();
+    }
+
+    public function onUpdate(\Closure $onUpdate ) {
+        $this->updateHook=$onUpdate;
     }
 
     /**
@@ -379,13 +388,15 @@ SQL;
 
 
     /**
-     * Reindex all data described in search domain
+     * Reindex all data that are not up-to-date described in search domain
+     * @param bool $clearDataBefore if true, previous recorded data are deleted before record data
      * @throws Exception
      * @throws \Anakeen\Core\DocManager\Exception
      * @throws \Anakeen\Core\Exception
      * @throws \Anakeen\Database\Exception
+     * @throws \Anakeen\Search\Exception
      */
-    public function resetData(bool $clearDataBefore)
+    public function recordData(bool $clearDataBefore)
     {
         $currentLanguage = ContextManager::getLanguage();
         if ($this->domain->lang !== $currentLanguage) {
@@ -420,11 +431,14 @@ SQL;
             $s->overrideAccessControl();
             $s->returnsOnly($fields);
             $results = $s->search()->getResults();
-            $count = $s->count();
-            $c = 1;
+
+            $ft=$this->updateHook;
             foreach ($results as $se) {
                 //printf("%05d/%d %s)\n",$c++,$count, $structureName);
                 $this->updateSmartElementIndex($se, $smartStructureSearchconfig);
+                if ($ft) {
+                    $ft($se);
+                }
             }
         }
 
