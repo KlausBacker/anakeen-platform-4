@@ -19,6 +19,7 @@
         <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationLabel/**/*.xml"/>
 
         <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubInstanciation/**/*.xml"/>
+        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Hub/Routes/hub-station-admin-grid-controller.xml" />
 
     </post-install>
     <post-upgrade>

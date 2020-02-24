@@ -432,6 +432,9 @@ class SmartGridConfigBuilder
                 case "S": // Search
                     $structureId = $this->smartCollection->getRawValue(Search::se_famid);
                     break;
+                case "F":
+                    $structureId = $this->smartCollection->initid;
+                    break;
                 default:
                     break;
             }
