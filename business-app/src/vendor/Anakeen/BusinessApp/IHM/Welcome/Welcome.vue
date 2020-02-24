@@ -1,6 +1,7 @@
 <template>
   <div class="ank-business-app-welcome">
-    <div v-if="creation && creation.length" class="ank-business-app-welcome-creation card card-default">
+    <div v-if="creation && creation.length"
+class="ank-business-app-welcome-creation card card-default">
       <div class="ank-business-app-welcome-creation-title card-header">
         <span class="ank-business-app-welcome-grid-title-label">
           <i class="title-icon material-icons">add</i> <span class="title">Creation</span>
@@ -17,9 +18,7 @@
             ><span class="creation-structure-icon-wrapper"
               ><img class="creation-structure-icon" :src="item.icon"
             /></span>
-            <span class="creation-structure-title">{{
-              item.title || item.name
-            }}</span></span
+            <span class="creation-structure-title">{{ item.title || item.name }}</span></span
           >
         </div>
       </div>
@@ -34,16 +33,19 @@
           <i class="title-icon material-icons">grid_on</i>
           <span class="title">{{ gridCollec.title }}</span>
         </span>
-        <button @click="reloadGrid(index)" class="ank-business-app-welcome-grid-reload k-button"><i class="fa fa-refresh"></i></button>
+        <button class="ank-business-app-welcome-grid-reload k-button" @click="reloadGrid(index)">
+          <i class="fa fa-refresh" />
+        </button>
       </div>
       <div class="ank-business-app-welcome-grid-content">
         <ank-se-grid
-          :collection="gridCollec.name || gridCollec.initid"
-          urlConfig="/api/v2/smartstructures/dsearch/gridConfig/<collection>"
-          @action-click="onActionClick"
           ref="grids"
-        >
-        </ank-se-grid>
+          :collection="gridCollec.name || gridCollec.initid"
+          controller="DEFAULT_GRID_CONTROLLER"
+          defaultExpandable
+          :actions="[{ action: 'consult', title: 'Display' }]"
+          @rowActionClick="onActionClick"
+        />
       </div>
     </div>
   </div>
