@@ -1,12 +1,10 @@
 import AnkPaneSplitter from "@anakeen/internal-components/lib/PaneSplitter";
 import SmartElement from "@anakeen/user-interfaces/components/lib/AnkSmartElement.esm";
 import AnkSEVueGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementVueGrid.esm";
-import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementGrid.esm";
 import { Component, Vue } from "vue-property-decorator";
 
 @Component({
   components: {
-    "ank-se-grid": AnkSEGrid,
     "ank-smart-element": () => SmartElement,
     "ank-split-panes": AnkPaneSplitter,
     "ank-se-vue-grid": AnkSEVueGrid
