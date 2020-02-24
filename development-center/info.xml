@@ -20,6 +20,7 @@
         <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/masks-grid-controller.xml" />
         <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/control-grid-controller.xml" />
         <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/field-access-grid-controller.xml" />
+        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/profiles-grid-controller.xml" />
     </post-install>
 
     <post-upgrade>

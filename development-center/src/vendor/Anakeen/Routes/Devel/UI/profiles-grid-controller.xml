@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<grid:controllers xmlns:grid="https://platform.anakeen.com/4/schemas/grid/1.0">
+    <grid:controller name="PROFILES_GRID_CONTROLLER" class="Anakeen\Routes\Devel\UI\ProfilesGridController"/>
+</grid:controllers>
