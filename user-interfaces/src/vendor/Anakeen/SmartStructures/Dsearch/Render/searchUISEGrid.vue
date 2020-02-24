@@ -2,6 +2,7 @@
   <ank-se-grid
     v-if="searchId"
     :collection="searchId"
+    :pageable="false"
     class="search-grid"
     ref="searchGrid"
     controller="REPORT_GRID_CONTROLLER"

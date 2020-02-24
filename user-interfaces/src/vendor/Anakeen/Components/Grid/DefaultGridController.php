@@ -48,6 +48,11 @@ class DefaultGridController implements SmartGridController
             foreach ($clientConfig["columns"] as $column) {
                 $contentBuilder->addColumn($column);
             }
+        } else {
+            $config = self::getGridConfig($collectionId, $clientConfig);
+            foreach ($config["columns"] as $column) {
+                $contentBuilder->addColumn($column);
+            }
         }
         if (isset($clientConfig["filter"])) {
             $filterLogic = $clientConfig["filter"]["logic"];
