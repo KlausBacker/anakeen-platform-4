@@ -1,8 +1,6 @@
 import AnkPaneSplitter from "@anakeen/internal-components/lib/PaneSplitter";
-import SearchConfigs from "./FullsearchConfig.vue";
-import SearchSearch from "./FullsearchSearch.vue";
-// eslint-disable-next-line no-unused-vars
-import { IDomainConfig } from "./IDomainConfigType";
+import SearchConfigs from "../BasicList/FullsearchConfig.vue";
+import SearchSearch from "../Searches/FullsearchSearch.vue";
 
 import "@progress/kendo-ui/js/kendo.splitter";
 

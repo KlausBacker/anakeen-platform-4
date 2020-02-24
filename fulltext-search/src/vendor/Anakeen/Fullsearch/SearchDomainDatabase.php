@@ -9,6 +9,7 @@ use Anakeen\Core\DbManager;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\Utils\Date;
+use Anakeen\Core\Utils\Postgres;
 use Anakeen\Core\Utils\Strings;
 use Anakeen\Exception;
 use Anakeen\Search\SearchElements;
@@ -54,8 +55,165 @@ class SearchDomainDatabase
         $this->createIndex();
     }
 
-    public function onUpdate(\Closure $onUpdate ) {
-        $this->updateHook=$onUpdate;
+    /**
+     * Reindex all data that are not up-to-date described in search domain
+     * @param bool $clearDataBefore if true, previous recorded data are deleted before record data
+     * @throws Exception
+     * @throws \Anakeen\Core\DocManager\Exception
+     * @throws \Anakeen\Core\Exception
+     * @throws \Anakeen\Database\Exception
+     * @throws \Anakeen\Search\Exception
+     */
+    public function recordData(bool $clearDataBefore)
+    {
+        $currentLanguage = ContextManager::getLanguage();
+        if ($this->domain->lang !== $currentLanguage) {
+            ContextManager::setLanguage($this->domain->lang);
+        }
+
+        if ($clearDataBefore === true) {
+            $sql = sprintf("delete from %s", $this->getTableName());
+            DbManager::query($sql);
+        }
+
+        $configs = $this->domain->configs;
+        foreach ($configs as $smartStructureSearchconfig) {
+            $fields = array_map(function ($item) {
+                /** @var SearchFieldConfig $item */
+                return $item->field;
+            }, $smartStructureSearchconfig->fields);
+
+            $structureName = $smartStructureSearchconfig->structure;
+            $structure = SEManager::getFamily($structureName);
+            if (!$structure) {
+                throw new Exception("FSEA0003", $this->domainName, $structureName);
+            }
+            $s = new SearchElements($structure->id);
+            $s->join(sprintf("id = %s(docid)", $this->getTableName()), "left outer");
+            $s->addFilter(
+                "%s.mdate > %s.mdate or %s.mdate is null",
+                $s->getMainTable(),
+                $this->getTableName(),
+                $this->getTableName()
+            );
+            $s->overrideAccessControl();
+            $s->returnsOnly($fields);
+            $results = $s->search()->getResults();
+
+            $ft = $this->updateHook;
+            foreach ($results as $se) {
+                //printf("%05d/%d %s)\n",$c++,$count, $structureName);
+                $this->updateSmartElementIndex($se, $smartStructureSearchconfig);
+                if ($ft) {
+                    $ft($se);
+                }
+            }
+        }
+
+
+        if ($clearDataBefore === true) {
+            $sql = <<<SQL
+update %s set v = 
+setweight(to_tsvector('%s', unaccent(ta)), 'A') || 
+setweight(to_tsvector('%s', unaccent(tb)), 'B') || 
+setweight(to_tsvector('%s', unaccent(tc)), 'C') || 
+setweight(to_tsvector('%s', unaccent(td)), 'D');
+SQL;
+            DbManager::query(sprintf(
+                $sql,
+                $this->getTableName(),
+                $this->domain->stem,
+                $this->domain->stem,
+                $this->domain->stem,
+                $this->domain->stem
+            ));
+        }
+
+        if ($this->domain->lang !== $currentLanguage) {
+            ContextManager::setLanguage($currentLanguage);
+        }
+    }
+
+    public function onUpdate(\Closure $onUpdate)
+    {
+        $this->updateHook = $onUpdate;
+    }
+
+    public function getDbStats()
+    {
+        $configs = $this->domain->configs;
+        $stats=[];
+        foreach ($configs as $smartStructureSearchconfig) {
+            $structureName = $smartStructureSearchconfig->structure;
+            $structure = SEManager::getFamily($structureName);
+            if (!$structure) {
+                throw new Exception("FSEA0003", $this->domainName, $structureName);
+            }
+            $s = new SearchElements($structure->id);
+            $s->overrideAccessControl();
+            $results = $s->onlyCount();
+
+            $stats["structures"][$structureName]["totalToIndex"]=$results;
+
+
+            $s = new SearchElements($structure->id);
+            $s->overrideAccessControl();
+            $s->join(sprintf("id = %s(docid)", $this->getTableName()));
+            $results = $s->onlyCount();
+
+            $stats["structures"][$structureName]["totalIndexed"]=$results;
+
+
+
+            $s = new SearchElements($structure->id);
+            $s->overrideAccessControl();
+            $s->join(sprintf("id = %s(docid)", $this->getTableName()));
+            $s->addFilter(
+                "%s.mdate > %s.mdate",
+                $s->getMainTable(),
+                $this->getTableName()
+            );
+            $results = $s->onlyCount();
+
+            $stats["structures"][$structureName]["totalDirty"]=$results;
+        }
+        return $stats;
+    }
+
+    /**
+     * Reset indexing of all search data for the smart element
+     * @param SmartElement $se
+     * @throws Exception
+     * @throws \Anakeen\Database\Exception
+     */
+    public function updateSmartElement(SmartElement $se)
+    {
+        $configs = $this->domain->configs;
+        $config = "";
+        foreach ($configs as $smartStructureSearchconfig) {
+            if ($smartStructureSearchconfig->structure === $se->fromname) {
+                $config = $smartStructureSearchconfig;
+                break;
+            }
+        }
+        if (!$config) {
+            throw new Exception("FSEA0006", $this->domainName, $se->fromname);
+        }
+        $currentLanguage = ContextManager::getLanguage();
+        if ($this->domain->lang !== $currentLanguage) {
+            ContextManager::setLanguage($this->domain->lang);
+        }
+        // @TODO need delete other revision also if search config has no revision option
+        $sql = sprintf(
+            "delete from %s where docid=%d",
+            $this->getTableName(),
+            $se->id
+        );
+        DbManager::query($sql);
+        $this->updateSmartElementIndex($se, $config);
+        if ($this->domain->lang !== $currentLanguage) {
+            ContextManager::setLanguage($currentLanguage);
+        }
     }
 
     /**
@@ -161,47 +319,6 @@ SQL;
                 $this->domain->stem,
                 $this->domain->stem,
                 $filedata,
-                $se->id
-            );
-            DbManager::query($updSql);
-        }
-    }
-
-    /**
-     * Update data vector index without file data
-     * @param SmartElement $se
-     * @throws Exception
-     * @throws \Anakeen\Database\Exception
-     */
-    protected function updateTsVector(SmartElement $se)
-    {
-        $configs = $this->domain->configs;
-        foreach ($configs as $config) {
-            $structureName = $config->structure;
-            if (!is_a($se, SEManager::getFamilyClassName($structureName))) {
-                continue;
-            }
-
-
-            $sql = <<<SQL
-update searches.%s as s set v = 
-
-setweight(to_tsvector('%s', unaccent(ta)), 'A') || 
-setweight(to_tsvector('%s', unaccent(tb)), 'B') || 
-setweight(to_tsvector('%s', unaccent(tc)), 'C') || 
-setweight(to_tsvector('%s', unaccent(td)), 'D') 
-
-where s.docid = %d
-SQL;
-
-
-            $updSql = sprintf(
-                $sql,
-                $this->domain->name,
-                $this->domain->stem,
-                $this->domain->stem,
-                $this->domain->stem,
-                $this->domain->stem,
                 $se->id
             );
             DbManager::query($updSql);
@@ -325,40 +442,46 @@ SQL;
     }
 
     /**
-     * Reset indexing of all search data for the smart element
+     * Update data vector index without file data
      * @param SmartElement $se
      * @throws Exception
      * @throws \Anakeen\Database\Exception
      */
-    public function updateSmartElement(SmartElement $se)
+    protected function updateTsVector(SmartElement $se)
     {
         $configs = $this->domain->configs;
-        $config = "";
-        foreach ($configs as $smartStructureSearchconfig) {
-            if ($smartStructureSearchconfig->structure === $se->fromname) {
-                $config = $smartStructureSearchconfig;
-                break;
+        foreach ($configs as $config) {
+            $structureName = $config->structure;
+            if (!is_a($se, SEManager::getFamilyClassName($structureName))) {
+                continue;
             }
-        }
-        if (!$config) {
-            throw new Exception("FSEA0006", $this->domainName, $se->fromname);
-        }
-        $currentLanguage = ContextManager::getLanguage();
-        if ($this->domain->lang !== $currentLanguage) {
-            ContextManager::setLanguage($this->domain->lang);
-        }
-        // @TODO need delete other revision also if search config has no revision option
-        $sql = sprintf(
-            "delete from %s where docid=%d",
-            $this->getTableName(),
-            $se->id
-        );
-        DbManager::query($sql);
-        $this->updateSmartElementIndex($se, $config);
-        if ($this->domain->lang !== $currentLanguage) {
-            ContextManager::setLanguage($currentLanguage);
+
+
+            $sql = <<<SQL
+update searches.%s as s set v = 
+
+setweight(to_tsvector('%s', unaccent(ta)), 'A') || 
+setweight(to_tsvector('%s', unaccent(tb)), 'B') || 
+setweight(to_tsvector('%s', unaccent(tc)), 'C') || 
+setweight(to_tsvector('%s', unaccent(td)), 'D') 
+
+where s.docid = %d
+SQL;
+
+
+            $updSql = sprintf(
+                $sql,
+                $this->domain->name,
+                $this->domain->stem,
+                $this->domain->stem,
+                $this->domain->stem,
+                $this->domain->stem,
+                $se->id
+            );
+            DbManager::query($updSql);
         }
     }
+
 
     protected function createIndex()
     {
@@ -377,6 +500,7 @@ create table if not exists %s  (
   tb text default '',
   tc text default '',
   td text default '',
+  files bigint[] default '{}',
   mdate timestamp,
   v tsvector,
   primary key (docid)
@@ -385,87 +509,6 @@ SQL;
         $sql = sprintf($sql, $this->getTableName());
         DbManager::query($sql);
     }
-
-
-    /**
-     * Reindex all data that are not up-to-date described in search domain
-     * @param bool $clearDataBefore if true, previous recorded data are deleted before record data
-     * @throws Exception
-     * @throws \Anakeen\Core\DocManager\Exception
-     * @throws \Anakeen\Core\Exception
-     * @throws \Anakeen\Database\Exception
-     * @throws \Anakeen\Search\Exception
-     */
-    public function recordData(bool $clearDataBefore)
-    {
-        $currentLanguage = ContextManager::getLanguage();
-        if ($this->domain->lang !== $currentLanguage) {
-            ContextManager::setLanguage($this->domain->lang);
-        }
-
-        if ($clearDataBefore === true) {
-            $sql = sprintf("delete from %s", $this->getTableName());
-            DbManager::query($sql);
-        }
-
-        $configs = $this->domain->configs;
-        foreach ($configs as $smartStructureSearchconfig) {
-            $fields = array_map(function ($item) {
-                /** @var SearchFieldConfig $item */
-                return $item->field;
-            }, $smartStructureSearchconfig->fields);
-
-            $structureName = $smartStructureSearchconfig->structure;
-            $structure = SEManager::getFamily($structureName);
-            if (!$structure) {
-                throw new Exception("FSEA0003", $this->domainName, $structureName);
-            }
-            $s = new SearchElements($structure->id);
-            $s->join(sprintf("id = %s(docid)", $this->getTableName()), "left outer");
-            $s->addFilter(
-                "%s.mdate > %s.mdate or %s.mdate is null",
-                $s->getMainTable(),
-                $this->getTableName(),
-                $this->getTableName()
-            );
-            $s->overrideAccessControl();
-            $s->returnsOnly($fields);
-            $results = $s->search()->getResults();
-
-            $ft=$this->updateHook;
-            foreach ($results as $se) {
-                //printf("%05d/%d %s)\n",$c++,$count, $structureName);
-                $this->updateSmartElementIndex($se, $smartStructureSearchconfig);
-                if ($ft) {
-                    $ft($se);
-                }
-            }
-        }
-
-
-        if ($clearDataBefore === true) {
-            $sql = <<<SQL
-update %s set v = 
-setweight(to_tsvector('%s', unaccent(ta)), 'A') || 
-setweight(to_tsvector('%s', unaccent(tb)), 'B') || 
-setweight(to_tsvector('%s', unaccent(tc)), 'C') || 
-setweight(to_tsvector('%s', unaccent(td)), 'D');
-SQL;
-            DbManager::query(sprintf(
-                $sql,
-                $this->getTableName(),
-                $this->domain->stem,
-                $this->domain->stem,
-                $this->domain->stem,
-                $this->domain->stem
-            ));
-        }
-
-        if ($this->domain->lang !== $currentLanguage) {
-            ContextManager::setLanguage($currentLanguage);
-        }
-    }
-
 
     /**
      * @param SmartElement $se
@@ -567,6 +610,7 @@ SQL;
             }
         }
 
+        $filesId=[];
         foreach ($config->files as $fieldInfo) {
             $oa = $se->getAttribute($fieldInfo->field);
             if ($oa === false) {
@@ -578,8 +622,8 @@ SQL;
             }
             switch ($oa->type) {
                 case 'file':
-                        /** @var SearchFileConfig $fieldInfo */
-                        $fileValues = [];
+                    /** @var SearchFileConfig $fieldInfo */
+                    $fileValues = [];
                     if ($oa->isMultiple() === false) {
                         $fileValues[-1] = $fieldInfo;
                     } else {
@@ -589,16 +633,22 @@ SQL;
                     }
                     foreach ($fileValues as $kf => $rawValue) {
                         $fileRequest++;
-                        try {
-                            $fileRequestSend = IndexFile::sendIndexRequest(
-                                $se,
-                                $this->domainName,
-                                $fieldInfo,
-                                $kf
-                            ) || $fileRequestSend;
-                        } catch (Exception $e) {
-                            if ($e->getDcpCode() !== "FSEA0010") {
-                                throw $e;
+                        if (preg_match(PREGEXPFILE, $rawValue, $reg)) {
+                            if ($reg["vid"]) {
+                                $filesId[] = $reg["vid"];
+                            }
+
+                            try {
+                                $fileRequestSend = IndexFile::sendIndexRequest(
+                                    $se,
+                                    $this->domainName,
+                                    $fieldInfo,
+                                    $kf
+                                ) || $fileRequestSend;
+                            } catch (Exception $e) {
+                                if ($e->getDcpCode() !== "FSEA0010") {
+                                    throw $e;
+                                }
                             }
                         }
                     }
@@ -608,7 +658,7 @@ SQL;
         }
 
         $sql = sprintf(
-            "delete from %s where docid=%d; insert into %s (docid, ta, tb, tc, td, mdate) values (%d, E'%s', E'%s', E'%s', E'%s', E'%s')",
+            "delete from %s where docid=%d; insert into %s (docid, ta, tb, tc, td, files, mdate) values (%d, E'%s', E'%s', E'%s', E'%s',%s, E'%s')",
             $this->getTableName(),
             $se->id,
             $this->getTableName(),
@@ -617,6 +667,7 @@ SQL;
             pg_escape_string(preg_replace('/\s+/', ' ', implode(", ", $data["B"]))),
             pg_escape_string(preg_replace('/\s+/', ' ', implode(", ", $data["C"]))),
             pg_escape_string(preg_replace('/\s+/', ' ', implode(", ", $data["D"]))),
+            $filesId?(pg_escape_literal(Postgres::arrayToString($filesId))):'null',
             pg_escape_string(Date::getNow(true))
         );
         DbManager::query($sql);

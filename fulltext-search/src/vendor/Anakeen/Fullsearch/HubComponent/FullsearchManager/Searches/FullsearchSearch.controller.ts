@@ -1,7 +1,7 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import AnkSmartElement from "@anakeen/user-interfaces/components/lib/AnkSmartElement.esm";
 import AnkPaneSplitter from "@anakeen/internal-components/lib/PaneSplitter";
-import ResultList from "./FullsearchResultList.vue";
+import ResultList from "../Results/FullsearchResultList.vue";
 import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 
 Vue.use(ButtonsInstaller);

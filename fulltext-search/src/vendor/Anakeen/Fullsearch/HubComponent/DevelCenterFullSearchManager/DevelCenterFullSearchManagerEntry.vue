@@ -1,11 +1,11 @@
 <template>
   <hub-element-layout>
     <nav>
-      <i class="material-icons hub-icon">search</i> <span v-if="!isDockCollapsed"> Fullsearch Manager</span>
+     <span > Fullsearch</span>
     </nav>
     <template v-slot:hubContent>
       <div class="hub-fullsearch-manager">
-        <admin-center-fullsearch></admin-center-fullsearch>
+        <devel-center-fullsearch></devel-center-fullsearch>
       </div>
     </template>
   </hub-element-layout>
@@ -14,10 +14,10 @@
 import HubElement from "@anakeen/hub-components/components/lib/AnkHubElement.esm";
 
 export default {
-  name: "ank-admin-fullsearch-manager",
+  name: "ank-devel-fullsearch-manager",
   extends: HubElement,
   components: {
-    "admin-center-fullsearch": () => import("../FullsearchManager/Manager/FullsearchManager.vue")
+    "devel-center-fullsearch": () => import("../FullsearchManager/Devel/FullsearchDevel.vue")
     }
 };
 </script>

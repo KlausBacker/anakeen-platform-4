@@ -4,8 +4,6 @@
 namespace Anakeen\Fullsearch;
 
 use Anakeen\Core\ContextManager;
-use Anakeen\Core\Internal\SmartElement;
-use Anakeen\Exception;
 
 class SearchDomainManager
 {
@@ -30,12 +28,6 @@ class SearchDomainManager
 
     public static function recordDomainConfig(SearchDomain $domain)
     {
-        $domainsParam = ContextManager::getParameterValue(self::NSPARAM, "DOMAIN_CONFIG");
-        if ($domainsParam) {
-            $domains = json_decode($domainsParam, true);
-        } else {
-            $domains = [];
-        }
         $domains=self::getConfig();
         $domains[$domain->name] = $domain;
 

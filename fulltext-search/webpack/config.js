@@ -18,6 +18,9 @@ const conf = {
   entry: {
     AdminFullsearchManager: [
       path.resolve(BASE_DIR, "src/vendor/Anakeen/Fullsearch/HubComponent/AdminCenterFullSearchManager/index.js")
+    ],
+    DevelFullsearchManager: [
+      path.resolve(BASE_DIR, "src/vendor/Anakeen/Fullsearch/HubComponent/DevelCenterFullSearchManager/index.js")
     ]
   },
   buildPath: PUBLIC_PATH,

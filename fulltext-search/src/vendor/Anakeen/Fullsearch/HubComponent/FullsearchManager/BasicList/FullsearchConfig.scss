@@ -1,0 +1,24 @@
+.fullsearch-list {
+  tr.k-state-selected {
+    background-color: var(--primary);
+
+    > td:not(.k-hierarchy-cell) {
+      color: var(--white);
+    }
+  }
+
+  ul.structure-info {
+    .warning {
+      color: #b57c14;
+      font-weight: bold;
+    }
+
+    .success {
+      color: #00b521;
+      font-weight: bold;
+
+
+    }
+
+  }
+}

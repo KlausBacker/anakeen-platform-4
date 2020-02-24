@@ -10,15 +10,23 @@ const componentInstance = Vue.component("template-component", {
           <p><strong>Stemmer:</strong> {{dataItem.domainStem}}</p>
           <div>
               <strong>Analyzed structures:</strong>
-              <ul>
-                  <li v-for="structure in dataItem.structures">
-                      {{ structure.structure }}
+              <ul class="structure-info">
+                  <li v-for="structure in dataItem.structures"  >
+                      <span :class="{ success: (structure.stats.totalToIndex === structure.stats.totalIndexed && structure.stats.totalDirty === 0) }">{{ structure.structure }}</span>
+                      <ul>
+                          <li>Total to index : {{structure.stats.totalToIndex}}</li>
+                          <li :class="{ warning: (structure.stats.totalToIndex > structure.stats.totalIndexed) }">Total indexed : {{structure.stats.totalIndexed}}</li>
+                          <li :class="{ warning: (structure.stats.totalDirty > 0) }">Total not up to date : {{structure.stats.totalDirty}}</li>
+                      </ul>
+                      
                   </li>
               </ul>
           </div>
+          <p><strong>Database size:</strong> {{dataItem.database.size.prettySize}}</p>
       </section>`
 });
 
+// noinspection JSUnusedGlobalSymbols
 export default {
   name: "ank-fullsearch-list",
   components: {
@@ -52,9 +60,24 @@ export default {
           const domainName = domain.name;
           const domainStem = domain.stem;
 
+          for (let [structName, dbStats] of Object.entries(domain.database.structures)) {
+            domain.configs.forEach(struc => {
+              if (struc.structure === structName) {
+                struc.stats = dbStats;
+              }
+            });
+          }
+
+          /*  domain.database.structures.forEach((db, structName) => {
+            domain.configs.forEach((struc) => {
+              if (struc.name === )
+            })
+          });*/
+
           this.configInfo.push({
             domainName: domainName,
             domainStem: domainStem,
+            database: domain.database,
             structures: domain.configs
           });
         });
