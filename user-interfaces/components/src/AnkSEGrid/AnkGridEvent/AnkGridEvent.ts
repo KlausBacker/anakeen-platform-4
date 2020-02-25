@@ -26,7 +26,7 @@ class GridEvent {
   /**
    * Cancel the event if it is cancelable
    */
-  preventDefault() {
+  preventDefault(): void {
     if (this.cancelable) {
       this.defaultPrevented = true;
     } else {
@@ -38,7 +38,7 @@ class GridEvent {
    * Test if the event is cancelled or not
    * @return {boolean} true if the event is cancelled, false otherwise
    */
-  isDefaultPrevented() {
+  isDefaultPrevented(): boolean {
     return this.cancelable && this.defaultPrevented;
   }
 }

@@ -54,7 +54,7 @@ export default class AnkGridCellHtmlText extends Vue {
   @Watch("pageSize")
   protected onPageSizeChange(newValue) {
     if (this.gridComponent) {
-      this.gridComponent.$emit("gridPageChange", {
+      this.gridComponent.$emit("pageChange", {
         page: {
           skip: 0,
           take: newValue,
@@ -164,7 +164,7 @@ export default class AnkGridCellHtmlText extends Vue {
 
   public goToPage(pageNumber) {
     if (this.gridComponent) {
-      this.gridComponent.$emit("gridPageChange", {
+      this.gridComponent.$emit("pageChange", {
         page: {
           skip: (pageNumber - 1) * this.pageSize,
           take: this.pageSize,
@@ -190,7 +190,7 @@ export default class AnkGridCellHtmlText extends Vue {
 
   public firstPage() {
     if (this.gridComponent && this.hasPrevious) {
-      this.gridComponent.$emit("gridPageChange", {
+      this.gridComponent.$emit("pageChange", {
         page: {
           skip: 0,
           take: this.pageSize,
@@ -202,7 +202,7 @@ export default class AnkGridCellHtmlText extends Vue {
 
   public previousPage() {
     if (this.gridComponent && this.hasPrevious) {
-      this.gridComponent.$emit("gridPageChange", {
+      this.gridComponent.$emit("pageChange", {
         page: {
           skip: this.gridComponent.currentPage.skip - this.pageSize,
           take: this.pageSize,
@@ -214,7 +214,7 @@ export default class AnkGridCellHtmlText extends Vue {
 
   public nextPage() {
     if (this.gridComponent && this.hasNext) {
-      this.gridComponent.$emit("gridPageChange", {
+      this.gridComponent.$emit("pageChange", {
         page: {
           skip: this.gridComponent.currentPage.skip + this.pageSize,
           take: this.pageSize,
@@ -226,7 +226,7 @@ export default class AnkGridCellHtmlText extends Vue {
 
   public lastPage() {
     if (this.gridComponent && this.hasNext) {
-      this.gridComponent.$emit("gridPageChange", {
+      this.gridComponent.$emit("pageChange", {
         page: {
           skip: this.gridComponent.currentPage.total - this.pageSize,
           take: this.pageSize,

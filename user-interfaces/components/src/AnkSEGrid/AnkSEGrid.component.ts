@@ -10,9 +10,9 @@ import AnkGridPager from "./AnkGridPager/AnkGridPager.vue";
 import AnkGridHeaderCell from "./AnkGridHeaderCell/AnkGridHeaderCell.vue";
 import { Grid } from "@progress/kendo-vue-grid";
 import { VNode } from "vue/types/umd";
-import GridActions from "../AnkSEGrid/utils/GridActions";
-import GridEvent from "../AnkSEGrid/utils/GridEvent";
-import GridError from "../AnkSEGrid/utils/GridError";
+import GridEvent from "./AnkGridEvent/AnkGridEvent";
+import GridError from "./utils/GridError";
+import GridExportEvent from './AnkGridEvent/AnkGridExportEvent';
 
 const CONTROLLER_URL = "/api/v2/grid/controllers/{controller}/{op}/{collection}";
 
@@ -87,6 +87,11 @@ export default class GridController extends Vue {
     type: String
   })
   public controller: string;
+  @Prop({
+    default: " ",
+    type: String
+  })
+  public actionColumnTitle!: string;
   @Prop({
     default: "",
     type: String
@@ -208,7 +213,7 @@ export default class GridController extends Vue {
         }
       });
     });
-    this.$emit("grid-data-bound", this.gridInstance);
+    this.$emit("dataBound", this.gridInstance);
   }
 
   public transaction: any = null;
@@ -264,9 +269,8 @@ export default class GridController extends Vue {
 
   async created() {
     this.isLoading = true;
-    this.gridActions = new GridActions(this);
     this.gridError = new GridError(this);
-    this.$on("gridPageChange", this.onPageChange);
+    this.$on("pageChange", this.onPageChange);
 
     try {
       await this._loadGridConfig();
@@ -279,6 +283,10 @@ export default class GridController extends Vue {
       console.error(error);
       this.isLoading = false;
     }
+  }
+
+  beforeDestroy() {
+    this.$off("pageChange", this.onPageChange);
   }
 
   mounted() {
@@ -370,7 +378,7 @@ export default class GridController extends Vue {
           if (response.data.data.actions.length > 0) {
             this.columnsList.push({
               field: "smart_element_grid_action_menu",
-              title: " ",
+              title: this.actionColumnTitle,
               abstract: true,
               withContext: false,
               sortable: false,
@@ -625,7 +633,7 @@ export default class GridController extends Vue {
     onPolling = () => {},
     pollingTime = 500,
     onExport = this.doDefaultExport.bind(this)
-  ) {
+  ): Promise<any> {
     const beforeEvent = this.sendBeforeExportEvent(onExport, onPolling);
     if (!beforeEvent.isDefaultPrevented()) {
       const exportCb = beforeEvent.onExport;
@@ -658,7 +666,7 @@ export default class GridController extends Vue {
     }
   }
 
-  protected async doDefaultExport(transaction, queryParams, directDownload) {
+  protected async doDefaultExport(transaction, queryParams, directDownload): Promise<any> {
     const exportUrl = this._getOperationUrl("export");
     await this.$http
       .get(exportUrl, {
@@ -691,7 +699,7 @@ export default class GridController extends Vue {
   }
 
   protected sendBeforeExportEvent(onExport, onPolling) {
-    const event = new GridEvent({
+    const event = new GridExportEvent({
       component: this,
       type: "export"
     });
@@ -702,20 +710,20 @@ export default class GridController extends Vue {
   }
 
   protected sendBeforePollingEvent() {
-    const event = new GridEvent(null, null, false);
+    const event = new GridExportEvent(null, null, false);
     this.$emit("beforePollingGridExport", event);
     return event;
   }
 
   protected sendErrorEvent(message) {
-    const event = new GridEvent(
+    const event = new GridExportEvent(
       {
         message: message
       },
       null,
       false
     );
-    this.$emit("grid-export-error", event);
+    this.$emit("exportError", event);
     return event;
   }
 
