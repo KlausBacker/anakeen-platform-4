@@ -1,8 +1,9 @@
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Mixins, Vue } from "vue-property-decorator";
 import AnkSmartForm from "../../../AnkSmartForm";
 import GridController from "../../AnkSEGrid.component";
 import { ISmartFormConfiguration } from "../../../AnkSmartForm/ISmartForm";
 import { default as AnkSmartFormDefinition } from "../../../AnkSmartForm/AnkSmartForm.component";
+import I18nMixin from "../../../../mixins/AnkVueComponentMixin/I18nMixin";
 
 const FIELD_TYPE_OPERATOR = {
   docid: {
@@ -49,7 +50,7 @@ const getFilterValueType = (columnType, operator, defaultType = "text") => {
     "ank-smart-form": () => AnkSmartForm
   }
 })
-export default class GridFilterCell extends Vue {
+export default class GridFilterCell extends Mixins(I18nMixin) {
   @Prop({
     type: String,
     required: true
@@ -181,7 +182,6 @@ export default class GridFilterCell extends Vue {
       second_grid_filter_value: ""
     }
   };
-
   public created() {
     if (this.grid && this.grid.currentFilter && this.grid.currentFilter.filters) {
       const columnFilters = this.grid.currentFilter.filters.filter(f => f.field === this.field);
@@ -203,6 +203,10 @@ export default class GridFilterCell extends Vue {
         }
       }
     }
+    this.config.values.grid_filter_operator_concat = {
+      value: this.logic,
+      displayValue: this.$t("gridFilter.And") as string
+    };
     // apply filters type field
     this.updateValueFieldType("first_grid_filter_value", this.config.values.first_grid_filter_operator);
     this.updateValueFieldType("second_grid_filter_value", this.config.values.second_grid_filter_operator);
