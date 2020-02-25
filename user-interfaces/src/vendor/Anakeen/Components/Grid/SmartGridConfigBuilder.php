@@ -8,7 +8,6 @@ use Anakeen\Core\SmartStructure;
 use Anakeen\Core\SmartStructure\BasicAttribute;
 use Anakeen\Core\Utils\Gettext;
 use Anakeen\Core\Utils\Strings;
-use Anakeen\SmartElementManager;
 use Closure;
 use SmartStructure\Fields\Dir;
 use SmartStructure\Fields\Report as ReportFields;
@@ -94,7 +93,7 @@ class SmartGridConfigBuilder
     {
         $this->smartCollectionId = $collectionId;
         if ($this->smartCollectionId !== 0 && $this->smartCollectionId !== -1) {
-            $this->smartCollection = SmartElementManager::getDocument($collectionId);
+            $this->smartCollection = SEManager::getDocument($collectionId);
             if (!$this->smartCollection) {
                 $exception = new Exception("GRID0001", $this->smartCollectionId);
                 $exception->setHttpStatus("404", "Smart Element not found");
@@ -439,7 +438,7 @@ class SmartGridConfigBuilder
                     break;
             }
         }
-        $structureRef = SmartElementManager::getFamily($structureId);
+        $structureRef = SEManager::getFamily($structureId);
         if (empty($structureRef)) {
             throw new Exception("GRID0002", $structureId);
         }

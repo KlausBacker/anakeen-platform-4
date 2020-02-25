@@ -81,22 +81,27 @@ class SmartGridContentBuilder
                 throw $exception;
             }
 
-
-            $error = $this->smartCollection->control("execute");
-            if ($error) {
-                $exception = new Exception("GRID0015", $this->collectionId);
-                $exception->setHttpStatus("403", "Insufficient privileges");
-                throw $exception;
-            }
             switch ($this->smartCollection->defDoctype) {
                 case 'C':
                     $this->initSearch($collectionId);
                     break;
                 case 'D':
+                    $error = $this->smartCollection->control("open");
+                    if ($error) {
+                        $exception = new Exception("GRID0015", $this->collectionId);
+                        $exception->setHttpStatus("403", "Insufficient privileges");
+                        throw $exception;
+                    }
                     $this->initSearch();
                     $this->searchElements->useCollection($collectionId);
                     break;
                 case 'S':
+                    $error = $this->smartCollection->control("execute");
+                    if ($error) {
+                        $exception = new Exception("GRID0015", $this->collectionId);
+                        $exception->setHttpStatus("403", "Insufficient privileges");
+                        throw $exception;
+                    }
                     $fromId = $this->smartCollection->getRawValue(Search::se_famid, 0);
                     $this->initSearch($fromId);
                     $this->searchElements->useCollection($collectionId);
