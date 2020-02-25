@@ -15,6 +15,10 @@ class SmartGridControllerParameter
 
     protected const PARAMETER_NS = "Ui";
     protected const SE_GRID_CONTROLLERS = "SE_GRID_CONTROLLERS";
+    protected const DEFAULT_CONTROLLER = [
+        "name" => "DEFAULT_GRID_CONTROLLER",
+        "class" => "Anakeen\Components\Grid\DefaultGridController"
+    ];
 
     public static function addConfiguration($path)
     {
@@ -87,6 +91,11 @@ class SmartGridControllerParameter
     public static function getControllerByName($controllerName)
     {
         $result = null;
+
+        if ($controllerName === static::DEFAULT_CONTROLLER["name"]) {
+            return static::DEFAULT_CONTROLLER;
+        }
+
         $controllers = static::getParameterValue();
         $found = array_search($controllerName, array_column($controllers, "name"));
         if ($found !== false) {
