@@ -106,7 +106,14 @@ class SmartGridControllerParameter
 
     public static function getParameterValue($defaultValue = [])
     {
-        return json_decode(ContextParameterManager::getValue(self::PARAMETER_NS, self::SE_GRID_CONTROLLERS, json_encode($defaultValue)), true);
+        $parameterValue = ContextParameterManager::getValue(self::PARAMETER_NS, self::SE_GRID_CONTROLLERS, json_encode($defaultValue));
+        if ($parameterValue) {
+            $values = json_decode($parameterValue, true);
+            if ($values && is_array($values)) {
+                return array_values($values);
+            }
+        }
+        return $defaultValue;
     }
 
     protected static function setParameterValue($config)
