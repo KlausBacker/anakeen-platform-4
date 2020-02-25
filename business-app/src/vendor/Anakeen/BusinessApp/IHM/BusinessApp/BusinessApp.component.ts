@@ -234,7 +234,7 @@ export default class BusinessApp extends Vue {
   protected onGridConsult(element) {
     this.addTab({
       closable: true,
-      name: element.id.toString()
+      name: element.properties.id.toString()
     });
   }
 
