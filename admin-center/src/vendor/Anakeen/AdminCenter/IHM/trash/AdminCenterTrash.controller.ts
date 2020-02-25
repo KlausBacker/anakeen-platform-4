@@ -1,7 +1,7 @@
 /* eslint-disable no-case-declarations */
 import AnkPaneSplitter from "@anakeen/internal-components/lib/PaneSplitter";
 import SmartElement from "@anakeen/user-interfaces/components/lib/AnkSmartElement.esm";
-import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementVueGrid.esm";
+import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementGrid.esm";
 import { Component, Vue } from "vue-property-decorator";
 
 @Component({

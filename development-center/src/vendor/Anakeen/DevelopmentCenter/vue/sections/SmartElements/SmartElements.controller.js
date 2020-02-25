@@ -1,5 +1,5 @@
 import Splitter from "@anakeen/internal-components/lib/Splitter.js";
-import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementVueGrid.esm";
+import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementGrid.esm";
 import PropertiesView from "devComponents/PropertiesView/PropertiesView.vue";
 import ElementView from "./ElementView/ElementView.vue";
 import RawElementView from "./RawElementView/RawElementView.vue";
