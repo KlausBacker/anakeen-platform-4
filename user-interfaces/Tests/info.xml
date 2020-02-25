@@ -61,7 +61,6 @@
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TEST_DDUI_INIT_DATA.csv"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TEST_DDUI_INIT_DATA4.csv"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Test/HubConfiguration/hubConfiguration.xml"/>
-        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Test/HubConfiguration/grid-controller.xml" />
     </post-upgrade>
 
     <pre-delete>
