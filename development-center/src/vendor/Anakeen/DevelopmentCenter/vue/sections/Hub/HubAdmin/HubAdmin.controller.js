@@ -8,7 +8,7 @@ import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
 
 const urlJoin = require("url-join");
 
-import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementVueGrid.esm";
+import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementGrid.esm";
 import AnkSmartElement from "@anakeen/user-interfaces/components/lib/AnkSmartElement.esm";
 import AnkHubMockup from "./HubAdminMockUp.vue";
 import AnkSplitter from "@anakeen/internal-components/lib/Splitter";
