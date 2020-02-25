@@ -18,7 +18,7 @@ use SmartStructure\Fields\Hubinstanciation as InstanceFields;
  *
  * @note used by route /hub/config/{hubId}
  */
-class MainConfiguration extends \Anakeen\Components\Grid\Routes\GridContent
+class MainConfiguration
 {
     protected $structureName = "";
     /**

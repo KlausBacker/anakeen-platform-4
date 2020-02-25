@@ -1,1 +1,1 @@
-export { default } from "./Components/GridColumnsButton/GridColumnsButton.vue";
+export { default } from "./AnkGridColumnsButton/AnkGridColumnsButton.vue";

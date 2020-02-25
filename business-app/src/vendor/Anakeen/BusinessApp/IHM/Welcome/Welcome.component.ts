@@ -1,4 +1,4 @@
-import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementGrid.esm";
+import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementVueGrid.esm";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 @Component({
@@ -35,21 +35,21 @@ export default class Welcome extends Vue {
   private refreshGrids() {
     if (Array.isArray(this.$refs.grids)) {
       this.$refs.grids.forEach(grid => {
-        grid.dataSource.read();
+        grid._loadGridContent();
       });
     } else if (this.$refs.grids) {
       // @ts-ignore
-      this.$refs.grids.dataSource.read();
+      this.$refs.grids._loadGridContent();
     }
   }
 
   private reloadGrid(index) {
     if (Array.isArray(this.$refs.grids)) {
       // @ts-ignore
-      this.$refs.grids[index].dataSource.read();
+      this.$refs.grids[index]._loadGridContent();
     } else if (index === 0) {
       // @ts-ignore
-      this.$refs.grids.dataSource.read();
+      this.$refs.grids.dataSource._loadGridContent();
     }
   }
 }

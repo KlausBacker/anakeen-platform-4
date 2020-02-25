@@ -11,6 +11,7 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/AdminCenter/Accounts/111-AdminManagerProfile.xml"/>
         <!-- import default configuration of admin center -->
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/AdminCenter/Config/hubConfiguration.xml"/>
+        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Admin/Trash/trash-grid-controller.xml" />
     </post-install>
     <post-upgrade>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/AdminCenter/Accounts/110-AdminCenterRoles.xml"/>

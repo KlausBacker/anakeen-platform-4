@@ -1,8 +1,8 @@
 <template>
   <ank-se-grid
-    :url-config="`/api/v2/smartstructures/dsearch/gridConfig/${searchId}`"
-    :page-sizes="[50, 100, 500]"
     :collection="searchId"
+    :pageable="false"
+    controller="REPORT_GRID_CONTROLLER"
     class="dsearch-result-grid"
     ref="gridPreview"
   >
@@ -18,7 +18,7 @@
   </ank-se-grid>
 </template>
 <script>
-import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementGrid.esm";
+import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementVueGrid.esm";
 import AnkSEGridExportButton from "@anakeen/user-interfaces/components/lib/AnkSmartElementGridExportButton.esm";
 
 export default {

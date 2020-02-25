@@ -1,15 +1,12 @@
 <template>
   <ank-se-grid
     v-if="searchId"
-    :url-config="`/api/v2/smartstructures/dsearch/gridConfig/${searchId}`"
-    :server-paging="true"
-    :page-sizes="[50, 100, 500]"
-    :server-sorting="true"
-    :server-filtering="true"
     :collection="searchId"
+    :pageable="false"
     class="search-grid"
-    :contextTitles="false"
     ref="searchGrid"
+    controller="REPORT_GRID_CONTROLLER"
+    defaultExpandable
   >
   </ank-se-grid>
 </template>

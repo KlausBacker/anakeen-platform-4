@@ -1,0 +1,40 @@
+.smart-element-grid-cell {
+  overflow: auto;
+  word-break: break-word;
+}
+
+.smart-element-grid-cell--longtext,
+.smart-element-grid-cell--htmltext {
+  white-space: pre-wrap;
+}
+
+.smart-element-grid-cell--int,
+.smart-element-grid-cell--double,
+.smart-element-grid-cell--money {
+  text-align: right;
+}
+
+.smart-element-grid-cell-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.smart-element-grid-cell-content-multiple-row-separator {
+  margin: .5rem 0;
+  width: 100%;
+}
+
+.smart-element-grid-cell-content-multiple-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.smart-element-grid-cell-content-multiple-row-content {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+.smart-element-grid-cell-content-multiple-col {
+  display: flex;
+}

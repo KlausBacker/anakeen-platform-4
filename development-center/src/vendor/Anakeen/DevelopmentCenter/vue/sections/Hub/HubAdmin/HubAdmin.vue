@@ -5,9 +5,7 @@
         <span
           >Configuration for -
           <img
-            :src="
-              `/api/v2/smart-elements/${hubId}/images/icon/-1/sizes/16x16c.png`
-            "
+            :src="`/api/v2/smart-elements/${hubId}/images/icon/-1/sizes/16x16c.png`"
             alt="favIcon"
             width="16"
             height="16"
@@ -15,11 +13,9 @@
           {{ hubElement.properties.title }}</span
         >
       </div>
+
       <div class="hub-admin-header__content">
-        <kendo-datasource
-          ref="dataHubElements"
-          :transport-read-url="'/hub/components/'"
-        />
+        <kendo-datasource ref="dataHubElements" :transport-read-url="'/hub/components/'" />
         <kendo-dropdownlist
           class="k-primary"
           :data-source-ref="'dataHubElements'"
@@ -33,66 +29,26 @@
         <kendo-button class="k-primary k-outline" @click="exportConfiguration"
           >Export hub instance configuration
         </kendo-button>
-        <kendo-button class="k-primary k-outline" @click="openElement"
-          >View current hub instance
-        </kendo-button>
-        <kendo-button class="k-primary k-outline" @click="openInterface"
-          >Display hub instance
-        </kendo-button>
+        <kendo-button class="k-primary k-outline" @click="openElement">View current hub instance </kendo-button>
+        <kendo-button class="k-primary k-outline" @click="openInterface">Display hub instance </kendo-button>
       </div>
     </header>
     <section>
-      <ank-splitter
-        ref="hubAdminSplitter"
-        class="hub-admin-splitter"
-        :panes="panes"
-      >
+      <ank-splitter ref="hubAdminSplitter" class="hub-admin-splitter" :panes="panes">
         <template slot="left">
           <div class="hub-admin-content">
-            <ank-hub-mockup
-              :info="mockData"
-              :selected-id="selectedComponent"
-              @mock-select="changeSelectComponent"
-            />
-
+            <ank-hub-mockup :info="mockData" :selected-id="selectedComponent" @mock-select="changeSelectComponent" />
             <div class="hub-admin-grid">
-              <span
-                >List of the hub elements of
-                {{ hubElement.properties.title }}</span
-              >
+              <span>List of the hub elements of {{ hubElement.properties.title }}</span>
               <ank-se-grid
                 ref="hubGrid"
-                :urlContent="`/api/v2/hub/station/${hubId}/admin/`"
-                :serverPaging="false"
-                :sortable="''"
+                :collection="hubId.toString()"
+                controller="HUB_STATION_ADMIN_GRID_CONTROLLER"
                 :pageable="false"
                 class="hub-admin"
-                @after-content-response="displayMockUp"
+                @afterContent="displayMockUp"
                 :contextTitles="false"
               >
-                <ank-se-grid-column
-                  title="#"
-                  field="key"
-                  width="3rem"
-                ></ank-se-grid-column>
-                <ank-se-grid-column
-                  title="Title"
-                  field="title"
-                ></ank-se-grid-column>
-                <ank-se-grid-column
-                  title="Type"
-                  field="hub_type"
-                ></ank-se-grid-column>
-                <ank-se-grid-column
-                  title="Position"
-                  field="hub_docker_position"
-                  :hidden="true"
-                ></ank-se-grid-column>
-                <ank-se-grid-column
-                  title="Order"
-                  field="hub_order"
-                  :hidden="true"
-                ></ank-se-grid-column>
               </ank-se-grid>
             </div>
           </div>

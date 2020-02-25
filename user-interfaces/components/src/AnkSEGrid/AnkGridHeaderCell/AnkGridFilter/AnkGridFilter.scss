@@ -1,0 +1,52 @@
+.smart-element-grid-filter-criteria {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+}
+.smart-element-grid-filter-form-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.smart-element-grid-filter-form {
+  flex: 1;
+  overflow-y: hidden;
+  .document {
+    background: white;
+  }
+
+  .dcpDocument--show {
+    transition: none;
+  }
+
+  .dcpLoading--content {
+    display: none !important;
+  }
+
+  .dcpDocument__header {
+    display: none;
+  }
+
+  .dcpFrame {
+    margin: 0;
+    padding: 0;
+  }
+
+  .dcpDocument__body {
+    padding: 0;
+  }
+
+  .dcpDocument--edit .dcpAttribute,
+  .dcpDocument--create .dcpAttribute {
+    margin-bottom: 0.5rem;
+  }
+
+  .dcpDocument--edit .dcpAttribute--visibility--S .dcpAttribute__right {
+    padding-top: 0;
+  }
+
+  .dcpAttribute__content .k-dropdown .k-dropdown-wrap .k-input {
+    background-color: transparent;
+  }
+}

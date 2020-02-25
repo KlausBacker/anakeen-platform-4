@@ -1,5 +1,5 @@
 import Splitter from "@anakeen/internal-components/lib/Splitter.js";
-import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementGrid.esm";
+import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementVueGrid.esm";
 import ProfileView from "./ProfileVisualizer/ProfileVisualizerContent.vue";
 
 export default {
@@ -93,34 +93,6 @@ export default {
       }
       return {};
     },
-    cellRender(event) {
-      if (event.data && event.data.columnConfig) {
-        switch (event.data.columnConfig.field) {
-          case "family":
-            event.data.cellRender.text(event.data.cellData.name);
-            break;
-          case "fromid":
-            event.data.cellRender.text(event.data.cellData.name);
-            break;
-          case "dpdoc_famid":
-            if (event.data.cellData.name) {
-              event.data.cellRender.html(
-                `<a data-role="develRouterLink" href="/devel/smartStructures/${event.data.cellData.name}/infos">${event.data.cellData.name}</a>`
-              );
-            } else {
-              event.data.cellRender.text("");
-            }
-            break;
-          case "title":
-            event.data.cellRender.html(
-              `<a data-role="develRouterLink" href="/devel/smartElements/${event.data.rowData.id}/view?initid=${
-                event.data.rowData.id
-              }">${event.data.cellRender.html()}</a>`
-            );
-            break;
-        }
-      }
-    },
     getRoute() {
       const filter = this.getFilter();
       const filterUrl = Object.keys(filter).length ? `?${$.param(filter)}` : "";
@@ -139,7 +111,7 @@ export default {
       switch (event.data.type) {
         case "view":
           this.$refs.profileSplitter.disableEmptyContent();
-          this.selectedProfile = event.data.row.name || event.data.row.id;
+          this.selectedProfile = event.data.row.properties.name || event.data.row.properties.id.toString();
           this.getRoute().then(route => {
             this.$emit("navigate", route);
           });

@@ -42,8 +42,8 @@ export default {
     };
   },
   devCenterRefreshData() {
-    if (this.$refs.masksGrid && this.$refs.masksGrid.dataSource) {
-      this.$refs.masksGrid.dataSource.read();
+    if (this.$refs.masksGrid) {
+      this.$refs.masksGrid._loadGridContent();
     }
   },
   methods: {
@@ -127,14 +127,13 @@ export default {
       return Promise.resolve([{ url: filterUrl }]);
     },
     actionClick(event) {
-      event.preventDefault();
       switch (event.data.type) {
         case "consult": {
           this.$refs.masksSplitter.disableEmptyContent();
-          this.selectedMask = event.data.row.name || event.data.row.id;
+          this.selectedMask = event.data.row.properties.name || event.data.row.properties.id.toString();
           this.getRoute().then(route => {
             this.$emit("navigate", route);
-            this.getSelected(event.data.row.id, "id");
+            this.getSelected(event.data.row.properties.id, "id");
           });
           break;
         }

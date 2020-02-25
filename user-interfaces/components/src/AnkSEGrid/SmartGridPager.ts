@@ -1,1 +1,1 @@
-export { default } from "./Components/GridPager/GridPager.vue";
+export { default } from "./AnkGridPager/AnkGridPager.vue";

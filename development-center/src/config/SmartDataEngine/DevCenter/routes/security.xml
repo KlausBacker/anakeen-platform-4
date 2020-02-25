@@ -92,15 +92,6 @@
                 <sde:access ns="DevCenter">DevelAccess</sde:access>
             </sde:requiredAccess>
         </sde:route>
-        <sde:route name="elementsGridConfig">
-            <sde:callable>Anakeen\Routes\Devel\UI\ElementsGridConfig</sde:callable>
-            <sde:method>GET</sde:method>
-            <sde:pattern>/api/v2/devel/security/elements/config/</sde:pattern>
-            <sde:description>Get elements grid config</sde:description>
-            <sde:requiredAccess>
-                <sde:access ns="DevCenter">DevelAccess</sde:access>
-            </sde:requiredAccess>
-        </sde:route>
         <sde:route name="fieldAccessGridConfig">
             <sde:callable>Anakeen\Routes\Devel\UI\FieldAccessGridConfig</sde:callable>
             <sde:method>GET</sde:method>

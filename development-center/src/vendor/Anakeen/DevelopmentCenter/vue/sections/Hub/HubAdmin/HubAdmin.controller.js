@@ -5,9 +5,10 @@ import { Vue } from "vue-property-decorator";
 import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 import { DropdownsInstaller } from "@progress/kendo-dropdowns-vue-wrapper";
 import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
+
 const urlJoin = require("url-join");
 
-import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementGrid.esm";
+import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementVueGrid.esm";
 import AnkSmartElement from "@anakeen/user-interfaces/components/lib/AnkSmartElement.esm";
 import AnkHubMockup from "./HubAdminMockUp.vue";
 import AnkSplitter from "@anakeen/internal-components/lib/Splitter";
@@ -56,6 +57,9 @@ export default {
     hubId: function(val, oldVal) {
       if (val !== oldVal) {
         this.initHub(val);
+        Vue.nextTick(() => {
+          this.$refs.hubGrid._loadGridContent();
+        });
       }
     },
     selectedComponent: function(val) {
@@ -72,11 +76,9 @@ export default {
   },
 
   mounted() {
-    $(this.$el).on("click", ".grid-cell--key  > .grid-cell-content", e => {
+    $(this.$el).on("click", ".smart-element-grid-cell--key  > .smart-element-grid-cell-content", e => {
       //noinspection JSUnusedGlobalSymbols
-      this.selectedComponent = $(e.currentTarget)
-        .closest("tr")
-        .data("seid");
+      this.selectedComponent = this.$refs.hubGrid.dataItems[e.currentTarget.innerText - 1].properties.id;
     });
     this.openElement();
   },
@@ -149,7 +151,7 @@ export default {
     },
 
     displayMockUp: function(e) {
-      let data = e.data.content.smartElements;
+      let data = e.data.content.content;
       const positionKey = [
         "TOP_LEFT",
         "TOP_CENTER",
@@ -171,10 +173,10 @@ export default {
       });
 
       data.sort((a, b) => {
-        const idxa = positionKey.indexOf(a.attributes.hub_docker_position.value);
-        const idxb = positionKey.indexOf(b.attributes.hub_docker_position.value);
-        const posa = a.attributes.hub_order.value || 0;
-        const posb = b.attributes.hub_order.value || 0;
+        const idxa = positionKey.indexOf(a.abstract.hub_docker_position);
+        const idxb = positionKey.indexOf(b.abstract.hub_docker_position);
+        const posa = a.abstract.hub_order || 0;
+        const posb = b.abstract.hub_order || 0;
 
         const pa = idxa * 100 + posa;
         const pb = idxb * 100 + posb;
@@ -184,7 +186,7 @@ export default {
         } else if (pa < pb) {
           return -1;
         } else if (pa === pb) {
-          const sortTitle = a.properties.title.value.localeCompare(b.properties.title.value);
+          const sortTitle = a.properties.title.localeCompare(b.properties.title);
           if (sortTitle > 0) {
             return 1;
           } else if (sortTitle < 0) {
@@ -197,32 +199,14 @@ export default {
       });
 
       data.forEach((datum, k) => {
-        datum.attributes.key = { value: k + 1, displayValue: k + 1 };
-        this.mockData[datum.attributes.hub_docker_position.value].push({
-          key: datum.attributes.key.value,
-          title: datum.properties.title.displayValue,
+        datum.abstract.key = { value: k + 1, displayValue: k + 1 };
+        this.mockData[datum.abstract.hub_docker_position].push({
+          key: datum.abstract.key,
+          title: datum.properties.title,
           initid: datum.properties.initid
         });
       });
-      this.addDataOnRow();
     },
-
-    addDataOnRow() {
-      this.$nextTick(() => {
-        const kgrid = this.$refs.hubGrid.kendoGrid;
-        const items = kgrid.items();
-
-        items.each(function addTypeClass() {
-          const dataItem = kgrid.dataItem(this);
-          if (dataItem.initid) {
-            $(this).attr("data-seid", dataItem.initid);
-          }
-        });
-
-        this.selectTr(this.selectedComponent);
-      });
-    },
-
     openDetailConfig(seid) {
       let e = new Event("click");
       e.data = {
@@ -245,7 +229,7 @@ export default {
           initid: eid,
           viewId: "!defaultConsultation"
         });
-        this.$refs.hubGrid.privateScope.initGrid();
+        // this.$refs.hubGrid.privateScope.initGrid();
       }
     },
 

@@ -1,8 +1,9 @@
 <?php
+namespace Anakeen\Routes\Admin\Trash;
 
+use Anakeen\Search\Internal\SearchSmartData;
 
-
-class TrashSearchSmartData extends Anakeen\Search\Internal\SearchSmartData
+class TrashSearchSmartData extends SearchSmartData
 {
     public function getQueries()
     {
@@ -16,12 +17,12 @@ SQL;
 }
 
 
-$s = new TrashSearchSmartData();
-
-$s->orderby = "revision desc, title";
-$list = $s->search();
-
-foreach ($list as $data) {
-    printf("%s :%s %s [%s]\n", $data['revision'], $data["initid"], $data["deluser"], $data["mdate"]);
-}
-print_r($s->getSearchInfo());
+//$s = new TrashSearchSmartData();
+//
+//$s->orderby = "revision desc, title";
+//$list = $s->search();
+//
+//foreach ($list as $data) {
+//    printf("%s :%s %s [%s]\n", $data['revision'], $data["initid"], $data["deluser"], $data["mdate"]);
+//}
+//print_r($s->getSearchInfo());

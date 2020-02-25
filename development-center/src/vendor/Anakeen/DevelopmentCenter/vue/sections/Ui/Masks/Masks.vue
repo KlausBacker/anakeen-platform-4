@@ -1,29 +1,20 @@
 <template>
-  <ank-splitter
-    ref="masksSplitter"
-    class="masks-splitter"
-    :panes="panes"
-    localStorageKey="ui-masks-splitter"
-  >
+  <ank-splitter ref="masksSplitter" class="masks-splitter" :panes="panes" localStorageKey="ui-masks-splitter">
     <template slot="left">
       <ank-se-grid
         ref="masksGrid"
-        :urlConfig="`/api/v2/devel/ui/smart/structures/${ssName}/masks/config/`"
-        filterable="inline"
-        :pageSizes="[100, 200, 500]"
-        :sortable="''"
-        @action-click="actionClick"
+        :collection="ssName"
+        controller="MASKS_GRID_CONTROLLER"
+        filterable
+        :pageable="{ pageSizes: [100, 200, 500], pageSize: 100 }"
+        @rowActionClick="actionClick"
         @grid-data-bound="onGridDataBound"
       >
       </ank-se-grid>
     </template>
     <template slot="right">
       <!--            <router-multi-view :force-multi-views="false" style="display:flex; flex: 1" class="splitter-right"></router-multi-view>-->
-      <element-view
-        style="height: 100%"
-        :initid="selectedMask"
-        viewId="!defaultConsultation"
-      ></element-view>
+      <element-view style="height: 100%" :initid="selectedMask" viewId="!defaultConsultation"></element-view>
     </template>
   </ank-splitter>
 </template>
