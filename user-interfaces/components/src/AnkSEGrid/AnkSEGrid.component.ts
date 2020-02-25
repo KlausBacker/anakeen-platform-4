@@ -305,7 +305,7 @@ export default class GridController extends Vue {
     this.$emit("gridReady");
   }
 
-  public onExpandClicked() {
+  public expandColumns() {
     // @ts-ignore
     $(this.$refs.smartGridWidget.$el).toggleClass("grid-row-collapsed");
   }
