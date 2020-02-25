@@ -6,6 +6,7 @@ use Anakeen\Components\Grid\DefaultGridController;
 use Anakeen\Components\Grid\Operators;
 use Anakeen\Components\Grid\SmartGridConfigBuilder;
 use Anakeen\Components\Grid\SmartGridContentBuilder;
+use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
 
 class ElementsGridController extends DefaultGridController
@@ -18,7 +19,7 @@ class ElementsGridController extends DefaultGridController
         }
         $configBuilder->addProperty("title");
         $configBuilder->addProperty("name", array("title"=>"Logical name"));
-        $configBuilder->addProperty("fromid", array("relation"=>"-1","smartType"=>"text","title"=>"Type"));
+        $configBuilder->addProperty("fromid", array("relation"=>"-1","smartType"=>"docid","title"=>"Type"));
         $configBuilder->addProperty("initid", array("filterable"=>self::getFilterable("int"),"title"=>"InitId","smartType"=>"integer"));
         $configBuilder->addProperty("doctype", array("hidden"=>true));
         $configBuilder->addProperty("profid", array("hidden"=>true));
@@ -47,7 +48,31 @@ class ElementsGridController extends DefaultGridController
             }
         }
         if (isset($clientConfig["filter"])) {
-            $contentBuilder->addFilter($clientConfig["filter"]);
+
+            foreach ($clientConfig["filter"]["filters"] as $filter) {
+                if (strcmp($filter["field"], "fromid") !== 0) {
+                    $contentBuilder->addFilter($filter);
+                } else {
+                    if (isset($filter["filters"]) && !empty($filter["filters"])) {
+                        foreach ($filter["filters"] as $fromIdFilter) {
+                            if (strcmp($fromIdFilter["operator"], "titleContains") !== 0) {
+                                $contentBuilder->addFilter($fromIdFilter);
+                            } else {
+                                $sqlQuery = "SELECT id FROM docfam WHERE name ~* '%s'";
+                                if (isset($fromIdFilter["value"]) && !empty($fromIdFilter["value"])) {
+                                    $result = [];
+                                    DbManager::query(sprintf($sqlQuery, pg_escape_string($fromIdFilter["value"])), $result, true);
+                                    if (empty($result)) {
+                                        // Ensure that no filter result implies there is no grid data content (fromid = -2)
+                                        $result = [-2];
+                                    }
+                                    $contentBuilder->getSearch()->addFilter("fromid in (%s)", implode(",", $result));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
         $contentBuilder->addProperty("title");
         $contentBuilder->addProperty("name");
