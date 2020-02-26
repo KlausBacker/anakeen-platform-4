@@ -643,11 +643,9 @@ export default class GridController extends Mixins(I18nMixin) {
       if (typeof onExport === "function") {
         this.sendBeforePollingEvent();
         const promise = this.createExportTransaction()
-          .then(transaction => {
-            this.transaction = transaction;
-
+          .then(() => {
             return this.doTransactionExport(
-              transaction,
+              this.transaction,
               this.gridInfo,
               exportCb,
               pollingCb,
@@ -729,11 +727,13 @@ export default class GridController extends Mixins(I18nMixin) {
     return event;
   }
 
-  protected createExportTransaction() {
-    return this.$http
-      .post("/api/v2/grid/export")
+  protected async createExportTransaction() {
+    const exportUrl = this._getOperationUrl("export");
+    await this.$http
+      .get(exportUrl)
       .then(response => {
-        return response.data.data;
+        this.transaction = response.data;
+        return true;
       })
       .catch(err => {
         this.gridError.error(err);
