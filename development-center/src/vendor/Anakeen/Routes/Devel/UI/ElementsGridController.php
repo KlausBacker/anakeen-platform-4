@@ -48,7 +48,6 @@ class ElementsGridController extends DefaultGridController
             }
         }
         if (isset($clientConfig["filter"])) {
-
             foreach ($clientConfig["filter"]["filters"] as $filter) {
                 if (strcmp($filter["field"], "fromid") !== 0) {
                     $contentBuilder->addFilter($filter);
@@ -72,6 +71,11 @@ class ElementsGridController extends DefaultGridController
                         }
                     }
                 }
+            }
+        }
+        if (isset($clientConfig["sort"])) {
+            foreach ($clientConfig["sort"] as $sort) {
+                $contentBuilder->addSort($sort["field"], $sort["dir"]);
             }
         }
         $contentBuilder->addProperty("title");

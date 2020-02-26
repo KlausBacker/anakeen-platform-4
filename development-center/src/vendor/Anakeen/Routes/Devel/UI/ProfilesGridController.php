@@ -73,6 +73,11 @@ class ProfilesGridController extends DefaultGridController
                 }
             }
         }
+        if (isset($clientConfig["sort"])) {
+            foreach ($clientConfig["sort"] as $sort) {
+                $contentBuilder->addSort($sort["field"], $sort["dir"]);
+            }
+        }
         $contentBuilder->addProperty("name");
         $contentBuilder->addProperty("title");
         $contentBuilder->addProperty("fromid");
