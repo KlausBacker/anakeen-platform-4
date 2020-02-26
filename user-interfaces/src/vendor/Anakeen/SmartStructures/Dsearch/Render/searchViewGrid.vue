@@ -1,7 +1,8 @@
 <template>
   <ank-se-grid
     :collection="searchId"
-    :pageable="false"
+    :pageable="{ pageSizes: [50, 100, 200], pageSize: 50 }"
+    defaultExpandable
     controller="REPORT_GRID_CONTROLLER"
     class="dsearch-result-grid"
     ref="gridPreview"
