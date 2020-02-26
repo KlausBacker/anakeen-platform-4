@@ -27,8 +27,7 @@ class TrashGridController extends DefaultGridController
         $configBuilder->addRowAction(array("action"=> "restore", "title"=> "Restore"));
         $configBuilder->addRowAction(array("action"=> "display", "title"=> "Display"));
         $configBuilder->addRowAction(array("action"=> "delete", "title"=> "Delete from trash"));
-        $config = $configBuilder->getConfig();
-        return $config;
+        return $configBuilder->getConfig();
     }
 
     public static function getGridContent($collectionId, $clientConfig)
@@ -76,7 +75,6 @@ class TrashGridController extends DefaultGridController
                             if (strcmp($fromIdFilter["operator"], "titleContains") !== 0) {
                                 $contentBuilder->addFilter($fromIdFilter);
                             } else {
-
                                 $sqlQuery = "SELECT id FROM docfam WHERE name ~* '%s'";
                                 if (isset($fromIdFilter["value"]) && !empty($fromIdFilter["value"])) {
                                     $result = [];
