@@ -21,6 +21,7 @@
         <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/control-grid-controller.xml" />
         <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/field-access-grid-controller.xml" />
         <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/profiles-grid-controller.xml" />
+        <process command="./ank.php --script=setParameter --param=Core::CORE_DISPLAY_ERROR --value=yes" />
     </post-install>
 
     <post-upgrade>
