@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="development-center" version="2.2.2-RC.2020.1.4" vendor="Anakeen" license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0">
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="development-center" version="2.2.2-RC.2020.1.5" vendor="Anakeen" license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0">
 
     <description>Developement Center</description>
 
     <requires>
-        <module name="user-interfaces" version="^3.0.2-RC.2020.1.4"/>
-        <module name="security" version="^2.0.3-RC.2020.1.4"/>
-        <module name="workflow" version="^2.0.2-RC.2020.1.4"/>
-        <module name="anakeen-hub" version="^1.0.4-RC.2020.1.4"/>
+        <module name="user-interfaces" version="^3.0.2-RC.2020.1.5"/>
+        <module name="security" version="^2.0.3-RC.2020.1.5"/>
+        <module name="workflow" version="^2.0.2-RC.2020.1.5"/>
+        <module name="anakeen-hub" version="^1.0.4-RC.2020.1.5"/>
     </requires>
 
     <parameters>
@@ -16,23 +16,23 @@
     <post-install>
         <!-- import default configuration of admin center -->
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/DevelopmentCenter/Config/develConfiguration.xml"/>
-        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/elements-grid-controller.xml" />
-        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/masks-grid-controller.xml" />
-        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/control-grid-controller.xml" />
-        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/field-access-grid-controller.xml" />
-        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/profiles-grid-controller.xml" />
-        <process command="./ank.php --script=setParameter --param=Core::CORE_DISPLAY_ERROR --value=yes" />
+        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/elements-grid-controller.xml"/>
+        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/masks-grid-controller.xml"/>
+        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/control-grid-controller.xml"/>
+        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/field-access-grid-controller.xml"/>
+        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/profiles-grid-controller.xml"/>
+        <process command="./ank.php --script=setParameter --param=Core::CORE_DISPLAY_ERROR --value=yes"/>
     </post-install>
 
     <post-upgrade>
         <!-- import default configuration of admin center -->
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/DevelopmentCenter/Config/develConfiguration.xml"/>
 
-        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/elements-grid-controller.xml" />
-        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/masks-grid-controller.xml" />
-        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/control-grid-controller.xml" />
-        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/field-access-grid-controller.xml" />
-        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/profiles-grid-controller.xml" />
+        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/elements-grid-controller.xml"/>
+        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/masks-grid-controller.xml"/>
+        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/control-grid-controller.xml"/>
+        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/field-access-grid-controller.xml"/>
+        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/profiles-grid-controller.xml"/>
     </post-upgrade>
 
 
