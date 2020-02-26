@@ -81,5 +81,5 @@ class ErrorCodeSD
      * @errorCode when use docrel and usertag table join by exemple
      * @see \Anakeen\Search\SearchElements::join()
      */
-    const SD0015 = "The join type must be 'inner' ou 'left outer', not '%s'";
+    const SD0015 = "The join type must be %s, not '%s'";
 }

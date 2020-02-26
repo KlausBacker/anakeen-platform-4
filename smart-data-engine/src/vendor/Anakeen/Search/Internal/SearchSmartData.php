@@ -359,7 +359,7 @@ class SearchSmartData
      *
      * @param string $jointure
      *
-     * @param string $joinType "inner" or "left outer"
+     * @param string $joinType "inner", "right outer", "full outer" or "left outer"
      * @throws Exception
      * @api Add join condition
      * @code
@@ -383,8 +383,9 @@ class SearchSmartData
             throw new \Anakeen\Search\Exception("SD0001", $jointure);
         }
         $joinType=strtolower($joinType);
-        if (!in_array($joinType, ["inner", "left outer"])) {
-            throw new \Anakeen\Search\Exception("SD0015", $joinType);
+        $allowed= ["inner", "left outer", "right outer", "full outer"];
+        if (!in_array($joinType, $allowed)) {
+            throw new \Anakeen\Search\Exception("SD0015", $joinType, implode(' or ', $allowed));
         }
         $this->joinType=$joinType;
     }
