@@ -950,26 +950,12 @@
   dependencies:
     jquery "<=3"
 
-"@progress/kendo-vue-animation@0.4.2", "@progress/kendo-vue-animation@^0.4.2":
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-vue-animation/-/kendo-vue-animation-0.4.2.tgz#dd0d5a92783c4e052f036ba13984a4da8494d3c6"
-  integrity sha512-QNdEEbTphM4NKkGrM8PFD4Ue0DIxwtr8kRc3uRlkCBqlZqnfH3SKG+v9F6ZFGwZChzhX4U3Uj6bqX7CbASFs/A==
-  dependencies:
-    "@progress/kendo-vue-common" "0.4.2"
-
-"@progress/kendo-vue-animation@0.4.4":
+"@progress/kendo-vue-animation@0.4.4", "@progress/kendo-vue-animation@^0.4.4":
   version "0.4.4"
   resolved "https://registry.yarnpkg.com/@progress/kendo-vue-animation/-/kendo-vue-animation-0.4.4.tgz#6c363ac29030f33f08524d8c6baf6396c241162f"
   integrity sha512-BBCK3pVFl3NYkzYbg5IXqMjEAH8DkEq+2ppMpmBr4Tj4TU/KoXbm3Q9J3RIc3ESEojG7qjCMLhCg8ockr+CNWQ==
   dependencies:
     "@progress/kendo-vue-common" "0.4.4"
-
-"@progress/kendo-vue-common@0.4.2":
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-vue-common/-/kendo-vue-common-0.4.2.tgz#ce396b3ac135678dce3b20ea547b780707c7522f"
-  integrity sha512-f1IVXm06E1734xa/N+nlF9Tfrp1HopKjBB4msGB3f1BPtbKtoi59V1EYUsVqUsHfGIu5lXbbtbL6BoquSJ2jIQ==
-  dependencies:
-    "@telerik/kendo-draggable" "2.0.0"
 
 "@progress/kendo-vue-common@0.4.4":
   version "0.4.4"
@@ -986,12 +972,12 @@
     "@progress/kendo-vue-common" "0.4.4"
     "@progress/kendo-vue-popup" "0.4.4"
 
-"@progress/kendo-vue-grid@^0.4.2":
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-vue-grid/-/kendo-vue-grid-0.4.2.tgz#81f19dfec33b89f628cd801fb455a1b3b565228d"
-  integrity sha512-bFNQo1K6ugkAyyCkPcEoKjCSYOBjkl+bqXGfljBNwON9uIGGk5iCVnfzDHIDqvIrILNejjsEYqL9KYk1IDFEVQ==
+"@progress/kendo-vue-grid@^0.4.4":
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-vue-grid/-/kendo-vue-grid-0.4.4.tgz#b524f86a18d31694c8e4c493626de12a7c085026"
+  integrity sha512-rniIG8tgl5MSTB+oECf24DwCLVE28TYEEHjLqKHmGKU5QmD4rKEcBvHq2abYXANI+6i24oWvJ4WeDkFHt1QOuw==
   dependencies:
-    "@progress/kendo-vue-common" "0.4.2"
+    "@progress/kendo-vue-common" "0.4.4"
     "@telerik/kendo-draggable" "^1.9.0"
 
 "@progress/kendo-vue-inputs@^0.4.4":
@@ -1001,15 +987,15 @@
   dependencies:
     "@progress/kendo-vue-common" "0.4.4"
 
-"@progress/kendo-vue-intl@^0.4.2":
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-vue-intl/-/kendo-vue-intl-0.4.2.tgz#45154f7f5213500252a31a9e317896d840fb7884"
-  integrity sha512-NlYQwFgH57BPcYGpcZc6s5ccYTX0flzhr/REiTRvHGExKBMr1MnZtfLdhHq8lcXGb0vw2Owyx1dc8wHk/JvI8w==
+"@progress/kendo-vue-intl@^0.4.4":
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-vue-intl/-/kendo-vue-intl-0.4.4.tgz#2ad674745591b917ed010eaccd4366a3b51f07e3"
+  integrity sha512-T0Df4aUNLWGIlndaZ9ioEoeTX3gfCAUQOfBOwsHYUiBg1u0f7kXnup0Cp9gmpuZ8VfalhJCNJhnLPWtNNY0dLA==
   dependencies:
-    "@progress/kendo-vue-common" "0.4.2"
+    "@progress/kendo-vue-common" "0.4.4"
     "@telerik/kendo-intl" "^1.4.4"
 
-"@progress/kendo-vue-popup@0.4.4":
+"@progress/kendo-vue-popup@0.4.4", "@progress/kendo-vue-popup@^0.4.4":
   version "0.4.4"
   resolved "https://registry.yarnpkg.com/@progress/kendo-vue-popup/-/kendo-vue-popup-0.4.4.tgz#9d4657328b6f47d33ecb13ea6ce9809aa4efcc1b"
   integrity sha512-LdEvCcPorm/Odedq+dwdp3Tzg2aBUlahwI/5KNOjJkzmqo60oguPW4AsyH30Yku0L5CPrpU7vuFleyePtvrFpQ==
@@ -1017,15 +1003,6 @@
     "@progress/kendo-popup-common" "^1.6.1"
     "@progress/kendo-vue-animation" "0.4.4"
     "@progress/kendo-vue-common" "0.4.4"
-
-"@progress/kendo-vue-popup@^0.4.2":
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-vue-popup/-/kendo-vue-popup-0.4.2.tgz#344685ee11b871e77c9a579c89e12f343ec43ab3"
-  integrity sha512-/z8mjo6ydJ7PqRCKk/unVKddGvH+KDasJj4lKB7AgIGVQcU3+B+iYedxxs9L7QsSDzJf9PF6Y91Mz0/NbgSsQA==
-  dependencies:
-    "@progress/kendo-popup-common" "^1.6.1"
-    "@progress/kendo-vue-animation" "0.4.2"
-    "@progress/kendo-vue-common" "0.4.2"
 
 "@sphinxxxx/color-conversion@^2.2.2":
   version "2.2.2"
