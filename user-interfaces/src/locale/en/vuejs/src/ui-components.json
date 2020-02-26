@@ -63,6 +63,7 @@
   "gridFilter.And": "And",
   "gridFilter.Filter": "Filter",
   "gridFilter.Clear": "Clear",
+  "gridComponent.No records": "No records available",
   "selist.Search in : {collection}": "Search in : {collection}",
   "selist.No {collection} to display": "No {collection} to display",
   "selist.Items per page": "Items per page",

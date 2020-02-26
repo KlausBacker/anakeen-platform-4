@@ -63,6 +63,7 @@
   "gridFilter.And": "Et",
   "gridFilter.Filter": "Filtrer",
   "gridFilter.Clear": "Effacer",
+  "gridComponent.No records": "Aucun résultat",
   "selist.Search in : {collection}": "Rechercher dans : {collection}",
   "selist.No {collection} to display": "Aucun {collection} à afficher",
   "selist.Items per page": "Éléments par page",

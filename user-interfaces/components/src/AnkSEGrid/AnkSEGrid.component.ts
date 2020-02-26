@@ -1,4 +1,4 @@
-import { Component, Prop, Watch, Vue } from "vue-property-decorator";
+import { Component, Prop, Watch, Mixins, Vue } from "vue-property-decorator";
 import AnkProgress from "./AnkProgress/AnkProgress.vue";
 import AnkActionMenu from "./AnkActionMenu/AnkActionMenu.vue";
 import AnkGridCell from "./AnkGridCell/AnkGridCell.vue";
@@ -8,11 +8,12 @@ import AnkGridColumnsButton from "./AnkGridColumnsButton/AnkGridColumnsButton.vu
 
 import AnkGridPager from "./AnkGridPager/AnkGridPager.vue";
 import AnkGridHeaderCell from "./AnkGridHeaderCell/AnkGridHeaderCell.vue";
-import { Grid } from "@progress/kendo-vue-grid";
+import { Grid, GridNoRecords } from "@progress/kendo-vue-grid";
 import { VNode } from "vue/types/umd";
 import GridEvent from "./AnkGridEvent/AnkGridEvent";
 import GridError from "./utils/GridError";
 import GridExportEvent from "./AnkGridEvent/AnkGridExportEvent";
+import I18nMixin from "../../mixins/AnkVueComponentMixin/I18nMixin";
 
 const CONTROLLER_URL = "/api/v2/grid/controllers/{controller}/{op}/{collection}";
 
@@ -50,6 +51,7 @@ const DEFAULT_SORT = {
 
 @Component({
   components: {
+    "kendo-grid-norecords": GridNoRecords,
     "kendo-grid-vue": Grid,
     "ank-progress": AnkProgress,
     "ank-action-menu": AnkActionMenu,
@@ -60,7 +62,7 @@ const DEFAULT_SORT = {
   },
   name: "ank-se-grid-vue"
 })
-export default class GridController extends Vue {
+export default class GridController extends Mixins(I18nMixin) {
   @Prop({
     default: "0",
     type: String
