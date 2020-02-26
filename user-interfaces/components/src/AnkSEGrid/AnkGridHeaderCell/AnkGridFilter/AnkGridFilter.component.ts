@@ -24,6 +24,8 @@ const FIELD_TYPE_OPERATOR = {
     "eq*": "enum",
     "neq*": "enum"
   },
+  timestamp: "timestamp",
+  time: "time",
   date: "date",
   int: "int",
   double: "double",
