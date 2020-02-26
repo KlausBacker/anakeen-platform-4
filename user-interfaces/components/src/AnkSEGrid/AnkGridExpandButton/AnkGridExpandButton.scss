@@ -1,0 +1,17 @@
+.grid-expand-button {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  border-color: #e5e5e5;
+  background-color: transparent;
+  transform: rotate(90deg);
+
+  &:hover {
+    background: rgba(210, 210, 210, 0.5);
+  }
+}
+
+.k-state-expand-active,
+.k-state-expand-active:hover{
+  color: var(--white);
+  background-color: #157EFB;
+}

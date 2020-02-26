@@ -135,7 +135,7 @@ export default {
       switch (event.data.type) {
         case "rights":
           this.$refs.fallSplitter.disableEmptyContent();
-          fallIdentifier = event.data.row.name || event.data.row.initid;
+          fallIdentifier = event.data.row.properties.name || event.data.row.properties.initid;
           this.selectedFieldAccess = {
             url: `${fallIdentifier}/rights`,
             component: "fall-rights",
@@ -152,7 +152,7 @@ export default {
           break;
         case "config":
           this.$refs.fallSplitter.disableEmptyContent();
-          fallIdentifier = event.data.row.name || event.data.row.initid;
+          fallIdentifier = event.data.row.properties.name || event.data.row.properties.initid;
           this.selectedFieldAccess = {
             url: `${fallIdentifier}/config`,
             component: "fall-config",

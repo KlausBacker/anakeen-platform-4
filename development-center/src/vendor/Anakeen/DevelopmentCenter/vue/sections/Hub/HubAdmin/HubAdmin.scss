@@ -26,10 +26,12 @@
       }
 
 
-      .grid-widget {
+      .smart-element-grid-widget {
         display: flex !important;
-
-        .grid-cell--key .grid-cell-content {
+        .smart-element-grid-cell--key {
+          width: 3rem;
+        }
+        .smart-element-grid-cell--key .smart-element-grid-cell-content {
           text-align: center;
           border-radius: 50%;
           background-color: #333;

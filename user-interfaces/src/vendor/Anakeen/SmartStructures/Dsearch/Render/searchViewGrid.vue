@@ -1,8 +1,9 @@
 <template>
   <ank-se-grid
-    :url-config="`/api/v2/smartstructures/dsearch/gridConfig/${searchId}`"
-    :page-sizes="[50, 100, 500]"
     :collection="searchId"
+    :pageable="{ pageSizes: [50, 100, 200], pageSize: 50 }"
+    defaultExpandable
+    controller="REPORT_GRID_CONTROLLER"
     class="dsearch-result-grid"
     ref="gridPreview"
   >

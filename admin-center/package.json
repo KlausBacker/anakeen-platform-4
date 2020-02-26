@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/admin-center",
-  "version": "2.1.2-RC.2020.1.4",
+  "version": "2.1.2-RC.2020.1.5",
   "autorelease": true,
   "description": "Web interfaces to admin applications and configure smart elements",
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/admin-center.git",
@@ -18,7 +18,7 @@
     "README.md"
   ],
   "devDependencies": {
-    "@anakeen/anakeen-cli": "1.2.2-RC.2020.1.4",
+    "@anakeen/anakeen-cli": "1.2.2-RC.2020.1.5",
     "@anakeen/webpack-conf": "1.2.1",
     "core-js": "3.6.1",
     "@types/jquery": "^3.3.30",
@@ -28,9 +28,9 @@
     "typescript": "^3.7.4"
   },
   "dependencies": {
-    "@anakeen/hub-components": "1.0.4-RC.2020.1.4",
-    "@anakeen/internal-components": "1.0.3-RC.2020.1.4",
-    "@anakeen/user-interfaces": "3.0.2-RC.2020.1.4",
+    "@anakeen/hub-components": "1.0.4-RC.2020.1.5",
+    "@anakeen/internal-components": "1.0.3-RC.2020.1.5",
+    "@anakeen/user-interfaces": "3.0.2-RC.2020.1.5",
     "@progress/kendo-buttons-vue-wrapper": "^2019.3.1023",
     "@progress/kendo-charts-vue-wrapper": "^2019.3.1023",
     "@progress/kendo-datasource-vue-wrapper": "^2019.3.1023",

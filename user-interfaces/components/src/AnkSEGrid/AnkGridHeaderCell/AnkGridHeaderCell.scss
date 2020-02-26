@@ -1,0 +1,58 @@
+.smart-element-grid-header {
+  display: flex;
+  position: relative;
+}
+
+.smart-element-grid-header-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  position: relative;
+
+  .k-link {
+    flex: 1;
+  }
+}
+
+.smart-element-grid-header--subtitle {
+  color: #666;
+  font-style: italic;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.smart-element-grid-header--title,
+.smart-element-grid-header-title-wrapper {
+  display: flex;
+  align-items: flex-start;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.smart-element-grid-header--title {
+  justify-content: space-between;
+}
+
+.smart-element-header-sort-button,
+.smart-element-grid-header-filter-button-wrapper {
+  margin-left: 0.5rem;
+  cursor: pointer;
+  &.smart-element-header-sort-button--none::after {
+    content: "\e127\e128";
+    font-style: normal;
+    font-family: "WebComponentsIcons";
+    letter-spacing: -0.4rem;
+  }
+}
+
+.smart-element-grid-header-filter--is-filtered {
+  border-radius: 0.25rem;
+  color: white;
+  background-color: #157efb;
+}
+
+.smart-element-grid-filter-content {
+  padding: 0;
+  width: 16.8rem;
+  min-height: 23rem;
+}

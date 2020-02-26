@@ -11,12 +11,12 @@
       <ank-se-grid
         ref="grid"
         class="trash-grid"
+        controller="TRASH_GRID_CONTROLLER"
         :sortable="false"
-        :refresh="true"
-        :page-sizes="[50, 100, 200]"
-        url-config="/api/v2/admin/trash/config/"
-        :context-titles="false"
-        @action-click="selectTrash"
+        pageable
+        filterable
+        default-expandable
+        @rowActionClick="selectTrash"
         @grid-data-bound="onGridDataBound"
       />
       <div class="trash-se-parent">
@@ -24,7 +24,7 @@
           <span class="material-icons">delete</span>
           <p>Select Smart Element</p>
         </div>
-        <ank-smart-element class="trash-smart-element" ref="trashSmartElement" />
+        <ank-smart-element ref="trashSmartElement" class="trash-smart-element" />
       </div>
     </ank-split-panes>
   </div>

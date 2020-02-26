@@ -39,6 +39,9 @@
     <!-- ui -->
     <public uri="./xsd/ui/1.0/config.xsd" publicId="https://platform.anakeen.com/4/schemas/ui/1.0"/>
     <uri uri="./xsd/ui/1.0/config.xsd" name="https://platform.anakeen.com/4/schemas/ui/1.0" />
+    <!-- grid -->
+    <public uri="./xsd/grid/1.0/config.xsd" publicId="https://platform.anakeen.com/4/schemas/grid/1.0"/>
+    <uri uri="./xsd/grid/1.0/config.xsd" name="https://platform.anakeen.com/4/schemas/grid/1.0" />
     <!-- workflow -->
     <public uri="./xsd/workflow/1.0/config.xsd" publicId="https://platform.anakeen.com/4/schemas/workflow/1.0"/>
     <uri uri="./xsd/workflow/1.0/config.xsd" name="https://platform.anakeen.com/4/schemas/workflow/1.0" />

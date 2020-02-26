@@ -19,11 +19,6 @@
     min-height: 0;
 }
 
-.dcpDocument--view.dcpDocument, .dcpDocument--edit.dcpDocument {
-    max-height: 100vh;
-    height: 100vh;
-}
-
 .dcpDsearch__body {
     padding: 1.166rem 0 0 0;
 }

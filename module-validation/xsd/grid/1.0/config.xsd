@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="https://platform.anakeen.com/4/schemas/grid/1.0" xmlns:grid="https://platform.anakeen.com/4/schemas/grid/1.0">
+  <xs:element name="controllers">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="grid:controller"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="controller">
+    <xs:complexType>
+      <xs:attribute name="class" use="required"/>
+      <xs:attribute name="name" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
