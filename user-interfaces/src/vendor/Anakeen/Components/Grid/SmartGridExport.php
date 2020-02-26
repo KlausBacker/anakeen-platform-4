@@ -12,12 +12,6 @@ use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-/**
- * Class GridExport
- *
- * @package Anakeen\Components\Grid\Routes
- * @note    use by route /api/v2/grid/export/{collectionId}
- */
 class SmartGridExport
 {
     public $clientColumnsConfig = [];
@@ -27,6 +21,13 @@ class SmartGridExport
     public $transactionId;
     public $onlySelect = false;
 
+    /**
+     * @param \Slim\Http\response $response
+     * @param $data
+     * @return \Slim\Http\Response
+     * @throws Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
     public function doExport(\Slim\Http\response $response, $data)
     {
         $spreadSheet = new Spreadsheet();
@@ -38,6 +39,10 @@ class SmartGridExport
         return self::withFile($response, $filename);
     }
 
+    /**
+     * @param Worksheet $sheet
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
     private function writeHeaders(Worksheet $sheet)
     {
         $styleArray = [
@@ -70,6 +75,10 @@ class SmartGridExport
         $sheet->fromArray($columnsNames, null, "A1");
     }
 
+    /**
+     * @param $fieldId
+     * @return mixed|null
+     */
     private function getFieldConfig($fieldId)
     {
         if (!empty($this->clientColumnsConfig)) {
@@ -83,6 +92,12 @@ class SmartGridExport
         return null;
     }
 
+    /**
+     * @param Worksheet $sheet
+     * @param $values
+     * @throws Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
     private function writeValues(Worksheet $sheet, $values)
     {
         $rowIndex = 2;
@@ -137,6 +152,11 @@ class SmartGridExport
         }
     }
 
+    /**
+     * @param $data
+     * @param $propId
+     * @return mixed
+     */
     private function getCellPropertyValue($data, $propId)
     {
         if (is_array($data)) {
@@ -154,6 +174,11 @@ class SmartGridExport
         return $data;
     }
 
+    /**
+     * @param $data
+     * @param $dataConfig
+     * @return mixed
+     */
     private function getCellFieldValue($data, $dataConfig)
     {
         if (isset($dataConfig["smartType"])) {
@@ -177,6 +202,12 @@ class SmartGridExport
         }
     }
 
+    /**
+     * @param Worksheet $sheet
+     * @param $cellCoordinate
+     * @param $format
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
     private function setCellFormat(Worksheet $sheet, $cellCoordinate, $format)
     {
         switch ($format) {
@@ -191,6 +222,11 @@ class SmartGridExport
     }
 
 
+    /**
+     * @param Spreadsheet $spreadsheet
+     * @return string
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     */
     private function writeFile(Spreadsheet $spreadsheet)
     {
         $outputFileName = sprintf("%s/%s.xlsx", ContextManager::getTmpDir(), uniqid("export"));
@@ -199,6 +235,14 @@ class SmartGridExport
         return $outputFileName;
     }
 
+    /**
+     * @param \Slim\Http\response $response
+     * @param $filePath - path to the writable file
+     * @param string $fileName - name of the file to return
+     * @param string $mime
+     * @return \Slim\Http\Response
+     * @throws Exception
+     */
     private static function withFile(
         \Slim\Http\response $response,
         $filePath,
