@@ -1,6 +1,7 @@
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Mixins, Watch } from "vue-property-decorator";
 import GridController from "../AnkSEGrid.component";
 import { DropDownList } from "@progress/kendo-vue-dropdowns";
+import I18nMixin from "../../../mixins/AnkVueComponentMixin/I18nMixin";
 
 @Component({
   name: "ank-grid-pager",
@@ -8,7 +9,7 @@ import { DropDownList } from "@progress/kendo-vue-dropdowns";
     DropDownList
   }
 })
-export default class AnkGridCellHtmlText extends Vue {
+export default class GridPager extends Mixins(I18nMixin) {
   @Prop({
     required: true
   })

@@ -12,7 +12,7 @@ import { Grid } from "@progress/kendo-vue-grid";
 import { VNode } from "vue/types/umd";
 import GridEvent from "./AnkGridEvent/AnkGridEvent";
 import GridError from "./utils/GridError";
-import GridExportEvent from './AnkGridEvent/AnkGridExportEvent';
+import GridExportEvent from "./AnkGridEvent/AnkGridExportEvent";
 
 const CONTROLLER_URL = "/api/v2/grid/controllers/{controller}/{op}/{collection}";
 
