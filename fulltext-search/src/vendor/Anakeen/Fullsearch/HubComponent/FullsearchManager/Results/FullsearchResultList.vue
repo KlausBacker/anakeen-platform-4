@@ -1,5 +1,5 @@
 <template>
-  <div class="fullsearch-list">
+  <div class="fullsearch-results">
     <kendo-grid
       ref="grid"
       :cell-render="cellTemplate"

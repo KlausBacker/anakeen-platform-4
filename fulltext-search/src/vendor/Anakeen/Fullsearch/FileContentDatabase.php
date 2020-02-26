@@ -4,6 +4,7 @@ namespace Anakeen\Fullsearch;
 
 use Anakeen\Core\DbManager;
 use Anakeen\Core\Internal\DbObj;
+use Anakeen\Core\Internal\QueryDb;
 use Anakeen\Core\Utils\Date;
 use Anakeen\Vault\FileInfo;
 
@@ -12,9 +13,6 @@ class FileContentDatabase extends DbObj
     const DBTABLE = "files.content";
     public $dbtable = self::DBTABLE;
     public $fields = [
-        "docid",
-        "field",
-        "index",
         "fileid",
         "taskid",
         "status",
@@ -26,11 +24,8 @@ class FileContentDatabase extends DbObj
         = [
             "taskid"
         ];
-    public $docid;
-    public $field;
     public $fileid;
     public $mdate;
-    public $index = -1;
     public $taskid;
     public $status;
     public $textcontent;
@@ -41,19 +36,15 @@ class FileContentDatabase extends DbObj
     public $sqlcreate = <<<SQL
 create schema if not exists files;
 create table files.content (
-  docid int references docread(id),
   fileid bigint,
-  field text,
-  taskid text not null,
+  taskid text,
   status char,
-  index int default -1,
   mdate timestamp,
   textcontent text
                    );
                    
-create index if not exists files_idx on files.content(docid);
 create unique index if not exists filesvault_idx on files.content(fileid);
-create unique index if not exists files_idx on files.content(taskid);
+create index if not exists files_idx on files.content(taskid);
 SQL;
 
     public function preInsert()
@@ -68,14 +59,12 @@ SQL;
         return parent::preUpdate();
     }
 
-    public static function deleteFieldIndex($seId, $fieldName, $index)
+    public static function deleteFileIndex($fileid)
     {
         $sql = sprintf(
-            "delete from %s where docid=%d and field='%s' and index = %d",
+            "delete from %s where fileid=%d ",
             self::DBTABLE,
-            $seId,
-            pg_escape_string($fieldName),
-            $index
+            $fileid
         );
         DbManager::query($sql);
     }
@@ -90,5 +79,20 @@ SQL;
         );
         DbManager::query($sql, $r, true, true);
         return $r !== false;
+    }
+
+    /**
+     * @param int $fileid
+     * @return FileContentDatabase|null
+     * @throws \Anakeen\Database\Exception
+     */
+    public static function getFromFileid(int $fileid) {
+        $q=new QueryDb("", self::class);
+        $q->addQuery(sprintf("fileid = %d", $fileid));
+        $r=$q->query(0, 1);
+        if ($q->nb > 0) {
+            return $r[0];
+        }
+        return null;
     }
 }

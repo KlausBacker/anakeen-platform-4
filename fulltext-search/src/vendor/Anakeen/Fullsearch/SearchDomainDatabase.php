@@ -83,6 +83,11 @@ class SearchDomainDatabase
                 return $item->field;
             }, $smartStructureSearchconfig->fields);
 
+            $fields = array_merge($fields, array_map(function ($item) {
+                /** @var SearchFieldConfig $item */
+                return $item->field;
+            }, $smartStructureSearchconfig->files));
+
             $structureName = $smartStructureSearchconfig->structure;
             $structure = SEManager::getFamily($structureName);
             if (!$structure) {
@@ -142,7 +147,7 @@ SQL;
     public function getDbStats()
     {
         $configs = $this->domain->configs;
-        $stats=[];
+        $stats = [];
         foreach ($configs as $smartStructureSearchconfig) {
             $structureName = $smartStructureSearchconfig->structure;
             $structure = SEManager::getFamily($structureName);
@@ -153,7 +158,7 @@ SQL;
             $s->overrideAccessControl();
             $results = $s->onlyCount();
 
-            $stats["structures"][$structureName]["totalToIndex"]=$results;
+            $stats["structures"][$structureName]["totalToIndex"] = $results;
 
 
             $s = new SearchElements($structure->id);
@@ -161,8 +166,7 @@ SQL;
             $s->join(sprintf("id = %s(docid)", $this->getTableName()));
             $results = $s->onlyCount();
 
-            $stats["structures"][$structureName]["totalIndexed"]=$results;
-
+            $stats["structures"][$structureName]["totalIndexed"] = $results;
 
 
             $s = new SearchElements($structure->id);
@@ -175,9 +179,55 @@ SQL;
             );
             $results = $s->onlyCount();
 
-            $stats["structures"][$structureName]["totalDirty"]=$results;
+            $stats["structures"][$structureName]["totalDirty"] = $results;
         }
+        $sql = sprintf(
+            "select f.status, count(f.status) from %s f inner join %s s on (f.fileid = any(s.files))  group by f.status",
+            FileContentDatabase::DBTABLE,
+            $this->getTableName()
+        );
+        DbManager::query($sql, $status);
+        foreach ($status as &$aStatus) {
+            switch ($aStatus["status"]) {
+                case "K":
+                    $aStatus["label"] = ___("Failing", "fullsearch-status");
+                    break;
+                case "D":
+                    $aStatus["label"] = ___("Succeed", "fullsearch-status");
+                    break;
+                case "W":
+                    $aStatus["label"] = ___("Waiting", "fullsearch-status");
+                    break;
+                default:
+                    $aStatus["label"] = $aStatus["status"];
+                    break;
+            }
+        }
+
+        $stats["files"] = $status;
         return $stats;
+    }
+
+    /**
+     * @TODO Add admin interface to see failing files details
+     * @return mixed
+     * @throws Exception
+     * @throws \Anakeen\Database\Exception
+     */
+    protected function getFailingFiles()
+    {
+        $sql = sprintf(
+            "select f.fileid, v.name as filename, docread.title, docread.id 
+                from %s f inner join %s s on (f.fileid = any(s.files)) 
+                inner join docread on (docread.id = s.docid) 
+                inner join vaultdiskstorage v on  (v.id_file=f.fileid) 
+                where status='K'",
+            FileContentDatabase::DBTABLE,
+            $this->getTableName()
+        );
+
+        DbManager::query($sql, $results);
+        return $results;
     }
 
     /**
@@ -296,7 +346,7 @@ SQL;
             foreach ($weightFiles as $weight => $fileFields) {
                 if ($fileFields) {
                     $sqlset[] = sprintf(
-                        "setweight((select to_tsvector('%s', unaccent(string_agg(textcontent, ', '))) from %s where fileid in (%s)), '%s')",
+                        "setweight((select to_tsvector('%s', unaccent(string_agg(textcontent, ', '))) from %s where fileid in (%s) and status='D'), '%s')",
                         $this->domain->stem,
                         FileContentDatabase::DBTABLE,
                         implode(", ", $fileFields),
@@ -610,7 +660,7 @@ SQL;
             }
         }
 
-        $filesId=[];
+        $filesId = [];
         foreach ($config->files as $fieldInfo) {
             $oa = $se->getAttribute($fieldInfo->field);
             if ($oa === false) {
@@ -625,7 +675,7 @@ SQL;
                     /** @var SearchFileConfig $fieldInfo */
                     $fileValues = [];
                     if ($oa->isMultiple() === false) {
-                        $fileValues[-1] = $fieldInfo;
+                        $fileValues[-1] = $rawValue;
                     } else {
                         foreach ($se->getMultipleRawValues($oa->id) as $kf => $rawValue) {
                             $fileValues = $se->getMultipleRawValues($oa->id);
@@ -667,7 +717,7 @@ SQL;
             pg_escape_string(preg_replace('/\s+/', ' ', implode(", ", $data["B"]))),
             pg_escape_string(preg_replace('/\s+/', ' ', implode(", ", $data["C"]))),
             pg_escape_string(preg_replace('/\s+/', ' ', implode(", ", $data["D"]))),
-            $filesId?(pg_escape_literal(Postgres::arrayToString($filesId))):'null',
+            $filesId ? (pg_escape_literal(Postgres::arrayToString($filesId))) : 'null',
             pg_escape_string(Date::getNow(true))
         );
         DbManager::query($sql);

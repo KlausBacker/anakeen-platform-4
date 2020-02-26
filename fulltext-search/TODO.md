@@ -5,7 +5,7 @@
 
 * tests sur le highlight [OK]
 
-* commit sur le te pour diminuer le sleep
+* commit sur le te pour diminuer le sleep [OK]
 
 * custom callback pour ajouter des données personnalisées
 

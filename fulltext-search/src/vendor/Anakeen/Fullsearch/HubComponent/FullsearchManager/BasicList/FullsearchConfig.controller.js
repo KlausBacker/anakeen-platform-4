@@ -17,13 +17,41 @@ const componentInstance = Vue.component("template-component", {
                           <li>Total to index : {{structure.stats.totalToIndex}}</li>
                           <li :class="{ warning: (structure.stats.totalToIndex > structure.stats.totalIndexed) }">Total indexed : {{structure.stats.totalIndexed}}</li>
                           <li :class="{ warning: (structure.stats.totalDirty > 0) }">Total not up to date : {{structure.stats.totalDirty}}</li>
+                      
                       </ul>
                       
                   </li>
               </ul>
+              <strong>Files indexing statuses:</strong>
+              <ul  class="file-info"> 
+                  <li  v-for="fileStatus in dataItem.database.files"><span class="status">{{fileStatus.label}}</span> : <b>{{fileStatus.count}}</b> </li>
+              </ul>
           </div>
           <p><strong>Database size:</strong> {{dataItem.database.size.prettySize}}</p>
       </section>`
+});
+
+const componentHeaderInstance = Vue.component("template-component", {
+  props: {
+    field: String,
+    title: String,
+    sortable: [Boolean, Object]
+  },
+  data() {
+    return {
+      autoReloadTimer: false
+    };
+  },
+  template: `<div class="full-header"  ><b>{{title}}</b> <button @click="clickHandler" @dblclick="autoRefresh" class="btn"  :class="{ 'btn-primary':this.autoReloadTimer}"><span class="material-icons">refresh</span></button></div>`,
+  methods: {
+    clickHandler: function(e) {
+      this.$emit("reload", e);
+    },
+    autoRefresh: function() {
+      this.autoReloadTimer = !this.autoReloadTimer;
+      this.$emit("autoReload", this.autoReloadTimer);
+    }
+  }
 });
 
 // noinspection JSUnusedGlobalSymbols
@@ -40,7 +68,9 @@ export default {
       domains: [],
       gridData: null,
       configInfo: [],
-      columns: [{ field: "domainName", title: "Search domains" }]
+      expandedRows: {},
+      autoReloadTimer: null,
+      columns: [{ field: "domainName", title: "Search domains", headerCell: componentHeaderInstance }]
     };
   },
 
@@ -54,7 +84,8 @@ export default {
   computed: {},
   methods: {
     fetchConfigs() {
-      this.$http.get("/api/admin/fullsearch/domains/").then(response => {
+      return this.$http.get("/api/admin/fullsearch/domains/").then(response => {
+        this.configInfo = [];
         this.domains = response.data.data.config;
         this.domains.forEach(domain => {
           const domainName = domain.name;
@@ -85,12 +116,35 @@ export default {
           this.selectedID = this.configInfo[0].domainName;
           this.$emit("selected", this.selectedID);
         }
-        this.getData();
+
+        this.updateData();
       });
     },
 
-    getData() {
+    autoReload(reload) {
+      if (reload) {
+        this.autoReloadTimer = window.setTimeout(() => {
+          this.fetchConfigs().then(() => {
+            this.autoReloadTimer = null;
+            this.autoReload(true);
+          });
+        }, 1000);
+      } else {
+        if (this.autoReloadTimer) {
+          window.clearTimeout(this.autoReloadTimer);
+        }
+      }
+    },
+    updateData() {
       this.gridData = this.configInfo.map(item => ({ ...item, selected: item.domainName === this.selectedID }));
+      // Reaffect expanded rows
+      for (let [domainName, expanded] of Object.entries(this.expandedRows)) {
+        this.gridData.forEach(item => {
+          if (item.domainName === domainName) {
+            Vue.set(item, "expanded", expanded);
+          }
+        });
+      }
     },
     onRowClick(event) {
       this.selectedID = event.dataItem.domainName;
@@ -105,6 +159,7 @@ export default {
     },
     expandChange(event) {
       Vue.set(event.dataItem, event.target.$props.expandField, event.value);
+      this.expandedRows[event.dataItem.domainName] = event.value;
     }
   }
 };

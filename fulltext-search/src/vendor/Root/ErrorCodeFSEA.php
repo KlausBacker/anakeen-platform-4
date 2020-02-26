@@ -49,4 +49,8 @@ class ErrorCodeFSEA
      * @errorCode When send file to TE
      */
     const FSEA0010 = 'TE send file  error "%s"';
+    /**
+     * @errorCode When send TE file text extraction
+     */
+    const FSEA0011 = 'Incorrect file reference "%s" in field \"%s\" , smart element %d';
 }

@@ -5,8 +5,24 @@
     > td:not(.k-hierarchy-cell) {
       color: var(--white);
     }
+
+    > td {
+      background-color: transparent;
+    }
+  }
+  .k-grid td {
+      cursor: pointer;
+
   }
 
+  .k-grid tbody tr:hover, .k-grid tbody tr.k-state-hover {
+    color: inherit;
+    background-color: #dfdfdf;
+  }
+
+  .k-grid-content {
+    overflow:auto;
+  }
   ul.structure-info {
     .warning {
       color: #b57c14;
@@ -19,6 +35,19 @@
 
 
     }
+  }
 
+  ul.file-info {
+    .status {
+      font-family: monospace;
+    }
+
+  }
+
+  .full-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
   }
 }

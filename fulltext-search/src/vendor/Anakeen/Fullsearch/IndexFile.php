@@ -27,6 +27,7 @@ class IndexFile
         } else {
             $fileValue = $se->getRawValue($fieldInfo->field);
         }
+
         if ($fileValue) {
             /** @var FileInfo $fileInfo */
             $fileInfo = $se->getFileInfo($fileValue, "", "object");
@@ -40,40 +41,66 @@ class IndexFile
                         //$mb=microtime(true);
                         $err = $te->sendTransformation("utf8", "", $fileInfo->path, $callurl, $info);
 
-                        // printf("\tSend %dms, %s\n",(microtime(true)-$mb) *1000, $fileInfo->name);
+                        //  printf("\tSend %dms, %s\n",(microtime(true)-$mb) *1000, $fileInfo->name);
 
                         if ($err) {
+                            self::recordTeError(
+                                $fileInfo->id_file,
+                                $err
+                            );
                             throw new Exception("FSEA0010", $err);
                         }
                         self::recordTeRequest(
                             $info["tid"],
                             $info["status"],
-                            $se->id,
-                            $fieldInfo->field,
-                            $fileInfo->id_file,
-                            $index
+                            $fileInfo->id_file
                         );
 
                         return true;
                     }
+                } else {
+                    self::recordTeError(
+                        $fileInfo->id_file,
+                        sprintf("file \"%s\ not found : \"%s\"", $fileInfo->name, $fileInfo->path)
+                    );
+                }
+            } else {
+                if (preg_match(PREGEXPFILE, $fileValue, $reg)) {
+                    self::recordTeError(
+                        $reg["vid"],
+                        sprintf("file \"%s\ (#%s) not referenced in vault", $reg["name"], $reg["vid"])
+                    );
+                } else {
+                    throw new Exception("FSEA0011", $fileValue, $fieldInfo->field, $se->id);
                 }
             }
         }
         return false;
     }
 
-    protected static function recordTeRequest($tid, $status, $seid, $fieldid, $fileid, $index = -1)
+    protected static function recordTeRequest($tid, $status, $fileid)
     {
         // Delete old file index
         // @TODO how remove deleted files ?
-        FileContentDatabase::deleteFieldIndex($seid, $fieldid, $index);
+        FileContentDatabase::deleteFileIndex($fileid);
         $fileRecord = new FileContentDatabase();
         $fileRecord->taskid = $tid;
         $fileRecord->status = $status;
-        $fileRecord->docid = $seid;
         $fileRecord->fileid = $fileid;
-        $fileRecord->field = $fieldid;
-        $fileRecord->index = $index;
+        $err = $fileRecord->add();
+        if ($err) {
+            throw new Exception($err);
+        }
+    }
+
+
+    protected static function recordTeError($fileid, $err)
+    {
+        FileContentDatabase::deleteFileIndex($fileid);
+        $fileRecord = new FileContentDatabase();
+        $fileRecord->status = "K";
+        $fileRecord->fileid = $fileid;
+        $fileRecord->textcontent = $err;
         $err = $fileRecord->add();
         if ($err) {
             throw new Exception($err);
