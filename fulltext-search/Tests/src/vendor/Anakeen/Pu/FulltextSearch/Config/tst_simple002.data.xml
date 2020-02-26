@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documents>
+    <tst_simple002 name="TST_ESIMPLE2_001">
+        <tst_f_title>
+            <tst_title>001 Tous les ours ont un grand corps trapu et massif, des membres puissants.</tst_title>
+            <tst_desc>Les ours sont chassés depuis la préhistoire pour leur viande et leur fourrure. Ils ont
+                joué un rôle de premier plan dans la culture (mythologie, légendes, etc.) et les arts. À l'époque
+                moderne, les populations d'ours sont victimes de pressions (comme celles des éleveurs dans les
+                Pyrénées), de l'empiètement de l'homme sur son habitat naturel, de l'artificialisation et de la
+                fragmentation des forêts, ainsi que du commerce illicite, notamment le marché asiatique de la bile
+                d'ours. L'UICN a classé six espèces d'ours comme vulnérables ou menacées d'extinction. L'ours brun
+                pourrait disparaître dans certains pays européens. Le braconnage et le commerce international des
+                populations les plus en danger sont interdits, mais se pratiquent toujours.
+                L'ours aime bien les saumons sauvages.
+            </tst_desc>
+        </tst_f_title>
+    </tst_simple002>
+    <tst_simple002 name="TST_ESIMPLE2_002">
+        <tst_f_title>
+            <tst_title>002 Le lion (Panthera leo) est une espèce de mammifères carnivores de la famille des félidés.
+            </tst_title>
+            <tst_desc>La femelle du lion est la lionne, son petit est le lionceau. Le mâle adulte, aisément
+                reconnaissable à
+                son importante crinière, accuse une masse moyenne qui peut être variable selon les zones géographiques
+                où il
+                se trouve, allant de 180 kg pour les lions de Kruger à 230 kg pour les lions de Transvaal. Certains
+                spécimens très rares peuvent dépasser exceptionnellement 250 kg. Un mâle adulte se nourrit de 7 kg de
+                viande
+                chaque jour contre 5 kg chez la femelle. Le lion est un animal grégaire, c'est-à-dire qu'il vit en
+                larges
+                groupes familiaux, contrairement aux autres félins. Son espérance de vie, à l'état sauvage, est comprise
+                entre 7 et 12 ans pour le mâle et 14 à 20 ans pour la femelle, mais il dépasse fréquemment les 30 ans en
+                captivité.
+                Le lion mâle ne chasse qu'occasionnellement, il est chargé de combattre les intrusions sur le territoire
+                et
+                les menaces contre la troupe. Le lion rugit. Il n'existe plus à l'état sauvage que 16 500 à 30 000
+                individus
+                dans la savane africaine, répartis en une dizaine de sous-espèces et environ 300 au parc national de Gir
+                Forest dans le nord-ouest de l'Inde. Il est surnommé « le roi des animaux » car sa crinière lui donne un
+                aspect semblable au Soleil, qui apparaît comme « le roi des astres ». Entre 1993 et 2017, leur
+                population a
+                baissé de 43 %
+            </tst_desc>
+        </tst_f_title>
+    </tst_simple002>
+    <tst_simple002 name="TST_ESIMPLE2_003">
+        <tst_f_title>
+            <tst_title>003 Saumon :est un nom vernaculaire ambigu désignant chez les francophones plusieurs espèces de poissons de la famille des salmonidés :
+            </tst_title>
+            <tst_desc>    huit espèces classées dans le genre Oncorhynchus, qui vivent dans le nord de l'océan Pacifique et son bassin versant ;
+                une espèce du genre Salmo, qui vit dans le nord de l'océan Atlantique et son bassin versant.
+
+                Presque tous les saumons remontent (autrefois par millions) les rivières vers les sources pour aller pondre (anadromie). La plupart des adultes meurent après la ponte. Leurs millions de cadavres ainsi que les saumons mangés par les animaux sauvages (ours notamment) lors de leur remontée sont une source importantes d'oligoéléments d'origine marine, favorable à la biodiversité. Après l'éclosion en eau douce, les jeunes migrent vers l'océan jusqu'à leur maturité sexuelle.
+            </tst_desc>
+        </tst_f_title>
+    </tst_simple002>
+    <tst_simple002 name="TST_ESIMPLE2_004">
+        <tst_f_title>
+            <tst_title>004 Le terme truite est un nom vernaculaire ambigu désignant plusieurs espèces de poissons de la famille des salmonidés.
+            </tst_title>
+            <tst_desc>  Les truites vivent dans des eaux claires et vives, principalement en Amérique du Nord, en Europe, dans le nord de l'Asie et dans les rivières de l'Atlas au Maroc. Elles ont été également introduites en Australie et en Nouvelle-Zélande au XIXe siècle. Selon les espèces, la durée de vie peut varier de 7 ans à plusieurs dizaines d'années. Une truite de 80 cm peut dépasser les 5 kg. Certains spécimens vivant en lac dépassent le mètre et 15 kg.
+            </tst_desc>
+        </tst_f_title>
+    </tst_simple002>
+</documents>

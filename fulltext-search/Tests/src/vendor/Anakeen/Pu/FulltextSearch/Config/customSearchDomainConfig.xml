@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:search-domain name="testDomainCustom" lang="fr"
+                     xmlns:smart="https://platform.anakeen.com/4/schemas/search-domain/1.0">
+    <smart:search-stem>simple</smart:search-stem>
+    <smart:search-config structure="TST_SIMPLE002">
+        <smart:title weight="A"/>
+        <smart:callable function="Anakeen\Pu\FulltextSearch\Config\CustomData::addHisto" weight="C" />
+        <smart:callable function="Anakeen\Pu\FulltextSearch\Config\CustomData::getName" weight="D" />
+    </smart:search-config>
+</smart:search-domain>

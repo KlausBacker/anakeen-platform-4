@@ -2,6 +2,7 @@
 
 namespace Anakeen\Pu\FulltextSearch;
 
+use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Exception;
 use Anakeen\Fullsearch\FilterContains;
@@ -77,6 +78,7 @@ class PuFileSearch extends FulltextSearchConfig
         $ot = new \Anakeen\TransformationEngine\Client();
 
         $elaspedTime=0;
+        $dbDomain=new SearchDomainDatabase($domain);
         foreach ($waitings as $waiting) {
             $info = [];
             do {
@@ -95,10 +97,15 @@ class PuFileSearch extends FulltextSearchConfig
                 throw new Exception($info["comment"]);
             }
             IndexFile::recordTeFileresult($info["tid"]);
+            $elemnts=$dbDomain->getElementIdsReferenceFile($waiting->fileid);
 
-            $se = SEManager::getDocument($waiting->docid, false);
-            $d = new SearchDomainDatabase($domain);
-            $d->updateSmartWithFiles($se);
+            DbManager::query(sprintf("select * from %s", $dbDomain->getTableName()), $r);
+
+            foreach ($elemnts as $elemnt) {
+                $se = SEManager::getDocument($elemnt, false);
+
+                $dbDomain->updateSmartWithFiles($se);
+            }
         }
     }
 

@@ -93,6 +93,7 @@ class SearchDomainDatabase
             if (!$structure) {
                 throw new Exception("FSEA0003", $this->domainName, $structureName);
             }
+
             $s = new SearchElements($structure->id);
             $s->join(sprintf("id = %s(docid)", $this->getTableName()), "left outer");
             $s->addFilter(
@@ -102,7 +103,9 @@ class SearchDomainDatabase
                 $this->getTableName()
             );
             $s->overrideAccessControl();
-            $s->returnsOnly($fields);
+            if (!$smartStructureSearchconfig->callables) {
+                $s->returnsOnly($fields);
+            }
             $results = $s->search()->getResults();
 
             $ft = $this->updateHook;
@@ -241,7 +244,9 @@ SQL;
         $configs = $this->domain->configs;
         $config = "";
         foreach ($configs as $smartStructureSearchconfig) {
-            if ($smartStructureSearchconfig->structure === $se->fromname) {
+            $structureClass = SEManager::getFamilyClassName($smartStructureSearchconfig->structure);
+
+            if (is_a($se, $structureClass)) {
                 $config = $smartStructureSearchconfig;
                 break;
             }
@@ -283,6 +288,26 @@ SQL;
         ));
     }
 
+    /**
+     * Return element id that reference the file
+     * @param int $fileid file identifier
+     * @return int[] element ids
+     */
+    public function getElementIdsReferenceFile($fileid)
+    {
+        $sql=sprintf(
+            "
+                select s.docid
+                from %s f
+                inner join %s s on (f.fileid = any(s.files))
+                where f.fileid=%s;",
+            FileContentDatabase::DBTABLE,
+            $this->getTableName(),
+            intval($fileid)
+        );
+        DbManager::query($sql, $docids, true);
+        return $docids;
+    }
     /**
      * Update data index with file data set in files schema
      * Call after TE result record file text conversion is done
@@ -561,8 +586,9 @@ SQL;
     }
 
     /**
-     * @param SmartElement $se
-     * @param SearchConfig $config
+     * Recompute search data for a specific Smart Element
+     * @param SmartElement $se Smart Element to update
+     * @param SearchConfig $config Search domain config (for a structure)
      * @throws Exception
      * @throws \Anakeen\Database\Exception
      */
@@ -661,10 +687,10 @@ SQL;
         }
 
         $filesId = [];
-        foreach ($config->files as $fieldInfo) {
-            $oa = $se->getAttribute($fieldInfo->field);
+        foreach ($config->files as $fileInfo) {
+            $oa = $se->getAttribute($fileInfo->field);
             if ($oa === false) {
-                throw new Exception("FSEA0005", $this->domainName, $se, $fieldInfo->field);
+                throw new Exception("FSEA0005", $this->domainName, $se, $fileInfo->field);
             }
             $rawValue = $se->getRawValue($oa->id);
             if (!$rawValue) {
@@ -672,7 +698,6 @@ SQL;
             }
             switch ($oa->type) {
                 case 'file':
-                    /** @var SearchFileConfig $fieldInfo */
                     $fileValues = [];
                     if ($oa->isMultiple() === false) {
                         $fileValues[-1] = $rawValue;
@@ -692,7 +717,7 @@ SQL;
                                 $fileRequestSend = IndexFile::sendIndexRequest(
                                     $se,
                                     $this->domainName,
-                                    $fieldInfo,
+                                    $fileInfo,
                                     $kf
                                 ) || $fileRequestSend;
                             } catch (Exception $e) {
@@ -704,6 +729,17 @@ SQL;
                     }
 
                     break;
+            }
+        }
+
+
+        foreach ($config->callables as $callInfo) {
+            $ft=$callInfo->functionReference;
+            if ($ft) {
+                $text = $se->applyMethod($ft."(THIS)");
+                if ($text) {
+                    $data[$callInfo->weight][] = $text;
+                }
             }
         }
 

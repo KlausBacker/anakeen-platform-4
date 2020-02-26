@@ -7,7 +7,7 @@
 
 * commit sur le te pour diminuer le sleep [OK]
 
-* custom callback pour ajouter des données personnalisées
+* custom callback pour ajouter des données personnalisées [OK]
 
 * Proposition de correction orthographique
 

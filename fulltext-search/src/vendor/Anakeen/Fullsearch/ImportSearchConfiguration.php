@@ -107,6 +107,16 @@ class ImportSearchConfiguration
             );
         }
 
+
+        $fieldNodes = $this->xpath->query("sd:callable", $configNode);
+        foreach ($fieldNodes as $fieldNode) {
+            /** @var \DOMElement $fieldNode */
+            $config->callables[] = new SearchCallableConfig(
+                $fieldNode->getAttribute("function"),
+                $fieldNode->getAttribute("weight")
+            );
+        }
+
         return $config;
     }
 }

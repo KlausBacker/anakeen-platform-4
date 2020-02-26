@@ -12,6 +12,10 @@ class SearchConfig implements \JsonSerializable
      * @var SearchFileConfig[]
      */
     public $files = [];
+    /**
+     * @var SearchCallableConfig[]
+     */
+    public $callables = [];
 
     public function __construct($dataConfig = [])
     {
@@ -27,6 +31,12 @@ class SearchConfig implements \JsonSerializable
                     $fieldConfig["weight"]
                 );
             }
+            foreach ($dataConfig["callables"] as $fieldConfig) {
+                $this->callables[] = new SearchCallableConfig(
+                    $fieldConfig["function"],
+                    $fieldConfig["weight"]
+                );
+            }
         }
     }
 
@@ -38,7 +48,8 @@ class SearchConfig implements \JsonSerializable
         return [
             "structure" => $this->structure,
             "fields" => $this->fields,
-            "files" => $this->files
+            "files" => $this->files,
+            "callables" => $this->callables
         ];
     }
 }
