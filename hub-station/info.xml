@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="anakeen-hub" vendor="Anakeen" version="1.0.4-RC.2020.1.4">
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="anakeen-hub" vendor="Anakeen" version="1.0.4-RC.2020.1.5">
 
     <requires>
-        <module name="smart-data-engine" version="^2.1.2-RC.2020.1.4"/>
-        <module name="user-interfaces" version="^3.0.2-RC.2020.1.4"/>
-        <module name="security" version="^2.0.3-RC.2020.1.4"/>
-        <module name="workflow" version="^2.0.2-RC.2020.1.4"/>
+        <module name="smart-data-engine" version="^2.1.2-RC.2020.1.5"/>
+        <module name="user-interfaces" version="^3.0.2-RC.2020.1.5"/>
+        <module name="security" version="^2.0.3-RC.2020.1.5"/>
+        <module name="workflow" version="^2.0.2-RC.2020.1.5"/>
     </requires>
     <post-install>
         <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/Hub/Accounts/110-HubRoles.xml"/>
@@ -19,7 +19,7 @@
         <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationLabel/**/*.xml"/>
 
         <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubInstanciation/**/*.xml"/>
-        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Hub/Routes/hub-station-admin-grid-controller.xml" />
+        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Hub/Routes/hub-station-admin-grid-controller.xml"/>
 
     </post-install>
     <post-upgrade>
@@ -37,6 +37,6 @@
         <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationLabel/**/*.xml"/>
 
         <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubInstanciation/**/*.xml"/>
-        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Hub/Routes/hub-station-admin-grid-controller.xml" />
+        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Hub/Routes/hub-station-admin-grid-controller.xml"/>
     </post-upgrade>
 </module>

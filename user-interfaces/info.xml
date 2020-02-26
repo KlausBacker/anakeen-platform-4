@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="user-interfaces" version="3.0.2-RC.2020.1.4" vendor="Anakeen" license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0">
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="user-interfaces" version="3.0.2-RC.2020.1.5" vendor="Anakeen" license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0">
 
     <description>Anakeen Platform : User interfaces</description>
     <requires>
-        <module name="smart-data-engine" version="^2.1.2-RC.2020.1.4"/>
+        <module name="smart-data-engine" version="^2.1.2-RC.2020.1.5"/>
     </requires>
     <replaces>
         <module name="anakeen-theme"/>
@@ -76,7 +76,7 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Role/role.views.xml">
             <label>ROLE Structure view</label>
         </process>
-        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/SmartStructures/Dsearch/report-grid-controller.xml" />
+        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/SmartStructures/Dsearch/report-grid-controller.xml"/>
 
         <process command="./ank.php --script=migrationUpdateAccountUI"/>
     </post-install>
@@ -144,7 +144,7 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Role/role.views.xml">
             <label>ROLE Structure view</label>
         </process>
-        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/SmartStructures/Dsearch/report-grid-controller.xml" />
+        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/SmartStructures/Dsearch/report-grid-controller.xml"/>
 
         <process command="./programs/runMigrationScript.php --file=./vendor/Anakeen/SmartStructures/Mailtemplate/Migration/mailTemplateMigration.xml">
             <label>Apply Migrate Mail Template Control View</label>
