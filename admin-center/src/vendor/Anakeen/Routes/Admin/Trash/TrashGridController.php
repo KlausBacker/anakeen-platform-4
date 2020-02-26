@@ -50,15 +50,6 @@ class TrashGridController extends DefaultGridController
         if (isset($clientConfig["page"])) {
             $contentBuilder->setPage($clientConfig["page"]);
         }
-
-        if (isset($clientConfig["sort"])) {
-            foreach ($clientConfig["sort"] as $sort) {
-                $contentBuilder->addSort($sort["field"], $sort["dir"]);
-            }
-        } else {
-            $contentBuilder->addSort("mdate", "desc");
-        }
-
         if (isset($clientConfig["filter"])) {
             foreach ($clientConfig["filter"]["filters"] as $filter) {
                 if (strcmp($filter["field"], "author") === 0) {
@@ -114,7 +105,7 @@ class TrashGridController extends DefaultGridController
         $fullContent = $contentBuilder->getContent();
         $content = $fullContent["content"];
         foreach ($content as $key => $val) {
-            $fullContent["content"][$key]["properties"]["fromid"] = SEManager::getTitle($val["properties"]["fromid"]);
+            $fullContent["content"][$key]["properties"]["fromid"] = SEManager::getNameFromId($val["properties"]["fromid"]);
             $fullContent["content"][$key]["properties"]["mdate"] = Date::stringDateToLocaleDate($val["properties"]["mdate"]);
         }
         return $fullContent;
