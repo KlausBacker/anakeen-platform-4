@@ -2,7 +2,7 @@
   <ank-se-grid
     v-if="searchId"
     :collection="searchId"
-    :pageable="false"
+    :pageable="{ pageSizes: [50, 100, 200], pageSize: 50 }"
     class="search-grid"
     ref="searchGrid"
     controller="REPORT_GRID_CONTROLLER"

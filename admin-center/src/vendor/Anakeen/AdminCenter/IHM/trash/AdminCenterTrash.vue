@@ -12,6 +12,7 @@
         ref="grid"
         class="trash-grid"
         controller="TRASH_GRID_CONTROLLER"
+        :sortable="false"
         pageable
         filterable
         default-expandable

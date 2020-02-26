@@ -104,7 +104,7 @@ class DefaultGridController implements SmartGridController
             });
         } else {
             $transaction = TransactionManager::createTransaction();
-            return $transaction->getData();
+            return json_encode($transaction->getData());
         }
     }
 }

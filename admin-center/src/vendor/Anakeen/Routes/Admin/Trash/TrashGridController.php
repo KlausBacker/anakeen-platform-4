@@ -6,6 +6,7 @@ namespace Anakeen\Routes\Admin\Trash;
 use Anakeen\Components\Grid\DefaultGridController;
 use Anakeen\Components\Grid\SmartGridConfigBuilder;
 use Anakeen\Components\Grid\SmartGridContentBuilder;
+use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\Utils\Date;
 use Anakeen\Search\SearchElements;
@@ -19,15 +20,14 @@ class TrashGridController extends DefaultGridController
             $configBuilder->setPageable($clientConfig["pageable"]);
         }
         $configBuilder->addProperty("title");
-        $configBuilder->addProperty("fromid", array("relation"=>"-1","smartType"=>"text","title"=>"Type"));
+        $configBuilder->addProperty("fromid", array("relation"=>"-1","smartType"=>"docid","title"=>"Type"));
         $configBuilder->addProperty("mdate", array("title"=>"Date of deletion"));
         $configBuilder->addAbstractColumn("auth", array("smartType"=>"text","title"=>"Authorization","hidden"=>true,"sortable"=>false,"filterable"=>false));
         $configBuilder->addAbstractColumn("author", array("smartType"=>"text","title"=>"Author of the deletion","sortable"=>false,"filterable"=>true));
         $configBuilder->addRowAction(array("action"=> "restore", "title"=> "Restore"));
         $configBuilder->addRowAction(array("action"=> "display", "title"=> "Display"));
         $configBuilder->addRowAction(array("action"=> "delete", "title"=> "Delete from trash"));
-        $config = $configBuilder->getConfig();
-        return $config;
+        return $configBuilder->getConfig();
     }
 
     public static function getGridContent($collectionId, $clientConfig)
@@ -49,15 +49,6 @@ class TrashGridController extends DefaultGridController
         if (isset($clientConfig["page"])) {
             $contentBuilder->setPage($clientConfig["page"]);
         }
-
-        if (isset($clientConfig["sort"])) {
-            foreach ($clientConfig["sort"] as $sort) {
-                $contentBuilder->addSort($sort["field"], $sort["dir"]);
-            }
-        } else {
-            $contentBuilder->addSort("mdate", "desc");
-        }
-
         if (isset($clientConfig["filter"])) {
             foreach ($clientConfig["filter"]["filters"] as $filter) {
                 if (strcmp($filter["field"], "author") === 0) {
@@ -78,6 +69,25 @@ class TrashGridController extends DefaultGridController
                             $contentBuilder->getSearch()->addFilter("dochisto.uname IS NOT NULL AND dochisto.uname != ''");
                         }
                     }
+                } elseif (strcmp($filter["field"], "fromid") === 0) {
+                    if (isset($filter["filters"]) && !empty($filter["filters"])) {
+                        foreach ($filter["filters"] as $fromIdFilter) {
+                            if (strcmp($fromIdFilter["operator"], "titleContains") !== 0) {
+                                $contentBuilder->addFilter($fromIdFilter);
+                            } else {
+                                $sqlQuery = "SELECT id FROM docfam WHERE name ~* '%s'";
+                                if (isset($fromIdFilter["value"]) && !empty($fromIdFilter["value"])) {
+                                    $result = [];
+                                    DbManager::query(sprintf($sqlQuery, pg_escape_string($fromIdFilter["value"])), $result, true);
+                                    if (empty($result)) {
+                                        // Ensure that no filter result implies there is no grid data content (fromid = -2)
+                                        $result = [-2];
+                                    }
+                                    $contentBuilder->getSearch()->addFilter("fromid in (%s)", implode(",", $result));
+                                }
+                            }
+                        }
+                    }
                 } else {
                     $contentBuilder->addFilter($filter);
                 }
@@ -93,7 +103,7 @@ class TrashGridController extends DefaultGridController
         $fullContent = $contentBuilder->getContent();
         $content = $fullContent["content"];
         foreach ($content as $key => $val) {
-            $fullContent["content"][$key]["properties"]["fromid"] = SEManager::getTitle($val["properties"]["fromid"]);
+            $fullContent["content"][$key]["properties"]["fromid"] = SEManager::getNameFromId($val["properties"]["fromid"]);
             $fullContent["content"][$key]["properties"]["mdate"] = Date::stringDateToLocaleDate($val["properties"]["mdate"]);
         }
         return $fullContent;
