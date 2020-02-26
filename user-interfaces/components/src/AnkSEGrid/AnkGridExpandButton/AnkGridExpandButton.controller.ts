@@ -38,7 +38,7 @@ export default class AnkGridExpandButtonController extends Vue {
       .data("kendoButton");
     this.button.bind("click", () => {
       $(this.$el).toggleClass("k-state-expand-active");
-      this.gridComponent.onExpandClicked();
+      this.gridComponent.expandColumns();
     });
     $(".grid-expand-button")
       .kendoTooltip({

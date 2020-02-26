@@ -33,19 +33,31 @@ class TrashGridController extends DefaultGridController
     public static function getGridContent($collectionId, $clientConfig)
     {
         $contentBuilder = new SmartGridContentBuilder();
-        // Searching in all Smart Structures
-        $contentBuilder->setCollection(-1);
+
+        $trashContent = new TrashContent();
+        $contentBuilder->addProperty("fromid");
+        $contentBuilder->addProperty("mdate");
+        $contentBuilder->getSearch()->useTrash(SearchElements::ONLYTRASH);
+        $contentBuilder->getSearch()->setDistinct(true);
+        $contentBuilder->getSearch()->overrideAccessControl();
+        $contentBuilder->getSearch()->join("id = dochisto(id)");
+        $contentBuilder->getSearch()->addFilter("dochisto.code = 'DELETE'");
+
         if (isset($clientConfig["pageable"]["pageSize"])) {
             $contentBuilder->setPageSize($clientConfig["pageable"]["pageSize"]);
         }
         if (isset($clientConfig["page"])) {
             $contentBuilder->setPage($clientConfig["page"]);
         }
-        if (isset($clientConfig["columns"])) {
-            foreach ($clientConfig["columns"] as $column) {
-                $contentBuilder->addColumn($column);
+
+        if (isset($clientConfig["sort"])) {
+            foreach ($clientConfig["sort"] as $sort) {
+                $contentBuilder->addSort($sort["field"], $sort["dir"]);
             }
+        } else {
+            $contentBuilder->addSort("mdate", "desc");
         }
+
         if (isset($clientConfig["filter"])) {
             foreach ($clientConfig["filter"]["filters"] as $filter) {
                 if (strcmp($filter["field"], "author") === 0) {
@@ -67,26 +79,11 @@ class TrashGridController extends DefaultGridController
                         }
                     }
                 } else {
-                    $contentBuilder->   addFilter($filter);
+                    $contentBuilder->addFilter($filter);
                 }
             }
         }
-        if (isset($clientConfig["sort"])) {
-            foreach ($clientConfig["sort"] as $sort) {
-                $contentBuilder->addSort($sort["field"], $sort["dir"]);
-            }
-        }
-        $contentBuilder->addProperty("fromid");
-        $contentBuilder->addProperty("mdate");
-        $trashSearchElements = new TrashSearchElements();
-        $trashContent = new TrashContent();
-        $contentBuilder->setSearch($trashSearchElements);
-        $contentBuilder->getSearch()->useTrash(SearchElements::ONLYTRASH);
-        $contentBuilder->getSearch()->setDistinct(true);
-        $contentBuilder->getSearch()->overrideAccessControl();
-        $contentBuilder->getSearch()->setOrder("dochisto.date desc");
-        $contentBuilder->getSearch()->join("id = dochisto(id)");
-        $contentBuilder->getSearch()->addFilter("dochisto.code = 'DELETE'");
+
         $contentBuilder->addAbstract("auth", function ($seData) use ($trashContent) {
             return $trashContent->canDisplay($seData);
         });

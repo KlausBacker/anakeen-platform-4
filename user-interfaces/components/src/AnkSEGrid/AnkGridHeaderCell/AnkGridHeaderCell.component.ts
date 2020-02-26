@@ -16,7 +16,7 @@ enum SortableDirection {
     AnkGridFilter
   }
 })
-export default class GridFilterCell extends Vue {
+export default class GridHeaderCell extends Vue {
   @Prop({
     type: String,
     required: true

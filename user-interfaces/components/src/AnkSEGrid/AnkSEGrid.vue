@@ -35,6 +35,9 @@
         @filterchange="onFilterChange"
         @columnreorder="onColumnReorder"
       >
+        <kendo-grid-norecords>
+          {{ this.$t("gridComponent.No records") }}
+        </kendo-grid-norecords>
       </kendo-grid-vue>
       <div class="smart-element-grid-footer">
         <slot name="gridFooter" v-bind:gridComponent="gridInstance">

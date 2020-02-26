@@ -44,6 +44,11 @@ class MasksGridController extends DefaultGridController
                 $contentBuilder->addColumn($column);
             }
         }
+        if (isset($clientConfig["sort"])) {
+            foreach ($clientConfig["sort"] as $sort) {
+                $contentBuilder->addSort($sort["field"], $sort["dir"]);
+            }
+        }
         if (isset($clientConfig["filter"])) {
             $contentBuilder->addFilter($clientConfig["filter"]);
         }

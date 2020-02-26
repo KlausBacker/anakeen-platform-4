@@ -47,6 +47,11 @@ class FieldAccessGridController extends DefaultGridController
         if (isset($clientConfig["filter"])) {
             $contentBuilder->addFilter($clientConfig["filter"]);
         }
+        if (isset($clientConfig["sort"])) {
+            foreach ($clientConfig["sort"] as $sort) {
+                $contentBuilder->addSort($sort["field"], $sort["dir"]);
+            }
+        }
         $contentBuilder->addProperty("name");
         $contentBuilder->addProperty("title");
         $contentBuilder->addAbstract("dpdoc_famid", function ($se) {
