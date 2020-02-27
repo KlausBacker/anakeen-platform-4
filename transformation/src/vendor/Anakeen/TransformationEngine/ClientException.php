@@ -2,6 +2,6 @@
 
 namespace Anakeen\TransformationEngine;
 
-class ClientException extends \Exception
+class ClientException extends \Anakeen\Exception
 {
 }
