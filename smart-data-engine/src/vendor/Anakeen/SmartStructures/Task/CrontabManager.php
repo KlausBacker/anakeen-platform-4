@@ -26,13 +26,6 @@ class CrontabManager
     {
         try {
             \Cron\CronExpression::factory($crontabExpression);
-
-            $minutes = self::getNextDates($crontabExpression, $number = 13, $format = "i");
-            foreach ($minutes as $minute) {
-                if (intval($minute) % 5 !== 0) {
-                    return "Cron minutes period interval must be a multiple of 5";
-                }
-            }
         } catch (\Exception $e) {
             return $e->getMessage();
         }
