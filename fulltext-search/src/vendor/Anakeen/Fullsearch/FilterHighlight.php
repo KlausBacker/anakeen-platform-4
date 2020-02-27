@@ -32,7 +32,7 @@ class FilterHighlight
     public function highlight($seId, $pattern)
     {
         $sql=sprintf(
-            "select ts_headline('%s', unaccent(ta || ' ' || tb || ' ' || tc || ' ' || td || coalesce((select string_agg(textcontent, ',') 
+            "select ts_headline('%s', (ta || ' ' || tb || ' ' || tc || ' ' || td || coalesce((select string_agg(textcontent, ',') 
                     from %s where fileid in (select unnest(files) from %s where docid=%d)), '')), 
                    to_tsquery('simple', '%s'), 'MaxFragments=1,StartSel=%s, StopSel=%s') from %s where docid=%d group by ta, tb, tc, td;",
             $this->domain->stem,

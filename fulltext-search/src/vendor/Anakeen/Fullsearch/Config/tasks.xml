@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0"
+              xmlns:task="https://platform.anakeen.com/4/schemas/task/1.0">
+    <task:task name="FULLSEARCH_UPDATE_TASK" label="Update fullsearch data">
+        <task:user login="admin"/>
+
+        <task:description>Update searching data for all configured search domains</task:description>
+
+        <task:route ns="FullSearch" ref="UpdateSearchData" method="POST"/>
+
+        <task:crontab>4,30 6 * * 1-5</task:crontab>
+        <task:status>active</task:status>
+    </task:task>
+</smart:config>

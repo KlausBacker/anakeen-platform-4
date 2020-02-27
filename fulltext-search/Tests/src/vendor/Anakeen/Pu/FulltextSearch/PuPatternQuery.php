@@ -55,6 +55,8 @@ class PuPatternQuery extends FulltextSearchConfig
             ["simple", "les 123*", "'les' & '123':*"],
             ["simple", "les mar* -truite -saumon", "'les' & 'mar':* & !'truite' & !'saumon'"],
             ["simple", "les truites or -saumon", "'les' & 'truites' | !'saumon'"],
+            ["french", "les tortues d'Herman*", "'le' & 'tortu' & 'herman':*"],
+            ["simple", "les tortues d'Herman*", "'les' & 'tortues' & 'd' & 'herman':*"],
         );
     }
 }

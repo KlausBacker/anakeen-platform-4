@@ -25,6 +25,10 @@ class PuFileSearch extends FulltextSearchConfig
         }
 
 
+        $waitings = IndexFile::getWaitingRequest();
+        if (count($waitings) > 0) {
+            throw new Exception("Waiting task already recorded cannot perform test");
+        }
         self::importConfiguration(__DIR__ . "/Config/tst_file001.struct.xml");
         self::importDocument(__DIR__ . "/Config/tst_file001.data.xml");
 

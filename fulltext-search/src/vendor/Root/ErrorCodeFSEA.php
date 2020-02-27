@@ -53,4 +53,8 @@ class ErrorCodeFSEA
      * @errorCode When send TE file text extraction
      */
     const FSEA0011 = 'Incorrect file reference "%s" in field \"%s\" , smart element %d';
+    /**
+     * @errorCode When global update on domain
+     */
+    const FSEA0012 = 'Search Domain "%s" : update already in progress';
 }

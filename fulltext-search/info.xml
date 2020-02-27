@@ -16,10 +16,9 @@
             <label>Initialize system database</label>
         </process>
 
-        <process
-                command="./ank.php --script=importAccounts --file=./vendor/Anakeen/Fullsearch/HubComponent/FullsearchRoles.xml"/>
-        <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Fullsearch/HubComponent/hubConfiguration.xml"/>
+        <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/Fullsearch/Config/FullsearchRoles.xml"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Fullsearch/Config/hubConfiguration.xml"/>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/Fullsearch/Config/tasks.xml"/>
     </post-install>
 
 

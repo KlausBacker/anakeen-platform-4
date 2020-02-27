@@ -111,7 +111,7 @@ class PuTextSearch extends FulltextSearchConfig
                 "testDomainText",
                 "ours",
                 [
-                    "TST_ETEXT_003" => "par les animaux sauvages ([ours] notamment) lors de leur remontee",
+                    "TST_ETEXT_003" => "par les animaux sauvages ([ours] notamment) lors de leur remontée",
                     "TST_ETEXT_001" => "Tous les [ours] ont un grand corps trapu et massif",
                 ]
             ],
@@ -127,15 +127,15 @@ class PuTextSearch extends FulltextSearchConfig
                 "testDomainText",
                 "salmonidés",
                 [
-                    "TST_ETEXT_004" => "especes de poissons de la famille des [salmonides]",
-                    "TST_ETEXT_003" => "especes de poissons de la famille des [salmonides]"
+                    "TST_ETEXT_004" => "espèces de poissons de la famille des [salmonidés]",
+                    "TST_ETEXT_003" => "espèces de poissons de la famille des [salmonidés]"
                 ]
             ],
             [
                 "testDomainText",
                 "rivières de l'Atlas",
                 [
-                    "TST_ETEXT_004" => "les [rivieres] de l'[Atlas] au Maroc"
+                    "TST_ETEXT_004" => "les [rivières] de l'[Atlas] au Maroc"
                 ]
             ],
         ];

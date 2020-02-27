@@ -8,13 +8,16 @@
           </h1>
 
           <div v-if="domain" class="search-inputs">
-            <input
-              v-model="pattern"
-              type="text"
-              class="k-textbox"
-              placeholder="Enter words to search"
-              @keyup.enter="search"
-            />
+
+              <span class="k-textbox k-space-right" style="width: 100%;" >
+                     <input
+                             v-model="pattern"
+                             type="search"
+                             placeholder="Enter words to search"
+                             @keyup.enter="search"
+                     />
+                    <a class="k-icon k-i-search">&nbsp;</a>
+                </span>
             <kendo-button class="k-primary" @click="search">Search</kendo-button>
           </div>
         </header>

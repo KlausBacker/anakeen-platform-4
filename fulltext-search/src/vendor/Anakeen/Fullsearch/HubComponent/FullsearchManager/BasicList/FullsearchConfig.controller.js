@@ -27,7 +27,7 @@ const componentInstance = Vue.component("template-component", {
                   <li  v-for="fileStatus in dataItem.database.files"><span class="status">{{fileStatus.label}}</span> : <b>{{fileStatus.count}}</b> </li>
               </ul>
           </div>
-          <p><strong>Database size:</strong> {{dataItem.database.size.prettySize}}</p>
+          <p><strong>Database table size:</strong> {{dataItem.database.size.prettySize}}</p>
       </section>`
 });
 
@@ -35,6 +35,8 @@ const componentHeaderInstance = Vue.component("template-component", {
   props: {
     field: String,
     title: String,
+    column: Object,
+    fileDatabaseSize: String,
     sortable: [Boolean, Object]
   },
   data() {
@@ -42,7 +44,9 @@ const componentHeaderInstance = Vue.component("template-component", {
       autoReloadTimer: false
     };
   },
-  template: `<div class="full-header"  ><b>{{title}}</b> <button @click="clickHandler" @dblclick="autoRefresh" class="btn"  :class="{ 'btn-primary':this.autoReloadTimer}"><span class="material-icons">refresh</span></button></div>`,
+  template: `<div class="full-header"  ><b>{{title}}</b> 
+      <span>{{fileDatabaseSize}}{{column}}</span>
+      <button @click="clickHandler" @dblclick="autoRefresh" class="btn"  :class="{ 'btn-primary':this.autoReloadTimer}"><span class="material-icons">refresh</span></button></div>`,
   methods: {
     clickHandler: function(e) {
       this.$emit("reload", e);
@@ -66,11 +70,19 @@ export default {
       selectedID: "",
       detailTemplate: componentInstance,
       domains: [],
+      fileCacheSize: {},
       gridData: null,
       configInfo: [],
       expandedRows: {},
       autoReloadTimer: null,
-      columns: [{ field: "domainName", title: "Search domains", headerCell: componentHeaderInstance }]
+      columns: [
+        {
+          field: "domainName",
+          title: "Search domains",
+          fileDatabaseSize: "HOHO",
+          headerCell: componentHeaderInstance
+        }
+      ]
     };
   },
 
@@ -86,6 +98,7 @@ export default {
     fetchConfigs() {
       return this.$http.get("/api/admin/fullsearch/domains/").then(response => {
         this.configInfo = [];
+        this.fileCacheSize = response.data.data.fileCacheSize;
         this.domains = response.data.data.config;
         this.domains.forEach(domain => {
           const domainName = domain.name;

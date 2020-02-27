@@ -66,6 +66,11 @@ class SearchDomainDatabase
      */
     public function recordData(bool $clearDataBefore)
     {
+        $sessionId=crc32($this->domain->name);
+        $isLocked=DbManager::lockSession($sessionId, true);
+        if (! $isLocked) {
+            throw new Exception("FSEA0012", $this->domainName);
+        }
         $currentLanguage = ContextManager::getLanguage();
         if ($this->domain->lang !== $currentLanguage) {
             ContextManager::setLanguage($this->domain->lang);
@@ -111,10 +116,10 @@ class SearchDomainDatabase
             $ft = $this->updateHook;
             foreach ($results as $se) {
                 //printf("%05d/%d %s)\n",$c++,$count, $structureName);
-                $this->updateSmartElementIndex($se, $smartStructureSearchconfig);
                 if ($ft) {
                     $ft($se);
                 }
+                $this->updateSmartElementIndex($se, $smartStructureSearchconfig);
             }
         }
 
@@ -122,10 +127,10 @@ class SearchDomainDatabase
         if ($clearDataBefore === true) {
             $sql = <<<SQL
 update %s set v = 
-setweight(to_tsvector('%s', unaccent(ta)), 'A') || 
-setweight(to_tsvector('%s', unaccent(tb)), 'B') || 
-setweight(to_tsvector('%s', unaccent(tc)), 'C') || 
-setweight(to_tsvector('%s', unaccent(td)), 'D');
+setweight(to_tsvector('%s', ta), 'A') || 
+setweight(to_tsvector('%s', tb), 'B') || 
+setweight(to_tsvector('%s', tc), 'C') || 
+setweight(to_tsvector('%s', td), 'D');
 SQL;
             DbManager::query(sprintf(
                 $sql,
@@ -140,6 +145,8 @@ SQL;
         if ($this->domain->lang !== $currentLanguage) {
             ContextManager::setLanguage($currentLanguage);
         }
+
+        DbManager::unlockSession($sessionId);
     }
 
     public function onUpdate(\Closure $onUpdate)
@@ -190,6 +197,16 @@ SQL;
             $this->getTableName()
         );
         DbManager::query($sql, $status);
+        $dbStatus=array_map(function ($item) {
+            return $item["status"];
+        }, $status);
+
+        foreach (["W", "K", "D"] as $codeStatus) {
+            if (!in_array($codeStatus, $dbStatus)) {
+                $status[]=["status"=>$codeStatus, "count"=>0];
+            }
+        }
+
         foreach ($status as &$aStatus) {
             switch ($aStatus["status"]) {
                 case "K":
@@ -206,6 +223,7 @@ SQL;
                     break;
             }
         }
+
 
         $stats["files"] = $status;
         return $stats;
@@ -295,7 +313,7 @@ SQL;
      */
     public function getElementIdsReferenceFile($fileid)
     {
-        $sql=sprintf(
+        $sql = sprintf(
             "
                 select s.docid
                 from %s f
@@ -308,6 +326,7 @@ SQL;
         DbManager::query($sql, $docids, true);
         return $docids;
     }
+
     /**
      * Update data index with file data set in files schema
      * Call after TE result record file text conversion is done
@@ -358,10 +377,10 @@ SQL;
             $sql = <<<SQL
 update searches.%s as s set v = 
 
-setweight(to_tsvector('%s', unaccent(ta)), 'A') || 
-setweight(to_tsvector('%s', unaccent(tb)), 'B') || 
-setweight(to_tsvector('%s', unaccent(tc)), 'C') || 
-setweight(to_tsvector('%s', unaccent(td)), 'D') 
+setweight(to_tsvector('%s', ta), 'A') || 
+setweight(to_tsvector('%s', tb), 'B') || 
+setweight(to_tsvector('%s', tc), 'C') || 
+setweight(to_tsvector('%s', td), 'D') 
 
 %s
 
@@ -371,7 +390,7 @@ SQL;
             foreach ($weightFiles as $weight => $fileFields) {
                 if ($fileFields) {
                     $sqlset[] = sprintf(
-                        "setweight((select to_tsvector('%s', unaccent(string_agg(textcontent, ', '))) from %s where fileid in (%s) and status='D'), '%s')",
+                        "setweight((select to_tsvector('%s', string_agg(textcontent, ', ')) from %s where fileid in (%s) and status='D'), '%s')",
                         $this->domain->stem,
                         FileContentDatabase::DBTABLE,
                         implode(", ", $fileFields),
@@ -418,6 +437,8 @@ SQL;
         $config->addTokenDefinition(new TokenDefn("STARTWITH", '[\\p{L}\\p{N}]+\\*(?:\\s|$)', "u"));
         $config->addTokenDefinition(new TokenDefn("PLAIN", "[^\\s]+", "u"));
 
+
+        $pattern=str_replace("'", " ", $pattern);
         $lexer = new Lexer($config);
         $lexer->setInput($pattern);
         $lexer->moveNext();
@@ -459,7 +480,7 @@ SQL;
             switch ($part["token"]) {
                 case "PLAIN":
                     $toQuery[] = sprintf(
-                        "plainto_tsquery('%s', unaccent('%s')) as q%d",
+                        "plainto_tsquery('%s', '%s') as q%d",
                         pg_escape_string($stem),
                         pg_escape_string($part["value"]),
                         $k
@@ -467,7 +488,7 @@ SQL;
                     break;
                 case "PHRASE":
                     $toQuery[] = sprintf(
-                        "phraseto_tsquery('%s', unaccent('%s')) as q%d",
+                        "phraseto_tsquery('%s', '%s') as q%d",
                         pg_escape_string($stem),
                         pg_escape_string(trim($part["value"], '"')),
                         $k
@@ -508,7 +529,8 @@ SQL;
                     if ($needAddAndOperator === true) {
                         $finalQueryParts[] = " & ";
                     }
-                    $finalQueryParts[] = sprintf("%s:* ", Strings::unaccent(trim($part["value"], " *")));
+                    $startWord = trim($part["value"], " *") ;
+                    $finalQueryParts[] = sprintf("%s:* ", Strings::unaccent($startWord));
                     $needAddAndOperator = true;
             }
         }
@@ -535,10 +557,10 @@ SQL;
             $sql = <<<SQL
 update searches.%s as s set v = 
 
-setweight(to_tsvector('%s', unaccent(ta)), 'A') || 
-setweight(to_tsvector('%s', unaccent(tb)), 'B') || 
-setweight(to_tsvector('%s', unaccent(tc)), 'C') || 
-setweight(to_tsvector('%s', unaccent(td)), 'D') 
+setweight(to_tsvector('%s', ta), 'A') || 
+setweight(to_tsvector('%s', tb), 'B') || 
+setweight(to_tsvector('%s', tc), 'C') || 
+setweight(to_tsvector('%s', td), 'D') 
 
 where s.docid = %d
 SQL;
@@ -734,9 +756,9 @@ SQL;
 
 
         foreach ($config->callables as $callInfo) {
-            $ft=$callInfo->functionReference;
+            $ft = $callInfo->functionReference;
             if ($ft) {
-                $text = $se->applyMethod($ft."(THIS)");
+                $text = $se->applyMethod($ft . "(THIS)");
                 if ($text) {
                     $data[$callInfo->weight][] = $text;
                 }

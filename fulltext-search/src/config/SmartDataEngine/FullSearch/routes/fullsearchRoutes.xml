@@ -13,5 +13,17 @@
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/fullsearch/domains/{domain}/smart-elements/</sde:pattern>
         </sde:route>
+
+
+        <sde:route name="UpdateSearchData">
+            <sde:callable>Anakeen\Fullsearch\Route\UpdateData</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/fullsearch/domains/</sde:pattern>
+            <sde:description>Update search data for all domains</sde:description>
+            <sde:requiredAccess operator="or">
+                <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminFullSearch</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
     </sde:routes>
 </sde:config>

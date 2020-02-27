@@ -16,9 +16,9 @@
   .search-pane {
     height: 100%;
     display: flex;
+    padding: 0.2rem;
     flex-direction: column;
     > header {
-
     }
     > .fullsearch-list {
       flex:1;
