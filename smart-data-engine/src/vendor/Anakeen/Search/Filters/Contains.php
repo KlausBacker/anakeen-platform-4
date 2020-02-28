@@ -2,14 +2,32 @@
 
 namespace Anakeen\Search\Filters;
 
+use Anakeen\Search\SearchCriteria\SearchCriteriaTrait;
+
 class Contains extends StandardAttributeFilter implements ElementSearchFilter
 {
+
+    use SearchCriteriaTrait;
+
     const NOT = 1;
     const NOCASE = 2;
     const NODIACRITIC = 4;
+    const STARTSWITH = 8;
+
+    public static function getOptionMap()
+    {
+        return array(
+            self::NOT => "not",
+            self::NOCASE => "noCase",
+            self::NODIACRITIC => "noDiacritic",
+            self::STARTSWITH => "startsWith"
+        );
+    }
+
     protected $NOT = false;
     protected $NOCASE = false;
     private $NODIACRITIC = false;
+    private $STARTSWITH = false;
     protected $value = null;
     protected $compatibleType = array(
         'text',
@@ -38,9 +56,14 @@ class Contains extends StandardAttributeFilter implements ElementSearchFilter
             $this->NOT = ($options & self::NOT);
             $this->NOCASE = ($options & self::NOCASE);
             $this->NODIACRITIC = ($options & self::NODIACRITIC);
+            $this->STARTSWITH = ($options & self::STARTSWITH);
             /* NODIACRITIC toggles NOCASE */
             if ($this->NODIACRITIC) {
                 $this->NOCASE = true;
+            }
+
+            if ($this->STARTSWITH) {
+                $this->regexpPrefix = '^';
             }
         }
     }

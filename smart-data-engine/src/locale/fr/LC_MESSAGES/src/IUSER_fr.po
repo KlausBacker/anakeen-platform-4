@@ -197,4 +197,3 @@ msgstr "Système"
 msgctxt "IUSER"
 msgid "us_whatid"
 msgstr "Identifiant"
-

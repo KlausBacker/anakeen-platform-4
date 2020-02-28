@@ -3,13 +3,29 @@
 namespace Anakeen\Search\Filters;
 
 use Anakeen\Core\SmartStructure\NormalAttribute;
+use Anakeen\Search\SearchCriteria\SearchCriteriaTrait;
 
 class OneContains extends StandardAttributeFilter implements ElementSearchFilter
 {
+    use SearchCriteriaTrait;
+
     const NOT = 1;
     const NOCASE = 2;
     const ALL = 4;
     const NODIACRITIC = 8;
+
+    public static function getOptionMap()
+    {
+        return array(
+            self::NOT => "not",
+            self::NOCASE => "noCase",
+            self::NODIACRITIC => "noDiacritic",
+            self::ALL => "all"
+        );
+    }
+
+
+
     protected $NOT = false;
     protected $NOCASE = false;
     protected $NODIACRITIC = false;
@@ -70,7 +86,9 @@ class OneContains extends StandardAttributeFilter implements ElementSearchFilter
     public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
         $attr = $this->verifyCompatibility($search);
-        $search->addFilter($this->_filter($attr, $this->value));
+        if (isset($this->value) && $this->value !== "") {
+            $search->addFilter($this->_filter($attr, $this->value));
+        }
         return $this;
     }
 

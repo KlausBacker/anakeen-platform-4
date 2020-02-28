@@ -54,8 +54,8 @@
     "@anakeen/anakeen-cli": "1.2.2-RC.2020.1.26",
     "@anakeen/internal-components": "1.0.3-RC.2020.1.26",
     "@anakeen/webpack-conf": "1.2.1",
-    "core-js": "3.6.1",
     "@types/node": "^13.1.2",
+    "core-js": "3.6.1",
     "rollup": "^1.27.14",
     "rollup-plugin-cleaner": "^1.0.0",
     "rollup-plugin-commonjs": "^10.1.0",
@@ -65,7 +65,7 @@
     "rollup-plugin-scss": "^2.1.0",
     "rollup-plugin-string": "^3.0.0",
     "rollup-plugin-typescript2": "^0.25.3",
-    "rollup-plugin-vue": "^5.1.4"
+    "rollup-plugin-vue": "^5.1.6"
   },
   "peerDependencies": {
     "@anakeen/user-interfaces": "3.0.2-RC.2020.1.26",

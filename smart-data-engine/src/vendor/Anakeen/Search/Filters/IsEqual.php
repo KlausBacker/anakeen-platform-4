@@ -6,12 +6,28 @@ use Anakeen\Core\Internal\SmartElement;
 
 class IsEqual extends StandardAttributeFilter implements ElementSearchFilter
 {
+    const NOT = 1;
+    protected $NOT = false;
     protected $value = null;
-    public function __construct($attrId, $value)
+
+    /**
+     * IsEqual constructor.
+     * @param $attrId
+     * @param $value
+     * @param int $options<p>
+     * Bitmask consisting of
+     * <b>\Anakeen\Search\Filters\IsEqual::$NOT</b>,
+     * </p>
+     */
+    public function __construct($attrId, $value, $options = 0)
     {
         parent::__construct($attrId);
         $this->value = $value;
+        if (isset($options)) {
+            $this->NOT = ($options & self::NOT);
+        }
     }
+
     public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData & $search)
     {
         $attr = parent::verifyCompatibility($search);
@@ -36,7 +52,8 @@ class IsEqual extends StandardAttributeFilter implements ElementSearchFilter
     public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
         $this->verifyCompatibility($search);
-        $search->addFilter(sprintf('%s = %s', pg_escape_identifier($this->attributeId), pg_escape_literal($this->value)));
+        $query = $this->NOT ? '%s <> %s' : '%s = %s';
+        $search->addFilter(sprintf($query, pg_escape_identifier($this->attributeId), pg_escape_literal($this->value)));
         return $this;
     }
 }

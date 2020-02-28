@@ -353,6 +353,14 @@
       <sde:description>Get document history information</sde:description>
       <sde:requiredAccess/>
     </sde:route>
+    <sde:route name="SearchCriteria:Test">
+      <sde:priority>1</sde:priority>
+      <sde:callable>Anakeen\Routes\Core\TestSearchCriteria</sde:callable>
+      <sde:method>POST</sde:method>
+      <sde:pattern>/api/v2/searchcriteria/test/</sde:pattern>
+      <sde:description>test route for search criteria</sde:description>
+      <sde:requiredAccess/>
+    </sde:route>
   </sde:routes>
   <sde:middlewares namespace="Core">
     <sde:middleware name="Middleware:ApiAuthent">

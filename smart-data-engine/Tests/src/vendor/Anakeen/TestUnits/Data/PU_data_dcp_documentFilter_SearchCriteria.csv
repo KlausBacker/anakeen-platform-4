@@ -1,0 +1,88 @@
+BEGIN;;Op Opérator;;;TEST_DCP_DOCUMENTFILTER_SEARCHCRITERIA;;;;;;;;;;;;;;;;;;;;;;;;;;;
+TYPE;C;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+FDLDID;auto;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+//;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink;phpconstraint;options;;;;;;;;;;;;;;;;;
+ATTR;FRAME;;Single;N;N;frame;::auto;W;N;;;;;;;;;;;;;;;;;;;;;;;
+ATTR;S_TEXT;FRAME;Text;Y;N;text;70;W;N;;;;;;;;;;;;;;;;;;;;;;;
+ATTR;S_HTMLTEXT;FRAME;Htmltext;N;N;htmltext;80;W;N;;;;;;;;;;;;;;;;;;;;;;;
+ATTR;S_LONGTEXT;FRAME;LongText;N;N;longtext;90;W;N;;;;;;;;;;;;;;;;;;;;;;;
+ATTR;S_INT;FRAME;Int;N;N;int;100;W;N;;;;;;;;;;;;;;;;;;;;;;;
+ATTR;S_DOUBLE;FRAME;Double;N;N;double;110;W;N;;;;;;;;;;;;;;;;;;;;;;;
+ATTR;S_MONEY;FRAME;Money;N;N;money;120;W;N;;;;;;;;;;;;;;;;;;;;;;;
+ATTR;S_DATE;FRAME;Date;N;N;date;130;W;N;;;;;;;;;;;;;;;;;;;;;;;
+ATTR;S_TIMESTAMP;FRAME;Timestamp;N;N;timestamp;140;W;N;;;;;;;;;;;;;;;;;;;;;;;
+ATTR;S_TIME;FRAME;Time;N;N;time;150;W;N;;;;;;;;;;;;;;;;;;;;;;;
+ATTR;S_ENUM;FRAME;Enum;N;N;enum;160;W;N;;;Y|Yes,N|No;;;;;;;;;;;;;;;;;;;;
+ATTR;S_DOCID;FRAME;Docid;N;N;"docid(""Op Opérator"")";170;W;N;;;;;;;;;;;;;;;;;;;;;;;
+ATTR;S_ACCOUNT;FRAME;Account;N;N;account;180;W;N;;;;;;;;;;;;;;;;;;;;;;;
+ATTR;M_FRAME;;Multiple x 1;N;N;frame;190;W;N;;;;;;;;;;;;;;;;;;;;;;;
+ATTR;M_ENUM;M_FRAME;Enuum;N;N;enum;200;W;N;;;Y|Yes,N|No;;;multiple=yes;;;;;;;;;;;;;;;;;
+ATTR;M_DOCID;M_FRAME;Docid;N;N;"docid(""Op Opérator"")";210;W;N;;;;;;multiple=yes;;;;;;;;;;;;;;;;;
+ATTR;M_ACCOUNT;M_FRAME;Account;N;N;account;220;W;N;;;;;;multiple=yes;;;;;;;;;;;;;;;;;
+ATTR;A_FRAME;;Array;N;N;frame;230;W;N;;;;;;;;;;;;;;;;;;;;;;;
+ATTR;A_ARR;A_FRAME;Array;N;N;array;240;W;N;;;;;;;;;;;;;;;;;;;;;;;
+ATTR;A_TEXT;A_ARR;Text;Y;N;text;250;W;N;;;;;;;;;;;;;;;;;;;;;;;
+ATTR;A_HTMLTEXT;A_ARR;Htmltext;N;N;htmltext;260;W;N;;;;;;;;;;;;;;;;;;;;;;;
+ATTR;A_LONGTEXT;A_ARR;LongText;N;N;longtext;270;W;N;;;;;;;;;;;;;;;;;;;;;;;
+ATTR;A_INT;A_ARR;Int;N;N;int;280;W;N;;;;;;;;;;;;;;;;;;;;;;;
+ATTR;A_DOUBLE;A_ARR;Double;N;N;double;290;W;N;;;;;;;;;;;;;;;;;;;;;;;
+ATTR;A_MONEY;A_ARR;Money;N;N;money;300;W;N;;;;;;;;;;;;;;;;;;;;;;;
+ATTR;A_DATE;A_ARR;Date;N;N;date;310;W;N;;;;;;;;;;;;;;;;;;;;;;;
+ATTR;A_TIMESTAMP;A_ARR;Timestamp;N;N;timestamp;320;W;N;;;;;;;;;;;;;;;;;;;;;;;
+ATTR;A_TIME;A_ARR;Time;N;N;time;330;W;N;;;;;;;;;;;;;;;;;;;;;;;
+ATTR;A_ENUM;A_ARR;Enum;N;N;enum;340;W;N;;;Y|Yes,N|No;;;;;;;;;;;;;;;;;;;;
+ATTR;A_DOCID;A_ARR;Docid;N;N;"docid(""Op Opérator"")";350;W;N;;;;;;;;;;;;;;;;;;;;;;;
+ATTR;A_ACCOUNT;A_ARR;Account;N;N;account;360;W;N;;;;;;;;;;;;;;;;;;;;;;;
+ATTR;X_FRAME;;Array Multiple;N;N;frame;370;W;N;;;;;;;;;;;;;;;;;;;;;;;
+ATTR;X_ARR;X_FRAME;Array;N;N;array;380;W;N;;;;;;;;;;;;;;;;;;;;;;;
+ATTR;X_DOCID;X_ARR;Docid;N;N;"docid(""Op Opérator"")";390;W;N;;;;;;multiple=yes;;;;;;;;;;;;;;;;;
+ATTR;X_ACCOUNT;X_ARR;Account;N;N;account;400;W;N;;;;;;multiple=yes;;;;;;;;;;;;;;;;;
+END;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ORDER;IUSER;;;us_login;us_passwd1;us_passwd2;us_fname;us_lname;;;;;;;;;;;;;;;;;;;;;;;;
+//;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;IUSER;U_1;;u_1;secret;secret;Uh;Un;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;IUSER;U_2;;u_2;secret;secret;Uh;Deux;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;IUSER;U_3;;u_3;secret;secret;Uh;Trois;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ORDER;FOO_SEARCHCRITERIA;;;s_text;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+//;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;FOO_SEARCHCRITERIA;FOO_1;;Foo Un;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;FOO_SEARCHCRITERIA;FOO_2;;Foo Deux;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;FOO_SEARCHCRITERIA;FOO_3;;Foo Trois;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ORDER;TEST_DCP_DOCUMENTFILTER_SEARCHCRITERIA;;;s_text;s_htmltext;s_longtext;s_int;s_double;s_money;s_date;s_timestamp;s_time;s_enum;s_docid;s_account;m_enum;m_docid;m_account;a_text;a_htmltext;a_longtext;a_int;a_double;a_money;a_date;a_timestamp;a_time;a_enum;a_docid;a_account;x_docid;x_account
+//;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TEST_DCP_DOCUMENTFILTER_SEARCHCRITERIA;SEARCHCRITERIA_1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TEST_DCP_DOCUMENTFILTER_SEARCHCRITERIA;SEARCHCRITERIA_2;;Non vide;<b>Non vide</b>;Non\nvide;42;42.42;42.42;01/01/2014;01/01/2014 13:14:15;10:30:00;N;FOO_1;U_1;"Y
+N";"FOO_1
+FOO_2";"U_1
+U_1";"Un
+Deux";"<b>Un</b>
+<b>Deux</b>";"Un\rUn
+Deux\rDeux";"{
+10,
+20
+}";"{
+10.5,
+20.5
+}";"{
+10.5,
+20.5
+}";"{
+""01/01/2014"",
+""30/06/2014""
+}";"{
+""01/01/2014 12:13:14"",
+""30/06/2014 12:13:14""
+}";"{
+""12:13:14"",
+""13:14:15""
+}";"Y
+N";"FOO_1
+FOO_2";"U_1
+U_1";"FOO_1<BR>FOO_2
+FOO_2<BR>FOO_3";"U_1<BR>U_1
+U_1<BR>U_1"

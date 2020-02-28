@@ -1,0 +1,39 @@
+{
+  "title": "Filtre des factures",
+  "defaultStructure": "DEVBILL",
+  "criterias": [
+    {
+      "kind": "property",
+      "field": "title",
+      "label": "Titre de facture"
+    },
+    {
+      "kind": "field",
+      "field": "bill_clients",
+      "default": {
+        "operator": {
+          "key": "oneEqualsMulti",
+          "option": [
+            "all"
+          ]
+        }
+      }
+    },
+    {
+      "kind": "field",
+      "field": "bill_billdate",
+      "label": "Date de facturation",
+      "default": {
+        "value": [
+          "1970-01-01",
+          "2020-01-01"
+        ]
+      }
+    },
+    {
+      "kind": "field",
+      "field": "bill_cost",
+      "label": "Coût"
+    }
+  ]
+}

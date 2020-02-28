@@ -15,6 +15,8 @@ import GridExportEvent from "./AnkGridEvent/AnkGridExportEvent";
 import I18nMixin from "../../mixins/AnkVueComponentMixin/I18nMixin";
 
 import $ from "jquery";
+import AnkSmartCriteria from "../AnkSmartCriteria/AnkSmartCriteria.component";
+import ISmartFilter from "../AnkSmartCriteria/Types/ISmartFilter";
 
 const CONTROLLER_URL = "/api/v2/grid/controllers/{controller}/{op}/{collection}";
 
@@ -383,6 +385,12 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   })
   public autoFit!: boolean;
 
+  @Prop({
+    default: () => ({ logic: "and", filters: [] }),
+    type: Object
+  })
+  public smartCriteriaValue!: ISmartFilter;
+
   public $refs: {
     smartGridWidget: Grid;
   };
@@ -525,6 +533,18 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   @Watch("dataItems")
   public watchDataItems(): void {
     this.$emit("dataBound", this.gridInstance);
+  }
+
+  @Watch("smartCriteriaValue")
+  public async watchSearchCriteriaValue(newValue): Promise<void> {
+    const filtered = this.currentFilter.filters.filter(filter => filter.operator !== "searchCriteria");
+    filtered.push({
+      field: "searchCriteriaField",
+      operator: "searchCriteria",
+      value: newValue
+    });
+    this.currentFilter.filters = filtered;
+    return await this._loadGridContent();
   }
 
   @Watch("selectedRows", { deep: true })

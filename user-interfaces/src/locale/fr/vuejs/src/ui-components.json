@@ -71,5 +71,6 @@
   "gridPager.{0} - {1} of {2} items": "{0} - {1} sur {2} résultats",
   "gridPager.No items to display": "Aucun résultat",
   "gridPager.items per page": "résultats par page",
-  "gridPager.of {0}": "sur {0}"
+  "gridPager.of {0}": "sur {0}",
+  "SmartFormConfigurationBuilder.And": "et"
 }
