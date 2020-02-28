@@ -57,4 +57,12 @@ class ErrorCodeFSEA
      * @errorCode When global update on domain
      */
     const FSEA0012 = 'Search Domain "%s" : update already in progress';
+    /**
+     * @errorCode The search domain reference a structure name that not exists
+     */
+    const FSEA0013 = 'Search Domain : structure "%s" not found (in config file "%s").';
+    /**
+     * @errorCode The search domain reference a field in a structure that not exists
+     */
+    const FSEA0014 = 'Search Domain : structure "%s", field "%s" not found (in config file "%s").';
 }

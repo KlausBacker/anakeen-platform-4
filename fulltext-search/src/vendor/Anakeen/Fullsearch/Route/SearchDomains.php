@@ -7,6 +7,7 @@ use Anakeen\Fullsearch\FileContentDatabase;
 use Anakeen\Fullsearch\SearchDomainDatabase;
 use Anakeen\Fullsearch\SearchDomainManager;
 use Anakeen\Router\ApiV2Response;
+use SmartStructure\Fields\Task as TaskFields;
 
 class SearchDomains
 {
@@ -26,6 +27,7 @@ class SearchDomains
             $config["database"] = $this->getDbSize($config["name"]);
         }
         $data["fileCacheSize"] = $this->getDbTableSize(FileContentDatabase::DBTABLE);
+        $data["nextUpdateDate"]=$this->getNextDateForAutoUpdate();
 
         return $data;
     }
@@ -53,5 +55,20 @@ SQL;
 
         DbManager::query($sql, $size, false, true);
         return $size;
+    }
+
+    protected function getNextDateForAutoUpdate() {
+        $s=new \Anakeen\Search\SearchElements("TASK");
+        $s->addFilter("%s = 'FullSearch'", TaskFields::task_route_ns);
+        $s->addFilter("%s = 'UpdateSearchData'", TaskFields::task_route_name);
+        $s->addFilter("%s = 'active'", TaskFields::task_status);
+        $s->search();
+        $tasks=$s->getResults();
+        $dates=[];
+        foreach ($tasks as $task) {
+            $dates[]=$task->getRawValue(TaskFields::task_nextdate);
+        }
+
+        return min($dates);
     }
 }

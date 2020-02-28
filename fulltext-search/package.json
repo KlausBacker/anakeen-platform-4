@@ -22,9 +22,9 @@
     "dev": "dev=DEV npx webpack-dev-server --config=./webpack/config.js"
   },
   "devDependencies": {
-    "@anakeen/anakeen-cli": "1.2.2-RC.2020.1.4",
-    "@anakeen/hub-components": "1.0.4-RC.2020.1.4",
-    "@anakeen/internal-components": "1.0.3-RC.2020.1.4",
+    "@anakeen/anakeen-cli": "1.2.2-RC.2020.1.5",
+    "@anakeen/hub-components": "1.0.4-RC.2020.1.5",
+    "@anakeen/internal-components": "1.0.3-RC.2020.1.5",
     "@anakeen/webpack-conf": "1.2.1",
     "@progress/kendo-buttons-vue-wrapper": "^2019.3.1023",
     "@progress/kendo-charts-vue-wrapper": "^2019.3.1023",

@@ -12,11 +12,11 @@
 * Proposition de correction orthographique
 
 
-* Api Indexation multi-domain d'un smart element
+* Api Indexation multi-domain d'un smart element [OK]
 
 * Api de mise à jour incrémentale
   * mono domaine [OK]
-  * multi-domaine
+  * multi-domaine [OK]
   
-* traitement de synonymes
+* traitement de synonymes [DOC - SYS PG]
 

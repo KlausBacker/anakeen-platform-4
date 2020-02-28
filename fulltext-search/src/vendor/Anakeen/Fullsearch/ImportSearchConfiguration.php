@@ -4,6 +4,7 @@
 namespace Anakeen\Fullsearch;
 
 use Anakeen\Core\ContextManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Core\Utils\Xml;
 use Anakeen\Exception;
 
@@ -25,9 +26,11 @@ class ImportSearchConfiguration
     protected $configs = [];
     /** @var SearchDomain */
     protected $domain;
+    protected $xmlFilePath;
 
     public function __construct($xmlFile)
     {
+        $this->xmlFilePath=$xmlFile;
         $this->dom = new \DOMDocument();
         $this->dom->load($xmlFile);
 
@@ -79,12 +82,21 @@ class ImportSearchConfiguration
         $config = new SearchConfig();
         $config->structure = $configNode->getAttribute("structure");
 
+        $structure=SEManager::getFamily($config->structure);
+        if (!$structure) {
+            throw new Exception("FSEA0013", $config->structure, $this->xmlFilePath);
+        }
 
+        $config->collection = $configNode->getAttribute("collection");
         $fieldNodes = $this->xpath->query("sd:field", $configNode);
         foreach ($fieldNodes as $fieldNode) {
             /** @var \DOMElement $fieldNode */
+            $fieldId=$fieldNode->getAttribute("ref");
+            if (!$structure->getAttribute($fieldId)) {
+                throw new Exception("FSEA0014", $config->structure, $fieldId, $this->xmlFilePath);
+            }
             $config->fields[] = new SearchFieldConfig(
-                $fieldNode->getAttribute("ref"),
+                $fieldId,
                 $fieldNode->getAttribute("weight")
             );
         }

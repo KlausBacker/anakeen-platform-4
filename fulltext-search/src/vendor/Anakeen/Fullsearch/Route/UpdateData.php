@@ -2,16 +2,16 @@
 
 namespace Anakeen\Fullsearch\Route;
 
-use Anakeen\Core\DbManager;
 use Anakeen\Core\Internal\ContextParameterManager;
 use Anakeen\Fullsearch\SearchDomain;
 use Anakeen\Fullsearch\SearchDomainManager;
 use Anakeen\Router\ApiV2Response;
-use Anakeen\TransformationEngine\Manager;
+use Anakeen\TransformationEngine\Manager as TeManager;
 
 class UpdateData
 {
-    protected $teConnectionChecked=false;
+    protected $teConnectionChecked = false;
+
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $data = $this->doRequest();
@@ -21,7 +21,6 @@ class UpdateData
     protected function doRequest()
     {
         $data = [];
-
 
         $domains = SearchDomainManager::getConfig();
 
@@ -34,8 +33,8 @@ class UpdateData
 
     protected function checkTeConnection()
     {
-        if (ContextParameterManager::getValue(Manager::Ns, "TE_ACTIVATE") === "yes") {
-            Manager::checkConnection();
+        if (ContextParameterManager::getValue(TeManager::Ns, "TE_ACTIVATE") === "yes") {
+            TeManager::checkConnection();
         }
     }
 
@@ -46,7 +45,7 @@ class UpdateData
         $domain->updateIndexSearchData(function (\Anakeen\SmartElement $se) use (&$data) {
             if ($this->teConnectionChecked === false) {
                 $this->checkTeConnection();
-                $this->teConnectionChecked=true;
+                $this->teConnectionChecked = true;
             }
             $data[] = ["id" => $se->id, "title" => $se->getTitle()];
         });

@@ -8,12 +8,12 @@ const componentInstance = Vue.component("template-component", {
   },
   template: `
       <td  @click="clickHandler">
-          <div v-if="dataItem.properties">
+          <div v-if="dataItem.properties" class="fullresult-element">
               <p><img alt="icon" :src="dataItem.properties.icon"/><b>{{dataItem.properties.title}}</b> </p>
-          <p v-html="getHighValue()" class="highlight"></p>
+              <p v-html="getHighValue()" class="highlight"></p>
           </div>
 
-          <div v-if="dataItem.message">
+          <div v-if="dataItem.message" class="fullresult-message">
               <p v-if="dataItem.pattern">{{dataItem.message}} <em>{{dataItem.pattern}}</em></p>
               <p v-else><b>{{dataItem.message}}</b></p>
           </div>

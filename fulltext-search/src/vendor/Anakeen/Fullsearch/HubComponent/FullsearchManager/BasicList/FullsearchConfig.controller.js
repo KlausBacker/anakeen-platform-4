@@ -34,9 +34,9 @@ const componentInstance = Vue.component("template-component", {
 const componentHeaderInstance = Vue.component("template-component", {
   props: {
     field: String,
+    grid: Object,
     title: String,
     column: Object,
-    fileDatabaseSize: String,
     sortable: [Boolean, Object]
   },
   data() {
@@ -45,10 +45,25 @@ const componentHeaderInstance = Vue.component("template-component", {
     };
   },
   template: `<div class="full-header"  ><b>{{title}}</b> 
-      <span>{{fileDatabaseSize}}{{column}}</span>
+      <span>File cache size: <b>{{getFileTableSize()}}</b></span>
+      <span>Next update: <b>{{getUpdateDate()}}</b></span>
       <button @click="clickHandler" @dblclick="autoRefresh" class="btn"  :class="{ 'btn-primary':this.autoReloadTimer}"><span class="material-icons">refresh</span></button></div>`,
   methods: {
+    getFileTableSize() {
+      if (this.grid && this.grid.fileCacheSize) {
+        return this.grid.fileCacheSize.prettySize;
+      }
+    },
+    getUpdateDate() {
+      if (this.grid && this.grid.nextUpdateDate) {
+        return this.grid.nextUpdateDate.toDateString() + " " + this.grid.nextUpdateDate.toTimeString().substr(0, 5);
+      }
+    },
     clickHandler: function(e) {
+      if (this.autoReloadTimer) {
+        this.autoReloadTimer = false;
+        this.$emit("autoReload", this.autoReloadTimer);
+      }
       this.$emit("reload", e);
     },
     autoRefresh: function() {
@@ -72,6 +87,7 @@ export default {
       domains: [],
       fileCacheSize: {},
       gridData: null,
+      nextUpdateDate: "",
       configInfo: [],
       expandedRows: {},
       autoReloadTimer: null,
@@ -79,26 +95,35 @@ export default {
         {
           field: "domainName",
           title: "Search domains",
-          fileDatabaseSize: "HOHO",
-          headerCell: componentHeaderInstance
+          headerCell: this.headerCellRenderFunction
         }
       ]
     };
   },
 
   created() {
-    // this.getData();
-  },
-
-  mounted() {
     this.fetchConfigs();
   },
+
+  mounted() {},
   computed: {},
   methods: {
+    headerCellRenderFunction(createElement, defaultRendering, props) {
+      return createElement(componentHeaderInstance, {
+        props: { ...props, grid: this },
+        on: {
+          reload: this.fetchConfigs,
+          autoReload: this.autoReload
+        }
+      });
+    },
     fetchConfigs() {
       return this.$http.get("/api/admin/fullsearch/domains/").then(response => {
         this.configInfo = [];
         this.fileCacheSize = response.data.data.fileCacheSize;
+        if (response.data.data.nextUpdateDate) {
+          this.nextUpdateDate = new Date(response.data.data.nextUpdateDate);
+        }
         this.domains = response.data.data.config;
         this.domains.forEach(domain => {
           const domainName = domain.name;
@@ -111,12 +136,6 @@ export default {
               }
             });
           }
-
-          /*  domain.database.structures.forEach((db, structName) => {
-            domain.configs.forEach((struc) => {
-              if (struc.name === )
-            })
-          });*/
 
           this.configInfo.push({
             domainName: domainName,

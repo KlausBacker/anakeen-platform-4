@@ -15,8 +15,6 @@
       :expand-field="'expanded'"
       :columns="columns"
       :selected-field="selectedField"
-      @reload="fetchConfigs"
-      @autoReload="autoReload"
       @rowclick="onRowClick"
       @expandchange="expandChange"
     >

@@ -41,7 +41,17 @@
     }
   }
 
+
+  .k-grid-header {
+    display:none;
+  }
   .k-grid-content {
     overflow:auto;
+  }
+  .fullresult-message {
+    text-align: center;
+    em {
+      font-weight: bold;
+    }
   }
 }

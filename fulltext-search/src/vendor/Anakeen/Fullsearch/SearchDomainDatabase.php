@@ -55,12 +55,17 @@ class SearchDomainDatabase
         $this->createIndex();
     }
 
+    public function clearData() {
+        $sql = sprintf("delete from %s", $this->getTableName());
+        DbManager::query($sql);
+    }
     /**
      * Reindex all data that are not up-to-date described in search domain
      * @param bool $clearDataBefore if true, previous recorded data are deleted before record data
      * @throws Exception
      * @throws \Anakeen\Core\DocManager\Exception
      * @throws \Anakeen\Core\Exception
+     * @throws \Anakeen\Database\Exception
      * @throws \Anakeen\Database\Exception
      * @throws \Anakeen\Search\Exception
      */
@@ -77,8 +82,8 @@ class SearchDomainDatabase
         }
 
         if ($clearDataBefore === true) {
-            $sql = sprintf("delete from %s", $this->getTableName());
-            DbManager::query($sql);
+            $this->clearData();
+
         }
 
         $configs = $this->domain->configs;
@@ -93,13 +98,20 @@ class SearchDomainDatabase
                 return $item->field;
             }, $smartStructureSearchconfig->files));
 
+            $fields[]="mdate";
+
             $structureName = $smartStructureSearchconfig->structure;
             $structure = SEManager::getFamily($structureName);
             if (!$structure) {
                 throw new Exception("FSEA0003", $this->domainName, $structureName);
             }
 
-            $s = new SearchElements($structure->id);
+            if ($smartStructureSearchconfig->collection) {
+                $s = new SearchElements($structure->id);
+                $s->useCollection($smartStructureSearchconfig->collection);
+            } else {
+                $s = new SearchElements($structure->id);
+            }
             $s->join(sprintf("id = %s(docid)", $this->getTableName()), "left outer");
             $s->addFilter(
                 "%s.mdate > %s.mdate or %s.mdate is null",
@@ -111,6 +123,7 @@ class SearchDomainDatabase
             if (!$smartStructureSearchconfig->callables) {
                 $s->returnsOnly($fields);
             }
+
             $results = $s->search()->getResults();
 
             $ft = $this->updateHook;
@@ -265,6 +278,7 @@ SQL;
             $structureClass = SEManager::getFamilyClassName($smartStructureSearchconfig->structure);
 
             if (is_a($se, $structureClass)) {
+                // @TODO its wrong if use collection
                 $config = $smartStructureSearchconfig;
                 break;
             }
