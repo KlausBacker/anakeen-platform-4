@@ -1,0 +1,110 @@
+
+
+###############################################################################
+## Binaries
+###############################################################################
+DOCKER_BIN = docker
+DOCKER_COMPOSE_BIN = docker-compose
+DOCKER_COMPOSE_CMD = $(DOCKER_COMPOSE_ENV) $(DOCKER_COMPOSE_BIN) -p $(PROJECT_NAME) -f $(DOCKER_COMPOSE_FILES)
+NVM_EXEC_BIN = $(DEVTOOLS_DIR)/nvm-exec.sh
+NVM_EXEC_OPTIONS =
+NVM_EXEC_CMD = $(NVM_EXEC_BIN) $(NVM_EXEC_OPTIONS)
+YARN_CMD = $(NVM_EXEC_CMD) -- yarn
+NPX_CMD = $(NVM_EXEC_CMD) -- npx
+ANAKEEN_CLI_CMD = $(NPX_CMD) @anakeen/anakeen-cli
+CHECK_VERSION_CMD = $(NVM_EXEC_CMD) $(DEVTOOLS_DIR)/ci/check/checkVersionNpmApp.js
+
+###############################################################################
+## Docker
+###############################################################################
+
+DOCKER_DIR = $(DEVTOOLS_DIR)/docker
+DOCKER_COMPOSE_UID = $$(id -u)
+DOCKER_COMPOSE_GID = $$(id -g)
+DOCKER_COMPOSE_ENV = COMPOSE_UID=$(DOCKER_COMPOSE_UID) COMPOSE_GID=$(DOCKER_COMPOSE_GID)
+DOCKER_COMPOSE_ENV += PROJECT_HTTP_PORT=$(PROJECT_HTTP_PORT) PROJECT_PSQL_PORT=$(PROJECT_PSQL_PORT) PROJECT_MAIL_PORT=$(PROJECT_MAIL_PORT)
+DOCKER_COMPOSE_ENV += PROJECT_PHP_VERSION=$(PROJECT_PHP_VERSION) PROJECT_POSTGRES_VERSION=$(PROJECT_POSTGRES_VERSION)
+DOCKER_COMPOSE_UP_OPTIONS =
+DOCKER_COMPOSE_DOWN_OPTIONS =
+DOCKER_COMPOSE_SERVICES = php postgres mail
+DOCKER_COMPOSE_BASE_FILE = $(DOCKER_DIR)/docker-compose.yml
+DOCKER_COMPOSE_OVERRIDES =
+DOCKER_COMPOSE_FILES = $(DOCKER_COMPOSE_BASE_FILE) $(DOCKER_COMPOSE_OVERRIDES)
+
+DOCKER_INTERNAL_SHARE_PATH = /tmp/share
+
+DOCKER_INTERNAL_PHP_BASE = /var/www/html/anakeen
+DOCKER_INTERNAL_PHP_CONTROL_DIR_PATH = $(DOCKER_INTERNAL_PHP_BASE)/control
+DOCKER_INTERNAL_PHP_CONTEXT_PATH = $(DOCKER_INTERNAL_PHP_BASE)/platform
+DOCKER_INTERNAL_PHP_VAULTS_PATH = $(DOCKER_INTERNAL_PHP_BASE)/vaults
+DOCKER_INTERNAL_PHP_REPO_PATH = $(DOCKER_INTERNAL_PHP_BASE)/repo
+DOCKER_INTERNAL_PHP_SNAPSHOTS_PATH = $(DOCKER_INTERNAL_SHARE_PATH)/snapshots
+DOCKER_INTERNAL_PHP_CRONTABS_PATH = /var/spool/cron/crontabs
+DOCKER_INTERNAL_POSTGRES_DATA_PATH = /var/lib/postgresql/data
+
+###############################################################################
+## Volumes
+###############################################################################
+
+VOLUMES_DIR = $(DOCKER_DIR)/Volumes
+VOLUMES_PRIVATE_DIR = $(VOLUMES_DIR)/_private
+
+VOLUMES_POSTGRES_DATA = $(VOLUMES_PRIVATE_DIR)/postgres/$(DOCKER_INTERNAL_POSTGRES_DATA_PATH)
+VOLUMES_POSTGRES_SHARE = $(VOLUMES_PRIVATE_DIR)/postgres/$(DOCKER_INTERNAL_SHARE_PATH)
+
+VOLUMES_PHP_BASE = $(VOLUMES_PRIVATE_DIR)/php/$(DOCKER_INTERNAL_PHP_BASE)
+VOLUMES_PHP_CONTEXT = $(VOLUMES_PRIVATE_DIR)/php/$(DOCKER_INTERNAL_PHP_CONTEXT_PATH)
+VOLUMES_PHP_VAULTS = $(VOLUMES_PRIVATE_DIR)/php/$(DOCKER_INTERNAL_PHP_VAULTS_PATH)
+VOLUMES_PHP_REPO = $(BUILD_DIR)
+VOLUMES_PHP_CONTROL = $(VOLUMES_PRIVATE_DIR)/php/$(DOCKER_INTERNAL_PHP_CONTROL_DIR_PATH)
+VOLUMES_PHP_CONTROL_CONF = $(VOLUMES_PHP_CONTROL)/conf
+VOLUMES_PHP_CRONTABS = $(VOLUMES_PRIVATE_DIR)/php/$(DOCKER_INTERNAL_PHP_CRONTABS_PATH)
+VOLUMES_PHP_SHARE = $(VOLUMES_PRIVATE_DIR)/php/$(DOCKER_INTERNAL_SHARE_PATH)
+VOLUMES_PHP_SNAPSHOT_DIR = $(VOLUMES_PRIVATE_DIR)/php/$(DOCKER_INTERNAL_PHP_SNAPSHOTS_PATH)
+
+VOLUMES_PRIVATE = $(VOLUMES_POSTGRES_DATA)
+VOLUMES_PRIVATE += $(VOLUMES_POSTGRES_SHARE)
+VOLUMES_PRIVATE += $(VOLUMES_PHP_BASE)
+VOLUMES_PRIVATE += $(VOLUMES_PHP_CONTEXT)
+VOLUMES_PRIVATE += $(VOLUMES_PHP_VAULTS)
+VOLUMES_PRIVATE += $(VOLUMES_PHP_REPO)
+VOLUMES_PRIVATE += $(VOLUMES_PHP_CONTROL)
+VOLUMES_PRIVATE += $(VOLUMES_PHP_CRONTABS)
+VOLUMES_PRIVATE += $(VOLUMES_PHP_SHARE)
+VOLUMES_PRIVATE += $(VOLUMES_PHP_SNAPSHOT_DIR)
+
+###############################################################################
+## Control
+###############################################################################
+CONTEXT_NAME = platform
+CONTEXT_PASSWORD = anakeen
+LOCAL_REPO_NAME = anakeen-platform-4
+
+###############################################################################
+## default values
+###############################################################################
+
+PROJECT_POSTGRES_VERSION = 11.6
+PROJECT_PHP_VERSION = 7.3
+PROJECT_PSQL_PORT = 54321
+PROJECT_HTTP_PORT = 8080
+PROJECT_DEVSERVER_PORT = 8001
+PROJECT_MAIL_PORT = 8081
+
+DEVTOOLS_DIR = .devtool
+BUILD_DIR = build
+
+SMTP_HOST = mail
+SMTP_PORT = 1025
+SMTP_FROM = noreply@example.net
+CORE_URLINDEX = http://localhost:$(PROJECT_HTTP_PORT)/
+
+###############################################################################
+## colors
+###############################################################################
+PRINT_COLOR = printf
+COLOR_SUCCESS = \033[1;32m
+COLOR_DEBUG = \033[36m
+COLOR_HINT = \033[33m
+COLOR_WARNING = \033[31m
+COLOR_RESET = \033[0m

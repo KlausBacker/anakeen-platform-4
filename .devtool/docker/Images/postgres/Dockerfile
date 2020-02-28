@@ -1,0 +1,2 @@
+ARG PROJECT_POSTGRES_VERSION
+FROM registry.ap4.anakeen.com/ank-postgres:$PROJECT_POSTGRES_VERSION

@@ -1,36 +1,35 @@
-#MAKEFILE dir
-MK_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+include ../.devtool/Makefile.params.mk
+DEVTOOLS_DIR = ../.devtool
 
 #path
-CS_PATH_NAME=./../.devtool/ci/check/checkPHP/anakeenPhpCs.xml
-
+CS_PATH_NAME=$(DEVTOOLS_DIR)/ci/check/checkPHP/anakeenPhpCs.xml
 
 #Build
-APP_OUTPUT_PATH=../build/
+APP_OUTPUT_PATH = ../$(BUILD_DIR)/
 
 ##bin
-YARN_BIN=yarn
-ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
-CBF_BIN=php ./../.devtool/ci/check/checkPHP/vendor/bin/phpcbf
-CS_BIN=php ./../.devtool/ci/check/checkPHP/vendor/bin/phpcs
+CBF_BIN=php $(DEVTOOLS_DIR)/ci/check/checkPHP/vendor/bin/phpcbf
+CS_BIN=php $(DEVTOOLS_DIR)/ci/check/checkPHP/vendor/bin/phpcs
 COMPOSER_BIN=composer
-CHECK_VERSION=node ./../.devtool/ci/check/checkVersionNpmApp.js
 
--include ../Makefile.local
-
+########################################################################################################################
+##
+## Deps
+##
+########################################################################################################################
 
 node_modules:
-	${YARN_BIN} install
+	$(YARN_CMD) install --frozen-lock
 
-./../.devtool/ci/check/checkPHP/vendor:
-	${COMPOSER_BIN} install --working-dir=./../.devtool/ci/check/checkPHP/ --ignore-platform-reqs
+$(DEVTOOLS_DIR)/ci/check/checkPHP/vendor:
+	${COMPOSER_BIN} install --working-dir=$(DEVTOOLS_DIR)/ci/check/checkPHP/ --ignore-platform-reqs
 ########################################################################################################################
 ##
 ## Deps
 ##
 ########################################################################################################################
 install-deps: node_modules
-	@${PRINT_COLOR} "${DEBUG_COLOR}Install deps${RESET_COLOR}\n"
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Install deps$(COLOR_RESET)\n"
 
 
 ########################################################################################################################
@@ -40,19 +39,19 @@ install-deps: node_modules
 ########################################################################################################################
 
 checkXML: install-deps
-	@${PRINT_COLOR} "${DEBUG_COLOR}Check XML${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} check
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Check XML$(COLOR_RESET)\n"
+	$(ANAKEEN_CLI_CMD) check
 
 checkVersion:
-	@${PRINT_COLOR} "${DEBUG_COLOR}Check version between info and package${RESET_COLOR}\n"
-	${CHECK_VERSION} ./
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Check version between info and package$(COLOR_RESET)\n"
+	$(CHECK_VERSION_CMD) ./
 
-lint: checkXML checkVersion ./../.devtool/ci/check/checkPHP/vendor
-	@${PRINT_COLOR} "${DEBUG_COLOR}Lint PHP${RESET_COLOR}\n"
+lint: checkXML checkVersion $(DEVTOOLS_DIR)/ci/check/checkPHP/vendor
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Lint PHP$(COLOR_RESET)\n"
 	$(CS_BIN) --standard=${CS_PATH_NAME} --extensions=php ./src
 
-beautify: ./../.devtool/ci/check/checkPHP/vendor
-	@${PRINT_COLOR} "${DEBUG_COLOR}Beautify PHP${RESET_COLOR}\n"
+beautify: $(DEVTOOLS_DIR)/ci/check/checkPHP/vendor
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Beautify PHP$(COLOR_RESET)\n"
 	$(CBF_BIN) --standard=${CS_PATH_NAME} --extensions=php ./src
 	$(CBF_BIN) --standard=${CS_PATH_NAME} --extensions=php ./Tests
 
@@ -62,12 +61,12 @@ beautify: ./../.devtool/ci/check/checkPHP/vendor
 ##
 ########################################################################################################################
 po: install-deps
-	@${PRINT_COLOR} "${DEBUG_COLOR}Extract PO${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} extractPo
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Extract PO$(COLOR_RESET)\n"
+	$(ANAKEEN_CLI_CMD) extractPo
 
 stub: install-deps
-	@${PRINT_COLOR} "${DEBUG_COLOR}Generate Stubs${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} generateStubs
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Generate Stubs$(COLOR_RESET)\n"
+	$(ANAKEEN_CLI_CMD) generateStubs
 
 ########################################################################################################################
 ##
@@ -75,22 +74,22 @@ stub: install-deps
 ##
 ########################################################################################################################
 app: install-deps
-	@${PRINT_COLOR} "${DEBUG_COLOR}Make app${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} build -t ${APP_OUTPUT_PATH}
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Make app$(COLOR_RESET)\n"
+	$(ANAKEEN_CLI_CMD) build -t ${APP_OUTPUT_PATH}
 
 app-test: install-deps
-	@${PRINT_COLOR} "${DEBUG_COLOR}Make app test${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} build --sourcePath ./Tests -t ${APP_OUTPUT_PATH}
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Make app test$(COLOR_RESET)\n"
+	$(ANAKEEN_CLI_CMD) build --sourcePath ./Tests -t ${APP_OUTPUT_PATH}
 
 app-all: app app-test
 
 app-autorelease: install-deps
-	@${PRINT_COLOR} "${DEBUG_COLOR}Make app autotrelease${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} build --autoRelease="dev" -t ${APP_OUTPUT_PATH}
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Make app autotrelease$(COLOR_RESET)\n"
+	$(ANAKEEN_CLI_CMD) build --autoRelease="dev" -t ${APP_OUTPUT_PATH}
 
 app-test-autorelease: install-deps
-	@${PRINT_COLOR} "${DEBUG_COLOR}Make app test autotrelease${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} build --sourcePath ./Tests --autoRelease="dev" -t ${APP_OUTPUT_PATH}
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Make app test autotrelease$(COLOR_RESET)\n"
+	$(ANAKEEN_CLI_CMD) build --sourcePath ./Tests --autoRelease="dev" -t ${APP_OUTPUT_PATH}
 
 app-all-autorelease: app-autorelease app-test-autorelease
 
@@ -100,12 +99,12 @@ app-all-autorelease: app-autorelease app-test-autorelease
 ##
 ########################################################################################################################
 deploy: install-deps
-	@${PRINT_COLOR} "${DEBUG_COLOR}Deploy${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath . 
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Deploy$(COLOR_RESET)\n"
+	$(ANAKEEN_CLI_CMD) deploy --auto-release --sourcePath .
 
 deploy-test: install-deps
-	@${PRINT_COLOR} "${DEBUG_COLOR}Deploy test${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ./Tests 
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Deploy test$(COLOR_RESET)\n"
+	$(ANAKEEN_CLI_CMD) deploy --auto-release --sourcePath ./Tests
 
 deploy-all: deploy deploy-test
 
@@ -115,28 +114,7 @@ deploy-all: deploy deploy-test
 ##
 ########################################################################################################################
 clean:
-	@${PRINT_COLOR} "${DEBUG_COLOR}Clean${RESET_COLOR}\n"
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Clean$(COLOR_RESET)\n"
 	rm -fr node_modules
 	rm -f *.src
 	rm -f *.app
-
-########################################################################################################################
-##
-## MAKEFILE INTERNALS
-##
-########################################################################################################################
-.PHONY: app app-test app-all app-autorelease app-test-autorelease app-all-autorelease deploy deploy-test deploy-all
-
-PRINT_COLOR = printf
-SUCCESS_COLOR = \033[1;32m
-DEBUG_COLOR = \033[36m
-HINT_COLOR = \033[33m
-WARNING_COLOR = \033[31m
-RESET_COLOR = \033[0m
-
-.DEFAULT_GOAL := help
-
-help: HELP_WIDTH = 25
-help: ## Show this help message
-	@grep -h -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-${HELP_WIDTH}s\033[0m %s\n", $$1, $$2}'
-
