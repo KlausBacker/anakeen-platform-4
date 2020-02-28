@@ -82,6 +82,7 @@
     </post-install>
 
     <post-upgrade>
+        <process command="./ank.php --system --reloadConfig"/>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mask/mask.struct.xml">
             <label>MASK Structure</label>
         </process>
