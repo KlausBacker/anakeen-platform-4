@@ -21,6 +21,8 @@ class SmartGridContentBuilder
      */
     protected $searchElements = null;
 
+    protected $formatter = null;
+
     protected $fields = [];
     protected $sort = [];
 
@@ -196,13 +198,11 @@ class SmartGridContentBuilder
     public function getContent()
     {
         $return = [];
+        $return["requestParameters"] = $this->getRequestParameters();
+        $this->prepareFormatter();
+        $return["content"] = $this->formatter->format();
         if (ContextManager::getParameterValue("Ui", "MODE_DEBUG", false)) {
             $return["debug"] = $this->searchElements->getSearchInfo();
-        }
-        $return["requestParameters"] = $this->getRequestParameters();
-        $return["content"] = [];
-        foreach ($this->searchElements->getResults() as $element) {
-            $return["content"][] = $this->formatElement($element);
         }
         return $return;
     }
@@ -226,6 +226,53 @@ class SmartGridContentBuilder
     {
         $this->pageSize = $pageSize;
         $this->setPager($this->page, $this->pageSize);
+    }
+
+    protected function prepareFormatter()
+    {
+        $this->formatter = new GridDataFormatter($this->searchElements);
+
+        // Add property
+        foreach ($this->fields as $field) {
+            if (isset($field["field"])) {
+                if (isset($field["property"]) && $field["property"]) {
+                    $this->formatter->addProperty($field["field"]);
+                } elseif (!isset($field["abstract"])) {
+                    $this->formatter->setAttributes([$field["field"]]);
+                }
+            }
+        }
+
+        // Add abstract data
+        $this->formatter->getFormatCollection()->setDocumentRenderHook(function ($info, \Anakeen\Core\Internal\SmartElement $se) {
+            foreach ($this->fields as $field) {
+                if (isset($field["field"])) {
+                    if (isset($field["abstract"]) && $field["abstract"]) {
+                        $abstractDataFunction = function () {
+                            return [
+                                "value" => null,
+                                "displayValue" => null
+                            ];
+                        };
+                        if (isset($field["dataFunction"]) && is_callable($field["dataFunction"])) {
+                            $abstractDataFunction = $field["dataFunction"];
+                        }
+                        $data = $abstractDataFunction($se);
+                        $info["abstract"] = array_merge($info['abstract'] ?? [], [
+                            $field["field"] => $data
+                        ]);
+                    } else {
+                        if (empty($field["property"])) {
+                            // Remove unexisting smart field from formatting
+                            if (!$se->getAttribute($field['field'])) {
+                                unset($info["attributes"][$field['field']]);
+                            }
+                        }
+                    }
+                }
+            }
+            return $info;
+        });
     }
 
     protected static function getFlatLevelFilters($filterArg)
@@ -267,46 +314,5 @@ class SmartGridContentBuilder
         if ($pageSize !== "ALL") {
             $this->searchElements->setStart(($page - 1) * $pageSize);
         }
-    }
-
-    protected function formatElement(SmartElement $element)
-    {
-        $df = new DocumentDataFormatter($element);
-        foreach ($this->fields as $field) {
-            if (isset($field["field"])) {
-                if (isset($field["property"]) && $field["property"]) {
-                    $df->addProperty($field["field"]);
-                    $df->format();
-                } elseif (!isset($field["abstract"])) {
-                    if ($element->getAttribute($field["field"])) {
-                        $df->setAttributes([$field["field"]]);
-                    }
-                }
-            }
-        }
-        $df->getFormatCollection()->setDocumentRenderHook(function ($info, \Anakeen\Core\Internal\SmartElement $se) {
-            foreach ($this->fields as $field) {
-                if (isset($field["field"])) {
-                    if (isset($field["abstract"]) && $field["abstract"]) {
-                        $abstractDataFunction = function () {
-                            return [
-                                "value" => null,
-                                "displayValue" => null
-                            ];
-                        };
-                        if (isset($field["dataFunction"]) && is_callable($field["dataFunction"])) {
-                            $abstractDataFunction = $field["dataFunction"];
-                        }
-                        $data = $abstractDataFunction($se);
-                        $info["abstract"] = array_merge($info['abstract'] ?? [], [
-                            $field["field"] => $data
-                        ]);
-                    }
-                }
-            }
-            return $info;
-        });
-
-        return $df->getData();
     }
 }
