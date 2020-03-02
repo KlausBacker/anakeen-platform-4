@@ -1,6 +1,6 @@
 {
   "name": "transformation",
-  "version": "2.0.3-RC.2020.1.7",
+  "version": "2.0.3-RC.2020.1.8",
   "main": "index.js",
   "author": "Anakeen",
   "license": "SEE LICENSE IN LICENSE",
@@ -11,9 +11,9 @@
     "buildJs": "yarn run buildJs:tedock:prod && yarn run buildJs:tedock:dev"
   },
   "devDependencies": {
-    "@anakeen/anakeen-cli": "1.2.2-RC.2020.1.7",
-    "@anakeen/hub-components": "1.0.4-RC.2020.1.7",
-    "@anakeen/internal-components": "1.0.3-RC.2020.1.7",
+    "@anakeen/anakeen-cli": "1.2.2-RC.2020.1.8",
+    "@anakeen/hub-components": "1.0.4-RC.2020.1.8",
+    "@anakeen/internal-components": "1.0.3-RC.2020.1.8",
     "@anakeen/webpack-conf": "1.2.1",
     "core-js": "3.6.1",
     "@progress/kendo-buttons-vue-wrapper": "^2019.3.1023",
