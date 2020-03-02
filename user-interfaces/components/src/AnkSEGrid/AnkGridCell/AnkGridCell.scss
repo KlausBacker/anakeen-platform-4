@@ -38,3 +38,20 @@
 .smart-element-grid-cell-content-multiple-col {
   display: flex;
 }
+
+.smart-element-grid-cell__state--color {
+  border-radius: 25%;
+  width: .8rem;
+  height: .8rem;
+  margin-left: .5rem;
+  background-color: transparent;
+}
+
+.smart-element-grid-cell__state {
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-right: 1rem;
+  margin-top: -0.5rem;
+}

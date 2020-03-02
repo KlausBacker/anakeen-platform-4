@@ -44,21 +44,33 @@ $.widget("dcp.dcpLabel", {
           event.stopPropagation();
         }
 
-        action = $this.data("action") || $this.attr("href");
-        const data = action.substring(8).split(/({(.+))/g);
-        if (data[1]) {
-          options = data[0].split(":").slice(0, -1);
-          options.customClientData = JSON.parse(data[1]);
+        // action = $target.data("action") || $target.attr("href");
+        let data;
+        if ($this.data("action")) {
+          const action = $this.data("action");
+          data = action.split(/({(.+))/g);
+          if (data[1]) {
+            options = data[0].split(":").slice(0, -1);
+            options.customClientData = JSON.parse(data[1]);
+          } else {
+            options = action.split(":");
+          }
         } else {
-          options = action.substring(8).split(":");
+          action = $this.attr("href");
+          data = action.substring(8).split(/({(.+))/g);
+          if (data[1]) {
+            options = data[0].split(":").slice(0, -1);
+            options.customClientData = JSON.parse(data[1]);
+          } else {
+            options = action.substring(8).split(":");
+          }
         }
         eventOptions = {
           target: event.target,
-          index: -1,
           eventId: options.shift(),
-          options: options
+          options: options,
+          index: -1
         };
-
         scopeWidget._trigger("externalLinkSelected", event, eventOptions);
         return this;
       }
