@@ -811,7 +811,7 @@ class ImportDocumentDescription
         if ($orphanAttributes) {
             $sql = array();
             foreach ($orphanAttributes as $orphanAttrId) {
-                $sql[] = sprintf("alter table doc%d drop column %s cascade; ", $this->doc->id, $orphanAttrId);
+                $sql[] = sprintf("alter table doc%d drop column if exists %s cascade; ", $this->doc->id, $orphanAttrId);
 
                 $this->tcr[$this->nLine]["msg"] .= "\nDestroy values for \"$orphanAttrId\".";
             }

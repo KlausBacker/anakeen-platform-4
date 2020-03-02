@@ -29,7 +29,7 @@ export default class GridHeaderCell extends Vue {
   public title!: string;
 
   @Prop({
-    type: [Boolean, Object],
+    type: [Boolean, Object]
   })
   public sortable!: boolean | object;
 
@@ -44,10 +44,13 @@ export default class GridHeaderCell extends Vue {
     required: true
   })
   public grid!: GridController;
-
   public sortableDir: SortableDirection = SortableDirection.NONE;
-  public showFilter: boolean = false;
-
+  public showFilter = false;
+  public hoverPopup = false;
+  public collision = {
+    horizontal: "fit",
+    vertical: "flip"
+  };
   public get hasSubtitle() {
     return this.grid.contextTitles && Array.isArray(this.columnConfig.context) && this.columnConfig.context.length;
   }
@@ -75,6 +78,31 @@ export default class GridHeaderCell extends Vue {
   }
 
   public created() {
+    window.addEventListener("click", e => {
+      // remove filter's popup when clicking outside of the popup
+      const tabFilterClasses = [];
+      const popup = $(".smart-element-grid-filter-criteria");
+      const popupClasses = $(e.target).attr("class");
+      if (popupClasses) {
+        if (popupClasses.split(" ")) {
+          popupClasses.split(" ").forEach(item => {
+            if (popup.find("." + item).length) {
+              tabFilterClasses.push(item);
+            }
+          });
+        } else {
+          if (popup.find("." + $(e.target).attr("class")).length) {
+            tabFilterClasses.push($(e.target).attr("class"));
+          }
+        }
+        if (tabFilterClasses.length === 0) {
+          this.showFilter = false;
+        }
+      } else {
+        this.showFilter = false;
+      }
+    });
+    // sort change
     if (this.grid.sorter && this.grid.sorter.allowUnsort === false && this.sortable) {
       this.sortableDir = SortableDirection.ASC;
       this.$emit("sortchange", {
@@ -87,7 +115,17 @@ export default class GridHeaderCell extends Vue {
       });
     }
   }
-
+  public beforeDestroy() {
+    window.removeEventListener("click", () => {
+      if (!this.hoverPopup) {
+        this.showFilter = false;
+      }
+    });
+  }
+  public clickFilter() {
+    this.showFilter = !this.showFilter;
+    this.hoverPopup = true;
+  }
   protected onSort() {
     let sortableStr = "";
     const sortableValues = [null, "asc", "desc"];
@@ -111,12 +149,10 @@ export default class GridHeaderCell extends Vue {
   }
 
   protected clearFilter(...args) {
-    this.showFilter = false;
     this.$emit("filterchange", ...args);
   }
 
   protected filter(...args) {
-    this.showFilter = false;
     this.$emit("filterchange", ...args);
   }
 }

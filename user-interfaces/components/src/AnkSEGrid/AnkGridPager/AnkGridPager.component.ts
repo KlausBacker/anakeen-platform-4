@@ -55,6 +55,7 @@ export default class GridPager extends Mixins(I18nMixin) {
   @Watch("pageSize")
   protected onPageSizeChange(newValue) {
     if (this.gridComponent) {
+      kendo.ui.progress($(".smart-element-grid-widget"), true);
       this.gridComponent.$emit("pageChange", {
         page: {
           skip: 0,
@@ -165,6 +166,7 @@ export default class GridPager extends Mixins(I18nMixin) {
 
   public goToPage(pageNumber) {
     if (this.gridComponent) {
+      kendo.ui.progress($(".smart-element-grid-widget"), true);
       this.gridComponent.$emit("pageChange", {
         page: {
           skip: (pageNumber - 1) * this.pageSize,
@@ -191,6 +193,7 @@ export default class GridPager extends Mixins(I18nMixin) {
 
   public firstPage() {
     if (this.gridComponent && this.hasPrevious) {
+      kendo.ui.progress($(".smart-element-grid-widget"), true);
       this.gridComponent.$emit("pageChange", {
         page: {
           skip: 0,
@@ -203,6 +206,7 @@ export default class GridPager extends Mixins(I18nMixin) {
 
   public previousPage() {
     if (this.gridComponent && this.hasPrevious) {
+      kendo.ui.progress($(".smart-element-grid-widget"), true);
       this.gridComponent.$emit("pageChange", {
         page: {
           skip: this.gridComponent.currentPage.skip - this.pageSize,
@@ -215,6 +219,7 @@ export default class GridPager extends Mixins(I18nMixin) {
 
   public nextPage() {
     if (this.gridComponent && this.hasNext) {
+      kendo.ui.progress($(".smart-element-grid-widget"), true);
       this.gridComponent.$emit("pageChange", {
         page: {
           skip: this.gridComponent.currentPage.skip + this.pageSize,
@@ -227,6 +232,7 @@ export default class GridPager extends Mixins(I18nMixin) {
 
   public lastPage() {
     if (this.gridComponent && this.hasNext) {
+      kendo.ui.progress($(".smart-element-grid-widget"), true);
       this.gridComponent.$emit("pageChange", {
         page: {
           skip: this.gridComponent.currentPage.total - this.pageSize,

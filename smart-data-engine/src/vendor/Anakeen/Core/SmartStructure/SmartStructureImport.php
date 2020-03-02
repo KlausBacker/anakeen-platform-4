@@ -234,6 +234,15 @@ class SmartStructureImport
                             }
                         }
                     }
+                } else {
+                    $mAttrid=substr($parentAttr["id"], 1);
+                    foreach ($allAttributes as $ka => $attr) {
+                        if ($attr["id"] === $mAttrid) {
+                            if (! empty($parentAttr["frameid"])) {
+                                $allAttributes[$ka]["parent"]=$parentAttr["frameid"];
+                            }
+                        }
+                    }
                 }
             }
 
