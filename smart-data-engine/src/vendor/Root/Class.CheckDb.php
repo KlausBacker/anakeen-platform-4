@@ -441,7 +441,7 @@ SQL;
 
         $d = new \Anakeen\Core\Internal\SmartElement();
         $fam = \Anakeen\Core\SEManager::getFamily($famid);
-        $sql = sprintf("select column_name from information_schema.columns where table_name = 'doc%d'", $fam->id);
+        $sql = sprintf("select column_name from information_schema.columns where table_schema = 'public' and table_name = 'doc%d'", $fam->id);
         \Anakeen\Core\DbManager::query($sql, $res, true);
 
         $nAttributes = $fam->getNormalAttributes();
