@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:enumerates>
+    <smart:enum-configuration name="TST-SEARCHABLE-003">
+        <smart:enum name="blue" label="indexed"/>
+        <smart:enum name="green" label="Indexed"/>
+        <smart:enum name="red" label="Not Indexed"/>
+        <smart:enum name="yellow" label="Not Indexed"/>
+    </smart:enum-configuration>
+    </smart:enumerates>
+    <smart:structure-configuration name="TST_SIMPLE003" label="Test n°1">
+        <smart:tag name="vendor">Anakeen</smart:tag>
+        <smart:fields>
+            <smart:field-set name="tst_f_title" type="frame" label="Titre" access="ReadWrite">
+                <smart:field-text name="tst_title" label="Le titre" access="ReadWrite" is-title="true"/>
+                <smart:field-longtext name="tst_desc" label="Description" access="ReadWrite"/>
+                <smart:field-enum access="ReadWrite" name="tst_searchable" relation="TST-SEARCHABLE-003"/>
+            </smart:field-set>
+        </smart:fields>
+    </smart:structure-configuration>
+</smart:config>

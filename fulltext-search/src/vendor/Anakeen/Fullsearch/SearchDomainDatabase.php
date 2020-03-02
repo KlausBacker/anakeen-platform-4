@@ -55,7 +55,8 @@ class SearchDomainDatabase
         $this->createIndex();
     }
 
-    public function clearData() {
+    public function clearData()
+    {
         $sql = sprintf("delete from %s", $this->getTableName());
         DbManager::query($sql);
     }
@@ -83,7 +84,6 @@ class SearchDomainDatabase
 
         if ($clearDataBefore === true) {
             $this->clearData();
-
         }
 
         $configs = $this->domain->configs;
@@ -106,11 +106,9 @@ class SearchDomainDatabase
                 throw new Exception("FSEA0003", $this->domainName, $structureName);
             }
 
+            $s = new SearchElements($structure->id);
             if ($smartStructureSearchconfig->collection) {
-                $s = new SearchElements($structure->id);
                 $s->useCollection($smartStructureSearchconfig->collection);
-            } else {
-                $s = new SearchElements($structure->id);
             }
             $s->join(sprintf("id = %s(docid)", $this->getTableName()), "left outer");
             $s->addFilter(

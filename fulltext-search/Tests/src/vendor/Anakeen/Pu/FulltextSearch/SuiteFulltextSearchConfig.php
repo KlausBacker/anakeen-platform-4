@@ -25,6 +25,7 @@ class SuiteFulltextSearchConfig
         $suite->addTestSuite(PuHtmltextSearch::class);
         $suite->addTestSuite(PuFileSearch::class);
         $suite->addTestSuite(PuCustomSearch::class);
+        $suite->addTestSuite(PuCollectionSearch::class);
 
         return $suite;
     }

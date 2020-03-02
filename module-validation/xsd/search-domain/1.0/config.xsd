@@ -14,7 +14,8 @@
                 <xs:element name="file" type="sd:fileType" maxOccurs="unbounded" minOccurs="0"/>
                 <xs:element name="callable" type="sd:functionType" maxOccurs="unbounded" minOccurs="0"/>
             </xs:sequence>
-            <xs:attribute type="xs:string" name="structure" use="required"/>
+            <xs:attribute type="sd:logicalNameType" name="structure" use="required"/>
+            <xs:attribute type="sd:logicalNameType" name="collection"/>
         </xs:complexType>
     </xs:element>
 
@@ -70,6 +71,11 @@
         </xs:restriction>
     </xs:simpleType>
 
+    <xs:simpleType name="logicalNameType">
+        <xs:restriction base="xs:token">
+            <xs:pattern value="[A-Za-z][A-Za-z0-9_-]+"/>
+        </xs:restriction>
+    </xs:simpleType>
     <xs:simpleType name="weight">
         <xs:annotation>
             <xs:documentation>
