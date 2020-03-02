@@ -1,5 +1,5 @@
 <template>
-  <a :href="linkUrl" target="_blank">
+  <a href="#" @click.prevent="onClickLink">
     <img class="smart-element-grid-cell-content--icon" :src="iconUrl" />
     <span class="smart-element-grid-cell-content--title">{{ fieldValue.displayValue }}</span>
   </a>
@@ -22,6 +22,7 @@ a {
 <script lang="ts">
 import { Component, Mixins } from "vue-property-decorator";
 import AnkGridCellMixin from "../AnkGridCellMixin";
+import GridEvent from "../../AnkGridEvent/AnkGridEvent";
 
 @Component({
   name: "ank-grid-cell-icontext"
@@ -58,6 +59,20 @@ export default class AnkGridCellIconText extends Mixins(AnkGridCellMixin) {
         return this.fieldValue.thumbnail;
       default:
         return this.fieldValue.icon;
+    }
+  }
+  public onClickLink() {
+    const event = new GridEvent(
+            {
+              url: this.linkUrl,
+              fieldValue: this.fieldValue
+            },
+            null,
+            true // Cancelable
+    );
+    this.gridComponent.$emit("beforeDocidLink", event);
+    if (!event.isDefaultPrevented()) {
+      window.open(this.linkUrl);
     }
   }
 }
