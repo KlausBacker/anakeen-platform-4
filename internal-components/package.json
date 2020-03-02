@@ -1,7 +1,7 @@
 {
   "name": "@anakeen/internal-components",
   "autorelease": true,
-  "version": "1.0.3-RC.2020.1.5",
+  "version": "1.0.3-RC.2020.1.6",
   "description": "Anakeen internal components",
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/npm/internal-components.git",
   "author": "Anakeen",
