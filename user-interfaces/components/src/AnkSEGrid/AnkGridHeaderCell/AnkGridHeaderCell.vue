@@ -10,9 +10,9 @@
           <div
             v-if="!!sortable"
             class="smart-element-grid-header-sort-button-wrapper"
-            v-html="sortableStateIcon"
             @click="onSort"
-          ></div>
+            v-html="sortableStateIcon"
+          />
         </div>
         <div
           v-if="!!columnConfig.filterable"
@@ -21,17 +21,18 @@
             'smart-element-grid-header-filter-button-wrapper': true,
             'smart-element-grid-header-filter--is-filtered': isFiltered
           }"
-          @click="showFilter = !showFilter"
         >
-          <i class="k-icon k-i-filter"></i>
+          <i class="k-icon k-i-filter" @click="showFilter = !showFilter" />
           <Popup
-            anchor="filterButton"
+            ref="filterPopup"
+            :anchor="'filterButton'"
             :show="showFilter"
             popup-class="smart-element-grid-filter-content"
             :anchor-align="{ horizontal: 'left', vertical: 'bottom' }"
             :popup-align="{ horizontal: 'right', vertical: 'top' }"
+            :collision="collision"
           >
-            <ank-grid-filter @clear="clearFilter" @filter="filter" v-bind="$props"></ank-grid-filter>
+            <ank-grid-filter v-bind="$props" @clear="clearFilter" @filter="filter" />
           </Popup>
         </div>
       </div>
@@ -41,7 +42,6 @@
 
 <!-- CSS to this component only -->
 <style lang="scss">
-
 @import "./AnkGridHeaderCell.scss";
 </style>
 
