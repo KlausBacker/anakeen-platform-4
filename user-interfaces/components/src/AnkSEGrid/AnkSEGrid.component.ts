@@ -199,6 +199,32 @@ export default class GridController extends Mixins(I18nMixin) {
   })
   public maxRowHeight: string;
 
+  @Watch("$props", { deep: true })
+  protected async onPropsChange(newValue) {
+    this.isLoading = true;
+    this.gridError = new GridError(this);
+    this.$on("pageChange", this.onPageChange);
+
+    try {
+      await this._loadGridConfig();
+      await this._loadGridContent();
+      this.dataItems = this.dataItems.map(item => {
+        return { ...item, selected: false };
+      });
+      this.isLoading = false;
+    } catch (error) {
+      console.error(error);
+      this.isLoading = false;
+    }
+  }
+
+  @Watch("isLoading")
+  protected onLoadingChange(newValue) {
+    console.log(newValue);
+    // @ts-ignore
+    this.$kendo.ui.progress(this.$(this.$refs.gridWrapper), newValue);
+  }
+
   @Watch("dataItems")
   public watchDataItems(val) {
     Vue.nextTick(() => {
