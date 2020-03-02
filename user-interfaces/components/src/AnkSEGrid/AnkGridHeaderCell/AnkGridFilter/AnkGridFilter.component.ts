@@ -224,6 +224,7 @@ export default class GridFilterCell extends Mixins(I18nMixin) {
   }
 
   public filter() {
+    kendo.ui.progress($(".smart-element-grid-widget"), true);
     const firstOperator = this.$refs.smartForm.getValue("first_grid_filter_operator", "current");
     const firstValue = this.$refs.smartForm.getValue("first_grid_filter_value", "current");
     const secondOperator = this.$refs.smartForm.getValue("second_grid_filter_operator", "current");
