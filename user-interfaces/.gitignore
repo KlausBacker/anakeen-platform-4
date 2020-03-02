@@ -18,7 +18,6 @@ Makefile.local
 /.cibuild/targets/*/outputs/*
 *.src
 components/lib
-components/public
 lib
 /.idea/webServers.xml
 /.idea/dictionaries/charles.xml

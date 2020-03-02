@@ -40,6 +40,8 @@ populate-cache-master:
   script:
     #Suppress build part
     - rm -rf ./build/
+    - rm -rf ./user-interfaces/components/lib
+    - rm -rf ./hub-station/components/lib
 
 #endregion tear-up
 
