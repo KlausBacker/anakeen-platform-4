@@ -217,7 +217,7 @@ export default class GridController extends Mixins(I18nMixin) {
     });
     this.$emit("dataBound", this.gridInstance);
   }
-
+  public networkOnline: boolean = true;
   public transaction: any = null;
   public gridActions: any = null;
   public gridInstance: any = null;
@@ -270,6 +270,8 @@ export default class GridController extends Mixins(I18nMixin) {
   }
 
   async created() {
+    window.addEventListener("online", this.updateOnlineStatus);
+    window.addEventListener("offline", this.updateOnlineStatus);
     this.isLoading = true;
     this.gridError = new GridError(this);
     this.$on("pageChange", this.onPageChange);
@@ -306,7 +308,15 @@ export default class GridController extends Mixins(I18nMixin) {
     this.gridInstance = this;
     this.$emit("gridReady");
   }
-
+  public updateOnlineStatus(event) {
+    const condition = navigator.onLine;
+    if (condition !== this.networkOnline && condition) {
+      this.networkOnline = condition;
+      this._loadGridContent();
+    } else {
+      this.networkOnline = condition;
+    }
+  }
   public expandColumns() {
     // @ts-ignore
     $(this.$refs.smartGridWidget.$el).toggleClass("grid-row-collapsed");
@@ -438,10 +448,12 @@ export default class GridController extends Mixins(I18nMixin) {
             false
           );
           this.$emit("afterContent", responseEvent);
+          kendo.ui.progress($(".smart-element-grid-widget"), false);
         })
         .catch(error => {
           console.error(error);
           this.isLoading = false;
+          kendo.ui.progress($(".smart-element-grid-widget"), false);
         });
     }
   }
@@ -605,22 +617,26 @@ export default class GridController extends Mixins(I18nMixin) {
   }
 
   protected async onPageChange(pagerEvt) {
-    this.currentPage = Object.assign({}, this.currentPage, pagerEvt.page);
-    this.pager = Object.assign({}, this.pager, { pageSize: pagerEvt.page.take });
-    this.isLoading = true;
+    if (this.networkOnline) {
+      this.currentPage = Object.assign({}, this.currentPage, pagerEvt.page);
+      this.pager = Object.assign({}, this.pager, { pageSize: pagerEvt.page.take });
+      this.isLoading = true;
+    }
     await this._loadGridContent();
     this.isLoading = false;
   }
 
   protected async onFilterChange(filterEvt) {
-    if (filterEvt) {
-      const filters = this.currentFilter.filters.filter(f => f.field !== filterEvt.field);
-      if (filterEvt.filters) {
-        filters.push(filterEvt);
+    if (this.networkOnline) {
+      if (filterEvt) {
+        const filters = this.currentFilter.filters.filter(f => f.field !== filterEvt.field);
+        if (filterEvt.filters) {
+          filters.push(filterEvt);
+        }
+        this.currentFilter.filters = filters;
       }
-      this.currentFilter.filters = filters;
+      this.isLoading = true;
     }
-    this.isLoading = true;
     await this._loadGridContent();
     this.isLoading = false;
   }
@@ -636,32 +652,37 @@ export default class GridController extends Mixins(I18nMixin) {
     pollingTime = 500,
     onExport = this.doDefaultExport.bind(this)
   ): Promise<any> {
-    const beforeEvent = this.sendBeforeExportEvent(onExport, onPolling);
-    if (!beforeEvent.isDefaultPrevented()) {
-      const exportCb = beforeEvent.onExport;
-      const pollingCb = beforeEvent.onPolling;
-      if (typeof onExport === "function") {
-        this.sendBeforePollingEvent();
-        const promise = this.createExportTransaction()
-          .then(() => {
-            return this.doTransactionExport(
-              this.transaction,
-              this.gridInfo,
-              exportCb,
-              pollingCb,
-              pollingTime,
-              directDownload
-            );
-          })
-          .then(result => {
-            return result ? result.data : true;
-          });
-        if (!directDownload) {
-          return promise;
+    if (this.networkOnline) {
+      const beforeEvent = this.sendBeforeExportEvent(onExport, onPolling);
+      if (!beforeEvent.isDefaultPrevented()) {
+        const exportCb = beforeEvent.onExport;
+        const pollingCb = beforeEvent.onPolling;
+        if (typeof onExport === "function") {
+          this.sendBeforePollingEvent();
+          const promise = this.createExportTransaction()
+            .then(() => {
+              return this.doTransactionExport(
+                this.transaction,
+                this.gridInfo,
+                exportCb,
+                pollingCb,
+                pollingTime,
+                directDownload
+              );
+            })
+            .then(result => {
+              return result ? result.data : true;
+            });
+          if (!directDownload) {
+            return promise;
+          }
+        } else {
+          this.gridError.error("Export failed: no export function are provided");
+          this.sendErrorEvent("Export failed: no export function are provided");
         }
       } else {
-        this.gridError.error("Export failed: no export function are provided");
-        this.sendErrorEvent("Export failed: no export function are provided");
+        this.gridError.error("Export failed: network disconnected");
+        this.sendErrorEvent("Export failed: network disconnected");
       }
     }
   }
