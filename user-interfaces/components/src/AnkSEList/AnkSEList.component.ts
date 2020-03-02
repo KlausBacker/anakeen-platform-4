@@ -56,6 +56,7 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin,
   @Prop({ type: Number, default: 1 }) public page;
   @Prop({ type: String, default: "Aucun contenu" }) public emptyMessage;
   @Prop({ type: Boolean, default: true }) public selectable;
+  @Prop({ type: Boolean, default: false }) public noAutoScroll;
 
   public $refs!: {
     wrapper: HTMLElement;
@@ -184,9 +185,11 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin,
         const customEvent = this.$createEvent("se-selected", { data: [seSelected.properties] });
         this.$emit("se-selected", customEvent);
         this.selectedItem = seId;
-        this.$nextTick(() => {
-          this.scrollToActiveItem();
-        });
+        if (!this.noAutoScroll) {
+          this.$nextTick(() => {
+            this.scrollToActiveItem();
+          });
+        }
       }
     }
   }

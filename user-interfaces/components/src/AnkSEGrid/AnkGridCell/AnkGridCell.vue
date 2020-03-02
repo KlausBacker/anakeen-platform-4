@@ -20,18 +20,21 @@
     </div>
     <!-- Property display -->
     <div
+      v-else-if="columnConfig.property"
       class="smart-element-grid-cell-content"
       :style="{ maxHeight: gridComponent.maxRowHeight }"
-      v-else-if="columnConfig.property"
     >
-      {{ cellValue }}
+      <div v-if="field === 'state'" class="smart-element-grid-cell__state">
+        <span>{{ cellValue.displayValue }}</span>
+        <span class="smart-element-grid-cell__state--color" :style="{ backgroundColor: cellValue.color }"></span>
+      </div>
+      <span v-else>{{ cellValue }}</span>
     </div>
-
     <!-- Abstract display -->
     <div
+      v-else-if="columnConfig.abstract"
       class="smart-element-grid-cell-content"
       :style="{ maxHeight: gridComponent.maxRowHeight }"
-      v-else-if="columnConfig.abstract"
     >
       {{ cellValue.displayValue || cellValue.value }}
     </div>
@@ -44,38 +47,38 @@
       class="smart-element-grid-cell-content"
       :style="{ maxHeight: gridComponent.maxRowHeight * 2 }"
     >
-      <div class="smart-element-grid-cell-content-multiple-row" v-for="(fValue, index) in cellValue" :key="index">
+      <div v-for="(fValue, index) in cellValue" class="smart-element-grid-cell-content-multiple-row" :key="index">
         <div class="smart-element-grid-cell-content-multiple-row-content">
           <div
-            class="smart-element-grid-cell-content-multiple-col"
             v-for="(sublevel, subindex) in getSublevel(fValue)"
             :key="`sublevel-${subindex}`"
+            class="smart-element-grid-cell-content-multiple-col"
           >
             <component
-              class="smart-element-grid-cell-content--value"
               :is="componentName"
+              class="smart-element-grid-cell-content--value"
               v-bind="$props"
-              :fieldValue="sublevel"
-            ></component>
+              :field-value="sublevel"
+            />
             <span
-              class="smart-element-grid-cell-content-multiple-col-separator"
               v-if="subindex < getSublevel(fValue).length - 1"
+              class="smart-element-grid-cell-content-multiple-col-separator"
               >,&nbsp;</span
             >
           </div>
         </div>
-        <hr class="smart-element-grid-cell-content-multiple-row-separator" v-if="index < cellValue.length - 1" />
+        <hr v-if="index < cellValue.length - 1" class="smart-element-grid-cell-content-multiple-row-separator" />
       </div>
     </div>
 
     <!-- Simple case -->
     <div class="smart-element-grid-cell-content" :style="{ maxHeight: gridComponent.maxRowHeight }" v-else>
       <component
-        class="smart-element-grid-cell-content--value"
         :is="componentName"
+        class="smart-element-grid-cell-content--value"
         v-bind="$props"
-        :fieldValue="cellValue"
-      ></component>
+        :field-value="cellValue"
+      />
     </div>
   </component>
 </template>
