@@ -1,5 +1,4 @@
 import { Component, Prop, Watch, Mixins, Vue } from "vue-property-decorator";
-import AnkProgress from "./AnkProgress/AnkProgress.vue";
 import AnkActionMenu from "./AnkActionMenu/AnkActionMenu.vue";
 import AnkGridCell from "./AnkGridCell/AnkGridCell.vue";
 import AnkExportButton from "./AnkExportButton/AnkExportButton.vue";
@@ -31,10 +30,41 @@ export interface SmartGridColumn {
   transaction?: boolean | object;
 }
 
-interface SmartGridActions {
+export interface SmartGridAction {
   action: string;
   title: string;
   iconClass: string;
+}
+
+export type SmartGridCellPropertyValue = string | object | number | boolean;
+export interface SmartGridCellFieldValue {
+  value: string | number | boolean;
+  displayValue: string;
+}
+export type SmartGridCellAbstractValue = string | object | number | boolean | SmartGridCellFieldValue;
+
+export type SmartGridCellValue =
+  | SmartGridCellAbstractValue
+  | SmartGridCellFieldValue
+  | SmartGridCellFieldValue[]
+  | SmartGridCellPropertyValue;
+
+export interface SmartGridRowData {
+  properties: {
+    [key: string]: SmartGridCellPropertyValue;
+  };
+  attributes: {
+    [key: string]: SmartGridCellFieldValue;
+  };
+  abstract?: {
+    [key: string]: SmartGridCellAbstractValue;
+  };
+}
+
+export interface SmartGridPageSize {
+  page: number;
+  pageSize: number;
+  total: number;
 }
 
 const DEFAULT_PAGER = {
@@ -53,7 +83,6 @@ const DEFAULT_SORT = {
   components: {
     "kendo-grid-norecords": GridNoRecords,
     "kendo-grid-vue": Grid,
-    "ank-progress": AnkProgress,
     "ank-action-menu": AnkActionMenu,
     "ank-export-button": AnkExportButton,
     "ank-expand-button": AnkGridExpandButton,
@@ -62,12 +91,17 @@ const DEFAULT_SORT = {
   },
   name: "ank-se-grid-vue"
 })
-export default class GridController extends Mixins(I18nMixin) {
+export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   @Prop({
     default: "0",
     type: String
   })
   public collection: string;
+
+  @Prop({
+    type: Object
+  })
+  public customData!: object;
 
   @Prop({
     default: () => [],
@@ -83,7 +117,7 @@ export default class GridController extends Mixins(I18nMixin) {
     default: () => [],
     type: Array
   })
-  public actions: SmartGridActions[];
+  public actions: SmartGridAction[];
   @Prop({
     default: "DEFAULT_GRID_CONTROLLER",
     type: String
@@ -201,7 +235,6 @@ export default class GridController extends Mixins(I18nMixin) {
 
   @Watch("$props", { deep: true })
   protected async onPropsChange(newValue) {
-    this.isLoading = true;
     this.gridError = new GridError(this);
     this.$on("pageChange", this.onPageChange);
 
@@ -211,18 +244,14 @@ export default class GridController extends Mixins(I18nMixin) {
       this.dataItems = this.dataItems.map(item => {
         return { ...item, selected: false };
       });
-      this.isLoading = false;
     } catch (error) {
       console.error(error);
-      this.isLoading = false;
     }
   }
 
-  @Watch("isLoading")
+  @Watch("isLoading", { immediate: true })
   protected onLoadingChange(newValue) {
-    console.log(newValue);
-    // @ts-ignore
-    this.$kendo.ui.progress(this.$(this.$refs.gridWrapper), newValue);
+    kendo.ui.progress($(".smart-element-grid-widget", this.$el), !!newValue);
   }
 
   @Watch("dataItems")
@@ -291,14 +320,14 @@ export default class GridController extends Mixins(I18nMixin) {
       filter: this.currentFilter,
       transaction: this.transaction,
       selectedRows: this.selectedRows,
-      onlySelection: this.onlySelection
+      onlySelection: this.onlySelection,
+      customData: this.customData
     };
   }
 
   async created() {
     window.addEventListener("online", this.updateOnlineStatus);
     window.addEventListener("offline", this.updateOnlineStatus);
-    this.isLoading = true;
     this.gridError = new GridError(this);
     this.$on("pageChange", this.onPageChange);
 
@@ -308,10 +337,8 @@ export default class GridController extends Mixins(I18nMixin) {
       this.dataItems = this.dataItems.map(item => {
         return { ...item, selected: false };
       });
-      this.isLoading = false;
     } catch (error) {
       console.error(error);
-      this.isLoading = false;
     }
   }
 
@@ -372,7 +399,9 @@ export default class GridController extends Mixins(I18nMixin) {
     }
     await this._loadGridConfig();
   }
+
   protected async _loadGridConfig() {
+    this.isLoading = true;
     const url = this._getOperationUrl("config");
     const event = new GridEvent(
       {
@@ -433,15 +462,19 @@ export default class GridController extends Mixins(I18nMixin) {
             false
           );
           this.$emit("afterConfig", responseEvent);
+          this.isLoading = false;
         })
         .catch(error => {
           console.error(error);
           this.isLoading = false;
         });
+    } else {
+      this.isLoading = false;
     }
   }
 
   protected async _loadGridContent() {
+    this.isLoading = true;
     const url = this._getOperationUrl("content");
     const event = new GridEvent(
       {
@@ -474,13 +507,14 @@ export default class GridController extends Mixins(I18nMixin) {
             false
           );
           this.$emit("afterContent", responseEvent);
-          kendo.ui.progress($(".smart-element-grid-widget"), false);
+          this.isLoading = false;
         })
         .catch(error => {
           console.error(error);
           this.isLoading = false;
-          kendo.ui.progress($(".smart-element-grid-widget"), false);
         });
+    } else {
+      this.isLoading = false;
     }
   }
 
@@ -637,19 +671,15 @@ export default class GridController extends Mixins(I18nMixin) {
   protected async onSortChange(sortEvt) {
     const sort = sortEvt.sort;
     this.currentSort = sortEvt.sort;
-    this.isLoading = true;
     await this._loadGridContent();
-    this.isLoading = false;
   }
 
   protected async onPageChange(pagerEvt) {
     if (this.networkOnline) {
       this.currentPage = Object.assign({}, this.currentPage, pagerEvt.page);
       this.pager = Object.assign({}, this.pager, { pageSize: pagerEvt.page.take });
-      this.isLoading = true;
     }
     await this._loadGridContent();
-    this.isLoading = false;
   }
 
   protected async onFilterChange(filterEvt) {
@@ -661,10 +691,8 @@ export default class GridController extends Mixins(I18nMixin) {
         }
         this.currentFilter.filters = filters;
       }
-      this.isLoading = true;
     }
     await this._loadGridContent();
-    this.isLoading = false;
   }
 
   protected onColumnReorder(reorderEvt) {
@@ -674,7 +702,7 @@ export default class GridController extends Mixins(I18nMixin) {
   protected export(
     exportAll = true,
     directDownload = true,
-    onPolling = () => {},
+    onPolling: (...args: unknown[]) => void = (): void => {},
     pollingTime = 500,
     onExport = this.doDefaultExport.bind(this)
   ): Promise<any> {

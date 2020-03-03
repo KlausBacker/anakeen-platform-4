@@ -1,8 +1,9 @@
-import { Component, Prop, Watch, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 import { Popup } from "@progress/kendo-vue-popup";
 import GridEvent from "../AnkGridEvent/AnkGridEvent";
+import AnkSmartElementGrid, { SmartGridAction, SmartGridRowData } from "../AnkSEGrid.component";
 
-const isStandardAction = action => action === "display" || action === "modify";
+const isStandardAction = (action): boolean => action === "display" || action === "modify";
 
 @Component({
   name: "ank-se-grid-actions",
@@ -21,23 +22,23 @@ export default class AnkActionMenuController extends Vue {
     ],
     type: Array
   })
-  public actions: object[];
+  public actions: SmartGridAction[];
 
   @Prop({
     type: Object
   })
-  public rowData: any;
+  public rowData: SmartGridRowData;
 
   @Prop({
-    default: () => {},
+    default: () => ({}),
     type: Object
   })
-  public gridComponent: any;
+  public gridComponent: AnkSmartElementGrid;
 
-  public showSecondaryActionsMenu: boolean = false;
-  public hoverPopup: boolean = false;
+  public showSecondaryActionsMenu = false;
+  public hoverPopup = false;
 
-  public get primaryActions() {
+  public get primaryActions(): SmartGridAction[] {
     if (this.actions) {
       if (this.actions.length > 2) {
         return [this.actions[0]];
@@ -48,7 +49,7 @@ export default class AnkActionMenuController extends Vue {
     return [];
   }
 
-  public get secondaryActions() {
+  public get secondaryActions(): SmartGridAction[] {
     if (this.actions) {
       if (this.actions.length > 2) {
         return this.actions.slice(1);
@@ -59,7 +60,7 @@ export default class AnkActionMenuController extends Vue {
     return [];
   }
 
-  public created() {
+  public created(): void {
     window.addEventListener("click", () => {
       if (!this.hoverPopup) {
         this.showSecondaryActionsMenu = false;
@@ -67,7 +68,7 @@ export default class AnkActionMenuController extends Vue {
     });
   }
 
-  public beforeDestroy() {
+  public beforeDestroy(): void {
     window.removeEventListener("click", () => {
       if (!this.hoverPopup) {
         this.showSecondaryActionsMenu = false;
@@ -75,7 +76,7 @@ export default class AnkActionMenuController extends Vue {
     });
   }
 
-  protected onRowActionClick(evt, action) {
+  protected onRowActionClick(evt, action): void {
     evt.preventDefault();
     const event = new GridEvent(
       {
@@ -97,7 +98,7 @@ export default class AnkActionMenuController extends Vue {
     this.showSecondaryActionsMenu = false;
   }
 
-  public customAction(e, actionType) {
+  public customAction(e, actionType): void {
     e.preventDefault();
     // index - 1 to start from 0
     const index = e.item.closest("td").getAttribute("dataindex") - 1;
