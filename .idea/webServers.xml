@@ -3,7 +3,7 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="5783b9c8-3c96-492d-a083-79eb8889ba4f" name="docker" url="http://localhost:8080/">
-        <fileTransfer port="0" mountedRoot="$PROJECT_DIR$/.devtool/docker/Volumes/_private/php/var/www/html" accessType="MOUNT" />
+        <fileTransfer port="0" mountedRoot="$PROJECT_DIR$/.devtool/docker/Volumes/_private/php/var/www/html/anakeen" accessType="MOUNT" />
       </webServer>
     </option>
   </component>

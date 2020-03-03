@@ -94,6 +94,8 @@ PROJECT_MAIL_PORT = 8081
 DEVTOOLS_DIR = .devtool
 BUILD_DIR = build
 
+WAIT_FOR_IT_TIMEOUT = 15
+
 SMTP_HOST = mail
 SMTP_PORT = 1025
 SMTP_FROM = noreply@example.net
