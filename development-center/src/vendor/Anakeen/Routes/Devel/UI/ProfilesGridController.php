@@ -81,10 +81,9 @@ class ProfilesGridController extends DefaultGridController
         $contentBuilder->addProperty("name");
         $contentBuilder->addProperty("title");
         $contentBuilder->addProperty("fromid");
-        $contentBuilder->addAbstract("dpdoc_famid", function ($se) {
-            $name = SEManager::getNameFromId($se->dpdoc_famid);
-            return $name;
-        });
+        $contentBuilder->addAbstract("dpdoc_famid", array("dataFunction" => function ($se) {
+            return SEManager::getNameFromId($se->dpdoc_famid);
+        }));
         $fullContent = $contentBuilder->getContent();
         $content = $fullContent["content"];
         foreach ($content as $key => $val) {

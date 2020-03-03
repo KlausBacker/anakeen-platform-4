@@ -4,34 +4,27 @@ namespace Anakeen\Components\Grid;
 
 use Anakeen\Components\Grid\Exceptions\Exception;
 use Anakeen\Core\ContextManager;
-use Anakeen\Core\Internal\FormatCollection;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
-use Anakeen\Routes\Core\Lib\DocumentDataFormatter;
-use Anakeen\Search\ElementList;
 use Anakeen\Search\SearchElements;
-use Anakeen\SmartElementManager;
-use Closure;
 use SmartStructure\Fields\Search;
 
-class SmartGridContentBuilder
+class SmartGridContentBuilder implements SmartGridBuilder
 {
     /**
      * @var SearchElements
      */
     protected $searchElements = null;
 
+    /**
+     * @var GridDataFormatter $formatter
+     */
     protected $formatter = null;
 
     protected $fields = [];
     protected $sort = [];
 
     protected $smartCollectionId = null;
-
-    /**
-     * @var Filter data information
-     */
-    protected $filter = null;
 
     /**
      * Page number
@@ -57,8 +50,6 @@ class SmartGridContentBuilder
      * @param mixed $collectionId - Identifier of the collection (structure name/id, folder or report id),
      * it could be 0 for searching in all Smart Elements, or -1 for searching in all Smart Structures
      *
-     *
-     * @return $this - the current instance
      */
     public function __construct($collectionId = 0)
     {
@@ -78,7 +69,7 @@ class SmartGridContentBuilder
         if ($collectionId !== 0 && $collectionId !== -1) {
             $this->smartCollection = SEManager::getDocument($collectionId);
             if (!$this->smartCollection) {
-                $exception = new Exception("GRID0001", $this->collectionId);
+                $exception = new Exception("GRID0001", $this->smartCollectionId);
                 $exception->setHttpStatus("404", "Smart Element not found");
                 throw $exception;
             }
@@ -90,7 +81,7 @@ class SmartGridContentBuilder
                 case 'D':
                     $error = $this->smartCollection->control("open");
                     if ($error) {
-                        $exception = new Exception("GRID0015", $this->collectionId);
+                        $exception = new Exception("GRID0015", $this->smartCollectionId);
                         $exception->setHttpStatus("403", "Insufficient privileges");
                         throw $exception;
                     }
@@ -100,7 +91,7 @@ class SmartGridContentBuilder
                 case 'S':
                     $error = $this->smartCollection->control("execute");
                     if ($error) {
-                        $exception = new Exception("GRID0015", $this->collectionId);
+                        $exception = new Exception("GRID0015", $this->smartCollectionId);
                         $exception->setHttpStatus("403", "Insufficient privileges");
                         throw $exception;
                     }
@@ -112,8 +103,15 @@ class SmartGridContentBuilder
         } else {
             $this->initSearch($collectionId);
         }
+        return $this;
     }
 
+    /**
+     * Add sort to content
+     * @param $colId
+     * @param $direction
+     * @return $this
+     */
     public function addSort($colId, $direction)
     {
         $this->sort[] = ["field" => $colId, "dir" => $direction];
@@ -122,8 +120,15 @@ class SmartGridContentBuilder
         }, $this->sort));
         $order .= ",id ASC";
         $this->searchElements->setOrder($order);
+        return $this;
     }
 
+    /**
+     * Add filter to content.
+     * @param $filter
+     * @return $this
+     * @throws \Anakeen\Search\Exception
+     */
     public function addFilter($filter)
     {
         if (!empty($filter)) {
@@ -140,28 +145,46 @@ class SmartGridContentBuilder
         return $this;
     }
 
-    public function addAbstract($colId, Closure $dataFunction)
+    /**
+     * Add abstract column to content.
+     * @param string $colId
+     * @param array $options
+     * @return $this
+     */
+    public function addAbstract($colId, $options = [])
     {
-        $this->fields[] = [
+        $this->fields[] = array_merge([
             "field" => $colId,
             "property" => false,
-            "abstract" => true,
-            "dataFunction" => $dataFunction
-        ];
+            "abstract" => true
+        ], $options);
         return $this;
     }
 
-    public function addField($fieldId)
+    /**
+     * Add a smart field to content
+     * @param string $fieldId
+     * @param array $overload
+     * @param string $structureName
+     * @return $this|SmartGridBuilder
+     */
+    public function addField($fieldId, $overload = [], $structureName = "")
     {
-        $this->fields[] = [
+        $this->fields[] = array_merge([
             "field" => $fieldId,
             "property" => false,
             "abstract" => false
-        ];
+        ], $overload);
         return $this;
     }
 
-    public function addProperty($propId)
+    /**
+     * Add a property to content
+     * @param string $propId
+     * @param array $overload
+     * @return $this|SmartGridBuilder
+     */
+    public function addProperty($propId, $overload = [])
     {
         $this->fields[] = [
             "field" => $propId,
@@ -171,9 +194,27 @@ class SmartGridContentBuilder
         return $this;
     }
 
+    /**
+     * Add un column to content. It can be a smart field, property or abstract
+     * @param array $field
+     * @return $this
+     */
     public function addColumn($field)
     {
         $this->fields[] = $field;
+        return $this;
+    }
+
+    /**
+     * Set the columns to content. It can be a list smart field, property or abstract.
+     * @param mixed $columns
+     * @return $this
+     */
+    public function setColumns($columns)
+    {
+        foreach ($columns as $column) {
+            $this->addColumn($column);
+        }
         return $this;
     }
 
@@ -208,6 +249,7 @@ class SmartGridContentBuilder
     }
 
     /**
+     * Get the internal search object
      * @return SearchElements
      */
     public function getSearch()
@@ -215,17 +257,68 @@ class SmartGridContentBuilder
         return $this->searchElements;
     }
 
+    /**
+     * Set the current content page
+     * @param $page
+     * @return $this
+     */
     public function setPage($page)
     {
         $this->page = $page;
         $this->setPager($this->page, $this->pageSize);
+        return $this;
     }
 
-
+    /**
+     * Set the content page size
+     * @param $pageSize
+     * @return $this
+     */
     public function setPageSize($pageSize)
     {
         $this->pageSize = $pageSize;
         $this->setPager($this->page, $this->pageSize);
+        return $this;
+    }
+
+    /**
+     * Set the pageable Smart Element Grid configuration
+     * @param $pageable
+     * @return $this - the current instance
+     */
+    public function setPageable($pageable)
+    {
+        if (isset($pageable["pageSize"])) {
+            $this->setPageSize($pageable["pageSize"]);
+        }
+        return $this;
+    }
+
+    /**
+     * Set the client Smart Element Grid configuration in the builder
+     * @param array $clientConfig
+     * @return $this - the current instance
+     */
+    public function setClientConfig(array $clientConfig)
+    {
+        if (isset($clientConfig["pageable"])) {
+            $this->setPageable($clientConfig["pageable"]);
+        }
+        if (isset($clientConfig["page"])) {
+            $this->setPage($clientConfig["page"]);
+        }
+        if (isset($clientConfig["columns"])) {
+            $this->setColumns($clientConfig["columns"]);
+        }
+        if (isset($clientConfig["filter"])) {
+            $this->addFilter($clientConfig["filter"]);
+        }
+        if (isset($clientConfig["sort"])) {
+            foreach ($clientConfig["sort"] as $sort) {
+                $this->addSort($sort["field"], $sort["dir"]);
+            }
+        }
+        return $this;
     }
 
     protected function prepareFormatter()
@@ -248,7 +341,7 @@ class SmartGridContentBuilder
             foreach ($this->fields as $field) {
                 if (isset($field["field"])) {
                     if (isset($field["abstract"]) && $field["abstract"]) {
-                        $abstractDataFunction = function () {
+                        $abstractDataFunction = function ($se) {
                             return [
                                 "value" => null,
                                 "displayValue" => null

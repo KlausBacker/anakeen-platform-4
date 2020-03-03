@@ -22,8 +22,8 @@ class TrashGridController extends DefaultGridController
         $configBuilder->addProperty("title");
         $configBuilder->addProperty("fromid", array("relation"=>"-1","smartType"=>"docid","title"=>"Type"));
         $configBuilder->addProperty("mdate", array("title"=>"Date of deletion"));
-        $configBuilder->addAbstractColumn("auth", array("smartType"=>"text","title"=>"Authorization","hidden"=>true,"sortable"=>false,"filterable"=>false));
-        $configBuilder->addAbstractColumn("author", array("smartType"=>"text","title"=>"Author of the deletion","sortable"=>false,"filterable"=>true));
+        $configBuilder->addAbstract("auth", array("smartType"=>"text","title"=>"Authorization","hidden"=>true,"sortable"=>false,"filterable"=>false));
+        $configBuilder->addAbstract("author", array("smartType"=>"text","title"=>"Author of the deletion","sortable"=>false,"filterable"=>true));
         $configBuilder->addRowAction(array("action"=> "restore", "title"=> "Restore"));
         $configBuilder->addRowAction(array("action"=> "display", "title"=> "Display"));
         $configBuilder->addRowAction(array("action"=> "delete", "title"=> "Delete from trash"));
@@ -94,12 +94,12 @@ class TrashGridController extends DefaultGridController
             }
         }
 
-        $contentBuilder->addAbstract("auth", function ($seData) use ($trashContent) {
+        $contentBuilder->addAbstract("auth", array("dataFunction" => function ($seData) use ($trashContent) {
             return $trashContent->canDisplay($seData);
-        });
-        $contentBuilder->addAbstract("author", function ($seData) use ($trashContent) {
+        }));
+        $contentBuilder->addAbstract("author", array("dataFunction" => function ($seData) use ($trashContent) {
             return $trashContent->getAuthorName($seData);
-        });
+        }));
         $fullContent = $contentBuilder->getContent();
         $content = $fullContent["content"];
         foreach ($content as $key => $val) {

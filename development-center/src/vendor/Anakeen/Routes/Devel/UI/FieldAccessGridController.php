@@ -54,14 +54,12 @@ class FieldAccessGridController extends DefaultGridController
         }
         $contentBuilder->addProperty("name");
         $contentBuilder->addProperty("title");
-        $contentBuilder->addAbstract("dpdoc_famid", function ($se) {
-            $name = SEManager::getNameFromId($se->dpdoc_famid);
-            return $name;
-        });
-        $contentBuilder->addAbstract("fall_famid", function ($se) {
-            $name = SEManager::getNameFromId($se->fall_famid);
-            return $name;
-        });
+        $contentBuilder->addAbstract("dpdoc_famid", array("dataFunction" => function ($se) {
+            return SEManager::getNameFromId($se->dpdoc_famid);
+        }));
+        $contentBuilder->addAbstract("fall_famid", array("dataFunction" => function ($se) {
+            return SEManager::getNameFromId($se->fall_famid);
+        }));
         return $contentBuilder->getContent();
     }
 }

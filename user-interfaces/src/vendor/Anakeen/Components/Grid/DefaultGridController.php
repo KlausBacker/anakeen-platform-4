@@ -7,63 +7,164 @@ use Anakeen\Routes\Ui\Transaction\TransactionManager;
 
 class DefaultGridController implements SmartGridController
 {
-    public static function getGridConfig($collectionId, $clientConfig)
+    /**
+     * Get the Smart Element Grid configuration builder
+     * @return SmartGridConfigBuilder
+     */
+    protected static function getConfigBuilder(): SmartGridConfigBuilder
     {
-        $configBuilder = new SmartGridConfigBuilder();
-        if (isset($collectionId)) {
-            $configBuilder->setCollection($collectionId);
-        }
-        if (isset($clientConfig["pageable"])) {
-            $configBuilder->setPageable($clientConfig["pageable"]);
-        }
-        if (isset($clientConfig["columns"])) {
-            $configBuilder->setColumns($clientConfig["columns"]);
-        } else {
-            // use default columns for the collection
-            $configBuilder->useDefaultColumns();
-        }
-        if (isset($clientConfig["actions"])) {
-            foreach ($clientConfig["actions"] as $action) {
-                $configBuilder->addRowAction($action);
-            }
-        }
-
-        $config = $configBuilder->getConfig();
-        return $config;
+        return new SmartGridConfigBuilder();
     }
 
-    public static function getGridContent($collectionId, $clientConfig)
+    /**
+     * Get the Smart Element Grid content builder
+     * @return SmartGridContentBuilder
+     */
+    protected static function getContentBuilder(): SmartGridContentBuilder
     {
-        $contentBuilder = new SmartGridContentBuilder();
+        return new SmartGridContentBuilder();
+    }
+
+    /**
+     * Set the config or content builder collection id
+     * @param SmartGridBuilder $builder
+     * @param $collectionId
+     * @param $clientConfig
+     */
+    protected static function setCollectionId(SmartGridBuilder $builder, $collectionId, $clientConfig)
+    {
         if (isset($collectionId)) {
-            $contentBuilder->setCollection($collectionId);
+            $builder->setCollection($collectionId);
         }
-        if (isset($clientConfig["pageable"]["pageSize"])) {
-            $contentBuilder->setPageSize($clientConfig["pageable"]["pageSize"]);
+    }
+
+    /**
+     * Set the page configuration
+     * @param SmartGridBuilder $builder
+     * @param $collectionId
+     * @param $clientConfig
+     */
+    protected static function setPageable(SmartGridBuilder $builder, $collectionId, $clientConfig)
+    {
+        if (isset($clientConfig["pageable"])) {
+            $builder->setPageable($clientConfig["pageable"]);
         }
+    }
+
+    /**
+     * Set the columns
+     * @param SmartGridBuilder $builder
+     * @param $collectionId
+     * @param $clientConfig
+     */
+    protected static function setColumns(SmartGridBuilder $builder, $collectionId, $clientConfig)
+    {
+        if (isset($clientConfig["columns"])) {
+            $builder->setColumns($clientConfig["columns"]);
+        } else {
+            if (is_a($builder, SmartGridConfigBuilder::class)) {
+                // use default columns for the collection
+                $builder->useDefaultColumns();
+            } elseif (is_a($builder, SmartGridContentBuilder::class)) {
+                $config = self::getGridConfig($collectionId, $clientConfig);
+                if (isset($config["columns"])) {
+                    $builder->setColumns($config["columns"]);
+                }
+            }
+        }
+    }
+
+    /**
+     * Set actions to configuration builder
+     * @param SmartGridConfigBuilder $builder
+     * @param $collectionId
+     * @param $clientConfig
+     */
+    protected static function setActions(SmartGridConfigBuilder $builder, $collectionId, $clientConfig)
+    {
+        if (isset($clientConfig["actions"])) {
+            foreach ($clientConfig["actions"] as $action) {
+                $builder->addRowAction($action);
+            }
+        }
+    }
+
+    /**
+     * Set current page to content
+     * @param SmartGridContentBuilder $contentBuilder
+     * @param $collectionId
+     * @param $clientConfig
+     */
+    protected static function setCurrentContentPage(
+        SmartGridContentBuilder $contentBuilder,
+        $collectionId,
+        $clientConfig
+    ) {
         if (isset($clientConfig["page"])) {
             $contentBuilder->setPage($clientConfig["page"]);
         }
-        if (isset($clientConfig["columns"])) {
-            foreach ($clientConfig["columns"] as $column) {
-                $contentBuilder->addColumn($column);
-            }
-        } else {
-            $config = self::getGridConfig($collectionId, $clientConfig);
-            foreach ($config["columns"] as $column) {
-                $contentBuilder->addColumn($column);
-            }
-        }
+    }
+
+    /**
+     * Set filter to content
+     * @param SmartGridContentBuilder $contentBuilder
+     * @param $collectionId
+     * @param $clientConfig
+     */
+    protected static function setContentFilter(SmartGridContentBuilder $contentBuilder, $collectionId, $clientConfig)
+    {
         if (isset($clientConfig["filter"])) {
-            $filterLogic = $clientConfig["filter"]["logic"];
-            $filters = $clientConfig["filter"]["filters"];
             $contentBuilder->addFilter($clientConfig["filter"]);
         }
+    }
+
+    /**
+     * Set sort to content
+     * @param SmartGridContentBuilder $contentBuilder
+     * @param $collectionId
+     * @param $clientConfig
+     */
+    protected static function setContentSort(SmartGridContentBuilder $contentBuilder, $collectionId, $clientConfig)
+    {
         if (isset($clientConfig["sort"])) {
             foreach ($clientConfig["sort"] as $sort) {
                 $contentBuilder->addSort($sort["field"], $sort["dir"]);
             }
         }
+    }
+
+    /**
+     * Get the Smart Element Grid configuration
+     * @param $collectionId
+     * @param $clientConfig
+     * @return array
+     */
+    public static function getGridConfig($collectionId, $clientConfig)
+    {
+        $configBuilder = static::getConfigBuilder();
+        static::setCollectionId($configBuilder, $collectionId, $clientConfig);
+        static::setPageable($configBuilder, $collectionId, $clientConfig);
+        static::setColumns($configBuilder, $collectionId, $clientConfig);
+        static::setActions($configBuilder, $collectionId, $clientConfig);
+        return $configBuilder->getConfig();
+    }
+
+
+    /**
+     * Get the Smart Element Grid content
+     * @param $collectionId
+     * @param $clientConfig
+     * @return array
+     */
+    public static function getGridContent($collectionId, $clientConfig)
+    {
+        $contentBuilder = static::getContentBuilder();
+        static::setCollectionId($contentBuilder, $collectionId, $clientConfig);
+        static::setPageable($contentBuilder, $collectionId, $clientConfig);
+        static::setCurrentContentPage($contentBuilder, $collectionId, $clientConfig);
+        static::setColumns($contentBuilder, $collectionId, $clientConfig);
+        static::setContentFilter($contentBuilder, $collectionId, $clientConfig);
+        static::setContentSort($contentBuilder, $collectionId, $clientConfig);
         return $contentBuilder->getContent();
     }
 
@@ -98,10 +199,13 @@ class DefaultGridController implements SmartGridController
                 $exception->setHttpStatus("400", "Transaction id missing");
                 throw $exception;
             }
-            return TransactionManager::runTransaction($transactionId, function ($tId) use ($response, $exportBuilder, $data) {
-                $exportBuilder->transactionId = $tId;
-                return $exportBuilder->doExport($response, $data);
-            });
+            return TransactionManager::runTransaction(
+                $transactionId,
+                function ($tId) use ($response, $exportBuilder, $data) {
+                    $exportBuilder->transactionId = $tId;
+                    return $exportBuilder->doExport($response, $data);
+                }
+            );
         } else {
             $transaction = TransactionManager::createTransaction();
             return json_encode($transaction->getData());
