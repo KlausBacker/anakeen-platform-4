@@ -1,8 +1,10 @@
 import "@progress/kendo-ui/js/kendo.button";
 import "@progress/kendo-ui/js/kendo.tooltip";
 import $ from "jquery";
+import VueI18n from "vue-i18n";
 import { Component, Mixins, Prop, Watch } from "vue-property-decorator";
 import I18nMixin from "../../../mixins/AnkVueComponentMixin/I18nMixin";
+import { SmartGridColumn } from "../AnkSEGrid.component";
 
 @Component({
   name: "ank-se-grid-columns-button"
@@ -27,19 +29,19 @@ export default class AnkGridColumnsButtonController extends Mixins(I18nMixin) {
   public searchInput = "";
 
   @Watch("searchInput")
-  public watchSearchInput(newValue) {
+  public watchSearchInput(newValue): void {
     this.filter(newValue);
   }
 
-  public get validColumns() {
+  public get validColumns(): SmartGridColumn[] {
     return this.columns.filter(
       c => !!c.field && c.field !== "ank-grid_selected_rows" && c.field !== "smart_element_grid_action_menu"
     );
   }
-  public get dialogTitle() {
+  public get dialogTitle(): string {
     return this.title || this.translations.dialogTitle;
   }
-  public get translations() {
+  public get translations(): { [key: string]: VueI18n.TranslateResult } {
     return {
       applyChanges: this.$t("gridColumnsButton.Apply changes"),
       cancel: this.$t("gridColumnsButton.Cancel"),
@@ -51,7 +53,8 @@ export default class AnkGridColumnsButtonController extends Mixins(I18nMixin) {
       tooltip: this.$t("gridColumnsButton.Tooltip")
     };
   }
-  public mounted() {
+
+  public mounted(): void {
     const options = this.getButtonOptions();
     this.button = $(this.$refs.columnsButton)
       .kendoButton(options)
@@ -91,7 +94,7 @@ export default class AnkGridColumnsButtonController extends Mixins(I18nMixin) {
       .data("kendoWindow");
   }
 
-  public filter(filterInput = "") {
+  public filter(filterInput = ""): void {
     if (filterInput) {
       this.columns = this.columns.filter(col => {
         const title = col.title ? col.title.toLowerCase() : col.title;
@@ -104,26 +107,26 @@ export default class AnkGridColumnsButtonController extends Mixins(I18nMixin) {
       this.columns = this.gridComponent.columnsList;
     }
   }
-  public close() {
+  public close(): void {
     if (this.kendoWindow) {
       this.kendoWindow.close();
     }
   }
-  public open() {
+  public open(): void {
     if (this.kendoWindow) {
       this.kendoWindow.center().open();
     }
   }
-  public resize() {
+  public resize(): void {
     if (this.kendoWindow) {
       this.kendoWindow.resize();
     }
   }
-  public acceptChanges() {
+  public acceptChanges(): void {
     this.gridComponent.onSettingsChange(this.changes);
     this.close();
   }
-  public onDisplayColumn(e, colConfig) {
+  public onDisplayColumn(e, colConfig): void {
     if (e.target.checked) {
       this.changes[colConfig.field] = { display: true };
     } else {
@@ -132,13 +135,13 @@ export default class AnkGridColumnsButtonController extends Mixins(I18nMixin) {
   }
 
   @Watch("gridComponent.allColumns")
-  public watchColumnsList(newValue) {
+  public watchColumnsList(newValue): void {
     this.columns = newValue.filter(
       c => c.field !== "ank-grid_selected_rows" && c.field !== "smart_element_grid_action_menu"
     );
   }
 
-  private getButtonOptions() {
+  private getButtonOptions(): { [key: string]: string | boolean } {
     const options = {
       enable: true,
       icon: "",

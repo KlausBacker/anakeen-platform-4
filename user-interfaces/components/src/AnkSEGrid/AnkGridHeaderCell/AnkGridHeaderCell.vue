@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ 'smart-element-grid-header': true }">
+  <div :class="{ 'smart-element-grid-header': true }" ref="headerWrapper">
     <div class="smart-element-grid-header-content">
       <div v-show="hasSubtitle" class="smart-element-grid-header--subtitle">
         {{ subtitle }}
@@ -16,27 +16,29 @@
         </div>
         <div
           v-if="!!columnConfig.filterable"
-          ref="filterButton"
           :class="{
             'smart-element-grid-header-filter-button-wrapper': true,
             'smart-element-grid-header-filter--is-filtered': isFiltered
           }"
+          style="width: 5rem"
+          ref="filterButton"
         >
           <i class="k-icon k-i-filter" @click="showFilter = !showFilter" />
-          <Popup
-            ref="filterPopup"
-            :anchor="'filterButton'"
-            :show="showFilter"
-            popup-class="smart-element-grid-filter-content"
-            :anchor-align="{ horizontal: 'left', vertical: 'bottom' }"
-            :popup-align="{ horizontal: 'right', vertical: 'top' }"
-            :collision="collision"
-          >
-            <ank-grid-filter v-bind="$props" @clear="clearFilter" @filter="filter" />
-          </Popup>
         </div>
       </div>
     </div>
+    <Popup
+      ref="filterPopup"
+      :anchor="'filterButton'"
+      :show="showFilter"
+      append-to=".smart-element-grid"
+      popup-class="smart-element-grid-filter-content"
+      :anchor-align="{ horizontal: 'right', vertical: 'bottom' }"
+      :popup-align="{ horizontal: 'right', vertical: 'top' }"
+      :collision="collision"
+    >
+      <ank-grid-filter v-bind="$props" @clear="clearFilter" @filter="filter" />
+    </Popup>
   </div>
 </template>
 

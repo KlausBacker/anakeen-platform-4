@@ -1,7 +1,7 @@
 import "@progress/kendo-ui/js/kendo.menu";
 import $ from "jquery";
-import Vue from "vue";
 import { Component, Mixins, Prop, Watch } from "vue-property-decorator";
+import VueI18n from "vue-i18n";
 import I18nMixin from "../../../mixins/AnkVueComponentMixin/I18nMixin";
 @Component({
   name: "ank-se-grid-export-button"
@@ -37,7 +37,7 @@ export default class GridExportButtonController extends Mixins(I18nMixin) {
   })
   public gridComponent;
 
-  public mounted() {
+  public mounted(): void {
     this.actionMenu = $(this.$refs.actionMenu)
       .kendoMenu({
         direction: this.direction,
@@ -61,14 +61,14 @@ export default class GridExportButtonController extends Mixins(I18nMixin) {
       .data("kendoMenu");
   }
 
-  public export() {
-    this.gridComponent.export(true, true, this.doDefaultPolling);
+  public export(): void {
+    return this.gridComponent.export(true, true, this.doDefaultPolling);
   }
-  public get exportTitle() {
-    return this.title === "" ? this.translations.title : this.title;
+  public get exportTitle(): string {
+    return this.title === "" ? (this.translations.title as string) : this.title;
   }
   @Watch("gridComponent")
-  public watchGridComponent(newValue) {
+  public watchGridComponent(newValue): void {
     this.gridComponent = newValue;
     this.setupMenus();
     this.$on("grid-data-bound", data => {
@@ -79,7 +79,8 @@ export default class GridExportButtonController extends Mixins(I18nMixin) {
     this.gridComponent.$on("beforePollingGridExport", () => this.displayExportPendingStatus(false));
     this.gridComponent.$on("grid-export-error", this.displayExportErrorStatus);
   }
-  public get translations() {
+
+  public get translations(): { [key: string]: VueI18n.TranslateResult } {
     return {
       cancel: this.$t("gridExportButton.Cancel"),
       title: this.$t("gridExportButton.Title"),
@@ -89,13 +90,13 @@ export default class GridExportButtonController extends Mixins(I18nMixin) {
     };
   }
 
-  private setupMenus() {
+  private setupMenus(): void {
     this.setupActionMenu();
     this.setupErrorMenu();
     this.setupPendingMenu();
   }
 
-  private setupActionMenu() {
+  private setupActionMenu(): void {
     const actionSubmenus = [];
     if (this.gridComponent.checkable) {
       actionSubmenus.push({
@@ -114,7 +115,7 @@ export default class GridExportButtonController extends Mixins(I18nMixin) {
     this.actionMenu.append(actionSubmenus, this.actionMenu.element.find(".k-item.k-first[data-export-menu=root]"));
   }
 
-  private setupErrorMenu() {
+  private setupErrorMenu(): void {
     const errorSubmenus = [];
     errorSubmenus.push({
       attr: {
@@ -131,7 +132,7 @@ export default class GridExportButtonController extends Mixins(I18nMixin) {
     this.errorMenu.append(errorSubmenus, this.errorMenu.element.find(".k-item.k-first[data-export-menu=root]"));
   }
 
-  private setupPendingMenu() {
+  private setupPendingMenu(): void {
     const pendingSubmenus = [];
     pendingSubmenus.push({
       attr: {
@@ -164,7 +165,7 @@ export default class GridExportButtonController extends Mixins(I18nMixin) {
     this.pendingMenu.append(pendingSubmenus, this.pendingMenu.element.find(".k-item.k-first[data-export-menu=root]"));
   }
 
-  private onExportActionMenuItemClick(event) {
+  private onExportActionMenuItemClick(event): void {
     if (this.gridComponent.$(event.item).data("export-menu") !== "root") {
       const exportAction = event.item.dataset.exportAction;
       let disabled;
@@ -195,23 +196,23 @@ export default class GridExportButtonController extends Mixins(I18nMixin) {
     }
   }
 
-  private cancelExport(event: any) {
+  private cancelExport(event: JQuery.Event): void {
     event.preventDefault();
     this.displayExportMenu();
   }
 
-  private displayExportMenu() {
+  private displayExportMenu(): void {
     this.actionMenuVisible = true;
     this.errorMenuVisible = false;
     this.pendingMenuVisible = false;
     this.successMenuVisible = false;
   }
 
-  private sendExportDoneEvent() {
+  private sendExportDoneEvent(): void {
     this.$emit("exportDone");
   }
 
-  private doDefaultPolling(transaction) {
+  private doDefaultPolling(transaction): void {
     let exportedRows = 0;
     let total = this.gridComponent.currentPage.total;
     if (transaction.transactionStatus === "PENDING") {
@@ -228,7 +229,7 @@ export default class GridExportButtonController extends Mixins(I18nMixin) {
     this.updateProgressBar(exportedRows, total);
   }
 
-  private computeTotalExport(data) {
+  private computeTotalExport(data): void {
     const grid = data;
     const selectedRows = grid.selectedKeyNames();
     const countTotals = grid.currentPage.total;
@@ -242,7 +243,7 @@ export default class GridExportButtonController extends Mixins(I18nMixin) {
     const exportSelection = this.actionMenu.element.find(".k-item[data-export-action=selection] .k-link");
     const exportAll = this.actionMenu.element.find(".k-item[data-export-action=all] .k-link");
 
-    const template = count => `<span class="export-total">${count}</span>`;
+    const template = (count): string => `<span class="export-total">${count}</span>`;
     let totalExport = exportSelection.find(".export-total");
     if (totalExport.length) {
       totalExport.replaceWith(template(countRows));
@@ -264,7 +265,7 @@ export default class GridExportButtonController extends Mixins(I18nMixin) {
     }
   }
 
-  private displayExportPendingStatus(indeterminate = false) {
+  private displayExportPendingStatus(indeterminate = false): void {
     this.actionMenuVisible = false;
     this.errorMenuVisible = false;
     this.successMenuVisible = false;
@@ -283,7 +284,7 @@ export default class GridExportButtonController extends Mixins(I18nMixin) {
     }
   }
 
-  private updateProgressBar(exported, total) {
+  private updateProgressBar(exported, total): void {
     const percent = (exported / total) * 100;
     const progressBar = $(this.$refs.pendingMenu);
     progressBar.find(".grid-export-status-progress-bar").css("width", `${percent}%`);
@@ -292,7 +293,7 @@ export default class GridExportButtonController extends Mixins(I18nMixin) {
     progressBar.find(".grid-export-status-progress-bar-text .total").text(total);
   }
 
-  private displayExportSuccessStatus(autoHide = true) {
+  private displayExportSuccessStatus(autoHide = true): void {
     this.actionMenuVisible = false;
     this.errorMenuVisible = false;
     this.pendingMenuVisible = false;
@@ -306,7 +307,7 @@ export default class GridExportButtonController extends Mixins(I18nMixin) {
     this.sendExportDoneEvent();
   }
 
-  private displayExportErrorStatus() {
+  private displayExportErrorStatus(): void {
     const menu = $(this.$refs.exportButtonWrapper);
     menu.find("ul.grid-export-action-menu").css("display", "none");
     this.actionMenuVisible = false;

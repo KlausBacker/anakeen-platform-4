@@ -2,12 +2,12 @@
  * Class to manage Grid errors.
  */
 import GridEvent from "../AnkGridEvent/AnkGridEvent";
-import GridController from "../AnkSEGrid.component";
+import AnkSmartElementGrid from "../AnkSEGrid.component";
 
 export default class GridError {
-  protected vueComponent: GridController;
+  protected vueComponent: AnkSmartElementGrid;
 
-  constructor(vueComponent: GridController) {
+  constructor(vueComponent: AnkSmartElementGrid) {
     this.vueComponent = vueComponent;
   }
 
