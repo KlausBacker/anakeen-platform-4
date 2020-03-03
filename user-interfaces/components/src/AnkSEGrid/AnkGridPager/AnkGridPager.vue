@@ -82,9 +82,8 @@
     >
       <span aria-label="Go to the last page" class="k-icon k-i-seek-e" />
     </a>
-
     <div v-if="pageSizes" class="smart-element-grid-pager-sizes">
-      <drop-down-list v-model="pageSize" class="smart-element-grid-pager-sizes--dropdown" :data-items="pageSizes" />
+      <input ref="gridPageSizes" :value="pageSizes[0]" class="smart-element-grid-pager-sizes--dropdown" />
       <span class="smart-element-grid-pager-sizes--label"> {{ this.$t("gridPager.items per page") }}</span>
     </div>
 
@@ -97,5 +96,14 @@
 <style lang="scss" scoped>
 @import "./AnkGridPager.scss";
 </style>
-
+<style lang="scss">
+.smart-element-grid-pager {
+  .smart-element-grid-pager-sizes {
+    margin: 0 1rem;
+    .k-widget.k-dropdown.smart-element-grid-pager-sizes--dropdown {
+      width: 4rem;
+    }
+  }
+}
+</style>
 <script lang="ts" src="./AnkGridPager.component.ts"></script>

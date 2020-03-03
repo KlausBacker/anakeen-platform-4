@@ -1,13 +1,10 @@
 import { Component, Prop, Mixins, Watch } from "vue-property-decorator";
 import GridController from "../AnkSEGrid.component";
-import { DropDownList } from "@progress/kendo-vue-dropdowns";
+import "@progress/kendo-ui/js/kendo.dropdownlist.js";
 import I18nMixin from "../../../mixins/AnkVueComponentMixin/I18nMixin";
 
 @Component({
-  name: "ank-grid-pager",
-  components: {
-    DropDownList
-  }
+  name: "ank-grid-pager"
 })
 export default class GridPager extends Mixins(I18nMixin) {
   @Prop({
@@ -65,7 +62,6 @@ export default class GridPager extends Mixins(I18nMixin) {
       });
     }
   }
-
   public pageSize: number = Array.isArray(this.pageSizes) && this.pageSizes.length ? this.pageSizes[0] : 10;
 
   public get total() {
@@ -163,7 +159,17 @@ export default class GridPager extends Mixins(I18nMixin) {
     }
     return 0;
   }
-
+  public mounted() {
+    const dropdownPageSizes = $(".smart-element-grid-pager-sizes--dropdown");
+    dropdownPageSizes
+      .kendoDropDownList({
+        dataSource: this.pageSizes,
+        change: () => {
+          this.pageSize = Number(dropdownPageSizes.val());
+        }
+      })
+      .data("kendoDropDownList");
+  }
   public goToPage(pageNumber) {
     if (this.gridComponent) {
       kendo.ui.progress($(".smart-element-grid-widget"), true);
