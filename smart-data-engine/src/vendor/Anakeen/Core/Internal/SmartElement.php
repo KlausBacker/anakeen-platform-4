@@ -6992,7 +6992,7 @@ create unique index i_docir on doc(initid, revision);";
             $d = SEManager::getRawDocument($name);
 
             if ($d && $d["doctype"] != 'Z') {
-                return sprintf(_("Logical name %s already use in document %s"), $name, $d["title"]);
+                return sprintf("Logical name \"%s\" already used in Smart Element \"%s\". Cannot be set for \"%s\" (#%d)", $name, $d["title"], $this->getTitle(), $this->id);
             } elseif (!$verifyOnly) {
                 if ($this->name) {
                     DbManager::query(sprintf(
