@@ -23,22 +23,13 @@
           style="width: 5rem"
           ref="filterButton"
         >
-          <i class="k-icon k-i-filter" @click="showFilter = !showFilter" />
+          <i class="k-icon k-i-filter smart-element-grid-filter-icon" @click="showFilters" />
         </div>
       </div>
     </div>
-    <Popup
-      ref="filterPopup"
-      :anchor="'filterButton'"
-      :show="showFilter"
-      append-to=".smart-element-grid"
-      popup-class="smart-element-grid-filter-content"
-      :anchor-align="{ horizontal: 'right', vertical: 'bottom' }"
-      :popup-align="{ horizontal: 'right', vertical: 'top' }"
-      :collision="collision"
-    >
+    <div ref="filterPopup" class="smart-element-grid-filter-content" v-if="showFilter">
       <ank-grid-filter v-bind="$props" @clear="clearFilter" @filter="filter" />
-    </Popup>
+    </div>
   </div>
 </template>
 

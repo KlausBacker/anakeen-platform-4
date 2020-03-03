@@ -1,7 +1,7 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { Popup } from "@progress/kendo-vue-popup";
 import AnkGridFilter from "./AnkGridFilter/AnkGridFilter.vue";
 import AnkSmartElementGrid from "../AnkSEGrid.component";
+import "@progress/kendo-ui/js/kendo.popup.js";
 
 enum SortableDirection {
   NONE,
@@ -12,7 +12,6 @@ enum SortableDirection {
 @Component({
   name: "ank-se-grid-header-cell",
   components: {
-    Popup,
     AnkGridFilter
   }
 })
@@ -46,7 +45,6 @@ export default class GridHeaderCell extends Vue {
   public grid!: AnkSmartElementGrid;
   public sortableDir: SortableDirection = SortableDirection.NONE;
   public showFilter = false;
-  public hoverPopup = false;
   public collision = {
     horizontal: "fit",
     vertical: "flip"
@@ -78,32 +76,38 @@ export default class GridHeaderCell extends Vue {
       this.grid.currentFilter && !!this.grid.currentFilter.filters.filter((f: any) => f.field === this.field).length
     );
   }
-
-  public created(): void {
-    window.addEventListener("click", e => {
-      // remove filter's popup when clicking outside of the popup
-      const tabFilterClasses = [];
-      const popup = $(".smart-element-grid-filter-criteria");
-      const popupClasses = $(e.target).attr("class");
-      if (popupClasses) {
-        if (popupClasses.split(" ")) {
-          popupClasses.split(" ").forEach(item => {
-            if (popup.find("." + item).length) {
-              tabFilterClasses.push(item);
-            }
-          });
-        } else {
-          if (popup.find("." + $(e.target).attr("class")).length) {
-            tabFilterClasses.push($(e.target).attr("class"));
-          }
-        }
-        if (tabFilterClasses.length === 0) {
-          this.showFilter = false;
-        }
+  public showFilters(): void {
+    this.showFilter = !this.showFilter;
+    const popup = $(".smart-element-grid-filter-content", this.$el).data("kendoPopup");
+    if (popup) {
+      if (this.showFilter) {
+        // $(".smart-element-grid-filter-icon", this.$el).toggleClass("k-state-filter-button-active");
+        popup.toggle();
       } else {
-        this.showFilter = false;
+        // $(".smart-element-grid-filter-icon", this.$el).toggleClass("k-state-filter-button-active");
+        popup.close();
+      }
+    }
+  }
+  public mounted(): void {
+    $(".smart-element-grid-filter-content", this.$el).kendoPopup({
+      anchor: $(this.$refs.filterButton as HTMLElement),
+      position: "top right",
+      origin: "bottom right",
+      appendTo: $(".smart-element-grid-header-content"),
+      animation: {
+        close: {
+          effects: "slideOut zoom:out",
+          duration: 300
+        },
+        open: {
+          effects: "slideIn zoom:in",
+          duration: 300
+        }
       }
     });
+  }
+  public created(): void {
     // sort change
     // @ts-ignore
     if (this.grid.sorter && this.grid.sorter.allowUnsort === false && this.sortable) {
@@ -117,17 +121,6 @@ export default class GridHeaderCell extends Vue {
         ]
       });
     }
-  }
-  public beforeDestroy(): void {
-    window.removeEventListener("click", () => {
-      if (!this.hoverPopup) {
-        this.showFilter = false;
-      }
-    });
-  }
-  public clickFilter(): void {
-    this.showFilter = !this.showFilter;
-    this.hoverPopup = true;
   }
   protected onSort(): void {
     let sortableStr: string;
