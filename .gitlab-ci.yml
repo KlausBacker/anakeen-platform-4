@@ -696,6 +696,7 @@ user-interfaces-publish:
       - user-interfaces/**/*
   dependencies:
     - user-interfaces-build
+    - user-interfaces-buildJS
 
 hub-station-integration-publish:
   extends: .npm-publish-package-integration-synchro
@@ -709,6 +710,7 @@ hub-station-integration-publish:
       - hub-station/**/*
   dependencies:
     - hub-station-integration-build
+    - hub-station-buildJS
 
 hub-station-publish:
   extends: .npm-publish-package
@@ -919,6 +921,7 @@ user-interfaces-register:
       - user-interfaces/**/*
   dependencies:
     - user-interfaces-build
+    - user-interfaces-buildJS
 
 user-interfaces-integration-register:
   extends: .registry
@@ -932,6 +935,7 @@ user-interfaces-integration-register:
       - user-interfaces/**/*
   dependencies:
     - user-interfaces-integration-build
+    - user-interfaces-buildJS
 
 migration-tools-register:
   extends: .registry
@@ -971,6 +975,7 @@ hub-station-register:
       - hub-station/**/*
   dependencies:
     - hub-station-build
+    - hub-station-buildJS
 
 hub-station-integration-register:
   extends: .registry
@@ -984,6 +989,7 @@ hub-station-integration-register:
       - hub-station/**/*
   dependencies:
     - hub-station-integration-build
+    - hub-station-buildJS
 
 business-app-register:
   extends: .registry
