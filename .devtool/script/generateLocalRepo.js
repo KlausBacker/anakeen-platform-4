@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const repoContent = require("../../anakeen-cli/utils/RepoContentXML");
 const path = require("path");
 const glob = require("glob");

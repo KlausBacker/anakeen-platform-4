@@ -1,11 +1,8 @@
-#MAKEFILE dir
-MK_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-
-##bin
-YARN_BIN=yarn
+include ../.devtool/Makefile.params.mk
+DEVTOOLS_DIR = ../.devtool
 
 app:
-	$(YARN_BIN) build
+	$(YARN_CMD) build
 app-test-autorelease:
 app-autorelease: app
 app-test: app

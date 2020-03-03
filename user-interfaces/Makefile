@@ -1,5 +1,5 @@
-#MAKEFILE dir
-MK_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+include ../.devtool/Makefile.params.mk
+DEVTOOLS_DIR = ../.devtool
 
 ## path
 STUB_PATH=stubs/
@@ -20,29 +20,30 @@ JS_TEST_SOURCE_PATH=Tests/src/vendor/Anakeen/
 JS_POLYFILL_BUILD_PATH=./src/public/Anakeen/polyfill/
 ANAKEEN_UI_SRC_PATH=./
 TEST_SRC_PATH=Tests/
-CS_PATH_NAME=./../.devtool/ci/check/checkPHP/anakeenPhpCs.xml
+CS_PATH_NAME=$(DEVTOOLS_DIR)/ci/check/checkPHP/anakeenPhpCs.xml
 
 #Build
-APP_OUTPUT_PATH=../build/
+APP_OUTPUT_PATH = ../$(BUILD_DIR)/
 
 ##bin
-YARN_BIN=yarn
-ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
-CBF_BIN=php ./../.devtool/ci/check/checkPHP/vendor/bin/phpcbf
-CS_BIN=php ./../.devtool/ci/check/checkPHP/vendor/bin/phpcs
+CBF_BIN=php $(DEVTOOLS_DIR)/ci/check/checkPHP/vendor/bin/phpcbf
+CS_BIN=php $(DEVTOOLS_DIR)/ci/check/checkPHP/vendor/bin/phpcs
 COMPOSER_BIN=composer
-CHECK_VERSION=node ./../.devtool/ci/check/checkVersionNpmApp.js
 
--include ../Makefile.local
+########################################################################################################################
+##
+## Deps
+##
+########################################################################################################################
 
 node_modules:
-	${YARN_BIN} install
+	$(YARN_CMD) install --frozen-lock
 
 $(ANAKEEN_UI_SRC_PATH)/src/vendor/Anakeen/Ui/PhpLib/vendor:
 	cd $(ANAKEEN_UI_SRC_PATH)/src/vendor/Anakeen/Ui/PhpLib; $(COMPOSER_BIN) install
 
-./../.devtool/ci/check/checkPHP/vendor:
-	${COMPOSER_BIN} install --working-dir=./../.devtool/ci/check/checkPHP/ --ignore-platform-reqs
+$(DEVTOOLS_DIR)/ci/check/checkPHP/vendor:
+	${COMPOSER_BIN} install --working-dir=$(DEVTOOLS_DIR)/ci/check/checkPHP/ --ignore-platform-reqs
 ########################################################################################################################
 ##
 ## Deps
@@ -50,7 +51,7 @@ $(ANAKEEN_UI_SRC_PATH)/src/vendor/Anakeen/Ui/PhpLib/vendor:
 ########################################################################################################################
 
 install-deps: node_modules $(ANAKEEN_UI_SRC_PATH)/src/vendor/Anakeen/Ui/PhpLib/vendor
-	@${PRINT_COLOR} "${DEBUG_COLOR}Install deps${RESET_COLOR}\n"
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Install deps$(COLOR_RESET)\n"
 
 ########################################################################################################################
 ##
@@ -59,20 +60,20 @@ install-deps: node_modules $(ANAKEEN_UI_SRC_PATH)/src/vendor/Anakeen/Ui/PhpLib/v
 ########################################################################################################################
 
 checkXML: install-deps
-	@${PRINT_COLOR} "${DEBUG_COLOR}Check XML${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} check
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Check XML$(COLOR_RESET)\n"
+	$(ANAKEEN_CLI_CMD) check
 
 checkVersion:
-	@${PRINT_COLOR} "${DEBUG_COLOR}Check version between info and package${RESET_COLOR}\n"
-	${CHECK_VERSION} ./ -s ${ANAKEEN_UI_SRC_PATH}
-	${ANAKEEN_CLI_BIN} check -s ${TEST_SRC_PATH}
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Check version between info and package$(COLOR_RESET)\n"
+	$(CHECK_VERSION_CMD) ./ -s ${ANAKEEN_UI_SRC_PATH}
+	$(ANAKEEN_CLI_CMD) check -s ${TEST_SRC_PATH}
 
-lint: checkXML checkVersion ./../.devtool/ci/check/checkPHP/vendor
-	@${PRINT_COLOR} "${DEBUG_COLOR}Lint PHP${RESET_COLOR}\n"
+lint: checkXML checkVersion $(DEVTOOLS_DIR)/ci/check/checkPHP/vendor
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Lint PHP$(COLOR_RESET)\n"
 	$(CS_BIN) --standard=${CS_PATH_NAME} --ignore=${PHP_LIB_PATH},${JS_ASSET_PATH} --extensions=php ${ANAKEEN_UI_SRC_PATH}/src
 
-beautify: ./../.devtool/ci/check/checkPHP/vendor
-	@${PRINT_COLOR} "${DEBUG_COLOR}Beautify PHP${RESET_COLOR}\n"
+beautify: $(DEVTOOLS_DIR)/ci/check/checkPHP/vendor
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Beautify PHP$(COLOR_RESET)\n"
 	$(CBF_BIN) --standard=${CS_PATH_NAME} --ignore=${PHP_LIB_PATH},${JS_ASSET_PATH} --extensions=php  ${ANAKEEN_UI_SRC_PATH}/src
 
 ########################################################################################################################
@@ -81,13 +82,13 @@ beautify: ./../.devtool/ci/check/checkPHP/vendor
 ##
 ########################################################################################################################
 po: install-deps
-	@${PRINT_COLOR} "${DEBUG_COLOR}Extract PO${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} extractPo --sourcePath ${ANAKEEN_UI_SRC_PATH}
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Extract PO$(COLOR_RESET)\n"
+	$(ANAKEEN_CLI_CMD) extractPo --sourcePath ${ANAKEEN_UI_SRC_PATH}
 
 stub: install-deps
-	@${PRINT_COLOR} "${DEBUG_COLOR}Generate Stubs${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} generateStubs -s ${ANAKEEN_UI_SRC_PATH}
-	${ANAKEEN_CLI_BIN} generateStubs -s ${TEST_SRC_PATH}
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Generate Stubs$(COLOR_RESET)\n"
+	$(ANAKEEN_CLI_CMD) generateStubs -s ${ANAKEEN_UI_SRC_PATH}
+	$(ANAKEEN_CLI_CMD) generateStubs -s ${TEST_SRC_PATH}
 
 ########################################################################################################################
 ##
@@ -96,29 +97,29 @@ stub: install-deps
 ########################################################################################################################
 
 buildJS: install-deps
-	@${PRINT_COLOR} "${DEBUG_COLOR}Extract component po $@${RESET_COLOR}\n"
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Extract component po $@$(COLOR_RESET)\n"
 	make -f pojs.make compile
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build ank component $@${RESET_COLOR}\n"
-	$(YARN_BIN) lib:rollup
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build Css $@${RESET_COLOR}\n"
-	$(YARN_BIN) buildCss
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build asset $@${RESET_COLOR}\n"
-	$(YARN_BIN) buildAsset
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build smart element $@${RESET_COLOR}\n"
-	$(YARN_BIN) buildSmartElement
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build login $@${RESET_COLOR}\n"
-	$(YARN_BIN) buildLogin
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build smart structures $@${RESET_COLOR}\n"
-	$(YARN_BIN) buildSmartStructures
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Build ank component $@$(COLOR_RESET)\n"
+	$(YARN_CMD) lib:rollup
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Build Css $@$(COLOR_RESET)\n"
+	$(YARN_CMD) buildCss
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Build asset $@$(COLOR_RESET)\n"
+	$(YARN_CMD) buildAsset
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Build smart element $@$(COLOR_RESET)\n"
+	$(YARN_CMD) buildSmartElement
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Build login $@$(COLOR_RESET)\n"
+	$(YARN_CMD) buildLogin
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Build smart structures $@$(COLOR_RESET)\n"
+	$(YARN_CMD) buildSmartStructures
 
 buildComponent: install-deps
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build ank component $@${RESET_COLOR}\n"
-	$(YARN_BIN) lib:rollup
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Build ank component $@$(COLOR_RESET)\n"
+	$(YARN_CMD) lib:rollup
 
 buildJS-test: install-deps
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Build $@$(COLOR_RESET)\n"
 	make -f pojs.make compile
-	$(YARN_BIN) buildTest
+	$(YARN_CMD) buildTest
 
 ########################################################################################################################
 ##
@@ -126,22 +127,22 @@ buildJS-test: install-deps
 ##
 ########################################################################################################################
 app: install-deps buildJS
-	@${PRINT_COLOR} "${DEBUG_COLOR}Make app${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} build -s ${ANAKEEN_UI_SRC_PATH} -t ${APP_OUTPUT_PATH}
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Make app$(COLOR_RESET)\n"
+	$(ANAKEEN_CLI_CMD) build -s ${ANAKEEN_UI_SRC_PATH} -t ${APP_OUTPUT_PATH}
 
 app-test: install-deps buildJS-test
-	@${PRINT_COLOR} "${DEBUG_COLOR}Make app test${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} build -s ${TEST_SRC_PATH} -t ${APP_OUTPUT_PATH}
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Make app test$(COLOR_RESET)\n"
+	$(ANAKEEN_CLI_CMD) build -s ${TEST_SRC_PATH} -t ${APP_OUTPUT_PATH}
 
 app-all: app app-test
 
 app-autorelease: install-deps buildJS
-	@${PRINT_COLOR} "${DEBUG_COLOR}Make app autotrelease${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} build -s ${ANAKEEN_UI_SRC_PATH} --autoRelease="dev" -t ${APP_OUTPUT_PATH}
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Make app autotrelease$(COLOR_RESET)\n"
+	$(ANAKEEN_CLI_CMD) build -s ${ANAKEEN_UI_SRC_PATH} --autoRelease="dev" -t ${APP_OUTPUT_PATH}
 
 app-test-autorelease: install-deps buildJS-test
-	@${PRINT_COLOR} "${DEBUG_COLOR}Make app test autotrelease${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} build -s ${TEST_SRC_PATH} --autoRelease="dev" -t ${APP_OUTPUT_PATH}
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Make app test autotrelease$(COLOR_RESET)\n"
+	$(ANAKEEN_CLI_CMD) build -s ${TEST_SRC_PATH} --autoRelease="dev" -t ${APP_OUTPUT_PATH}
 
 app-all-autorelease: app-autorelease app-test-autorelease
 
@@ -151,12 +152,12 @@ app-all-autorelease: app-autorelease app-test-autorelease
 ##
 ########################################################################################################################
 deploy: install-deps buildJS
-	@${PRINT_COLOR} "${DEBUG_COLOR}Deploy${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ${ANAKEEN_UI_SRC_PATH} 
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Deploy$(COLOR_RESET)\n"
+	$(ANAKEEN_CLI_CMD) deploy --auto-release --sourcePath ${ANAKEEN_UI_SRC_PATH}
 
 deploy-test: install-deps buildJS-test
-	@${PRINT_COLOR} "${DEBUG_COLOR}Deploy test${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ${TEST_SRC_PATH} 
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Deploy test$(COLOR_RESET)\n"
+	$(ANAKEEN_CLI_CMD) deploy --auto-release --sourcePath ${TEST_SRC_PATH}
 
 deploy-all: deploy deploy-test
 
@@ -167,30 +168,9 @@ deploy-all: deploy deploy-test
 ########################################################################################################################
 
 clean: ## clean the local pub
-	@${PRINT_COLOR} "${DEBUG_COLOR}Clean $@${RESET_COLOR}\n"
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Clean $@$(COLOR_RESET)\n"
 	rm -fr node_modules
 	rm -fr components/lib	src/public/uiAssets/ src/public/Anakeen/ Tests/src/public/Anakeen/ src/public/Images
 	rm -f *.app
 	rm -f *.src
 	make -f pojs.make clean
-
-########################################################################################################################
-##
-## MAKEFILE INTERNALS
-##
-########################################################################################################################
-
-.PHONY: app po deploy install app-test deploy-test pojs clean cleanAll stub
-
-PRINT_COLOR = printf
-SUCCESS_COLOR = \033[1;32m
-DEBUG_COLOR = \033[36m
-HINT_COLOR = \033[33m
-WARNING_COLOR = \033[31m
-RESET_COLOR = \033[0m
-
-.DEFAULT_GOAL := help
-
-help: HELP_WIDTH = 25
-help: ## Show this help message
-	@grep -h -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-${HELP_WIDTH}s\033[0m %s\n", $$1, $$2}'
