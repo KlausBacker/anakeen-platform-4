@@ -378,11 +378,18 @@ class ImportAccounts
 
                     case "password":
                         /** @var \DOMNodeList $nodeInfo */
-                        $nodeElt=$nodeInfo->item(0);
+                        $nodeElt = $nodeInfo->item(0);
+                        /** @var \DOMElement $nodeElt */
                         $crypted = $nodeElt->getAttribute("crypted") === "true";
                         if ($crypted) {
                             if (substr($nodeElt->nodeValue, 0, 3) !== '$5$') {
-                                $this->addToReport($values["login"], "changePassword", "Not a SHA256 crypt", "", $nodeInfo);
+                                $this->addToReport(
+                                    $values["login"],
+                                    "changePassword",
+                                    "Not a SHA256 crypt",
+                                    "",
+                                    $nodeInfo
+                                );
                             } else {
                                 $values["password"] = $nodeElt->nodeValue;
                             }
@@ -394,7 +401,13 @@ class ImportAccounts
 
                     case "login":
                         if (mb_strtolower($nodeInfo) !== $nodeInfo) {
-                            $this->addToReport($nodeInfo, "users update", "Login must not contains uppercase characters", "", $nodeInfo);
+                            $this->addToReport(
+                                $nodeInfo,
+                                "users update",
+                                "Login must not contains uppercase characters",
+                                "",
+                                $nodeInfo
+                            );
                         }
                         $values[$varId] = $nodeInfo;
                         break;
@@ -440,7 +453,13 @@ class ImportAccounts
                 $values[$varId] = $value;
 
                 if ($varId === "login" && mb_strtolower($values[$varId]) !== $values[$varId]) {
-                    $this->addToReport($values[$varId], "group update", "Reference must not contains uppercase characters", "", $value);
+                    $this->addToReport(
+                        $values[$varId],
+                        "group update",
+                        "Reference must not contains uppercase characters",
+                        "",
+                        $value
+                    );
                 }
             }
         }
@@ -458,8 +477,8 @@ class ImportAccounts
     }
 
     /**
-     * @param \DOMElement           $node
-     * @param string                $tagName "group" or "role"
+     * @param \DOMElement $node
+     * @param string $tagName "group" or "role"
      * @param \Anakeen\Core\Account $account
      */
     protected function importParent($node, $tagName, \Anakeen\Core\Account $account)
@@ -480,7 +499,11 @@ class ImportAccounts
                 } elseif ($tagName === "associatedRole") {
                     $type = \Anakeen\Core\Account::ROLE_TYPE;
                 }
-                $sql = sprintf("delete from groups using users where iduser=%d and users.id=groups.idgroup and users.accounttype= %s", $account->id, pg_escape_literal($type));
+                $sql = sprintf(
+                    "delete from groups using users where iduser=%d and users.id=groups.idgroup and users.accounttype= %s",
+                    $account->id,
+                    pg_escape_literal($type)
+                );
 
                 DbManager::query($sql);
                 $this->addToReport($account->login, "reset$tagName", "", "", $listNodeItem);
@@ -517,7 +540,13 @@ class ImportAccounts
                         $this->addToReport($account->login, "already$tagName", "", $groupAccount->login, $parentNode);
                     }
                 } else {
-                    $this->addToReport($account->login, "add $tagName", sprintf("$tagName reference %s not exists", $parentLogin), "", $parentNode);
+                    $this->addToReport(
+                        $account->login,
+                        "add $tagName",
+                        sprintf("$tagName reference %s not exists", $parentLogin),
+                        "",
+                        $parentNode
+                    );
                 }
             }
             if ($needUpdate) {
@@ -559,7 +588,13 @@ class ImportAccounts
             if ($value !== "") {
                 $values[$varId] = $value;
                 if ($varId === "login" && mb_strtolower($values[$varId]) !== $values[$varId]) {
-                    $this->addToReport($values[$varId], "role update", "Reference must not contains uppercase characters", "", $value);
+                    $this->addToReport(
+                        $values[$varId],
+                        "role update",
+                        "Reference must not contains uppercase characters",
+                        "",
+                        $value
+                    );
                 }
             }
         }
@@ -581,8 +616,10 @@ class ImportAccounts
             $roleElt = SEManager::getDocument($account->fid);
 
             if ($roleElt->name !== $logicalName) {
-                $roleElt->setLogicalName($logicalName);
-                $err = $roleElt->modify();
+                $err = $roleElt->setLogicalName($logicalName);
+                if (!$err) {
+                    $err = $roleElt->modify();
+                }
                 if ($err) {
                     throw new Exception($err);
                 }
@@ -591,10 +628,10 @@ class ImportAccounts
     }
 
     /**
-     * @param \DOMElement $node          node to import
-     * @param string      $tag           node tag
-     * @param string      $defaultFamily default family for account in case of document tag not exists
-     * @param array       $values        system values to update account
+     * @param \DOMElement $node node to import
+     * @param string $tag node tag
+     * @param string $defaultFamily default family for account in case of document tag not exists
+     * @param array $values system values to update account
      *
      * @return \Anakeen\Core\Account
      * @throws Exception
@@ -618,9 +655,9 @@ class ImportAccounts
             $msg = ___("Updated values", "dcp:import") . " :\n" . substr(print_r($values, true), 7, -2);
         }
 
-        if ($account->setLoginName($values["login"])) {
+        if (!$account->setLoginName($values["login"])) {
             // Already exists : update role
-        } else {
+
             if ($tag === "role") {
                 $account->accounttype = \Anakeen\Core\Account::ROLE_TYPE;
             } elseif ($tag === "group") {
@@ -651,7 +688,7 @@ class ImportAccounts
             } else {
                 $this->addToReport($values["login"], "documentCreation", "Cannot create $family", "", $documentNode);
             }
-        };
+        }
         /**
          * @var \DOMElement $roleDocumentNode
          */
@@ -678,7 +715,10 @@ class ImportAccounts
                     if ($docName) {
                         $docAccount = SEManager::getDocument($account->fid);
                         if ($docAccount && !$docAccount->name) {
-                            $docAccount->setLogicalName($docName);
+                            $err = $docAccount->setLogicalName($docName);
+                            if ($err) {
+                                throw new Exception($err);
+                            }
                         } else {
                             if ($docAccount->name != $docName) {
                                 throw new Exception("ACCT0209", $docName, $docAccount);
@@ -698,7 +738,10 @@ class ImportAccounts
                 if ($roleDocumentNode) {
                     $docName = $roleDocumentNode->getAttribute("name");
                     if ($docName) {
-                        $newDocAccount->setLogicalName($docName);
+                        $err = $newDocAccount->setLogicalName($docName);
+                        if ($err) {
+                            throw new Exception($err);
+                        }
                     }
                 }
                 $account->synchroAccountDocument();
@@ -797,7 +840,7 @@ class ImportAccounts
             "action" => $actionType,
             "error" => $error,
             "message" => $msgType,
-            "node" => (is_a($node, \DOMNode::class) )? $this->xml->saveXML($node) : $node
+            "node" => (is_a($node, \DOMNode::class)) ? $this->xml->saveXML($node) : $node
         );
 
         if ($error && $this->stopOnError) {
