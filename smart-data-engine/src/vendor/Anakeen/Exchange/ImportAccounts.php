@@ -379,6 +379,7 @@ class ImportAccounts
                     case "password":
                         /** @var \DOMNodeList $nodeInfo */
                         $nodeElt=$nodeInfo->item(0);
+                        /** @var \DOMElement $nodeElt */
                         $crypted = $nodeElt->getAttribute("crypted") === "true";
                         if ($crypted) {
                             if (substr($nodeElt->nodeValue, 0, 3) !== '$5$') {
@@ -581,8 +582,10 @@ class ImportAccounts
             $roleElt = SEManager::getDocument($account->fid);
 
             if ($roleElt->name !== $logicalName) {
-                $roleElt->setLogicalName($logicalName);
-                $err = $roleElt->modify();
+                $err = $roleElt->setLogicalName($logicalName);
+                if (! $err) {
+                    $err = $roleElt->modify();
+                }
                 if ($err) {
                     throw new Exception($err);
                 }
@@ -618,9 +621,9 @@ class ImportAccounts
             $msg = ___("Updated values", "dcp:import") . " :\n" . substr(print_r($values, true), 7, -2);
         }
 
-        if ($account->setLoginName($values["login"])) {
+        if (!$account->setLoginName($values["login"])) {
             // Already exists : update role
-        } else {
+
             if ($tag === "role") {
                 $account->accounttype = \Anakeen\Core\Account::ROLE_TYPE;
             } elseif ($tag === "group") {
@@ -651,7 +654,7 @@ class ImportAccounts
             } else {
                 $this->addToReport($values["login"], "documentCreation", "Cannot create $family", "", $documentNode);
             }
-        };
+        }
         /**
          * @var \DOMElement $roleDocumentNode
          */
@@ -678,7 +681,10 @@ class ImportAccounts
                     if ($docName) {
                         $docAccount = SEManager::getDocument($account->fid);
                         if ($docAccount && !$docAccount->name) {
-                            $docAccount->setLogicalName($docName);
+                            $err=$docAccount->setLogicalName($docName);
+                            if ($err) {
+                                throw new Exception($err);
+                            }
                         } else {
                             if ($docAccount->name != $docName) {
                                 throw new Exception("ACCT0209", $docName, $docAccount);
@@ -698,7 +704,10 @@ class ImportAccounts
                 if ($roleDocumentNode) {
                     $docName = $roleDocumentNode->getAttribute("name");
                     if ($docName) {
-                        $newDocAccount->setLogicalName($docName);
+                        $err = $newDocAccount->setLogicalName($docName);
+                        if ($err) {
+                            throw new Exception($err);
+                        }
                     }
                 }
                 $account->synchroAccountDocument();
@@ -797,7 +806,7 @@ class ImportAccounts
             "action" => $actionType,
             "error" => $error,
             "message" => $msgType,
-            "node" => (is_a($node, \DOMNode::class) )? $this->xml->saveXML($node) : $node
+            "node" => (is_a($node, \DOMNode::class))? $this->xml->saveXML($node) : $node
         );
 
         if ($error && $this->stopOnError) {
