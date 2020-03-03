@@ -18,7 +18,7 @@
               @error="onError"
             />
           </div>
-          <div splitpanes-size="66" class="grid-section grid-right">
+          <div splitpanes-size="67" class="grid-section grid-right">
             <header :title="tooltip"><h1>Smart Grid</h1></header>
             <ank-smart-element-grid @rowActionClick="onRowActionClick" v-bind="gridConfig"> </ank-smart-element-grid>
           </div>
