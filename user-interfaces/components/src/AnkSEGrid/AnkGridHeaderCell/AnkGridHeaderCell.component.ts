@@ -1,7 +1,7 @@
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import GridController from "../AnkSEGrid.component";
+import { Component, Prop, Vue } from "vue-property-decorator";
 import { Popup } from "@progress/kendo-vue-popup";
 import AnkGridFilter from "./AnkGridFilter/AnkGridFilter.vue";
+import AnkSmartElementGrid from "../AnkSEGrid.component";
 
 enum SortableDirection {
   NONE,
@@ -43,7 +43,7 @@ export default class GridHeaderCell extends Vue {
     type: Object,
     required: true
   })
-  public grid!: GridController;
+  public grid!: AnkSmartElementGrid;
   public sortableDir: SortableDirection = SortableDirection.NONE;
   public showFilter = false;
   public hoverPopup = false;
@@ -51,18 +51,18 @@ export default class GridHeaderCell extends Vue {
     horizontal: "fit",
     vertical: "flip"
   };
-  public get hasSubtitle() {
+  public get hasSubtitle(): boolean {
     return this.grid.contextTitles && Array.isArray(this.columnConfig.context) && this.columnConfig.context.length;
   }
 
-  public get subtitle() {
+  public get subtitle(): string {
     if (this.hasSubtitle) {
       return this.columnConfig.context.join(` ${this.grid.contextTitlesSeparator} `);
     }
     return "";
   }
 
-  public get sortableStateIcon() {
+  public get sortableStateIcon(): string {
     switch (this.sortableDir) {
       case SortableDirection.NONE:
         return `<i class='smart-element-header-sort-button smart-element-header-sort-button--none'></i>`;
@@ -73,11 +73,13 @@ export default class GridHeaderCell extends Vue {
     }
   }
 
-  public get isFiltered() {
-    return this.grid.currentFilter && !!this.grid.currentFilter.filters.filter(f => f.field === this.field).length;
+  public get isFiltered(): boolean {
+    return (
+      this.grid.currentFilter && !!this.grid.currentFilter.filters.filter((f: any) => f.field === this.field).length
+    );
   }
 
-  public created() {
+  public created(): void {
     window.addEventListener("click", e => {
       // remove filter's popup when clicking outside of the popup
       const tabFilterClasses = [];
@@ -103,6 +105,7 @@ export default class GridHeaderCell extends Vue {
       }
     });
     // sort change
+    // @ts-ignore
     if (this.grid.sorter && this.grid.sorter.allowUnsort === false && this.sortable) {
       this.sortableDir = SortableDirection.ASC;
       this.$emit("sortchange", {
@@ -115,21 +118,22 @@ export default class GridHeaderCell extends Vue {
       });
     }
   }
-  public beforeDestroy() {
+  public beforeDestroy(): void {
     window.removeEventListener("click", () => {
       if (!this.hoverPopup) {
         this.showFilter = false;
       }
     });
   }
-  public clickFilter() {
+  public clickFilter(): void {
     this.showFilter = !this.showFilter;
     this.hoverPopup = true;
   }
-  protected onSort() {
-    let sortableStr = "";
+  protected onSort(): void {
+    let sortableStr: string;
     const sortableValues = [null, "asc", "desc"];
     this.sortableDir = (this.sortableDir + 1) % 3;
+    // @ts-ignore
     if (this.grid.sorter && this.grid.sorter.allowUnsort === true && this.sortable) {
       sortableStr = sortableValues[this.sortableDir];
     } else {
@@ -148,11 +152,11 @@ export default class GridHeaderCell extends Vue {
     });
   }
 
-  protected clearFilter(...args) {
+  protected clearFilter(...args): void {
     this.$emit("filterchange", ...args);
   }
 
-  protected filter(...args) {
+  protected filter(...args): void {
     this.$emit("filterchange", ...args);
   }
 }

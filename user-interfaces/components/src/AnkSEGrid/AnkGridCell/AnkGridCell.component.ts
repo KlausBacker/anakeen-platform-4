@@ -1,21 +1,25 @@
-import { Component, Mixins, Prop, Vue } from "vue-property-decorator";
-import { SmartGridColumn } from "../AnkSEGrid.component";
+import { Component, Mixins } from "vue-property-decorator";
 import AnkGridCellMixin from "./AnkGridCellMixin";
+import SimpleText from "./AnkGridCellTypes/AnkGridCellText.vue";
+import HtmlText from "./AnkGridCellTypes/AnkGridCellHtmlText.vue";
+import IconText from "./AnkGridCellTypes/AnkGridCellIconText.vue";
+import Color from "./AnkGridCellTypes/AnkGridCellColor.vue";
+import { SmartGridCellFieldValue, SmartGridCellValue } from "../AnkSEGrid.component";
 
 @Component({
   name: "ank-se-grid-cell",
   components: {
-    simpleText: () => import("./AnkGridCellTypes/AnkGridCellText.vue"),
-    htmlText: () => import("./AnkGridCellTypes/AnkGridCellHtmlText.vue"),
-    iconText: () => import("./AnkGridCellTypes/AnkGridCellIconText.vue"),
-    color: () => import("./AnkGridCellTypes/AnkGridCellColor.vue")
+    SimpleText,
+    HtmlText,
+    IconText,
+    Color
   }
 })
 export default class GridFilterCell extends Mixins(AnkGridCellMixin) {
   public selectedOperator = null;
-  public filterValue: string = "";
+  public filterValue = "";
 
-  protected getSublevel(field) {
+  protected getSublevel(field): string[] {
     if (Array.isArray(field)) {
       return field;
     } else {
@@ -23,11 +27,11 @@ export default class GridFilterCell extends Mixins(AnkGridCellMixin) {
     }
   }
 
-  protected get isMultiple() {
+  protected get isMultiple(): boolean {
     return this.columnConfig.multiple || Array.isArray(this.cellValue);
   }
 
-  protected get cellValue() {
+  protected get cellValue(): SmartGridCellValue {
     if (this.fieldValue) {
       return this.fieldValue;
     } else if (this.dataItem) {
@@ -42,33 +46,35 @@ export default class GridFilterCell extends Mixins(AnkGridCellMixin) {
     return null;
   }
 
-  protected get isEmpty() {
+  protected get isEmpty(): boolean {
     if (this.isMultiple) {
-      return !this.cellValue.length;
+      const cellValue = this.cellValue as SmartGridCellFieldValue[];
+      return !cellValue.length;
     } else if (this.columnConfig.property) {
       return !this.cellValue;
     } else {
-      return !(this.cellValue.diplayValue || this.cellValue.value);
+      const cellValue = this.cellValue as SmartGridCellFieldValue;
+      return !(cellValue.displayValue && cellValue.value);
     }
   }
 
-  protected get isInexistent() {
+  protected get isInexistent(): boolean {
     return !this.cellValue;
   }
 
-  public get componentName() {
+  public get componentName(): "IconText" | "Color" | "HtmlText" | "SimpleText" {
     switch (this.columnConfig.smartType) {
       case "docid":
       case "account":
       case "file":
       case "image":
-        return "iconText";
+        return "IconText";
       case "color":
-        return "color";
+        return "Color";
       case "htmltext":
-        return "htmlText";
+        return "HtmlText";
       default:
-        return "simpleText";
+        return "SimpleText";
     }
   }
 }

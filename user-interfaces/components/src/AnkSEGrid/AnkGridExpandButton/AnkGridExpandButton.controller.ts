@@ -2,6 +2,7 @@ import "@progress/kendo-ui/js/kendo.button";
 import "@progress/kendo-ui/js/kendo.tooltip";
 import $ from "jquery";
 import Vue from "vue";
+import VueI18n from "vue-i18n";
 import { Component, Prop, Watch } from "vue-property-decorator";
 
 @Component({
@@ -22,16 +23,16 @@ export default class AnkGridExpandButtonController extends Vue {
   public button = null;
 
   @Watch("gridComponent")
-  public watchGridComponent(newValue) {
+  public watchGridComponent(newValue): void {
     this.gridComponent = newValue;
     this.initButton();
   }
-  public get translations() {
+  public get translations(): { [key: string]: VueI18n.TranslateResult } {
     return {
       tooltip: this.$t("gridExpandButton.Tooltip")
     };
   }
-  public initButton() {
+  public initButton(): void {
     const options = this.getButtonOptions();
     this.button = $(this.$refs.expandButton)
       .kendoButton(options)
@@ -51,7 +52,7 @@ export default class AnkGridExpandButtonController extends Vue {
       .data("kendoTooltip");
   }
 
-  private getButtonOptions() {
+  private getButtonOptions(): { [key: string]: string | boolean } {
     const options = {
       enable: true,
       icon: "",

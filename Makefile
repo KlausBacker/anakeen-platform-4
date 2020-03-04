@@ -1,9 +1,20 @@
-.DEFAULT_GOAL := help
 #MAKEFILE dir
 MK_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
-NODE_BIN=node
-NPX_BIN=npx
+include .devtool/Makefile.params.mk
+
+SHELL = bash
+.SHELLFLAGS := -eu -o pipefail -c
+MAKEFLAGS += --warn-undefined-variables
+MAKEFLAGS += --no-builtin-rules
+
+PROJECT_NAME = monorepo
+PROJECT_POSTGRES_VERSION = 11.6
+PROJECT_PHP_VERSION = 7.3
+PROJECT_PSQL_PORT = 54321
+PROJECT_HTTP_PORT = 8080
+PROJECT_DEVSERVER_PORT = 8001
+PROJECT_MAIL_PORT = 8081
 
 TOPTARGETS := deploy deploy-test deploy-all lint po stub checkXML clean beautify
 
@@ -11,72 +22,91 @@ BUILDTARGETS := app app-autorelease app-test app-test-autorelease app-all
 
 SUBDIRS := control smart-data-engine security workflow internal-components user-interfaces hub-station admin-center business-app development-center transformation migration-tools dev-data test-tools
 
-BUILDDIRS := app-control app-smart-data-engine app-security app-workflow app-internal-components app-user-interfaces app-hub-station app-admin-center app-business-app app-development-center app-transformation app-migration-tools app-dev-data app-test-tools
+CONTROL_ARCHIVE = $(BUILD_DIR)/control/anakeen-control-latest.zip
 
+# User specific variables come last
+-include Makefile.local.mk
+
+BUILDDIR_PREFIX := app-
+
+BUILDDIRS := $(addprefix $(BUILDDIR_PREFIX),$(SUBDIRS))
+
+.PHONY: $(TOPTARGETS)
 $(TOPTARGETS): $(SUBDIRS)
 
+.PHONY: $(SUBDIRS)
 $(SUBDIRS):
 	$(MAKE) -C $@ $(MAKECMDGOALS)
 
+.PHONY: $(BUILDTARGETS)
 $(BUILDTARGETS): $(BUILDDIRS)
 
-$(BUILDDIRS):
-	mkdir -p build
-	$(MAKE) APP_OUTPUT_PATH=$(MK_DIR)/build/$(subst app-,,$@) -C $(subst app-,,$@) $(MAKECMDGOALS)
-	node ./.devtool/script/generateLocalRepo.js
+.PHONY: $(BUILDDIRS)
+$(BUILDDIRS): $(BUILD_DIR)
+	$(MAKE) APP_OUTPUT_PATH=$(MK_DIR)/$(BUILD_DIR)/$(subst $(BUILDDIR_PREFIX),,$@) -C $(subst $(BUILDDIR_PREFIX),,$@) $(MAKECMDGOALS)
+	$(NVM_EXEC_CMD) $(DEVTOOLS_DIR)/script/generateLocalRepo.js
 
+.PHONY: lint-JS
 lint-JS: ## Check js files
-	$(NPX_BIN) eslint ./ --cache
+	$(NPX_CMD) eslint ./ --cache
 
+.PHONY: beautify-JS
 beautify-JS: ## Lint js files
-	$(NPX_BIN) eslint ./ --cache --fix
+	$(NPX_CMD) eslint ./ --cache --fix
 
+.PHONY: lint-po
 lint-po: ## Lint po
-	./.devtool/ci/check/checkPo.sh
+	./$(DEVTOOLS_DIR)/ci/check/checkPo.sh
 
-start-env: ## Start docker environment
-	make -C ./.devtool/docker start-env
+.PHONY: start-env
+start-env: | $(VOLUMES_PHP_CONTROL_CONF)/contexts.xml $(VOLUMES_PRIVATE) ## Start docker environment
+	@$(PRINT_COLOR) "$(COLOR_SUCCESS)"
+	@$(MAKE) --no-print-directory env-list-ports
+	@$(PRINT_COLOR) "$(COLOR_RESET)"
 
+.PHONY: stop-env
 stop-env: ## Stop docker environment
-	make -C ./.devtool/docker stop-env
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)[D][$@] Stop containers$(COLOR_RESET)\n"
+	$(DOCKER_COMPOSE_CMD) down --remove-orphans $(DOCKER_COMPOSE_DOWN_OPTIONS)
 
-clean-env: ## Clean docker environment
-	make -C ./.devtool/docker clean-env
+.PHONY: clean-env
+clean-env: | stop-env ## Clean docker environment
+	@$(PRINT_COLOR) "$(COLOR_WARNING)Delete private volumes$(COLOR_RESET)\n"
+	#rm -rf $(filter-out $(KEEP_VOLUMES),$(VOLUMES_PRIVATE))
+	rm -rf $(VOLUMES_PRIVATE) $(BUILD_DIR)
 
+.PHONY: reboot-env
 reboot-env: ## Reboot docker environment (stop + start + set params)
-	make -C ./.devtool/docker reboot-env
+	make clean-env
+	make install-all
+	make test-mail-set-params
 
+.PHONY: reset-env
 reset-env: ## Reset docker environment
-	make -C ./.devtool/docker reset-env
+	make -C ./$(DEVTOOLS_DIR)/docker reset-env
 
-clean-env-full: ## Clean docker environment and remove images
-	make -C ./.devtool/docker clean-env-full
+.PHONY: clean-env-full
+clean-env-full: DOCKER_COMPOSE_DOWN_OPTIONS += --rmi local
+clean-env-full: clean-env ## Clean docker environment and remove images
+	@$(PRINT_COLOR) "$(COLOR_WARNING)Delete cached data$(COLOR_RESET)\n"
+#	rm -rf $(NODE_MODULES_DIR) $(DEVTOOLS_TMP_DIR) $(KEEP_VOLUMES)
+#	rm -rf $(NODE_MODULES_DIR) $(DEVTOOLS_TMP_DIR)
 
-update-all: app-autorelease ## Update all modules
-	docker exec monorepo_php_1 /var/www/html/control/anakeen-control update -n
+.PHONY: update-all
+update-all: app-autorelease | start-env ## Update all modules
+	$(_CONTROL_CMD) update --no-interaction --no-ansi
 
-init-docker: start-env ## Init docker environment
-	make -C ./.devtool/docker init
-	make -C ./.devtool/docker register-local-repo
-	make -C ./.devtool/docker install
+.PHONY: install-all
+install-all: | start-env ## install all modules
+	$(MAKE) app
+	$(_CONTROL_CMD) install --no-interaction --no-ansi
 
-control-status: ## Get controll status
-	watch docker exec monorepo_php_1 /var/www/html/control/anakeen-control status
-
-control-bash: ## Run www-data bash
-	make -C ./.devtool/docker docker-prompt-platform
-
-run-bash: ## Run bash in php container
-	make -C ./.devtool/docker docker-prompt-root
-
-run-sql: ## Run psql in postgres container
-	make -C ./.devtool/docker docker-prompt-psql
-
+.PHONY: run-dev-server
 run-dev-server: ## Run webpack development server
-	$(NODE_BIN) --max-old-space-size=4096 .devtool/devserver/index.js
+	$(NODE_BIN) --max-old-space-size=4096 $(DEVTOOLS_DIR)/devserver/index.js
 
-.PHONY: $(TOPTARGETS) $(SUBDIRS) $(BUILDDIRS) $(BUILDTARGETS) help lint-JS beautify-JS lint-po start-env stop-env clean-env reset-env reboot-env clean-env-full update-all init-docker control-status run-dev-server
+$(CONTROL_ARCHIVE):
+	make APP_OUTPUT_PATH=$(MK_DIR)/$(BUILD_DIR)/control -C control app
+	$(NVM_EXEC_CMD) $(DEVTOOLS_DIR)/script/generateLocalRepo.js
 
-help: HELP_WIDTH = 25
-help: ## Show this help message
-	@grep -h -E -e '^[a-zA-Z_%-]+:.*?## .*$$' -e '^##: ##' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-$(HELP_WIDTH)s\033[0m %s\n", $$1, $$2}'
+include .devtool/Makefile.rules.mk

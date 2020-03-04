@@ -1,19 +1,16 @@
 import { Component, Prop, Mixins, Watch } from "vue-property-decorator";
-import GridController from "../AnkSEGrid.component";
-import { DropDownList } from "@progress/kendo-vue-dropdowns";
+import "@progress/kendo-ui/js/kendo.dropdownlist.js";
 import I18nMixin from "../../../mixins/AnkVueComponentMixin/I18nMixin";
+import AnkSmartElementGrid, { SmartGridPageSize } from "../AnkSEGrid.component";
 
 @Component({
-  name: "ank-grid-pager",
-  components: {
-    DropDownList
-  }
+  name: "ank-grid-pager"
 })
 export default class GridPager extends Mixins(I18nMixin) {
   @Prop({
     required: true
   })
-  public gridComponent!: GridController;
+  public gridComponent!: AnkSmartElementGrid;
 
   @Prop({
     type: Number,
@@ -46,16 +43,15 @@ export default class GridPager extends Mixins(I18nMixin) {
   public type!: boolean | string;
 
   @Watch("gridComponent.currentPage.take")
-  protected onGridTakeChange(newValue) {
+  protected onGridTakeChange(newValue): void {
     if (newValue !== this.pageSize) {
       this.pageSize = newValue;
     }
   }
 
   @Watch("pageSize")
-  protected onPageSizeChange(newValue) {
+  protected onPageSizeChange(newValue): void {
     if (this.gridComponent) {
-      kendo.ui.progress($(".smart-element-grid-widget"), true);
       this.gridComponent.$emit("pageChange", {
         page: {
           skip: 0,
@@ -65,24 +61,23 @@ export default class GridPager extends Mixins(I18nMixin) {
       });
     }
   }
-
   public pageSize: number = Array.isArray(this.pageSizes) && this.pageSizes.length ? this.pageSizes[0] : 10;
 
-  public get total() {
+  public get total(): number {
     if (this.gridComponent) {
       return this.gridComponent.currentPage.total;
     }
     return 0;
   }
 
-  public get beginPage() {
+  public get beginPage(): number {
     if (this.gridComponent) {
       return this.gridComponent.currentPage.skip + 1;
     }
     return 0;
   }
 
-  public get endPage() {
+  public get endPage(): number {
     if (this.gridComponent) {
       const endPage = this.gridComponent.currentPage.skip + this.pageSize;
       if (endPage > this.gridComponent.currentPage.total) {
@@ -93,21 +88,21 @@ export default class GridPager extends Mixins(I18nMixin) {
     return 0;
   }
 
-  public get hasPrevious() {
+  public get hasPrevious(): boolean {
     if (this.gridComponent) {
       return this.gridComponent.currentPage.skip >= this.pageSize;
     }
     return false;
   }
 
-  public get hasNext() {
+  public get hasNext(): boolean {
     if (this.gridComponent) {
       return this.gridComponent.currentPage.skip < this.gridComponent.currentPage.total - this.pageSize;
     }
     return false;
   }
 
-  public get hasPreviousNumbersList() {
+  public get hasPreviousNumbersList(): boolean {
     if (this.gridComponent && this.buttonCount) {
       let result = Math.floor(this.gridComponent.currentPage.total / this.pageSize);
       if (this.gridComponent.currentPage.total > result * this.pageSize) {
@@ -116,7 +111,6 @@ export default class GridPager extends Mixins(I18nMixin) {
       if (this.buttonCount >= result) {
         return false;
       } else {
-        const pages = [];
         const currentPage = Math.floor(this.gridComponent.currentPage.skip / this.pageSize);
         const coeff = Math.floor(currentPage / this.buttonCount);
         return !!coeff;
@@ -125,7 +119,7 @@ export default class GridPager extends Mixins(I18nMixin) {
     return false;
   }
 
-  public get hasNextNumbersList() {
+  public get hasNextNumbersList(): boolean {
     if (this.gridComponent && this.buttonCount) {
       let result = Math.floor(this.gridComponent.currentPage.total / this.pageSize);
       if (this.gridComponent.currentPage.total > result * this.pageSize) {
@@ -134,7 +128,6 @@ export default class GridPager extends Mixins(I18nMixin) {
       if (this.buttonCount >= result) {
         return false;
       } else {
-        const pages = [];
         const currentPage = Math.floor(this.gridComponent.currentPage.skip / this.pageSize);
         const coeff = Math.floor(currentPage / this.buttonCount);
         return coeff < this.buttonCount;
@@ -143,7 +136,7 @@ export default class GridPager extends Mixins(I18nMixin) {
     return false;
   }
 
-  public get maxButtonsPages() {
+  public get maxButtonsPages(): number | number[] {
     if (this.gridComponent && this.buttonCount) {
       let result = Math.floor(this.gridComponent.currentPage.total / this.pageSize);
       if (this.gridComponent.currentPage.total > result * this.pageSize) {
@@ -163,10 +156,19 @@ export default class GridPager extends Mixins(I18nMixin) {
     }
     return 0;
   }
-
-  public goToPage(pageNumber) {
+  public mounted(): void {
+    const dropdownPageSizes = $(".smart-element-grid-pager-sizes--dropdown");
+    dropdownPageSizes
+      .kendoDropDownList({
+        dataSource: this.pageSizes,
+        change: () => {
+          this.pageSize = Number(dropdownPageSizes.val());
+        }
+      })
+      .data("kendoDropDownList");
+  }
+  public goToPage(pageNumber): void {
     if (this.gridComponent) {
-      kendo.ui.progress($(".smart-element-grid-widget"), true);
       this.gridComponent.$emit("pageChange", {
         page: {
           skip: (pageNumber - 1) * this.pageSize,
@@ -177,7 +179,7 @@ export default class GridPager extends Mixins(I18nMixin) {
     }
   }
 
-  public getCurrentPage() {
+  public getCurrentPage(): SmartGridPageSize {
     const result = {
       page: 0,
       pageSize: 0,
@@ -191,9 +193,8 @@ export default class GridPager extends Mixins(I18nMixin) {
     return result;
   }
 
-  public firstPage() {
+  public firstPage(): void {
     if (this.gridComponent && this.hasPrevious) {
-      kendo.ui.progress($(".smart-element-grid-widget"), true);
       this.gridComponent.$emit("pageChange", {
         page: {
           skip: 0,
@@ -204,9 +205,8 @@ export default class GridPager extends Mixins(I18nMixin) {
     }
   }
 
-  public previousPage() {
+  public previousPage(): void {
     if (this.gridComponent && this.hasPrevious) {
-      kendo.ui.progress($(".smart-element-grid-widget"), true);
       this.gridComponent.$emit("pageChange", {
         page: {
           skip: this.gridComponent.currentPage.skip - this.pageSize,
@@ -217,9 +217,8 @@ export default class GridPager extends Mixins(I18nMixin) {
     }
   }
 
-  public nextPage() {
+  public nextPage(): void {
     if (this.gridComponent && this.hasNext) {
-      kendo.ui.progress($(".smart-element-grid-widget"), true);
       this.gridComponent.$emit("pageChange", {
         page: {
           skip: this.gridComponent.currentPage.skip + this.pageSize,
@@ -230,9 +229,8 @@ export default class GridPager extends Mixins(I18nMixin) {
     }
   }
 
-  public lastPage() {
+  public lastPage(): void {
     if (this.gridComponent && this.hasNext) {
-      kendo.ui.progress($(".smart-element-grid-widget"), true);
       this.gridComponent.$emit("pageChange", {
         page: {
           skip: this.gridComponent.currentPage.total - this.pageSize,
@@ -243,19 +241,19 @@ export default class GridPager extends Mixins(I18nMixin) {
     }
   }
 
-  protected isCurrentPage(pageNumber) {
+  protected isCurrentPage(pageNumber): boolean {
     if (this.gridComponent) {
       return pageNumber === Math.floor(this.gridComponent.currentPage.skip / this.gridComponent.currentPage.take) + 1;
     }
     return false;
   }
 
-  protected previousNumbersList() {
+  protected previousNumbersList(): void {
     const maxPages = this.maxButtonsPages as number[];
     this.goToPage(maxPages[0] - 1);
   }
 
-  protected nextNumbersList() {
+  protected nextNumbersList(): void {
     const maxPages = this.maxButtonsPages as number[];
     this.goToPage(maxPages[maxPages.length - 1] + 1);
   }

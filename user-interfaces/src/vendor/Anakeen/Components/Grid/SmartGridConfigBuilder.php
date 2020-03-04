@@ -13,7 +13,7 @@ use SmartStructure\Fields\Dir;
 use SmartStructure\Fields\Report as ReportFields;
 use SmartStructure\Fields\Search;
 
-class SmartGridConfigBuilder
+class SmartGridConfigBuilder implements SmartGridBuilder
 {
     const DEFAULT_COLUMNS = ["title"];
     const DEFAULT_CONTENT_URL = "/api/v2/grid/content/%s?fields=%s";
@@ -44,10 +44,10 @@ class SmartGridConfigBuilder
     /**
      * Constructor of SmartGridConfigBuilder
      *
-     * @param  mixed $collectionId - Identifier of the collection (structure name/id, folder or report id),
+     * @param mixed $collectionId - Identifier of the collection (structure name/id, folder or report id),
      * it could be 0 for searching in all Smart Elements, or -1 for searching in all Smart Structures
      *
-     * @param  mixed $columns
+     * @param mixed $columns
      *
      * @return $this - the current instance
      */
@@ -61,6 +61,27 @@ class SmartGridConfigBuilder
     }
 
     /**
+     * Set the client Smart Element Grid configuration in the builder
+     * @param array $clientConfig
+     * @return $this - the current instance
+     */
+    public function setClientConfig(array $clientConfig)
+    {
+        if (isset($clientConfig["pageable"])) {
+            $this->setPageable($clientConfig["pageable"]);
+        }
+        if (isset($clientConfig["columns"])) {
+            $this->setColumns($clientConfig["columns"]);
+        }
+        if (isset($clientConfig["actions"])) {
+            foreach ($clientConfig["actions"] as $action) {
+                $this->addRowAction($action);
+            }
+        }
+        return $this;
+    }
+
+    /**
      * Get the Smart Element Grid configuration array
      *
      * @return array
@@ -68,7 +89,11 @@ class SmartGridConfigBuilder
     public function getConfig()
     {
         $fields = $this->getFields();
-        $contentUrl = $this->contentUrl ?: sprintf(self::DEFAULT_CONTENT_URL, $this->smartCollectionId, static::fieldsToUrl($fields));
+        $contentUrl = $this->contentUrl ?: sprintf(
+            self::DEFAULT_CONTENT_URL,
+            $this->smartCollectionId,
+            static::fieldsToUrl($fields)
+        );
         return array(
             "columns" => $fields,
             "pageable" => $this->getPageable(),
@@ -77,14 +102,14 @@ class SmartGridConfigBuilder
             "locales" => $this->getLocales(),
             "footer" => $this->getFooter(),
             // "toolbar" => [],
-             "actions" => $this->getActions()
+            "actions" => $this->getActions()
         );
     }
 
     /**
      * Set the smart collection which the smart element Smart Element Grid is based on
      *
-     * @param  mixed $collectionId - Identifier of the collection (structure name/id, folder or report id),
+     * @param mixed $collectionId - Identifier of the collection (structure name/id, folder or report id),
      * it could be 0 for searching in all Smart Elements, or -1 for searching in all Smart Structures
      *
      * @return $this - the current instance
@@ -106,7 +131,7 @@ class SmartGridConfigBuilder
     /**
      * Set the Smart Element Grid content url.
      *
-     * @param  string $url
+     * @param string $url
      *
      * @return $this - the current instance
      */
@@ -119,11 +144,11 @@ class SmartGridConfigBuilder
     /**
      * Add an abstract column in Smart Element Grid
      *
-     * @param  string $colId - identifier of the column
-     * @param  array $options - options for the column
+     * @param string $colId - identifier of the column
+     * @param array $options - options for the column
      * @return $this - the current instance
      */
-    public function addAbstractColumn(string $colId, array $options = [])
+    public function addAbstract(string $colId, array $options = [])
     {
         $type = $options["smartType"] ?? "text";
         $title = $options["title"] ?? $colId;
@@ -199,10 +224,10 @@ class SmartGridConfigBuilder
     {
         $iconClass = isset($action["iconClass"]) ? $action["iconClass"] : "";
         array_push($this->actions, array(
-                "action" => $action["action"],
-                "title" => sprintf(Gettext::___($action["title"], "smart-grid")),
-                "iconClass" => $iconClass
-            ));
+            "action" => $action["action"],
+            "title" => sprintf(Gettext::___($action["title"], "smart-grid")),
+            "iconClass" => $iconClass
+        ));
         return $this;
     }
 
@@ -227,9 +252,30 @@ class SmartGridConfigBuilder
     }
 
     /**
+     * Add a Smart Element Grid column
+     *
+     * @param array $column - the column object
+     * @return $this - the current instance
+     * @throws Exception
+     */
+    public function addColumn($column)
+    {
+        if (isset($column["property"]) && $column["property"] === true) {
+            // Give 2nd argument to mix the property with the client given data for overloading
+            $this->addProperty($column["field"], $column);
+        } elseif (isset($column["abstract"]) && $column["abstract"] === true) {
+            $this->addAbstract($column["field"], $column);
+        } else {
+            // Give 2nd argument to mix the field with the client given data for overloading
+            $this->addField($column["field"], $column, $column["structure"] ?? "");
+        }
+        return $this;
+    }
+
+    /**
      * Set grid columns
      *
-     * @param  mixed $columns
+     * @param mixed $columns
      *
      * @return $this - the current instance
      */
@@ -240,7 +286,7 @@ class SmartGridConfigBuilder
                 // Give 2nd argument to mix the property with the client given data for overloading
                 $this->addProperty($column["field"], $column);
             } elseif (isset($column["abstract"]) && $column["abstract"] === true) {
-                $this->addAbstractColumn($column["field"], $column);
+                $this->addAbstract($column["field"], $column);
             } else {
                 // Give 2nd argument to mix the field with the client given data for overloading
                 $this->addField($column["field"], $column, $column["structure"] ?? "");
@@ -254,10 +300,10 @@ class SmartGridConfigBuilder
      * Use default available configuration for specified collection.
      * If collection is a report, the default available configuration is computed from the report configuration.
      *
-     * @param  boolean $columns use default columns
-     * @param  boolean $rowActions use default row actions
-     * @param  boolean $toolbarActions use default toolbar actions
-     * @param  boolean $footer use default footer
+     * @param boolean $columns use default columns
+     * @param boolean $rowActions use default row actions
+     * @param boolean $toolbarActions use default toolbar actions
+     * @param boolean $footer use default footer
      *
      * @return $this - the current instance
      */
@@ -438,11 +484,15 @@ class SmartGridConfigBuilder
                     break;
             }
         }
-        $structureRef = SEManager::getFamily($structureId);
-        if (empty($structureRef)) {
-            throw new Exception("GRID0002", $structureId);
+        if (!empty($structureId)) {
+            $structureRef = SEManager::getFamily($structureId);
+            if (empty($structureRef)) {
+                throw new Exception("GRID0002", $structureId);
+            }
+            return $structureRef;
+        } else {
+            throw new Exception("GRID0002");
         }
-        return $structureRef;
     }
 
     protected function getPropertyConfig(string $propertyName)
@@ -511,23 +561,23 @@ class SmartGridConfigBuilder
     {
         try {
             // try property
-            $config = $this->getPropertyConfig($id);
-            return $config;
+            return $this->getPropertyConfig($id);
         } catch (Exception $e) {
             if ($e->getDcpCode() === "GRID0004") {
-                // try field
-                $config = $this->getFieldConfig($id);
-                return $config;
+                try {
+                    // try field
+                    return $this->getFieldConfig($id);
+                } catch (Exception $e) {
+                    if ($e->getDcpCode() === "GRID0004") {
+                        $error = new Exception("GRID0006", $id);
+                        $error->setHttpStatus(500, "Cannot resolved " . $id);
+                        throw $error;
+                    }
+                    throw $e;
+                }
             } else {
                 throw $e;
             }
-        } catch (Exception $e) {
-            if ($e->getDcpCode() === "GRID0004") {
-                $error = new Exception("GRID0006", $id);
-                $error->setHttpStatus(500, "Cannot resolved " . $id);
-                throw $error;
-            }
-            throw $e;
         }
     }
 

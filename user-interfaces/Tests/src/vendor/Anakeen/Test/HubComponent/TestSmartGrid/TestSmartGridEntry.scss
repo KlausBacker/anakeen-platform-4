@@ -1,0 +1,46 @@
+.test-smart-grid {
+  height: 100%;
+  background: white;
+  display: flex;
+
+  .grid-section {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    flex: 1;
+    header,
+    .jsoneditor-menu {
+      background-color: var(--primary);
+      padding: 0.25rem;
+      color: white;
+    }
+
+    & + .grid-section {
+      border-left: 2px solid black;
+    }
+  }
+
+  &.warning {
+    .grid-section > header,
+    .jsoneditor-menu {
+      background: var(--warning);
+    }
+  }
+  &.error {
+    .grid-section > header,
+    .jsoneditor-menu {
+      background: var(--danger);
+    }
+  }
+
+  .json-editor {
+    flex: 1;
+    .jsoneditor {
+      border: none;
+    }
+    .jsoneditor-menu > .jsoneditor-modes > button,
+    .jsoneditor-menu > button {
+      opacity: 1;
+    }
+  }
+}

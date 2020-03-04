@@ -1,5 +1,4 @@
 import { Component, Prop, Watch, Mixins, Vue } from "vue-property-decorator";
-import AnkProgress from "./AnkProgress/AnkProgress.vue";
 import AnkActionMenu from "./AnkActionMenu/AnkActionMenu.vue";
 import AnkGridCell from "./AnkGridCell/AnkGridCell.vue";
 import AnkExportButton from "./AnkExportButton/AnkExportButton.vue";
@@ -18,6 +17,9 @@ import I18nMixin from "../../mixins/AnkVueComponentMixin/I18nMixin";
 const CONTROLLER_URL = "/api/v2/grid/controllers/{controller}/{op}/{collection}";
 
 export interface SmartGridColumn {
+  withContext?: boolean;
+  width?: number;
+  headerAttributes?: { [key: string]: string };
   field: string;
   smartType?: string;
   title?: string;
@@ -27,14 +29,72 @@ export interface SmartGridColumn {
   encoded?: boolean;
   hidden?: boolean;
   sortable?: boolean;
-  filterable?: boolean | any;
+  filterable?: boolean | object;
   transaction?: boolean | object;
+  resizable?: boolean;
 }
 
-interface SmartGridActions {
+export interface SmartGridAction {
   action: string;
   title: string;
   iconClass: string;
+}
+
+export type SmartGridCellPropertyValue = string | object | number | boolean;
+export interface SmartGridCellFieldValue {
+  value: string | number | boolean;
+  displayValue: string;
+}
+export type SmartGridCellAbstractValue = string | object | number | boolean | SmartGridCellFieldValue;
+
+export type SmartGridCellValue =
+  | SmartGridCellAbstractValue
+  | SmartGridCellFieldValue
+  | SmartGridCellFieldValue[]
+  | SmartGridCellPropertyValue;
+
+export interface SmartGridRowData {
+  properties: {
+    [key: string]: SmartGridCellPropertyValue;
+  };
+  attributes: {
+    [key: string]: SmartGridCellFieldValue;
+  };
+  abstract?: {
+    [key: string]: SmartGridCellAbstractValue;
+  };
+  selected?: boolean;
+}
+
+export interface SmartGridPageSize {
+  page: number;
+  pageSize: number;
+  total: number;
+}
+
+export interface SmartGridSubHeader {
+  [columnId: string]: string;
+}
+
+export interface SmartGridInfo {
+  columns: SmartGridColumn[];
+  actions: SmartGridAction[];
+  controller: string;
+  collection: string;
+  pageable: false | SmartGridPageSize | { buttonCount: number; pageSize: number; pageSizes: number[] };
+  page: number;
+  sortable: boolean | object;
+  sort: kendo.data.DataSourceSortItem;
+  filterable: boolean | object;
+  filter: kendo.data.DataSourceFilters;
+  transaction: { [key: string]: string };
+  selectedRows: string[];
+  onlySelection: boolean;
+  customData: unknown;
+}
+
+interface KendoVueGridRow extends Vue {
+  dataItem?: SmartGridRowData;
 }
 
 const DEFAULT_PAGER = {
@@ -53,7 +113,6 @@ const DEFAULT_SORT = {
   components: {
     "kendo-grid-norecords": GridNoRecords,
     "kendo-grid-vue": Grid,
-    "ank-progress": AnkProgress,
     "ank-action-menu": AnkActionMenu,
     "ank-export-button": AnkExportButton,
     "ank-expand-button": AnkGridExpandButton,
@@ -62,12 +121,17 @@ const DEFAULT_SORT = {
   },
   name: "ank-se-grid-vue"
 })
-export default class GridController extends Mixins(I18nMixin) {
+export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   @Prop({
     default: "0",
     type: String
   })
   public collection: string;
+
+  @Prop({
+    type: Object
+  })
+  public customData!: object;
 
   @Prop({
     default: () => [],
@@ -78,12 +142,12 @@ export default class GridController extends Mixins(I18nMixin) {
     default: () => ({}),
     type: Object
   })
-  public subHeader: { [key: string]: any };
+  public subHeader: SmartGridSubHeader;
   @Prop({
     default: () => [],
     type: Array
   })
-  public actions: SmartGridActions[];
+  public actions: SmartGridAction[];
   @Prop({
     default: "DEFAULT_GRID_CONTROLLER",
     type: String
@@ -170,7 +234,7 @@ export default class GridController extends Mixins(I18nMixin) {
     default: () => DEFAULT_PAGER,
     type: [Boolean, Object]
   })
-  public pageable: boolean | any;
+  public pageable: boolean | SmartGridPageSize;
 
   @Prop({
     default: true,
@@ -199,15 +263,40 @@ export default class GridController extends Mixins(I18nMixin) {
   })
   public maxRowHeight: string;
 
+  public $refs: {
+    smartGridWidget: Grid;
+  };
+
+  @Watch("$props", { deep: true })
+  protected async onPropsChange(): Promise<void> {
+    this.gridError = new GridError(this);
+    this.$on("pageChange", this.onPageChange);
+
+    try {
+      await this._loadGridConfig();
+      await this._loadGridContent();
+      this.dataItems = this.dataItems.map(item => {
+        return { ...item, selected: false };
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  @Watch("isLoading", { immediate: true })
+  protected onLoadingChange(newValue): void {
+    kendo.ui.progress($(".smart-element-grid-widget", this.$el), !!newValue);
+  }
+
   @Watch("dataItems")
-  public watchDataItems(val) {
+  public watchDataItems(val): void {
     Vue.nextTick(() => {
       val.forEach(item => {
         if (item.selected) {
-          // @ts-ignore
-          this.$refs.smartGridWidget.$children.forEach(child => {
+          this.$refs.smartGridWidget.$children.forEach((child: KendoVueGridRow) => {
             if (child.dataItem) {
               if (child.dataItem.properties.id === item.properties.id) {
+                // @ts-ignore
                 child.$el.firstElementChild.firstElementChild.checked = item.selected;
               }
             }
@@ -217,13 +306,11 @@ export default class GridController extends Mixins(I18nMixin) {
     });
     this.$emit("dataBound", this.gridInstance);
   }
-  public networkOnline: boolean = true;
-  public transaction: any = null;
-  public gridActions: any = null;
-  public gridInstance: any = null;
-  public gridError: any = null;
-  public gridExport: any = null;
-  public collectionProperties: any = {};
+  public networkOnline = true;
+  public transaction: { [key: string]: string } = null;
+  public gridInstance: AnkSmartElementGrid = null;
+  public gridError: GridError = null;
+  public collectionProperties: { [key: string]: string } = {};
   public translations = {
     downloadAllResults: "Download all results",
     downloadReport: "Download",
@@ -232,15 +319,15 @@ export default class GridController extends Mixins(I18nMixin) {
     downloadCancel: "Cancel"
   };
   public onlySelection = false;
-  public allColumns: any = this.columns;
-  public columnsList: any = this.columns;
-  public actionsList: any = this.actions;
-  public dataItems: any = [];
-  public selectedRows: any = [];
+  public allColumns: SmartGridColumn[] = this.columns;
+  public columnsList: SmartGridColumn[] = this.columns;
+  public actionsList: SmartGridAction[] = this.actions;
+  public dataItems: SmartGridRowData[] = [];
+  public selectedRows: string[] = [];
   public isLoading = false;
-  public currentSort: any = null;
-  public currentFilter: any = { logic: "and", filters: [] };
-  public currentPage: any = {
+  public currentSort: kendo.data.DataSourceSortItem = null;
+  public currentFilter: kendo.data.DataSourceFilters = { logic: "and", filters: [] };
+  public currentPage: { total: number; skip: number; take: number } = {
     total: null,
     skip: 0,
     take:
@@ -248,10 +335,10 @@ export default class GridController extends Mixins(I18nMixin) {
         ? this.pageable.pageSize || DEFAULT_PAGER.pageSize
         : DEFAULT_PAGER.pageSize
   };
-  public pager: any = this.pageable === true ? DEFAULT_PAGER : this.pageable;
-  public sorter: any = this.sortable === true ? DEFAULT_PAGER : this.sortable;
+  public pager = this.pageable === true ? DEFAULT_PAGER : this.pageable;
+  public sorter = this.sortable === true ? DEFAULT_PAGER : this.sortable;
 
-  public get gridInfo() {
+  public get gridInfo(): SmartGridInfo {
     return {
       columns: this.columns,
       actions: this.actions,
@@ -265,14 +352,14 @@ export default class GridController extends Mixins(I18nMixin) {
       filter: this.currentFilter,
       transaction: this.transaction,
       selectedRows: this.selectedRows,
-      onlySelection: this.onlySelection
+      onlySelection: this.onlySelection,
+      customData: this.customData
     };
   }
 
-  async created() {
+  async created(): Promise<void> {
     window.addEventListener("online", this.updateOnlineStatus);
     window.addEventListener("offline", this.updateOnlineStatus);
-    this.isLoading = true;
     this.gridError = new GridError(this);
     this.$on("pageChange", this.onPageChange);
 
@@ -282,18 +369,16 @@ export default class GridController extends Mixins(I18nMixin) {
       this.dataItems = this.dataItems.map(item => {
         return { ...item, selected: false };
       });
-      this.isLoading = false;
     } catch (error) {
       console.error(error);
-      this.isLoading = false;
     }
   }
 
-  beforeDestroy() {
+  beforeDestroy(): void {
     this.$off("pageChange", this.onPageChange);
   }
 
-  mounted() {
+  mounted(): void {
     let saveColumnsOptions = null;
     if (this.persistStateKey) {
       if (window && window.localStorage) {
@@ -308,21 +393,21 @@ export default class GridController extends Mixins(I18nMixin) {
     this.gridInstance = this;
     this.$emit("gridReady");
   }
-  public updateOnlineStatus(event) {
+  public updateOnlineStatus(): Promise<void> {
     const condition = navigator.onLine;
     if (condition !== this.networkOnline && condition) {
       this.networkOnline = condition;
-      this._loadGridContent();
+      return this._loadGridContent();
     } else {
       this.networkOnline = condition;
     }
   }
-  public expandColumns() {
-    // @ts-ignore
+
+  public expandColumns(): void {
     $(this.$refs.smartGridWidget.$el).toggleClass("grid-row-collapsed");
   }
 
-  public async onSettingsChange(changes) {
+  public async onSettingsChange(changes): Promise<void> {
     if (changes) {
       Object.keys(changes).forEach(colId => {
         if (this.$refs.smartGridWidget) {
@@ -346,7 +431,9 @@ export default class GridController extends Mixins(I18nMixin) {
     }
     await this._loadGridConfig();
   }
-  protected async _loadGridConfig() {
+
+  protected async _loadGridConfig(): Promise<void> {
+    this.isLoading = true;
     const url = this._getOperationUrl("config");
     const event = new GridEvent(
       {
@@ -407,15 +494,19 @@ export default class GridController extends Mixins(I18nMixin) {
             false
           );
           this.$emit("afterConfig", responseEvent);
+          this.isLoading = false;
         })
         .catch(error => {
           console.error(error);
           this.isLoading = false;
         });
+    } else {
+      this.isLoading = false;
     }
   }
 
-  protected async _loadGridContent() {
+  protected async _loadGridContent(): Promise<void> {
+    this.isLoading = true;
     const url = this._getOperationUrl("content");
     const event = new GridEvent(
       {
@@ -438,7 +529,7 @@ export default class GridController extends Mixins(I18nMixin) {
           this.currentPage.take = pager.take;
           this.dataItems = response.data.data.content;
           this.dataItems.forEach(item => {
-            item.selected = this.selectedRows.indexOf(item.properties.id) !== -1;
+            item.selected = this.selectedRows.indexOf(item.properties.id as string) !== -1;
           });
           const responseEvent = new GridEvent(
             {
@@ -448,32 +539,33 @@ export default class GridController extends Mixins(I18nMixin) {
             false
           );
           this.$emit("afterContent", responseEvent);
-          kendo.ui.progress($(".smart-element-grid-widget"), false);
+          this.isLoading = false;
         })
         .catch(error => {
           console.error(error);
           this.isLoading = false;
-          kendo.ui.progress($(".smart-element-grid-widget"), false);
         });
+    } else {
+      this.isLoading = false;
     }
   }
 
-  protected onSelectionChange(event) {
+  protected onSelectionChange(event): void {
     this.dataItems.find(item => {
       if (item.properties.id === event.dataItem.properties.id) {
         const checkedValue = event.event.target.checked;
         item.selected = checkedValue;
-        if (checkedValue && this.selectedRows.indexOf(item.properties.id) === -1) {
+        if (checkedValue && this.selectedRows.indexOf(item.properties.id as string) === -1) {
           this.selectedRows.push(event.dataItem.properties.id);
         } else {
-          this.selectedRows.splice(this.selectedRows.indexOf(item.properties.id), 1);
+          this.selectedRows.splice(this.selectedRows.indexOf(item.properties.id as string), 1);
         }
       }
     });
     this._loadGridContent();
   }
 
-  protected cellRenderFunction(createElement, tdElement: VNode, props, listeners) {
+  protected cellRenderFunction(createElement, tdElement: VNode, props, listeners): VNode | VNode[] {
     const columnConfig = this.columnsList[props.columnIndex];
     const event = new GridEvent(
       {
@@ -549,7 +641,7 @@ export default class GridController extends Mixins(I18nMixin) {
     return renderElement;
   }
 
-  protected headerCellRenderFunction(createElement, defaultRendering, props, listeners) {
+  protected headerCellRenderFunction(createElement, defaultRendering, props): VNode {
     const columnConfig = this.columnsList.find(c => c.field === props.field);
     return createElement(AnkGridHeaderCell, {
       props: { ...props, columnConfig, grid: this },
@@ -560,7 +652,7 @@ export default class GridController extends Mixins(I18nMixin) {
     });
   }
 
-  protected subHeaderCellRenderFunction(createElement, defaultRendering, props, change) {
+  protected subHeaderCellRenderFunction(createElement, defaultRendering, props): VNode {
     const columnConfig = this.columnsList.find(c => c.field === props.field);
     const options = {
       props: {
@@ -593,8 +685,8 @@ export default class GridController extends Mixins(I18nMixin) {
     return createElement(AnkGridCell, options);
   }
 
-  protected _getOperationUrl(operation) {
-    return CONTROLLER_URL.replace(/\{(\w+)\}/g, (match, substr, ...args) => {
+  protected _getOperationUrl(operation): string {
+    return CONTROLLER_URL.replace(/\{(\w+)\}/g, (match, substr) => {
       switch (substr) {
         case "controller":
           return this.controller;
@@ -608,47 +700,42 @@ export default class GridController extends Mixins(I18nMixin) {
     });
   }
 
-  protected async onSortChange(sortEvt) {
-    const sort = sortEvt.sort;
+  protected async onSortChange(sortEvt): Promise<void> {
     this.currentSort = sortEvt.sort;
-    this.isLoading = true;
     await this._loadGridContent();
-    this.isLoading = false;
   }
 
-  protected async onPageChange(pagerEvt) {
+  protected async onPageChange(pagerEvt): Promise<void> {
     if (this.networkOnline) {
       this.currentPage = Object.assign({}, this.currentPage, pagerEvt.page);
       this.pager = Object.assign({}, this.pager, { pageSize: pagerEvt.page.take });
-      this.isLoading = true;
     }
     await this._loadGridContent();
-    this.isLoading = false;
   }
 
-  protected async onFilterChange(filterEvt) {
+  protected async onFilterChange(filterEvt): Promise<void> {
     if (this.networkOnline) {
       if (filterEvt) {
-        const filters = this.currentFilter.filters.filter(f => f.field !== filterEvt.field);
+        const filters = this.currentFilter.filters.filter(
+          (f: kendo.data.DataSourceFilter & { field?: string }) => f.field !== filterEvt.field
+        );
         if (filterEvt.filters) {
           filters.push(filterEvt);
         }
         this.currentFilter.filters = filters;
       }
-      this.isLoading = true;
     }
     await this._loadGridContent();
-    this.isLoading = false;
   }
 
-  protected onColumnReorder(reorderEvt) {
-    console.log(reorderEvt);
+  protected onColumnReorder(reorderEvt): void {
+    this.columnsList = reorderEvt.columns;
   }
 
   protected export(
     exportAll = true,
     directDownload = true,
-    onPolling = () => {},
+    onPolling: (...args: unknown[]) => void = (): void => {},
     pollingTime = 500,
     onExport = this.doDefaultExport.bind(this)
   ): Promise<any> {
@@ -687,7 +774,7 @@ export default class GridController extends Mixins(I18nMixin) {
     }
   }
 
-  protected async doDefaultExport(transaction, queryParams, directDownload): Promise<any> {
+  protected async doDefaultExport(): Promise<any> {
     const exportUrl = this._getOperationUrl("export");
     await this.$http
       .get(exportUrl, {
@@ -701,7 +788,7 @@ export default class GridController extends Mixins(I18nMixin) {
       });
   }
 
-  protected downloadExportFile(blobFile) {
+  protected downloadExportFile(blobFile): void {
     const blob = new Blob([blobFile], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
     const url = window.URL.createObjectURL(blob);
     let link;
@@ -719,7 +806,7 @@ export default class GridController extends Mixins(I18nMixin) {
     link.click();
   }
 
-  protected sendBeforeExportEvent(onExport, onPolling) {
+  protected sendBeforeExportEvent(onExport, onPolling): GridExportEvent {
     const event = new GridExportEvent({
       component: this,
       type: "export"
@@ -730,13 +817,13 @@ export default class GridController extends Mixins(I18nMixin) {
     return event;
   }
 
-  protected sendBeforePollingEvent() {
+  protected sendBeforePollingEvent(): GridExportEvent {
     const event = new GridExportEvent(null, null, false);
     this.$emit("beforePollingGridExport", event);
     return event;
   }
 
-  protected sendErrorEvent(message) {
+  protected sendErrorEvent(message): GridExportEvent {
     const event = new GridExportEvent(
       {
         message: message
@@ -748,7 +835,7 @@ export default class GridController extends Mixins(I18nMixin) {
     return event;
   }
 
-  protected async createExportTransaction() {
+  protected async createExportTransaction(): Promise<void> {
     const exportUrl = this._getOperationUrl("export");
     await this.$http
       .get(exportUrl)
@@ -762,7 +849,14 @@ export default class GridController extends Mixins(I18nMixin) {
       });
   }
 
-  protected doTransactionExport(transaction, queryParams, exportRequest, pollingRequest, pollingTime, directDownload) {
+  protected doTransactionExport(
+    transaction,
+    queryParams,
+    exportRequest,
+    pollingRequest,
+    pollingTime,
+    directDownload
+  ): { data: string } {
     const transactionId = transaction.transactionId;
     const file = exportRequest(transaction, queryParams, directDownload);
     this.pollTransaction(transactionId, pollingRequest, pollingTime);
@@ -770,9 +864,9 @@ export default class GridController extends Mixins(I18nMixin) {
     return file;
   }
 
-  protected pollTransaction(transactionId, pollingCb, pollingTime) {
+  protected pollTransaction(transactionId, pollingCb, pollingTime): void {
     let timer = null;
-    const getStatus = () => {
+    const getStatus = (): void => {
       this.$http
         .get(`/api/v2/ui/transaction/${transactionId}/status`)
         .then(response => {

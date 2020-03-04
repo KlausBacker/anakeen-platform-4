@@ -1,9 +1,11 @@
-import { Component, Prop, Mixins, Vue } from "vue-property-decorator";
+import { Component, Prop, Mixins } from "vue-property-decorator";
 import AnkSmartForm from "../../../AnkSmartForm";
-import GridController from "../../AnkSEGrid.component";
 import { ISmartFormConfiguration } from "../../../AnkSmartForm/ISmartForm";
 import { default as AnkSmartFormDefinition } from "../../../AnkSmartForm/AnkSmartForm.component";
 import I18nMixin from "../../../../mixins/AnkVueComponentMixin/I18nMixin";
+import AnkSmartElementGrid from "../../AnkSEGrid.component";
+
+type OperatorType = "docid" | "account" | "enum" | "timestamp" | "time" | "date" | "int" | "double" | "money" | "text";
 
 const FIELD_TYPE_OPERATOR = {
   docid: {
@@ -32,9 +34,9 @@ const FIELD_TYPE_OPERATOR = {
   money: "money"
 };
 
-const isUnaryOperator = operator => operator === "isempty" || operator === "isnotempty";
+const isUnaryOperator = (operator): boolean => operator === "isempty" || operator === "isnotempty";
 
-const getFilterValueType = (columnType, operator, defaultType = "text") => {
+const getFilterValueType = (columnType, operator, defaultType: OperatorType = "text"): OperatorType | null => {
   if (isUnaryOperator(operator)) {
     return null;
   }
@@ -49,7 +51,7 @@ const getFilterValueType = (columnType, operator, defaultType = "text") => {
 @Component({
   name: "ank-se-grid-filter",
   components: {
-    "ank-smart-form": () => AnkSmartForm
+    "ank-smart-form": (): Promise<unknown> => AnkSmartForm
   }
 })
 export default class GridFilterCell extends Mixins(I18nMixin) {
@@ -80,7 +82,7 @@ export default class GridFilterCell extends Mixins(I18nMixin) {
     type: Object,
     required: true
   })
-  public grid!: GridController;
+  public grid!: AnkSmartElementGrid;
 
   @Prop({
     type: String,
@@ -90,6 +92,7 @@ export default class GridFilterCell extends Mixins(I18nMixin) {
 
   public $refs!: {
     smartForm: AnkSmartFormDefinition;
+    wrapper: HTMLElement;
   };
 
   public config: ISmartFormConfiguration = {
@@ -184,9 +187,9 @@ export default class GridFilterCell extends Mixins(I18nMixin) {
       second_grid_filter_value: ""
     }
   };
-  public created() {
+  public created(): void {
     if (this.grid && this.grid.currentFilter && this.grid.currentFilter.filters) {
-      const columnFilters = this.grid.currentFilter.filters.filter(f => f.field === this.field);
+      const columnFilters: any[] = this.grid.currentFilter.filters.filter((f: any) => f.field === this.field);
       if (columnFilters && columnFilters.length) {
         const columnFilter = columnFilters[0];
         if (columnFilter.filters.length >= 1) {
@@ -214,17 +217,15 @@ export default class GridFilterCell extends Mixins(I18nMixin) {
     this.updateValueFieldType("second_grid_filter_value", this.config.values.second_grid_filter_operator);
   }
 
-  public mounted() {
-    // @ts-ignore
-    this.$kendo.ui.progress(this.$(this.$refs.wrapper), true);
+  public mounted(): void {
+    kendo.ui.progress($(this.$refs.wrapper), true);
   }
 
-  public clear() {
+  public clear(): void {
     this.$emit("filter", { field: this.field });
   }
 
-  public filter() {
-    kendo.ui.progress($(".smart-element-grid-widget"), true);
+  public filter(): void {
     const firstOperator = this.$refs.smartForm.getValue("first_grid_filter_operator", "current");
     const firstValue = this.$refs.smartForm.getValue("first_grid_filter_value", "current");
     const secondOperator = this.$refs.smartForm.getValue("second_grid_filter_operator", "current");
@@ -257,7 +258,7 @@ export default class GridFilterCell extends Mixins(I18nMixin) {
     }
   }
 
-  protected onSmartFieldChange(event, se, sf) {
+  protected onSmartFieldChange(event, se, sf): void {
     if (sf.id === "first_grid_filter_operator" || sf.id === "second_grid_filter_operator") {
       // Smart Form will reload so keep operator and filter values
       ["first", "second"].forEach(item => {
@@ -272,12 +273,11 @@ export default class GridFilterCell extends Mixins(I18nMixin) {
     }
   }
 
-  protected onReady() {
-    // @ts-ignore
-    this.$kendo.ui.progress(this.$(this.$refs.wrapper), false);
+  protected onReady(): void {
+    kendo.ui.progress($(this.$refs.wrapper), false);
   }
 
-  protected updateValueFieldType(fieldValueId, fieldOperator) {
+  protected updateValueFieldType(fieldValueId, fieldOperator): void {
     const valueField = this.config.structure[0].content.find(el => el.name === fieldValueId);
     if (valueField) {
       const type = getFilterValueType(this.columnConfig.smartType, fieldOperator);
