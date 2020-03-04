@@ -85,6 +85,7 @@ const analyzeAndReturnWebpackConf = ({
     devtool: mode !== "dev" ? "sourcemap" : "cheap-module-eval-source-map",
     entry,
     output: {
+      jsonpFunction: `webpack_${moduleName}_${mode}`,
       publicPath: path.join("/", relativeOutputPath),
       path: path.resolve(buildPath, relativeOutputPath),
       filename: "[name]-[hash].js",
