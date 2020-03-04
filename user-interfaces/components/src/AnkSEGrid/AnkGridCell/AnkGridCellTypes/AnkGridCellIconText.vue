@@ -29,6 +29,7 @@ import GridEvent from "../../AnkGridEvent/AnkGridEvent";
 })
 export default class AnkGridCellIconText extends Mixins(AnkGridCellMixin) {
   public get linkUrl() {
+    // @ts-ignore
     const url = this.fieldValue.url;
     if (url) {
       if (this.columnConfig.smartType === "file" || this.columnConfig.smartType === "image") {
@@ -56,8 +57,10 @@ export default class AnkGridCellIconText extends Mixins(AnkGridCellMixin) {
   public get iconUrl() {
     switch (this.columnConfig.smartType) {
       case "image":
+        // @ts-ignore
         return this.fieldValue.thumbnail;
       default:
+        // @ts-ignore
         return this.fieldValue.icon;
     }
   }
