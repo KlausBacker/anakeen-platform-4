@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const webpack = require("webpack");
 const rollup = require("rollup");
 const webpackDevMiddleware = require("webpack-dev-middleware");
@@ -8,11 +10,7 @@ const config = require("./config.perso.js");
 const merge = require("webpack-merge");
 
 config.getRollupConfig().forEach(currentElement => {
-  console.log(currentElement);
   const compiler = rollup.watch(currentElement.default);
-  compiler.on('event', event => {
-    console.log("ROLLUP ", event);
-  });
 });
 
 config.getConfig().forEach(currentConfig => {
