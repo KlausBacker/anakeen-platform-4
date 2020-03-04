@@ -3,10 +3,10 @@
     <description>Tests for Anakeen Uis</description>
 
     <requires>
-        <module name="user-interfaces" version="^3.0.2-RC.2020.1.9"/>
-        <module name="workflow" version="^2.0.2-RC.2020.1.9"/>
+        <module name="user-interfaces" version="^3.0.2-RC.2020.1.10"/>
+        <module name="workflow" version="^2.0.2-RC.2020.1.10"/>
         <module name="smart-data-engine-test" version="2.0.x"/>
-        <module name="anakeen-hub-business-app" version="^1.0.4-RC.2020.1.9"/>
+        <module name="anakeen-hub-business-app" version="^1.0.4-RC.2020.1.10"/>
         <module name="anakeen-dev-data" version="2.0.x"/>
     </requires>
 
