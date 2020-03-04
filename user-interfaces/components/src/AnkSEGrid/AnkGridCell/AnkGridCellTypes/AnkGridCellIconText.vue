@@ -23,14 +23,14 @@ a {
 import { Component, Mixins } from "vue-property-decorator";
 import AnkGridCellMixin from "../AnkGridCellMixin";
 import GridEvent from "../../AnkGridEvent/AnkGridEvent";
+import { SmartGridCellPropertyValue } from "../../AnkSEGrid.component";
 
 @Component({
   name: "ank-grid-cell-icontext"
 })
 export default class AnkGridCellIconText extends Mixins(AnkGridCellMixin) {
   public get linkUrl() {
-    // @ts-ignore
-    const url = this.fieldValue.url;
+    const url = (this.fieldValue as { [key: string]: string}).url;
     if (url) {
       if (this.columnConfig.smartType === "file" || this.columnConfig.smartType === "image") {
         const reg = /inline=(\w+)&?/;
@@ -57,11 +57,9 @@ export default class AnkGridCellIconText extends Mixins(AnkGridCellMixin) {
   public get iconUrl() {
     switch (this.columnConfig.smartType) {
       case "image":
-        // @ts-ignore
-        return this.fieldValue.thumbnail;
+        return (this.fieldValue as { [key: string]: string}).thumbnail;
       default:
-        // @ts-ignore
-        return this.fieldValue.icon;
+        return (this.fieldValue as { [key: string]: string}).icon;
     }
   }
   public onClickLink() {

@@ -73,7 +73,10 @@ export default class GridHeaderCell extends Vue {
 
   public get isFiltered(): boolean {
     return (
-      this.grid.currentFilter && !!this.grid.currentFilter.filters.filter((f: any) => f.field === this.field).length
+      this.grid.currentFilter &&
+      !!this.grid.currentFilter.filters.filter(
+        (f: kendo.data.DataSourceFilter & { field?: string }) => f.field === this.field
+      ).length
     );
   }
   public showFilters(): void {
@@ -109,7 +112,6 @@ export default class GridHeaderCell extends Vue {
   }
   public created(): void {
     // sort change
-    // @ts-ignore
     if (this.grid.sorter && this.grid.sorter.allowUnsort === false && this.sortable) {
       this.sortableDir = SortableDirection.ASC;
       this.$emit("sortchange", {
@@ -126,7 +128,6 @@ export default class GridHeaderCell extends Vue {
     let sortableStr: string;
     const sortableValues = [null, "asc", "desc"];
     this.sortableDir = (this.sortableDir + 1) % 3;
-    // @ts-ignore
     if (this.grid.sorter && this.grid.sorter.allowUnsort === true && this.sortable) {
       sortableStr = sortableValues[this.sortableDir];
     } else {
