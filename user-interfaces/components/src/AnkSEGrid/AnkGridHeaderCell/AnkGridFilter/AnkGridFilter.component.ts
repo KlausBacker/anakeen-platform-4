@@ -189,7 +189,7 @@ export default class GridFilterCell extends Mixins(I18nMixin) {
   };
   public created(): void {
     if (this.grid && this.grid.currentFilter && this.grid.currentFilter.filters) {
-      const columnFilters = this.grid.currentFilter.filters.filter(f => f.field === this.field);
+      const columnFilters: any[] = this.grid.currentFilter.filters.filter((f: any) => f.field === this.field);
       if (columnFilters && columnFilters.length) {
         const columnFilter = columnFilters[0];
         if (columnFilter.filters.length >= 1) {
