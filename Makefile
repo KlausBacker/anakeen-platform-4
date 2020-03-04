@@ -93,7 +93,7 @@ clean-env-full: clean-env ## Clean docker environment and remove images
 #	rm -rf $(NODE_MODULES_DIR) $(DEVTOOLS_TMP_DIR)
 
 .PHONY: update-all
-update-all: app-autorelease | start-env ## Update all modules
+update-all: | start-env ## Update all modules
 	$(_CONTROL_CMD) update --no-interaction --no-ansi
 
 .PHONY: install-all
