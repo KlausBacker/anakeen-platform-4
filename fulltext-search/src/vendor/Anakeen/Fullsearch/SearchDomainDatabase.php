@@ -773,11 +773,11 @@ SQL;
 
                             try {
                                 $fileRequestSend = IndexFile::sendIndexRequest(
-                                        $se,
-                                        $this->domainName,
-                                        $fileInfo,
-                                        $kf
-                                    ) || $fileRequestSend;
+                                    $se,
+                                    $this->domainName,
+                                    $fileInfo,
+                                    $kf
+                                ) || $fileRequestSend;
                             } catch (Exception $e) {
                                 if ($e->getDcpCode() !== "FSEA0010") {
                                     throw $e;

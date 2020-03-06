@@ -80,7 +80,7 @@ class SearchDomain implements \JsonSerializable
     /**
      * Reset all search data that are not up-to-date
      * Delete all previously recorded searching data
-     * @param \Closure|null $onUpdate
+     * @param \Closure|null $onUpdate callback call before update
      * @throws \Anakeen\Exception
      */
     public function reindexSearchData(\Closure $onUpdate = null)
@@ -95,7 +95,7 @@ class SearchDomain implements \JsonSerializable
 
     /**
      * Update all search data that are not up-to-date
-     * @param \Closure|null $onUpdate
+     * @param \Closure|null $onUpdate callback call before update
      * @throws \Anakeen\Exception
      */
     public function updateIndexSearchData(\Closure $onUpdate = null)
