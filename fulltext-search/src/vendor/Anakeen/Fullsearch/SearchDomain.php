@@ -3,7 +3,6 @@
 
 namespace Anakeen\Fullsearch;
 
-use Anakeen\Core\ContextManager;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Exception;
 
@@ -20,16 +19,26 @@ class SearchDomain implements \JsonSerializable
      */
     public $lang;
 
+    /**
+     * SearchDomain constructor.
+     * @param string $name Search Domain Identifier
+     * @throws Exception
+     */
     public function __construct(string $name = "")
     {
         if ($name) {
-            $this->get($name);
+            $this->affect($name);
         }
     }
 
-    public function get($name)
+    /**
+     * Instance object from parameter config
+     * @param string $name Search Domain Identifier
+     * @throws Exception
+     */
+    public function affect($name)
     {
-        $domains=SearchDomainManager::getConfig();
+        $domains = SearchDomainManager::getConfig();
         if (!isset($domains[$name])) {
             throw new Exception("FSEA0002", $name);
         }
@@ -44,32 +53,54 @@ class SearchDomain implements \JsonSerializable
     }
 
 
+    /**
+     * Record config and create database tables
+     * @throws Exception
+     */
     public function record()
     {
         SearchDomainManager::recordDomainConfig($this);
-        $dbDomain=new SearchDomainDatabase($this->name);
+        $dbDomain = new SearchDomainDatabase($this->name);
         $dbDomain->initialize();
     }
 
 
+    /**
+     * Reset indexing for a Smart Element for current domain
+     * @param SmartElement $se
+     * @throws Exception
+     * @throws \Anakeen\Database\Exception
+     */
     public function reindexSearchDataElement(SmartElement $se)
     {
-        $db=new SearchDomainDatabase($this->name);
+        $db = new SearchDomainDatabase($this->name);
         $db->updateSmartElement($se);
     }
 
+    /**
+     * Reset all search data that are not up-to-date
+     * Delete all previously recorded searching data
+     * @param \Closure|null $onUpdate
+     * @throws \Anakeen\Exception
+     */
     public function reindexSearchData(\Closure $onUpdate = null)
     {
-        $db=new SearchDomainDatabase($this->name);
+        $db = new SearchDomainDatabase($this->name);
         $db->initialize();
         if ($onUpdate) {
             $db->onUpdate($onUpdate);
         }
         $db->recordData(true);
     }
+
+    /**
+     * Update all search data that are not up-to-date
+     * @param \Closure|null $onUpdate
+     * @throws \Anakeen\Exception
+     */
     public function updateIndexSearchData(\Closure $onUpdate = null)
     {
-        $db=new SearchDomainDatabase($this->name);
+        $db = new SearchDomainDatabase($this->name);
         $db->initialize();
         if ($onUpdate) {
             $db->onUpdate($onUpdate);
@@ -77,9 +108,6 @@ class SearchDomain implements \JsonSerializable
         $db->recordData(false);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function jsonSerialize()
     {
         return [

@@ -13,6 +13,10 @@ class SearchDomainManager
     const PARAMCONFIG = "DOMAIN_CONFIG";
 
 
+    /**
+     * Return domain config recorded to context parameter
+     * @return array
+     */
     public static function getConfig()
     {
         $domainsParam = ContextManager::getParameterValue(self::NSPARAM, "DOMAIN_CONFIG");
@@ -26,6 +30,10 @@ class SearchDomainManager
     }
 
 
+    /**
+     * Record domain config into context parameter
+     * @param SearchDomain $domain
+     */
     public static function recordDomainConfig(SearchDomain $domain)
     {
         $domains=self::getConfig();
