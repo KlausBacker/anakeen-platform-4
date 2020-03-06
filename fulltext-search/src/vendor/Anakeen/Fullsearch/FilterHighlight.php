@@ -17,10 +17,16 @@ class FilterHighlight
      */
     protected $dbDomain;
     protected $pattern;
-    protected $startSel="[";
-    protected $stopSel="]";
+    protected $startSel = "{{";
+    protected $stopSel = "}}";
 
-    public function __construct($domainName)
+
+    /**
+     * FilterHighlight constructor.
+     *
+     * @param string $domainName Search Domain Identifier
+     */
+    public function __construct(string $domainName)
     {
         $this->domainName = $domainName;
 
@@ -29,9 +35,18 @@ class FilterHighlight
     }
 
 
+    /**
+     * Return part of text where pattern is found
+     * @param string $seId Smart Element Identifier
+     * @param string $pattern terme to highlight
+     *
+     * @return mixed
+     * @throws \Anakeen\Database\Exception
+     * @throws \Anakeen\Exception
+     */
     public function highlight($seId, $pattern)
     {
-        $sql=sprintf(
+        $sql = sprintf(
             "select ts_headline('%s', (ta || ' ' || tb || ' ' || tc || ' ' || td || coalesce((select string_agg(textcontent, ',') 
                     from %s where fileid in (select unnest(files) from %s where docid=%d)), '')), 
                    to_tsquery('simple', '%s'), 'MaxFragments=1,StartSel=%s, StopSel=%s') from %s where docid=%d group by ta, tb, tc, td;",
@@ -53,13 +68,12 @@ class FilterHighlight
 
     protected function getPattern($pattern)
     {
-        return  SearchDomainDatabase::patternToTsquery($this->domain->stem, $pattern);
+        return SearchDomainDatabase::patternToTsquery($this->domain->stem, $pattern);
     }
 
-
-
     /**
-     * @param string $startSel
+     * Set characters to identify the begining of match term
+     * @param string $startSel default is "{{"
      * @return FilterHighlight
      */
     public function setStartSel(string $startSel): FilterHighlight
@@ -69,7 +83,8 @@ class FilterHighlight
     }
 
     /**
-     * @param string $stopSel
+     * Set characters to identify the ending of match term
+     * @param string $stopSel  default is "}}"
      * @return FilterHighlight
      */
     public function setStopSel(string $stopSel): FilterHighlight

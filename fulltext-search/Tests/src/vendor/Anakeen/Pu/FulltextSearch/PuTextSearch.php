@@ -106,36 +106,36 @@ class PuTextSearch extends FulltextSearchConfig
     public function dataHighLight()
     {
         return [
-            ["testDomainText", "lion", ["TST_ETEXT_002" => "La femelle du [lion] est la [lionne]"]],
+            ["testDomainText", "lion", ["TST_ETEXT_002" => "La femelle du {{lion}} est la {{lionne}}"]],
             [
                 "testDomainText",
                 "ours",
                 [
-                    "TST_ETEXT_003" => "par les animaux sauvages ([ours] notamment) lors de leur remontée",
-                    "TST_ETEXT_001" => "Tous les [ours] ont un grand corps trapu et massif",
+                    "TST_ETEXT_003" => "par les animaux sauvages ({{ours}} notamment) lors de leur remontée",
+                    "TST_ETEXT_001" => "Tous les {{ours}} ont un grand corps trapu et massif",
                 ]
             ],
             [
                 "testDomainText",
                 "saumon",
                 [
-                    "TST_ETEXT_003" => "[Saumon]: est un nom vernaculaire",
-                    "TST_ETEXT_001" => "L'ours aime bien les [saumons] sauvages"
+                    "TST_ETEXT_003" => "{{Saumon}}: est un nom vernaculaire",
+                    "TST_ETEXT_001" => "L'ours aime bien les {{saumons}} sauvages"
                 ]
             ],
             [
                 "testDomainText",
                 "salmonidés",
                 [
-                    "TST_ETEXT_004" => "espèces de poissons de la famille des [salmonidés]",
-                    "TST_ETEXT_003" => "espèces de poissons de la famille des [salmonidés]"
+                    "TST_ETEXT_004" => "espèces de poissons de la famille des {{salmonidés}}",
+                    "TST_ETEXT_003" => "espèces de poissons de la famille des {{salmonidés}}"
                 ]
             ],
             [
                 "testDomainText",
                 "rivières de l'Atlas",
                 [
-                    "TST_ETEXT_004" => "les [rivières] de l'[Atlas] au Maroc"
+                    "TST_ETEXT_004" => "les {{rivières}} de l'{{Atlas}} au Maroc"
                 ]
             ],
         ];

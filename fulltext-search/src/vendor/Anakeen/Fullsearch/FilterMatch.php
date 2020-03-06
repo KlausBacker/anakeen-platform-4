@@ -19,7 +19,13 @@ class FilterMatch implements ElementSearchFilter
     protected $dbDomain;
     protected $pattern;
 
-    public function __construct($domainName, $searchPattern)
+    /**
+     * FilterMatch constructor.
+     *
+     * @param string $domainName Search Domain Identifier
+     * @param string $searchPattern terms to search
+     */
+    public function __construct(string $domainName, string $searchPattern)
     {
         $this->domainName = $domainName;
         $this->searchPattern = $searchPattern;
@@ -29,6 +35,13 @@ class FilterMatch implements ElementSearchFilter
     }
 
 
+    /**
+     * Internal method to apply filter
+     * @param \Anakeen\Search\Internal\SearchSmartData $search
+     * @return string|void
+     * @throws \Anakeen\Exception
+     * @throws \Anakeen\Search\Exception
+     */
     public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
         //("id = dochisto(id)");
@@ -44,9 +57,9 @@ class FilterMatch implements ElementSearchFilter
 
     /**
      * Return sql order to be set in setOrder
-     * @see SearchElements::setOrder()
      * @return string
      * @throws \Anakeen\Exception
+     * @see SearchElements::setOrder()
      */
     public function getRankOrder()
     {
