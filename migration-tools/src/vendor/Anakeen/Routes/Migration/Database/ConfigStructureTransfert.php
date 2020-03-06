@@ -208,8 +208,6 @@ SQL;
 
     protected static function importStructureFields($structureName)
     {
-
-        Utils::importForeignTable("docattr");
         $qsql = <<<SQL
 insert into docattr (%s) 
 select %s from dynacase.docattr where docid=(select id from docfam where name='%s') returning id
@@ -232,6 +230,11 @@ SQL;
         );
 
         DbManager::query($sql, $ids, true);
+
+        // Delete menu and action
+        $sql = "delete from docattr where type='menu' or type='action'";
+        DbManager::query($sql);
+
         // Delete MODATTR without father
         $sql = "delete from docattr where id ~ '^:' and substring(id,2) not in (select id from docattr)";
         DbManager::query($sql);

@@ -46,6 +46,7 @@ class InitTransfert
         DbManager::query("create schema if not exists dynacase;");
         // Testing connexion with foreign server first
         Utils::importForeignTable("docfam");
+        Utils::importForeignTable("docattr");
 
         $tools = file_get_contents(__DIR__ . "/../../../Migration/Tools.sql");
         DbManager::query($tools);
