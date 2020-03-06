@@ -3,7 +3,7 @@
 namespace Anakeen\Pu\FulltextSearch;
 
 use Anakeen\Core\SEManager;
-use Anakeen\Fullsearch\FilterContains;
+use Anakeen\Fullsearch\FilterMatch;
 use Anakeen\Search\SearchElements;
 
 class PuTextSearch extends FulltextSearchConfig
@@ -29,7 +29,7 @@ class PuTextSearch extends FulltextSearchConfig
     {
         $s = new SearchElements();
 
-        $filter = new FilterContains($domain, $searchPatten);
+        $filter = new FilterMatch($domain, $searchPatten);
         $s->setSlice(10);
         $s->addFilter($filter);
         $results = $s->getResults();
@@ -54,7 +54,7 @@ class PuTextSearch extends FulltextSearchConfig
     {
         $s = new SearchElements();
 
-        $filter = new FilterContains($domain, $searchPatten);
+        $filter = new FilterMatch($domain, $searchPatten);
         $s->setSlice(10);
         $s->addFilter($filter);
         $s->setOrder($filter->getRankOrder());

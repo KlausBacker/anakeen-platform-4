@@ -5,7 +5,7 @@ namespace Anakeen\Pu\FulltextSearch;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Exception;
-use Anakeen\Fullsearch\FilterContains;
+use Anakeen\Fullsearch\FilterMatch;
 use Anakeen\Fullsearch\IndexFile;
 use Anakeen\Fullsearch\SearchDomainDatabase;
 use Anakeen\Search\SearchElements;
@@ -133,7 +133,7 @@ class PuFileSearch extends FulltextSearchConfig
      
         $s = new SearchElements();
 
-        $filter = new FilterContains($domain, $searchPatten);
+        $filter = new FilterMatch($domain, $searchPatten);
         $s->setSlice(10);
         $s->addFilter($filter);
         $results = $s->getResults();

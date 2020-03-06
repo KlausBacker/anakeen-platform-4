@@ -2,7 +2,7 @@
 
 namespace Anakeen\Pu\FulltextSearch;
 
-use Anakeen\Fullsearch\FilterContains;
+use Anakeen\Fullsearch\FilterMatch;
 use Anakeen\Search\SearchElements;
 
 class PuDocidSearch extends FulltextSearchConfig
@@ -31,7 +31,7 @@ class PuDocidSearch extends FulltextSearchConfig
 
         $s = new SearchElements();
 
-        $filter = new FilterContains($domain, $searchPatten);
+        $filter = new FilterMatch($domain, $searchPatten);
         $s->setSlice(10);
         $s->addFilter($filter);
         $results = $s->getResults();

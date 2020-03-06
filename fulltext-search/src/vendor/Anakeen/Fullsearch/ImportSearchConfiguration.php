@@ -49,12 +49,15 @@ class ImportSearchConfiguration
     }
 
 
+    /**
+     * @return SearchDomain
+     */
     public function recordConfig()
     {
         $this->analyzeXml();
         $this->domain->record();
+        return $this->domain;
     }
-
 
     protected function analyzeXml()
     {
@@ -62,6 +65,7 @@ class ImportSearchConfiguration
         $this->domain->name = $this->dom->documentElement->getAttribute("name");
         $this->domain->lang = substr($this->dom->documentElement->getAttribute("lang"), 0, 2);
         $this->domain->stem = $this->xpath->evaluate("string(sd:search-stem)");
+        $this->domain->description = $this->xpath->evaluate("string(sd:description)");
 
         $locales = ContextManager::getLocales();
         foreach ($locales as $kLocale => $locale) {

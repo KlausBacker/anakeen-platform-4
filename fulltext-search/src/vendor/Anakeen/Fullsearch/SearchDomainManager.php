@@ -5,6 +5,7 @@ namespace Anakeen\Fullsearch;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\Internal\SmartElement;
+use Anakeen\Exception;
 
 class SearchDomainManager
 {
@@ -34,7 +35,7 @@ class SearchDomainManager
     }
 
     /**
-     * Update search data for all Search Domain compatibl with a specific smartElement
+     * Update search data for all Search Domain compatible with a specific smartElement
      * @param SmartElement $smartElement
      */
     public static function updateSmartElementSearchData(SmartElement $smartElement)
@@ -43,7 +44,13 @@ class SearchDomainManager
 
         foreach ($domains as $domainName => $config) {
             $domain = new SearchDomain($domainName);
-            $domain->reindexSearchDataElement($smartElement);
+            try {
+                $domain->reindexSearchDataElement($smartElement);
+            } catch (Exception $e) {
+                if ($e->getDcpCode() !== "FSEA0006") {
+                    throw $e;
+                }
+            }
         }
     }
 }

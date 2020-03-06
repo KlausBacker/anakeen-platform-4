@@ -4,7 +4,7 @@ namespace Anakeen\Fullsearch\Route;
 
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\Settings;
-use Anakeen\Fullsearch\FilterContains;
+use Anakeen\Fullsearch\FilterMatch;
 use Anakeen\Fullsearch\SearchDomain;
 use Anakeen\Router\URLUtils;
 use Anakeen\Routes\Core\DocumentList;
@@ -40,7 +40,7 @@ class SearchElements extends DocumentList
 
         $data["requestParameters"]["q"] = $this->pattern;
         $data["requestParameters"]["searchDomain"] = $this->domainName;
-        $data["uri"]=URLUtils::generateURL(Settings::ApiV2 . "fullsearch/domains/{$this->domainName}/smart-elements/");
+        $data["uri"] = URLUtils::generateURL(Settings::ApiV2 . "fullsearch/domains/{$this->domainName}/smart-elements/");
 
         return $data;
     }
@@ -49,28 +49,32 @@ class SearchElements extends DocumentList
     protected function prepareDocumentList()
     {
         parent::prepareDocumentList();
-        $filter = new FilterContains($this->domainName, $this->pattern);
+        if ($this->pattern) {
+            $filter = new FilterMatch($this->domainName, $this->pattern);
 
-        $this->_searchDoc->addFilter($filter);
-        $this->_searchDoc->setOrder($filter->getRankOrder());
+            $this->_searchDoc->addFilter($filter);
+            $this->_searchDoc->setOrder($filter->getRankOrder());
+        }
     }
 
     protected function prepareDocumentFormatter($documentList)
     {
         $documentFormatter = parent::prepareDocumentFormatter($documentList);
 
-        $h=new \Anakeen\Fullsearch\FilterHighlight($this->domainName);
-        $h->setStartSel("[[[");
-        $h->setStopSel("]]]");
-        $fmt=$documentFormatter->getFormatCollection();
-        $previous=$fmt->getDocumentRenderHook();
-        $fmt->setDocumentRenderHook(function ($values, SmartElement $smartElement) use ($h, $previous){
-            if ($previous) {
-                $values=$previous($values, $smartElement);
-            }
-            $values["highlights"]=$h->highlight($smartElement->id, $this->pattern);
-            return $values;
-        });
+        if ($this->pattern) {
+            $h = new \Anakeen\Fullsearch\FilterHighlight($this->domainName);
+            $h->setStartSel("[[[");
+            $h->setStopSel("]]]");
+            $fmt = $documentFormatter->getFormatCollection();
+            $previous = $fmt->getDocumentRenderHook();
+            $fmt->setDocumentRenderHook(function ($values, SmartElement $smartElement) use ($h, $previous) {
+                if ($previous) {
+                    $values = $previous($values, $smartElement);
+                }
+                $values["highlights"] = $h->highlight($smartElement->id, $this->pattern);
+                return $values;
+            });
+        }
         return $documentFormatter;
     }
 

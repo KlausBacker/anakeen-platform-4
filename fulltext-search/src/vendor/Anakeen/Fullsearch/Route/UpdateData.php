@@ -8,6 +8,10 @@ use Anakeen\Fullsearch\SearchDomainManager;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\TransformationEngine\Manager as TeManager;
 
+/**
+ *
+ * @note used POST /api/admin/fullsearch/domains/
+ */
 class UpdateData
 {
     protected $teConnectionChecked = false;

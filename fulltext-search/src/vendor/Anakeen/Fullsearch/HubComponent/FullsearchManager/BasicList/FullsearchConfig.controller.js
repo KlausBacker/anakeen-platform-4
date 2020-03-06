@@ -1,7 +1,7 @@
 import Vue from "vue";
 import { Grid } from "@progress/kendo-vue-grid";
 
-const componentInstance = Vue.component("template-component", {
+const detailInstance = Vue.component("template-component", {
   props: {
     dataItem: Object
   },
@@ -58,6 +58,7 @@ const componentHeaderInstance = Vue.component("template-component", {
       if (this.grid && this.grid.nextUpdateDate) {
         return this.grid.nextUpdateDate.toDateString() + " " + this.grid.nextUpdateDate.toTimeString().substr(0, 5);
       }
+      return "No update date";
     },
     clickHandler: function(e) {
       if (this.autoReloadTimer) {
@@ -73,6 +74,7 @@ const componentHeaderInstance = Vue.component("template-component", {
   }
 });
 
+
 // noinspection JSUnusedGlobalSymbols
 export default {
   name: "ank-fullsearch-list",
@@ -83,7 +85,7 @@ export default {
     return {
       selectedField: "selected",
       selectedID: "",
-      detailTemplate: componentInstance,
+      detailTemplate: detailInstance,
       domains: [],
       fileCacheSize: {},
       gridData: null,
@@ -93,7 +95,7 @@ export default {
       autoReloadTimer: null,
       columns: [
         {
-          field: "domainName",
+          field: "title",
           title: "Search domains",
           headerCell: this.headerCellRenderFunction
         }
@@ -117,7 +119,7 @@ export default {
         }
       });
     },
-    fetchConfigs() {
+    fetchConfigs: function() {
       return this.$http.get("/api/admin/fullsearch/domains/").then(response => {
         this.configInfo = [];
         this.fileCacheSize = response.data.data.fileCacheSize;
@@ -140,6 +142,8 @@ export default {
           this.configInfo.push({
             domainName: domainName,
             domainStem: domainStem,
+            description: domain.description,
+            title: domain.description ? `${domain.description} (${domainName})` : domainName,
             database: domain.database,
             structures: domain.configs
           });

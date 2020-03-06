@@ -5,17 +5,28 @@
             <sde:callable>Anakeen\Fullsearch\Route\SearchDomains</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/admin/fullsearch/domains/</sde:pattern>
+            <sde:description>Retrieve all domains configuration</sde:description>
             <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>
                 <sde:access ns="AdminCenter">AdminFullSearch</sde:access>
             </sde:requiredAccess>
         </sde:route>
 
+        <sde:route name="UpdateSearchData">
+            <sde:callable>Anakeen\Fullsearch\Route\UpdateData</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/admin/fullsearch/domains/</sde:pattern>
+            <sde:description>Update search data for all domains</sde:description>
+            <sde:requiredAccess operator="or">
+                <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminFullSearch</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
     </sde:routes>
 
     <sde:accesses namespace="AdminCenter">
         <sde:access name="AdminFullSearch">
-            <sde:description>Tokens administrator access</sde:description>
+            <sde:description>Fulltext administrator access</sde:description>
         </sde:access>
         <sde:route-access ref="AdminFullSearch" account="fullsearch_administrator" />
     </sde:accesses>

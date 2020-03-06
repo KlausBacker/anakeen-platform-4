@@ -5,7 +5,7 @@ namespace Anakeen\Fullsearch;
 use Anakeen\Search\Filters\ElementSearchFilter;
 use Anakeen\Search\SearchElements;
 
-class FilterContains implements ElementSearchFilter
+class FilterMatch implements ElementSearchFilter
 {
     protected $domainName;
     protected $searchPattern;

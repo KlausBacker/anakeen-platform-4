@@ -58,7 +58,7 @@ const conf = {
         contentBase: PUBLIC_PATH,
         compress: true,
         port: 9002,
-        host: '0.0.0.0',
+        host: "0.0.0.0",
         proxy: {
           "!/Anakeen/adminFullsearch/dev/": {
             target: `http://localhost:10083`

@@ -15,6 +15,7 @@
         <process command="./ank.php --script=updateclass --class='Anakeen\Fullsearch\FileContentDatabase'">
             <label>Initialize system database</label>
         </process>
+        <process command="./ank.php --script=../vendor/Anakeen/Fullsearch/Config/unaccentPgParser"/>
 
         <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/Fullsearch/Config/FullsearchRoles.xml"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Fullsearch/Config/hubConfiguration.xml"/>

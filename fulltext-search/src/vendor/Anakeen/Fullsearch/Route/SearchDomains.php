@@ -68,7 +68,9 @@ SQL;
         foreach ($tasks as $task) {
             $dates[]=$task->getRawValue(TaskFields::task_nextdate);
         }
-
-        return min($dates);
+        if (count($dates)>0) {
+            return min($dates);
+        }
+        return null;
     }
 }

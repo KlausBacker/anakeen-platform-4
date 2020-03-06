@@ -12,6 +12,7 @@ class SearchDomain implements \JsonSerializable
     const NSPARAM = "Fullsearch";
     public $name;
     public $stem;
+    public $description;
     /** @var SearchConfig[] */
     public $configs = [];
     /**
@@ -57,10 +58,13 @@ class SearchDomain implements \JsonSerializable
         $db->updateSmartElement($se);
     }
 
-    public function reindexSearchData()
+    public function reindexSearchData(\Closure $onUpdate = null)
     {
         $db=new SearchDomainDatabase($this->name);
         $db->initialize();
+        if ($onUpdate) {
+            $db->onUpdate($onUpdate);
+        }
         $db->recordData(true);
     }
     public function updateIndexSearchData(\Closure $onUpdate = null)
@@ -82,6 +86,7 @@ class SearchDomain implements \JsonSerializable
             "name" => $this->name,
             "lang" => $this->lang,
             "stem" => $this->stem,
+            "description" => $this->description,
             "configs" => $this->configs
         ];
     }

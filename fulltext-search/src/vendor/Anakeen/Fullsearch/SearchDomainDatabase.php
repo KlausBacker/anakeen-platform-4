@@ -60,6 +60,7 @@ class SearchDomainDatabase
         $sql = sprintf("delete from %s", $this->getTableName());
         DbManager::query($sql);
     }
+
     /**
      * Reindex all data that are not up-to-date described in search domain
      * @param bool $clearDataBefore if true, previous recorded data are deleted before record data
@@ -72,9 +73,9 @@ class SearchDomainDatabase
      */
     public function recordData(bool $clearDataBefore)
     {
-        $sessionId=crc32($this->domain->name);
-        $isLocked=DbManager::lockSession($sessionId, true);
-        if (! $isLocked) {
+        $sessionId = crc32($this->domain->name);
+        $isLocked = DbManager::lockSession($sessionId, true);
+        if (!$isLocked) {
             throw new Exception("FSEA0012", $this->domainName);
         }
         $currentLanguage = ContextManager::getLanguage();
@@ -98,7 +99,7 @@ class SearchDomainDatabase
                 return $item->field;
             }, $smartStructureSearchconfig->files));
 
-            $fields[]="mdate";
+            $fields[] = "mdate";
 
             $structureName = $smartStructureSearchconfig->structure;
             $structure = SEManager::getFamily($structureName);
@@ -177,6 +178,9 @@ SQL;
             }
             $s = new SearchElements($structure->id);
             $s->overrideAccessControl();
+            if ($smartStructureSearchconfig->collection) {
+                $s->useCollection($smartStructureSearchconfig->collection);
+            }
             $results = $s->onlyCount();
 
             $stats["structures"][$structureName]["totalToIndex"] = $results;
@@ -184,6 +188,9 @@ SQL;
 
             $s = new SearchElements($structure->id);
             $s->overrideAccessControl();
+            if ($smartStructureSearchconfig->collection) {
+                $s->useCollection($smartStructureSearchconfig->collection);
+            }
             $s->join(sprintf("id = %s(docid)", $this->getTableName()));
             $results = $s->onlyCount();
 
@@ -192,6 +199,9 @@ SQL;
 
             $s = new SearchElements($structure->id);
             $s->overrideAccessControl();
+            if ($smartStructureSearchconfig->collection) {
+                $s->useCollection($smartStructureSearchconfig->collection);
+            }
             $s->join(sprintf("id = %s(docid)", $this->getTableName()));
             $s->addFilter(
                 "%s.mdate > %s.mdate",
@@ -208,13 +218,13 @@ SQL;
             $this->getTableName()
         );
         DbManager::query($sql, $status);
-        $dbStatus=array_map(function ($item) {
+        $dbStatus = array_map(function ($item) {
             return $item["status"];
         }, $status);
 
         foreach (["W", "K", "D"] as $codeStatus) {
             if (!in_array($codeStatus, $dbStatus)) {
-                $status[]=["status"=>$codeStatus, "count"=>0];
+                $status[] = ["status" => $codeStatus, "count" => 0];
             }
         }
 
@@ -241,12 +251,13 @@ SQL;
     }
 
     /**
+     * Return all failed files indexing
      * @TODO Add admin interface to see failing files details
      * @return mixed
      * @throws Exception
      * @throws \Anakeen\Database\Exception
      */
-    protected function getFailingFiles()
+    public function getFailingFiles()
     {
         $sql = sprintf(
             "select f.fileid, v.name as filename, docread.title, docread.id 
@@ -276,9 +287,22 @@ SQL;
             $structureClass = SEManager::getFamilyClassName($smartStructureSearchconfig->structure);
 
             if (is_a($se, $structureClass)) {
-                // @TODO its wrong if use collection
-                $config = $smartStructureSearchconfig;
-                break;
+                if ($smartStructureSearchconfig->collection) {
+                    $s = new SearchElements($smartStructureSearchconfig->structure);
+                    $s->useCollection($smartStructureSearchconfig->collection);
+                    $s->addFilter(
+                        "initid = %d",
+                        $se->initid
+                    );
+                    $s->search();
+                    if ($s->count() > 0) {
+                        $config = $smartStructureSearchconfig;
+                        break;
+                    }
+                } else {
+                    $config = $smartStructureSearchconfig;
+                    break;
+                }
             }
         }
         if (!$config) {
@@ -288,7 +312,7 @@ SQL;
         if ($this->domain->lang !== $currentLanguage) {
             ContextManager::setLanguage($this->domain->lang);
         }
-        // @TODO need delete other revision also if search config has no revision option
+        // Delete before reset searching data
         $sql = sprintf(
             "delete from %s where docid=%d",
             $this->getTableName(),
@@ -450,7 +474,7 @@ SQL;
         $config->addTokenDefinition(new TokenDefn("PLAIN", "[^\\s]+", "u"));
 
 
-        $pattern=str_replace("'", " ", $pattern);
+        $pattern = str_replace("'", " ", $pattern);
         $lexer = new Lexer($config);
         $lexer->setInput($pattern);
         $lexer->moveNext();
@@ -541,7 +565,7 @@ SQL;
                     if ($needAddAndOperator === true) {
                         $finalQueryParts[] = " & ";
                     }
-                    $startWord = trim($part["value"], " *") ;
+                    $startWord = trim($part["value"], " *");
                     $finalQueryParts[] = sprintf("%s:* ", Strings::unaccent($startWord));
                     $needAddAndOperator = true;
             }
@@ -749,11 +773,11 @@ SQL;
 
                             try {
                                 $fileRequestSend = IndexFile::sendIndexRequest(
-                                    $se,
-                                    $this->domainName,
-                                    $fileInfo,
-                                    $kf
-                                ) || $fileRequestSend;
+                                        $se,
+                                        $this->domainName,
+                                        $fileInfo,
+                                        $kf
+                                    ) || $fileRequestSend;
                             } catch (Exception $e) {
                                 if ($e->getDcpCode() !== "FSEA0010") {
                                     throw $e;
