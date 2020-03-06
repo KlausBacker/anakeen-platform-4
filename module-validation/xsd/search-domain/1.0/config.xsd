@@ -6,6 +6,7 @@
 
 
     <xs:element name="search-stem" type="xs:string"/>
+    <xs:element name="description" type="xs:token" />
     <xs:element name="search-config">
         <xs:complexType>
             <xs:sequence>
@@ -23,10 +24,11 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element ref="sd:search-stem"/>
+                <xs:element ref="sd:description" minOccurs="0"/>
                 <xs:element ref="sd:search-config" maxOccurs="unbounded" minOccurs="0"/>
             </xs:sequence>
             <xs:attribute type="xs:string" name="name" use="required"/>
-            <xs:attribute type="xs:string" name="lang" use="required"/>
+            <xs:attribute type="sd:langType" name="lang" use="required"/>
         </xs:complexType>
     </xs:element>
 
@@ -68,6 +70,13 @@
     <xs:simpleType name="callableType">
         <xs:restriction base="xs:string">
             <xs:pattern value="[A-Za-z][a-zA-Z0-9_\\]*::[A-Za-z0-9_]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="langType">
+        <xs:restriction base="xs:token">
+            <xs:pattern value="[a-z][a-z]"/>
         </xs:restriction>
     </xs:simpleType>
 
