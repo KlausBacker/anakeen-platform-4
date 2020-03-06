@@ -74,7 +74,6 @@ const componentHeaderInstance = Vue.component("template-component", {
   }
 });
 
-
 // noinspection JSUnusedGlobalSymbols
 export default {
   name: "ank-fullsearch-list",
