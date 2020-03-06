@@ -81,6 +81,8 @@ class InitTransfert
                 DbManager::query($sql);
                 $sql = sprintf("drop sequence if exists seq_doc%d", $id + self::delta);
                 DbManager::query($sql);
+                $sql = sprintf("create sequence if not exists seq_doc%d", $id);
+                DbManager::query($sql);
             }
         }
         DbManager::query("commit");
