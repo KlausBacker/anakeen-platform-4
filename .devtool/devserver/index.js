@@ -7,27 +7,44 @@ const express = require("express");
 const app = express();
 const proxy = require("express-http-proxy");
 const config = require("./config.perso.js");
-const merge = require("webpack-merge");
+const ErrorOverlayPlugin = require("error-overlay-webpack-plugin");
+const rollupConfig = config.getRollupConfig();
+let firstRollup;
 
-config.getRollupConfig().forEach(currentElement => {
-  const compiler = rollup.watch(currentElement.default);
-});
-
-config.getConfig().forEach(currentConfig => {
-  if (currentConfig.mode !== "development") {
-    return;
-  }
-  if (config.devtool) {
-    currentConfig.devtool = config.devtool;
-  }
-  currentConfig.plugins = currentConfig.plugins || [];
-
-  const compiler = webpack(currentConfig);
-
-  const instance = webpackDevMiddleware(compiler, {
-    publicPath: currentConfig.output.publicPath
+if (rollupConfig.length > 0) {
+  firstRollup = new Promise((resolve, reject) => {
+    config.getRollupConfig().forEach(currentElement => {
+      const watcher = rollup.watch(currentElement.default);
+      watcher.on("event", event => {
+        if (event.code === "END") {
+          setTimeout(resolve, 1000);
+        }
+      });
+    });
   });
-  app.use(instance);
+} else {
+  firstRollup = Promise.resolve();
+}
+
+firstRollup.then(() => {
+  config.getConfig().forEach(currentConfig => {
+    if (currentConfig.mode !== "development") {
+      return;
+    }
+    if (config.devtool) {
+      currentConfig.devtool = config.devtool;
+    }
+    currentConfig.plugins = currentConfig.plugins || [];
+    currentConfig.plugins.push(new ErrorOverlayPlugin());
+
+    const compiler = webpack(currentConfig);
+
+    const instance = webpackDevMiddleware(compiler, {
+      publicPath: currentConfig.output.publicPath,
+      writeToDisk: true
+    });
+    app.use(instance);
+  });
 });
 
 app.use(
