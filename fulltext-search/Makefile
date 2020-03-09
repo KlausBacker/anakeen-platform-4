@@ -45,7 +45,7 @@ checkVersion:
 
 lint: checkXML checkVersion ./../.devtool/ci/check/checkPHP/vendor
 	@${PRINT_COLOR} "${DEBUG_COLOR}Lint PHP${RESET_COLOR}\n"
-	$(CS_BIN) --standard=${CS_PATH_NAME} --extensions=php ./src
+	$(CS_BIN) --standard=${CS_PATH_NAME} --extensions=php --ignore=./src/vendor/Anakeen/Fullsearch/lib ./src
 
 
 beautify: ./../.devtool/ci/check/checkPHP/vendor
