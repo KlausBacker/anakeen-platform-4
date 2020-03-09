@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documents>
+    <tst_file001 name="TST_EFILE_001">
+        <tst_f_title>
+            <tst_title>Tous les ours ont un grand corps trapu et massif, des membres puissants.</tst_title>
+            <tst_file>
+            </tst_file>
+        </tst_f_title>
+    </tst_file001>
+    <tst_file001 name="TST_EFILE_002">
+        <tst_f_title>
+            <tst_title>Cheval sauvage</tst_title>
+        </tst_f_title>
+    </tst_file001>
+    <tst_file001 name="TST_EFILE_003">
+        <tst_f_title>
+            <tst_title>Pangolin et tortue</tst_title>
+        </tst_f_title>
+    </tst_file001>
+    <tst_file001 name="TST_EFILE_004">
+        <tst_f_title>
+            <tst_title>Viking &amp; Pangolin et tortue</tst_title>
+        </tst_f_title>
+    </tst_file001>
+    <tst_file001 name="TST_EFILE_005">
+        <tst_f_title>
+            <tst_title>Nom de fichier</tst_title>
+        </tst_f_title>
+    </tst_file001>
+</documents>

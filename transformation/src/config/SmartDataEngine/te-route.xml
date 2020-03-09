@@ -6,5 +6,10 @@
             <sde:method>GET</sde:method>
             <sde:pattern>/api/transformationengine/{vidin}/{vidout}/{elementid}</sde:pattern>
         </sde:route>
+        <sde:route name="TestCallback">
+            <sde:callable>Anakeen\Routes\TransformationEngine\TestCallback</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/transformationengine/tests/{id}</sde:pattern>
+        </sde:route>
     </sde:routes>
 </sde:config>

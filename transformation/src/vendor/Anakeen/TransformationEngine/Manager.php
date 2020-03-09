@@ -15,13 +15,13 @@ namespace Anakeen\TransformationEngine;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\Internal\ContextParameterManager;
 use Anakeen\Core\Utils\System;
+use Anakeen\Exception;
 use Anakeen\Router\AuthenticatorManager;
 use Anakeen\Vault\DiskStorage;
 use Anakeen\Vault\VaultFile;
 
 class Manager
 {
-
     const Ns = "TE";
 
     /**
@@ -42,7 +42,9 @@ class Manager
     /**
      * check if TE is accessible
      *
+     * @param array $info
      * @return string error message, if no error empty string
+     * @throws ClientException
      */
     public static function isAccessible(&$info)
     {
@@ -66,22 +68,25 @@ class Manager
      */
     public static function isActivated()
     {
-        return \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\TransformationEngine\Manager::Ns, "TE_ACTIVATE") === "yes";
+        return \Anakeen\Core\ContextManager::getParameterValue(
+            \Anakeen\TransformationEngine\Manager::Ns,
+            "TE_ACTIVATE"
+        ) === "yes";
     }
 
     /**
      * Generate a conversion of a file
      * The result is store in vault itself
      *
-     * @deprecated
-     *
-     * @param string  $engine  the convert engine identifier (from VaultEngine Class)
-     * @param int     $vidin   vault file identifier (original file)
-     * @param int     $vidout  vault identifier of new stored file
+     * @param string $engine the convert engine identifier (from VaultEngine Class)
+     * @param int $vidin vault file identifier (original file)
+     * @param int $vidout vault identifier of new stored file
      * @param boolean $isimage true is it is a image (jpng, png, ...)
-     * @param int     $docid   original document where the file is inserted
+     * @param int $docid original document where the file is inserted
      *
      * @return string error message (empty if OK)
+     * @deprecated
+     *
      */
     public static function vaultGenerate($engine, $vidin, $vidout, $isimage = false, $docid = 0)
     {
@@ -148,7 +153,10 @@ class Manager
 
     /**
      * get url with open id to use with open authentiication
-     *
+     * @param string $pattern the url pattern
+     * @return string
+     * @throws Exception
+     * @throws \Anakeen\Router\Exception
      */
     public static function getOpenTeUrl($pattern)
     {
@@ -156,9 +164,15 @@ class Manager
         if ($urlindex == "") { //case DAV
             $au = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_URLINDEX");
             if ($au != "") {
-                $urlindex = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_URLINDEX");
+                $urlindex = \Anakeen\Core\ContextManager::getParameterValue(
+                    \Anakeen\Core\Settings::NsSde,
+                    "CORE_URLINDEX"
+                );
             } else {
-                $scheme = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_EXTERNURL");
+                $scheme = \Anakeen\Core\ContextManager::getParameterValue(
+                    \Anakeen\Core\Settings::NsSde,
+                    "CORE_EXTERNURL"
+                );
                 if ($scheme == "") {
                     throw new \Anakeen\Exception("Need configure TE_URLINDEX");
                 }
@@ -178,7 +192,14 @@ class Manager
         } else {
             $beg = '?';
         }
-        $openurl = sprintf("%s%s%s%s=%s", $urlindex, $pattern, $beg, \Anakeen\Core\Internal\OpenAuthenticator::openGetId, $token);
+        $openurl = sprintf(
+            "%s%s%s%s=%s",
+            $urlindex,
+            $pattern,
+            $beg,
+            \Anakeen\Core\Internal\OpenAuthenticator::openGetId,
+            $token
+        );
 
         $proto = substr($openurl, 0, 6);
         $tail = str_replace('//', '/', substr($openurl, 6));
@@ -190,9 +211,9 @@ class Manager
      * return filename where is stored produced file
      * need to delete after use it
      *
-     * @param string $tid      task TE identifier
+     * @param string $tid task TE identifier
      * @param string $filename output file path
-     * @param array  $info
+     * @param array $info
      *
      * @return string
      */
@@ -220,10 +241,10 @@ class Manager
     /**
      * Send request to convert and waiting until transformation engine server has finish the transformation
      *
-     * @param string $infile  path to file to convert
-     * @param string $engine  engine name to use
+     * @param string $infile path to file to convert
+     * @param string $engine engine name to use
      * @param string $outfile path where to store new file
-     * @param array &$info    various informations for convertion process
+     * @param array &$info various informations for convertion process
      *
      * @return string error message
      */
@@ -270,5 +291,70 @@ class Manager
             $err = sprintf(___("file %s not found", "tengine"), $infile);
         }
         return $err;
+    }
+
+    /**
+     * Verify the complete configuration of TE
+     * Send a task and wait response callback
+     * @param int $timeout (in seconds) to wait the callback response
+     * @throws ClientException
+     * @throws Exception
+     * @throws \Anakeen\Router\Exception
+     */
+    public static function checkConnection($timeout = 60)
+    {
+        $err = self::isAccessible($info);
+        if ($err) {
+            throw new Exception($err);
+        }
+
+        $tmpFile = tempnam(ContextManager::getTmpDir(), '');
+        if ($tmpFile === false) {
+            throw new Exception("Could not create temporary file.");
+        }
+        if (file_put_contents($tmpFile, 'hello world.') === false) {
+            throw new Exception(sprintf("Error writing content to temporary file '%s'", $tmpFile));
+        }
+
+        $te_name = 'utf8';
+        $fkey = '';
+        $key = uniqid("te");
+
+        $callback = sprintf("/api/transformationengine/tests/%s", $key);
+        $callurl = Manager::getOpenTeUrl($callback);
+
+        $te = new Client();
+        $err = $te->sendTransformation($te_name, $fkey, $tmpFile, $callurl, $info);
+        if ($err != '') {
+            unlink($tmpFile);
+            throw new Exception($err);
+        }
+        $resultFile = sprintf("%s/%s", ContextManager::getTmpDir(), $key);
+        $t = 0;
+        while ($t < $timeout) {
+            sleep(1);
+            if (file_exists($resultFile)) {
+                break;
+            }
+            $t++;
+        }
+
+        $err = $te->getInfo($info["tid"], $status);
+        if ($err) {
+            throw new Exception("Conversion faliled: " . $err);
+        }
+
+        if (!file_exists($resultFile)) {
+            $err = print_r($status, true);
+
+            throw new Exception("Timeout: callback no return - " . $err);
+        } else {
+            if ($status["status"] !== Client::TASK_STATE_SUCCESS) {
+                $err = print_r($status, true);
+
+                throw new Exception("Task error: " . $err);
+            }
+        }
+        unlink($resultFile);
     }
 }

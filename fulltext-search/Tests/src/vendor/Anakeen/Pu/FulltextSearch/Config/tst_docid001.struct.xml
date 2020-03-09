@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+
+    <smart:structure-configuration name="TST_DOCID001">
+        <smart:tag name="vendor">Anakeen</smart:tag>
+        <smart:fields>
+            <smart:field-set name="tst_f_title" type="frame" label="Titre" access="ReadWrite">
+                <smart:field-text name="tst_title" access="ReadWrite" is-title="true"/>
+                <smart:field-docid name="tst_docid" relation="TST_DOCID002" access="ReadWrite"/>
+                <smart:field-docid name="tst_docids" relation="TST_DOCID002" multiple="true" access="ReadWrite"/>
+
+                <smart:field-account name="tst_account"  access="ReadWrite"/>
+                <smart:field-account name="tst_accounts" multiple="true" access="ReadWrite"/>
+
+                <smart:field-set name="tst_array" type="array" access="ReadWrite">
+                    <smart:field-docid name="tst_docid2" relation="TST_DOCID002" access="ReadWrite"/>
+                    <smart:field-docid name="tst_docid2s" relation="TST_DOCID002" multiple="true" access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-set name="tst_array2" type="array" access="ReadWrite">
+                    <smart:field-account name="tst_account2"  access="ReadWrite"/>
+                    <smart:field-account name="tst_account2s"  multiple="true" access="ReadWrite"/>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:fields>
+    </smart:structure-configuration>
+</smart:config>

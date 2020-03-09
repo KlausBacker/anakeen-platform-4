@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documents>
+    <tst_docid002 name="TST_EDOCID2_001">
+        <tst_f_title>
+            <tst_title>Le rouge et le noir</tst_title>
+        </tst_f_title>
+    </tst_docid002>
+    <tst_docid002 name="TST_EDOCID2_002">
+        <tst_f_title>
+            <tst_title>Ours blanc</tst_title>
+        </tst_f_title>
+    </tst_docid002>
+    <tst_docid002 name="TST_EDOCID2_003">
+        <tst_f_title>
+            <tst_title>Panthère noire</tst_title>
+        </tst_f_title>
+    </tst_docid002>
+    <tst_docid002 name="TST_EDOCID2_004">
+        <tst_f_title>
+            <tst_title>Fourmis rouges</tst_title>
+        </tst_f_title>
+    </tst_docid002>
+    <tst_docid002 name="TST_EDOCID2_005">
+        <tst_f_title>
+            <tst_title>Les arts comtemporains</tst_title>
+        </tst_f_title>
+    </tst_docid002>
+    <tst_docid002 name="TST_EDOCID2_006">
+        <tst_f_title>
+            <tst_title>Le moyen-age</tst_title>
+        </tst_f_title>
+    </tst_docid002>
+    <tst_docid002 name="TST_EDOCID2_007">
+        <tst_f_title>
+            <tst_title>Le moyen-orient</tst_title>
+        </tst_f_title>
+    </tst_docid002>
+    <tst_docid002 name="TST_EDOCID2_008">
+        <tst_f_title>
+            <tst_title>L'empire ottoman</tst_title>
+        </tst_f_title>
+    </tst_docid002>
+    <tst_docid002 name="TST_EDOCID2_009">
+        <tst_f_title>
+            <tst_title>La chine de XIII siècle</tst_title>
+        </tst_f_title>
+    </tst_docid002>
+    <iuser name="TST_EIUSER2_001">
+        <us_fr_ident>
+            <us_lname>Doe</us_lname>
+            <us_fname>Johnny</us_fname>
+        </us_fr_ident>
+    </iuser>
+    <iuser name="TST_EIUSER2_002">
+        <us_fr_ident>
+            <us_lname>Doe</us_lname>
+            <us_fname>jane</us_fname>
+        </us_fr_ident>
+    </iuser>
+    <iuser name="TST_EIUSER2_003">
+        <us_fr_ident>
+            <us_lname>Skywalker</us_lname>
+            <us_fname>Leai</us_fname>
+        </us_fr_ident>
+    </iuser>
+    <iuser name="TST_EIUSER2_004">
+        <us_fr_ident>
+            <us_lname>Skywalker</us_lname>
+            <us_fname>Luke</us_fname>
+        </us_fr_ident>
+    </iuser>
+    <iuser name="TST_EIUSER2_005">
+        <us_fr_ident>
+            <us_lname>Solo</us_lname>
+            <us_fname>Han</us_fname>
+        </us_fr_ident>
+    </iuser>
+    <iuser name="TST_EIUSER2_006">
+        <us_fr_ident>
+            <us_lname>Kenobi</us_lname>
+            <us_fname>Obiwan</us_fname>
+        </us_fr_ident>
+    </iuser>
+</documents>

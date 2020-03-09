@@ -6,9 +6,9 @@ class DbManager
 {
     protected static $inTransition = false;
     protected static $savepoint;
-    protected static $masterLock=false;
+    protected static $masterLock = false;
     protected static $lockpoint;
-    protected static $pgConnection=null;
+    protected static $pgConnection = null;
     protected static $dbRessource;
 
     public static function getDbAccess()
@@ -57,14 +57,14 @@ class DbManager
     /**
      * send simple query to database
      *
-     * @param string            $query        sql query
-     * @param string|bool|array &$result      query result
-     * @param bool              $singlecolumn set to true if only one field is return
-     * @param bool              $singleresult set to true is only one row is expected (return the first row). If is combined with singlecolumn return the value not an array, if no
+     * @param string $query sql query
+     * @param string|bool|array &$result query result
+     * @param bool $singlecolumn set to true if only one field is return
+     * @param bool $singleresult set to true is only one row is expected (return the first row). If is combined with singlecolumn return the value not an array, if no
      *                                        results and $singlecolumn is true then $results is false
      *
-     * @throws \Anakeen\Database\Exception
      * @return void
+     * @throws \Anakeen\Database\Exception
      */
     public static function query($query, &$result = array(), $singlecolumn = false, $singleresult = false)
     {
@@ -112,7 +112,7 @@ class DbManager
                 $point
             );
             static::query("begin");
-            static::$inTransition=true;
+            static::$inTransition = true;
         } else {
             static::$savepoint[$idbid][] = $point;
         }
@@ -134,7 +134,7 @@ class DbManager
      * - The lock is automatically released when the transaction is
      *   commited or rolled back.
      *
-     * @param int    $exclusiveLock       Lock's identifier as a signed integer in the int32 range
+     * @param int $exclusiveLock Lock's identifier as a signed integer in the int32 range
      *                                    (i.e. in the range [-2147483648, 2147483647]).
      * @param string $exclusiveLockPrefix Lock's prefix string limited up to 4 bytes.
      *
@@ -163,7 +163,11 @@ class DbManager
             $prefixLockId = 0;
         }
         if (static::$masterLock === false) {
-            static::query(sprintf('select pg_advisory_lock(0), pg_advisory_unlock(0), pg_advisory_xact_lock(%d,%d);', $exclusiveLock, $prefixLockId));
+            static::query(sprintf(
+                'select pg_advisory_lock(0), pg_advisory_unlock(0), pg_advisory_xact_lock(%d,%d);',
+                $exclusiveLock,
+                $prefixLockId
+            ));
         }
 
         static::$lockpoint[$idbid][sprintf("%d-%s", $exclusiveLock, $exclusiveLockPrefix)] = array(
@@ -191,7 +195,7 @@ class DbManager
             static::query(sprintf('release savepoint "%s"', pg_escape_string($point)));
             if (count(static::$savepoint[$idbid]) == 0) {
                 static::query("commit");
-                static::$inTransition=false;
+                static::$inTransition = false;
             }
         } else {
             throw new \Anakeen\Core\Exception(sprintf("cannot commit unsaved point : %s", $point));
@@ -219,7 +223,7 @@ class DbManager
             static::query(sprintf('rollback to savepoint "%s"', pg_escape_string($point)));
             if (count(static::$savepoint[$idbid]) == 0) {
                 static::query("commit");
-                static::$inTransition=false;
+                static::$inTransition = false;
             }
         } else {
             throw new \Anakeen\Core\Exception(sprintf("cannot rollback unsaved point : %s", $point));
@@ -235,21 +239,53 @@ class DbManager
      *
      * @return void
      */
-    public static function setMasterLock($useLock)
+    public static function setMasterLock(bool $useLock)
     {
         if ($useLock) {
-            static::query('select pg_advisory_lock(0)');
+            static::lockSession(0);
         } else {
-            static::query('select pg_advisory_unlock(0)');
+            static::unlockSession(0);
         }
-
         static::$masterLock = (bool)$useLock;
     }
 
     /**
-     * @param array    $values
-     * @param   string $column
-     * @param bool     $integer
+     * Add a database session lock
+     * Lock is released when unlock is called or when database connection is closed
+     * @param int $key lock identifier (bigint)
+     * @param bool $try if true no wait lock release if already locked, return false if lock cannot be set
+     * @return bool
+     * @see unlockSession()
+     * @throws \Anakeen\Database\Exception
+     */
+    public static function lockSession(int $key, bool $try = false)
+    {
+        if ($try === false) {
+            static::query(sprintf('select pg_advisory_lock(%u)', $key));
+        } else {
+            static::query(sprintf('select pg_try_advisory_lock(%u)', $key), $succeed, true, true);
+            return $succeed === "t";
+        }
+        return true;
+    }
+
+    /**
+     * Unlock lock set by lockSession method
+     * @param int $key lock identifier (bigint)
+     * @see lockSession()
+     * @throws \Anakeen\Database\Exception
+     * @return bool true if lock is released, false if the lock not exists
+     */
+    public static function unlockSession(int $key)
+    {
+        static::query(sprintf('select pg_advisory_unlock(%u)', $key), $succeed, true, true);
+        return $succeed === "t";
+    }
+
+    /**
+     * @param array $values
+     * @param string $column
+     * @param bool $integer
      *
      * @return string like : mycol in ('a', 'b' , 'c')
      */
@@ -272,7 +308,7 @@ class DbManager
         }
 
         if (!$sql_cond) {
-            $sql_cond="false";
+            $sql_cond = "false";
         }
         return $sql_cond;
     }

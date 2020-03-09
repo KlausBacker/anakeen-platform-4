@@ -10,6 +10,7 @@ use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure\FieldAccessManager;
 use Anakeen\Core\Utils\Date;
+use Anakeen\Core\Utils\Postgres;
 use Anakeen\Exception;
 
 class ExportXmlDocument
@@ -374,6 +375,9 @@ class ExportXmlDocument
                 return sprintf("<%s><![CDATA[%s]]></%s>", $attribute->id, $v, $attribute->id);
                 break;
             default:
+                if (is_array($v)) {
+                    $v=Postgres::arrayToString($v);
+                }
                 return sprintf("<%s>%s</%s>", $attribute->id, $attribute->encodeXml($v), $attribute->id);
         }
     }

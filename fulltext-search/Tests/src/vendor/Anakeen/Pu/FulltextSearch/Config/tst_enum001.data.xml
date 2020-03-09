@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documents>
+    <tst_enum001 name="TST_EENUM_001">
+        <tst_f_title>
+            <tst_title>Enum1</tst_title>
+            <tst_color>red</tst_color>
+            <tst_countries>{AD,AG}</tst_countries>
+
+            <tst_array>
+                <tst_colors>green</tst_colors>
+                <tst_countries2>{AO,AR,AS}</tst_countries2>
+            </tst_array>
+            <tst_array>
+                <tst_colors>blue</tst_colors>
+                <tst_countries2>{AO,AG,AS}</tst_countries2>
+            </tst_array>
+        </tst_f_title>
+    </tst_enum001>
+    <tst_enum001 name="TST_EENUM_002">
+        <tst_f_title>
+            <tst_title>Enum2</tst_title>
+            <tst_color>green</tst_color>
+            <tst_countries>{AI}</tst_countries>
+
+            <tst_array>
+                <tst_colors>green</tst_colors>
+                <tst_countries2>{AL,AR,AD}</tst_countries2>
+            </tst_array>
+            <tst_array>
+                <tst_colors>yellow</tst_colors>
+                <tst_countries2>{AE,AG,AM}</tst_countries2>
+            </tst_array>
+        </tst_f_title>
+    </tst_enum001>
+    <tst_enum001 name="TST_EENUM_003">
+        <tst_f_title>
+            <tst_title>Enum3</tst_title>
+            <tst_color>lightblue</tst_color>
+            <tst_countries>{AG}</tst_countries>
+        </tst_f_title>
+    </tst_enum001>
+    <tst_enum001 name="TST_EENUM_004">
+        <tst_f_title>
+            <tst_title>Enum4</tst_title>
+            <tst_color>navyblue</tst_color>
+            <tst_countries>{AL}</tst_countries>
+        </tst_f_title>
+    </tst_enum001>
+</documents>

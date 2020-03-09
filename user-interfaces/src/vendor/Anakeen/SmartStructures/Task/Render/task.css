@@ -43,6 +43,12 @@
     border-radius: 0.5rem;
 }
 
+.dcpDocument[data-structure=TASK] .dcpAttribute__content[data-attrid=task_exec_output] .dcpAttribute__content__value {
+    white-space: pre-wrap;
+    font-family: monospace;
+}
+
+
 .dcpDocument[data-structure=TASK] .dcpAttribute__content[data-attrid=task_humancrontab] .dcpAttribute__value {
     font-style: italic;
 }

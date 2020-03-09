@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:search-domain name="testDomainCollection" lang="fr"
+                     xmlns:smart="https://platform.anakeen.com/4/schemas/search-domain/1.0">
+    <smart:search-stem>simple</smart:search-stem>
+    <smart:search-config structure="TST_SIMPLE003" collection="TST_ESEARCH_003_BLUE">
+        <smart:title weight="A"/>
+    </smart:search-config>
+    <smart:search-config structure="TST_SIMPLE003" collection="TST_ESEARCH_003_GREEN">
+        <smart:title weight="A"/>
+    </smart:search-config>
+</smart:search-domain>

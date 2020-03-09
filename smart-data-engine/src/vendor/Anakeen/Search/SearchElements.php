@@ -42,8 +42,10 @@ class SearchElements
     /**
      * add join condition
      *
-     * @param string $jointure
+     * @param string $jointure like "id = dochisto(id)"
+     * @param string $joinType "inner" or "left outer"
      * @return SearchElements
+     * @throws \Anakeen\Exception
      * @api Add join condition
      * @code
      * $s=new searchDoc();
@@ -56,9 +58,9 @@ class SearchElements
      * $result= $s->search();
      * @endcode
      */
-    public function join($jointure)
+    public function join($jointure, $joinType = "inner")
     {
-        $this->searchData->join($jointure);
+        $this->searchData->join($jointure, $joinType);
         return $this;
     }
 
@@ -187,6 +189,16 @@ class SearchElements
     public function getFamily()
     {
         return $this->searchData->getFamily();
+    }
+
+    /**
+     * Get the main table search
+     * Useful when use join
+     * @return string
+     */
+    public function getMainTable()
+    {
+        return $this->searchData->getMainTable();
     }
 
     /**
