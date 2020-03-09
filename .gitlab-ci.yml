@@ -445,6 +445,37 @@ transformation-integration-build:
    changes:
      - transformation/**/*
 
+
+fulltext-build:
+  extends: .build-package
+  stage: build
+  tags:
+    - a4ppm
+  variables:
+    PACKAGE_PATH: fulltext-search
+    PACKAGE_NAME: fulltext-search
+    MODE: "app"
+  only:
+    refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - fulltext-search/**/*
+
+fulltext-integration-build:
+  extends: .build-package
+  stage: build
+  tags:
+    - a4ppm
+  variables:
+    PACKAGE_PATH: fulltext-search
+    PACKAGE_NAME: fulltext-search
+    MODE: "app-autorelease"
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - fulltext-search/**/*
+
 migration-tools-build:
   extends: .build-package
   stage: build
@@ -1094,6 +1125,33 @@ transformation-integration-register:
       - transformation/**/*
   dependencies:
     - transformation-integration-build
+
+
+fulltext-register:
+  extends: .registry
+  variables:
+    ANK_CI_APP_NAME: "fulltext-search"
+    ANK_CI_APP_PATH: "fulltext-search"
+  only:
+    refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - fulltext-search/**/*
+  dependencies:
+    - fulltext-build
+
+fulltext-integration-register:
+  extends: .registry
+  variables:
+    ANK_CI_APP_NAME: "fulltext-search"
+    ANK_CI_APP_PATH: "fulltext-search"
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - fulltext-search/**/*
+  dependencies:
+    - fulltext-integration-build
 
 #endregion registry
 
