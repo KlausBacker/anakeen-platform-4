@@ -66,12 +66,12 @@ class ShellManager
         $lines[] = sprintf("--script=<script file>");
         $lines[] = sprintf("\t--list\t\t\tList all available scripts");
         $lines[] = sprintf("\t--login\t\t\tExecute as special account (admin is default)");
-        /** @noinspection HtmlUnknownAttribute */
         $lines[] = sprintf("--route=<route id>");
         $lines[] = sprintf("\t--list\t\t\tList all recorded routes");
         $lines[] = sprintf("\t--method=<HTTP Method>\t[GET|POST|PUT|DELETE] (default GET)");
         $lines[] = sprintf("\t--arg-<x>=<value>\tRoute argument <x> value");
         /** @noinspection RequiredAttributes */
+        /** @noinspection HtmlUnknownAttribute */
         $lines[] = sprintf("\t--content=<data file>\tFor POST/PUT methods");
         $lines[] = sprintf("\t--query=<optional args>\tLike \"a=1&b=2\"");
         $lines[] = sprintf("--system");
@@ -100,6 +100,7 @@ class ShellManager
         } else {
             self::initContext();
             try {
+                /** @noinspection PhpIncludeInspection */
                 require($apifile);
             } catch (UsageException $e) {
                 switch ($e->getDcpCode()) {
@@ -122,7 +123,9 @@ class ShellManager
             } catch (Exception $e) {
                 $err = $e->getDcpMessage();
                 System::setStatusMessage($err, "error");
-                self::writeError($err);
+                if (!self::isInteractiveCLI()) {
+                    self::writeError($err);
+                }
                 self::exceptionHandler($e, false);
                 exit(1);
             } catch (\Anakeen\Exception $e) {
@@ -179,7 +182,6 @@ class ShellManager
             $errMsg = $e->getMessage();
         }
 
-
         System::setStatusMessage($e->getMessage(), "error");
         if (!self::isInteractiveCLI()) {
             $expand = array(
@@ -209,6 +211,10 @@ class ShellManager
                 }
             }
 
+            $msg = str_replace("\r", "", $msg);
+            $msg = str_replace("\t", "    ", $msg);
+            // Delete formatted text color code
+            $msg = preg_replace("/\033\[[^m]+m;?/u", "", $msg);
             $msg = wordwrap($msg, $consoleWidth - 2, "\n", true);
             $lines = explode("\n", $msg);
             $maxLen = 0;
@@ -216,11 +222,11 @@ class ShellManager
             foreach ($lines as $line) {
                 $maxLen = max(mb_strlen($line), $maxLen);
             }
-            $spaces = str_pad("", $maxLen, " ");
+            $spaces = str_pad("", $maxLen + 2, " ");
 
             fprintf(STDERR, "\033[0;37m\033[41m %s \033[0m\n", $spaces);
             foreach ($lines as $line) {
-                $line = str_pad($line, $maxLen, " ");
+                $line = " " . str_pad($line, $maxLen, " ") . " ";
                 fprintf(STDERR, "\033[0;37m\033[41m %s \033[0m\n", $line);
             }
             fprintf(STDERR, "\033[0;37m\033[41m %s \033[0m\n", $spaces);

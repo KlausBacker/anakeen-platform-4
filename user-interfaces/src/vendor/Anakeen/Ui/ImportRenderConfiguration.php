@@ -67,6 +67,9 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
 
                 $renderAccess = $this->evaluate($config, "string({$this->uiPrefix}:render-access/@class)");
                 if ($renderAccess) {
+                    if (!preg_match('/^[a-zA-Z_][a-zA-Z0-9_\\\\]+$/', $renderAccess)) {
+                        throw new Exception(sprintf("Class name syntax error for \"%s\" in render access class for \"%s\"", $renderAccess, $ref));
+                    }
                     RenderConfigManager::setRenderParameter($ref, "renderAccessClass", $renderAccess);
                 }
                 $disableEtag = $this->evaluate($config, "string({$this->uiPrefix}:render-access/@disable-etag)");
@@ -138,9 +141,9 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
             foreach ($needNodes as $needNode) {
                 $field = $needNode->getAttribute("field");
                 if ($field) {
-                    $needValue=$needNode->getAttribute("value");
+                    $needValue = $needNode->getAttribute("value");
                     if ($needValue === "true") {
-                         $maskData[$field]['need'] = 'Y';
+                        $maskData[$field]['need'] = 'Y';
                     } elseif ($needValue === "false") {
                         $maskData[$field]['need'] = 'N';
                     }
@@ -156,7 +159,7 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
                     ]
                 );
             }
-            $this->verboseMessages[]=sprintf("[%s] Record \"%s\"", $mask->fromname, $mask->name);
+            $this->verboseMessages[] = sprintf("[%s] Record \"%s\"", $mask->fromname, $mask->name);
             return $this->getElementdata($mask);
         }
         return [];
@@ -187,7 +190,7 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
             $masterMask = $this->evaluate($cvNode, "string({$this->uiPrefix}:primary-mask/@ref)");
             if ($masterMask) {
                 // Very subtil : Need to change type on the fly to not try to resolve logicalname
-                $cvdoc->getAttribute(CvDocFields::cv_primarymask)->type="text";
+                $cvdoc->getAttribute(CvDocFields::cv_primarymask)->type = "text";
                 $cvdoc->setValue(CvDocFields::cv_primarymask, $masterMask);
             }
             $createvid = $this->evaluate($cvNode, "string({$this->uiPrefix}:creation-view/@ref)");
@@ -198,7 +201,7 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
             $viewNodes = $this->getUiNodes($cvNode, "view");
 
             // Very subtil : Need to change type on the fly to not try to resolve logicalname
-            $cvdoc->getAttribute(CvDocFields::cv_mskid)->type="text";
+            $cvdoc->getAttribute(CvDocFields::cv_mskid)->type = "text";
             /**
              * @var \DOMElement $viewNode
              */
@@ -225,14 +228,14 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
                 );
             }
 
-            $this->verboseMessages[]=sprintf("[%s] Record \"%s\"", $cvdoc->fromname, $cvdoc->name);
+            $this->verboseMessages[] = sprintf("[%s] Record \"%s\"", $cvdoc->fromname, $cvdoc->name);
             return $this->getElementdata($cvdoc);
         }
         return [];
     }
 
     /**
-     * @param string      $name
+     * @param string $name
      * @param \DOMElement $e
      *
      * @return \DOMNodeList
