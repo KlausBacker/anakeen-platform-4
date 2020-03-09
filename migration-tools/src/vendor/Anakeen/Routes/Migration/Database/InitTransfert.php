@@ -174,7 +174,7 @@ SQL;
         DbManager::query("select max(id) from users", $delta, true, true);
 
         $sql = <<<SQL
-update users set id = (-id + %d) where id < -9;
+update users set id = (-id + %d) where id < -9; 
 update groups set iduser = (-iduser + %d) where iduser < -9;
 update groups set idgroup = (-idgroup + %d) where iduser < -9;
 update doc127 set us_whatid = (- us_whatid::int + %d) where us_whatid::int < -9;
@@ -183,6 +183,18 @@ update doc130 set us_whatid = (- us_whatid::int + %d) where us_whatid::int < -9;
 update permission set id_user = (-id_user + %d) where id_user < -9;
 SQL;
         DbManager::query(sprintf($sql, $delta, $delta, $delta, $delta, $delta, $delta, $delta));
+
+        self::restoreSequences();
+    }
+
+
+    protected static function restoreSequences()
+    {
+        DbManager::query(sprintf("select id  from docfam where id < 1000 and id > %d", 1000 - self::delta), $sid, true);
+        foreach ($sid as $famid) {
+            $sql = sprintf("create sequence if not exists seq_doc%d", $famid);
+            DbManager::query($sql);
+        }
     }
 
 
