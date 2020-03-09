@@ -77,6 +77,4 @@ class SearchElements extends DocumentList
         }
         return $documentFormatter;
     }
-
-
 }
