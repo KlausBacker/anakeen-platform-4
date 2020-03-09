@@ -46,6 +46,7 @@ class InitTransfert
         DbManager::query("create schema if not exists dynacase;");
         // Testing connexion with foreign server first
         Utils::importForeignTable("docfam");
+        Utils::importForeignTable("docattr");
 
         $tools = file_get_contents(__DIR__ . "/../../../Migration/Tools.sql");
         DbManager::query($tools);
@@ -79,6 +80,8 @@ class InitTransfert
                 $sql = sprintf("alter table doc%d rename to doc%d", $id + self::delta, $id);
                 DbManager::query($sql);
                 $sql = sprintf("drop sequence if exists seq_doc%d", $id + self::delta);
+                DbManager::query($sql);
+                $sql = sprintf("create sequence if not exists seq_doc%d", $id);
                 DbManager::query($sql);
             }
         }
