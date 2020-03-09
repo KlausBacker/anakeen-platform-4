@@ -86,7 +86,8 @@ SQL;
      * @return FileContentDatabase|null
      * @throws \Anakeen\Database\Exception
      */
-    public static function getFromFileid(int $fileid) {
+    public static function getFromFileid(int $fileid)
+    {
         $q=new QueryDb("", self::class);
         $q->addQuery(sprintf("fileid = %d", $fileid));
         $r=$q->query(0, 1);

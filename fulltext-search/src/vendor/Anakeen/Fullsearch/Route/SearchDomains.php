@@ -57,7 +57,8 @@ SQL;
         return $size;
     }
 
-    protected function getNextDateForAutoUpdate() {
+    protected function getNextDateForAutoUpdate()
+    {
         $s=new \Anakeen\Search\SearchElements("TASK");
         $s->addFilter("%s = 'FullSearch'", TaskFields::task_route_ns);
         $s->addFilter("%s = 'UpdateSearchData'", TaskFields::task_route_name);
