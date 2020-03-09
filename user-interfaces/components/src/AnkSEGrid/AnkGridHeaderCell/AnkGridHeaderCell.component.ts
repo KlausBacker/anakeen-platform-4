@@ -1,7 +1,8 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import AnkGridFilter from "./AnkGridFilter/AnkGridFilter.vue";
 import AnkSmartElementGrid from "../AnkSEGrid.component";
-import "@progress/kendo-ui/js/kendo.popup.js";
+import { Popup } from "@progress/kendo-vue-popup";
+import $ from "jquery";
 
 enum SortableDirection {
   NONE,
@@ -12,7 +13,8 @@ enum SortableDirection {
 @Component({
   name: "ank-se-grid-header-cell",
   components: {
-    AnkGridFilter
+    AnkGridFilter,
+    Popup
   }
 })
 export default class GridHeaderCell extends Vue {
@@ -49,6 +51,10 @@ export default class GridHeaderCell extends Vue {
     horizontal: "fit",
     vertical: "flip"
   };
+  public filterOffset = {
+    top: 0,
+    left: 0
+  };
   public get hasSubtitle(): boolean {
     return this.grid.contextTitles && Array.isArray(this.columnConfig.context) && this.columnConfig.context.length;
   }
@@ -81,34 +87,6 @@ export default class GridHeaderCell extends Vue {
   }
   public showFilters(): void {
     this.showFilter = !this.showFilter;
-    const popup = $(".smart-element-grid-filter-content", this.$el).data("kendoPopup");
-    if (popup) {
-      if (this.showFilter) {
-        // $(".smart-element-grid-filter-icon", this.$el).toggleClass("k-state-filter-button-active");
-        popup.toggle();
-      } else {
-        // $(".smart-element-grid-filter-icon", this.$el).toggleClass("k-state-filter-button-active");
-        popup.close();
-      }
-    }
-  }
-  public mounted(): void {
-    $(".smart-element-grid-filter-content", this.$el).kendoPopup({
-      anchor: $(this.$refs.filterButton as HTMLElement),
-      position: "top right",
-      origin: "bottom right",
-      appendTo: $(".smart-element-grid-header-content"),
-      animation: {
-        close: {
-          effects: "slideOut zoom:out",
-          duration: 300
-        },
-        open: {
-          effects: "slideIn zoom:in",
-          duration: 300
-        }
-      }
-    });
   }
   public created(): void {
     // sort change
@@ -152,5 +130,30 @@ export default class GridHeaderCell extends Vue {
 
   protected filter(...args): void {
     this.$emit("filterchange", ...args);
+  }
+  protected setFilterOffset(): void {
+    const filter = $(this.$refs.filterButton).offset();
+    if ($(this.$refs.filterButton).is(":hidden")) {
+      this.showFilter = false;
+    }
+    if (!filter || !filter.top || !filter.left) {
+      return;
+    }
+    const left = filter.left - 200 <= 0 ? 28 : filter.left - 200;
+    this.filterOffset = {
+      top: filter.top + 18,
+      left
+    };
+  }
+
+  public mounted(): void {
+    this.setFilterOffset();
+    $(window).on(`resize.popupGrid${this._uid}`, () => {
+      this.setFilterOffset();
+    });
+  }
+
+  public beforeDestroy(): void {
+    $(window).off(`.popupGrid${this._uid}`);
   }
 }
