@@ -55,4 +55,11 @@
   padding: 0;
   width: 16.8rem;
   min-height: 23rem;
+  height: 22.8rem;
+}
+
+.k-state-filter-button-active,
+.k-state-filter-button-active:hover {
+  color: var(--white);
+  background-color: #157EFB;
 }

@@ -14,6 +14,8 @@ import GridError from "./utils/GridError";
 import GridExportEvent from "./AnkGridEvent/AnkGridExportEvent";
 import I18nMixin from "../../mixins/AnkVueComponentMixin/I18nMixin";
 
+import $ from "jquery";
+
 const CONTROLLER_URL = "/api/v2/grid/controllers/{controller}/{op}/{collection}";
 
 export interface SmartGridColumn {
@@ -40,7 +42,7 @@ export interface SmartGridAction {
   iconClass: string;
 }
 
-export type SmartGridCellPropertyValue = string | object | number | boolean;
+export type SmartGridCellPropertyValue = string | { [key: string]: string | number | boolean } | number | boolean;
 export interface SmartGridCellFieldValue {
   value: string | number | boolean;
   displayValue: string;
@@ -70,6 +72,12 @@ export interface SmartGridPageSize {
   page: number;
   pageSize: number;
   total: number;
+}
+
+export interface SmartGridSortConfig {
+  mode: string;
+  showIndexes: boolean;
+  allowUnsort: boolean;
 }
 
 export interface SmartGridSubHeader {
@@ -212,7 +220,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     default: () => DEFAULT_SORT,
     type: [Boolean, Object]
   })
-  public sortable: boolean | object;
+  public sortable: boolean | SmartGridSortConfig;
 
   @Prop({
     default: true,
@@ -326,7 +334,17 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   public selectedRows: string[] = [];
   public isLoading = false;
   public currentSort: kendo.data.DataSourceSortItem = null;
-  public currentFilter: kendo.data.DataSourceFilters = { logic: "and", filters: [] };
+  public currentFilter: {
+    logic: string;
+    filters: Array<{
+      logic: string;
+      field?: string;
+      filters: Array<{ operator: string; field: string; value: string; displayValue?: string }>;
+    }>;
+  } = {
+    logic: "and",
+    filters: []
+  };
   public currentPage: { total: number; skip: number; take: number } = {
     total: null,
     skip: 0,
@@ -336,7 +354,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
         : DEFAULT_PAGER.pageSize
   };
   public pager = this.pageable === true ? DEFAULT_PAGER : this.pageable;
-  public sorter = this.sortable === true ? DEFAULT_PAGER : this.sortable;
+  public sorter = this.sortable === true ? DEFAULT_SORT : this.sortable;
 
   public get gridInfo(): SmartGridInfo {
     return {
@@ -642,7 +660,9 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   }
 
   protected headerCellRenderFunction(createElement, defaultRendering, props): VNode {
-    const columnConfig = this.columnsList.find(c => c.field === props.field);
+    const columnConfig = this.columnsList.find(
+      (c: kendo.data.DataSourceFilter & { field?: string }) => c.field === props.field
+    );
     return createElement(AnkGridHeaderCell, {
       props: { ...props, columnConfig, grid: this },
       on: {
@@ -653,7 +673,9 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   }
 
   protected subHeaderCellRenderFunction(createElement, defaultRendering, props): VNode {
-    const columnConfig = this.columnsList.find(c => c.field === props.field);
+    const columnConfig = this.columnsList.find(
+      (c: kendo.data.DataSourceFilter & { field?: string }) => c.field === props.field
+    );
     const options = {
       props: {
         ...props,
