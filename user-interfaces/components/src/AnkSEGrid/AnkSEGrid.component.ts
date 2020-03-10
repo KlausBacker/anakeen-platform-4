@@ -45,6 +45,7 @@ export interface SmartGridCellFieldValue {
   value: string | number | boolean;
   displayValue: string;
 }
+
 export type SmartGridCellAbstractValue = string | object | number | boolean | SmartGridCellFieldValue;
 
 export type SmartGridCellValue =
@@ -101,6 +102,23 @@ export interface SmartGridInfo {
   exportUrl: string;
 }
 
+export enum SmartGridFilterOperator {
+  EQUAL = "eq",
+  NOT_EQUAL = "neq",
+  CONTAINS = "contains",
+  TITLE_CONTAINS = "title_contains",
+  STARTS_WITH = "startswith",
+  DOES_NOT_CONTAIN = "doesnotcontain",
+  IS_EMPTY = "isempty",
+  IS_NOT_EMPTY = "isnotempty"
+}
+
+export interface SmartGridSortable {
+  allowUnsort?: boolean;
+  showIndexes?: boolean;
+  mode?: string;
+}
+
 interface KendoVueGridRow extends Vue {
   dataItem?: SmartGridRowData;
 }
@@ -117,6 +135,10 @@ const DEFAULT_SORT = {
   allowUnsort: true
 };
 
+function computeSkipFromPage(page, pageSize) {
+  return (page - 1) * pageSize;
+}
+
 @Component({
   components: {
     "kendo-grid-norecords": GridNoRecords,
@@ -130,11 +152,18 @@ const DEFAULT_SORT = {
   name: "ank-se-grid-vue"
 })
 export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
+  // Deprecated use of collection prop, use smartCollection instead
   @Prop({
     default: "0",
     type: String
   })
   public collection: string;
+
+  @Prop({
+    default: "0",
+    type: String
+  })
+  public smartCollection: string;
 
   @Prop({
     type: Object
@@ -298,6 +327,16 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     type: Object
   })
   public sort!: kendo.data.DataSourceSortItem[];
+  @Prop({
+    default: () => ({ logic: "and", filters: [] }),
+    type: Object
+  })
+  public filter!: kendo.data.DataSourceFilters;
+  @Prop({
+    default: 1,
+    type: Number
+  })
+  public page!: number;
 
   public $refs: {
     smartGridWidget: Grid;
@@ -305,9 +344,23 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
 
   @Watch("$props", { deep: true })
   protected async onPropsChange(newValue): Promise<void> {
+    // apply sort prop change
     if (this.currentSort !== newValue.sort) {
-      this.addSort(...newValue.sort);
+      this.currentSort = newValue.sort;
     }
+
+    // apply page prop change
+    const skip = computeSkipFromPage(newValue.page, this.currentPage.take);
+    if (this.currentPage.skip !== skip) {
+      this.currentPage.skip = skip;
+    }
+
+    // apply filter prop change
+    if (this.currentFilter !== newValue.filter) {
+      this.currentFilter = newValue.filter;
+    }
+
+    // apply general changes
     return await this.refreshGrid();
   }
 
@@ -354,20 +407,15 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   public selectedRows: string[] = [];
   public isLoading = false;
   public currentSort: kendo.data.DataSourceSortItem[] = this.sort;
-  public currentFilter: {
-    logic: string;
-    filters: Array<{
-      logic: string;
-      field?: string;
-      filters: Array<{ operator: string; field: string; value: string; displayValue?: string }>;
-    }>;
-  } = {
-    logic: "and",
-    filters: []
-  };
+  public currentFilter: kendo.data.DataSourceFilters = this.filter;
   public currentPage: { total: number; skip: number; take: number } = {
     total: null,
-    skip: 0,
+    skip: computeSkipFromPage(
+      this.page,
+      this.pageable && this.pageable !== true
+        ? this.pageable.pageSize || DEFAULT_PAGER.pageSize
+        : DEFAULT_PAGER.pageSize
+    ),
     take:
       this.pageable && this.pageable !== true
         ? this.pageable.pageSize || DEFAULT_PAGER.pageSize
@@ -470,6 +518,15 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     }
   }
 
+  public async addFilter(
+    ...filterItem: kendo.data.DataSourceFilterItem[] | kendo.data.DataSourceFilters[]
+  ): Promise<void> {
+    filterItem.forEach(filter => {
+      this.currentFilter.filters.push(filter);
+    });
+    return await this._loadGridContent();
+  }
+
   public expandColumns(): void {
     $(this.$refs.smartGridWidget.$el).toggleClass("grid-row-collapsed");
   }
@@ -499,7 +556,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     await this._loadGridConfig();
   }
 
-  protected get rowsData() {
+  protected get rowsData(): SmartGridRowData[] {
     return this.dataItems.map(item => {
       if (this.selectable || this.checkable) {
         item[this.selectedField] = this.selectedRows.indexOf(item.properties.id as string) !== -1;
@@ -525,6 +582,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
           params: this.gridInfo
         })
         .then(response => {
+          this.collectionProperties = response.data.data.collection || {};
           this.columnsList = response.data.data.columns;
           this.allColumns = response.data.data.columns;
           this.columnsList = this.columnsList.filter(item => {
