@@ -2,6 +2,7 @@ import { Component, Prop, Mixins, Watch } from "vue-property-decorator";
 import "@progress/kendo-ui/js/kendo.dropdownlist.js";
 import I18nMixin from "../../../mixins/AnkVueComponentMixin/I18nMixin";
 import AnkSmartElementGrid, { SmartGridPageSize } from "../AnkSEGrid.component";
+import $ from "jquery";
 
 @Component({
   name: "ank-grid-pager"

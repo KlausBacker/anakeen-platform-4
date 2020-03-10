@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/user-interfaces",
-  "version": "3.0.2-RC.2020.1.11",
+  "version": "3.0.2-RC.2020.1.12",
   "autorelease": true,
   "description": "A package for the user interface of anakeen-platform",
   "keywords": [
@@ -46,7 +46,7 @@
   "license": "SEE LICENSE IN LICENSE",
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/user-interfaces.git",
   "devDependencies": {
-    "@anakeen/anakeen-cli": "1.2.2-RC.2020.1.11",
+    "@anakeen/anakeen-cli": "1.2.2-RC.2020.1.12",
     "@anakeen/webpack-conf": "1.2.1",
     "core-js": "3.6.1",
     "@types/backbone": "^1.4.0",
@@ -79,7 +79,7 @@
     "vue": "2.6.11"
   },
   "dependencies": {
-    "@anakeen/theme-variables": "1.0.0-RC.2020.1.11",
+    "@anakeen/theme-variables": "1.0.0-RC.2020.1.12",
     "@progress/kendo-data-query": "^1.5.2",
     "@progress/kendo-theme-bootstrap": "4.8.0",
     "@progress/kendo-ui": "2019.3.1113",

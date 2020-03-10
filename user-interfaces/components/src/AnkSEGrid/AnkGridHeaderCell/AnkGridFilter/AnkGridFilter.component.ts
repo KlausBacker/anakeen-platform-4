@@ -4,6 +4,7 @@ import { ISmartFormConfiguration } from "../../../AnkSmartForm/ISmartForm";
 import { default as AnkSmartFormDefinition } from "../../../AnkSmartForm/AnkSmartForm.component";
 import I18nMixin from "../../../../mixins/AnkVueComponentMixin/I18nMixin";
 import AnkSmartElementGrid from "../../AnkSEGrid.component";
+import $ from "jquery";
 
 type OperatorType = "docid" | "account" | "enum" | "timestamp" | "time" | "date" | "int" | "double" | "money" | "text";
 

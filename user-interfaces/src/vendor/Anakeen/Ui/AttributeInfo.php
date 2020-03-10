@@ -49,6 +49,10 @@ class AttributeInfo implements \JsonSerializable
      */
     protected $helpOutputs;
     /**
+     * @var array autocomplete definition
+     */
+    protected $autocomplete = null;
+    /**
      * @var string
      */
     protected $defaultValue = '';
@@ -265,5 +269,21 @@ class AttributeInfo implements \JsonSerializable
         return array_filter(get_object_vars($this), function ($v) {
             return ($v !== null);
         });
+    }
+
+    /**
+     * @return array
+     */
+    public function getAutocomplete(): ?array
+    {
+        return $this->autocomplete;
+    }
+
+    /**
+     * @param array $autocomplete
+     */
+    public function setAutocomplete(array $autocomplete): void
+    {
+        $this->autocomplete = $autocomplete;
     }
 }
