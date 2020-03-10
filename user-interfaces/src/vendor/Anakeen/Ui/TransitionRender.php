@@ -2,6 +2,7 @@
 
 namespace Anakeen\Ui;
 
+use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure\BasicAttribute;
 use Anakeen\SmartStructures\Wdoc\WDocHooks;
 
@@ -25,6 +26,7 @@ class TransitionRender
      * @var \Anakeen\Routes\Core\Lib\DocumentApiData
      */
     protected $crudWorkflow;
+    protected $instanceData;
 
     /**
      * @return WDocHooks
@@ -72,7 +74,6 @@ class TransitionRender
      */
     public function getTransitionParameters($transitionId)
     {
-
         $attrData = array();
         $askes = [];
         if (!$transitionId) {
@@ -101,11 +102,15 @@ class TransitionRender
             );
             $attrData[] = $this->getAttributeInfo($workflow, $askFrame);
             $this->workflow->attributes->addAttribute($askFrame);
+            $instance = $this->workflow->getSmartElement();
             foreach ($askes as $oa) {
                 if ($oa) {
                     $oa->fieldSet = $askFrame;
-
-                    $attrData[] = $this->getAttributeInfo($workflow, $oa);
+                    if (in_array(SEManager::getIdFromName($oa->docname), $instance->attributes->fromids)) {
+                        $attrData[] = $this->getAttributeInfo($this->getViewInstancew(), $oa);
+                    } else {
+                        $attrData[] = $this->getAttributeInfo($workflow, $oa);
+                    }
 
                     if ($oa->type === "array") {
                         if ($this->workflow->getAttribute($oa->id) &&
@@ -114,12 +119,12 @@ class TransitionRender
                             foreach ($attrs as $aid => $attr) {
                                 $attrData[] = $this->getAttributeInfo($workflow, $this->workflow->getAttribute($aid));
                             }
-                        } elseif ($this->workflow->getSmartElement()->getAttribute($oa->id)) {
+                        } elseif (in_array(SEManager::getIdFromName($oa->docname), $instance->attributes->fromids)) {
                             $attrs = $this->workflow->getSmartElement()->attributes->getArrayElements($oa->id);
                             foreach ($attrs as $aid => $attr) {
                                 $attrData[] = $this->getAttributeInfo(
-                                    $workflow,
-                                    $this->workflow->getSmartElement()->getAttribute($aid)
+                                    $this->getViewInstancew(),
+                                    $instance->getAttribute($aid)
                                 );
                             }
                         }
@@ -160,7 +165,22 @@ class TransitionRender
         }
         return $attrData;
     }
+    protected function getViewInstancew()
+    {
+        if ($this->instanceData === null) {
+            $this->instanceData = new \Anakeen\Routes\Core\Lib\DocumentApiData($this->workflow->getSmartElement());
 
+            $info = array(
+                "document.properties",
+                "document.properties.family"
+            );
+
+            $this->instanceData->setFields($info);
+            $this->instanceData->getDocumentData();
+        }
+
+        return $this->instanceData;
+    }
     /**
      * @param \Anakeen\Routes\Core\Lib\DocumentApiData $document
      * @param \Anakeen\Core\SmartStructure\BasicAttribute $attribute
@@ -186,6 +206,13 @@ class TransitionRender
         $origin = $this->workflow;
         if ($this->workflow->getSmartElement()->getAttribute($attribute->id)) {
             $origin = $this->workflow->getSmartElement();
+            if ($attribute->type === "docid" || $attribute->type === "account") {
+                if (!$aInfo->getAutocomplete()) {
+                    $aInfo->setAutocomplete([
+                        "url" => sprintf("/api/v2/smart-elements/%d/autocomplete/%s", $origin->id, $attribute->id)
+                    ]);
+                }
+            }
         }
 
         if ($attribute->usefor === "Q") {
