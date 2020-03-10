@@ -1,6 +1,6 @@
 {
   "name": "transformation-server",
-  "version": "1.4.2-RC.2020.1.10",
+  "version": "1.4.2-RC.2020.1.11",
   "main": "index.js",
   "author": "anakeen",
   "license": "MIT"
