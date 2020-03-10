@@ -54,7 +54,7 @@ export default class GridFilterCell extends Mixins(AnkGridCellMixin) {
       return !this.cellValue;
     } else {
       const cellValue = this.cellValue as SmartGridCellFieldValue;
-      return !(cellValue.displayValue && cellValue.value);
+      return !(cellValue.displayValue || cellValue.value);
     }
   }
 

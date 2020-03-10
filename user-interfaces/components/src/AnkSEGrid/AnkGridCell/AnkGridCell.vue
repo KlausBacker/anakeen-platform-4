@@ -36,7 +36,7 @@
       class="smart-element-grid-cell-content"
       :style="{ maxHeight: gridComponent.maxRowHeight }"
     >
-      {{ cellValue.displayValue || cellValue.value }}
+      {{ cellValue.displayValue || cellValue.value || cellValue }}
     </div>
 
     <!-- Smart Field display -->

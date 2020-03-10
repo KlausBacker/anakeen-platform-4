@@ -330,7 +330,7 @@ class SmartGridContentBuilder implements SmartGridBuilder
             if (isset($field["field"])) {
                 if (isset($field["property"]) && $field["property"]) {
                     $this->formatter->addProperty($field["field"]);
-                } elseif (!isset($field["abstract"])) {
+                } elseif (empty($field["abstract"])) {
                     $this->formatter->setAttributes([$field["field"]]);
                 }
             }
