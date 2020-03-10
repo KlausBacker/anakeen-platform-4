@@ -91,12 +91,18 @@ exports.versions = [
     moduleName: "dev-data"
   },
   {
+    package: "@anakeen/fulltext-search",
+    version: "1.0.0",
+    modulePath: "fulltext-search",
+    moduleName: "fulltext-search"
+  },
+  {
     package: "@anakeen/anakeen-module-validation",
     version: "2.1.0",
     npmOnly: true
   }
 ];
-exports.RC = "10";
+exports.RC = "11";
 exports.release = "2020.1";
 exports.modulePath = [
   "admin-center",
