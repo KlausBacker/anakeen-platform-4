@@ -427,7 +427,6 @@ class DirLib
         if ($trash == "only") {
             $distinct = true;
         }
-        //   xdebug_var_dump(xdebug_get_function_stack());
         if ($searchDoc) {
             $tqsql = $searchDoc->getQueries();
         } else {
@@ -476,26 +475,31 @@ class DirLib
                     if ($join) {
                         if (preg_match('/from\s+([a-z0-9]*)/', $qsql, $reg)) {
                             $maintable = $reg[1];
-                            $if = 0;
+
+                            if (!$maintable && preg_match('/^select ([a-z0-9]+).\* from/i', $qsql, $reg)) {
+                                $maintable=$reg[1];
+                            }
                             if ($maintable) {
                                 foreach ($tsqlfields as $kf => $vf) {
-                                    if ($if++ > 0) {
-                                        $tsqlfields[$kf] = $maintable . '.' . $vf;
-                                    }
+                                    $tsqlfields[$kf] = $maintable . '.' . $vf;
                                 }
                             }
                         }
                     }
                     $maintabledot = ($maintable) ? $maintable . '.' : '';
                     $sqlfields = implode(", ", $tsqlfields);
+
                     if ($userid > 1) { // control view privilege
                         // $qsql.= " and (${maintabledot}profid <= 0 or hasviewprivilege($userid, ${maintabledot}profid))";
                         $qsql .= sprintf(" and (%sviews && '%s')", $maintabledot, \Anakeen\Search\Internal\SearchSmartData::getUserViewVector($userid));
                         // no compute permission here, just test it
+                    }
+                    if (count($tqsql) > 1) {
                         $qsql = str_replace("* from ", "$sqlfields  from ", $qsql);
                     } else {
-                        $qsql = str_replace("* from ", "$sqlfields  from ", $qsql);
+                        $qsql = preg_replace("/select ([a-z]+\.\*) from/i", "select $sqlfields from ", $qsql);
                     }
+
                     if ((!$distinct) && strstr($qsql, "distinct")) {
                         $distinct = true;
                     }
@@ -543,8 +547,7 @@ class DirLib
                     $qsql .= " ORDER BY $orderby LIMIT $slice OFFSET $start;";
                 }
                 if ($fromid != "") {
-                    if ($fromid == -1) {
-                    } else {
+                    if ($fromid != -1) {
                         $fromid = abs($fromid);
                         if ($fromid > 0) {
                             \Anakeen\Core\SEManager::requireFamilyClass($fromid);

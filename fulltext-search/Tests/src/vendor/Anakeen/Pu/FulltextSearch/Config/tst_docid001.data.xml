@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documents>
+    <tst_docid001 name="TST_EDOCID1_001">
+        <tst_f_title>
+            <tst_title>Doc n°1</tst_title>
+            <tst_docid name="TST_EDOCID2_001"/>
+            <tst_docids name="TST_EDOCID2_002,TST_EDOCID2_003"/>
+            <tst_account name="TST_EIUSER2_001"/>
+            <tst_accounts name="TST_EIUSER2_005"/>
+            <tst_array>
+                <tst_docid2 name="TST_EDOCID2_005"/>
+                <tst_docid2s name="TST_EDOCID2_006,TST_EDOCID2_004"/>
+            </tst_array>
+            <tst_array>
+                <tst_docid2 name="TST_EDOCID2_007"/>
+                <tst_docid2s name="TST_EDOCID2_008,TST_EDOCID2_004"/>
+            </tst_array>
+            <tst_array>
+                <tst_account2 name="TST_EIUSER2_002"/>
+                <tst_account2s name="TST_EIUSER2_003,TST_EIUSER2_004"/>
+            </tst_array>
+        </tst_f_title>
+    </tst_docid001>
+    <tst_docid001 name="TST_EDOCID1_002">
+        <tst_f_title>
+            <tst_title>Doc n°2</tst_title>
+            <tst_docid name="TST_EDOCID2_002"/>
+        </tst_f_title>
+    </tst_docid001>
+    <tst_docid001 name="TST_EDOCID1_003">
+        <tst_f_title>
+            <tst_title>Doc n°3</tst_title>
+            <tst_docids name="TST_EDOCID2_003"/>
+        </tst_f_title>
+    </tst_docid001>
+    <tst_docid001 name="TST_EDOCID1_004">
+        <tst_f_title>
+            <tst_title>Doc n°4</tst_title>
+            <tst_docids name="TST_EDOCID2_004"/>
+        </tst_f_title>
+    </tst_docid001>
+    <tst_docid001 name="TST_EDOCID1_005">
+        <tst_f_title>
+            <tst_title>Doc n°5</tst_title>
+            <tst_docids name="TST_EDOCID2_005"/>
+            <tst_account name="TST_EIUSER2_004"/>
+        </tst_f_title>
+    </tst_docid001>
+    <tst_docid001 name="TST_EDOCID1_006">
+        <tst_f_title>
+            <tst_title>Doc n°6</tst_title>
+            <tst_docid2s name="TST_EDOCID2_003,TST_EDOCID2_005"/>
+            <tst_account2s name="TST_EIUSER2_006"/>
+        </tst_f_title>
+    </tst_docid001>
+    <tst_docid001 name="TST_EDOCID1_007">
+        <tst_f_title>
+            <tst_title>Doc n°7</tst_title>
+            <tst_docids name="TST_EDOCID2_007,TST_EDOCID2_008"/>
+            <tst_account2 name="TST_EIUSER2_004"/>
+            <tst_account2 name="TST_EIUSER2_005"/>
+        </tst_f_title>
+    </tst_docid001>
+</documents>

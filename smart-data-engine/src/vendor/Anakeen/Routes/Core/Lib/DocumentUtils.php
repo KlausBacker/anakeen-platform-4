@@ -161,7 +161,7 @@ class DocumentUtils
                 if ($document->doctype === "Z") {
                     return URLUtils::generateURL(sprintf("%s/trash/%s.json", $prefix, $document->initid));
                 } else {
-                    if ($document->locked == -1) {
+                    if (intval($document->locked) === -1) {
                         return URLUtils::generateURL(
                             sprintf(
                                 "%s/smart-elements/%s/revisions/%d.json",

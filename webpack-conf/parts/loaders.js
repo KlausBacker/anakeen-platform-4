@@ -61,6 +61,7 @@ exports.scssLoader = ({ filename, minify = false, removeJS = false, includePaths
             {
               loader: "sass-loader",
               options: {
+                implementation: require("node-sass"),
                 sassOptions: {
                   includePaths
                 }
@@ -135,7 +136,7 @@ exports.typescriptLoader = (customOptions = {}) => {
  * @param exclude
  * @returns {{resolve: {extensions: string[], alias: {vue$: string}}, plugins: VueLoaderPlugin[], module: {rules: *[]}}}
  */
-exports.vueLoader = (exclude = [])=> {
+exports.vueLoader = (exclude = []) => {
   return {
     resolve: {
       extensions: [".js", ".vue", ".json"],
@@ -157,7 +158,16 @@ exports.vueLoader = (exclude = [])=> {
         },
         {
           test: /\.s[ac]ss/,
-          use: ["vue-style-loader", "css-loader", "sass-loader"]
+          use: [
+            "vue-style-loader",
+            "css-loader",
+            {
+              loader: "sass-loader",
+              options: {
+                implementation: require("node-sass")
+              }
+            }
+          ]
         },
         {
           test: /\.css/,
@@ -259,7 +269,7 @@ exports.sourceMapLoader = () => {
     module: {
       rules: [
         {
-          test: /\.js$/,
+          test: /\.[jt]s$/,
           use: ["source-map-loader"],
           enforce: "pre"
         }
@@ -269,7 +279,7 @@ exports.sourceMapLoader = () => {
 };
 
 exports.excludeChunkFromMinification = () => {
-  const optimization = {
+  return {
     optimization: {
       minimizer: [
         new TerserPlugin({
@@ -284,5 +294,4 @@ exports.excludeChunkFromMinification = () => {
       ]
     }
   };
-  return optimization;
 };

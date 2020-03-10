@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:routes namespace="FullSearch">
+        <sde:route name="RecordFileTextContent">
+            <sde:callable>Anakeen\Fullsearch\Route\RecordFileTextContent</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/fullsearch/domains/{domain}/smart-elements/{elementid}</sde:pattern>
+            <sde:description>Use by TE to record file text extraction</sde:description>
+        </sde:route>
+
+        <sde:route name="SearchElements">
+            <sde:callable>Anakeen\Fullsearch\Route\SearchElements</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/fullsearch/domains/{domain}/smart-elements/</sde:pattern>
+            <sde:description>Search Smart Elements by pattern</sde:description>
+        </sde:route>
+    </sde:routes>
+</sde:config>

@@ -20,6 +20,7 @@ $dry = $usage->addEmptyParameter("dry-run", "Analyse file only - no import is pr
 $logfile = $usage->addOptionalParameter("log", "log file output");
 $verbose = $usage->addEmptyParameter("verbose", "Verbose mode");
 $debug = $usage->addEmptyParameter("debug", "Debug mode");
+$fromglob = $usage->addHiddenParameter("fromglob", "sub process of glob");
 
 $usage->verify();
 
@@ -35,6 +36,9 @@ if ($filename && $glob) {
 
 if ($glob) {
     $configFiles = \Anakeen\Core\Utils\Glob::glob($glob, 0, true);
+    if (count($configFiles) === 0) {
+        print "No files detected in glob \"$glob\"\n";
+    }
 } elseif (!is_file($filename)) {
     \Anakeen\Core\ContextManager::exitError(sprintf(___("Import file '%s' is not found", "sde"), $filename));
 } else {
@@ -54,8 +58,7 @@ if ($logfile) {
 }
 
 $point = "IMPCFG";
-\Anakeen\Core\DbManager::savePoint($point);
-
+$err = "";
 // -----------
 // Pre Testing
 $xmlErrors = [];
@@ -65,7 +68,6 @@ foreach ($configFiles as $configFile) {
         $xmlErrors[] = $err;
     }
 }
-
 if ($xmlErrors) {
     throw new \Anakeen\Script\Exception(implode("\n", $xmlErrors));
 }
@@ -76,11 +78,16 @@ $importObject->setVerbose($verbose);
 
 // -------------------------------
 // Process configuration files
-foreach ($configFiles as $configFile) {
+if (count($configFiles) === 1) {
+    $configFile = $configFiles[0];
     if ($verbose) {
-        printf("%s> Parse file \"%s\".\n", date("Y-m-d H:i:s"), $configFile);
-        $mb1=microtime(true);
+        if (!$fromglob) {
+            printf("%s> Parse file \"%s\".\n", date("Y-m-d H:i:s"), $configFile);
+        }
+        $mb1 = microtime(true);
     }
+
+    \Anakeen\Core\DbManager::savePoint($point);
 
     $importObject->clearVerboseMessages();
     $importObject->load($configFile);
@@ -100,7 +107,9 @@ foreach ($configFiles as $configFile) {
 
     try {
         $importObject->import();
+        \Anakeen\Core\DbManager::commitPoint($point);
     } catch (\Anakeen\Exception $exception) {
+        \Anakeen\Core\DbManager::rollbackPoint($point);
         if ($debug) {
             $data = $importObject->getDebugData();
             print(json_encode($data, JSON_PRETTY_PRINT));
@@ -121,12 +130,38 @@ foreach ($configFiles as $configFile) {
         print(json_encode($data, JSON_PRETTY_PRINT));
         print "\n";
     }
-}
-
-
-if ($err) {
-    \Anakeen\Core\DbManager::rollbackPoint($point);
-    \Anakeen\Core\ContextManager::exitError($err);
 } else {
-    \Anakeen\Core\DbManager::commitPoint($point);
+    $opt = "--fromglob";
+    if ($dryRun) {
+        $opt .= " --dry-run";
+    }
+    if ($verbose) {
+        $opt .= " --verbose";
+    }
+    if ($debug) {
+        $opt .= " --debug";
+    }
+    foreach ($configFiles as $configFile) {
+        if ($verbose) {
+            printf("\033[32m%s> Parse file \"%s\".\033[0m\n", date("Y-m-d H:i:s"), $configFile);
+            $mb1 = microtime(true);
+        }
+        $ankCmd = sprintf(
+            "%s --script=importConfiguration --file=%s %s 2>&1",
+            \Anakeen\Script\ShellManager::getAnkCmd(),
+            escapeshellarg($configFile),
+            $opt
+        );
+        $output = [];
+        exec($ankCmd, $output, $retval);
+        if ($retval === 0) {
+            print(implode("\n\t", $output) . "\n");
+        } else {
+            throw new \Anakeen\Script\Exception(sprintf(
+                "Error importing \"%s\":\n%s",
+                $configFile,
+                implode("\n", $output)
+            ));
+        }
+    }
 }

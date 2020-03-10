@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documents>
+    <dsearch name="TST_ESEARCH_003_GREEN">
+        <se_famid name="TST_SIMPLE003">Filtre de recherche vert</se_famid>
+        <se_famonly>no</se_famonly>
+        <se_ol>and</se_ol>
+        <se_t_detail>
+            <se_leftp>no</se_leftp>
+            <se_attrids>tst_searchable</se_attrids>
+            <se_funcs>=</se_funcs>
+            <se_keys>green</se_keys>
+            <se_rightp>no</se_rightp>
+        </se_t_detail>
+    </dsearch>
+    <dsearch name="TST_ESEARCH_003_BLUE">
+        <se_famid name="TST_SIMPLE003">Filtre de recherche bleu</se_famid>
+        <se_famonly>no</se_famonly>
+        <se_ol>and</se_ol>
+        <se_t_detail>
+            <se_leftp>no</se_leftp>
+            <se_attrids>tst_searchable</se_attrids>
+            <se_funcs>=</se_funcs>
+            <se_keys>blue</se_keys>
+            <se_rightp>no</se_rightp>
+        </se_t_detail>
+    </dsearch>
+
+    <tst_simple003 name="TST_ESIMPLE3_001">
+        <tst_f_title>
+            <tst_title>Tous les ours ont un grand corps trapu et massif, des membres puissants.</tst_title>
+            <tst_searchable>blue</tst_searchable>
+        </tst_f_title>
+    </tst_simple003>
+    <tst_simple003 name="TST_ESIMPLE3_002">
+        <tst_f_title>
+            <tst_title>Le lion (Panthera leo) est une espèce de mammifères carnivores de la famille des félidés.
+            </tst_title>
+            <tst_searchable>green</tst_searchable>
+        </tst_f_title>
+    </tst_simple003>
+    <tst_simple003 name="TST_ESIMPLE3_003">
+        <tst_f_title>
+            <tst_title>Saumon est un nom vernaculaire ambigu désignant chez les francophones plusieurs espèces de poissons de la famille des salmonidés :
+            </tst_title>
+            <tst_searchable>blue</tst_searchable>
+        </tst_f_title>
+    </tst_simple003>
+    <tst_simple003 name="TST_ESIMPLE3_004">
+        <tst_f_title>
+            <tst_title>Le terme truite est un nom vernaculaire ambigu désignant plusieurs espèces de poissons de la famille des salmonidés.
+            </tst_title>
+            <tst_searchable>red</tst_searchable>
+        </tst_f_title>
+    </tst_simple003>
+    <tst_simple003 name="TST_ESIMPLE3_005">
+        <tst_f_title>
+            <tst_title>Saumon est un nom vernaculaire ambigu désignant chez les francophones plusieurs espèces de poissons de la famille des salmonidés :
+            </tst_title>
+            <tst_searchable>yellow</tst_searchable>
+        </tst_f_title>
+    </tst_simple003>
+</documents>

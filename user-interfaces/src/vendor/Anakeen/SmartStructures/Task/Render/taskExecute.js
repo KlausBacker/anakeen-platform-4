@@ -50,4 +50,25 @@ window.ank.smartElement.globalController.registerFunction("taskRenderCommon", co
       }
     }
   });
+  controller.addEventListener(
+    "smartFieldReady",
+    {
+      name: "doubleCheck",
+      smartFieldCheck: smartField => {
+        return smartField.id === "task_exec_output";
+      }
+    },
+    function changeDisplayError(event, smartElement, smartField, $el) {
+      const $v = $el.find(".dcpAttribute__content__value");
+
+      const output = controller.getValue("task_exec_output");
+      if (output.value) {
+        try {
+          const jsonv = JSON.parse(output.value);
+          $v.html(JSON.stringify(jsonv, null, 2));
+          // eslint-disable-next-line no-empty
+        } catch (e) {}
+      }
+    }
+  );
 });

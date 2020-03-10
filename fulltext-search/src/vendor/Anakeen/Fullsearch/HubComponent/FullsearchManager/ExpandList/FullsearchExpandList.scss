@@ -1,0 +1,13 @@
+.fullsearch-list {
+  tr.k-state-selected {
+    background-color: var(--primary);
+
+    > td:not(.k-hierarchy-cell) {
+      color:var(--white);
+    }
+  }
+
+  .search-button {
+    margin-left: auto;
+  }
+}

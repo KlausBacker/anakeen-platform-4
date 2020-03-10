@@ -5,7 +5,7 @@ use Anakeen\Router\ApiV2Response;
 use Anakeen\SmartStructures\Task\CrontabManager;
 
 /**
- * Class CrontabCheck
+ * Verify crontab syntax
  *
  * @note    Used by route : GET /api/v2/admin/task/crontab/{crontab}
  */

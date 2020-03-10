@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const webpack = require("webpack");
 const rollup = require("rollup");
 const webpackDevMiddleware = require("webpack-dev-middleware");
@@ -5,31 +7,44 @@ const express = require("express");
 const app = express();
 const proxy = require("express-http-proxy");
 const config = require("./config.perso.js");
-const merge = require("webpack-merge");
+const ErrorOverlayPlugin = require("error-overlay-webpack-plugin");
+const rollupConfig = config.getRollupConfig();
+let firstRollup;
 
-config.getRollupConfig().forEach(currentElement => {
-  console.log(currentElement);
-  const compiler = rollup.watch(currentElement.default);
-  compiler.on('event', event => {
-    console.log("ROLLUP ", event);
+if (rollupConfig.length > 0) {
+  firstRollup = new Promise((resolve, reject) => {
+    config.getRollupConfig().forEach(currentElement => {
+      const watcher = rollup.watch(currentElement.default);
+      watcher.on("event", event => {
+        if (event.code === "END") {
+          setTimeout(resolve, 1000);
+        }
+      });
+    });
   });
-});
+} else {
+  firstRollup = Promise.resolve();
+}
 
-config.getConfig().forEach(currentConfig => {
-  if (currentConfig.mode !== "development") {
-    return;
-  }
-  if (config.devtool) {
-    currentConfig.devtool = config.devtool;
-  }
-  currentConfig.plugins = currentConfig.plugins || [];
+firstRollup.then(() => {
+  config.getConfig().forEach(currentConfig => {
+    if (currentConfig.mode !== "development") {
+      return;
+    }
+    if (config.devtool) {
+      currentConfig.devtool = config.devtool;
+    }
+    currentConfig.plugins = currentConfig.plugins || [];
+    currentConfig.plugins.push(new ErrorOverlayPlugin());
 
-  const compiler = webpack(currentConfig);
+    const compiler = webpack(currentConfig);
 
-  const instance = webpackDevMiddleware(compiler, {
-    publicPath: currentConfig.output.publicPath
+    const instance = webpackDevMiddleware(compiler, {
+      publicPath: currentConfig.output.publicPath,
+      writeToDisk: true
+    });
+    app.use(instance);
   });
-  app.use(instance);
 });
 
 app.use(

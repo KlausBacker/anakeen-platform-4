@@ -20,7 +20,7 @@ TOPTARGETS := deploy deploy-test deploy-all lint po stub checkXML clean beautify
 
 BUILDTARGETS := app app-autorelease app-test app-test-autorelease app-all
 
-SUBDIRS := control smart-data-engine security workflow internal-components user-interfaces hub-station admin-center business-app development-center transformation migration-tools dev-data test-tools
+SUBDIRS := control smart-data-engine security workflow internal-components user-interfaces hub-station admin-center business-app development-center transformation migration-tools dev-data test-tools fulltext-search
 
 CONTROL_ARCHIVE = $(BUILD_DIR)/control/anakeen-control-latest.zip
 
@@ -93,7 +93,7 @@ clean-env-full: clean-env ## Clean docker environment and remove images
 #	rm -rf $(NODE_MODULES_DIR) $(DEVTOOLS_TMP_DIR)
 
 .PHONY: update-all
-update-all: app-autorelease | start-env ## Update all modules
+update-all: | start-env ## Update all modules
 	$(_CONTROL_CMD) update --no-interaction --no-ansi
 
 .PHONY: install-all
@@ -103,7 +103,7 @@ install-all: | start-env ## install all modules
 
 .PHONY: run-dev-server
 run-dev-server: ## Run webpack development server
-	$(NODE_BIN) --max-old-space-size=4096 $(DEVTOOLS_DIR)/devserver/index.js
+	$(NVM_EXEC_CMD) $(DEVTOOLS_DIR)/devserver/index.js
 
 $(CONTROL_ARCHIVE):
 	make APP_OUTPUT_PATH=$(MK_DIR)/$(BUILD_DIR)/control -C control app

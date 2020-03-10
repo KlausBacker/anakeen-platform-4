@@ -1,7 +1,8 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { Popup } from "@progress/kendo-vue-popup";
 import AnkGridFilter from "./AnkGridFilter/AnkGridFilter.vue";
 import AnkSmartElementGrid from "../AnkSEGrid.component";
+import { Popup } from "@progress/kendo-vue-popup";
+import $ from "jquery";
 
 enum SortableDirection {
   NONE,
@@ -12,8 +13,8 @@ enum SortableDirection {
 @Component({
   name: "ank-se-grid-header-cell",
   components: {
-    Popup,
-    AnkGridFilter
+    AnkGridFilter,
+    Popup
   }
 })
 export default class GridHeaderCell extends Vue {
@@ -46,10 +47,13 @@ export default class GridHeaderCell extends Vue {
   public grid!: AnkSmartElementGrid;
   public sortableDir: SortableDirection = SortableDirection.NONE;
   public showFilter = false;
-  public hoverPopup = false;
   public collision = {
     horizontal: "fit",
     vertical: "flip"
+  };
+  public filterOffset = {
+    top: 0,
+    left: 0
   };
   public get hasSubtitle(): boolean {
     return this.grid.contextTitles && Array.isArray(this.columnConfig.context) && this.columnConfig.context.length;
@@ -75,37 +79,17 @@ export default class GridHeaderCell extends Vue {
 
   public get isFiltered(): boolean {
     return (
-      this.grid.currentFilter && !!this.grid.currentFilter.filters.filter((f: any) => f.field === this.field).length
+      this.grid.currentFilter &&
+      !!this.grid.currentFilter.filters.filter(
+        (f: kendo.data.DataSourceFilter & { field?: string }) => f.field === this.field
+      ).length
     );
   }
-
+  public showFilters(): void {
+    this.showFilter = !this.showFilter;
+  }
   public created(): void {
-    window.addEventListener("click", e => {
-      // remove filter's popup when clicking outside of the popup
-      const tabFilterClasses = [];
-      const popup = $(".smart-element-grid-filter-criteria");
-      const popupClasses = $(e.target).attr("class");
-      if (popupClasses) {
-        if (popupClasses.split(" ")) {
-          popupClasses.split(" ").forEach(item => {
-            if (popup.find("." + item).length) {
-              tabFilterClasses.push(item);
-            }
-          });
-        } else {
-          if (popup.find("." + $(e.target).attr("class")).length) {
-            tabFilterClasses.push($(e.target).attr("class"));
-          }
-        }
-        if (tabFilterClasses.length === 0) {
-          this.showFilter = false;
-        }
-      } else {
-        this.showFilter = false;
-      }
-    });
     // sort change
-    // @ts-ignore
     if (this.grid.sorter && this.grid.sorter.allowUnsort === false && this.sortable) {
       this.sortableDir = SortableDirection.ASC;
       this.$emit("sortchange", {
@@ -118,22 +102,10 @@ export default class GridHeaderCell extends Vue {
       });
     }
   }
-  public beforeDestroy(): void {
-    window.removeEventListener("click", () => {
-      if (!this.hoverPopup) {
-        this.showFilter = false;
-      }
-    });
-  }
-  public clickFilter(): void {
-    this.showFilter = !this.showFilter;
-    this.hoverPopup = true;
-  }
   protected onSort(): void {
     let sortableStr: string;
     const sortableValues = [null, "asc", "desc"];
     this.sortableDir = (this.sortableDir + 1) % 3;
-    // @ts-ignore
     if (this.grid.sorter && this.grid.sorter.allowUnsort === true && this.sortable) {
       sortableStr = sortableValues[this.sortableDir];
     } else {
@@ -158,5 +130,30 @@ export default class GridHeaderCell extends Vue {
 
   protected filter(...args): void {
     this.$emit("filterchange", ...args);
+  }
+  protected setFilterOffset(): void {
+    const filter = $(this.$refs.filterButton).offset();
+    if ($(this.$refs.filterButton).is(":hidden")) {
+      this.showFilter = false;
+    }
+    if (!filter || !filter.top || !filter.left) {
+      return;
+    }
+    const left = filter.left - 200 <= 0 ? 28 : filter.left - 200;
+    this.filterOffset = {
+      top: filter.top + 18,
+      left
+    };
+  }
+
+  public mounted(): void {
+    this.setFilterOffset();
+    $(window).on(`resize.popupGrid${this._uid}`, () => {
+      this.setFilterOffset();
+    });
+  }
+
+  public beforeDestroy(): void {
+    $(window).off(`.popupGrid${this._uid}`);
   }
 }

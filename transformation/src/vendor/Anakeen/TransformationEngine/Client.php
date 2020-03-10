@@ -7,7 +7,6 @@ use Anakeen\Core\Utils\FileMime;
 
 class Client
 {
-
     const TASK_STATE_BEGINNING = 'B'; // C/S start of transaction
     const TASK_STATE_TRANSFERRING = 'T'; // Data (file) transfer is in progress
     const TASK_STATE_ERROR = 'K'; // Job ends with error
@@ -52,10 +51,16 @@ class Client
         } else {
             $this->host = $host;
         }
+        if (! $this->host) {
+            throw new ClientException("TE : No HOST configured");
+        }
         if ($port === 0) {
             $this->port = ContextParameterManager::getValue(Manager::Ns, "TE_PORT");
         } else {
             $this->port = $port;
+        }
+        if (! $this->port) {
+            throw new ClientException("TE : No PORT configured");
         }
         $this->timeout = floatval(ContextParameterManager::getValue(Manager::Ns, "TE_TIMEOUT", 3));
     }
@@ -102,7 +107,7 @@ class Client
         //  echo "Essai de connexion à '$address' sur le port '$service_port'...\n";
         //    $result = socket_connect($socket, $address, $service_port);
 
-        $fp = stream_socket_client("tcp://$address:$service_port", $errno, $errstr, $this->timeout);
+        $fp = @stream_socket_client("tcp://$address:$service_port", $errno, $errstr, $this->timeout);
 
         if (!$fp) {
             $err = "TE : Socket creation error" . " : $errstr ($errno)\n";

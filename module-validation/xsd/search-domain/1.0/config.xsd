@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:sd="https://platform.anakeen.com/4/schemas/search-domain/1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified"
+           targetNamespace="https://platform.anakeen.com/4/schemas/search-domain/1.0">
+
+
+    <xs:element name="search-stem" type="xs:string"/>
+    <xs:element name="description" type="xs:token" />
+    <xs:element name="search-config">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="title" type="sd:propType" maxOccurs="unbounded" minOccurs="0"/>
+                <xs:element name="field" type="sd:fieldType" maxOccurs="unbounded" minOccurs="0"/>
+                <xs:element name="file" type="sd:fileType" maxOccurs="unbounded" minOccurs="0"/>
+                <xs:element name="callable" type="sd:functionType" maxOccurs="unbounded" minOccurs="0"/>
+            </xs:sequence>
+            <xs:attribute type="sd:logicalNameType" name="structure" use="required"/>
+            <xs:attribute type="sd:logicalNameType" name="collection"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="search-domain">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="sd:search-stem"/>
+                <xs:element ref="sd:description" minOccurs="0"/>
+                <xs:element ref="sd:search-config" maxOccurs="unbounded" minOccurs="0"/>
+            </xs:sequence>
+            <xs:attribute type="xs:string" name="name" use="required"/>
+            <xs:attribute type="sd:langType" name="lang" use="required"/>
+        </xs:complexType>
+    </xs:element>
+
+
+    <xs:complexType name="fieldType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="ref" use="required"/>
+                <xs:attribute type="sd:weight" name="weight" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="functionType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="sd:callableType" name="function" use="required"/>
+                <xs:attribute type="sd:weight" name="weight" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="fileType">
+        <xs:simpleContent>
+            <xs:extension base="sd:fieldType">
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+
+    <xs:complexType name="propType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="sd:weight" name="weight" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:simpleType name="callableType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[A-Za-z][a-zA-Z0-9_\\]*::[A-Za-z0-9_]*"/>
+            <xs:pattern value="[A-Za-z][a-zA-Z0-9_\\]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="langType">
+        <xs:restriction base="xs:token">
+            <xs:pattern value="[a-z][a-z]"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="logicalNameType">
+        <xs:restriction base="xs:token">
+            <xs:pattern value="[A-Za-z][A-Za-z0-9_-]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="weight">
+        <xs:annotation>
+            <xs:documentation>
+                <h1>Information weight</h1>
+                <ul>
+                    <li><code>A</code>: Important information
+                        <code>(1.0)</code>
+                    </li>
+                    <li><code>B</code>: Normal information
+                        <code>(0.4)</code>
+                    </li>
+                    <li><code>C</code>: Information
+                        <code>(0.2)</code>
+                    </li>
+                    <li><code>D</code>: Optionnal information
+                        <code>(0.1)</code>
+                    </li>
+                </ul>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="A"/>
+            <xs:enumeration value="B"/>
+            <xs:enumeration value="C"/>
+            <xs:enumeration value="D"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

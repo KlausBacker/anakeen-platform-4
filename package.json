@@ -20,6 +20,7 @@
         "webpack-conf",
         "dev-data",
         "test-tools",
+        "fulltext-search",
         ".devtool/devserver"
     ],
     "dependencies": {

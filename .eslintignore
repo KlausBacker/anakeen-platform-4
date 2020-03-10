@@ -50,3 +50,6 @@ test-tools/src/public/
 test-tools/components/lib
 test-tools/components/webpack/
 test-tools/test
+fulltext-search/node_modules/
+fulltext-search/src/public/
+fulltext-search/webpack/

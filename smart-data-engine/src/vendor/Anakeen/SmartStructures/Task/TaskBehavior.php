@@ -65,18 +65,22 @@ class TaskBehavior extends \Anakeen\SmartElement
         DbManager::lockPoint($this->initid);
 
         $this->select($this->getLatestId(false, true));
-        $cmd = $this->getAnkCmd();
         $this->setValue(TaskFields::task_exec_state_result, "inprogress");
         $this->setValue(TaskFields::task_exec_date, Date::getNow());
         $this->modify();
+        DbManager::commitPoint("_taskExec");
 
         $d1 = new \DateTime();
+        $cmd = $this->getAnkCmd();
         exec($cmd . " 2>&1", $output, $return);
 
 
+        DbManager::savePoint("_taskExec");
+        DbManager::lockPoint($this->initid);
         $d2 = new \DateTime();
         $diff = $d2->diff($d1);
 
+        $this->select($this->getLatestId(false, true));
         $this->setValue(TaskFields::task_exec_output, implode("\n", $output));
         $this->setValue(TaskFields::task_exec_duration, $diff->format("%H:%I:%S"));
         $this->setValue(TaskFields::task_exec_state_result, $return === 0 ? "success" : "fail");
@@ -88,8 +92,8 @@ class TaskBehavior extends \Anakeen\SmartElement
         $this->clearValue(TaskFields::task_exec_duration);
         $this->clearValue(TaskFields::task_exec_date);
         $this->modify();
-
         DbManager::commitPoint("_taskExec");
+
         return $return;
     }
 
@@ -159,9 +163,8 @@ class TaskBehavior extends \Anakeen\SmartElement
             } catch (\Exception $e) {
                 throw new Exception("Invalid crontab :" . $e->getMessage());
             }
-            // Add One minute to be sure to change next run date after execution
+
             $oneMinuteAfter = new \DateTime();
-            $oneMinuteAfter->add(new \DateInterval('PT1M'));
             return $cron->getNextRunDate($oneMinuteAfter)->format('Y-m-d H:i:s');
         }
 

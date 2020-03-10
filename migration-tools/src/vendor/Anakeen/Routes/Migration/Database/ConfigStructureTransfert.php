@@ -183,7 +183,6 @@ class ConfigStructureTransfert extends DataElementTransfert
             $sql = sprintf("delete from docenum where name = '%s'", pg_escape_string($enumSetName));
             DbManager::query($sql);
 
-
             $qsql = <<<SQL
 insert into docenum ("name", key, label, parentkey, disabled, eorder) 
                select  '%s', key, label, parentkey, disabled, eorder from dynacase.docenum 
@@ -208,8 +207,6 @@ SQL;
 
     protected static function importStructureFields($structureName)
     {
-
-        Utils::importForeignTable("docattr");
         $qsql = <<<SQL
 insert into docattr (%s) 
 select %s from dynacase.docattr where docid=(select id from docfam where name='%s') returning id
@@ -232,11 +229,22 @@ SQL;
         );
 
         DbManager::query($sql, $ids, true);
+
+        // Delete menu and action
+        $sql = "delete from docattr where type='menu' or type='action'";
+        DbManager::query($sql);
+
         // Delete MODATTR without father
         $sql = "delete from docattr where id ~ '^:' and substring(id,2) not in (select id from docattr)";
         DbManager::query($sql);
+
         // Default Access is ReadWrite
         $sql = "update docattr set accessibility='ReadWrite' where accessibility is null and id !~ '^:'";
+        DbManager::query($sql);
+
+
+        // Delete old autocomplete
+        $sql = "update docattr set phpfile=null, phpfunc=null  where phpfile like '%.php';";
         DbManager::query($sql);
 
         // Thesaurus are only docid
