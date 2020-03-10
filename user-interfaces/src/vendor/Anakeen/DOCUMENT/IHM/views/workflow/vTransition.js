@@ -272,6 +272,9 @@ export default ViewDocument.extend({
           window: {
             // maxWidth: "600px",
             height: "auto",
+            resize: function resizeTransition() {
+              $(window).trigger("resize");
+            },
             close: function registerCloseEvent(e) {
               var event = { prevent: false };
               currentView.model.trigger("beforeChangeStateClose", event);
