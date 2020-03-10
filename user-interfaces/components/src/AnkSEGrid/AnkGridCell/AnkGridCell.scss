@@ -39,19 +39,24 @@
   display: flex;
 }
 
-.smart-element-grid-cell__state--color {
+.smart-element-grid-cell-state--color {
   border-radius: 25%;
   width: .8rem;
   height: .8rem;
-  margin-left: .5rem;
+  margin-right: .5rem;
   background-color: transparent;
 }
 
-.smart-element-grid-cell__state {
+.smart-element-grid-cell-state {
   font-size: 0.95rem;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   margin-right: 1rem;
   margin-top: -0.5rem;
+}
+
+.smart-element-grid-cell--title-icon {
+  width: 1.1rem;
+  height: 1.1rem;
 }

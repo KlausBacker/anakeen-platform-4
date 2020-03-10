@@ -1,4 +1,4 @@
-import { Component, Prop, Watch, Mixins, Vue } from "vue-property-decorator";
+import { Component, Mixins, Prop, Vue, Watch } from "vue-property-decorator";
 import AnkActionMenu from "./AnkActionMenu/AnkActionMenu.vue";
 import AnkGridCell from "./AnkGridCell/AnkGridCell.vue";
 import AnkExportButton from "./AnkExportButton/AnkExportButton.vue";
@@ -10,7 +10,7 @@ import AnkGridHeaderCell from "./AnkGridHeaderCell/AnkGridHeaderCell.vue";
 import { Grid, GridNoRecords } from "@progress/kendo-vue-grid";
 import { VNode } from "vue/types/umd";
 import GridEvent from "./AnkGridEvent/AnkGridEvent";
-import GridError from "./utils/GridError";
+import GridError, { GridErrorCodes } from "./utils/GridError";
 import GridExportEvent from "./AnkGridEvent/AnkGridExportEvent";
 import I18nMixin from "../../mixins/AnkVueComponentMixin/I18nMixin";
 
@@ -99,6 +99,9 @@ export interface SmartGridInfo {
   selectedRows: string[];
   onlySelection: boolean;
   customData: unknown;
+  configUrl: string;
+  contentUrl: string;
+  exportUrl: string;
 }
 
 interface KendoVueGridRow extends Vue {
@@ -271,6 +274,23 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   })
   public maxRowHeight: string;
 
+  @Prop({
+    default: CONTROLLER_URL,
+    type: String
+  })
+  public contentUrl: string;
+
+  @Prop({
+    default: CONTROLLER_URL,
+    type: String
+  })
+  public configUrl: string;
+
+  @Prop({
+    default: CONTROLLER_URL,
+    type: String
+  })
+  public exportUrl: string;
   public $refs: {
     smartGridWidget: Grid;
   };
@@ -371,7 +391,10 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
       transaction: this.transaction,
       selectedRows: this.selectedRows,
       onlySelection: this.onlySelection,
-      customData: this.customData
+      customData: this.customData,
+      contentUrl: this._getOperationUrl("content"),
+      configUrl: this._getOperationUrl("config"),
+      exportUrl: this._getOperationUrl("export")
     };
   }
 
@@ -405,7 +428,10 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
           saveColumnsOptions = JSON.parse(saveColumnsOptions);
         }
       } else {
-        console.error("Persistent grid state is disabled, local storage is not supported by the current environment");
+        this.gridError.error(
+          "Persistent grid state is disabled, local storage is not supported by the current environment",
+          GridErrorCodes.LOCAL_STORAGE
+        );
       }
     }
     this.gridInstance = this;
@@ -515,7 +541,11 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
           this.isLoading = false;
         })
         .catch(error => {
-          console.error(error);
+          if (error && error.response && error.response.status === 404) {
+            this.gridError.error("The configuration URL '" + url + "' does not exist", GridErrorCodes.URL_NOT_EXIST);
+          } else {
+            this.gridError.error(error, GridErrorCodes.CONFIGURATION);
+          }
           this.isLoading = false;
         });
     } else {
@@ -560,7 +590,11 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
           this.isLoading = false;
         })
         .catch(error => {
-          console.error(error);
+          if (error && error.response && error.response.status === 404) {
+            this.gridError.error("The content URL '" + url + "' does not exist", GridErrorCodes.URL_NOT_EXIST);
+          } else {
+            this.gridError.error(error, GridErrorCodes.CONTENT);
+          }
           this.isLoading = false;
         });
     } else {
@@ -708,7 +742,19 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   }
 
   protected _getOperationUrl(operation): string {
-    return CONTROLLER_URL.replace(/\{(\w+)\}/g, (match, substr) => {
+    let url = CONTROLLER_URL;
+    switch (operation) {
+      case "config":
+        url = this.configUrl;
+        break;
+      case "content":
+        url = this.contentUrl;
+        break;
+      case "export":
+        url = this.exportUrl;
+        break;
+    }
+    return url.replace(/\{(\w+)\}/g, (match, substr) => {
       switch (substr) {
         case "controller":
           return this.controller;
@@ -760,7 +806,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     onPolling: (...args: unknown[]) => void = (): void => {},
     pollingTime = 500,
     onExport = this.doDefaultExport.bind(this)
-  ): Promise<any> {
+  ): Promise<boolean | string | void> {
     if (this.networkOnline) {
       const beforeEvent = this.sendBeforeExportEvent(onExport, onPolling);
       if (!beforeEvent.isDefaultPrevented()) {
@@ -796,7 +842,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     }
   }
 
-  protected async doDefaultExport(): Promise<any> {
+  protected async doDefaultExport(): Promise<void> {
     const exportUrl = this._getOperationUrl("export");
     await this.$http
       .get(exportUrl, {
@@ -804,9 +850,13 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
         responseType: "blob"
       })
       .then(response => this.downloadExportFile(response.data))
-      .catch(err => {
-        this.gridError.error(err);
-        this.sendErrorEvent(err);
+      .catch(error => {
+        if (error && error.response && error.response.status === 404) {
+          this.gridError.error("The export URL '" + exportUrl + "' does not exist", GridErrorCodes.URL_NOT_EXIST);
+        } else {
+          this.gridError.error(error, GridErrorCodes.EXPORT);
+        }
+        this.sendErrorEvent(error);
       });
   }
 
@@ -865,9 +915,13 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
         this.transaction = response.data;
         return true;
       })
-      .catch(err => {
-        this.gridError.error(err);
-        this.sendErrorEvent(err);
+      .catch(error => {
+        if (error && error.response && error.response.status === 404) {
+          this.gridError.error("The export URL '" + exportUrl + "' does not exist", GridErrorCodes.URL_NOT_EXIST);
+        } else {
+          this.gridError.error(error, GridErrorCodes.EXPORT);
+        }
+        this.sendErrorEvent(error);
       });
   }
 
@@ -908,7 +962,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
           }
         })
         .catch(err => {
-          console.error(err);
+          this.gridError.error(err, GridErrorCodes.EXPORT_POLLING);
           if (timer) {
             clearTimeout(timer);
           }

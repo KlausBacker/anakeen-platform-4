@@ -24,9 +24,19 @@
       class="smart-element-grid-cell-content"
       :style="{ maxHeight: gridComponent.maxRowHeight }"
     >
-      <div v-if="field === 'state'" class="smart-element-grid-cell__state">
+      <div v-if="field === 'state'" class="smart-element-grid-cell-state">
+        <span class="smart-element-grid-cell-state--color" :style="{ backgroundColor: cellValue.color }"></span>
         <span>{{ cellValue.displayValue }}</span>
-        <span class="smart-element-grid-cell__state--color" :style="{ backgroundColor: cellValue.color }"></span>
+      </div>
+      <div v-else-if="field === 'title'" class="smart-element-grid-cell--title">
+        <div class="smart-element-grid-cell--title-content">
+          <img
+            class="smart-element-grid-cell--title-icon"
+            v-if="dataItem.properties.icon"
+            :src="dataItem.properties.icon"
+          />
+          <span class="smart-element-grid-cell--title-text">{{ cellValue }}</span>
+        </div>
       </div>
       <span v-else>{{ cellValue }}</span>
     </div>
