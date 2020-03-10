@@ -1,6 +1,7 @@
 <template>
   <component
     :is="tag"
+    @click="onClickItem"
     :class="
       `smart-element-grid-cell smart-element-grid-cell--${columnConfig.smartType} smart-element-grid-cell--${field}`
     "

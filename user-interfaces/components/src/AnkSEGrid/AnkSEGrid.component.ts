@@ -660,7 +660,10 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
             columnConfig,
             gridComponent: this
           },
-          scopedSlots: {}
+          scopedSlots: {},
+          on: {
+            itemClick: () => this.onRowClick({ dataItem: props.dataItem })
+          }
         };
         if (this.$scopedSlots && this.$scopedSlots.emptyCell) {
           // @ts-ignore
