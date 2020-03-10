@@ -4,12 +4,6 @@ import AnkSmartElementGrid from "../AnkSEGrid.component";
 import { Popup } from "@progress/kendo-vue-popup";
 import $ from "jquery";
 
-enum SortableDirection {
-  NONE,
-  ASC,
-  DESC
-}
-
 @Component({
   name: "ank-se-grid-header-cell",
   components: {
@@ -45,7 +39,6 @@ export default class GridHeaderCell extends Vue {
     required: true
   })
   public grid!: AnkSmartElementGrid;
-  public sortableDir: SortableDirection = SortableDirection.NONE;
   public showFilter = false;
   public collision = {
     horizontal: "fit",
@@ -67,14 +60,16 @@ export default class GridHeaderCell extends Vue {
   }
 
   public get sortableStateIcon(): string {
-    switch (this.sortableDir) {
-      case SortableDirection.NONE:
-        return `<i class='smart-element-header-sort-button smart-element-header-sort-button--none'></i>`;
-      case SortableDirection.ASC:
-        return `<i class='smart-element-header-sort-button k-icon k-i-sort-asc-sm'></i>`;
-      case SortableDirection.DESC:
-        return `<i class='smart-element-header-sort-button k-icon k-i-sort-desc-sm'></i>`;
+    const sortField = this.currentSort;
+    if (sortField) {
+      switch (sortField.dir) {
+        case "asc":
+          return `<i class='smart-element-header-sort-button k-icon k-i-sort-asc-sm'></i>`;
+        case "desc":
+          return `<i class='smart-element-header-sort-button k-icon k-i-sort-desc-sm'></i>`;
+      }
     }
+    return `<i class='smart-element-header-sort-button smart-element-header-sort-button--none'></i>`;
   }
 
   public get isFiltered(): boolean {
@@ -88,37 +83,43 @@ export default class GridHeaderCell extends Vue {
   public showFilters(): void {
     this.showFilter = !this.showFilter;
   }
-  public created(): void {
-    // sort change
-    if (this.grid.sorter && this.grid.sorter.allowUnsort === false && this.sortable) {
-      this.sortableDir = SortableDirection.ASC;
-      this.$emit("SortChange", {
-        sort: [
-          {
-            field: this.field,
-            dir: "asc"
-          }
-        ]
+
+  public get currentSort(): kendo.data.DataSourceSortItem {
+    if (this.grid && this.grid.currentSort) {
+      return this.grid.currentSort.find(sort => {
+        return sort.field === this.field;
       });
+    } else {
+      return null;
     }
   }
+
   protected onSort(): void {
-    let sortableStr: string;
-    const sortableValues = [null, "asc", "desc"];
-    this.sortableDir = (this.sortableDir + 1) % 3;
-    if (this.grid.sorter && this.grid.sorter.allowUnsort === true && this.sortable) {
-      sortableStr = sortableValues[this.sortableDir];
-    } else {
-      if (this.sortableDir === 0) {
-        this.sortableDir = (this.sortableDir + 1) % 3;
+    let nextSortableDir: string;
+    if (this.currentSort && this.currentSort.dir) {
+      switch (this.currentSort.dir) {
+        case "asc":
+          nextSortableDir = "desc";
+          break;
+        case "desc":
+          if (this.grid.sorter.allowUnsort === false) {
+            nextSortableDir = "asc";
+          } else {
+            nextSortableDir = null;
+          }
+          break;
+        case null:
+          nextSortableDir = "asc";
+          break;
       }
-      sortableStr = sortableValues[this.sortableDir];
+    } else {
+      nextSortableDir = "asc";
     }
     this.$emit("SortChange", {
       sort: [
         {
           field: this.field,
-          dir: sortableStr
+          dir: nextSortableDir
         }
       ]
     });

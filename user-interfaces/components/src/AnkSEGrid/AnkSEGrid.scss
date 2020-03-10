@@ -72,4 +72,8 @@
       flex: 0;
     }
   }
+
+  .k-grid col.k-sorted, .k-grid th.k-sorted {
+    background: none;
+  }
 }

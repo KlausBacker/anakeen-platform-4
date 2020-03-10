@@ -89,7 +89,7 @@ export interface SmartGridInfo {
   pageable: false | SmartGridPageSize | { buttonCount: number; pageSize: number; pageSizes: number[] };
   page: number;
   sortable: boolean | object;
-  sort: kendo.data.DataSourceSortItem;
+  sort: kendo.data.DataSourceSortItem[];
   filterable: boolean | object;
   filter: kendo.data.DataSourceFilters;
   transaction: { [key: string]: string };
@@ -293,13 +293,21 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     type: String
   })
   public selectedField: string;
+  @Prop({
+    default: null,
+    type: Object
+  })
+  public sort!: kendo.data.DataSourceSortItem[];
 
   public $refs: {
     smartGridWidget: Grid;
   };
 
   @Watch("$props", { deep: true })
-  protected async onPropsChange(): Promise<void> {
+  protected async onPropsChange(newValue): Promise<void> {
+    if (this.currentSort !== newValue.sort) {
+      this.addSort(...newValue.sort);
+    }
     return await this.refreshGrid();
   }
 
@@ -345,7 +353,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   public dataItems: SmartGridRowData[] = [];
   public selectedRows: string[] = [];
   public isLoading = false;
-  public currentSort: kendo.data.DataSourceSortItem = null;
+  public currentSort: kendo.data.DataSourceSortItem[] = this.sort;
   public currentFilter: {
     logic: string;
     filters: Array<{
@@ -441,6 +449,24 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
       await this._loadGridContent();
     } catch (error) {
       this.gridError.error(error);
+    }
+  }
+
+  public async addSort(...sortItem: kendo.data.DataSourceSortItem[]): Promise<void> {
+    let sort = [...sortItem];
+    if (this.sorter) {
+      if (this.sorter.mode !== "multiple") {
+        sort = [sortItem[0]];
+      } else if (this.currentSort) {
+        sort = this.currentSort
+          .filter(s => {
+            const alreadyExist = sort.find(newSort => newSort.field === s.field);
+            return !alreadyExist;
+          })
+          .concat(sort);
+      }
+      this.currentSort = sort;
+      return await this._loadGridContent();
     }
   }
 
@@ -782,8 +808,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   }
 
   protected async onSortChange(sortEvt): Promise<void> {
-    this.currentSort = sortEvt.sort;
-    await this._loadGridContent();
+    this.addSort(...sortEvt.sort);
   }
 
   protected async onPageChange(pagerEvt): Promise<void> {
