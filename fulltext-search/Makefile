@@ -23,7 +23,7 @@ CHECK_VERSION=node ./../.devtool/ci/check/checkVersionNpmApp.js
 ##
 ########################################################################################################################
 src/vendor/Anakeen/Fullsearch/lib/vendor/:
-	cd $@/.. ; ${COMPOSER_BIN} install
+	cd src/vendor/Anakeen/Fullsearch/lib/ ; ${COMPOSER_BIN} install
 
 install-deps: src/vendor/Anakeen/Fullsearch/lib/vendor/
 	@${PRINT_COLOR} "${DEBUG_COLOR}Install deps${RESET_COLOR}\n"
