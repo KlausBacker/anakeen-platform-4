@@ -1,5 +1,4 @@
 const path = require("path");
-const { useCache } = require("./common");
 const { prod, dev } = require("@anakeen/webpack-conf");
 const {
   vueLoader,
@@ -11,6 +10,7 @@ const PUBLIC_PATH = path.join(BASE_DIR, "/src/public");
 
 module.exports = () => {
   const conf = {
+    context: BASE_DIR,
     moduleName: "login",
     entry: {
       login: [

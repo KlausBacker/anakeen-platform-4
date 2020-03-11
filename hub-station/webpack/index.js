@@ -1,12 +1,10 @@
 const path = require("path");
-const { useCache } = require("./common");
 const { prod, dev } = require("@anakeen/webpack-conf");
 const {
   vueLoader,
   typeScriptLoader,
   addKendoGlobal,
-  addJqueryGlobal,
-  addVueGlobal
+  addJqueryGlobal
 } = require("@anakeen/webpack-conf/parts");
 
 const BASE_DIR = path.resolve(__dirname, "../");
@@ -14,6 +12,7 @@ const PUBLIC_PATH = path.join(BASE_DIR, "src/public");
 
 module.exports = () => {
   const conf = {
+    context: BASE_DIR,
     moduleName: "hub",
     entry: {
       hub: [path.resolve(BASE_DIR, "src/vendor/Anakeen/Hub/IHM/JS/hub.js")]
@@ -26,7 +25,6 @@ module.exports = () => {
     ],
     buildPath: PUBLIC_PATH,
     customParts: [
-      useCache,
       addJqueryGlobal(),
       addKendoGlobal([/kendo.pdf/, /kendo.excel/], true),
       vueLoader(),

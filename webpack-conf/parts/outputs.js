@@ -1,6 +1,7 @@
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const AssetsWebpackPlugin = require("assets-webpack-plugin");
 const DuplicatePackageCheckerPlugin = require("duplicate-package-checker-webpack-plugin");
+const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 const webpack = require("webpack");
 
 /**
@@ -11,6 +12,15 @@ const webpack = require("webpack");
 exports.checkDuplicatePackage = () => ({
   plugins: [new DuplicatePackageCheckerPlugin()]
 });
+
+exports.addCache = () => {
+  if (process.env.NO_CACHE) {
+    return [];
+  }
+  return {
+    plugins: [new HardSourceWebpackPlugin()]
+  }
+};
 
 /**
  * Remove generated files of path
@@ -79,38 +89,3 @@ exports.generateNamedChunk = () => ({
     }
   ]
 });
-
-/**
- * Indicate that a module is a DLL pack (internal)
- *
- * @param path
- * @param name
- * @returns {{plugins: (webpack.DllPlugin|DllPlugin)[]}}
- */
-exports.dllPlugin = ({ path, name }) => {
-  return {
-    plugins: [
-      new webpack.DllPlugin({
-        path,
-        name
-      })
-    ]
-  };
-};
-
-/**
- * Indicate that a build will use this DLL
- * @param context
- * @param manifest
- * @returns {{plugins: (webpack.DllReferencePlugin|DllReferencePlugin)[]}}
- */
-exports.addDll = ({ context, manifest }) => {
-  return {
-    plugins: [
-      new webpack.DllReferencePlugin({
-        context,
-        manifest
-      })
-    ]
-  };
-};

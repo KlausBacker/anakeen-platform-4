@@ -1,5 +1,4 @@
 const path = require("path");
-const { useCache } = require("./common");
 const { prod, dev } = require("@anakeen/webpack-conf");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const { clean } = require("@anakeen/webpack-conf/parts");
@@ -9,6 +8,7 @@ const PUBLIC_PATH = path.join(BASE_DIR, "/src/public");
 
 module.exports = () => {
   const conf = {
+    context: BASE_DIR,
     moduleName: "assets",
     entry: {
       KendoUI: [path.resolve(__dirname, "./kendo/kendo.js")]
@@ -16,7 +16,6 @@ module.exports = () => {
     buildPath: PUBLIC_PATH,
     withoutBabel: true,
     customParts: [
-      useCache,
       {
         module: {
           rules: [

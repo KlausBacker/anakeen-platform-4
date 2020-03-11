@@ -1,6 +1,5 @@
 const path = require("path");
 const webpack = require("webpack");
-const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 const { lib } = require("@anakeen/webpack-conf");
 
 const {
@@ -15,6 +14,7 @@ const BASE_DIR = path.resolve(__dirname, "../");
 const PUBLIC_PATH = path.join(BASE_DIR, "src/public");
 
 const conf = {
+  context: BASE_DIR,
   moduleName: "admin",
   libName: "adminGlobal",
   entry: {
@@ -59,7 +59,6 @@ const conf = {
     /node_modules\/brace/
   ],
   customParts: [
-    { plugins: [new HardSourceWebpackPlugin()] },
     vueLoader(),
     typeScriptLoader(),
     addKendoGlobal([/kendo.pdf/, /kendo.excel/], true),

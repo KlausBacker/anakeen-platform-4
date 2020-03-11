@@ -57,7 +57,6 @@
     "@anakeen/webpack-conf": "1.2.1",
     "core-js": "3.6.1",
     "@types/node": "^13.1.2",
-    "hard-source-webpack-plugin": "^0.13.1",
     "rollup": "^1.27.14",
     "rollup-plugin-cleaner": "^1.0.0",
     "rollup-plugin-commonjs": "^10.1.0",

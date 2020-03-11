@@ -1,5 +1,4 @@
 const path = require("path");
-const { useCache } = require("./common");
 const { prod, dev } = require("@anakeen/webpack-conf");
 const { cssLoader, addKendoGlobal, addJqueryGlobal } = require("@anakeen/webpack-conf/parts");
 
@@ -8,6 +7,7 @@ const PUBLIC_PATH = path.join(BASE_DIR, "src/public");
 
 module.exports = () => {
   const conf = {
+    context: BASE_DIR,
     moduleName: "hubRender",
     entry: {
       hubConfiguration: [
@@ -18,7 +18,7 @@ module.exports = () => {
       ]
     },
     buildPath: PUBLIC_PATH,
-    customParts: [useCache, addJqueryGlobal(), addKendoGlobal([/kendo.pdf/, /kendo.excel/], true), cssLoader()]
+    customParts: [addJqueryGlobal(), addKendoGlobal([/kendo.pdf/, /kendo.excel/], true), cssLoader()]
   };
   if (process.env.conf === "PROD") {
     return prod(conf);

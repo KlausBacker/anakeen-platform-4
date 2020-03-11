@@ -1,5 +1,4 @@
 const path = require("path");
-const { useCache } = require("./common");
 
 const { prod, dev } = require("@anakeen/webpack-conf");
 const { vueLoader, addKendoGlobal, addJqueryGlobal } = require("@anakeen/webpack-conf/parts");
@@ -9,6 +8,7 @@ const PUBLIC_PATH = path.join(BASE_DIR, "/src/public");
 
 module.exports = () => {
   const conf = {
+    context: BASE_DIR,
     moduleName: "smartStructures",
     entry: {
       Dsearch: [
@@ -47,7 +47,6 @@ module.exports = () => {
     buildPath: PUBLIC_PATH,
     excludeBabel: [/node_modules\/style-loader/],
     customParts: [
-      useCache,
       addKendoGlobal([/kendo.pdf/, /kendo.excel/], true),
       addJqueryGlobal(),
       {

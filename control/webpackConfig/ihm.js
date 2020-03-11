@@ -16,6 +16,7 @@ fs.writeFileSync(
 
 module.exports = () => {
   const conf = {
+    context: BASE_DIR,
     moduleName: "control",
     entry: {
       control: [path.resolve(__dirname, "../src/src/Control/IHM/index.js")]

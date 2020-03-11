@@ -12,6 +12,8 @@ const commonConfig = ({ mode, moduleName, manifestPath }) => {
     {
       bail: true
     },
+    parts.addCache(),
+    parts.generateNamedChunk(),
     parts.generateHashModuleName(),
     parts.checkDuplicatePackage(),
     parts.sourceMapLoader(),
