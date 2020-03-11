@@ -11,5 +11,17 @@ export default import("ckeditor4"  /* webpackChunkName: "ckeditor4" */).then(() 
     if (!jqueryGlobal) {
       window.jQuery = oldQuery;
     }
+    return new Promise((resolve, reject) => {
+      if (window.CKEDITOR) {
+        return resolve();
+      }
+      //wait if ckeditor is set
+      var waitCKEDITOR = setInterval(function() {
+        if (window.CKEDITOR) {
+          clearInterval(waitCKEDITOR);
+          resolve();
+        }
+      }, 100);
+    });
   });
 });
