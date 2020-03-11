@@ -10,6 +10,7 @@ const PUBLIC_PATH =  path.join(BASE_DIR, "src/public");
 
 module.exports = () => {
   const conf = {
+    context: BASE_DIR,
     "moduleName": "DevCenterStandalone",
     "entry": {
       'profile': [path.resolve(BASE_DIR, 'src/vendor/Anakeen/DevelopmentCenter/JS/profile.js')],

@@ -103,7 +103,7 @@ install-all: | start-env ## install all modules
 
 .PHONY: run-dev-server
 run-dev-server: ## Run webpack development server
-	$(NVM_EXEC_CMD) $(DEVTOOLS_DIR)/devserver/index.js
+	NO_CACHE=true $(NVM_EXEC_CMD) $(DEVTOOLS_DIR)/devserver/index.js
 
 $(CONTROL_ARCHIVE):
 	make APP_OUTPUT_PATH=$(MK_DIR)/$(BUILD_DIR)/control -C control app

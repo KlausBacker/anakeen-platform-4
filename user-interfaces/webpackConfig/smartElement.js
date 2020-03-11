@@ -1,5 +1,4 @@
 const path = require("path");
-const { useCache  } = require("./common");
 
 const { prod, dev } = require("@anakeen/webpack-conf");
 const webpack = require("webpack");
@@ -15,6 +14,7 @@ const PUBLIC_PATH = path.join(BASE_DIR, "/src/public");
 
 module.exports = () => {
   const conf = {
+    context: BASE_DIR,
     moduleName: "smartElement",
     entry: {
       smartElement: [
@@ -27,7 +27,6 @@ module.exports = () => {
     buildPath: PUBLIC_PATH,
     excludeBabel: [/node_modules\/ckeditor/],
     customParts: [
-      useCache,
       {
         plugins: [
           new webpack.ProvidePlugin({

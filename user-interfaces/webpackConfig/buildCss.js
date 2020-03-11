@@ -1,5 +1,4 @@
 const path = require("path");
-const { useCache } = require("./common");
 
 const { prod, dev } = require("@anakeen/webpack-conf");
 const { scssLoader } = require("@anakeen/webpack-conf/parts");
@@ -9,6 +8,7 @@ const PUBLIC_PATH = path.join(BASE_DIR, "/src/public");
 
 module.exports = () => {
   const conf = {
+    context: BASE_DIR,
     moduleName: "theme",
     entry: {
       bootstrap: [path.resolve(__dirname, "../components/scss/bootstrap.scss")],
@@ -25,7 +25,6 @@ module.exports = () => {
   const confProd = {
     ...conf,
     customParts: [
-      useCache,
       scssLoader({
         filename: "[name]-[chunkhash].css",
         minify: true,
@@ -36,7 +35,6 @@ module.exports = () => {
   const confDev = {
     ...conf,
     customParts: [
-      useCache,
       scssLoader({
         filename: "[name].css",
         removeJS: true

@@ -39,26 +39,31 @@ firstRollup.then(() => {
 
     const compiler = webpack(currentConfig);
 
+    console.log(currentConfig.output.publicPath);
+
     const instance = webpackDevMiddleware(compiler, {
-      publicPath: currentConfig.output.publicPath,
-      writeToDisk: true
+      publicPath: currentConfig.output.publicPath
     });
+    console.log(`Add conf for ${currentConfig.output.publicPath}`);
     app.use(instance);
   });
+}).then(() => {
+  console.log(`Add general proxy for ${config.platformUrl}`);
+  app.use(
+    "/",
+    proxy(config.platformUrl, {
+      proxyReqOptDecorator: function(proxyReqOpts) {
+        if (config.credentials && config.credentials.user && config.credentials.password) {
+          const buffer = new Buffer(`${config.credentials.user}:${config.credentials.password}`);
+          proxyReqOpts.headers["Authorization"] = `Basic ${buffer.toString("base64")}`;
+        }
+        return proxyReqOpts;
+      }
+    })
+  );
 });
 
-app.use(
-  "/",
-  proxy(config.platformUrl, {
-    proxyReqOptDecorator: function(proxyReqOpts) {
-      if (config.credentials && config.credentials.user && config.credentials.password) {
-        const buffer = new Buffer(`${config.credentials.user}:${config.credentials.password}`);
-        proxyReqOpts.headers["Authorization"] = `Basic ${buffer.toString("base64")}`;
-      }
-      return proxyReqOpts;
-    }
-  })
-);
+
 
 app.listen(config.devServerPort, function(err) {
   if (err) {

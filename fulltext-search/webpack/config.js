@@ -1,6 +1,5 @@
 const path = require("path");
 const webpack = require("webpack");
-const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 const { lib } = require("@anakeen/webpack-conf");
 
 const { vueLoader, typeScriptLoader, addKendoGlobal, addJqueryGlobal, addVueGlobal } = require("@anakeen/webpack-conf/parts");
@@ -13,6 +12,7 @@ const modeDev = {
 };
 
 const conf = {
+  context: BASE_DIR,
   moduleName: "adminFullsearch",
   libName: "adminFullsearch",
   entry: {
@@ -33,7 +33,6 @@ const conf = {
     /node_modules\/brace/
   ],
   customParts: [
-    { plugins: [new HardSourceWebpackPlugin()] },
     vueLoader(),
     typeScriptLoader(),
     addKendoGlobal([/kendo.pdf/, /kendo.excel/], true),

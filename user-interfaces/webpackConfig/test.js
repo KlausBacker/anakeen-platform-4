@@ -1,5 +1,4 @@
 const path = require("path");
-const { useCache } = require("./common");
 const { prod, dev, lib } = require("@anakeen/webpack-conf");
 const {
   vueLoader,
@@ -17,6 +16,7 @@ const PUBLIC_PATH = path.join(BASE_DIR, "Tests/src/public");
 
 module.exports = () => {
   const conf = {
+    context: BASE_DIR,
     moduleName: "uiTest",
     entry: {
       familyTestRender: [
@@ -28,7 +28,6 @@ module.exports = () => {
     },
     buildPath: PUBLIC_PATH,
     customParts: [
-      useCache,
       vueLoader(),
       typeScriptLoader(),
       addKendoGlobal([/kendo.pdf/, /kendo.excel/], true),
