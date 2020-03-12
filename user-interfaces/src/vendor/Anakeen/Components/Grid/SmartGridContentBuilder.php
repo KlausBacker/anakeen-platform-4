@@ -388,7 +388,7 @@ class SmartGridContentBuilder implements SmartGridBuilder
                 "page" => $this->page,
                 "skip" => $this->pageSize !== "ALL" ? ($this->page * $this->pageSize) - $this->pageSize : 0,
                 "take" => $this->pageSize,
-                "pageSize" => $this->pageSize === "ALL" ? 10 : $this->pageSize,
+                "pageSize" => $this->pageSize === "ALL" ? "ALL" : $this->pageSize,
                 "total" => $this->searchElements->onlyCount()
             ]
         ];
