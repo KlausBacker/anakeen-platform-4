@@ -155,7 +155,9 @@ if (count($configFiles) === 1) {
         $output = [];
         exec($ankCmd, $output, $retval);
         if ($retval === 0) {
-            print(implode("\n\t", $output) . "\n");
+            if ($verbose) {
+                print(implode("\n\t", $output) . "\n");
+            }
         } else {
             throw new \Anakeen\Script\Exception(sprintf(
                 "Error importing \"%s\":\n%s",
