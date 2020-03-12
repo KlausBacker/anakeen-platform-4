@@ -252,7 +252,7 @@ class SEManager
     }
 
     /**
-     * Initialize document object
+     * Initialize Smart Element object
      *
      * The document is not yet recorded to database and has no identifier
      *
@@ -306,9 +306,10 @@ class SEManager
     }
 
     /**
-     * Create document object
+     * Create Smart Element object
      *
-     * The document is not yet recorded to database and has no identifier
+     * The Smart Element is not yet recorded to database and has no identifier
+     * The Smart Element is NOT under access control
      *
      * @param int|string $structureIdentifier
      * @param bool $useDefaultValues
@@ -332,19 +333,19 @@ class SEManager
         $doc->accessControl()->setProfil($family->cprofid);
         $doc->accessControl()->setCvid($family->ccvid);
         $doc->accessControl()->setFallid($family->cfallid);
+        $doc->disableAccessControl(true);
         if ($useDefaultValues) {
             $doc->setDefaultValues($family->getDefValues());
         }
 
-        $doc->disableAccessControl(true);
         return $doc;
     }
 
     /**
-     * Create document object
+     * Create Smart Element object
      *
-     * The document is not yet recorded to database and has no identifier
-     * this document has no profile. It will be destroyed by dynacaseDbCleaner wsh program
+     * The Smart Element is not yet recorded to database and has no identifier
+     * This Smart Element has no profile. It will be destroyed by schedule task program
      *
      * @param int|string $familyIdentifier
      * @param bool $useDefaultValues
@@ -359,6 +360,7 @@ class SEManager
     {
         $doc = self::initializeDocument($familyIdentifier);
         $doc->doctype = 'T';
+        $doc->disableAccessControl(true);
         if ($useDefaultValues) {
             /**
              * @var \Anakeen\Core\SmartStructure $family
@@ -404,7 +406,7 @@ class SEManager
     }
 
     /**
-     * Create document object from document's values
+     * Create Smart Element object from data's values
      *
      * No call to database is done to retrieve attributes values
      *
@@ -434,7 +436,7 @@ class SEManager
     }
 
     /**
-     * Get document title
+     * Get Smart Element title
      *
      * Retrieve raw title of document directly from database.
      * No use any cache
@@ -463,7 +465,7 @@ class SEManager
     }
 
     /**
-     * Get document properties
+     * Get Smart Element properties
      *
      * Retrieve proterties of document directly from database.
      * No use any cache
@@ -497,7 +499,7 @@ class SEManager
     }
 
     /**
-     * Get raw value for a document
+     * Get raw value for a Smart Element
      *
      * Retrieve raw value of document directly from database
      *
@@ -540,9 +542,9 @@ class SEManager
 
 
     /**
-     * Get some raw data for a document
+     * Get some raw data for a Smart Element
      *
-     * Retrieve raw value of document
+     * Retrieve raw value of Smart Element
      *
      * @param string|int $documentIdentifier
      * @param string[] $dataIdentifiers list of attribute or property identifiers
@@ -624,7 +626,7 @@ class SEManager
     }
 
     /**
-     * Get latest id from document name (logical name)
+     * Get latest id from Smart Element name (logical name)
      *
      * @param string $documentName
      *
@@ -676,7 +678,7 @@ class SEManager
     }
 
     /**
-     * Get document name (logical name) from numerical identifier
+     * Get Smart Element name (logical name) from numerical identifier
      *
      * @param int $documentId
      *
@@ -705,7 +707,7 @@ class SEManager
     }
 
     /**
-     * Get Family Id
+     * Get Smart Structure Id
      *
      * @param string $famName familyName
      * @param bool $reset
@@ -765,7 +767,7 @@ class SEManager
     }
 
     /**
-     * Get document fromid
+     * Get Smart Element fromid
      *
      * @param int|string $documentId document identifier
      *
@@ -800,7 +802,7 @@ class SEManager
 
 
     /**
-     * Get document from name
+     * Get Smart Element from name
      *
      * @param int|string $documentId document identifier
      *
@@ -834,7 +836,7 @@ class SEManager
     }
 
     /**
-     * Return Document Cache Object
+     * Return Smart Element Cache Object
      *
      * @return DocManager\Cache
      */
