@@ -81,7 +81,7 @@ export default {
               this.$refs.hubInstanciationList.refreshList();
             });
           } else {
-            element.$on("documentLoaded", () => {
+            element.$on("SmartElementMounted", () => {
               element.addEventListener("afterSave", () => {
                 this.$refs.hubInstanciationList.refreshList();
               });
@@ -116,7 +116,7 @@ export default {
                       this.$refs.hubInstanciationList.refreshList();
                     });
                   } else {
-                    element.$once("documentLoaded", () => {
+                    element.$once("SmartElementMounted", () => {
                       this.$refs.hubInstanciationList.refreshList();
                     });
                   }
@@ -125,7 +125,7 @@ export default {
             }
           });
         } else {
-          this.$refs.instanceConfig.$once("documentLoaded", () => {
+          this.$refs.instanceConfig.$once("SmartElementMounted", () => {
             this.$refs.instanceConfig.addEventListener("afterSave", (e, doc) => {
               if (this.$refs.hubInstanciationList) {
                 this.$refs.hubInstanciationList.refreshList();
