@@ -92,7 +92,7 @@ export default class GridHeaderCell extends Vue {
     // sort change
     if (this.grid.sorter && this.grid.sorter.allowUnsort === false && this.sortable) {
       this.sortableDir = SortableDirection.ASC;
-      this.$emit("sortchange", {
+      this.$emit("SortChange", {
         sort: [
           {
             field: this.field,
@@ -114,7 +114,7 @@ export default class GridHeaderCell extends Vue {
       }
       sortableStr = sortableValues[this.sortableDir];
     }
-    this.$emit("sortchange", {
+    this.$emit("SortChange", {
       sort: [
         {
           field: this.field,
@@ -125,11 +125,11 @@ export default class GridHeaderCell extends Vue {
   }
 
   protected clearFilter(...args): void {
-    this.$emit("filterchange", ...args);
+    this.$emit("FilterChange", ...args);
   }
 
   protected filter(...args): void {
-    this.$emit("filterchange", ...args);
+    this.$emit("FilterChange", ...args);
   }
   protected setFilterOffset(): void {
     const filter = $(this.$refs.filterButton).offset();
