@@ -46,7 +46,7 @@
                 controller="HUB_STATION_ADMIN_GRID_CONTROLLER"
                 :pageable="false"
                 class="hub-admin"
-                @afterContent="displayMockUp"
+                @AfterContent="displayMockUp"
                 :contextTitles="false"
               >
               </ank-se-grid>

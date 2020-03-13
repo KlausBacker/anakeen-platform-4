@@ -13,8 +13,8 @@
         filterable
         defaultExpandable
         :pageable="{ pageSizes: [100, 200, 500], pageSize: 100 }"
-        @rowActionClick="actionClick"
-        @grid-data-bound="onGridDataBound"
+        @RowActionClick="actionClick"
+        @DataBound="onGridDataBound"
       >
       </ank-se-grid>
     </template>

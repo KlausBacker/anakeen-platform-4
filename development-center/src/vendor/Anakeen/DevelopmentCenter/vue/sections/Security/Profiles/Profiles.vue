@@ -13,8 +13,8 @@
           :contextTitles="false"
           controller="PROFILES_GRID_CONTROLLER"
           filterable
-          @rowActionClick="actionClick"
-          @grid-data-bound="onGridDataBound"
+          @RowActionClick="actionClick"
+          @DataBound="onGridDataBound"
         >
           <template v-slot:cellTemplate="opts">
             <td v-if="opts.columnConfig.field === 'dpdoc_famid'">
