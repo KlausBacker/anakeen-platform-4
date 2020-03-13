@@ -16,8 +16,8 @@
         pageable
         filterable
         default-expandable
-        @rowActionClick="selectTrash"
-        @grid-data-bound="onGridDataBound"
+        @RowActionClick="selectTrash"
+        @DataBound="onGridDataBound"
       />
       <div class="trash-se-parent">
         <div v-if="!selectedTrashBool" class="trash-empty">
