@@ -83,7 +83,7 @@
       <span aria-label="Go to the last page" class="k-icon k-i-seek-e" />
     </a>
     <div v-if="pageSizes" class="smart-element-grid-pager-sizes">
-      <input ref="gridPageSizes" :value="pageSizes[0]" class="smart-element-grid-pager-sizes--dropdown" />
+      <input ref="gridPageSizes" :value="pageSize" class="smart-element-grid-pager-sizes--dropdown" />
       <span class="smart-element-grid-pager-sizes--label"> {{ this.$t("gridPager.items per page") }}</span>
     </div>
 

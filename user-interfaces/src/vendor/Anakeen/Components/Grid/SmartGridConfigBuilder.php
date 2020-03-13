@@ -22,7 +22,7 @@ class SmartGridConfigBuilder implements SmartGridBuilder
     protected $actions = [];
     protected $toolbarActions = false;
     protected $footer = false;
-    protected $pageable = false;
+    protected $pageable = 'all';
 
     /**
      * @var  int

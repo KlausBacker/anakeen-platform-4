@@ -21,4 +21,4 @@ exports.addKendoGlobal = global.addKendoGlobal;
 exports.addJqueryGlobal = global.addJqueryGlobal;
 exports.addVueGlobal = global.addVueGlobal;
 exports.dllPlugin = outputs.dllPlugin;
-exports.addDll = outputs.addDll;
+exports.addCache = outputs.addCache;

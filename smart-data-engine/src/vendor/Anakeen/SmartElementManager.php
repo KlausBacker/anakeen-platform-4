@@ -41,6 +41,13 @@ class SmartElementManager extends \Anakeen\Core\SEManager
     }
 
 
+    /**
+     * The Smart Element is under access control
+     * @param int|string $structureIdentifier
+     * @param bool $useDefaultValues
+     * @return Core\Internal\SmartElement
+     * @throws Exception
+     */
     public static function createDocument($structureIdentifier, $useDefaultValues = true)
     {
         $doc = parent::createDocument($structureIdentifier, $useDefaultValues);

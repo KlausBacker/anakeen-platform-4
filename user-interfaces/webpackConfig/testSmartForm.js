@@ -1,7 +1,5 @@
 const path = require("path");
 
-const { useCache } = require("./common");
-
 const {
   vueLoader,
   typeScriptLoader,
@@ -13,6 +11,7 @@ const {
 const BASE_DIR = path.resolve(__dirname, "../");
 const PUBLIC_PATH = path.join(BASE_DIR, "Tests/src/public");
 const conf = {
+  context: BASE_DIR,
   moduleName: "testSmartForm",
   libName: "TestSmartForm",
   entry: {
@@ -33,7 +32,6 @@ const conf = {
     /node_modules\/brace/
   ],
   customParts: [
-    useCache,
     vueLoader(),
     typeScriptLoader(),
     addJqueryGlobal(),

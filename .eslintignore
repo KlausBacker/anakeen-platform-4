@@ -53,3 +53,4 @@ test-tools/test
 fulltext-search/node_modules/
 fulltext-search/src/public/
 fulltext-search/webpack/
+user-interfaces-dojo/webpackConfig/

@@ -3155,6 +3155,8 @@ create unique index i_docir on doc(initid, revision);";
             if ($needRepad) {
                 $oldComplete = $this->_setValueCompleteArray;
                 $this->_setValueCompleteArray = true;
+
+                $this->disableAccessControl();
                 foreach ($ta as $k => $v) { // fill uncompleted rows
                     $c = count($tValues[$k]);
                     if ($c < $max) {
@@ -3168,6 +3170,7 @@ create unique index i_docir on doc(initid, revision);";
                         $err .= $this->setValue($k, $tValues[$k]);
                     }
                 }
+                $this->restoreAccessControl();
                 $this->_setValueCompleteArray = $oldComplete;
             }
 
@@ -4074,7 +4077,9 @@ create unique index i_docir on doc(initid, revision);";
                 $doctitle = $attrid . '_title';
             }
             if (!empty($doctitle)) {
-                $this->SetValue($doctitle, " ");
+                $this->disableAccessControl();
+                $this->setValue($doctitle, " ");
+                $this->restoreAccessControl();
             }
         }
         return $this->SetValue($attrid, " ");

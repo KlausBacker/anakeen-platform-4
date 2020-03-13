@@ -2,6 +2,7 @@ image:
   name: gitlab.anakeen.com:4567/anakeen/platform-4/docker/build/build:latest
 
 stages:
+  - tear-up
   - lint
   - buildJS
   - buildHub
@@ -30,7 +31,22 @@ before_script:
   - export ANK_CI_BUCKET=$(node ./.devtool/ci/utils/selectBucket.js)
   - export ANK_CI_A4PPM=$(node ./.devtool/ci/utils/selectA4ppm.js)
 
-# region tear-up
+#region tear-up
+#pre populate node_modules
+populate-cache-before:
+  stage: tear-up
+  tags:
+    - a4ppm
+  cache:
+    <<: *default-cache
+  script:
+    #Suppress build part
+    - rm -rf ./build/
+    - rm -rf ./user-interfaces/components/lib
+    - rm -rf ./hub-station/components/lib
+#endregion tear-up
+
+# region tear-down
 populate-cache-master:
   stage: tear-down
   tags:
@@ -43,7 +59,7 @@ populate-cache-master:
     - rm -rf ./user-interfaces/components/lib
     - rm -rf ./hub-station/components/lib
 
-#endregion tear-up
+#endregion tear-down
 
 #region lint
 lint-php:
