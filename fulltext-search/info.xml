@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="fulltext-search" version="1.0.0-RC.2020.1.12" vendor="Anakeen" license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3">
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="fulltext-search" version="1.0.0-RC.2020.1.13" vendor="Anakeen" license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3">
 
     <description>Fulltext search</description>
 
