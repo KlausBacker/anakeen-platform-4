@@ -278,7 +278,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   @Watch("$props", { deep: true })
   protected async onPropsChange(): Promise<void> {
     this.gridError = new GridError(this);
-    this.$on("pageChange", this.onPageChange);
+    this.$on("PageChange", this.onPageChange);
 
     try {
       await this._loadGridConfig();
@@ -312,7 +312,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
         }
       });
     });
-    this.$emit("dataBound", this.gridInstance);
+    this.$emit("DataBound", this.gridInstance);
   }
   public networkOnline = true;
   public transaction: { [key: string]: string } = null;
@@ -379,7 +379,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     window.addEventListener("online", this.updateOnlineStatus);
     window.addEventListener("offline", this.updateOnlineStatus);
     this.gridError = new GridError(this);
-    this.$on("pageChange", this.onPageChange);
+    this.$on("PageChange", this.onPageChange);
 
     try {
       await this._loadGridConfig();
@@ -409,7 +409,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
       }
     }
     this.gridInstance = this;
-    this.$emit("gridReady");
+    this.$emit("GridReady");
   }
   public updateOnlineStatus(): Promise<void> {
     const condition = navigator.onLine;
@@ -460,7 +460,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
       null,
       true // Cancelable
     );
-    this.$emit("beforeConfig", event);
+    this.$emit("BeforeConfig", event);
     if (!event.isDefaultPrevented()) {
       this.$http
         .get(url, {
@@ -511,7 +511,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
             null,
             false
           );
-          this.$emit("afterConfig", responseEvent);
+          this.$emit("AfterConfig", responseEvent);
           this.isLoading = false;
         })
         .catch(error => {
@@ -534,7 +534,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
       null,
       true // Cancelable
     );
-    this.$emit("beforeContent", event);
+    this.$emit("BeforeContent", event);
     if (!event.isDefaultPrevented()) {
       this.$http
         .get(url, {
@@ -556,7 +556,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
             null,
             false
           );
-          this.$emit("afterContent", responseEvent);
+          this.$emit("AfterContent", responseEvent);
           this.isLoading = false;
         })
         .catch(error => {
@@ -594,7 +594,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
       false,
       "GridCellRenderEvent"
     );
-    this.$emit("beforeGridCellRender", event);
+    this.$emit("BeforeGridCellRender", event);
     let renderElement = tdElement;
     if (props.field === "smart_element_grid_action_menu") {
       if (this.actionsList.length > 0) {
@@ -605,7 +605,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
             gridComponent: this
           },
           on: {
-            rowActionClick: (...args) => this.$emit("rowActionClick", ...args)
+            RowActionClick: (...args) => this.$emit("RowActionClick", ...args)
           }
         });
         if (this.$scopedSlots && this.$scopedSlots.actionTemplate) {
@@ -666,8 +666,8 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     return createElement(AnkGridHeaderCell, {
       props: { ...props, columnConfig, grid: this },
       on: {
-        sortchange: this.onSortChange,
-        filterchange: this.onFilterChange
+        SortChange: this.onSortChange,
+        FilterChange: this.onFilterChange
       }
     });
   }
@@ -835,13 +835,13 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     });
     event.onExport = onExport;
     event.onPolling = onPolling;
-    this.$emit("beforeGridExport", event);
+    this.$emit("BeforeGridExport", event);
     return event;
   }
 
   protected sendBeforePollingEvent(): GridExportEvent {
     const event = new GridExportEvent(null, null, false);
-    this.$emit("beforePollingGridExport", event);
+    this.$emit("BeforePollingGridExport", event);
     return event;
   }
 
@@ -853,7 +853,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
       null,
       false
     );
-    this.$emit("exportError", event);
+    this.$emit("ExportError", event);
     return event;
   }
 

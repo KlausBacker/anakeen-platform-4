@@ -30,8 +30,8 @@
       :filterable="subHeader ? subHeader && Object.keys(subHeader).length > 0 : false"
       selectedField="ank-grid_selected_rows"
       @selectionchange="onSelectionChange"
-      @sortchange="onSortChange"
-      @filterchange="onFilterChange"
+      @SortChange="onSortChange"
+      @FilterChange="onFilterChange"
       @columnreorder="onColumnReorder"
     >
       <kendo-grid-norecords>

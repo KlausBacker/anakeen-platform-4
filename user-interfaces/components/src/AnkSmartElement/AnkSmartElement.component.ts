@@ -47,7 +47,7 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
     if (this.initialData.initid.toString() !== "0") {
       this._initController(this.initialData);
     }
-    this.$emit("smartElementMounted");
+    this.$emit("SmartElementMounted");
   }
   @Watch('initid')
   protected watchInitId() {
@@ -321,7 +321,7 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
     ) as SmartElementController;
     this.listenEvents();
     this.$emit("smartElementLoaded");
-    this.$emit("documentLoaded");
+    this.$emit("SmartElementMounted");
   }
 
   protected listenEvents() {
