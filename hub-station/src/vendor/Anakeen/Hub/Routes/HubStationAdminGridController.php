@@ -36,12 +36,7 @@ class HubStationAdminGridController extends DefaultGridController
         $contentBuilder = new SmartGridContentBuilder();
         // Searching in all Smart Structures
         $contentBuilder->setCollection("HUBCONFIGURATION");
-        if (isset($clientConfig["pageable"]["pageSize"])) {
-            $contentBuilder->setPageSize($clientConfig["pageable"]["pageSize"]);
-        }
-        if (isset($clientConfig["page"])) {
-            $contentBuilder->setPage($clientConfig["page"]);
-        }
+        $contentBuilder->setPageSize("ALL");
         if (isset($clientConfig["columns"])) {
             foreach ($clientConfig["columns"] as $column) {
                 $contentBuilder->addColumn($column);
