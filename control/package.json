@@ -2,9 +2,8 @@
   "name": "anakeen-control",
   "version": "3.0.0-RC.2020.1.13",
   "main": "index.js",
-  "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/users/eric.brison/anakeen-control.git",
   "author": "anakeen",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "scripts": {
     "build": "npx webpack --config ./webpackConfig/ihm.js"
   },

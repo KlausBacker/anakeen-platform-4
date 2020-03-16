@@ -1,7 +1,6 @@
 {
   "name": "development-center",
   "version": "2.2.2-RC.2020.1.13",
-  "autorelease": true,
   "description": "Developement Center for Anakeen Platform",
   "main": "index.js",
   "scripts": {

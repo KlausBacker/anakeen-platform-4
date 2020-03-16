@@ -1,9 +1,7 @@
 {
   "name": "@anakeen/admin-center",
   "version": "2.1.2-RC.2020.1.13",
-  "autorelease": true,
   "description": "Web interfaces to admin applications and configure smart elements",
-  "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/admin-center.git",
   "author": "Anakeen",
   "license": "SEE LICENSE IN LICENSE",
   "scripts": {

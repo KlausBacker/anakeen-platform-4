@@ -19,7 +19,6 @@
     "/components/**/*",
     "/constants/*.js",
     "/components/README.md",
-    "/src/**/*",
     "yarn.lock"
   ],
   "keywords": [
