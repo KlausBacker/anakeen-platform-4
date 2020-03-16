@@ -51,7 +51,9 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
   }
   @Watch("autoUnload")
   protected watchAutoUnload(newValue) {
-    AnakeenGlobalController.setAutoUnload(newValue, this.controllerScopeId);
+    if (this.controllerScopeId) {
+      AnakeenGlobalController.setAutoUnload(newValue, this.controllerScopeId);
+    }
   }
   @Watch("initid")
   protected watchInitId() {
