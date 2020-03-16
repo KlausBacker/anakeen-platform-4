@@ -28,7 +28,7 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
       viewId: this.viewId || "!defaultConsultation"
     };
   }
-
+  @Prop({ type: Boolean, default: true }) public autoUnload!: boolean;
   @Prop({ type: Boolean, default: false }) public browserHistory!: boolean;
   @Prop({ type: [String, Number], default: 0 }) public initid!: string | number;
   @Prop({ type: Object, default: null }) public customClientData!: object;
@@ -49,23 +49,29 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
     }
     this.$emit("SmartElementMounted");
   }
-  @Watch('initid')
+  @Watch("autoUnload")
+  protected watchAutoUnload(newValue) {
+    if (this.controllerScopeId) {
+      AnakeenGlobalController.setAutoUnload(newValue, this.controllerScopeId);
+    }
+  }
+  @Watch("initid")
   protected watchInitId() {
     this.updateComponent();
   }
-  @Watch('viewId')
+  @Watch("viewId")
   protected watchViewId() {
     this.updateComponent();
   }
-  @Watch('browserHistory')
+  @Watch("browserHistory")
   protected watchBrowserHistory() {
     this.updateComponent();
   }
-  @Watch('customClientData', { deep: true })
+  @Watch("customClientData", { deep: true })
   protected watchCustomClientData() {
     this.updateComponent();
   }
-  @Watch('revision')
+  @Watch("revision")
   protected watchRevision() {
     this.updateComponent();
   }
@@ -275,8 +281,8 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
     return this.smartElementWidget.unmaskSmartElement(force);
   }
 
-  public tryToDestroy() {
-    return this.smartElementWidget.tryToDestroy().then(() => {
+  public tryToDestroy({ testDirty }) {
+    return this.smartElementWidget.tryToDestroy({ testDirty }).then(() => {
       AnakeenGlobalController.removeSmartElement(this.controllerScopeId);
     });
   }
@@ -319,6 +325,7 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
     this.smartElementWidget = AnakeenGlobalController.getScopedController(
       this.controllerScopeId
     ) as SmartElementController;
+    AnakeenGlobalController.setAutoUnload(this.autoUnload, this.controllerScopeId);
     this.listenEvents();
     this.$emit("smartElementLoaded");
     this.$emit("SmartElementMounted");
