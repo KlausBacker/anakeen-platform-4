@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="development-center" version="2.2.2-RC.2020.1.13" vendor="Anakeen" license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0">
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="development-center" version="2.2.2-RC.2020.1.13" vendor="Anakeen" license="https://ap4.anakeen.com/license4.html">
 
     <description>Developement Center</description>
 
