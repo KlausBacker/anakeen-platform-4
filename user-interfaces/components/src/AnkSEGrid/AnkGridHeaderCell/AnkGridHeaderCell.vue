@@ -1,7 +1,5 @@
 <template>
-  <div
-ref="headerWrapper" :class="{ 'smart-element-grid-header': true }"
->
+  <div ref="headerWrapper" :class="{ 'smart-element-grid-header': true }">
     <div class="smart-element-grid-header-content">
       <div v-show="hasSubtitle" class="smart-element-grid-header--subtitle">
         {{ subtitle }}
@@ -21,9 +19,9 @@ ref="headerWrapper" :class="{ 'smart-element-grid-header': true }"
           ref="filterButton"
           :class="{
             'smart-element-grid-header-filter-button-wrapper': true,
-            'smart-element-grid-header-filter--is-filtered': isFiltered
+            'smart-element-grid-header-filter--is-filtered': isFiltered,
+            'smart-element-grid-header-filter--is-active': isActive
           }"
-          style="width: 5rem"
         >
           <i class="k-icon k-i-filter smart-element-grid-filter-icon" @click="showFilters" />
         </div>
@@ -31,6 +29,7 @@ ref="headerWrapper" :class="{ 'smart-element-grid-header': true }"
     </div>
     <popup
       ref="filterPopup"
+      :animate="animate"
       class="smart-element-grid-filter-content"
       :show="showFilter"
       :offset="filterOffset"

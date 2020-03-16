@@ -77,4 +77,8 @@ export default class GridFilterCell extends Mixins(AnkGridCellMixin) {
         return "SimpleText";
     }
   }
+
+  protected onClickItem(): void {
+    this.$emit("itemClick");
+  }
 }
