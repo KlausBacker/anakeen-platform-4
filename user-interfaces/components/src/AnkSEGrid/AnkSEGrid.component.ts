@@ -72,12 +72,6 @@ export interface SmartGridPageSize {
   total: number;
 }
 
-export interface SmartGridSortConfig {
-  mode: string;
-  showIndexes: boolean;
-  allowUnsort: boolean;
-}
-
 export interface SmartGridSubHeader {
   [columnId: string]: string;
 }
@@ -249,7 +243,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     default: () => DEFAULT_SORT,
     type: [Boolean, Object]
   })
-  public sortable: boolean | SmartGridSortConfig;
+  public sortable: boolean | SmartGridSortable;
 
   @Prop({
     default: true,
@@ -422,7 +416,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
         : DEFAULT_PAGER.pageSize
   };
   public pager = this.pageable === true ? DEFAULT_PAGER : this.pageable;
-  public sorter = this.sortable === true ? DEFAULT_SORT : this.sortable;
+  public sorter: false | SmartGridSortable = this.sortable === true ? DEFAULT_SORT : this.sortable;
 
   public get gridInfo(): SmartGridInfo {
     return {
@@ -738,7 +732,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
       return renderElement;
     } else {
       if (columnConfig) {
-        const options = {
+        const options: any = {
           props: {
             ...props,
             columnConfig,
@@ -746,16 +740,14 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
           },
           scopedSlots: {},
           on: {
-            itemClick: () => this.onRowClick({ dataItem: props.dataItem })
+            itemClick: (): void => this.onRowClick({ dataItem: props.dataItem })
           }
         };
         if (this.$scopedSlots && this.$scopedSlots.emptyCell) {
-          // @ts-ignore
           options.scopedSlots.emptyCell = props =>
             this.$scopedSlots.emptyCell({ renderElement, props, listeners, columnConfig });
         }
         if (this.$scopedSlots && this.$scopedSlots.inexistentCell) {
-          // @ts-ignore
           options.scopedSlots.inexistentCell = props =>
             this.$scopedSlots.inexistentCell({ renderElement, props, listeners, columnConfig });
         }

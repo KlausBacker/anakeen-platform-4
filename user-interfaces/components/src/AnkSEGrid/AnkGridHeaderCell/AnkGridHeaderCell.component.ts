@@ -48,6 +48,7 @@ export default class GridHeaderCell extends Vue {
     top: 0,
     left: 0
   };
+  public animate = { closeDuration: 0 };
   public get hasSubtitle(): boolean {
     return this.grid.contextTitles && Array.isArray(this.columnConfig.context) && this.columnConfig.context.length;
   }
@@ -80,7 +81,16 @@ export default class GridHeaderCell extends Vue {
       ).length
     );
   }
+
+  public get isActive(): boolean {
+    return !!this.showFilter;
+  }
+
   public showFilters(): void {
+    if (!this.showFilter) {
+      // Place the correct popup position
+      this.setFilterOffset();
+    }
     this.showFilter = !this.showFilter;
   }
 
@@ -102,7 +112,7 @@ export default class GridHeaderCell extends Vue {
           nextSortableDir = "desc";
           break;
         case "desc":
-          if (this.grid.sorter.allowUnsort === false) {
+          if (this.grid.sorter && this.grid.sorter.allowUnsort === false) {
             nextSortableDir = "asc";
           } else {
             nextSortableDir = null;
@@ -127,16 +137,17 @@ export default class GridHeaderCell extends Vue {
 
   protected clearFilter(...args): void {
     this.$emit("FilterChange", ...args);
+    // Close popup when filter is cleared
+    this.showFilter = false;
   }
 
   protected filter(...args): void {
     this.$emit("FilterChange", ...args);
+    // Close popup when filter is applied
+    this.showFilter = false;
   }
   protected setFilterOffset(): void {
     const filter = $(this.$refs.filterButton).offset();
-    if ($(this.$refs.filterButton).is(":hidden")) {
-      this.showFilter = false;
-    }
     if (!filter || !filter.top || !filter.left) {
       return;
     }
@@ -147,8 +158,22 @@ export default class GridHeaderCell extends Vue {
     };
   }
 
+  public created(): void {
+    // Enable disappear popup if click outside the popup
+    $(window).on(`mouseup.popupGrid${this._uid}`, event => {
+      const target = event.originalEvent.target as Element;
+      if (this.$refs.filterPopup) {
+        const container = this.$refs.filterPopup as Vue;
+        const containerElement = $(container.$el);
+        // If container is visible and click target is not contained by the container so it's a outside click
+        if (containerElement.is(":visible") && !containerElement.is(target) && !$.contains(container.$el, target)) {
+          this.showFilter = false;
+        }
+      }
+    });
+  }
+
   public mounted(): void {
-    this.setFilterOffset();
     $(window).on(`resize.popupGrid${this._uid}`, () => {
       this.setFilterOffset();
     });
