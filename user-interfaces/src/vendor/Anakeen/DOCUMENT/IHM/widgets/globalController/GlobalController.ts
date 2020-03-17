@@ -546,8 +546,6 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
           try {
             const scopedController = this.getScopedController(event.controller.uid) as SmartElementController;
             // Restrict the js to the current smart element view
-            // @ts-ignore
-            scopedController._defaultPersistent = false;
             const results = [];
             this._scripts[jsPath].forEach(scriptFunction => {
               results.push(Promise.resolve().then(() => scriptFunction.call(this, scopedController)));
@@ -556,8 +554,6 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
             return () =>
               promisify
                 .then(() => {
-                  // @ts-ignore
-                  scopedController._defaultPersistent = true;
                   return Promise.all(results);
                 })
                 .catch(err => {

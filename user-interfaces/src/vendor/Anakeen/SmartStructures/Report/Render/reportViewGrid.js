@@ -17,10 +17,8 @@ export default function reportViewGridProcess(controller) {
       });
       controller.addEventListener("actionClick", (event, smartElementProps, data) => {
         if (data.eventId === "exportReport") {
-          if (navigator.online) {
-            searchGrid.showButton();
-            searchGrid.export();
-          }
+          searchGrid.showButton();
+          searchGrid.export();
         }
       });
     }
