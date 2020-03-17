@@ -98,7 +98,7 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
     options?: object | ListenableEventCallable,
     callback?: ListenableEventCallable
   ) {
-    if (options as ListenableEventCallable) {
+    if (callback === undefined) {
       callback = options as ListenableEventCallable;
       options = {};
     }
