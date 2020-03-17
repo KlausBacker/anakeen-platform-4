@@ -3,8 +3,8 @@
 
 namespace Anakeen\SmartStructures\Wdoc;
 
-use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SmartStructure\BasicAttribute;
+use Anakeen\Exception;
 
 class Transition
 {
@@ -69,6 +69,7 @@ class Transition
     {
         return empty($this->rawConfig["nr"]);
     }
+
     public function setRequiredComment(bool $require)
     {
         $this->rawConfig["nr"] = !$require;
@@ -87,11 +88,17 @@ class Transition
                 $askes = $this->rawConfig["ask"];
             }
             $oAskes = [];
-            foreach ($askes as $ask) {
+            foreach ($askes as $ka => $ask) {
+                if (!$ask) {
+                    throw new Exception("WFL0303", $this->id, ($this->workflow->name ?: $this->workflow->id), $ka);
+                }
                 if (is_a($ask, BasicAttribute::class)) {
                     $oa = $ask;
                 } else {
                     $oa = $this->workflow->getAttribute($ask);
+                    if (!$oa) {
+                        throw new Exception("WFL0302", $this->id, ($this->workflow->name ?: $this->workflow->id), $ask);
+                    }
                 }
                 $oAskes[] = $oa;
             }

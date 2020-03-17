@@ -176,4 +176,8 @@ class ErrorCodeWFL
      * @errorCode The transition is not valid in the workflow
      */
     const WFL0301 = 'Destination state is not defined for workflow "%s" (%d)';
+    /**  @errorCode  The workflow parameter id declared in ask not exists  */
+    const WFL0302 = 'Transition "%s" in workflow "%s": ask parameter "%s" not found';
+    /**  @errorCode  The Smart Field object  declared in ask not exists  */
+    const WFL0303 = 'Transition "%s" in workflow "%s": ask field at index #%d not found';
 }

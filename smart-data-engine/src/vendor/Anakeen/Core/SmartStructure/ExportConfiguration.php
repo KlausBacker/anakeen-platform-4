@@ -380,6 +380,9 @@ class ExportConfiguration
             if ($attr->getOption("autocreated") === "yes") {
                 continue;
             }
+            if ($attr->getOption("autotitle") === "yes") {
+                continue;
+            }
 
             if ($this->isModAttr($attr)) {
                 continue;
