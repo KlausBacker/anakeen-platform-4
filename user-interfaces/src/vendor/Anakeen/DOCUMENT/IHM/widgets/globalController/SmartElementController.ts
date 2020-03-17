@@ -119,7 +119,6 @@ export default class SmartElementController extends AnakeenController.BusEvents.
   protected $loading: JQuery & { dcpLoading(...args): JQuery };
   protected $notification: JQuery & { dcpNotification(...args): JQuery };
   protected _globalEventHandler: (...args: any[]) => any;
-  protected _defaultPersistent: boolean = true;
 
   constructor(dom: DOMReference, viewData: ViewData, options?: IControllerOptions, globalEventHandler?) {
     super();
@@ -810,7 +809,6 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     // the first parameters can be the final object (chain removeEvent and addEvent)
     if (_.isObject(eventType) && _.isUndefined(eventOptions) && _.isUndefined(eventCallback)) {
       currentEvent = eventType;
-      currentEvent._persistent = this._defaultPersistent;
       if (!currentEvent.name) {
         throw new Error(
           "When an event is initiated with a single object, this object needs to have the name property " +
@@ -824,7 +822,9 @@ export default class SmartElementController extends AnakeenController.BusEvents.
         name: _.uniqueId("event_" + eventType),
         once: false
       });
-      currentEvent._persistent = this._defaultPersistent;
+    }
+    if (currentEvent.persistent === undefined) {
+      currentEvent.persistent = false;
     }
     // the eventType must be one the list
     this.checkEventName(currentEvent.eventType);
@@ -868,7 +868,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       removed = removed.concat(
         this.getEventsList()[eventType].filter(currentEvent => {
           return (
-            (allKind || !currentEvent._persistent) &&
+            (allKind || !currentEvent.persistent) &&
             (currentEvent.name === eventName || testRegExp.test(currentEvent.name))
           );
         })
@@ -2355,7 +2355,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
   private _addAndInitNewEvents(newEvent: ListenableEventOptions) {
     // let uniqueName = (newEvent.externalEvent ? "external_" : "internal_") + newEvent.name;
     const currentElementProperties = this.getProperties();
-    if (newEvent._persistent) {
+    if (newEvent.persistent) {
       if (newEvent.once) {
         this._registeredListeners.once(newEvent.eventType, newEvent);
       } else {
