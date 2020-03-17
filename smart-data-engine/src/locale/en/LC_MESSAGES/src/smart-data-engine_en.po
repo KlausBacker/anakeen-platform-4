@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-10 14:38+0200\n"
+"POT-Creation-Date: 2020-03-17 15:02+0100\n"
 "PO-Revision-Date: 2016-11-18 15:26+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
@@ -15,6 +15,11 @@ msgstr ""
 #, php-format
 msgctxt "search"
 msgid "\"%s\" is not a structure"
+msgstr ""
+
+#, php-format
+msgctxt "vault"
+msgid "%.02f GB"
 msgstr ""
 
 #, php-format
@@ -190,10 +195,6 @@ msgstr ""
 msgid "Account Type \"%s\""
 msgstr ""
 
-#, php-format
-msgid "Add atags \"%s\""
-msgstr ""
-
 msgctxt "fusersimport"
 msgid "Add group reference"
 msgstr ""
@@ -220,34 +221,8 @@ msgctxt "wdoc"
 msgid "Ask for"
 msgstr ""
 
-#, php-format
-msgid ""
-"Attribute %s found is not alone\n"
-"Must precise request with appname arguments\n"
-msgstr ""
-
-#, php-format
-msgid "Attribute %s modified to %s"
-msgstr ""
-
-#, php-format
-msgid "Attribute %s not found\n"
-msgstr ""
-
-#, php-format
-msgid "Attribute %s not modified : %s\n"
-msgstr ""
-
 msgctxt "authentOpen"
 msgid "Authorization Required"
-msgstr ""
-
-#, php-format
-msgid "CVID : %s"
-msgstr ""
-
-#, php-format
-msgid "CVID : view control '%s' not found"
 msgstr ""
 
 #, php-format
@@ -265,12 +240,6 @@ msgstr ""
 
 #, php-format
 msgid "Cannot copy file %s to %s"
-msgstr ""
-
-#, php-format
-msgid ""
-"Cannot import document because the ORDER line for family '%s' is incorrect: "
-"%s"
 msgstr ""
 
 msgctxt "sde"
@@ -345,10 +314,6 @@ msgstr ""
 
 #, php-format
 msgid "DbObj::Adds error in multiple insertion"
-msgstr ""
-
-#, php-format
-msgid "Del atags \"%s\""
 msgstr ""
 
 #, php-format
@@ -477,18 +442,6 @@ msgstr ""
 #, php-format
 msgctxt "sde"
 msgid "Element %s is in edition by %s."
-msgstr ""
-
-#, php-format
-msgid ""
-"Element can't be perfectly analyze, some error might occur or be corrected "
-"when importing"
-msgstr ""
-
-#, php-format
-msgid ""
-"Element can't be perfectly analyzed, some error might occurs or be corrected "
-"when importing"
 msgstr ""
 
 msgid "English"
@@ -687,10 +640,6 @@ msgid "Logical name %s already set for %s. Use reset parameter to overhide it"
 msgstr ""
 
 #, php-format
-msgid "Logical name %s already use in document %s"
-msgstr ""
-
-#, php-format
 msgid "Mail %s sent to %s"
 msgstr ""
 
@@ -716,10 +665,6 @@ msgstr ""
 
 msgctxt "fusersimport"
 msgid "New password"
-msgstr ""
-
-#, php-format
-msgid "No Icon specified"
 msgstr ""
 
 #, php-format
@@ -785,9 +730,6 @@ msgstr ""
 msgid "REPORT_pivot"
 msgstr ""
 
-msgid "Recomputing profiled documents"
-msgstr ""
-
 #, php-format
 msgid "Record documents %d/%d"
 msgstr ""
@@ -798,22 +740,6 @@ msgstr ""
 
 msgctxt "fusersimport"
 msgid "Reset all group attachment"
-msgstr ""
-
-#, php-format
-msgid "Reset attribute structure"
-msgstr ""
-
-#, php-format
-msgid "Reset defaults values"
-msgstr ""
-
-#, php-format
-msgid "Reset enums definition"
-msgstr ""
-
-#, php-format
-msgid "Reset parameters values"
 msgstr ""
 
 msgctxt "fuserexport"
@@ -863,10 +789,6 @@ msgstr ""
 
 #, php-format
 msgid "Send mail info : can't send mail %s: no sendee found"
-msgstr ""
-
-#, php-format
-msgid "Set atags \"%s\""
 msgstr ""
 
 #, php-format
@@ -938,9 +860,6 @@ msgctxt "fusersimport"
 msgid "Update account"
 msgstr ""
 
-msgid "Update by importation"
-msgstr ""
-
 msgctxt "sde"
 msgid "Update forbidden"
 msgstr ""
@@ -960,18 +879,6 @@ msgstr ""
 msgid ""
 "Vous devez entrer un nom d'utilisateur valide et un mot de passe correct "
 "pour acceder a cette ressource"
-msgstr ""
-
-#, php-format
-msgid "WID : %s"
-msgstr ""
-
-#, php-format
-msgid "WID : workflow '%s' is not a workflow"
-msgstr ""
-
-#, php-format
-msgid "WID : workflow '%s' not found"
 msgstr ""
 
 msgctxt "dcp"
@@ -1040,31 +947,11 @@ msgid "[%s] the method '%s' is not known for the object class %s"
 msgstr ""
 
 #, php-format
-msgid "add %s for %s"
-msgstr ""
-
-#, php-format
 msgid "add %s id [%d]  "
 msgstr ""
 
 #, php-format
-msgid "add %s search"
-msgstr ""
-
-#, php-format
-msgid "add acl %s"
-msgstr ""
-
-#, php-format
-msgid "add default value %s %s"
-msgstr ""
-
-#, php-format
 msgid "add id [%d] "
-msgstr ""
-
-#, php-format
-msgid "add negative acl %s"
 msgstr ""
 
 msgid "already deleted"
@@ -1119,10 +1006,6 @@ msgstr ""
 
 #, php-format
 msgid "attachTimer : the timer parameter is not a document of TIMER family"
-msgstr ""
-
-#, php-format
-msgid "attr key is empty"
 msgstr ""
 
 #, php-format
@@ -1265,35 +1148,7 @@ msgid "cannot write log in %s"
 msgstr ""
 
 #, php-format
-msgid "change application tag to '%s'"
-msgstr ""
-
-#, php-format
-msgid "change default creation profile id  to '%s'"
-msgstr ""
-
-#, php-format
-msgid "change methods to '%s'"
-msgstr ""
-
-#, php-format
-msgid "change profil %s"
-msgstr ""
-
-#, php-format
-msgid "change profile id  to '%s'"
-msgstr ""
-
-#, php-format
-msgid "change special use to '%s'"
-msgstr ""
-
-#, php-format
 msgid "change state : %s to %s"
-msgstr ""
-
-#, php-format
-msgid "change tagable parameter to '%s'"
 msgstr ""
 
 #, php-format
@@ -1338,14 +1193,6 @@ msgid "copy from document #%d -%s-"
 msgstr ""
 
 #, php-format
-msgid "create %s family %s"
-msgstr ""
-
-#, php-format
-msgid "create default folder (id [%d])\n"
-msgstr ""
-
-#, php-format
 msgid "create directory %s\n"
 msgstr ""
 
@@ -1370,20 +1217,8 @@ msgstr ""
 msgid "default folder"
 msgstr ""
 
-#, php-format
-msgid "default folder already set. Auto ignored"
-msgstr ""
-
-#, php-format
-msgid "delete %s for %s"
-msgstr ""
-
 msgid "doctitle"
 msgstr "Title"
-
-#, php-format
-msgid "document %s : set icon to '%s'"
-msgstr ""
 
 #, php-format
 msgid "document %s [%d] is not in the trash"
@@ -1436,10 +1271,6 @@ msgid "error in pzone format %s"
 msgstr ""
 
 #, php-format
-msgid "error storing configuration property (%s, %s, %s)"
-msgstr ""
-
-#, php-format
 msgid "family %s not found"
 msgstr ""
 
@@ -1486,10 +1317,6 @@ msgstr ""
 msgid "folder/search %s not found"
 msgstr ""
 
-#, php-format
-msgid "generate version '%s'"
-msgstr ""
-
 msgid "generating file"
 msgstr ""
 
@@ -1498,10 +1325,6 @@ msgid "group %d does not exist"
 msgstr ""
 
 msgid "group cannot be revived"
-msgstr ""
-
-#, php-format
-msgid "icon already set. No update allowed"
 msgstr ""
 
 msgctxt "smartOperator"
@@ -1583,20 +1406,12 @@ msgstr ""
 msgid "login yet use"
 msgstr ""
 
-#, php-format
-msgid "max revision '%d'"
-msgstr ""
-
 #, fuzzy
 msgid "mdate"
 msgstr "Revision creation date"
 
 #, php-format
 msgid "method %s not found"
-msgstr ""
-
-#, php-format
-msgid "modify %s family"
 msgstr ""
 
 #, php-format
@@ -1622,10 +1437,6 @@ msgstr ""
 
 #, php-format
 msgid "new import keys : %s"
-msgstr ""
-
-#, php-format
-msgid "no change icon : document %s not found"
 msgstr ""
 
 #, php-format
@@ -1761,14 +1572,6 @@ msgstr ""
 msgid "possible incorrect conversion HTML to ODT %s: %s"
 msgstr ""
 
-#, php-format
-msgid "profil id unknow %s"
-msgstr ""
-
-#, php-format
-msgid "profil id unkonow %s"
-msgstr ""
-
 msgid "prop_allocated"
 msgstr "allocate"
 
@@ -1849,20 +1652,8 @@ msgstr "workflow"
 msgid "regeneration of file template %s"
 msgstr ""
 
-#, php-format
-msgid "reinit all attributes"
-msgstr ""
-
-#, php-format
-msgid "reinit all properties"
-msgstr ""
-
 msgid "report:docid"
 msgstr "id"
-
-#, php-format
-msgid "reset profil %s"
-msgstr ""
 
 msgid "restore document"
 msgstr ""
@@ -1919,38 +1710,6 @@ msgstr ""
 
 #, php-format
 msgid "sendmailto %s"
-msgstr ""
-
-#, php-format
-msgid "set default folder to '%s'"
-msgstr ""
-
-#, php-format
-msgid "set default view control to '%s'"
-msgstr ""
-
-#, php-format
-msgid "set default workflow to '%s'"
-msgstr ""
-
-#, php-format
-msgid "set doctype to '%s'"
-msgstr ""
-
-#, php-format
-msgid "set icon to '%s'"
-msgstr ""
-
-#, php-format
-msgid "set primary folder to '%s'"
-msgstr ""
-
-#, php-format
-msgid "set profile %s"
-msgstr ""
-
-#, php-format
-msgid "set special characteristics to '%s'"
 msgstr ""
 
 #, php-format
@@ -2025,10 +1784,6 @@ msgid "tomorrow"
 msgstr ""
 
 #, php-format
-msgid "try add acl %s"
-msgstr ""
-
-#, php-format
 msgid "unattach %d timers associated to %s"
 msgstr ""
 
@@ -2067,10 +1822,6 @@ msgstr "kB"
 msgid "unknow %s file property"
 msgstr ""
 
-#, php-format
-msgid "unknow acl %s"
-msgstr ""
-
 msgid "unknow attribute"
 msgstr ""
 
@@ -2093,12 +1844,6 @@ msgstr ""
 msgid "unreferenced document"
 msgstr ""
 
-msgid "unset default view control"
-msgstr ""
-
-msgid "unset default workflow"
-msgstr ""
-
 #, php-format
 msgid "untitle %s %d"
 msgstr ""
@@ -2111,22 +1856,6 @@ msgid "update %s [%d] "
 msgstr ""
 
 #, php-format
-msgid "update %s attribute"
-msgstr ""
-
-#, php-format
-msgid "update %s family %s"
-msgstr ""
-
-#, php-format
-msgid "update %s search"
-msgstr ""
-
-#, php-format
-msgid "update id [%d] "
-msgstr ""
-
-#, php-format
 msgid "update of %s in progress"
 msgstr ""
 
@@ -2135,7 +1864,8 @@ msgid "updated by import"
 msgstr ""
 
 #, php-format
-msgid "user #%d does not exist"
+msgctxt "smart iuser"
+msgid "user \"%s\" has no associated account"
 msgstr ""
 
 #, php-format
@@ -2147,10 +1877,6 @@ msgid "user cannot be revived"
 msgstr ""
 
 msgid "user not know"
-msgstr ""
-
-#, php-format
-msgid "value [%s] is not a integer"
 msgstr ""
 
 #, php-format
@@ -2167,6 +1893,10 @@ msgstr ""
 
 #, php-format
 msgid "value [%s] is not a valid timestamp"
+msgstr ""
+
+#, php-format
+msgid "value [%s] is not an integer"
 msgstr ""
 
 #, php-format
