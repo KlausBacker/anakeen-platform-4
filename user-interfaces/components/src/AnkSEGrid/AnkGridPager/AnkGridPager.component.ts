@@ -53,7 +53,7 @@ export default class GridPager extends Mixins(I18nMixin) {
   @Watch("pageSize")
   protected onPageSizeChange(newValue): void {
     if (this.gridComponent) {
-      this.gridComponent.$emit("pageChange", {
+      this.gridComponent.$emit("PageChange", {
         page: {
           skip: 0,
           take: newValue,
@@ -170,7 +170,7 @@ export default class GridPager extends Mixins(I18nMixin) {
   }
   public goToPage(pageNumber): void {
     if (this.gridComponent) {
-      this.gridComponent.$emit("pageChange", {
+      this.gridComponent.$emit("PageChange", {
         page: {
           skip: (pageNumber - 1) * this.pageSize,
           take: this.pageSize,
@@ -196,7 +196,7 @@ export default class GridPager extends Mixins(I18nMixin) {
 
   public firstPage(): void {
     if (this.gridComponent && this.hasPrevious) {
-      this.gridComponent.$emit("pageChange", {
+      this.gridComponent.$emit("PageChange", {
         page: {
           skip: 0,
           take: this.pageSize,
@@ -208,7 +208,7 @@ export default class GridPager extends Mixins(I18nMixin) {
 
   public previousPage(): void {
     if (this.gridComponent && this.hasPrevious) {
-      this.gridComponent.$emit("pageChange", {
+      this.gridComponent.$emit("PageChange", {
         page: {
           skip: this.gridComponent.currentPage.skip - this.pageSize,
           take: this.pageSize,
@@ -220,7 +220,7 @@ export default class GridPager extends Mixins(I18nMixin) {
 
   public nextPage(): void {
     if (this.gridComponent && this.hasNext) {
-      this.gridComponent.$emit("pageChange", {
+      this.gridComponent.$emit("PageChange", {
         page: {
           skip: this.gridComponent.currentPage.skip + this.pageSize,
           take: this.pageSize,
@@ -232,7 +232,7 @@ export default class GridPager extends Mixins(I18nMixin) {
 
   public lastPage(): void {
     if (this.gridComponent && this.hasNext) {
-      this.gridComponent.$emit("pageChange", {
+      this.gridComponent.$emit("PageChange", {
         page: {
           skip: this.gridComponent.currentPage.total - this.pageSize,
           take: this.pageSize,

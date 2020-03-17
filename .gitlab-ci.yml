@@ -771,6 +771,7 @@ hub-station-publish:
       - hub-station/**/*
   dependencies:
     - hub-station-build
+    - hub-station-buildJS
 
 smart-data-engine-integration-publish:
   extends: .npm-publish-package-integration-synchro

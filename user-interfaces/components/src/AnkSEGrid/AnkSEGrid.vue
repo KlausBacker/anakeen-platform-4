@@ -15,7 +15,7 @@
       ref="smartGridWidget"
       class="smart-element-grid-widget"
       :columns="columnsList"
-      :data-items="dataItems"
+      :data-items="rowsData"
       :cell-render="cellRenderFunction"
       :header-cell-render="headerCellRenderFunction"
       :filter-cell-render="subHeaderCellRenderFunction"
@@ -28,11 +28,12 @@
       :sortable="sortable"
       :sort="currentSort"
       :filterable="subHeader ? subHeader && Object.keys(subHeader).length > 0 : false"
-      selectedField="ank-grid_selected_rows"
+      :selectedField="selectedField"
       @selectionchange="onSelectionChange"
-      @sortchange="onSortChange"
-      @filterchange="onFilterChange"
+      @SortChange="onSortChange"
+      @FilterChange="onFilterChange"
       @columnreorder="onColumnReorder"
+      @rowclick="onRowClick"
     >
       <kendo-grid-norecords>
         {{ this.$t("gridComponent.No records") }}

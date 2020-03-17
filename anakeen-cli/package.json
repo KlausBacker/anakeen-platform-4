@@ -1,9 +1,10 @@
 {
   "name": "@anakeen/anakeen-cli",
-  "version": "1.2.2-RC.2020.1.13",
-  "autorelease": "true",
+  "version": "1.2.2-RC.2020.1.14",
   "description": "The cli tool to init, build and deploy anakeen-platform projects",
   "main": "index.js",
+  "author": "Anakeen",
+  "license": "SEE LICENSE IN LICENSE",
   "bin": {
     "anakeen-cli": "./index.js",
     "anakeen-cli-completion": "./completion.js"
@@ -14,9 +15,8 @@
     "anakeen-cli": "./index.js",
     "anakeen-cli-completion": "./completion.js"
   },
-  "license": "MIT",
   "dependencies": {
-    "@anakeen/anakeen-module-validation": "2.1.0-RC.2020.1.13",
+    "@anakeen/anakeen-module-validation": "2.1.0-RC.2020.1.14",
     "@babel/core": "^7.0.0-0",
     "@babel/parser": "^7.7.7",
     "@babel/plugin-proposal-class-properties": "^7.7.4",

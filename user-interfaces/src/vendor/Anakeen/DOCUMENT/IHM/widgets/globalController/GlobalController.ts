@@ -50,6 +50,7 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
    */
   private static _selfController: GlobalController;
 
+  private notObserveUnload = {};
   /**
    * Create script element
    * @param js
@@ -293,7 +294,7 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
     }
   }
 
-  public setVerbose(enable: boolean = false) {
+  public setVerbose(enable = false) {
     this._verbose = enable;
     if (enable) {
       this._logVerbose("verbose mode enabled", "Global");
@@ -312,19 +313,26 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
       });
     }
   }
-
+  public setAutoUnload(autoUnload: boolean, controllerId: string): void {
+    // set autoUnload to true means set false to notObserveUnload for the controller id
+    this.notObserveUnload[controllerId] = !autoUnload;
+  }
   protected _onRemoveDOMController(mutationList: MutationRecord[]) {
+    // Walk in dom mutation
     mutationList.forEach(mutation => {
+      // filter only in dom removal mutations
       if (mutation.type === "childList" && mutation.removedNodes.length) {
         // tslint:disable-next-line:prefer-for-of
         for (let i = 0; i < mutation.removedNodes.length; i++) {
           const node = $(mutation.removedNodes[i]);
+          // Check if dom removal concerns scoped controller
           const controllerIDs = node.find("[data-controller]").map((index, e) => $(e).attr("data-controller"));
           if (controllerIDs && controllerIDs.length) {
             for (let j = controllerIDs.length - 1; j >= 0; j--) {
               const controllerUID = controllerIDs[j];
               try {
                 const controller = this.getScopedController(controllerUID) as SmartElementController;
+                // Prepare clean up callback
                 const onDestroy = () => {
                   this._logVerbose(
                     `remove scoped controller (${controllerUID}) for smart element "${
@@ -335,7 +343,22 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
                   this._dispatcher.removeController(controllerUID);
                   this._cleanCss();
                 };
-                controller.tryToDestroy({ testDirty: false }).then(onDestroy).catch(onDestroy);
+                // If the scoped controller must auto unload
+                if (!this.notObserveUnload[controllerUID]) {
+                  this._logVerbose(
+                    `try to destroy smart element "${
+                      controller.getProperties().initid
+                    }" bind to controller "${controllerUID}"`,
+                    "Global"
+                  );
+                  controller
+                    .tryToDestroy({ testDirty: false })
+                    .then(onDestroy)
+                    .catch(onDestroy);
+                } else {
+                  // The scoped controller have not to auto unload, but clean it up nonetheless
+                  onDestroy();
+                }
               } catch (e) {
                 // Nothing to do : the element is already destroyed
                 if (!(e instanceof ControllerNotFoundError)) {
@@ -523,8 +546,6 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
           try {
             const scopedController = this.getScopedController(event.controller.uid) as SmartElementController;
             // Restrict the js to the current smart element view
-            // @ts-ignore
-            scopedController._defaultPersistent = false;
             const results = [];
             this._scripts[jsPath].forEach(scriptFunction => {
               results.push(Promise.resolve().then(() => scriptFunction.call(this, scopedController)));
@@ -533,8 +554,6 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
             return () =>
               promisify
                 .then(() => {
-                  // @ts-ignore
-                  scopedController._defaultPersistent = true;
                   return Promise.all(results);
                 })
                 .catch(err => {

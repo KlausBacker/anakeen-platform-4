@@ -25,7 +25,6 @@ class ExportElementConfiguration
     protected static $dom;
     protected $dataSet = [];
 
-    /** @noinspection PhpMissingParentConstructorInspection */
     public static function initDom()
     {
         self::$dom = new \DOMDocument("1.0", "UTF-8");
@@ -104,7 +103,10 @@ class ExportElementConfiguration
                 $tag->setAttribute("name", ExportConfiguration::getLogicalName($eLayer->id));
                 $tag->setAttribute("label", $eLayer->getTitle());
                 $tag->setAttribute("access-name", $aclNames[$kl]);
-                $tag->setAttribute("structure", ExportConfiguration::getLogicalName($eLayer->getRawValue(\SmartStructure\Fields\Fieldaccesslayer::fal_famid)));
+                $tag->setAttribute(
+                    "structure",
+                    ExportConfiguration::getLogicalName($eLayer->getRawValue(\SmartStructure\Fields\Fieldaccesslayer::fal_famid))
+                );
 
                 $fieldIds = $eLayer->getMultipleRawValues(\SmartStructure\Fields\Fieldaccesslayer::fal_fieldid);
                 $fieldAccesses = $eLayer->getMultipleRawValues(\SmartStructure\Fields\Fieldaccesslayer::fal_fieldaccess);
@@ -163,13 +165,19 @@ class ExportElementConfiguration
         $timerNode->setAttribute("name", ExportWorkflowConfiguration::getLogicalName($name));
         $timerNode->setAttribute("label", $timer->getRawValue(TimerFields::tm_title));
 
-        $timerNode->setAttribute("structure", ExportWorkflowConfiguration::getLogicalName($timer->getRawValue(TimerFields::tm_family)));
-        $timerNode->setAttribute("workflow", ExportWorkflowConfiguration::getLogicalName($timer->getRawValue(TimerFields::tm_workflow)));
+        $timerNode->setAttribute(
+            "structure",
+            ExportWorkflowConfiguration::getLogicalName($timer->getRawValue(TimerFields::tm_family))
+        );
+        $timerNode->setAttribute(
+            "workflow",
+            ExportWorkflowConfiguration::getLogicalName($timer->getRawValue(TimerFields::tm_workflow))
+        );
 
         $dateRef = $timer->getRawValue(TimerFields::tm_dyndate);
         $dateNode = self::celtimer("field-date-reference");
         if ($dateRef) {
-            $dateNode->setAttribute("ref", $dateRef);
+            $dateNode->setAttribute("ref", trim(strtok($dateRef, " ")));
         }
         $timerNode->appendChild($dateNode);
         $deltaDay = $timer->getRawValue(TimerFields::tm_refdaydelta);
@@ -248,7 +256,10 @@ class ExportElementConfiguration
 
         $mailNode->setAttribute("name", ExportWorkflowConfiguration::getLogicalName($name));
         $mailNode->setAttribute("label", $mail->getRawValue(MailFields::tmail_title));
-        $mailNode->setAttribute("structure", ExportWorkflowConfiguration::getLogicalName($mail->getRawValue(MailFields::tmail_family)));
+        $mailNode->setAttribute(
+            "structure",
+            ExportWorkflowConfiguration::getLogicalName($mail->getRawValue(MailFields::tmail_family))
+        );
 
         $fromNode = self::celmail("from");
 
@@ -376,7 +387,10 @@ class ExportElementConfiguration
             $viewtag = self::celui("view");
             $viewtag->setAttribute("name", $view[CvDocFields::cv_idview]);
             $viewtag->setAttribute("label", $view[CvDocFields::cv_lview]);
-            $viewtag->setAttribute("display-mode", $view[CvDocFields::cv_kview] === "VEDIT" ? "edition" : "consultation");
+            $viewtag->setAttribute(
+                "display-mode",
+                $view[CvDocFields::cv_kview] === "VEDIT" ? "edition" : "consultation"
+            );
             if ($view[CvDocFields::cv_mskid]) {
                 $msktag = self::celui("mask");
                 $msktag->setAttribute("ref", ExportConfiguration::getLogicalName($view[CvDocFields::cv_mskid]));
@@ -434,7 +448,10 @@ class ExportElementConfiguration
 
         $masktag->setAttribute("name", ExportConfiguration::getLogicalName($mask->id));
         $masktag->setAttribute("label", $mask->title);
-        $masktag->setAttribute("structure", ExportConfiguration::getLogicalName($mask->getRawvalue(MaskFields::msk_famid)));
+        $masktag->setAttribute(
+            "structure",
+            ExportConfiguration::getLogicalName($mask->getRawvalue(MaskFields::msk_famid))
+        );
         $views = $mask->getAttributeValue(MaskFields::msk_t_contain);
 
         $visList = self::celui("visibility-list");
@@ -474,11 +491,9 @@ class ExportElementConfiguration
         }
 
         if ($e->accessControl()->isRealProfile() || $e->id === $e->profid) {
-            $accessControl = self::getAccess($e->id);
-            return $accessControl;
+            return self::getAccess($e->id);
         } else {
-            $accessControl = self::getAccessRef($e);
-            return $accessControl;
+            return self::getAccessRef($e);
         }
     }
 
@@ -514,7 +529,10 @@ class ExportElementConfiguration
             $accessControl->setAttribute("profil-type", $profil->fromname);
         }
         if ($profil->getRawValue("dpdoc_famid")) {
-            $accessControl->setAttribute("access-structure", ExportWorkflowConfiguration::getLogicalName($profil->getRawValue("dpdoc_famid")));
+            $accessControl->setAttribute(
+                "access-structure",
+                ExportWorkflowConfiguration::getLogicalName($profil->getRawValue("dpdoc_famid"))
+            );
         }
         if ($profil->getRawValue("ba_desc")) {
             if ($profil->accessControl()->isRealProfile()) {
@@ -628,7 +646,10 @@ class ExportElementConfiguration
 
         $tag->setAttribute("name", ExportWorkflowConfiguration::getLogicalName($fall->id));
         $tag->setAttribute("label", $fall->title);
-        $tag->setAttribute("structure", ExportWorkflowConfiguration::getLogicalName($fall->getRawValue(\SmartStructure\Fields\Fieldaccesslayerlist::fall_famid)));
+        $tag->setAttribute(
+            "structure",
+            ExportWorkflowConfiguration::getLogicalName($fall->getRawValue(\SmartStructure\Fields\Fieldaccesslayerlist::fall_famid))
+        );
 
 
         $layers = $fall->getMultipleRawValues(\SmartStructure\Fields\Fieldaccesslayerlist::fall_layer);
@@ -719,22 +740,34 @@ class ExportElementConfiguration
 
     protected static function celtimer($name)
     {
-        return self::$dom->createElementNS(ExportWorkflowConfiguration::NSTMURL, ExportWorkflowConfiguration::NSTM . ":" . $name);
+        return self::$dom->createElementNS(
+            ExportWorkflowConfiguration::NSTMURL,
+            ExportWorkflowConfiguration::NSTM . ":" . $name
+        );
     }
 
     protected static function celmail($name)
     {
-        return self::$dom->createElementNS(ExportWorkflowConfiguration::NSMTURL, ExportWorkflowConfiguration::NSMT . ":" . $name);
+        return self::$dom->createElementNS(
+            ExportWorkflowConfiguration::NSMTURL,
+            ExportWorkflowConfiguration::NSMT . ":" . $name
+        );
     }
 
     protected static function celui($name)
     {
-        return self::$dom->createElementNS(ExportRenderConfiguration::NSUIURL, ExportRenderConfiguration::NSUI . ":" . $name);
+        return self::$dom->createElementNS(
+            ExportRenderConfiguration::NSUIURL,
+            ExportRenderConfiguration::NSUI . ":" . $name
+        );
     }
 
     protected static function cel($name)
     {
-        return self::$dom->createElementNS(ExportWorkflowConfiguration::NSURL, ExportWorkflowConfiguration::NS . ":" . $name);
+        return self::$dom->createElementNS(
+            ExportWorkflowConfiguration::NSURL,
+            ExportWorkflowConfiguration::NS . ":" . $name
+        );
     }
 
     protected static function setComment($text, \DOMElement $dom)

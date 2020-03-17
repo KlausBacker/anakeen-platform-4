@@ -9,8 +9,8 @@
           controller="FIELD_ACCESS_GRID_CONTROLLER"
           filterable
           defaultExpandable
-          @rowActionClick="actionClick"
-          @grid-data-bound="onGridDataBound"
+          @RowActionClick="actionClick"
+          @DataBound="onGridDataBound"
         >
           <template v-slot:cellTemplate="opts">
             <td v-if="opts.columnConfig.field === 'dpdoc_famid'">

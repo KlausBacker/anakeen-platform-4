@@ -24,7 +24,7 @@
 .smart-element-grid-header--title,
 .smart-element-grid-header-title-wrapper {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   text-overflow: ellipsis;
   overflow: hidden;
 }
@@ -45,10 +45,18 @@
   }
 }
 
-.smart-element-grid-header-filter--is-filtered {
+.smart-element-grid-header-filter-button-wrapper {
+  padding: .10rem;
   border-radius: 0.25rem;
+}
+
+.smart-element-grid-header-filter--is-filtered {
   color: white;
   background-color: #157efb;
+}
+
+.smart-element-grid-header-filter--is-active {
+  box-shadow: 1px 1px 1px 1px rgba(100, 100, 100, 0.5) inset;
 }
 
 .smart-element-grid-filter-content {

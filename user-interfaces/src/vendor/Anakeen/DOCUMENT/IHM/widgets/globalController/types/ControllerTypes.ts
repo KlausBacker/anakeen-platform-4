@@ -52,6 +52,7 @@ export namespace AnakeenController {
       smartFieldCheck?: (...args: any[]) => boolean;
       once?: boolean;
       name?: string;
+      persistent?: boolean;
       eventType?: SmartElementEvent;
       [key: string]: any;
     }

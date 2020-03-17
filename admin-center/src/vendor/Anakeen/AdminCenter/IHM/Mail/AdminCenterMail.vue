@@ -14,7 +14,7 @@
         controller="DEFAULT_GRID_CONTROLLER"
         :actions="actions"
         :columns="columns"
-        @rowActionClick="selectMailTemplate"
+        @RowActionClick="selectMailTemplate"
         filterable
         defaultExpandable
       />

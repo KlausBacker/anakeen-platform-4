@@ -25,7 +25,7 @@ class TrashGridController extends DefaultGridController
         $configBuilder->addAbstract("auth", array("smartType"=>"text","title"=>"Authorization","hidden"=>true,"sortable"=>false,"filterable"=>false));
         $configBuilder->addAbstract("author", array("smartType"=>"text","title"=>"Author of the deletion","sortable"=>false,"filterable"=>true));
         $configBuilder->addRowAction(array("action"=> "restore", "title"=> "Restore"));
-        $configBuilder->addRowAction(array("action"=> "display", "title"=> "Display"));
+        $configBuilder->addRowAction(array("action"=> "consult", "title"=> "Display"));
         $configBuilder->addRowAction(array("action"=> "delete", "title"=> "Delete from trash"));
         return $configBuilder->getConfig();
     }

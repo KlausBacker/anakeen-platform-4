@@ -4,12 +4,6 @@ import AnkSmartElementGrid from "../AnkSEGrid.component";
 import { Popup } from "@progress/kendo-vue-popup";
 import $ from "jquery";
 
-enum SortableDirection {
-  NONE,
-  ASC,
-  DESC
-}
-
 @Component({
   name: "ank-se-grid-header-cell",
   components: {
@@ -45,7 +39,6 @@ export default class GridHeaderCell extends Vue {
     required: true
   })
   public grid!: AnkSmartElementGrid;
-  public sortableDir: SortableDirection = SortableDirection.NONE;
   public showFilter = false;
   public collision = {
     horizontal: "fit",
@@ -55,6 +48,7 @@ export default class GridHeaderCell extends Vue {
     top: 0,
     left: 0
   };
+  public animate = { closeDuration: 0 };
   public get hasSubtitle(): boolean {
     return this.grid.contextTitles && Array.isArray(this.columnConfig.context) && this.columnConfig.context.length;
   }
@@ -67,14 +61,16 @@ export default class GridHeaderCell extends Vue {
   }
 
   public get sortableStateIcon(): string {
-    switch (this.sortableDir) {
-      case SortableDirection.NONE:
-        return `<i class='smart-element-header-sort-button smart-element-header-sort-button--none'></i>`;
-      case SortableDirection.ASC:
-        return `<i class='smart-element-header-sort-button k-icon k-i-sort-asc-sm'></i>`;
-      case SortableDirection.DESC:
-        return `<i class='smart-element-header-sort-button k-icon k-i-sort-desc-sm'></i>`;
+    const sortField = this.currentSort;
+    if (sortField) {
+      switch (sortField.dir) {
+        case "asc":
+          return `<i class='smart-element-header-sort-button k-icon k-i-sort-asc-sm'></i>`;
+        case "desc":
+          return `<i class='smart-element-header-sort-button k-icon k-i-sort-desc-sm'></i>`;
+      }
     }
+    return `<i class='smart-element-header-sort-button smart-element-header-sort-button--none'></i>`;
   }
 
   public get isFiltered(): boolean {
@@ -85,57 +81,73 @@ export default class GridHeaderCell extends Vue {
       ).length
     );
   }
+
+  public get isActive(): boolean {
+    return !!this.showFilter;
+  }
+
   public showFilters(): void {
+    if (!this.showFilter) {
+      // Place the correct popup position
+      this.setFilterOffset();
+    }
     this.showFilter = !this.showFilter;
   }
-  public created(): void {
-    // sort change
-    if (this.grid.sorter && this.grid.sorter.allowUnsort === false && this.sortable) {
-      this.sortableDir = SortableDirection.ASC;
-      this.$emit("sortchange", {
-        sort: [
-          {
-            field: this.field,
-            dir: "asc"
-          }
-        ]
+
+  public get currentSort(): kendo.data.DataSourceSortItem {
+    if (this.grid && this.grid.currentSort) {
+      return this.grid.currentSort.find(sort => {
+        return sort.field === this.field;
       });
+    } else {
+      return null;
     }
   }
+
   protected onSort(): void {
-    let sortableStr: string;
-    const sortableValues = [null, "asc", "desc"];
-    this.sortableDir = (this.sortableDir + 1) % 3;
-    if (this.grid.sorter && this.grid.sorter.allowUnsort === true && this.sortable) {
-      sortableStr = sortableValues[this.sortableDir];
-    } else {
-      if (this.sortableDir === 0) {
-        this.sortableDir = (this.sortableDir + 1) % 3;
+    let nextSortableDir: string;
+    if (this.currentSort && this.currentSort.dir) {
+      switch (this.currentSort.dir) {
+        case "asc":
+          nextSortableDir = "desc";
+          break;
+        case "desc":
+          if (this.grid.sorter && this.grid.sorter.allowUnsort === false) {
+            nextSortableDir = "asc";
+          } else {
+            nextSortableDir = null;
+          }
+          break;
+        case null:
+          nextSortableDir = "asc";
+          break;
       }
-      sortableStr = sortableValues[this.sortableDir];
+    } else {
+      nextSortableDir = "asc";
     }
-    this.$emit("sortchange", {
+    this.$emit("SortChange", {
       sort: [
         {
           field: this.field,
-          dir: sortableStr
+          dir: nextSortableDir
         }
       ]
     });
   }
 
   protected clearFilter(...args): void {
-    this.$emit("filterchange", ...args);
+    this.$emit("FilterChange", ...args);
+    // Close popup when filter is cleared
+    this.showFilter = false;
   }
 
   protected filter(...args): void {
-    this.$emit("filterchange", ...args);
+    this.$emit("FilterChange", ...args);
+    // Close popup when filter is applied
+    this.showFilter = false;
   }
   protected setFilterOffset(): void {
     const filter = $(this.$refs.filterButton).offset();
-    if ($(this.$refs.filterButton).is(":hidden")) {
-      this.showFilter = false;
-    }
     if (!filter || !filter.top || !filter.left) {
       return;
     }
@@ -146,8 +158,22 @@ export default class GridHeaderCell extends Vue {
     };
   }
 
+  public created(): void {
+    // Enable disappear popup if click outside the popup
+    $(window).on(`mouseup.popupGrid${this._uid}`, event => {
+      const target = event.originalEvent.target as Element;
+      if (this.$refs.filterPopup) {
+        const container = this.$refs.filterPopup as Vue;
+        const containerElement = $(container.$el);
+        // If container is visible and click target is not contained by the container so it's a outside click
+        if (containerElement.is(":visible") && !containerElement.is(target) && !$.contains(container.$el, target)) {
+          this.showFilter = false;
+        }
+      }
+    });
+  }
+
   public mounted(): void {
-    this.setFilterOffset();
     $(window).on(`resize.popupGrid${this._uid}`, () => {
       this.setFilterOffset();
     });

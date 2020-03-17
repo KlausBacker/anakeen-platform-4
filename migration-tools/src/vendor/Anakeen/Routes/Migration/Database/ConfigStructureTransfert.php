@@ -234,6 +234,15 @@ SQL;
         $sql = "delete from docattr where type='menu' or type='action'";
         DbManager::query($sql);
 
+
+        // Delete autogenerate attr
+        $sql = "delete from docattr where options ~ 'autotitle=yes';";
+        DbManager::query($sql);
+
+        // Delete autogenerate attr
+        $sql = "delete from docattr where options ~ 'autocreated=yes';";
+        DbManager::query($sql);
+
         // Delete MODATTR without father
         $sql = "delete from docattr where id ~ '^:' and substring(id,2) not in (select id from docattr)";
         DbManager::query($sql);
