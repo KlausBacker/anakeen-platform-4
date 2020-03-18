@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="development-center" version="2.2.2-RC.2020.1.14" vendor="Anakeen" license="https://ap4.anakeen.com/license4.html">
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="development-center" version="2.2.2-RC.2020.1.15" vendor="Anakeen" license="https://ap4.anakeen.com/license4.html">
 
     <description>Developement Center</description>
 
     <requires>
-        <module name="user-interfaces" version="^3.0.2-RC.2020.1.14"/>
-        <module name="security" version="^2.0.3-RC.2020.1.14"/>
-        <module name="workflow" version="^2.0.2-RC.2020.1.14"/>
-        <module name="anakeen-hub" version="^1.0.4-RC.2020.1.14"/>
+        <module name="user-interfaces" version="^3.0.2-RC.2020.1.15"/>
+        <module name="security" version="^2.0.3-RC.2020.1.15"/>
+        <module name="workflow" version="^2.0.2-RC.2020.1.15"/>
+        <module name="anakeen-hub" version="^1.0.4-RC.2020.1.15"/>
     </requires>
 
     <parameters>
