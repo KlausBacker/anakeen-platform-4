@@ -16,7 +16,7 @@
         :revision="revision"
         class="ank-se-tab-element"
         ref="smartElement"
-        @SmartElementMounted="onSmartElementLoaded"
+        @smartElementMounted="onSmartElementLoaded"
       ></ank-smart-element>
       <ank-loading
         class="ank-loading"
