@@ -26,5 +26,11 @@ msgstr "Moyenne"
 #: src/vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "report-rep_foots"
+msgid "NONE"
+msgstr "Aucun"
+
+#: src/vendor/Anakeen/SmartStructures/Report/report.struct.xml
+#, fuzzy
+msgctxt "report-rep_foots"
 msgid "SUM"
 msgstr "Somme"

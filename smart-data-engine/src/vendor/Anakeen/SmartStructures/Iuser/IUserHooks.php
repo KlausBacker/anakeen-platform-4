@@ -16,6 +16,7 @@ use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Router\RouterAccess;
 use Anakeen\SmartHooks;
+use PHPUnit\Framework\Error\Error;
 use SmartStructure\Fields\Iuser as MyAttributes;
 use SmartStructure\Iuser;
 
@@ -599,11 +600,18 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
      */
     public function setPassword($password)
     {
-        $idwuser = $this->getRawValue("US_WHATID");
+        $idwuser = $this->getRawValue("US_WHATID", false);
+
+        if ($idwuser === false) {
+            return sprintf(___("user \"%s\" has no associated account", "smart iuser"), $this->name ?: $this->initid);
+        }
 
         $wuser = $this->getAccount();
+        if ($wuser === false) {
+            return sprintf(___("user \"%s\" has no associated account", "smart iuser"), $this->name ?: $this->initid);
+        }
         if (!$wuser->isAffected()) {
-            return sprintf(_("user #%d does not exist"), $idwuser);
+            return sprintf(___("user \"%s\" has no associated account", "smart iuser"), $this->name ?: $this->initid);
         }
         // Change what user password
         $wuser->password_new = $password;

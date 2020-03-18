@@ -144,6 +144,16 @@ msgstr "Deadline epoch"
 
 #: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
+msgid "us_passwd1"
+msgstr "New password"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_passwd2"
+msgstr "Confirm password"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
 msgid "us_rolegorigin"
 msgstr "Group"
 
@@ -235,14 +245,6 @@ msgstr "Identifier"
 #~ msgctxt "IUSER"
 #~ msgid "us_menuresetlogfails#submenu"
 #~ msgstr "Manage account"
-
-#~ msgctxt "IUSER"
-#~ msgid "us_passwd1"
-#~ msgstr "New password"
-
-#~ msgctxt "IUSER"
-#~ msgid "us_passwd2"
-#~ msgstr "Confirm password"
 
 #~ msgctxt "IUSER"
 #~ msgid "us_rolesorigin#group"

@@ -144,6 +144,16 @@ msgstr "Délai d'expiration epoch"
 
 #: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
+msgid "us_passwd1"
+msgstr "Nouveau mot de passe"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_passwd2"
+msgstr "Confirmation mot de passe"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
 msgid "us_rolegorigin"
 msgstr "Groupe"
 
@@ -188,78 +198,3 @@ msgctxt "IUSER"
 msgid "us_whatid"
 msgstr "Identifiant"
 
-#~ msgctxt "IUSER"
-#~ msgid "us_activateaccount"
-#~ msgstr "Activer le compte"
-
-#~ msgctxt "IUSER"
-#~ msgid "us_activateaccount#submenu"
-#~ msgstr "Gestion du compte"
-
-#~ msgctxt "IUSER"
-#~ msgid "us_daydelay#elabel"
-#~ msgstr "mettre -1 pour annuler l'expiration"
-
-#~ msgctxt "IUSER"
-#~ msgid "us_desactivateaccount"
-#~ msgstr "Désactiver le compte"
-
-#~ msgctxt "IUSER"
-#~ msgid "us_desactivateaccount#submenu"
-#~ msgstr "Gestion du compte"
-
-#~ msgctxt "IUSER"
-#~ msgid "us_fr_privacy"
-#~ msgstr "Confidentialité"
-
-#~ msgctxt "IUSER"
-#~ msgid "us_groups#showempty"
-#~ msgstr "Aucun groupe"
-
-#~ msgctxt "IUSER"
-#~ msgid "us_inituser"
-#~ msgstr "Actualiser les utilisateurs"
-
-#~ msgctxt "IUSER"
-#~ msgid "us_ldapdn"
-#~ msgstr "Login LDAP"
-
-#~ msgctxt "IUSER"
-#~ msgid "us_login#elabel"
-#~ msgstr "saisissez '-' pour indiquer qu'il n'y a pas de login"
-
-#~ msgctxt "IUSER"
-#~ msgid "us_menuresetlogfails"
-#~ msgstr "Réinitialiser échecs de connexion"
-
-#~ msgctxt "IUSER"
-#~ msgid "us_menuresetlogfails#submenu"
-#~ msgstr "Gestion du compte"
-
-#~ msgctxt "IUSER"
-#~ msgid "us_passwd1"
-#~ msgstr "Nouveau mot de passe"
-
-#~ msgctxt "IUSER"
-#~ msgid "us_passwd2"
-#~ msgstr "Confirmation mot de passe"
-
-#~ msgctxt "IUSER"
-#~ msgid "us_rolesorigin#group"
-#~ msgstr "Obtenu par"
-
-#~ msgctxt "IUSER"
-#~ msgid "us_rolesorigin#internal"
-#~ msgstr "Affectation directe"
-
-#~ msgctxt "IUSER"
-#~ msgid "us_status#A"
-#~ msgstr "Activé"
-
-#~ msgctxt "IUSER"
-#~ msgid "us_status#D"
-#~ msgstr "Désactivé"
-
-#~ msgctxt "IUSER"
-#~ msgid "us_t_roles#showempty"
-#~ msgstr "Aucun rôle"
