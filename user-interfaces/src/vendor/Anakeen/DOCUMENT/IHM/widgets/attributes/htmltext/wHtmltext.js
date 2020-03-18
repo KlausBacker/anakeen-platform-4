@@ -81,7 +81,6 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
    * Display the htmltext after all the dom is done
    */
   displayHtmlText: function wHtmlTextDisplay() {
-    console.log("ready baby");
     try {
       this.ckEditorInstance = this.getContentElements().ckeditor(this.ckOptions).editor;
       this.options.attributeValue.value = this.ckEditorInstance.getData();
