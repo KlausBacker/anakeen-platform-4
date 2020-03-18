@@ -22,8 +22,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
 
   _initDom: function wHtmltext_InitDom() {
     var currentWidget = this,
-      bind_super = _.bind(this._super, this),
-      bindInitEvent = _.bind(this._initEvent, this);
+      bind_super = _.bind(this._super, this);
     try {
       this.popupWindows = {};
 
@@ -59,10 +58,8 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
               };
               options.disallowedContent = "script; *[on*]";
             }
-
-            currentWidget.ckEditorInstance = currentWidget.getContentElements().ckeditor(options).editor;
-            currentWidget.options.attributeValue.value = currentWidget.ckEditorInstance.getData();
-            bindInitEvent();
+            this.ckOptions = options;
+            this._trigger("widgetReady");
           })
           .catch(error => {
             console.error(error);
@@ -77,6 +74,19 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
       } else {
         console.error(e);
       }
+    }
+  },
+
+  /**
+   * Display the htmltext after all the dom is done
+   */
+  displayHtmlText: function wHtmlTextDisplay() {
+    try {
+      this.ckEditorInstance = this.getContentElements().ckeditor(this.ckOptions).editor;
+      this.options.attributeValue.value = this.ckEditorInstance.getData();
+      this._initEvent();
+    } catch (e) {
+      console.error(e);
     }
   },
 
