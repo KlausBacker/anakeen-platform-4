@@ -19,6 +19,8 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
   },
 
   ckEditorInstance: null,
+  domReady: false,
+  ckLoaded: false,
 
   _initDom: function wHtmltext_InitDom() {
     var currentWidget = this,
@@ -27,6 +29,8 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
       this.popupWindows = {};
 
       if (this.getMode() === "write") {
+        bind_super();
+        this.getContentElements().addClass("dcpAttribute__content--htmltext--beforeCkEditor");
         import("../../../../../../../../webpackConfig/ckeditor/ckeditor" /* webpackChunkName: "ckeditor" */)
           .then(ckeditorPromise => {
             return ckeditorPromise.default.then(() => {
@@ -44,7 +48,6 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
               currentWidget.ckOptions(cssPath),
               currentWidget.options.renderOptions.ckEditorConfiguration
             );
-            bind_super();
             if (currentWidget.options.renderOptions.ckEditorAllowAllTags) {
               // Allow all HTML tags
               options.allowedContent = {
@@ -58,7 +61,9 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
               };
               options.disallowedContent = "script; *[on*]";
             }
+            this.ckLoaded = true;
             this.ckOptions = options;
+            this.displayHtmlText();
             this._trigger("widgetReady");
           })
           .catch(error => {
@@ -76,12 +81,18 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
       }
     }
   },
-
   /**
    * Display the htmltext after all the dom is done
    */
-  displayHtmlText: function wHtmlTextDisplay() {
+  displayHtmlText: function wHtmlTextDisplay(domReady) {
+    if (domReady) {
+      this.domReady = true;
+    }
+    if (this.domReady === false || this.ckLoaded === false) {
+      return;
+    }
     try {
+      this.getContentElements().removeClass("dcpAttribute__content--htmltext--beforeCkEditor");
       this.ckEditorInstance = this.getContentElements().ckeditor(this.ckOptions).editor;
       this.options.attributeValue.value = this.ckEditorInstance.getData();
       this._initEvent();
@@ -292,7 +303,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
       });
 
       this.ckEditorInstance.on("instanceReady", function wHtmltext_loaded() {
-        currentWidget._trigger("widgetReady");
+        currentWidget._trigger("widgetReadyHtmlPart");
       });
 
       this.element.on("postMoved" + this.eventNamespace, function wHtmlTextOnPostMoved(event, eventData) {

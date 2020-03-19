@@ -101,3 +101,7 @@
   /* No bold for htmltext */
   font-family: inherit;
 }
+
+.dcpAttribute__content--htmltext--beforeCkEditor {
+  visibility: hidden;
+}

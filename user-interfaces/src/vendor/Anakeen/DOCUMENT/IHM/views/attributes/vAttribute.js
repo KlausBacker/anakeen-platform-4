@@ -43,7 +43,8 @@ export default Backbone.View.extend({
     "dcpattributeuploadfiledone  .dcpAttribute__content": "uploadFileDone",
     "dcpattributedisplaynetworkerror  .dcpAttribute__content": "displayNetworkError",
     "dcpattributeanchorclick .dcpAttribute__content": "anchorClick",
-    "dcpattributewidgetready .dcpAttribute__content": "setWidgetReady"
+    "dcpattributewidgetready .dcpAttribute__content": "setWidgetReady",
+    "dcpattributewidgetreadyhtmlpart .dcpAttribute__content": "setHtmlTextWidgetReady"
   },
 
   initialize: function vAttributeInitialize(options) {
@@ -836,11 +837,26 @@ export default Backbone.View.extend({
   },
 
   setWidgetReady: function Vattribute_setWidgetReady() {
+    if (this.model.get("type") === "htmltext") {
+      return;
+    }
     this.widgetReady = true;
     this.triggerRenderDone();
   },
 
-  triggerRenderDone: function vAttribute_triggerRenderDone() {
+  /**
+   * The ready event is not the same due to the asynchronous render of ckeditor
+   */
+  setHtmlTextWidgetReady: function Vattribute_setHtmlTextWidgetReady() {
+    this.widgetReady = true;
+    this.triggerRenderDone(true);
+  },
+
+  triggerRenderDone: function vAttribute_triggerRenderDone(htmlRender) {
+    //If the smartField is an htmlText one, the event is not the same (sic)
+    if (this.model.get("type") === "htmltext" && !htmlRender) {
+      return;
+    }
     if (this.noRenderEvent !== false && this.renderDone && this.widgetReady && !this.triggerRender) {
       this.model.trigger("renderDone", { model: this.model, $el: this.$el });
       this.triggerRender = true;
@@ -896,13 +912,18 @@ export default Backbone.View.extend({
     if (this.model.get("type") !== "htmltext") {
       return;
     }
-    this.widgetApply(
-      this.getDOMElements()
-        .find(".dcpAttribute__content--widget")
-        .addBack()
-        .filter(".dcpAttribute__content--widget"),
-      "displayHtmlText"
-    );
+    try {
+      this.widgetApply(
+        this.getDOMElements()
+          .find(".dcpAttribute__content--widget")
+          .addBack()
+          .filter(".dcpAttribute__content--widget"),
+        "displayHtmlText",
+        true
+      );
+    } catch (e) {
+      console.error(e);
+    }
   },
 
   _findWidgetName: function vAttribute_findWidgetName($element) {

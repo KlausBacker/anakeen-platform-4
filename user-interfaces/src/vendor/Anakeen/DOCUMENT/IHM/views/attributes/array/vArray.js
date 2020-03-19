@@ -91,6 +91,9 @@ export default Backbone.View.extend({
 
             Promise.all(promisesColumn).then(function renderDone() {
               currentView.$el.attr("data-attrid", currentView.model.id);
+              currentView.model.get("content").each(currentAttr => {
+                currentAttr.trigger("renderHtmlText");
+              });
               currentView.model.trigger("renderDone", {
                 model: currentView.model,
                 $el: currentView.$el,
