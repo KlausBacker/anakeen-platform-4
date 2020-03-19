@@ -47,7 +47,7 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
     if (this.initialData.initid.toString() !== "0") {
       this._initController(this.initialData);
     }
-    this.$emit("SmartElementMounted");
+    this.$emit("smartElementMounted");
   }
   @Watch("autoUnload")
   protected watchAutoUnload(newValue) {
@@ -337,7 +337,6 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
     AnakeenGlobalController.setAutoUnload(this.autoUnload, this.controllerScopeId);
     this.listenEvents();
     this.$emit("smartElementLoaded");
-    this.$emit("SmartElementMounted");
   }
 
   protected listenEvents() {

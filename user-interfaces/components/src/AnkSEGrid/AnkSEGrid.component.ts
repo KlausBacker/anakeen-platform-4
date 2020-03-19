@@ -14,6 +14,8 @@ import GridError, { GridErrorCodes } from "./utils/GridError";
 import GridExportEvent from "./AnkGridEvent/AnkGridExportEvent";
 import I18nMixin from "../../mixins/AnkVueComponentMixin/I18nMixin";
 
+import $ from "jquery";
+
 const CONTROLLER_URL = "/api/v2/grid/controllers/{controller}/{op}/{collection}";
 
 export interface SmartGridColumn {

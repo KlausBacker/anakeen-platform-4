@@ -58,6 +58,7 @@ export default Backbone.View.extend({
     this.listenTo(this.model, "show", this.show);
     this.listenTo(this.model, "haveView", this._identifyView);
     this.listenTo(this.model, "closeWidget", this._closeWidget);
+    this.listenTo(this.model, "renderHtmlText", this._triggerHtmlTextEvent);
     this.templateWrapper = this.model.getTemplates().attribute.simpleWrapper;
 
     options = options || {};
@@ -270,27 +271,14 @@ export default Backbone.View.extend({
    */
   refreshError: function vAttributeRefreshError() {
     this.$el.find(".dcpAttribute__label").dcpLabel("setError", this.model.get("errorMessage"));
-    // andSelf method was removed from jQuery 3.0.0+ use addBack instead
-    var jqueryVersion = +$().jquery.split(".")[0];
-    if (jqueryVersion >= 3) {
-      this.widgetApply(
-        this.getDOMElements()
-          .find(".dcpAttribute__content--widget")
-          .addBack()
-          .filter(".dcpAttribute__content--widget"),
-        "setError",
-        this.model.get("errorMessage")
-      );
-    } else {
-      this.widgetApply(
-        this.getDOMElements()
-          .find(".dcpAttribute__content--widget")
-          .andSelf()
-          .filter(".dcpAttribute__content--widget"),
-        "setError",
-        this.model.get("errorMessage")
-      );
-    }
+    this.widgetApply(
+      this.getDOMElements()
+        .find(".dcpAttribute__content--widget")
+        .addBack()
+        .filter(".dcpAttribute__content--widget"),
+      "setError",
+      this.model.get("errorMessage")
+    );
   },
 
   /**
@@ -902,6 +890,19 @@ export default Backbone.View.extend({
         console.error(e);
       }
     }
+  },
+
+  _triggerHtmlTextEvent: function vAttribute_triggerHtmlTextEvent() {
+    if (this.model.get("type") !== "htmltext") {
+      return;
+    }
+    this.widgetApply(
+      this.getDOMElements()
+        .find(".dcpAttribute__content--widget")
+        .addBack()
+        .filter(".dcpAttribute__content--widget"),
+      "displayHtmlText"
+    );
   },
 
   _findWidgetName: function vAttribute_findWidgetName($element) {
