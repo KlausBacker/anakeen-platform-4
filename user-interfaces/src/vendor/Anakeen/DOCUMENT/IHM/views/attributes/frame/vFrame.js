@@ -151,10 +151,6 @@ export default Backbone.View.extend({
         const promiseEnd = () => {
           Promise.all(promiseAttributes)
             .then(function allRenderDone() {
-              //Trigger htmltext render
-              currentView.model.get("content").each(currentAttr => {
-                currentAttr.trigger("renderHtmlText");
-              });
               currentView.model.trigger("renderDone", {
                 model: currentView.model,
                 $el: currentView.$el,
