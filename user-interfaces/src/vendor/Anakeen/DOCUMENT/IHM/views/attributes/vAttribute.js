@@ -901,7 +901,8 @@ export default Backbone.View.extend({
         .find(".dcpAttribute__content--widget")
         .addBack()
         .filter(".dcpAttribute__content--widget"),
-      "displayHtmlText"
+      "displayHtmlText",
+      true
     );
   },
 
