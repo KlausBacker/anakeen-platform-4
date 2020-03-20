@@ -1,0 +1,13 @@
+{{#caption}}<fieldset ><legend><span >{{caption}}</span></legend>{{/caption}}
+    <table style="width:100%" >
+        <thead>
+        <tr>
+           {{#headcells}}<th >{{headLabel}}</th>{{/headcells}}
+        </tr>
+        </thead>
+        <tbody  >
+        {{#rows}}<tr>{{#line}}<td >{{{cellValue}}}</td>{{/line}}
+        </tr>{{/rows}}
+        </tbody>
+    </table>
+    {{#caption}}</fieldset>{{/caption}}
