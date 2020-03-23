@@ -358,6 +358,9 @@ export default Backbone.View.extend({
     Promise.all(allPromiseAttributes)
       .then(
         _.bind(function addlinePromiseAllDone() {
+          this.model.get("content").each(currentAttr => {
+            currentAttr.trigger("renderHtmlText");
+          });
           this.model.trigger("array", "addLine", this.model, options.line);
           options.resolve();
         }, this)

@@ -350,10 +350,6 @@ export default Backbone.View.extend({
             this.resizeForFooter();
             Promise.all(renderPromises).then(
               _.bind(function vDocumentRenderDone() {
-                //Trigger htmltext render
-                this.model.get("attributes").each(currentAttr => {
-                  currentAttr.trigger("renderHtmlText");
-                });
                 this.trigger("renderDone");
               }, this)
             );
