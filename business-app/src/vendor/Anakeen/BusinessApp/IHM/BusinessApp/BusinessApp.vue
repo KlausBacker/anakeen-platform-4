@@ -54,6 +54,7 @@
           :viewId="tab.viewId || '!defaultConsultation'"
           :revision="tab.revision"
           ref="seTab"
+          @SmartElementTabBeforeRender="(event, se) => onTabBeforeRender(event, se, tab)"
           @SmartElementTabAfterSave="onAfterSave"
           @SmartElementTabAfterDelete="onAfterDelete"
           @SmartElementTabActionClick="onActionClick"
