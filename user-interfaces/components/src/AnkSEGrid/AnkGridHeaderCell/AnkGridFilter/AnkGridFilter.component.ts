@@ -230,6 +230,7 @@ export default class GridFilterCell extends Mixins(I18nMixin) {
       second_grid_filter_value: ""
     }
   };
+
   public created(): void {
     if (this.grid && this.grid.currentFilter && this.grid.currentFilter.filters) {
       const columnFilters: any[] = this.grid.currentFilter.filters.filter((f: any) => f.field === this.field);
@@ -345,6 +346,18 @@ export default class GridFilterCell extends Mixins(I18nMixin) {
   }
 
   protected setAutocompleteField(valueField, type, fieldValueId, fieldOperatorValue) {
+    if (this.field === "state" && (fieldOperatorValue === "eq" || fieldOperatorValue === "neq")) {
+      // @ts-ignore
+      valueField.autocomplete = {
+        url: `/api/v2/grid/filter/${this.grid.collection}/state/autocomplete`,
+        outputs: {
+          [fieldValueId]: "stateValue"
+        }
+      };
+    } else {
+      // @ts-ignore
+      delete valueField.autocomplete;
+    }
     if (
       isAutocompleteType(type) &&
       this.grid.filterable &&

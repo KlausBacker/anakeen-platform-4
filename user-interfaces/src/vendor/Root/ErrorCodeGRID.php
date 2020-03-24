@@ -27,4 +27,8 @@ class ErrorCodeGRID
     const GRID0013 = 'Error, class is required';
     const GRID0014 = 'Class "%s" does not implement interface "%s"';
     const GRID0015 = 'Error, unsufficient privileges to search for %s Smart Elements';
+    /**
+     * @errorCode the property is not compatible with this filter
+     */
+    const GRID0016 = "Property '%s' with type '%s' is not compatible.";
 }

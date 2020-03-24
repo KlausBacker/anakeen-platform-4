@@ -10,6 +10,18 @@
   display: flex;
   flex-direction: column;
 }
+
+.smart-element-grid-filter-form-state-entry {
+  display: flex;
+  align-items: center;
+}
+
+.smart-element-grid-filter-form-state-entry--color {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 25%;
+  margin-right: .25rem;
+}
 .smart-element-grid-filter-form {
   flex: 1;
   overflow-y: hidden;
