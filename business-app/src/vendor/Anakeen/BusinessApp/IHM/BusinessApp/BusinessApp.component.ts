@@ -52,9 +52,8 @@ export default class BusinessApp extends Vue {
   ];
 
   public collectionDropDownList: kendo.ui.DropDownList = null;
-  public currentListPage: number = 0;
-  public currentListFilter: string = "";
-  private creationCounter: number = 0;
+  public currentListPage = 0;
+  public currentListFilter = "";
 
   @Watch("selectedCollection")
   public onSelectedCollectionDataChange(newVal, oldVal) {
@@ -199,7 +198,7 @@ export default class BusinessApp extends Vue {
       icon: createInfo.icon,
       label: createInfo.title,
       name: createInfo.name,
-      tabId: `CREATION_${createInfo.name}_${this.creationCounter++}`,
+      tabId: `CREATION_${createInfo.name}`,
       title: `Creation ${createInfo.title}`,
       viewId: "!defaultCreation"
     });
@@ -243,6 +242,47 @@ export default class BusinessApp extends Vue {
     if (this.$refs.businessWelcomeTab) {
       // @ts-ignore
       this.$refs.businessWelcomeTab.refresh();
+    }
+  }
+  protected onTabBeforeRender(event, se, currentTab) {
+    const currentTabId = currentTab.tabId || currentTab.name;
+    let tab;
+    if (se.id === 0) {
+      tab = {
+        closable: true,
+        name: se.family.name,
+        tabId: `CREATION_${se.family.name}`,
+        viewId: "!defaultCreation"
+      };
+    } else {
+      tab = {
+        closable: true,
+        name: se.id.toString(),
+        tabId: se.id.toString(),
+        viewId: se.viewId,
+        revision: se.revision
+      };
+    }
+    const findEl = this.tabs.find(t => {
+      if (t.tabId === undefined) {
+        return t.name === tab.tabId;
+      }
+      return t.tabId === tab.tabId;
+    });
+    if (findEl && findEl !== currentTab) {
+      this.selectedTab = tab.tabId;
+      // fermeture de l'onglet courrant car smart element deja existant dans une autre tab
+      this.onTabRemove(currentTabId.toString());
+    } else {
+      if (currentTabId.toString() !== tab.tabId) {
+        event.preventDefault();
+        this.selectedTab = tab.tabId;
+        // @ts-ignore
+        this.$store.commit(this.getBusinessAppModuleKey("UPDATE_TAB"), {
+          previousId: currentTabId.toString(),
+          newTab: tab
+        });
+      }
     }
   }
 
@@ -311,12 +351,12 @@ export default class BusinessApp extends Vue {
     if (!this.selectedTab || this.selectedTab === "welcome") {
       this.selectedTab = "welcome";
     } else {
-      const match = this.selectedTab.match(/CREATION_([A-Z0-9a-z]+)_\d+/);
+      const match = this.selectedTab.match(/CREATION_([A-Z0-9a-z]+)/);
       if (match && match.length > 1) {
         this.addTab({
           closable: true,
           name: match[1],
-          tabId: `CREATION_${match[1]}_${this.creationCounter++}`,
+          tabId: `CREATION_${match[1]}`,
           viewId: "!defaultCreation"
         });
       } else {
