@@ -31,7 +31,7 @@ export interface SmartGridColumn {
   encoded?: boolean;
   hidden?: boolean;
   sortable?: boolean;
-  filterable?: boolean | object;
+  filterable?: boolean | SmartGridFilterable;
   transaction?: boolean | object;
   resizable?: boolean;
 }
@@ -78,6 +78,14 @@ export interface SmartGridSubHeader {
   [columnId: string]: string;
 }
 
+export interface SmartGridFilter {
+  logic?: string;
+  filters?: SmartGridFilter[];
+  field?: string;
+  operator?: string;
+  value?: string | number;
+}
+
 export interface SmartGridInfo {
   columns: SmartGridColumn[];
   actions: SmartGridAction[];
@@ -87,8 +95,8 @@ export interface SmartGridInfo {
   page: number;
   sortable: boolean | object;
   sort: kendo.data.DataSourceSortItem[];
-  filterable: boolean | object;
-  filter: kendo.data.DataSourceFilters;
+  filterable: boolean | SmartGridFilterable;
+  filter: SmartGridFilter;
   transaction: { [key: string]: string };
   selectedRows: string[];
   onlySelection: boolean;
@@ -115,9 +123,19 @@ export interface SmartGridSortable {
   mode?: string;
 }
 
+export interface SmartGridFilterable {
+  [columnId: string]: {
+    autocomplete?: { url?: string; outputs?: object; inputs?: object };
+    activeOperators?: string[];
+    singleFilter?: boolean;
+  };
+}
+
 interface KendoVueGridRow extends Vue {
   dataItem?: SmartGridRowData;
 }
+
+const DEFAULT_FILTERABLE = true;
 
 const DEFAULT_PAGER = {
   buttonCount: 0,
@@ -248,10 +266,10 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   public sortable: boolean | SmartGridSortable;
 
   @Prop({
-    default: true,
-    type: Boolean
+    default: () => DEFAULT_FILTERABLE,
+    type: [Boolean, Object]
   })
-  public filterable: boolean;
+  public filterable: boolean | SmartGridFilterable;
   @Prop({
     default: false,
     type: Boolean
@@ -327,7 +345,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     default: () => ({ logic: "and", filters: [] }),
     type: Object
   })
-  public filter!: kendo.data.DataSourceFilters;
+  public filter!: SmartGridFilter;
   @Prop({
     default: 1,
     type: Number
@@ -408,7 +426,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   public selectedRows: string[] = [];
   public isLoading = false;
   public currentSort: kendo.data.DataSourceSortItem[] = this.sort;
-  public currentFilter: kendo.data.DataSourceFilters = this.filter;
+  public currentFilter: SmartGridFilter = this.filter;
   public currentPage: { total: number; skip: number; take: number } = {
     total: null,
     skip: computeSkipFromPage(
@@ -519,9 +537,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     }
   }
 
-  public async addFilter(
-    ...filterItem: kendo.data.DataSourceFilterItem[] | kendo.data.DataSourceFilters[]
-  ): Promise<void> {
+  public async addFilter(...filterItem: SmartGridFilter[]): Promise<void> {
     filterItem.forEach(filter => {
       this.currentFilter.filters.push(filter);
     });
@@ -560,7 +576,10 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   protected get rowsData(): SmartGridRowData[] {
     return this.dataItems.map(item => {
       if (this.selectable || this.checkable) {
-        item[this.selectedField] = this.selectedRows.indexOf(item.properties.id as string) !== -1;
+        return {
+          ...item,
+          [this.selectedField]: this.selectedRows.indexOf(item.properties.id.toString()) !== -1
+        };
       }
       return item;
     });
@@ -615,6 +634,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
               title: this.actionColumnTitle,
               abstract: true,
               withContext: false,
+              filterable: false,
               sortable: false,
               resizable: false
             });
@@ -879,9 +899,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   protected async onFilterChange(filterEvt): Promise<void> {
     if (this.networkOnline) {
       if (filterEvt) {
-        const filters = this.currentFilter.filters.filter(
-          (f: kendo.data.DataSourceFilter & { field?: string }) => f.field !== filterEvt.field
-        );
+        const filters = this.currentFilter.filters.filter((f: SmartGridFilter) => f.field !== filterEvt.field);
         if (filterEvt.filters) {
           filters.push(filterEvt);
         }

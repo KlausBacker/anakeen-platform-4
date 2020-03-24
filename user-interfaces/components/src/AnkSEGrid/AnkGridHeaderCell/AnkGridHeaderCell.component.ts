@@ -1,6 +1,6 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import AnkGridFilter from "./AnkGridFilter/AnkGridFilter.vue";
-import AnkSmartElementGrid from "../AnkSEGrid.component";
+import AnkSmartElementGrid, { SmartGridFilter } from "../AnkSEGrid.component";
 import { Popup } from "@progress/kendo-vue-popup";
 import $ from "jquery";
 
@@ -73,12 +73,14 @@ export default class GridHeaderCell extends Vue {
     return `<i class='smart-element-header-sort-button smart-element-header-sort-button--none'></i>`;
   }
 
+  public get isFilterable(): boolean {
+    return !!this.grid.filterable && !!this.columnConfig.filterable;
+  }
+
   public get isFiltered(): boolean {
     return (
       this.grid.currentFilter &&
-      !!this.grid.currentFilter.filters.filter(
-        (f: kendo.data.DataSourceFilter & { field?: string }) => f.field === this.field
-      ).length
+      !!this.grid.currentFilter.filters.filter((f: SmartGridFilter) => f.field === this.field).length
     );
   }
 

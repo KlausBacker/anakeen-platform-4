@@ -36,6 +36,7 @@ const FIELD_TYPE_OPERATOR = {
 };
 
 const isUnaryOperator = (operator): boolean => operator === "isempty" || operator === "isnotempty";
+const isAutocompleteType = (type): boolean => type === "text" || type === "docid" || type === "account";
 
 const getFilterValueType = (columnType, operator, defaultType: OperatorType = "text"): OperatorType | null => {
   if (isUnaryOperator(operator)) {
@@ -107,12 +108,26 @@ export default class GridFilterCell extends Mixins(I18nMixin) {
             name: "first_grid_filter_operator",
             type: "enum",
             enumItems: this.columnConfig
-              ? Object.keys(this.columnConfig.filterable.operators.string).map(k => {
-                  return {
-                    key: k,
-                    label: this.columnConfig.filterable.operators.string[k]
-                  };
-                })
+              ? Object.keys(this.columnConfig.filterable.operators.string)
+                  // Constraint to requested operators only
+                  .filter(k => {
+                    if (
+                      this.grid.filterable &&
+                      this.grid.filterable[this.field] &&
+                      Array.isArray(this.grid.filterable[this.field].activeOperators) &&
+                      this.grid.filterable[this.field].activeOperators.length
+                    ) {
+                      return this.grid.filterable[this.field].activeOperators.indexOf(k) > -1;
+                    }
+                    // By default all operators are available
+                    return true;
+                  })
+                  .map(k => {
+                    return {
+                      key: k,
+                      label: this.columnConfig.filterable.operators.string[k]
+                    };
+                  })
               : []
           },
           {
@@ -124,26 +139,51 @@ export default class GridFilterCell extends Mixins(I18nMixin) {
           },
           {
             label: this.title || this.field,
-            display: "read",
+            display:
+              this.grid.filterable && this.grid.filterable[this.field] && this.grid.filterable[this.field].singleFilter
+                ? "none"
+                : "read",
             name: "grid_filter_operator_concat",
             type: "text"
           },
           {
             label: this.title || this.field,
             name: "second_grid_filter_operator",
+            display:
+              this.grid.filterable && this.grid.filterable[this.field] && this.grid.filterable[this.field].singleFilter
+                ? "none"
+                : "write",
             type: "enum",
             enumItems: this.columnConfig
-              ? Object.keys(this.columnConfig.filterable.operators.string).map(k => {
-                  return {
-                    key: k,
-                    label: this.columnConfig.filterable.operators.string[k]
-                  };
-                })
+              ? Object.keys(this.columnConfig.filterable.operators.string)
+                  // Constraint to requested operators only
+                  .filter(k => {
+                    if (
+                      this.grid.filterable &&
+                      this.grid.filterable[this.field] &&
+                      Array.isArray(this.grid.filterable[this.field].activeOperators) &&
+                      this.grid.filterable[this.field].activeOperators.length
+                    ) {
+                      return this.grid.filterable[this.field].activeOperators.indexOf(k) > -1;
+                    }
+                    // By default all operators are available
+                    return true;
+                  })
+                  .map(k => {
+                    return {
+                      key: k,
+                      label: this.columnConfig.filterable.operators.string[k]
+                    };
+                  })
               : []
           },
           {
             label: this.title || this.field,
             name: "second_grid_filter_value",
+            display:
+              this.grid.filterable && this.grid.filterable[this.field] && this.grid.filterable[this.field].singleFilter
+                ? "none"
+                : "write",
             type: "text",
             typeFormat: this.columnConfig ? this.columnConfig.relation : "",
             multiple: this.columnConfig ? this.columnConfig.multipe : false
@@ -178,13 +218,15 @@ export default class GridFilterCell extends Mixins(I18nMixin) {
     },
     values: {
       grid_filter_operator_concat: this.logic,
-      first_grid_filter_operator: this.columnConfig
-        ? Object.keys(this.columnConfig.filterable.operators.string)[0]
-        : "",
+      first_grid_filter_operator:
+        this.grid.filterable && this.grid.filterable[this.field] && this.grid.filterable[this.field].activeOperators
+          ? Object.keys(this.grid.filterable[this.field].activeOperators)
+          : Object.keys(this.columnConfig.filterable.operators.string)[0] || "",
       first_grid_filter_value: "",
-      second_grid_filter_operator: this.columnConfig
-        ? Object.keys(this.columnConfig.filterable.operators.string)[0]
-        : "",
+      second_grid_filter_operator:
+        this.grid.filterable && this.grid.filterable[this.field] && this.grid.filterable[this.field].activeOperators
+          ? Object.keys(this.grid.filterable[this.field].activeOperators)
+          : Object.keys(this.columnConfig.filterable.operators.string)[0] || "",
       second_grid_filter_value: ""
     }
   };
@@ -215,11 +257,17 @@ export default class GridFilterCell extends Mixins(I18nMixin) {
     };
     // apply filters type field
     this.updateValueFieldType("first_grid_filter_value", this.config.values.first_grid_filter_operator);
-    this.updateValueFieldType("second_grid_filter_value", this.config.values.second_grid_filter_operator);
+    if (!this.singleFilter) {
+      this.updateValueFieldType("second_grid_filter_value", this.config.values.second_grid_filter_operator);
+    }
   }
 
   public mounted(): void {
     kendo.ui.progress($(this.$refs.wrapper), true);
+  }
+
+  public get singleFilter(): boolean {
+    return this.grid.filterable && this.grid.filterable[this.field] && this.grid.filterable[this.field].singleFilter;
   }
 
   public clear(): void {
@@ -261,8 +309,12 @@ export default class GridFilterCell extends Mixins(I18nMixin) {
 
   protected onSmartFieldChange(event, se, sf): void {
     if (sf.id === "first_grid_filter_operator" || sf.id === "second_grid_filter_operator") {
+      const fields = ["first"];
+      if (!this.singleFilter) {
+        fields.push("second");
+      }
       // Smart Form will reload so keep operator and filter values
-      ["first", "second"].forEach(item => {
+      fields.forEach(item => {
         const fieldValueId = `${item}_grid_filter_value`;
         const fieldOperatorId = `${item}_grid_filter_operator`;
         const operatorValue = this.$refs.smartForm.getValue(fieldOperatorId, "current");
@@ -285,9 +337,22 @@ export default class GridFilterCell extends Mixins(I18nMixin) {
       if (!type) {
         valueField.display = "none";
       } else {
+        this.setAutocompleteField(valueField, type, fieldValueId, fieldOperator);
         valueField.type = type;
         valueField.display = "write";
       }
+    }
+  }
+
+  protected setAutocompleteField(valueField, type, fieldValueId, fieldOperatorValue) {
+    if (
+      isAutocompleteType(type) &&
+      this.grid.filterable &&
+      this.grid.filterable[this.field] &&
+      this.grid.filterable[this.field].autocomplete
+    ) {
+      // @ts-ignore
+      valueField.autocomplete = this.grid.filterable[this.field].autocomplete;
     }
   }
 }
