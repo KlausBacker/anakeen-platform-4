@@ -10,7 +10,7 @@ use Anakeen\Vault\FileInfo;
 
 class FileContentDatabase extends DbObj
 {
-    const DBTABLE = "files.content";
+    const DBTABLE = "searches._filecache";
     public $dbtable = self::DBTABLE;
     public $fields = [
         "fileid",
@@ -34,8 +34,8 @@ class FileContentDatabase extends DbObj
     public $order_by = "";
 
     public $sqlcreate = <<<SQL
-create schema if not exists files;
-create table files.content (
+create schema if not exists searches;
+create table searches._filecache (
   fileid bigint,
   taskid text,
   status char,
@@ -43,8 +43,8 @@ create table files.content (
   textcontent text
                    );
                    
-create unique index if not exists filesvault_idx on files.content(fileid);
-create index if not exists files_idx on files.content(taskid);
+create unique index if not exists filecachevault_idx on searches._filecache(fileid);
+create index if not exists filecache_idx on searches._filecache(taskid);
 SQL;
 
     public function preInsert()
