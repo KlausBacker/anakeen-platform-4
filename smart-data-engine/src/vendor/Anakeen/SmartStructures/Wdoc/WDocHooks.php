@@ -26,7 +26,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
      *
      * @var array
      */
-    protected static $basicAcls =[ "view", "edit", "delete"];
+    protected static $basicAcls = ["view", "edit", "delete"];
 
     public $usefor = 'SW';
     public $defDoctype = 'W';
@@ -99,7 +99,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     {
         $this->acls = self::$basicAcls;
         if (is_array($this->transitions)) {
-            $this->extendedAcls=[];
+            $this->extendedAcls = [];
             foreach ($this->transitions as $k => $trans) {
                 $this->extendedAcls[$k] = array(
                     "name" => $k,
@@ -118,7 +118,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
      *
      * @return void
      */
-    public function set(\Anakeen\Core\Internal\SmartElement & $doc, $force = false)
+    public function set(\Anakeen\Core\Internal\SmartElement &$doc, $force = false)
     {
         if ((!isset($this->doc)) || ($this->doc->id != $doc->id) || $force) {
             $this->doc = &$doc;
@@ -1383,8 +1383,6 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
     protected function useWorkflowGraph($xmlFilePath)
     {
-        $this->transitions=[];
-        $this->cycle=[];
         XmlGraph::setWorkflowGraph($this, $xmlFilePath);
         $this->setTransitionsAcls();
     }
