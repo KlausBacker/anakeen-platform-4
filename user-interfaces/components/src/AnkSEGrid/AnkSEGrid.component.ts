@@ -333,6 +333,11 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     type: Number
   })
   public page!: number;
+  @Prop({
+    default: true,
+    type: Boolean
+  })
+  public autoFit!: boolean;
 
   public $refs: {
     smartGridWidget: Grid;
@@ -688,9 +693,9 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   protected onSelectionChange(event): void {
     if (this.checkable) {
       if (event.event.target.checked) {
-        this.selectedRows.push(event.dataItem.properties.id);
+        this.selectedRows.push(event.dataItem.properties.id.toString());
       } else {
-        this.selectedRows.splice(this.selectedRows.indexOf(event.dataItem.properties.id as string), 1);
+        this.selectedRows.splice(this.selectedRows.indexOf(event.dataItem.properties.id.toString()), 1);
       }
     }
   }
@@ -1063,7 +1068,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
 
   protected onRowClick(event): void {
     if (!this.checkable && this.selectable && event.dataItem && event.dataItem.properties.id) {
-      this.$set(this.selectedRows, 0, event.dataItem.properties.id);
+      this.$set(this.selectedRows, 0, event.dataItem.properties.id.toString());
     }
     const gridEvent = new GridEvent(
       {

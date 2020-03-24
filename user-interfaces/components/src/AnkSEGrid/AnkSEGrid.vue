@@ -1,5 +1,13 @@
 <template>
-  <div class="smart-element-grid" ref="gridWrapper">
+  <div
+    :class="{
+      'smart-element-grid': true,
+      'smart-element-grid--selectable': selectable,
+      'smart-element-grid--checkable': checkable,
+      'smart-element-grid--fit': autoFit
+    }"
+    ref="gridWrapper"
+  >
     <div class="smart-element-grid-header--toolbar">
       <slot name="gridHeader" direction="left" v-bind:gridComponent="gridInstance">
         <ank-columns-button v-if="defaultShownColumns" :gridComponent="gridInstance"></ank-columns-button>
@@ -12,6 +20,7 @@
     </div>
     <kendo-grid-vue
       v-if="columnsList.length"
+      style="height: auto;"
       ref="smartGridWidget"
       class="smart-element-grid-widget"
       :columns="columnsList"
