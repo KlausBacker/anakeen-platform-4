@@ -85,7 +85,7 @@ export default class SETab extends Vue {
     if (this.$refs.smartElement) {
       this.bindSmartElementEvents();
     }
-    this.$emit("SmartElementTabMounted");
+    this.$emit("smartElementTabMounted");
   }
 
   public closeSmartElement() {
@@ -122,7 +122,7 @@ export default class SETab extends Vue {
     this.$refs.smartElement.$on("close", isDirtyCb);
     SmartElementEvents.forEach(eventName => {
       this.$refs.smartElement.$on(eventName, (...args) => {
-        this.$emit(`SmartElementTab${capitalize(eventName)}`, ...args);
+        this.$emit(`smartElementTab${capitalize(eventName)}`, ...args);
       });
     });
   }

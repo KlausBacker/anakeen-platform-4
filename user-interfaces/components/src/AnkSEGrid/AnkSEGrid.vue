@@ -39,8 +39,8 @@
       :filterable="subHeader ? subHeader && Object.keys(subHeader).length > 0 : false"
       :selectedField="selectedField"
       @selectionchange="onSelectionChange"
-      @SortChange="onSortChange"
-      @FilterChange="onFilterChange"
+      @sortChange="onSortChange"
+      @filterChange="onFilterChange"
       @columnreorder="onColumnReorder"
       @rowclick="onRowClick"
     >

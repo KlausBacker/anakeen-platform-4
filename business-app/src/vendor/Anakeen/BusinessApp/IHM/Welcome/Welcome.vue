@@ -44,7 +44,7 @@ class="ank-business-app-welcome-creation card card-default">
           controller="DEFAULT_GRID_CONTROLLER"
           defaultExpandable
           :actions="[{ action: 'consult', title: 'Display' }]"
-          @RowActionClick="onActionClick"
+          @rowActionClick="onActionClick"
         />
       </div>
     </div>

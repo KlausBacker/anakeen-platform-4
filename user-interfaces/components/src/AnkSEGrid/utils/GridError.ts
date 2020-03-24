@@ -35,6 +35,6 @@ export default class GridError {
       false,
       "GridErrorEvent"
     );
-    this.vueComponent.$emit("GridError", event);
+    this.vueComponent.$emit("gridError", event);
   }
 }

@@ -127,7 +127,7 @@ export default class GridHeaderCell extends Vue {
     } else {
       nextSortableDir = "asc";
     }
-    this.$emit("SortChange", {
+    this.$emit("sortChange", {
       sort: [
         {
           field: this.field,
@@ -138,13 +138,13 @@ export default class GridHeaderCell extends Vue {
   }
 
   protected clearFilter(...args): void {
-    this.$emit("FilterChange", ...args);
+    this.$emit("filterChange", ...args);
     // Close popup when filter is cleared
     this.showFilter = false;
   }
 
   protected filter(...args): void {
-    this.$emit("FilterChange", ...args);
+    this.$emit("filterChange", ...args);
     // Close popup when filter is applied
     this.showFilter = false;
   }
