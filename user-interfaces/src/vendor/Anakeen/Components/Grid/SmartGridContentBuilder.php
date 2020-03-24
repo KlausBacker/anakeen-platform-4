@@ -66,6 +66,9 @@ class SmartGridContentBuilder implements SmartGridBuilder
      */
     public function setCollection($collectionId)
     {
+        if (is_numeric($collectionId)) {
+            $collectionId = intval($collectionId);
+        }
         if ($collectionId !== 0 && $collectionId !== -1) {
             $this->smartCollection = SEManager::getDocument($collectionId);
             if (!$this->smartCollection) {
