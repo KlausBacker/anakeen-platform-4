@@ -15,7 +15,7 @@
           />
         </div>
         <div
-          v-if="!!columnConfig.filterable"
+          v-if="isFilterable"
           ref="filterButton"
           :class="{
             'smart-element-grid-header-filter-button-wrapper': true,

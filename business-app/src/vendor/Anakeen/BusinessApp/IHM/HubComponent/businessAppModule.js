@@ -12,6 +12,17 @@ export default function() {
       },
       SELECT_TAB(state, tab) {
         state.selectedTab = tab;
+      },
+      UPDATE_TAB(state, { previousId, newTab }) {
+        state.openedTabs = state.openedTabs.map(t => {
+          if (t.tabId === undefined && t.name === previousId) {
+            return newTab;
+          } else if (t.tabId === previousId) {
+            return newTab;
+          } else {
+            return t;
+          }
+        });
       }
     },
     getters: {

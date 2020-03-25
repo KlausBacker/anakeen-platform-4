@@ -54,45 +54,54 @@ export default Backbone.View.extend({
     this.listenTo(this.model, "doDrawTab", this.drawTab);
     this.listenTo(this.model, "dduiDocumentReady", this.cleanAndRender);
     this.listenTo(this.model, "dduiDocumentDisplayView", this.showView);
+    this.renderInProgress = Promise.resolve();
   },
 
   /**
    * Clean the associated view and re-render it
    */
   cleanAndRender: function vDocumentCleanAndRender() {
-    this.trigger("loaderShow", i18n.___("Rendering", "ddui"), 70);
-    this.$el
-      .closest(".smart-element-wrapper")
-      .find(".dcpStaticErrorMessage")
-      .attr("hidden", true);
-    this.$el.show();
-    this.$el[0].className = this.$el[0].className.replace(/\bdcpFamily.*\b/g, "");
-    this.$el.removeClass("dcpDocument--view").removeClass("dcpDocument--edit");
-    try {
-      if (this.historyWidget) {
-        this.historyWidget.destroy();
-      }
-      if (this.propertiesWidget) {
-        this.propertiesWidget.destroy();
-      }
-      if (this.helpWidget) {
-        this.helpWidget.destroy();
-      }
-      if (this.transitionGraph && this.transitionGraph.view) {
-        this.transitionGraph.view.remove();
-      }
-    } catch (e) {
-      console.error(e);
-    }
-    //  this.trigger("cleanNotification");
-    this.render();
+    this.renderInProgress = this.renderInProgress.finally(() => {
+      return new Promise((resolve, reject) => {
+        try {
+          this.trigger("loaderShow", i18n.___("Rendering", "ddui"), 70);
+          this.$el
+            .closest(".smart-element-wrapper")
+            .find(".dcpStaticErrorMessage")
+            .attr("hidden", true);
+          this.$el.show();
+          this.$el[0].className = this.$el[0].className.replace(/\bdcpFamily.*\b/g, "");
+          this.$el.removeClass("dcpDocument--view").removeClass("dcpDocument--edit");
+          try {
+            if (this.historyWidget) {
+              this.historyWidget.destroy();
+            }
+            if (this.propertiesWidget) {
+              this.propertiesWidget.destroy();
+            }
+            if (this.helpWidget) {
+              this.helpWidget.destroy();
+            }
+            if (this.transitionGraph && this.transitionGraph.view) {
+              this.transitionGraph.view.remove();
+            }
+          } catch (e) {
+            console.error(e);
+          }
+          //  this.trigger("cleanNotification");
+          this.render({ resolve, reject });
+        } catch (e) {
+          reject(e);
+        }
+      });
+    });
   },
 
   /**
    * Render the document view
    * @returns {*}
    */
-  render: function vDocumentRender() {
+  render: function vDocumentRender({ resolve, reject }) {
     var renderPromises = [];
     var $content,
       model = this.model,
@@ -350,10 +359,7 @@ export default Backbone.View.extend({
             this.resizeForFooter();
             Promise.all(renderPromises).then(
               _.bind(function vDocumentRenderDone() {
-                //Trigger htmltext render
-                this.model.get("attributes").each(currentAttr => {
-                  currentAttr.trigger("renderHtmlText");
-                });
+                resolve();
                 this.trigger("renderDone");
               }, this)
             );
@@ -395,6 +401,7 @@ export default Backbone.View.extend({
             }, 500);
           });
       } catch (e) {
+        reject(e);
         console.error(e);
         this.model.trigger("showError", {
           title: e.message

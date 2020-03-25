@@ -7,12 +7,12 @@
           class="role-content"
           collection="ROLE"
           :pageable="{ pageSizes: [100, 200, 500], pageSize: 100 }"
-          @RowActionClick="selectRole"
+          @rowActionClick="selectRole"
           filterable
           :actions="actions"
           :columns="columns"
-          @DataBound="onGridDataBound"
-          @GridError="onGridError"
+          @dataBound="onGridDataBound"
+          @gridError="onGridError"
         >
         </ank-se-grid>
       </template>

@@ -8,6 +8,7 @@ namespace Anakeen\Search\Internal;
 
 use Anakeen\Core\SEManager;
 use Anakeen\Search\Exception;
+use Anakeen\Search\Filters\ElementSearchFilter;
 use \Anakeen\SmartStructures\Dir\DirLib;
 use \Anakeen\SmartStructures\Dir\DirHooks;
 
@@ -992,9 +993,9 @@ class SearchSmartData
     }
 
     /**
-     * add a condition in filters
+     * Add a condition in filters
      *
-     * @param string $filter the filter string
+     * @param string|ElementSearchFilter $filter the filter string (sql where condition) or filter object
      * @param string $args arguments of the filter string (arguments are escaped to avoid sql injection)
      *
      * @return void
@@ -1026,15 +1027,15 @@ class SearchSmartData
                 $this->filters[] = $filter;
             }
         } elseif (is_object($filter)) {
-            if (!is_a($filter, \Anakeen\Search\Filters\ElementSearchFilter::class)) {
+            if (!is_a($filter, ElementSearchFilter::class)) {
                 throw new \Anakeen\Search\Exception(sprintf(
                     "Filter object does not implements \"%s\" interface.",
-                    \Anakeen\Search\Filters\ElementSearchFilter::class
+                    ElementSearchFilter::class
                 ));
             }
             $originalJoin = $this->getJoin();
             /**
-             * @var \Anakeen\Search\Filters\ElementSearchFilter $filter
+             * @var ElementSearchFilter $filter
              */
             $filter->addFilter($this);
             if ($originalJoin && $this->getJoin() !== $originalJoin) {

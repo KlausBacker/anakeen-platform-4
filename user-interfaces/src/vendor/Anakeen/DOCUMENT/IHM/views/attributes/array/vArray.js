@@ -91,9 +91,6 @@ export default Backbone.View.extend({
 
             Promise.all(promisesColumn).then(function renderDone() {
               currentView.$el.attr("data-attrid", currentView.model.id);
-              currentView.model.get("content").each(currentAttr => {
-                currentAttr.trigger("renderHtmlText");
-              });
               currentView.model.trigger("renderDone", {
                 model: currentView.model,
                 $el: currentView.$el,
@@ -358,6 +355,9 @@ export default Backbone.View.extend({
     Promise.all(allPromiseAttributes)
       .then(
         _.bind(function addlinePromiseAllDone() {
+          this.model.get("content").each(currentAttr => {
+            currentAttr.trigger("renderHtmlText");
+          });
           this.model.trigger("array", "addLine", this.model, options.line);
           options.resolve();
         }, this)

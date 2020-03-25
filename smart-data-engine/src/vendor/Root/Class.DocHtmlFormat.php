@@ -1,8 +1,12 @@
-<?php /** @noinspection PhpUnusedParameterInspection */
+<?php
+/** @noinspection PhpUnusedParameterInspection */
+
 /*
  * @author Anakeen
  * @package FDL
 */
+
+use Anakeen\Core\Settings;
 
 /**
  * Get Html Value for document
@@ -38,12 +42,12 @@ class DocHtmlFormat
      */
     private $vaultErrorSent = false;
 
-    public function __construct(\Anakeen\Core\Internal\SmartElement & $doc)
+    public function __construct(\Anakeen\Core\Internal\SmartElement &$doc)
     {
         $this->setDoc($doc);
     }
 
-    public function setDoc(\Anakeen\Core\Internal\SmartElement & $doc)
+    public function setDoc(\Anakeen\Core\Internal\SmartElement &$doc)
     {
         $this->doc = $doc;
     }
@@ -53,19 +57,24 @@ class DocHtmlFormat
      * for multiple values if index >= 0 the value must be the ith value of array values
      *
      * @param \Anakeen\Core\SmartStructure\NormalAttribute $oattr
-     * @param string                                       $value raw value
-     * @param string                                       $target
-     * @param bool                                         $htmlLink
-     * @param int                                          $index
-     * @param bool                                         $useEntities
-     * @param bool                                         $abstractMode
+     * @param string $value raw value
+     * @param string $target
+     * @param bool $htmlLink
+     * @param int $index
+     * @param bool $useEntities
+     * @param bool $abstractMode
      *
      * @return string the HTML formated value
      */
-    public function getHtmlValue($oattr, $value, $target = "_self", $htmlLink = true, $index = -1, $useEntities = true, $abstractMode = false)
-    {
-        global $action;
-
+    public function getHtmlValue(
+        $oattr,
+        $value,
+        $target = "_self",
+        $htmlLink = true,
+        $index = -1,
+        $useEntities = true,
+        $abstractMode = false
+    ) {
         $this->oattr = $oattr;
         $this->target = $target;
         $this->index = $index;
@@ -208,7 +217,12 @@ class DocHtmlFormat
                     if ($ulink = $this->doc->urlWhatEncode($hlink, $kvalue)) {
                         if ($this->target == "ext") {
                             if (preg_match("/FDL_CARD.*id=([0-9]+)/", $ulink, $reg)) {
-                                $abegin = $this->doc->getDocAnchor($reg[1], $this->target, true, html_entity_decode($htmlval, ENT_QUOTES, 'UTF-8'));
+                                $abegin = $this->doc->getDocAnchor(
+                                    $reg[1],
+                                    $this->target,
+                                    true,
+                                    html_entity_decode($htmlval, ENT_QUOTES, 'UTF-8')
+                                );
                                 $htmlval = '';
                                 $aend = "";
                             } elseif (true || preg_match("/^http:/", $ulink, $reg)) {
@@ -224,7 +238,17 @@ class DocHtmlFormat
                             }
                             $abegin = "<a target=\"$this->target\"  href=\"";
                             if ($scheme == "") {
-                                $abegin .= $action->GetParam("CORE_URLINDEX", ($action->GetParam("CORE_EXTERNURL") . "/")) . $ulink;
+                                $url = \Anakeen\Core\ContextManager::getParameterValue(
+                                    Settings::NsSde,
+                                    "CORE_URLINDEX"
+                                );
+                                if (!$url) {
+                                    $url = \Anakeen\Core\ContextManager::getParameterValue(
+                                        Settings::NsSde,
+                                        "CORE_EXTERNURL"
+                                    ) . "/";
+                                }
+                                $abegin .= $url . $ulink;
                             } else {
                                 $abegin .= $ulink;
                             }
@@ -309,14 +333,12 @@ class DocHtmlFormat
      */
     public function formatImage($kvalue, $avalue)
     {
-        global $action;
-        if ($this->target == "mail") {
+        if ($this->target == "mail2") {
             $htmlval = "cid:" . $this->oattr->id;
             if ($this->index >= 0) {
                 $htmlval .= "+$this->index";
             }
-        }
-        if ($this->target == "te") {
+        } elseif ($this->target == "te") {
             $htmlval = "file://" . $this->doc->vaultFilename($this->oattr->id, true, $kvalue);
         } else {
             if (preg_match(PREGEXPFILE, $avalue, $reg)) {
@@ -340,20 +362,17 @@ class DocHtmlFormat
                     $idx = $this->index;
                 }
                 $inline = $this->oattr->getOption("inline");
-                $htmlval = $this->doc->getFileLink($this->oattr->id, $idx, false, ($inline == "yes"), $avalue, $fileInfo);
-            } else {
-                if (empty($avalue)) {
-                    $localImage = $this->oattr->getOption('showempty');
-                    if ($localImage) {
-                        $htmlval = $action->parent->getImageLink($localImage);
-                    } else {
-                        $htmlval = $action->parent->getImageLink($avalue);
-                    }
-                } else {
-                    $htmlval = $action->parent->getImageLink($avalue);
-                }
+                $htmlval = $this->doc->getFileLink(
+                    $this->oattr->id,
+                    $idx,
+                    false,
+                    ($inline == "yes"),
+                    $avalue,
+                    $fileInfo
+                );
             }
         }
+        $htmlval=sprintf('<img src="%s" alt="%s" />', $htmlval, htmlentities($this->oattr->getLabel()));
         return $htmlval;
     }
 
@@ -466,7 +485,8 @@ class DocHtmlFormat
                         );
                         if ($fileInfo->teng_state < 0) {
                             $htmlval .= sprintf(
-                                '<a href="?app=FDL&action=FDL_METHOD&id=%d&method=resetConvertVaultFile(\'%s,%s)"><img class="mime" title="%s" src="%s"></a>',
+                                '<a href="?app=FDL&action=FDL_METHOD&id=%d&method=resetConvertVaultFile(\'%s,%s)"><img class="mime" title="%s" src="
+%s"></a>',
                                 $this->doc->id,
                                 $this->oattr->id,
                                 $this->index,
@@ -486,12 +506,18 @@ class DocHtmlFormat
                     }
                     $standardview = true;
                     if ($standardview) {
-                        global $action;
                         $size = self::humanSize($fileInfo->size);
                         $utarget = "_blank";
                         $inline = $this->oattr->getOption("inline");
                         $htmlval = "<a onmousedown=\"document.noselect=true;\" title=\"$size\" target=\"$utarget\" type=\"$mime\" href=\""
-                            . $this->doc->getFileLink($this->oattr->id, $idx, false, ($inline == "yes"), $avalue, $fileInfo) . "\">";
+                            . $this->doc->getFileLink(
+                                $this->oattr->id,
+                                $idx,
+                                false,
+                                ($inline == "yes"),
+                                $avalue,
+                                $fileInfo
+                            ) . "\">";
                         if ($mimeicon) {
                             $htmlval .= "<img class=\"mime\" needresize=1  src=\"Images/$mimeicon\">&nbsp;";
                         }
@@ -573,7 +599,10 @@ class DocHtmlFormat
                     $htmlval = sprintf('<pre style="background-color:%s;display:inline">&nbsp;-&nbsp;</pre>', $color);
                 } else {
                     $color = $tcolor[1];
-                    $htmlval = sprintf('<pre style="background-color:%s;display:inline">&nbsp;&bull;&nbsp;</pre>', $color);
+                    $htmlval = sprintf(
+                        '<pre style="background-color:%s;display:inline">&nbsp;&bull;&nbsp;</pre>',
+                        $color
+                    );
                 }
             } else {
                 $htmlval = $avalue;
@@ -598,36 +627,24 @@ class DocHtmlFormat
      */
     public function formatArray($kvalue, $avalue)
     {
-        global $action;
         $htmlval = '';
         if (count($this->doc->getArrayRawValues($this->oattr->id)) == 0 && $this->oattr->getOption('showempty')) {
             $htmlval = $this->oattr->getOption('showempty');
             return $htmlval;
         }
-        $viewzone = $this->oattr->getOption("rowviewzone");
-        $sort = $this->oattr->getOption("sorttable");
-        if ($sort == "yes") {
-            $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FREEDOM/Layout/sorttable.js");
-        }
-        $displayRowCount = $this->oattr->getOption("displayrowcount", 10);
-        if (!is_numeric($displayRowCount)) {
-            $displayRowCount = 10;
-        }
 
-        $lay = new \Anakeen\Layout\TextLayout("FDL/Layout/viewdocarray.xml");
-        $lay->set("issort", ($sort == "yes"));
+        $mustache = new Mustache_Engine();
+        $arrayData = [];
+        $template = file_get_contents(__DIR__ . "/Layout/htmlArray.mustache.html");
+
         if (!method_exists($this->doc->attributes, "getArrayElements")) {
             return $htmlval;
         }
-        $height = $this->oattr->getOption("height", false);
-        $lay->set("tableheight", $height);
-        $lay->set("caption", $this->oattr->getLabel());
-        $lay->set("aid", $this->oattr->id);
+        $arrayData["caption"] = $this->oattr->getLabel();
 
 
         $ta = $this->doc->attributes->getArrayElements($this->oattr->id);
-        $talabel = array();
-        $tvattr = array();
+
 
         $emptyarray = true;
         $nbitem = 0;
@@ -637,10 +654,8 @@ class DocHtmlFormat
             if ($v->getAccess() === \Anakeen\Core\SmartStructure\BasicAttribute::NONE_ACCESS) {
                 continue;
             }
-            $talabel[] = array(
-                "alabel" => ucfirst($v->getLabel()),
-                "astyle" => $v->getOption("cellheadstyle"),
-                "cwidth" => $v->getOption("cwidth", "auto")
+            $arrayData["headcells"][] = array(
+                "headLabel" => ucfirst($v->getLabel()),
             );
             $tval[$k] = $this->doc->getMultipleRawValues($k);
             $nbitem = max($nbitem, count($tval[$k]));
@@ -649,33 +664,16 @@ class DocHtmlFormat
             }
         }
         if (!$emptyarray) {
-            if ($this->oattr->getOption("vlabel") == "up") {
-                $caption = $this->oattr->getLabel();
-                if ($nbitem > 10) {
-                    $caption .= " ($nbitem)";
-                }
-            } else {
-                $caption = "";
-                if ($displayRowCount >= 0 && ($displayRowCount == 0 || $nbitem > $displayRowCount)) {
-                    if (count($talabel) > 0) {
-                        $talabel[0]["alabel"] .= " ($nbitem)";
-                    }
-                }
-            }
-
-            $lay->setBlockData("TATTR", $talabel);
-            $lay->set("caption", $caption);
-            $tvattr = array();
             for ($k = 0; $k < $nbitem; $k++) {
-                $tvattr[] = array(
-                    "bevalue" => "bevalue_$k"
-                );
-                $tivalue = array();
+                $row = array();
                 /**
                  * @var \Anakeen\Core\SmartStructure\NormalAttribute $va
                  */
                 foreach ($ta as $ka => $va) {
                     if ($va->getAccess() === \Anakeen\Core\SmartStructure\BasicAttribute::NONE_ACCESS) {
+                        $row[] = array(
+                            "cellValue" => ""
+                        );
                         continue;
                     }
                     if (isset($tval[$ka][$k])) {
@@ -695,25 +693,21 @@ class DocHtmlFormat
                             }
                             $hval = "<a  href=\"$hval\"><img border='0' width=\"$iwidth\" src=\"" . $hval . $optwidth . "\"></a>";
                         } else {
-                            $hval = preg_replace("/>(.+)</", ">&nbsp;<img class=\"button\" width=\"$iwidth\" src=\"\\1\">&nbsp;<", $hval);
+                            $hval = preg_replace(
+                                "/>(.+)</",
+                                ">&nbsp;<img class=\"button\" width=\"$iwidth\" src=\"\\1\">&nbsp;<",
+                                $hval
+                            );
                         }
                     }
-                    $tivalue[] = array(
-                        "evalue" => $hval,
-                        "attrid" => $va->id,
-                        "atype" => $va->type,
-                        "tdstyle" => $va->getOption("cellbodystyle"),
-                        "color" => $va->getOption("color", "inherit"),
-                        "bgcolor" => $va->getOption("bgcolor", "inherit"),
-                        "tdclass" => $va->getOption("className", ''),
-                        "align" => $va->getOption("align", "inherit")
+                    $row[] = array(
+                        "cellValue" => $hval
                     );
                 }
-                $lay->setBlockData("bevalue_$k", $tivalue);
+                $arrayData["rows"][] = ["line" => $row];
             }
-            $lay->setBlockData("EATTR", $tvattr);
 
-            $htmlval = $lay->gen();
+            $htmlval = $mustache->render($template, $arrayData);
         } else {
             $htmlval = "";
         }
@@ -775,7 +769,7 @@ class DocHtmlFormat
             }
             $isLatest = $this->oattr->getOption("docrev", "latest") == "latest";
             if ($multiple) {
-                if (! is_array($avalue)) {
+                if (!is_array($avalue)) {
                     $avalue = str_replace("\n", "<BR>", $avalue);
                     $tval = explode("<BR>", $avalue);
                 } else {
@@ -793,15 +787,29 @@ class DocHtmlFormat
                                 $thval[] = '<a target="' . $dtarget . '" href="' . $link . '">' . $this->doc->htmlEncode($title) . '</a>';
                             } else {
                                 if ($title === false) {
-                                    $title = $this->doc->htmlEncode($this->oattr->getOption("noaccesstext", _("information access deny")));
+                                    $title = $this->doc->htmlEncode($this->oattr->getOption(
+                                        "noaccesstext",
+                                        _("information access deny")
+                                    ));
                                 }
                                 $thval[] = $this->doc->htmlEncode($title);
                             }
                         } else {
                             if ($title === false) {
-                                $thval[] = $this->doc->htmlEncode($this->oattr->getOption("noaccesstext", _("information access deny")));
+                                $thval[] = $this->doc->htmlEncode($this->oattr->getOption(
+                                    "noaccesstext",
+                                    _("information access deny")
+                                ));
                             } else {
-                                $thval[] = $this->doc->getDocAnchor(trim($vv), $dtarget, $this->htmlLink, $title, true, $this->oattr->getOption("docrev"), true);
+                                $thval[] = $this->doc->getDocAnchor(
+                                    trim($vv),
+                                    $dtarget,
+                                    $this->htmlLink,
+                                    $title,
+                                    true,
+                                    $this->oattr->getOption("docrev"),
+                                    true
+                                );
                             }
                         }
                     }
@@ -819,9 +827,20 @@ class DocHtmlFormat
                 } else {
                     $title = DocTitle::getRelationTitle(trim($avalue), $isLatest, $this->doc);
                     if ($title === false) {
-                        $htmlval = $this->doc->htmlEncode($this->oattr->getOption("noaccesstext", _("information access deny")));
+                        $htmlval = $this->doc->htmlEncode($this->oattr->getOption(
+                            "noaccesstext",
+                            _("information access deny")
+                        ));
                     } else {
-                        $htmlval = $this->doc->getDocAnchor(trim($avalue), $dtarget, $this->htmlLink, $title, true, $this->oattr->getOption("docrev"), true);
+                        $htmlval = $this->doc->getDocAnchor(
+                            trim($avalue),
+                            $dtarget,
+                            $this->htmlLink,
+                            $title,
+                            true,
+                            $this->oattr->getOption("docrev"),
+                            true
+                        );
                     }
                 }
             }
@@ -853,7 +872,12 @@ class DocHtmlFormat
                 } else {
                     $thc = \Anakeen\Core\SEManager::getDocument(trim($vv));
                     if ($thc && $thc->isAlive()) {
-                        $thval[] = $this->doc->getDocAnchor(trim($vv), $this->target, $this->htmlLink, $thc->getCustomTitle());
+                        $thval[] = $this->doc->getDocAnchor(
+                            trim($vv),
+                            $this->target,
+                            $this->htmlLink,
+                            $thc->getCustomTitle()
+                        );
                     } else {
                         $thval[] = "th error1 $vv";
                     }
@@ -867,7 +891,12 @@ class DocHtmlFormat
                 $avalue = trim($avalue);
                 $thc = \Anakeen\Core\SEManager::getDocument($avalue);
                 if ($thc && $thc->isAlive()) {
-                    $htmlval = $this->doc->getDocAnchor(trim($avalue), $this->target, $this->htmlLink, $thc->getCustomTitle());
+                    $htmlval = $this->doc->getDocAnchor(
+                        trim($avalue),
+                        $this->target,
+                        $this->htmlLink,
+                        $thc->getCustomTitle()
+                    );
                 } else {
                     $htmlval = "th error2 [$avalue]";
                 }
@@ -959,7 +988,14 @@ class DocHtmlFormat
                  */
                 foreach ($aElements as $currentA) {
                     if ($currentA->hasAttribute("data-initid")) {
-                        $newA = $this->doc->getDocAnchor($currentA->getAttribute("data-initid"), $this->target, $shtmllink, false, true, $currentA->getAttribute("data-docrev"));
+                        $newA = $this->doc->getDocAnchor(
+                            $currentA->getAttribute("data-initid"),
+                            $this->target,
+                            $shtmllink,
+                            false,
+                            true,
+                            $currentA->getAttribute("data-docrev")
+                        );
                         $newAFragment = $domDoc->createDocumentFragment();
                         $newAFragment->appendXML($newA);
                         $currentA->parentNode->replaceChild($newAFragment, $currentA);
@@ -968,7 +1004,12 @@ class DocHtmlFormat
 
                 $avalue = $domDoc->saveHTML();
             } catch (Exception $e) {
-                error_log(sprintf("%s unable to parse/create html width docLink elements(document :%s, error %)s", __METHOD__, $this->doc->id, $e->getMessage()));
+                error_log(sprintf(
+                    "%s unable to parse/create html width docLink elements(document :%s, error %)s",
+                    __METHOD__,
+                    $this->doc->id,
+                    $e->getMessage()
+                ));
             }
         } else {
             $prefix = uniqid("");
@@ -981,7 +1022,11 @@ class DocHtmlFormat
                 "B$prefix",
                 "D$prefix"
             ), $avalue);
-            $avalue = \Anakeen\Core\Utils\HtmlClean::normalizeHTMLFragment(mb_convert_encoding($avalue, 'HTML-ENTITIES', 'UTF-8'), $error);
+            $avalue = \Anakeen\Core\Utils\HtmlClean::normalizeHTMLFragment(mb_convert_encoding(
+                $avalue,
+                'HTML-ENTITIES',
+                'UTF-8'
+            ), $error);
             $avalue = str_replace(array(
                 "B$prefix",
                 "D$prefix"
@@ -1087,7 +1132,6 @@ class DocHtmlFormat
      */
     public function formatIfile($kvalue, $avalue)
     {
-        global $action;
         $lay = new \Anakeen\Layout\TextLayout("FDL/Layout/viewifile.xml");
         $lay->set("aid", $this->oattr->id);
         $lay->set("id", $this->doc->id);

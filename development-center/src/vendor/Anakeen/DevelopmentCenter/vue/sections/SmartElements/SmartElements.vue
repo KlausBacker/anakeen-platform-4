@@ -9,8 +9,8 @@
           controller="ELEMENTS_GRID_CONTROLLER"
           filterable
           defaultExpandable
-          @DataBound="onGridDataBound"
-          @RowActionClick="actionClick"
+          @dataBound="onGridDataBound"
+          @rowActionClick="actionClick"
         >
           <template v-slot:cellTemplate="opts">
             <td v-if="opts.columnConfig.field === 'fromid'">

@@ -1,5 +1,5 @@
 <template>
-  <a href="#" @click.prevent="onClickLink">
+  <a href="#" @click="onClickLink($event)">
     <img class="smart-element-grid-cell-content--icon" :src="iconUrl" />
     <span class="smart-element-grid-cell-content--title">{{ fieldValue.displayValue }}</span>
   </a>
@@ -62,7 +62,9 @@ export default class AnkGridCellIconText extends Mixins(AnkGridCellMixin) {
         return (this.fieldValue as { [key: string]: string}).icon;
     }
   }
-  public onClickLink() {
+  public onClickLink(domEvent) {
+    domEvent.preventDefault();
+    domEvent.stopPropagation();
     const event = new GridEvent(
             {
               url: this.linkUrl,

@@ -2,6 +2,8 @@
 
 namespace Anakeen\Search;
 
+use Anakeen\Search\Filters\ElementSearchFilter;
+
 class SearchElements
 {
     const NOTRASH = "no";
@@ -215,7 +217,7 @@ class SearchElements
 
     /**
      * add a condition in filters
-     * @param string $filter the filter string
+     * @param ElementSearchFilter|string $filter the filter string (sql where condition) or filter object
      * @param mixed ...$args arguments of the filter string (arguments are escaped to avoid sql injection)
      * @return void
      * @throws Exception

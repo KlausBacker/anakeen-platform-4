@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ANAKEEN-UI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-31 14:13+0100\n"
+"POT-Creation-Date: 2020-03-24 16:17+0100\n"
 "PO-Revision-Date: 2018-06-01 08:42+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -461,7 +461,15 @@ msgctxt "grid-component"
 msgid "Is not equal to"
 msgstr ""
 
+msgctxt "grid-component"
+msgid "Label contains"
+msgstr ""
+
 msgid "Label must not be empty"
+msgstr ""
+
+msgctxt "grid-component"
+msgid "Label not contain"
 msgstr ""
 
 msgctxt " smart cvdoc"
@@ -550,6 +558,10 @@ msgstr ""
 
 msgctxt "smart iuser"
 msgid "No roles"
+msgstr ""
+
+msgctxt "grid-component"
+msgid "No state found"
 msgstr ""
 
 msgctxt "grid-component"

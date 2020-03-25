@@ -76,6 +76,8 @@ app: install-deps
 	@$(PRINT_COLOR) "$(COLOR_DEBUG)Make app$(COLOR_RESET)\n"
 	$(ANAKEEN_CLI_CMD) build -t ${APP_OUTPUT_PATH}
 
+app-test-autorelease:
+
 app-test:
 
 app-all: app

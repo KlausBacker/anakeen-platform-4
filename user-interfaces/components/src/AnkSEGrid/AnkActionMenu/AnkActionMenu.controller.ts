@@ -87,7 +87,7 @@ export default class AnkActionMenuController extends Vue {
       isStandardAction(action.action),
       "GridActionEvent"
     );
-    this.$emit("RowActionClick", event);
+    this.$emit("rowActionClick", event);
     if (isStandardAction(action.action) && !event.isDefaultPrevented()) {
       const viewId = action.action === "modify" ? "defaultEdition" : "defaultConsultation";
       window.open(
@@ -106,7 +106,7 @@ export default class AnkActionMenuController extends Vue {
     if (actionType) {
       const item = this.gridComponent.dataItems[index].properties;
       const event = new GridEvent({ type: actionType, row: item }, target, false, "GridActionEvent");
-      this.$emit("RowActionClick", event);
+      this.$emit("rowActionClick", event);
     }
   }
 }

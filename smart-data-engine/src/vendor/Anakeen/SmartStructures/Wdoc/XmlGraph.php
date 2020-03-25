@@ -19,6 +19,11 @@ class XmlGraph
         $xmlGraph = new \DOMDocument();
         $xmlGraph->load($xmlFilePath);
 
+        $previousTransitions = $wfl->transitions;
+
+
+        $wfl->transitions = [];
+        $wfl->cycle = [];
 
         self::$nsPrefix = Xml::getPrefix($xmlGraph, self::NS);
         $nsPrefix = self::$nsPrefix;
@@ -29,7 +34,7 @@ class XmlGraph
         $steps = $xmlGraph->getElementsByTagNameNS(self::NS, "step");
         $transitions = $xmlGraph->getElementsByTagNameNS(self::NS, "transition");
 
-        /**  @var \DOMElement $transition  */
+        /**  @var \DOMElement $transition */
         foreach ($transitions as $transition) {
             $wfl->cycle[] = [
                 "e1" => $transition->getAttribute("from"),
@@ -37,18 +42,22 @@ class XmlGraph
                 "t" => $transition->getAttribute("name")
             ];
 
-            $wfl->transitions[$transition->getAttribute("name")] = [
-                "label" => $transition->getAttribute("label")
-            ];
+            $tid = $transition->getAttribute("name");
+            if (isset($previousTransitions[$tid])) {
+                $wfl->transitions[$tid] = $previousTransitions[$tid];
+            } else {
+                $wfl->transitions[$tid] = [];
+            }
+            $wfl->transitions[$tid]["label"] = $transition->getAttribute("label");
         }
 
 
         /** @var \DOMElement $step */
         foreach ($steps as $step) {
-            $stepRef=$step->getAttribute("name");
-            $isInitial=$step->getAttribute("initial");
+            $stepRef = $step->getAttribute("name");
+            $isInitial = $step->getAttribute("initial");
             if ($isInitial) {
-                $wfl->firstState=$stepRef;
+                $wfl->firstState = $stepRef;
             }
 
             $wfl->stepLabels[$stepRef] = [

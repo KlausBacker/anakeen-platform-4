@@ -43,8 +43,7 @@ export default Backbone.View.extend({
     "dcpattributeuploadfiledone  .dcpAttribute__content": "uploadFileDone",
     "dcpattributedisplaynetworkerror  .dcpAttribute__content": "displayNetworkError",
     "dcpattributeanchorclick .dcpAttribute__content": "anchorClick",
-    "dcpattributewidgetready .dcpAttribute__content": "setWidgetReady",
-    "dcpattributewidgetreadyhtmlpart .dcpAttribute__content": "setHtmlTextWidgetReady"
+    "dcpattributewidgetready .dcpAttribute__content": "setWidgetReady"
   },
 
   initialize: function vAttributeInitialize(options) {
@@ -59,7 +58,6 @@ export default Backbone.View.extend({
     this.listenTo(this.model, "show", this.show);
     this.listenTo(this.model, "haveView", this._identifyView);
     this.listenTo(this.model, "closeWidget", this._closeWidget);
-    this.listenTo(this.model, "renderHtmlText", this._triggerHtmlTextEvent);
     this.templateWrapper = this.model.getTemplates().attribute.simpleWrapper;
 
     options = options || {};
@@ -272,14 +270,27 @@ export default Backbone.View.extend({
    */
   refreshError: function vAttributeRefreshError() {
     this.$el.find(".dcpAttribute__label").dcpLabel("setError", this.model.get("errorMessage"));
-    this.widgetApply(
-      this.getDOMElements()
-        .find(".dcpAttribute__content--widget")
-        .addBack()
-        .filter(".dcpAttribute__content--widget"),
-      "setError",
-      this.model.get("errorMessage")
-    );
+    // andSelf method was removed from jQuery 3.0.0+ use addBack instead
+    var jqueryVersion = +$().jquery.split(".")[0];
+    if (jqueryVersion >= 3) {
+      this.widgetApply(
+        this.getDOMElements()
+          .find(".dcpAttribute__content--widget")
+          .addBack()
+          .filter(".dcpAttribute__content--widget"),
+        "setError",
+        this.model.get("errorMessage")
+      );
+    } else {
+      this.widgetApply(
+        this.getDOMElements()
+          .find(".dcpAttribute__content--widget")
+          .andSelf()
+          .filter(".dcpAttribute__content--widget"),
+        "setError",
+        this.model.get("errorMessage")
+      );
+    }
   },
 
   /**
@@ -837,26 +848,11 @@ export default Backbone.View.extend({
   },
 
   setWidgetReady: function Vattribute_setWidgetReady() {
-    if (this.model.get("type") === "htmltext") {
-      return;
-    }
     this.widgetReady = true;
     this.triggerRenderDone();
   },
 
-  /**
-   * The ready event is not the same due to the asynchronous render of ckeditor
-   */
-  setHtmlTextWidgetReady: function Vattribute_setHtmlTextWidgetReady() {
-    this.widgetReady = true;
-    this.triggerRenderDone(true);
-  },
-
-  triggerRenderDone: function vAttribute_triggerRenderDone(htmlRender) {
-    //If the smartField is an htmlText one, the event is not the same (sic)
-    if (this.model.get("type") === "htmltext" && !htmlRender) {
-      return;
-    }
+  triggerRenderDone: function vAttribute_triggerRenderDone() {
     if (this.noRenderEvent !== false && this.renderDone && this.widgetReady && !this.triggerRender) {
       this.model.trigger("renderDone", { model: this.model, $el: this.$el });
       this.triggerRender = true;
@@ -905,24 +901,6 @@ export default Backbone.View.extend({
       } else {
         console.error(e);
       }
-    }
-  },
-
-  _triggerHtmlTextEvent: function vAttribute_triggerHtmlTextEvent() {
-    if (this.model.get("type") !== "htmltext") {
-      return;
-    }
-    try {
-      this.widgetApply(
-        this.getDOMElements()
-          .find(".dcpAttribute__content--widget")
-          .addBack()
-          .filter(".dcpAttribute__content--widget"),
-        "displayHtmlText",
-        true
-      );
-    } catch (e) {
-      console.error(e);
     }
   },
 

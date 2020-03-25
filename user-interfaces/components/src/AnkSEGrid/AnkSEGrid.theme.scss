@@ -1,161 +1,30 @@
 .smart-element-grid {
-
-  .k-grid {
-    color: $ank-ui-color-text;
-
-    // Text color on alt row
-    .k-alt, tbody tr:hover {
-      color: $ank-ui-color-text;
-    }
-
-    // Background color of selected rows
-    tr.k-state-selected, th.k-state-selected, td.k-state-selected {
-      background-color: rgba($ank-ui-button1-color-background, 0.07);
-      color: $ank-ui-color-text;
-    }
-
-    .checkable-grid-header.toggle-all-rows.check-partial {
-      input + .k-checkbox-label.k-no-text {
-        &::before {
-          background: $ank-ui-button1-color-background !important;
-        }
-      }
-    }
-
-    tr:not(.k-state-selected) {
-      .checkable-grid-cell, .checkable-grid-header {
-        input:not(:checked) + .k-checkbox-label.k-no-text {
-          &:hover {
-            &::before {
-              border-color: $ank-ui-button1-color-background;
-            }
-          }
-        }
-      }
-    }
-
-    .grid-toolbar-export-action {
-      .export-total {
-        background: $ank-ui-button1-color-background;
-        color: $ank-ui-color-text-colored;
-      }
-    }
-
-  }
-
-  .k-command-cell {
-
-    .k-button {
-      color: $ank-ui-color-btn-action;
-    }
-
-    .actionMenu {
-
-      & > .k-item > .k-link > .k-icon {
-        //color: #157EFB;
-      }
-    }
-  }
-
-  .operator-label {
-    color: $gray;
-  }
-
   .k-grid-header {
-
     background: $ank-grid-header-background;
-
-    &:hover {
-      border-color: transparent #DDDDDD;
-    }
-
-    .k-filtercell {
-      .k-dropdown-operator .k-dropdown-wrap, .k-button {
-        background: transparent;
-        color: $ank-ui-color-font-placeholder;
-
-        &:hover, .k-icon:hover {
-          color: $ank-ui-color-text;
-        }
-      }
-    }
-
-    .k-filter-active {
-      background: $ank-ui-button2-color-text;
-      color: $ank-ui-button2-color-background;
-
-      .k-icon {
-        color: $ank-ui-button2-color-background;
-      }
-
-      .operator-label {
-        color: $ank-ui-button2-color-background;
-      }
-
-      .k-widget {
-        border-color: transparent;
-      }
-
-      .k-numeric-wrap {
-        border-color: $ank-ui-button2-color-text;
-      }
-
-      .filter-input, input.k-formatted-value {
-        color: $ank-ui-button2-color-background;
-        background-color: $ank-ui-button2-color-text;
-      }
-
-      .k-dropdown-wrap,
-      .k-picker-wrap,
-      .k-select {
-        color: $ank-ui-button2-color-background;
-        background-color: $ank-ui-button2-color-text;
-        border-color: transparent;
-        border-radius: 0;
-
-        input {
-          text-indent: 0;
-        }
-      }
-
-      .k-clear-value {
-        color: inherit;
-      }
-    }
-
-  }
-
-  .filter-no-input {
-    input {
-      background: repeating-linear-gradient(
-                      45deg,
-                      transparent,
-                      transparent 10px,
-                      $ank-ui-color-font-placeholder 10px,
-                      $ank-ui-color-font-placeholder 20px
-      );
+    &:hover .k-header:not(:first-child) {
+      border-left-width: 1px;
+      border-left-color: rgba(33, 37, 41, 0.125);
     }
   }
 
-  .k-grid-toolbar {
-    .k-button + .k-button:before {
-      background-color: #777;
+  &.smart-element-grid--selectable .k-master-row {
+    &.k-state-selected {
+      box-shadow: inset 3px 0px 0px 0px $ank-ui-color-client;
+      &,
+      td,
+      th {
+        background-color: transparentize($ank-ui-color-link, 0.85);
+        color: $ank-ui-color-text;
+        font-weight: bold;
+      }
     }
-  }
-
-  .k-grid-content {
-    border-top-color: $gray-light-alt;
-  }
-
-  .k-grid-pager {
-    border-top-color: $gray-light-alt;
-
-    .k-pager-info {
-      color: $ank-ui-color-font-placeholder;
+    &:not(.k-state-selected) {
+      &:hover {
+        background-color: $ank-ui-color-hovered;
+      }
     }
   }
 }
-
 .smart-element-grid-window {
   .columns-management-table {
 
