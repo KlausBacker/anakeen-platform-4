@@ -22,13 +22,12 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
 
   _initDom: function wHtmltext_InitDom() {
     var currentWidget = this,
-      bind_super = _.bind(this._super, this);
+      bind_super = _.bind(this._super, this),
+      bindInitEvent = _.bind(this._initEvent, this);
     try {
       this.popupWindows = {};
 
       if (this.getMode() === "write") {
-        bind_super();
-        this.getContentElements().addClass("dcpAttribute__content--htmltext--beforeCkEditor");
         import("../../../../../../../../webpackConfig/ckeditor/ckeditor" /* webpackChunkName: "ckeditor" */)
           .then(ckeditorPromise => {
             return ckeditorPromise.default.then(() => {
@@ -59,8 +58,10 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
               };
               options.disallowedContent = "script; *[on*]";
             }
-            this.ckOptions = options;
-            this._trigger("widgetReady");
+
+            currentWidget.ckEditorInstance = currentWidget.getContentElements().ckeditor(options).editor;
+            currentWidget.options.attributeValue.value = currentWidget.ckEditorInstance.getData();
+            bindInitEvent();
           })
           .catch(error => {
             console.error(error);
@@ -75,20 +76,6 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
       } else {
         console.error(e);
       }
-    }
-  },
-
-  /**
-   * Display the htmltext after all the dom is done
-   */
-  displayHtmlText: function wHtmlTextDisplay() {
-    try {
-      this.getContentElements().removeClass("dcpAttribute__content--htmltext--beforeCkEditor");
-      this.ckEditorInstance = this.getContentElements().ckeditor(this.ckOptions).editor;
-      this.options.attributeValue.value = this.ckEditorInstance.getData();
-      this._initEvent();
-    } catch (e) {
-      console.error(e);
     }
   },
 
