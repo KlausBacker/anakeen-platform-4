@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/hub-components",
-  "version": "1.0.4-RC.2020.1.16",
+  "version": "1.0.4-RC.2020.1.17",
   "description": "Anakeen Hub Components",
   "main": "components/lib/hub-components.common.min.js",
   "scripts": {
@@ -28,7 +28,7 @@
   "author": "Anakeen",
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
-    "@anakeen/user-interfaces": "3.0.2-RC.2020.1.16",
+    "@anakeen/user-interfaces": "3.0.2-RC.2020.1.17",
     "@progress/kendo-buttons-vue-wrapper": "^2019.3.1023",
     "@progress/kendo-datasource-vue-wrapper": "^2019.3.1023",
     "@progress/kendo-dropdowns-vue-wrapper": "^2019.3.1023",
@@ -51,8 +51,8 @@
     "vuex": "3.1.2"
   },
   "devDependencies": {
-    "@anakeen/anakeen-cli": "1.2.2-RC.2020.1.16",
-    "@anakeen/internal-components": "1.0.3-RC.2020.1.16",
+    "@anakeen/anakeen-cli": "1.2.2-RC.2020.1.17",
+    "@anakeen/internal-components": "1.0.3-RC.2020.1.17",
     "@anakeen/webpack-conf": "1.2.1",
     "core-js": "3.6.1",
     "@types/node": "^13.1.2",
@@ -68,7 +68,7 @@
     "rollup-plugin-vue": "^5.1.4"
   },
   "peerDependencies": {
-    "@anakeen/user-interfaces": "3.0.2-RC.2020.1.16",
+    "@anakeen/user-interfaces": "3.0.2-RC.2020.1.17",
     "axios": "0.19.0",
     "jquery": "3.4.1",
     "vue": "2.6.10",
