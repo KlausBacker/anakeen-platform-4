@@ -3,6 +3,7 @@ import "@progress/kendo-ui/js/kendo.dropdownlist.js";
 import I18nMixin from "../../../mixins/AnkVueComponentMixin/I18nMixin";
 import AnkSmartElementGrid, { SmartGridPageSize } from "../AnkSEGrid.component";
 import $ from "jquery";
+import GridEvent from "../AnkGridEvent/AnkGridEvent";
 
 @Component({
   name: "ank-grid-pager"
@@ -53,13 +54,23 @@ export default class GridPager extends Mixins(I18nMixin) {
   @Watch("pageSize")
   protected onPageSizeChange(newValue): void {
     if (this.gridComponent) {
-      this.gridComponent.$emit("PageChange", {
-        page: {
-          skip: 0,
-          take: newValue,
-          total: this.gridComponent.currentPage.total
-        }
-      });
+      const gridEvent = new GridEvent(
+        {
+          page: {
+            skip: 0,
+            take: newValue,
+            total: this.gridComponent.currentPage.total
+          },
+          pages: {
+            page: 1,
+            total: Math.ceil(this.gridComponent.currentPage.total / newValue),
+            size: newValue
+          }
+        },
+        null,
+        false
+      );
+      this.gridComponent.$emit("pageChange", gridEvent);
     }
   }
   public pageSize: number = Array.isArray(this.pageSizes) && this.pageSizes.length ? this.pageSizes[0] : 10;
@@ -170,13 +181,23 @@ export default class GridPager extends Mixins(I18nMixin) {
   }
   public goToPage(pageNumber): void {
     if (this.gridComponent) {
-      this.gridComponent.$emit("PageChange", {
-        page: {
-          skip: (pageNumber - 1) * this.pageSize,
-          take: this.pageSize,
-          total: this.gridComponent.currentPage.total
-        }
-      });
+      const gridEvent = new GridEvent(
+        {
+          page: {
+            skip: (pageNumber - 1) * this.pageSize,
+            take: this.pageSize,
+            total: this.gridComponent.currentPage.total
+          },
+          pages: {
+            page: pageNumber,
+            size: this.pageSize,
+            total: Math.ceil(this.gridComponent.currentPage.total / this.pageSize)
+          }
+        },
+        null,
+        false
+      );
+      this.gridComponent.$emit("pageChange", gridEvent);
     }
   }
 
@@ -196,49 +217,89 @@ export default class GridPager extends Mixins(I18nMixin) {
 
   public firstPage(): void {
     if (this.gridComponent && this.hasPrevious) {
-      this.gridComponent.$emit("PageChange", {
-        page: {
-          skip: 0,
-          take: this.pageSize,
-          total: this.gridComponent.currentPage.total
-        }
-      });
+      const gridEvent = new GridEvent(
+        {
+          page: {
+            skip: 0,
+            take: this.pageSize,
+            total: this.gridComponent.currentPage.total
+          },
+          pages: {
+            page: 1,
+            size: this.pageSize,
+            total: Math.ceil(this.gridComponent.currentPage.total / this.pageSize)
+          }
+        },
+        null,
+        false
+      );
+      this.gridComponent.$emit("pageChange", gridEvent);
     }
   }
 
   public previousPage(): void {
     if (this.gridComponent && this.hasPrevious) {
-      this.gridComponent.$emit("PageChange", {
-        page: {
-          skip: this.gridComponent.currentPage.skip - this.pageSize,
-          take: this.pageSize,
-          total: this.gridComponent.currentPage.total
-        }
-      });
+      const gridEvent = new GridEvent(
+        {
+          page: {
+            skip: this.gridComponent.currentPage.skip - this.pageSize,
+            take: this.pageSize,
+            total: this.gridComponent.currentPage.total
+          },
+          pages: {
+            page: Math.ceil((this.gridComponent.currentPage.skip - this.pageSize) / this.pageSize) + 1,
+            size: this.pageSize,
+            total: Math.ceil(this.gridComponent.currentPage.total / this.pageSize)
+          }
+        },
+        null,
+        false
+      );
+      this.gridComponent.$emit("pageChange", gridEvent);
     }
   }
 
   public nextPage(): void {
     if (this.gridComponent && this.hasNext) {
-      this.gridComponent.$emit("PageChange", {
-        page: {
-          skip: this.gridComponent.currentPage.skip + this.pageSize,
-          take: this.pageSize,
-          total: this.gridComponent.currentPage.total
-        }
-      });
+      const gridEvent = new GridEvent(
+        {
+          page: {
+            skip: this.gridComponent.currentPage.skip + this.pageSize,
+            take: this.pageSize,
+            total: this.gridComponent.currentPage.total
+          },
+          pages: {
+            page: Math.ceil((this.gridComponent.currentPage.skip + this.pageSize) / this.pageSize) + 1,
+            size: this.pageSize,
+            total: Math.ceil(this.gridComponent.currentPage.total / this.pageSize)
+          }
+        },
+        null,
+        false
+      );
+      this.gridComponent.$emit("pageChange", gridEvent);
     }
   }
 
   public lastPage(): void {
     if (this.gridComponent && this.hasNext) {
-      this.gridComponent.$emit("PageChange", {
-        page: {
-          skip: this.gridComponent.currentPage.total - this.pageSize,
-          take: this.pageSize,
-          total: this.gridComponent.currentPage.total
-        }
-      });
+      const gridEvent = new GridEvent(
+        {
+          page: {
+            skip: this.gridComponent.currentPage.total - this.pageSize,
+            take: this.pageSize,
+            total: this.gridComponent.currentPage.total
+          },
+          pages: {
+            page: Math.ceil((this.gridComponent.currentPage.total - this.pageSize) / this.pageSize) + 1,
+            size: this.pageSize,
+            totall: Math.ceil(this.gridComponent.currentPage.total / this.pageSize)
+          }
+        },
+        null,
+        false
+      );
+      this.gridComponent.$emit("pageChange", gridEvent);
     }
   }
 

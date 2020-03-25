@@ -417,8 +417,12 @@ class SmartGridConfigBuilder implements SmartGridBuilder
             $value["smartType"] = $value['type'];
             $value["title"] = Strings::mbUcfirst(_($value['label']));
             $value["property"] = true;
-            $value["filterable"] = $this->getFilterable($value["type"]);
-
+            $filterablePropertyConfig = static::getPropertyFilterable($value["field"]);
+            if (!empty($filterablePropertyConfig)) {
+                $value["filterable"] = $filterablePropertyConfig;
+            } else {
+                $value["filterable"] = $this->getFilterable($value["type"]);
+            }
             if (isset($value["displayable"])) {
                 unset($value["displayable"]);
             }
@@ -654,6 +658,28 @@ class SmartGridConfigBuilder implements SmartGridBuilder
         return static::getFilterable($field->type . ($field->isMultiple() ? '[]' : '') . ($field->isMultipleInArray() ? '[]' : ''));
     }
 
+    protected static function getPropertyFilterable($propId)
+    {
+        $operators = Operators::getPropertyOperators($propId);
+        if (empty($operators)) {
+            return false;
+        }
+        $stringsOperators = [];
+        foreach ($operators as $k => $operator) {
+            $stringsOperators[$k] = $operator["label"];
+        }
+
+        return [
+            "operators" => [
+                "string" => $stringsOperators,
+                "date" => $stringsOperators,
+            ],
+            "cell" => [
+                "enable" => true,
+                "delay" => 9999999999 // Wait 115 days : only way to have the clear button easyly
+            ]
+        ];
+    }
 
     protected static function getFilterable($type)
     {

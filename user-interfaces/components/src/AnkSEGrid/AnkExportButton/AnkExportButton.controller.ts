@@ -71,13 +71,13 @@ export default class GridExportButtonController extends Mixins(I18nMixin) {
   public watchGridComponent(newValue): void {
     this.gridComponent = newValue;
     this.setupMenus();
-    this.$on("DataBound", data => {
+    this.$on("dataBound", data => {
       this.computeTotalExport(data);
     });
     // this.gridComponent.kendoGrid.bind("dataBound", () => this.computeTotalExport());
     // this.gridComponent.kendoGrid.bind("change", () => this.computeTotalExport());
-    this.gridComponent.$on("BeforePollingGridExport", () => this.displayExportPendingStatus(false));
-    this.gridComponent.$on("ExportError", this.displayExportErrorStatus);
+    this.gridComponent.$on("beforePollingGridExport", () => this.displayExportPendingStatus(false));
+    this.gridComponent.$on("exportError", this.displayExportErrorStatus);
   }
 
   public get translations(): { [key: string]: VueI18n.TranslateResult } {
@@ -209,7 +209,7 @@ export default class GridExportButtonController extends Mixins(I18nMixin) {
   }
 
   private sendExportDoneEvent(): void {
-    this.$emit("ExportDone");
+    this.$emit("exportDone");
   }
 
   private doDefaultPolling(transaction): void {

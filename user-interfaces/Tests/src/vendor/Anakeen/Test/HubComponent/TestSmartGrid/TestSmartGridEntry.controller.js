@@ -39,24 +39,25 @@ export default {
         }
       },
       gridConfig: {
-        collection: "TST_DDUI_ALLTYPE",
+        collection: "DEVBILL",
         columns: [
           { field: "initid", property: true },
           { field: "state", property: true },
           { field: "title", property: true },
+          { field: "bill_author" }
           // { field: "test_ddui_all__title" },
-          { field: "test_ddui_all__longtext" },
+          // { field: "test_ddui_all__longtext" },
           // { field: "test_ddui_all__htmltext" },
-          { field: "test_ddui_all__account_multiple" },
-          { field: "test_ddui_all__account_multiple_array" },
+          // { field: "test_ddui_all__account_multiple" },
+          // { field: "test_ddui_all__account_multiple_array" },
           // { field: "test_ddui_all__enumlist" },
-          { field: "test_ddui_all__docid" },
+          // { field: "test_ddui_all__docid" },
           // { field: "test_ddui_all__account" },
-          { field: "test_ddui_all__date" },
-          { field: "test_ddui_all__color" },
+          // { field: "test_ddui_all__date" },
+          // { field: "test_ddui_all__color" },
           // { field: "test_ddui_all__image" },
-          { field: "test_ddui_all__timestamp" },
-          { field: "test_ddui_all__money" }
+          // { field: "test_ddui_all__timestamp" },
+          // { field: "test_ddui_all__money" }
         ],
         actions: [
           { action: "display", title: "Display" },
@@ -66,9 +67,19 @@ export default {
         defaultExportButton: true,
         defaultExpandable: true,
         defaultShownColumns: true,
-        checkable: true,
+        checkable: false,
+        selectable: true,
         reorderable: true,
-        resizable: true
+        resizable: true,
+        filterable: {
+          bill_author: {
+            singleFilter: true,
+            autocomplete: {
+              url: "/foo/bar"
+            },
+            activeOperators: ["eq", "neq"]
+          }
+        }
       }
     };
   },

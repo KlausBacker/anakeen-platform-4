@@ -2,6 +2,7 @@
 
 namespace Anakeen\Components\Grid;
 
+use Anakeen\Components\Grid\Filters\StateLabel;
 use Anakeen\Search\Filters\Contains;
 use Anakeen\Search\Filters\DocumentTitle;
 use Anakeen\Search\Filters\ElementSearchFilter;
@@ -42,6 +43,44 @@ class Operators
         "htmltext",
         "account"
     ];
+
+    public static function getSupportedPropertyOperators()
+    {
+        return [
+            "eq" => [
+                "label" => ___("Is equal to", "grid-component"),
+                "operands" => [":field", ":value"],
+                "properties" => [
+                    "state"
+                ],
+                "filterClass" => IsEqual::class
+            ],
+            "neq" => [
+                "label" => ___("Is not equal to", "grid-component"),
+                "operands" => [":field", ":value"],
+                "properties" => [
+                    "state"
+                ],
+                "filterClass" => IsNotEqual::class
+            ],
+            "labelcontains" => [
+                "label" => ___("Label contains", "grid-component"),
+                "operands" => [":field", ":value", StateLabel::NOCASE],
+                "properties" => [
+                    "state"
+                ],
+                "filterClass" => StateLabel::class
+            ],
+            "labeldoesnotcontain" => [
+                "label" => ___("Label not contain", "grid-component"),
+                "operands" => [":field", ":value", StateLabel::NOT | StateLabel::NOCASE],
+                "properties" => [
+                    "state"
+                ],
+                "filterClass" => StateLabel::class
+            ],
+        ];
+    }
 
     public static function getSupportedOperators()
     {
@@ -154,8 +193,8 @@ class Operators
             ],
             "gt" => [
                 "label" => ___("Is greater than", "grid-component"),
-                "typedLabels"=> [
-                    "date"=>___("Is after than", "grid-component")
+                "typedLabels" => [
+                    "date" => ___("Is after than", "grid-component")
                 ],
                 "operands" => [":field", ":value"],
                 "type" => [
@@ -170,8 +209,8 @@ class Operators
             ],
             "gte" => [
                 "label" => ___("Is greater than or equal to", "grid-component"),
-                "typedLabels"=> [
-                    "date"=>___("Is after than or equal to", "grid-component")
+                "typedLabels" => [
+                    "date" => ___("Is after than or equal to", "grid-component")
                 ],
                 "operands" => [":field", ":value", IsGreater::EQUAL],
                 "type" => [
@@ -188,8 +227,8 @@ class Operators
 
             "gt*" => [
                 "label" => ___("One of values is greater than or equal to", "grid-component"),
-                "typedLabels"=> [
-                    "date"=>___("One of values is after than or equal to", "grid-component")
+                "typedLabels" => [
+                    "date" => ___("One of values is after than or equal to", "grid-component")
                 ],
                 "operands" => [":field", ":value", OneGreaterThan::EQUAL],
                 "type" => [
@@ -205,8 +244,8 @@ class Operators
 
             "gt**" => [
                 "label" => ___("Any values is greater than or equal to", "grid-component"),
-                "typedLabels"=> [
-                    "date"=>___("Any values is after than or equal to", "grid-component")
+                "typedLabels" => [
+                    "date" => ___("Any values is after than or equal to", "grid-component")
                 ],
                 "operands" => [":field", ":value", OneGreaterThan::EQUAL | OneGreaterThan::ALL],
                 "type" => [
@@ -222,8 +261,8 @@ class Operators
 
             "lt" => [
                 "label" => ___("Is lesser than", "grid-component"),
-                "typedLabels"=> [
-                    "date"=>___("Is earlier than", "grid-component")
+                "typedLabels" => [
+                    "date" => ___("Is earlier than", "grid-component")
                 ],
                 "operands" => [":field", ":value"],
                 "type" => [
@@ -238,8 +277,8 @@ class Operators
             ],
             "lte" => [
                 "label" => ___("Is lesser than or equal to", "grid-component"),
-                "typedLabels"=> [
-                    "date"=>___("Is earlier than or equal to", "grid-component")
+                "typedLabels" => [
+                    "date" => ___("Is earlier than or equal to", "grid-component")
                 ],
                 "operands" => [":field", ":value", IsLesser::EQUAL],
                 "type" => [
@@ -256,8 +295,8 @@ class Operators
 
             "lt*" => [
                 "label" => ___("One of values is lesser than or equal to", "grid-component"),
-                "typedLabels"=> [
-                    "date"=>___("One of values is earlier than or equal to", "grid-component")
+                "typedLabels" => [
+                    "date" => ___("One of values is earlier than or equal to", "grid-component")
                 ],
                 "operands" => [":field", ":value", OneLesserThan::EQUAL],
                 "type" => [
@@ -273,8 +312,8 @@ class Operators
 
             "lt**" => [
                 "label" => ___("Any values is lesser than or equal to", "grid-component"),
-                "typedLabels"=> [
-                    "date"=>___("Any values is earlier than or equal to", "grid-component")
+                "typedLabels" => [
+                    "date" => ___("Any values is earlier than or equal to", "grid-component")
                 ],
                 "operands" => [":field", ":value", OneLesserThan::EQUAL | OneLesserThan::ALL],
                 "type" => [
@@ -415,6 +454,27 @@ class Operators
         return null;
     }
 
+    public static function getPropertyOperator($operator)
+    {
+        $supportedPropertyOperators = self::getSupportedPropertyOperators();
+        if (isset($supportedPropertyOperators[$operator])) {
+            return $supportedPropertyOperators[$operator];
+        }
+        return null;
+    }
+
+    public static function getPropertyOperators($propId)
+    {
+        $supportedOperators = self::getSupportedPropertyOperators();
+        $propOperators = [];
+        foreach ($supportedOperators as $k => $supportedOperator) {
+            if (in_array($propId, $supportedOperator["properties"])) {
+                $propOperators[$k] = $supportedOperator;
+            }
+        }
+        return $propOperators;
+    }
+
     public static function getTypeOperators($type)
     {
         $supportedOperators = self::getSupportedOperators();
@@ -435,7 +495,11 @@ class Operators
      */
     public static function getFilterObject(array $filterData)
     {
-        $operator = self::getOperator($filterData["operator"]);
+        if ($filterData["field"] === "state") {
+            $operator = self::getPropertyOperator($filterData["operator"]);
+        } else {
+            $operator = self::getOperator($filterData["operator"]);
+        }
 
         if ($operator) {
             $class = $operator["filterClass"];

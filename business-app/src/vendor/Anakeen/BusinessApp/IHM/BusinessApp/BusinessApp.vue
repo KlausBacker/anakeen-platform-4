@@ -32,10 +32,7 @@
       >
         <ank-tab v-if="hasWelcomeTab" :closable="false" tabId="welcome">
           <template slot="label">
-            <span
-              class="ank-business-app-welcome-title"
-              v-html="welcomeTab.title"
-            ></span>
+            <span class="ank-business-app-welcome-title" v-html="welcomeTab.title"></span>
           </template>
           <ank-welcome
             @tabWelcomeCreate="onCreateElement"
@@ -54,12 +51,12 @@
           :viewId="tab.viewId || '!defaultConsultation'"
           :revision="tab.revision"
           ref="seTab"
-          @SmartElementTabBeforeRender="(event, se) => onTabBeforeRender(event, se, tab)"
-          @SmartElementTabAfterSave="onAfterSave"
-          @SmartElementTabAfterDelete="onAfterDelete"
-          @SmartElementTabActionClick="onActionClick"
-          @SmartElementTabDisplayError="onDisplayError"
-          @SmartElementTabDisplayMessage="onDisplayMessage"
+          @smartElementTabBeforeRender="(event, se) => onTabBeforeRender(event, se, tab)"
+          @smartElementTabAfterSave="onAfterSave"
+          @smartElementTabAfterDelete="onAfterDelete"
+          @smartElementTabActionClick="onActionClick"
+          @smartElementTabDisplayError="onDisplayError"
+          @smartElementTabDisplayMessage="onDisplayMessage"
         >
         </ank-se-tab>
       </ank-tabs>

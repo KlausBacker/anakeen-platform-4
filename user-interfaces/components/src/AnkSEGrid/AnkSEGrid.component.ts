@@ -31,7 +31,7 @@ export interface SmartGridColumn {
   encoded?: boolean;
   hidden?: boolean;
   sortable?: boolean;
-  filterable?: boolean | object;
+  filterable?: boolean | SmartGridFilterable;
   transaction?: boolean | object;
   resizable?: boolean;
 }
@@ -78,6 +78,14 @@ export interface SmartGridSubHeader {
   [columnId: string]: string;
 }
 
+export interface SmartGridFilter {
+  logic?: string;
+  filters?: SmartGridFilter[];
+  field?: string;
+  operator?: string;
+  value?: string | number;
+}
+
 export interface SmartGridInfo {
   columns: SmartGridColumn[];
   actions: SmartGridAction[];
@@ -87,8 +95,8 @@ export interface SmartGridInfo {
   page: number;
   sortable: boolean | object;
   sort: kendo.data.DataSourceSortItem[];
-  filterable: boolean | object;
-  filter: kendo.data.DataSourceFilters;
+  filterable: boolean | SmartGridFilterable;
+  filter: SmartGridFilter;
   transaction: { [key: string]: string };
   selectedRows: string[];
   onlySelection: boolean;
@@ -115,9 +123,19 @@ export interface SmartGridSortable {
   mode?: string;
 }
 
+export interface SmartGridFilterable {
+  [columnId: string]: {
+    autocomplete?: { url?: string; outputs?: object; inputs?: object };
+    activeOperators?: string[];
+    singleFilter?: boolean;
+  };
+}
+
 interface KendoVueGridRow extends Vue {
   dataItem?: SmartGridRowData;
 }
+
+const DEFAULT_FILTERABLE = true;
 
 const DEFAULT_PAGER = {
   buttonCount: 0,
@@ -248,10 +266,10 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   public sortable: boolean | SmartGridSortable;
 
   @Prop({
-    default: true,
-    type: Boolean
+    default: () => DEFAULT_FILTERABLE,
+    type: [Boolean, Object]
   })
-  public filterable: boolean;
+  public filterable: boolean | SmartGridFilterable;
   @Prop({
     default: false,
     type: Boolean
@@ -327,12 +345,17 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     default: () => ({ logic: "and", filters: [] }),
     type: Object
   })
-  public filter!: kendo.data.DataSourceFilters;
+  public filter!: SmartGridFilter;
   @Prop({
     default: 1,
     type: Number
   })
   public page!: number;
+  @Prop({
+    default: true,
+    type: Boolean
+  })
+  public autoFit!: boolean;
 
   public $refs: {
     smartGridWidget: Grid;
@@ -367,7 +390,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
 
   @Watch("dataItems")
   public watchDataItems(val): void {
-    this.$emit("DataBound", this.gridInstance);
+    this.$emit("dataBound", this.gridInstance);
   }
 
   @Watch("selectedRows", { deep: true })
@@ -380,7 +403,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
       false,
       "GridSelectionChangeEvent"
     );
-    this.$emit("SelectionChange", gridEvent);
+    this.$emit("selectionChange", gridEvent);
   }
 
   public networkOnline = true;
@@ -403,7 +426,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   public selectedRows: string[] = [];
   public isLoading = false;
   public currentSort: kendo.data.DataSourceSortItem[] = this.sort;
-  public currentFilter: kendo.data.DataSourceFilters = this.filter;
+  public currentFilter: SmartGridFilter = this.filter;
   public currentPage: { total: number; skip: number; take: number } = {
     total: null,
     skip: computeSkipFromPage(
@@ -446,13 +469,13 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     window.addEventListener("online", this.updateOnlineStatus);
     window.addEventListener("offline", this.updateOnlineStatus);
     this.gridError = new GridError(this);
-    this.$on("PageChange", this.onPageChange);
+    this.$on("pageChange", this.onPageChange);
 
     this.refreshGrid();
   }
 
   beforeDestroy(): void {
-    this.$off("PageChange", this.onPageChange);
+    this.$off("pageChange", this.onPageChange);
   }
 
   mounted(): void {
@@ -471,7 +494,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
       }
     }
     this.gridInstance = this;
-    this.$emit("GridReady");
+    this.$emit("gridReady");
   }
 
   public updateOnlineStatus(): Promise<void> {
@@ -514,9 +537,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     }
   }
 
-  public async addFilter(
-    ...filterItem: kendo.data.DataSourceFilterItem[] | kendo.data.DataSourceFilters[]
-  ): Promise<void> {
+  public async addFilter(...filterItem: SmartGridFilter[]): Promise<void> {
     filterItem.forEach(filter => {
       this.currentFilter.filters.push(filter);
     });
@@ -555,7 +576,10 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   protected get rowsData(): SmartGridRowData[] {
     return this.dataItems.map(item => {
       if (this.selectable || this.checkable) {
-        item[this.selectedField] = this.selectedRows.indexOf(item.properties.id as string) !== -1;
+        return {
+          ...item,
+          [this.selectedField]: this.selectedRows.indexOf(item.properties.id.toString()) !== -1
+        };
       }
       return item;
     });
@@ -571,7 +595,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
       null,
       true // Cancelable
     );
-    this.$emit("BeforeConfig", event);
+    this.$emit("beforeConfig", event);
     if (!event.isDefaultPrevented()) {
       this.$http
         .get(url, {
@@ -610,6 +634,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
               title: this.actionColumnTitle,
               abstract: true,
               withContext: false,
+              filterable: false,
               sortable: false,
               resizable: false
             });
@@ -623,7 +648,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
             null,
             false
           );
-          this.$emit("AfterConfig", responseEvent);
+          this.$emit("afterConfig", responseEvent);
           this.isLoading = false;
         })
         .catch(error => {
@@ -650,7 +675,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
       null,
       true // Cancelable
     );
-    this.$emit("BeforeContent", event);
+    this.$emit("beforeContent", event);
     if (!event.isDefaultPrevented()) {
       this.$http
         .get(url, {
@@ -669,7 +694,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
             null,
             false
           );
-          this.$emit("AfterContent", responseEvent);
+          this.$emit("afterContent", responseEvent);
           this.isLoading = false;
         })
         .catch(error => {
@@ -688,9 +713,9 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   protected onSelectionChange(event): void {
     if (this.checkable) {
       if (event.event.target.checked) {
-        this.selectedRows.push(event.dataItem.properties.id);
+        this.selectedRows.push(event.dataItem.properties.id.toString());
       } else {
-        this.selectedRows.splice(this.selectedRows.indexOf(event.dataItem.properties.id as string), 1);
+        this.selectedRows.splice(this.selectedRows.indexOf(event.dataItem.properties.id.toString()), 1);
       }
     }
   }
@@ -706,7 +731,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
       false,
       "GridCellRenderEvent"
     );
-    this.$emit("BeforeGridCellRender", event);
+    this.$emit("beforeGridCellRender", event);
     let renderElement = tdElement;
     if (props.field === "smart_element_grid_action_menu") {
       if (this.actionsList.length > 0) {
@@ -717,7 +742,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
             gridComponent: this
           },
           on: {
-            RowActionClick: (...args) => this.$emit("RowActionClick", ...args)
+            rowActionClick: (...args) => this.$emit("rowActionClick", ...args)
           }
         });
         if (this.$scopedSlots && this.$scopedSlots.actionTemplate) {
@@ -759,7 +784,10 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
         const scopeResult = this.$scopedSlots.cellTemplate({
           renderElement,
           props,
-          listeners,
+          listeners: {
+            ...listeners,
+            ItemClick: (): void => this.onRowClick({ dataItem: props.dataItem })
+          },
           columnConfig
         });
         if (scopeResult) {
@@ -778,8 +806,8 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     const renderElement = createElement(AnkGridHeaderCell, {
       props: { ...props, columnConfig, grid: this },
       on: {
-        SortChange: this.onSortChange,
-        FilterChange: this.onFilterChange
+        sortChange: this.onSortChange,
+        filterChange: this.onFilterChange
       }
     });
 
@@ -865,8 +893,8 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
 
   protected async onPageChange(pagerEvt): Promise<void> {
     if (this.networkOnline) {
-      this.currentPage = Object.assign({}, this.currentPage, pagerEvt.page);
-      this.pager = Object.assign({}, this.pager, { pageSize: pagerEvt.page.take });
+      this.currentPage = Object.assign({}, this.currentPage, pagerEvt.data.page);
+      this.pager = Object.assign({}, this.pager, { pageSize: pagerEvt.data.page.take });
     }
     await this._loadGridContent();
   }
@@ -874,9 +902,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   protected async onFilterChange(filterEvt): Promise<void> {
     if (this.networkOnline) {
       if (filterEvt) {
-        const filters = this.currentFilter.filters.filter(
-          (f: kendo.data.DataSourceFilter & { field?: string }) => f.field !== filterEvt.field
-        );
+        const filters = this.currentFilter.filters.filter((f: SmartGridFilter) => f.field !== filterEvt.field);
         if (filterEvt.filters) {
           filters.push(filterEvt);
         }
@@ -975,13 +1001,13 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     });
     event.onExport = onExport;
     event.onPolling = onPolling;
-    this.$emit("BeforeGridExport", event);
+    this.$emit("beforeGridExport", event);
     return event;
   }
 
   protected sendBeforePollingEvent(): GridExportEvent {
     const event = new GridExportEvent(null, null, false);
-    this.$emit("BeforePollingGridExport", event);
+    this.$emit("beforePollingGridExport", event);
     return event;
   }
 
@@ -993,7 +1019,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
       null,
       false
     );
-    this.$emit("ExportError", event);
+    this.$emit("exportError", event);
     return event;
   }
 
@@ -1063,7 +1089,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
 
   protected onRowClick(event): void {
     if (!this.checkable && this.selectable && event.dataItem && event.dataItem.properties.id) {
-      this.$set(this.selectedRows, 0, event.dataItem.properties.id);
+      this.$set(this.selectedRows, 0, event.dataItem.properties.id.toString());
     }
     const gridEvent = new GridEvent(
       {
