@@ -19,8 +19,6 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
   },
 
   ckEditorInstance: null,
-  domReady: false,
-  ckLoaded: false,
 
   _initDom: function wHtmltext_InitDom() {
     var currentWidget = this,
@@ -61,9 +59,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
               };
               options.disallowedContent = "script; *[on*]";
             }
-            this.ckLoaded = true;
             this.ckOptions = options;
-            this.displayHtmlText();
             this._trigger("widgetReady");
           })
           .catch(error => {
@@ -81,16 +77,11 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
       }
     }
   },
+
   /**
    * Display the htmltext after all the dom is done
    */
-  displayHtmlText: function wHtmlTextDisplay(domReady) {
-    if (domReady) {
-      this.domReady = true;
-    }
-    if (this.domReady === false || this.ckLoaded === false) {
-      return;
-    }
+  displayHtmlText: function wHtmlTextDisplay() {
     try {
       this.getContentElements().removeClass("dcpAttribute__content--htmltext--beforeCkEditor");
       this.ckEditorInstance = this.getContentElements().ckeditor(this.ckOptions).editor;
