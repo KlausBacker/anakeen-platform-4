@@ -19,18 +19,15 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
   },
 
   ckEditorInstance: null,
-  domReady: false,
-  ckLoaded: false,
 
   _initDom: function wHtmltext_InitDom() {
     var currentWidget = this,
-      bind_super = _.bind(this._super, this);
+      bind_super = _.bind(this._super, this),
+      bindInitEvent = _.bind(this._initEvent, this);
     try {
       this.popupWindows = {};
 
       if (this.getMode() === "write") {
-        bind_super();
-        this.getContentElements().addClass("dcpAttribute__content--htmltext--beforeCkEditor");
         import("../../../../../../../../webpackConfig/ckeditor/ckeditor" /* webpackChunkName: "ckeditor" */)
           .then(ckeditorPromise => {
             return ckeditorPromise.default.then(() => {
@@ -48,6 +45,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
               currentWidget.ckOptions(cssPath),
               currentWidget.options.renderOptions.ckEditorConfiguration
             );
+            bind_super();
             if (currentWidget.options.renderOptions.ckEditorAllowAllTags) {
               // Allow all HTML tags
               options.allowedContent = {
@@ -61,10 +59,10 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
               };
               options.disallowedContent = "script; *[on*]";
             }
-            this.ckLoaded = true;
-            this.ckOptions = options;
-            this.displayHtmlText();
-            this._trigger("widgetReady");
+
+            currentWidget.ckEditorInstance = currentWidget.getContentElements().ckeditor(options).editor;
+            currentWidget.options.attributeValue.value = currentWidget.ckEditorInstance.getData();
+            bindInitEvent();
           })
           .catch(error => {
             console.error(error);
@@ -79,25 +77,6 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
       } else {
         console.error(e);
       }
-    }
-  },
-  /**
-   * Display the htmltext after all the dom is done
-   */
-  displayHtmlText: function wHtmlTextDisplay(domReady) {
-    if (domReady) {
-      this.domReady = true;
-    }
-    if (this.domReady === false || this.ckLoaded === false) {
-      return;
-    }
-    try {
-      this.getContentElements().removeClass("dcpAttribute__content--htmltext--beforeCkEditor");
-      this.ckEditorInstance = this.getContentElements().ckeditor(this.ckOptions).editor;
-      this.options.attributeValue.value = this.ckEditorInstance.getData();
-      this._initEvent();
-    } catch (e) {
-      console.error(e);
     }
   },
 
@@ -303,7 +282,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
       });
 
       this.ckEditorInstance.on("instanceReady", function wHtmltext_loaded() {
-        currentWidget._trigger("widgetReadyHtmlPart");
+        currentWidget._trigger("widgetReady");
       });
 
       this.element.on("postMoved" + this.eventNamespace, function wHtmlTextOnPostMoved(event, eventData) {

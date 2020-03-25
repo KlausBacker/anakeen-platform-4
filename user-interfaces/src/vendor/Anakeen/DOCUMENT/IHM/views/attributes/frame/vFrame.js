@@ -39,7 +39,7 @@ export default Backbone.View.extend({
 
   render: function vFrame_render() {
     var currentView = this;
-    return new Promise(
+    const renderPromise = new Promise(
       _.bind(function vFrame_renderPromise(resolve, reject) {
         var customRender,
           $content,
@@ -168,6 +168,15 @@ export default Backbone.View.extend({
         renderPromise.then(promiseEnd).catch(promiseEnd);
       }, this)
     );
+
+    return renderPromise.then(() => {
+      //Trigger htmltext render
+      currentView.model.get("content").each(currentAttr => {
+        if (currentAttr.get("type") === "htmltext") {
+          currentAttr.trigger("renderHtmlText");
+        }
+      });
+    });
   },
 
   setResponsiveClasse: function vFrame_setResponsiveClasse() {
