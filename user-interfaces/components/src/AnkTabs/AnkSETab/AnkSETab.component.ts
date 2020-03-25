@@ -63,6 +63,9 @@ export default class SETab extends Vue {
   public revision!: string;
   @Prop({ default: false, type: Boolean }) public closable!: boolean;
   @Prop({ default: false, type: Boolean }) public lazy!: boolean;
+  @Prop({ type: Boolean, default: true }) public autoUnload!: boolean;
+  @Prop({ type: Object, default: null }) public customClientData!: object;
+  @Prop({ type: Boolean, default: false }) public browserHistory!: boolean;
 
   public index: any = null;
   public loaded: boolean = false;
