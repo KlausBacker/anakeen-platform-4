@@ -45,6 +45,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
               currentWidget.ckOptions(cssPath),
               currentWidget.options.renderOptions.ckEditorConfiguration
             );
+            bind_super();
             if (currentWidget.options.renderOptions.ckEditorAllowAllTags) {
               // Allow all HTML tags
               options.allowedContent = {
@@ -281,7 +282,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
       });
 
       this.ckEditorInstance.on("instanceReady", function wHtmltext_loaded() {
-        currentWidget._trigger("widgetReadyHtmlPart");
+        currentWidget._trigger("widgetReady");
       });
 
       this.element.on("postMoved" + this.eventNamespace, function wHtmlTextOnPostMoved(event, eventData) {

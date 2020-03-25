@@ -28,13 +28,18 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
       viewId: this.viewId || "!defaultConsultation"
     };
   }
-  @Prop({ type: Boolean, default: true }) public autoUnload!: boolean;
-  @Prop({ type: Boolean, default: false }) public browserHistory!: boolean;
-  @Prop({ type: [String, Number], default: 0 }) public initid!: string | number;
-  @Prop({ type: Object, default: null }) public customClientData!: object;
+  @Prop({ type: Boolean, default: true })
+  public autoUnload!: boolean;
+  @Prop({ type: Boolean, default: false })
+  public browserHistory!: boolean;
+  @Prop({ type: [String, Number], default: 0 })
+  public initid!: string | number;
+  @Prop({ type: Object, default: null })
+  public customClientData!: object;
   @Prop({ type: String, default: "!defaultConsultation" })
   public viewId!: string;
-  @Prop({ type: Number, default: -1 }) public revision!: number;
+  @Prop({ type: Number, default: -1 })
+  public revision!: number;
 
   public smartElementWidget: SmartElementController = null;
   private controllerScopeId: string;
@@ -115,10 +120,9 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
     }
   }
 
-  public fetchSmartElement(value, options?) {
+  public fetchSmartElement(value, options?): Promise<any> {
     if (!this.isLoaded()) {
-      this._initController(value, options);
-      return Promise.resolve();
+      return this._initController(value, options);
     } else {
       return this.smartElementWidget.fetchSmartElement(value, options).catch(error => {
         let errorMessage = "Undefined error";
@@ -325,10 +329,11 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
   }
 
   protected _initController(viewData, options = {}) {
+    const initViewData = {...viewData,  ...{ initid: false } };
     this.controllerScopeId = AnakeenGlobalController.addSmartElement(
       // @ts-ignore
       this.$refs.ankSEWrapper,
-      viewData,
+      initViewData,
       options
     );
     this.smartElementWidget = AnakeenGlobalController.getScopedController(
@@ -336,7 +341,11 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
     ) as SmartElementController;
     AnakeenGlobalController.setAutoUnload(this.autoUnload, this.controllerScopeId);
     this.listenEvents();
-    this.$emit("smartElementLoaded");
+    const loadedPromise = this.smartElementWidget.fetchSmartElement(viewData, options);
+    loadedPromise.then(() => {
+      this.$emit("smartElementLoaded");
+    });
+    return loadedPromise;
   }
 
   protected listenEvents() {

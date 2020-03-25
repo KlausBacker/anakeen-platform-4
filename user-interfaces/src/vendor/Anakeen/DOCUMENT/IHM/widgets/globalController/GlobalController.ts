@@ -176,7 +176,7 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
   }
 
   /**
-   *
+   * Add the smart Element in the DOM
    * @param dom
    * @param viewData
    * @param options

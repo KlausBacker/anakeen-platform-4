@@ -145,7 +145,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       model: false,
       view: false
     };
-    if (!this._internalViewData.initid) {
+    if (!this._internalViewData.initid || this._internalViewData.initid === 0) {
       return;
     }
     // noinspection JSIgnoredPromiseFromCall
@@ -1142,29 +1142,22 @@ export default class SmartElementController extends AnakeenController.BusEvents.
   }
 
   private _initializeSmartElement(options, config) {
-    const onInitializeSuccess = () => {
-      this._initialized.model = true;
-    };
     const initOptions = options || {};
     this._initModel(this._getModelValue());
     this._initView();
     this._initExternalElements();
-    if (initOptions.success) {
-      initOptions.success = _.wrap(options.success, (success, ...args) => {
-        onInitializeSuccess.apply(this);
-        return success.apply(this, args);
-      });
-    }
     if (config.customClientData) {
       this._model._customClientData = config.customClientData;
     }
     if (config.formConfiguration) {
       this._model._formConfiguration = config.formConfiguration;
     }
-    const resultPromise = this._model.fetchDocument(this._getModelValue(), options);
-    if (!options.success) {
-      resultPromise.then(onInitializeSuccess);
-    }
+    const fetchPromise = this._model.fetchDocument(this._getModelValue(), options);
+
+    const resultPromise = fetchPromise.then(result => {
+      this._initialized.model = true;
+      return result;
+    });
 
     if (this._options.router !== false) {
       this._initRouter({ useHistory: true });

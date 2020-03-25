@@ -63,7 +63,7 @@ export default Backbone.View.extend({
               currentView
                 .renderContent()
                 .then(function vTabContentRender_renderContent() {
-                  this.model.get("content").each(currentAttr => {
+                  currentView.model.get("content").each(currentAttr => {
                     currentAttr.trigger("renderHtmlText");
                   });
                   resolve(currentView);
