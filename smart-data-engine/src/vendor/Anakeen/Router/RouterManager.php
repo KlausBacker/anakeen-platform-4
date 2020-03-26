@@ -115,7 +115,7 @@ class RouterManager
         $otherPathes = ContextParameterManager::getValue(Settings::NsSde, self::CONFIGDIRECTORIES);
         $configPath = [];
         if ($otherPathes) {
-            $opath = json_decode($otherPathes);
+            $opath = json_decode($otherPathes, true);
             if ($opath) {
                 $configPath = $opath;
             }
@@ -131,7 +131,7 @@ class RouterManager
 
         $path = rtrim($path, "/");
         if ($otherPathes) {
-            $opaths = json_decode($otherPathes);
+            $opaths = json_decode($otherPathes, true);
             if ($opaths) {
                 foreach ($opaths as $k => $opath) {
                     if ($opath === $path) {
