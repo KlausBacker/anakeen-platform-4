@@ -28,7 +28,7 @@ switch ($todo) {
     case "list":
         $paths=\Anakeen\Router\RouterManager::getRouterConfigPaths();
         print "Config paths :\n\t";
-        print(implode("\n\t", $paths)."\n.");
+        print(implode("\n\t", $paths)."\n");
         break;
 
     case "add":

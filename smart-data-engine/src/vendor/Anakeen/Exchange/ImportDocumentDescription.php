@@ -6,7 +6,9 @@
 
 namespace Anakeen\Exchange;
 
+use Anakeen\Core\DbManager;
 use \Anakeen\Core\SmartStructure\DocAttr;
+use Anakeen\Core\Utils\Postgres;
 use Anakeen\Exception;
 
 class ImportDocumentDescription
@@ -2080,6 +2082,11 @@ class ImportDocumentDescription
         return isset($tc[$curType]) && ($tc[$curType] == $newType);
     }
 
+    protected function getFromids(int $structureId)
+    {
+        DbManager::query(sprintf("select getFromids(%d)", $structureId), $fromids, true, true);
+        return Postgres::stringToArray($fromids);
+    }
 
     /**
      * analyze UPDTATTR
@@ -2088,13 +2095,29 @@ class ImportDocumentDescription
      */
     protected function doUpdtattr(array $data)
     {
-        $attrid = $data[1];
+        $attrid = strtolower($data[1]);
         $oattr = new DocAttr($this->dbaccess, array(
             $this->doc->id,
-            strtolower($attrid)
+            $attrid
         ));
+        $modAttrActivated=false;
         if (!$oattr->isAffected()) {
-            $this->tcr[$this->nLine]["err"] = \ErrorCode::getError('ATTR0104', $attrid);
+            $fromids=$this->getFromids($this->doc->id);
+            foreach ($fromids as $fromid) {
+                $oattr = new DocAttr($this->dbaccess, array(
+                    $fromid,
+                    $attrid
+                ));
+                if ($oattr->isAffected()) {
+                    break;
+                }
+            }
+
+            if (!$oattr->isAffected()) {
+                $this->tcr[$this->nLine]["err"] = \ErrorCode::getError('ATTR0104', $attrid);
+            } else {
+                $modAttrActivated=true;
+            }
         }
 
         if ($this->tcr[$this->nLine]["err"]) {
@@ -2104,24 +2127,29 @@ class ImportDocumentDescription
         $structAttr = new \StructAttribute();
         $structAttr->set($data);
         $iAttr = new \Anakeen\Core\Internal\ImportSmartAttr();
-        $iAttr->id = $oattr->id;
-        $iAttr->idfield = $oattr->frameid;
-        $iAttr->label = $oattr->labeltext;
-        $iAttr->isTitle = $oattr->title;
-        $iAttr->isAbstract = $oattr->abstract;
-        $iAttr->type = $oattr->type;
-        $iAttr->order = $oattr->ordered;
-        $iAttr->access = $oattr->accessibility;
-        $iAttr->need = $oattr->needed;
-        $iAttr->link = $oattr->link;
-        $iAttr->phpfile = $oattr->phpfile;
-        $iAttr->phpfunc = $oattr->phpfunc;
-        $iAttr->elink = $oattr->elink;
-        $iAttr->constraint = ($structAttr->constraint) ?: '';
-        $iAttr->autocomplete = $structAttr->autocomplete;
-
-
-        $this->doAttr($iAttr->getData("ATTR"), true);
+        if ($modAttrActivated === false) {
+            $iAttr->id = $oattr->id;
+            $iAttr->idfield = $oattr->frameid;
+            $iAttr->label = $oattr->labeltext;
+            $iAttr->isTitle = $oattr->title;
+            $iAttr->isAbstract = $oattr->abstract;
+            $iAttr->type = $oattr->type;
+            $iAttr->order = $oattr->ordered;
+            $iAttr->access = $oattr->accessibility;
+            $iAttr->need = $oattr->needed;
+            $iAttr->link = $oattr->link;
+            $iAttr->phpfile = $oattr->phpfile;
+            $iAttr->phpfunc = $oattr->phpfunc;
+            $iAttr->elink = $oattr->elink;
+            $iAttr->constraint = ($structAttr->constraint) ?: '';
+            $iAttr->autocomplete = $structAttr->autocomplete;
+            $this->doAttr($iAttr->getData("ATTR"), true);
+        } else {
+            $iAttr->id = $attrid;
+            $iAttr->constraint = ($structAttr->constraint) ?: '';
+            $iAttr->autocomplete = $structAttr->autocomplete;
+            $this->doAttr($iAttr->getData("MODATTR"), true);
+        }
     }
 
     /**
@@ -2178,7 +2206,7 @@ class ImportDocumentDescription
                 // modification of type is forbidden
                 $curType = trim(strtok($oattr->type, '('));
                 $newType = trim(strtok($this->structAttr->type, '('));
-                if ($curType != $newType && (!$this->isTypeCompatible($curType, $newType))) {
+                if (!$modattr && $curType != $newType && (!$this->isTypeCompatible($curType, $newType))) {
                     $this->tcr[$this->nLine]["err"] .= sprintf(
                         "cannot change attribute %s type definition from %s to %s",
                         $this->structAttr->id,

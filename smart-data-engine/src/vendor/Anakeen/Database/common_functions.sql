@@ -348,7 +348,19 @@ begin
 end;
 ' language 'plpgsql' ;
 
-
+create or replace function getFromids(int)
+  returns int[] as $$
+declare
+  famid alias for $1;
+  sfromid int;
+begin
+  select into sfromid fromid from docfam where id=famid;
+  if (sfromid > 0)  then
+    return array_append(getFromids(sfromid), sfromid);
+  end if;
+  return '{}';
+end;
+$$ language 'plpgsql';
 
 
 create or replace function getdoc(int) 
