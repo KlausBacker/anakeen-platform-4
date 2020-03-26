@@ -34,7 +34,7 @@ class SmartStructureImport
      *   to the destination file.
      *
      * @param string $fileName destination file
-     * @param string $content  content to write
+     * @param string $content content to write
      *
      * @return string empty string on success or error message on failure
      */
@@ -64,7 +64,7 @@ class SmartStructureImport
      * Generate Class.Docxxx.php files
      *
      * @param string $genDir output directory
-     * @param array  $tdoc   array of family definition
+     * @param array $tdoc array of family definition
      *
      * @return void
      * @throws Exception
@@ -105,7 +105,12 @@ class SmartStructureImport
             $phpAdoc->Set("fromid", "");
             $phpAdoc->Set("pinit", '\DocCtrl');
         } else {
-            $parentFile = sprintf("%s/%s/SmartStructure/Smart%d.php", DEFAULT_PUBDIR, Settings::DocumentGenDirectory, $tdoc["fromid"]);
+            $parentFile = sprintf(
+                "%s/%s/SmartStructure/Smart%d.php",
+                DEFAULT_PUBDIR,
+                Settings::DocumentGenDirectory,
+                $tdoc["fromid"]
+            );
             if ((!file_exists($parentFile)) || filesize($parentFile) == 0) {
                 throw new \Anakeen\Exception("FAM0600", $parentFile, $tdoc["name"]);
             }
@@ -160,7 +165,11 @@ class SmartStructureImport
                 $type = trim(strtok($v->type, "("));
                 if ($type === "docid" || $type == "account" || $type == "thesaurus") {
                     $parentDoctitle = "";
-                    if (isset($pa[substr($v->id, 1)]) && preg_match("/doctitle=([A-Za-z0-9_-]+)/", $pa[substr($v->id, 1)]["options"], $reg)) {
+                    if (isset($pa[substr($v->id, 1)]) && preg_match(
+                        "/doctitle=([A-Za-z0-9_-]+)/",
+                        $pa[substr($v->id, 1)]["options"],
+                        $reg
+                    )) {
                         $parentDoctitle = $reg[1];
                     }
                     // add title auto
@@ -175,7 +184,7 @@ class SmartStructureImport
                         $doctitle = strtolower($doctitle);
 
                         if (!isset($table1[strtolower($doctitle)])) {
-                            $table1[$doctitle] = clone ($v);
+                            $table1[$doctitle] = clone($v);
                             $table1[$doctitle]->id = $doctitle;
                             $table1[$doctitle]->type = "text";
                             $table1[$doctitle]->accessibility = FieldAccessManager::getTextAccess(BasicAttribute::READ_ACCESS);
@@ -235,11 +244,11 @@ class SmartStructureImport
                         }
                     }
                 } else {
-                    $mAttrid=substr($parentAttr["id"], 1);
+                    $mAttrid = substr($parentAttr["id"], 1);
                     foreach ($allAttributes as $ka => $attr) {
                         if ($attr["id"] === $mAttrid) {
-                            if (! empty($parentAttr["frameid"])) {
-                                $allAttributes[$ka]["parent"]=$parentAttr["frameid"];
+                            if (!empty($parentAttr["frameid"])) {
+                                $allAttributes[$ka]["parent"] = $parentAttr["frameid"];
                             }
                         }
                     }
@@ -285,23 +294,6 @@ class SmartStructureImport
                 } // old notation compliant
                 //$v->phpfunc = str_replace("\"", "\\\"", $v->phpfunc);
                 switch (strtolower($v->type)) {
-                    case "menu": // menu
-                        if (substr($v->link, 0, 2) == "::") {
-                            if (preg_match('/::([^\(]+)\(([^\)]*)\)/', $v->link, $reg)) {
-                                $v->link = "%S%app=FDL&action=FDL_METHOD&id=%I%&method=" . urlencode($v->link);
-                            }
-                        }
-                        $tmenu[strtolower($v->id)] = array(
-                            "attrid" => strtolower($v->id),
-                            "label" => str_replace("\"", "\\\"", $v->labeltext),
-                            "order" => intval($v->ordered),
-                            "link" => str_replace("\"", "\\\"", $v->link),
-                            "access" => FieldAccessManager::getRawAccess($v->accessibility),
-                            "options" => str_replace("\"", "\\\"", $v->options),
-                            "precond" => self::doubleslash($v->phpfunc)
-                        );
-                        break;
-
                     case "tab":
                     case "frame": // frame
                         $tfield[strtolower($v->id)] = array(
@@ -318,7 +310,7 @@ class SmartStructureImport
 
 
                     default: // normal
-                        if (preg_match('/^\[([a-z=0-9]+)\](.*)/', $v->phpfunc, $reg)) {
+                        if (preg_match('/^\[([a-z=0-9]+)](.*)/', $v->phpfunc, $reg)) {
                             $v->phpfunc = $reg[2];
                             $funcformat = $reg[1];
                         } else {
@@ -356,7 +348,11 @@ class SmartStructureImport
 
                         $atype = strtolower(trim($atype));
                         // create code for calculated attributes
-                        if ((!$v->phpfile) && preg_match('/^(?:(?:[a-z_][a-z0-9_]*\\\\)*[a-z_][a-z0-9_]*)?::[a-z_][a-z0-9_]*\(/i', $v->phpfunc, $reg) && ($v->usefor != 'Q')) {
+                        if ((!$v->phpfile) && preg_match(
+                            '/^(?:(?:[a-z_][a-z0-9_]*\\\\)*[a-z_][a-z0-9_]*)?::[a-z_][a-z0-9_]*\(/i',
+                            $v->phpfunc,
+                            $reg
+                        ) && ($v->usefor != 'Q')) {
                             $pM->parse($v->phpfunc);
                             $error = $pM->getError();
                             if ($error) {
@@ -550,7 +546,11 @@ class SmartStructureImport
         $dfiles["/vendor/Anakeen/Core/Layout/Class.Doc.layout"] = sprintf("%s/Smart%d.php", $genDir, $tdoc["id"]);
 
         if (!empty($tdoc["methods"])) {
-            $dfiles["/vendor/Anakeen/Core/Layout/Class.SmartMethods.layout"] = sprintf("%s/Method.%s.php", $genDir, $tdoc["name"]);
+            $dfiles["/vendor/Anakeen/Core/Layout/Class.SmartMethods.layout"] = sprintf(
+                "%s/Method.%s.php",
+                $genDir,
+                $tdoc["name"]
+            );
         }
 
         foreach ($dfiles as $kFile => $dfile) {
@@ -677,7 +677,6 @@ class SmartStructureImport
                 }
             }
 
-            $updateView = false;
             foreach ($tattr as $ka => $attr) {
                 $attr->id = chop($attr->id);
                 if (substr($attr->type, 0, 5) == "array") {
@@ -735,7 +734,6 @@ class SmartStructureImport
                         }
 
                         self::alterTableAddColumn("public", "doc$docid", $ka, $sqltype);
-                        $updateView = true;
                     }
                 }
             }
@@ -748,7 +746,11 @@ class SmartStructureImport
     protected static function tableExists($schemaName, $tableName)
     {
         DbManager::query(
-            sprintf("SELECT 'true' FROM information_schema.tables WHERE table_schema = %s AND table_name = %s", pg_escape_literal($schemaName), pg_escape_literal($tableName)),
+            sprintf(
+                "SELECT 'true' FROM information_schema.tables WHERE table_schema = %s AND table_name = %s",
+                pg_escape_literal($schemaName),
+                pg_escape_literal($tableName)
+            ),
             $res,
             true,
             true
@@ -784,7 +786,11 @@ class SmartStructureImport
 
     protected static function recreateFamilyView($docname, $docid)
     {
-        DbManager::query(sprintf("SELECT refreshFamilySchemaViews(%s, %s)", pg_escape_literal($docname), pg_escape_literal(intval($docid))), $res, true, true);
+        DbManager::query(sprintf(
+            "SELECT refreshFamilySchemaViews(%s, %s)",
+            pg_escape_literal($docname),
+            pg_escape_literal(intval($docid))
+        ), $res, true, true);
     }
 
     protected static function getTableColumns($schemaName, $tableName)
@@ -882,7 +888,7 @@ class SmartStructureImport
      * refresh PHP Class & Postgres Table Definition
      *
      * @param string $dbaccess
-     * @param int    $docid
+     * @param int $docid
      *
      * @return string error message
      */
@@ -942,7 +948,7 @@ class SmartStructureImport
     /**
      * complete attribute properties from  parent attribute
      *
-     * @param string  $dbaccess
+     * @param string $dbaccess
      * @param DocAttr $ta
      *
      * @return mixed
@@ -1018,16 +1024,18 @@ class SmartStructureImport
             $paf = array();
             foreach ($pa as $v) {
                 $paf[$v["id"]] = $v;
-                if (preg_match('/\bdoctitle=(?P<attrid>[A-Za-z0-9_-]+)\b/', $v["options"], $m)) {
-                    $vtitle = $v;
-                    if ($m['attrid'] == 'auto') {
-                        $vtitle["id"] = $v["id"] . "_title";
-                    } else {
-                        $vtitle["id"] = strtolower($m['attrid']);
+                if (preg_match("/^(docid|account)/", $v["type"])) {
+                    if (preg_match('/\bdoctitle=(?P<attrid>[A-Za-z0-9_-]+)\b/', $v["options"], $m)) {
+                        $vtitle = $v;
+                        if ($m['attrid'] == 'auto') {
+                            $vtitle["id"] = $v["id"] . "_title";
+                        } else {
+                            $vtitle["id"] = strtolower($m['attrid']);
+                        }
+                        $vtitle["type"] = "text";
+                        $vtitle["options"] = "";
+                        $paf[$vtitle["id"]] = $vtitle;
                     }
-                    $vtitle["type"] = "text";
-                    $vtitle["options"] = "";
-                    $paf[$vtitle["id"]] = $vtitle;
                 }
             }
             return $paf;
@@ -1088,7 +1096,7 @@ class SmartStructureImport
             return '';
         }
         $contents = preg_replace(
-            '%(?:  //[^\n]*\@begin-method-ignore|  /\*+[^/]*?\@begin-method-ignore)(.*?)(?:  //[^\n]*\@end-method-ignore[^\n]*|  /\*+[^/]*?\@end-method-ignore[^/]*?\*/)%xms',
+            '%(?:  //[^\n]*@begin-method-ignore|  /\*+[^/]*?@begin-method-ignore)(.*?)(?:  //[^\n]* @end-method-ignore[^\n]*|  /\*+[^/]*?@end-method-ignore[^/]*?\*/)%xms',
             '',
             $contents
         );

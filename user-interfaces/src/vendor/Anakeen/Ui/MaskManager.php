@@ -10,7 +10,6 @@ use SmartStructure\Fields\Cvdoc as CvdocFields;
 
 class MaskManager
 {
-
     const HiddenVisibility = "H";
     const ReadOnlyVisibility = "R";
     const ReadWriteVisibility = "W";
@@ -253,6 +252,9 @@ class MaskManager
                     // recompute loosed attributes
                     foreach ($tdiff as $k) {
                         $v = $oas[$k];
+                        if (!$v) {
+                            throw new \Anakeen\Exception("DOC1005", ($mdoc->name?:$mdoc->initid), $k);
+                        }
                         if ($v->type !== "frame") {
                             $fid = $oas[$k]->id;
                             $this->mVisibilities[$oas[$k]->id] = self::propagateVisibility(
