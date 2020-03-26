@@ -97,7 +97,11 @@ class AuthenticatorManager extends \Anakeen\Core\Internal\AuthenticatorManager
             }
 
             $sParser = new \FastRoute\RouteParser\Std;
-            $sParser->parse($route);
+            try {
+                $sParser->parse($route);
+            } catch (\FastRoute\BadRouteException $e) {
+                throw new Exception("ROUTER0109", $route, $e->getMessage());
+            }
 
             $routes[$k] = ["pattern" => $route, "methods" => $methods, "query" => $queries];
         }
