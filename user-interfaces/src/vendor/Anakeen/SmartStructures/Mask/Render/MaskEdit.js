@@ -53,10 +53,11 @@ window.ank.smartElement.globalController.registerFunction("maskEdit", controller
     Object.keys(visibilities).forEach(i => {
       if (i === "-") {
         visibilitiesTab.push({ value: i, text: "Unset" });
-      } else {
+      } else if (i !== "H") {
         visibilitiesTab.push({ value: i, text: visibilities[i] });
       }
     });
+    const visibilitiesTabNoArray = visibilitiesTab.filter(item => item.value !== "U");
     let $tree = $("#maskGrid");
 
     if ($tree.length === 0) {
@@ -115,15 +116,27 @@ window.ank.smartElement.globalController.registerFunction("maskEdit", controller
             .find("input[class='mask-visibility--dropdown']")
             .addClass("mask-visibility--dropdown-" + index);
           const $maskAlteredVisibilityList = $(".mask-visibility--dropdown-" + index);
-          $maskAlteredVisibilityList.kendoDropDownList({
-            dataSource: visibilitiesTab,
-            dataTextField: "text",
-            dataValueField: "value",
-            value: data.mVisibility,
-            change: function() {
-              changeVisibility(data, this.value(), index);
-            }
-          });
+          if (data.type !== "array") {
+            $maskAlteredVisibilityList.kendoDropDownList({
+              dataSource: visibilitiesTabNoArray,
+              dataTextField: "text",
+              dataValueField: "value",
+              value: data.mVisibility,
+              change: function() {
+                changeVisibility(data, this.value(), index);
+              }
+            });
+          } else {
+            $maskAlteredVisibilityList.kendoDropDownList({
+              dataSource: visibilitiesTab,
+              dataTextField: "text",
+              dataValueField: "value",
+              value: data.mVisibility,
+              change: function() {
+                changeVisibility(data, this.value(), index);
+              }
+            });
+          }
 
           $(row)
             .find("input[class='mask-needed--dropdown']")
