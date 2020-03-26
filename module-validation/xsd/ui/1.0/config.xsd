@@ -83,7 +83,7 @@
     </xs:complexType>
     <xs:complexType name="visibilityListType">
         <xs:sequence>
-            <xs:element type="uif:visibilityType" name="visibility" maxOccurs="unbounded"/>
+            <xs:element type="uif:visibilityType" name="visibility" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="visibilityType">
