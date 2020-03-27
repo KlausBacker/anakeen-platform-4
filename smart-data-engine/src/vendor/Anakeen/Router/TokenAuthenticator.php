@@ -39,7 +39,6 @@ class TokenAuthenticator extends \Anakeen\Core\Internal\OpenAuthenticator
             return false;
         }
 
-
         $url = $_SERVER["REDIRECT_URL"] ?? $_SERVER["REQUEST_URI"];
 
         $context = unserialize($rawContext);

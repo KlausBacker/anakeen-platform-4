@@ -154,11 +154,12 @@ class Manager
     /**
      * get url with open id to use with open authentiication
      * @param string $pattern the url pattern
+     * @param string $description description label for token
      * @return string
      * @throws Exception
      * @throws \Anakeen\Router\Exception
      */
-    public static function getOpenTeUrl($pattern)
+    public static function getOpenTeUrl($pattern, $description = "Transformation Engine")
     {
         $urlindex = \Anakeen\Core\ContextManager::getParameterValue(self::Ns, "TE_URLINDEX");
         if ($urlindex == "") { //case DAV
@@ -179,15 +180,18 @@ class Manager
             }
         }
 
-        $routes = [$pattern];
+        $parse=parse_url($pattern);
+
+
+        $routes = [$parse["path"]];
         $token = AuthenticatorManager::getAuthorizationToken(
             ContextManager::getCurrentUser(),
             $routes,
             3600 * 24,
             true,
-            "Transformation Engine"
+            $description
         );
-        if (strstr($urlindex, '?')) {
+        if (strstr($urlindex.$pattern, '?')) {
             $beg = '&';
         } else {
             $beg = '?';
