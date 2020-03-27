@@ -1,5 +1,3 @@
-import GlobalController from "../../../src/vendor/Anakeen/DOCUMENT/IHM/widgets/globalController/GlobalController";
-
 class ControllerNotInitializedError extends Error {}
 
 if (!(window.ank && window.ank.smartElement && window.ank.smartElement.globalController)) {

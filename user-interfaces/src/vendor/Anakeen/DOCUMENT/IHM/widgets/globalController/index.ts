@@ -7,7 +7,7 @@ import "../../../../../../../webpackConfig/kendo/kendo";
 window.ank = window.ank || {};
 window.ank.smartElement = window.ank.smartElement || {};
 
-export default new Promise((resolve, reject) => {
+const initController: Promise<AnakeenController> = new Promise((resolve, reject) => {
   try {
     if (!window.ank.smartElement.globalController) {
       window.ank.smartElement.globalController = new AnakeenController(false);
@@ -30,3 +30,5 @@ export default new Promise((resolve, reject) => {
     reject(e);
   }
 });
+
+export default initController;

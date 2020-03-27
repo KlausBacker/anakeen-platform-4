@@ -21,6 +21,7 @@ const conf = {
   input: {
     AnkAuthent: path.resolve(BASE_PATH, "src/AnkAuthent/index.ts"),
     AnkController: path.resolve(BASE_PATH, "src/AnkController/index.ts"),
+    AnkInitController: path.resolve(BASE_PATH, "src/AnkInitController/index.ts"),
     AnkIdentity: path.resolve(BASE_PATH, "src/AnkIdentity/index.ts"),
     AnkLoading: path.resolve(BASE_PATH, "src/AnkLoading/index.ts"),
     AnkLogout: path.resolve(BASE_PATH, "src/AnkLogout/index.ts"),
