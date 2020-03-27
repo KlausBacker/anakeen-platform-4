@@ -16,33 +16,26 @@ import _ from "underscore";
 import ControllerDispatcher from "./ControllerDispatcher";
 import SmartElementController from "./SmartElementController";
 import load from "./utils/ScriptLoader.js";
+import * as util from "util";
 
 interface IAsset {
   key: string;
   path: string;
 }
 
+interface ICallBack {
+  callback: (controller: SmartElementController) => void;
+  executed: boolean;
+}
+
 type CssAssetList = IAsset[];
 
-/**
- * Chain promises list
- * @param promisesList
- */
-const chainPromise = (...promisesList) =>
-  promisesList.reduce((acc, curr) => {
-    return acc.then(() => {
-      const result = curr();
-      if (result instanceof Promise || typeof result.then === "function") {
-        return result;
-      } else {
-        return Promise.resolve(result);
-      }
-    });
-  }, Promise.resolve());
-
-const ERROR_CODES = {
-  FUNCTION_NOT_FOUND: "FUNCTION_NOT_FOUND"
+const FunctionNotFound = function(this: Error, message): void {
+  Error.captureStackTrace(this, this.constructor);
+  this.name = this.constructor.name;
+  this.message = message;
 };
+util.inherits(FunctionNotFound, Error);
 
 export default class GlobalController extends AnakeenController.BusEvents.Listenable {
   /**
@@ -57,24 +50,14 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
    * @param script
    * @private
    */
-  private static _createScript(js, script: HTMLScriptElement) {
+  private static _createScript(js, script: HTMLScriptElement): void {
     const currentPath = js.path;
     const $script = $(script);
     $script.attr("data-id", js.key);
     $script.attr("data-src", currentPath);
-    switch (js.type) {
-      case "module":
-        // Module mode injection
-        $script.attr("type", "module");
-        $script.text(Mustache.render(moduleTemplate, js));
-        break;
-      case "library":
-        $script.attr("src", currentPath);
-        break;
-      default:
-        // Global mode injection
-        $script.attr("src", currentPath);
-        break;
+    if (js.type === "module") {
+      $script.attr("type", "module");
+      $script.text(Mustache.render(moduleTemplate, js));
     }
   }
 
@@ -88,14 +71,13 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
   /**
    * Verbose mode of the controller
    */
-  private _verbose: boolean = false;
-  private _scripts: { [scriptPath: string]: Array<(controller: SmartElementController) => void> } = {};
+  private _verbose = false;
 
-  private _isReady: boolean = false;
+  private _isReady = false;
 
   private _domObserver: MutationObserver;
 
-  private _registeredFunction: { [functionKey: string]: (controller: SmartElementController) => void } = {};
+  private _registeredFunction: { [functionKey: string]: ICallBack } = {};
   /**
    * Constructor of the GlobalController. The GlobalController is a Singleton
    */
@@ -289,8 +271,13 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
 
   public registerFunction(key: string, scriptFunction: (controller: SmartElementController) => void) {
     if (key && typeof scriptFunction === "function") {
-      this._registeredFunction[key] = scriptFunction;
+      if (this._registeredFunction[key]) {
+        this._logVerbose(`Beware ! The key ${key} is already used`, "Asset", "JS");
+      }
+      this._registeredFunction[key] = { callback: scriptFunction, executed: false };
       this._logVerbose(`register function with key ${key}`, "Asset", "JS");
+    } else {
+      throw new Error(`You must register a function for ${key}`);
     }
   }
 
@@ -466,15 +453,41 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
    * @param event
    * @private
    */
-  private _injectSmartElementJS(event) {
+  private _injectSmartElementJS(event): void {
+    const methodsToExecute = {} as { [functionKey: string]: ICallBack };
     const injectPromise = event.js.reduce((acc, currentJS) => {
-      console;
+      let needToRegisterScript = false;
+      //Check if the needed function are already is the scope
+      if (!currentJS.type || currentJS.type === "library") {
+        let functionKey = currentJS.function || currentJS.key;
+        if (!Array.isArray(functionKey)) {
+          functionKey = [functionKey];
+        }
+        functionKey.forEach(currentMethodName => {
+          try {
+            methodsToExecute[currentMethodName] = this._getRegisteredFunction(currentMethodName);
+          } catch (e) {
+            if (e instanceof FunctionNotFound) {
+              needToRegisterScript = true;
+            } else {
+              throw e;
+            }
+          }
+        });
+      } else {
+        needToRegisterScript = true;
+      }
+
       const currentPath = currentJS.path;
       // inject js if not alredy exist
-      if ($(`script[data-src="${currentPath}"], script[src="${currentPath}"]`).length === 0) {
+      if (needToRegisterScript && $(`script[data-src="${currentPath}"], script[src="${currentPath}"]`).length === 0) {
         return acc.then(() => {
           return new Promise((resolve, reject) => {
-            load("", {
+            let url = currentPath;
+            if (currentJS.type === "module") {
+              url = "";
+            }
+            load(url, {
               callback: err => {
                 if (err) {
                   reject(err);
@@ -493,29 +506,22 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
                     "Asset",
                     "JS"
                   );
-                  const functionKey = currentJS.function || currentJS.key;
-                  if (Array.isArray(functionKey)) {
-                    const functions = functionKey.map(key => {
-                      const scriptFunction = this._getRegisteredFunction(key);
-                      if (typeof scriptFunction !== "function") {
-                        // Set error function for missing script function
-                        return () =>
-                          Promise.reject({
-                            errorCode: ERROR_CODES.FUNCTION_NOT_FOUND,
-                            message: `Missing executable function for key "${key}" in script "${currentJS.path}"`
-                          });
-                      }
-                      return scriptFunction;
-                    });
-                    this._registerScript(currentJS.path, ...functions);
-                  } else {
-                    const registeredFunction = this._getRegisteredFunction(functionKey);
-                    if (registeredFunction) {
-                      this._registerScript(currentJS.path, this._getRegisteredFunction(functionKey));
-                    } else {
-                      this.emit("_internal::scriptReady", currentJS.path);
-                    }
+                  let currentKey = currentJS.function || currentJS.key;
+                  if (!Array.isArray(currentKey)) {
+                    currentKey = [currentKey];
                   }
+                  currentKey.forEach(currentMethodName => {
+                    try {
+                      methodsToExecute[currentMethodName] = this._getRegisteredFunction(currentMethodName);
+                    } catch (e) {
+                      if (e instanceof FunctionNotFound) {
+                        console.error(
+                          `Missing executable function for key "${currentMethodName}" in script "${currentJS.path}"`
+                        );
+                      }
+                    }
+                  });
+                  this.emit("_internal::scriptReady", currentJS.path);
                 }
               },
               setup: script => GlobalController._createScript(currentJS, script)
@@ -538,57 +544,59 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
     // Set inject promise
     event.injectPromise = injectPromise.then(() => {
       // Execute script function with scoped controller
-      const customJS = _.pluck(event.js, "path");
-      const promises = customJS.map(jsPath => {
-        const promisify = Promise.resolve();
-        if (Array.isArray(this._scripts[jsPath])) {
-          // eslint-disable-next-line no-useless-catch
-          try {
-            const scopedController = this.getScopedController(event.controller.uid) as SmartElementController;
-            // Restrict the js to the current smart element view
-            const results = [];
-            this._scripts[jsPath].forEach(scriptFunction => {
-              results.push(Promise.resolve().then(() => scriptFunction.call(this, scopedController)));
-            });
-            // If returnFunction is Promise => handle async operation, else immediately resolve
-            return () =>
-              promisify
-                .then(() => {
-                  return Promise.all(results);
-                })
-                .catch(err => {
-                  if (err && typeof err === "object" && err.errorCode === ERROR_CODES.FUNCTION_NOT_FOUND) {
-                    console.error(err.message);
-                    return Promise.resolve();
-                  }
-                  console.error(err);
-                  throw err;
-                });
-          } catch (err) {
-            console.error(err);
-            throw err;
-          }
+      const scopedController = this.getScopedController(event.controller.uid) as SmartElementController;
+      const callback = Object.values(methodsToExecute).map(callBack => {
+        if (callBack.executed === true) {
+          //Already executed once, so doesn't execute it a second time
+          return false;
         }
-        return () => promisify;
+        return (): any => {
+          let result;
+          try {
+            result = callBack.callback.call(this, scopedController);
+            //the callback need to be executed only one time
+            callBack.executed = true;
+          } catch (e) {
+            console.error(e);
+          }
+          return result;
+        };
       });
-      return chainPromise(...promises);
+      //Execute all the stacked method one after other
+      return callback.reduce((acc, currentCallBack) => {
+        return acc.then(() => {
+          if (currentCallBack === false) {
+            return Promise.resolve();
+          }
+          const result = currentCallBack();
+          if (result instanceof Promise) {
+            return result;
+          } else {
+            return Promise.resolve(result);
+          }
+        });
+      }, Promise.resolve());
     });
   }
 
   /**
    * Register script function for later reuse after listener unbinding
    * @param scriptUrl
-   * @param scriptFunction
    * @private
    */
-  private _registerScript(scriptUrl: string, ...scriptFunction: Array<(controller: SmartElementController) => void>) {
-    if (typeof scriptUrl === "string" && Array.isArray(scriptFunction)) {
-      this._scripts[scriptUrl] = scriptFunction;
-    }
+  private _registerScript(scriptUrl: string): void {
     this.emit("_internal::scriptReady", scriptUrl);
   }
 
-  private _getRegisteredFunction(key: string) {
+  /**
+   * Return a registered function or throw an FunctionNotFound Error
+   * @param key
+   * @private
+   */
+  private _getRegisteredFunction(key: string): ICallBack {
+    if (!this._registeredFunction[key]) {
+      throw new FunctionNotFound("Function not registered");
+    }
     return this._registeredFunction[key];
   }
 
