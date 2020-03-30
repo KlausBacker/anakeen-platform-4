@@ -8,7 +8,7 @@ import ListenableEvent = AnakeenController.BusEvents.ListenableEvent;
 import EVENTS_LIST = AnakeenController.SmartElement.EVENTS_LIST;
 import ControllerOptions = AnakeenController.Types.IControllerOptions;
 import ControllerNotFoundError from "./ControllerNotFoundError";
-// @ts-ignore
+
 import moduleTemplate from "./utils/templates/module.mustache.js";
 import $ from "jquery";
 import Mustache from "mustache";
@@ -25,7 +25,6 @@ interface IAsset {
 
 interface ICallBack {
   callback: (controller: SmartElementController) => void;
-  executed: boolean;
 }
 
 type CssAssetList = IAsset[];
@@ -274,7 +273,7 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
       if (this._registeredFunction[key]) {
         this._logVerbose(`Beware ! The key ${key} is already used`, "Asset", "JS");
       }
-      this._registeredFunction[key] = { callback: scriptFunction, executed: false };
+      this._registeredFunction[key] = { callback: scriptFunction };
       this._logVerbose(`register function with key ${key}`, "Asset", "JS");
     } else {
       throw new Error(`You must register a function for ${key}`);
@@ -546,16 +545,10 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
       // Execute script function with scoped controller
       const scopedController = this.getScopedController(event.controller.uid) as SmartElementController;
       const callback = Object.values(methodsToExecute).map(callBack => {
-        if (callBack.executed === true) {
-          //Already executed once, so doesn't execute it a second time
-          return false;
-        }
         return (): any => {
           let result;
           try {
             result = callBack.callback.call(this, scopedController);
-            //the callback need to be executed only one time
-            callBack.executed = true;
           } catch (e) {
             console.error(e);
           }
@@ -565,9 +558,6 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
       //Execute all the stacked method one after other
       return callback.reduce((acc, currentCallBack) => {
         return acc.then(() => {
-          if (currentCallBack === false) {
-            return Promise.resolve();
-          }
           const result = currentCallBack();
           if (result instanceof Promise) {
             return result;
