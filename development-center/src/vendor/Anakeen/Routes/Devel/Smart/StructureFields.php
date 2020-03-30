@@ -54,10 +54,11 @@ class StructureFields
 
         $data["properties"]["parents"] = StructureInfo::getParents($this->structure);
         $data["fields"] = $this->getFieldsConfig($this->structure);
-        $data["uri"] = URLUtils::generateURL(Settings::ApiV2 . sprintf(
-            "devel/smart/structures/%s/fields/",
-            $this->structureName
-        ));
+        $data["uri"] = URLUtils::generateURL(Settings::ApiV2 .
+            sprintf(
+                "devel/smart/structures/%s/fields/",
+                $this->structureName
+            ));
         return $data;
     }
 
@@ -194,7 +195,6 @@ class StructureFields
                 $dbAttrs[$oa->id]["simpletype"] = strtok($dbAttrs[$oa->id]["type"], "(");
                 $dbAttrs[$oa->id]["displayOrder"] = $relativeOrder++;
             }
-
             foreach ($dbModAttr as $modAttr) {
                 if ($modAttr["id"] === ":" . $oa->id && $modAttr["docid"] == $oa->structureId) {
                     $dbAttrs[$oa->id]["declaration"] = "overrided";
@@ -211,7 +211,8 @@ class StructureFields
                         "elink" => "elink",
                         "phpfunc" => "phpfunc",
                         "phpconstraint" => "phpconstraint",
-                        "phpfile" => "phpfile"
+                        "phpfile" => "phpfile",
+                        "properties" => "properties"
                     ];
                     foreach ($types as $type => $oType) {
                         if ($modAttr[$type]) {
@@ -267,7 +268,7 @@ class StructureFields
                 if (is_numeric($attr["ordered"])) {
                     $attr["ordered"] = "";
                 }
-            };
+            }
 
             if (!empty($attr["ordered"]) && !is_numeric($attr["ordered"])) {
                 $attr["options"] = preg_replace("/(relativeOrder=[a-zA-Z0-9_:]+)/", "", $attr["options"]);
@@ -315,13 +316,21 @@ class StructureFields
                 $dbAttr["overrides"]["parentId"] = $dbAttr["overrides"]["frameid"];
                 unset($dbAttr["overrides"]["frameid"]);
             }
+            if (isset($dbAttr["overrides"]["properties"])) {
+                if (!empty($dbAttr["overrides"]["properties"]["after"]->autocomplete)) {
+                    $dbAttr["overrides"]["autocomplete"] = [
+                        "before" => $dbAttr["overrides"]["properties"]["before"],
+                        "after" => $dbAttr["overrides"]["properties"]["after"]
+                    ];
+                }
+            }
 
             $dbAttr["optionValues"] = SmartStructure\BasicAttribute::optionsToArray($dbAttr["options"] ?: '');
             $dbAttr["structure"] = SEManager::getNameFromId($dbAttr["docid"]);
             $dbAttr["parentId"] = $dbAttr["frameid"];
 
-            if ($dbAttr["properties"]) {
-                $dbAttr["properties"] = json_decode($dbAttr["properties"], true);
+            if ($dbAttr["properties"] && !is_object($dbAttr["properties"])) {
+                $dbAttr["properties"] = json_decode($dbAttr["properties"], false);
             }
 
             unset($dbAttr["usefor"]);
@@ -335,8 +344,8 @@ class StructureFields
             $result[] = $dbAttr;
         }
         foreach ($result as &$fieldData) {
-            if (isset($fieldData["properties"]["autocomplete"])) {
-                $fieldData["autocomplete"] = $fieldData["properties"]["autocomplete"];
+            if (!empty($fieldData["properties"]->autocomplete)) {
+                $fieldData["autocomplete"] = $fieldData["properties"]->autocomplete;
             } elseif (strlen($fieldData["phpfile"]) > 2 && $fieldData["phpfunc"]) {
                 $fieldData["autocomplete"] = sprintf("[%s] : %s", $fieldData["phpfile"], $fieldData["phpfunc"]);
             } elseif (strlen($fieldData["phpfunc"]) > 2) {

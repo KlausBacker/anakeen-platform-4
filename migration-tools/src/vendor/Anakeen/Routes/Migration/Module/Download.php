@@ -106,8 +106,8 @@ class Download
         $structName = self::camelCase($structure->name);
         $e = new ExportRenderAccessConfiguration($structure);
         $e->extractProfil("ref");
-        $e->extractCvRef();
         $e->insertStructConfig();
+        $e->extractCvRef();
         $xmlFile = sprintf("%s/SmartStructures/%s/500-%sSetting.xml", $this->outputPath, $structName, $structName);
         $this->zip->addFromString($xmlFile, $e->toXml());
 

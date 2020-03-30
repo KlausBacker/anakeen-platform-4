@@ -277,6 +277,10 @@ class ErrorCodeDOC
      */
     const DOC1004 = '"%s" mask is not found , cannot apply it to "%s" document';
     /**
+     * @errorCode a reference field is not a part of structure
+     */
+    const DOC1005 = '"%s" mask  ,field "%s" not found';
+    /**
      * @errorCode A method call by client must has a specific declaration in the comment part : @apiExpose
      *
      */

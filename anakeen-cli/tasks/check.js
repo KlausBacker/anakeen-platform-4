@@ -50,6 +50,7 @@ exports.checkConfigFile = ({ sourcePath, verbose, glob, sourceDir }) => {
     async () =>
       new Promise((resolve, reject) => {
         let result = "";
+        const error = [];
         if (sourcePath === undefined && glob === undefined) {
           throw new Error("No source path specified.");
         }
@@ -64,8 +65,8 @@ exports.checkConfigFile = ({ sourcePath, verbose, glob, sourceDir }) => {
               result = checkResult.ok ? "✓" : checkResult.ignore ? "ignored" : checkResult.error;
               log(`Analyze : ${sourcePath} : ${result}`);
             }
-            if (checkResult.error) {
-              result += checkResult.error;
+            if (result.error) {
+              return reject(result.error);
             }
             resolve(result);
           } else if (glob) {
@@ -84,7 +85,13 @@ exports.checkConfigFile = ({ sourcePath, verbose, glob, sourceDir }) => {
                     result = checkResult.ok ? "✓" : checkResult.ignore ? "ignored" : checkResult.error;
                     log(`Analyze : ${filepath} : ${result}`);
                   }
+                  if (checkResult.error) {
+                    error.push(checkResult.error);
+                  }
                 });
+                if (error.length > 0) {
+                  return reject(error.join(" "));
+                }
                 resolve(result);
               }
             });
