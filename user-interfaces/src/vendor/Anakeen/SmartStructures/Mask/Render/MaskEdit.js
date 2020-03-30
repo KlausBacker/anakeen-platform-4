@@ -44,6 +44,7 @@ window.ank.smartElement.globalController.registerFunction("maskEdit", controller
     controller.setValue("msk_needeeds", { value: val, index: index });
   };
   controller.addEventListener("ready", function maskViewReady(event, smartElementObject) {
+    const maskHeader = $(".mask-header");
     const neededTab = [
       { value: true, text: "Mandatory" },
       { value: false, text: "Optionnal" }
@@ -53,7 +54,7 @@ window.ank.smartElement.globalController.registerFunction("maskEdit", controller
     Object.keys(visibilities).forEach(i => {
       if (i === "-") {
         visibilitiesTab.push({ value: i, text: "Unset" });
-      } else if (i !== "H") {
+      } else if (i !== "I") {
         visibilitiesTab.push({ value: i, text: visibilities[i] });
       }
     });
@@ -73,7 +74,6 @@ window.ank.smartElement.globalController.registerFunction("maskEdit", controller
         $(window).off("resize.mask");
       }
     });
-
     $tree.kendoTreeList({
       dataSource: {
         transport: {
@@ -251,5 +251,9 @@ window.ank.smartElement.globalController.registerFunction("maskEdit", controller
       ]
     });
     fitMaskGridToBottom($tree);
+    const famidInput = maskHeader.find("input[name='msk_famid_input']");
+    famidInput.on("change", e => {
+      controller.setValue("msk_famid", { value: e.target.value });
+    });
   });
 });
