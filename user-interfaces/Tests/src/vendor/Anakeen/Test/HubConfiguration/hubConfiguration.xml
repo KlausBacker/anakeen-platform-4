@@ -72,6 +72,23 @@
     </hge_jsassets>
     <hge_component_tag>ank-test-smart-grid</hge_component_tag>
   </hubconfigurationgeneric>
+  <hubconfigurationgeneric name="HGEA_TESTSMARTLIST">
+    <hub_station_id name="UI_TEST">Test Smart Element List</hub_station_id>
+    <hub_title>TESTSMARTLIST</hub_title>
+    <hub_order>3</hub_order>
+    <hub_docker_position>LEFT_TOP</hub_docker_position>
+    <hub_vue_router_entry>testsmartlist</hub_vue_router_entry>
+    <hub_activated>FALSE</hub_activated>
+    <hub_selectable>TRUE</hub_selectable>
+    <hub_expandable>TRUE</hub_expandable>
+    <hge_jsassets>
+      <hge_jsasset_type>MANIFEST</hge_jsasset_type>
+      <hge_jsasset>
+        Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("testSmartList", "test-smart-list")
+      </hge_jsasset>
+    </hge_jsassets>
+    <hge_component_tag>ank-test-smart-list</hge_component_tag>
+  </hubconfigurationgeneric>
   <report xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="report.xsd" name="HUBEXT_2108" title="Tests de rendu de Smart Element" revision="0" modification-date="2019-04-25 14:12:15.959953" version="" state="">
     <fr_basic>
       <ba_title>Tests de rendu de Smart Element</ba_title>

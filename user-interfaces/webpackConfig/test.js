@@ -10,6 +10,7 @@ const {
 } = require("@anakeen/webpack-conf/parts");
 const testSmartForm = require("./testSmartForm");
 const testSmartGrid = require("./testSmartGrid");
+const testSmartList = require("./testSmartList");
 
 const BASE_DIR = path.resolve(__dirname, "../");
 const PUBLIC_PATH = path.join(BASE_DIR, "Tests/src/public");
@@ -37,10 +38,10 @@ module.exports = () => {
     ]
   };
   if (process.env.conf === "PROD") {
-    return [prod(conf), lib(testSmartForm), lib(testSmartGrid)];
+    return [prod(conf), lib(testSmartForm), lib(testSmartGrid), lib(testSmartList)];
   }
   if (process.env.conf === "DEV") {
-    return [dev(conf), lib({ ...testSmartForm, ...{ mode: "dev" } }), lib({ ...testSmartGrid, ...{ mode: "dev" } })];
+    return [dev(conf), lib({ ...testSmartForm, ...{ mode: "dev" } }), lib({ ...testSmartGrid, ...{ mode: "dev" } }), lib({ ...testSmartList, ...{ mode: "dev" } })];
   }
   return [
     prod(conf),
@@ -48,6 +49,8 @@ module.exports = () => {
     lib(testSmartForm),
     lib({ ...testSmartForm, ...{ mode: "dev" } }),
     lib(testSmartGrid),
-    lib({ ...testSmartGrid, ...{ mode: "dev" } })
+    lib({ ...testSmartGrid, ...{ mode: "dev" } }),
+    lib(testSmartList),
+    lib({ ...testSmartList, ...{ mode: "dev" } })
   ];
 };
