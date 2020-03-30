@@ -30,7 +30,10 @@ interface ICallBack {
 type CssAssetList = IAsset[];
 
 const FunctionNotFound = function(this: Error, message): void {
-  Error.captureStackTrace(this, this.constructor);
+  // Error.captureStackTrace is not available on ff
+  if (Error.captureStackTrace) {
+    Error.captureStackTrace(this, this.constructor);
+  }
   this.name = this.constructor.name;
   this.message = message;
 };
