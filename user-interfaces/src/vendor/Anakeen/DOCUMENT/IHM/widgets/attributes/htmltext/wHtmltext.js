@@ -420,7 +420,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
       if (originalValue.trim() != value.value.trim()) {
         // Modify value only if different
 
-        this.getContentElements().html(value.value);
+        this.getContentElements().val(value.value);
       }
     } else if (this.getMode() === "read") {
       this.getContentElements().html(value.displayValue);
