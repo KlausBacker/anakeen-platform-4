@@ -1,0 +1,3 @@
+PROJECT_NGINX_VERSION = 1.17
+
+DOCKER_COMPOSE_OVERRIDES += -f $(DOCKER_DIR)/Addons/nginx/docker-compose.yml

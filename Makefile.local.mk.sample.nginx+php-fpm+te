@@ -1,0 +1,13 @@
+ifneq ($(wildcard build/transformation-server/transformation-server-latest.zip),)
+	# Add  "transformation-server" container (tcp/51968) iff the
+	# `transformation-server-latest.zip` file exists otherwise the container
+	# won't start
+	include .devtool/docker/Addons/transformation-server/Makefile.params.mk
+endif
+
+# Add "php-fpm" container (tcp/9000)
+include .devtool/docker/Addons/php-fpm/Makefile.params.mk
+
+# Override default "web" container with Nginx one (still serves HTTP (tcp/80)
+# and add HTTPS (tcp/443) support)
+include .devtool/docker/Addons/nginx/Makefile.params.mk

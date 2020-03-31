@@ -20,7 +20,7 @@ TOPTARGETS := deploy deploy-test deploy-all lint po stub checkXML clean beautify
 
 BUILDTARGETS := app app-autorelease app-test app-test-autorelease app-all
 
-SUBDIRS := control smart-data-engine internal-components user-interfaces security workflow hub-station admin-center business-app development-center transformation migration-tools dev-data test-tools fulltext-search
+SUBDIRS := control smart-data-engine internal-components user-interfaces security workflow hub-station admin-center business-app development-center transformation transformation-server migration-tools dev-data test-tools fulltext-search
 
 CONTROL_ARCHIVE = $(BUILD_DIR)/control/anakeen-control-latest.zip
 
@@ -61,7 +61,7 @@ lint-po: ## Lint po
 	./$(DEVTOOLS_DIR)/ci/check/checkPo.sh
 
 .PHONY: env-start
-env-start: | $(VOLUMES_PHP_CONTROL_CONF)/contexts.xml $(VOLUMES_PRIVATE) ## Start docker environment
+env-start: | $(VOLUMES_WEBROOT_CONTROL_CONF)/contexts.xml $(VOLUMES_PRIVATE) ## Start docker environment
 	@$(PRINT_COLOR) "$(COLOR_SUCCESS)"
 	@$(MAKE) --no-print-directory env-list-ports
 	@$(PRINT_COLOR) "$(COLOR_RESET)"

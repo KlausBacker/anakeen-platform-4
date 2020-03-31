@@ -6,11 +6,11 @@
 
 .PHONY: logs-php-error
 logs-php-error: ## Shows php error log from php container
-	docker logs -f $$($(DOCKER_COMPOSE_CMD) ps -q php) 2>&1 >/dev/null | sed -ur 's/\\n/\n/g'
+	docker logs -f $$($(DOCKER_COMPOSE_CMD) ps -q $(CONTAINER_PHP)) 2>&1 >/dev/null | sed -ur 's/\\n/\n/g'
 
 .PHONY: logs-php-access
 logs-php-access: ## Shows php access log from php container
-	docker logs -f $$($(DOCKER_COMPOSE_CMD) ps -q php) 2>/dev/null | sed -ur 's/\\n/\n/g'
+	docker logs -f $$($(DOCKER_COMPOSE_CMD) ps -q $(CONTAINER_PHP)) 2>/dev/null | sed -ur 's/\\n/\n/g'
 
 .PHONY: logs-postgresql
 logs-postgresql: ## Shows error from postgres container
@@ -18,7 +18,7 @@ logs-postgresql: ## Shows error from postgres container
 
 .PHONY: docker-prompt-php
 docker-prompt-php: ## open bash prompt in php container
-	$(DOCKER_COMPOSE_CMD) exec php docker-php-entrypoint /bin/bash
+	$(DOCKER_COMPOSE_CMD) exec $(CONTAINER_PHP) docker-php-entrypoint /bin/bash
 
 .PHONY: docker-prompt-control
 docker-prompt-control: ## open anakeen-control prompt
@@ -32,10 +32,20 @@ docker-prompt-postgresql: ## open bash prompt in postgres container
 docker-prompt-psql: ## open psql prompt in platform db
 	$(DOCKER_COMPOSE_CMD) exec postgres bash -c 'psql -U $$ANK_PG_USER -d $$ANK_PG_BASE'
 
-$(VOLUMES_PHP_CONTROL): | $(CONTROL_ARCHIVE)
+.PHONY: docker-compose-env
+docker-compose-env: ## Generate Bourne shell commands to export variables suitable for use by ".devtools/docker-compose" or any external introspection
+	@echo export $(DOCKER_COMPOSE_ENV)
+	@echo export DOCKER_COMPOSE_CMD=\"$(DOCKER_COMPOSE_CMD)\"
+	@echo export DOCKER_COMPOSE_BASE_FILE=\"$(DOCKER_COMPOSE_BASE_FILE)\"
+	@echo export DOCKER_COMPOSE_SERVICES=\"$(DOCKER_COMPOSE_SERVICES)\"
+	@echo export DOCKER_COMPOSE_OVERRIDES=\"$(DOCKER_COMPOSE_OVERRIDES)\"
+	@echo export PROJECT_NAME=\"$(PROJECT_NAME)\"
+	@echo export _CONTROL_CMD=\"$(_CONTROL_CMD)\"
+
+$(VOLUMES_WEBROOT_CONTROL): | $(CONTROL_ARCHIVE)
 	mkdir -p "$@/.."
 	unzip -qo "$(CONTROL_ARCHIVE)" -d "$(@D)"
-	mkdir -p $(VOLUMES_PHP_CONTROL_CONF)
+	mkdir -p $(VOLUMES_WEBROOT_CONTROL_CONF)
 	touch "$@"
 
 $(BUILD_DIR):
@@ -44,12 +54,15 @@ $(BUILD_DIR):
 $(VOLUMES_PRIVATE_DIR)/%:
 	mkdir -p "$@"
 
-$(VOLUMES_PHP_CONTROL_CONF)/contexts.xml: | _env-start
+$(VOLUMES_WEBROOT_CERTS):
+	mkdir -p "$@"
+
+$(VOLUMES_WEBROOT_CONTROL_CONF)/contexts.xml: | _env-start
 	@$(PRINT_COLOR) "$(COLOR_INFO)[I]$@ not found, initializing context$(COLOR_RESET)\n"
 	$(_CONTROL_CMD) status --format json | jq -e '.status != "Not Initialized"' > /dev/null \
 		|| $(_CONTROL_CMD) init --pg-service=platform --password=$(CONTEXT_PASSWORD)
 	$(_CONTROL_CMD) registry show --format json | jq -e '.[] | select(.name=="$(LOCAL_REPO_NAME)").name == "$(LOCAL_REPO_NAME)"' > /dev/null \
-		|| $(_CONTROL_CMD) registry add $(LOCAL_REPO_NAME) $(DOCKER_INTERNAL_PHP_REPO_PATH)
+		|| $(_CONTROL_CMD) registry add $(LOCAL_REPO_NAME) $(DOCKER_INTERNAL_WEBROOT_REPO_PATH)
 	#$(_CONTROL_CMD) install --no-interaction --no-ansi
 	#$(_CONTROL_CMD) update --no-interaction --no-ansi
 	@$(PRINT_COLOR) "$(COLOR_INFO)[I]context initialized$(COLOR_RESET)\n"
@@ -59,8 +72,11 @@ _env-start: | $(VOLUMES_PRIVATE) $(BUILD_DIR)
 	@$(PRINT_COLOR) "$(COLOR_DEBUG)[D][$@] Start containers$(COLOR_RESET)\n"
 	$(DOCKER_COMPOSE_CMD) up -d $(DOCKER_COMPOSE_UP_OPTIONS) $(DOCKER_COMPOSE_SERVICES)
 	@$(PRINT_COLOR) "$(COLOR_DEBUG)[D][$@] Wait for services to start$(COLOR_RESET)\n"
-	$(DOCKER_COMPOSE_CMD) run --rm --no-deps wait-for-it postgres:5432 -t $(WAIT_FOR_IT_TIMEOUT)
-	$(DOCKER_COMPOSE_CMD) run --rm --no-deps wait-for-it php:80 -t $(WAIT_FOR_IT_TIMEOUT)
+	for SERVICE in $(DOCKER_COMPOSE_SERVICES_WAIT_LIST); do \
+		echo "[+] Waiting for '$${SERVICE}'..."; \
+		$(DOCKER_COMPOSE_CMD) run --rm --no-deps wait-for-it $${SERVICE} -t $(WAIT_FOR_IT_TIMEOUT); \
+		echo "[+] Done."; \
+	done
 
 .PHONY: _env-stop
 _env-stop:
@@ -147,13 +163,18 @@ env-list-ports: ## list exposed ports
 	@for service in $(DOCKER_COMPOSE_SERVICES); do \
 		echo "- $$service:"; \
 		$(DOCKER_BIN) port $$($(DOCKER_COMPOSE_CMD) ps -q $$service); \
-	done
+	done; \
+	if [ -f $(VOLUMES_WEBROOT_CERTS)/rootCA.pem ]; then \
+		echo ""; \
+		echo "Root CA certificate: $(VOLUMES_WEBROOT_CERTS)/rootCA.pem"; \
+		echo ""; \
+	fi;
 
 ###############################################################################
 ## Utils
 ###############################################################################
 
-_CONTROL_CMD = $(DOCKER_COMPOSE_CMD) exec php $(DOCKER_INTERNAL_PHP_CONTROL_DIR_PATH)/anakeen-control
+_CONTROL_CMD = $(DOCKER_COMPOSE_CMD) exec $(CONTAINER_PHP) $(DOCKER_INTERNAL_WEBROOT_CONTROL_DIR_PATH)/anakeen-control
 _CONTROL_SHELL_CMD = $(_CONTROL_CMD) run
 _CONTROL_ANK_CMD = $(_CONTROL_SHELL_CMD) ./ank.ph
 

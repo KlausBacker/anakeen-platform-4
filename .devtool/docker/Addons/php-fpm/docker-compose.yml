@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  php-fpm:
+    build:
+      context: ./Addons/php-fpm
+      args:
+        ANK_RUN_UID: ${COMPOSE_UID}
+        ANK_RUN_GID: ${COMPOSE_GID}
+        PROJECT_PHP_VERSION: ${PROJECT_PHP_VERSION-7.3}
+    volumes:
+      - './Volumes/_private/webroot/var/www/html/anakeen:/var/www/html/anakeen'
+      - './Volumes/_private/webroot/var/spool/cron/crontabs/:/var/spool/cron/crontabs'
+      - './Volumes/_private/webroot/tmp/share/:/tmp/share/'
+
+      - "../../build/:/var/www/html/anakeen/repo"
+
+      - './Volumes/php/usr/local/etc/php/conf.d/10-base.ini:/usr/local/etc/php/conf.d/10-base.ini'
+    depends_on:
+      - postgres
+    links:
+      - 'postgres:postgres'
+      - 'mail:mail'
+    networks:
+      internal:
+        aliases:
+          - php-fpm
+          - php
+
+networks:
+  internal: {}
