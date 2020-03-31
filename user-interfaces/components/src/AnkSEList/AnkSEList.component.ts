@@ -5,12 +5,14 @@ import I18nMixin from "../../mixins/AnkVueComponentMixin/I18nMixin";
 import ReadyMixin from "../../mixins/AnkVueComponentMixin/ReadyMixin";
 import AnkSmartElementGrid, { SmartGridColumn, SmartGridFilter } from "../AnkSEGrid/AnkSEGrid.component";
 import ListEvent from "./AnkListEvent/AnkListEvent";
+import AnkGridPager from "../AnkSEGrid/AnkGridPager/AnkGridPager.vue";
 
 const CONTROLLER_URL = "/api/v2/grid/controllers/{controller}/{op}/{collection}";
 @Component({
   name: "ank-se-list",
   components: {
-    AnkGrid
+    AnkGrid,
+    AnkGridPager
   }
 })
 export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin, I18nMixin) {
@@ -26,7 +28,7 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin,
   @Prop({ type: Number, default: 0 }) public value!: number;
   @Prop({ type: Number, default: 1 }) public page!: number;
   @Prop({ type: String, default: "" }) public filterValue!: string;
-
+  @Prop({ type: Object, default: () => ({ field: "title", dir: "asc" }) }) public sort!: kendo.data.DataSourceSortItem;
   @Watch("smartCollection")
   protected onSmartCollectionChange(newValue): void {
     this.collectionId = newValue;
@@ -46,13 +48,25 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin,
     }
   }
 
+  @Watch("filterInput")
+  protected onFilterInputDataChange(newValue): void {
+    const listEvent = new ListEvent(
+      {
+        filterInput: newValue
+      },
+      null,
+      false
+    );
+    this.$emit("filterInput", listEvent);
+  }
+
   public collectionId: string | number = this.smartCollection;
   public selectedItem: string | number = "";
   public filterInput = this.filterValue;
   public small = false;
   public xSmall = false;
   public currentFilter: SmartGridFilter = {};
-  public collectionInfoReady: boolean = false;
+  public collectionInfoReady = false;
 
   public $refs: {
     internalWidget: AnkSmartElementGrid;
@@ -137,18 +151,20 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin,
       this.clearListFilter();
     } else {
       this.filterInput = filterValue;
-      this.currentFilter = {
+      const filterObject = {
         field: "title",
         operator: "contains",
         value: filterValue
       };
       const listEvent = new ListEvent(
         {
-          filterInput: filterValue
+          filterInput: filterValue,
+          filter: filterObject
         },
         null,
         false
       );
+      this.currentFilter = filterObject;
       this.$emit("filterChange", listEvent);
     }
   }
@@ -222,5 +238,14 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin,
   protected onPageChange(event): void {
     const listEvent = new ListEvent(event.data, null, false);
     this.$emit("pageChange", listEvent);
+  }
+
+  protected onBeforeContent(event): void {
+    const listEvent = new ListEvent(event.data, null, true);
+    this.$emit("beforeContent", listEvent);
+    event.data = listEvent.data;
+    if (listEvent.isDefaultPrevented()) {
+      event.preventDefault();
+    }
   }
 }
