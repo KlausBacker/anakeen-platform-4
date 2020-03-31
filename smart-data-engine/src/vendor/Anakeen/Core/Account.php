@@ -288,6 +288,9 @@ create sequence seq_id_users start 10;";
         if (!$this->lastname && !$this->firstname) {
             $this->lastname = $this->login;
         }
+        if (!$this->memberof) {
+            $this->memberof='{}';
+        }
 
         if (isset($this->password_new) && ($this->password_new != "")) {
             $this->computepass($this->password_new, $this->password);

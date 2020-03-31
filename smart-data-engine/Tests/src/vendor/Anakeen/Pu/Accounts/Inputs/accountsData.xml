@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<accounts:accounts xmlns:accounts="https://platform.anakeen.com/4/schemas/account/1.0">
+
+    <accounts:roles>
+        <accounts:role name="rtst_001"/>
+        <accounts:role name="rtst_002"/>
+        <accounts:role name="rtst-003"/>
+    </accounts:roles>
+
+
+    <accounts:groups>
+        <accounts:group name="gtst_101"/>
+        <accounts:group name="gtst_102"/>
+        <accounts:group name="gtst_103"/>
+        <accounts:group name="gtst_104"/>
+        <accounts:group name="gtst_201">
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="gtst_101"/>
+            </accounts:parentGroups>
+        </accounts:group>
+        <accounts:group name="gtst_202">
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="gtst_101"/>
+                <accounts:parentGroup ref="gtst_102"/>
+            </accounts:parentGroups>
+        </accounts:group>
+        <accounts:group name="gtst_203">
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="gtst_102"/>
+            </accounts:parentGroups>
+        </accounts:group>
+        <accounts:group name="gtst_301">
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="gtst_201"/>
+            </accounts:parentGroups>
+        </accounts:group>
+        <accounts:group name="gtst_302">
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="gtst_201"/>
+                <accounts:parentGroup ref="gtst_102"/>
+            </accounts:parentGroups>
+        </accounts:group>
+        <accounts:group name="gtst_303">
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="gtst_201"/>
+                <accounts:parentGroup ref="gtst_202"/>
+            </accounts:parentGroups>
+        </accounts:group>
+        <accounts:group name="gtst_304">
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="gtst_202"/>
+            </accounts:parentGroups>
+        </accounts:group>
+        <accounts:group name="gtst_305">
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="gtst_203"/>
+            </accounts:parentGroups>
+        </accounts:group>
+        <accounts:group name="gtst_202">
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="gtst_103"/>
+            </accounts:parentGroups>
+        </accounts:group>
+
+        <accounts:group name="gtst_r101">
+            <accounts:associatedRoles>
+                <accounts:associatedRole ref="rtst_001"/>
+            </accounts:associatedRoles>
+        </accounts:group>
+        <accounts:group name="gtst_r201">
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="gtst_r101"/>
+            </accounts:parentGroups>
+        </accounts:group>
+        <accounts:group name="gtst_r301">
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="gtst_r201"/>
+            </accounts:parentGroups>
+        </accounts:group>
+        <accounts:group name="gtst_r201">
+            <accounts:associatedRoles>
+                <accounts:associatedRole ref="rtst_002"/>
+            </accounts:associatedRoles>
+        </accounts:group>
+
+
+    </accounts:groups>
+
+    <accounts:users>
+        <accounts:user login="u0006-0"/>
+        <accounts:user login="u0006-1">
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="gtst_101"/>
+            </accounts:parentGroups>
+        </accounts:user>
+        <accounts:user login="u0006-2">
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="gtst_301"/>
+                <accounts:parentGroup ref="gtst_302"/>
+                <accounts:parentGroup ref="gtst_303"/>
+            </accounts:parentGroups>
+        </accounts:user>
+        <accounts:user login="u0006-3">
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="gtst_301"/>
+            </accounts:parentGroups>
+        </accounts:user>
+        <accounts:user login="u0006-4">
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="gtst_302"/>
+            </accounts:parentGroups>
+        </accounts:user>
+        <accounts:user login="u0006-5">
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="gtst_303"/>
+            </accounts:parentGroups>
+        </accounts:user>
+        <accounts:user login="u0006-6">
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="gtst_304"/>
+            </accounts:parentGroups>
+        </accounts:user>
+        <accounts:user login="u0006-7">
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="gtst_305"/>
+            </accounts:parentGroups>
+        </accounts:user>
+    </accounts:users>
+</accounts:accounts>

@@ -22,6 +22,7 @@ class SuiteConfig
         $suite->addTestSuite(\Anakeen\Pu\Config\PuDisableAccess::class);
         $suite->addTestSuite(\Anakeen\Pu\Lib\PuSeemMethod::class);
 
+        $suite->addTestSuite(\Anakeen\Pu\Accounts\PuGroups::class);
         return $suite;
     }
 }

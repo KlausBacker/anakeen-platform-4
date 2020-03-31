@@ -57,7 +57,7 @@ SQL;
     /**
      * suppress a user from the group
      *
-     * @param int  $uid    user identifier to suppress
+     * @param int $uid user identifier to suppress
      * @param bool $nopost set to to true to not perform postDelete methods
      *
      * @return string error message
@@ -94,9 +94,30 @@ SQL;
     public function preInsert()
     {
         // verify is exists
-        $err = $this->query(sprintf("select * from groups where idgroup=%s and iduser=%s", $this->idgroup, $this->iduser));
+        $err = $this->query(sprintf(
+            "select * from groups where idgroup=%s and iduser=%s",
+            $this->idgroup,
+            $this->iduser
+        ));
         if ($this->numrows() > 0) {
-            $err = "OK"; // just to say it is not a real error
+            $err = "OK"; // just to say it is not a real error : it is already inserted
+        }
+        \Anakeen\Core\DbManager::query(
+            sprintf("select accounttype from users where  id=%d", $this->iduser),
+            $type,
+            true,
+            true
+        );
+
+        if (!$type) {
+            $err = sprintf("Cannot insert in group : Account #%d not exists", $this->iduser);
+        }
+        if ($type !== \Anakeen\Core\Account::USER_TYPE && $type !== \Anakeen\Core\Account::GROUP_TYPE) {
+            $err = sprintf(
+                "Cannot insert in group : Account type '%s' (#%d) not compatible to insert in group",
+                $type,
+                $this->iduser
+            );
         }
         return $err;
     }
@@ -110,8 +131,8 @@ SQL;
         }
         $u->updateMemberOf();
         if ($u->accounttype != \Anakeen\Core\Account::USER_TYPE) {
-            // recompute all doc profil
-            $this->resetAccountMemberOf();
+            // recompute child memberof
+            $this->resetChildMembers();
         } else {
             $dbf = $this->dbaccess;
             $g = new Group($dbf);
@@ -131,14 +152,13 @@ SQL;
     public function postInsert()
     {
         $err = $this->query(sprintf("delete from sessions where userid=%d", $this->iduser));
-        //    $this->FreedomCopyGroup();
         $u = new \Anakeen\Core\Account("", $this->iduser);
 
         $u->updateMemberOf();
 
-        if ($u->accounttype != \Anakeen\Core\Account::USER_TYPE) {
-            // recompute all doc profil
-            $this->resetAccountMemberOf();
+        if ($u->accounttype !== \Anakeen\Core\Account::USER_TYPE) {
+            // add new members of each childs
+            $this->addMemberToChilds();
         } else {
             $dbf = $this->dbaccess;
             $g = new Group($dbf);
@@ -156,6 +176,40 @@ SQL;
         }
 
         return $err;
+    }
+
+
+    protected function resetChildMembers()
+    {
+        $sql = sprintf("select * from users where memberof @> '{%d}' order by id", $this->iduser);
+        \Anakeen\Core\DbManager::query($sql, $tusers);
+        $u = new \Anakeen\Core\Account($this->dbaccess);
+        foreach ($tusers as $tu) {
+            $u->affect($tu);
+            $u->updateMemberOf();
+        }
+    }
+
+    /**
+     * Add group members (idgroup) to all account already attach to modified group (iduser)
+     * @throws \Anakeen\Core\Exception
+     * @throws \Anakeen\Database\Exception
+     */
+    protected function addMemberToChilds()
+    {
+        $g = new \Anakeen\Core\Account("", $this->idgroup);
+        $ms = \Anakeen\Core\Utils\Postgres::stringToArray($g->memberof);
+        $ms[] = $g->id; // add itself to have the new parent
+
+        $membersToAdd = \Anakeen\Core\Utils\Postgres::arrayToString($ms);
+        $sql = sprintf(
+            "update users set memberof = memberof || '%s'  where memberof @> '{%d}' and not(memberof @> '%s')",
+            pg_escape_string($membersToAdd),
+            $this->iduser,
+            pg_escape_string($membersToAdd)
+        );
+
+        \Anakeen\Core\DbManager::query($sql);
     }
 
     /**
@@ -286,7 +340,12 @@ SQL;
     {
         if (!isset($this->allgroups)) {
             $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
-            $list = $query->Query(0, 0, "TABLE", "select * from groups where iduser in (select id from users where accounttype='G')");
+            $list = $query->Query(
+                0,
+                0,
+                "TABLE",
+                "select * from groups where iduser in (select id from users where accounttype='G')"
+            );
             if ($list) {
                 foreach ($list as $v) {
                     $this->allgroups[] = $v;
