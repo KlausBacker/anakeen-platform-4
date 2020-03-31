@@ -17,11 +17,13 @@
       :content-url="contentUrl"
       :controller="controller"
       :filter="currentFilter"
+      :sort="[sort]"
       :page="page"
       @selectionChange="onSelectionChange"
       @rowClick="onItemClick"
       @dataBound="onDataBound"
       @pageChange="onPageChange"
+      @beforeContent="onBeforeContent"
     >
       <template v-slot:headerTemplate="props">
         <div class="smart-element-list--slots-wrapper">
@@ -30,7 +32,7 @@
           </div>
 
           <div class="smart-element-list--label">
-            <slot name="label">
+            <slot name="label" v-bind="{ label: listLabel }">
               <div class="smart-element-list--label-text">
                 {{ listLabel }}
               </div>
@@ -38,7 +40,7 @@
           </div>
 
           <div class="smart-element-list--search">
-            <slot name="search">
+            <slot name="search" v-bind="{ filter: filterList }">
               <div class="smart-element-list--search-default">
                 <div class="input-group">
                   <i
@@ -84,6 +86,14 @@
             </div>
           </slot>
         </td>
+      </template>
+      <template v-slot:gridFooter="opts">
+        <div class="smart-element-list--footer">
+          <slot name="footer"></slot>
+          <slot name="pager">
+            <ank-grid-pager class="smart-element-list--pager" :gridComponent="opts.gridComponent"></ank-grid-pager>
+          </slot>
+        </div>
       </template>
     </ank-grid>
   </div>

@@ -337,8 +337,8 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   })
   public selectedField: string;
   @Prop({
-    default: null,
-    type: Object
+    default: () => [],
+    type: Array
   })
   public sort!: kendo.data.DataSourceSortItem[];
   @Prop({
@@ -590,7 +590,8 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     const url = this._getOperationUrl("config");
     const event = new GridEvent(
       {
-        url: url
+        url: url,
+        queryParams: this.gridInfo
       },
       null,
       true // Cancelable
@@ -598,8 +599,8 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     this.$emit("beforeConfig", event);
     if (!event.isDefaultPrevented()) {
       this.$http
-        .get(url, {
-          params: this.gridInfo
+        .get(event.data.url, {
+          params: event.data.queryParams
         })
         .then(response => {
           this.collectionProperties = response.data.data.collection || {};
@@ -678,8 +679,8 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     this.$emit("beforeContent", event);
     if (!event.isDefaultPrevented()) {
       this.$http
-        .get(url, {
-          params: this.gridInfo
+        .get(event.data.url, {
+          params: event.data.queryParams
         })
         .then(response => {
           const pager = response.data.data.requestParameters.pager;
