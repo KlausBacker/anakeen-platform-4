@@ -13,14 +13,35 @@
 }
 .mask-header {
     margin:1rem;
-    text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
+
+span[class*='k-dropdown-wrap k-state-default'].visibility-dropdown-set {
+    background-color: green;
+    color: white;
+    border-color: green;
+}
+
+span[class*='k-dropdown-wrap k-state-default'].needed-dropdown-set {
+    background-color: green;
+    color: white;
+    border-color: green;
+}
+span[class*='k-dropdown-wrap k-state-default'].visibility-dropdown-modified {
+    background-color: #a2d0c0;
+    border-color: #a2d0c0;
+    color: white;
+}
 .mask-needed-set,
 .mask-visibility-set {
     background-color: green;
     color: white;
 }
+
 .mask-visibility-modified {
     background-color: #a2d0c0;
     color: white;
@@ -58,6 +79,9 @@
     opacity: 0;
 }
 
+.mask-visibility--dropdown, .mask-needed--dropdown {
+    width: 100%;
+}
 .mask-grid td[role=gridcell] .k-i-expand,
 .mask-grid td[role=gridcell] .k-i-collapse {
     cursor: pointer;

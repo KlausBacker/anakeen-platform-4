@@ -23,6 +23,10 @@ module.exports = () => {
           "../src/vendor/Anakeen/SmartStructures/Mask/Render/MaskView.js"
         )
       ],
+      MaskEdit: [
+        path.resolve(__dirname,
+          "../src/vendor/Anakeen/SmartStructures/Mask/Render/MaskEdit.js")
+      ],
       IuserGroup: [
         path.resolve(
           __dirname,
