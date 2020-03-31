@@ -1,6 +1,6 @@
 {
   "name": "development-center",
-  "version": "2.2.2-RC.2020.1.19",
+  "version": "2.2.2-RC.2020.1.20",
   "description": "Developement Center for Anakeen Platform",
   "main": "index.js",
   "scripts": {
@@ -21,10 +21,10 @@
     "developement"
   ],
   "devDependencies": {
-    "@anakeen/anakeen-cli": "1.2.2-RC.2020.1.19",
-    "@anakeen/hub-components": "1.0.4-RC.2020.1.19",
-    "@anakeen/internal-components": "1.0.3-RC.2020.1.19",
-    "@anakeen/user-interfaces": "3.0.2-RC.2020.1.19",
+    "@anakeen/anakeen-cli": "1.2.2-RC.2020.1.20",
+    "@anakeen/hub-components": "1.0.4-RC.2020.1.20",
+    "@anakeen/internal-components": "1.0.3-RC.2020.1.20",
+    "@anakeen/user-interfaces": "3.0.2-RC.2020.1.20",
     "@anakeen/webpack-conf": "1.2.1",
     "core-js": "3.6.1",
     "@progress/kendo-buttons-vue-wrapper": "^2019.3.1023",
