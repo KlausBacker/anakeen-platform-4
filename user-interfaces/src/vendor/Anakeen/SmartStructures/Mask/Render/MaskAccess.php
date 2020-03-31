@@ -16,6 +16,7 @@ class MaskAccess implements \Anakeen\Ui\IRenderConfigAccess
     {
         switch ($mode) {
             case \Anakeen\Ui\RenderConfigManager::CreateMode:
+                return new MaskCreateRender();
             case \Anakeen\Ui\RenderConfigManager::EditMode:
                 return new MaskEditRender();
             case \Anakeen\Ui\RenderConfigManager::ViewMode:

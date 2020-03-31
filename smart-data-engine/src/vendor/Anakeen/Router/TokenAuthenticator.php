@@ -2,6 +2,8 @@
 
 namespace Anakeen\Router;
 
+use Anakeen\LogManager;
+
 class TokenAuthenticator extends \Anakeen\Core\Internal\OpenAuthenticator
 {
     const AUTHORIZATION_SCHEME = "Token";
@@ -39,7 +41,15 @@ class TokenAuthenticator extends \Anakeen\Core\Internal\OpenAuthenticator
             return false;
         }
 
-        $url = $_SERVER["REDIRECT_URL"] ?? $_SERVER["REQUEST_URI"];
+        if (!isset($_SERVER['REQUEST_URI'])) {
+            LogManager::error(__METHOD__." ".sprintf("Missing REQUEST_URI"));
+            return false;
+        }
+        $urlPath = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
+        if (!is_string($urlPath)) {
+            LogManager::error(__METHOD__." ".sprintf("Malformed REQUEST_URI '%s'", $_SERVER['REQUEST_URI']));
+            return false;
+        }
 
         $context = unserialize($rawContext);
         $requestMethod = strtoupper($_SERVER["REQUEST_METHOD"]);
@@ -59,7 +69,7 @@ class TokenAuthenticator extends \Anakeen\Core\Internal\OpenAuthenticator
 
                         if ($methodAllowed) {
                             $routePattern = $rules["pattern"];
-                            if (RouterLib::matchPattern($routePattern, $url)) {
+                            if (RouterLib::matchPattern($routePattern, $urlPath)) {
                                 $allow = true;
                                 break;
                             }
@@ -74,7 +84,7 @@ class TokenAuthenticator extends \Anakeen\Core\Internal\OpenAuthenticator
                         continue;
                     }
                     if (strtoupper($expectedMethod) === $requestMethod) {
-                        if (RouterLib::matchPattern($routePattern, $url)) {
+                        if (RouterLib::matchPattern($routePattern, $urlPath)) {
                             $allow = true;
                             break;
                         }
