@@ -59,7 +59,7 @@ export default {
       });
     },
     openConfig(e) {
-      let elementID = e.detail[0].initid;
+      let elementID = e.data.properties.initid;
       this.selectedHub = elementID;
       this.displayConfig = true;
       this.$nextTick(() => {
@@ -159,7 +159,7 @@ export default {
     onListDataBound() {
       if (this.hubInstanceSelected) {
         this.$nextTick(() => {
-          this.$refs.hubInstanciationList.selectSe(this.hubInstanceSelected);
+          this.$refs.hubInstanciationList.selectSmartElement(this.hubInstanceSelected);
         });
       }
     },

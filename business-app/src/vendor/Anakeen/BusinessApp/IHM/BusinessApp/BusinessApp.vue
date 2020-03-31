@@ -5,31 +5,19 @@
         ref="businessAppList"
         class="ank-business-app-list-widget"
         :selectable="false"
-        @se-clicked="onSelectListItem"
-        @after-se-list-page-change="afterPageChange"
-        @se-list-filter-change="onListFilterChange"
+        @itemClicked="onSelectListItem"
+        @filterChange="onListFilterChange"
+        @pageChange="onPageChange"
+        :page="currentListPage"
+        :filterValue="currentListFilter"
       >
-        <div
-          v-if="isMultiCollection"
-          slot="title"
-          class="ank-business-app-header"
-        >
-          <select
-            class="ank-business-app-collection-selector"
-            ref="businessAppCollectionSelector"
-          >
-          </select>
-        </div>
+        <template v-if="isMultiCollection" v-slot:label>
+          <select class="ank-business-app-collection-selector" ref="businessAppCollectionSelector"> </select>
+        </template>
       </ank-se-list>
     </div>
     <div class="ank-business-app-tabs-wrapper">
-      <ank-tabs
-        class="ank-business-app-tabs"
-        ref="businessAppTabs"
-        v-model="selectedTab"
-        @tabRemove="onTabRemove"
-        @tabClick="onTabClick"
-      >
+      <ank-tabs class="ank-business-app-tabs" ref="businessAppTabs" v-model="selectedTab" @tabRemove="onTabRemove">
         <ank-tab v-if="hasWelcomeTab" :closable="false" tabId="welcome">
           <template slot="label">
             <span class="ank-business-app-welcome-title" v-html="welcomeTab.title"></span>

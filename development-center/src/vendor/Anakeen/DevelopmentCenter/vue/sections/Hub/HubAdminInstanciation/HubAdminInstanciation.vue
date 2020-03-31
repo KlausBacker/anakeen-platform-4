@@ -16,9 +16,9 @@
                 ref="hubInstanciationList"
                 smart-collection="HUBINSTANCIATION"
                 label="Hub Instance"
-                @se-selected="openConfig"
-                @se-clicked="onListClicked"
-                @se-list-dataBound="onListDataBound"
+                @itemSelected="openConfig"
+                @itemClicked="onListClicked"
+                @dataBound="onListDataBound"
               >
                 <div slot="header"></div>
                 <div slot="search">

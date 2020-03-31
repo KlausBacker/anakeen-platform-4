@@ -52,7 +52,7 @@ export default class BusinessApp extends Vue {
   ];
 
   public collectionDropDownList: kendo.ui.DropDownList = null;
-  public currentListPage = 0;
+  public currentListPage = 1;
   public currentListFilter = "";
 
   @Watch("selectedCollection")
@@ -154,8 +154,7 @@ export default class BusinessApp extends Vue {
   }
 
   protected onSelectListItem(event) {
-    const seProps = event.detail[0];
-
+    const seProps = event.data.properties;
     // @ts-ignore
     this.addTab({
       closable: true,
@@ -202,10 +201,6 @@ export default class BusinessApp extends Vue {
       title: `Creation ${createInfo.title}`,
       viewId: "!defaultCreation"
     });
-  }
-
-  protected onTabClick() {
-    this.$refs.businessAppList.selectSe(this.selectedTab);
   }
 
   protected onActionClick(event, elementData, data) {
@@ -294,14 +289,13 @@ export default class BusinessApp extends Vue {
     }
   }
 
-  protected afterPageChange(event) {
-    const page = event.detail && event.detail.length ? event.detail[0] : {};
-    this.currentListPage = page.currentPage;
+  protected onPageChange(event) {
+    this.currentListPage = event.data && event.data.pages ? event.data.pages.page : 1;
   }
 
   protected onListFilterChange(event) {
-    const filter = event.detail && event.detail.length ? event.detail[0] : "";
-    this.currentListFilter = filter.filterInput;
+    const filter = event.data && event.data.filterInput ? event.data.filterInput : "";
+    this.currentListFilter = filter;
   }
 
   private initCollectionSelector() {
@@ -312,9 +306,7 @@ export default class BusinessApp extends Vue {
         dataValueField: "initid",
         select: (e: kendo.ui.DropDownListSelectEvent) => {
           this.selectedCollection = e.dataItem.initid;
-          this.$refs.businessAppList.setCollection({
-            initid: this.selectedCollection
-          });
+          this.$refs.businessAppList.setCollection(this.selectedCollection);
           this.currentListPage = 1;
         },
         template: `<span style="display: flex; align-items: center;"><img style="margin-right: 1rem;" src="#:displayIcon#"/> <span>#:title#</span></span>`,
@@ -326,23 +318,14 @@ export default class BusinessApp extends Vue {
 
   private initSEList() {
     if (this.$refs.businessAppList) {
-      this.$refs.businessAppList.setCollection({
-        initid: this.selectedCollection
-      });
-      this.$refs.businessAppList.$once("se-list-dataBound", () => {
+      this.$refs.businessAppList.setCollection(this.selectedCollection);
+      this.$refs.businessAppList.$once("dataBound", () => {
         if (this.page) {
           this.currentListPage = this.page;
-          this.$refs.businessAppList.dataSource.page(this.page);
         }
         if (this.filter) {
           this.currentListFilter = this.filter;
-          this.$refs.businessAppList.filterList(this.filter);
         }
-        this.$refs.businessAppList.refreshList().then(() => {
-          if (this.selectedTab) {
-            this.$refs.businessAppList.selectSe(this.selectedTab);
-          }
-        });
       });
     }
   }
