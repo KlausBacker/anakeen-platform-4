@@ -103,12 +103,17 @@ export default ViewDocument.extend({
   cleanAndRender: function vTransition_cleanAndRender() {
     var workflow = this.model.get("workflow"),
       transition = workflow.transition,
-      state = workflow.state;
+      state = workflow.state,
+      currentView = this;
 
-    this.render();
-    this.displayMessages(this.model.get("messages"));
-    this.clearError();
-    this.reactiveWidget();
+    const renderPromise = (resolve, reject) => {
+      this.render({ resolve, reject });
+    };
+    renderPromise.then(() => {
+      currentView.displayMessages(this.model.get("messages"));
+      currentView.clearError();
+      currentView.reactiveWidget();
+    });
     if (!transition && state) {
       this.model.trigger("success", this.messages);
     }
