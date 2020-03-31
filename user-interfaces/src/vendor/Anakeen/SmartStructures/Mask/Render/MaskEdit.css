@@ -19,13 +19,31 @@
     align-items: center;
 }
 
+
+span[class*='k-dropdown-wrap k-state-default'].visibility-dropdown-set {
+    background-color: green;
+    color: white;
+    border-color: green;
+}
+
+span[class*='k-dropdown-wrap k-state-default'].needed-dropdown-set {
+    background-color: green;
+    color: white;
+    border-color: green;
+}
+span[class*='k-dropdown-wrap k-state-default'].visibility-dropdown-modified {
+    background-color: #a2d0c0;
+    border-color: #a2d0c0;
+    color: white;
+}
 .mask-needed-set,
 .mask-visibility-set {
     background-color: green;
     color: white;
 }
+
 .mask-visibility-modified {
-    background-color: #d4d4d4;
+    background-color: #a2d0c0;
     color: white;
 }
 
