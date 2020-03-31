@@ -106,9 +106,9 @@ export default ViewDocument.extend({
       state = workflow.state,
       currentView = this;
 
-    const renderPromise = (resolve, reject) => {
+    const renderPromise = new Promise((resolve, reject) => {
       this.render({ resolve, reject });
-    };
+    });
     renderPromise.then(() => {
       currentView.displayMessages(this.model.get("messages"));
       currentView.clearError();
