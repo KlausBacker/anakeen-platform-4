@@ -597,7 +597,7 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
         strCategories = `[${categories.filter(c => !!c).join("][")}]`;
       }
       const logMsg = `[Smart Element Controller]${strCategories} : ${message}`;
-      window.console.log(logMsg);
+      window.console.info(new Date().toISOString(), logMsg);
       this.emit("controllerLog", logMsg);
     }
   }
