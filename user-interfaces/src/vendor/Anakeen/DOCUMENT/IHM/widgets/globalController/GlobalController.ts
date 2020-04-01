@@ -344,9 +344,6 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
                     .tryToDestroy({ testDirty: false })
                     .then(onDestroy)
                     .catch(onDestroy);
-                } else {
-                  // The scoped controller have not to auto unload, but clean it up nonetheless
-                  onDestroy();
                 }
               } catch (e) {
                 // Nothing to do : the element is already destroyed
@@ -600,7 +597,7 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
         strCategories = `[${categories.filter(c => !!c).join("][")}]`;
       }
       const logMsg = `[Smart Element Controller]${strCategories} : ${message}`;
-      window.console.log(logMsg);
+      window.console.info(new Date().toISOString(), logMsg);
       this.emit("controllerLog", logMsg);
     }
   }

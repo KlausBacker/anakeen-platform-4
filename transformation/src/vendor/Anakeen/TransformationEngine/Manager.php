@@ -205,10 +205,49 @@ class Manager
             $token
         );
 
-        $proto = substr($openurl, 0, 6);
-        $tail = str_replace('//', '/', substr($openurl, 6));
+        $pUrl = parse_url($openurl);
+        if (is_array($pUrl) && isset($pUrl['path'])) {
+            $pUrl['path'] = str_replace('//', '/', $pUrl['path']);
+            $openurl = self::implodeUrl($pUrl);
+        }
 
-        return $proto . $tail;
+        return $openurl;
+    }
+
+    /**
+     * rewrite URL from parse_url array
+     * @param array $turl the url array
+     * @return string
+     */
+    private static function implodeUrl($turl)
+    {
+        if (isset($turl["scheme"])) {
+            $url = $turl["scheme"] . "://";
+        } else {
+            $url = "http://";
+        }
+        if (isset($turl["user"]) && isset($turl["pass"])) {
+            $url.= $turl["user"] . ':' . $turl["pass"] . '@';
+        }
+        if (isset($turl["host"])) {
+            $url.= $turl["host"];
+        } else {
+            $url.= "localhost";
+        }
+        if (isset($turl["port"])) {
+            $url.= ':' . $turl["port"];
+        }
+        if (isset($turl["path"])) {
+            $url.= $turl["path"];
+        }
+        if (isset($turl["query"])) {
+            $url.= '?' . $turl["query"];
+        }
+        if (isset($turl["fragment"])) {
+            $url.= '#' . $turl["fragment"];
+        }
+
+        return $url;
     }
 
     /**
