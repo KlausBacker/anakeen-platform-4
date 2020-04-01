@@ -16,6 +16,8 @@ class Groups
     protected $skip = 0;
     protected $take;
     protected $collected = 0;
+    protected $depth;
+    protected $maxDepth=0;
 
     /**
      * @param \Slim\Http\request $request
@@ -30,6 +32,7 @@ class Groups
         $filter = $request->getQueryParam("filter");
         $this->skip = intval($request->getQueryParam("skip"));
         $this->take = $request->getQueryParam("take");
+        $this->depth = $request->getQueryParam("depth", 0);
         $sort = $request->getQueryParam("sort");
 
         // Get top groups
@@ -113,6 +116,7 @@ class Groups
 
         return $response->withJson([
             "total" => $nResult,
+            "maxDepth" => $this->maxDepth,
             "data" => array_values($this->results)
         ]);
     }
@@ -148,9 +152,12 @@ class Groups
             $info = $groupAccount["info"];
             $info["path"] = $path;
             $this->collected++;
-            if ( $this->collected > $this->skip ) {
+            $this->maxDepth=max(count($path), $this->maxDepth);
+            if ($this->collected > $this->skip) {
                 if ($this->take !== null && count($this->results) < $this->take) {
-                    $this->results[] = $info;
+                    if ($this->depth === 0 || count($path) < $this->depth) {
+                        $this->results[] = $info;
+                    }
                 }
             }
             if (!empty($groupAccount["content"])) {

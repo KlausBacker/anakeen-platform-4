@@ -1,7 +1,27 @@
 <template>
   <div ref="accountManager_wrapper" class="accountManager_wrapper">
-    <ank-split-panes ref="accountTreeSplitter" watch-slots vertical class="account-manager-splitter splitter-tree">
+    <ank-split-panes ref="accountTreeSplitter" watch-slots vertical
+class="account-manager-splitter splitter-tree">
       <div ref="treeViewPart" class="grid-group-section" splitpanes-size="20">
+        <header class="admin-account-header">
+          <kendo-button
+            class="k-primary change-group-btn"
+            :disabled="!this.groupId || this.groupId === '@users'"
+            @click="openChangeGroup"
+          >
+            Move group
+          </kendo-button>
+          <kendo-dropdownlist
+            ref="userList"
+            class="k-primary"
+            :data-source-ref="'dataUserElement'"
+            :data-text-field="'text'"
+            :data-value-field="'value'" 
+            option-label="Create User"
+            @select="selectCreateUserConfig"
+            @open="addClassOnSelectorContainer"
+          />
+        </header>
         <kendo-grid
           ref="groupGrid"
           class="account-user-grid"
@@ -78,10 +98,7 @@
           </div>
         </header>
         <section>
-          <ank-split-panes
-ref="accountSplitter"
-watch-slots vertical class="account-manager-splitter splitter-grid"
->
+          <ank-split-panes ref="accountSplitter" watch-slots vertical class="account-manager-splitter splitter-grid">
             <div class="accountManager_contentPart_gridPart">
               <kendo-grid
                 ref="grid"
@@ -89,7 +106,7 @@ watch-slots vertical class="account-manager-splitter splitter-grid"
                 :data-source="gridUserContent"
                 :pageable="{
                   alwaysVisible: true,
-                  pageSizes: [50, 100, 200],
+                  pageSizes: [50, 100, 200]
                 }"
                 :sortable="true"
                 :filterable="{
