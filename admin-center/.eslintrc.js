@@ -19,7 +19,15 @@ module.exports = {
       "error",
       "always"
     ],
-    "no-console": ["error", { allow: ["warn", "error"] }]
+    "no-console": ["error", { allow: ["warn", "error"] }],
+
+    "vue/max-attributes-per-line": ["error", {
+      "singleline": 3,
+      "multiline": {
+        "max": 1,
+        "allowFirstLine": false
+      }
+    }]
   },
   "globals": {
     $: false,

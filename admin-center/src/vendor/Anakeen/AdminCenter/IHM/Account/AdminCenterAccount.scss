@@ -30,13 +30,41 @@
       min-width: 40rem;
     }
 
-    .tree-view-part {
+    .grid-group-section {
       display: flex;
       flex-direction: column;
       height: 100%;
 
       * {
         min-height: 0;
+      }
+
+      .grouprow {
+        padding:0;
+      }
+      .groupinfo {
+        border-left: solid 1px grey;
+        padding:0.25rem;
+      }
+
+      .k-grid {
+        display: flex!important;
+        flex-direction: column;
+
+        .k-pager-wrap.k-pager-md .k-pager-info, .k-pager-wrap.k-pager-sm .k-pager-info {
+          display: flex;
+        }
+
+        .path {
+          font-style: italic;
+          word-break: break-word;
+        }
+
+        .k-grid-content {
+          tr:nth-child(odd) {
+            background-color: rgba(33, 37, 41, 0.03);;
+          }
+        }
       }
 
       .accountManager_treeViewPart_wrapper {
