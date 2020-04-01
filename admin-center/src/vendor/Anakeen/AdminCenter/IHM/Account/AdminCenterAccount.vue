@@ -1,24 +1,21 @@
 <template>
   <div ref="accountManager_wrapper" class="accountManager_wrapper">
-    <ank-split-panes ref="accountTreeSplitter" watch-slots vertical
-class="account-manager-splitter splitter-tree">
+    <ank-split-panes ref="accountTreeSplitter" watch-slots vertical class="account-manager-splitter splitter-tree">
       <div ref="treeViewPart" class="grid-group-section" splitpanes-size="20">
-        <header class="admin-account-header">
-          <kendo-button
-            class="k-primary change-group-btn"
-            :disabled="!this.groupId || this.groupId === '@users'"
-            @click="openChangeGroup"
-          >
-            Move group
+        <header class="admin-account-group-header">
+          <kendo-button class="k-primary" @click="viewAllUsers">
+            View all users
           </kendo-button>
+
           <kendo-dropdownlist
-            ref="userList"
+            v-model="selectedDepth"
             class="k-primary"
-            :data-source-ref="'dataUserElement'"
-            :data-text-field="'text'"
-            :data-value-field="'value'" 
-            option-label="Create User"
-            @select="selectCreateUserConfig"
+            :data-source="dataDepth"
+            option-label="Depth"
+            value-template="Depth : <strong>#: id #</strong>"
+            data-text-field="id"
+            data-value-field="id"
+            @select="selectDepth"
             @open="addClassOnSelectorContainer"
           />
         </header>
@@ -44,7 +41,7 @@ class="account-manager-splitter splitter-tree">
           :auto-bind="false"
         >
           <kendo-grid-column field="id" :hidden="true" />
-          <kendo-grid-column field="lastname" title="Group" type="string" />
+          <kendo-grid-column :sortable="false" field="lastname" title="Groups" type="string" />
         </kendo-grid>
       </div>
 
@@ -98,7 +95,10 @@ class="account-manager-splitter splitter-tree">
           </div>
         </header>
         <section>
-          <ank-split-panes ref="accountSplitter" watch-slots vertical class="account-manager-splitter splitter-grid">
+          <ank-split-panes
+ref="accountSplitter"
+watch-slots vertical class="account-manager-splitter splitter-grid"
+>
             <div class="accountManager_contentPart_gridPart">
               <kendo-grid
                 ref="grid"
@@ -106,7 +106,9 @@ class="account-manager-splitter splitter-tree">
                 :data-source="gridUserContent"
                 :pageable="{
                   alwaysVisible: true,
-                  pageSizes: [50, 100, 200]
+                  pageSizes: [50, 100, 200],
+                  numeric: false,
+                  refresh: true
                 }"
                 :sortable="true"
                 :filterable="{

@@ -17,7 +17,8 @@ class Groups
     protected $take;
     protected $collected = 0;
     protected $depth;
-    protected $maxDepth=0;
+    protected $maxDepth = 0;
+    protected $totalResults = 0;
 
     /**
      * @param \Slim\Http\request $request
@@ -66,7 +67,7 @@ class Groups
                 }
             }
         }
-
+        $pointerTree = [];
 
         foreach ($searchAccount->search() as $currentAccount) {
             /* @var $currentAccount \Anakeen\Core\Account */
@@ -84,62 +85,46 @@ class Groups
         }
 
 
+        // Get all group branches
         DbManager::query(
             "select groups.* from users gu, users uu, groups where idgroup=gu.id and iduser=uu.id and uu.accounttype='G' and gu.accounttype='G' order by uu.lastname, uu.login;",
             $groupBranches
         );
 
-        $tree = [];
-        $childIds = [];
 
-        // $pointerTree = [];
+        // Compose the tree from branches
         foreach ($groupBranches as $branch) {
             $parent = intval($branch["idgroup"]);
             $child = intval($branch["iduser"]);
 
             $pointerTree[$parent]["content"][$child] =  &$pointerTree[$child];
-            // $pointerTree[$child["id"]] = &$pointerTree[$member]["content"][$child["id"]];
         }
-        // print_r($pointerTree);
 
+        // Delete no top branches into the tree
         foreach ($pointerTree as $accountId => $info) {
             if (!in_array($accountId, $topGroupIds)) {
                 unset($pointerTree[$accountId]);
             }
         }
 
-        $nResult = count($groupBranches)+ count($topGroupIds);
 
         // Walk by depth before to the tree
         $this->walkToTheTree($pointerTree);
 
 
         return $response->withJson([
-            "total" => $nResult,
+            "total" => $this->collected,
             "maxDepth" => $this->maxDepth,
             "data" => array_values($this->results)
         ]);
     }
 
-    protected function getChildGroups(
-        array $gids
-    ) {
-        $sql = sprintf(
-            "select users.id, fid, memberof, lastname, login from users, groups where accounttype='G' and groups.iduser=users.id and groups.idgroup in (%s) limit 100",
-            implode(", ", $gids)
-        );
-        print $sql;
-        DbManager::query($sql, $childs);
-        return $childs;
-    }
 
     protected function walkToTheTree(
         array $tree,
         $path = []
     ) {
-        if ($this->skip !== null) {
-            //  $searchAccount->setStart($skip);
-        }
+
         if ($this->take !== null) {
             if (count($this->results) > $this->take) {
                 return;
@@ -151,11 +136,11 @@ class Groups
             }
             $info = $groupAccount["info"];
             $info["path"] = $path;
-            $this->collected++;
-            $this->maxDepth=max(count($path), $this->maxDepth);
-            if ($this->collected > $this->skip) {
-                if ($this->take !== null && count($this->results) < $this->take) {
-                    if ($this->depth === 0 || count($path) < $this->depth) {
+            $this->maxDepth = max(count($path), $this->maxDepth);
+            if ($this->depth === 0 || count($path) < $this->depth) {
+                $this->collected++;
+                if ($this->collected > $this->skip) {
+                    if ($this->take !== null && count($this->results) < $this->take) {
                         $this->results[] = $info;
                     }
                 }

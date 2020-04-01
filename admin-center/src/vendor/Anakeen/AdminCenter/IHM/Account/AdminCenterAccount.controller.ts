@@ -4,15 +4,12 @@ import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
 import { DropdownsInstaller } from "@progress/kendo-dropdowns-vue-wrapper";
 import { GridInstaller } from "@progress/kendo-grid-vue-wrapper";
-import { TreeViewInstaller } from "@progress/kendo-treeview-vue-wrapper";
 import "@progress/kendo-ui/js/kendo.grid";
 import "@progress/kendo-ui/js/kendo.toolbar";
-import "@progress/kendo-ui/js/kendo.treeview";
 import { Component, Vue, Watch } from "vue-property-decorator";
 
 Vue.use(ButtonsInstaller);
 Vue.use(GridInstaller);
-Vue.use(TreeViewInstaller);
 Vue.use(DropdownsInstaller);
 Vue.use(DataSourceInstaller);
 declare const $;
@@ -48,7 +45,22 @@ export default class AdminCenterAccountController extends Vue {
     serverSorting: true,
     transport: {
       read: {
-        url: "/api/v2/admin/account/groups/"
+        url: "/api/v2/admin/account/groups/",
+        data: filter => {
+          console.log(filter);
+          filter.depth = this.getDepth();
+          return filter;
+        }
+      }
+    },
+    requestEnd: e => {
+      if (e && e.response) {
+        const newDataDepth = [];
+        for (let i = 1; i <= e.response.maxDepth; i++) {
+          newDataDepth.push({ id: i });
+        }
+
+        this.updateDepth(newDataDepth);
       }
     }
   });
@@ -84,6 +96,8 @@ export default class AdminCenterAccountController extends Vue {
   public options: object = {};
   public groupId = "";
   public groupTitle: string | boolean = false;
+  public dataDepth = [{ id: 1 }];
+  public selectedDepth = 1;
   private smartTriggerActivated = false;
   private refreshNeeded = false;
   @Watch("refreshNeeded")
@@ -108,11 +122,18 @@ export default class AdminCenterAccountController extends Vue {
     }
   }
 
-  public mounted() {
+  public mounted(): void {
     this.$nextTick(() => {
       this.groupId = window.localStorage.getItem("admin.account.groupSelected.id");
       this.gridGroupContent.read();
     });
+  }
+
+  public updateDepth(newDataDepth): void {
+    this.dataDepth = newDataDepth;
+  }
+  public getDepth(): number {
+    return this.selectedDepth;
   }
 
   public parseCreateUser(data) {
@@ -124,7 +145,7 @@ export default class AdminCenterAccountController extends Vue {
   }
 
   // Bind the grid events (click to open an user)
-  public openUser(event) {
+  public openUser(event): void {
     event.preventDefault();
     const grid = this.$refs.grid.kendoWidget();
     const $tr = $(event.currentTarget).closest("tr");
@@ -188,6 +209,12 @@ export default class AdminCenterAccountController extends Vue {
     }
   }
 
+  public viewAllUsers() {
+    this.groupId = "@users";
+    this.updateGridData(this.groupId);
+    this.updateGroupSelected(this.groupId);
+  }
+
   public openGroup() {
     this.selectedUser = this.groupId;
     this.$nextTick(() => {
@@ -217,6 +244,12 @@ export default class AdminCenterAccountController extends Vue {
         }
       });
     }
+  }
+
+  public selectDepth(e): void {
+    this.$nextTick(() => {
+      this.gridGroupContent.read();
+    });
   }
   public addClassOnSelectorContainer(e) {
     e.sender.popup.element.addClass("select-container");

@@ -35,6 +35,9 @@
       flex-direction: column;
       height: 100%;
 
+      .admin-account-group-header {
+        flex-basis: 3rem;
+      }
       * {
         min-height: 0;
       }
@@ -50,6 +53,7 @@
       .k-grid {
         display: flex!important;
         flex-direction: column;
+        flex: 1;
 
         .k-pager-wrap.k-pager-md .k-pager-info, .k-pager-wrap.k-pager-sm .k-pager-info {
           display: flex;
@@ -219,6 +223,10 @@
 
 .accountManager_contentPart_gridPart {
   height: 100%;
+
+  .k-pager-wrap.k-pager-md .k-pager-info, .k-pager-wrap.k-pager-sm .k-pager-info {
+    display: flex;
+  }
 }
 
 .accountManager_contentPart_gridPart .k-grid {
