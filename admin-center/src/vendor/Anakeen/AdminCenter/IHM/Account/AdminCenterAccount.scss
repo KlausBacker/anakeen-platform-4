@@ -38,20 +38,71 @@
       .admin-account-group-header {
         flex-basis: 3rem;
       }
+
       * {
         min-height: 0;
       }
 
       .grouprow {
-        padding:0;
-      }
-      .groupinfo {
-        border-left: solid 1px grey;
-        padding:0.25rem;
+        padding: 0;
+
+        .lastname {
+          flex: 1;
+          font-weight: bold;
+        }
+
+        .groupinfo {
+          border-left: solid 1px grey;
+          padding: 0.25rem;
+        }
+
+
+        .groupinfo[data-expanded=true] {
+          .account-badge {
+            &.group-count {
+              background-color: #079b37;
+            }
+          }
+        }
+        .account-badge {
+          color: white;
+          border-radius: 0.5rem;
+          padding-right: 0.5rem;
+          padding-left: 0.5rem;
+          min-width: 5rem;
+          height: 1.6rem;
+          text-align: right;
+
+          &.user-count {
+            background-color: #157efb;
+
+            &::before {
+              font-family: "Material Icons";
+              content: "person";
+              float: left;
+            }
+          }
+
+          &.group-count {
+            background-color: #9b8e2f;
+
+            &::before {
+              font-family: "Material Icons";
+              content: "group";
+              float: left;
+            }
+
+          }
+        }
+
+        .groupname {
+          display: flex;
+          flex-direction: row;
+        }
       }
 
       .k-grid {
-        display: flex!important;
+        display: flex !important;
         flex-direction: column;
         flex: 1;
 

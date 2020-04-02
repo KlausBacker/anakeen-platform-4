@@ -29,10 +29,16 @@ export default class AdminCenterAccountController extends Vue {
   public gridGroupContent = new kendo.data.DataSource({
     pageSize: 50,
     schema: {
-      data: "data",
+      data: response => {
+        console.log(response);
+        for (let i = 0; i < response.data.length; i++) {
+          response.data[i].currentDepth = this.getDepth();
+        }
+        return response.data;
+      },
       model: {
         fields: {
-          firstname: { type: "string" },
+          currentDepth: { type: "number" },
           lastname: { type: "string" },
           login: { type: "string" }
         },
@@ -176,9 +182,12 @@ export default class AdminCenterAccountController extends Vue {
     const template =
       '<tr data-uid="#: uid #">' +
       '<td class="grouprow" >' +
-      '<div class="groupinfo" style="margin-left: #= data.path.length #rem">' +
-      '<div class="path"># for (var i = 0; i < data.path.length; i++) { #&gt;&nbsp; #= (data.path[i]) ## } # </div>' +
-      '<div class="lastname"> #: lastname# </div></div>' +
+      '<div class="groupinfo" style="margin-left: #= data.path.length #rem"' +
+      '#if (data.path.length < (data.currentDepth -1)) {# data-expanded="true" #}# >' +
+      '<div class="path"># for (var i = 0; i < data.path.length; i++)  { #&gt;&nbsp; #= (data.path[i]) ## } # </div>' +
+      '<div class="groupname"><div class="lastname"> #: lastname# </div> ' +
+      '# if (subgroupCount > 0) { # <div class="account-badge group-count"  > #: subgroupCount# </div> #}#' +
+      '<div class="account-badge user-count"> #: userCount# </div></div></div>' +
       "</td>" +
       "</tr>";
 

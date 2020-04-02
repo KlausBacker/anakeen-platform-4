@@ -111,6 +111,7 @@ class Groups
         // Walk by depth before to the tree
         $this->walkToTheTree($pointerTree);
 
+        $this->insertUserCountToNode();
 
         return $response->withJson([
             "total" => $this->collected,
@@ -119,6 +120,32 @@ class Groups
         ]);
     }
 
+    protected function insertUserCountToNode() {
+        $ids=[];
+        foreach ($this->results as $result) {
+            $ids[$result["accountId"]]=$result["accountId"];
+        }
+        $sql=sprintf("select id, (select count(*) from users where memberof @> ARRAY[uu.id] and accounttype='U') as c from users uu where id in (%s)", implode(',',$ids));
+        DbManager::query($sql, $accountCounts);
+
+        $uc=[];
+        foreach ($accountCounts as $accountCount) {
+            $uc[$accountCount["id"]]=$accountCount["c"];
+        }
+
+        $sql=sprintf("select id, (select count(*) from users where memberof @> ARRAY[uu.id] and accounttype='G') as c from users uu where id in (%s)", implode(',',$ids));
+        DbManager::query($sql, $accountCounts);
+
+        $gc=[];
+        foreach ($accountCounts as $accountCount) {
+            $gc[$accountCount["id"]]=$accountCount["c"];
+        }
+
+        foreach ($this->results as &$result) {
+            $result["userCount"]=$uc[$result["accountId"]];
+            $result["subgroupCount"]=$gc[$result["accountId"]];
+        }
+    }
 
     protected function walkToTheTree(
         array $tree,
@@ -140,7 +167,7 @@ class Groups
             if ($this->depth === 0 || count($path) < $this->depth) {
                 $this->collected++;
                 if ($this->collected > $this->skip) {
-                    if ($this->take !== null && count($this->results) < $this->take) {
+                    if ($this->take === null || count($this->results) < $this->take) {
                         $this->results[] = $info;
                     }
                 }
