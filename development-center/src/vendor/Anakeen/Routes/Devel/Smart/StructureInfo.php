@@ -82,6 +82,9 @@ class StructureInfo
         $data["ui"]["render"] = RenderConfigManager::getRenderParameter($this->structure->name);
         $cFields = $cNFields = $cParameters = $cNParameters = 0;
         foreach ($this->structure->getAttributes() as $field) {
+            if (!$field) {
+                continue;
+            }
             if ($field->usefor === "Q") {
                 $cParameters++;
                 if ($field->isNormal && $field->type !== "array") {
