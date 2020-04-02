@@ -22,9 +22,12 @@ class SmartFieldAbsoluteOrder
 {
     const firstOrder = "::first";
     const autoOrder = "::auto";
+
+    public static $updatedAttrCounts = [];
+
     /**
      * @param array $relativeOrders
-     * @param int   $familyId
+     * @param int $familyId
      *
      * @brief input relativeOrders is a linear Array
      *        (
@@ -61,7 +64,7 @@ class SmartFieldAbsoluteOrder
             self::updateAttributeTree($tree, $subTree);
         }
         self::checkTree($tree);
-        
+
         $linear = self::linearOrderTree($tree);
         foreach ($relativeOrders as $relativeOrder) {
             if (array_search($relativeOrder["id"], $linear) === false) {
@@ -73,13 +76,14 @@ class SmartFieldAbsoluteOrder
         }
         return $linear;
     }
+
     /**
      * Complete information (prev) when absolute numeric order is done
      *
      * @param array $attributes
      * @param       $familyId
      */
-    public static function completeForNumericOrder(array & $attributes, $familyId)
+    public static function completeForNumericOrder(array &$attributes, $familyId)
     {
         $familyIds = self::getFamilyInherits($familyId);
         $famAttribute = [];
@@ -95,17 +99,18 @@ class SmartFieldAbsoluteOrder
                 $attributes[$key] = $oneAttribute;
             }
         }
-        
+
         uasort($attributes, function ($a, $b) {
             return self::sortAttributeCallBackfunction($a, $b);
         });
     }
+
     /**
      * Complete information (previous) for a attribute set of a given family
      *
      * @param array $familyAttributes
      */
-    protected static function completeForNumericOrderByFamilyLevel(array & $familyAttributes)
+    protected static function completeForNumericOrderByFamilyLevel(array &$familyAttributes)
     {
         foreach ($familyAttributes as & $anAttribute) {
             $anAttribute["structLevel"] = self::getStructLevel($anAttribute["id"], $familyAttributes);
@@ -117,9 +122,9 @@ class SmartFieldAbsoluteOrder
                     $anAttribute["numOrder"] = min($anAttribute["numOrder"], $absOrder);
                 }
             }
-                $anAttribute["familyLevel"] = self::getFamilyLevel($anAttribute["family"]);
+            $anAttribute["familyLevel"] = self::getFamilyLevel($anAttribute["family"]);
         }
-        
+
         uasort($familyAttributes, function ($a, $b) {
             return self::sortAttributeCallBackfunction($a, $b);
         });
@@ -138,21 +143,22 @@ class SmartFieldAbsoluteOrder
             return 0;
         });
     }
+
     /** @noinspection PhpUnusedPrivateMethodInspection
-     * @param array  $r
+     * @param array $r
      * @param string $text
      */
     private static function debug(array $r, $text = "")
     {
         printf("\n========= %s======== \n", $text);
-        
+
         $first = current($r);
         printf("%20s|", "index");
         foreach (array_keys($first) as $h) {
             printf("%20s|", $h);
         }
         print "\n";
-        
+
         foreach ($r as $k => $sr) {
             printf("%20s|", $k);
             foreach ($sr as $item) {
@@ -161,7 +167,7 @@ class SmartFieldAbsoluteOrder
             printf("\n");
         }
     }
-    
+
     protected static function sortAttributeCallBackfunction($a, $b)
     {
         if ($a["structLevel"] > $b["structLevel"]) {
@@ -178,6 +184,7 @@ class SmartFieldAbsoluteOrder
         }
         return 0;
     }
+
     /**
      * Get family level of inheritance of family (0 means top family)
      *
@@ -189,6 +196,7 @@ class SmartFieldAbsoluteOrder
     {
         return count(self::getFamilyInherits($famid));
     }
+
     /**
      * Get family ancestors
      *
@@ -199,7 +207,7 @@ class SmartFieldAbsoluteOrder
     protected static function getFamilyInherits($familyId)
     {
         static $inherits = [];
-        
+
         if (empty($inherits[$familyId])) {
             $tfromid[] = $familyId;
             $childfamilyId = $familyId;
@@ -216,7 +224,7 @@ class SmartFieldAbsoluteOrder
      * Get structure level for an attribute (0 means top level  - for tabs or frame)
      *
      * @param string $attrid
-     * @param array  $attributes
+     * @param array $attributes
      *
      * @return int
      * @throws \Anakeen\Core\Exception
@@ -233,11 +241,12 @@ class SmartFieldAbsoluteOrder
         }
         return $level;
     }
+
     /**
      * Get previous attribute order when only numeric order is done
      *
      * @param string $attrid
-     * @param array  $sortedAttributes
+     * @param array $sortedAttributes
      *
      * @return string
      */
@@ -260,11 +269,12 @@ class SmartFieldAbsoluteOrder
         }
         return $previous;
     }
+
     /**
      * Compute numeric order when no order id done
      *
      * @param string $attrid
-     * @param array  $attributes
+     * @param array $attributes
      *
      * @return int|float
      */
@@ -276,7 +286,7 @@ class SmartFieldAbsoluteOrder
                 if ($attribute["numOrder"] === 0) {
                     $attribute["numOrder"] = self::getNumericOrder($attribute["id"], $attributes);
                 }
-                
+
                 if ($num === 0) {
                     $num = $attribute["numOrder"] - 0.5;
                 } else {
@@ -284,9 +294,10 @@ class SmartFieldAbsoluteOrder
                 }
             }
         }
-        
+
         return $num;
     }
+
     /**
      * Linearize tree to be a flat array
      *
@@ -305,12 +316,13 @@ class SmartFieldAbsoluteOrder
         }
         return $linearOrder;
     }
+
     /**
      * Get childs for a node
      *
-     * @param  array  $tree
-     * @param  string $attrid
-     * @param array   $default
+     * @param array $tree
+     * @param string $attrid
+     * @param array $default
      *
      * @return array
      */
@@ -327,6 +339,7 @@ class SmartFieldAbsoluteOrder
         }
         return $default;
     }
+
     /**
      * Delete node : return deleted node, false if not found
      *
@@ -335,7 +348,7 @@ class SmartFieldAbsoluteOrder
      *
      * @return bool|array
      */
-    protected static function deleteNode(array & $tree, $attrid)
+    protected static function deleteNode(array &$tree, $attrid)
     {
         foreach ($tree as $kNode => & $node) {
             if ($node["id"] === $attrid) {
@@ -350,55 +363,64 @@ class SmartFieldAbsoluteOrder
         }
         return false;
     }
+
     /**
      * Add items to the tree
      *
      * @param array $tree
      * @param array $onlyFamilyTree
      */
-    protected static function updateAttributeTree(array & $tree, array $onlyFamilyTree)
+    protected static function updateAttributeTree(array &$tree, array $onlyFamilyTree)
     {
+        self::$updatedAttrCounts = [];
         foreach ($onlyFamilyTree as $attrid => $order) {
             self::updateAttributeTreeItem($tree, $attrid, $onlyFamilyTree);
         }
     }
+
     /**
      * Verify that all attributes are well places in the tree
      *
-     * @param array  $tree
+     * @param array $tree
      * @param string $parent
      *
      * @throws Exception
      *
      */
-    protected static function checkTree(array & $tree, $parent = "")
+    protected static function checkTree(array &$tree, $parent = "")
     {
         foreach ($tree as $child) {
             if (!isset($child["parent"])) {
                 $child["parent"] = "";
             }
-            
+
             if ($child["parent"] !== $parent) {
                 throw new Exception("ATTR0213", $child["id"], $parent, $child["parent"]);
             }
-            
+
             if ($child["content"]) {
                 self::checkTree($child["content"], $child["id"]);
             }
         }
     }
+
     /**
      * add single item to the tree
      *
-     * @param array  $tree
+     * @param array $tree
      * @param        $attrid
-     * @param  array $orders
+     * @param array $orders
      */
-    protected static function updateAttributeTreeItem(array & $tree, $attrid, &$orders)
+    protected static function updateAttributeTreeItem(array &$tree, $attrid, &$orders)
     {
+        self::$updatedAttrCounts[$attrid]++;
+        if (self::$updatedAttrCounts[$attrid] > 3) {
+            // Avoid recursive changes
+            return;
+        }
         $parent = (!empty($orders[$attrid]["parent"])) ? $orders[$attrid]["parent"] : false;
         $prev = (!empty($orders[$attrid]["prev"])) ? $orders[$attrid]["prev"] : false;
-        
+
         if (empty($orders[$attrid]["isInTree"])) {
             // $node = ["id" => $attrid, "content" => self::getTreeContent($tree, $attrid)];
             if (!empty($orders[$attrid]["id"])) {
@@ -407,9 +429,9 @@ class SmartFieldAbsoluteOrder
                     $node = ["id" => $attrid, "content" => []];
                 }
             } else {
-                $node = ["id" => $attrid, "content" => self::getTreeContent($tree, $attrid) ];
+                $node = ["id" => $attrid, "content" => self::getTreeContent($tree, $attrid)];
             }
-            
+
             if (!$parent) {
                 if ($prev === self::autoOrder) {
                     $tree[] = $node;
@@ -419,7 +441,7 @@ class SmartFieldAbsoluteOrder
                     if (empty($orders[$prev]["isInTree"])) {
                         self::updateAttributeTreeItem($tree, $prev, $orders);
                     }
-                    
+
                     self::insertAfter($tree, $prev, $node);
                 }
             } else {
@@ -441,8 +463,8 @@ class SmartFieldAbsoluteOrder
             $orders[$attrid]["isInTree"] = true;
         }
     }
-    
-    protected static function insertAfter(array & $array, $ref, array & $new)
+
+    protected static function insertAfter(array &$array, $ref, array &$new)
     {
         foreach ($array as $k => & $v) {
             if ($v["id"] == $ref) {
@@ -455,8 +477,8 @@ class SmartFieldAbsoluteOrder
         }
         return false;
     }
-    
-    protected static function prependNode(array & $array, $parent, array & $new)
+
+    protected static function prependNode(array &$array, $parent, array &$new)
     {
         foreach ($array as $k => & $v) {
             if ($v["id"] == $parent) {
@@ -469,8 +491,8 @@ class SmartFieldAbsoluteOrder
         }
         return false;
     }
-    
-    protected static function appendNode(array & $array, $parent, array & $new)
+
+    protected static function appendNode(array &$array, $parent, array &$new)
     {
         foreach ($array as $k => & $v) {
             if ($v["id"] == $parent) {
