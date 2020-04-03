@@ -177,9 +177,8 @@ class ExportConfiguration
         $this->setEndComment();
     }
 
-    protected function extractModAttr()
+    public function extractModAttr()
     {
-
         $structConfig = $this->structConfig;
         /**
          * @var \DOMElement[]
@@ -190,7 +189,7 @@ class ExportConfiguration
         $l = $q->Query();
 
         if ($q->nb === 0) {
-            return;
+            return false;
         }
         /**
          * @var DocAttr $docattr
@@ -201,33 +200,79 @@ class ExportConfiguration
             $smartOver->setAttribute("field", $attrid);
             $attr = $this->sst->getAttribute($attrid);
             if (!$attr) {
-                throw new Exception("Attr $attrid");
+                throw new Exception("Override field \"$attrid\" not found");
             }
 
+            if (is_a($attr, MenuAttribute::class)) {
+                continue;
+            }
             if ($docattr->accessibility) {
                 $smartOver->setAttribute("access", $docattr->accessibility);
             }
-
-            if ($docattr->needed) {
-                $smartOver->setAttribute("needed", ($docattr->needed === "Y") ? "true" : "false");
-            }
-            if ($docattr->title) {
-                $smartOver->setAttribute("is-title", ($docattr->title === "Y") ? "true" : "false");
-            }
-            if ($docattr->abstract) {
-                $smartOver->setAttribute("is-abstract", ($docattr->abstract === "Y") ? "true" : "false");
+            if (is_a($attr, NormalAttribute::class)) {
+                if ($docattr->needed) {
+                    $smartOver->setAttribute("needed", ($docattr->needed === "Y") ? "true" : "false");
+                }
+                if ($docattr->title) {
+                    $smartOver->setAttribute("is-title", ($docattr->title === "Y") ? "true" : "false");
+                }
+                if ($docattr->abstract) {
+                    $smartOver->setAttribute("is-abstract", ($docattr->abstract === "Y") ? "true" : "false");
+                }
             }
             if ($docattr->ordered) {
-                $smartOver->setAttribute("insert-after", $docattr->ordered);
+                if ($attr->getOption("relativeOrder")) {
+                    $smartOver->setAttribute("insert-after", $attr->getOption("relativeOrder"));
+                } else {
+                    if (is_numeric($docattr->ordered)) {
+                        $previous=null;
+                        $allAttrs=$this->sst->getAttributes();
+                        $this->sst->attributes->orderAttributes();
+
+                        foreach ($allAttrs as $fields) {
+                            if (!$fields || $fields->usefor==='Q') {
+                                continue;
+                            }
+                            if ($fields->id === $attr->id) {
+                                break;
+                            }
+                            switch ($attr->type) {
+                                case "frame":
+                                    if ($fields->type !== "frame") {
+                                        if ($attr->fieldSet && $fields->fieldSet && $attr->fieldSet->id === $fields->fieldSet->id) {
+                                            $previous=$fields;
+                                        } elseif (!$attr->fieldSet && !$fields->fieldSet) {
+                                            $previous=$fields;
+                                        }
+                                    }
+                                    break;
+                                case "tab":
+                                    if ($fields->type === "tab") {
+                                        $previous=$fields;
+                                    }
+                                    break;
+                                default:
+                                    if ($fields->type !== "frame" && $fields->type !== "tab" && $fields->fieldSet && $fields->fieldSet->id === $attr->fieldSet->id) {
+                                        if ($fields->getOption("autotitle")!=="yes") {
+                                            $previous=$fields;
+                                        }
+                                    }
+                            }
+                        }
+
+
+
+                            $smartOver->setAttribute("insert-after", $previous?$previous->id:"::first");
+                    } else {
+                        $smartOver->setAttribute("insert-after", $docattr->ordered);
+                    }
+                }
             }
             if ($docattr->labeltext) {
                 $smartOver->setAttribute("label", $docattr->labeltext);
             }
             if ($docattr->title) {
                 $smartOver->setAttribute("label", $docattr->labeltext);
-            }
-            if ($docattr->type) {
-                $smartOver->setAttribute("type", $docattr->type);
             }
             if ($docattr->link) {
                 $smartOver->setAttribute("link", $docattr->link);
@@ -237,32 +282,34 @@ class ExportConfiguration
             }
             if ($docattr->phpconstraint && $docattr->phpconstraint !== "-") {
                 if (!is_a($attr, NormalAttribute::class)) {
-                    throw new \Anakeen\Router\Exception(sprintf("\"%s\" is not a normal attribute. Constraint cannot be set", $attr->id));
+                    throw new \Anakeen\Router\Exception(sprintf(
+                        "\"%s\" is not a normal attribute. Constraint cannot be set",
+                        $attr->id
+                    ));
                 }
-                $smartOver->appendChild($this->getConstraint($attr));
+                // $smartOver->appendChild($this->getConstraint($attr));
             }
 
 
             if ($docattr->phpfunc && (!$attr->phpfile) && $attr->type !== "enum") {
                 $smartOver->appendChild($this->getComputeFunc($attr));
             }
-            if ($docattr->phpfunc && ($attr->phpfile) && $attr->type !== "enum") {
-                $smartOver->appendChild($this->getAutocompleteFunc($attr));
-            }
+
+            // No set here the autocomplete modattr : already set in extractAttr part
 
             if ($docattr->frameid) {
-                if (isset($this->fieldSets[$docattr->frameid])) {
-                    $this->fieldSets[$docattr->frameid]->appendChild($smartOver);
-                } else {
+                if (!$this->sst->getAttribute($docattr->frameid)) {
                     $smartOver->setAttribute("unknow-fieldset", $docattr->frameid);
-                    $this->setComment("Alterated Fields", $structConfig);
-                    $structConfig->appendChild($smartOver);
+                } else {
+                    $smartOver->setAttribute("fieldset", $docattr->frameid);
                 }
-            } else {
+            }
+            if ($smartOver->attributes->length > 1) {
                 $this->setComment("Alterated Fields", $structConfig);
                 $structConfig->appendChild($smartOver);
             }
         }
+        return true;
     }
 
     public function extractDefaults()
@@ -374,6 +421,9 @@ class ExportConfiguration
         $attrs = $this->sst->getAttributes();
         $this->fieldSets = [];
         foreach ($attrs as $attr) {
+            if (!$attr) {
+                continue;
+            }
             if ($attr->structureId !== $this->sst->id) {
                 continue;
             }
@@ -456,7 +506,10 @@ class ExportConfiguration
                         if ($attr->format) {
                             $smartAttr->setAttribute("relation", $attr->format);
                         } else {
-                            $smartAttr->setAttribute("relation", sprintf("%s-%s", strtolower($this->sst->name), $attr->id));
+                            $smartAttr->setAttribute(
+                                "relation",
+                                sprintf("%s-%s", strtolower($this->sst->name), $attr->id)
+                            );
                         }
                     }
                 }
@@ -520,11 +573,16 @@ class ExportConfiguration
 
             if ($attr->isNormal && $attr->phpconstraint) {
                 // No export computed constraint
-                if (!preg_match('/Anakeen\\\\Core\\\\Utils\\\\Numbers\\:\\:is/', $attr->phpconstraint)) {
+                if (!preg_match('/Anakeen\\\\Core\\\\Utils\\\\Numbers::is/', $attr->phpconstraint)) {
                     $smartHooks->appendChild($this->getConstraint($attr));
                 }
             }
-
+            if ($attr->getOption("autotitle") === "yes") {
+                continue;
+            }
+            if ($attr->getOption("autocreated") === "yes") {
+                continue;
+            }
 
             if ($attr->isNormal && $attr->phpfunc && (!$attr->phpfile) && $attr->type !== "enum") {
                 $smartHooks->appendChild($this->getComputeFunc($attr));
@@ -589,7 +647,10 @@ class ExportConfiguration
         if ($attr->properties && $attr->properties->autocomplete) {
             $parseMethod = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
             $parseMethod->parse($attr->properties->autocomplete);
-            $smartAttrCallable->setAttribute("function", sprintf("%s::%s", $parseMethod->className, $parseMethod->methodName));
+            $smartAttrCallable->setAttribute(
+                "function",
+                sprintf("%s::%s", $parseMethod->className, $parseMethod->methodName)
+            );
         } else {
             $parseMethod = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyFunction();
             $parseMethod->parse($attr->phpfunc);
@@ -620,7 +681,6 @@ class ExportConfiguration
 
     protected function getComputeFunc(NormalAttribute $attr)
     {
-
         $smartAttrHook = $this->cel("field-hook");
         $smartAttrHook->setAttribute("event", "onPreRefresh");
         $smartAttrHook->setAttribute("field", $attr->id);
@@ -718,7 +778,11 @@ class ExportConfiguration
 
     protected function isModAttr(BasicAttribute $attr)
     {
-        $sql = sprintf("select id from docattr where docid=%d and id =':%s'", $this->sst->id, pg_escape_string($attr->id));
+        $sql = sprintf(
+            "select id from docattr where docid=%d and id =':%s'",
+            $this->sst->id,
+            pg_escape_string($attr->id)
+        );
         DbManager::query($sql, $id, true, true);
         return $id !== false;
     }
