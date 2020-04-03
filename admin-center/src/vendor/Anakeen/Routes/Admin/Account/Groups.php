@@ -19,6 +19,8 @@ class Groups
     protected $depth;
     protected $maxDepth = 0;
     protected $totalResults = 0;
+    protected $openPathIds = [];
+    protected $filterValue = "";
 
     /**
      * @param \Slim\Http\request $request
@@ -34,8 +36,9 @@ class Groups
         $this->skip = intval($request->getQueryParam("skip"));
         $this->take = $request->getQueryParam("take");
         $this->depth = $request->getQueryParam("depth", 0);
-        $sort = $request->getQueryParam("sort");
+        $this->openPathIds = $request->getQueryParam("openPathIds", []);
 
+        //  print_r($this->openedGroups);
         // Get top groups
 
         DbManager::query(
@@ -47,23 +50,12 @@ class Groups
         );
         $searchAccount = new \Anakeen\Accounts\SearchAccounts();
         $searchAccount->setTypeFilter(\Anakeen\Accounts\SearchAccounts::groupType);
-        if ($sort) {
-            $sortString = "";
-            foreach ($sort as $currentSort) {
-                $sortString .= $currentSort["field"] . " " . $currentSort["dir"] . " ";
-            }
-            $searchAccount->setOrder($sortString);
-        }
+
 
         if ($filter) {
             foreach ($filter["filters"] as $currentFilter) {
-                if ($currentFilter["field"] === "group") {
-                    $searchAccount->addGroupFilter($currentFilter["value"]);
-                } else {
-                    $searchAccount->addFilter(
-                        $currentFilter["field"] . " ~* '%s'",
-                        preg_quote($currentFilter["value"])
-                    );
+                if ($currentFilter["value"]) {
+                    $this->filterValue = $currentFilter["value"];
                 }
             }
         }
@@ -115,43 +107,54 @@ class Groups
 
         return $response->withJson([
             "total" => $this->collected,
-            "maxDepth" => $this->maxDepth,
+            "maxDepth" => $this->maxDepth + 1,
             "data" => array_values($this->results)
         ]);
     }
 
-    protected function insertUserCountToNode() {
-        $ids=[];
+    protected function insertUserCountToNode()
+    {
+        if (!$this->results) {
+            return;
+        }
+        $ids = [];
         foreach ($this->results as $result) {
-            $ids[$result["accountId"]]=$result["accountId"];
+            $ids[$result["accountId"]] = $result["accountId"];
         }
-        $sql=sprintf("select id, (select count(*) from users where memberof @> ARRAY[uu.id] and accounttype='U') as c from users uu where id in (%s)", implode(',',$ids));
+        $sql = sprintf(
+            "select id, (select count(*) from users where memberof @> ARRAY[uu.id] and accounttype='U') as c from users uu where id in (%s)",
+            implode(',', $ids)
+        );
         DbManager::query($sql, $accountCounts);
 
-        $uc=[];
+
+        $uc = [];
         foreach ($accountCounts as $accountCount) {
-            $uc[$accountCount["id"]]=$accountCount["c"];
+            $uc[$accountCount["id"]] = $accountCount["c"];
         }
 
-        $sql=sprintf("select id, (select count(*) from users where memberof @> ARRAY[uu.id] and accounttype='G') as c from users uu where id in (%s)", implode(',',$ids));
+        $sql = sprintf(
+            "select id, (select count(*) from users where memberof @> ARRAY[uu.id] and accounttype='G') as c from users uu where id in (%s)",
+            implode(',', $ids)
+        );
         DbManager::query($sql, $accountCounts);
 
-        $gc=[];
+        $gc = [];
         foreach ($accountCounts as $accountCount) {
-            $gc[$accountCount["id"]]=$accountCount["c"];
+            $gc[$accountCount["id"]] = $accountCount["c"];
         }
 
         foreach ($this->results as &$result) {
-            $result["userCount"]=$uc[$result["accountId"]];
-            $result["subgroupCount"]=$gc[$result["accountId"]];
+            $result["userCount"] = $uc[$result["accountId"]];
+            $result["subgroupCount"] = $gc[$result["accountId"]];
         }
     }
 
     protected function walkToTheTree(
         array $tree,
+        $pathId = "",
         $path = []
     ) {
-
         if ($this->take !== null) {
             if (count($this->results) > $this->take) {
                 return;
@@ -163,17 +166,25 @@ class Groups
             }
             $info = $groupAccount["info"];
             $info["path"] = $path;
+            $info["pathid"] = $pathId;
             $this->maxDepth = max(count($path), $this->maxDepth);
-            if ($this->depth === 0 || count($path) < $this->depth) {
+
+            if ($this->depth === 0 || count($path) < $this->depth || in_array($info["pathid"], $this->openPathIds)) {
                 $this->collected++;
                 if ($this->collected > $this->skip) {
                     if ($this->take === null || count($this->results) < $this->take) {
-                        $this->results[] = $info;
+                        if ($this->filterValue === "" || stripos($info["lastname"], $this->filterValue) !== false) {
+                            $this->results[] = $info;
+                        }
                     }
                 }
             }
             if (!empty($groupAccount["content"])) {
-                $this->walkToTheTree($groupAccount["content"], array_merge($path, [$info["lastname"]]));
+                $this->walkToTheTree(
+                    $groupAccount["content"],
+                    $pathId . ":" . $info["accountId"],
+                    array_merge($path, [$info["lastname"]])
+                );
             }
         }
     }

@@ -30,9 +30,9 @@ export default class AdminCenterAccountController extends Vue {
     pageSize: 50,
     schema: {
       data: response => {
-        console.log(response);
         for (let i = 0; i < response.data.length; i++) {
           response.data[i].currentDepth = this.getDepth();
+          response.data[i].openPathIds = this.getOpenPathIds();
         }
         return response.data;
       },
@@ -53,7 +53,7 @@ export default class AdminCenterAccountController extends Vue {
       read: {
         url: "/api/v2/admin/account/groups/",
         data: filter => {
-          console.log(filter);
+          filter.openPathIds = this.getOpenPathIds();
           filter.depth = this.getDepth();
           return filter;
         }
@@ -97,7 +97,8 @@ export default class AdminCenterAccountController extends Vue {
   });
   public displayGroupDocument = false;
   public selectedGroupDocumentId = false;
-  public selectedGroupLogin = false;
+  public selectedGroupLogin = "@users";
+  public openPathIds: string[] = [];
   public selectedUser = "";
   public options: object = {};
   public groupId = "";
@@ -132,6 +133,19 @@ export default class AdminCenterAccountController extends Vue {
     this.$nextTick(() => {
       this.groupId = window.localStorage.getItem("admin.account.groupSelected.id");
       this.gridGroupContent.read();
+
+      this.$refs.groupGrid.kendoWidget().element.on("mousedown", ".account-badge.group-count", e => {
+        const grid = this.$refs.groupGrid.kendoWidget();
+        const $tr = $(e.currentTarget).closest("tr");
+        const dataItem = grid.dataItem($tr);
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        this.openPathIds.push(dataItem.pathid + ":" + dataItem.accountId);
+        this.gridGroupContent.read();
+      });
+      this.viewAllUsers();
     });
   }
 
@@ -140,6 +154,9 @@ export default class AdminCenterAccountController extends Vue {
   }
   public getDepth(): number {
     return this.selectedDepth;
+  }
+  public getOpenPathIds(): string[] {
+    return this.openPathIds;
   }
 
   public parseCreateUser(data) {
@@ -176,6 +193,10 @@ export default class AdminCenterAccountController extends Vue {
     });
   }
 
+  public onGroupFilter() {
+    this.selectedDepth = this.dataDepth.length;
+    console.log("onGroupFilter");
+  }
   public groupRowTemplate = this.generateRowTemplate();
 
   public generateRowTemplate() {
@@ -183,9 +204,9 @@ export default class AdminCenterAccountController extends Vue {
       '<tr data-uid="#: uid #">' +
       '<td class="grouprow" >' +
       '<div class="groupinfo" style="margin-left: #= data.path.length #rem"' +
-      '#if (data.path.length < (data.currentDepth -1)) {# data-expanded="true" #}# >' +
+      '#if (data.path.length < (data.currentDepth -1) || data.openPathIds.indexOf(data.pathid+":"+data.accountId) >= 0) {# data-expanded="true" #}# >' +
       '<div class="path"># for (var i = 0; i < data.path.length; i++)  { #&gt;&nbsp; #= (data.path[i]) ## } # </div>' +
-      '<div class="groupname"><div class="lastname"> #: lastname# </div> ' +
+      '<div class="groupname"><div class="lastname">#: lastname# </div> ' +
       '# if (subgroupCount > 0) { # <div class="account-badge group-count"  > #: subgroupCount# </div> #}#' +
       '<div class="account-badge user-count"> #: userCount# </div></div></div>' +
       "</td>" +
@@ -255,9 +276,10 @@ export default class AdminCenterAccountController extends Vue {
     }
   }
 
-  public selectDepth(e): void {
+  public selectDepth(): void {
     this.$nextTick(() => {
-      this.gridGroupContent.read();
+      this.openPathIds = [];
+      this.gridGroupContent.page(1);
     });
   }
   public addClassOnSelectorContainer(e) {

@@ -22,6 +22,7 @@
         <kendo-grid
           ref="groupGrid"
           class="account-user-grid"
+          @filter="onGroupFilter"
           :data-source="gridGroupContent"
           :row-template="groupRowTemplate"
           :selectable="true"

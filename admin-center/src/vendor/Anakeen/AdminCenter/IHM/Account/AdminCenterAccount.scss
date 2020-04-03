@@ -49,46 +49,66 @@
         .lastname {
           flex: 1;
           font-weight: bold;
+          word-break: break-word;
         }
 
         .groupinfo {
           border-left: solid 1px grey;
           padding: 0.25rem;
+          cursor: default;
         }
 
 
         .groupinfo[data-expanded=true] {
           .account-badge {
             &.group-count {
-              background-color: #079b37;
+              color: unset;
+              background-color: unset;
+            }
+
+            &::before {
+              display: none;
             }
           }
         }
+
         .account-badge {
-          color: white;
           border-radius: 0.5rem;
           padding-right: 0.5rem;
           padding-left: 0.5rem;
           min-width: 5rem;
           height: 1.6rem;
           text-align: right;
+          border: solid 1px gray;
 
           &.user-count {
-            background-color: #157efb;
 
-            &::before {
+            &::after {
               font-family: "Material Icons";
               content: "person";
-              float: left;
+              vertical-align: top;
+
             }
           }
 
           &.group-count {
-            background-color: #9b8e2f;
+            background-color: #079b37;
+            cursor: pointer;
+            color: white;
+
+            &:hover {
+              background-color: #07c440;
+            }
+
+            &::after {
+              font-family: "Material Icons";
+              content: "group";
+              vertical-align: top;
+            }
 
             &::before {
               font-family: "Material Icons";
-              content: "group";
+              content: "add_box";
               float: left;
             }
 
