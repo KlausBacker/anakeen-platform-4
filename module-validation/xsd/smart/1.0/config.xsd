@@ -9,10 +9,13 @@
            xmlns:timer="https://platform.anakeen.com/4/schemas/timer/1.0"
            xmlns:v1="https://platform.anakeen.com/4/schemas/smart/1.0">
     <xs:import namespace="https://platform.anakeen.com/4/schemas/ui/1.0" schemaLocation="../../ui/1.0/config.xsd"/>
-    <xs:import namespace="https://platform.anakeen.com/4/schemas/workflow/1.0" schemaLocation="../../workflow/1.0/config.xsd"/>
-    <xs:import namespace="https://platform.anakeen.com/4/schemas/mailtemplate/1.0" schemaLocation="../../mailtemplate/1.0/config.xsd"/>
+    <xs:import namespace="https://platform.anakeen.com/4/schemas/workflow/1.0"
+               schemaLocation="../../workflow/1.0/config.xsd"/>
+    <xs:import namespace="https://platform.anakeen.com/4/schemas/mailtemplate/1.0"
+               schemaLocation="../../mailtemplate/1.0/config.xsd"/>
     <xs:import namespace="https://platform.anakeen.com/4/schemas/task/1.0" schemaLocation="../../task/1.0/config.xsd"/>
-    <xs:import namespace="https://platform.anakeen.com/4/schemas/timer/1.0" schemaLocation="../../timer/1.0/config.xsd"/>
+    <xs:import namespace="https://platform.anakeen.com/4/schemas/timer/1.0"
+               schemaLocation="../../timer/1.0/config.xsd"/>
     <xs:element name="config" type="v1:configType">
         <xs:annotation>
             <xs:documentation>
@@ -32,20 +35,20 @@
     </xs:element>
 
     <xs:complexType name="configType">
-        <xs:sequence>
-            <xs:element ref="mail:mailtemplate" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element ref="timer:timer" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element ref="task:task" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element ref="wfl:graph" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element ref="wfl:config" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element type="v1:fieldAccessLayerType" name="field-access-layer" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element type="v1:fieldAccessLayerListType" name="field-access-layer-list" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element type="v1:enumeratesType" name="enumerates" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:choice maxOccurs="unbounded">
+            <xs:element ref="mail:mailtemplate" minOccurs="0"/>
+            <xs:element ref="timer:timer" minOccurs="0"/>
+            <xs:element ref="task:task" minOccurs="0"/>
+            <xs:element ref="wfl:graph" minOccurs="0"/>
+            <xs:element ref="wfl:config" minOccurs="0"/>
+            <xs:element type="v1:fieldAccessLayerType" name="field-access-layer" minOccurs="0"/>
+            <xs:element type="v1:fieldAccessLayerListType" name="field-access-layer-list" minOccurs="0"/>
+            <xs:element type="v1:enumeratesType" name="enumerates" minOccurs="0"/>
 
-            <xs:element ref="ui:mask" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element ref="ui:view-control" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element ref="v1:access-configuration" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element type="v1:structure-configurationType" name="structure-configuration" minOccurs="0" maxOccurs="unbounded">
+            <xs:element ref="ui:mask" minOccurs="0"/>
+            <xs:element ref="ui:view-control" minOccurs="0"/>
+            <xs:element ref="v1:access-configuration" minOccurs="0"/>
+            <xs:element type="v1:structure-configurationType" name="structure-configuration" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>
                         <h1>Smart Structure Configuration</h1>
@@ -53,8 +56,8 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element ref="ui:render" minOccurs="0" maxOccurs="unbounded"/>
-        </xs:sequence>
+            <xs:element ref="ui:render" minOccurs="0"/>
+        </xs:choice>
     </xs:complexType>
 
     <xs:complexType name="field-returnType">
@@ -65,7 +68,9 @@
                     <h1>
                         <b>Name index for return key</b>
                     </h1>
-                    <p>This index must be used in <pre>SmartAutocompleteResponse::appendEntry()</pre> method to set results into the appropriate index</p>
+                    <p>This index must be used in <pre>SmartAutocompleteResponse::appendEntry()</pre> method to set
+                        results into the appropriate index
+                    </p>
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
@@ -94,8 +99,10 @@
             <xs:documentation>
                 <h1>Type of argument</h1>
                 <ul>
-                    <li><code>field</code>: reference field of structure, the argument is the field value in the form</li>
-                    <li><code>string</code>: static text use as value in arg</li>
+                    <li><code>field</code>: reference field of structure, the argument is the field value in the form
+                    </li>
+                    <li><code>string</code>: static text use as value in arg
+                    </li>
                 </ul>
             </xs:documentation>
         </xs:annotation>
@@ -431,7 +438,8 @@
                 <xs:documentation>
                     <h1>Dynamic Profil</h1>
                     <p>Indicate that account attributes of linked structure can be use in acl configuration</p>
-                    <p>If it is set, all smart element linked with its profil are a computed profil. When the right of this profil change, all linked computed profile are reseted.
+                    <p>If it is set, all smart element linked with its profil are a computed profil. When the right of
+                        this profil change, all linked computed profile are reseted.
                         May take long time to proceed (depends of number of linked profil)
                     </p>
                 </xs:documentation>
@@ -460,7 +468,9 @@
                         <h1>PHP Class</h1>
                         <p>This property indicate a complete PHP (including namespace).</p>
                         <p>This class is used to declare hooks and to add functionnalities to the Smart Structure</p>
-                        <em>This class must extends the standard SmartElement class if the Smart Structure not extends another Smart Structure</em>
+                        <em>This class must extends the standard SmartElement class if the Smart Structure not extends
+                            another Smart Structure
+                        </em>
                     </xs:documentation>
                 </xs:annotation>
 
