@@ -219,7 +219,6 @@ export default {
         dataSource: this.methods
       })
       .data("kendoComboBox");
-    console.log(this.methods);
     this.funcButton = $(this.$refs.funcButton)
       .kendoButton()
       .data("kendoButton");
