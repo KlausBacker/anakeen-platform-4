@@ -1,31 +1,33 @@
 <template>
-  <div class="condition-table-keywords-time-group">
-    <div v-show="isTextBox" class="condition-table-keywords-time-textbox">
+  <div class="condition-table-keywords-money-group">
+    <div v-show="isTextBox" class="condition-table-keywords-money-textbox">
       <input
-        ref="keywordsTimeTextBoxWrapper"
+        ref="keywordsMoneyTextBoxWrapper"
         type="text"
-        class="condition-table-keywords-time-textbox k-textbox"
+        class="condition-table-keywords-money-textbox k-textbox"
         @change="onInputChange"
       />
     </div>
-    <div v-show="!isTextBox" class="condition-table-keywords-time-timepicker">
-      <div v-show="timeMode" class="condition-table-keywords-time-time">
-        <input ref="keywordsTimeWrapper" class="condition-table-keywords-time-timepicker" />
+    <div v-show="!isTextBox" class="condition-table-keywords-money-moneypicker">
+      <div v-show="moneyMode" class="condition-table-keywords-money-money">
+        <input type="number" ref="keywordsMoneyWrapper" class="condition-table-keywords-money-moneypicker" />
       </div>
-      <div v-show="!timeMode" class="condition-table-keywords-time-combobox">
-        <div ref="keywordsTimeFunctionWrapper" class="condition-table-keywords-time-function" />
+      <div v-show="!moneyMode" class="condition-table-keywords-money-combobox">
+        <div ref="keywordsMoneyFunctionWrapper" class="condition-table-keywords-money-function" />
       </div>
-      <button ref="funcButton" class="condition-table-keywords-time-funcBtn" @click="onFuncButtonClick">
+      <button ref="funcButton" class="condition-table-keywords-money-funcBtn" @click="onFuncButtonClick">
         Σ
       </button>
     </div>
   </div>
 </template>
 <script>
-import "@progress/kendo-ui/js/kendo.timepicker";
+import "@progress/kendo-ui/js/kendo.numerictextbox";
+import "@progress/kendo-ui/js/kendo.combobox";
+import "@progress/kendo-ui/js/kendo.button";
 
 export default {
-  name: "condition-table-keywords-time",
+  name: "condition-table-keywords-money",
   props: {
     operator: "",
     methods: null,
@@ -33,10 +35,10 @@ export default {
   },
   data() {
     return {
-      timePicker: null,
+      moneyPicker: null,
       funcButton: null,
       methodsComboBox: null,
-      timeMode: true,
+      moneyMode: true,
       textBoxOperators: ["~*", "!~*"]
     };
   },
@@ -53,15 +55,14 @@ export default {
     }
   },
   mounted() {
-    this.timePicker = $(this.$refs.keywordsTimeWrapper)
-      .kendoTimePicker({
-        parseFormats: ["HH:mm"],
-        format: "h:mm tt",
-        /* trigger a fonction that change the value of the date from the displayValue according to ISO 8601 */
-        change: () => this.onTimeChange()
+    this.moneyPicker = $(this.$refs.keywordsMoneyWrapper)
+      .kendoNumericTextBox({
+        format: "c",
+        decimals: 3,
+        change: () => this.onMoneyChange()
       })
-      .data("kendoTimePicker");
-    this.methodsComboBox = $(this.$refs.keywordsTimeFunctionWrapper)
+      .data("kendoNumericTextBox");
+    this.methodsComboBox = $(this.$refs.keywordsMoneyFunctionWrapper)
       .kendoComboBox({
         width: 200,
         filter: "contains",
@@ -83,10 +84,10 @@ export default {
     isValid() {
       let valid;
       if (this.isTextBox) {
-        valid = this.$refs.keywordsTimeTextBoxWrapper.value !== "";
+        valid = this.$refs.keywordsMoneyTextBoxWrapper.value !== "";
       } else {
-        if (this.timeMode) {
-          valid = !!this.timePicker.value();
+        if (this.moneyMode) {
+          valid = !!this.moneyPicker.value();
         } else {
           valid = !!this.methodsComboBox.value();
         }
@@ -100,15 +101,11 @@ export default {
         parentValue: value
       });
     },
-    onTimeChange() {
-      let timeDate = this.timePicker.value();
-      let time = "";
-      if (timeDate) {
-        time = this.searchPadNumber(timeDate.getHours()) + ":" + this.searchPadNumber(timeDate.getMinutes());
-      }
+    onMoneyChange() {
+      let money = this.moneyPicker.value();
       this.$emit("keysChange", {
-        smartFieldValue: time,
-        parentValue: time
+        smartFieldValue: money,
+        parentValue: money
       });
     },
     onFuncChange() {
@@ -118,22 +115,15 @@ export default {
         parentValue: value
       });
     },
-    searchPadNumber(number) {
-      let result = number;
-      if (number < 10) {
-        result = "0" + number;
-      }
-      return result;
-    },
     onFuncButtonClick() {
-      this.timeMode = !this.timeMode;
-      this.timeMode ? this.onTimeChange() : this.onFuncChange();
+      this.moneyMode = !this.moneyMode;
+      this.moneyMode ? this.onMoneyChange() : this.onFuncChange();
       $(this.$refs.funcButton).toggleClass("func-button-clicked");
     },
     initData() {
       if (this.initValue) {
         if (this.isTextBox) {
-          $(this.$refs.keywordsTimeTextBoxWrapper).val(this.initValue);
+          $(this.$refs.keywordsMoneyTextBoxWrapper).val(this.initValue);
         } else {
           let methodInitValue;
           for (let prop in this.methods) {
@@ -145,47 +135,58 @@ export default {
             }
           }
           if (methodInitValue) {
-            this.timeMode = false;
+            this.moneyMode = false;
             this.methodsComboBox.select(function(item) {
               return item.method === methodInitValue;
             });
           } else {
-            this.timePicker.value(this.initValue);
+            this.moneyPicker.value(this.initValue);
           }
         }
       }
     },
     clearData() {
-      this.timePicker.value("");
+      this.moneyPicker.value("");
       this.methodsComboBox.value("");
-      $(this.$refs.keywordsTimeTextBoxWrapper).val("");
+      $(this.$refs.keywordsMoneyTextBoxWrapper).val("");
     }
   }
 };
 </script>
 <style>
-.condition-table-keywords-time-combobox {
+.condition-table-keywords-money-moneypicker.k-input {
+  width: 100%;
+  margin-left: 4rem;
+}
+
+.condition-table-keywords-money-money {
+  width: 100%;
+}
+.condition-table-keywords-money-combobox {
   width: 100%;
 }
 
-.condition-table-keywords-time-function {
+.k-moneypicker.condition-table-keywords-money-moneypicker {
+  width: 100%;
+}
+.condition-table-keywords-money-function {
   width: 100%;
 }
 
-.condition-table-keywords-time-group {
+.condition-table-keywords-money-group {
   width: 100%;
 }
 
-.condition-table-keywords-time-timepicker {
+.condition-table-keywords-money-moneypicker {
   display: flex;
   width: 100%;
 }
 
-.condition-table-keywords-time-time {
-  width: 100%;
+.condition-table-keywords-money-money {
+  display: flex;
+  flex-direction: column;
 }
-
-.condition-table-keywords-time-textbox {
+.condition-table-keywords-money-textbox {
   width: 100%;
 }
 .func-button-clicked {
