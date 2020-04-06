@@ -22,7 +22,6 @@
         <kendo-grid
           ref="groupGrid"
           class="account-user-grid"
-          @filter="onGroupFilter"
           :data-source="gridGroupContent"
           :row-template="groupRowTemplate"
           :selectable="true"
@@ -40,6 +39,7 @@
           :change="onGroupSelect"
           :persist-selection="true"
           :auto-bind="false"
+          @filter="onGroupFilter"
         >
           <kendo-grid-column field="id" :hidden="true" />
           <kendo-grid-column :sortable="false" field="lastname" title="Groups" type="string" />
@@ -96,10 +96,7 @@
           </div>
         </header>
         <section>
-          <ank-split-panes
-ref="accountSplitter"
-watch-slots vertical class="account-manager-splitter splitter-grid"
->
+          <ank-split-panes ref="accountSplitter" watch-slots vertical class="account-manager-splitter splitter-grid">
             <div class="accountManager_contentPart_gridPart">
               <kendo-grid
                 ref="grid"

@@ -21,8 +21,8 @@ module.exports = {
     ],
     "no-console": ["error", { allow: ["warn", "error"] }],
 
-    "vue/max-attributes-per-line": ["error", {
-      "singleline": 3,
+    "vue/max-attributes-per-line": ["warn", {
+      "singleline": 4,
       "multiline": {
         "max": 1,
         "allowFirstLine": false
