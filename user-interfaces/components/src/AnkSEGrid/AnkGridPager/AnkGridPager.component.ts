@@ -169,10 +169,14 @@ export default class GridPager extends Mixins(I18nMixin) {
     return 0;
   }
   public mounted(): void {
-    const dropdownPageSizes = $(".smart-element-grid-pager-sizes--dropdown");
+    const dropdownPageSizes = $(this.$refs.gridPageSizes);
     dropdownPageSizes
       .kendoDropDownList({
         dataSource: this.pageSizes,
+        popup: {
+          // @ts-ignore
+          appendTo: $(this.$refs.gridPagerContainer)
+        },
         change: () => {
           this.pageSize = Number(dropdownPageSizes.val());
         }
