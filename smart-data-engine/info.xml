@@ -472,6 +472,9 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Role/role.struct.xml">
             <label>Add ROLE Structure</label>
         </process>
+        <process command="./ank.php --script=generateDocumentClass">
+            <label>Rewrite structure classes</label>
+        </process>
         <process command="./ank.php --system --localeGen"/>
     </post-upgrade>
 
