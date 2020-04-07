@@ -45,6 +45,9 @@ import $ from "jquery";
 import Mustache from "mustache";
 import _ from "underscore";
 import SmartElementEvent = AnakeenController.SmartElement.SmartElementEvent;
+import ISmartElementLoading = AnakeenController.SmartElement.ISmartElementLoading;
+import WidgetLoadingWrapper from "./types/WidgetLoadingWrapper";
+import DefaultLoading from "./types/DefaultLoading";
 
 const DEFAULT_OPTIONS: IControllerOptions = {
   controllerPrefix: "smart-element-controller-",
@@ -84,7 +87,7 @@ interface ISmartElementModel extends Backbone.Model {
 
   getServerProperties(): any;
 
-  getValues(onlyModified?:boolean): any;
+  getValues(onlyModified?: boolean): any;
 
   unautolock(): Promise<any>;
 
@@ -116,7 +119,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
   };
   protected _requestData: ViewData;
   protected _options: IControllerOptions = {};
-  protected $loading: JQuery & { dcpLoading(...args): JQuery };
+  protected loading: ISmartElementLoading;
   protected $notification: JQuery & { dcpNotification(...args): JQuery };
   protected _globalEventHandler: (...args: any[]) => any;
 
@@ -488,7 +491,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
    *
    * @returns {*|{}}
    */
-  public getValues(onlyModified= false) {
+  public getValues(onlyModified = false) {
     this.checkInitialisedModel();
     return this._model.getValues(onlyModified);
   }
@@ -964,12 +967,12 @@ export default class SmartElementController extends AnakeenController.BusEvents.
    * @param px
    */
   public maskSmartElement(message, px) {
-    this.$loading.dcpLoading("show");
+    this.loading.show();
     if (message) {
-      this.$loading.dcpLoading("setTitle", message);
+      this.loading.setTitle(message);
     }
     if (px) {
-      this.$loading.dcpLoading("setPercent", px);
+      this.loading.setPercent(px);
     }
   }
 
@@ -977,7 +980,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
    * Hide loading bar
    */
   public unmaskSmartElement(force) {
-    this.$loading.dcpLoading("hide", force);
+    this.loading.hide(force);
   }
 
   /**
@@ -1182,8 +1185,10 @@ export default class SmartElementController extends AnakeenController.BusEvents.
    */
   private _initExternalElements() {
     if (this._options.loading) {
-      // @ts-ignore
-      this.$loading = this._element.find(".dcpLoading").dcpLoading();
+      const $dcpLoading = this._element.find(".dcpLoading") as JQuery & { dcpLoading(...args): JQuery };
+      this.loading = new WidgetLoadingWrapper(this, $dcpLoading.dcpLoading());
+    } else {
+      this.loading = new DefaultLoading(this);
     }
     if (this._options.notification) {
       // @ts-ignore
@@ -1294,6 +1299,10 @@ export default class SmartElementController extends AnakeenController.BusEvents.
             {{> loading}}
             {{> staticError}}
         </div>`;
+      const partials: any = { staticError: StaticErrorTemplate };
+      if (this._options.loading) {
+        partials.loading = LoadingTemplate;
+      }
       this._element.append(
         Mustache.render(
           domTemplate,
@@ -1303,7 +1312,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
               loadError: i18n.___("Unable to load try again", "ddui")
             }
           },
-          { loading: LoadingTemplate, staticError: StaticErrorTemplate }
+          partials
         )
       );
       // Bind reload action in case of static error
@@ -1807,27 +1816,27 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       this.$notification.dcpNotification("clear");
     });
     this._view.on("loading", (data, nbItem) => {
-      this.$loading.dcpLoading("setPercent", data);
+      this.loading.setPercent(data);
       if (nbItem) {
-        this.$loading.dcpLoading("setNbItem", nbItem);
+        this.loading.setNbItem(nbItem);
       }
     });
     this._view.on("loaderShow", (text, pc) => {
-      this.$loading.dcpLoading("show", text, pc);
+      this.loading.show(text, pc);
     });
     this._view.on("loaderHide", () => {
-      this.$loading.dcpLoading("hide");
+      this.loading.hide();
     });
     this._view.on("partRender", () => {
-      this.$loading.dcpLoading("addItem");
+      this.loading.addItem();
     });
     this._view.on("renderDone", () => {
-      this.$loading.dcpLoading("setPercent", 100);
-      this.$loading.dcpLoading("setLabel", null);
+      this.loading.setPercent(100);
+      this.loading.setLabel(null);
       this._initialized.view = true;
       this._triggerControllerEvent("ready", null, this.getProperties());
       _.delay(() => {
-        this.$loading.dcpLoading("hide", true);
+        this.loading.hide(true);
       });
     });
     this._view.on("showMessage", message => {

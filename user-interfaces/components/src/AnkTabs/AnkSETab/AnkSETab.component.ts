@@ -39,6 +39,10 @@ export default class SETab extends Vue {
     return this.tabId || this.identifier || this.index;
   }
 
+  get hasLoadingSlot() {
+    return !!this.$scopedSlots && !!this.$scopedSlots.loading;
+  }
+
   public get tabTitle() {
     return this.elementTitle;
   }

@@ -20,14 +20,11 @@
         class="ank-se-tab-element"
         ref="smartElement"
         @smartElementMounted="onSmartElementLoaded"
-      ></ank-smart-element>
-      <ank-loading
-        class="ank-loading"
-        :fullLabel="false"
-        height="30px"
-        fontColor="black"
-        v-if="!smartElementLoaded"
-      ></ank-loading>
+      >
+        <template v-if="hasLoadingSlot" v-slot:loading>
+          <slot name="loading"></slot>
+        </template>
+      </ank-smart-element>
     </slot>
   </div>
 </template>
