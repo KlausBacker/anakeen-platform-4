@@ -58,6 +58,19 @@
         ...
       </a>
     </div>
+    <div v-if="!!showCurrentPage" class="smart-element-grid-pager-page">
+      <input
+        class="k-textbox smart-element-grid-pager-page--input"
+        type="number"
+        min="1"
+        :max="totalPage"
+        :value="getCurrentPage().page"
+        @input="goToPage(parseInt($event.target.value))"
+        :readonly="showCurrentPage !== 'input'"
+      />
+      <span class="smart-element-grid-pager-page--separator"></span>
+      <span class="smart-element-grid-pager-page--total">{{ totalPage }}</span>
+    </div>
     <a
       v-if="previousNext"
       :class="{
