@@ -62,6 +62,74 @@ _env-start: | $(VOLUMES_PRIVATE)
 	$(DOCKER_COMPOSE_CMD) run --rm --no-deps wait-for-it postgres:5432 -t $(WAIT_FOR_IT_TIMEOUT)
 	$(DOCKER_COMPOSE_CMD) run --rm --no-deps wait-for-it php:80 -t $(WAIT_FOR_IT_TIMEOUT)
 
+.PHONY: _env-stop
+_env-stop:
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)[D][$@] Stop containers$(COLOR_RESET)\n"
+	$(DOCKER_COMPOSE_CMD) down --remove-orphans $(DOCKER_COMPOSE_DOWN_OPTIONS)
+
+########################################################################################################################
+##
+## SNAPSHOTS
+##
+########################################################################################################################
+
+.PHONY: snapshot
+snapshot: ## take a snapshot of current state
+	$(MAKE) snapshots-add-auto-$(shell date "+%Y%m%d-%H%M%S")
+
+.PHONY: _snapshot
+_snapshot:
+	$(MAKE) _snapshots-add-auto-$(shell date "+%Y%m%d-%H%M%S")
+
+.PHONY: snapshots-list
+snapshots-list: ## Display a list of all available snapshots
+	@$(PRINT_COLOR) "available snapshots (in $(VOLUMES_PHP_SNAPSHOT_DIR)):\n"
+	@for file in $$(ls -t1 $(VOLUMES_PHP_SNAPSHOT_DIR)/*.zip); do \
+		echo "  - $$(basename $$file '.zip') ($$(stat -c '%y' $$file); $$(du -sh $$file| cut -f -1))"; \
+		echo "    - revert with [make snapshots-revert-$$(basename $$file '.zip')]"; \
+		echo "    - delete with [make snapshots-delete-$$(basename $$file '.zip')]"; \
+	done
+
+.PHONY: snapshots-add-%
+snapshots-add-%: ## Create a new snapshot named %
+	@[ -f "$(VOLUMES_PHP_SNAPSHOT_DIR)/$*.zip" ] \
+		&& { $(PRINT_COLOR) >&2 "$(COLOR_WARNING)$(VOLUMES_PHP_SNAPSHOT_DIR)/$*.zip already exists$(COLOR_RESET)\n"; exit 1; } \
+		|| $(MAKE) _snapshots-add-$*
+
+.PHONY: _snapshots-add-%
+_snapshots-add-%: _env-start
+	mkdir -p "$(VOLUMES_PHP_SNAPSHOT_DIR)"
+	$(_CONTROL_CMD) archive --dry-run "$(DOCKER_INTERNAL_PHP_SNAPSHOTS_PATH)/$*.zip"
+	$(_CONTROL_CMD) dojob -v
+	@$(PRINT_COLOR) "$(COLOR_NOTICE)New snapshot created: $*.zip\n"
+	@$(MAKE) snapshots-list
+	@$(PRINT_COLOR) "$(COLOR_RESET)\n"
+
+.PHONY: snapshots-revert-%
+snapshots-revert-%: | $(VOLUMES_PHP_CONTEXT) ## revert to snapshot %
+	[ -f "$(VOLUMES_PHP_SNAPSHOT_DIR)/$*.zip" ] || \
+		{ \
+			$(PRINT_COLOR) >&2 "$(COLOR_WARNING)$*.zip does not exists.\n$(COLOR_RESET)$(COLOR_HINT)"; \
+			$(MAKE) --no-print-directory snapshots-list >&2; \
+			$(PRINT_COLOR) >&2 "$(COLOR_RESET)"; \
+			exit 1; \
+		}
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Revert snapshot from $*.zip$(COLOR_RESET)\n"
+	$(MAKE) _env-stop
+	rm -rf "$(VOLUMES_PHP_CONTEXT)" "$(VOLUMES_PHP_VAULTS)" "$(VOLUMES_PHP_CONTROL)"
+	unzip -qod "$(VOLUMES_PHP_BASE)" "$(VOLUMES_PHP_SNAPSHOT_DIR)/$*.zip"
+	$(MAKE) _env-start
+	$(_CONTROL_CMD) restore --pg-service=platform --force-clean --dry-run
+	$(_CONTROL_CMD) dojob -v
+	$(DOCKER_COMPOSE_CMD) exec php rm "$(DOCKER_INTERNAL_PHP_BASE)/core_db.pg_dump"
+	@$(PRINT_COLOR) "$(COLOR_SUCCESS)"
+	@$(MAKE) --no-print-directory env-list-ports
+	@$(PRINT_COLOR) "$(COLOR_RESET)"
+
+.PHONY: snapshots-delete-%
+snapshots-delete-%: ## Delete snapshot %
+	rm -i $(VOLUMES_PHP_SNAPSHOT_DIR)/$*.zip
+
 .PHONY: test-mail-set-params
 test-mail-set-params: ## configure context to use local mail catcher
 	$(_CONTROL_SHELL_CMD) "./ank.php --script=setParameter --param=Core::SMTP_FROM --value='$(SMTP_FROM)'"

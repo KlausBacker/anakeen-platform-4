@@ -24,6 +24,8 @@ SUBDIRS := control smart-data-engine security workflow internal-components user-
 
 CONTROL_ARCHIVE = $(BUILD_DIR)/control/anakeen-control-latest.zip
 
+DOCKER_COMPOSE_ENV += LC_ALL=C.UTF-8 LANG=C.UTF-8 LANGUAGE=C.UTF-8
+
 # User specific variables come last
 -include Makefile.local
 
@@ -65,9 +67,8 @@ start-env: | $(VOLUMES_PHP_CONTROL_CONF)/contexts.xml $(VOLUMES_PRIVATE) ## Star
 	@$(PRINT_COLOR) "$(COLOR_RESET)"
 
 .PHONY: stop-env
-stop-env: ## Stop docker environment
-	@$(PRINT_COLOR) "$(COLOR_DEBUG)[D][$@] Stop containers$(COLOR_RESET)\n"
-	$(DOCKER_COMPOSE_CMD) down --remove-orphans $(DOCKER_COMPOSE_DOWN_OPTIONS)
+stop-env: | _env-stop ## Stop docker environment
+	@:
 
 .PHONY: clean-env
 clean-env: | stop-env ## Clean docker environment
