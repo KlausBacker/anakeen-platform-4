@@ -221,14 +221,14 @@ class ExportConfiguration
                 }
             }
             if ($docattr->ordered) {
-                if ($attr->getOption("relativeOrder")) {
+                if ($attr->getOption("relativeOrder") && $attr->getOption("relativeOrder") !== "::auto") {
                     $smartOver->setAttribute("insert-after", $attr->getOption("relativeOrder"));
                 } else {
                     if (is_numeric($docattr->ordered)) {
                         $previous=null;
                         $allAttrs=$this->sst->getAttributes();
                         $this->sst->attributes->orderAttributes();
-
+                        
                         foreach ($allAttrs as $fields) {
                             if (!$fields || $fields->usefor==='Q') {
                                 continue;
@@ -238,7 +238,7 @@ class ExportConfiguration
                             }
                             switch ($attr->type) {
                                 case "frame":
-                                    if ($fields->type !== "frame") {
+                                    if ($fields->type === "frame") {
                                         if ($attr->fieldSet && $fields->fieldSet && $attr->fieldSet->id === $fields->fieldSet->id) {
                                             $previous=$fields;
                                         } elseif (!$attr->fieldSet && !$fields->fieldSet) {
