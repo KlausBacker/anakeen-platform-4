@@ -82,7 +82,7 @@
     >
       <span aria-label="Go to the last page" class="k-icon k-i-seek-e" />
     </a>
-    <div v-if="pageSizes" class="smart-element-grid-pager-sizes">
+    <div v-if="pageSizes" class="smart-element-grid-pager-sizes" ref="gridPagerContainer">
       <input ref="gridPageSizes" :value="pageSize" class="smart-element-grid-pager-sizes--dropdown" />
       <span class="smart-element-grid-pager-sizes--label"> {{ this.$t("gridPager.items per page") }}</span>
     </div>
@@ -104,6 +104,9 @@
       width: 4rem;
     }
   }
+}
+.smart-element-grid-pager-sizes {
+  position: relative;
 }
 </style>
 <script lang="ts" src="./AnkGridPager.component.ts"></script>
