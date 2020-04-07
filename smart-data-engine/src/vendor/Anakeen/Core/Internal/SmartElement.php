@@ -7396,7 +7396,6 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return the today date and time with european format DD/MM/YYYY HH:MM
      *
-     * @searchType time
      * @param int $hourdelta to have the current date more or less hour  (-1 means one hour before, 1 one hour after)
      * @param bool $second if true format DD/MM/YYYY HH:MM
      *
