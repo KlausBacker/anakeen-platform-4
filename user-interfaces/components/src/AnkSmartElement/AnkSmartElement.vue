@@ -1,10 +1,14 @@
 <template>
-<!--    <iframe style="visibility:hidden" ref="iDocument" :src="initialDocumentUrl" class="apDocumentWrapper"></iframe>-->
-    <div class="ankSEWrapper" ref="ankSEWrapper"></div>
+  <div class="ankSEWrapper" ref="ankSEWrapper">
+
+    <div v-if="true" class="smart-element-custom-loading">
+      <slot name="loading"></slot>
+    </div>
+  </div>
 </template>
 
-<script lang="ts" src="./AnkSmartElement.component.ts" ></script>
+<script lang="ts" src="./AnkSmartElement.component.ts"></script>
 
-<style lang="scss" scoped >
-    @import "./AnkSmartElement.scss";
+<style lang="scss" scoped>
+@import "./AnkSmartElement.scss";
 </style>
