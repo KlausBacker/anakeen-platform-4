@@ -7330,6 +7330,17 @@ create unique index i_docir on doc(initid, revision);";
     }
 
     /**
+     * @searchLabel My user account id
+     * @searchType account
+     * @searchType docid("IUSER")
+     *
+     * @return int
+     */
+    public static function getUserId()
+    {
+        return ContextManager::getCurrentUser()->fid;
+    }
+    /**
      * return the today date with european format DD/MM/YYYY
      *
      * @searchLabel today
@@ -7840,7 +7851,6 @@ create unique index i_docir on doc(initid, revision);";
         ));
 
         $compatibleMethods = array();
-
         if ($attrType == 'date' || $attrType == 'timestamp') {
             $compatibleMethods = array_merge($compatibleMethods, array(
                 array(
@@ -7853,7 +7863,6 @@ create unique index i_docir on doc(initid, revision);";
                 )
             ));
         }
-
         try {
             $rc = new \ReflectionClass(get_class($this));
         } catch (\Exception $e) {

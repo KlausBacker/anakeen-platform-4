@@ -9,7 +9,15 @@
       />
     </div>
     <div v-show="!isTextBox" class="condition-table-keywords-docid-combobox">
-      <div class="condition-table-keywords-docid-combobox" ref="keywordsDocidComboBoxWrapper"></div>
+      <div v-show="docidMode" class="condition-table-keywords-docid-docid">
+        <div class="condition-table-keywords-docid-combobox" ref="keywordsDocidComboBoxWrapper"></div>
+      </div>
+      <div v-show="!docidMode" class="condition-table-keywords-docid-combobox">
+        <div ref="keywordsDocidFunctionWrapper" class="condition-table-keywords-docid-function" />
+      </div>
+      <button ref="funcButton" class="condition-table-keywords-docid-funcBtn" @click="onFuncButtonClick">
+        Σ
+      </button>
     </div>
   </div>
 </template>
@@ -22,15 +30,25 @@ export default {
     famid: Number,
     field: null,
     operator: "",
-    initValue: ""
+    initValue: "",
+    methods: null,
   },
   data() {
     return {
       textBoxOperators: ["~*", "!~*", "=~*"],
       comboBox: null,
       initHtmlTitle: "",
-      myInitValue: ""
+      myInitValue: "",
+      methodsComboBox: null,
+      docidMode: true
     };
+  },
+  watch: {
+    methods: function(newValue) {
+      if (this.methodsComboBox) {
+        this.methodsComboBox.setDataSource(newValue);
+      }
+    }
   },
   computed: {
     isTextBox() {
@@ -43,7 +61,11 @@ export default {
       if (this.isTextBox) {
         valid = this.$refs.keywordsDocidTextBoxWrapper.value !== "";
       } else {
-        valid = this.comboBox ? !!this.comboBox.value() : false;
+        if (this.docidMode) {
+          valid = !!this.comboBox.value();
+        } else {
+          valid = !!this.methodsComboBox.value();
+        }
       }
       return valid;
     },
@@ -60,6 +82,43 @@ export default {
         smartFieldValue: value,
         parentValue: value
       });
+    },
+    onFuncChange() {
+      const value = this.methodsComboBox.value();
+      this.$emit("keysChange", {
+        smartFieldValue: value,
+        parentValue: value
+      });
+    },
+    onFuncButtonClick() {
+      this.docidMode = !this.docidMode;
+      this.docidMode ? this.onComboBoxChange() : this.onFuncChange();
+      $(this.$refs.funcButton).toggleClass("func-button-clicked");
+    },
+    initializeData() {
+      if (this.initValue) {
+        if (this.isTextBox) {
+          $(this.$refs.keywordsDocidTextBoxWrapper).val(this.initValue);
+        } else {
+          let methodInitValue;
+          for (let prop in this.methods) {
+            if (Object.prototype.hasOwnProperty.call(this.methods, prop)) {
+              const propMethodValue = this.methods[prop].method;
+              if (propMethodValue === this.initValue) {
+                methodInitValue = propMethodValue;
+              }
+            }
+          }
+          if (methodInitValue) {
+            this.docidMode = false;
+            this.methodsComboBox.select(function(item) {
+              return item.method === methodInitValue;
+            });
+          } else {
+            this.comboBox.value(this.initValue);
+          }
+        }
+      }
     },
     initData() {
       if (this.myInitValue) {
@@ -78,6 +137,7 @@ export default {
     },
     clearData() {
       this.comboBox.value("");
+      this.methodsComboBox.value("");
       $(this.$refs.keywordsDocidTextBoxWrapper).val("");
     },
     fetchData() {
@@ -135,7 +195,7 @@ export default {
     }
   },
   mounted() {
-    this.myInitValue = this.initValue
+    this.myInitValue = this.initValue;
     this.comboBox = $(this.$refs.keywordsDocidComboBoxWrapper)
       .kendoComboBox({
         width: 200,
@@ -146,7 +206,23 @@ export default {
         change: this.onComboBoxChange
       })
       .data("kendoComboBox");
-
+    this.methodsComboBox = $(this.$refs.keywordsDocidFunctionWrapper)
+      .kendoComboBox({
+        width: 200,
+        filter: "contains",
+        clearButton: false,
+        minLength: 0,
+        dataValueField: "method",
+        dataTextField: "label",
+        template: "#: label #",
+        change: () => this.onFuncChange(),
+        dataSource: this.methods
+      })
+      .data("kendoComboBox");
+    this.funcButton = $(this.$refs.funcButton)
+      .kendoButton()
+      .data("kendoButton");
+    this.initializeData();
     if (this.myInitValue) {
       let that = this;
       $.ajax({
@@ -184,5 +260,23 @@ export default {
 
 .condition-table-keywords-docid-combobox {
   width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.condition-table-keywords-docid-function {
+  width: 100%;
+}
+
+.condition-table-keywords-docid-textbox {
+  width: 100%;
+}
+
+.condition-table-keywords-docid-docid {
+  width: 100%;
+}
+.func-button-clicked {
+  background-color: #157efb;
+  color: white;
 }
 </style>

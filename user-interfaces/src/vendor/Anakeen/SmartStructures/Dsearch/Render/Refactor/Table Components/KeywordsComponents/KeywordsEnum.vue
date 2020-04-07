@@ -8,8 +8,16 @@
         @change="onInputChange"
       />
     </div>
-    <div class="condition-table-keywords-enum-combobox-wrapper" v-show="!isTextBox">
-      <div class="condition-table-keywords-enum-combobox" ref="keywordsEnumWrapper"></div>
+    <div v-show="!isTextBox" class="condition-table-keywords-enum-combobox-wrapper">
+      <div v-show="enumMode" class="condition-table-keywords-enum-enum">
+        <div class="condition-table-keywords-enum-combobox" ref="keywordsEnumWrapper"></div>
+      </div>
+      <div v-show="!enumMode" class="condition-table-keywords-enum-combobox">
+        <div ref="keywordsEnumFunctionWrapper" class="condition-table-keywords-enum-function" />
+      </div>
+      <button ref="funcButton" class="condition-table-keywords-enum-funcBtn" @click="onFuncButtonClick">
+        Σ
+      </button>
     </div>
   </div>
 </template>
@@ -22,17 +30,27 @@ export default {
     famid: Number,
     field: null,
     operator: "",
-    initValue: ""
+    initValue: "",
+    methods: null
   },
   data() {
     return {
       textBoxOperators: ["~*", "!~*"],
-      comboBox: null
+      comboBox: null,
+      methodsComboBox: null,
+      enumMode: true
     };
   },
   computed: {
     isTextBox() {
       return this.textBoxOperators.indexOf(this.operator) !== -1;
+    }
+  },
+  watch: {
+    methods: function(newValue) {
+      if (this.methodsComboBox) {
+        this.methodsComboBox.setDataSource(newValue);
+      }
     }
   },
   methods: {
@@ -41,7 +59,11 @@ export default {
       if (this.isTextBox) {
         valid = this.$refs.keywordsEnumTextBoxWrapper.value !== "";
       } else {
-        valid = !!this.comboBox.value();
+        if (this.enumMode) {
+          valid = !!this.comboBox.value();
+        } else {
+          valid = !!this.methodsComboBox.value();
+        }
       }
       return valid;
     },
@@ -59,21 +81,46 @@ export default {
         parentValue: value
       });
     },
+    onFuncChange() {
+      const value = this.methodsComboBox.value();
+      this.$emit("keysChange", {
+        smartFieldValue: value,
+        parentValue: value
+      });
+    },
+    onFuncButtonClick() {
+      this.enumMode = !this.enumMode;
+      this.enumMode ? this.onComboBoxChange() : this.onFuncChange();
+      $(this.$refs.funcButton).toggleClass("func-button-clicked");
+    },
     initData() {
       if (this.initValue) {
-        if (!this.isTextBox) {
-          let that = this;
-          this.comboBox.select(function(item) {
-            return item.value === that.initValue;
-          });
-          this.onComboBoxChange();
-        } else {
+        if (this.isTextBox) {
           $(this.$refs.keywordsEnumTextBoxWrapper).val(this.initValue);
+        } else {
+          let methodInitValue;
+          for (let prop in this.methods) {
+            if (Object.prototype.hasOwnProperty.call(this.methods, prop)) {
+              const propMethodValue = this.methods[prop].method;
+              if (propMethodValue === this.initValue) {
+                methodInitValue = propMethodValue;
+              }
+            }
+          }
+          if (methodInitValue) {
+            this.enumMode = false;
+            this.methodsComboBox.select(function(item) {
+              return item.method === methodInitValue;
+            });
+          } else {
+            this.comboBox.value(this.initValue);
+          }
         }
       }
     },
     clearData() {
       this.comboBox.value("");
+      this.methodsComboBox.value("");
       $(this.$refs.keywordsEnumTextBoxWrapper).val("");
     },
     updateDataSource() {
@@ -126,6 +173,23 @@ export default {
         change: this.onComboBoxChange
       })
       .data("kendoComboBox");
+    this.methodsComboBox = $(this.$refs.keywordsEnumFunctionWrapper)
+      .kendoComboBox({
+        width: 200,
+        filter: "contains",
+        clearButton: false,
+        minLength: 0,
+        dataValueField: "method",
+        dataTextField: "label",
+        template: "#: label #",
+        change: () => this.onFuncChange(),
+        dataSource: this.methods
+      })
+      .data("kendoComboBox");
+    this.funcButton = $(this.$refs.funcButton)
+      .kendoButton()
+      .data("kendoButton");
+    this.initData();
   },
   watch: {
     field: function() {
@@ -145,5 +209,24 @@ export default {
 
 .condition-table-keywords-enum-combobox {
   width: 100%;
+}
+.condition-table-keywords-enum-combobox-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+.condition-table-keywords-enum-function {
+  width: 100%;
+}
+
+.condition-table-keywords-enum-enum {
+  width: 100%;
+}
+
+.condition-table-keywords-enum-textbox {
+  width: 100%;
+}
+.func-button-clicked {
+  background-color: #157efb;
+  color: white;
 }
 </style>
