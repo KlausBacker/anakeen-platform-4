@@ -40,9 +40,9 @@ export default class GridPager extends Mixins(I18nMixin) {
 
   @Prop({
     type: [Boolean, String],
-    default: () => "input"
+    default: false
   })
-  public type!: boolean | string;
+  public showCurrentPage!: boolean | string;
 
   @Watch("gridComponent.currentPage.take")
   protected onGridTakeChange(newValue): void {
@@ -73,11 +73,23 @@ export default class GridPager extends Mixins(I18nMixin) {
       this.gridComponent.$emit("pageChange", gridEvent);
     }
   }
+
+  @Watch("pageSizes")
+  protected onPageSizesChange(newValue): void {
+    this.initPageSizesDropdownList();
+  }
   public pageSize: number = Array.isArray(this.pageSizes) && this.pageSizes.length ? this.pageSizes[0] : 10;
 
   public get total(): number {
     if (this.gridComponent) {
       return this.gridComponent.currentPage.total;
+    }
+    return 0;
+  }
+
+  public get totalPage(): number {
+    if (this.gridComponent) {
+      return Math.ceil(this.gridComponent.currentPage.total / this.pageSize);
     }
     return 0;
   }
@@ -169,19 +181,7 @@ export default class GridPager extends Mixins(I18nMixin) {
     return 0;
   }
   public mounted(): void {
-    const dropdownPageSizes = $(this.$refs.gridPageSizes);
-    dropdownPageSizes
-      .kendoDropDownList({
-        dataSource: this.pageSizes,
-        popup: {
-          // @ts-ignore
-          appendTo: $(this.$refs.gridPagerContainer)
-        },
-        change: () => {
-          this.pageSize = Number(dropdownPageSizes.val());
-        }
-      })
-      .data("kendoDropDownList");
+    this.initPageSizesDropdownList();
   }
   public goToPage(pageNumber): void {
     if (this.gridComponent) {
@@ -322,5 +322,23 @@ export default class GridPager extends Mixins(I18nMixin) {
   protected nextNumbersList(): void {
     const maxPages = this.maxButtonsPages as number[];
     this.goToPage(maxPages[maxPages.length - 1] + 1);
+  }
+
+  protected initPageSizesDropdownList(): void {
+    if (this.pageSizes) {
+      const dropdownPageSizes = $(this.$refs.gridPageSizes);
+      dropdownPageSizes
+        .kendoDropDownList({
+          dataSource: this.pageSizes,
+          popup: {
+            // @ts-ignore
+            appendTo: $(this.$refs.gridPagerContainer)
+          },
+          change: () => {
+            this.pageSize = Number(dropdownPageSizes.val());
+          }
+        })
+        .data("kendoDropDownList");
+    }
   }
 }

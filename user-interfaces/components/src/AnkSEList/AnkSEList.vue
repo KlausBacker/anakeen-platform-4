@@ -13,6 +13,7 @@
       :auto-fit="autoFit"
       :collection="collectionId"
       :selectable="selectable"
+      :pageable="pageable"
       :columns="columns"
       :content-url="contentUrl"
       :controller="controller"
@@ -27,20 +28,16 @@
     >
       <template v-slot:headerTemplate="props">
         <div class="smart-element-list--slots-wrapper">
-          <div class="smart-element-list--header">
-            <slot name="header"></slot>
-          </div>
-
-          <div class="smart-element-list--label">
-            <slot name="label" v-bind="{ label: listLabel }">
+          <slot name="header"></slot>
+          <slot name="label" v-bind="{ label: listLabel }">
+            <div class="smart-element-list--label">
               <div class="smart-element-list--label-text">
                 {{ listLabel }}
               </div>
-            </slot>
-          </div>
-
-          <div class="smart-element-list--search">
-            <slot name="search" v-bind="{ filter: filterList }">
+            </div>
+          </slot>
+          <slot name="search" v-bind="{ filter: filterList }">
+            <div class="smart-element-list--search">
               <div class="smart-element-list--search-default">
                 <div class="input-group">
                   <i
@@ -65,12 +62,12 @@
                   </i>
                 </div>
               </div>
-            </slot>
-          </div>
+            </div>
+          </slot>
         </div>
       </template>
       <template v-slot:cellTemplate="{ props, listeners }">
-        <td class="smart-element-list-item--body" :title="props.dataItem.properties.title" @click="listeners.ItemClick">
+        <td class="smart-element-list-item--body" :title="props.dataItem.properties.title" @click.stop="listeners.ItemClick">
           <slot name="item" v-bind:item="props.dataItem">
             <div class="smart-element-list-item--heading">
               <img class="smart-element-list-item--heading-icon" :src="props.dataItem.properties.icon" alt="image" />
@@ -91,7 +88,12 @@
         <div class="smart-element-list--footer">
           <slot name="footer"></slot>
           <slot name="pager">
-            <ank-grid-pager class="smart-element-list--pager" :gridComponent="opts.gridComponent"></ank-grid-pager>
+            <ank-grid-pager
+              v-if="opts.gridComponent.pager"
+              v-bind="opts.gridComponent.pager"
+              class="smart-element-list--pager"
+              :gridComponent="opts.gridComponent"
+            ></ank-grid-pager>
           </slot>
         </div>
       </template>

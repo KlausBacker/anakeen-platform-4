@@ -3,7 +3,11 @@ import AnkGrid from "../AnkSEGrid/AnkSEGrid.vue";
 import EventUtilsMixin from "../../mixins/AnkVueComponentMixin/EventUtilsMixin";
 import I18nMixin from "../../mixins/AnkVueComponentMixin/I18nMixin";
 import ReadyMixin from "../../mixins/AnkVueComponentMixin/ReadyMixin";
-import AnkSmartElementGrid, { SmartGridColumn, SmartGridFilter } from "../AnkSEGrid/AnkSEGrid.component";
+import AnkSmartElementGrid, {
+  SmartGridColumn,
+  SmartGridFilter,
+  SmartGridPageable
+} from "../AnkSEGrid/AnkSEGrid.component";
 import ListEvent from "./AnkListEvent/AnkListEvent";
 import AnkGridPager from "../AnkSEGrid/AnkGridPager/AnkGridPager.vue";
 
@@ -29,6 +33,7 @@ export default class SeListComponent extends Mixins(EventUtilsMixin, ReadyMixin,
   @Prop({ type: Number, default: 1 }) public page!: number;
   @Prop({ type: String, default: "" }) public filterValue!: string;
   @Prop({ type: Object, default: () => ({ field: "title", dir: "asc" }) }) public sort!: kendo.data.DataSourceSortItem;
+  @Prop({ type: [Object, Boolean], default: true}) public pageable!: SmartGridPageable | boolean;
   @Watch("smartCollection")
   protected onSmartCollectionChange(newValue): void {
     this.collectionId = newValue;

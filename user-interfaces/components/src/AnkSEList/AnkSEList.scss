@@ -4,6 +4,10 @@
   flex-direction: column;
   background-color: #fbfbfb;
 
+  .smart-element-grid.smart-element-grid--selectable .k-master-row:not(.k-state-selected):hover {
+    color: #00b4fc;
+  }
+
   &.smart-element-list--fit {
     height: 100%;
     width: 100%;
@@ -19,6 +23,9 @@
   &.smart-element-list--tiny {
     .smart-element-grid-pager-first,
     .smart-element-grid-pager-last {
+      display: none;
+    }
+    .smart-element-grid-pager-page {
       display: none;
     }
   }

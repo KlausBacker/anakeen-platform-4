@@ -4,6 +4,25 @@
   flex-grow: 1;
 }
 
+.smart-element-grid-pager-page {
+  display: flex;
+  align-items: center;
+
+  .smart-element-grid-pager-page--separator {
+    margin: 0 .25rem;
+    &::after {
+      content: "/";
+    }
+  }
+
+  .smart-element-grid-pager-page--input {
+    width: 5rem;
+    &:read-only {
+      cursor: default;
+    }
+  }
+}
+
 .smart-element-grid-pager-nav,
 .smart-element-grid-pager-pageNumber {
   border: none;
