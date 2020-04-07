@@ -38,7 +38,7 @@ module.exports = {
     },
     {
       files: ["**/*.vue"],
-      extends: ["plugin:vue/recommended"]
+      extends: ["plugin:vue/recommended", "eslint:recommended", "prettier/vue", "plugin:prettier/recommended"]
     }
   ]
 };
