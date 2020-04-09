@@ -663,5 +663,17 @@ export namespace AnakeenController {
       setLabel(newLabel: string): void;
       isModified(): boolean;
     }
+
+    export interface ISmartElementLoading {
+      addItem(number?: number): void;
+      setNbItem(restItem: number): void;
+      setPercent(pc: number): void;
+      setLabel(label?: string): void;
+      show(label?: string, percent?: number): void;
+      hide(force?: boolean): void;
+      isDisplayed(): boolean;
+      setTitle(title: string): void;
+      reset(): void;
+    }
   }
 }

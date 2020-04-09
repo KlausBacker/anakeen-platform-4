@@ -58,6 +58,19 @@
         ...
       </a>
     </div>
+    <div v-if="!!showCurrentPage" class="smart-element-grid-pager-page">
+      <input
+        class="k-textbox smart-element-grid-pager-page--input"
+        type="number"
+        min="1"
+        :max="totalPage"
+        :value="getCurrentPage().page"
+        @input="goToPage(parseInt($event.target.value))"
+        :readonly="showCurrentPage !== 'input'"
+      />
+      <span class="smart-element-grid-pager-page--separator"></span>
+      <span class="smart-element-grid-pager-page--total">{{ totalPage }}</span>
+    </div>
     <a
       v-if="previousNext"
       :class="{
@@ -82,7 +95,7 @@
     >
       <span aria-label="Go to the last page" class="k-icon k-i-seek-e" />
     </a>
-    <div v-if="pageSizes" class="smart-element-grid-pager-sizes">
+    <div v-if="pageSizes" class="smart-element-grid-pager-sizes" ref="gridPagerContainer">
       <input ref="gridPageSizes" :value="pageSize" class="smart-element-grid-pager-sizes--dropdown" />
       <span class="smart-element-grid-pager-sizes--label"> {{ this.$t("gridPager.items per page") }}</span>
     </div>
@@ -104,6 +117,9 @@
       width: 4rem;
     }
   }
+}
+.smart-element-grid-pager-sizes {
+  position: relative;
 }
 </style>
 <script lang="ts" src="./AnkGridPager.component.ts"></script>

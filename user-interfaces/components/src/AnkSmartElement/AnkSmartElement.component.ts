@@ -43,14 +43,21 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
 
   public smartElementWidget: SmartElementController = null;
   private controllerScopeId: string;
+  private isLoading = false;
 
   get smartFieldValues(): any {
     return this.getValues();
   }
 
+  public get hasLoadingSlot(): boolean {
+    return !!this.$scopedSlots && !!this.$scopedSlots.loading;
+  }
+
   public mounted() {
     if (this.initialData.initid.toString() !== "0") {
-      this._initController(this.initialData);
+      this._initController(this.initialData, {
+        loading: !this.hasLoadingSlot
+      });
     }
     this.$emit("smartElementMounted");
   }
@@ -84,9 +91,13 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
   protected updateComponent() {
     if (this.initialData.initid.toString() !== "0") {
       if (!this.isLoaded()) {
-        this._initController(this.initialData);
+        this._initController(this.initialData, {
+          loading: !this.hasLoadingSlot
+        });
       } else if (this.isLoaded()) {
-        this.fetchSmartElement(this.initialData);
+        this.fetchSmartElement(this.initialData, {
+          loading: !this.hasLoadingSlot
+        });
       }
     }
   }
@@ -121,9 +132,12 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
   }
 
   public fetchSmartElement(value, options?): Promise<any> {
+    options = options || {};
+    options.loading = this.hasLoadingSlot;
     if (!this.isLoaded()) {
       return this._initController(value, options);
     } else {
+      this.isLoading = true;
       return this.smartElementWidget.fetchSmartElement(value, options).catch(error => {
         let errorMessage = "Undefined error";
         if (error && error.errorMessage && error.errorMessage.contentText) {
@@ -329,7 +343,7 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
   }
 
   protected _initController(viewData, options = {}) {
-    const initViewData = {...viewData,  ...{ initid: false } };
+    const initViewData = { ...viewData, ...{ initid: false } };
     this.controllerScopeId = AnakeenGlobalController.addSmartElement(
       // @ts-ignore
       this.$refs.ankSEWrapper,
@@ -341,6 +355,7 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
     ) as SmartElementController;
     AnakeenGlobalController.setAutoUnload(this.autoUnload, this.controllerScopeId);
     this.listenEvents();
+    this.isLoading = true;
     const loadedPromise = this.smartElementWidget.fetchSmartElement(viewData, options);
     loadedPromise.then(() => {
       this.$emit("smartElementLoaded");
@@ -351,6 +366,11 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
   protected listenEvents() {
     EVENTS_LIST.forEach(eventName => {
       this.addEventListener(eventName, (...args) => {
+        if (eventName === "close") {
+          this.isLoading = true;
+        } else if (eventName === "ready") {
+          this.isLoading = false;
+        }
         this.$emit(eventName, ...args);
       });
     });

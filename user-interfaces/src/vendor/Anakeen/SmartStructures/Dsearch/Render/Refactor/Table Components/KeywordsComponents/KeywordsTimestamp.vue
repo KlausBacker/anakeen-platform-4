@@ -105,6 +105,7 @@ export default {
     onFuncButtonClick() {
       this.dateMode = !this.dateMode;
       this.dateMode ? this.onDateChange() : this.onFuncChange();
+      $(this.$refs.funcButton).toggleClass("func-button-clicked");
     },
     initData() {
       if (this.initValue) {
@@ -175,21 +176,11 @@ export default {
 };
 </script>
 <style>
-.condition-table-keywords-timestamp-datetimepicker.k-input {
-  width: 100%;
-  margin-left: 4rem;
-}
 
-.condition-table-keywords-timestamp-date {
-  width: 100%;
-}
 .condition-table-keywords-timestamp-combobox {
   width: 100%;
 }
 
-.k-datetimepicker.condition-table-keywords-timestamp-datetimepicker {
-  width: 100%;
-}
 .condition-table-keywords-timestamp-function {
   width: 100%;
 }
@@ -209,5 +200,9 @@ export default {
 
 .condition-table-keywords-timestamp-textbox {
   width: 100%;
+}
+.func-button-clicked {
+  background-color: #157efb;
+  color: white;
 }
 </style>

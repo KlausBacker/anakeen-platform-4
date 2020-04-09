@@ -234,10 +234,14 @@ class StructureFields
                                     $after = $oa->needed ? "Y" : "N";
                                     break;
                                 case "title":
-                                    $after = $oa->isInTitle ? "Y" : "N";
+                                    if (is_a($oa, SmartStructure\NormalAttribute::class)) {
+                                        $after = $oa->isInTitle ? "Y" : "N";
+                                    }
                                     break;
                                 case "abstract":
-                                    $after = $oa->isInAbstract ? "Y" : "N";
+                                    if (is_a($oa, SmartStructure\NormalAttribute::class)) {
+                                        $after = $oa->isInAbstract ? "Y" : "N";
+                                    }
                                     break;
                                 case "labeltext":
                                     $after = $oa->labelText;

@@ -1,4 +1,4 @@
-import { Component, Prop, Mixins } from "vue-property-decorator";
+import { Component, Prop, Mixins, Watch } from "vue-property-decorator";
 import AnkSmartForm from "../../../AnkSmartForm";
 import { ISmartFormConfiguration } from "../../../AnkSmartForm/ISmartForm";
 import { default as AnkSmartFormDefinition } from "../../../AnkSmartForm/AnkSmartForm.component";
@@ -92,11 +92,17 @@ export default class GridFilterCell extends Mixins(I18nMixin) {
   })
   public logic!: string;
 
+  @Watch("loading")
+  protected onLoadingChange(newValue) {
+    kendo.ui.progress($(this.$refs.wrapper), !!newValue);
+  }
+
   public $refs!: {
     smartForm: AnkSmartFormDefinition;
     wrapper: HTMLElement;
   };
 
+  public loading = false;
   public config: ISmartFormConfiguration = {
     structure: [
       {
@@ -222,12 +228,12 @@ export default class GridFilterCell extends Mixins(I18nMixin) {
         this.grid.filterable && this.grid.filterable[this.field] && this.grid.filterable[this.field].activeOperators
           ? Object.keys(this.grid.filterable[this.field].activeOperators)
           : Object.keys(this.columnConfig.filterable.operators.string)[0] || "",
-      first_grid_filter_value: "",
+      first_grid_filter_value: null,
       second_grid_filter_operator:
         this.grid.filterable && this.grid.filterable[this.field] && this.grid.filterable[this.field].activeOperators
           ? Object.keys(this.grid.filterable[this.field].activeOperators)
           : Object.keys(this.columnConfig.filterable.operators.string)[0] || "",
-      second_grid_filter_value: ""
+      second_grid_filter_value: null
     }
   };
 
@@ -236,11 +242,14 @@ export default class GridFilterCell extends Mixins(I18nMixin) {
       const columnFilters: any[] = this.grid.currentFilter.filters.filter((f: any) => f.field === this.field);
       if (columnFilters && columnFilters.length) {
         const columnFilter = columnFilters[0];
-        if (columnFilter.filters.length >= 1) {
-          this.config.values.first_grid_filter_operator = columnFilter.filters[0].operator;
+        if ((!columnFilter.filters && columnFilter.operator) || columnFilter.filters.length >= 1) {
+          const operator = columnFilter.operator || columnFilter.filters[0].operator;
+          const value = columnFilter.value || columnFilter.filters[0].value;
+          const displayValue = columnFilter.displayValue || columnFilter.filters[0].displayValue;
+          this.config.values.first_grid_filter_operator = operator;
           this.config.values.first_grid_filter_value = {
-            displayValue: columnFilter.filters[0].displayValue,
-            value: columnFilter.filters[0].value
+            displayValue,
+            value
           };
         }
         if (columnFilter.filters.length >= 2) {
@@ -264,7 +273,7 @@ export default class GridFilterCell extends Mixins(I18nMixin) {
   }
 
   public mounted(): void {
-    kendo.ui.progress($(this.$refs.wrapper), true);
+    this.loading = true;
   }
 
   public get singleFilter(): boolean {
@@ -328,7 +337,7 @@ export default class GridFilterCell extends Mixins(I18nMixin) {
   }
 
   protected onReady(): void {
-    kendo.ui.progress($(this.$refs.wrapper), false);
+    this.loading = false;
   }
 
   protected updateValueFieldType(fieldValueId, fieldOperator): void {
@@ -338,9 +347,9 @@ export default class GridFilterCell extends Mixins(I18nMixin) {
       if (!type) {
         valueField.display = "none";
       } else {
-        this.setAutocompleteField(valueField, type, fieldValueId, fieldOperator);
         valueField.type = type;
         valueField.display = "write";
+        this.setAutocompleteField(valueField, type, fieldValueId, fieldOperator);
       }
     }
   }
@@ -354,6 +363,19 @@ export default class GridFilterCell extends Mixins(I18nMixin) {
           [fieldValueId]: "stateValue"
         }
       };
+    } else if (
+      type === "enum" &&
+      (fieldOperatorValue === "eq" ||
+        fieldOperatorValue === "neq" ||
+        fieldOperatorValue === "eq*" ||
+        fieldOperatorValue === "neq*")
+    ) {
+      if (this.columnConfig && this.columnConfig.relation) {
+        // @ts-ignore
+        this.config.renderOptions.fields[fieldValueId].useSourceUri = true;
+        // @ts-ignore
+        valueField.enumUrl = `/api/v2/enumerates/${this.columnConfig.relation}/`;
+      }
     } else {
       // @ts-ignore
       delete valueField.autocomplete;

@@ -34,7 +34,7 @@ class ContainsValues extends StandardAttributeFilter implements ElementSearchFil
     /**
      * ContainsValues constructor.
      * @param string $attrId
-     * @param string $value
+     * @param string|array $value
      * @param int $options <p>
      * Bitmask consisting of
      * <b>\Anakeen\Search\Filters\ContainsValues::$NOT</b>,

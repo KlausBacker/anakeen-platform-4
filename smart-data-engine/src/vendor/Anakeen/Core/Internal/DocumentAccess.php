@@ -136,8 +136,16 @@ class DocumentAccess
                 DbManager::query(sprintf("delete from docperm where docid=%d", $this->document->id));
                 DbManager::query(sprintf("delete from docpermext where docid=%d", $this->document->id));
             } else {
-                DbManager::query(sprintf("delete from docperm where docid=%d and userid=%d", $this->document->id, $userid));
-                DbManager::query(sprintf("delete from docpermext where docid=%d and userid=%d", $this->document->id, $userid));
+                DbManager::query(sprintf(
+                    "delete from docperm where docid=%d and userid=%d",
+                    $this->document->id,
+                    $userid
+                ));
+                DbManager::query(sprintf(
+                    "delete from docpermext where docid=%d and userid=%d",
+                    $this->document->id,
+                    $userid
+                ));
             }
         }
     }
@@ -170,17 +178,16 @@ class DocumentAccess
         }
 
         $this->document->profid = $this->document->id;
-        $err = $this->document->modify(true, array(
+        return $this->document->modify(true, array(
             "profid"
         ), true);
-        return $err;
     }
 
 
     /**
      * set profil for document
      *
-     * @param int                                 $profid identifier for profil document
+     * @param int $profid identifier for profil document
      * @param \Anakeen\Core\Internal\SmartElement $fromdocidvalues
      *
      * @return string
@@ -207,7 +214,7 @@ class DocumentAccess
                 // dynamic profil
                 $this->document->dprofid = $profid;
                 $this->computeDProfil($this->document->dprofid, $fromdocidvalues);
-                unset($this->document->uperm); // force recompute privileges
+                $this->document->uperm = []; // force recompute privileges
             } else {
                 $this->document->dprofid = 0;
                 $this->setViewProfil();
@@ -247,19 +254,31 @@ class DocumentAccess
             $this->computeDProfil();
         } else {
             if ($this->document->profid == $this->document->id) {
-                DbManager::query(sprintf("select userid from docperm where docid=%d and upacl & 2 != 0", $this->document->id), $uids, true, false);
+                DbManager::query(sprintf(
+                    "select userid from docperm where docid=%d and upacl & 2 != 0",
+                    $this->document->id
+                ), $uids, true, false);
                 $this->document->views = '{' . implode(',', $uids) . '}';
                 $this->document->modify(true, array(
                     'views'
                 ), true);
                 if ($this->isRealProfile()) {
                     //propagate static profil views on linked documents
-                    DbManager::query(sprintf("update doc set views='%s' where profid=%d and (dprofid is null or dprofid = 0)", $this->document->views, $this->document->id));
+                    DbManager::query(sprintf(
+                        "update doc set views='%s' where profid=%d and (dprofid is null or dprofid = 0)",
+                        $this->document->views,
+                        $this->document->id
+                    ));
                 }
             } else {
                 // static profil
                 if ($this->document->profid > 0) {
-                    DbManager::query(sprintf("select views from docread where id=%d", $this->document->profid), $view, true, true);
+                    DbManager::query(
+                        sprintf("select views from docread where id=%d", $this->document->profid),
+                        $view,
+                        true,
+                        true
+                    );
                 } else {
                     $view = '{0}';
                 }
@@ -329,7 +348,7 @@ class DocumentAccess
     /**
      * reset right for dynamic profil
      *
-     * @param int                                 $dprofid         identifier for dynamic profil document
+     * @param int $dprofid identifier for dynamic profil document
      * @param \Anakeen\Core\Internal\SmartElement $fromdocidvalues other document to reference dynamic profiling (default itself)
      *
      * @return string error message
@@ -440,16 +459,28 @@ class DocumentAccess
                                 $docu = SEManager::getRawDocument(intval($duid), false);
                                 if (!is_array($docu)) {
                                     // No use exception because document may has been deleted
-                                    $errorMessage = \ErrorCode::getError('DOC0127', var_export($duid, true), var_export($aid, true));
+                                    $errorMessage = \ErrorCode::getError(
+                                        'DOC0127',
+                                        var_export($duid, true),
+                                        var_export($aid, true)
+                                    );
                                     LogManager::error($errorMessage);
                                     $this->document->addHistoryEntry($errorMessage, \DocHisto::ERROR);
                                 } elseif (!array_key_exists('us_whatid', $docu)) {
-                                    $errorMessage = \ErrorCode::getError('DOC0128', var_export($duid, true), var_export($aid, true));
+                                    $errorMessage = \ErrorCode::getError(
+                                        'DOC0128',
+                                        var_export($duid, true),
+                                        var_export($aid, true)
+                                    );
                                     LogManager::error($errorMessage);
                                     $this->document->addHistoryEntry($errorMessage, \DocHisto::ERROR);
                                 } elseif (empty($docu['us_whatid'])) {
                                     // No use exception because account may has been deleted
-                                    $errorMessage = \ErrorCode::getError('DOC0129', var_export($duid, true), var_export($aid, true));
+                                    $errorMessage = \ErrorCode::getError(
+                                        'DOC0129',
+                                        var_export($duid, true),
+                                        var_export($aid, true)
+                                    );
                                     LogManager::error($errorMessage);
                                     $this->document->addHistoryEntry($errorMessage, \DocHisto::ERROR);
                                 } else {
@@ -495,14 +526,14 @@ class DocumentAccess
             $err .= $this->computeDProfilExt($pdoc->id, $fromdocidvalues);
             $this->document->restoreAccessControl();
         }
-        unset($this->document->uperm); // force recompute privileges
+        $this->document->uperm = []; // force recompute privileges
         return $err;
     }
 
     /**
      * reset right for dynamic profil
      *
-     * @param int                                 $dprofid         identifier for dynamic profil document
+     * @param int $dprofid identifier for dynamic profil document
      * @param \Anakeen\Core\Internal\SmartElement $fromdocidvalues other document to reference dynamic profiling (default itself)
      *
      * @return string error message
@@ -549,8 +580,7 @@ class DocumentAccess
         }
         $greenUid = array();
         foreach ($tacl as $v) {
-            if ($v["userid"] < \VGroup::STARTIDVGROUP) {
-            } else {
+            if ($v["userid"] >= \VGroup::STARTIDVGROUP) {
                 $aid = $tVgroup2attrid[$v["userid"]];
                 /**
                  * @var \Anakeen\Core\Internal\SmartElement $fromdocidvalues
@@ -563,7 +593,7 @@ class DocumentAccess
                     if ($duid[0] === '{') {
                         $tduid = Postgres::stringToFlatArray($duid);
                     } else {
-                        $tduid=[$duid];
+                        $tduid = [$duid];
                     }
                     foreach ($tduid as $duid) {
                         if ($duid > 0) {
@@ -594,9 +624,9 @@ class DocumentAccess
     /**
      * modify control for a specific user
      *
-     * @param int    $uid           user identifier
-     * @param string $aclname       name of the acl (edit, view,...)
-     * @param bool   $deletecontrol set true if want delete a control
+     * @param int $uid user identifier
+     * @param string $aclname name of the acl (edit, view,...)
+     * @param bool $deletecontrol set true if want delete a control
      *
      * @return string error message (empty if no errors)
      * @throws \Anakeen\Core\Exception
@@ -633,7 +663,7 @@ class DocumentAccess
     /**
      * add control for a specific user
      *
-     * @param int    $uid     user identifier
+     * @param int $uid user identifier
      * @param string $aclname name of the acl (edit, view,...)
      *
      * @return string error message (empty if no errors)
@@ -658,7 +688,7 @@ class DocumentAccess
      *
      * is not a negative control
      *
-     * @param int    $uid     user identifier
+     * @param int $uid user identifier
      * @param string $aclname name of the acl (edit, view,...)
      *
      * @return string error message (empty if no errors)
@@ -705,9 +735,9 @@ class DocumentAccess
     /**
      * use to know if current user has access privilege
      *
-     * @param int    $profid  profil identifier
+     * @param int $profid profil identifier
      * @param string $aclname name of the acl (edit, view,...)
-     * @param bool   $strict  set to true to not use substitute
+     * @param bool $strict set to true to not use substitute
      * @return string if empty access granted else error message
      */
     public function controlId($profid, $aclname, $strict = false)
@@ -715,17 +745,18 @@ class DocumentAccess
         if ($this->isExtendedAcl($aclname)) {
             return $this->controlExtId($profid, $aclname, $strict);
         } else {
+            $userid = ContextManager::getCurrentUser()->id;
             if ($strict) {
-                $uperm = \DocPerm::getUperm($profid, ContextManager::getCurrentUser()->id, $strict);
+                $uperm = \DocPerm::getUperm($profid, $userid, $strict);
                 return $this->controlUp($uperm, $aclname);
             } else {
                 if ($this->document->profid == $profid) {
-                    if (!isset($this->document->uperm)) {
-                        $this->document->uperm = \DocPerm::getUperm($profid, ContextManager::getCurrentUser()->id);
+                    if (!isset($this->document->uperm[$userid])) {
+                        $this->document->uperm[$userid] = \DocPerm::getUperm($profid, $userid);
                     }
-                    return $this->controlUp($this->document->uperm, $aclname);
+                    return $this->controlUp($this->document->uperm[$userid], $aclname);
                 } else {
-                    $uperm = \DocPerm::getUperm($profid, ContextManager::getCurrentUser()->id);
+                    $uperm = \DocPerm::getUperm($profid, $userid);
                     return $this->controlUp($uperm, $aclname);
                 }
             }
@@ -735,9 +766,9 @@ class DocumentAccess
     /**
      * use to know if current user has access privilege
      *
-     * @param int    $profid  profil identifier
+     * @param int $profid profil identifier
      * @param string $aclname name of the acl (edit, view,...)
-     * @param bool   $strict  set to true to not use substitute
+     * @param bool $strict set to true to not use substitute
      * @return string if empty access granted else error message
      */
     public function controlExtId($profid, $aclname, $strict = false)
@@ -754,8 +785,8 @@ class DocumentAccess
     /**
      * use to know if current user has access privilege
      *
-     * @param int    $profid  profil identifier
-     * @param int    $uid     user identifier
+     * @param int $profid profil identifier
+     * @param int $uid user identifier
      * @param string $aclname name of the acl (edit, view,...)
      * @return string if empty access granted else error message
      */
@@ -776,7 +807,7 @@ class DocumentAccess
     /**
      * use to know if permission has access privilege
      *
-     * @param int    $uperm   permission mask
+     * @param int $uperm permission mask
      * @param string $aclname name of the acl (edit, view,...)
      * @return string if empty access granted else error message
      */
@@ -824,9 +855,9 @@ class DocumentAccess
     /**
      * modify control for a specific user
      *
-     * @param string $uName         user identifier
-     * @param string $aclname       name of the acl (edit, view,...)
-     * @param bool   $deletecontrol set true if want delete a control
+     * @param string $uName user identifier
+     * @param string $aclname name of the acl (edit, view,...)
+     * @param bool $deletecontrol set true if want delete a control
      *
      * @return string error message (empty if no errors)
      * @throws \Anakeen\Core\Exception
@@ -868,9 +899,15 @@ class DocumentAccess
     private function getUid($accountReference)
     {
         // Test logical name
-        if (!is_numeric($accountReference) && strpos($accountReference, \Anakeen\Exchange\ImportDocumentDescription::attributePrefix) !== 0) {
+        if (!is_numeric($accountReference) && strpos(
+            $accountReference,
+            \Anakeen\Exchange\ImportDocumentDescription::attributePrefix
+        ) !== 0) {
             if (strpos($accountReference, \Anakeen\Exchange\ImportDocumentDescription::documentPrefix) === 0) {
-                $accountReference = substr($accountReference, strlen(\Anakeen\Exchange\ImportDocumentDescription::documentPrefix));
+                $accountReference = substr(
+                    $accountReference,
+                    strlen(\Anakeen\Exchange\ImportDocumentDescription::documentPrefix)
+                );
             }
             $uiid = SEManager::getIdFromName($accountReference);
             if ($uiid) {
@@ -881,9 +918,15 @@ class DocumentAccess
             }
         }
         // Test  account attribute reference
-        if (!is_numeric($accountReference) && strpos($accountReference, \Anakeen\Exchange\ImportDocumentDescription::documentPrefix) !== 0) {
+        if (!is_numeric($accountReference) && strpos(
+            $accountReference,
+            \Anakeen\Exchange\ImportDocumentDescription::documentPrefix
+        ) !== 0) {
             if (strpos($accountReference, \Anakeen\Exchange\ImportDocumentDescription::attributePrefix) === 0) {
-                $accountReference = substr($accountReference, strlen(\Anakeen\Exchange\ImportDocumentDescription::attributePrefix));
+                $accountReference = substr(
+                    $accountReference,
+                    strlen(\Anakeen\Exchange\ImportDocumentDescription::attributePrefix)
+                );
             }
             // logical name
             $vg = new \VGroup($this->document->dbaccess, strtolower($accountReference));

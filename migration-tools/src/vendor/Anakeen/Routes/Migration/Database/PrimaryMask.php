@@ -57,11 +57,12 @@ class PrimaryMask
         foreach ($results as $result) {
             $vis = $result["visibility"];
             $need = $result["needed"];
+
             if ($vis !== "W" || $need === "Y") {
                 $mask->addArrayRow(
                     MaskField::msk_t_contain,
                     [
-                        MaskField::msk_attrids => $result["id"],
+                        MaskField::msk_attrids => trim($result["id"], ":"),
                         MaskField::msk_visibilities => $vis,
                         MaskField::msk_needeeds => ($need === "Y" ? $need : "-")
                     ]

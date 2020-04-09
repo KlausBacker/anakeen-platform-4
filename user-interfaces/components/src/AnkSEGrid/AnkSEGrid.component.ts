@@ -74,6 +74,14 @@ export interface SmartGridPageSize {
   total: number;
 }
 
+export interface SmartGridPageable {
+  buttonCount: number;
+  info: boolean;
+  showCurrentPage: boolean;
+  pageSize: number;
+  pageSizes: number[];
+}
+
 export interface SmartGridSubHeader {
   [columnId: string]: string;
 }
@@ -91,7 +99,7 @@ export interface SmartGridInfo {
   actions: SmartGridAction[];
   controller: string;
   collection: string;
-  pageable: false | SmartGridPageSize | { buttonCount: number; pageSize: number; pageSizes: number[] };
+  pageable: false | SmartGridPageable;
   page: number;
   sortable: boolean | object;
   sort: kendo.data.DataSourceSortItem[];
@@ -131,14 +139,12 @@ export interface SmartGridFilterable {
   };
 }
 
-interface KendoVueGridRow extends Vue {
-  dataItem?: SmartGridRowData;
-}
-
 const DEFAULT_FILTERABLE = true;
 
-const DEFAULT_PAGER = {
+const DEFAULT_PAGER: SmartGridPageable = {
   buttonCount: 0,
+  showCurrentPage: false,
+  info: true,
   pageSize: 10,
   pageSizes: [10, 20, 50]
 };
@@ -149,7 +155,7 @@ const DEFAULT_SORT = {
   allowUnsort: true
 };
 
-function computeSkipFromPage(page, pageSize) {
+function computeSkipFromPage(page, pageSize): number {
   return (page - 1) * pageSize;
 }
 
@@ -285,7 +291,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     default: () => DEFAULT_PAGER,
     type: [Boolean, Object]
   })
-  public pageable: boolean | SmartGridPageSize;
+  public pageable: boolean | SmartGridPageable;
 
   @Prop({
     default: true,
@@ -362,7 +368,13 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   };
 
   @Watch("$props", { deep: true })
-  protected async onPropsChange(newValue): Promise<void> {
+  protected async onPropsChange(newValue, oldValue): Promise<void> {
+    if (newValue.pageable !== this.pager) {
+      this.pager = newValue.pageable === true ? DEFAULT_PAGER : newValue.pageable;
+    }
+    if (newValue.sortable !== this.sorter) {
+      this.sorter = newValue.sortable === true ? DEFAULT_SORT : newValue.sortable;
+    }
     // apply sort prop change
     if (this.currentSort !== newValue.sort) {
       this.currentSort = newValue.sort;
@@ -389,12 +401,12 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   }
 
   @Watch("dataItems")
-  public watchDataItems(val): void {
+  public watchDataItems(): void {
     this.$emit("dataBound", this.gridInstance);
   }
 
   @Watch("selectedRows", { deep: true })
-  protected onSelectedRowChange(newValue) {
+  protected onSelectedRowChange(newValue): void {
     const gridEvent = new GridEvent(
       {
         selectedRows: newValue
@@ -466,6 +478,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   }
 
   async created(): Promise<void> {
+    this.gridInstance = this;
     window.addEventListener("online", this.updateOnlineStatus);
     window.addEventListener("offline", this.updateOnlineStatus);
     this.gridError = new GridError(this);
@@ -493,7 +506,6 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
         );
       }
     }
-    this.gridInstance = this;
     this.$emit("gridReady");
   }
 
@@ -743,7 +755,9 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
             gridComponent: this
           },
           on: {
-            rowActionClick: (...args) => this.$emit("rowActionClick", ...args)
+            rowActionClick: (...args): void => {
+              this.$emit("rowActionClick", ...args);
+            }
           }
         });
         if (this.$scopedSlots && this.$scopedSlots.actionTemplate) {
@@ -772,11 +786,11 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
           }
         };
         if (this.$scopedSlots && this.$scopedSlots.emptyCell) {
-          options.scopedSlots.emptyCell = props =>
+          options.scopedSlots.emptyCell = (props): VNode[] =>
             this.$scopedSlots.emptyCell({ renderElement, props, listeners, columnConfig });
         }
         if (this.$scopedSlots && this.$scopedSlots.inexistentCell) {
-          options.scopedSlots.inexistentCell = props =>
+          options.scopedSlots.inexistentCell = (props): VNode[] =>
             this.$scopedSlots.inexistentCell({ renderElement, props, listeners, columnConfig });
         }
         renderElement = createElement(AnkGridCell, options);

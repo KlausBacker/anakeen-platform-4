@@ -31,8 +31,10 @@ class FinalUpdates
         $data = [];
 
         // Transfert field access
-        DbManager::query("update family.igroup set fallid=(select cfallid from docfam where name='IGROUP') where fallid is null and fromid=127;");
-        DbManager::query("update family.iuser set fallid=(select cfallid from docfam where name='IUSER') where fallid is null and fromid=128;");
+        DbManager::query("update docfam set cfallid=(select cfallid from docfam where name='IGROUP') where fromid=(select id from docfam where name = 'IGROUP');");
+        DbManager::query("update docfam set cfallid=(select cfallid from docfam where name='IUSER') where fromid=(select id from docfam where name = 'IUSER');");
+        DbManager::query("update family.igroup set fallid=(select cfallid from docfam where name='IGROUP') where fallid is null;");
+        DbManager::query("update family.iuser set fallid=(select cfallid from docfam where name='IUSER') where fallid is null;");
 
         // Transfert cvdoc
         DbManager::query("update family.igroup set cvid=(select ccvid from docfam where name='IGROUP') where cvid is null and fromid=127;");

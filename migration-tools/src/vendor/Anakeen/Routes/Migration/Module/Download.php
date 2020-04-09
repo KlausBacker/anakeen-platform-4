@@ -40,7 +40,6 @@ class Download
     {
         $this->initParameters($request, $args);
         $data = $this->doRequest();
-
         // return ApiV2Response::withData($response, $data);
         return ApiV2Response::withFile($response, $data);
     }
@@ -121,6 +120,19 @@ class Download
         $e->insertStructConfig();
         $xmlFile = sprintf("%s/SmartStructures/%s/100-%sStructure.xml", $this->outputPath, $structName, $structName);
         $this->zip->addFromString($xmlFile, $e->toXml());
+
+
+        $e = new SmartStructure\ExportConfiguration($structure);
+        if ($e->extractModAttr()) {
+            $e->insertStructConfig();
+            $xmlFile = sprintf(
+                "%s/SmartStructures/%s/105-%sModStructure.xml",
+                $this->outputPath,
+                $structName,
+                $structName
+            );
+            $this->zip->addFromString($xmlFile, $e->toXml());
+        }
 
 
         $e = new SmartStructure\ExportConfiguration($structure);

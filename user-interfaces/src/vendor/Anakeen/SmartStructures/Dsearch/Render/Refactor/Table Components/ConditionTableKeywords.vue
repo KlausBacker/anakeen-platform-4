@@ -17,6 +17,7 @@ import KeywordsEnum from "./KeywordsComponents/KeywordsEnum";
 import KeywordsDate from "./KeywordsComponents/KeywordsDate";
 import KeywordsDocid from "./KeywordsComponents/KeywordsDocid";
 import KeywordsTime from "./KeywordsComponents/KeywordsTime";
+import KeywordsMoney from "./KeywordsComponents/KeywordsMoney";
 import KeywordsTimestamp from "./KeywordsComponents/KeywordsTimestamp";
 import KeywordsWid from "./KeywordsComponents/KeywordsWid";
 import KeywordsDefault from "./KeywordsComponents/KeywordsDefault";
@@ -29,6 +30,7 @@ export default {
     "condition-table-keywords-date": KeywordsDate,
     "condition-table-keywords-docid": KeywordsDocid,
     "condition-table-keywords-time": KeywordsTime,
+    "condition-table-keywords-money": KeywordsMoney,
     "condition-table-keywords-timestamp": KeywordsTimestamp,
     "condition-table-keywords-wid": KeywordsWid,
     "condition-table-keywords-default": KeywordsDefault
@@ -58,7 +60,8 @@ export default {
             famid: this.famid,
             field: this.field,
             operator: this.operator,
-            initValue: this.initialFieldType === "enum" ? this.initValue : ""
+            initValue: this.initialFieldType === "enum" ? this.initValue : "",
+            methods: this.field ? this.field.methods : []
           }
         },
         docid: {
@@ -67,7 +70,8 @@ export default {
             famid: this.famid,
             field: this.field,
             operator: this.operator,
-            initValue: this.initialFieldType === "docid" ? this.initValue : ""
+            initValue: this.initialFieldType === "docid" ? this.initValue : "",
+            methods: this.field ? this.field.methods : []
           }
         },
         account: {
@@ -76,7 +80,8 @@ export default {
             famid: this.famid,
             field: this.field,
             operator: this.operator,
-            initValue: this.initialFieldType === "account" ? this.initValue : ""
+            initValue: this.initialFieldType === "account" ? this.initValue : "",
+            methods: this.field ? this.field.methods : []
           }
         },
         wid: {
@@ -108,7 +113,16 @@ export default {
           componentName: "condition-table-keywords-time",
           props: {
             operator: this.operator,
-            initValue: this.initialFieldType === "time" ? this.initValue : ""
+            initValue: this.initialFieldType === "time" ? this.initValue : "",
+            methods: this.field ? this.field.methods : []
+          }
+        },
+        money: {
+          componentName: "condition-table-keywords-money",
+          props: {
+            operator: this.operator,
+            initValue: this.initialFieldType === "money" ? this.initValue : "",
+            methods: this.field ? this.field.methods : []
           }
         },
         default: {

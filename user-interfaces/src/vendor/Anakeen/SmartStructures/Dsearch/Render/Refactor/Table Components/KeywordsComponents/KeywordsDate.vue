@@ -96,6 +96,7 @@ export default {
     onFuncButtonClick() {
       this.dateMode = !this.dateMode;
       this.dateMode ? this.onDateChange() : this.onFuncChange();
+      $(this.$refs.funcButton).toggleClass("func-button-clicked");
     },
     initData() {
       if (this.initValue) {
@@ -159,18 +160,6 @@ export default {
 };
 </script>
 <style>
-.condition-table-keywords-date-picker.k-datepicker {
-  width: 100%;
-}
-
-.condition-table-keywords-date-picker.k-input {
-  padding-left: 2.2rem;
-}
-
-.condition-table-keywords-date-combobox {
-  width: 100%;
-}
-
 .condition-table-keywords-date-mode {
   width: 100%;
 }
@@ -190,5 +179,9 @@ export default {
 
 .condition-table-keywords-date-textbox.k-textbox {
   width: 100%;
+}
+.func-button-clicked {
+  background-color: #157efb;
+  color: white;
 }
 </style>
