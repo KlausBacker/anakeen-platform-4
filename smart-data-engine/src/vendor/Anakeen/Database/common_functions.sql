@@ -30,24 +30,42 @@ begin
 end;
 $$ language 'plpgsql';
 
-CREATE OR REPLACE FUNCTION iregexp_commutator(text, text)
-  RETURNS bool AS
-$func$
-SELECT $2 ~* $1
-$func$  LANGUAGE sql IMMUTABLE;
-
 CREATE OR REPLACE FUNCTION regexp_commutator(text, text)
   RETURNS bool AS
 $func$
 SELECT $2 ~ $1
 $func$  LANGUAGE sql IMMUTABLE;
 
-DROP OPERATOR IF EXISTS ~*<(text, text);
+CREATE OR REPLACE FUNCTION iregexp_commutator(text, text)
+  RETURNS bool AS
+$func$
+SELECT $2 ~* $1
+$func$  LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION ndregexp_commutator(text, text)
+  RETURNS bool AS
+$func$
+SELECT unaccent($2) ~ unaccent($1)
+$func$  LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION indregexp_commutator(text, text)
+  RETURNS bool AS
+$func$
+SELECT unaccent($2) ~* unaccent($1)
+$func$  LANGUAGE sql IMMUTABLE;
+
 DROP OPERATOR IF EXISTS ~<(text, text);
-CREATE OPERATOR ~*< ( leftarg = text, rightarg = text, procedure = iregexp_commutator);
+DROP OPERATOR IF EXISTS ~*<(text, text);
+DROP OPERATOR IF EXISTS ~%<(text, text);
+DROP OPERATOR IF EXISTS ~*%<(text, text);
 CREATE OPERATOR ~< ( leftarg = text, rightarg = text, procedure = regexp_commutator);
-COMMENT ON OPERATOR ~*<(text, text) IS 'insensitive regexp commutator';
+CREATE OPERATOR ~*< ( leftarg = text, rightarg = text, procedure = iregexp_commutator);
+CREATE OPERATOR ~%< ( leftarg = text, rightarg = text, procedure = ndregexp_commutator);
+CREATE OPERATOR ~%*< ( leftarg = text, rightarg = text, procedure = indregexp_commutator);
 COMMENT ON OPERATOR ~<(text, text) IS 'regexp commutator';
+COMMENT ON OPERATOR ~*<(text, text) IS 'insensitive regexp commutator';
+COMMENT ON OPERATOR ~%<(text, text) IS 'nodiacritic regexp commutator';
+COMMENT ON OPERATOR ~%*<(text, text) IS 'insensitive nodiacritic regexp commutator';
 
 
 -- change type of column
