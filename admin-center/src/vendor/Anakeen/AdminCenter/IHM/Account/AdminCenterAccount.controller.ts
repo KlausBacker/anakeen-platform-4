@@ -134,17 +134,19 @@ export default class AdminCenterAccountController extends Vue {
       this.groupId = window.localStorage.getItem("admin.account.groupSelected.id");
       this.gridGroupContent.read();
 
-      this.$refs.groupGrid.kendoWidget().element.on("mousedown", ".account-badge.group-count", e => {
-        const grid = this.$refs.groupGrid.kendoWidget();
-        const $tr = $(e.currentTarget).closest("tr");
-        const dataItem = grid.dataItem($tr);
+      this.$refs.groupGrid
+        .kendoWidget()
+        .element.on("mousedown", '.groupinfo[data-expanded="false"] .group-expand', e => {
+          const grid = this.$refs.groupGrid.kendoWidget();
+          const $tr = $(e.currentTarget).closest("tr");
+          const dataItem = grid.dataItem($tr);
 
-        e.preventDefault();
-        e.stopPropagation();
+          e.preventDefault();
+          e.stopPropagation();
 
-        this.openPathIds.push(dataItem.pathid + ":" + dataItem.accountId);
-        this.gridGroupContent.read();
-      });
+          this.openPathIds.push(dataItem.pathid + ":" + dataItem.accountId);
+          this.gridGroupContent.read();
+        });
       this.viewAllUsers();
     });
   }
@@ -204,9 +206,9 @@ export default class AdminCenterAccountController extends Vue {
       '<tr data-uid="#: uid #">' +
       '<td class="grouprow" >' +
       '<div class="groupinfo" style="margin-left: #= data.path.length #rem"' +
-      '#if (data.path.length < (data.currentDepth -1) || data.openPathIds.indexOf(data.pathid+":"+data.accountId) >= 0) {# data-expanded="true" #}# >' +
-      '<div class="path"># for (var i = 0; i < data.path.length; i++)  { #&gt;&nbsp; #= (data.path[i]) ## } # </div>' +
-      '<div class="groupname"><div class="lastname">#: lastname# </div> ' +
+      '#if (data.path.length < (data.currentDepth -1) || data.openPathIds.indexOf(data.pathid+":"+data.accountId) >= 0 || subgroupCount == 0) {# data-expanded="true" #} else {# data-expanded="false" #}# >' +
+      '<div class="path"># for (var i = 0; i < data.path.length; i++)  { # &gt;&nbsp; #= (data.path[i]) ## } # </div>' +
+      '<div class="groupname"><div class="lastname"><div class="group-expand"  > </div> <span>#: lastname#</span> </div> ' +
       '# if (subgroupCount > 0) { # <div class="account-badge group-count"  > #: subgroupCount# </div> #}#' +
       '<div class="account-badge user-count"> #: userCount# </div></div></div>' +
       "</td>" +
