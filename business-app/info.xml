@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="anakeen-hub-business-app" vendor="Anakeen" version="1.0.4-RC.2020.1.21" license="https://ap4.anakeen.com/license4.html">
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="anakeen-hub-business-app" vendor="Anakeen" version="1.0.4-RC.2020.1.22" license="https://ap4.anakeen.com/license4.html">
   <requires>
-    <module name="anakeen-hub" version="^1.0.4-RC.2020.1.21"/>
+    <module name="anakeen-hub" version="^1.0.4-RC.2020.1.22"/>
   </requires>
   <post-install>
     <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/BusinessApp/Accounts/110-BusinessAppRoles.xml"/>
