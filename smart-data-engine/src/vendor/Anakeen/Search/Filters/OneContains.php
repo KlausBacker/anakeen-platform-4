@@ -9,8 +9,10 @@ class OneContains extends StandardAttributeFilter implements ElementSearchFilter
     const NOT = 1;
     const NOCASE = 2;
     const ALL = 4;
+    const NODIACRITIC = 8;
     protected $NOT = false;
     protected $NOCASE = false;
+    protected $NODIACRITIC = false;
     protected $compatibleType
         = array(
             'text',
@@ -28,6 +30,7 @@ class OneContains extends StandardAttributeFilter implements ElementSearchFilter
      * Bitmask consisting of
      * <b>\Anakeen\Search\Filters\OneContains::$NOT</b>,
      * <b>\Anakeen\Search\Filters\OneContains::$NOCASE</b>
+     * <b>\Anakeen\Search\Filters\OneContains::$NODIACRITIC</b>
      * <b>\Anakeen\Search\Filters\OneContains::$ALL</b>
      * </p>
      */
@@ -39,6 +42,7 @@ class OneContains extends StandardAttributeFilter implements ElementSearchFilter
             $this->NOT = $this->NOT | ($options & self::NOT);
             $this->NOCASE = $this->NOCASE | ($options & self::NOCASE);
             $this->ALL = $this->ALL | ($options & self::ALL);
+            $this->NODIACRITIC = $this->NODIACRITIC | ($options & self::NODIACRITIC);
         }
     }
 
@@ -78,11 +82,20 @@ class OneContains extends StandardAttributeFilter implements ElementSearchFilter
          * - http://www.postgresql.org/docs/9.1/static/functions-matching.html#POSIX-METASYNTAX
         */
         $value = '***=' . $value;
+        $sqlOperator = '~<';
+        if ($this->NOCASE && $this->NODIACRITIC) {
+            $sqlOperator = '~%*<';
+        } elseif ($this->NOCASE) {
+            $sqlOperator = '~*<';
+        } elseif ($this->NODIACRITIC) {
+            $sqlOperator = '~%<';
+        }
+
         $sql = sprintf(
-            "%s IS NOT NULL AND %s ~%s< %s(%s)",
+            "%s IS NOT NULL AND %s %s %s(%s)",
             pg_escape_identifier($attr->id),
             pg_escape_literal($value),
-            ($this->NOCASE ? '*' : ''),
+            $sqlOperator,
             ($this->ALL ? 'ALL' : 'ANY'),
             pg_escape_identifier($attr->id)
         );

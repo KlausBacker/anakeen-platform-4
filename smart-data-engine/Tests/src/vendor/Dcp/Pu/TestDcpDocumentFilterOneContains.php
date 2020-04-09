@@ -33,7 +33,8 @@ class TestDcpDocumentFilterOneContains extends TestDcpDocumentFiltercommon
                     "attr" => "A_TEXT",
                     "value" => "n",
                     "expected" => array(
-                        "ONECONTAINS_2"
+                        "ONECONTAINS_2",
+                        "ONECONTAINS_4",
                     )
                 )
             ) ,
@@ -44,8 +45,40 @@ class TestDcpDocumentFilterOneContains extends TestDcpDocumentFiltercommon
                     "value" => "N",
                     "flags" => \Anakeen\Search\Filters\OneContains::NOCASE,
                     "expected" => array(
-                        "ONECONTAINS_2"
+                        "ONECONTAINS_2",
+                        "ONECONTAINS_4",
                     )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_TEXT",
+                    "value" => "hete",
+                    "flags" => \Anakeen\Search\Filters\OneContains::NODIACRITIC,
+                    "expected" => array(
+                        "ONECONTAINS_4",
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_TEXT",
+                    "value" => "ele",
+                    "flags" => \Anakeen\Search\Filters\OneContains::NODIACRITIC + \Anakeen\Search\Filters\OneContains::NOCASE,
+                    "expected" => array(
+                        "ONECONTAINS_4",
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_TEXT",
+                    "value" => "ele",
+                    "flags" => \Anakeen\Search\Filters\OneContains::NOCASE,
+                    "expected" => array()
                 )
             ) ,
             // A_HTMLTEXT
@@ -55,7 +88,8 @@ class TestDcpDocumentFilterOneContains extends TestDcpDocumentFiltercommon
                     "attr" => "A_HTMLTEXT",
                     "value" => "n",
                     "expected" => array(
-                        "ONECONTAINS_2"
+                        "ONECONTAINS_2",
+                        "ONECONTAINS_4",
                     )
                 )
             ) ,
@@ -66,8 +100,40 @@ class TestDcpDocumentFilterOneContains extends TestDcpDocumentFiltercommon
                     "value" => "N",
                     "flags" => \Anakeen\Search\Filters\OneContains::NOCASE,
                     "expected" => array(
-                        "ONECONTAINS_2"
+                        "ONECONTAINS_2",
+                        "ONECONTAINS_4",
                     )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_HTMLTEXT",
+                    "value" => "hete",
+                    "flags" => \Anakeen\Search\Filters\OneContains::NODIACRITIC,
+                    "expected" => array(
+                        "ONECONTAINS_4",
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_HTMLTEXT",
+                    "value" => "ele",
+                    "flags" => \Anakeen\Search\Filters\OneContains::NODIACRITIC + \Anakeen\Search\Filters\OneContains::NOCASE,
+                    "expected" => array(
+                        "ONECONTAINS_4",
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_HTMLTEXT",
+                    "value" => "ele",
+                    "flags" => \Anakeen\Search\Filters\OneContains::NOCASE,
+                    "expected" => array()
                 )
             ) ,
             // A_LONGTEXT
@@ -77,7 +143,8 @@ class TestDcpDocumentFilterOneContains extends TestDcpDocumentFiltercommon
                     "attr" => "A_LONGTEXT",
                     "value" => "n",
                     "expected" => array(
-                        "ONECONTAINS_2"
+                        "ONECONTAINS_2",
+                        "ONECONTAINS_4",
                     )
                 )
             ) ,
@@ -88,8 +155,40 @@ class TestDcpDocumentFilterOneContains extends TestDcpDocumentFiltercommon
                     "value" => "N",
                     "flags" => \Anakeen\Search\Filters\OneContains::NOCASE,
                     "expected" => array(
-                        "ONECONTAINS_2"
+                        "ONECONTAINS_2",
+                        "ONECONTAINS_4",
                     )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_LONGTEXT",
+                    "value" => "hete",
+                    "flags" => \Anakeen\Search\Filters\OneContains::NODIACRITIC,
+                    "expected" => array(
+                        "ONECONTAINS_4",
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_LONGTEXT",
+                    "value" => "ele",
+                    "flags" => \Anakeen\Search\Filters\OneContains::NODIACRITIC + \Anakeen\Search\Filters\OneContains::NOCASE,
+                    "expected" => array(
+                        "ONECONTAINS_4",
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_LONGTEXT",
+                    "value" => "ele",
+                    "flags" => \Anakeen\Search\Filters\OneContains::NOCASE,
+                    "expected" => array()
                 )
             ) ,
         );
