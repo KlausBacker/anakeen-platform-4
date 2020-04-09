@@ -207,7 +207,7 @@ class DocumentAccess
                 // dynamic profil
                 $this->document->dprofid = $profid;
                 $this->computeDProfil($this->document->dprofid, $fromdocidvalues);
-                unset($this->document->uperm); // force recompute privileges
+                $this->document->uperm=[]; // force recompute privileges
             } else {
                 $this->document->dprofid = 0;
                 $this->setViewProfil();
@@ -495,7 +495,7 @@ class DocumentAccess
             $err .= $this->computeDProfilExt($pdoc->id, $fromdocidvalues);
             $this->document->restoreAccessControl();
         }
-        unset($this->document->uperm); // force recompute privileges
+        $this->document->uperm=[]; // force recompute privileges
         return $err;
     }
 
@@ -715,17 +715,18 @@ class DocumentAccess
         if ($this->isExtendedAcl($aclname)) {
             return $this->controlExtId($profid, $aclname, $strict);
         } else {
+            $userid = ContextManager::getCurrentUser()->id;
             if ($strict) {
-                $uperm = \DocPerm::getUperm($profid, ContextManager::getCurrentUser()->id, $strict);
+                $uperm = \DocPerm::getUperm($profid, $userid, $strict);
                 return $this->controlUp($uperm, $aclname);
             } else {
                 if ($this->document->profid == $profid) {
-                    if (!isset($this->document->uperm)) {
-                        $this->document->uperm = \DocPerm::getUperm($profid, ContextManager::getCurrentUser()->id);
+                    if (!isset($this->document->uperm[$userid])) {
+                        $this->document->uperm[$userid] = \DocPerm::getUperm($profid, $userid);
                     }
-                    return $this->controlUp($this->document->uperm, $aclname);
+                    return $this->controlUp($this->document->uperm[$userid], $aclname);
                 } else {
-                    $uperm = \DocPerm::getUperm($profid, ContextManager::getCurrentUser()->id);
+                    $uperm = \DocPerm::getUperm($profid, $userid);
                     return $this->controlUp($uperm, $aclname);
                 }
             }
