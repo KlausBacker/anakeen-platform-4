@@ -19,13 +19,13 @@ export default class LogoutComponent extends Mixins(EventUtilsMixin, ReadyMixin,
         .delete("/components/user/session")
         .then(response => {
           this.$emit("afterLogout", response.data);
-          document.location.assign(response.data.location || "/");
+          document.location.assign(response.data.data.location || "/");
           kendo.ui.progress(kendo.jQuery("body"), false);
         })
         .catch(error => {
           if (error.status === 401) {
             this.$emit("afterLogout", error.data);
-            document.location.assign(error.data.location || "/");
+            document.location.assign(error.data.data.location || "/");
           } else {
             this.$emit("afterLogout", "networkError");
             kendo.ui.progress(kendo.jQuery("body"), false);
