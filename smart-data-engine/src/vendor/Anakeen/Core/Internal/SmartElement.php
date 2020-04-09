@@ -511,15 +511,11 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
      * @var array
      */
     public $extendedAcls = array();
+
     /**
-     * @var int  current user id
-     * @deprecated
+     * @var int[] user permission masks
      */
-    public $userid;
-    /**
-     * @var int user permission mask
-     */
-    public $uperm;
+    public $uperm=[];
     /**
      * param value cache
      *
