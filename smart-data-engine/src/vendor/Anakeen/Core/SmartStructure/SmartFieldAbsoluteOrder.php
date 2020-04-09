@@ -413,6 +413,9 @@ class SmartFieldAbsoluteOrder
      */
     protected static function updateAttributeTreeItem(array &$tree, $attrid, &$orders)
     {
+        if (!isset(self::$updatedAttrCounts[$attrid])) {
+            self::$updatedAttrCounts[$attrid]=0;
+        }
         self::$updatedAttrCounts[$attrid]++;
         if (self::$updatedAttrCounts[$attrid] > 3) {
             // Avoid recursive changes
