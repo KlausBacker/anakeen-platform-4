@@ -133,7 +133,8 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
 
   public fetchSmartElement(value, options?): Promise<any> {
     options = options || {};
-    options.loading = this.hasLoadingSlot;
+    // Disable default loading if there is custom loading
+    options.loading = !this.hasLoadingSlot;
     if (!this.isLoaded()) {
       return this._initController(value, options);
     } else {

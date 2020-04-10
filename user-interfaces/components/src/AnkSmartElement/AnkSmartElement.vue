@@ -1,7 +1,6 @@
 <template>
   <div class="ankSEWrapper" ref="ankSEWrapper">
-
-    <div v-if="true" class="smart-element-custom-loading">
+    <div v-if="hasLoadingSlot && isLoading" class="smart-element-custom-loading">
       <slot name="loading"></slot>
     </div>
   </div>

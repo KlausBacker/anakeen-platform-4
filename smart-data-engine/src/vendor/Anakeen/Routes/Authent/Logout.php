@@ -34,7 +34,7 @@ class Logout
         \Anakeen\Router\AuthenticatorManager::closeAccess();
         $data = [];
         foreach (headers_list() as $header) {
-            if (preg_match("/location:\s*(.*)/i", $header, $reg)) {
+            if (preg_match("/^location:\s*(.*)/i", $header, $reg)) {
                 $data["location"] = $reg[1];
             }
         }
