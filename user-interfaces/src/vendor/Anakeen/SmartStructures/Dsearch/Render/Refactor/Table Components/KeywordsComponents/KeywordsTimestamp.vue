@@ -201,6 +201,9 @@ export default {
 .condition-table-keywords-timestamp-textbox {
   width: 100%;
 }
+.condition-table-keywords-timestamp-datetimepicker {
+  width: 100%;
+}
 .func-button-clicked {
   background-color: #157efb;
   color: white;
