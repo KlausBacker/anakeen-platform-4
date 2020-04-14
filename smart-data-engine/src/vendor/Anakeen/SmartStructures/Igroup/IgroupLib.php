@@ -3,6 +3,7 @@
  * @author Anakeen
  * @package FDL
 */
+
 /**
  * Function utilities to manipulate users
  *
@@ -10,7 +11,10 @@
 
 namespace Anakeen\SmartStructures\Igroup;
 
+use Anakeen\Core\Account;
+use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
+use Anakeen\Core\Utils\Date;
 
 /**
  * refresh a set of group
@@ -19,9 +23,12 @@ use Anakeen\Core\SEManager;
  */
 class IgroupLib
 {
-
-    public static function refreshGroups($groupIdList, $refresh = false, &$currentPath = array(), &$groupDepth = array())
-    {
+    public static function refreshGroups(
+        $groupIdList,
+        $refresh = false,
+        &$currentPath = array(),
+        &$groupDepth = array()
+    ) {
         /**
          * @var \Group $wg
          */
@@ -34,7 +41,11 @@ class IgroupLib
         foreach ($groupIdList as $groupId) {
             // Detect loops in groups
             if (array_search($groupId, $currentPath)) {
-                error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Loop detected in group with id '%s' (path=[%s])", $groupId, join('-', $currentPath)));
+                error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf(
+                    "Loop detected in group with id '%s' (path=[%s])",
+                    $groupId,
+                    join('-', $currentPath)
+                ));
                 continue;
             }
             // Get direct parent groups list
@@ -64,9 +75,76 @@ class IgroupLib
     }
 
 
+    /**
+     * Recompute all group mail where account is referenced
+     * @param Account $user
+     * @throws \Anakeen\Database\Exception
+     */
+    public static function refreshMailGroupsOfUser(Account $user)
+    {
+        // Select group where grp_hasmail is yes and user is referenced
+        $sql = sprintf(
+            "select ug.id from users uu, users ug, family.igroup as ig " .
+            "where uu.memberof @> ARRAY[ug.id] and uu.id=%d and ug.accounttype='G' and ug.fid=ig.id and ig.grp_hasmail = 'yes'",
+            $user->id
+        );
+        DbManager::query($sql, $groups, true);
+        foreach ($groups as $groupId) {
+            self::refreshMailGroup($groupId);
+        }
+    }
+
+    /**
+     * Get group mail for a specific group
+     * @param int $groupId System group identifier
+     * @param bool $rawFormat if true add name before email address, else only email address
+     * @return string
+     * @throws \Anakeen\Database\Exception
+     */
+    public static function getMailGroup(int $groupId, $rawFormat = false)
+    {
+        // Aggregate mail address of all users of the group (recursive)
+        if ($rawFormat === true) {
+            $sql = sprintf(
+                "select string_agg(mail,', ' order by mail)" .
+                " from users where memberof @> '{%d}' and mail is not null",
+                $groupId
+            );
+        } else {
+            $sql = sprintf(
+                "select string_agg('\"' || replace(trim(coalesce(firstname,'') || ' ' || coalesce(lastname,'')), '\"', '-')  || '\" <' ||mail || '>',', ' order by mail)" .
+                " from users where memberof @> '{%d}' and mail is not null",
+                $groupId
+            );
+        }
+        DbManager::query($sql, $mailGroup, true, true);
+        return $mailGroup;
+    }
+
+    /**
+     * Recompute group mail for a specific group
+     * @param int $groupId System group identifier
+     * @throws \Anakeen\Database\Exception
+     */
+    public static function refreshMailGroup(int $groupId)
+    {
+        $mailGroup = self::getMailGroup($groupId);
+
+        // Update system account
+        DbManager::query(sprintf("update users set mail='%s' where id=%d", pg_escape_string($mailGroup), $groupId));
+        // Update Smart Igroup
+        DbManager::query(sprintf(
+            "update doc127 set grp_mail='%s', mdate='%s' where us_whatid=%d",
+            pg_escape_string($mailGroup),
+            Date::getNow(true),
+            $groupId
+        ));
+    }
+
+
     public static function refreshOneGroup($gid, $refresh)
     {
-        $g = new \Anakeen\Core\Account("", $gid);
+        $g = new Account("", $gid);
         if ($g->fid > 0 && $g->accounttype == 'G') {
             /**
              * @var \SmartStructure\Igroup $doc

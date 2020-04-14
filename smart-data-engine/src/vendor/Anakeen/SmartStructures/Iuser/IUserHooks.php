@@ -16,7 +16,7 @@ use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Router\RouterAccess;
 use Anakeen\SmartHooks;
-use PHPUnit\Framework\Error\Error;
+use Anakeen\SmartStructures\Igroup\IgroupLib;
 use SmartStructure\Fields\Iuser as MyAttributes;
 use SmartStructure\Iuser;
 
@@ -31,7 +31,6 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
     {
         parent::registerHooks();
         $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
-
             $substitute = $this->getOldRawValue(MyAttributes::us_substitute);
             /**
              * update/synchro system user
@@ -232,6 +231,9 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
                     $this->clearArrayValues(MyAttributes::us_groups);
                 }
                 $err = $this->modify();
+                if ($this->getOldRawValue(MyAttributes::us_mail) && $this->getOldRawValue(MyAttributes::us_mail) !== $this->getRawValue(MyAttributes::us_mail)) {
+                    IgroupLib::refreshMailGroupsOfUser($wuser);
+                }
             } else {
                 $err = sprintf(_("user %d does not exist"), $wid);
             }
@@ -332,6 +334,7 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
             if ($substitute) {
                 $substitute = $this->getDocValue($substitute, "us_whatid");
             }
+            SEManager::cache()->addDocument($this);
             $err .= $user->updateUser($fid, $lname, $fname, $expires, $passdelay, $login, $status, $pwd1, $pwd2, $extmail, $roleIds, $substitute);
             if ($err == "") {
                 if ($user) {
@@ -346,10 +349,6 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
                         $err .= $this->setToDefaultGroup();
                     }
                 }
-            }
-
-            if ($err == "") {
-                $err = $this->RefreshDocUser(); // refresh from core database
             }
         } else {
             // tranfert extern mail if no login specified yet
