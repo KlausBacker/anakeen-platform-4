@@ -76,6 +76,10 @@ class ImageAsset
 
     protected function getDestinationCacheImage($localimage, $size)
     {
+        $imgDir = sprintf("%s/%s", DEFAULT_PUBDIR, self::CACHEIMGDIR);
+        if (!is_dir($imgDir)) {
+            mkdir($imgDir);
+        }
         $basedest = sprintf(
             "%s/%s/Images_%s-%s",
             DEFAULT_PUBDIR,
