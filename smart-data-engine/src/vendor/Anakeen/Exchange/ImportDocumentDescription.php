@@ -1871,7 +1871,7 @@ class ImportDocumentDescription
                                         "delete access \"%s\" for \"%s\"",
                                         $aclname,
                                         $uid
-                                        );
+                                    );
                                 }
                             } else { // the "ADD" by default
                                 foreach ($tuid as $uid) {
@@ -1883,7 +1883,7 @@ class ImportDocumentDescription
                                         "add access \"%s\" for \"%s\"",
                                         $aclname,
                                         $uid
-                                        );
+                                    );
                                 }
                             }
                             $this->tcr[$this->nLine]["err"] = $perr;
@@ -1902,7 +1902,7 @@ class ImportDocumentDescription
                             "recomputing all accesses \"%s\" for \"%s\"",
                             $pdoc->name,
                             $pdoc->getTitle()
-                            );
+                        );
                         $pdoc->addHistoryEntry(
                             "Recomputing profiled elements",
                             \DocHisto::INFO,
@@ -2241,10 +2241,10 @@ class ImportDocumentDescription
             if (!$this->tcr[$this->nLine]["err"]) {
                 if ($data[0] == "PARAM") {
                     $oattr->usefor = 'Q';
-                // parameters
+                    // parameters
                 } elseif ($data[0] == "OPTION") {
                     $oattr->usefor = 'O';
-                // options
+                    // options
                 } else {
                     $oattr->usefor = 'N';
                     // normal
