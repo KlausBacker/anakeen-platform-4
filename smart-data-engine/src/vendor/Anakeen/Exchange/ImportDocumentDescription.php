@@ -7,6 +7,7 @@
 namespace Anakeen\Exchange;
 
 use Anakeen\Core\DbManager;
+use Anakeen\Core\SmartStructure\BasicAttribute;
 use \Anakeen\Core\SmartStructure\DocAttr;
 use Anakeen\Core\Utils\Postgres;
 use Anakeen\Exception;
@@ -1596,7 +1597,7 @@ class ImportDocumentDescription
             );
         } else {
             if ($force || ($previousValue === null)) {
-                $err=$this->doc->setParam($attrid, $newValue, false);
+                $err = $this->doc->setParam($attrid, $newValue, false);
                 $this->tcr[$this->nLine]["err"] = $err;
                 $this->tcr[$this->nLine]["msg"] = "reset default parameter";
             }
@@ -1870,7 +1871,7 @@ class ImportDocumentDescription
                                         "delete access \"%s\" for \"%s\"",
                                         $aclname,
                                         $uid
-                                    );
+                                        );
                                 }
                             } else { // the "ADD" by default
                                 foreach ($tuid as $uid) {
@@ -1882,7 +1883,7 @@ class ImportDocumentDescription
                                         "add access \"%s\" for \"%s\"",
                                         $aclname,
                                         $uid
-                                    );
+                                        );
                                 }
                             }
                             $this->tcr[$this->nLine]["err"] = $perr;
@@ -1901,7 +1902,7 @@ class ImportDocumentDescription
                             "recomputing all accesses \"%s\" for \"%s\"",
                             $pdoc->name,
                             $pdoc->getTitle()
-                        );
+                            );
                         $pdoc->addHistoryEntry(
                             "Recomputing profiled elements",
                             \DocHisto::INFO,
@@ -2088,6 +2089,21 @@ class ImportDocumentDescription
         return Postgres::stringToArray($fromids);
     }
 
+    protected function getParentAttr($attrid)
+    {
+        $fromids = $this->getFromids($this->doc->id);
+        foreach ($fromids as $fromid) {
+            $oattr = new DocAttr($this->dbaccess, array(
+                $fromid,
+                $attrid
+            ));
+            if ($oattr->isAffected()) {
+                return $oattr;
+            }
+        }
+        return null;
+    }
+
     /**
      * analyze UPDTATTR
      *
@@ -2100,23 +2116,14 @@ class ImportDocumentDescription
             $this->doc->id,
             $attrid
         ));
-        $modAttrActivated=false;
+        $modAttrActivated = false;
         if (!$oattr->isAffected()) {
-            $fromids=$this->getFromids($this->doc->id);
-            foreach ($fromids as $fromid) {
-                $oattr = new DocAttr($this->dbaccess, array(
-                    $fromid,
-                    $attrid
-                ));
-                if ($oattr->isAffected()) {
-                    break;
-                }
-            }
+            $oattr = $this->getParentAttr($attrid);
 
-            if (!$oattr->isAffected()) {
+            if (!$oattr) {
                 $this->tcr[$this->nLine]["err"] = \ErrorCode::getError('ATTR0104', $attrid);
             } else {
-                $modAttrActivated=true;
+                $modAttrActivated = true;
             }
         }
 
@@ -2325,6 +2332,24 @@ class ImportDocumentDescription
                     $oattr->options .= sprintf("relativeOrder=%s", $oattr->ordered);
                     $oattr->ordered = $this->nLine;
                 }
+                if ($modattr && $oattr->options) {
+                    $parentAttr = $this->getParentAttr(trim($oattr->id, ":"));
+                    $pOptions = BasicAttribute::optionsToArray($parentAttr->options);
+                    $cOptions = BasicAttribute::optionsToArray($oattr->options);
+                    if (!isset($cOptions["multiple"]) && !empty($pOptions["multiple"]) && $pOptions["multiple"] === "yes") {
+                        $oattr->options .= "|multiple=yes";
+                    }
+                }
+                if ($oattr->options) {
+                    $cOptions = BasicAttribute::optionsToArray($oattr->options);
+                    $cOptions = array_unique($cOptions);
+                    $attrOptions = [];
+                    foreach ($cOptions as $k => $v) {
+                        $attrOptions[] = sprintf("%s=%s", $k, $v);
+                    }
+                    $oattr->options = implode('|', $attrOptions);
+                }
+
                 if ($oattr->isAffected()) {
                     $err = $oattr->Modify();
                 } else {
@@ -2457,7 +2482,7 @@ class ImportDocumentDescription
         $this->tcr[$this->nLine]["msg"] = sprintf("Enum \"%s\" - \"%s\" recorded", $enumName, $key);
     }
 
-    protected function addImportedAttribute($famId, DocAttr & $oa)
+    protected function addImportedAttribute($famId, DocAttr &$oa)
     {
         if (!isset($this->importedAttribute[$famId])) {
             $this->importedAttribute[$famId] = array();
