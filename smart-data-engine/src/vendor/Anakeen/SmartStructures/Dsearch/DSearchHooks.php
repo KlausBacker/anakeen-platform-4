@@ -805,18 +805,6 @@ class DSearchHooks extends \SmartStructure\Search
                     $rv = $workdoc->ApplyMethod($v);
                     $tkey[$k] = $rv;
                 }
-                if (substr($v, 0, 1) == "?") {
-                    // it's a parameter
-                    $rv = getHttpVars(substr($v, 1), "-");
-                    if ($rv == "-") {
-                        return (false);
-                    }
-                    if ($rv === "" || $rv === " ") {
-                        unset($taid[$k]);
-                    } else {
-                        $tkey[$k] = $rv;
-                    }
-                }
                 if ($taid[$k] == "revdate") {
                     if (substr_count($tkey[$k], '/') === 2) {
                         list($dd, $mm, $yyyy) = explode("/", $tkey[$k]);
@@ -873,18 +861,6 @@ class DSearchHooks extends \SmartStructure\Search
      */
     public function isParameterizable()
     {
-        $tkey = $this->getMultipleRawValues("SE_KEYS");
-        if (empty($tkey)) {
-            return false;
-        }
-        if ((count($tkey) > 1) || ($tkey[0] != "")) {
-            foreach ($tkey as $k => $v) {
-                if ($v && $v[0] == '?') {
-                    return true;
-                    //if (getHttpVars(substr($v,1),"-") == "-") return true;
-                }
-            }
-        }
         return false;
     }
 
@@ -893,16 +869,6 @@ class DSearchHooks extends \SmartStructure\Search
      */
     public function needParameters()
     {
-        $tkey = $this->getMultipleRawValues("SE_KEYS");
-        if ((count($tkey) > 1) || (!empty($tkey[0]))) {
-            foreach ($tkey as $k => $v) {
-                if ($v && $v[0] == '?') {
-                    if (getHttpVars(substr($v, 1), "-") == "-") {
-                        return true;
-                    }
-                }
-            }
-        }
         return false;
     }
 
@@ -915,18 +881,6 @@ class DSearchHooks extends \SmartStructure\Search
      */
     public function urlWhatEncodeSpec($l)
     {
-        $tkey = $this->getMultipleRawValues("SE_KEYS");
-
-        if ((count($tkey) > 1) || (isset($tkey[0]) && $tkey[0] != "")) {
-            foreach ($tkey as $k => $v) {
-                if ($v && $v[0] == '?') {
-                    if (getHttpVars(substr($v, 1), "-") != "-") {
-                        $l .= '&' . substr($v, 1) . "=" . getHttpVars(substr($v, 1));
-                    }
-                }
-            }
-        }
-
         return $l;
     }
 
@@ -935,33 +889,7 @@ class DSearchHooks extends \SmartStructure\Search
      */
     public function getCustomTitle()
     {
-        $tkey = $this->getMultipleRawValues("SE_KEYS");
-        $taid = $this->getMultipleRawValues("SE_ATTRIDS");
-        $l = "";
-        if ((count($tkey) > 1) || (isset($tkey[0]) && $tkey[0] != "")) {
-            $tl = array();
-            foreach ($tkey as $k => $v) {
-                if ($v && $v[0] == '?') {
-                    $vh = getHttpVars(substr($v, 1), "-");
-                    if (($vh != "-") && ($vh != "")) {
-                        if (is_numeric($vh)) {
-                            $fam = $this->getSearchFamilyDocument();
-                            if ($fam) {
-                                $oa = $fam->getAttribute($taid[$k]);
-                                if ($oa && $oa->type == "docid") {
-                                    $vh = $this->getTitle($vh);
-                                }
-                            }
-                        }
-                        $tl[] = $vh;
-                    }
-                }
-            }
-            if (count($tl) > 0) {
-                $l = " (" . implode(", ", $tl) . ")";
-            }
-        }
-        return $this->getRawValue("ba_title") . $l;
+        return $this->getRawValue("ba_title");
     }
 
 
