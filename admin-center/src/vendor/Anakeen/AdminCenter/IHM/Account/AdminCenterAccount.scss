@@ -36,7 +36,14 @@
       height: 100%;
 
       .admin-account-group-header {
+        display: flex;
         flex-basis: 3rem;
+        justify-content: space-between;
+      }
+      .group-expand {
+        display: flex;
+        align-items: center;
+
       }
 
       * {

@@ -7,17 +7,9 @@
             View all users
           </kendo-button>
 
-          <kendo-dropdownlist
-            v-model="selectedDepth"
-            class="k-primary"
-            :data-source="dataDepth"
-            option-label="Depth"
-            value-template="Depth : <strong>#: id #</strong>"
-            data-text-field="id"
-            data-value-field="id"
-            @select="selectDepth"
-            @open="addClassOnSelectorContainer"
-          />
+
+          <div class="group-expand"><span>Expand all :</span>  <kendo-switch @change="selectMaxDepth"></kendo-switch></div>
+
         </header>
         <kendo-grid
           ref="groupGrid"

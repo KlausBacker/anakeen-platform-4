@@ -1,6 +1,31 @@
-<form id="formFilter">
-    <input type="text" id="filterTree" class="form-control" placeholder="Search..."/>
-</form>
-<div id="listOfGroups">
+<div class="igroup-changegroup">
+    <div class="igroup-list igroup-ag">
+        <p>Available groups</p>
+        <script type="text/x-kendo-template" name="availableGroupTemplate">
+            <div class="available-group">
+                <span>#:lastname#</span>
+                <button data-id="#:accountId#" class="add-group"> &gt;&gt;</button>
+            </div>
+        </script>
+        <form name="availableGroupForm">
+            <input type="text" class="form-control"  name="availableGroupSearch" placeholder="Search..."/>
+        </form>
+        <div name="availableGroupList" data-filter="not"/>
+        <div name="availableGroupPager"/>
+    </div>
 
+    <div class="igroup-list igroup-pg">
+        <p>Parent groups</p>
+        <script type="text/x-kendo-template" name="parentGroupTemplate">
+            <div class="product">
+                <button data-id="#:accountId#" class="delete-group"> &lt;&lt;</button>
+                <span>#:lastname#</span>
+            </div>
+        </script>
+        <form name="parentGroupForm">
+            <input type="text" class="form-control"  name="parentGroupSearch" placeholder="Search..."/>
+        </form>
+        <div name="parentGroupList"/>
+        <div name="parentGroupPager"/>
+    </div>
 </div>

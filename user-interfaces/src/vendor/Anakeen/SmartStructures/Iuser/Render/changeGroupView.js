@@ -1,112 +1,76 @@
 import kendo from "@progress/kendo-ui/js/kendo.core";
 import $ from "jquery";
-import "@progress/kendo-ui/js/kendo.treeview";
+import "@progress/kendo-ui/js/kendo.data";
+import "@progress/kendo-ui/js/kendo.pager";
+import "@progress/kendo-ui/js/kendo.listview";
 import "./changeGroupView.css";
 
 window.ank.smartElement.globalController.registerFunction("iuserGroup", controller => {
-  let getGroupTreeSource;
-  let checkedGroups;
-  let currentDoc;
-  let notified = false;
-  const getGroups = () => {
-    return fetch("/api/v2/admin/account/groups/", {
-      credentials: "same-origin"
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(response => {
-        return response.groups;
-      });
-  };
 
-  const initTreeGroup = groups => () => {
-    return new kendo.data.HierarchicalDataSource({
-      filter: {},
-      transport: {
-        read: options => {
-          groups
-            .then(groups => {
-              Object.values(groups).forEach(currentData => {
-                currentData.expanded = true;
-                currentData.items = currentData.items || [];
-                currentData.parents.forEach(parentData => {
-                  try {
-                    groups[parentData].items = groups[parentData].items || [];
-                    groups[parentData].items.push(currentData);
-                  } catch (e) {
-                    //no need to handle the error
-                  }
-                });
-              });
-              //Suppress first level elements
-              Object.values(groups).forEach(currentData => {
-                if (currentData.parents.length > 0) {
-                  delete groups[currentData.accountId];
-                }
-              });
+  let addedGroups=[];
+  let deletedGroups=[];
 
-              try {
-                //Suppress refs elements and keep only values
-                groups = Object.values(JSON.parse(JSON.stringify(groups)));
-              } catch (e) {
-                groups = [];
-              }
-              const addUniqId = (currentElement, id = "") => {
-                currentElement.hierarchicalId = id ? id + "/" + currentElement.documentId : currentElement.documentId;
-                if (currentElement.items) {
-                  currentElement.items.forEach(childrenElement => {
-                    addUniqId(childrenElement, currentElement.hierarchicalId);
-                  });
-                }
-              };
-              groups.forEach(currentGroup => {
-                addUniqId(currentGroup);
-              });
-              const restoreCheckedTree = checked => {
-                return function analyzeChecked(data) {
-                  data.forEach(currentData => {
-                    currentData.checked = false;
-                    if (checked[currentData.accountId]) {
-                      currentData.checked = true;
-                    }
-                    if (currentData.items && currentData.items.length) {
-                      analyzeChecked(currentData.items);
-                    }
-                  });
-                };
-              };
-              if (checkedGroups) {
-                restoreCheckedTree(checkedGroups)(groups);
-              }
-              const hasChildChecked = data => {
-                return data.reduce((accumulator, currentData) => {
-                  if (currentData.items && currentData.items.length) {
-                    if (hasChildChecked(currentData.items)) {
-                      currentData.hasChildChecked = true;
-                      return true;
-                    }
-                  }
-                  return accumulator || currentData.checked;
-                }, false);
-              };
-              hasChildChecked(groups);
-              options.success(groups);
-            })
-            .catch(error => {
-              console.error("Unable to get group", error);
-            });
+  const initParentGroupList = ($list, $pager, $template, se) => {
+    console.log(se);
+    const dataSource = new kendo.data.DataSource({
+      schema: {
+        data: response => {
+          return response.data;
+        },
+        total: function(response) {
+          return response.total; // total is returned in the "total" field of the response
         }
       },
-      schema: {
-        model: {
-          id: "hierarchicalId",
-          children: "items"
+      serverPaging: true,
+      serverFiltering: true,
+      transport: {
+        read: {
+          url: "/api/v2/ui/account/groups/"+se.id ,
+          data: filter => {
+            if ($list.data("filter") === "not") {
+              filter.not = true;
+            }
+            filter.addedGroups=addedGroups;
+            filter.deletedGroups=deletedGroups;
+            return filter;
+          }
         }
-      }
+      },
+      pageSize: 21
+    });
+
+    $pager.kendoPager({
+      dataSource: dataSource,
+      pageSizes: [10, 25, 50]
+    });
+
+    $list.kendoListView({
+      dataSource: dataSource,
+      selectable: "multiple",
+      template: kendo.template($template.html())
+    });
+
+    $list.on("click", "button.delete-group", function() {
+      console.log(this);
+      const id=$(this).data("id");
+      deletedGroups.push(id);
+      dataSource.read();
+    });
+    $list.on("click", "button.add-group", function() {
+      console.log(this);
+      const id=$(this).data("id");
+      addedGroups.push(id);
+      dataSource.read();
+    });
+
+    $("#formFilter").on("submit", event => {
+      event.preventDefault();
+      filterTitle = document.getElementById("filterTree").value
+        ? document.getElementById("filterTree").value.toLowerCase()
+        : "";
     });
   };
-
+/*
   controller.addEventListener(
     "beforeRender",
     {
@@ -116,113 +80,39 @@ window.ank.smartElement.globalController.registerFunction("iuserGroup", controll
         return documentObject.renderMode === "edit" && serverData["GROUP_ANALYZE"];
       }
     },
-    () => {
-      if (!getGroupTreeSource) {
-        getGroupTreeSource = initTreeGroup(getGroups());
-      }
-    }
+    () => {}
   );
   controller.addEventListener("afterSave", { name: "changeGroupSave.changeGroup" }, function reloadInConsultation() {
-    getGroupTreeSource = initTreeGroup(getGroups());
+    //  TODO
   });
+
+ */
   controller.addEventListener(
     "ready",
     {
       name: "changeGroupReady.changeGroup",
       check: documentObject => {
         const serverData = controller.getCustomServerData();
-        currentDoc = documentObject.id;
         return documentObject.renderMode === "edit" && serverData["GROUP_ANALYZE"];
       }
     },
-    () => {
+    (event, se) => {
       const serverData = controller.getCustomServerData();
-      checkedGroups = serverData.groups;
       let filterTitle = null;
+      let $parentGroupList = $(event.target).find('div[name="parentGroupList"]');
+      let $parentGrouppager = $(event.target).find('div[name="parentGroupPager"]');
+      let $parentGrouptemaplate = $(event.target).find('script[name="parentGroupTemplate"]');
 
-      const updateTreeSource = kendoTree => {
-        return (force = false) => {
-          let groupTreeSource = kendoTree.dataSource;
-          const filter = filterTitle ? { field: "title", operator: "contains", value: filterTitle } : {};
-          if (force) {
-            const newTreeSource = getGroupTreeSource();
-            newTreeSource.read().then(() => {
-              kendoTree.setDataSource(newTreeSource);
-              newTreeSource.filter(filter);
-            });
-          } else {
-            groupTreeSource.filter(filter);
-          }
-        };
-      };
+      initParentGroupList($parentGroupList, $parentGrouppager, $parentGrouptemaplate, se);
 
-      const getChecked = checked => currentEventNode => {
-        return function analyzeChecked(dataSource) {
-          const data = dataSource instanceof kendo.data.HierarchicalDataSource && dataSource.data();
-          if (data === false) {
-            return;
-          }
-          data.forEach(currentNode => {
-            let isChecked = null;
-            if (currentEventNode.accountId === currentNode.accountId) {
-              isChecked = currentEventNode.checked;
-            }
-            if (isChecked === null && currentNode.accountId && currentNode.checked) {
-              isChecked = true;
-            }
-            if (isChecked) {
-              checked[currentNode.accountId] = true;
-            }
-            if (currentNode.children) {
-              analyzeChecked(currentNode.children);
-            }
-          });
-        };
-      };
 
-      let updateListOfGroup;
-      $("#listOfGroups").kendoTreeView({
-        checkboxes: true,
-        dataSource: getGroupTreeSource(),
-        select: event => {
-          event.preventDefault();
-        },
-        template:
-          "<span # if(item.hasChildChecked) {# class='hasChildChecked' #}# data-accountId='#= item.accountId #' data-se-id='#= item.documentId #'>#= item.title # (#= item.nbUser #) </span>",
-        check: function onTreeCheck(event) {
-          const eventNode = this.dataItem(event.node);
-          const checked = {};
-          if (eventNode.documentId !== currentDoc.toString() && !eventNode.id.includes(currentDoc.toString())) {
-            getChecked(checked)(eventNode)(event.sender.dataSource);
-            checkedGroups = checked;
-            controller.addCustomClientData({
-              parentGroups: checkedGroups
-            });
-            updateListOfGroup(true);
-          } else {
-            if (!notified) {
-              $("body").dcpNotification("showError", {
-                title: "Move group",
-                message: "Can't set self or children groups as parent group"
-              });
-              notified = true;
-            }
-            $("#listOfGroups input.k-checkbox[id=_" + eventNode.uid + "]")
-              .prop("checked", false)
-              .trigger("change");
-          }
-          notified = false;
-        }
-      });
-      $("#formFilter").on("submit", event => {
-        event.preventDefault();
-        filterTitle = document.getElementById("filterTree").value
-          ? document.getElementById("filterTree").value.toLowerCase()
-          : "";
-        updateListOfGroup();
-      });
+      let $availableGroupList = $(event.target).find('div[name="availableGroupList"]');
+      let $availableGrouppager = $(event.target).find('div[name="availableGroupPager"]');
+      let $availableGrouptemaplate = $(event.target).find('script[name="availableGroupTemplate"]');
 
-      updateListOfGroup = updateTreeSource($("#listOfGroups").data("kendoTreeView"));
+      initParentGroupList($availableGroupList, $availableGrouppager, $availableGrouptemaplate, se);
+
+
     }
   );
 });

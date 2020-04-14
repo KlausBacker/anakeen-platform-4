@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type,@typescript-eslint/no-explicit-any */
 import AnkPaneSplitter from "@anakeen/internal-components/lib/PaneSplitter";
 import AnkSmartElement from "@anakeen/user-interfaces/components/lib/AnkSmartElement.esm";
 import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
 import { DropdownsInstaller } from "@progress/kendo-dropdowns-vue-wrapper";
 import { GridInstaller } from "@progress/kendo-grid-vue-wrapper";
+import { InputsInstaller } from "@progress/kendo-inputs-vue-wrapper";
 import "@progress/kendo-ui/js/kendo.grid";
 import "@progress/kendo-ui/js/kendo.toolbar";
 import { Component, Vue, Watch } from "vue-property-decorator";
@@ -12,6 +14,7 @@ Vue.use(ButtonsInstaller);
 Vue.use(GridInstaller);
 Vue.use(DropdownsInstaller);
 Vue.use(DataSourceInstaller);
+Vue.use(InputsInstaller);
 declare const $;
 declare const kendo;
 
@@ -106,16 +109,6 @@ export default class AdminCenterAccountController extends Vue {
   public dataDepth = [{ id: 1 }];
   public selectedDepth = 1;
   private smartTriggerActivated = false;
-  private refreshNeeded = false;
-  @Watch("refreshNeeded")
-  public watchRefreshNeeded(value) {
-    if (value) {
-      setTimeout(() => {
-        console.log("NEED REFERSH GROUP GRID");
-      }, 300);
-    }
-    this.refreshNeeded = false;
-  }
 
   @Watch("groupId")
   public watchGroupId(value) {
@@ -161,11 +154,11 @@ export default class AdminCenterAccountController extends Vue {
     return this.openPathIds;
   }
 
-  public parseCreateUser(data) {
+  public parseCreateUser(data): object[] {
     return data.user;
   }
 
-  public parseCreateGroup(data) {
+  public parseCreateGroup(data): object[] {
     return data.group;
   }
 
@@ -195,18 +188,17 @@ export default class AdminCenterAccountController extends Vue {
     });
   }
 
-  public onGroupFilter() {
+  public onGroupFilter(): void {
     this.selectedDepth = this.dataDepth.length;
-    console.log("onGroupFilter");
   }
   public groupRowTemplate = this.generateRowTemplate();
 
-  public generateRowTemplate() {
+  public generateRowTemplate(): object {
     const template =
       '<tr data-uid="#: uid #">' +
       '<td class="grouprow" >' +
       '<div class="groupinfo" style="margin-left: #= data.path.length #rem"' +
-      '#if (data.path.length < (data.currentDepth -1) || data.openPathIds.indexOf(data.pathid+":"+data.accountId) >= 0 || subgroupCount == 0) {# data-expanded="true" #} else {# data-expanded="false" #}# >' +
+      ' #if (data.path.length < (data.currentDepth -1) || data.openPathIds.indexOf(data.pathid+":"+data.accountId) >= 0 || subgroupCount == 0) {# data-expanded="true" #} else {# data-expanded="false" #}# >' +
       '<div class="path"># for (var i = 0; i < data.path.length; i++)  { # &gt;&nbsp; #= (data.path[i]) ## } # </div>' +
       '<div class="groupname"><div class="lastname"><div class="group-expand"  > </div> <span>#: lastname#</span> </div> ' +
       '# if (subgroupCount > 0) { # <div class="account-badge group-count"  > #: subgroupCount# </div> #}#' +
@@ -218,7 +210,7 @@ export default class AdminCenterAccountController extends Vue {
   }
 
   // Display the selected group in the ank-document
-  public updateGroupSelected(selectedGroupId) {
+  public updateGroupSelected(selectedGroupId): void {
     this.selectedGroupLogin = selectedGroupId || this.selectedGroupLogin;
     if (selectedGroupId && selectedGroupId !== "@users") {
       this.selectedGroupDocumentId = selectedGroupId;
@@ -229,7 +221,7 @@ export default class AdminCenterAccountController extends Vue {
   }
 
   // Refresh the with the new selected group
-  public updateGridData(selectedGroupLogin?) {
+  public updateGridData(selectedGroupLogin?): void {
     if (selectedGroupLogin === "@users") {
       this.gridUserContent.filter({});
     } else {
@@ -241,13 +233,15 @@ export default class AdminCenterAccountController extends Vue {
     }
   }
 
-  public viewAllUsers() {
+  public viewAllUsers(): void {
+    const grid = this.$refs.groupGrid.kendoWidget();
     this.groupId = "@users";
     this.updateGridData(this.groupId);
     this.updateGroupSelected(this.groupId);
+    grid.clearSelection();
   }
 
-  public openGroup() {
+  public openGroup(): void {
     this.selectedUser = this.groupId;
     this.$nextTick(() => {
       const openDoc = this.$refs.openDoc;
@@ -260,7 +254,7 @@ export default class AdminCenterAccountController extends Vue {
       }
     });
   }
-  public selectCreateUserConfig(e) {
+  public selectCreateUserConfig(e): void {
     if (e.dataItem.canCreate) {
       this.selectedUser = e.dataItem.id;
       this.$nextTick(() => {
@@ -284,10 +278,21 @@ export default class AdminCenterAccountController extends Vue {
       this.gridGroupContent.page(1);
     });
   }
-  public addClassOnSelectorContainer(e) {
+
+  public selectMaxDepth(e): void {
+    console.log("selectMaxDepth", e);
+    if (e.checked) {
+      this.selectedDepth = this.dataDepth.length;
+    } else {
+      this.selectedDepth = 1;
+    }
+    this.selectDepth();
+  }
+
+  public addClassOnSelectorContainer(e): void {
     e.sender.popup.element.addClass("select-container");
   }
-  public selectCreateGroupConfig(e) {
+  public selectCreateGroupConfig(e): void {
     if (e.dataItem.canCreate) {
       this.selectedUser = e.dataItem.id;
       this.$nextTick(() => {
@@ -306,7 +311,7 @@ export default class AdminCenterAccountController extends Vue {
   }
 
   // Open group selected in group change mode
-  public openChangeGroup() {
+  public openChangeGroup(): void {
     this.selectedUser = this.groupId;
     this.$nextTick(() => {
       const openDoc = this.$refs.openDoc;
@@ -320,32 +325,31 @@ export default class AdminCenterAccountController extends Vue {
   }
 
   // Show users the selected group
-  public onGroupSelect(event) {
+  public onGroupSelect(event): void {
     event.preventDefault();
     const grid = this.$refs.groupGrid.kendoWidget();
     const $tr = event.sender.select();
     const dataItem = grid.dataItem($tr);
-    window.localStorage.setItem("admin.account.groupSelected.id", dataItem.id);
-    this.updateGridData(dataItem.login);
-    this.updateGroupSelected(dataItem.id);
-    this.groupTitle = dataItem.title;
-    this.groupId = dataItem.id;
+    if (dataItem) {
+      window.localStorage.setItem("admin.account.groupSelected.id", dataItem.id);
+      this.updateGridData(dataItem.login);
+      this.updateGroupSelected(dataItem.id);
+      this.groupTitle = dataItem.title;
+      this.groupId = dataItem.id;
+    }
   }
 
-  public refreshData(openDoc) {
+  public refreshData(openDoc): void {
     if (!this.smartTriggerActivated) {
       openDoc.addEventListener("afterSave", () => {
         this.gridUserContent.read();
         this.gridGroupContent.read();
-        this.refreshNeeded = true;
       });
       openDoc.addEventListener("afterDelete", () => {
         this.updateGridData();
         this.gridGroupContent.read();
-        this.refreshNeeded = true;
       });
       this.smartTriggerActivated = true;
-      this.refreshNeeded = false;
     }
   }
 }
