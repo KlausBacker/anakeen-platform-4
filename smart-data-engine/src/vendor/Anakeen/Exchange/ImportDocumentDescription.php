@@ -2203,6 +2203,9 @@ class ImportDocumentDescription
             ));
 
             if ($oattr->isAffected()) {
+                if ($updateMode === false && $modattr) {
+                    $updateMode = true;
+                }
                 // modification of type is forbidden
                 $curType = trim(strtok($oattr->type, '('));
                 $newType = trim(strtok($this->structAttr->type, '('));
