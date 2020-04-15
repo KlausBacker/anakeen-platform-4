@@ -12,7 +12,7 @@
             </button>
 
         </div>
-        <ank-smart-element v-show="!errorMessage" ref="smartElement" @ready="onReady" @displayError="onShowError" @internalComponentError="onShowError" @actionClick="onActionClick" class="smart-element" :initid="initid" :viewId="viewId"></ank-smart-element>
+        <ank-smart-element :auto-unload="false" v-show="!errorMessage" ref="smartElement" @ready="onReady" @displayError="onShowError" @internalComponentError="onShowError" @actionClick="onActionClick" class="smart-element" :initid="initid" :viewId="viewId"></ank-smart-element>
         <div v-show="errorMessage" class="smart-element-error-view">
             <div class="smart-element-error-content">
                 <i class="material-icons smart-element-error-icon">error_outline</i>
@@ -65,7 +65,7 @@
     },
     devCenterRefreshData() {
       if (this.$refs.smartElement) {
-        this.$refs.smartElement.fetchSmartElement(this.$refs.smartElement.getInitialData);
+        this.$refs.smartElement.fetchSmartElement(this.$refs.smartElement.initialData);
       }
     },
     methods: {

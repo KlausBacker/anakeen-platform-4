@@ -38,8 +38,8 @@ export default {
     };
   },
   devCenterRefreshData() {
-    if (this.$refs.fallGrid && this.$refs.fallGrid.dataSource) {
-      this.$refs.fallGrid.dataSource.read();
+    if (this.$refs.fallGrid) {
+      this.$refs.fallGrid.refreshGrid(true);
     }
   },
   mounted() {
