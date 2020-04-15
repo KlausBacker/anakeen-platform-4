@@ -124,7 +124,7 @@
                 </div>
                 <div>Select an user</div>
               </div>
-              <ank-smart-element ref="openDoc" class="open-element-content" />
+              <ank-smart-element ref="openDoc" class="account-element-content" />
             </div>
           </ank-split-panes>
         </section>

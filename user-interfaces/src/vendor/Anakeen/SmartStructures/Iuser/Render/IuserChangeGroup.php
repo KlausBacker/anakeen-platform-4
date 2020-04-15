@@ -4,6 +4,7 @@ namespace Anakeen\SmartStructures\Iuser\Render;
 
 use Anakeen\Routes\Core\Lib\ApiMessage;
 use Anakeen\SmartElementManager;
+use Anakeen\Ui\BarMenu;
 use Anakeen\Ui\DefaultConfigEditRender;
 use Anakeen\Ui\UIGetAssetPath;
 //use \SmartStructure\Fields\Iuser as myAttributes;
@@ -26,6 +27,15 @@ class IuserChangeGroup extends DefaultConfigEditRender
         $data["GROUP_ANALYZE"] = true;
         $data["groups"] = $this->getAllMyGroups($smartElement);
         return $data;
+    }
+
+    public function getMenu(\Anakeen\Core\Internal\SmartElement $document): BarMenu
+    {
+        $menu= parent::getMenu($document);
+
+        $saveItem=$menu->getElement("save");
+        $saveItem->setTextLabel(___("Change parent groups", "iuser"));
+        return $menu;
     }
 
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $smartElement = null)
@@ -55,7 +65,7 @@ class IuserChangeGroup extends DefaultConfigEditRender
         $data = $this->customClientData;
         $msg = parent::getMessages($userAccount);
         if (isset($data["parentGroups"])) {
-            $newGroups = array_keys($data["parentGroups"]);
+            $newGroups = $data["parentGroups"];
             /* @var Iuser $userAccount */
             $account = $userAccount->getAccount();
             $oldGroups = $account->getGroupsId();

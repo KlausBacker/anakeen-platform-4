@@ -2,11 +2,7 @@
 
 namespace Anakeen\SmartStructures\Iuser\Routes;
 
-use Anakeen\Accounts\SearchAccounts;
-use Anakeen\Core\Account;
-use Anakeen\Core\AccountManager;
 use Anakeen\Core\DbManager;
-use Anakeen\Core\SEManager;
 use Anakeen\Exception;
 use Anakeen\SmartElementManager;
 use SmartStructure\Iuser;
@@ -26,68 +22,86 @@ class GroupList
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-
-
         $result = [];
 
         $not = $request->getQueryParam("not");
         $filter = $request->getQueryParam("filter");
         $skip = $request->getQueryParam("skip");
-        $take= $request->getQueryParam("take");
-        $sort = $request->getQueryParam("sort");
+        $take = $request->getQueryParam("take");
+        $addedgroups = $request->getQueryParam("addedGroups");
+        $deletedgroups = $request->getQueryParam("deletedGroups");
 
-        $accountId=$args["accountid"];
+        $accountId = $args["accountid"];
 
-        $smartAccount=SmartElementManager::getDocument($accountId);
+        $smartAccount = SmartElementManager::getDocument($accountId);
         if (!$smartAccount) {
-             throw new Exception(sprintf("Account #%d not found", $args["accountid"]));
+            throw new Exception(sprintf("Account #%d not found", $args["accountid"]));
         }
         /** @var Iuser $smartAccount */
-        $account=$smartAccount->getAccount();
+        $account = $smartAccount->getAccount();
         if (!$account || !$account->isAffected()) {
             throw new Exception(sprintf("System account #%d not found", $args["accountid"]));
         }
 
-        $g=new \Group("", $account->id);
-        $parentGroups=[];
+        $g = new \Group("", $account->id);
+        $parentGroups = [];
         if ($g->getGroups()) {
             $parentGroups = $g->groups;
         }
         $searchAccount = new \Anakeen\Accounts\SearchAccounts();
         $searchAccount->setTypeFilter(\Anakeen\Accounts\SearchAccounts::groupType);
-        if ($not) {
 
-            if ($parentGroups) {
-                $searchAccount->addFilter(sprintf("id not in (%s)", implode(",", $parentGroups)));
-            }
-        } else {
-            if ($parentGroups) {
-                $searchAccount->addFilter(sprintf("id in (%s)", implode(",", $parentGroups)));
-            } else {
-                $searchAccount->addFilter("false");
+        $groupIds = [];
+        $toaddIds = [];
+        $todeleteIds = [];
+        if ($parentGroups) {
+            foreach ($parentGroups as $parentGroup) {
+                $gid = intval($parentGroup);
+                $groupIds[$gid] = $gid;
             }
         }
-        if ($sort) {
-            $sortString = "";
-            foreach ($sort as $currentSort) {
-                $sortString .= $currentSort["field"]." ".$currentSort["dir"]." ";
-            }
-            $searchAccount->setOrder($sortString);
-        }
-
-        if ($filter) {
-            foreach ($filter["filters"] as $currentFilter) {
-                if ($currentFilter["field"] === "group") {
-                    $searchAccount->addGroupFilter($currentFilter["value"]);
-                } else {
-                    $searchAccount->addFilter($currentFilter["field"]." ~* '%s'", preg_quote($currentFilter["value"]));
+        if ($deletedgroups) {
+            foreach ($deletedgroups as $deletedgroup) {
+                $gid = intval($deletedgroup);
+                if (isset($groupIds[$gid])) {
+                    unset($groupIds[$gid]);
+                    $todeleteIds[$gid] = true;
                 }
             }
         }
 
+        if ($addedgroups) {
+            foreach ($addedgroups as $parentGroup) {
+                $gid = intval($parentGroup);
+                if (!isset($groupIds[$gid])) {
+                    $groupIds[$gid] = $gid;
+                    $toaddIds[$gid] = true;
+                }
+            }
+        }
+
+        if ($not) {
+            if ($groupIds) {
+                $searchAccount->addFilter(sprintf("id not in (%s)", implode(",", $groupIds)));
+            }
+        } elseif ($groupIds) {
+            $searchAccount->addFilter(sprintf("id in (%s)", implode(",", $groupIds)));
+        } else {
+            $searchAccount->addFilter("false");
+        }
+
+
+        $searchAccount->setOrder("lastname, login");
+
+
+        if ($filter) {
+
+            $searchAccount->addFilter("lastname ~* '%s'", preg_quote($filter));
+        }
+
         //count max result
         $request = $searchAccount->getQuery();
-        DbManager::query("select count(*) from (".$request.") as nbResult;", $nResult, true, true);
+        DbManager::query("select count(*) from (" . $request . ") as nbResult;", $nResult, true, true);
 
         if ($skip !== null) {
             $searchAccount->setStart($skip);
@@ -99,20 +113,22 @@ class GroupList
 
         foreach ($searchAccount->search() as $currentAccount) {
             /* @var $currentAccount \Anakeen\Core\Account */
-            $result[$currentAccount->id] = [
-                "login"=> $currentAccount->login,
+            $uid = intval($currentAccount->id);
+            $result[$uid] = [
+                "login" => $currentAccount->login,
                 "id" => $currentAccount->fid,
-                "accountId" => $currentAccount->id,
+                "accountId" => $uid,
                 "title" => \DocTitle::getTitle($currentAccount->fid),
-                "mail"=> $currentAccount->mail,
+                "mail" => $currentAccount->mail,
                 "firstname" => $currentAccount->firstname,
-                "lastname" => $currentAccount->lastname
+                "lastname" => $currentAccount->lastname,
+                "tag" => isset($todeleteIds[$uid]) ? "todelete" : (isset($toaddIds[$uid]) ? "toadd" : "")
             ];
         }
 
         return $response->withJson([
-            "total"=> $nResult,
-            "data"=> array_values($result)
+            "total" => $nResult,
+            "data" => array_values($result)
         ]);
     }
 }

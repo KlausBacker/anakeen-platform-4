@@ -227,17 +227,28 @@
     flex: 1;
     overflow: hidden;
   }
+
+  .account-element-content {
+    height: 100%;
+    > .smart-element-wrapper {
+      height: 100%;
+      > .document {
+        height: 100%;
+        > .dcpDocument {
+
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+
+        }
+
+      }
+
+    }
+  }
 }
 
-.open-element-content {
-  height: 100% !important;
-}
 
-.k-treeview .k-in.k-state-selected {
-  border-color: #157efb;
-  background-color: #157efb;
-  color: white;
-}
 
 .k-grid-Consult {
   color: #157efb !important;

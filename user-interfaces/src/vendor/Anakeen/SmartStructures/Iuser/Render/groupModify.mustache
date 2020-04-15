@@ -1,29 +1,29 @@
 <div class="igroup-changegroup">
     <div class="igroup-list igroup-ag">
-        <p>Available groups</p>
+        <h3>Available groups</h3>
         <script type="text/x-kendo-template" name="availableGroupTemplate">
-            <div class="available-group">
+            <div data-id="#:accountId#" class="igroup-item add-group #:tag#">
                 <span>#:lastname#</span>
-                <button data-id="#:accountId#" class="add-group"> &gt;&gt;</button>
+                <button class="btn btn-primary add-group"> &gt;&gt;</button>
             </div>
         </script>
         <form name="availableGroupForm">
-            <input type="text" class="form-control"  name="availableGroupSearch" placeholder="Search..."/>
+            <input type="search" class="form-control"  name="availableGroupSearch" placeholder="Search..."/>
         </form>
         <div name="availableGroupList" data-filter="not"/>
         <div name="availableGroupPager"/>
     </div>
 
     <div class="igroup-list igroup-pg">
-        <p>Parent groups</p>
+        <h3>Parent groups</h3>
         <script type="text/x-kendo-template" name="parentGroupTemplate">
-            <div class="product">
-                <button data-id="#:accountId#" class="delete-group"> &lt;&lt;</button>
+            <div data-id="#:accountId#" class="igroup-item delete-group #:tag#">
+                <button  class="btn btn-primary delete-group"> &lt;&lt;</button>
                 <span>#:lastname#</span>
             </div>
         </script>
         <form name="parentGroupForm">
-            <input type="text" class="form-control"  name="parentGroupSearch" placeholder="Search..."/>
+            <input type="search" class="form-control"  name="parentGroupSearch" placeholder="Search..."/>
         </form>
         <div name="parentGroupList"/>
         <div name="parentGroupPager"/>
