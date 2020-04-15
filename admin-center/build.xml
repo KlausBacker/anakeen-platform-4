@@ -3,6 +3,7 @@
     <module:source path="src" />
     <module:po-config>
         <module:po-js source="src/vendor/Anakeen/**/*js" target="ADMIN_CENTER"/>
+        <module:po-vuejs source="src/vendor/Anakeen/**/*.?(vue|ts)" target="ADMIN_CENTER"/>
     </module:po-config>
     <module:stub-config>
         <module:stub-struct source="src/vendor/Anakeen/AdminCenter/SmartStructures/**/*.xml"/>

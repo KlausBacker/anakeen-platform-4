@@ -1,7 +1,8 @@
 import AnkPaneSplitter from "@anakeen/internal-components/lib/PaneSplitter";
 import SmartElement from "@anakeen/user-interfaces/components/lib/AnkSmartElement.esm";
 import AnkSEVueGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementGrid.esm";
-import { Component, Vue } from "vue-property-decorator";
+import { Component, /*Mixins,*/ Vue } from "vue-property-decorator";
+//import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
 
 @Component({
   components: {
@@ -15,7 +16,7 @@ export default class AdminCenterMailController extends Vue {
   public columns: object[] = [
     { field: "id", property: true, hidden: true, title: "Identification", withContext: false },
     { field: "tmail_title", title: "Title", withContext: false },
-    { field: "tmail_subject", title: "Subject", withContext: false }
+    { field: "tmail_subject", title: `${this.$t("AdminCenterMail.Subject")}`, withContext: false }
   ];
   public selectedMail = "";
 
