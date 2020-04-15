@@ -1,5 +1,6 @@
-import Component from "vue-class-component";
-import { Vue } from "vue-property-decorator";
+//import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
+import { Component, Vue } from "vue-property-decorator";
+
 const parameterEditor = () => import("../ParameterEditor/ParameterEditor.vue");
 
 declare var $;
@@ -57,22 +58,22 @@ export default class GlobalParametersController extends Vue {
   public initTreeList() {
     const toolbarTemplate = `
         <div class="global-parameters-toolbar">
-            <span>&nbspSystem&nbsp</span>
+            <span>&nbsp${this.$t("globalParameter.System")}&nbsp</span>
             <label class="switch">
               <input type="checkbox" class="switch-btn">
               <span class="slider round"></span>
             </label>
-            <span>&nbspUser&nbsp</span>
+            <span>&nbsp${this.$t("globalParameter.User")}&nbsp</span>
             <a class="refresh-btn"></a>
             <a class="expand-btn"></a>
             <a class="collapse-btn"></a>
             <div class="input-group">
                 <input type="text"
                        class="form-control global-search-input"
-                       placeholder="Filter parameters...">
+                       placeholder="${this.$t("globalParameter.Filter parameters")}...">
                 <i class="input-group-addon material-icons reset-search-btn parameter-search-reset">close</i>
                 <div class="input-group-append">
-                    <button class="btn btn-secondary filter-btn">Filter</button>
+                    <button class="btn btn-secondary filter-btn">${this.$t("globalParameter.Filter")}</button>
                 </div>
              </div>
         </div>
@@ -86,26 +87,26 @@ export default class GlobalParametersController extends Vue {
           {
             field: "name",
             headerAttributes,
-            headerTemplate: '<a class="column-title">Name</a>'
+            headerTemplate: `<a class="column-title">${this.$t("globalParameter.Name")}</a>`
           },
           {
             field: "description",
             headerAttributes,
-            headerTemplate: '<a class="column-title">Description</a>'
+            headerTemplate: `<a class="column-title">${this.$t("globalParameter.Description")}</a>`
           },
           {
             field: "value",
             headerAttributes,
-            headerTemplate: '<a class="column-title">System value</a>'
+            headerTemplate: `<a class="column-title">${this.$t("globalParameter.SystemValue")}</a>`
           },
           {
             filterable: false,
             // Add a button only if the parameter is modifiable
             template:
               "# if (!data.rowLevel && !data.isStatic && !data.isReadOnly) { #" +
-              '<a class="edition-btn" title="Edit"></a>' +
+              `<a class="edition-btn" title="${this.$t("globalParameter.Edit")}"></a>` +
               "# } else if (!data.rowLevel) { #" +
-              '<a class="display-btn" title="Show value"></a>' +
+              `<a class="display-btn" title="${this.$t("globalParameter.ShowValue")}"></a>` +
               "# } #",
             width: "6rem"
           }
