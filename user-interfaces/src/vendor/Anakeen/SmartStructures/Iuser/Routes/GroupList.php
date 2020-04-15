@@ -95,7 +95,6 @@ class GroupList
 
 
         if ($filter) {
-
             $searchAccount->addFilter("lastname ~* '%s'", preg_quote($filter));
         }
 
