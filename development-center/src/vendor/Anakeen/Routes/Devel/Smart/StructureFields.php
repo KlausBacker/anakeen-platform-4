@@ -121,7 +121,7 @@ class StructureFields
                 $oa->options = preg_replace("/(relativeOrder=[a-zA-Z0-9_:]+)/", "", $oa->options);
             }
 
-            if (empty($dbAttrs[$oa->id])) {
+            if (empty($dbAttrs[$oa->id]) || $oa->structureId != $family->id) {
                 if ($oa->id === SmartStructure\Attributes::HIDDENFIELD) {
                     continue;
                 }
@@ -143,8 +143,14 @@ class StructureFields
                 $oDocAttr->phpfunc = $oa->phpfunc;
                 $oDocAttr->phpconstraint = $oa->phpconstraint;
 
+                $isCoded = empty($dbAttrs[$oa->id]);
                 $dbAttrs[$oa->id] = $oDocAttr->getValues();
-                $dbAttrs[$oa->id]["declaration"] = "bycode";
+
+                if ($isCoded) {
+                    $dbAttrs[$oa->id]["declaration"] = "bycode";
+                } else {
+                    $dbAttrs[$oa->id]["declaration"] = "static";
+                }
             } else {
                 $dbAttrs[$oa->id]["declaration"] = "static";
                 $currentType = $oa->type;
@@ -196,7 +202,7 @@ class StructureFields
                 $dbAttrs[$oa->id]["displayOrder"] = $relativeOrder++;
             }
             foreach ($dbModAttr as $modAttr) {
-                if ($modAttr["id"] === ":" . $oa->id && $modAttr["docid"] == $oa->structureId) {
+                if ($modAttr["id"] === ":" . $oa->id && $modAttr["docid"] == $family->id) {
                     $dbAttrs[$oa->id]["declaration"] = "overrided";
                     $dbAttrs[$oa->id]["overrides"] = [];
                     $types = [
@@ -331,7 +337,7 @@ class StructureFields
 
             $dbAttr["optionValues"] = SmartStructure\BasicAttribute::optionsToArray($dbAttr["options"] ?: '');
             $dbAttr["structure"] = SEManager::getNameFromId($dbAttr["docid"]);
-            $dbAttr["parentId"] = $dbAttr["frameid"];
+            $dbAttr["parentId"] = $dbAttr["frameid"] ?: null;
 
             if ($dbAttr["properties"] && !is_object($dbAttr["properties"])) {
                 $dbAttr["properties"] = json_decode($dbAttr["properties"], false);
