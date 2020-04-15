@@ -23,8 +23,6 @@
 
     </post-install>
     <post-upgrade>
-        <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/Hub/Accounts/110-HubRoles.xml"/>
-
         <process command="./programs/runMigrationScript.php --file=./vendor/Anakeen/Hub/Migration/resetHubConfigurationField.xml">
             <label>Apply Migrate HubGenericConfiguration Rules</label>
         </process>
