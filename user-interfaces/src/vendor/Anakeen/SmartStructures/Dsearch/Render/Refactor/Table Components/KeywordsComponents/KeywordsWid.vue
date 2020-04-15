@@ -47,7 +47,7 @@ export default {
       this.workflows = [];
       this.dataWorkflow = [];
 
-      $.getJSON("/api/v2/smart-elements/" + this.famid + "/workflows/states/?allStates=1", function requestWorkflows(
+      $.getJSON("/api/v2/smart-elements/" + this.famid + "/workflows/states/?allState=1", function requestWorkflows(
         data
       ) {
         $.each(data.data.states, function eachStatesSReady(key, value) {
