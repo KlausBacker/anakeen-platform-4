@@ -1,19 +1,8 @@
 /* tslint:disable:variable-name */
 import VueI18n from "vue-i18n";
 import { Component, Vue } from "vue-property-decorator";
-import I18nSetup from "./I18nSetup";
-// A mixin to share traductions between components
-Vue.use(VueI18n);
-Vue.use(I18nSetup);
 
-const i18n = new VueI18n({
-  locale: "fr-FR",
-  messages: {}
-});
-
-@Component({
-  i18n
-})
+@Component({})
 export default class AnkVueI18nMixin extends Vue {
   public _i18n: VueI18n;
 
