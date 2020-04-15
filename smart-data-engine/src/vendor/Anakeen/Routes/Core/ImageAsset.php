@@ -78,7 +78,7 @@ class ImageAsset
     {
         $imgDir = sprintf("%s/%s", DEFAULT_PUBDIR, self::CACHEIMGDIR);
         if (!is_dir($imgDir)) {
-            mkdir($imgDir);
+            mkdir($imgDir, 0755, true);
         }
         $basedest = sprintf(
             "%s/%s/Images_%s-%s",
