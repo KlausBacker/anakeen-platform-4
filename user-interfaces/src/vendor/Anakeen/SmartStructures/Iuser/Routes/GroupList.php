@@ -3,6 +3,7 @@
 namespace Anakeen\SmartStructures\Iuser\Routes;
 
 use Anakeen\Core\DbManager;
+use Anakeen\Core\Utils\Postgres;
 use Anakeen\Exception;
 use Anakeen\SmartElementManager;
 use SmartStructure\Iuser;
@@ -118,16 +119,47 @@ class GroupList
                 "id" => $currentAccount->fid,
                 "accountId" => $uid,
                 "title" => \DocTitle::getTitle($currentAccount->fid),
-                "mail" => $currentAccount->mail,
                 "firstname" => $currentAccount->firstname,
                 "lastname" => $currentAccount->lastname,
-                "tag" => isset($todeleteIds[$uid]) ? "todelete" : (isset($toaddIds[$uid]) ? "toadd" : "")
+                "tag" => isset($todeleteIds[$uid]) ? "todelete" : (isset($toaddIds[$uid]) ? "toadd" : ""),
+                "pathes" => []
             ];
         }
+
+        if ($result) {
+            $pathes = $this->getAccountPathes(array_keys($result));
+            foreach ($pathes as $uid => $paths) {
+                $result[$uid]["pathes"] = $paths;
+            }
+        }
+
 
         return $response->withJson([
             "total" => $nResult,
             "data" => array_values($result)
         ]);
+    }
+
+    /**
+     * Request to get all group path for some groups
+     * @param int[] $ids group ids
+     * @return array
+     * @throws \Anakeen\Database\Exception
+     */
+    protected function getAccountPathes($ids)
+    {
+        $sql = sprintf("
+with recursive agroups(gid, logins, aid) as (
+ select idgroup,  ARRAY[]::text[] as c, iduser as aid  from groups,users where iduser in (%s) and users.id=groups.idgroup
+union
+ select idgroup,  users.lastname ||  agroups.logins as c, agroups.aid from groups,users, agroups where groups.iduser = agroups.gid and users.id=groups.iduser
+) select users.lastname || agroups.logins as path, agroups.aid from agroups, users where users.id=agroups.gid and users.accounttype='G' and users.memberof = '{}';
+", implode(",", $ids));
+        DbManager::query($sql, $paths);
+        $accountPathes = [];
+        foreach ($paths as $path) {
+            $accountPathes[intval($path["aid"])][] = Postgres::stringToArray($path["path"]);
+        }
+        return $accountPathes;
     }
 }

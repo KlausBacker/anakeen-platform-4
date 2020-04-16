@@ -3,7 +3,7 @@ import $ from "jquery";
 import "@progress/kendo-ui/js/kendo.data";
 import "@progress/kendo-ui/js/kendo.pager";
 import "@progress/kendo-ui/js/kendo.listview";
-import "./changeGroupView.css";
+import "./changeGroupView.scss";
 
 window.ank.smartElement.globalController.registerFunction("iuserGroup", controller => {
   let addedGroups = [];
@@ -75,6 +75,26 @@ window.ank.smartElement.globalController.registerFunction("iuserGroup", controll
       availableGroupdata.read();
     });
 
+    $list.on("click", ".igroup-item .expand-pathes", function(event) {
+      const $ul = $(event.currentTarget)
+        .parent()
+        .find("ul");
+      const $button = $(event.currentTarget)
+        .parent()
+        .find("button span");
+      event.preventDefault();
+      event.stopPropagation();
+
+      if ($ul.is(":visible")) {
+        $ul.hide();
+        $button.addClass("fa-caret-right");
+        $button.removeClass("fa-caret-down");
+      } else {
+        $ul.show();
+        $button.addClass("fa-caret-down");
+        $button.removeClass("fa-caret-right");
+      }
+    });
     $form.on("submit", event => {
       event.preventDefault();
       filterValue = $(event.target)
@@ -85,60 +105,44 @@ window.ank.smartElement.globalController.registerFunction("iuserGroup", controll
     return dataSource;
   };
 
-  controller.addEventListener(
-    "ready",
-    {
-      name: "changeGroupReady.changeGroup",
-      check: documentObject => {
-        const serverData = controller.getCustomServerData();
-        return documentObject.renderMode === "edit" && serverData["GROUP_ANALYZE"];
-      }
-    },
-    (event, se) => {
-      let $parentGroupList = $(event.target).find('div[name="parentGroupList"]');
-      let $parentGrouppager = $(event.target).find('div[name="parentGroupPager"]');
-      let $parentGrouptemaplate = $(event.target).find('script[name="parentGroupTemplate"]');
-      let $parentGroupform = $(event.target).find('form[name="parentGroupForm"]');
+  controller.addEventListener("ready", {}, (event, se) => {
+    $(event.target)
+      .find(".dcpDocument")
+      .addClass("smart-change-group");
 
-      parentGroupdata = initParentGroupList(
-        $parentGroupList,
-        $parentGrouppager,
-        $parentGrouptemaplate,
-        $parentGroupform,
-        se
-      );
+    let $parentGroupList = $(event.target).find('div[name="parentGroupList"]');
+    let $parentGrouppager = $(event.target).find('div[name="parentGroupPager"]');
+    let $parentGrouptemaplate = $(event.target).find('script[name="parentGroupTemplate"]');
+    let $parentGroupform = $(event.target).find('form[name="parentGroupForm"]');
 
-      let $availableGroupList = $(event.target).find('div[name="availableGroupList"]');
-      let $availableGrouppager = $(event.target).find('div[name="availableGroupPager"]');
-      let $availableGrouptemaplate = $(event.target).find('script[name="availableGroupTemplate"]');
-      let $availableGroupform = $(event.target).find('form[name="availableGroupForm"]');
+    parentGroupdata = initParentGroupList(
+      $parentGroupList,
+      $parentGrouppager,
+      $parentGrouptemaplate,
+      $parentGroupform,
+      se
+    );
 
-      availableGroupdata = initParentGroupList(
-        $availableGroupList,
-        $availableGrouppager,
-        $availableGrouptemaplate,
-        $availableGroupform,
-        se
-      );
+    let $availableGroupList = $(event.target).find('div[name="availableGroupList"]');
+    let $availableGrouppager = $(event.target).find('div[name="availableGroupPager"]');
+    let $availableGrouptemaplate = $(event.target).find('script[name="availableGroupTemplate"]');
+    let $availableGroupform = $(event.target).find('form[name="availableGroupForm"]');
+
+    availableGroupdata = initParentGroupList(
+      $availableGroupList,
+      $availableGrouppager,
+      $availableGrouptemaplate,
+      $availableGroupform,
+      se
+    );
+  });
+
+  controller.addEventListener("beforeSave", {}, (event, se, request, custom) => {
+    const data = parentGroupdata.data();
+    const parentGroups = addedGroups;
+    for (let i = 0; i < data.length; i++) {
+      parentGroups.push(data[i].accountId);
     }
-  );
-
-  controller.addEventListener(
-    "beforeSave",
-    {
-      name: "changeGroupBeforesave.changeGroup",
-      check: documentObject => {
-        const serverData = controller.getCustomServerData();
-        return documentObject.renderMode === "edit" && serverData["GROUP_ANALYZE"];
-      }
-    },
-    (event, se, request, custom) => {
-      const data = parentGroupdata.data();
-      const parentGroups = addedGroups;
-      for (let i = 0; i < data.length; i++) {
-        parentGroups.push(data[i].accountId);
-      }
-      custom.parentGroups = parentGroups;
-    }
-  );
+    custom.parentGroups = parentGroups;
+  });
 });

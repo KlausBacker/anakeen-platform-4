@@ -7,9 +7,9 @@
             View all users
           </kendo-button>
 
-
-          <div class="group-expand"><span>Expand all :</span>  <kendo-switch @change="selectMaxDepth"></kendo-switch></div>
-
+          <div class="group-expand">
+            <span>Expand all :</span> <kendo-switch @change="selectMaxDepth"></kendo-switch>
+          </div>
         </header>
         <kendo-grid
           ref="groupGrid"
@@ -41,13 +41,8 @@
       <div class="admin-account-main-section" splitpanes-size="80">
         <header class="admin-account-header">
           <div class="admin-account-header__content">
-            <kendo-button
-              class="k-primary change-group-btn"
-              :disabled="!this.groupId || this.groupId === '@users'"
-              @click="openChangeGroup"
-            >
-              Move group
-            </kendo-button>
+            <span v-if="selectedGroup" class="group-header">{{ selectedGroup.lastname }} </span>
+            <span v-else class="group-header">All users</span>
             <kendo-datasource
               ref="dataUserElement"
               :transport-read-url="'/api/v2/admin/account/config/'"
@@ -80,7 +75,7 @@
             />
             <kendo-button
               class="k-primary change-group-btn"
-              :disabled="!this.groupId || this.groupId === '@users'"
+              :disabled="!groupId || groupId === '@users'"
               @click="openGroup"
             >
               Group info

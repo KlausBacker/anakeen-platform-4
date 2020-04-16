@@ -101,6 +101,7 @@ export default class AdminCenterAccountController extends Vue {
   public displayGroupDocument = false;
   public selectedGroupDocumentId = false;
   public selectedGroupLogin = "@users";
+  public selectedGroup = null;
   public openPathIds: string[] = [];
   public selectedUser = "";
   public options: object = {};
@@ -116,8 +117,11 @@ export default class AdminCenterAccountController extends Vue {
       const createGrpBtn = this.$refs.groupList.kendoWidget();
       if (value === "@users") {
         createGrpBtn.setOptions({ optionLabel: "Create group" });
+        this.selectedGroup = null;
       } else {
         createGrpBtn.setOptions({ optionLabel: "Create sub group" });
+
+        this.selectedGroup = this.gridGroupContent.get(value);
       }
     }
   }
@@ -308,20 +312,6 @@ export default class AdminCenterAccountController extends Vue {
         }
       });
     }
-  }
-
-  // Open group selected in group change mode
-  public openChangeGroup(): void {
-    this.selectedUser = this.groupId;
-    this.$nextTick(() => {
-      const openDoc = this.$refs.openDoc;
-      if (openDoc) {
-        openDoc.fetchSmartElement({
-          initid: this.groupId,
-          viewId: "changeGroup"
-        });
-      }
-    });
   }
 
   // Show users the selected group

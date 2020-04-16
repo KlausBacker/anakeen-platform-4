@@ -228,6 +228,12 @@
     overflow: hidden;
   }
 
+  .group-header {
+    padding: 0.375rem 2.5rem;
+    font-weight: bold;
+    min-width: 24rem;
+  }
+
   .account-element-content {
     height: 100%;
     > .smart-element-wrapper {
