@@ -334,7 +334,7 @@ export default class BusinessApp extends Vue {
     if (!this.selectedTab || this.selectedTab === "welcome") {
       this.selectedTab = "welcome";
     } else {
-      const match = this.selectedTab.match(/CREATION_([A-Z0-9a-z]+)/);
+      const match = this.selectedTab.match(/CREATION_([A-Z0-9a-z]\w+)/);
       if (match && match.length > 1) {
         this.addTab({
           closable: true,
