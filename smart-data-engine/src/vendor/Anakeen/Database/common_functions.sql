@@ -312,8 +312,6 @@ return NEW;
 end;
 ' language 'plpgsql';
 
-create or replace FUNCTION updatevector(int) RETURNS void LANGUAGE sql AS
-  'update docread set fulltext=setweight(to_tsvector(title), ''A'')|| to_tsvector(values) where id=$1;';
 
 
 create or replace function droptrigger(name) 
