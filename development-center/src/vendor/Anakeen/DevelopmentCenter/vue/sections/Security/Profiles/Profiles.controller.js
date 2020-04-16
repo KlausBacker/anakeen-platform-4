@@ -36,8 +36,8 @@ export default {
     };
   },
   devCenterRefreshData() {
-    if (this.$refs.profilesGrid && this.$refs.profilesGrid.dataSource) {
-      this.$refs.profilesGrid.dataSource.read();
+    if (this.$refs.profilesGrid) {
+      this.$refs.profilesGrid.refreshGrid(true);
     }
   },
   mounted() {
