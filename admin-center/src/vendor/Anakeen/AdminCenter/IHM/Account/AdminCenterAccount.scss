@@ -35,6 +35,10 @@
       flex-direction: column;
       height: 100%;
 
+      .k-grid-content {
+        overflow:auto;
+      }
+
       .admin-account-group-header {
         display: flex;
         flex-basis: 3rem;
@@ -104,6 +108,7 @@
             content: "add_box";
             font-size: 1.5rem;
             vertical-align: middle;
+            display: inline-block;
 
 
 
