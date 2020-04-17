@@ -1,0 +1,6 @@
+/*#Set the rules to be at 100%*/
+
+body > .smart-element > .smart-element-wrapper > .document > .dcpDocument {
+    width: 100vw;
+    height: 100vh;
+}
