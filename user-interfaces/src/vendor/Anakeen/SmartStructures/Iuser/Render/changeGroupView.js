@@ -38,7 +38,7 @@ window.ank.smartElement.globalController.registerFunction("iuserGroup", controll
           }
         }
       },
-      pageSize: 200
+      pageSize: 100
     });
 
     $pager.kendoPager({

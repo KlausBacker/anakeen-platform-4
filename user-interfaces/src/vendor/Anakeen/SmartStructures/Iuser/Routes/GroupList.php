@@ -148,18 +148,34 @@ class GroupList
      */
     protected function getAccountPathes($ids)
     {
-        $sql = sprintf("
+        $sql = sprintf(
+            "
 with recursive agroups(gid, logins, aid) as (
  select idgroup,  ARRAY[]::text[] as c, iduser as aid  from groups,users where iduser in (%s) and users.id=groups.idgroup
 union
  select idgroup,  users.lastname ||  agroups.logins as c, agroups.aid from groups,users, agroups where groups.iduser = agroups.gid and users.id=groups.iduser
-) select users.lastname || agroups.logins as path, agroups.aid from agroups, users where users.id=agroups.gid and users.accounttype='G' and users.memberof = '{}';
-", implode(",", $ids));
+) select users.lastname || agroups.logins as path, agroups.aid from agroups, users where users.id=agroups.gid and users.accounttype='G' and users.id in (%s);
+",
+            implode(",", $ids),
+            implode(",", $this->getTopGroupIds())
+        );
         DbManager::query($sql, $paths);
         $accountPathes = [];
         foreach ($paths as $path) {
             $accountPathes[intval($path["aid"])][] = Postgres::stringToArray($path["path"]);
         }
         return $accountPathes;
+    }
+
+    protected function getTopGroupIds()
+    {
+        DbManager::query(
+            "select id " .
+            " from users where accounttype='G' and id not in " .
+            "(select iduser from users gu, users uu, groups where idgroup=gu.id and iduser=uu.id and uu.accounttype='G' and gu.accounttype='G');",
+            $topGroupIds,
+            true
+        );
+        return $topGroupIds;
     }
 }
