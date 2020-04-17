@@ -54,10 +54,15 @@
       flex: 1;
       ul {
         display:none;
-        font-style: italic;
         li:first-child {
           list-style: none;
         font-style: normal;
+        }
+        li > i {
+          white-space: nowrap;
+          &:after {
+            content: " > ";
+          }
         }
       }
 

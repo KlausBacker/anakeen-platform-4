@@ -54,11 +54,12 @@ window.ank.smartElement.globalController.registerFunction("iuserGroup", controll
 
     $list.on("click", ".igroup-item.delete-group", function() {
       const id = $(this).data("id");
-      deletedGroups.push(id);
 
       const pos = addedGroups.indexOf(id);
       if (pos >= 0) {
         addedGroups.splice(pos, 1);
+      } else {
+        deletedGroups.push(id);
       }
 
       parentGroupdata.read();
@@ -66,10 +67,11 @@ window.ank.smartElement.globalController.registerFunction("iuserGroup", controll
     });
     $list.on("click", ".igroup-item.add-group", function() {
       const id = $(this).data("id");
-      addedGroups.push(id);
       const pos = deletedGroups.indexOf(id);
       if (pos >= 0) {
         deletedGroups.splice(pos, 1);
+      } else {
+        addedGroups.push(id);
       }
       parentGroupdata.read();
       availableGroupdata.read();
@@ -109,6 +111,11 @@ window.ank.smartElement.globalController.registerFunction("iuserGroup", controll
     $(event.target)
       .find(".dcpDocument")
       .addClass("smart-change-group");
+
+    addedGroups = [];
+    deletedGroups = [];
+    parentGroupdata = null;
+    availableGroupdata = null;
 
     let $parentGroupList = $(event.target).find('div[name="parentGroupList"]');
     let $parentGrouppager = $(event.target).find('div[name="parentGroupPager"]');
