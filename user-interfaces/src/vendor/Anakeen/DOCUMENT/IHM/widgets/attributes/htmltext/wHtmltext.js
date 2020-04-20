@@ -1,6 +1,7 @@
 import $ from "jquery";
 import _ from "underscore";
 import "../text/wText";
+import l from "little-loader";
 
 $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
   options: {
@@ -28,46 +29,55 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
       this.popupWindows = {};
 
       if (this.getMode() === "write") {
-        import("../../../../../../../../webpackConfig/ckeditor/ckeditor" /* webpackChunkName: "ckeditor" */)
-          .then(ckeditorPromise => {
-            return ckeditorPromise.default.then(() => {
-              if (!window.dcp || !window.dcp.ckEditorCustoCSS) {
-                return fetch("/Anakeen/manifest/theme/prod.json").then(function(response) {
-                  window.dcp.ckEditorCustoCSS = response.json();
-                  return window.dcp.ckEditorCustoCSS;
-                });
+        const loadCKEditor = () => {
+          var options = _.extend(currentWidget.ckOptions(), currentWidget.options.renderOptions.ckEditorConfiguration);
+          bind_super();
+          if (currentWidget.options.renderOptions.ckEditorAllowAllTags) {
+            // Allow all HTML tags
+            options.allowedContent = {
+              $1: {
+                // Use the ability to specify elements as an object.
+                elements: window.CKEDITOR.dtd,
+                attributes: true,
+                styles: true,
+                classes: true
               }
-              return Promise.resolve(window.dcp.ckEditorCustoCSS);
-            });
-          })
-          .then(cssPath => {
-            var options = _.extend(
-              currentWidget.ckOptions(cssPath),
-              currentWidget.options.renderOptions.ckEditorConfiguration
-            );
-            bind_super();
-            if (currentWidget.options.renderOptions.ckEditorAllowAllTags) {
-              // Allow all HTML tags
-              options.allowedContent = {
-                $1: {
-                  // Use the ability to specify elements as an object.
-                  elements: window.CKEDITOR.dtd,
-                  attributes: true,
-                  styles: true,
-                  classes: true
-                }
-              };
-              options.disallowedContent = "script; *[on*]";
-            }
+            };
+            options.disallowedContent = "script; *[on*]";
+          }
+          currentWidget.ckEditorInstance = window.CKEDITOR.replace(currentWidget.getContentElements()[0], options);
+          currentWidget.options.attributeValue.value = currentWidget.ckEditorInstance.getData();
+          bindInitEvent();
+        };
 
-            currentWidget.ckEditorInstance = currentWidget.getContentElements().ckeditor(options).editor;
-            currentWidget.options.attributeValue.value = currentWidget.ckEditorInstance.getData();
-            bindInitEvent();
-          })
-          .catch(error => {
-            console.error(error);
-            currentWidget._trigger("displayNetworkError");
+        const loadCKJS = () => {
+          if (!window.ank) {
+            window.ank = {};
+          }
+          window.ank.ckeditorPromise = new Promise((resolve, reject) => {
+            l(`/uiAssets/externals/ckeditor/ckeditor.js?${_.uniqueId("loadingCK")}`, error => {
+              if (error) {
+                console.error(error);
+                reject(error);
+                currentWidget._trigger("displayNetworkError");
+                return;
+              }
+              resolve();
+              loadCKEditor();
+            });
           });
+        };
+
+        //CKEDITOR is already is the current env
+        if (window.CKEDITOR) {
+          return loadCKEditor();
+        }
+        //CKEDITOR is already in loading
+        if (window.ank && window.ank.ckeditorPromise) {
+          return window.ank.ckeditorPromise.then(loadCKEditor).catch(loadCKJS);
+        }
+        //Import ckeditor
+        loadCKJS();
       } else {
         bind_super();
       }
@@ -84,7 +94,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
    * Define option set for ckEditor widget
    * @returns {{language: string, contentsCss: string[], removePlugins: string, toolbarCanCollapse: boolean, entities: boolean, filebrowserImageBrowseUrl: string, filebrowserImageUploadUrl: string, toolbar_Full: *[], toolbar_Default: *[], toolbar_Simple: *[], toolbar_Basic: *[], removeButtons: string}}
    */
-  ckOptions: function wHtmlTextCkOptions(cssPath) {
+  ckOptions: function wHtmlTextCkOptions() {
     var locale = this.options.locale;
     if (this.options.renderOptions.toolbar) {
       this.options.renderOptions.ckEditorConfiguration.toolbar = this.options.renderOptions.toolbar;
@@ -97,7 +107,6 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
     }
     return {
       language: locale.substring(0, 2),
-      contentsCss: [cssPath],
       removePlugins: "elementspath", // no see HTML path elements
       extraPlugins:
         "a11yhelp,about,basicstyles,blockquote,clipboard,colorbutton,contextmenu,divarea,elementspath,enterkey,entities,filebrowser,floatingspace,font,format,horizontalrule,htmlwriter,image,indentlist,justify,link,list,magicline,maximize,pastefromword,pastetext,removeformat,resize,scayt,showborders,sourcearea,sourcedialog,specialchar,stylescombo,tab,table,tabletools,toolbar,undo,wsc,wysiwygarea",
@@ -420,7 +429,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
       if (originalValue.trim() != value.value.trim()) {
         // Modify value only if different
 
-        this.getContentElements().val(value.value);
+        this.ckEditorInstance.setData(value.value);
       }
     } else if (this.getMode() === "read") {
       this.getContentElements().html(value.displayValue);
