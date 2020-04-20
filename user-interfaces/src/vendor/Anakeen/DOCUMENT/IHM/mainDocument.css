@@ -1,6 +1,22 @@
 /*#Set the rules to be at 100%*/
 
-body > .smart-element > .smart-element-wrapper > .document > .dcpDocument {
-    width: 100vw;
+html, body {
+    margin: 0;
     height: 100vh;
+}
+
+body > .smart-element {
+    height: 100%;
+}
+
+body > .smart-element > .smart-element-wrapper {
+    height: 100%;
+}
+
+body > .smart-element > .smart-element-wrapper > .document {
+    height: 100%;
+}
+
+body > .smart-element > .smart-element-wrapper > .document > .dcpDocument {
+    height: 100%;
 }
