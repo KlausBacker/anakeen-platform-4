@@ -149,7 +149,6 @@ export default {
         },
         parentValue: event.parentValue
       });
-      this.checkValidity();
     },
     clearKeysValue: function() {
       this.$emit("valueChange", {
@@ -206,6 +205,16 @@ export default {
       }
     }
   },
+  mounted() {
+    this.controllerProxy("addEventListener", "beforeSave", event => {
+      if (!this.checkValidity()) {
+        event.preventDefault();
+      }
+    });
+    this.controllerProxy("addEventListener", "ready", () => {
+      this.checkValidity();
+    });
+  },
   watch: {
     field: function(newValue) {
       if (newValue) {
@@ -215,7 +224,6 @@ export default {
         } else {
           this.fieldType = "default";
         }
-        this.$nextTick(this.checkValidity);
       }
       if (this.initialFieldType === null) {
         this.initialFieldType = this.fieldType;
@@ -225,12 +233,8 @@ export default {
     shouldBeDisplayed: function(newValue) {
       if (!newValue) {
         this.clearKeysValue();
-        this.$nextTick(this.checkValidity);
       }
     },
-    operator: function(newValue) {
-      this.$nextTick(this.checkValidity);
-    }
   }
 };
 </script>

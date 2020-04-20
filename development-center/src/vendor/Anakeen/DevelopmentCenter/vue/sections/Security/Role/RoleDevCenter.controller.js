@@ -49,8 +49,8 @@ export default {
     this.initFilters(window.location.search);
   },
   devCenterRefreshData() {
-    if (this.$refs.roleContent && this.$refs.roleContent.dataSource) {
-      this.$refs.roleContent.dataSource.read();
+    if (this.$refs.roleContent) {
+      this.$refs.roleContent.refreshGrid(true);
     }
   },
   methods: {

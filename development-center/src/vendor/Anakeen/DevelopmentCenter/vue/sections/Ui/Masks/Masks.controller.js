@@ -43,7 +43,7 @@ export default {
   },
   devCenterRefreshData() {
     if (this.$refs.masksGrid) {
-      this.$refs.masksGrid._loadGridContent();
+      this.$refs.masksGrid.refreshGrid(true);
     }
   },
   methods: {

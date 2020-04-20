@@ -1,6 +1,6 @@
 <template>
   <div class="condition-table-functions" :class="name" v-show="field">
-    <div class="condition-table-functions-dropdown-wrapper" ref="functionsWrapper" ></div>
+    <div class="condition-table-functions-dropdown-wrapper" ref="functionsWrapper"></div>
   </div>
 </template>
 <script>
@@ -64,29 +64,31 @@ export default {
       let that = this;
       if (this.field) {
         $.each(that.allOperators, function eachDataInitOperators(key, value) {
-          let myObject;
-          const type = that.field.type;
-          if (value.compatibleTypes === null) {
-            myObject = {
-              opId: value.id,
-              opTitle: value.title
-            };
-            if (value.typedTitle[type] !== undefined) {
-              myObject.opTitle = value.typedTitle[type];
+          if (value.id !== "><") {
+            let myObject;
+            const type = that.field.type;
+            if (value.compatibleTypes === null) {
+              myObject = {
+                opId: value.id,
+                opTitle: value.title
+              };
+              if (value.typedTitle[type] !== undefined) {
+                myObject.opTitle = value.typedTitle[type];
+              }
+              that.operators.push(myObject);
+            } else if (
+              //check if the type is compatible with the operator
+              value.compatibleTypes.indexOf(type) !== -1
+            ) {
+              myObject = {
+                opId: value.id,
+                opTitle: value.title
+              };
+              if (value.typedTitle[type] !== undefined) {
+                myObject.opTitle = value.typedTitle[type];
+              }
+              that.operators.push(myObject);
             }
-            that.operators.push(myObject);
-          } else if (
-            //check if the type is compatible with the operator
-            value.compatibleTypes.indexOf(type) !== -1
-          ) {
-            myObject = {
-              opId: value.id,
-              opTitle: value.title
-            };
-            if (value.typedTitle[type] !== undefined) {
-              myObject.opTitle = value.typedTitle[type];
-            }
-            that.operators.push(myObject);
           }
         });
       }
@@ -121,8 +123,7 @@ export default {
 };
 </script>
 <style>
-  .condition-table-functions-dropdown-wrapper {
-    width: 100%;
-  }
-
+.condition-table-functions-dropdown-wrapper {
+  width: 100%;
+}
 </style>

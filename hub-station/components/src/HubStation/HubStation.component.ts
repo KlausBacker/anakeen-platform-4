@@ -427,7 +427,7 @@ class HubStation extends Mixins(AnkI18NMixin) {
               handler: () => {
                 this.activeRoute = cfg.entryOptions.route;
               },
-              pattern: new RegExp(`^/${cfg.entryOptions.route}(?:/.*)?$`)
+              pattern: new RegExp(`^(?:/)?${cfg.entryOptions.route}(?:/.*)?$`)
             });
           }
         }

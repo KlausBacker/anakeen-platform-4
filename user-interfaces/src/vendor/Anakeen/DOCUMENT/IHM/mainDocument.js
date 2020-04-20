@@ -4,6 +4,7 @@
 import $ from "jquery";
 
 import globalController from "./widgets/globalController/index";
+import "./mainDocument.css";
 
 globalController.then(() => {
   return import(

@@ -75,8 +75,8 @@ export default {
     };
   },
   devCenterRefreshData() {
-    if (this.$refs.grid && this.$refs.grid.dataSource) {
-      this.$refs.grid.dataSource.read();
+    if (this.$refs.grid) {
+      this.$refs.grid.refreshGrid(true);
     }
   },
   mounted() {

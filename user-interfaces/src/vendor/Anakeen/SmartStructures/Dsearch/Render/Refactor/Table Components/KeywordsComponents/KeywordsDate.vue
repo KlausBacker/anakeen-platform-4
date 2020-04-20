@@ -171,7 +171,9 @@ export default {
 .condition-table-keywords-date-group {
   width: 100%;
 }
-
+.condition-table-keywords-date-picker {
+  width: 100%;
+}
 .condition-table-keywords-date-datepicker {
   display: flex;
   width: 100%;
