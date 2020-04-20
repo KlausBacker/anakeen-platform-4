@@ -20,7 +20,7 @@ export default class SmartStructureManagerParametersController extends Vue {
     type: String
   })
   public ssName;
-  public haveParameters: boolean = false;
+  public haveParameters = false;
   public smartForm: object = {};
   public unsupportedType = ["frame", "tab"];
   public $refs!: {
@@ -30,6 +30,7 @@ export default class SmartStructureManagerParametersController extends Vue {
   public smartFormArrayValues = {};
   public paramValues = [];
   public finalData = {};
+  public paramData = [];
 
   @Watch("ssName")
   public watchSsName(newValue) {
@@ -43,11 +44,38 @@ export default class SmartStructureManagerParametersController extends Vue {
     }
   }
   get generateSmartForm() {
-    let parametersStructure = [];
-    let values = {};
-    let parametersRenderOptions = {};
+    const parametersStructure = [];
+    const values = {};
+    const parametersRenderOptions = {
+      types: {
+        enum: {
+          useSourceUri: true
+        }
+      }
+    };
+    const structureFields = [];
     // Generate dynamic smartform content
-    if (this.paramValues.length) {
+    console.log("form", this.paramData);
+    for (let i = 0; i < this.paramData.length; i++) {
+      const fieldId = this.paramData[i].id;
+      const field = this.paramData[i];
+
+      console.log("Try root ", field.id);
+
+      if (field.fieldSet.fieldSet && !this.existsField(field.fieldSet.fieldSet, structureFields)) {
+        console.log("appped 2 ", field.fieldSet.fieldSet.id);
+        this.appendField(field.fieldSet.fieldSet, structureFields);
+      }
+      if (!this.existsField(field.fieldSet, structureFields)) {
+        console.log("appped 1 ", field.fieldSet.id);
+        this.appendField(field.fieldSet, structureFields);
+      }
+      this.appendField(field, structureFields);
+    }
+
+    console.log("struct", structureFields);
+
+    if (false) {
       this.paramValues.forEach(parameter => {
         // Manage SmartForm values
         values[parameter.parameterId + "-result"] = "<ul>";
@@ -92,54 +120,57 @@ export default class SmartStructureManagerParametersController extends Vue {
           }
         }
         // Generate SmartForm structure
-        parametersStructure.push({
+
+        console.log(parameter);
+
+        /*parametersStructure.push({
           content: [
             {
               enumItems: [
                 {
                   key: "inherited",
-                  label: this.$t("AdminCenterSmartStructure.Inherited")
+                  label: "Inherited"
                 },
                 {
                   key: "value",
-                  label: this.$t("AdminCenterSmartStructure.Value")
+                  label: "Value"
                 },
                 {
                   key: "advanced_value",
-                  label: this.$t("AdminCenterSmartStructure.Advanced Value")
+                  label: "Advanced Value"
                 },
                 {
                   key: "no_value",
-                  label: this.$t("AdminCenterSmartStructure.Erase field")
+                  label: "Erase field"
                 }
               ],
-              label: this.$t("AdminCenterSmartStructure.Type"),
+              label: "Type",
               name: `${parameter.parameterId}-type`,
               type: "enum"
             },
             {
               display: "read",
-              label: this.$t("AdminCenterSmartStructure.Inherited"),
+              label: "Inherited",
               name: `${parameter.parameterId}-inherited_value`,
               type: "text"
             },
             {
               content: this.smartFormArrayStructure[parameter.parameterId],
               enumItems: parameter.enumData,
-              label: this.$t("AdminCenterSmartStructure.Value"),
+              label: "Value",
               name: `${parameter.parameterId}-value`,
               type: parameter.type,
               typeFormat: parameter.typeFormat,
               multiple: parameter.isMultiple
             },
             {
-              label: this.$t("AdminCenterSmartStructure.Advanced value"),
+              label: "Advanced value",
               name: `${parameter.parameterId}-advanced_value`,
               type: "longtext"
             },
             {
               display: "read",
-              label: this.$t("AdminCenterSmartStructure.Result"),
+              label: "Result",
               name: `${parameter.parameterId}-result`,
               type: "htmltext"
             }
@@ -147,9 +178,9 @@ export default class SmartStructureManagerParametersController extends Vue {
           label: parameter.label,
           name: `${parameter.parameterId}`,
           type: "frame"
-        });
+        });*/
 
-        if (!["array", "htmltext"].includes(parameter.type)) {
+        /* if (!["array", "htmltext"].includes(parameter.type)) {
           parametersRenderOptions[parameter.parameterId] = {
             responsiveColumns: [
               {
@@ -159,7 +190,7 @@ export default class SmartStructureManagerParametersController extends Vue {
               }
             ]
           };
-        }
+        }*/
       });
     }
     return {
@@ -177,41 +208,22 @@ export default class SmartStructureManagerParametersController extends Vue {
           visibility: "visible"
         }
       ],
-      structure: parametersStructure,
-      title: this.$t("AdminCenterSmartStructure.Parameters edition"),
-      renderOptions: {
-        fields: parametersRenderOptions
-      },
+      structure: structureFields,
+      title: "Parameters edition",
+      renderOptions: parametersRenderOptions,
       values: values
     };
   }
+
   public mounted() {
-    this.$refs.parametersGridData.kendoDataSource.read();
+    this.getParameters();
   }
-  public ssmFormReady() {
-    if (this.paramValues) {
-      this.paramValues.forEach(parameter => {
-        // Prepare finalData model
-        this.finalData[parameter.parameterId] = {
-          parameterId: parameter.parameterId,
-          structureId: this.ssName,
-          value: parameter.rawValue,
-          valueType: this.$refs.ssmForm.getValue(`${parameter.parameterId}-type`).value
-        };
-        // If param is array's child
-        if (Object.keys(this.smartFormArrayStructure).includes(parameter.parameterId)) {
-          this.finalData[parameter.parameterId].value = this.initArrayData(parameter.parameterId);
-        }
-        // Manage which field to show/hide
-        this.manageHiddenFields(parameter);
-      });
-    }
-  }
+  public ssmFormReady() {}
   public initArrayData(arrayParamId) {
     const children = this.smartFormArrayStructure[arrayParamId].map(child => child.label);
     const colCount = children.length;
     const rowCount = this.smartFormArrayValues[children[0]].length;
-    let finalValue = [];
+    const finalValue = [];
 
     for (let i = 0; i < rowCount; i++) {
       finalValue[i] = [];
@@ -297,7 +309,7 @@ export default class SmartStructureManagerParametersController extends Vue {
         } else if (smartField.id.includes("-value")) {
           const paramInitValues = this.paramValues.find(param => param.parameterId === paramField);
           if (paramInitValues.isMultiple === true) {
-            let multipleValue = [];
+            const multipleValue = [];
             values.current.forEach(value => {
               multipleValue.push(value.value);
             });
@@ -315,7 +327,7 @@ export default class SmartStructureManagerParametersController extends Vue {
   }
   public ssmArrayChange(e, smartElement, smartField, type, options) {
     if (type === "removeLine") {
-      let columns = [];
+      const columns = [];
       // Get column's name
       Object.values(this.smartFormArrayStructure).forEach(values => {
         Object.values(values).forEach(element => {
@@ -334,7 +346,7 @@ export default class SmartStructureManagerParametersController extends Vue {
     let actualValue;
     let numberOfLine;
     let arrayFieldToUpdate = null;
-    let formattedValues = [];
+    const formattedValues = [];
     // Find parent array field
     Object.keys(this.smartFormArrayStructure).forEach(parentParamField => {
       if (arrayFieldToUpdate === null) {
@@ -375,11 +387,32 @@ export default class SmartStructureManagerParametersController extends Vue {
 
     this.finalData[arrayFieldToUpdate].value = JSON.parse(JSON.stringify(actualValue));
   }
-  public formClickMenu(e, se, params) {
-    if (params.eventId === "document.save") {
-      this.updateData(this.finalData);
-    }
+  public onSave(event, smartElement, requestOptions, customData) {
+    const url = `/api/v2/admin/smart-structures/${this.ssName}/update/parameter/`;
+    const systemData = requestOptions.getRequestData();
+
+    const fieldValues = systemData.document.attributes;
+
+    console.log(systemData);
+    const updatedData = [];
+    Object.keys(fieldValues).forEach(fieldId => {
+      updatedData.push({
+        fieldId: fieldId,
+        fieldValue: fieldValues[fieldId]
+      });
+    });
+
+    console.log(updatedData);
+    this.$http
+      .put(url, { params: updatedData })
+      .then(response => {
+        console.log("need relaod");
+      })
+      .catch(response => {
+        console.error("UpdateDataResError", response);
+      });
   }
+
   public displayData(colId) {
     return dataItem => {
       switch (colId) {
@@ -420,164 +453,6 @@ export default class SmartStructureManagerParametersController extends Vue {
     }
     return `<ul>${str}</ul>`;
   }
-  protected parseParametersData(response) {
-    const result = [];
-    if (response && response.data && response.data.data) {
-      const paramsValues = response.data.data.paramsValues;
-      const paramsFields = response.data.data.params;
-      Object.keys(paramsValues).map(item => {
-        const paramVal = paramsValues[item];
-        const param = paramsFields[item];
-        const parentField = param.fieldSet;
-        if (!this.unsupportedType.includes(param.type)) {
-          if (param) {
-            const configParam = paramVal.configurationParameter;
-            const resultParam = paramVal.result;
-            const type = param.type;
-            const typeFormat = param.format;
-            let isAdvancedValue = false;
-            let isMultiple = false;
-            let rawValue;
-            let displayValue;
-            let url = null;
-            let enumData = [];
-
-            if (param.hasOwnProperty("options") && param.options.includes("multiple=yes")) {
-              isMultiple = true;
-            }
-            if (parentField.type === "array") {
-              const parentConfigParam = paramsValues[parentField.id].configurationParameter;
-              this.prepareSmartFormArray(paramVal, param, parentField.id, parentConfigParam);
-            } else {
-              if (Array.isArray(configParam)) {
-                rawValue = [];
-                displayValue = [];
-                url = [];
-
-                if (isMultiple === true) {
-                  resultParam.forEach(actualResultValue => {
-                    if (typeof actualResultValue === "object") {
-                      if (actualResultValue.displayValue && actualResultValue.value) {
-                        if (actualResultValue.hasOwnProperty("displayValue"))
-                          displayValue.push(actualResultValue.displayValue);
-                        if (actualResultValue.hasOwnProperty("value")) rawValue.push(actualResultValue.value);
-                        if (actualResultValue.hasOwnProperty("url")) url.push(actualResultValue.url);
-                      } else {
-                        displayValue.push(null);
-                        rawValue.push(null);
-                      }
-                    } else {
-                      rawValue.push(actualResultValue);
-                      displayValue.push(actualResultValue);
-                    }
-                  });
-                } else if (type !== "array") {
-                  configParam.forEach(actualConfigValue => {
-                    if (typeof actualConfigValue === "object") {
-                      if (actualConfigValue.displayValue && actualConfigValue.rawValue) {
-                        displayValue = actualConfigValue.displayValue;
-                        rawValue = actualConfigValue.rawValue;
-                      } else {
-                        displayValue = null;
-                        rawValue = null;
-                      }
-                    } else {
-                      rawValue = actualConfigValue;
-                      displayValue = actualConfigValue;
-                    }
-                  });
-                }
-              } else if (configParam instanceof Object) {
-                if (resultParam.value && resultParam.displayValue) {
-                  if (configParam && typeof configParam !== "undefined" && configParam != resultParam.value) {
-                    rawValue = configParam;
-                  } else {
-                    rawValue = resultParam.value;
-                  }
-                  displayValue = resultParam.displayValue;
-                } else if (Array.isArray(resultParam) && resultParam[0].value && resultParam[0].displayValue) {
-                  resultParam.forEach(singleResult => {});
-
-                  rawValue = resultParam[0].value;
-                  displayValue = resultParam[0].displayValue;
-                } else {
-                  if (configParam && configParam.rawValue && configParam.displayValue) {
-                    rawValue = configParam.rawValue;
-                    displayValue = configParam.displayValue;
-                  } else {
-                    rawValue = configParam;
-                    displayValue = configParam;
-                  }
-                }
-              } else {
-                if (configParam !== null) {
-                  rawValue = configParam;
-                  if (Array.isArray(resultParam)) {
-                    displayValue = [];
-                    resultParam.forEach(defValElem => {
-                      if (defValElem && defValElem.value && defValElem.displayValue) {
-                        if (defValElem.displayValue == configParam) {
-                          rawValue = defValElem.value;
-                          displayValue = defValElem.displayValue;
-                        } else if (defValElem.value == configParam) {
-                          displayValue = defValElem.displayValue;
-                        } else {
-                          displayValue = configParam;
-                        }
-                      }
-                    });
-                  } else if (resultParam && resultParam.displayValue) {
-                    displayValue = resultParam.displayValue;
-                  } else {
-                    displayValue = configParam;
-                  }
-                } else {
-                  if (
-                    resultParam &&
-                    resultParam.hasOwnProperty("displayValue") &&
-                    resultParam.hasOwnProperty("value")
-                  ) {
-                    rawValue = resultParam.value;
-                    displayValue = resultParam.displayValue;
-                  } else {
-                    rawValue = null;
-                    displayValue = null;
-                  }
-                }
-              }
-
-              if (rawValue && typeof rawValue === "string" && rawValue.includes("::")) {
-                displayValue = resultParam;
-                isAdvancedValue = true;
-              }
-
-              if (type === "enum") {
-                enumData = this.getEnum(typeFormat);
-              }
-              result.push({
-                displayValue,
-                label: param.labelText,
-                parameterId: item,
-                parentValue: paramsValues[item].parentConfigurationValue
-                  ? paramsValues[item].parentConfigurationValue
-                  : null,
-                rawValue,
-                url,
-                type,
-                typeFormat,
-                enumData,
-                isAdvancedValue,
-                isMultiple
-              });
-            }
-          }
-        }
-      });
-      this.paramValues = result;
-      return result;
-    }
-    return [];
-  }
   protected prepareSmartFormArray(paramVal, field, parentId, parentConfigParam) {
     // Prepare data and structure
     const column = {
@@ -588,7 +463,7 @@ export default class SmartStructureManagerParametersController extends Vue {
       typeFormat: field.format
     };
     const values = {};
-    let finalConfigValue = [];
+    const finalConfigValue = [];
     // Define array if not already done
     if (!this.smartFormArrayStructure[parentId]) {
       this.smartFormArrayStructure[parentId] = [];
@@ -608,7 +483,7 @@ export default class SmartStructureManagerParametersController extends Vue {
 
     if (parentConfigParam !== null && parentConfigParam != "") {
       for (let i = 0; i < parentConfigParam.length; i++) {
-        let configValue = parentConfigParam[i].map(x => {
+        const configValue = parentConfigParam[i].map(x => {
           if (x.hasOwnProperty(field.id) === true) {
             return x[field.id];
           }
@@ -627,6 +502,72 @@ export default class SmartStructureManagerParametersController extends Vue {
     this.smartFormArrayStructure[parentId].push(column);
     Object.assign(this.smartFormArrayValues, values);
   }
+
+  protected existsField(field, structureFields): boolean {
+    if (field.id === "FIELD_HIDDENS") {
+      return true;
+    }
+    for (let i = 0; i < structureFields.length; i++) {
+      if (structureFields[i].name === field.id) {
+        return true;
+      }
+      if (structureFields[i].content) {
+        const exists = this.existsField(field, structureFields[i].content);
+        if (exists === true) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  protected appendField(field, structureFields) {
+    console.log("try", field.id, "to", field.fieldSet.id);
+    if (field.fieldSet.id === "FIELD_HIDDENS") {
+      console.log("push", field.id);
+      structureFields.push(this.getFieldData(field));
+    } else {
+      for (let i = 0; i < structureFields.length; i++) {
+        if (structureFields[i].name === field.fieldSet.id) {
+          if (!structureFields[i].content) {
+            structureFields[i].content = [];
+          }
+          console.log("push", field.id, "to", structureFields[i].name);
+          structureFields[i].content.push(this.getFieldData(field));
+        } else if (structureFields[i].content) {
+          this.appendField(field, structureFields[i].content);
+        }
+      }
+    }
+  }
+
+  protected getFieldData(field) {
+    const fieldData: any = {
+      name: field.id,
+      type: field.type,
+      label: field.labelText
+    };
+
+    if (field.type === "enum") {
+      if (field.format) {
+        fieldData.enumUrl = "/api/v2/enumerates/" + field.format + "/";
+      }
+    }
+
+    if (field._topt && field._topt.multiple === "yes") {
+      fieldData.multiple = true;
+    }
+    switch (field.type) {
+      case "enum":
+      case "docid":
+      case "account":
+        if (field.format) {
+          fieldData.typeFormat = field.format;
+        }
+    }
+    return fieldData;
+  }
+
   protected formatType(simpleType, longType) {
     const type = simpleType;
     let typeFormat = "";
@@ -635,23 +576,38 @@ export default class SmartStructureManagerParametersController extends Vue {
     }
     return { type, typeFormat };
   }
-  protected getParameters(options) {
+
+  protected parseParametersData(response) {
+    const result = [];
+    if (response && response.data && response.data.data) {
+      const paramsValues = response.data.data.paramsValues;
+      const paramsFields = response.data.data.params;
+
+      for (let i = 0; i < paramsFields.length; i++) {
+        const fieldId = paramsFields[i].id;
+        paramsFields[i].value = paramsValues[fieldId];
+      }
+
+      console.log(paramsFields);
+      this.paramData = paramsFields;
+    } else {
+      this.paramData = [];
+    }
+  }
+  protected getParameters() {
     this.$http
-      .get(`/api/v2/admin/smart-structures/${this.ssName}/parameters/`, {
-        params: options.data,
-        paramsSerializer: kendo.jQuery.param
-      })
+      .get(`/api/v2/admin/smart-structures/${this.ssName}/parameters/`, {})
       .then(response => {
         this.paramValues = [];
-        if (Array.isArray(response.data.data.params)) {
+        if (response.data.data.params.length === 0) {
           this.haveParameters = false;
         } else {
           this.haveParameters = true;
         }
-        options.success(response);
+        this.parseParametersData(response);
       })
       .catch(response => {
-        options.error(response);
+        throw new Error(response);
       });
     return [];
   }
@@ -680,6 +636,9 @@ export default class SmartStructureManagerParametersController extends Vue {
   }
   private updateData(data) {
     const url = `/api/v2/admin/smart-structures/${this.ssName}/update/parameter/`;
+
+    console.log(data);
+    return;
     this.$http
       .put(url, { params: JSON.stringify(data) })
       .then(response => {
@@ -687,7 +646,6 @@ export default class SmartStructureManagerParametersController extends Vue {
         this.paramValues = [];
         this.smartFormArrayValues = {};
         this.smartFormArrayStructure = {};
-        this.$refs.parametersGridData.kendoDataSource.read();
       })
       .catch(response => {
         console.error("UpdateDataResError", response);

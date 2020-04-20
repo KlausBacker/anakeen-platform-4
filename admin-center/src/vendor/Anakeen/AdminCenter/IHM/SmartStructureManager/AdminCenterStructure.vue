@@ -24,8 +24,7 @@
             <template slot="label">
               <span class="ssm-parameters-title">{{ $t("AdminCenterSmartStructure.Parameters") }}</span>
             </template>
-            <h1>Under repair. Structure parameters values interface will be back soon </h1>
-            <ssm-parameters v-if="false" :ssName="selectedSS" class="ssm-parameters" ref="paramsComp"></ssm-parameters>
+            <ssm-parameters  :ssName="selectedSS" class="ssm-parameters" ref="paramsComp"></ssm-parameters>
           </ank-tab>
         </ank-tabs>
       </div>

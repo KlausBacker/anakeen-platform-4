@@ -30,7 +30,7 @@ class StructureParameters extends StructureFields
         $data["uri"] = URLUtils::generateURL(Settings::ApiV2 . sprintf("admin/smart-structures/%s/parameters/", $this->structureName));
         $data["paramsValues"] = $this->getConfigParameters($this->structure);
 
-        $data["params"] = $this->structure->getParamAttributes();
+        $data["params"] = array_values($this->structure->getParamAttributes());
         return $data;
     }
 
