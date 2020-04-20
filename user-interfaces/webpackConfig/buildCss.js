@@ -12,7 +12,6 @@ module.exports = () => {
     moduleName: "theme",
     entry: {
       bootstrap: [path.resolve(__dirname, "../components/scss/bootstrap.scss")],
-      ckeditor: [path.resolve(__dirname, "../components/scss/ckeditor.scss")],
       components: [path.resolve(__dirname, "../components/scss/components.scss")],
       kendo: [path.resolve(__dirname, "../components/scss/kendo.scss")],
       smartElement: [path.resolve(__dirname, "../components/scss/AnkSmartElement.scss")],
