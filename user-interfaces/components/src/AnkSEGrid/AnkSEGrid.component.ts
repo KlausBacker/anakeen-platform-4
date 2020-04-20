@@ -642,7 +642,14 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
             });
           }
           if (response.data.data.actions.length > 0) {
+            let menuWidth = 120;
+            if (response.data.data.actions.length === 2) {
+              const tabActions = response.data.data.actions;
+              menuWidth = (tabActions[0].title.length + tabActions[1].title.length) * 10;
+            }
             this.columnsList.push({
+              // @ts-ignore
+              width: menuWidth,
               field: "smart_element_grid_action_menu",
               title: this.actionColumnTitle,
               abstract: true,
