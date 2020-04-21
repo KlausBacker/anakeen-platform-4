@@ -5,6 +5,17 @@ import ConditionTableFunctions from "./Table Components/ConditionTableFunctions"
 import ConditionTableKeywords from "./Table Components/ConditionTableKeywords";
 import ConditionTableRightP from "./Table Components/ConditionTableRightP";
 import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
+import $ from "jquery";
+
+function uuidv4() {
+  let dt = new Date().getTime();
+  const uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
+    const r = (dt + Math.random() * 16) % 16 | 0;
+    dt = Math.floor(dt / 16);
+    return (c === "x" ? r : (r & 0x3) | 0x8).toString(16);
+  });
+  return uuid;
+}
 
 export default {
   name: "search-conditions",
@@ -25,6 +36,8 @@ export default {
   },
   data() {
     return {
+      isLoading: false,
+      allOperators: [],
       famid: null,
       conditionRuleType: "and",
       conditions: [],
@@ -90,12 +103,23 @@ export default {
       ];
     }
   },
-
+  watch: {
+    allOperators(newValue) {
+      this.conditions.forEach(c => {
+        c.functions.operatorsList = newValue;
+      });
+    }
+  },
   created() {
     this.$on("localeLoaded", this.initTranslation);
+    const that = this;
+    $.getJSON("/api/v2/smartstructures/dsearch/operators/", function requestOperatorsSReady(data) {
+      that.allOperators = [...data.data];
+    });
   },
 
   mounted() {
+    this.isLoading = true;
     this.controllerProxy(
       "addEventListener",
       "smartFieldChange",
@@ -114,6 +138,7 @@ export default {
       }
     );
     this.loadSmartElement();
+    this.isLoading = false;
   },
   methods: {
     initTranslation() {
@@ -161,6 +186,7 @@ export default {
         condition.leftp.initValue = leftp[row].value;
         condition.fields.initValue = fields[row].value;
         condition.functions.initValue = funcInitValue;
+        condition.functions.operatorsList = this.allOperators;
         condition.keywords.initValue = keys[row].value;
         condition.keywords.operator = funcInitValue;
         condition.rightp.initValue = rightp[row].value;
@@ -189,6 +215,7 @@ export default {
     },
     createDefaultCondition: function() {
       return {
+        uid: uuidv4(),
         operator: {
           initValue: ""
         },

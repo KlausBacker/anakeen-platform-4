@@ -30,11 +30,11 @@ export default {
   },
   data() {
     return {
-      wf: Object,
+      wf: null,
       fieldOptions: [],
       comboBox: null,
-      tooltip: Object,
-      selectedField: Object,
+      tooltip: null,
+      selectedField: null,
       errorClass: ""
     };
   },
@@ -75,14 +75,14 @@ export default {
             group: { field: "label_parent" }
           },
           change: function(evt) {
-            that.addSelectedItemParentLabel(evt.sender);
+            // that.addSelectedItemParentLabel(evt.sender);
             that.onValueChange();
             that.checkValidity();
           }
         })
         .data("kendoComboBox");
       this.initData();
-      this.addSelectedItemParentLabel(this.comboBox);
+      // this.addSelectedItemParentLabel(this.comboBox);
     },
     findIfWorkflow: function(data) {
       const $lastAttribute = data[data.length - 1];

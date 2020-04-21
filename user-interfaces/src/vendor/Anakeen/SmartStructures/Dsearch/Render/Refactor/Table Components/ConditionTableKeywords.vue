@@ -202,6 +202,8 @@ export default {
           this.errorClass = "";
         }
         return valid;
+      } else {
+        return true;
       }
     }
   },
@@ -235,11 +237,18 @@ export default {
         this.clearKeysValue();
       }
     },
+    errorClass(newValue) {
+      $(this.$refs.keywordsWrapper)
+        .closest(".search-tabs")
+        .find(".search-condition-tab--label")
+        .toggleClass("hasError", !!newValue);
+    }
   }
 };
 </script>
 <style>
-.keywords-wrapper.hasError {
+.keywords-wrapper.hasError,
+.search-condition-tab--label.hasError {
   outline: solid 2px #ff542c;
 }
 </style>

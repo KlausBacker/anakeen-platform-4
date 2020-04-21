@@ -117,7 +117,7 @@ export default {
 
           if (methodInitValue) {
             this.dateMode = false;
-            const existingMethod = this.methods.ffilter(m => m.method === methodInitValue);
+            const existingMethod = this.methods.filter(m => m.method === methodInitValue);
             if (existingMethod && existingMethod.length) {
               // If it's provided method, select it
               this.methodsComboBox.select(function(item) {
