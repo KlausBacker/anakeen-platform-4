@@ -63,7 +63,11 @@ export default Backbone.Model.extend({
     var revision = this.get("revision");
 
     if (this.get("creationFamid") && this.id === null) {
-      urlData += "smart-structures/" + encodeURIComponent(this.get("creationFamid")) + "/documentsViews/";
+      urlData += "smart-elements/" + encodeURIComponent(this.get("creationFamid"));
+      if (this.get("renderMode") === "edit") {
+        viewId = "!defaultCreation";
+      }
+      urlData += "/views/" + encodeURIComponent(viewId);
     } else {
       urlData += "smart-elements/" + encodeURIComponent(this.id);
       //Don't add revision for the deletion of a alive document
