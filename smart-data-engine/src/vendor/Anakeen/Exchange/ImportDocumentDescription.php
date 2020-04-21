@@ -50,7 +50,6 @@ class ImportDocumentDescription
     private $tcr = array();
     private $dbaccess = '';
     private $needCleanStructure = false;
-    private $needCleanParamsAndDefaults = false;
     private $importFileName = '';
     /*
      * @var ressource
@@ -754,11 +753,6 @@ class ImportDocumentDescription
                 }
             }
 
-            if ($this->needCleanParamsAndDefaults) {
-                $this->needCleanParamsAndDefaults = false;
-                $this->cleanDefaultAndParametersValues();
-            }
-
             $this->tcr[$this->nLine]["err"] .= $check->check($data, $this->doc)->getErrors();
             if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
                 $this->tcr[$this->nLine]["msg"] .= sprintf("Element can't be perfectly analyze, some error might occur or be corrected when importing");
@@ -832,22 +826,13 @@ class ImportDocumentDescription
 
     protected function cleanDefaultAndParametersValues()
     {
-        $defs = $this->doc->getOwnDefValues();
-        foreach ($defs as $aid => $v) {
-            if (!$this->doc->getAttribute($aid)) {
-                $this->doc->setDefValue($aid, '', false);
-                $this->tcr[$this->nLine]["msg"] .= "\nClear default value \"$aid\".";
-            }
-        }
-        $defs = $this->doc->getOwnParams();
-        foreach ($defs as $aid => $v) {
-            if (!$this->doc->getAttribute($aid)) {
-                $this->doc->setParam($aid, '', false);
-                $this->tcr[$this->nLine]["msg"] .= "\nClear parameter value \"$aid\".";
-            }
-        }
+        $this->doc->defaultvalues=null;
+        $this->doc->param=null;
 
-        $this->doc->modify();
+        $this->tcr[$this->nLine]["msg"] .= "\nClear all default values .";
+        $this->tcr[$this->nLine]["msg"] .= "\nClear all parameters values .";
+        
+        $this->doc->modify(true, ["defaultvalues", "param"], true);
     }
 
     /**
@@ -877,8 +862,8 @@ class ImportDocumentDescription
 
                     $sql = sprintf("delete from docattr where docid=%d", $this->doc->id);
                     \Anakeen\Core\DbManager::query($sql);
+                    $this->cleanDefaultAndParametersValues();
 
-                    $this->needCleanParamsAndDefaults = true;
                     break;
 
                 case 'default':
@@ -920,7 +905,7 @@ class ImportDocumentDescription
                     $sql = sprintf("delete from docattr where docid=%d", $this->doc->id);
                     \Anakeen\Core\DbManager::query($sql);
                     $this->needCleanStructure = true;
-                    $this->needCleanParamsAndDefaults = true;
+                    $this->cleanDefaultAndParametersValues();
                     break;
             }
         } else {
@@ -1634,6 +1619,7 @@ class ImportDocumentDescription
         $defv = $data[2];
         $opt = (isset($data[3])) ? trim(strtolower($data[3])) : null;
         $force = (str_replace(" ", "", $opt) == "force=yes");
+
         $ownDef = $this->doc->getOwnDefValues();
         if ((!empty($ownDef[$attrid])) && (!$force)) {
             // reset default
@@ -2241,10 +2227,10 @@ class ImportDocumentDescription
             if (!$this->tcr[$this->nLine]["err"]) {
                 if ($data[0] == "PARAM") {
                     $oattr->usefor = 'Q';
-                    // parameters
+                // parameters
                 } elseif ($data[0] == "OPTION") {
                     $oattr->usefor = 'O';
-                    // options
+                // options
                 } else {
                     $oattr->usefor = 'N';
                     // normal
