@@ -26,7 +26,7 @@ class StructureUpdateParameter
     {
         $this->initData($request, $args);
         $data = $this->doRequest();
-        return ApiV2Response::withData($data);
+        return ApiV2Response::withData($response, $data);
     }
 
     protected function initData($request, $args)
@@ -47,19 +47,25 @@ class StructureUpdateParameter
             $fieldId = $parameterData["fieldId"];
             $fieldValue = $parameterData["fieldValue"];
 
-            if (!is_array($fieldValue)) {
+            if (array_key_exists("value", $fieldValue)) {
                  $err = $this->structure->setParam($fieldId, $fieldValue["value"]);
                 $updatedData[$fieldId]= $fieldValue["value"];
             } else {
                 $rawValues=[];
-                foreach ($fieldValue as $rowValue) {
-                    if (! is_array($rowValue)) {
+                foreach ($fieldValue as $ka=>$rowValue) {
+                    if (array_key_exists("value", $rowValue)) {
                         $rawValues[] = $rowValue["value"];
+                    } else {
+                        foreach ($rowValue as $rowValueCell) {
+                            $rawValues[$ka][]=$rowValueCell["value"];
+                        }
                     }
                 }
                 $err = $this->structure->setParam($fieldId, $rawValues);
                 $updatedData[$fieldId]=$rawValues;
             }
+
+
 
             /*
             if ($parameterData->valueType === "no_value") {
