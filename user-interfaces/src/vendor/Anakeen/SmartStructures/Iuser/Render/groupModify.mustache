@@ -1,6 +1,59 @@
-<form id="formFilter">
-    <input type="text" id="filterTree" class="form-control" placeholder="Search..."/>
-</form>
-<div id="listOfGroups">
+<div class="igroup-changegroup">
+    <div class="igroup-list igroup-ag">
+        <h3>Available groups</h3>
+        <script type="text/x-kendo-template" name="availableGroupTemplate">
+            <div data-id="#:accountId#" class="igroup-item add-group #:tag#">
 
+
+                <div>
+                    <button class="btn  expand-pathes"  # if (pathes.length === 0) {# style="visibility:hidden" #}#> <span class="fa fa-caret-right fa-lg"/></button>
+
+                    <span>#:lastname#</span>
+
+                    # if (pathes.length > 0) {#
+                    <ul>
+                        <li>Parent groups :</li>
+                        # for (var i = 0; i < pathes.length; i++) { #
+                        <li># for (var si = 0; si < pathes[i].length; si++) { # <i>#= (pathes[i][si]) #</i> #}#</li>
+                        # } #
+                    </ul>
+                    #}#
+                </div>
+                <button class="btn btn-primary add-group"> &gt;&gt;</button>
+            </div>
+        </script>
+        <form name="availableGroupForm">
+            <input type="search" class="form-control"  name="availableGroupSearch" placeholder="Search..."/>
+        </form>
+        <div name="availableGroupList" data-filter="not"/>
+        <div name="availableGroupPager"/>
+    </div>
+
+    <div class="igroup-list igroup-pg">
+        <h3>Parent groups</h3>
+        <script type="text/x-kendo-template" name="parentGroupTemplate">
+            <div data-id="#:accountId#" class="igroup-item delete-group #:tag#">
+                <button  class="btn btn-primary delete-group"> &lt;&lt;</button>
+                <div>
+
+                    <button class="btn  expand-pathes"  # if (pathes.length === 0) {# style="visibility:hidden" #}#> <span class="fa fa-caret-right fa-lg"/></button>
+                    <span>#:lastname#</span>
+
+                    # if (pathes.length > 0) {#
+                    <ul>
+                        <li>Parent groups :</li>
+                        # for (var i = 0; i < pathes.length; i++) { #
+                        <li># for (var si = 0; si < pathes[i].length; si++) { # <i>#= (pathes[i][si]) #</i> #}#</li>
+                        # } #
+                    </ul>
+                    #}#
+                </div>
+            </div>
+        </script>
+        <form name="parentGroupForm">
+            <input type="search" class="form-control"  name="parentGroupSearch" placeholder="Search..."/>
+        </form>
+        <div name="parentGroupList"/>
+        <div name="parentGroupPager"/>
+    </div>
 </div>

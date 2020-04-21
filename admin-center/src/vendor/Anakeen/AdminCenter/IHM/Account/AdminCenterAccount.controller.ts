@@ -1,22 +1,22 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type,@typescript-eslint/no-explicit-any */
 import AnkPaneSplitter from "@anakeen/internal-components/lib/PaneSplitter";
 import AnkSmartElement from "@anakeen/user-interfaces/components/lib/AnkSmartElement.esm";
 import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
 import { DropdownsInstaller } from "@progress/kendo-dropdowns-vue-wrapper";
 import { GridInstaller } from "@progress/kendo-grid-vue-wrapper";
-import { TreeViewInstaller } from "@progress/kendo-treeview-vue-wrapper";
+import { InputsInstaller } from "@progress/kendo-inputs-vue-wrapper";
 import "@progress/kendo-ui/js/kendo.grid";
 import "@progress/kendo-ui/js/kendo.toolbar";
-import "@progress/kendo-ui/js/kendo.treeview";
 import { Component, Vue, Watch } from "vue-property-decorator";
 
 Vue.use(ButtonsInstaller);
 Vue.use(GridInstaller);
-Vue.use(TreeViewInstaller);
 Vue.use(DropdownsInstaller);
 Vue.use(DataSourceInstaller);
-declare var $;
-declare var kendo;
+Vue.use(InputsInstaller);
+declare const $;
+declare const kendo;
 
 @Component({
   components: {
@@ -28,105 +28,54 @@ export default class AdminCenterAccountController extends Vue {
   public $refs!: {
     [key: string]: any;
   };
-  public groupTree = new kendo.data.HierarchicalDataSource({
+
+  public gridGroupContent = new kendo.data.DataSource({
+    pageSize: 50,
     schema: {
+      data: response => {
+        for (let i = 0; i < response.data.length; i++) {
+          response.data[i].currentDepth = this.getDepth();
+          response.data[i].openPathIds = this.getOpenPathIds();
+        }
+        return response.data;
+      },
       model: {
-        children: "items",
-        id: "hierarchicalId"
+        fields: {
+          currentDepth: { type: "number" },
+          lastname: { type: "string" },
+          login: { type: "string" }
+        },
+        id: "id"
+      },
+      total: "total"
+    },
+    serverFiltering: true,
+    serverPaging: true,
+    serverSorting: true,
+    transport: {
+      read: {
+        url: "/api/v2/admin/account/groups/",
+        data: filter => {
+          filter.openPathIds = this.getOpenPathIds();
+          filter.depth = this.getDepth();
+          return filter;
+        }
       }
     },
-    transport: {
-      read: options => {
-        this.$http
-          .get("/api/v2/admin/account/groups/")
-          .then(response => {
-            if (response.status === 200 && response.statusText === "OK") {
-              let groups: ITreeElement[] = response.data.groups;
-              Object.values(groups).forEach(currentData => {
-                currentData.items = currentData.items || [];
-                currentData.parents.forEach(parentData => {
-                  try {
-                    groups[parentData].items = groups[parentData].items || [];
-                    groups[parentData].items.push(currentData);
-                  } catch (e) {
-                    // no test here
-                  }
-                });
-              });
-              // Suppress first level elements
-              Object.values(groups).forEach(currentData => {
-                if (currentData.parents.length > 0) {
-                  delete groups[currentData.accountId];
-                }
-              });
+    requestEnd: e => {
+      if (e && e.response) {
+        const newDataDepth = [];
+        for (let i = 1; i <= e.response.maxDepth; i++) {
+          newDataDepth.push({ id: i });
+        }
 
-              try {
-                // Suppress refs elements and keep only values
-                groups = Object.values(JSON.parse(JSON.stringify(groups)));
-              } catch (e) {
-                groups = [];
-              }
-              const addUniqId = (currentElement, id = "") => {
-                currentElement.hierarchicalId = id ? id + "/" + currentElement.documentId : currentElement.documentId;
-                if (currentElement.items) {
-                  currentElement.items.forEach(childrenElement => {
-                    addUniqId(childrenElement, currentElement.hierarchicalId);
-                  });
-                }
-              };
-              groups.forEach(currentGroup => {
-                addUniqId(currentGroup);
-              });
-              const selectedElement = window.localStorage.getItem("admin.account.groupSelected");
-              const restoreExpandedTree = (data, expanded) => {
-                for (const currentData of data) {
-                  if (expanded["#all"] === true || expanded[currentData.hierarchicalId]) {
-                    currentData.expanded = true;
-                  }
-                  if (currentData.hierarchicalId === selectedElement) {
-                    currentData.selected = true;
-                  }
-                  if (currentData.items && currentData.items.length) {
-                    restoreExpandedTree(currentData.items, expanded);
-                  }
-                }
-              };
-              let expandedElements = window.localStorage.getItem("admin.account.expandedElement");
-              if (expandedElements) {
-                try {
-                  expandedElements = JSON.parse(expandedElements);
-                  restoreExpandedTree(groups, expandedElements);
-                } catch (e) {
-                  // no test here
-                }
-              }
-              const toDisplay = [
-                {
-                  accountId: "@users",
-                  documentId: "@users",
-                  expanded: expandedElements && (expandedElements["#all"] || expandedElements["@users"]),
-                  hierarchicalId: "@users",
-                  items: groups,
-                  login: "@users",
-                  nbUser: response.data.nbUsers ? response.data.nbUsers : "??",
-                  parents: [],
-                  selected: "@users" === selectedElement,
-                  title: "All users"
-                }
-              ];
-              options.success(toDisplay);
-            } else {
-              throw new Error("Unable to get groups");
-            }
-          })
-          .catch(error => {
-            console.error("Unable to get group", error);
-          });
+        this.updateDepth(newDataDepth);
       }
     }
   });
-  public gridContent = new kendo.data.DataSource({
-    pageSize: 20,
+
+  public gridUserContent = new kendo.data.DataSource({
+    pageSize: 50,
     schema: {
       data: "data",
       model: {
@@ -149,24 +98,18 @@ export default class AdminCenterAccountController extends Vue {
       }
     }
   });
-  public displayGroupDocument: boolean = false;
-  public selectedGroupDocumentId: boolean = false;
-  public selectedGroupLogin: boolean = false;
-  public selectedUser: string = "";
+  public displayGroupDocument = false;
+  public selectedGroupDocumentId = false;
+  public selectedGroupLogin = "@users";
+  public selectedGroup = null;
+  public openPathIds: string[] = [];
+  public selectedUser = "";
   public options: object = {};
-  public groupId: any = false;
-  public groupTitle: any = false;
-  private smartTriggerActivated: boolean = false;
-  private refreshNeeded: boolean = false;
-  @Watch("refreshNeeded")
-  public watchRefreshNeeded(value) {
-    if (value) {
-      setTimeout(() => {
-        this.updateTreeData();
-      }, 300);
-    }
-    this.refreshNeeded = false;
-  }
+  public groupId = "";
+  public groupTitle: string | boolean = false;
+  public dataDepth = [{ id: 1 }];
+  public selectedDepth = 1;
+  private smartTriggerActivated = false;
 
   @Watch("groupId")
   public watchGroupId(value) {
@@ -174,45 +117,57 @@ export default class AdminCenterAccountController extends Vue {
       const createGrpBtn = this.$refs.groupList.kendoWidget();
       if (value === "@users") {
         createGrpBtn.setOptions({ optionLabel: "Create group" });
+        this.selectedGroup = null;
       } else {
         createGrpBtn.setOptions({ optionLabel: "Create sub group" });
+
+        this.selectedGroup = this.gridGroupContent.get(value);
       }
     }
   }
 
-  public mounted() {
+  public mounted(): void {
     this.$nextTick(() => {
       this.groupId = window.localStorage.getItem("admin.account.groupSelected.id");
-      this.bindTree();
+      this.gridGroupContent.read();
+
+      this.$refs.groupGrid
+        .kendoWidget()
+        .element.on("mousedown", '.groupinfo[data-expanded="false"] .group-expand', e => {
+          const grid = this.$refs.groupGrid.kendoWidget();
+          const $tr = $(e.currentTarget).closest("tr");
+          const dataItem = grid.dataItem($tr);
+
+          e.preventDefault();
+          e.stopPropagation();
+
+          this.openPathIds.push(dataItem.pathid + ":" + dataItem.accountId);
+          this.gridGroupContent.read();
+        });
+      this.viewAllUsers();
     });
   }
 
-  // Bind the tree events
-  public bindTree() {
-    const treeview = this.$refs.groupTreeView.kendoWidget();
-    treeview.bind("dataBound", () => {
-      const selectedElement = treeview.dataItem(treeview.select());
-      if (selectedElement) {
-        if (selectedElement.login && this.selectedGroupLogin !== selectedElement.documentId) {
-          this.updateGridData(selectedElement.login);
-        }
-        if (selectedElement.documentId) {
-          this.updateGroupSelected(selectedElement.documentId);
-        }
-      }
-    });
+  public updateDepth(newDataDepth): void {
+    this.dataDepth = newDataDepth;
+  }
+  public getDepth(): number {
+    return this.selectedDepth;
+  }
+  public getOpenPathIds(): string[] {
+    return this.openPathIds;
   }
 
-  public parseCreateUser(data) {
+  public parseCreateUser(data): object[] {
     return data.user;
   }
 
-  public parseCreateGroup(data) {
+  public parseCreateGroup(data): object[] {
     return data.group;
   }
 
   // Bind the grid events (click to open an user)
-  public openUser(event) {
+  public openUser(event): void {
     event.preventDefault();
     const grid = this.$refs.grid.kendoWidget();
     const $tr = $(event.currentTarget).closest("tr");
@@ -222,7 +177,7 @@ export default class AdminCenterAccountController extends Vue {
     this.selectedUser = userId;
     this.$nextTick(() => {
       if (!this.$refs.grid.kendoWidget()._data) {
-        this.gridContent.read();
+        this.gridUserContent.read();
       }
       if (userId) {
         const openDoc = this.$refs.openDoc;
@@ -237,72 +192,29 @@ export default class AdminCenterAccountController extends Vue {
     });
   }
 
-  // Manually refresh the tree pane
-  public updateTreeData() {
-    let filterTitle;
-    if (this.$refs.filterTree.value) {
-      filterTitle = this.$refs.filterTree.value.toLowerCase();
-    }
+  public onGroupFilter(): void {
+    this.selectedDepth = this.dataDepth.length;
+  }
+  public groupRowTemplate = this.generateRowTemplate();
 
-    const treeview = this.$refs.groupTreeView.kendoWidget();
-    kendo.ui.progress($(this.$refs.groupTreeView.$el), true);
-    treeview.dataSource.read().then(() => {
-      kendo.ui.progress($(this.$refs.groupTreeView.$el), false);
-      if (filterTitle !== undefined) {
-        this.filter(this.groupTree, filterTitle);
-      }
-    });
+  public generateRowTemplate(): object {
+    const template =
+      '<tr data-uid="#: uid #">' +
+      '<td class="grouprow" >' +
+      '<div class="groupinfo" style="margin-left: #= data.path.length #rem"' +
+      ' #if (data.path.length < (data.currentDepth -1) || data.openPathIds.indexOf(data.pathid+":"+data.accountId) >= 0 || subgroupCount == 0) {# data-expanded="true" #} else {# data-expanded="false" #}# >' +
+      '<div class="path"># for (var i = 0; i < data.path.length; i++)  { # &gt;&nbsp; #= (data.path[i]) ## } # </div>' +
+      '<div class="groupname"><div class="lastname"><div class="group-expand"  > </div> <span>#: lastname#</span> </div> ' +
+      '# if (subgroupCount > 0) { # <div class="account-badge group-count"  > #: subgroupCount# </div> #}#' +
+      '<div class="account-badge user-count"> #: userCount# </div></div></div>' +
+      "</td>" +
+      "</tr>";
+
+    return kendo.template(template);
   }
 
-  // filter treeview datasource and expand until leaf is reached if a matching item is found
-  public filter(dataSource, query) {
-    let hasVisibleChildren = false;
-    const data = dataSource instanceof kendo.data.HierarchicalDataSource && dataSource.data();
-
-    // tslint:disable-next-line:prefer-for-of
-    for (let i = 0; i < data.length; i++) {
-      const item = data[i];
-      const text = item.title.toLowerCase();
-      const itemVisible =
-        query === true || // parent already matches
-        query === "" || // query is empty
-        text.indexOf(query) >= 0; // item title matches query
-
-      const anyVisibleChildren = this.filter(item.children, query);
-
-      hasVisibleChildren = hasVisibleChildren || anyVisibleChildren || itemVisible;
-
-      item.hidden = !itemVisible && !anyVisibleChildren;
-    }
-
-    if (data) {
-      // re-apply filter on children
-      dataSource.filter({ field: "hidden", operator: "neq", value: true });
-      const treeview = this.$refs.groupTreeView.kendoWidget();
-      treeview.expand(".k-item");
-    }
-
-    return hasVisibleChildren;
-  }
-
-  public showAll(dataSource) {
-    const data = dataSource instanceof kendo.data.HierarchicalDataSource && dataSource.data();
-    // tslint:disable-next-line:prefer-for-of
-    for (let i = 0; i < data.length; i++) {
-      const item = data[i];
-      item.hidden = false;
-      if (item.hasChildren) {
-        this.showAll(item.children);
-      }
-    }
-    return this.groupTree.filter({
-      field: "hidden",
-      operators: "eq",
-      value: false
-    });
-  }
   // Display the selected group in the ank-document
-  public updateGroupSelected(selectedGroupId) {
+  public updateGroupSelected(selectedGroupId): void {
     this.selectedGroupLogin = selectedGroupId || this.selectedGroupLogin;
     if (selectedGroupId && selectedGroupId !== "@users") {
       this.selectedGroupDocumentId = selectedGroupId;
@@ -313,11 +225,11 @@ export default class AdminCenterAccountController extends Vue {
   }
 
   // Refresh the with the new selected group
-  public updateGridData(selectedGroupLogin?) {
+  public updateGridData(selectedGroupLogin?): void {
     if (selectedGroupLogin === "@users") {
-      this.gridContent.filter({});
+      this.gridUserContent.filter({});
     } else {
-      this.gridContent.filter({
+      this.gridUserContent.filter({
         field: "group",
         operator: "equal",
         value: selectedGroupLogin
@@ -325,7 +237,15 @@ export default class AdminCenterAccountController extends Vue {
     }
   }
 
-  public openGroup() {
+  public viewAllUsers(): void {
+    const grid = this.$refs.groupGrid.kendoWidget();
+    this.groupId = "@users";
+    this.updateGridData(this.groupId);
+    this.updateGroupSelected(this.groupId);
+    grid.clearSelection();
+  }
+
+  public openGroup(): void {
     this.selectedUser = this.groupId;
     this.$nextTick(() => {
       const openDoc = this.$refs.openDoc;
@@ -338,27 +258,7 @@ export default class AdminCenterAccountController extends Vue {
       }
     });
   }
-  public selectCreateUserConfig(e) {
-    if (e.dataItem.canCreate) {
-      this.selectedUser = e.dataItem.id;
-      this.$nextTick(() => {
-        e.sender.value(""); // reset dropdownn
-        const openDoc = this.$refs.openDoc;
-        if (openDoc) {
-          this.refreshData(openDoc);
-          openDoc.fetchSmartElement({
-            customClientData: { defaultGroup: this.selectedGroupDocumentId },
-            initid: this.selectedUser,
-            viewId: "!defaultCreation"
-          });
-        }
-      });
-    }
-  }
-  public addClassOnSelectorContainer(e) {
-    e.sender.popup.element.addClass("select-container");
-  }
-  public selectCreateGroupConfig(e) {
+  public selectCreateUserConfig(e): void {
     if (e.dataItem.canCreate) {
       this.selectedUser = e.dataItem.id;
       this.$nextTick(() => {
@@ -376,80 +276,70 @@ export default class AdminCenterAccountController extends Vue {
     }
   }
 
-  // Open group selected in group change mode
-  public openChangeGroup() {
-    this.selectedUser = this.groupId;
+  public selectDepth(): void {
     this.$nextTick(() => {
-      const openDoc = this.$refs.openDoc;
-      if (openDoc) {
-        openDoc.fetchSmartElement({
-          initid: this.groupId,
-          viewId: "changeGroup"
-        });
-      }
+      this.openPathIds = [];
+      this.gridGroupContent.page(1);
     });
   }
 
-  // Update the selected group
-  public onGroupSelect(event) {
-    const selectedElement = event.sender.dataItem(event.sender.select());
-    window.localStorage.setItem("admin.account.groupSelected", selectedElement.hierarchicalId);
-    window.localStorage.setItem("admin.account.groupSelected.id", selectedElement.documentId);
-    this.updateGridData(selectedElement.login);
-    this.updateGroupSelected(selectedElement.documentId);
-    this.groupTitle = selectedElement.title;
-    this.groupId = selectedElement.documentId;
+  public selectMaxDepth(e): void {
+    console.log("selectMaxDepth", e);
+    if (e.checked) {
+      this.selectedDepth = this.dataDepth.length;
+    } else {
+      this.selectedDepth = 1;
+    }
+    this.selectDepth();
   }
 
-  // Register the leaf open and closed
-  public registerTreeState() {
-    const saveTreeView = () => {
-      const treeview = this.$refs.groupTreeView.kendoWidget();
-      const expandedItemsIds = {};
-      treeview.element.find(".k-item").each(function(this: any) {
-        const item = treeview.dataItem(this);
-        if (item.expanded) {
-          expandedItemsIds[item.hierarchicalId] = true;
+  public addClassOnSelectorContainer(e): void {
+    e.sender.popup.element.addClass("select-container");
+  }
+  public selectCreateGroupConfig(e): void {
+    if (e.dataItem.canCreate) {
+      this.selectedUser = e.dataItem.id;
+      this.$nextTick(() => {
+        e.sender.value(""); // reset dropdownn
+        const openDoc = this.$refs.openDoc;
+        if (openDoc) {
+          this.refreshData(openDoc);
+          openDoc.fetchSmartElement({
+            customClientData: { defaultGroup: this.selectedGroupDocumentId },
+            initid: this.selectedUser,
+            viewId: "!defaultCreation"
+          });
         }
       });
-      window.localStorage.setItem("admin.account.expandedElement", JSON.stringify(expandedItemsIds));
-    };
-    window.setTimeout(saveTreeView, 100);
-  }
-  public refreshData(openDoc) {
-    if (!this.smartTriggerActivated) {
-      openDoc.addEventListener("afterSave", () => {
-        this.gridContent.read();
-        this.groupTree.read();
-        this.refreshNeeded = true;
-      });
-      openDoc.addEventListener("afterDelete", () => {
-        this.updateGridData();
-        this.groupTree.read();
-        this.refreshNeeded = true;
-      });
-      this.smartTriggerActivated = true;
-      this.refreshNeeded = false;
     }
   }
 
-  // Close all the leafs
-  public collapseAll() {
-    window.localStorage.setItem("admin.account.expandedElement", JSON.stringify({ "#all": false }));
-    const treeview = this.$refs.groupTreeView.kendoWidget();
-    treeview.collapse(".k-item");
-  }
-
-  // Expand all the leafs
-  public expandAll() {
-    window.localStorage.setItem("admin.account.expandedElement", JSON.stringify({ "#all": true }));
-    const treeview = this.$refs.groupTreeView.kendoWidget();
-    treeview.expand(".k-item");
-  }
-
-  // Disable all the group non selected
-  public filterGroup(event) {
+  // Show users the selected group
+  public onGroupSelect(event): void {
     event.preventDefault();
-    this.updateTreeData();
+    const grid = this.$refs.groupGrid.kendoWidget();
+    const $tr = event.sender.select();
+    const dataItem = grid.dataItem($tr);
+    if (dataItem) {
+      window.localStorage.setItem("admin.account.groupSelected.id", dataItem.id);
+      this.updateGridData(dataItem.login);
+      this.updateGroupSelected(dataItem.id);
+      this.groupTitle = dataItem.title;
+      this.groupId = dataItem.id;
+    }
+  }
+
+  public refreshData(openDoc): void {
+    if (!this.smartTriggerActivated) {
+      openDoc.addEventListener("afterSave", () => {
+        this.gridUserContent.read();
+        this.gridGroupContent.read();
+      });
+      openDoc.addEventListener("afterDelete", () => {
+        this.updateGridData();
+        this.gridGroupContent.read();
+      });
+      this.smartTriggerActivated = true;
+    }
   }
 }
