@@ -7,9 +7,6 @@
       :config="generateSmartForm"
       :options="{ force: true }"
       @beforeSave="onSave"
-      @ready="ssmFormReady"
-      @smartFieldChange="ssmFormChange"
-      @smartFieldArrayChange="ssmArrayChange"
     />
     <div v-else class="no-records">
       <div class="empty-ssm-grid">
