@@ -2328,10 +2328,9 @@ class ImportDocumentDescription
                 }
                 if ($oattr->options) {
                     $cOptions = BasicAttribute::optionsToArray($oattr->options);
-                    $cOptions = array_unique($cOptions);
                     $attrOptions = [];
                     foreach ($cOptions as $k => $v) {
-                        $attrOptions[] = sprintf("%s=%s", $k, $v);
+                        $attrOptions[$k] = sprintf("%s=%s", $k, $v);
                     }
                     $oattr->options = implode('|', $attrOptions);
                 }
