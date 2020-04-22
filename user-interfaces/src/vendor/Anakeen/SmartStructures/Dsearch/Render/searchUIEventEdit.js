@@ -11,8 +11,8 @@ export default function searchUIEventEditProcess(controller) {
         return document.renderMode === "edit" && document.type === "search";
       }
     },
-    function prepareResultEditEvents() {
-      var $tab = $("#search-tabstrip");
+    function prepareResultEditEvents(event) {
+      var $tab = event.target.find(".search-tabstrip");
       $tab.kendoTabStrip({
         select: function(event) {
           var $li = $(event.item);
