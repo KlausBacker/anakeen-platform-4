@@ -163,12 +163,12 @@
             <sde:access>admin</sde:access>
         </sde:parameter>
         <sde:parameter name="CORE_WSH_MAILTO">
-            <sde:description>WSH error mail recipients (comma-separated list of mail addresses)</sde:description>
+            <sde:description>Script error mail recipients (comma-separated list of mail addresses)</sde:description>
             <sde:value/>
             <sde:access>admin</sde:access>
         </sde:parameter>
         <sde:parameter name="CORE_WSH_MAILSUBJECT">
-            <sde:description>WSH error mail subject</sde:description>
+            <sde:description>Script error mail subject</sde:description>
             <sde:value>[%h](%c) Script error: %m</sde:value>
             <sde:access>admin</sde:access>
         </sde:parameter>

@@ -52,7 +52,7 @@ class StructureWorkflow
             $structure = SEManager::getFamily($wdoc->getAttributeValue("wf_famid"));
             $wfData = [
                 "id" => $wdoc->name ?: $wdoc->id,
-                "title" => $wdoc->title,
+                "name" => $wdoc->title,
                 "baTitle" => $wdoc->getAttributeValue("ba_title"),
                 "icon" => $wdoc->getIcon("", 32),
                 "wfDesc" => $wdoc->getAttributeValue("wf_desc"),

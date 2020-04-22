@@ -99,10 +99,13 @@ class ImageAttribute extends FileAttribute
         if (empty($this->extension)) {
             $this->extension = "png";
         }
+        $imgDir = sprintf("%s/%s", DEFAULT_PUBDIR, self::CACHEIMGDIR);
+        if (!is_dir($imgDir)) {
+            mkdir($imgDir, 0755, true);
+        }
         $basedest = sprintf(
-            "%s/%s/%s-vid-%s.%s",
-            DEFAULT_PUBDIR,
-            self::CACHEIMGDIR,
+            "%s/%s-vid-%s.%s",
+            $imgDir,
             $size,
             str_replace("/", "_", $localimage),
             $this->extension

@@ -322,22 +322,25 @@ class IGroupHooks extends \SmartStructure\Group
     public function insertGroups()
     {
         $gAccount = $this->getAccount();
-        $err = "";
-        // get members
-        $tu = $gAccount->GetUsersGroupList($gAccount->id);
 
-        if (is_array($tu)) {
-            $err = parent::clear();
-            if (!$err) {
-                $tfid = array();
-                foreach ($tu as $k => $v) {
-                    //  if ($v["fid"]>0)  $err.=$this->AddFile($v["fid"]);
-                    if ($v["fid"] > 0) {
-                        $tfid[] = $v["fid"];
+        $err = "";
+        if ($gAccount && $gAccount->id) {
+            // get members
+            $tu = $gAccount->GetUsersGroupList($gAccount->id);
+
+            if (is_array($tu)) {
+                $err = parent::clear();
+                if (!$err) {
+                    $tfid = array();
+                    foreach ($tu as $k => $v) {
+                        //  if ($v["fid"]>0)  $err.=$this->AddFile($v["fid"]);
+                        if ($v["fid"] > 0) {
+                            $tfid[] = $v["fid"];
+                        }
                     }
+                    $err = $this->quickInsertMSDocId($tfid); // without postInsert
+                    $this->specPostInsert();
                 }
-                $err = $this->quickInsertMSDocId($tfid); // without postInsert
-                $this->specPostInsert();
             }
         }
         return $err;

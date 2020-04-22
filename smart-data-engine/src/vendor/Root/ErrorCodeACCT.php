@@ -113,4 +113,9 @@ class ErrorCodeACCT
      * @see \Anakeen\Exchange\ImportAccounts
      */
     const ACCT0209 = 'Mismatch logical name "%s" <> "%s"';
+    /**
+     * @errorCode The parent group or associated role not exists
+     * @see \Anakeen\Exchange\ImportAccounts
+     */
+    const ACCT0210 = 'Account reference "%s" not exists for account "%s"';
 }

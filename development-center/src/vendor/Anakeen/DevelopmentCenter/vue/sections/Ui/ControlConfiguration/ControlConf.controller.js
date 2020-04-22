@@ -46,8 +46,8 @@ export default {
     };
   },
   devCenterRefreshData() {
-    if (this.$refs.controlConfGrid && this.$refs.controlConfGrid.dataSource) {
-      this.$refs.controlConfGrid.dataSource.read();
+    if (this.$refs.controlConfGrid) {
+      this.$refs.controlConfGrid.refreshGrid(true);
     }
   },
   methods: {

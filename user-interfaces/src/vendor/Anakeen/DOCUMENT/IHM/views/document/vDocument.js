@@ -61,7 +61,7 @@ export default Backbone.View.extend({
    * Clean the associated view and re-render it
    */
   cleanAndRender: function vDocumentCleanAndRender() {
-    this.renderInProgress = this.renderInProgress.finally(() => {
+    const cleanDone = () => {
       return new Promise((resolve, reject) => {
         try {
           this.trigger("loaderShow", i18n.___("Rendering", "ddui"), 70);
@@ -94,7 +94,8 @@ export default Backbone.View.extend({
           reject(e);
         }
       });
-    });
+    };
+    this.renderInProgress = this.renderInProgress.then(cleanDone).catch(cleanDone);
   },
 
   /**

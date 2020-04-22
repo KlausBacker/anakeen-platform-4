@@ -114,7 +114,7 @@
   .smart-element-grid-pager-sizes {
     margin: 0 1rem;
     .k-widget.k-dropdown.smart-element-grid-pager-sizes--dropdown {
-      width: 4rem;
+      width: 5rem;
     }
   }
 }

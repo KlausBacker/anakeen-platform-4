@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+  <sde:routes namespace="Ui">
+    <sde:route name="Ui:Smart:Iuser:GroupList">
+      <sde:priority>1</sde:priority>
+      <sde:callable>Anakeen\SmartStructures\Iuser\Routes\GroupList</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/api/v2/ui/account/groups/{accountid}</sde:pattern>
+      <sde:description>Get parent groups of a account</sde:description>
+      <sde:requiredAccess operator="or">
+        <sde:access ns="AdminCenter">Admin</sde:access>
+        <sde:access ns="AdminCenter">AdminAccounts</sde:access>
+      </sde:requiredAccess>
+    </sde:route>
+  </sde:routes>
+</sde:config>
