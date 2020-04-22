@@ -50,7 +50,6 @@ class ImportDocumentDescription
     private $tcr = array();
     private $dbaccess = '';
     private $needCleanStructure = false;
-    private $needCleanParamsAndDefaults = false;
     private $importFileName = '';
     /*
      * @var ressource
@@ -463,8 +462,10 @@ class ImportDocumentDescription
 
                 case "PARAM":
                 case "ATTR":
-                case "MODATTR":
                     $this->doAttr($data);
+                    break;
+                case "MODATTR":
+                    $this->doModAttr($data);
                     break;
 
                 case "ORDER":
@@ -754,11 +755,6 @@ class ImportDocumentDescription
                 }
             }
 
-            if ($this->needCleanParamsAndDefaults) {
-                $this->needCleanParamsAndDefaults = false;
-                $this->cleanDefaultAndParametersValues();
-            }
-
             $this->tcr[$this->nLine]["err"] .= $check->check($data, $this->doc)->getErrors();
             if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
                 $this->tcr[$this->nLine]["msg"] .= sprintf("Element can't be perfectly analyze, some error might occur or be corrected when importing");
@@ -832,22 +828,13 @@ class ImportDocumentDescription
 
     protected function cleanDefaultAndParametersValues()
     {
-        $defs = $this->doc->getOwnDefValues();
-        foreach ($defs as $aid => $v) {
-            if (!$this->doc->getAttribute($aid)) {
-                $this->doc->setDefValue($aid, '', false);
-                $this->tcr[$this->nLine]["msg"] .= "\nClear default value \"$aid\".";
-            }
-        }
-        $defs = $this->doc->getOwnParams();
-        foreach ($defs as $aid => $v) {
-            if (!$this->doc->getAttribute($aid)) {
-                $this->doc->setParam($aid, '', false);
-                $this->tcr[$this->nLine]["msg"] .= "\nClear parameter value \"$aid\".";
-            }
-        }
+        $this->doc->defaultvalues=null;
+        $this->doc->param=null;
 
-        $this->doc->modify();
+        $this->tcr[$this->nLine]["msg"] .= "\nClear all default values .";
+        $this->tcr[$this->nLine]["msg"] .= "\nClear all parameters values .";
+        
+        $this->doc->modify(true, ["defaultvalues", "param"], true);
     }
 
     /**
@@ -877,8 +864,7 @@ class ImportDocumentDescription
 
                     $sql = sprintf("delete from docattr where docid=%d", $this->doc->id);
                     \Anakeen\Core\DbManager::query($sql);
-
-                    $this->needCleanParamsAndDefaults = true;
+                    $this->cleanDefaultAndParametersValues();
                     break;
 
                 case 'default':
@@ -920,7 +906,7 @@ class ImportDocumentDescription
                     $sql = sprintf("delete from docattr where docid=%d", $this->doc->id);
                     \Anakeen\Core\DbManager::query($sql);
                     $this->needCleanStructure = true;
-                    $this->needCleanParamsAndDefaults = true;
+                    $this->cleanDefaultAndParametersValues();
                     break;
             }
         } else {
@@ -1213,6 +1199,7 @@ class ImportDocumentDescription
                 if ($this->doc->dfldid == "") {
                     if (!$this->analyze) {
                         // create auto
+                        /** @noinspection PhpIncludeInspection */
                         include_once("Legacy/LegacyDocManager.php");
                         $fldid = createAutoFolder($this->doc);
                         $this->tcr[$this->nLine]["msg"] .= sprintf("create default folder (id [%d])\n", $fldid);
@@ -1645,11 +1632,7 @@ class ImportDocumentDescription
             );
         } else {
             $this->doc->setDefValue($attrid, $defv, false);
-            if ($force || (!$this->doc->getParameterRawValue($attrid))) {
-                // TODO : not really exact here : must verify if it is really a parameter
-                //$this->doc->setParam($attrid, $defv);
-                //$this->tcr[$this->nLine]["msg"] = "reset default parameter";
-            }
+
             $this->tcr[$this->nLine]["msg"] .= sprintf("add default value \"%s\" to \"%s\"", $attrid, $data[2]);
         }
     }
@@ -2133,6 +2116,7 @@ class ImportDocumentDescription
         }
         $structAttr = new \StructAttribute();
         $structAttr->set($data);
+
         $iAttr = new \Anakeen\Core\Internal\ImportSmartAttr();
         if ($modAttrActivated === false) {
             $iAttr->id = $oattr->id;
@@ -2156,6 +2140,63 @@ class ImportDocumentDescription
             $iAttr->constraint = ($structAttr->constraint) ?: '';
             $iAttr->autocomplete = $structAttr->autocomplete;
             $this->doAttr($iAttr->getData("MODATTR"), true);
+        }
+    }
+
+
+    protected function doModattr(array $data)
+    {
+        $attrid = strtolower($data[1]);
+
+
+        $parentAttr = $this->getParentAttr(":" . $attrid);
+
+        if (!$parentAttr) {
+            $this->doAttr($data);
+        } else {
+            // Need copy previous modattr
+
+            $currentModAttr=new DocAttr("", [$this->doc->id, ":".$attrid]);
+
+            $currentValues=$currentModAttr->getValues();
+            foreach ($currentValues as $k => $currentValue) {
+                if ($currentValue !== null && $currentValue !== "") {
+                    $parentAttr->$k = $currentValue;
+                }
+            }
+
+            $structAttr = new \StructAttribute();
+            $structAttr->set($data);
+
+            $iAttr = new \Anakeen\Core\Internal\ImportSmartAttr();
+            $iAttr->idfield = $parentAttr->frameid;
+            $iAttr->label = $parentAttr->labeltext;
+            $iAttr->isTitle = $parentAttr->title;
+            $iAttr->isAbstract = $parentAttr->abstract;
+            $iAttr->type = $parentAttr->type;
+            $iAttr->order = $parentAttr->ordered;
+            $iAttr->access = $parentAttr->accessibility;
+            $iAttr->need = $parentAttr->needed;
+            $iAttr->link = $parentAttr->link;
+            $iAttr->phpfile = $parentAttr->phpfile;
+            $iAttr->phpfunc = $parentAttr->phpfunc;
+            $iAttr->elink = $parentAttr->elink;
+            $iAttr->constraint = $parentAttr->phpconstraint;
+            $iAttr->option = $parentAttr->options;
+            $iAttr->properties = $parentAttr->properties;
+            //  $iAttr-> = $oattr->autocomplete;
+
+            $iAttr->id = $attrid;
+            $parentData=$iAttr->getData("MODATTR");
+
+
+            foreach ($data as $k => $v) {
+                if (($v === null || $v === "") && !empty($parentData[$k])) {
+                    $data[$k]=$parentData[$k];
+                }
+            }
+
+            $this->doAttr($data, false);
         }
     }
 
@@ -2240,14 +2281,11 @@ class ImportDocumentDescription
 
             if (!$this->tcr[$this->nLine]["err"]) {
                 if ($data[0] == "PARAM") {
-                    $oattr->usefor = 'Q';
                     // parameters
-                } elseif ($data[0] == "OPTION") {
-                    $oattr->usefor = 'O';
-                    // options
+                    $oattr->usefor = 'Q';
                 } else {
-                    $oattr->usefor = 'N';
                     // normal
+                    $oattr->usefor = 'N';
                 }
                 $oattr->docid = $this->doc->id;
                 $oattr->id = trim(strtolower($this->structAttr->id));
@@ -2342,10 +2380,9 @@ class ImportDocumentDescription
                 }
                 if ($oattr->options) {
                     $cOptions = BasicAttribute::optionsToArray($oattr->options);
-                    $cOptions = array_unique($cOptions);
                     $attrOptions = [];
                     foreach ($cOptions as $k => $v) {
-                        $attrOptions[] = sprintf("%s=%s", $k, $v);
+                        $attrOptions[$k] = sprintf("%s=%s", $k, $v);
                     }
                     $oattr->options = implode('|', $attrOptions);
                 }
@@ -2366,10 +2403,12 @@ class ImportDocumentDescription
     }
 
     /**
+     * @param string $enumName
      * @param string $phpfunc enum flat description
      * @param bool $reset set to true to delete old items before recorded
      *
      * @return string error message
+     * @throws \Anakeen\Database\Exception
      */
     public static function recordEnum($enumName, $phpfunc, $reset = false)
     {
@@ -2402,11 +2441,7 @@ class ImportDocumentDescription
                 $oe->parentkey = '';
             }
             $err = '';
-            if ($oe->exists()) {
-                // $err=$oe->add();
-                // " skipped [$itemKey]";
-            } else {
-                // " added  [$itemKey]";
+            if (!$oe->exists()) {
                 $err .= $oe->add();
             }
         }
