@@ -33,12 +33,20 @@
             <sde:description>Get render view list</sde:description>
             <sde:requiredAccess/>
         </sde:route>
-        <sde:route name="Document:CreationView">
+        <sde:route name="Document:CreationViewOld">
             <sde:priority>1</sde:priority>
             <sde:callable>Anakeen\Routes\Ui\CreationView</sde:callable>
             <sde:method>POST</sde:method>
             <sde:pattern>/api/v2/smart-structures/{family}/documentsViews/</sde:pattern>
             <sde:description>Get render view data</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+        <sde:route name="Document:CreationView">
+            <sde:priority>1</sde:priority>
+            <sde:callable>Anakeen\Routes\Ui\CreationView</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/smart-structures/{family}/smartElementCreation/</sde:pattern>
+            <sde:description>Get render view data in the creation case</sde:description>
             <sde:requiredAccess/>
         </sde:route>
         <sde:route name="Revision:ViewUpdate">
