@@ -51,7 +51,6 @@ $ss-list-border-color: rgb(210, 210, 210);
         width: 20rem;
         overflow-x: hidden;
         word-break: break-all;
-        direction: rtl;
 
         .empty-content {
           flex: 1;
@@ -63,7 +62,6 @@ $ss-list-border-color: rgb(210, 210, 210);
         .ss-list-item {
           flex-shrink: 0;
           color: #848484;
-          direction: ltr;
           height: 6rem;
           width: 100%;
           &:hover {

@@ -31,6 +31,11 @@ class StructureParameters extends StructureFields
         $data["paramsValues"] = $this->getConfigParameters($this->structure);
 
         $data["params"] = array_values($this->structure->getParamAttributes());
+        foreach ($data["params"]  as $k=>$paramData) {
+           if ( $paramData->access === SmartStructure\BasicAttribute::NONE_ACCESS) {
+               unset($data["params"][$k]);
+           }
+        }
         return $data;
     }
 

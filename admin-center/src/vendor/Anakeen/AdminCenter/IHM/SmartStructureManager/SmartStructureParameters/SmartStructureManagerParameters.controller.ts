@@ -54,13 +54,31 @@ export default class SmartStructureManagerParametersController extends Vue {
       this.appendField(field, structureFields);
     }
 
-    Object.keys(this.paramParentValues).forEach(fieldId => {
-      if (this.paramParentValues[fieldId].displayValue) {
-        parametersRenderOptions.fields[fieldId] = {
-          placeHolder: this.paramParentValues[fieldId].displayValue
-        };
+    Object.keys(this.paramValues).forEach(fieldId => {
+      if (this.paramValues[fieldId].inheritedValue === true) {
+        if (!parametersRenderOptions.fields[fieldId]) {
+          parametersRenderOptions.fields[fieldId] = {};
+        }
+        parametersRenderOptions.fields[fieldId].template =
+          "<div style=\"outline:dotted 2px green; font-size:130%\"> <h3 style='color:red'>inherit value</h3>          <div>{{{attribute.htmlDefaultContent}}} </div> </div>";
+      }
+
+      if (this.paramValues[fieldId].overrideValue === true) {
+        if (!parametersRenderOptions.fields[fieldId]) {
+          parametersRenderOptions.fields[fieldId] = {};
+        }
+        parametersRenderOptions.fields[fieldId].buttons = [
+          {
+            title: "Advanced",
+            htmlContent: "A",
+            url: "#action/inheritvalue:toto"
+          }
+        ];
+        parametersRenderOptions.fields[fieldId].template =
+          "<div style=\"outline:dotted 2px green; font-size:130%\"> <h3 style='color:orange'>Override value</h3>          <div>{{{attribute.htmlDefaultContent}}} </div> </div>";
       }
     });
+
     console.log("struct", structureFields);
     console.log("values", this.paramValues);
     console.log("render", parametersRenderOptions);
@@ -91,6 +109,9 @@ export default class SmartStructureManagerParametersController extends Vue {
     this.getParameters();
   }
 
+  public onActionClick(event, data, options) {
+    console.log("action", options.eventId);
+  }
   public onSave(event, smartElement, requestOptions) {
     const url = `/api/v2/admin/smart-structures/${this.ssName}/update/parameter/`;
     const systemData = requestOptions.getRequestData();
@@ -176,6 +197,10 @@ export default class SmartStructureManagerParametersController extends Vue {
           fieldData.typeFormat = field.format;
         }
     }
+    if (field.access === 1) {
+      fieldData.display = "read";
+    }
+
     return fieldData;
   }
 
@@ -192,16 +217,22 @@ export default class SmartStructureManagerParametersController extends Vue {
       this.paramData = paramsFields;
 
       this.paramValues = {};
+      this.paramParentValues = {};
 
       Object.keys(paramsValues).forEach(fieldId => {
-        if (paramsValues[fieldId].configurationParameter !== null) {
-          if (paramsValues[fieldId].result) {
-            this.paramValues[fieldId] = paramsValues[fieldId].result;
-          }
-        } else {
-          if (paramsValues[fieldId].parentConfigurationParameter !== null) {
-            if (paramsValues[fieldId].result) {
-              this.paramParentValues[fieldId] = paramsValues[fieldId].result;
+        const fieldValue = paramsValues[fieldId];
+        if (fieldValue.result) {
+          this.paramValues[fieldId] = fieldValue.result;
+          if (fieldValue.parentConfigurationParameters !== undefined) {
+            if (fieldValue.parentConfigurationParameters !== null) {
+              if (fieldValue.configurationParameter === null) {
+                this.paramValues[fieldId].inheritedValue = true;
+                console.log("inh", paramsValues[fieldId]);
+              } else {
+                if (fieldValue.parentConfigurationParameters !== fieldValue.configurationParameter) {
+                  this.paramValues[fieldId].overrideValue = true;
+                }
+              }
             }
           }
         }

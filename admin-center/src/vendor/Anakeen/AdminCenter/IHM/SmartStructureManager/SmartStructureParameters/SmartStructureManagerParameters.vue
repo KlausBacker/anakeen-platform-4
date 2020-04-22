@@ -7,6 +7,7 @@
       :config="generateSmartForm"
       :options="{ force: true }"
       @beforeSave="onSave"
+      @actionClick="onActionClick"
     />
     <div v-else class="no-records">
       <div class="empty-ssm-grid">
