@@ -65,16 +65,22 @@ export default class UserParametersController extends Vue {
 
         // Datasource set to display the users in a grid
         dataSource: {
-          pageSize: 10,
           schema: {
             data: response => response.data.data.users,
             total: response => response.data.data.total
+          },
+          pageable: {
+            pageSize: 50,
+            pageSizes: [50, 100, 200]
           },
           serverPaging: true,
           transport: {
             read: options => {
               this.$http
-                .get("api/v2/admin/parameters/users/")
+                .get("api/v2/admin/parameters/users/", {
+                  params: options.data,
+                  paramsSerializer: kendo.jQuery.param
+                })
                 .then(options.success)
                 .catch(options.error);
             }
@@ -87,7 +93,8 @@ export default class UserParametersController extends Vue {
           noRows: "Search a user to modify his settings"
         },
         pageable: {
-          pageSize: 10
+          pageSize: 50,
+          pageSizes: [50, 100, 200]
         },
         resizable: false,
         selectable: "rows"
@@ -278,6 +285,11 @@ export default class UserParametersController extends Vue {
     // Set new DataSource
     this.actualLogin = dataItem.login;
     this.userParametersDataSource = new kendo.data.TreeListDataSource({
+      pageable: {
+        pageSize: 50,
+        pageSizes: [50, 100, 200]
+      },
+      serverPaging: true,
       schema: {
         data: response => response.data.data
       },
@@ -377,7 +389,10 @@ export default class UserParametersController extends Vue {
     const user = $(".user-search-input", this.$el).val();
     if (user.trim()) {
       const usersDataSource = new kendo.data.DataSource({
-        pageSize: 10,
+        pageable: {
+          pageSize: 50,
+          pageSizes: [50, 100, 200]
+        },
         schema: {
           data: response => response.data.data.users,
           total: response => response.data.data.total
@@ -396,7 +411,10 @@ export default class UserParametersController extends Vue {
     }
     if (this.inputSearchValue === "") {
       const usersDataSource = new kendo.data.DataSource({
-        pageSize: 10,
+        pageable: {
+          pageSize: 50,
+          pageSizes: [50, 100, 200]
+        },
         schema: {
           data: response => response.data.data.users,
           total: response => response.data.data.total
@@ -405,7 +423,10 @@ export default class UserParametersController extends Vue {
         transport: {
           read: options => {
             this.$http
-              .get("api/v2/admin/parameters/users/")
+              .get("api/v2/admin/parameters/users/", {
+                params: { skip: 0, take: 50, page: 1, pageSize: 50 },
+                paramsSerializer: kendo.jQuery.param
+              })
               .then(options.success)
               .catch(options.error);
           }
@@ -537,16 +558,22 @@ export default class UserParametersController extends Vue {
     $(".user-search-input", this.$el).val("");
 
     const usersDataSource = new kendo.data.DataSource({
-      pageSize: 10,
+      pageable: {
+        pageSize: 50,
+        pageSizes: [50, 100, 200]
+      },
+      serverPaging: true,
       schema: {
         data: response => response.data.data.users,
         total: response => response.data.data.total
       },
-      serverPaging: true,
       transport: {
         read: options => {
           this.$http
-            .get("api/v2/admin/parameters/users/")
+            .get("api/v2/admin/parameters/users/", {
+              params: { skip: 0, take: 50, page: 1, pageSize: 50 },
+              paramsSerializer: kendo.jQuery.param
+            })
             .then(options.success)
             .catch(options.error);
         }
