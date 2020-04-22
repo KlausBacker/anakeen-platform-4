@@ -40,6 +40,11 @@ export default {
       textBoxOperators: ["~*", "!~*"]
     };
   },
+  watch: {
+    dateMode(newValue) {
+      $(this.$refs.funcButton).toggleClass("func-button-clicked", !newValue);
+    }
+  },
   computed: {
     isTextBox() {
       return this.textBoxOperators.indexOf(this.operator) !== -1;
@@ -48,7 +53,7 @@ export default {
   methods: {
     isValid() {
       let valid;
-      if (this.isTextBox){
+      if (this.isTextBox) {
         valid = this.$refs.keywordsDateTextBoxWrapper.value !== "";
       } else {
         if (this.dateMode) {
@@ -96,7 +101,6 @@ export default {
     onFuncButtonClick() {
       this.dateMode = !this.dateMode;
       this.dateMode ? this.onDateChange() : this.onFuncChange();
-      $(this.$refs.funcButton).toggleClass("func-button-clicked");
     },
     initData() {
       if (this.initValue) {
@@ -104,20 +108,25 @@ export default {
           $(this.$refs.keywordsDateTextBoxWrapper).val(this.initValue);
         } else {
           let methodInitValue;
-          for (let prop in this.methods) {
-            if (Object.prototype.hasOwnProperty.call(this.methods, prop)) {
-              const propMethodValue = this.methods[prop].method;
-              if (propMethodValue === this.initValue) {
-                methodInitValue = propMethodValue;
-              }
-            }
+          // Check if it's method or date
+          const checkDate = Date.parse(this.initValue);
+          if (isNaN(checkDate)) {
+            // It's not a valid date string, so it's method
+            methodInitValue = this.initValue;
           }
 
           if (methodInitValue) {
             this.dateMode = false;
-            this.methodsComboBox.select(function(item) {
-              return item.method === methodInitValue;
-            });
+            const existingMethod = this.methods.filter(m => m.method === methodInitValue);
+            if (existingMethod && existingMethod.length) {
+              // If it's provided method, select it
+              this.methodsComboBox.select(function(item) {
+                return item.method === methodInitValue;
+              });
+            } else {
+              // If it's custom method, set value
+              this.methodsComboBox.value(methodInitValue);
+            }
           } else {
             this.datePicker.value(this.initValue);
           }

@@ -12,7 +12,8 @@ export default {
   extends: BaseComponent,
   props: {
     field: Object,
-    initValue: ""
+    initValue: String,
+    operatorsList: Array
   },
   data() {
     return {
@@ -47,18 +48,20 @@ export default {
       this.onValueChange();
     },
     buildDropdownList: function() {
-      this.dropdownList = $(this.$refs.functionsWrapper)
-        .kendoDropDownList({
-          dataSource: this.operators,
-          dataTextField: "opTitle",
-          dataValueField: "opId",
-          template: '<span class="k-state-default">#= opTitle #</span>',
-          valueTemplate: "<span> #= opTitle# </span>",
-          index: 0,
-          change: this.onValueChange
-        })
-        .data("kendoDropDownList");
-      this.selectInitValue();
+      if (this.$refs.functionsWrapper) {
+        this.dropdownList = $(this.$refs.functionsWrapper)
+          .kendoDropDownList({
+            dataSource: this.operators,
+            dataTextField: "opTitle",
+            dataValueField: "opId",
+            template: '<span class="k-state-default">#= opTitle #</span>',
+            valueTemplate: "<span> #= opTitle# </span>",
+            index: 0,
+            change: this.onValueChange
+          })
+          .data("kendoDropDownList");
+        this.selectInitValue();
+      }
     },
     buildComponent() {
       let that = this;
@@ -101,18 +104,20 @@ export default {
       }
     }
   },
-  created() {
-    let that = this;
-    $.getJSON("/api/v2/smartstructures/dsearch/operators/", function requestOperatorsSReady(data) {
-      $.each(data.data, function eachDataOperatorsSReady(key, value) {
-        that.allOperators.push(value);
-      });
-      if (that.field) {
-        that.buildComponent();
-      }
-    });
-  },
   watch: {
+    operatorsList: {
+      immediate: true,
+      handler: function(newValue) {
+        if (newValue && Array.isArray(newValue)) {
+          newValue.forEach(value => {
+            this.allOperators.push(value);
+          });
+        }
+        if (this.field) {
+          this.buildComponent();
+        }
+      }
+    },
     field: function(newValue) {
       if (newValue && this.allOperators.length) {
         this.operators = [];

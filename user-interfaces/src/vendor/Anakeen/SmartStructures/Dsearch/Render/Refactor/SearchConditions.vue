@@ -1,5 +1,5 @@
 <template>
-  <div class="conditions-wrapper">
+  <div class="conditions-wrapper" ref="wrapper">
     <div class="conditions-enum" ref="conditionEnum">
       <div class="input-group margin-bottom-sm">
         <div class="k-textbox condition-type-wrapper">
@@ -56,18 +56,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(condition, index) in conditions">
+          <tr v-for="(condition, index) in conditions" :key="condition.uid">
             <td class="conditions-table-delete-condition">
               <button class="btn btn-default btn-xs" :data-row="index" @click="deleteCondition($event, index)">
                 <span class="fa fa-trash-o"></span>
               </button>
             </td>
-            <td v-for="column in columns" v-show="column.visible">
+            <td v-for="column in columns" v-show="column.visible" :key="column.name + index">
               <component
                 :is="column.componentName"
                 :name="column.name"
                 :row="index"
-                :key="column.name + index"
                 @valueChange="updateConditions"
                 v-bind="condition[column.name]"
               ></component>
