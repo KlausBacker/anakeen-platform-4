@@ -12,8 +12,9 @@ use Anakeen\Router\ApiV2Response;
  */
 class PreloadUsers
 {
-    protected $page;
-    protected $take;
+    const PAGESIZE = 50;
+    private $take = self::PAGESIZE;
+    private $skip = 0;
 
     /**
      * Return 5 users from the server, to pre-load a list of users
@@ -26,7 +27,7 @@ class PreloadUsers
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $this->initParameters($request);
-        $return = $this->getUsers($this->page, $this->take);
+        $return = $this->getUsers($this->skip, $this->take);
         return ApiV2Response::withData($response, $return);
     }
 
@@ -37,18 +38,18 @@ class PreloadUsers
      */
     private function initParameters(\Slim\Http\request $request)
     {
-        $this->page = $request->getQueryParam("page");
-        $this->take = $request->getQueryParam("take");
+        $this->take = intval($request->getQueryParam("take", self::PAGESIZE));
+        $this->skip = intval($request->getQueryParam("skip", 0));
     }
 
     /**
      * Get requested users from database
      *
-     * @param $page
+     * @param $skip
      * @param $take
      * @return array
      */
-    private function getUsers($page, $take)
+    private function getUsers($skip, $take)
     {
         $searchAccount = new \Anakeen\Accounts\SearchAccounts();
         $searchAccount->setTypeFilter(\Anakeen\Accounts\SearchAccounts::userType);
@@ -64,11 +65,10 @@ class PreloadUsers
                 "lastname" => $currentAccount->lastname
             ];
         }
-
-        $return["users"] = array_slice(array_values($result), ($page - 1) * $take, $take);
+        $return["users"] = array_slice(array_values($result), $skip, $take);
         $return["total"] = sizeof($result);
         $return["take"] = $take;
-        $return["page"] = $page;
+        $return["skip"] = $skip;
 
         return $return;
     }
