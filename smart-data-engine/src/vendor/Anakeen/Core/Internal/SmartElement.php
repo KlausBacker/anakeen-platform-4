@@ -1633,8 +1633,13 @@ create unique index i_docir on doc(initid, revision);";
         }
 
         if (is_array($r)) {
-             $r=Postgres::arrayToString($r);
+            if (empty($r)) {
+                $r='{}';
+            } else {
+                $r = Postgres::arrayToString($r);
+            }
         }
+
         $this->_paramValue[$idp] = $r;
         return $r;
     }
