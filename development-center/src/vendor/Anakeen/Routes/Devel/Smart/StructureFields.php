@@ -65,46 +65,10 @@ class StructureFields
     {
         $fromids = $family->getFromDoc();
 
-        $parents = $ancestrors = [];
-        foreach ($fromids as $parentId) {
-            $docParent = SEManager::getFamily($parentId);
-            if ($docParent->id != $family->id) {
-                $parents[$docParent->id] = array(
-                    'id' => $docParent->id,
-                    "name" => $docParent->name,
-                    "title" => $docParent->getTitle(),
-                    "icon" => $docParent->getIcon("", 16)
-                );
-                $ancestrors[$docParent->name] = $docParent;
-            }
-        }
-        $parentStructure = null;
-        if ($family->fromid) {
-            $parentStructure = SEManager::getFamily($family->fromid);
-        }
-
-        $ancestrors = array_reverse($ancestrors, true);
-        $sql = sprintf(
-            "select * from docattr where docid in (%s) and {$this->sqlFilter} and type != 'menu' and id !~ '^:' order by ordered",
-            implode(',', $fromids)
-        );
-        $dbAttrs = [];
-        DbManager::query($sql, $dbAttrs);
-        $sql = sprintf(
-            "select * from docattr where docid in (%s) and {$this->sqlFilter} and id ~ '^:' order by ordered",
-            implode(',', $fromids)
-        );
-        DbManager::query($sql, $dbModAttr);
-
-        foreach ($dbAttrs as $k => $v) {
-            $dbAttrs[$v["id"]] = $v;
-            unset($dbAttrs[$k]);
-        }
-        $oDocAttr = new SmartStructure\DocAttr();
+        $attrData = [];
         $oAttrs = $family->getAttributes();
         $family->attributes->orderAttributes(true);
 
-        $relativeOrder = 0;
         /**
          * @var SmartStructure\NormalAttribute $oa
          */
@@ -156,20 +120,76 @@ class StructureFields
             if ($attrDatum["format"]) {
                 $attrDatum["type"] .= "(\"" . $attrDatum["format"] . "\")";
             }
+            if (strlen($attrDatum["phpfunc"]) > 2) {
+                $attrDatum["computed"] = $attrDatum["phpfunc"];
+            }
             unset($attrDatum["optionValues"]["relativeOrder"]);
 
 
-            $attrData[] = $attrDatum;
-
-            /*
-             * @TODO overrides
-                        $attrDatum["overrides"]["isAbstract"] = [
-                            "before" => $dbAttr["overrides"]["abstract"]["before"] === "Y",
-                            "after" => $dbAttr["overrides"]["abstract"]["after"] === "Y"
-                        ];
-                         */
+            $attrData[$oa->id] = $attrDatum;
         }
-        return $attrData;
+
+        /**
+         * =================
+         * Add override part
+         */
+        $sql = sprintf(
+            "select * from docattr where docid = %d and {$this->sqlFilter} and id ~ '^:' order by ordered",
+            $family->id
+        );
+        DbManager::query($sql, $dbModAttr);
+        $sql = sprintf(
+            "select * from docattr where docid in (%s) and {$this->sqlFilter} and type != 'menu' and id !~ '^:' order by docid",
+            implode(',', $fromids)
+        );
+        DbManager::query($sql, $originAllAttr);
+        $originValues = [];
+        foreach ($originAllAttr as $originalAttr) {
+            $originValues[$originalAttr["id"]] = $originalAttr;
+        }
+        foreach ($dbModAttr as $modAttrRow) {
+            $fieldId = substr($modAttrRow["id"], 1);
+            foreach ($modAttrRow as $col => $modValue) {
+                if ($modValue) {
+                    $attrData[$fieldId]["declaration"] = "overrided";
+                    switch ($col) {
+                        case "title":
+                            $attrData[$fieldId]["overrides"]["isTitle"] = [];
+                            break;
+                        case "abstract":
+                            $attrData[$fieldId]["overrides"]["isAbstract"] = [];
+                            break;
+                        case "needed":
+                            $attrData[$fieldId]["overrides"]["isNeeded"] = [];
+                            break;
+                        case "frameid":
+                            $attrData[$fieldId]["overrides"]["parentId"] = [
+                                "before" => $originValues[$fieldId][$col],
+                                "after" => $attrData[$fieldId]["parentId"]
+                            ];
+                            break;
+                        case "phpfunc":
+                            $attrData[$fieldId]["overrides"]["computed"] = [
+                                "before" => $originValues[$fieldId][$col],
+                                "after" => $attrData[$fieldId][$col]
+                            ];
+                            break;
+                        case "options":
+                        case "ordered":
+                        case "accessibility":
+                        case "labeltext":
+                        case "phpconstraint":
+                            $attrData[$fieldId]["overrides"][$col] = [
+                                "before" => $originValues[$fieldId][$col],
+                                "after" => $attrData[$fieldId][$col]
+                            ];
+                            break;
+                    }
+                }
+            }
+        }
+
+        return array_values($attrData);
     }
 
     protected function checkAttribute(SmartStructure\BasicAttribute $oa)
