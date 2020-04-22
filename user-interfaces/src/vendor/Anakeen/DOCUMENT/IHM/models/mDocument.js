@@ -62,13 +62,37 @@ export default Backbone.Model.extend({
     var currentMethod = this.get("currentHttpMethod");
     var revision = this.get("revision");
 
-    if (this.get("creationFamid") && this.id === null) {
-      urlData += "smart-elements/" + encodeURIComponent(this.get("creationFamid"));
-      if (this.get("renderMode") === "edit") {
-        viewId = "!defaultCreation";
+    //There is no view so we add default view
+    if (viewId === undefined) {
+      if (this.get("renderMode") === "view" || currentMethod === "delete") {
+        //In consultation
+        viewId = "!defaultConsultation";
+      } else if (this.get("renderMode") === "edit") {
+        //In edition
+        viewId = "!defaultEdition";
+      } else {
+        //Last chance so we fallback in consultation
+        viewId = "!defaultConsultation";
       }
-      urlData += "/views/" + encodeURIComponent(viewId);
+    }
+
+    //We are in the special case of a creation
+    if (this.get("creationFamid") && this.id === null) {
+      if (currentMethod === "read") {
+        //There is no defaultConsultation in creation but a defaultCreation sic
+        if (viewId === "!defaultConsultation") {
+          viewId = "!defaultCreation";
+        }
+        urlData += `smart-elements/${encodeURIComponent(this.get("creationFamid"))}/views/${encodeURIComponent(
+          viewId
+        )}`;
+      }
+      if (currentMethod === "create") {
+        //We finally are in creation ! So we register the creation of the smart element url
+        urlData += "smart-structures/" + encodeURIComponent(this.get("creationFamid")) + "/smartElementCreation/";
+      }
     } else {
+      //We are in the general case (not in creation)
       urlData += "smart-elements/" + encodeURIComponent(this.id);
       //Don't add revision for the deletion of a alive document
       if (revision !== null && currentMethod !== "delete") {
@@ -78,24 +102,17 @@ export default Backbone.Model.extend({
           urlData += "/revisions/" + encodeURIComponent(revision);
         }
       }
-      if (viewId === undefined) {
-        if (this.get("renderMode") === "view" || currentMethod === "delete") {
-          viewId = "!defaultConsultation";
-        } else if (this.get("renderMode") === "edit") {
-          viewId = "!defaultEdition";
-        } else {
-          viewId = "!defaultConsultation";
-        }
-      }
       if (currentMethod === "delete" && this.get("renderMode") === "edit") {
         viewId = "!defaultConsultation";
       }
       urlData += "/views/" + encodeURIComponent(viewId);
     }
 
+    //We add eventual custom data
     if (!_.isEmpty(customClientData) && (currentMethod === "read" || currentMethod === "delete")) {
       urlData += "?customClientData=" + encodeURIComponent(JSON.stringify(customClientData));
     }
+
     return urlData;
   },
 
