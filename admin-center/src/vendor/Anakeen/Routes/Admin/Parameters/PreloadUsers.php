@@ -40,7 +40,6 @@ class PreloadUsers
     {
         $this->take = intval($request->getQueryParam("take", self::PAGESIZE));
         $this->skip = intval($request->getQueryParam("skip", 0));
-
     }
 
     /**
