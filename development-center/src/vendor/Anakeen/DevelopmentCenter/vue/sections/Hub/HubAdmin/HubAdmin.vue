@@ -54,7 +54,7 @@
           </div>
         </template>
         <template slot="right">
-          <smart-element ref="smartConfig" class="hub-modal"></smart-element>
+          <smart-element @smartElementMounted="listenSmartElement" ref="smartConfig" class="hub-modal"></smart-element>
         </template>
       </ank-splitter>
     </section>
