@@ -103,13 +103,6 @@ export default {
       ];
     }
   },
-  watch: {
-    allOperators(newValue) {
-      this.conditions.forEach(c => {
-        c.functions.operatorsList = newValue;
-      });
-    }
-  },
   created() {
     this.$on("localeLoaded", this.initTranslation);
     const that = this;

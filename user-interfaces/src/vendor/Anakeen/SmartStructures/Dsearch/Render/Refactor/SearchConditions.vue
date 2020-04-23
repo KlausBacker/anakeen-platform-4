@@ -69,6 +69,7 @@
                 :row="index"
                 @valueChange="updateConditions"
                 v-bind="condition[column.name]"
+                :operators-list="allOperators"
               ></component>
             </td>
           </tr>

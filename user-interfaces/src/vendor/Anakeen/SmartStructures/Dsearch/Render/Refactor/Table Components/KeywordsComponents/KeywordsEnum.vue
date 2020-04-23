@@ -23,6 +23,7 @@
 </template>
 <script>
 import "@progress/kendo-ui/js/kendo.combobox";
+import $ from "jquery";
 
 export default {
   name: "condition-table-keywords-enum",

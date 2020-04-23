@@ -2,20 +2,20 @@
   <div class="condition-table-keywords-date-group">
     <div v-show="isTextBox" class="condition-table-keywords-date-textbox">
       <input
+        ref="keywordsDateTextBoxWrapper"
         type="text"
         class="condition-table-keywords-date-textbox k-textbox"
-        ref="keywordsDateTextBoxWrapper"
         @change="onInputChange"
       />
     </div>
     <div v-show="!isTextBox" class="condition-table-keywords-date-datepicker">
       <div v-show="dateMode" class="condition-table-keywords-date-mode">
-        <input class="condition-table-keywords-date-picker" ref="keywordsDateWrapper" />
+        <input ref="keywordsDateWrapper" class="condition-table-keywords-date-picker" />
       </div>
       <div v-show="!dateMode" class="condition-table-keywords-date-datepicker">
-        <div class="condition-table-keywords-date-function" ref="keywordsDateFunctionWrapper"></div>
+        <div ref="keywordsDateFunctionWrapper" class="condition-table-keywords-date-function"></div>
       </div>
-      <button class="condition-table-keywords-date-funcBtn" ref="funcButton" @click="onFuncButtonClick">Σ</button>
+      <button ref="funcButton" class="condition-table-keywords-date-funcBtn" @click="onFuncButtonClick">Σ</button>
     </div>
   </div>
 </template>
@@ -23,9 +23,10 @@
 import "@progress/kendo-ui/js/kendo.datepicker";
 import "@progress/kendo-ui/js/kendo.combobox";
 import "@progress/kendo-ui/js/kendo.button";
+import $ from "jquery";
 
 export default {
-  name: "condition-table-keywords-date",
+  name: "ConditionTableKeywordsDate",
   props: {
     operator: "",
     methods: null,
@@ -40,15 +41,42 @@ export default {
       textBoxOperators: ["~*", "!~*"]
     };
   },
+  computed: {
+    isTextBox() {
+      return this.textBoxOperators.indexOf(this.operator) !== -1;
+    }
+  },
   watch: {
     dateMode(newValue) {
       $(this.$refs.funcButton).toggleClass("func-button-clicked", !newValue);
     }
   },
-  computed: {
-    isTextBox() {
-      return this.textBoxOperators.indexOf(this.operator) !== -1;
-    }
+  mounted() {
+    this.funcButton = $(this.$refs.funcButton)
+      .kendoButton()
+      .data("kendoButton");
+    this.datePicker = $(this.$refs.keywordsDateWrapper)
+      .kendoDatePicker({
+        parseFormats: ["yyyy-MM-dd"],
+        format: null, // standard format depends of the user's langage
+        /* trigger a fonction that change the value of the date from the displayValue according to ISO 8601 */
+        change: () => this.onDateChange()
+      })
+      .data("kendoDatePicker");
+    this.methodsComboBox = $(this.$refs.keywordsDateFunctionWrapper)
+      .kendoComboBox({
+        width: 200,
+        filter: "contains",
+        clearButton: false,
+        minLength: 0,
+        dataValueField: "method",
+        dataTextField: "label",
+        template: "#: label #",
+        change: () => this.onFuncChange(),
+        dataSource: this.methods
+      })
+      .data("kendoComboBox");
+    this.initData();
   },
   methods: {
     isValid() {
@@ -138,33 +166,6 @@ export default {
       this.methodsComboBox.value("");
       $(this.$refs.keywordsDateTextBoxWrapper).val("");
     }
-  },
-  mounted() {
-    this.funcButton = $(this.$refs.funcButton)
-      .kendoButton()
-      .data("kendoButton");
-    this.datePicker = $(this.$refs.keywordsDateWrapper)
-      .kendoDatePicker({
-        parseFormats: ["yyyy-MM-dd"],
-        format: null, // standard format depends of the user's langage
-        /* trigger a fonction that change the value of the date from the displayValue according to ISO 8601 */
-        change: () => this.onDateChange()
-      })
-      .data("kendoDatePicker");
-    this.methodsComboBox = $(this.$refs.keywordsDateFunctionWrapper)
-      .kendoComboBox({
-        width: 200,
-        filter: "contains",
-        clearButton: false,
-        minLength: 0,
-        dataValueField: "method",
-        dataTextField: "label",
-        template: "#: label #",
-        change: () => this.onFuncChange(),
-        dataSource: this.methods
-      })
-      .data("kendoComboBox");
-    this.initData();
   }
 };
 </script>

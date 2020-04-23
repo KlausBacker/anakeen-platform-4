@@ -6,14 +6,14 @@
 <script>
 import "@progress/kendo-ui/js/kendo.dropdownlist";
 import BaseComponent from "./ConditionTableBaseComponent.vue";
+import $ from "jquery";
 
 export default {
   name: "condition-table-functions",
   extends: BaseComponent,
   props: {
     field: Object,
-    initValue: String,
-    operatorsList: Array
+    initValue: String
   },
   data() {
     return {
