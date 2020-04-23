@@ -95,24 +95,35 @@ class StructureFields
                 "parentId" => ($oa->fieldSet && $oa->fieldSet->id !== SmartStructure\Attributes::HIDDENFIELD) ? $oa->fieldSet->id : null,
                 "labeltext" => $oa->getLabel(),
                 "type" => $oa->type,
-                "format" => $oa->format,
+                "format" => null,
                 "ordered" => $oa->ordered,
                 "accessibility" => SmartStructure\FieldAccessManager::getTextAccess($oa->access),
                 "declaration" => $oa->getOption("autotitle") ? "bycode" : "static",
                 "displayOrder" => $oa->ordered,
-                "isAbstract" => $oa->isInAbstract,
-                "isNeeded" => $oa->needed,
-                "isTitle" => $oa->isInTitle,
-                "link" => $oa->link,
+                "isAbstract" => null,
+                "isNeeded" => null,
+                "isTitle" => null,
+                "link" => null,
                 "optionValues" => $oa->getOptions(),
-                "phpconstraint" => $oa->phpconstraint,
-                "phpfile" => $oa->phpfile,
+                "phpconstraint" => null,
+                "phpfile" => null,
 
-                "phpfunc" => $oa->phpfunc,
+                "phpfunc" => null,
                 "properties" => $oa->properties ? json_decode(json_encode($oa->properties), true) : null,
                 "simpletype" => $oa->type,
                 "structure" => SEManager::getNameFromId($oa->structureId),
             ];
+            if ($oa->isNormal) {
+                $attrDatum  ["format"] = $oa->format;
+                $attrDatum  ["isAbstract"] = $oa->isInAbstract;
+                $attrDatum  ["isNeeded"] = $oa->needed;
+                $attrDatum  ["isTitle"] = $oa->isInTitle;
+                $attrDatum  ["link"] = $oa->link;
+                $attrDatum  ["phpconstraint"] = $oa->phpconstraint;
+                $attrDatum  ["phpfile"] = $oa->phpfile;
+                $attrDatum  ["phpfunc"] = $oa->phpfunc;
+            }
+
             if (!empty($attrDatum["properties"]["autocomplete"])) {
                 $attrDatum["autocomplete"] = $attrDatum["properties"]["autocomplete"];
                 unset($attrDatum["properties"]["autocomplete"]);
