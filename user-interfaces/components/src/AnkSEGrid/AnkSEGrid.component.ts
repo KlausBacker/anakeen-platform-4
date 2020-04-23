@@ -420,35 +420,6 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
       this.refreshGrid();
     }
   }
-
-  // @Watch("$props", { deep: true })
-  // protected async onPropsChange(newValue, oldValue): Promise<void> {
-  //   if (newValue.pageable !== this.pager) {
-  //     this.pager = newValue.pageable === true ? DEFAULT_PAGER : newValue.pageable;
-  //   }
-  //   if (newValue.sortable !== this.sorter) {
-  //     this.sorter = newValue.sortable === true ? DEFAULT_SORT : newValue.sortable;
-  //   }
-  //   // apply sort prop change
-  //   if (this.currentSort !== newValue.sort) {
-  //     this.currentSort = newValue.sort;
-  //   }
-  //
-  //   // apply page prop change
-  //   const skip = computeSkipFromPage(newValue.page, this.currentPage.take);
-  //   if (this.currentPage.skip !== skip) {
-  //     this.currentPage.skip = skip;
-  //   }
-  //
-  //   // apply filter prop change
-  //   if (this.currentFilter !== newValue.filter) {
-  //     this.currentFilter = newValue.filter;
-  //   }
-  //
-  //   // apply general changes
-  //   return await this.refreshGrid();
-  // }
-
   @Watch("isLoading", { immediate: true })
   protected onLoadingChange(newValue): void {
     kendo.ui.progress($(".smart-element-grid-widget", this.$el), !!newValue);
