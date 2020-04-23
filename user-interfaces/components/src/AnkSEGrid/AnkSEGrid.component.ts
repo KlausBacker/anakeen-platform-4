@@ -368,14 +368,14 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   };
 
   @Watch("sort", { deep: true })
-  public watchSort(newValue) {
+  public watchSort(newValue): void {
     if (this.currentSort !== newValue) {
       this.currentSort = newValue;
       this.refreshGrid();
     }
   }
   @Watch("pageable", { deep: true })
-  public watchPageable(newValue) {
+  public watchPageable(newValue): void {
     if (newValue === true) {
       this.pager = DEFAULT_PAGER;
       this.refreshGrid();
@@ -399,14 +399,14 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     }
   }
   @Watch("sortable", { deep: true })
-  public watchSortable(newValue) {
+  public watchSortable(newValue): void {
     if (this.sorter !== newValue) {
       this.sorter = newValue === true ? DEFAULT_SORT : newValue;
       this.refreshGrid();
     }
   }
   @Watch("page", { deep: true })
-  public watchPage(newValue) {
+  public watchPage(newValue): void {
     const skip = computeSkipFromPage(newValue, this.currentPage.take);
     if (this.currentPage.skip !== skip) {
       this.currentPage.skip = skip;
@@ -414,7 +414,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     }
   }
   @Watch("filter", { deep: true })
-  public watchFilter(newValue) {
+  public watchFilter(newValue): void {
     if (this.currentFilter !== newValue) {
       this.currentFilter = newValue;
       this.refreshGrid();
