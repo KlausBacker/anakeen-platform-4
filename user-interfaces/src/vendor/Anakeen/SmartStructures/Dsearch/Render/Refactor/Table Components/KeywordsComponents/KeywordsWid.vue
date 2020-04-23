@@ -3,6 +3,7 @@
 </template>
 <script>
 import "@progress/kendo-ui/js/kendo.combobox";
+import $ from "jquery";
 
 export default {
   name: "condition-table-keywords-wid",
@@ -36,7 +37,6 @@ export default {
         this.comboBox.select(function(item) {
           return item.id === that.initValue;
         });
-        this.initValue = "";
       }
     },
     clearData() {
@@ -99,6 +99,7 @@ export default {
     this.comboBox = $(this.$refs.keywordsWidWrapper)
       .kendoComboBox({
         width: 200,
+        value: this.initValue,
         filter: "contains",
         clearButton: false,
         minLength: 0,
@@ -108,7 +109,7 @@ export default {
         change: this.onComboBoxChange
       })
       .data("kendoComboBox");
-    this.comboBox.one("open", this.fetchData);
+    this.fetchData();
   },
   watch: {
     famid: function() {

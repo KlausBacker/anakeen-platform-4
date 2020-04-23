@@ -30,11 +30,11 @@ export default {
   },
   data() {
     return {
-      wf: Object,
+      wf: null,
       fieldOptions: [],
       comboBox: null,
-      tooltip: Object,
-      selectedField: Object,
+      tooltip: null,
+      selectedField: null,
       errorClass: ""
     };
   },
@@ -44,6 +44,20 @@ export default {
       this.comboBox.select(function(item) {
         return item.id === that.initValue;
       });
+    },
+    addSelectedItemParentLabel: function(comboBox) {
+      comboBox.input
+        .parent()
+        .find(".condition-table-fields--item-parent")
+        .remove();
+      const selectedValue = comboBox.value();
+      if (selectedValue) {
+        const item = this.fieldOptions.find(v => v.id === selectedValue);
+        if (item) {
+          const parentLabel = item.label_parent;
+          comboBox.input.parent().append(`<div class='condition-table-fields--item-parent'>${parentLabel}</div>`);
+        }
+      }
     },
     buildComboBox: function() {
       let that = this;
@@ -60,13 +74,15 @@ export default {
             data: this.fieldOptions,
             group: { field: "label_parent" }
           },
-          change: function() {
+          change: function(evt) {
+            // that.addSelectedItemParentLabel(evt.sender);
             that.onValueChange();
             that.checkValidity();
           }
         })
         .data("kendoComboBox");
       this.initData();
+      // this.addSelectedItemParentLabel(this.comboBox);
     },
     findIfWorkflow: function(data) {
       const $lastAttribute = data[data.length - 1];
@@ -203,9 +219,31 @@ export default {
   }
 };
 </script>
-<style>
+<style lang="scss">
 .condition-table-fields-combobox-wrapper {
   width: 100%;
+  .condition-table-fields--item-parent {
+    // Set same style as kendo group combobox label
+    color: #f1f1f1;
+    background: #353535;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0 0.5em;
+    font-size: 0.714rem;
+    line-height: 1rem;
+    text-transform: uppercase;
+    &::before {
+      display: block;
+      content: " ";
+      border-width: 0.5rem;
+      border-style: solid;
+      position: absolute;
+      left: -1rem;
+      bottom: 0;
+      border-color: #353535 #353535 transparent transparent;
+    }
+  }
 }
 
 .condition-table-fields.hasError {

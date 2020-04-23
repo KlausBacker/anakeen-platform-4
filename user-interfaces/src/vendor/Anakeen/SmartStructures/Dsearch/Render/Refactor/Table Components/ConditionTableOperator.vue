@@ -6,6 +6,7 @@
 <script>
 import "@progress/kendo-ui/js/kendo.dropdownlist";
 import BaseComponent from "./ConditionTableBaseComponent.vue";
+import $ from "jquery";
 
 export default {
   name: "condition-table-operator",
@@ -16,7 +17,10 @@ export default {
   data() {
     return {
       dropdownList: null,
-      data: [{ value: "and", displayValue: "et" }, { value: "or", displayValue: "ou" }]
+      data: [
+        { value: "and", displayValue: "et" },
+        { value: "or", displayValue: "ou" }
+      ]
     };
   },
   computed: {
@@ -55,7 +59,7 @@ export default {
       if (this.initValue) {
         let that = this;
         this.dropdownList.select(function(item) {
-          return (item.value = that.initValue);
+          return item.value === that.initValue;
         });
       } else {
         this.dropdownList.select(0);

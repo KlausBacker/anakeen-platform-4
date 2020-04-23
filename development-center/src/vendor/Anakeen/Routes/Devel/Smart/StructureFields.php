@@ -3,7 +3,6 @@
 namespace Anakeen\Routes\Devel\Smart;
 
 use Anakeen\Core\DbManager;
-use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\Settings;
 use Anakeen\Core\SmartStructure;
@@ -66,46 +65,10 @@ class StructureFields
     {
         $fromids = $family->getFromDoc();
 
-        $parents = $ancestrors = [];
-        foreach ($fromids as $parentId) {
-            $docParent = SEManager::getFamily($parentId);
-            if ($docParent->id != $family->id) {
-                $parents[$docParent->id] = array(
-                    'id' => $docParent->id,
-                    "name" => $docParent->name,
-                    "title" => $docParent->getTitle(),
-                    "icon" => $docParent->getIcon("", 16)
-                );
-                $ancestrors[$docParent->name] = $docParent;
-            }
-        }
-        $parentStructure = null;
-        if ($family->fromid) {
-            $parentStructure = SEManager::getFamily($family->fromid);
-        }
-
-        $ancestrors = array_reverse($ancestrors, true);
-        $sql = sprintf(
-            "select * from docattr where docid in (%s) and {$this->sqlFilter} and type != 'menu' and id !~ '^:' order by ordered",
-            implode(',', $fromids)
-        );
-        $dbAttrs = [];
-        DbManager::query($sql, $dbAttrs);
-        $sql = sprintf(
-            "select * from docattr where docid in (%s) and {$this->sqlFilter} and id ~ '^:' order by ordered",
-            implode(',', $fromids)
-        );
-        DbManager::query($sql, $dbModAttr);
-
-        foreach ($dbAttrs as $k => $v) {
-            $dbAttrs[$v["id"]] = $v;
-            unset($dbAttrs[$k]);
-        }
-        $oDocAttr = new SmartStructure\DocAttr();
+        $attrData = [];
         $oAttrs = $family->getAttributes();
         $family->attributes->orderAttributes(true);
 
-        $relativeOrder = 0;
         /**
          * @var SmartStructure\NormalAttribute $oa
          */
@@ -121,249 +84,123 @@ class StructureFields
                 $oa->options = preg_replace("/(relativeOrder=[a-zA-Z0-9_:]+)/", "", $oa->options);
             }
 
-            if (empty($dbAttrs[$oa->id]) || $oa->structureId != $family->id) {
-                if ($oa->id === SmartStructure\Attributes::HIDDENFIELD) {
-                    continue;
-                }
-                $oDocAttr->id = $oa->id;
-                $oDocAttr->type = $oa->type;
-                $oDocAttr->docid = $oa->structureId;
-                $oDocAttr->usefor = $oa->usefor;
-                $oDocAttr->ordered = $oa->ordered;
-                $oDocAttr->accessibility = SmartStructure\FieldAccessManager::getTextAccess($oa->access);
-                $oDocAttr->labeltext = $oa->labelText;
-                $oDocAttr->abstract = ($oa->isInAbstract) ? "Y" : "N";
-                $oDocAttr->title = ($oa->isInTitle) ? "Y" : "N";
-                $oDocAttr->needed = ($oa->needed) ? "Y" : "N";
-                $oDocAttr->frameid = ($oa->fieldSet->id != SmartStructure\Attributes::HIDDENFIELD) ? $oa->fieldSet->id : '';
-                $oDocAttr->link = $oa->link;
-                $oDocAttr->elink = $oa->elink;
-                $oDocAttr->options = $oa->options;
-                $oDocAttr->phpfile = $oa->phpfile;
-                $oDocAttr->phpfunc = $oa->phpfunc;
-                $oDocAttr->phpconstraint = $oa->phpconstraint;
 
-                $isCoded = empty($dbAttrs[$oa->id]);
-                $dbAttrs[$oa->id] = $oDocAttr->getValues();
-
-                if ($isCoded) {
-                    $dbAttrs[$oa->id]["declaration"] = "bycode";
-                } else {
-                    $dbAttrs[$oa->id]["declaration"] = "static";
-                }
-            } else {
-                $dbAttrs[$oa->id]["declaration"] = "static";
-                $currentType = $oa->type;
-                if (!empty($oa->format)) {
-                    $currentType .= '("' . $oa->format . '")';
-                }
-                if ($currentType != $dbAttrs[$oa->id]["type"]) {
-                    $dbAttrs[$oa->id]["overrides"][] = "type";
-                }
-
-                if (!empty($oa->ordered) && $oa->ordered != $dbAttrs[$oa->id]["ordered"]) {
-                    if (preg_match("/relativeOrder=([a-zA-Z0-9_:]+)/", $dbAttrs[$oa->id]["options"], $reg)) {
-                        $dbAttrs[$oa->id]["ordered"] = $reg[1];
-                        if ($oa->ordered !== $reg[1]) {
-                            $dbAttrs[$oa->id]["overrides"][] = "ordered";
-                        }
-                        $dbAttrs[$oa->id]["options"] = preg_replace(
-                            "/(relativeOrder=[a-zA-Z0-9_:]+)/",
-                            "",
-                            $dbAttrs[$oa->id]["options"]
-                        );
-                    }
-                } else {
-                    if (!empty($oa->ordered) && is_numeric($oa->ordered) && $ancestrors) {
-                        /**
-                         * @var SmartElement $ancestror
-                         */
-                        foreach ($ancestrors as $ancestror) {
-                            $parentOa = $ancestror->getAttribute($oa->id);
-                            if ($parentOa && $parentOa->getOption("relativeOrder")) {
-                                $dbAttrs[$oa->id]["ordered"] = $parentOa->getOption("relativeOrder");
-                                break;
-                            }
-                        }
-                    }
-                }
-                if ($oa->access != SmartStructure\FieldAccessManager::getRawAccess($dbAttrs[$oa->id]["accessibility"])) {
-                    $dbAttrs[$oa->id]["overrides"]["accessibility"] = [
-                        "before" => SmartStructure\FieldAccessManager::getTextAccess($parentStructure->getAttribute($oa->id)->access),
-                        "after" => SmartStructure\FieldAccessManager::getTextAccess($oa->access)
-                    ];
-                    $dbAttrs[$oa->id]["accessibility"] = SmartStructure\FieldAccessManager::getTextAccess($oa->access);
-                }
+            if ($oa->id === SmartStructure\Attributes::HIDDENFIELD) {
+                continue;
             }
 
 
-            if (isset($dbAttrs[$oa->id]["type"])) {
-                $dbAttrs[$oa->id]["simpletype"] = strtok($dbAttrs[$oa->id]["type"], "(");
-                $dbAttrs[$oa->id]["displayOrder"] = $relativeOrder++;
-            }
-            foreach ($dbModAttr as $modAttr) {
-                if ($modAttr["id"] === ":" . $oa->id && $modAttr["docid"] == $family->id) {
-                    $dbAttrs[$oa->id]["declaration"] = "overrided";
-                    $dbAttrs[$oa->id]["overrides"] = [];
-                    $types = [
-                        "labeltext" => "labelText",
-                        "ordered" => "ordered",
-                        "options" => "options",
-                        "link" => "link",
-                        "needed" => "needed",
-                        "frameid" => "frameid",
-                        "title" => "title",
-                        "abstract" => "abstract",
-                        "elink" => "elink",
-                        "phpfunc" => "phpfunc",
-                        "phpconstraint" => "phpconstraint",
-                        "phpfile" => "phpfile",
-                        "properties" => "properties"
-                    ];
-                    foreach ($types as $type => $oType) {
-                        if ($modAttr[$type]) {
-                            $parentField = $parentStructure->getAttribute($oa->id);
-                            $before = "";
-                            $after = "";
-                            if ($parentField) {
-                                if (property_exists($parentField, $oType)) {
-                                    $before = $parentField->$oType;
-                                } elseif ($oType === "frameid") {
-                                    $before = $parentField->fieldSet->id;
-                                }
-                            }
-                            switch ($type) {
-                                case "frameid":
-                                    $after = ($oa->fieldSet) ? $oa->fieldSet->id : "";
-                                    break;
-                                case "needed":
-                                    $after = $oa->needed ? "Y" : "N";
-                                    break;
-                                case "title":
-                                    if (is_a($oa, SmartStructure\NormalAttribute::class)) {
-                                        $after = $oa->isInTitle ? "Y" : "N";
-                                    }
-                                    break;
-                                case "abstract":
-                                    if (is_a($oa, SmartStructure\NormalAttribute::class)) {
-                                        $after = $oa->isInAbstract ? "Y" : "N";
-                                    }
-                                    break;
-                                case "labeltext":
-                                    $after = $oa->labelText;
-                                    $oType = "labeltext";
-                                    break;
-                                default:
-                                    if (property_exists($oa, $oType)) {
-                                        $after = $oa->$oType;
-                                    }
-                            }
+            $attrDatum = [
+                "id" => $oa->id,
+                "parentId" => ($oa->fieldSet && $oa->fieldSet->id !== SmartStructure\Attributes::HIDDENFIELD) ? $oa->fieldSet->id : null,
+                "labeltext" => $oa->getLabel(),
+                "type" => $oa->type,
+                "format" => null,
+                "ordered" => $oa->ordered,
+                "accessibility" => SmartStructure\FieldAccessManager::getTextAccess($oa->access),
+                "declaration" => $oa->getOption("autotitle") ? "bycode" : "static",
+                "displayOrder" => $oa->ordered,
+                "isAbstract" => null,
+                "isNeeded" => null,
+                "isTitle" => null,
+                "link" => null,
+                "optionValues" => $oa->getOptions(),
+                "phpconstraint" => null,
+                "phpfile" => null,
 
-                            if ($before !== $after) {
-                                $dbAttrs[$oa->id][$oType] = $after;
-                                $dbAttrs[$oa->id]["overrides"][$oType] = [
-                                    "before" => $before,
-                                    "after" => $after
-                                ];
-                            }
-                        }
+                "phpfunc" => null,
+                "properties" => $oa->properties ? json_decode(json_encode($oa->properties), true) : null,
+                "simpletype" => $oa->type,
+                "structure" => SEManager::getNameFromId($oa->structureId),
+            ];
+            if ($oa->isNormal) {
+                $attrDatum  ["format"] = $oa->format;
+                $attrDatum  ["isAbstract"] = $oa->isInAbstract;
+                $attrDatum  ["isNeeded"] = $oa->needed;
+                $attrDatum  ["isTitle"] = $oa->isInTitle;
+                $attrDatum  ["link"] = $oa->link;
+                $attrDatum  ["phpconstraint"] = $oa->phpconstraint;
+                $attrDatum  ["phpfile"] = $oa->phpfile;
+                $attrDatum  ["phpfunc"] = $oa->phpfunc;
+            }
+
+            if (!empty($attrDatum["properties"]["autocomplete"])) {
+                $attrDatum["autocomplete"] = $attrDatum["properties"]["autocomplete"];
+                unset($attrDatum["properties"]["autocomplete"]);
+            }
+            if ($attrDatum["format"]) {
+                $attrDatum["type"] .= "(\"" . $attrDatum["format"] . "\")";
+            }
+            if (strlen($attrDatum["phpfunc"]) > 2) {
+                $attrDatum["computed"] = $attrDatum["phpfunc"];
+            }
+            unset($attrDatum["optionValues"]["relativeOrder"]);
+
+
+            $attrData[$oa->id] = $attrDatum;
+        }
+
+        /**
+         * =================
+         * Add override part
+         */
+        $sql = sprintf(
+            "select * from docattr where docid = %d and {$this->sqlFilter} and id ~ '^:' order by ordered",
+            $family->id
+        );
+        DbManager::query($sql, $dbModAttr);
+        $sql = sprintf(
+            "select * from docattr where docid in (%s) and {$this->sqlFilter} and type != 'menu' and id !~ '^:' order by docid",
+            implode(',', $fromids)
+        );
+        DbManager::query($sql, $originAllAttr);
+        $originValues = [];
+        foreach ($originAllAttr as $originalAttr) {
+            $originValues[$originalAttr["id"]] = $originalAttr;
+        }
+        foreach ($dbModAttr as $modAttrRow) {
+            $fieldId = substr($modAttrRow["id"], 1);
+            foreach ($modAttrRow as $col => $modValue) {
+                if ($modValue) {
+                    $attrData[$fieldId]["declaration"] = "overrided";
+                    switch ($col) {
+                        case "title":
+                            $attrData[$fieldId]["overrides"]["isTitle"] = [];
+                            break;
+                        case "abstract":
+                            $attrData[$fieldId]["overrides"]["isAbstract"] = [];
+                            break;
+                        case "needed":
+                            $attrData[$fieldId]["overrides"]["isNeeded"] = [];
+                            break;
+                        case "frameid":
+                            $attrData[$fieldId]["overrides"]["parentId"] = [
+                                "before" => $originValues[$fieldId][$col],
+                                "after" => $attrData[$fieldId]["parentId"]
+                            ];
+                            break;
+                        case "phpfunc":
+                            $attrData[$fieldId]["overrides"]["computed"] = [
+                                "before" => $originValues[$fieldId][$col],
+                                "after" => $attrData[$fieldId][$col]
+                            ];
+                            break;
+                        case "options":
+                        case "ordered":
+                        case "accessibility":
+                        case "labeltext":
+                        case "phpconstraint":
+                            $attrData[$fieldId]["overrides"][$col] = [
+                                "before" => $originValues[$fieldId][$col],
+                                "after" => $attrData[$fieldId][$col]
+                            ];
+                            break;
                     }
                 }
             }
         }
 
-        unset($dbAttrs[SmartStructure\Attributes::HIDDENFIELD]);
-        foreach ($dbAttrs as & $attr) {
-            if (($attr["type"] === "tab" || $attr["type"] === "frame")) {
-                if (is_numeric($attr["ordered"])) {
-                    $attr["ordered"] = "";
-                }
-            }
-
-            if (!empty($attr["ordered"]) && !is_numeric($attr["ordered"])) {
-                $attr["options"] = preg_replace("/(relativeOrder=[a-zA-Z0-9_:]+)/", "", $attr["options"]);
-            }
-        }
-
-        uasort($dbAttrs, function ($a, $b) {
-            if ($a["displayOrder"] == $b["displayOrder"]) {
-                return 0;
-            }
-            if ($a["displayOrder"] > $b["displayOrder"]) {
-                return 1;
-            }
-            return -1;
-        });
-
-        $result = [];
-        foreach ($dbAttrs as $dbAttr) {
-            $dbAttr["isTitle"] = $dbAttr["title"] === 'Y';
-            $dbAttr["isAbstract"] = $dbAttr["abstract"] === 'Y';
-            $dbAttr["isNeeded"] = $dbAttr["needed"] === 'Y';
-
-            if (isset($dbAttr["overrides"]["title"])) {
-                $dbAttr["overrides"]["isTitle"] = [
-                    "before" => $dbAttr["overrides"]["title"]["before"] === "Y",
-                    "after" => $dbAttr["overrides"]["title"]["after"] === "Y"
-                ];
-                unset($dbAttr["overrides"]["title"]);
-            }
-            if (isset($dbAttr["overrides"]["abstract"])) {
-                $dbAttr["overrides"]["isAbstract"] = [
-                    "before" => $dbAttr["overrides"]["abstract"]["before"] === "Y",
-                    "after" => $dbAttr["overrides"]["abstract"]["after"] === "Y"
-                ];
-                unset($dbAttr["overrides"]["abstract"]);
-            }
-            if (isset($dbAttr["overrides"]["needed"])) {
-                $dbAttr["overrides"]["isNeeded"] = [
-                    "before" => $dbAttr["overrides"]["needed"]["before"] === "Y",
-                    "after" => $dbAttr["overrides"]["needed"]["after"] === "Y"
-                ];
-                unset($dbAttr["overrides"]["needed"]);
-            }
-            if (isset($dbAttr["overrides"]["frameid"])) {
-                $dbAttr["overrides"]["parentId"] = $dbAttr["overrides"]["frameid"];
-                unset($dbAttr["overrides"]["frameid"]);
-            }
-            if (isset($dbAttr["overrides"]["properties"])) {
-                if (!empty($dbAttr["overrides"]["properties"]["after"]->autocomplete)) {
-                    $dbAttr["overrides"]["autocomplete"] = [
-                        "before" => $dbAttr["overrides"]["properties"]["before"],
-                        "after" => $dbAttr["overrides"]["properties"]["after"]
-                    ];
-                }
-            }
-
-            $dbAttr["optionValues"] = SmartStructure\BasicAttribute::optionsToArray($dbAttr["options"] ?: '');
-            $dbAttr["structure"] = SEManager::getNameFromId($dbAttr["docid"]);
-            $dbAttr["parentId"] = $dbAttr["frameid"] ?: null;
-
-            if ($dbAttr["properties"] && !is_object($dbAttr["properties"])) {
-                $dbAttr["properties"] = json_decode($dbAttr["properties"], false);
-            }
-
-            unset($dbAttr["usefor"]);
-            unset($dbAttr["options"]);
-            unset($dbAttr["frameid"]);
-            unset($dbAttr["title"]);
-            unset($dbAttr["needed"]);
-            unset($dbAttr["abstract"]);
-            unset($dbAttr["elink"]);
-            unset($dbAttr["docid"]);
-            $result[] = $dbAttr;
-        }
-        foreach ($result as &$fieldData) {
-            if (!empty($fieldData["properties"]->autocomplete)) {
-                $fieldData["autocomplete"] = $fieldData["properties"]->autocomplete;
-            } elseif (strlen($fieldData["phpfile"]) > 2 && $fieldData["phpfunc"]) {
-                $fieldData["autocomplete"] = sprintf("[%s] : %s", $fieldData["phpfile"], $fieldData["phpfunc"]);
-            } elseif (strlen($fieldData["phpfunc"]) > 2) {
-                $fieldData["computed"] = $fieldData["phpfunc"];
-            }
-        }
-
-        return $result;
+        return array_values($attrData);
     }
 
     protected function checkAttribute(SmartStructure\BasicAttribute $oa)

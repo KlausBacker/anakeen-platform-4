@@ -30,13 +30,149 @@
       min-width: 40rem;
     }
 
-    .tree-view-part {
+    .grid-group-section {
       display: flex;
       flex-direction: column;
       height: 100%;
 
+      .k-grid-content {
+        overflow:auto;
+      }
+
+      .admin-account-group-header {
+        display: flex;
+        flex-basis: 3rem;
+        justify-content: space-between;
+      }
+      .group-expand {
+        display: flex;
+        align-items: center;
+
+      }
+
       * {
         min-height: 0;
+      }
+
+      .grouprow {
+        padding: 0;
+
+        .lastname {
+          flex: 1;
+          font-weight: bold;
+          word-break: break-word;
+        }
+
+        .groupinfo {
+          border-left: solid 1px grey;
+          padding: 0.25rem;
+          cursor: default;
+        }
+
+
+        .groupinfo[data-expanded=true] {
+          .account-badge {
+            &.group-count {
+              color: unset;
+              background-color: unset;
+            }
+
+            &::before {
+              display: none;
+            }
+          }
+           .group-expand {
+
+             visibility: hidden;
+           }
+        }
+
+        .groupinfo[data-expanded=false] {
+          .group-expand {
+          }
+
+        }
+
+        .group-expand {
+          width: 1.5rem;
+          cursor: pointer;
+          display: inline-block;
+          color: #157efb;
+
+          &:hover {
+            color: #c4c8de;
+          }
+
+          &::before {
+            font-family: "Material Icons";
+            content: "add_box";
+            font-size: 1.5rem;
+            vertical-align: middle;
+            display: inline-block;
+
+
+
+          }
+        }
+
+        .account-badge {
+          border-radius: 0.5rem;
+          padding-right: 0.5rem;
+          padding-left: 0.5rem;
+          min-width: 5rem;
+          height: 1.6rem;
+          text-align: right;
+          border: solid 1px #dedede;
+
+          &.user-count {
+
+            &::after {
+              font-family: "Material Icons";
+              content: "person";
+              vertical-align: top;
+
+            }
+          }
+
+          &.group-count {
+
+
+            &::after {
+              font-family: "Material Icons";
+              content: "group";
+              vertical-align: top;
+            }
+
+
+
+          }
+        }
+
+        .groupname {
+          display: flex;
+          flex-direction: row;
+        }
+      }
+
+      .k-grid {
+        display: flex !important;
+        flex-direction: column;
+        flex: 1;
+
+        .k-pager-wrap.k-pager-md .k-pager-info, .k-pager-wrap.k-pager-sm .k-pager-info {
+          display: flex;
+        }
+
+        .path {
+          font-style: italic;
+          word-break: break-word;
+        }
+
+        .k-grid-content {
+          tr:nth-child(odd) {
+            background-color: rgba(33, 37, 41, 0.03);;
+          }
+        }
       }
 
       .accountManager_treeViewPart_wrapper {
@@ -96,17 +232,34 @@
     flex: 1;
     overflow: hidden;
   }
+
+  .group-header {
+    padding: 0.375rem 2.5rem;
+    font-weight: bold;
+    min-width: 24rem;
+  }
+
+  .account-element-content {
+    height: 100%;
+    > .smart-element-wrapper {
+      height: 100%;
+      > .document {
+        height: 100%;
+        > .dcpDocument {
+
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+
+        }
+
+      }
+
+    }
+  }
 }
 
-.open-element-content {
-  height: 100% !important;
-}
 
-.k-treeview .k-in.k-state-selected {
-  border-color: #157efb;
-  background-color: #157efb;
-  color: white;
-}
 
 .k-grid-Consult {
   color: #157efb !important;
@@ -191,6 +344,10 @@
 
 .accountManager_contentPart_gridPart {
   height: 100%;
+
+  .k-pager-wrap.k-pager-md .k-pager-info, .k-pager-wrap.k-pager-sm .k-pager-info {
+    display: flex;
+  }
 }
 
 .accountManager_contentPart_gridPart .k-grid {

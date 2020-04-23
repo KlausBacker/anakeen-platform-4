@@ -524,14 +524,14 @@ class ImportAccounts
 
                 if ($groupAccount->setLoginName($parentLogin)) {
                     $group = new \Group();
-                    $group->setSyncAccount(false); // No sync for each grou, sync done at the end
+                    $group->setSyncAccount($this->needSyncAccounts === false); // No sync for each grou, sync done at the end
                     $group->idgroup = $groupAccount->id;
                     $group->iduser = $account->id;
                     $alreadyExists = ($group->preInsert() === "OK");
 
                     if (!$alreadyExists) {
                         $err = $group->add();
-                        $this->needSyncAccounts = true;
+                        // $this->needSyncAccounts = true;
                         $this->addToReport($account->login, "add$tagName", $err, $groupAccount->login, $parentNode);
                         if (!$err) {
                             $needUpdate[] = $groupAccount->fid;
@@ -540,13 +540,7 @@ class ImportAccounts
                         $this->addToReport($account->login, "already$tagName", "", $groupAccount->login, $parentNode);
                     }
                 } else {
-                    $this->addToReport(
-                        $account->login,
-                        "add $tagName",
-                        sprintf("$tagName reference %s not exists", $parentLogin),
-                        "",
-                        $parentNode
-                    );
+                    throw new Exception("ACCT0210", $parentLogin, $account->login);
                 }
             }
             if ($needUpdate) {

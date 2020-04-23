@@ -317,9 +317,8 @@ class RenderDefault implements IRenderConfig
         return $opt;
     }
 
-    protected function setLinkOption(\Anakeen\Core\Internal\SmartElement $document, RenderOptions & $opt)
+    protected function setLinkOption(\Anakeen\Core\Internal\SmartElement $document, RenderOptions &$opt)
     {
-
         $linkOption = new htmlLinkOptions();
         //$linkOption->title = ___("View {{{displayValue}}}", "ddui");
         $linkOption->target = "_render";
@@ -352,12 +351,22 @@ class RenderDefault implements IRenderConfig
     /**
      * @param \Anakeen\Core\Internal\SmartElement $document
      *
-     * @param \SmartStructure\Mask|null           $mask The mask referenced in view control when use a specific view
+     * @param \SmartStructure\Mask|null $mask The mask referenced in view control when use a specific view
      * @return RenderAttributeVisibilities new attribute visibilities
      */
-    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null): RenderAttributeVisibilities
-    {
-        return new RenderAttributeVisibilities($document, $mask);
+    public function getVisibilities(
+        \Anakeen\Core\Internal\SmartElement $document,
+        \SmartStructure\Mask $mask = null
+    ): RenderAttributeVisibilities {
+        $renderVisibilities = new RenderAttributeVisibilities($document, $mask);
+        $fields = $document->getNormalAttributes();
+        foreach ($fields as $field) {
+            if ($field->getOption("autotitle") === "yes") {
+                $renderVisibilities->setVisibility($field->id, RenderAttributeVisibilities::HiddenVisibility);
+            }
+        }
+
+        return $renderVisibilities;
     }
 
     /**
@@ -382,9 +391,7 @@ class RenderDefault implements IRenderConfig
      */
     public function getMenu(\Anakeen\Core\Internal\SmartElement $document): BarMenu
     {
-        $menu = new BarMenu();
-
-        return $menu;
+        return new BarMenu();
     }
 
     /**
@@ -399,9 +406,11 @@ class RenderDefault implements IRenderConfig
 
     protected function setEmblemMenu(\Anakeen\Core\Internal\SmartElement $document, BarMenu $menu)
     {
-
         $item = new SeparatorMenu("EmblemLock", "");
-        $item->setHtmlAttribute("class", "menu--left emblem emblem--lock" . ((abs($document->locked) == ContextManager::getCurrentUser()->id) ? " emblem-lock--my" : ""));
+        $item->setHtmlAttribute(
+            "class",
+            "menu--left emblem emblem--lock" . ((abs($document->locked) == ContextManager::getCurrentUser()->id) ? " emblem-lock--my" : "")
+        );
         $labelClass = "dcpDocument__emblem__lock fa fa-lock";
         $labelClass .= " {{#document.properties.security.lock.temporary}} dcpDocument__emblem__lock--temporary {{/document.properties.security.lock.temporary}}";
         $item->setHtmlLabel(
@@ -423,7 +432,10 @@ class RenderDefault implements IRenderConfig
                 true
             );
         } else {
-            $item->setTooltipLabel(sprintf('%s "<b>{{document.properties.security.lock.lockedBy.title}}</b>" ', htmlspecialchars(___("Locked by", "ddui"), ENT_QUOTES)), "", true);
+            $item->setTooltipLabel(sprintf(
+                '%s "<b>{{document.properties.security.lock.lockedBy.title}}</b>" ',
+                htmlspecialchars(___("Locked by", "ddui"), ENT_QUOTES)
+            ), "", true);
         }
 
         $item->setImportant(true);
@@ -451,7 +463,6 @@ class RenderDefault implements IRenderConfig
     }
 
 
-
     /**
      * Get custom data to transmit to client document controller
      *
@@ -468,7 +479,7 @@ class RenderDefault implements IRenderConfig
      * Retrieve some custom data
      *
      * @param \Anakeen\Core\Internal\SmartElement $document Document object instance
-     * @param mixed                               $data     data provided by client
+     * @param mixed $data data provided by client
      *
      * @return void
      */

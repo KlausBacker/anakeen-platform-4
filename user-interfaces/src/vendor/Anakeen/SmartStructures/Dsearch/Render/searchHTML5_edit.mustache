@@ -1,5 +1,4 @@
 <section class="container-fluid dcpDsearch__body">
-
     <div class="card card-default dcpFrame">
     <div class="card-body dcpFrame_content dcpFrame_content--open">
         <div class="dcpSearch-desc">
@@ -8,13 +7,13 @@
         </div>
     </div>
 </div>
-<div id="search-tabstrip" class="dcpDocument__tabs search-tabs">
+<div class="dcpDocument__tabs search-tabs search-tabstrip">
     <ul class="dcpDocument__tabs__list">
-        <li class="dcpLabel dcpLabel--active dcpTab__label k-state-active">[[#i18n]]dsearch::Conditions[[/i18n]]</li>
+        <li class="dcpLabel dcpLabel--active dcpTab__label k-state-active search-condition-tab--label">[[#i18n]]dsearch::Conditions[[/i18n]]</li>
         <li class="dcpLabel dcpTab__label">{{document.attributes.se_crit.label}}</li>
         <li class="dcpLabel dcpTab__label result-tab">[[#i18n]]dsearch::Results[[/i18n]]</li>
     </ul>
-    <div class="dcpTab__content">
+    <div class="dcpTab__content search-condition-tab">
         <div class="search-conditions-component"></div>
     </div>
     <div class="dcpTab__content">{{{document.attributes.se_crit.htmlView}}}</div>

@@ -8,7 +8,7 @@
             <ui:view name="default_edit" label="Modifier" display-mode="edition" order="2">
                 <ui:render-config class="\Anakeen\SmartStructures\Group\Render\GroupEditRender"/>
             </ui:view>
-            <ui:view name="changeGroup" label="Changer de groupe" display-mode="edition" menu-displayed="false">
+            <ui:view name="changeGroup" label="Changer de groupe" display-mode="edition" menu-displayed="true">
                 <ui:render-config class="\Anakeen\SmartStructures\Group\Render\GroupChangeGroup"/>
             </ui:view>
         </ui:view-list>

@@ -20,12 +20,12 @@ class ImportSmartAttr
     public $constraint;
     public $option;
     public $autocomplete;
+    public $properties=[];
 
     public function getData($key)
     {
-        $props=[];
         if ($this->autocomplete) {
-            $props["autocomplete"] = $this->autocomplete;
+            $this->properties["autocomplete"] = $this->autocomplete;
         }
         return [
             0 => $key,
@@ -44,7 +44,7 @@ class ImportSmartAttr
             13 => $this->elink,
             14 => $this->constraint,
             15 => $this->option,
-            "props" => $props
+            "props" => $this->properties
         ];
     }
 }

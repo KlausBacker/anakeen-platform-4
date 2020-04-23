@@ -1,15 +1,17 @@
 <template>
   <div class="input-group margin-bottom-sm">
     <input
+      ref="keysInput"
       type="text"
       class="condition-table-keywords-default k-textbox"
       name="se_keys"
       @change="onInputChange"
-      ref="keysInput"
     />
   </div>
 </template>
 <script>
+import $ from "jquery";
+
 export default {
   name: "condition-table-keywords-default",
   props: {

@@ -1,0 +1,99 @@
+.smart-change-group {
+
+  &.dcpDocument {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .igroup-changegroup .k-pager-wrap.k-pager-sm .k-pager-info,
+  .igroup-changegroup .k-pager-wrap.k-pager-md .k-pager-info {
+    display: unset;
+  }
+
+  .igroup-changegroup {
+    display: flex;
+    flex-direction: row;
+    min-height: 0;
+  }
+
+  .igroup-changegroup .igroup-list {
+    flex: 1;
+  }
+
+  .igroup-changegroup input[type=search] {
+    margin-bottom: 3px;
+  }
+
+  .igroup-changegroup .igroup-item:hover {
+    background: #94c1f5;
+  }
+
+  .igroup-changegroup .igroup-item button {
+    visibility: hidden;
+  }
+
+  .igroup-changegroup .igroup-item:hover button {
+    visibility: visible;
+  }
+
+  .igroup-item:nth-child(even) {
+    background-color: #fbfbfb;
+  }
+
+
+  .expand-pathes {
+    background: transparent;
+    border: none;
+  }
+  .igroup-item {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+
+    div {
+      flex: 1;
+      ul {
+        display:none;
+        li:first-child {
+          list-style: none;
+        font-style: normal;
+        }
+        li > i {
+          white-space: nowrap;
+          &:after {
+            content: " > ";
+          }
+        }
+      }
+
+      li {
+        //list-style: none;
+      }
+    }
+  }
+
+  .igroup-item.toadd {
+    background: #bddcbd;
+  }
+
+  .igroup-item.todelete {
+    background: #ffbfbf;
+  }
+
+  .igroup-ag .igroup-item {
+    justify-content: space-between;
+  }
+
+  .igroup-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+
+  .igroup-list .k-listview {
+    flex: 1;
+    overflow: auto;
+  }
+}
+
