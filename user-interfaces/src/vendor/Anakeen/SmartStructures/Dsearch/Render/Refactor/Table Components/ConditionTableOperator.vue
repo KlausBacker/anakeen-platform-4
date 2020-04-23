@@ -6,6 +6,7 @@
 <script>
 import "@progress/kendo-ui/js/kendo.dropdownlist";
 import BaseComponent from "./ConditionTableBaseComponent.vue";
+import $ from "jquery";
 
 export default {
   name: "condition-table-operator",
