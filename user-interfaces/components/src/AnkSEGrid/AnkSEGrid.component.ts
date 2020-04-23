@@ -367,33 +367,87 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     smartGridWidget: Grid;
   };
 
-  @Watch("$props", { deep: true })
-  protected async onPropsChange(newValue, oldValue): Promise<void> {
-    if (newValue.pageable !== this.pager) {
-      this.pager = newValue.pageable === true ? DEFAULT_PAGER : newValue.pageable;
+  @Watch("sort", { deep: true })
+  public watchSort(newValue) {
+    if (this.currentSort !== newValue) {
+      this.currentSort = newValue;
+      this.refreshGrid();
     }
-    if (newValue.sortable !== this.sorter) {
-      this.sorter = newValue.sortable === true ? DEFAULT_SORT : newValue.sortable;
+  }
+  @Watch("pageable", { deep: true })
+  public watchPageable(newValue) {
+    if (newValue === true) {
+      this.pager = DEFAULT_PAGER;
+      this.refreshGrid();
+    } else {
+      let sameValues = false;
+      for (const k in newValue) {
+        if (newValue[k] instanceof Object) {
+          for (const i in newValue[k]) {
+            sameValues = newValue[k][i] === this.pager[k][i];
+            if (!sameValues) break;
+          }
+        } else {
+          sameValues = newValue[k] == this.pager[k];
+        }
+        if (!sameValues) break;
+      }
+      if (!sameValues) {
+        this.pager = newValue;
+        this.refreshGrid();
+      }
     }
-    // apply sort prop change
-    if (this.currentSort !== newValue.sort) {
-      this.currentSort = newValue.sort;
+  }
+  @Watch("sortable", { deep: true })
+  public watchSortable(newValue) {
+    if (this.sorter !== newValue) {
+      this.sorter = newValue === true ? DEFAULT_SORT : newValue;
+      this.refreshGrid();
     }
-
-    // apply page prop change
-    const skip = computeSkipFromPage(newValue.page, this.currentPage.take);
+  }
+  @Watch("page", { deep: true })
+  public watchPage(newValue) {
+    const skip = computeSkipFromPage(newValue, this.currentPage.take);
     if (this.currentPage.skip !== skip) {
       this.currentPage.skip = skip;
+      this.refreshGrid();
     }
-
-    // apply filter prop change
-    if (this.currentFilter !== newValue.filter) {
-      this.currentFilter = newValue.filter;
-    }
-
-    // apply general changes
-    return await this.refreshGrid();
   }
+  @Watch("filter", { deep: true })
+  public watchFilter(newValue) {
+    if (this.currentFilter !== newValue) {
+      this.currentFilter = newValue;
+      this.refreshGrid();
+    }
+  }
+
+  // @Watch("$props", { deep: true })
+  // protected async onPropsChange(newValue, oldValue): Promise<void> {
+  //   if (newValue.pageable !== this.pager) {
+  //     this.pager = newValue.pageable === true ? DEFAULT_PAGER : newValue.pageable;
+  //   }
+  //   if (newValue.sortable !== this.sorter) {
+  //     this.sorter = newValue.sortable === true ? DEFAULT_SORT : newValue.sortable;
+  //   }
+  //   // apply sort prop change
+  //   if (this.currentSort !== newValue.sort) {
+  //     this.currentSort = newValue.sort;
+  //   }
+  //
+  //   // apply page prop change
+  //   const skip = computeSkipFromPage(newValue.page, this.currentPage.take);
+  //   if (this.currentPage.skip !== skip) {
+  //     this.currentPage.skip = skip;
+  //   }
+  //
+  //   // apply filter prop change
+  //   if (this.currentFilter !== newValue.filter) {
+  //     this.currentFilter = newValue.filter;
+  //   }
+  //
+  //   // apply general changes
+  //   return await this.refreshGrid();
+  // }
 
   @Watch("isLoading", { immediate: true })
   protected onLoadingChange(newValue): void {
@@ -430,6 +484,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     downloadAgain: "Retry",
     downloadCancel: "Cancel"
   };
+
   public onlySelection = false;
   public allColumns: SmartGridColumn[] = this.columns;
   public columnsList: SmartGridColumn[] = this.columns;
