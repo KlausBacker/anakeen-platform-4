@@ -45,39 +45,41 @@ class StructureUpdateParameter
         $updatedData = [];
         foreach ($this->data as $parameterData) {
             $fieldId = $parameterData["fieldId"];
-            $fieldValue = $parameterData["fieldValue"];
-
-            if (array_key_exists("value", $fieldValue)) {
-                 $err = $this->structure->setParam($fieldId, $fieldValue["value"]);
-                $updatedData[$fieldId]= $fieldValue["value"];
+            if (!empty($parameterData["toDelete"])) {
+                $err = $this->structure->setParam($fieldId, null);
             } else {
-                $rawValues=[];
-                foreach ($fieldValue as $ka=>$rowValue) {
-                    if (array_key_exists("value", $rowValue)) {
-                        $rawValues[] = $rowValue["value"];
-                    } else {
-                        foreach ($rowValue as $rowValueCell) {
-                            $rawValues[$ka][]=$rowValueCell["value"];
+                $fieldValue = $parameterData["fieldValue"];
+
+                if (array_key_exists("value", $fieldValue)) {
+                    if ($fieldValue["value"] === null) {
+                        $fieldValue["value"] = "";
+                    } elseif ($fieldValue["value"] === " ") {
+                        $fieldValue["value"] = null;
+                    }
+
+                    $err = $this->structure->setParam($fieldId, $fieldValue["value"]);
+                    $updatedData[$fieldId] = $fieldValue["value"];
+                } else {
+                    $rawValues = [];
+                    foreach ($fieldValue as $ka => $rowValue) {
+                        if (array_key_exists("value", $rowValue)) {
+                            $rawValues[] = $rowValue["value"];
+                        } else {
+                            foreach ($rowValue as $rowValueCell) {
+                                $rawValues[$ka][] = $rowValueCell["value"];
+                            }
                         }
                     }
+                    if ($rawValues === null) {
+                        $rawValues = [];
+                    } elseif ($rawValues === " ") {
+                        $rawValues = null;
+                    }
+                    $err = $this->structure->setParam($fieldId, $rawValues);
+
+                    $updatedData[$fieldId] = $rawValues;
                 }
-                $err = $this->structure->setParam($fieldId, $rawValues);
-                $updatedData[$fieldId]=$rawValues;
             }
-
-
-
-            /*
-            if ($parameterData->valueType === "no_value") {
-                $err = $this->structure->setParam($parameterData->parameterId, null);
-            } elseif ($parameterData->valueType === "value" && $parameterData->value === "") {
-                $err = $this->structure->setParam($parameterData->parameterId, "");
-            } elseif ($parameterData->valueType === "advanced_value") {
-                $err = $this->manageAdvancedValue($parameterData->parameterId, $parameterData->value);
-            } else {
-                $err = $this->structure->setParam($parameterData->parameterId, $parameterData->value);
-            }
-            */
 
             if ($err !== "") {
                 break;

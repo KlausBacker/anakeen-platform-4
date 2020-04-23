@@ -32,9 +32,9 @@ class StructureParameters extends StructureFields
 
         $data["params"] = array_values($this->structure->getParamAttributes());
         foreach ($data["params"]  as $k=>$paramData) {
-           if ( $paramData->access === SmartStructure\BasicAttribute::NONE_ACCESS) {
-               unset($data["params"][$k]);
-           }
+            if ($paramData->access === SmartStructure\BasicAttribute::NONE_ACCESS) {
+                unset($data["params"][$k]);
+            }
         }
         return $data;
     }
@@ -66,9 +66,12 @@ class StructureParameters extends StructureFields
             if ($structure->fromid) {
                 $data[$oa->id]["parentConfigurationParameters"] = $configParentParameters[$oa->id] ?? null;
             }
-            $data[$oa->id]["result"] = json_decode(json_encode($formater->getInfo($oa,$value, $element)), true);
+            if ($value === '{}' && $oa->isMultiple()) {
+                $data[$oa->id]["result"]=[];
+            } else {
+                $data[$oa->id]["result"] = json_decode(json_encode($formater->getInfo($oa, $value, $element)), true);
+            }
         }
-
         return $data;
     }
 }

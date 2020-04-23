@@ -1,5 +1,5 @@
 <template>
-  <div class="ssm-parameters-grid">
+  <div class="ssm-parameters">
 
     <smart-form
       v-if="haveParameters"

@@ -36,12 +36,27 @@ export default class SmartStructureManagerParametersController extends Vue {
         enum: {
           useSourceUri: true,
           editDisplay: "autoCompletion"
+        },
+        frame: {
+          responsiveColumns: [
+            {
+              number: 2,
+              minWidth: "70rem",
+              maxWidth: "100rem",
+              grow: true
+            },
+            {
+              number: 3,
+              minWidth: "100rem",
+              maxWidth: null,
+              grow: true
+            }
+          ]
         }
       }
     };
     const structureFields = [];
     // Generate dynamic smartform content
-    console.log("form", this.paramData);
     for (let i = 0; i < this.paramData.length; i++) {
       const field = this.paramData[i];
 
@@ -60,7 +75,7 @@ export default class SmartStructureManagerParametersController extends Vue {
           parametersRenderOptions.fields[fieldId] = {};
         }
         parametersRenderOptions.fields[fieldId].template =
-          "<div style=\"outline:dotted 2px green; font-size:130%\"> <h3 style='color:red'>inherit value</h3>          <div>{{{attribute.htmlDefaultContent}}} </div> </div>";
+          '<div class="inherit-value"> <p>This is the inherit value</p>  <div>{{{attribute.htmlDefaultContent}}} </div> </div>';
       }
 
       if (this.paramValues[fieldId].overrideValue === true) {
@@ -69,19 +84,15 @@ export default class SmartStructureManagerParametersController extends Vue {
         }
         parametersRenderOptions.fields[fieldId].buttons = [
           {
-            title: "Advanced",
-            htmlContent: "A",
-            url: "#action/inheritvalue:toto"
+            title: "Reset to inherit value",
+            htmlContent: "I",
+            url: "#action/inheritvalue:" + fieldId
           }
         ];
         parametersRenderOptions.fields[fieldId].template =
-          "<div style=\"outline:dotted 2px green; font-size:130%\"> <h3 style='color:orange'>Override value</h3>          <div>{{{attribute.htmlDefaultContent}}} </div> </div>";
+          '<div class="override-value"> <p>The inherit value is overrided</p>  <div>{{{attribute.htmlDefaultContent}}} </div> </div>';
       }
     });
-
-    console.log("struct", structureFields);
-    console.log("values", this.paramValues);
-    console.log("render", parametersRenderOptions);
 
     return {
       menu: [
@@ -109,25 +120,69 @@ export default class SmartStructureManagerParametersController extends Vue {
     this.getParameters();
   }
 
-  public onActionClick(event, data, options) {
-    console.log("action", options.eventId);
+  public onActionClick(event, data, options): void {
+    if (options.eventId === "inheritvalue") {
+      const smartForm = this.$refs.ssmForm;
+      const fieldId = options.options[0];
+      const previousValues = smartForm.getValue(fieldId);
+      const buttonTarget = options.target.closest(".dcpAttribute__content");
+
+      console.log(buttonTarget);
+      if (buttonTarget) {
+        buttonTarget.classList.add("todelete");
+      }
+
+      if (Array.isArray(previousValues)) {
+        if (previousValues.length === 0) {
+          previousValues.push({ value: "", inherit: true });
+          smartForm.setValue(fieldId, [{ value: "", inherit: true }]);
+        } else {
+          previousValues.forEach(value => {
+            value.inherit = true;
+          });
+        }
+      } else {
+        previousValues.inherit = true;
+        smartForm.setValue(fieldId, previousValues);
+      }
+    }
   }
-  public onSave(event, smartElement, requestOptions) {
+  public onSave(/*event, smartElement, requestOptions*/): void {
     const url = `/api/v2/admin/smart-structures/${this.ssName}/update/parameter/`;
-    const systemData = requestOptions.getRequestData();
 
-    const fieldValues = systemData.document.attributes;
-
-    console.log(systemData);
     const updatedData = [];
-    Object.keys(fieldValues).forEach(fieldId => {
-      updatedData.push({
-        fieldId: fieldId,
-        fieldValue: fieldValues[fieldId]
-      });
+    const fields = this.$refs.ssmForm.getSmartFields();
+
+    fields.forEach(field => {
+      let isToDelete = false;
+      const values = field.getValue();
+      if (Array.isArray(values)) {
+        if (values.length > 0 && values[0].inherit === true) {
+          isToDelete = true;
+        }
+      } else {
+        if (values && values.inherit === true) {
+          isToDelete = true;
+        }
+      }
+
+      if (isToDelete) {
+        updatedData.push({
+          fieldId: field.id,
+          toDelete: true
+        });
+      } else {
+        if (field.isModified()) {
+          updatedData.push({
+            fieldId: field.id,
+            fieldValue: field.getValue()
+          });
+        }
+      }
     });
 
     console.log(updatedData);
+
     this.$http
       .put(url, { params: updatedData })
       .then(() => {
@@ -231,6 +286,7 @@ export default class SmartStructureManagerParametersController extends Vue {
               } else {
                 if (fieldValue.parentConfigurationParameters !== fieldValue.configurationParameter) {
                   this.paramValues[fieldId].overrideValue = true;
+                  console.log("over", fieldId);
                 }
               }
             }
