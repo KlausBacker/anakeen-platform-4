@@ -335,7 +335,7 @@ create unique index idx_idfam on docfam(id);";
             }
         }
         if ($oa) {
-            if ($oa->isMultiple() && !is_array($val)) {
+            if ($oa->isMultiple() && ($val !== null && !is_array($val))) {
                 return \ErrorCode::getError('DOC0137', $this->name, $idp, $val);
             }
         }
