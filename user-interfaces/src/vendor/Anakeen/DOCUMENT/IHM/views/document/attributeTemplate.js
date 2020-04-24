@@ -687,6 +687,7 @@ export default {
       }
     }
     if (isAttribute) {
+      const isLeft=attributeView.model.getOption("labelPosition") === "left";
       switch (data.renderOptions.description.position) {
         case "bottom":
           $viewElement.append($descriptionElement);
@@ -701,8 +702,12 @@ export default {
           $viewElement.find(".dcpAttribute__content").append($descriptionElement);
           break;
         case "topValue":
-          $viewElement.prepend($descriptionElement);
-          $descriptionElement.addClass("dcpAttribute__right");
+          if (isLeft) {
+            $viewElement.prepend($descriptionElement);
+            $descriptionElement.addClass("dcpAttribute__right");
+          } else {
+            $viewElement.find(".dcpAttribute__content").prepend($descriptionElement);
+          }
           break;
         case "topLabel":
           $viewElement.prepend($descriptionElement);
