@@ -687,7 +687,7 @@ export default {
       }
     }
     if (isAttribute) {
-      const isLeft=attributeView.model.getOption("labelPosition") === "left";
+      const isLeft = attributeView.model.getOption("labelPosition") === "left";
       switch (data.renderOptions.description.position) {
         case "bottom":
           $viewElement.append($descriptionElement);

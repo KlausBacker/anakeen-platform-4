@@ -36,7 +36,6 @@ class StructureUpdateParameter
             throw new Exception("Cannot update parameter. Structure \"%s\" not found", $args["structure"]);
         }
         $this->data = $request->getParsedBody()["params"];
-
     }
 
     protected function doRequest()
@@ -88,7 +87,6 @@ class StructureUpdateParameter
             if ($err) {
                 break;
             }
-
         }
         if ($err) {
             $exception = new Exception($err);
