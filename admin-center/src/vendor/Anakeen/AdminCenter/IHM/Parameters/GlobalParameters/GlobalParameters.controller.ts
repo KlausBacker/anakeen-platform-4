@@ -170,7 +170,7 @@ export default class GlobalParametersController extends Vue {
                   {
                     content: {
                       textContent: "Loading of parameters from server failed",
-                      title: "Parameters loading failed"
+                      title: this.$t("globalParameter.Parameters loading failed")
                     },
                     type: "error"
                   }

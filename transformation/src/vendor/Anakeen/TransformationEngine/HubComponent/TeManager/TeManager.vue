@@ -4,13 +4,13 @@
             <kendo-tabstrip @activate="onTabActivate">
                 <ul>
                     <li class="k-state-active">
-                        Configuration
+                        {{ $t("AdminCenterTransformationFileManager.Configuration") }}
                     </li>
                     <li  data-id="supervision">
-                        Supervision
+                        {{ $t("AdminCenterTransformationFileManager.Supervision") }}
                     </li>
                     <li data-id="load">
-                        Server load
+                        {{ $t("AdminCenterTransformationFileManager.Server load") }}
                     </li>
                 </ul>
                 <div class="te-configuration">

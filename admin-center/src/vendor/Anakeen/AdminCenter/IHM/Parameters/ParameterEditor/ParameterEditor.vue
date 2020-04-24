@@ -2,13 +2,13 @@
   <div class="edition-window">
     <form v-if="editedItem" @keypress.enter.prevent="modifyParameter">
       <div class="form-group">
-        <div class="form-label">Description :</div>
+        <div class="form-label">{{ $t("globalParameter.Description") }} :</div>
         <span class="description-text">
           {{ editedItem.description }}
         </span>
       </div>
       <div class="form-group">
-        <div class="form-label">Value :</div>
+        <div class="form-label">{{ $t("globalParameter.Value") }} :</div>
         <input
           :type="parameterInputType"
           class="form-control value-input parameter-new-value"
@@ -37,13 +37,13 @@
         </select>
       </div>
       <div v-if="isNotJson" class="alert alert-warning invalid-json-warning" role="alert">
-        Parameter is not a valid json, please save it as json
+        {{ $t("globalParameter.Parameter is not a valid json") }}
       </div>
       <a class="modify-btn form-parameter-btn" @click="modifyParameter"
-        >Save new value</a
+        >{{ $t("globalParameter.Save new value") }}</a
       >
       <a class="cancel-btn form-parameter-btn" @click="closeEditor"
-        >Cancel value modification</a
+        >{{ $t("globalParameter.Cancel value modification") }}</a
       >
     </form>
     <div
@@ -51,11 +51,11 @@
       v-show="false"
       @keyup.enter.stop="closeConfirmationAndEditor"
     >
-      <div class="information-text">Parameter successfully modified</div>
+      <div class="information-text">{{ $t("globalParameter.Parameter successfully modified") }}</div>
       <a
         class="close-confirmation-btn form-parameter-btn"
         @click="closeConfirmationAndEditor"
-        >Back to parameters</a
+        >{{ $t("globalParameter.Back to parameters") }}</a
       >
     </div>
     <div
@@ -64,10 +64,10 @@
       @keyup.enter.stop="closeErrorAndEditor"
     >
       <div class="information-text">
-        An error occurred during parameter modification
+        {{ $t("globalParameter.An error occurred") }}
       </div>
       <a class="close-error-btn form-parameter-btn" @click="closeErrorAndEditor"
-        >Back to parameters</a
+        >{{ $t("globalParameter.Back to parameters") }}</a
       >
     </div>
   </div>

@@ -5,26 +5,25 @@
         <header>
           <kendo-button class="button-filtering k-outline k-primary" @click="flipFiltering">
             <i class="fa " :class="{ 'fa-check': showExpire }" />
-            <span> Show expired </span>
+            <span> {{ $t("AdminCenterAuthentication token.Show expired") }} </span>
           </kendo-button>
 
           <kendo-button class="button-createform k-primary" @click="displayCreateForm">
             <i class="fa fa-plus" />
-            <span>Create token</span></kendo-button
+            <span>{{ $t("AdminCenterAuthentication token.Create token") }}</span></kendo-button
           >
         </header>
-
         <div class="token-grid-box">
           <div ref="tokenGrid" class="token-grid"></div>
         </div>
       </div>
       <div v-if="!viewToken" class="token-logo">
         <span class="material-icons">fingerprint</span>
-        <p>Select token to display details</p>
+        <p>{{ $t("AdminCenterAuthentication token.Select token to display details") }}</p>
       </div>
 
       <ank-token-info v-if="viewToken" :info="tokenInfo" @token-deleted="refreshList"
-        >Detail
+        >{{ $t("AdminCenterAuthentication token.Detail") }}
       </ank-token-info >
     </ank-split-panes>
   </div>

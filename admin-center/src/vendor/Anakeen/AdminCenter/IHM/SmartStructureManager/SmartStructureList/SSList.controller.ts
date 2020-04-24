@@ -44,7 +44,7 @@ export default class SmartStructureListController extends Vue {
 
   public get translations() {
     return {
-      listFilterPlaceholder: "Search a structure"
+      listFilterPlaceholder: this.$t("AdminCenterSmartStructure.Search a structure")
     };
   }
   public get isEmpty() {

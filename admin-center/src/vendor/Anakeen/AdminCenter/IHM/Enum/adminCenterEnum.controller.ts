@@ -1,9 +1,12 @@
+/* eslint-disable */
 import AnkPaneSplitter from "@anakeen/internal-components/lib/PaneSplitter";
 import AnkSmartForm from "@anakeen/user-interfaces/components/lib/AnkSmartForm.esm";
 import "@progress/kendo-ui/js/kendo.grid";
 import "@progress/kendo-ui/js/kendo.switch";
 import * as _ from "underscore";
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Mixins } from "vue-property-decorator";
+import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
+import * as $ from "jquery"
 
 @Component({
   components: {
@@ -13,7 +16,7 @@ import { Component, Vue } from "vue-property-decorator";
     "ank-split-panes": AnkPaneSplitter
   }
 })
-export default class AdminCenterEnumController extends Vue {
+export default class AdminCenterEnumController extends Mixins(AnkI18NMixin) {
   public $refs!: {
     [key: string]: any;
   };
@@ -43,7 +46,7 @@ export default class AdminCenterEnumController extends Vue {
           iconUrl: "",
           id: "submit",
           important: false,
-          label: "Sauver les modifications",
+          label: this.$t("AdminCenterEnum.Sauver les modifications"),
           target: "_self",
           type: "itemMenu",
           url: "#action/enum.save",
@@ -56,49 +59,49 @@ export default class AdminCenterEnumController extends Vue {
             editDisplay: "bool"
           },
           enum_array_translation: {
-            template: `<a data-role="adminRouterLink" class="translate-button" href="#">Translate</a>`
+            template: `<a data-role="adminRouterLink" class="translate-button" href="#">${this.$t("AdminCenterEnum.btn Translate")}</a>`
           }
         }
       },
       structure: [
         {
-          label: "Enumerate " + this.selectedEnum,
+          label: this.$t("AdminCenterEnum.Enumerate") + " " + this.selectedEnum,
           name: "enum_frame",
           type: "frame",
           content: [
             {
-              label: "Entries",
+              label: this.$t("AdminCenterEnum.Entries"),
               name: "enum_array",
               type: "array",
               content: [
                 {
                   display: "write",
-                  label: "Key",
+                  label: this.$t("AdminCenterEnum.Key"),
                   name: "enum_array_key",
                   type: "text"
                 },
                 {
-                  label: "Label",
+                  label: this.$t("AdminCenterEnum.Label"),
                   name: "enum_array_label",
                   type: "text"
                 },
                 {
-                  label: "Translation",
+                  label: this.$t("AdminCenterEnum.Translation"),
                   name: "enum_array_translation",
                   type: "text"
                 },
                 {
-                  label: "Active",
+                  label: this.$t("AdminCenterEnum.Active"),
                   name: "enum_array_active",
                   type: "enum",
                   enumItems: [
                     {
                       key: "disable",
-                      label: "Disable"
+                      label: this.$t("AdminCenterEnum.Disable")
                     },
                     {
                       key: "enable",
-                      label: "Enable"
+                      label: this.$t("AdminCenterEnum.Enable")
                     }
                   ]
                 }
@@ -107,7 +110,7 @@ export default class AdminCenterEnumController extends Vue {
           ]
         }
       ],
-      title: "Enumerate " + this.selectedEnum,
+      title: this.$t("AdminCenterEnum.Enumerate") + " " + this.selectedEnum,
       type: "",
       values: {
         enum_array_key: this.keysArray,
@@ -269,36 +272,39 @@ export default class AdminCenterEnumController extends Vue {
       .get(`/api/v2/ui/users/current`)
       .then(response => (this.language = response.data.locale === "fr_FR.UTF-8" ? "fr" : "en"));
 
+     // TODO: enlever ts ignore
+    // @ts-ignore
     this.kendoGrid = $(this.$refs.gridWrapper)
       .kendoGrid({
         columns: [
           {
             field: "enumerate",
-            title: "Enumerate"
+            title: this.$t("AdminCenterEnum.Enumerate")
           },
           {
             field: "label",
-            title: "Label"
+            title: this.$t("AdminCenterEnum.Label")
           },
           {
             field: "structures",
-            title: "Structure"
+            title: this.$t("AdminCenterEnum.Structure")
           },
           {
             field: "fields",
-            title: "Fields"
+            title:
+            this.$t("AdminCenterEnum.Fields")
           },
           {
             field: "modifiable",
-            title: "Modifiable",
+            title: this.$t("AdminCenterEnum.Modifiable"),
             filterable: false
           },
           {
             command: {
               click: this.loadEnumerate,
-              text: "Modify"
+              text: this.$t("AdminCenterEnum.Modify")
             },
-            title: "Actions"
+            title: this.$t("AdminCenterEnum.header Actions")
           }
         ],
         dataSource: {
@@ -326,7 +332,13 @@ export default class AdminCenterEnumController extends Vue {
         },
         pageable: {
           pageSize: 50,
-          pageSizes: [50, 100, 200]
+          pageSizes: [50, 100, 200],
+          messages: {
+            itemsPerPage: this.$t("AdminCenterKendoGridTranslation.items per page"),
+            display: this.$t("AdminCenterKendoGridTranslation.{0}-{1}of{2}items"),
+            refresh: this.$t("AdminCenterKendoGridTranslation.Refresh"),
+            NoData: this.$t("AdminCenterKendoGridTranslation.No data")
+          }
         },
         scrollable: true,
         sortable: true,
@@ -334,8 +346,17 @@ export default class AdminCenterEnumController extends Vue {
           extra: false,
           operators: {
             string: {
-              contains: "Contains"
+              contains: this.$t("AdminCenterKendoGridTranslation.contains")
             }
+          },
+          messages: {
+            info: this.$t("AdminCenterKendoGridTranslation.Filter by") + ': ',
+            operator: this.$t("AdminCenterKendoGridTranslation.Choose operator"),
+            clear: this.$t("AdminCenterKendoGridTranslation.Clear"),
+            filter: this.$t("AdminCenterKendoGridTranslation.Apply"),
+            value: this.$t("AdminCenterKendoGridTranslation.Choose value"),
+            additionalValue: this.$t("AdminCenterKendoGridTranslation.Aditional value"),
+            title: this.$t("AdminCenterKendoGridTranslation.Aditional filter by")
           }
         },
         filterMenuInit(e) {

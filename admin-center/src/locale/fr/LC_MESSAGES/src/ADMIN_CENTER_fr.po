@@ -1,0 +1,50 @@
+# French translations for anakeen-platform package.
+# Copyright (C) 2020 THE anakeen-platform'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the anakeen-platform package.
+# Automatically generated, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: anakeen-platform 4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-04-24 19:49+0200\n"
+"PO-Revision-Date: 2020-04-17 09:22+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgctxt "AdminCenterTrash.author deletion"
+msgid "Author of the deletion"
+msgstr "Auteur de la suppression"
+
+msgctxt "AdminCenterTrash.authorization"
+msgid "Authorization"
+msgstr "Autorisation"
+
+msgctxt "AdminCenterTrash.date deletion"
+msgid "Date of deletion"
+msgstr "Date de la suppression"
+
+msgctxt "AdminCenterTrash.btn delete"
+msgid "Delete from trash"
+msgstr "Détruire"
+
+msgctxt "AdminCenterTrash.btn display"
+msgid "Display"
+msgstr "Afficher"
+
+msgctxt "AdminCenterTrash.btn restore"
+msgid "Restore"
+msgstr "Restaurer"
+
+msgctxt "AdminCenterTrash.type"
+msgid "Type"
+msgstr "Type"
+
+#~ msgctxt "AdminCenterTrash.title"
+#~ msgid "title"
+#~ msgstr "Titre"

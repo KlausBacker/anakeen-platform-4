@@ -98,48 +98,48 @@ export default class SmartStructureManagerParametersController extends Vue {
               enumItems: [
                 {
                   key: "inherited",
-                  label: "Inherited"
+                  label: this.$t("AdminCenterSmartStructure.Inherited")
                 },
                 {
                   key: "value",
-                  label: "Value"
+                  label: this.$t("AdminCenterSmartStructure.Value")
                 },
                 {
                   key: "advanced_value",
-                  label: "Advanced Value"
+                  label: this.$t("AdminCenterSmartStructure.Advanced Value")
                 },
                 {
                   key: "no_value",
-                  label: "Erase field"
+                  label: this.$t("AdminCenterSmartStructure.Erase field")
                 }
               ],
-              label: "Type",
+              label: this.$t("AdminCenterSmartStructure.Type"),
               name: `${parameter.parameterId}-type`,
               type: "enum"
             },
             {
               display: "read",
-              label: "Inherited",
+              label: this.$t("AdminCenterSmartStructure.Inherited"),
               name: `${parameter.parameterId}-inherited_value`,
               type: "text"
             },
             {
               content: this.smartFormArrayStructure[parameter.parameterId],
               enumItems: parameter.enumData,
-              label: "Value",
+              label: this.$t("AdminCenterSmartStructure.Value"),
               name: `${parameter.parameterId}-value`,
               type: parameter.type,
               typeFormat: parameter.typeFormat,
               multiple: parameter.isMultiple
             },
             {
-              label: "Advanced value",
+              label: this.$t("AdminCenterSmartStructure.Advanced value"),
               name: `${parameter.parameterId}-advanced_value`,
               type: "longtext"
             },
             {
               display: "read",
-              label: "Result",
+              label: this.$t("AdminCenterSmartStructure.Result"),
               name: `${parameter.parameterId}-result`,
               type: "htmltext"
             }
@@ -178,7 +178,7 @@ export default class SmartStructureManagerParametersController extends Vue {
         }
       ],
       structure: parametersStructure,
-      title: "Parameters edition",
+      title: this.$t("AdminCenterSmartStructure.Parameters edition"),
       renderOptions: {
         fields: parametersRenderOptions
       },

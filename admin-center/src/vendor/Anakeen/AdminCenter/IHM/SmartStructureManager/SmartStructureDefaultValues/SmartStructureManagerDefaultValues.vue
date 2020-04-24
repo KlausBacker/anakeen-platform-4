@@ -27,14 +27,14 @@
       }"
     >
       <kendo-grid-column
-        :title="'<b>Label</b>'"
+        :title="translations.Label"
         :field="'label'"
         :filterable-cell-operator="'contains'"
         :filterable-cell-show-operators="false"
         :filterable-cell-template="autoFilterCol"
       />
       <kendo-grid-column
-        :title="'<b>Parent Value</b>'"
+        :title="translations.ParentValue"
         :field="'parentValue'"
         :filterable-cell-operator="'contains'"
         :filterable-cell-show-operators="false"
@@ -42,7 +42,7 @@
         :template="displayData('parentValue')"
       />
       <kendo-grid-column
-        :title="'<b>Raw Value</b>'"
+        :title="translations.RawValue"
         :field="'rawValue'"
         :filterable-cell-operator="'contains'"
         :filterable-cell-show-operators="false"
@@ -50,7 +50,7 @@
         :template="displayData('rawValue')"
       />
       <kendo-grid-column
-        :title="'<b>Display Value</b>'"
+        :title="translations.DisplayValue"
         :field="'displayValue'"
         :filterable-cell-operator="'contains'"
         :filterable-cell-show-operators="false"
@@ -69,7 +69,7 @@
 :hidden="true" :title="'<b>Is Multiple</b>'" :field="'isMultiple'" />
       <kendo-grid-column
 :title="''" width="6.5rem"
-:command="{ click: onEditClick, text: 'Modify' }"
+:command="{ click: onEditClick, text: translations.Display }"
 />
     </kendo-grid>
 

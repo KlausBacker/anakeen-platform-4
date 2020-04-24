@@ -10,14 +10,13 @@
             <hub_instance_language>English</hub_instance_language>
         </hub_instance_titles>
         <hub_instance_titles>
-            <hub_instance_title>Admin Center</hub_instance_title>
+            <hub_instance_title>Centre d'administration</hub_instance_title>
             <hub_instance_language>Français</hub_instance_language>
         </hub_instance_titles>
         <hub_instance_cssassets>
             <hub_instance_cssasset_type>path</hub_instance_cssasset_type>
             <hub_instance_cssasset>/Anakeen/adminCenter/assets/adminCenter.css</hub_instance_cssasset>
         </hub_instance_cssassets>
-
         <hub_access_roles name="AC_FUNCADMIN,AC_SYSADMIN"/>
         <hub_super_role name="AC_SYSADMIN">System administrator</hub_super_role>
     </hubinstanciation>
@@ -27,7 +26,9 @@
         <hub_order>1</hub_order>
         <hub_docker_position>TOP_LEFT</hub_docker_position>
         <hub_activated>FALSE</hub_activated>
-        <label>Admin Center</label>
+        <label>
+            <![CDATA[<i class="material-icons hub-icon">assignment</i>]]>
+        </label>
     </hubconfigurationlabel>
     <hubconfigurationgeneric name="HGEA_ACCOUNTS">
         <hub_station_id name="ADMINCENTER">Admin Center</hub_station_id>

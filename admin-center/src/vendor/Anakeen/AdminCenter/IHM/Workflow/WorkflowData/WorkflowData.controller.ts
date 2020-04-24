@@ -4,12 +4,13 @@ import "@progress/kendo-ui/js/kendo.color.js";
 import "@progress/kendo-ui/js/kendo.colorpicker.js";
 import "@progress/kendo-ui/js/kendo.filtercell.js";
 import "@progress/kendo-ui/js/kendo.grid.js";
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch, Mixins } from "vue-property-decorator";
+import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
 
 Vue.use(GridInstaller);
 Vue.use(DataSourceInstaller);
 @Component
-export default class WorkflowDataController extends Vue {
+export default class WorkflowDataController extends Mixins(AnkI18NMixin) {
   public gridWidget: kendo.ui.Grid = null;
   public language: string = "";
 
@@ -71,11 +72,11 @@ export default class WorkflowDataController extends Vue {
     const result = [];
     if (response && response.data && response.data.data) {
       response.data.data.steps.forEach(item => {
-        item.type = "steps";
+        item.type = this.$t("AdminCenterWorkflow.steps");
         result.push(item);
       });
       response.data.data.transitions.forEach(item => {
-        item.type = "transitions";
+        item.type = this.$t("AdminCenterWorkflow.transitions");
         result.push(item);
       });
       return result;
@@ -86,37 +87,38 @@ export default class WorkflowDataController extends Vue {
     return dataItem => {
       switch (colId) {
         case "type":
-          return `<ul><li><b>Id:&nbsp</b>${dataItem.id}</li><li><b>Type:&nbsp</b>${dataItem.type}</li></ul>`;
+          return `<ul><li><b>${this.$t("AdminCenterWorkflow.Id")}:&nbsp</b>${dataItem.id}</li><li><b>${this.$t(
+            "AdminCenterWorkflow.Type"
+          )}:&nbsp</b>${dataItem.type}</li></ul>`;
         case "info":
-          if (dataItem.type === "steps") {
-            return `<ul><li><b>Label:&nbsp</b><a data-role="adminRouterLink" href="/admin/i18n/${
-              this.language
-            }?section=Workflow&msgstr=${dataItem.label}&msgid=${dataItem.id}">${
+          if (dataItem.type === this.$t("AdminCenterWorkflow.steps")) {
+            return `<ul><li><b>${this.$t(
+              "AdminCenterWorkflow.Label"
+            )}:&nbsp</b><a data-role="adminRouterLink" href="/admin/i18n/${this.language}?section=Workflow&msgstr=${
               dataItem.label
-            }</a></li><li><b>Timer:&nbsp</b>${this.displayMultiple(
-              dataItem.timer,
-              "timer"
-            )}</li><li><b>Mail template:&nbsp</b>${this.displayMultiple(
-              dataItem.mailtemplates,
-              "mail"
-            )}</li><li><b>Color:&nbsp</b><input data-role="colorpicker" type="color" class="wfl-step__color" value="${
+            }&msgid=${dataItem.id}">${dataItem.label}</a></li><li><b>${this.$t(
+              "AdminCenterWorkflow.Timer"
+            )}:&nbsp</b>${this.displayMultiple(dataItem.timer, "timer")}</li><li><b>${this.$t(
+              "AdminCenterWorkflow.Mail template"
+            )}:&nbsp</b>${this.displayMultiple(dataItem.mailtemplates, "mail")}</li><li><b>${this.$t(
+              "AdminCenterWorkflow.Color"
+            )}:&nbsp</b><input data-role="colorpicker" type="color" class="wfl-step__color" value="${
               dataItem.color
             }"/></li>`;
           } else {
-            return `<ul><li><b>Label:&nbsp</b><a data-role="adminRouterLink" href="/admin/i18n/${
-              this.language
-            }?section=Workflow&msgstr=${dataItem.label}&msgid=${dataItem.id}">${
+            return `<ul><li><b>${this.$t(
+              "AdminCenterWorkflow.Label"
+            )}:&nbsp</b><a data-role="adminRouterLink" href="/admin/i18n/${this.language}?section=Workflow&msgstr=${
               dataItem.label
-            }</a></li><li><b>Persistent timer:&nbsp</b>${this.displayMultiple(
-              dataItem.persistentTimers,
-              "timer"
-            )}</li><li><b>Unattach timer:&nbsp</b>${this.displayMultiple(
-              dataItem.unAttachTimers,
-              "timer"
-            )}</li><li><b>Volatile timer:&nbsp</b>${this.displayMultiple(
-              dataItem.volatileTimers,
-              "timer"
-            )}</li><li><b>Mail template:&nbsp</b>${this.displayMultiple(dataItem.mailtemplates, "mail")}</li>`;
+            }&msgid=${dataItem.id}">${dataItem.label}</a></li><li><b>${this.$t(
+              "AdminCenterWorkflow.Persistent timer"
+            )}:&nbsp</b>${this.displayMultiple(dataItem.persistentTimers, "timer")}</li><li><b>${this.$t(
+              "AdminCenterWorkflow.Unattach timer"
+            )}:&nbsp</b>${this.displayMultiple(dataItem.unAttachTimers, "timer")}</li><li><b>${this.$t(
+              "AdminCenterWorkflow.Volatile timer"
+            )}:&nbsp</b>${this.displayMultiple(dataItem.volatileTimers, "timer")}</li><li><b>${this.$t(
+              "AdminCenterWorkflow.Mail template"
+            )}:&nbsp</b>${this.displayMultiple(dataItem.mailtemplates, "mail")}</li>`;
           }
         default:
           break;
@@ -130,7 +132,7 @@ export default class WorkflowDataController extends Vue {
     } else if (data !== null && data !== undefined) {
       return data;
     } else {
-      return "None".fontcolor("ced4da");
+      return `${this.$t("AdminCenterWorkflow.None")}`.fontcolor("ced4da");
     }
   }
   public recursiveData(items, str, type) {
@@ -159,7 +161,7 @@ export default class WorkflowDataController extends Vue {
       });
     }
     if (str === "") {
-      return "None".fontcolor("ced4da");
+      return `${this.$t("AdminCenterWorkflow.None")}`.fontcolor("ced4da");
     }
     return `<ul>${str}</ul>`;
   }
