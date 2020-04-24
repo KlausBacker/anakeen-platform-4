@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import ankSmartController from "@anakeen/user-interfaces/components/lib/AnkController.esm";
+
 import AnkSmartForm from "@anakeen/user-interfaces/components/lib/AnkSmartForm.esm";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 @Component({
   components: {
-    "smart-form": () => AnkSmartForm
+    "smart-form": (): any => AnkSmartForm
   }
 })
 export default class SmartStructureManagerParametersController extends Vue {
@@ -16,7 +16,6 @@ export default class SmartStructureManagerParametersController extends Vue {
   public ssName;
   public haveParameters = false;
   public smartForm: object = {};
-  public unsupportedType = ["frame", "tab"];
   public $refs!: {
     [key: string]: any;
   };
@@ -41,13 +40,13 @@ export default class SmartStructureManagerParametersController extends Vue {
           responsiveColumns: [
             {
               number: 2,
-              minWidth: "70rem",
-              maxWidth: "100rem",
+              minWidth: "90rem",
+              maxWidth: "130rem",
               grow: true
             },
             {
               number: 3,
-              minWidth: "100rem",
+              minWidth: "130rem",
               maxWidth: null,
               grow: true
             }
@@ -56,9 +55,15 @@ export default class SmartStructureManagerParametersController extends Vue {
       }
     };
     const structureFields = [];
+    const formParamValues = {};
     // Generate dynamic smartform content
     for (let i = 0; i < this.paramData.length; i++) {
       const field = this.paramData[i];
+      const fieldId = this.paramData[i]["id"];
+
+      if (this.paramValues[fieldId] && this.paramValues[fieldId].isComputed) {
+        field.access = 1;
+      }
 
       if (field.fieldSet.fieldSet && !this.existsField(field.fieldSet.fieldSet, structureFields)) {
         this.appendField(field.fieldSet.fieldSet, structureFields);
@@ -70,27 +75,66 @@ export default class SmartStructureManagerParametersController extends Vue {
     }
 
     Object.keys(this.paramValues).forEach(fieldId => {
-      if (this.paramValues[fieldId].inheritedValue === true) {
+      let description = "";
+      let overDisplayValue = "";
+      const paramValue = this.paramValues[fieldId];
+
+      formParamValues[fieldId] = paramValue.result;
+
+      if (paramValue.inheritedValue === true) {
         if (!parametersRenderOptions.fields[fieldId]) {
           parametersRenderOptions.fields[fieldId] = {};
         }
-        parametersRenderOptions.fields[fieldId].template =
-          '<div class="inherit-value"> <p>This is the inherit value</p>  <div>{{{attribute.htmlDefaultContent}}} </div> </div>';
+        description += "This is the inherited value. ";
       }
 
-      if (this.paramValues[fieldId].overrideValue === true) {
+      if (paramValue.overrideValue) {
+        if (!paramValue.inArray) {
+          if (!parametersRenderOptions.fields[fieldId]) {
+            parametersRenderOptions.fields[fieldId] = {};
+          }
+          parametersRenderOptions.fields[fieldId].buttons = [
+            {
+              title: "Reset to inherit value",
+              htmlContent: "R",
+              url: "#action/inheritvalue:" + fieldId
+            }
+          ];
+        }
+
+        if (paramValue.overrideValue.displayValue) {
+          overDisplayValue = paramValue.overrideValue.displayValue;
+        } else if (Array.isArray(paramValue.overrideValue)) {
+          overDisplayValue = paramValue.overrideValue
+            .map(val => {
+              if (Array.isArray(val)) {
+                return val
+                  .map(val => {
+                    return val.displayValue;
+                  })
+                  .join(" - ");
+              } else {
+                return val.displayValue;
+              }
+            })
+            .join(", ");
+        }
+
+        description += `The inherited value "${overDisplayValue}" is overrided. `;
+      }
+
+      if (paramValue.isComputed) {
+        description += 'Computed by "' + paramValue.computedMethod + '".';
+      }
+
+      if (description) {
         if (!parametersRenderOptions.fields[fieldId]) {
           parametersRenderOptions.fields[fieldId] = {};
         }
-        parametersRenderOptions.fields[fieldId].buttons = [
-          {
-            title: "Reset to inherit value",
-            htmlContent: "I",
-            url: "#action/inheritvalue:" + fieldId
-          }
-        ];
-        parametersRenderOptions.fields[fieldId].template =
-          '<div class="override-value"> <p>The inherit value is overrided</p>  <div>{{{attribute.htmlDefaultContent}}} </div> </div>';
+        parametersRenderOptions.fields[fieldId].description = {
+          htmlTitle: "<p>" + kendo.htmlEncode(description) + "</p>",
+          position: paramValue.inArray ? "bottomLabel" : "topValue"
+        };
       }
     });
 
@@ -112,7 +156,7 @@ export default class SmartStructureManagerParametersController extends Vue {
       structure: structureFields,
       title: this.structureData.title + " parameters",
       renderOptions: parametersRenderOptions,
-      values: this.paramValues
+      values: formParamValues
     };
   }
 
@@ -127,7 +171,6 @@ export default class SmartStructureManagerParametersController extends Vue {
       const previousValues = smartForm.getValue(fieldId);
       const buttonTarget = options.target.closest(".dcpAttribute__content");
 
-      console.log(buttonTarget);
       if (buttonTarget) {
         buttonTarget.classList.add("todelete");
       }
@@ -180,8 +223,6 @@ export default class SmartStructureManagerParametersController extends Vue {
         }
       }
     });
-
-    console.log(updatedData);
 
     this.$http
       .put(url, { params: updatedData })
@@ -277,16 +318,15 @@ export default class SmartStructureManagerParametersController extends Vue {
       Object.keys(paramsValues).forEach(fieldId => {
         const fieldValue = paramsValues[fieldId];
         if (fieldValue.result) {
-          this.paramValues[fieldId] = fieldValue.result;
+          this.paramValues[fieldId] = fieldValue;
+
           if (fieldValue.parentConfigurationParameters !== undefined) {
             if (fieldValue.parentConfigurationParameters !== null) {
               if (fieldValue.configurationParameter === null) {
                 this.paramValues[fieldId].inheritedValue = true;
-                console.log("inh", paramsValues[fieldId]);
               } else {
                 if (fieldValue.parentConfigurationParameters !== fieldValue.configurationParameter) {
-                  this.paramValues[fieldId].overrideValue = true;
-                  console.log("over", fieldId);
+                  this.paramValues[fieldId].overrideValue = fieldValue.parentConfigurationParameters;
                 }
               }
             }
@@ -295,8 +335,6 @@ export default class SmartStructureManagerParametersController extends Vue {
       });
 
       this.structureData = response.data.data.properties;
-      console.log(paramsFields);
-      console.log(this.paramValues);
     } else {
       this.paramData = [];
       this.paramValues = {};

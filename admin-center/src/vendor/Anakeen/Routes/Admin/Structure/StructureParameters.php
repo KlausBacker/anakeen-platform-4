@@ -3,6 +3,7 @@
 namespace Anakeen\Routes\Admin\Structure;
 
 use Anakeen\Core\Internal\FormatCollection;
+use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\Settings;
 use Anakeen\Core\SmartStructure;
@@ -63,13 +64,34 @@ class StructureParameters extends StructureFields
 
 
             $data[$oa->id]["configurationParameter"] = $configParams[$oa->id] ?? null;
+            $pValue=null;
             if ($structure->fromid) {
-                $data[$oa->id]["parentConfigurationParameters"] = $configParentParameters[$oa->id] ?? null;
+                $pValue= $configParentParameters[$oa->id]??null;
+                if ($pValue) {
+                    $data[$oa->id]["parentConfigurationParameters"]=  json_decode(json_encode($formater->getInfo($oa, $pValue, $element)), true);
+                } else {
+                    $pValue = null;
+                }
             }
             if ($value === '{}' && $oa->isMultiple()) {
                 $data[$oa->id]["result"]=[];
             } else {
                 $data[$oa->id]["result"] = json_decode(json_encode($formater->getInfo($oa, $value, $element)), true);
+            }
+
+            $data[$oa->id]["inArray"]=$oa->inArray();
+            if (SmartElement::seemsMethod($data[$oa->id]["configurationParameter"])) {
+                if ($data[$oa->id]["configurationParameter"] !== $value) {
+                    $data[$oa->id]["computedMethod"] = $data[$oa->id]["configurationParameter"];
+                    $data[$oa->id]["isComputed"] = true;
+                }
+            } elseif (empty($data[$oa->id]["configurationParameter"]) &&
+                !empty($pValue) &&
+                SmartElement::seemsMethod($pValue)) {
+                if ($pValue !== $value) {
+                    $data[$oa->id]["computedMethod"] = $pValue;
+                    $data[$oa->id]["isComputed"] = true;
+                }
             }
         }
         return $data;

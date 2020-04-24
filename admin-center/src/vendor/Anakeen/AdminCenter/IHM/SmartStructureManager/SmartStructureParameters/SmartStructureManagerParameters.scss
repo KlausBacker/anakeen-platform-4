@@ -8,6 +8,15 @@
     border: none;
   }
 
+  .dcpAttribute__description {
+    font-style: italic;
+    background-color: transparent;
+    border:none;
+    &:before {
+      border:none;
+    }
+  }
+
   .dcp-column--leftright > .dcpFrame__content > .dcpArray.row {
     flex-basis: 100%;
   }
