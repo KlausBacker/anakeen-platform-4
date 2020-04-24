@@ -2,7 +2,7 @@
   <hub-element-layout>
     <nav>
       <i class="material-icons hub-icon">storage</i>
-      <span v-if="!isDockCollapsed"> Vault Manager</span>
+      <span v-if="!isDockCollapsed">{{ $t("AdminCenterVaultManager.Title Vault Manager") }}</span>
     </nav>
     <template v-slot:hubContent>
       <div class="vault-manager">

@@ -118,7 +118,7 @@ export default class AuthenticationTokenInfoController extends Vue {
       .kendoWindow({
         actions: ["Close"],
         modal: true,
-        title: "Confirm Token Deletion",
+        title: `${this.$t("AdminCenterAuthentication token.Confirm Token Deletion")}`,
         visible: false
       })
       .data("kendoWindow")
@@ -141,7 +141,7 @@ export default class AuthenticationTokenInfoController extends Vue {
               this.$emit("token-deleted", data);
             },
             modal: true,
-            title: "Token Deleted",
+            title: `${this.$t("AdminCenterAuthentication token.Token Deleted")}`,
             visible: false
           })
           .data("kendoWindow")

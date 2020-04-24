@@ -3,7 +3,9 @@ import axios from "axios";
 import Vue from "vue";
 import Login from "./LoginPage.vue";
 import I18nMixin from "../../../../../../components/mixins/AnkVueComponentMixin/I18nMixin";
+import setup from "@anakeen/user-interfaces/components/lib/setup.esm";
 
+Vue.use(setup);
 import VueI18n from "vue-i18n";
 
 Vue.http = Vue.prototype.$http = axios;

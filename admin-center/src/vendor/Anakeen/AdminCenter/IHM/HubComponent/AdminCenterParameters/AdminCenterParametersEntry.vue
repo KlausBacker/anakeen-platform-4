@@ -2,7 +2,7 @@
   <hub-element-layout>
     <nav>
       <i class="material-icons hub-icon">settings</i>
-      <span v-if="!isDockCollapsed"> Parameters</span>
+      <span v-if="!isDockCollapsed">{{ $t("globalParameter.Title Parameters")}}</span>
     </nav>
     <template v-slot:hubContent>
       <div class="parameters-parent">

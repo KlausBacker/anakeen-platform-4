@@ -47,6 +47,13 @@ export default class VaultInfoController extends Vue {
   @Prop({ type: Object as () => { metrics: {} } })
   public info;
 
+  public get translations() {
+    return {
+      NewPath: this.$t("AdminCenterVaultManager.New path"),
+      NewSize: this.$t("AdminCenterVaultManager.New size")
+    };
+  }
+
   public requestMessage: string = "";
   public sizeOptions = [
     {
@@ -72,9 +79,9 @@ export default class VaultInfoController extends Vue {
     if (data.category === "Free") {
       return `${data.category} - ${this.convertBytes(data.dataItem.sizeFiles)} (${data.dataItem.value}%)`;
     }
-    return `${data.category} - ${data.dataItem.nbFiles} files \n ${this.convertBytes(data.dataItem.sizeFiles)} (${
-      data.dataItem.value
-    }%)`;
+    return `${data.category} - ${data.dataItem.nbFiles} ${this.$t(
+      "AdminCenterVaultManager.files"
+    )} \n ${this.convertBytes(data.dataItem.sizeFiles)} (${data.dataItem.value}%)`;
   }
 
   public get getGaugeLogicalMax() {
@@ -156,7 +163,7 @@ export default class VaultInfoController extends Vue {
       freeSize = Math.max(100 - orphanPc - trashPc - referencedPc, 0);
       if (referencedPc) {
         data.push({
-          category: "Referenced",
+          category: this.$t("AdminCenterVaultManager.Referenced"),
           color: "#17a2b8",
           nbFiles: this.info.metrics.repartition.usefulCount,
           sizeFiles: this.info.metrics.repartition.usefulSize,
@@ -166,7 +173,7 @@ export default class VaultInfoController extends Vue {
 
       if (trashPc > 0) {
         data.push({
-          category: "Trash can",
+          category: this.$t("AdminCenterVaultManager.Trash can"),
           color: "#dc5c8c",
           nbFiles: this.info.metrics.repartition.trashCount,
           sizeFiles: this.info.metrics.repartition.trashSize,
@@ -176,7 +183,7 @@ export default class VaultInfoController extends Vue {
 
       if (orphanPc > 0) {
         data.push({
-          category: "Orphans",
+          category: this.$t("AdminCenterVaultManager.Orphans"),
           color: "#ffc107",
           nbFiles: this.info.metrics.repartition.orphanCount,
           sizeFiles: this.info.metrics.repartition.orphanSize,
@@ -186,7 +193,7 @@ export default class VaultInfoController extends Vue {
 
       if (freeSize > 0) {
         data.push({
-          category: "Free",
+          category: this.$t("AdminCenterVaultManager.Free"),
           color: "#28a644",
           nbFiles: 0,
           sizeFiles: totalSize - this.info.metrics.usedSize,
@@ -195,7 +202,7 @@ export default class VaultInfoController extends Vue {
       }
     } else {
       data.push({
-        category: "No data",
+        category: this.$t("AdminCenterVaultManager.No data"),
         color: "#28a644",
         nbFiles: 0,
         sizeFiles: 0,
@@ -268,7 +275,7 @@ export default class VaultInfoController extends Vue {
       .kendoWindow({
         actions: ["Close"],
         modal: true,
-        title: "Move path",
+        title: `${this.$t("AdminCenterVaultManager.Move path")}`,
         visible: false
       })
       .data("kendoWindow")
@@ -281,7 +288,7 @@ export default class VaultInfoController extends Vue {
       .kendoWindow({
         actions: ["Close"],
         modal: true,
-        title: "Resize logical volume",
+        title: `${this.$t("AdminCenterVaultManager.Resize logical volume")}`,
         visible: false
       })
       .data("kendoWindow")
@@ -290,13 +297,13 @@ export default class VaultInfoController extends Vue {
   }
 
   public logicalTemplate() {
-    return `<b>${this.convertBytes(this.info.metrics.usedSize)}</b> used out of <b>${this.convertBytes(
+    return `<b>${this.convertBytes(this.info.metrics.usedSize)}</b> ${this.$t("AdminCenterVaultManager.used out of")} <b>${this.convertBytes(
       this.info.metrics.totalSize
     )}</b> (<b>${Math.floor((this.info.metrics.usedSize / this.info.metrics.totalSize) * 100)}%</b>)`;
   }
 
   public diskTemplate() {
-    return `<b>${this.convertBytes(this.info.disk.usedSize)}</b> used out of <b>${this.convertBytes(
+    return `<b>${this.convertBytes(this.info.disk.usedSize)}</b>  ${this.$t("AdminCenterVaultManager.used out of")} <b>${this.convertBytes(
       this.info.disk.totalSize
     )}</b> (<b>${Math.floor((this.info.disk.usedSize / this.info.disk.totalSize) * 100)}%</b>)`;
   }

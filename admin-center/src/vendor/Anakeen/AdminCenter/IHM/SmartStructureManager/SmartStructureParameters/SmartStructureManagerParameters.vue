@@ -23,7 +23,7 @@
           <i class="material-icons">grid_off</i>
         </div>
         <div class="empty-ssm-grid-text">
-          <span>This Smart Structure has no parameters</span>
+          <span>{{ $t("AdminCenterSmartStructure.Smart Structure has no parameters") }}</span>
         </div>
       </div>
     </div>

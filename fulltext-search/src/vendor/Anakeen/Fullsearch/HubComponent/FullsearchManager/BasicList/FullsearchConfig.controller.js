@@ -1,35 +1,8 @@
 import Vue from "vue";
 import { Grid } from "@progress/kendo-vue-grid";
+import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
 
-const detailInstance = Vue.component("template-component", {
-  props: {
-    dataItem: Object
-  },
-  template: `
-      <section>
-          <p><strong>Stemmer:</strong> {{dataItem.domainStem}}</p>
-          <div>
-              <strong>Analyzed structures:</strong>
-              <ul class="structure-info">
-                  <li v-for="structure in dataItem.structures"  >
-                      <span :class="{ success: (structure.stats.totalToIndex === structure.stats.totalIndexed && structure.stats.totalDirty === 0) }">{{ structure.structure }}</span>
-                      <ul>
-                          <li>Total to index : {{structure.stats.totalToIndex}}</li>
-                          <li :class="{ warning: (structure.stats.totalToIndex > structure.stats.totalIndexed) }">Total indexed : {{structure.stats.totalIndexed}}</li>
-                          <li :class="{ warning: (structure.stats.totalDirty > 0) }">Total not up to date : {{structure.stats.totalDirty}}</li>
-                      
-                      </ul>
-                      
-                  </li>
-              </ul>
-              <strong>Files indexing statuses:</strong>
-              <ul  class="file-info"> 
-                  <li  v-for="fileStatus in dataItem.database.files"><span class="status">{{fileStatus.label}}</span> : <b>{{fileStatus.count}}</b> </li>
-              </ul>
-          </div>
-          <p><strong>Database table size:</strong> {{dataItem.database.size.prettySize}}</p>
-      </section>`
-});
+import detailInstance from "./DetailInstance";
 
 const componentHeaderInstance = Vue.component("template-component", {
   props: {
@@ -39,14 +12,15 @@ const componentHeaderInstance = Vue.component("template-component", {
     column: Object,
     sortable: [Boolean, Object]
   },
+  mixins: [AnkI18NMixin],
   data() {
     return {
       autoReloadTimer: false
     };
   },
   template: `<div class="full-header"  ><b>{{title}}</b> 
-      <span>File cache size: <b>{{getFileTableSize()}}</b></span>
-      <span>Next update: <b>{{getUpdateDate()}}</b></span>
+      <span>{{$t("AdminCenterFullsearch.File cache size")}}: <b>{{getFileTableSize()}}</b></span>
+      <span>{{$t("AdminCenterFullsearch.Next update")}}: <b>{{getUpdateDate()}}</b></span>
       <button @click="clickHandler" @dblclick="autoRefresh" class="btn"  :class="{ 'btn-primary':this.autoReloadTimer}"><span class="material-icons">refresh</span></button></div>`,
   methods: {
     getFileTableSize() {
@@ -76,6 +50,7 @@ const componentHeaderInstance = Vue.component("template-component", {
 
 // noinspection JSUnusedGlobalSymbols
 export default {
+  mixins: [AnkI18NMixin],
   name: "ank-fullsearch-list",
   components: {
     "kendo-grid": Grid
@@ -95,7 +70,7 @@ export default {
       columns: [
         {
           field: "title",
-          title: "Search domains",
+          title: this.$t("AdminCenterFullsearch.Search domains"),
           headerCell: this.headerCellRenderFunction
         }
       ]

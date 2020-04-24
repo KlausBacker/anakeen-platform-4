@@ -20,13 +20,19 @@ class TrashGridController extends DefaultGridController
             $configBuilder->setPageable($clientConfig["pageable"]);
         }
         $configBuilder->addProperty("title");
-        $configBuilder->addProperty("fromid", array("relation"=>"-1","smartType"=>"docid","title"=>"Type"));
-        $configBuilder->addProperty("mdate", array("title"=>"Date of deletion"));
-        $configBuilder->addAbstract("auth", array("smartType"=>"text","title"=>"Authorization","hidden"=>true,"sortable"=>false,"filterable"=>false));
-        $configBuilder->addAbstract("author", array("smartType"=>"text","title"=>"Author of the deletion","sortable"=>false,"filterable"=>true));
-        $configBuilder->addRowAction(array("action"=> "restore", "title"=> "Restore"));
-        $configBuilder->addRowAction(array("action"=> "consult", "title"=> "Display"));
-        $configBuilder->addRowAction(array("action"=> "delete", "title"=> "Delete from trash"));
+        $configBuilder->addProperty("fromid", array("relation"=>"-1","smartType"=>"docid","title"=>___("Type", "AdminCenterTrash.type")));
+        $configBuilder->addProperty("mdate", array("title"=>___("Date of deletion", "AdminCenterTrash.date deletion")));
+        $configBuilder->addAbstract("auth", array("smartType"=>"text","title"=> ___(
+            "Authorization",
+            "AdminCenterTrash.authorization"
+        ),"hidden"=>true,"sortable"=>false,"filterable"=>false));
+        $configBuilder->addAbstract("author", array("smartType"=>"text","title"=>___(
+            "Author of the deletion",
+            "AdminCenterTrash.author deletion"
+        ),"sortable"=>false,"filterable"=>true));
+        $configBuilder->addRowAction(array("action"=> "restore", "title"=> ___("Restore", "AdminCenterTrash.btn restore")));
+        $configBuilder->addRowAction(array("action"=> "consult", "title"=> ___("Display", "AdminCenterTrash.btn display")));
+        $configBuilder->addRowAction(array("action"=> "delete", "title"=> ___("Delete from trash", "AdminCenterTrash.btn delete")));
         return $configBuilder->getConfig();
     }
 

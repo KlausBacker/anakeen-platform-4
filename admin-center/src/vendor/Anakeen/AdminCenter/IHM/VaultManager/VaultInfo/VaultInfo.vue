@@ -8,21 +8,21 @@
                     <div class="vault-infos-card-content">
                         <div class="vault-infos-card-content-items">
                             <span class="vault-card-content-item">
-                                <span class="vault-card-content-item-label">Logical capacity used:&nbsp</span>
+                                <span class="vault-card-content-item-label">{{ $t("AdminCenterVaultManager.Logical capacity used") }}:&nbsp</span>
                                 <span class="vault-card-content-item-value">{{convertBytes(info.metrics.usedSize)}},&nbsp<i>({{info.metrics.totalCount}} Files)</i></span>
                             </span>
 
                             <span class="vault-card-content-item">
-                                <span class="vault-card-content-item-label">Free logical capacity:&nbsp</span>
+                                <span class="vault-card-content-item-label">{{ $t("AdminCenterVaultManager.Free logical capacity") }}:&nbsp</span>
                                 <span class="vault-card-content-item-value">{{info.freespace}}</span>
                             </span>
 
                             <span class="vault-card-content-item">
-                                <span class="vault-card-content-item-label">Disk Capacity:&nbsp</span>
+                                <span class="vault-card-content-item-label">{{ $t("AdminCenterVaultManager.Disk Capacity") }}:&nbsp</span>
                                 <span class="vault-card-content-item-value">{{convertBytes(info.disk.totalSize)}}</span>
                             </span>
                             <span class="vault-card-content-item">
-                                <span class="vault-card-content-item-label">Disk capacity used:&nbsp</span>
+                                <span class="vault-card-content-item-label">{{ $t("AdminCenterVaultManager.Disk capacity used") }}:&nbsp</span>
                                 <span class="vault-card-content-item-value">{{convertBytes(info.disk.usedSize)}}</span>
                             </span>
                         </div>
@@ -31,12 +31,12 @@
             </div>
             <div class="vault-buttons container-fluid">
                 <div class="vault-action">
-                    Logical capacity:&nbsp;<b>{{convertBytes(info.metrics.totalSize)}}</b>&nbsp;:
-                    <kendo-button class="k-primary" @click="onResizeDisk">Resize</kendo-button>
+                    {{ $t("AdminCenterVaultManager.Logical capacity") }}:&nbsp;<b>{{convertBytes(info.metrics.totalSize)}}</b>&nbsp;:
+                    <kendo-button class="k-primary" @click="onResizeDisk">{{ $t("AdminCenterVaultManager.btn Resize") }}</kendo-button>
                 </div>
                     <div class="vault-action">
-                        Vault server path:&nbsp;<b>{{info.path}}</b>&nbsp;:
-                        <kendo-button class="k-primary" @click="onMovePath">Move</kendo-button>
+                        {{ $t("AdminCenterVaultManager.Vault server path") }}:&nbsp;<b>{{info.path}}</b>&nbsp;:
+                        <kendo-button class="k-primary" @click="onMovePath">{{ $t("AdminCenterVaultManager.btn Move") }}</kendo-button>
                     </div>
 
             </div>
@@ -45,7 +45,7 @@
             <div class="disk-gauges" v-if="info.metrics.totalSize">
                 <div class="disk-gauge" :class="{ diskerror: info.metrics.totalSize < info.metrics.usedSize }">
 
-                    <p class="arc-title">Logical vault capacity</p>
+                    <p class="arc-title">{{ $t("AdminCenterVaultManager.Logical vault capacity") }}</p>
                     <kendo-lineargauge ref="logicalGauge"
                                        class="logical-gauge arc-gauge"
                                        :scale-min="0"
@@ -63,7 +63,7 @@
                     <p class="arc-legend" v-html="logicalTemplate()"></p>
                 </div>
                 <div class="disk-gauge" :class="{ diskerror: info.disk.totalSize === 0 }">
-                    <p class="arc-title">Physical disk capacity</p>
+                    <p class="arc-title">{{ $t("AdminCenterVaultManager.Physical disk capacity") }}</p>
                     <kendo-lineargauge ref="diskGauge"
                                        class="physical-gauge arc-gauge"
                                        :scale-min="0"
@@ -81,7 +81,7 @@
                 </div>
             </div>
             <div class="disk-chart">
-                <p class="disk-chart-legend">Vault disk file repartition</p>
+                <p class="disk-chart-legend">{{ $t("AdminCenterVaultManager.Vault disk file repartition") }}</p>
                 <kendo-chart ref="chart"
                              class="vault-chart"
                              :title-position="'top'"
@@ -98,27 +98,27 @@
             </div>
         </div>
         <div ref="movePathForm" class="vault-move-form" style="display: none">
-            <p> Current path is</p>
+            <p> {{ $t("AdminCenterVaultManager.Current path is") }}</p>
             <pre><b>{{ info.path }}</b></pre>
 
-            <input ref="newPath" class="k-textbox" placeholder="New path">
+            <input ref="newPath" class="k-textbox" :placeholder="translations.NewPath">
             <div class="vault-buttons">
                 <kendo-button
                         class="k-primary"
-                        @click="requestMoveIt">Move it
+                        @click="requestMoveIt">{{ $t("AdminCenterVaultManager.btn Move it") }}
                 </kendo-button>
 
-                <kendo-button @click="closeWindow">Cancel</kendo-button>
+                <kendo-button @click="closeWindow">{{ $t("AdminCenterVaultManager.btn Cancel") }}</kendo-button>
             </div>
         </div>
 
         <div ref="resizeVolumeForm" class="vault-resize-form" style="display: none">
-            <p> Current size is</p>
+            <p> {{ $t("AdminCenterVaultManager.Current size is") }}</p>
             <pre><b>{{ convertBytes(info.metrics.totalSize) }}</b></pre>
 
             <div class="vault-resize-inputs">
                 <input ref="newSize"
-                       @keyup.enter="requestResizeIt" class="k-textbox" placeholder="New size">
+                       @keyup.enter="requestResizeIt" class="k-textbox" :placeholder="translations.NewSize">
 
                 <kendo-dropdownlist
                         ref="kNewSizeUnit"
@@ -132,10 +132,10 @@
             <div class="vault-buttons">
                 <kendo-button
                         class="k-primary"
-                        @click="requestResizeIt">Resize it
+                        @click="requestResizeIt">{{ $t("AdminCenterVaultManager.btn Resize it") }}
                 </kendo-button>
 
-                <kendo-button @click="closeWindow">Cancel</kendo-button>
+                <kendo-button @click="closeWindow">{{ $t("AdminCenterVaultManager.btn Cancel") }}</kendo-button>
             </div>
         </div>
 
@@ -143,7 +143,7 @@
             <p>
                 <b>{{ requestMessage }}</b>
             </p>
-            <kendo-button @click="closeWindow">Close</kendo-button>
+            <kendo-button @click="closeWindow">{{ $t("AdminCenterVaultManager.btn Close") }}</kendo-button>
 
         </div>
     </div>

@@ -55,6 +55,14 @@ export default class VaultManagerController extends Vue {
       }
     }
   });
+
+  public get translations() {
+    return {
+      ServerPath: this.$t("AdminCenterVaultManager.Server path"),
+      LogicalMaxSize: this.$t("AdminCenterVaultManager.Logical max size")
+    };
+  }
+
   public requestMessage: string = "";
   public sizeOptions = [
     {
@@ -122,7 +130,7 @@ export default class VaultManagerController extends Vue {
               this.refreshVaultGrid();
             },
             modal: true,
-            title: "Vault updated",
+            title: `${this.$t("AdminCenterVaultManager.Vault updated")}`,
             visible: false
           })
           .data("kendoWindow")
@@ -136,7 +144,7 @@ export default class VaultManagerController extends Vue {
       .kendoWindow({
         actions: ["Close"],
         modal: true,
-        title: "Create vault",
+        title: `${this.$t("AdminCenterVaultManager.Create vault")}`,
         visible: false
       })
       .data("kendoWindow")
@@ -197,7 +205,7 @@ export default class VaultManagerController extends Vue {
                   ") </div>"
                 );
               },
-              title: "Vault"
+              title: `${this.$t("AdminCenterVaultManager.Vault")}`
             },
             {
               command: {
@@ -216,7 +224,7 @@ export default class VaultManagerController extends Vue {
                     .removeClass("vault--selected");
                   $tr.addClass("vault--selected");
                 },
-                text: "Display"
+                text: `${this.$t("AdminCenterVaultManager.Display")}`
               },
               width: "10rem"
             }

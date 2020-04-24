@@ -12,13 +12,13 @@
                 <kendo-toolbar-item
                         type="button"
                         icon="download"
-                        text="Export file"
+                        :text="$t('AdminCenterI18n.Export file')"
                         @click="exportLocaleFile"
                 ></kendo-toolbar-item>
                 <kendo-toolbar-item
                         type="button"
                         icon="upload"
-                        text="Import file"
+                        :text="$t('AdminCenterI18n.Import file')"
                         @click="importLocaleFile"
                 ></kendo-toolbar-item>
             </kendo-toolbar>

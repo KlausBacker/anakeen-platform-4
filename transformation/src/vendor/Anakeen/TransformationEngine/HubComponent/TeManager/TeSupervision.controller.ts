@@ -1,9 +1,10 @@
 import AnkSplitter from "@anakeen/internal-components/lib/Splitter";
 import "@progress/kendo-ui/js/kendo.filtercell";
 import "@progress/kendo-ui/js/kendo.grid";
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Mixins } from "vue-property-decorator";
 import TeTaskInfo from "./TeTaskInfo.vue";
 import { debounced } from "./TeUtils";
+import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
 
 // noinspection JSUnusedGlobalSymbols
 @Component({
@@ -13,11 +14,11 @@ import { debounced } from "./TeUtils";
   },
   name: "TeSupervision"
 })
-export default class TeSupervision extends Vue {
+export default class TeSupervision extends Mixins(AnkI18NMixin) {
   public $refs!: {
     [key: string]: any;
   };
-  public selectedTask: string = "";
+  public selectedTask = "";
   public tePanes: object[] = [
     {
       collapsible: true,
@@ -85,7 +86,7 @@ export default class TeSupervision extends Vue {
             template: item => {
               return item.cdate.substr(0, 19);
             },
-            title: "Request Date",
+            title: `${this.$t("AdminCenterTransformationFileManager.Request Date")}`,
             width: "13rem"
           },
           {
@@ -110,7 +111,7 @@ export default class TeSupervision extends Vue {
                 )
                 .get(0).outerHTML;
             },
-            title: "Status"
+            title: `${this.$t("AdminCenterTransformationFileManager.Status")}`
           },
           {
             attributes: {
@@ -125,7 +126,7 @@ export default class TeSupervision extends Vue {
                 suggestionOperator: "contains"
               }
             },
-            title: "Engine"
+            title: `${this.$t("AdminCenterTransformationFileManager.Engine")}`
           },
           {
             attributes: {
@@ -141,7 +142,7 @@ export default class TeSupervision extends Vue {
               }
             },
 
-            title: "Task Id"
+            title: `${this.$t("AdminCenterTransformationFileManager.Task Id")}`
           },
           {
             command: {
@@ -211,7 +212,13 @@ export default class TeSupervision extends Vue {
         pageable: {
           buttonCount: 5,
           pageSizes: [25, 100],
-          refresh: true
+          refresh: true,
+          messages: {
+            itemsPerPage: `${this.$t("AdminCenterKendoGridTranslation.items per page")}`,
+            display: `${this.$t("AdminCenterKendoGridTranslation.{0}-{1}of{2}items")}`,
+            refresh: `${this.$t("AdminCenterKendoGridTranslation.Refresh")}`,
+            empty: `${this.$t("AdminCenterKendoGridTranslation.No data")}`
+          }
         }
       })
       .data("kendoGrid");

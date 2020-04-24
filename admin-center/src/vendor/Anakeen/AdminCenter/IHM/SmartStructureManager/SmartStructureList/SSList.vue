@@ -18,7 +18,7 @@
         <div class="ss-tabs-list-nav">
           <slot v-if="isEmpty" name="empty">
             <div class="empty-content">
-              <span>No data found</span>
+              <span>{{ $t("AdminCenterSmartStructure.No data found") }}</span>
             </div>
           </slot>
           <div

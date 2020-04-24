@@ -3,7 +3,7 @@
     <div class="user-search">
       <form class="user-search-form" @submit.prevent>
         <div class="form-group search-group">
-          <span>&nbspSystem&nbsp</span>
+          <span>&nbsp{{ $t("globalParameter.System") }}&nbsp</span>
           <label class="switch">
             <input
               type="checkbox"
@@ -12,13 +12,13 @@
             />
             <span class="slider round"></span>
           </label>
-          <span>&nbspUser&nbsp</span>
+          <span>&nbsp{{ $t("globalParameter.User") }}&nbsp</span>
           <div class="input-group">
             <input
               autofocus
               class="form-control user-search-input"
               v-model.trim="inputSearchValue"
-              placeholder="Search user by login, first name, or last name..."
+              :placeholder="translations.SearchUser"
             />
             <div class="input-group-append reset-button">
               <i
@@ -32,7 +32,7 @@
                 class="btn btn-secondary"
                 @click.stop="searchUser"
               >
-                Search
+                {{ $t("globalParameter.Search") }}
               </button>
             </div>
           </div>
@@ -45,12 +45,12 @@
         @keyup.enter.stop="closeDeleteConfirmation"
       >
         <div class="information-text">
-          Parameter successfully restored to system value
+          {{ $t("globalParameter.Parameter successfully") }}
         </div>
         <a
           class="delete-confirmation-btn form-parameter-btn"
           @click="closeDeleteConfirmation"
-          >Back to parameters</a
+          >{{ $t("globalParameter.Back to parameters") }}</a
         >
       </div>
       <div
@@ -59,10 +59,10 @@
         @keyup.enter.stop="closeDeleteError"
       >
         <div class="information-text">
-          An error occured, parameter modification was not saved
+          {{ $t("globalParameter.An error occured") }}
         </div>
         <a class="delete-error-btn form-parameter-btn" @click="closeDeleteError"
-          >Back to parameters</a
+          >{{ $t("globalParameter.Back to parameters") }}</a
         >
       </div>
     </div>

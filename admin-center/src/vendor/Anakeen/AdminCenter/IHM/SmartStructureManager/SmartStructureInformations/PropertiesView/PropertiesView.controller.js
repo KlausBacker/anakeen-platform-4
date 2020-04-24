@@ -1,3 +1,5 @@
+import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
+
 const DEFAULT_PROPS = [
   "title",
   "id",
@@ -18,26 +20,6 @@ const DEFAULT_PROPS = [
   "tags"
 ];
 
-const PROPS_LABELS = {
-  title: "Title",
-  id: "Id",
-  name: "Logical Name",
-  revision: "Revision",
-  version: "Version",
-  workflow: "Workflow",
-  family: "Parent Structure",
-  createdBy: "Created by",
-  "security.lock.lockedBy": "Locked by",
-  confidential: "Confidential",
-  creationDate: "Creation date",
-  lastModificationDate: "Last modification date",
-  "security.profil": "Profil",
-  "security.profil.reference": "Reference profil",
-  "security.fieldAccess": "Field Access",
-  viewController: "View controller",
-  tags: "Tags"
-};
-
 const emptyProp = propValue => {
   if (propValue === undefined || propValue === null) {
     return true;
@@ -52,6 +34,7 @@ const emptyProp = propValue => {
 };
 
 export default {
+  mixins: [AnkI18NMixin],
   props: {
     elementId: {
       type: [String, Number],
@@ -111,6 +94,25 @@ export default {
     },
     parseProperties(data) {
       const result = [];
+      const PROPS_LABELS = {
+        title: this.$t("AdminCenterSmartStructure.Props.label Title"),
+        id: this.$t("AdminCenterSmartStructure.Props.label Id"),
+        name: this.$t("AdminCenterSmartStructure.Props.label Logical Name"),
+        revision: this.$t("AdminCenterSmartStructure.Props.label Revision"),
+        version: this.$t("AdminCenterSmartStructure.Props.label Version"),
+        workflow: this.$t("AdminCenterSmartStructure.Props.label Workflow"),
+        family: this.$t("AdminCenterSmartStructure.Props.label Parent Structure"),
+        createdBy: this.$t("AdminCenterSmartStructure.Props.label Created by"),
+        "security.lock.lockedBy": this.$t("AdminCenterSmartStructure.Props.label Locked by"),
+        confidential: this.$t("AdminCenterSmartStructure.Props.label Confidential"),
+        creationDate: this.$t("AdminCenterSmartStructure.Props.label Creation date"),
+        lastModificationDate: this.$t("AdminCenterSmartStructure.Props.label Last modification date"),
+        "security.profil": this.$t("AdminCenterSmartStructure.Props.label Profil"),
+        "security.profil.reference": this.$t("AdminCenterSmartStructure.Props.label Reference profil"),
+        "security.fieldAccess": this.$t("AdminCenterSmartStructure.Props.label Field Access"),
+        viewController: this.$t("AdminCenterSmartStructure.Props.label View controller"),
+        tags: this.$t("AdminCenterSmartStructure.Props.label Tags")
+      };
       this.properties.forEach(propid => {
         let propPath = propid.split(".");
         if (propPath.length === 1) {

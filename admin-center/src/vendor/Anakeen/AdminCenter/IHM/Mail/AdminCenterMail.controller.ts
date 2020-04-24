@@ -15,7 +15,7 @@ export default class AdminCenterMailController extends Mixins(AnkI18NMixin) {
   public actions: object[] = [{ action: "consultMailTemplate", title: "Display" }];
   public columns: object[] = [
     { field: "id", property: true, hidden: true, title: "Identification", withContext: false },
-    { field: "tmail_title", title: "Title", withContext: false },
+    { field: "tmail_title", title: `Title`, withContext: false },
     { field: "tmail_subject", title: `Subject`, withContext: false }
   ];
   public selectedMail = "";
@@ -23,7 +23,7 @@ export default class AdminCenterMailController extends Mixins(AnkI18NMixin) {
   public mounted(): void {
     this.columns = [
       { field: "id", property: true, hidden: true, title: "Identification", withContext: false },
-      { field: "tmail_title", title: "Title", withContext: false },
+      { field: "tmail_title", title: `${this.$t("AdminCenterMail.Title")}`, withContext: false },
       { field: "tmail_subject", title: `${this.$t("AdminCenterMail.Subject")}`, withContext: false }
     ];
   }

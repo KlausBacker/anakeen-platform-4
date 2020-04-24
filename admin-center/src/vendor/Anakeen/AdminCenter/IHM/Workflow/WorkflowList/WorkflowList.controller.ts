@@ -44,7 +44,7 @@ export default class WorkflowListController extends Vue {
 
   public get translations() {
     return {
-      listFilterPlaceholder: "Search a structure"
+      listFilterPlaceholder: this.$t("AdminCenterWorkflow.Search a structure")
     };
   }
   public get isEmpty() {

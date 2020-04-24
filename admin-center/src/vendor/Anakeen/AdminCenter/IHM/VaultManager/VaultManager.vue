@@ -11,7 +11,7 @@
         <header>
           <kendo-button class="k-primary" @click="onCreateVault">
             <i class="fa fa-plus"></i>
-            <span>Create</span>
+            <span>{{ $t("AdminCenterVaultManager.Create") }}</span>
           </kendo-button>
         </header>
         <div class="vault-grid-box">
@@ -22,10 +22,10 @@
       <ank-vault-info :info="info" class="vault-info" @vault-updated="refreshVaultGrid" splitpanes-size="70"></ank-vault-info>
     </ank-split-panes>
     <div ref="createVaultForm" class="vault-manager-form" style="display: none">
-      <input ref="newPath" class="k-textbox" placeholder="Server path" />
+      <input ref="newPath" class="k-textbox" :placeholder="translations.ServerPath" />
       <div class="vault-resize-inputs">
         <div class="vault-resize-inputs__content">
-          <input ref="newSize" class="k-textbox" placeholder="Logical max size" />
+          <input ref="newSize" class="k-textbox" :placeholder="translations.LogicalMaxSize" />
 
           <kendo-dropdownlist
             ref="kNewSizeUnit"
@@ -39,9 +39,11 @@
         </div>
       </div>
       <div class="vault-buttons">
-        <kendo-button class="k-primary" @click="requestCreateIt">Create it </kendo-button>
+        <kendo-button class="k-primary" @click="requestCreateIt">{{
+          $t("AdminCenterVaultManager.Create it")
+        }}</kendo-button>
 
-        <kendo-button @click="closeWindow">Cancel</kendo-button>
+        <kendo-button @click="closeWindow">{{ $t("AdminCenterVaultManager.Cancel") }}</kendo-button>
       </div>
     </div>
 
@@ -49,7 +51,7 @@
       <p>
         <b>{{ requestMessage }}</b>
       </p>
-      <kendo-button @click="closeWindow">Close</kendo-button>
+      <kendo-button @click="closeWindow">{{ $t("AdminCenterVaultManager.Close") }}</kendo-button>
     </div>
   </div>
 </template>
