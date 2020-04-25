@@ -2,7 +2,7 @@
   <hub-element-layout>
     <nav>
       <i class="material-icons hub-icon">code</i>
-      <span v-if="!isDockCollapsed">Smart Structure Manager</span>
+      <span v-if="!isDockCollapsed">{{ $t("AdminCenterSmartStructure.Title Smart Structure Manager")}}</span>
     </nav>
     <template v-slot:hubContent>
       <div class="structure-parent">

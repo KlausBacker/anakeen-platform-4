@@ -1,8 +1,9 @@
-/* eslint-disable no-case-declarations */
 import AnkPaneSplitter from "@anakeen/internal-components/lib/PaneSplitter";
 import SmartElement from "@anakeen/user-interfaces/components/lib/AnkSmartElement.esm";
 import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementGrid.esm";
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Mixins } from "vue-property-decorator";
+import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
+import * as $ from "jquery";
 
 @Component({
   components: {
@@ -11,7 +12,7 @@ import { Component, Vue } from "vue-property-decorator";
     "ank-split-panes": AnkPaneSplitter
   }
 })
-export default class AdminCenterTrashController extends Vue {
+export default class AdminCenterTrashController extends Mixins(AnkI18NMixin) {
   public $refs!: {
     [key: string]: any;
   };
@@ -51,8 +52,13 @@ export default class AdminCenterTrashController extends Vue {
       ***/
       case "restore":
         this.selectedTrash = e.data.row.properties.id.toString();
-        const contentRestore =
-          "<p ref='content_confirm' class='content-confirm' >Warning : you are about to restore this element</p> <div class='button_wrapper'> <button class='k-cancel' ref='cancel'>Cancel</button><button class='k-restore' ref='deleteElement'>Restore Element</button> </div>";
+        const contentRestore = `<p ref='content_confirm' class='content-confirm' >${this.$t(
+          "AdminCenterTrash.Warning restore"
+        )}</p> <div class='button_wrapper'> <button class='k-cancel' ref='cancel'>${this.$t(
+          "AdminCenterTrash.Cancel"
+        )}</button><button class='k-restore' ref='deleteElement'>${this.$t(
+          "AdminCenterTrash.Restore element"
+        )}</button> </div>`;
 
         $(this.$refs.confirm)
           .kendoWindow({
@@ -89,7 +95,7 @@ export default class AdminCenterTrashController extends Vue {
             close: this.onClose,
             content: { template: contentRestore },
             iframe: false,
-            title: "Confirm restoration of : " + e.data.row.properties.title
+            title: this.$t("AdminCenterTrash.Confirm restoration") + e.data.row.properties.title
           })
           .data("kendoWindow")
           .center()
@@ -107,11 +113,32 @@ export default class AdminCenterTrashController extends Vue {
         this.$http.get("/api/v2/admin/trash/" + this.selectedTrash).then(response => {
           const data = response.data.data;
           thisPointer.NbReference = response.data.data.length;
-          const deleteReference = `<p ref='content_confirm' class='content-confirm' ><span style='color:red;font-weight: bold; font-size: larger'>Warning</span>: you are about to <span style='font-weight: bold; font-size: larger'>definitively</span> delete this Smart Element which is referenced in <b>`;
-          const deleteButtonForm = `<div class='button_wrapper'> <button class='k-cancel' ref='cancel'>Cancel</button><button class='k-delete' ref='deleteElement'>Delete from trash</button> </div>`;
+          const deleteReference = `<p ref='content_confirm' class='content-confirm' ><span style='color:red;font-weight: bold; font-size: larger'>${this.$t(
+            "AdminCenterTrash.Warning"
+          )}</span>: ${this.$t(
+            "AdminCenterTrash.you are about to"
+          )} <span style='font-weight: bold; font-size: larger'>${this.$t(
+            "AdminCenterTrash.definitively"
+          )}</span> ${this.$t("AdminCenterTrash.delete Smart Element referenced")} <b>`;
+          const deleteButtonForm = `<div class='button_wrapper'> <button class='k-cancel' ref='cancel'>${this.$t(
+            "AdminCenterTrash.Cancel"
+          )}</button><button class='k-delete' ref='deleteElement'>${this.$t(
+            "AdminCenterTrash.Delete from trash"
+          )}</button> </div>`;
           if (Number(thisPointer.NbReference) === 0) {
-            this.content =
-              "<span ref='content_confirm' class='content-confirm' ><span style='color:red;font-weight: bold; font-size: larger'>Warning</span>: you are about to <span style='font-weight: bold; font-size: larger'>definitively</span> delete this Smart Element which is not referenced in any other Smart Element</p> <div class='button_wrapper'> <button class='k-cancel' ref='cancel'>Cancel</button><button class='k-delete' ref='deleteElement'>Delete from trash</button> </div>";
+            this.content = `<span ref='content_confirm' class='content-confirm' ><span style='color:red;font-weight: bold; font-size: larger'>${this.$t(
+              "AdminCenterTrash.Warning"
+            )}</span>: ${this.$t(
+              "AdminCenterTrash.you are about to"
+            )} <span style='font-weight: bold; font-size: larger'>${this.$t(
+              "AdminCenterTrash.definitively"
+            )}</span> ${this.$t(
+              "AdminCenterTrash.delete Smart Element not referenced"
+            )}</p> <div class='button_wrapper'> <button class='k-cancel' ref='cancel'>${this.$t(
+              "AdminCenterTrash.Cancel"
+            )}</button><button class='k-delete' ref='deleteElement'>${this.$t(
+              "AdminCenterTrash.Delete from trash"
+            )}</button> </div>`;
           } else if (Number(thisPointer.NbReference) <= 2) {
             let str = "";
             data.forEach(item => {
@@ -120,7 +147,10 @@ export default class AdminCenterTrashController extends Vue {
             this.content = `${deleteReference}<ul>${str}</ul>` + deleteButtonForm;
           } else {
             this.content =
-              deleteReference + thisPointer.NbReference + "</b> other Smart Elements</p>" + deleteButtonForm;
+              deleteReference +
+              thisPointer.NbReference +
+              `</b> ${this.$t("AdminCenterTrash.other Smart Elements")}</p>` +
+              deleteButtonForm;
           }
           $(thisPointer.$refs.confirm)
             .kendoWindow({
@@ -150,7 +180,7 @@ export default class AdminCenterTrashController extends Vue {
               close: thisPointer.onClose,
               content: { template: this.content },
               iframe: false,
-              title: `"${e.data.row.properties.title}" : Confirm deletion`
+              title: `${e.data.row.properties.title} : ${this.$t("AdminCenterTrash.Confirm deletion")}`
             })
             .data("kendoWindow")
             .center()

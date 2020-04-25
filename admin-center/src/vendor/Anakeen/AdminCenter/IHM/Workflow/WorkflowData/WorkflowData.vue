@@ -19,7 +19,7 @@
     >
       <kendo-grid-column
         :field="'type'"
-        :title="'<b>Identifier</b>'"
+        :title="$t('AdminCenterWorkflow.Identifier')"
         :template="displayData('type')"
         :filterable-cell-operator="'contains'"
         :filterable-cell-show-operators="false"
@@ -27,7 +27,7 @@
       ></kendo-grid-column>
       <kendo-grid-column
         :field="'info'"
-        :title="'<b>Informations</b>'"
+        :title="$t('AdminCenterWorkflow.Informations')"
         :template="displayData('info')"
         :filterable-cell-operator="'contains'"
         :filterable-cell-show-operators="false"

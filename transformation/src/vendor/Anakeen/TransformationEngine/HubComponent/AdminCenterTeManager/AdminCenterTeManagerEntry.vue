@@ -1,7 +1,7 @@
 <template>
   <hub-element-layout>
     <nav>
-      <i class="material-icons hub-icon">file_copy</i> <span v-if="!isDockCollapsed"> Transformation File Manager</span>
+      <i class="material-icons hub-icon">file_copy</i> <span v-if="!isDockCollapsed"> {{ $t("AdminCenterTransformationFileManager.Title Transformation File Manager") }}</span>
     </nav>
     <template v-slot:hubContent>
       <div class="hub-te-manager">

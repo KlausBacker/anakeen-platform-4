@@ -4,6 +4,7 @@ import "@progress/kendo-ui/js/kendo.filtercell";
 import "@progress/kendo-ui/js/kendo.grid.js";
 import "@progress/kendo-ui/js/kendo.toolbar.js";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import * as $ from "jquery";
 
 Vue.use(ButtonsInstaller);
 declare var kendo;
@@ -110,6 +111,7 @@ export default class I18nManagerController extends Vue {
     window.addEventListener("offline", e => {
       this.$emit("i18nOffline", e.type);
     });
+    // @ts-ignore
     $(this.$refs.i18nGrid).kendoGrid({
       columns: [
         {
@@ -121,13 +123,13 @@ export default class I18nManagerController extends Vue {
           field: "section",
           filterable: this.translationFilterableOptions,
           minResizableWidth: 25,
-          title: "Type"
+          title: this.$t("AdminCenterI18n.Type")
         },
         {
           field: "msgctxt",
           filterable: this.translationFilterableOptions,
           minResizableWidth: 25,
-          title: "Contexte"
+          title: this.$t("AdminCenterI18n.Context")
         },
         {
           field: "msgid",
@@ -136,7 +138,7 @@ export default class I18nManagerController extends Vue {
           template: rowData => {
             return this.escapeHtml(rowData.msgid).replace(/\\n/g, "&para;<br/>");
           },
-          title: "ID"
+          title: this.$t("AdminCenterI18n.ID")
         },
         {
           field: "msgstr",
@@ -156,7 +158,7 @@ export default class I18nManagerController extends Vue {
             }
             return str.replace(/\\n/g, "&para;<br/>");
           },
-          title: "Server translation"
+          title: this.$t("AdminCenterI18n.Server translation")
         },
         {
           field: "override",
@@ -198,7 +200,7 @@ export default class I18nManagerController extends Vue {
                 </div>`;
             }
           },
-          title: "Overriden translation"
+          title: this.$t("AdminCenterI18n.Overriden translation")
         }
       ],
       dataBound: () => {
@@ -220,7 +222,13 @@ export default class I18nManagerController extends Vue {
         alwaysVisible: true,
         buttonCount: 5,
         pageSizes: [50, 100, 200],
-        refresh: true
+        refresh: true,
+        messages: {
+          itemsPerPage: this.$t("AdminCenterKendoGridTranslation.items per page"),
+          display: this.$t("AdminCenterKendoGridTranslation.{0}-{1}of{2}items"),
+          refresh: this.$t("AdminCenterKendoGridTranslation.Refresh"),
+          NoData: this.$t("AdminCenterKendoGridTranslation.No data")
+        }
       },
       resizable: true,
       sortable: true

@@ -4,8 +4,8 @@
         <table class="se-properties-main table table-condensed table-hover">
             <thead>
             <tr class="se-properties-header">
-                <th class="se-properties-header--description">Property</th>
-                <th class="se-properties-header--value">Value</th>
+                <th class="se-properties-header--description">{{ $t("AdminCenterSmartStructure.Property")}}</th>
+                <th class="se-properties-header--value">{{ $t("AdminCenterSmartStructure.Value")}} </th>
             </tr>
             </thead>
             <tbody>

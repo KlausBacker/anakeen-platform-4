@@ -53,7 +53,7 @@
   "gridColumnsButton.Display": "Display",
   "gridColumnsButton.Title": "Title",
   "gridColumnsButton.Organize": "Organize",
-  "gridColumnsButton.Tooltip":"Columns management",
+  "gridColumnsButton.Tooltip": "Columns management",
   "gridExportButton.Title": "Download",
   "gridExportButton.Cancel": "Cancler",
   "gridExportButton.Retry": "Retry",

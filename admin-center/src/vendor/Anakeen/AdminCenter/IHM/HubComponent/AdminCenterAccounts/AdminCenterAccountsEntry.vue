@@ -2,7 +2,7 @@
   <hub-element-layout>
     <nav>
       <i class="material-icons hub-icon">group</i>
-      <span v-if="!isDockCollapsed">Accounts</span>
+      <span v-if="!isDockCollapsed"> {{ $t("AdminCenterAccount.Title Accounts") }} </span>
     </nav>
     <template v-slot:hubContent>
       <div class="account-station">

@@ -3,7 +3,7 @@
   <hub-element-layout>
     <nav>
       <i class="material-icons hub-icon">restore_from_trash</i>
-      <span v-if="!isDockCollapsed">Trash Manager</span>
+      <span v-if="!isDockCollapsed">{{ $t("AdminCenterTrash.Title Trash Manager") }}</span>
     </nav>
     <template v-slot:hubContent>
       <div class="trash-manager">

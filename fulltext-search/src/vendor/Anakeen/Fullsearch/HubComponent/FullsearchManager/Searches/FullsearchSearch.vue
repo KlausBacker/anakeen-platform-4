@@ -4,7 +4,7 @@
       <div splitpanes-size="40" class="search-pane">
         <header>
           <h1 v-if="domain">
-            Searching in <b>{{ domain }}</b>
+            {{ $t("AdminCenterFullsearch.Searching in") }}<b>{{ domain }}</b>
           </h1>
 
           <div v-if="domain" class="search-inputs">
@@ -26,7 +26,7 @@
       <ank-smart-element class="fullsearch-element" :initid="selectedElement" v-show="selectedElement" splitpanes-size="60"/>
     </ank-split-panes>
     <h1 v-else>
-      <b>Select Domain First</b>
+      <b>{{ $t("AdminCenterFullsearch.Select Domain First") }}</b>
     </h1>
   </div>
 </template>

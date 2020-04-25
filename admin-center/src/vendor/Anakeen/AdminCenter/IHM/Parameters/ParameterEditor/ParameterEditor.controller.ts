@@ -171,7 +171,7 @@ export default class ParameterEditorController extends Vue {
               draggable: false,
               modal: true,
               resizable: false,
-              title: "Parameter modified",
+              title: `${this.$t("globalParameter.Parameter modified")}`,
               visible: false,
               width: "30%"
             })
