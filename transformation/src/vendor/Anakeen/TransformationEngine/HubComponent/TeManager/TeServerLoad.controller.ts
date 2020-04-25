@@ -1,7 +1,8 @@
 import { ChartInstaller, KendoChart } from "@progress/kendo-charts-vue-wrapper";
 import { DropdownsInstaller } from "@progress/kendo-dropdowns-vue-wrapper";
 import "@progress/kendo-ui/js/dataviz/chart/chart";
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
+import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
 
 Vue.use(ChartInstaller);
 Vue.use(DropdownsInstaller);
@@ -10,7 +11,7 @@ Vue.use(DropdownsInstaller);
 @Component({
   name: "TeServerLoad"
 })
-export default class TeServerLoad extends Vue {
+export default class TeServerLoad extends Mixins(AnkI18NMixin) {
   @Prop({ default: 30, type: Number })
   public statusMaxRange: number;
 
@@ -19,6 +20,13 @@ export default class TeServerLoad extends Vue {
     statusChart: KendoChart;
     cpuLoadChart: KendoChart;
   };
+
+  public get translations() {
+    return {
+      ServerCPUload: this.$t("AdminCenterTransformationFileManager.Server CPU load"),
+      TasksInProgress: this.$t("AdminCenterTransformationFileManager.Tasks in progress")
+    };
+  }
 
   public refreshSelect = [
     {
@@ -38,7 +46,7 @@ export default class TeServerLoad extends Vue {
       value: 60
     },
     {
-      text: "Never",
+      text: "-",
       value: 0
     }
   ];
@@ -97,19 +105,19 @@ export default class TeServerLoad extends Vue {
         axis: "Y",
         color: "#5484ca",
         data: [],
-        name: "Processing"
+        name: ""
       },
       {
         axis: "Y",
         color: "#c69e47",
         data: [],
-        name: "Waiting"
+        name: ""
       },
       {
         axis: "Y",
         color: "#a53935",
         data: [],
-        name: "Transferring"
+        name: ""
       }
     ],
     tooltiptemplate: "#= series.name #: #= value #"
@@ -177,6 +185,9 @@ export default class TeServerLoad extends Vue {
   }
 
   public mounted() {
+    this.statusData.series[0].name = `${this.$t("AdminCenterTransformationFileManager.Processing")}`;
+    this.statusData.series[1].name = `${this.$t("AdminCenterTransformationFileManager.Waiting")}`;
+    this.statusData.series[2].name = `${this.$t("AdminCenterTransformationFileManager.Transferring")}`;
     this.kCpuLoad = this.$refs.cpuLoadChart.kendoWidget();
     this.kStatusChart = this.$refs.statusChart.kendoWidget();
 

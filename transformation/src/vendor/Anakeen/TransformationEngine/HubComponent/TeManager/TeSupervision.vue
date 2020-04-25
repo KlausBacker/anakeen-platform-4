@@ -19,7 +19,7 @@
                 </div>
             </template>
             <template slot="emptyText">
-                <span class="te-empty-text">Select task to view detail</span>
+                <span class="te-empty-text">{{ $t("AdminCenterTransformationFileManager.Select task to view detail") }}</span>
             </template>
         </ank-splitter>
     </div>

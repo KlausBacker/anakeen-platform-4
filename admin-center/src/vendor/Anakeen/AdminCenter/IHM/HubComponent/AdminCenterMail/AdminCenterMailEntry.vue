@@ -2,7 +2,7 @@
   <hub-element-layout>
     <nav>
       <i class="fa fa-envelope mail-icon" aria-hidden="true"></i>
-      <span v-if="!isDockCollapsed">Mail Templates</span>
+      <span v-if="!isDockCollapsed">{{ $t("AdminCenterMail.Title Mail Templates") }}</span>
     </nav>
     <template v-slot:hubContent>
       <div class="mail-station">

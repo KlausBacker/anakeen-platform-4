@@ -29,6 +29,31 @@ export default class AdminCenterAccountController extends Vue {
     [key: string]: any;
   };
 
+  public get translations() {
+    return {
+      CreateUser: this.$t("AdminCenterAccount.Create User"),
+      Login: this.$t("AdminCenterAccount.Login"),
+      FirstName: this.$t("AdminCenterAccount.First name"),
+      LastName: this.$t("AdminCenterAccount.Last name"),
+      Email: this.$t("AdminCenterAccount.E-mail"),
+      Groups: this.$t("AdminCenterAccount.Groups"),
+      CreateSubGroup: this.$t("AdminCenterAccount.Create sub group"),
+      Display: this.$t("AdminCenterAccount.Display"),
+      ItemsPerPage: this.$t("AdminCenterKendoGridTranslation.items per page"),
+      Items: this.$t("AdminCenterKendoGridTranslation.{0}-{1}of{2}items"),
+      Refresh: this.$t("AdminCenterKendoGridTranslation.Refresh"),
+      NoData: this.$t("AdminCenterKendoGridTranslation.No data"),
+      FilterBy: this.$t("AdminCenterKendoGridTranslation.Filter by"),
+      ChooseOperator: this.$t("AdminCenterKendoGridTranslation.Choose operator"),
+      ClearFilter: this.$t("AdminCenterKendoGridTranslation.Clear"),
+      ApplyFilter: this.$t("AdminCenterKendoGridTranslation.Apply"),
+      ChooseValue: this.$t("AdminCenterKendoGridTranslation.Choose value"),
+      AditionalValue: this.$t("AdminCenterKendoGridTranslation.Aditional value"),
+      AditionalFilterBy: this.$t("AdminCenterKendoGridTranslation.Aditional filter by"),
+      contains: this.$t("AdminCenterKendoGridTranslation.contains")
+    };
+  }
+
   public gridGroupContent = new kendo.data.DataSource({
     pageSize: 50,
     schema: {
@@ -116,10 +141,10 @@ export default class AdminCenterAccountController extends Vue {
     if (this.$refs.groupList) {
       const createGrpBtn = this.$refs.groupList.kendoWidget();
       if (value === "@users") {
-        createGrpBtn.setOptions({ optionLabel: "Create group" });
+        createGrpBtn.setOptions({ optionLabel: this.$t("AdminCenterAccount.Create Group") });
         this.selectedGroup = null;
       } else {
-        createGrpBtn.setOptions({ optionLabel: "Create sub group" });
+        createGrpBtn.setOptions({ optionLabel: this.$t("AdminCenterAccount.Create sub group") });
 
         this.selectedGroup = this.gridGroupContent.get(value);
       }

@@ -2,7 +2,7 @@
   <hub-element-layout>
     <nav>
       <i class="fa fa-list-ol enum-icon" aria-hidden="true"></i>
-      <span v-if="!isDockCollapsed">Enumerates</span>
+      <span v-if="!isDockCollapsed">{{ $t("AdminCenterEnum.Title Enumerates") }}</span>
     </nav>
     <template v-slot:hubContent>
       <div class="enum-station">

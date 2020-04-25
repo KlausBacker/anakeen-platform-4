@@ -1,7 +1,7 @@
 <template>
   <hub-element-layout>
     <nav>
-      <i class="material-icons hub-icon">search</i> <span v-if="!isDockCollapsed"> Fullsearch Manager</span>
+      <i class="material-icons hub-icon">search</i> <span v-if="!isDockCollapsed"> {{ $t("AdminCenterFullsearch.Fullsearch Manager")}}</span>
     </nav>
     <template v-slot:hubContent>
       <div class="hub-fullsearch-manager">

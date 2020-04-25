@@ -4,8 +4,10 @@ import "@progress/kendo-ui/js/kendo.filtercell";
 import "@progress/kendo-ui/js/kendo.grid";
 import "@progress/kendo-ui/js/kendo.treelist";
 import "@progress/kendo-ui/js/kendo.window";
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Mixins, Watch } from "vue-property-decorator";
+import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
 import AnkTokenInfo from "./AuthenticationTokenInfo.vue";
+import * as $ from "jquery";
 // eslint-disable-next-line no-unused-vars
 import { IAuthenticationToken } from "./IAuthenticationToken";
 import IsoDates from "./IsoDates";
@@ -20,7 +22,7 @@ declare var kendo;
   },
   name: "ank-authentication-tokens"
 })
-export default class AuthenticationTokensController extends Vue {
+export default class AuthenticationTokensController extends Mixins(AnkI18NMixin) {
   public get viewToken() {
     return this.tokenInfo.token !== "";
   }
@@ -115,6 +117,7 @@ export default class AuthenticationTokensController extends Vue {
   }
 
   protected initTokenGrid(divDom) {
+    // @ts-ignore
     $(divDom)
       .kendoGrid({
         columns: [
@@ -131,7 +134,7 @@ export default class AuthenticationTokensController extends Vue {
                 suggestionOperator: "contains"
               }
             },
-            title: "Description"
+            title: this.$t("AdminCenterAuthentication token.Description")
           },
           {
             attributes: {
@@ -146,7 +149,7 @@ export default class AuthenticationTokensController extends Vue {
                 suggestionOperator: "contains"
               }
             },
-            title: "Token",
+            title: this.$t("AdminCenterAuthentication token.Token"),
             width: "30rem"
           },
           {
@@ -162,7 +165,7 @@ export default class AuthenticationTokensController extends Vue {
                 suggestionOperator: "contains"
               }
             },
-            title: "User"
+            title: this.$t("AdminCenterAuthentication token.User")
           },
           {
             attributes: {
@@ -179,7 +182,7 @@ export default class AuthenticationTokensController extends Vue {
             },
             template:
               '# if (expire != "infinity") { #  #= kendo.toString(new Date(expire),"yyyy-MM-dd HH:mm:ss") # # } else { # Never # } #',
-            title: "Expire at",
+            title: this.$t("AdminCenterAuthentication token.Expire at"),
             width: "13rem"
           },
           {
@@ -219,7 +222,7 @@ export default class AuthenticationTokensController extends Vue {
                   .removeClass("token--selected");
                 $tr.addClass("token--selected");
               },
-              text: "Display"
+              text: `${this.$t("AdminCenterAuthentication token.Display")}`
             },
             width: "10rem"
           }
@@ -283,7 +286,9 @@ export default class AuthenticationTokensController extends Vue {
           alwaysVisible: true,
           info: false,
           messages: {
-            display: "Showing {0}-{1} from {2} data items"
+            display: this.$t("AdminCenterKendoGridTranslation.{0}-{1}of{2}items"),
+            refresh: this.$t("AdminCenterKendoGridTranslation.Refresh"),
+            NoData: this.$t("AdminCenterKendoGridTranslation.No data")
           },
           pageSizes: false,
           refresh: true

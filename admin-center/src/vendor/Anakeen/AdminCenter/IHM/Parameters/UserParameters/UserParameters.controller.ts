@@ -34,6 +34,12 @@ export default class UserParametersController extends Vue {
   // Value entered in the search input
   public inputSearchValue: string = "";
 
+  public get translations() {
+    return {
+      SearchUser: this.$t("globalParameter.Search user")
+    };
+  }
+
   // Memorize kendo components
   public deleteConfirmationWindow: any = null;
   public deleteErrorWindow: any = null;
@@ -45,13 +51,13 @@ export default class UserParametersController extends Vue {
     this.usersGrid = $(".users-grid", this.$el)
       .kendoGrid({
         columns: [
-          { field: "login", title: "Login" },
-          { field: "firstname", title: "First name" },
-          { field: "lastname", title: "Last name" },
+          { field: "login", title: this.$t("globalParameter.Login") },
+          { field: "firstname", title: this.$t("globalParameter.First name") },
+          { field: "lastname", title: this.$t("globalParameter.Last name") },
           {
             filterable: false,
             // Button to select the user and access his parameters
-            template: '<a class="selection-btn">Select user</a>',
+            template: '<a class="selection-btn">' + this.$t("globalParameter.Select user") + '</a>',
             width: "14rem"
           }
         ],
@@ -94,7 +100,13 @@ export default class UserParametersController extends Vue {
         },
         pageable: {
           pageSize: 50,
-          pageSizes: [50, 100, 200]
+          pageSizes: [50, 100, 200],
+          messages: {
+            itemsPerPage: this.$t("AdminCenterKendoGridTranslation.items per page"),
+            display: this.$t("AdminCenterKendoGridTranslation.{0}-{1}of{2}items"),
+            refresh: this.$t("AdminCenterKendoGridTranslation.Refresh"),
+            empty: this.$t("AdminCenterKendoGridTranslation.No data")
+          }
         },
         resizable: false,
         selectable: "rows"
@@ -115,17 +127,17 @@ export default class UserParametersController extends Vue {
     // Custom toolbar template to add a global filter
     const toolbarTemplate = `
       <div class="user-parameters-toolbar">
-          <a class="back-btn">Search another user</a>
+          <a class="back-btn">${this.$t("globalParameter.Search another user")}</a>
           <a class="refresh-btn"></a>
           <a class="expand-btn"></a>
           <a class="collapse-btn"></a>
           <div class="input-group">
               <input type="text"
                      class="form-control global-search-input"
-                     placeholder="Filter parameters...">
+                     placeholder=${this.$t("globalParameter.Filter parameters")}"...">
               <i class="input-group-addon material-icons reset-search-btn parameter-search-reset">close</i>
               <div class="input-group-append">
-                  <button class="btn btn-secondary filter-btn">Filter</button>
+                  <button class="btn btn-secondary filter-btn">${this.$t("globalParameter.Filter")}</button>
               </div>
           </div>
       </div>
@@ -144,33 +156,32 @@ export default class UserParametersController extends Vue {
           {
             field: "name",
             headerAttributes,
-            headerTemplate: '<a class="column-title">Name</a>'
+            headerTemplate: `<a class="column-title">${this.$t("globalParameter.Name")}</a>`
           },
           {
             field: "description",
             headerAttributes,
-            headerTemplate: '<a class="column-title">Description</a>'
+            headerTemplate: `<a class="column-title">${this.$t("globalParameter.Description")}</a>`
           },
           {
             field: "value",
             headerAttributes,
-            headerTemplate: '<a class="column-title">User value</a>'
+            headerTemplate: `<a class="column-title">${this.$t("globalParameter.User value")}</a>`
           },
           {
             field: "initialValue",
             headerAttributes,
-            headerTemplate: '<a class="column-title">System value</a>'
+            headerTemplate: `<a class="column-title">${this.$t("globalParameter.System value")}</a>`
           },
           {
             filterable: false,
             // and restore/delete button on user defined parameters
-            template:
-              "# if (!data.rowLevel && !data.isStatic && !data.isReadOnly) { #" +
-              '<a class="edition-btn" title="Edit"></a>' +
-              "# if (data.forUser) { #" +
-              '<a class="delete-btn" title="Restore system value"></a>' +
-              "# } #" +
-              "# } #",
+            template: `# if (!data.rowLevel && !data.isStatic && !data.isReadOnly) { #
+              <a class="edition-btn" title=${this.$t("globalParameter.Edit")}></a>
+              # if (data.forUser) { #
+              <a class="delete-btn" title=${this.$t("globalParameter.Restore system value")}></a>
+              # } #
+              # } #`,
             // Display edition button on modifiable parameters
             width: "10rem"
           }
@@ -242,7 +253,7 @@ export default class UserParametersController extends Vue {
                   {
                     content: {
                       textContent: "Loading of parameters from server failed",
-                      title: "Parameters loading failed"
+                      title: this.$t("globalParameter.Parameters loading failed")
                     },
                     type: "error"
                   }
@@ -335,7 +346,7 @@ export default class UserParametersController extends Vue {
             draggable: false,
             modal: true,
             resizable: false,
-            title: "Parameter restored",
+            title: this.$t("globalParameter.Parameter restored"),
             visible: false,
             width: "30%"
           })
@@ -359,7 +370,7 @@ export default class UserParametersController extends Vue {
             draggable: false,
             modal: true,
             resizable: false,
-            title: "Error",
+            title: this.$t("globalParameter.Error"),
             visible: false,
             width: "30%"
           })

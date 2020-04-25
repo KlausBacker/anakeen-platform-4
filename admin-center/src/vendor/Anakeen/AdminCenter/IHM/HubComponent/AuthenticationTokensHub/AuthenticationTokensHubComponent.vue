@@ -2,7 +2,7 @@
   <hub-element-layout>
     <nav>
       <i class="material-icons hub-icon">fingerprint</i
-      ><span v-if="!isDockCollapsed"> Authentication Tokens</span>
+      ><span v-if="!isDockCollapsed">{{ $t("AdminCenterAuthentication token.Title Authentication Tokens") }}</span>
     </nav>
     <template v-slot:hubContent>
       <div class="token-station">

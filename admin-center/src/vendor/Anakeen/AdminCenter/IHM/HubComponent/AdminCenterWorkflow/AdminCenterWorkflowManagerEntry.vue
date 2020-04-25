@@ -2,7 +2,7 @@
   <hub-element-layout>
     <nav>
       <i class="material-icons hub-icon">call_split</i>
-      <span v-if="!isDockCollapsed"> Workflow Manager</span>
+      <span v-if="!isDockCollapsed">{{ $t("AdminCenterWorkflow.Title Workflow Manager") }}</span>
     </nav>
     <template v-slot:hubContent>
       <div class="workflow-manager">

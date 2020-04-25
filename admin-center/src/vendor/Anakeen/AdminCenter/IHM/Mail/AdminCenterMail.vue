@@ -21,7 +21,7 @@
       <div class="mail-form-wrapper">
         <div v-show="!selectedMail" class="mail-empty">
           <span class="material-icons">email</span>
-          <p>Select mail template</p>
+          <p>{{ $t("AdminCenterMail.Select mail template") }}</p>
         </div>
         <ank-smart-element v-show="selectedMail" class="mail-smart-element" ref="mailSmartElement" />
       </div>

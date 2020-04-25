@@ -60,6 +60,16 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
     ssm_advanced_value: "write"
   };
 
+  public get translations() {
+    return {
+      Label: this.$t("AdminCenterSmartStructure.Label"),
+      ParentValue: this.$t("AdminCenterSmartStructure.Parent Value"),
+      RawValue: this.$t("AdminCenterSmartStructure.Raw Value"),
+      DisplayValue: this.$t("AdminCenterSmartStructure.Display Value"),
+      Display: this.$t("AdminCenterSmartStructure.Modify")
+    };
+  }
+
   @Watch("ssName")
   public watchSsName(newValue) {
     if (newValue) {
@@ -165,7 +175,7 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
           iconUrl: "",
           id: "cancel",
           important: false,
-          label: "Close",
+          label: this.$t("AdminCenterSmartStructure.Close"),
           target: "_self",
           type: "itemMenu",
           url: "#action/document.delete",
@@ -177,7 +187,7 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
           iconUrl: "",
           id: "erase",
           important: false,
-          label: "Erase default value",
+          label: this.$t("AdminCenterSmartStructure.Erase default value"),
           target: "_self",
           type: "itemMenu",
           url: "#action/ssmanager.erase",
@@ -189,7 +199,7 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
           iconUrl: "",
           id: "submit",
           important: false,
-          label: "Update default value",
+          label: this.$t("AdminCenterSmartStructure.Update default value"),
           target: "_self",
           type: "itemMenu",
           url: "#action/document.save",
@@ -203,31 +213,31 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
               enumItems: [
                 {
                   key: "inherited",
-                  label: "Inherited"
+                  label: this.$t("AdminCenterSmartStructure.Inherited")
                 },
                 {
                   key: "value",
-                  label: "Value"
+                  label: this.$t("AdminCenterSmartStructure.Value")
                 },
                 {
                   key: "advanced_value",
-                  label: "Advanced Value"
+                  label: this.$t("AdminCenterSmartStructure.Advanced Value")
                 },
               ],
-              label: "Type",
+              label: this.$t("AdminCenterSmartStructure.Type"),
               name: "ssm_type",
               type: "enum"
             },
             {
               display: "read",
-              label: "Inherited",
+              label: this.$t("AdminCenterSmartStructure.Inherited"),
               name: "ssm_inherited_value",
               type: "text"
             },
             {
               display: this.smartFormDisplayManager.ssm_value,
               enumItems: enumData,
-              label: "Value",
+              label: this.$t("AdminCenterSmartStructure.Value"),
               name: "ssm_value",
               type: `${this.actualDefValData.type.type}`,
               typeFormat: `${this.actualDefValData.type.typeFormat}`,
@@ -235,19 +245,19 @@ export default class SmartStructureManagerDefaultValuesController extends Vue {
             },
             {
               display: this.smartFormDisplayManager.ssm_advanced_value,
-              label: "Advanced value",
+              label: this.$t("AdminCenterSmartStructure.Advanced value"),
               name: "ssm_advanced_value",
               type: "longtext"
             },
             {
               content: this.smartFormArrayStructure[this.finalData.fieldId],
               display: this.smartFormDisplayManager.ssm_array,
-              label: "Array",
+              label: this.$t("AdminCenterSmartStructure.Array"),
               name: "ssm_array",
               type: "array"
             }
           ],
-          label: "Default value",
+          label: this.$t("AdminCenterSmartStructure.Default value"),
           name: "ssm_default_value",
           type: "frame"
         }

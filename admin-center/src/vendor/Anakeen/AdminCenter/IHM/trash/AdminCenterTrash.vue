@@ -22,7 +22,7 @@
       <div class="trash-se-parent">
         <div v-if="!selectedTrashBool" class="trash-empty">
           <span class="material-icons">delete</span>
-          <p>Select Smart Element</p>
+          <p>{{ $t("AdminCenterTrash.Select Smart Element") }}</p>
         </div>
         <ank-smart-element ref="trashSmartElement" class="trash-smart-element" />
       </div>

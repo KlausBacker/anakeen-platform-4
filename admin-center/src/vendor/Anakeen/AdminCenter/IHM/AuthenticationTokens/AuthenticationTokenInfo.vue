@@ -5,15 +5,15 @@
     v-bind:class="{ tokenExpired: isExpired }"
   >
     <p v-if="isInfo">
-      Created by : <b>{{ info.author }}</b> at
+      {{ $t("AdminCenterAuthentication token.Created by") }} : <b>{{ info.author }}</b> {{ $t("AdminCenterAuthentication token.at") }}
       <b>{{ creationDateFormatted }}</b>
     </p>
     <p v-if="isExpired" class="token-expired">
-      Token is expired
+      {{ $t("AdminCenterAuthentication token.Token is expired") }}
     </p>
     <div ref="form" class="authentication-token-form">
       <label v-show="isInfo">
-        <span class="label">Token :</span>
+        <span class="label">{{ $t("AdminCenterAuthentication token.Token") }} :</span>
         <input
           readonly="readonly"
           type="text"
@@ -22,7 +22,7 @@
         />
       </label>
       <label>
-        <span class="label">Description :</span>
+        <span class="label">{{ $t("AdminCenterAuthentication token.Description") }} :</span>
         <input
           type="text"
           :readonly="isInfo"
@@ -31,7 +31,7 @@
         />
       </label>
       <label>
-        <span class="label">User login :</span>
+        <span class="label">{{ $t("AdminCenterAuthentication token.User login") }} :</span>
         <input
           type="text"
           :readonly="isInfo"
@@ -40,7 +40,7 @@
         />
       </label>
       <div class="token-expire">
-        <span class="label">Expire :</span>
+        <span class="label">{{ $t("AdminCenterAuthentication token.Expire") }} :</span>
         <div class="token-dates">
           <kendo-button
             :data-active="neverExpire"
@@ -62,7 +62,7 @@
       </div>
 
       <label>
-        <span class="label">Expendable usage :</span>
+        <span class="label">{{ $t("AdminCenterAuthentication token.Expendable usage") }} :</span>
       </label>
 
       <div class="token-expendable">
@@ -75,7 +75,7 @@
           value="unique"
           v-model="expendable"
         />
-        <label class="k-radio-label" for="token-unique"> Unique </label>
+        <label class="k-radio-label" for="token-unique"> {{ $t("AdminCenterAuthentication token.Unique") }} </label>
 
         <input
           :disabled="isInfo"
@@ -86,7 +86,7 @@
           value="multiple"
           v-model="expendable"
         />
-        <label class="k-radio-label" for="token-multiple"> Multiple </label>
+        <label class="k-radio-label" for="token-multiple"> {{ $t("AdminCenterAuthentication token.Multiple") }} </label>
       </div>
 
       <div
@@ -122,37 +122,37 @@
           v-show="isInfo"
           class="button-delete k-danger"
           @click="onConfirmDelete"
-          >Delete token</kendo-button
+          >{{ $t("AdminCenterAuthentication token.Delete token") }}</kendo-button
         >
         <kendo-button
           :disabled="!fullInfo"
           v-show="isNew"
           class="button-record k-primary"
           @click="onCreate"
-          >Record token</kendo-button
+          >{{ $t("AdminCenterAuthentication token.Record token") }}</kendo-button
         >
       </div>
     </div>
     <div ref="confirmDelete" class="token-confirm" style="display: none">
       <p>
-        Sure delete token <b>{{ info.description }}</b> ?
+        {{ $t("AdminCenterAuthentication token.Sure delete token") }} <b>{{ info.description }}</b> ?
       </p>
       <pre>{{ info.token }}</pre>
       <kendo-button
         v-show="isInfo"
         class="button-delete k-danger"
         @click="onDelete"
-        >Delete token</kendo-button
+        >{{ $t("AdminCenterAuthentication token.Delete token") }}</kendo-button
       >
 
       <kendo-button v-show="isInfo" @click="onCloseConfirm"
-        >Cancel</kendo-button
+        >{{ $t("AdminCenterAuthentication token.Cancel") }}</kendo-button
       >
     </div>
 
     <div ref="infoDelete" class="token-confirm" style="display: none">
       <p>
-        Token <b>{{ info.description }}</b> is deleted
+        {{ $t("AdminCenterAuthentication token.Token") }} <b>{{ info.description }}</b> {{ $t("AdminCenterAuthentication token.is deleted") }}
       </p>
       <pre>{{ info.token }}</pre>
     </div>
