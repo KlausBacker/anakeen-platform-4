@@ -317,7 +317,7 @@ create unique index idx_idfam on docfam(id);";
      * set family parameter value
      *
      * @param string $idp parameter identifier
-     * @param string $val value of the parameter
+     * @param string|array $val value of the parameter
      * @param bool $check set to false when construct family
      *
      * @return string error message
@@ -335,7 +335,7 @@ create unique index idx_idfam on docfam(id);";
             }
         }
         if ($oa) {
-            if ($oa->isMultiple() && !is_array($val)) {
+            if ($oa->isMultiple() && ($val !== null && !is_array($val))) {
                 return \ErrorCode::getError('DOC0137', $this->name, $idp, $val);
             }
         }

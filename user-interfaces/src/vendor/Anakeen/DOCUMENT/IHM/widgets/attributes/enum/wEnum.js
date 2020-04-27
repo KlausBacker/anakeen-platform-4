@@ -913,9 +913,9 @@ import "../wAttribute";
           } else {
             _.each(scope.options.attributeValue, function wEnumAddOtherInUri(singleValue) {
               var hasValue = _.some(info, function wEnumVerifyValue(singleInfo) {
-                return singleInfo.value === singleValue.value;
+                return singleValue && singleInfo.value === singleValue.value;
               });
-              if (!hasValue) {
+              if (!hasValue && singleValue) {
                 info.push(singleValue);
               }
             });

@@ -542,7 +542,7 @@ $.widget("dcp.dcpAttribute", {
 
           if (buttonConfig.url.substr(0, 8) === "#action/") {
             // Special case when url is an action url : the event is catch by wAttributeActionClick
-            $button.attr("data-action", url);
+            $button.attr("data-action", url.substring(8));
           } else {
             if (buttonConfig.target !== "_dialog") {
               if (buttonConfig && (buttonConfig.windowWidth || buttonConfig.windowHeight)) {
