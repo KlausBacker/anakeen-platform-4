@@ -198,27 +198,30 @@ class StructureFields
                         "phpfile" => "phpfile"];
                     foreach ($types as $type => $oType) {
                         if ($modAttr[$type]) {
-                            $before = $parentStructure->getAttribute($oa->id)->$oType;
-                            switch ($type) {
-                                case "needed":
-                                    $after = $oa->needed ? "Y" : "N";
-                                    break;
-                                case "title":
-                                    $after = $oa->isInTitle ? "Y" : "N";
-                                    break;
-                                case "abstract":
-                                    $after = $oa->isInAbstract ? "Y" : "N";
-                                    break;
-                                default:
-                                    $after = $oa->$oType;
-                            }
+                            $parentAttr=$parentStructure->getAttribute($oa->id);
+                            if ($parentAttr && property_exists($parentAttr, $oType)) {
+                                $before = $parentAttr->$oType;
+                                switch ($type) {
+                                    case "needed":
+                                        $after = $oa->needed ? "Y" : "N";
+                                        break;
+                                    case "title":
+                                        $after = $oa->isInTitle ? "Y" : "N";
+                                        break;
+                                    case "abstract":
+                                        $after = $oa->isInAbstract ? "Y" : "N";
+                                        break;
+                                    default:
+                                        $after = $oa->$oType;
+                                }
 
-                            if ($before != $after) {
-                                $dbAttrs[$oa->id][$type] = $oa->$oType;
-                                $dbAttrs[$oa->id]["overrides"][$type] = [
-                                    "before" => $parentStructure->getAttribute($oa->id)->$oType,
-                                    "after" => $oa->$oType
-                                ];
+                                if ($before != $after) {
+                                    $dbAttrs[$oa->id][$type] = $oa->$oType;
+                                    $dbAttrs[$oa->id]["overrides"][$type] = [
+                                        "before" => $parentStructure->getAttribute($oa->id)->$oType,
+                                        "after" => $oa->$oType
+                                    ];
+                                }
                             }
                         }
                     }

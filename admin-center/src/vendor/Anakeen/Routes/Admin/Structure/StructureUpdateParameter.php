@@ -13,7 +13,7 @@ use ReflectionMethod;
  *
  * @note Used by route : PUT /api/v2/admin/smart-structures/{structure}/update/parameter/
  */
-class StructureUpdateParameter extends StructureFields
+class StructureUpdateParameter
 {
     /**
      * @var SmartStructure $structure
@@ -24,49 +24,78 @@ class StructureUpdateParameter extends StructureFields
 
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        $this->initData($request->getParsedBody()["params"], $args);
-        $err = $this->manageNewParameter();
-        if ($err !== "") {
+        $this->initData($request, $args);
+        $data = $this->doRequest();
+        return ApiV2Response::withData($response, $data);
+    }
+
+    protected function initData($request, $args)
+    {
+        $this->structure = SEManager::getFamily($args["structure"]);
+        if (!$this->structure) {
+            throw new Exception("Cannot update parameter. Structure \"%s\" not found", $args["structure"]);
+        }
+        $this->data = $request->getParsedBody()["params"];
+    }
+
+    protected function doRequest()
+    {
+        $err = "";
+        $updatedData = [];
+        foreach ($this->data as $parameterData) {
+            $fieldId = $parameterData["fieldId"];
+            if (!empty($parameterData["toDelete"])) {
+                $err = $this->structure->setParam($fieldId, null);
+            } else {
+                $fieldValue = $parameterData["fieldValue"];
+
+                if (array_key_exists("value", $fieldValue)) {
+                    if ($fieldValue["value"] === null) {
+                        $fieldValue["value"] = "";
+                    } elseif ($fieldValue["value"] === " ") {
+                        $fieldValue["value"] = null;
+                    }
+
+                    $err = $this->structure->setParam($fieldId, $fieldValue["value"]);
+                    $updatedData[$fieldId] = $fieldValue["value"];
+                } else {
+                    $rawValues = [];
+                    foreach ($fieldValue as $ka => $rowValue) {
+                        if (array_key_exists("value", $rowValue)) {
+                            $rawValues[] = $rowValue["value"];
+                        } else {
+                            foreach ($rowValue as $rowValueCell) {
+                                $rawValues[$ka][] = $rowValueCell["value"];
+                            }
+                        }
+                    }
+                    if ($rawValues === null) {
+                        $rawValues = [];
+                    } elseif ($rawValues === " ") {
+                        $rawValues = null;
+                    }
+                    $err = $this->structure->setParam($fieldId, $rawValues);
+
+                    $updatedData[$fieldId] = $rawValues;
+                }
+            }
+
+            if ($err !== "") {
+                break;
+            }
+            $err = $this->structure->modify();
+            if ($err) {
+                break;
+            }
+        }
+        if ($err) {
             $exception = new Exception($err);
-            $exception->setHttpStatus(404);
             $exception->setUserMessage($err);
             throw $exception;
         }
-        return ApiV2Response::withData($response, $err);
+        return $updatedData;
     }
 
-    protected function initData($dataFromFront, $args)
-    {
-        foreach (json_decode($dataFromFront) as $key => $value) {
-            $this->data[$key] = $value;
-            if (is_null($this->structure)) {
-                $this->structure = SEManager::getFamily($this->data[$key]->structureId);
-            }
-        }
-    }
-    private function manageNewParameter()
-    {
-        $err = "";
-        foreach ($this->data as $parameterData) {
-            if ($err === "") {
-                if ($parameterData->valueType === "no_value") {
-                    $err = $this->structure->setParam($parameterData->parameterId, null);
-                } elseif ($parameterData->valueType === "value" && $parameterData->value === "") {
-                    $err = $this->structure->setParam($parameterData->parameterId, "");
-                } elseif ($parameterData->valueType === "advanced_value") {
-                    $err = $this->manageAdvancedValue($parameterData->parameterId, $parameterData->value);
-                } else {
-                    $err = $this->structure->setParam($parameterData->parameterId, $parameterData->value);
-                }
-
-                if ($err !== "") {
-                    return $err;
-                }
-                $err = $this->structure->modify();
-            }
-        }
-        return $err;
-    }
     private function manageAdvancedValue($parameterId, $advancedValue)
     {
         $oParse = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
