@@ -23,6 +23,7 @@ class SuiteConfig
         $suite->addTestSuite(\Anakeen\Pu\Lib\PuSeemMethod::class);
 
         $suite->addTestSuite(\Anakeen\Pu\Accounts\PuGroups::class);
+        $suite->addTestSuite(\Anakeen\Pu\Accounts\PuMailGroups::class);
         return $suite;
     }
 }

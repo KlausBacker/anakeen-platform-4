@@ -13,6 +13,7 @@ namespace Anakeen\SmartStructures\Iuser;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
+use Anakeen\Core\Internal\Debug;
 use Anakeen\Core\SEManager;
 use Anakeen\Router\RouterAccess;
 use Anakeen\SmartHooks;
@@ -175,7 +176,6 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
         $wid = $this->getRawValue("us_whatid");
         if ($wid > 0) {
             $wuser = $this->getAccount(true);
-
             if ($wuser->isAffected()) {
                 $this->SetValue(MyAttributes::us_whatid, $wuser->id);
                 $this->SetValue(MyAttributes::us_lname, $wuser->lastname);
@@ -231,8 +231,8 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
                     $this->clearArrayValues(MyAttributes::us_groups);
                 }
                 $err = $this->modify();
-                if ($this->getOldRawValue(MyAttributes::us_mail) && $this->getOldRawValue(MyAttributes::us_mail) !== $this->getRawValue(MyAttributes::us_mail)) {
-                    IgroupLib::refreshMailGroupsOfUser($wuser);
+                if ($this->getOldRawValue(MyAttributes::us_mail) !== false && $this->getOldRawValue(MyAttributes::us_mail) !== $this->getRawValue(MyAttributes::us_mail)) {
+                    IgroupLib::refreshMailGroupsOfUser($wuser->id);
                 }
             } else {
                 $err = sprintf(_("user %d does not exist"), $wid);

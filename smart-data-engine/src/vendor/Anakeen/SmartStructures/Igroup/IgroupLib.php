@@ -77,16 +77,16 @@ class IgroupLib
 
     /**
      * Recompute all group mail where account is referenced
-     * @param Account $user
+     * @param int $userid system user id
      * @throws \Anakeen\Database\Exception
      */
-    public static function refreshMailGroupsOfUser(Account $user)
+    public static function refreshMailGroupsOfUser(int $userid)
     {
         // Select group where grp_hasmail is yes and user is referenced
         $sql = sprintf(
             "select ug.id from users uu, users ug, family.igroup as ig " .
             "where uu.memberof @> ARRAY[ug.id] and uu.id=%d and ug.accounttype='G' and ug.fid=ig.id and ig.grp_hasmail = 'yes'",
-            $user->id
+            $userid
         );
         DbManager::query($sql, $groups, true);
         foreach ($groups as $groupId) {
@@ -106,14 +106,14 @@ class IgroupLib
         // Aggregate mail address of all users of the group (recursive)
         if ($rawFormat === true) {
             $sql = sprintf(
-                "select string_agg(mail,', ' order by mail)" .
-                " from users where memberof @> '{%d}' and mail is not null",
+                "select string_agg(distinct mail,', ' order by mail)" .
+                " from users where memberof @> '{%d}' and mail is not null and accounttype = 'U'",
                 $groupId
             );
         } else {
             $sql = sprintf(
                 "select string_agg('\"' || replace(trim(coalesce(firstname,'') || ' ' || coalesce(lastname,'')), '\"', '-')  || '\" <' ||mail || '>',', ' order by mail)" .
-                " from users where memberof @> '{%d}' and mail is not null",
+                " from users where memberof @> '{%d}' and mail is not null and accounttype = 'U'",
                 $groupId
             );
         }
@@ -128,11 +128,12 @@ class IgroupLib
      */
     public static function refreshMailGroup(int $groupId)
     {
-        $mailGroup = self::getMailGroup($groupId);
+        $mailGroup = self::getMailGroup($groupId, true);
 
         // Update system account
         DbManager::query(sprintf("update users set mail='%s' where id=%d", pg_escape_string($mailGroup), $groupId));
         // Update Smart Igroup
+        $mailGroup = self::getMailGroup($groupId);
         DbManager::query(sprintf(
             "update doc127 set grp_mail='%s', mdate='%s' where us_whatid=%d",
             pg_escape_string($mailGroup),

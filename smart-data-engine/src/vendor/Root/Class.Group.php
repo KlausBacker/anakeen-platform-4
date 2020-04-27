@@ -130,7 +130,7 @@ SQL;
             $u = new \Anakeen\Core\Account("", $this->iduser);
         }
         $u->updateMemberOf();
-        if ($u->accounttype != \Anakeen\Core\Account::USER_TYPE) {
+        if ($u->accounttype !== \Anakeen\Core\Account::USER_TYPE) {
             // recompute child memberof
             $this->resetChildMembers();
         } else {
@@ -146,6 +146,8 @@ SQL;
                 $p = new Permission($this->dbaccess);
                 $p->deletePermission($g->iduser, null, true);
             }
+
+            \Anakeen\SmartStructures\Igroup\IgroupLib::refreshMailGroupsOfUser($this->iduser);
         }
     }
 
@@ -173,6 +175,8 @@ SQL;
                 $p->deletePermission($g->iduser, null, true);
                 $err = "";
             }
+
+            \Anakeen\SmartStructures\Igroup\IgroupLib::refreshMailGroupsOfUser($this->iduser);
         }
 
         return $err;
