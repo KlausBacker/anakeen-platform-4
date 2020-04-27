@@ -24,9 +24,9 @@ window.ank.smartElement.globalController.registerFunction("dSearch", controller 
           return document.renderMode === "edit" && document.type === "search";
         }
       },
-      () => {
+      event => {
         new (Vue.extend(SearchConditions))({
-          el: ".search-conditions-component",
+          el: event.target.find(".search-conditions-component")[0],
           propsData: {
             controllerProxy: (action, ...args) => controller[action](...args)
           }

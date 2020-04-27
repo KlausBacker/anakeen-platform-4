@@ -111,7 +111,13 @@ class ContextManager
             $urlInfo = parse_url($_SERVER["REQUEST_URI"]);
             if (function_exists("apache_request_headers")) {
                 $headers = apache_request_headers();
-                $hAccept = $headers["Accept"]?? "";
+                $hAccept = "";
+                foreach ($headers as $hName => $hValue) {
+                    if (strtolower($hName) === 'accept') {
+                        $hAccept = $hValue;
+                        break;
+                    }
+                }
             } else {
                 $hAccept = $_SERVER['HTTP_ACCEPT'] ?? "";
             }

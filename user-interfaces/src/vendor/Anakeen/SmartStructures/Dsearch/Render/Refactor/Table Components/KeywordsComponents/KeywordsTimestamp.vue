@@ -23,6 +23,7 @@
 import "@progress/kendo-ui/js/kendo.datetimepicker";
 import "@progress/kendo-ui/js/kendo.combobox";
 import "@progress/kendo-ui/js/kendo.button";
+import $ from "jquery";
 
 export default {
   name: "condition-table-keywords-timestamp",

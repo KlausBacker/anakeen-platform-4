@@ -147,7 +147,7 @@ export default {
             icon: this.hubElement.properties.icon
           });
         });
-      this.listenSmartElement();
+      //this.listenSmartElement();
     },
 
     displayMockUp: function(e) {
@@ -219,7 +219,7 @@ export default {
       this.$refs.hubAdminSplitter.disableEmptyContent();
       this.$nextTick(() => {
         this.openConfig(seid);
-        this.listenSmartElement();
+        //this.listenSmartElement();
       });
     },
 

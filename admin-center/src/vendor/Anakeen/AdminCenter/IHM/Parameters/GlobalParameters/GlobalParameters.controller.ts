@@ -323,6 +323,7 @@ export default class GlobalParametersController extends Vue {
 
   // When editor is closed, update modified value, and reset editedItem and editedRoute
   public updateAtEditorClose(newValue) {
+    kendo.ui.progress($(".parameters-tree", this.$el), true);
     setTimeout(() => {
       if (newValue !== null && newValue !== undefined) {
         this.editedItem.set("value", newValue);
@@ -330,6 +331,7 @@ export default class GlobalParametersController extends Vue {
 
       this.editedItem = null;
       this.editRoute = "";
+      kendo.ui.progress($(".parameters-tree", this.$el), false);
     }, 300);
   }
 

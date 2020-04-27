@@ -23,6 +23,7 @@
 </template>
 <script>
 import "@progress/kendo-ui/js/kendo.combobox";
+import $ from "jquery";
 
 export default {
   name: "condition-table-keywords-docid",
@@ -31,24 +32,18 @@ export default {
     field: null,
     operator: "",
     initValue: "",
-    methods: null,
+    methods: null
   },
   data() {
     return {
       textBoxOperators: ["~*", "!~*", "=~*"],
+      autocompleteOperators: ["=", "!=", "~y"],
       comboBox: null,
       initHtmlTitle: "",
       myInitValue: "",
       methodsComboBox: null,
       docidMode: true
     };
-  },
-  watch: {
-    methods: function(newValue) {
-      if (this.methodsComboBox) {
-        this.methodsComboBox.setDataSource(newValue);
-      }
-    }
   },
   computed: {
     isTextBox() {
@@ -93,7 +88,6 @@ export default {
     onFuncButtonClick() {
       this.docidMode = !this.docidMode;
       this.docidMode ? this.onComboBoxChange() : this.onFuncChange();
-      $(this.$refs.funcButton).toggleClass("func-button-clicked");
     },
     initializeData() {
       if (this.initValue) {
@@ -101,19 +95,22 @@ export default {
           $(this.$refs.keywordsDocidTextBoxWrapper).val(this.initValue);
         } else {
           let methodInitValue;
-          for (let prop in this.methods) {
-            if (Object.prototype.hasOwnProperty.call(this.methods, prop)) {
-              const propMethodValue = this.methods[prop].method;
-              if (propMethodValue === this.initValue) {
-                methodInitValue = propMethodValue;
-              }
-            }
+          const checkDocId = parseInt(this.initValue);
+          if (isNaN(checkDocId)) {
+            methodInitValue = this.initValue;
           }
           if (methodInitValue) {
             this.docidMode = false;
-            this.methodsComboBox.select(function(item) {
-              return item.method === methodInitValue;
-            });
+            const existingMethod = this.methods.filter(m => m.method === methodInitValue);
+            if (existingMethod && existingMethod.length) {
+              // If it's provided method, select it
+              this.methodsComboBox.select(function(item) {
+                return item.method === methodInitValue;
+              });
+            } else {
+              // If it's custom method, set value
+              this.methodsComboBox.value(methodInitValue);
+            }
           } else {
             this.comboBox.value(this.initValue);
           }
@@ -223,7 +220,7 @@ export default {
       .kendoButton()
       .data("kendoButton");
     this.initializeData();
-    if (this.myInitValue) {
+    if (this.myInitValue && this.autocompleteOperators.indexOf(this.operator) > -1 && this.docidMode) {
       let that = this;
       $.ajax({
         type: "GET",
@@ -245,6 +242,14 @@ export default {
   watch: {
     field: function() {
       this.$nextTick(this.fetchData);
+    },
+    methods: function(newValue) {
+      if (this.methodsComboBox) {
+        this.methodsComboBox.setDataSource(newValue);
+      }
+    },
+    docidMode(newValue) {
+      $(this.$refs.funcButton).toggleClass("func-button-clicked", !newValue);
     }
   }
 };
