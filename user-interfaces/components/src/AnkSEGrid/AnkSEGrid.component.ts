@@ -172,18 +172,11 @@ function computeSkipFromPage(page, pageSize): number {
   name: "ank-se-grid-vue"
 })
 export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
-  // Deprecated use of collection prop, use smartCollection instead
   @Prop({
     default: "0",
     type: String
   })
   public collection: string;
-
-  @Prop({
-    default: "0",
-    type: String
-  })
-  public smartCollection: string;
 
   @Prop({
     type: Object
@@ -367,6 +360,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     smartGridWidget: Grid;
   };
 
+  //region watchProps
   @Watch("sort", { deep: true })
   public watchSort(newValue): void {
     if (this.currentSort !== newValue) {
@@ -413,6 +407,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
       this.refreshGrid();
     }
   }
+
   @Watch("filter", { deep: true })
   public watchFilter(newValue): void {
     if (this.currentFilter !== newValue) {
@@ -420,6 +415,89 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
       this.refreshGrid();
     }
   }
+
+  @Watch("collection")
+  protected async oncollectionChange(): Promise<void> {
+    return await this.refreshGrid();
+  }
+
+  @Watch("customData")
+  protected async oncustomDataChange(): Promise<void> {
+    return await this.refreshGrid();
+  }
+
+  @Watch("columns")
+  protected async oncolumnsChange(): Promise<void> {
+    return await this.refreshGrid();
+  }
+
+  @Watch("subHeader")
+  protected async onsubHeaderChange(): Promise<void> {
+    return await this.refreshGrid();
+  }
+
+  @Watch("persistStateKey")
+  protected async onpersistStateKeyChange(newValue, oldValue): Promise<void> {
+    return await this.refreshGrid();
+  }
+
+  @Watch("filterable")
+  protected async onfilterableChange(newValue, oldValue): Promise<void> {
+    return await this.refreshGrid();
+  }
+
+  @Watch("reorderable")
+  protected async onreorderableChange(newValue, oldValue): Promise<void> {
+    return await this.refreshGrid();
+  }
+
+  @Watch("resizable")
+  protected async onresizableChange(newValue, oldValue): Promise<void> {
+    return await this.refreshGrid();
+  }
+  @Watch("selectable")
+  protected async onselectableChange(newValue, oldValue): Promise<void> {
+    return await this.refreshGrid();
+  }
+  @Watch("checkable")
+  protected async oncheckableChange(newValue, oldValue): Promise<void> {
+    return await this.refreshGrid();
+  }
+
+  @Watch("persistSelection")
+  protected async onpersistSelectionChange(newValue, oldValue): Promise<void> {
+    return await this.refreshGrid();
+  }
+  @Watch("maxRowHeight")
+  protected async onmaxRowHeightChange(newValue, oldValue): Promise<void> {
+    return await this.refreshGrid();
+  }
+
+  @Watch("contentUrl")
+  protected async oncontentUrlChange(newValue, oldValue): Promise<void> {
+    return await this.refreshGrid();
+  }
+
+  @Watch("configUrl")
+  protected async onconfigUrlChange(newValue, oldValue): Promise<void> {
+    return await this.refreshGrid();
+  }
+
+  @Watch("exportUrl")
+  protected async onexportUrlChange(newValue, oldValue): Promise<void> {
+    return await this.refreshGrid();
+  }
+  @Watch("selectedField")
+  protected async onselectedFieldChange(newValue, oldValue): Promise<void> {
+    return await this.refreshGrid();
+  }
+
+  @Watch("autoFit")
+  protected async onautoFitChange(newValue, oldValue): Promise<void> {
+    return await this.refreshGrid();
+  }
+  //endregion watchProps
+
   @Watch("isLoading", { immediate: true })
   protected onLoadingChange(newValue): void {
     kendo.ui.progress($(".smart-element-grid-widget", this.$el), !!newValue);
@@ -518,6 +596,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   }
 
   mounted(): void {
+    console.log("Coucou grid mounted");
     let saveColumnsOptions = null;
     if (this.persistStateKey) {
       if (window && window.localStorage) {
