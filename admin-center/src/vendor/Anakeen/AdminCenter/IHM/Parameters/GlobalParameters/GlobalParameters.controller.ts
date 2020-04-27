@@ -58,12 +58,12 @@ export default class GlobalParametersController extends Vue {
   public initTreeList() {
     const toolbarTemplate = `
         <div class="global-parameters-toolbar">
-            <span>&nbsp${this.$t("globalParameter.System")}&nbsp</span>
+            <span>&nbsp;${this.$t("globalParameter.System")}&nbsp;</span>
             <label class="switch">
               <input type="checkbox" class="switch-btn">
               <span class="slider round"></span>
             </label>
-            <span>&nbsp${this.$t("globalParameter.User")}&nbsp</span>
+            <span>&nbsp;${this.$t("globalParameter.User")}&nbsp;</span>
             <a class="refresh-btn"></a>
             <a class="expand-btn"></a>
             <a class="collapse-btn"></a>
