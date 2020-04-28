@@ -587,7 +587,8 @@ te-build:
   script:
     - make APP_OUTPUT_PATH=${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH} -C ${PACKAGE_PATH} app
     - export ANK_CI_APP_VERSION=$(jq -r .version ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}/package.json)
-    - tar -C ${PACKAGE_PATH} -czf ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}/${PACKAGE_NAME}-${ANK_CI_APP_VERSION}.tar.gz ./etc ./test-data ./lib ./src ./bin ./README.md ./package.json
+    - echo "${ANK_CI_APP_VERSION}" > "${PACKAGE_PATH}/VERSION" && echo "0" > "${PACKAGE_PATH}/RELEASE"
+    - tar -C ${PACKAGE_PATH} -czf ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}/${PACKAGE_NAME}-${ANK_CI_APP_VERSION}.tar.gz ./etc ./test-data ./lib ./src ./bin ./README.md ./package.json ./VERSION ./RELEASE
   artifacts:
     paths:
       - build/${PACKAGE_PATH}
@@ -609,7 +610,8 @@ te-integration-build:
   script:
     - make APP_OUTPUT_PATH=${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH} -C ${PACKAGE_PATH} app-autorelease
     - export ANK_CI_APP_VERSION=$(jq -r .version ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}/package.json)
-    - tar -C ${PACKAGE_PATH} -czf ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}/${PACKAGE_NAME}-${ANK_CI_APP_VERSION}.tar.gz ./etc ./test-data ./lib ./src ./bin ./README.md ./package.json
+    - echo "${ANK_CI_APP_VERSION}" > "${PACKAGE_PATH}/VERSION" && echo "0" > "${PACKAGE_PATH}/RELEASE"
+    - tar -C ${PACKAGE_PATH} -czf ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}/${PACKAGE_NAME}-${ANK_CI_APP_VERSION}.tar.gz ./etc ./test-data ./lib ./src ./bin ./README.md ./package.json ./VERSION ./RELEASE
   artifacts:
     paths:
       - build/${PACKAGE_PATH}
