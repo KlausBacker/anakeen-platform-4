@@ -297,7 +297,7 @@ export default class GridPager extends Mixins(I18nMixin) {
           pages: {
             page: Math.ceil((this.gridComponent.currentPage.total - this.pageSize) / this.pageSize) + 1,
             size: this.pageSize,
-            totall: Math.ceil(this.gridComponent.currentPage.total / this.pageSize)
+            total: Math.ceil(this.gridComponent.currentPage.total / this.pageSize)
           }
         },
         null,
