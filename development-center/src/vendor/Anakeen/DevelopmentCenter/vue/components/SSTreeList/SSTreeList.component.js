@@ -323,14 +323,14 @@ export default {
             case "contains":
               result = e.sender.element[0].firstElementChild.className.replace(/ k-i-filter/g, " k-i-filter-clear");
               e.sender.element[0].firstElementChild.className = result;
-              this.operatorconfig = "isnotnull";
-              e.sender.element[0].previousElementSibling.value = "is not null:";
+              this.operatorconfig = "isnotempty";
+              e.sender.element[0].previousElementSibling.value = "is not empty:";
               this.$refs.ssTreelist.kendoWidget().dataSource.filter({
                 field: "config",
-                operator: "isnotnull"
+                operator: "isnotempty"
               });
               break;
-            case "isnotnull":
+            case "isnotempty":
               result = e.sender.element[0].firstElementChild.className.replace(/ k-i-filter-clear/g, " k-i-filter");
               e.sender.element[0].firstElementChild.className = result;
               this.operatorconfig = "contains";
@@ -349,14 +349,28 @@ export default {
             case "contains":
               result = e.sender.element[0].firstElementChild.className.replace(/ k-i-filter/g, " k-i-filter-clear");
               e.sender.element[0].firstElementChild.className = result;
-              this.operatorvalue = "isnotnull";
-              e.sender.element[0].previousElementSibling.value = "is not null:";
+              this.operatorvalue = "isnotempty";
+              e.sender.element[0].previousElementSibling.value = "is not empty:";
               this.$refs.ssTreelist.kendoWidget().dataSource.filter({
                 field: "value",
-                operator: "isnotnull"
+                operator: item => {
+                  if (!item) {
+                    return false;
+                  }
+                  if (item instanceof String) {
+                    return item.length > 0;
+                  }
+                  if (item instanceof Object) {
+                    const realArray = item.toJSON();
+                    if (Array.isArray(realArray)) {
+                      return realArray.length > 0;
+                    }
+                    return false;
+                  }
+                }
               });
               break;
-            case "isnotnull":
+            case "isnotempty":
               result = e.sender.element[0].firstElementChild.className.replace(/ k-i-filter-clear/g, " k-i-filter");
               e.sender.element[0].firstElementChild.className = result;
               this.operatorvalue = "contains";
