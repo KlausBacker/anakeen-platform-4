@@ -202,7 +202,11 @@ SQL;
     protected function addMemberToChilds()
     {
         $g = new \Anakeen\Core\Account("", $this->idgroup);
-        $ms = \Anakeen\Core\Utils\Postgres::stringToArray($g->memberof);
+        if ($g->memberof) {
+            $ms = \Anakeen\Core\Utils\Postgres::stringToArray($g->memberof);
+        } else {
+            $ms = [];
+        }
         $ms[] = $g->id; // add itself to have the new parent
 
         $membersToAdd = \Anakeen\Core\Utils\Postgres::arrayToString($ms);
