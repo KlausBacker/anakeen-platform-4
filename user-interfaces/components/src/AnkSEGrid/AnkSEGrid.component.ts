@@ -18,6 +18,10 @@ import $ from "jquery";
 
 const CONTROLLER_URL = "/api/v2/grid/controllers/{controller}/{op}/{collection}";
 
+const deepEqual = (obj1, obj2): boolean => {
+  return JSON.stringify(obj1) === JSON.stringify(obj2);
+};
+
 export interface SmartGridColumn {
   withContext?: boolean;
   width?: number;
@@ -362,57 +366,49 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
 
   //region watchProps
   @Watch("sort", { deep: true })
-  public watchSort(newValue): void {
-    if (this.currentSort !== newValue) {
+  public async watchSort(newValue): Promise<void> {
+    if (!deepEqual(this.currentSort, newValue)) {
       this.currentSort = newValue;
-      this.refreshGrid();
+      return await this.refreshGrid();
     }
   }
   @Watch("pageable", { deep: true })
-  public watchPageable(newValue): void {
-    if (newValue === true) {
-      this.pager = DEFAULT_PAGER;
-      this.refreshGrid();
+  public async watchPageable(newValue): Promise<void> {
+    if (!newValue) {
+      this.pager = false;
     } else {
-      let sameValues = false;
-      for (const k in newValue) {
-        if (newValue[k] instanceof Object) {
-          for (const i in newValue[k]) {
-            sameValues = newValue[k][i] === this.pager[k][i];
-            if (!sameValues) break;
-          }
-        } else {
-          sameValues = newValue[k] == this.pager[k];
-        }
-        if (!sameValues) break;
+      let toCompare = newValue;
+      if (newValue === true) {
+        toCompare = DEFAULT_PAGER;
       }
-      if (!sameValues) {
-        this.pager = newValue;
-        this.refreshGrid();
+      if (!deepEqual(this.pager, toCompare)) {
+        this.pager = toCompare;
+        return await this.refreshGrid();
       }
     }
   }
+
   @Watch("sortable", { deep: true })
-  public watchSortable(newValue): void {
+  public async watchSortable(newValue): Promise<void> {
     if (this.sorter !== newValue) {
       this.sorter = newValue === true ? DEFAULT_SORT : newValue;
-      this.refreshGrid();
+      return await this.refreshGrid();
     }
   }
   @Watch("page", { deep: true })
-  public watchPage(newValue): void {
+  public async watchPage(newValue): Promise<void> {
     const skip = computeSkipFromPage(newValue, this.currentPage.take);
     if (this.currentPage.skip !== skip) {
       this.currentPage.skip = skip;
-      this.refreshGrid();
+      return await this.refreshGrid();
     }
   }
 
   @Watch("filter", { deep: true })
-  public watchFilter(newValue): void {
+  public async watchFilter(newValue): Promise<void> {
     if (this.currentFilter !== newValue) {
       this.currentFilter = newValue;
-      this.refreshGrid();
+      return await this.refreshGrid();
     }
   }
 
@@ -588,7 +584,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     this.gridError = new GridError(this);
     this.$on("pageChange", this.onPageChange);
 
-    this.refreshGrid();
+    return await this.refreshGrid();
   }
 
   beforeDestroy(): void {
@@ -1022,7 +1018,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
       this.currentPage = Object.assign({}, this.currentPage, pagerEvt.data.page);
       this.pager = Object.assign({}, this.pager, { pageSize: pagerEvt.data.page.take });
     }
-    await this._loadGridContent();
+    return await this._loadGridContent();
   }
 
   protected async onFilterChange(filterEvt): Promise<void> {
@@ -1035,7 +1031,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
         this.currentFilter.filters = filters;
       }
     }
-    await this._loadGridContent();
+    return await this._loadGridContent();
   }
 
   protected onColumnReorder(reorderEvt): void {
