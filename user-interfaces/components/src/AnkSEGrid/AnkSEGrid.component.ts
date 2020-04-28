@@ -596,7 +596,6 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   }
 
   mounted(): void {
-    console.log("Coucou grid mounted");
     let saveColumnsOptions = null;
     if (this.persistStateKey) {
       if (window && window.localStorage) {
