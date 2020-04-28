@@ -5,6 +5,8 @@
         ref="businessAppList"
         class="ank-business-app-list-widget"
         :selectable="false"
+        :pageable="pageableConfig"
+        :s-breakpoint="0"
         @itemClicked="onSelectListItem"
         @filterChange="onListFilterChange"
         @pageChange="onPageChange"
