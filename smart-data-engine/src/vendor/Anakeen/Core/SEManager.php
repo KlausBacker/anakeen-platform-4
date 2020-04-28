@@ -3,6 +3,7 @@
 namespace Anakeen\Core;
 
 use Anakeen\Core\DocManager\Exception;
+use SmartStructure\Wdoc;
 
 class SEManager
 {
@@ -329,10 +330,20 @@ class SEManager
         $family = self::getFamily($doc->fromid);
 
         $doc->wid = $family->wid;
+
         // inherit from its family
         $doc->accessControl()->setProfil($family->cprofid);
         $doc->accessControl()->setCvid($family->ccvid);
         $doc->accessControl()->setFallid($family->cfallid);
+        if ($doc->wid) {
+            // Set first state and workflow profiles
+            $wdoc = SEManager::getDocument($doc->wid);
+            if ($wdoc) {
+                /** @var Wdoc $wdoc */
+                SEManager::cache()->addDocument($wdoc);
+                $wdoc->set($doc);
+            }
+        }
         $doc->disableAccessControl(true);
         if ($useDefaultValues) {
             $doc->setDefaultValues($family->getDefValues());
