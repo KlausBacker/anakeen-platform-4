@@ -76,6 +76,8 @@ class QueryPg
     /** @var PgObj $basic_elem */
     protected $basic_elem;
     protected $cindex;
+    protected $dbaccess;
+    protected $class;
 
     public function __construct($dbaccess, $class)
     {
@@ -167,7 +169,7 @@ class QueryPg
     {
         $query = $this->initQuery($start, $slice, $p_query);
         $this->res_type = $res_type;
-        $err = $this->basic_elem->exec_query($query);
+        $err = $this->basic_elem->execQuery($query);
         //	print "$query $res_type $p_query<BR>\n";
         if ($err != "") {
             return ($err);
@@ -184,7 +186,7 @@ class QueryPg
         }
 
         for ($c = 0; $c < $this->nb; $c++) {
-            $result = $this->basic_elem->fetch_array($c);
+            $result = $this->basic_elem->fetchArray($c);
             if (($res_type == "LIST") || ($res_type == "LISTC")) {
                 $this->list[$c] = new $this->class($this->dbaccess, "", $result, $this->basic_elem->dbid);
             } else {
@@ -204,13 +206,13 @@ class QueryPg
     {
         $query = $this->initQuery($start, $slice, "", true);
         $this->res_type = "TABLE";
-        $err = $this->basic_elem->exec_query($query);
+        $err = $this->basic_elem->execQuery($query);
         //	print "$query $res_type $p_query<BR>\n";
         if ($err != "") {
             return ($err);
         }
 
-        $result = $this->basic_elem->fetch_array(0);
+        $result = $this->basic_elem->fetchArray(0);
         return ($result["count"]);
     }
 

@@ -4,9 +4,9 @@
  * @package FDL
 */
 
-require_once "Class.PgObj.php";
+require_once __DIR__."/Class.PgObj.php";
 
-Class Engine extends PgObj
+class Engine extends PgObj
 {
     public $fields = array(
         "name",
@@ -18,22 +18,22 @@ Class Engine extends PgObj
     );
     /**
      * transformation name
-     * @public string
+     * @var string
      */
     public $name;
     /**
      * compatible system mime type with the command (like text/html)
-     * @public string
+     * @var string
      */
     public $mime;
     /**
      * complete path of the program to use for transformation
-     * @public string
+     * @var string
      */
     public $command;
     /**
      * description of the command
-     * @public string
+     * @var string
      */
     public $comment;
     
@@ -54,7 +54,7 @@ CREATE TABLE engine (
 );
 SQL;
     
-    function getNearEngine($engine, $mime)
+    public function getNearEngine($engine, $mime)
     {
         if ($this->isAffected()) {
             return false;
@@ -105,17 +105,17 @@ SQL;
         return false;
     }
     
-    function existsEngine($engine)
+    public function existsEngine($engine)
     {
-        include_once ("Class.QueryPg.php");
+        include_once(__DIR__."/Class.QueryPg.php");
         $q = new QueryPg($this->dbaccess, "Engine");
         $q->AddQuery("name='" . pg_escape_string($engine) . "'");
         return ($q->Count() > 0);
     }
     
-    function getAllEngines()
+    public function getAllEngines()
     {
-        include_once ("Class.QueryPg.php");
+        include_once(__DIR__."/Class.QueryPg.php");
         $q = new QueryPg($this->dbaccess, "Engine");
         $q->AddQuery("true");
         return $q->Query(0, 0, "TABLE");

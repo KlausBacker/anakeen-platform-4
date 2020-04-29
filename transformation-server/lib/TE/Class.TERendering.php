@@ -1,17 +1,16 @@
 <?php
 /*
  * @author Anakeen
- * @package FDL
 */
 
-require_once "TE/Lib.TE.php";
-require_once "TE/Class.Task.php";
-require_once "TE/Class.QueryPg.php";
-require_once "TE/Class.Engine.php";
+require_once __DIR__."/Lib.TE.php";
+require_once __DIR__."/Class.Task.php";
+require_once __DIR__."/Class.QueryPg.php";
+require_once __DIR__."/Class.Engine.php";
 // for signal handler function
 declare(ticks = 1);
 
-Class TERendering
+class TERendering
 {
     public $cur_client = 0;
     public $max_client = 10;
@@ -26,39 +25,38 @@ Class TERendering
     public $task;
     public $status;
     // main loop condition
-    function decrease_child($sig)
+    protected function decreaseChild($sig)
     {
         while (($child = pcntl_waitpid(-1, $status, WNOHANG)) > 0) {
             $this->cur_client--;
             echo "One Less (pid = $child / sig = $sig)  " . $this->cur_client . "\n";
             // pcntl_wait($status); // to suppress zombies
-            
         }
     }
     
-    function rewaiting()
+    public function rewaiting()
     {
         if ($this->task) {
             $this->task->status = Task::STATE_WAITING; // waiting
             $this->task->log('Interrupted');
-            $this->task->Modify();
+            $this->task->modify();
         }
         exit(0);
     }
     
-    function childTermReq()
+    public function childTermReq()
     {
         exit(0);
     }
     
-    function breakloop()
+    public function breakloop()
     {
         $this->good = false;
     }
     /**
      * main loop to listen socket
      */
-    function listenLoop()
+    public function listenLoop()
     {
         /* unlimit execution time. */
         set_time_limit(0);
@@ -66,38 +64,34 @@ Class TERendering
         $this->setMainSignals();
         
         while ($this->good) {
-            
             if ($this->cur_client >= $this->max_client) {
                 echo "Too many [" . $this->cur_client . "]\n";
                 sleep(10);
             } else {
                 echo "Wait [" . $this->cur_client . "]\n";
-                if ($this->HasWaitingTask()) {
-                    
+                if ($this->hasWaitingTask()) {
                     echo "Accept [" . $this->cur_client . "]\n";
                     $this->cur_client++;
                     $pid = pcntl_fork();
                     
-                    PgObj::close_my_pg_connections();
+                    PgObj::closeMyPgConnections();
                     
                     if ($pid == - 1) {
                         // Fork failed
                         exit(1);
-                    } else if ($pid) {
+                    } elseif ($pid) {
                         // We are the parent
                         if ($this->purgeTrigger()) {
                             $this->purgeTasks();
                         }
                         echo "Parent Waiting Accept:" . $this->cur_client . "\n";
                         sleep(1); // need to wait rewaiting signal
-                        
                     } else {
                         $this->processOneTask();
                         exit(0);
                     }
                 } else {
                     sleep(10); // to not load CPU
-                    
                 }
             }
         }
@@ -105,10 +99,10 @@ Class TERendering
     private function setMainSignals()
     {
         pcntl_signal(SIGCHLD, array(&$this,
-            "decrease_child"
+            "decreaseChild"
         ));
         pcntl_signal(SIGPIPE, array(&$this,
-            "decrease_child"
+            "decreaseChild"
         ));
         pcntl_signal(SIGINT, array(&$this,
             "breakloop"
@@ -132,34 +126,38 @@ Class TERendering
      * verify if has a task winting
      * @return bool
      */
-    function HasWaitingTask()
+    protected function hasWaitingTask()
     {
         $q = new QueryPg($this->dbaccess, "Task");
         $q->AddQuery("status='W'");
         $q->Query(0, 1);
-        if ($q->nb > 0) return true;
+        if ($q->nb > 0) {
+            return true;
+        }
         return false;
     }
     /**
      * return next task to process
      * the new status ogf task is 'P' and yje pid is set to current process
-     * @return Task
+     * @return Task|false
      */
-    function getNextTask()
+    protected function getNextTask()
     {
         $wt = new Task($this->dbaccess);
-        $wt->exec_query(sprintf("update task set pid=%d, status='P' where tid = (select tid from task where status='W' limit 1)", posix_getpid())); // no need lock table
+        $wt->execQuery(sprintf("update task set pid=%d, status='P' where tid = (select tid from task where status='W' limit 1)", posix_getpid())); // no need lock table
         $q = new QueryPg($this->dbaccess, "Task");
         $q->AddQuery("status='P'");
         $q->AddQuery("pid=" . posix_getpid());
         $l = $q->Query(0, 1);
-        if ($q->nb > 0) return $l[0];
+        if ($q->nb > 0) {
+            return $l[0];
+        }
         return false;
     }
     /**
      * Get a waiting task and process it
      */
-    function processOneTask()
+    protected function processOneTask()
     {
         /*
          * Become a session leader so we can kill the whole process group
@@ -201,29 +199,31 @@ Class TERendering
             $orifile = $this->task->infile;
             $taskWorkDir = $this->task->getTaskWorkDir();
             if (!is_dir($taskWorkDir)) {
-                throw new Exception(sprintf(_("Invalid task directory from task's input file '%s'.") , $this->task->infile));
+                throw new Exception(sprintf(_("Invalid task directory from task's input file '%s'."), $this->task->infile));
             }
             $outfile = tempnam($taskWorkDir, 'ter-');
             if ($outfile === false) {
-                throw new Exception(sprintf(_("cannot create out file [%s]") , $outfile));
+                throw new Exception(sprintf(_("cannot create out file [%s]"), $outfile));
             }
             unlink($outfile);
             $outfile = $outfile . "." . $eng->name;
             $errfile = $outfile . ".err";
             if (is_file($outfile)) {
-                throw new Exception(sprintf(_("output file '%s' already exists.") , $outfile));
+                throw new Exception(sprintf(_("output file '%s' already exists."), $outfile));
             }
             if (is_file($errfile)) {
-                throw new Exception(sprintf(_("error file '%s' already exists.") , $errfile));
+                throw new Exception(sprintf(_("error file '%s' already exists."), $errfile));
             }
-            $tc = sprintf("%s %s %s > %s 2>&1", $eng->command, escapeshellarg($orifile) , escapeshellarg($outfile) , escapeshellarg($errfile));
-            $this->task->log(sprintf(_("execute [%s] command") , $tc));
+            $tc = sprintf("%s %s %s > %s 2>&1", $eng->command, escapeshellarg($orifile), escapeshellarg($outfile), escapeshellarg($errfile));
+            $this->task->log(sprintf(_("execute [%s] command"), $tc));
             /* Save original TMPDIR */
             $TMPDIR = $this->setTmpDir($taskWorkDir);
             system($tc, $retval);
             /* Restore original TMPDIR */
             $this->setTmpDir($TMPDIR);
-            if (!file_exists($outfile)) $retval = - 1;
+            if (!file_exists($outfile)) {
+                $retval = - 1;
+            }
             if ($retval != 0) {
                 //error mode
                 $err = file_get_contents($errfile);
@@ -232,11 +232,10 @@ Class TERendering
             $warcontent = str_replace('<', '', file_get_contents($errfile));
             $this->task->outfile = $outfile;
             $this->task->status = Task::STATE_SUCCESS;
-            $this->task->log(sprintf(_("generated by [%s] command") , $eng->command) . "\n$warcontent");
+            $this->task->log(sprintf(_("generated by [%s] command"), $eng->command) . "\n$warcontent");
             $this->task->pid = null;
             $this->task->modify();
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             $this->task->log($e->getMessage());
             $this->task->comment = $e->getMessage();
             $this->task->status = Task::STATE_ERROR; // KO
@@ -246,10 +245,10 @@ Class TERendering
         $this->task->runCallback();
     }
     
-    function flushProcessingTasks()
+    public function flushProcessingTasks()
     {
         $tasks = new Task($this->dbaccess);
-        $tasks->exec_query(sprintf("DELETE FROM task WHERE status = 'P'"));
+        $tasks->execQuery(sprintf("DELETE FROM task WHERE status = 'P'"));
         return true;
     }
     
