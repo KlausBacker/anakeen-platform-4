@@ -1,14 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import AnkSmartForm from "@anakeen/user-interfaces/components/lib/AnkSmartForm.esm";
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Mixins, Watch } from "vue-property-decorator";
+import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
 
 @Component({
   components: {
     "smart-form": (): any => AnkSmartForm
   }
 })
-export default class SmartStructureManagerParametersController extends Vue {
+export default class SmartStructureManagerParametersController extends Mixins(AnkI18NMixin) {
   @Prop({
     default: "",
     type: String
@@ -85,7 +86,7 @@ export default class SmartStructureManagerParametersController extends Vue {
         if (!parametersRenderOptions.fields[fieldId]) {
           parametersRenderOptions.fields[fieldId] = {};
         }
-        description += "This is the inherited value. ";
+        description += this.$t("AdminCenterSmartStructure.This is the inherited value.") + " ";
       }
 
       if (paramValue.overrideValue) {
@@ -95,7 +96,7 @@ export default class SmartStructureManagerParametersController extends Vue {
           }
           parametersRenderOptions.fields[fieldId].buttons = [
             {
-              title: "Reset to inherit value",
+              title: this.$t("AdminCenterSmartStructure.Reset to inherit value"),
               htmlContent: "R",
               url: "#action/inheritvalue:" + fieldId
             }
@@ -120,7 +121,9 @@ export default class SmartStructureManagerParametersController extends Vue {
             .join(", ");
         }
 
-        description += `The inherited value "${overDisplayValue}" is overrided. `;
+        description += `${this.$t("AdminCenterSmartStructure.he inherited value")} "${overDisplayValue}" ${this.$t(
+          "AdminCenterSmartStructure.is overrided."
+        )} `;
       }
 
       if (paramValue.isComputed) {
@@ -146,7 +149,7 @@ export default class SmartStructureManagerParametersController extends Vue {
           iconUrl: "",
           id: "submit",
           important: false,
-          label: "Record parameters",
+          label: this.$t("AdminCenterSmartStructure.Record parameters"),
           target: "_self",
           type: "itemMenu",
           url: "#action/document.save",
@@ -154,7 +157,7 @@ export default class SmartStructureManagerParametersController extends Vue {
         }
       ],
       structure: structureFields,
-      title: this.structureData.title + " parameters",
+      title: this.structureData.title + " " + this.$t("AdminCenterSmartStructure.parameters"),
       renderOptions: parametersRenderOptions,
       values: formParamValues
     };

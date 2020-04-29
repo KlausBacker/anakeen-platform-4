@@ -229,5 +229,11 @@
   "AdminCenterKendoGridTranslation.Choose value": "Value",
   "AdminCenterKendoGridTranslation.Aditional value": "Choose value",
   "AdminCenterKendoGridTranslation.Aditional filter by": "Show items with value that",
-  "AdminCenterKendoGridTranslation.contains": "contains"
+  "AdminCenterKendoGridTranslation.contains": "contains",
+  "AdminCenterSmartStructure.This is the inherited value.": "This is the inherited value.",
+  "AdminCenterSmartStructure.Reset to inherit value": "Reset to inherit value",
+  "AdminCenterSmartStructure.he inherited value": "he inherited value",
+  "AdminCenterSmartStructure.is overrided.": "is overrided.",
+  "AdminCenterSmartStructure.Record parameters": "Record parameters",
+  "AdminCenterSmartStructure.parameters": "parameters"
 }
