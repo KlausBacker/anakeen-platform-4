@@ -218,9 +218,9 @@ class ExportAccounts
         }
         if (count($groupLogins) > 0) {
             // Get all members of every exported groups
-            $sql = sprintf("select memberof,id from users where login in (%s)", implode(array_map(function ($s) {
+            $sql = sprintf("select memberof,id from users where login in (%s)", implode(", ", array_map(function ($s) {
                 return pg_escape_literal($s);
-            }, $groupLogins), ", "));
+            }, $groupLogins)));
             DbManager::query($sql, $members);
             $searchGroups = array();
             foreach ($members as $parents) {
@@ -239,13 +239,13 @@ class ExportAccounts
                         "select groups.iduser as groupid, groups.idgroup as parentid, users.login as grouplogin " .
                         "from groups, users where groups.iduser in (%s) and groups.iduser=users.id and users.accounttype='G'",
                         implode(
+                            ", ",
                             array_map(
                                 function ($s) {
                                     return pg_escape_literal($s);
                                 },
                                 $searchGroups
-                            ),
-                            ", "
+                            )
                         )
                     );
                 DbManager::query($sql, $groupTree);

@@ -53,7 +53,7 @@ SQL;
      * 1/2  = 1/3
      *
      * @param string $d path  to file
-     * @param int    $max
+     * @param int $max
      *
      * @return string
      */
@@ -162,8 +162,17 @@ SQL;
     {
         $id_fs = $fs["id_fs"];
         $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
-        $t = $query->Query(0, 0, "TABLE", "SELECT * from vaultdiskdirstorage where id_fs=" . intval($id_fs) . " order by id_dir desc limit 1");
-        $lpath = $t[0]["l_path"];
+        $t = $query->Query(
+            0,
+            0,
+            "TABLE",
+            "SELECT * from vaultdiskdirstorage where id_fs=" . intval($id_fs) . " order by id_dir desc limit 1"
+        );
+        if ($t) {
+            $lpath = $t[0]["l_path"];
+        } else {
+            $lpath = "";
+        }
         $npath = $this->nextdir($lpath);
         $rpath = $fs["r_path"];
 

@@ -53,6 +53,10 @@ class ErrorCodeDOC
      * @errorCode  the smart element cannot be imported because no order specified
      */
     const DOC0011 = ' smart structure  "%s" error detected  ORDER is needed';
+    /**  @errorCode  a constraint must return string, bool or array with err index  */
+    const DOC0012 = 'Smart Element "%s" constraint "%s" not return compatible type. It return "%s"';
+    /**  @errorCode  a constraint must return string, bool or array with err index  */
+    const DOC0013 = 'Smart Element "%s" constraint "%s" not return compatible array with err index. It return "%s"';
     /**
      * @errorCode error in setvalue when import document
      */

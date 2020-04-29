@@ -21,6 +21,7 @@ define("PREGEXPFILE", "/(?P<mime>[^\|]*)\|(?P<vid>[0-9]*)\|?(?P<name>.*)?/");
 
 use \Anakeen\Core\DbManager;
 use \Anakeen\Core\ContextManager;
+use Anakeen\Core\Exception;
 use \Anakeen\Core\SEManager;
 use Anakeen\Core\Settings;
 use Anakeen\Core\SmartStructure\Callables\InputArgument;
@@ -4288,7 +4289,7 @@ create unique index i_docir on doc(initid, revision);";
             );
             $res = $this->applyMethod($oattr->phpconstraint, $ko, $index);
 
-            if ($res !== true) {
+            if ($res !== null && $res !== true && $res !== "") {
                 if (!is_array($res)) {
                     if ($res === false) {
                         $res = array(
@@ -4300,11 +4301,16 @@ create unique index i_docir on doc(initid, revision);";
                             "err" => $res,
                             "sug" => array()
                         );
+                    } else {
+                        throw new Exception("DOC0012", $this->getTitle(), $oattr->phpconstraint, gettype($res));
                     }
                 } elseif (!empty($res["sug"]) && (!is_array($res["sug"]))) {
                     $res["sug"] = array(
                         $res["sug"]
                     );
+                }
+                if (!array_key_exists("err", $res)) {
+                     throw new Exception("DOC0013", $this->getTitle(), $oattr->phpconstraint, print_r($res, true));
                 }
                 if (is_array($res) && $res["err"] != "") {
                     $this->constraintbroken = "[$attrid] " . $res["err"];
@@ -7276,7 +7282,7 @@ create unique index i_docir on doc(initid, revision);";
                 $id = $this->getLatestId();
             }
         }
-        if ($id[0] === '{') {
+        if (is_string($id) && $id[0] === '{') {
             $tid = Postgres::stringToFlatArray($id);
             $ttitle = array();
             foreach ($tid as $idone) {

@@ -380,7 +380,7 @@ class DocOooFormat
      */
     public function formatMoney($avalue)
     {
-        $oooval = money_format('%!.2n', doubleval($avalue));
+        $oooval = \Anakeen\Core\Internal\Format\MoneyAttributeValue::formatMoney(doubleval($avalue));
         return $oooval;
     }
 

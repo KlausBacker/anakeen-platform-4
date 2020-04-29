@@ -17,7 +17,11 @@ class FamImp4 extends Famimp4Plus
 
     public function goodConstraint2($a)
     {
-        return "$a";
+        return "";
+    }
+    public function goodConstraint0()
+    {
+        return true;
     }
 
     /**

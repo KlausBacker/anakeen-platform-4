@@ -17,8 +17,8 @@
         <check type="phpversion" predicate="ge" version="7.2.0">
             <label>Minimum PHP version is 7.2</label>
         </check>
-        <check type="phpversion" predicate="lt" version="7.4.0">
-            <label>Maximum PHP version is 7.3</label>
+        <check type="phpversion" predicate="lt" version="7.5.0">
+            <label>Maximum PHP version is 7.4</label>
         </check>
         <check type="pgversion" service="@core_db" predicate="ge" version="9.6.0">
             <label>Minimum database version is 9.6</label>
@@ -261,8 +261,8 @@
         <check type="phpversion" predicate="ge" version="7.2.0">
             <label>Minimum PHP version is 7.2</label>
         </check>
-        <check type="phpversion" predicate="lt" version="7.4.0">
-            <label>Maximum PHP version is 7.3</label>
+        <check type="phpversion" predicate="lt" version="7.5.0">
+            <label>Maximum PHP version is 7.4</label>
         </check>
         <check type="pgversion" service="@core_db" predicate="ge" version="9.6.0">
             <label>Minimum database version is 9.6</label>

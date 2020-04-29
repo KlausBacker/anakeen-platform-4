@@ -6,13 +6,13 @@ global $pubdir;
 
 $pubdir = realpath(dirname(__DIR__.  '/../../../../'));
 
-set_include_path(implode([
+set_include_path(implode(PATH_SEPARATOR, [
     $pubdir,
         $pubdir."/vendor/Anakeen",
         $pubdir."/vendor/Anakeen/WHAT",
         $pubdir."/Apps",
 
-    ], PATH_SEPARATOR) . PATH_SEPARATOR . get_include_path());
+    ]) . PATH_SEPARATOR . get_include_path());
 
 define("DEFAULT_PUBDIR", $pubdir);
 define("PUBLIC_DIR", realpath(DEFAULT_PUBDIR."/public"));

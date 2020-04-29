@@ -435,12 +435,15 @@ class DirLib
 
         $tretdocs = array();
         if ($tqsql) {
+            /** @var string[] $tqsql   */
             foreach ($tqsql as $k => & $qsql) {
                 if ($qsql == false) {
                     unset($tqsql[$k]);
                 }
             }
             $isgroup = (count($tqsql) > 1);
+
+            /** @var string[] $tqsql   */
             foreach ($tqsql as & $qsql) {
                 if ($fromid != -1) { // not families
                     if ($fromid != 0) {
@@ -572,7 +575,8 @@ class DirLib
 
                     $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, $docClass);
                 } else {
-                    $usql = '(' . implode($tqsql, ") union (") . ')';
+                    /** @var string[] $tqsql   */
+                    $usql = '(' . implode(") union (", $tqsql) . ')';
                     if ($orderby) {
                         $usql .= " ORDER BY $orderby LIMIT $slice OFFSET $start;";
                     } else {
