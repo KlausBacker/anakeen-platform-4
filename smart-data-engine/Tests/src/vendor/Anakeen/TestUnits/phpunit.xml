@@ -10,6 +10,8 @@
             <file>../../Dcp/Pu/SuiteDcpAttribute.php</file>
             <file>../../Dcp/Pu/SuiteDcpUser.php</file>
             <file>../../Dcp/Pu/SuiteDcpSecurity.php</file>
+            <file>../../Dcp/Pu/SuiteWorkflow.php</file>
+            <file>../../Anakeen/Pu/SuiteUi.php</file>
         </testsuite>
     </testsuites>
 </phpunit>

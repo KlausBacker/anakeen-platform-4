@@ -43,7 +43,7 @@ abstract class AuthentProvider
     
     public function canICreateUser()
     {
-        if (array_key_exists('allowAutoFreedomUserCreation', $this->parms) && strtolower($this->parms{'allowAutoFreedomUserCreation'}) == 'yes' && is_callable(array(
+        if (array_key_exists('allowAutoFreedomUserCreation', $this->parms) && strtolower($this->parms['allowAutoFreedomUserCreation']) == 'yes' && is_callable(array(
             $this,
             'initializeUser'
         ))) {

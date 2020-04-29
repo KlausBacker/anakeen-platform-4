@@ -123,7 +123,7 @@ class TestCaseRoutes extends \Dcp\Pu\TestCaseDcpCommonFamily
     {
 
         foreach ($expectedValues as $currentKey => $expectedValue) {
-            if ($currentKey[0] === "!") {
+            if (is_string($currentKey) && $currentKey[0] === "!") {
                 $currentKey = substr($currentKey, 1);
                 $this->assertArrayNotHasKey(
                     $currentKey,

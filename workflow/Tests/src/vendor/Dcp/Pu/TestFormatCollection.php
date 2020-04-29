@@ -203,7 +203,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
         $propertyValue = $this->getRenderProp($r, $docName, $propertyName);
         if (is_array($expectedValue)) {
             foreach ($expectedValue as $infoKey => $expectInfo) {
-                if ($expectInfo[0] === "/") {
+                if (is_string($expectInfo) && $expectInfo[0] === "/") {
                     $this->assertRegExp(
                         $expectInfo,
                         (string)$propertyValue[$infoKey],
@@ -213,7 +213,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
                     $this->assertEquals($expectInfo, $propertyValue[$infoKey], sprintf("incorrect property (%s) display value : %s", $propertyName, print_r($propertyValue, true)));
                 }
             }
-        } elseif ($expectedValue[0] === "/") {
+        } elseif (is_string($expectedValue) && $expectedValue[0] === "/") {
             $this->assertRegExp($expectedValue, $propertyValue, sprintf("incorrect property (%s) display value : %s", $propertyName, print_r($propertyValue, true)));
         } else {
             $this->assertEquals($expectedValue, $propertyValue, sprintf("incorrect property (%s) display value : %s", $propertyName, print_r($propertyValue, true)));

@@ -70,9 +70,9 @@ class StateLabel extends StandardAttributeFilter implements ElementSearchFilter
             $states = $this->getMatchedStates($this->value, $wdoc);
             if (!empty($states)) {
                 // Filter the search
-                $search->addFilter(sprintf("state IN (%s)", implode(array_map(function ($state) {
+                $search->addFilter(sprintf("state IN (%s)", implode(", ", array_map(function ($state) {
                     return pg_escape_literal($state);
-                }, $states), ", ")));
+                }, $states))));
             }
         }
         return $this;

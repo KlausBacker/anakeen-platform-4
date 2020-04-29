@@ -194,7 +194,7 @@ function getTDoc($dbaccess, $id, $sqlfilters = array(), $result = array())
             $sqlcond
         );
     } else {
-        $scol = implode($result, ",");
+        $scol = implode(",", $result);
         $sql = "select $scol from only $table where id=$id $sqlcond;";
     }
     $sqlt1 = 0;
@@ -443,7 +443,7 @@ function getLatestDocIds($dbaccess, $ids)
     foreach ($ids as $k => $v) {
         $ids[$k] = intval($v);
     }
-    $sids = implode($ids, ",");
+    $sids = implode(",", $ids);
     $sql = sprintf(
         "SELECT id,initid from docread where initid in (SELECT initid from docread where id in (%s)) and locked != -1;",
         $sids

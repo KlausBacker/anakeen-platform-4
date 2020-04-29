@@ -59,7 +59,7 @@ class TestImportFamily extends TestCaseDcpDocument
         $doc = SEManager::createDocument($familyName);
         $this->assertTrue(is_object($doc));
         $err = $doc->store();
-        $this->assertEmpty($err, "cannot create good doc");
+        $this->assertEmpty($err, "cannot create good doc : $err");
         $id = $this->_DBGetValue(sprintf("select id from family.%s limit 1", strtolower($familyName)));
 
         $this->assertGreaterThan(1000, $id, "not found by view");
