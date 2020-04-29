@@ -4,9 +4,9 @@
  * @package FDL
 */
 
-require_once "Class.PgObj.php";
+require_once __DIR__."/Class.PgObj.php";
 
-Class Histo extends PgObj
+class Histo extends PgObj
 {
     public $fields = array(
         "tid",
@@ -19,12 +19,12 @@ Class Histo extends PgObj
     );
     /**
      * task identificator
-     * @public string
+     * @var string
      */
     public $tid;
     /**
      * description of the action
-     * @public string
+     * @var string
      */
     public $comment;
     
@@ -45,7 +45,7 @@ SQL;
     
     public function getTaskHisto($tid)
     {
-        include_once ("Class.QueryPg.php");
+        include_once(__DIR__."/Class.QueryPg.php");
         $q = new QueryPg($this->dbaccess, $this->dbtable);
         $q->order_by = "date ASC";
         $q->addQuery(sprintf("tid = '%s'", pg_escape_string($tid)));
@@ -58,7 +58,7 @@ SQL;
      */
     public function purgeUnreferencedLog()
     {
-        include_once ("Class.QueryPg.php");
+        include_once(__DIR__."/Class.QueryPg.php");
         $q = new QueryPg($this->dbaccess, $this->dbtable);
         $sql = sprintf("DELETE FROM histo WHERE NOT EXISTS (SELECT 1 FROM task WHERE task.tid = histo.tid LIMIT 1)");
         $q->Query(0, 0, "TABLE", $sql);

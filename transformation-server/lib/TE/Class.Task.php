@@ -1,14 +1,13 @@
 <?php
 /*
  * @author Anakeen
- * @package FDL
 */
 
 require_once "Class.PgObj.php";
 require_once "Class.Histo.php";
 require_once "Lib.TE.php";
 
-Class Task extends PgObj
+class Task extends PgObj
 {
     const TASK_WORK_DIR_PREFIX = 'te-task-';
     const STATE_BEGINNING = 'B'; // C/S start of transaction
@@ -65,7 +64,7 @@ SQL;
     public $outfile;
     /**
      * transformation name
-     * @public string
+     * @var string
      */
     public $engine;
     public $status;
@@ -75,12 +74,12 @@ SQL;
     public $cdate;
     /**
      * unix process id of processing
-     * @public int
+     * @var int
      */
     public $pid;
     /**
      * description of the command
-     * @public string
+     * @var string
      */
     public $comment;
     
@@ -97,7 +96,7 @@ SQL;
         return $taskDir;
     }
     
-    function preInsert()
+    public function preInsert()
     {
         if (empty($this->tid)) {
             $this->tid = uniqid("", true);
@@ -107,27 +106,29 @@ SQL;
         }
     }
     
-    function preUpdate()
+    public function preUpdate()
     {
         if (($this->infile != '') && ($this->inmime == '')) {
             $this->inmime = te_getSysMimeFile($this->infile);
         }
     }
     
-    function log($s)
+    public function log($s)
     {
         static $oh = false;
         
-        if (!$oh) $oh = new Histo($this->dbaccess);
+        if (!$oh) {
+            $oh = new Histo($this->dbaccess);
+        }
         if ($s) {
             $this->comment = $s;
             $oh->comment = $s;
             $oh->tid = $this->tid;
-            $oh->Add();
+            $oh->add();
         }
     }
     
-    function preDelete()
+    public function preDelete()
     {
         self::deleteTaskWorkDir($this->getTaskWorkDir());
         return '';
@@ -138,7 +139,7 @@ SQL;
      */
     public function getTasks($args)
     {
-        include_once ("Class.QueryPg.php");
+        include_once(__DIR__."/Class.QueryPg.php");
         $response = array(
             'count_all' => 0,
             'count_filter' => 0,
@@ -185,7 +186,7 @@ SQL;
     }
     public function getStatusBreakdown()
     {
-        include_once ("Class.QueryPg.php");
+        include_once(__DIR__."/Class.QueryPg.php");
         $q = new QueryPg($this->dbaccess, $this->dbtable);
         $sql = 'SELECT status, count(status) FROM task GROUP BY status ORDER BY status';
         $res = $q->Query(0, 0, "TABLE", $sql);
@@ -202,12 +203,11 @@ SQL;
      * Delete tasks older than $maxDays days
      * @param int|float $maxDays task's max age (in days)
      * @param string $status delete tasks with given statuses (ex. "D", "DKW", etc.)
-     * @param string $tid delete task with given identifier
      * @return bool
      */
     public function purgeTasks($maxDays = 0, $status = '')
     {
-        include_once ("Class.QueryPg.php");
+        include_once(__DIR__."/Class.QueryPg.php");
         $q = new QueryPg($this->dbaccess, $this->dbtable);
         $cond = array();
         if ($maxDays > 0) {
@@ -280,7 +280,7 @@ SQL;
         $this->pid = '';
         $this->status = Task::STATE_INTERRUPTED;
         $this->log(sprintf("Abort requested"));
-        $this->Modify();
+        $this->modify();
         $this->runCallback();
     }
     /**
@@ -288,22 +288,37 @@ SQL;
      * @param array $turl the url array
      * @return string
      */
-    function implode_url($turl)
+    public function implodeUrl($turl)
     {
-        
-        if (isset($turl["scheme"])) $url = $turl["scheme"] . "://";
-        else $url = "http://";
-        if (isset($turl["user"]) && isset($turl["pass"])) $url.= $turl["user"] . ':' . $turl["pass"] . '@';
-        if (isset($turl["host"])) $url.= $turl["host"];
-        else $url.= "localhost";
-        if (isset($turl["port"])) $url.= ':' . $turl["port"];
+        if (isset($turl["scheme"])) {
+            $url = $turl["scheme"] . "://";
+        } else {
+            $url = "http://";
+        }
+        if (isset($turl["user"]) && isset($turl["pass"])) {
+            $url.= $turl["user"] . ':' . $turl["pass"] . '@';
+        }
+        if (isset($turl["host"])) {
+            $url.= $turl["host"];
+        } else {
+            $url.= "localhost";
+        }
+        if (isset($turl["port"])) {
+            $url.= ':' . $turl["port"];
+        }
         if (isset($turl["path"]) && ($turl["path"][0] == '&')) {
             $turl["query"] = $turl["path"] . $turl["query"];
             $turl["path"] = '';
         }
-        if (isset($turl["path"])) $url.= $turl["path"];
-        if (isset($turl["query"])) $url.= '?' . $turl["query"];
-        if (isset($turl["fragment"])) $url.= '#' . $turl["fragment"];
+        if (isset($turl["path"])) {
+            $url.= $turl["path"];
+        }
+        if (isset($turl["query"])) {
+            $url.= '?' . $turl["query"];
+        }
+        if (isset($turl["fragment"])) {
+            $url.= '#' . $turl["fragment"];
+        }
         
         return $url;
     }
@@ -321,7 +336,7 @@ SQL;
         $turl = parse_url($callback);
         $turl["query"].= "&tid=" . $this->tid;
         $this->log(_("call : ") . $turl["host"] . '://' . $turl["query"]);
-        $url = $this->implode_url($turl);
+        $url = $this->implodeUrl($turl);
         $response = @file_get_contents($url);
         if ($response === false) {
             if (function_exists("error_get_last")) {
@@ -331,11 +346,10 @@ SQL;
                 $this->callreturn = "ERROR:$php_errormsg";
             }
         } else {
-            
             $this->callreturn = str_replace('<', '', $response);
         }
         $this->log(_("return call : ") . $this->callreturn);
-        $this->Modify();
+        $this->modify();
         /*
          * Return error message or empty string on success
         */
@@ -349,7 +363,7 @@ SQL;
      * @param $path
      * @return bool true on success or false if an error occurred (i.e. a file/dir could not be remove)
      */
-    public static function rm_rf($path)
+    public static function rmRf($path)
     {
         $filetype = filetype($path);
         if ($filetype === false) {
@@ -361,8 +375,8 @@ SQL;
             foreach (scandir($path) as $file) {
                 if ($file == "." || $file == "..") {
                     continue;
-                };
-                $ret = ($ret && self::rm_rf(sprintf("%s%s%s", $path, DIRECTORY_SEPARATOR, $file)));
+                }
+                $ret = ($ret && self::rmRf(sprintf("%s%s%s", $path, DIRECTORY_SEPARATOR, $file)));
             }
             /* The main directory should now be empty, so we can delete it. */
             $ret = ($ret && rmdir($path));
@@ -402,7 +416,7 @@ SQL;
             return;
         }
         if (self::isATaskWorkDir($taskWorkDir)) {
-            self::rm_rf($taskWorkDir);
+            self::rmRf($taskWorkDir);
         }
     }
     /**
@@ -413,6 +427,6 @@ SQL;
      */
     protected static function isATaskWorkDir($path)
     {
-        return (preg_match(sprintf('/^%s/', preg_quote(self::TASK_WORK_DIR_PREFIX, '/')) , basename($path)) === 1);
+        return (preg_match(sprintf('/^%s/', preg_quote(self::TASK_WORK_DIR_PREFIX, '/')), basename($path)) === 1);
     }
 }

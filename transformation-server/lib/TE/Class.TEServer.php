@@ -1,17 +1,16 @@
 <?php
 /*
  * @author Anakeen
- * @package FDL
 */
 
-require_once "TE/Lib.TE.php";
-require_once "TE/Class.Task.php";
-require_once "TE/Class.Engine.php";
-require_once "TE/Class.Selftest.php";
+require_once __DIR__."/Lib.TE.php";
+require_once __DIR__."/Class.Task.php";
+require_once __DIR__."/Class.Engine.php";
+require_once __DIR__."/Class.Selftest.php";
 // for signal handler function
 declare(ticks = 1);
 
-Class TEServer
+class TEServer
 {
     public $cur_client = 0;
     public $max_client = 15;
@@ -26,12 +25,11 @@ Class TEServer
     private $task;
     private $sock;
     // main loop condition
-    function decrease_child()
+    protected function decreaseChild()
     {
         while (($child = pcntl_waitpid(-1, $status, WNOHANG)) > 0) {
             $this->cur_client--;
             // pcntl_wait($status); // to suppress zombies
-            
         }
     }
     
@@ -39,22 +37,22 @@ Class TEServer
     {
         return "<response status=\"KO\">$err</response>\n";
     }
-    
-    function closesockets()
+
+    protected function closesockets()
     {
         print "\nCLOSE SOCKET " . $this->msgsock . "\n";
         @fclose($this->msgsock);
         if (isset($this->task)) {
             $this->task->pid = '';
             $this->task->status = Task::STATE_INTERRUPTED; // interrupted
-            $this->task->Modify();
+            $this->task->modify();
         }
         $this->good = false;
     }
     /**
      * main loop to listen socket
      */
-    function listenLoop()
+    public function listenLoop()
     {
         error_reporting(E_ALL);
         /* Autorise l'exécution infinie du script, en attente de connexion. */
@@ -64,10 +62,10 @@ Class TEServer
         ob_implicit_flush();
         
         pcntl_signal(SIGCHLD, array(&$this,
-            "decrease_child"
+            "decreaseChild"
         ));
         pcntl_signal(SIGPIPE, array(&$this,
-            "decrease_child"
+            "decreaseChild"
         ));
         pcntl_signal(SIGINT, array(&$this,
             "closesockets"
@@ -96,7 +94,6 @@ Class TEServer
                 echo "Accept [" . $this->cur_client . "]\n";
                 
                 if ($this->cur_client >= $this->max_client) {
-                    
                     $talkback = "Too many child [" . $this->cur_client . "] Reject\n";
                     //$childpid=pcntl_wait($wstatus);
                     if (@fputs($this->msgsock, $talkback, strlen($talkback)) === false) {
@@ -107,12 +104,12 @@ Class TEServer
                     $this->cur_client++;
                     $pid = pcntl_fork();
                     
-                    PgObj::close_my_pg_connections();
+                    PgObj::closeMyPgConnections();
                     
                     if ($pid == - 1) {
                         // Fork failed
                         exit(1);
-                    } else if ($pid) {
+                    } elseif ($pid) {
                         // We are the parent
                         echo "Parent Waiting Accept:" . $this->cur_client . "\n";
                     } else {
@@ -202,7 +199,7 @@ Class TEServer
                                 break;
 
                             case "ABORT":
-                                $msg = $this->Abort();
+                                $msg = $this->abort();
                                 if (@fputs($this->msgsock, $msg, strlen($msg)) === false) {
                                     echo "fputs $errstr ($errno)<br />\n";
                                 }
@@ -232,7 +229,7 @@ Class TEServer
      * @throws Exception
      * @return string  message to return
      */
-    function transfertFile()
+    public function transfertFile()
     {
         try {
             if (false === ($buf = @fgets($this->msgsock))) {
@@ -259,7 +256,9 @@ Class TEServer
             if (preg_match("/fname=[ ]*\"([^\"]*)\"/i", $buf, $match)) {
                 $fname = $match[1];
                 $ext = te_fileextension($fname);
-                if ($ext) $ext = '.' . $ext;
+                if ($ext) {
+                    $ext = '.' . $ext;
+                }
             }
             $cmime = "";
             if (preg_match("/mime=[ ]*\"([^\"]*)\"/i", $buf, $match)) {
@@ -285,14 +284,14 @@ Class TEServer
             $this->task->fkey = $fkey;
             $this->task->callback = $callback;
             $this->task->status = Task::STATE_BEGINNING; // Initializing
-            $err = $this->task->Add();
+            $err = $this->task->add();
             if ($err != '') {
                 throw new Exception("Error adding new task in database: %s", $err);
             }
             // find first a compatible engine
             $eng = new Engine($this->dbaccess);
             if (!$eng->existsEngine($this->task->engine)) {
-                throw new Exception(sprintf(_("Engine %s not found") , $this->task->engine));
+                throw new Exception(sprintf(_("Engine %s not found"), $this->task->engine));
             }
             if ($cmime) {
                 if (!$eng->isAffected()) {
@@ -300,12 +299,17 @@ Class TEServer
                 }
                 if (!$eng || !$eng->isAffected()) {
                     $this->task->log("Incompatible mime [$cmime]");
-                    $this->task->Modify();
-                    $err = sprintf(_("No compatible engine %s found for %s") , $tename, $fname);
+                    $this->task->modify();
+                    $err = sprintf(_("No compatible engine %s found for %s"), $tename, $fname);
                     throw new Exception($err);
                 }
                 $talkback = "<response status=\"OK\">";
-                $talkback.= sprintf("<task id=\"%s\" status=\"%s\"><comment>%s</comment></task>", $this->task->tid, $this->task->status, str_replace("\n", "; ", $this->task->comment));
+                $talkback.= sprintf(
+                    "<task id=\"%s\" status=\"%s\"><comment>%s</comment></task>",
+                    $this->task->tid,
+                    $this->task->status,
+                    str_replace("\n", "; ", $this->task->comment)
+                );
                 $talkback.= "</response>\n";
                 fputs($this->msgsock, $talkback, strlen($talkback));
             }
@@ -316,14 +320,14 @@ Class TEServer
                 $handle = @fopen($filename, "w");
             }
             if ($handle === false) {
-                throw new Exception(sprintf(_("Error opening task's file '%s' for writing.") , $filename));
+                throw new Exception(sprintf(_("Error opening task's file '%s' for writing."), $filename));
             }
             $peername = stream_socket_get_name($this->msgsock, true);
             if ($peername) {
-                $this->task->log(sprintf(_("transferring from %s") , $peername));
+                $this->task->log(sprintf(_("transferring from %s"), $peername));
             }
             $this->task->status = Task::STATE_TRANSFERRING; // transferring
-            $this->task->Modify();
+            $this->task->modify();
             $orig_size = $size;
             do {
                 if ($size >= 2048) {
@@ -345,16 +349,15 @@ Class TEServer
                 }
             } while ($size > 0);
             fclose($handle);
-            $this->task->log(sprintf("%d bytes read in %.03f sec", $trbytes, te_microtime_diff(microtime() , $mb)));
+            $this->task->log(sprintf("%d bytes read in %.03f sec", $trbytes, te_microtime_diff(microtime(), $mb)));
             $this->task->status = Task::STATE_WAITING; // waiting
             $this->task->inmime = ""; // reset mime type
-            $this->task->Modify();
-        }
-        catch(Exception $e) {
+            $this->task->modify();
+        } catch (Exception $e) {
             $this->task->comment = $e->getMessage();
             $this->task->log($e->getMessage());
             $this->task->status = Task::STATE_ERROR; // KO
-            $this->task->Modify();
+            $this->task->modify();
             return $this->formatErrorReturn($e->getMessage());
         }
         
@@ -371,7 +374,7 @@ Class TEServer
      * @throws Exception
      * @return string  message to return
      */
-    function getInfo()
+    public function getInfo()
     {
         try {
             if (false === ($buf = @fgets($this->msgsock))) {
@@ -385,7 +388,7 @@ Class TEServer
             $this->task = new Task($this->dbaccess, $tid);
             
             if (!$this->task->isAffected()) {
-                throw new Exception(sprintf(_("unknow task [%s]") , $tid));
+                throw new Exception(sprintf(_("unknow task [%s]"), $tid));
             }
             
             $message = "<response status=\"OK\">";
@@ -396,8 +399,7 @@ Class TEServer
             $message.= "</TASK></response>\n";
             
             return $message;
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return $this->formatErrorReturn($e->getMessage());
         }
     }
@@ -409,7 +411,7 @@ Class TEServer
      * @throws Exception
      * @return string  message to return
      */
-    function Abort()
+    protected function abort()
     {
         try {
             if (false === ($buf = @fgets($this->msgsock))) {
@@ -423,16 +425,14 @@ Class TEServer
             $this->task = new Task($this->dbaccess, $tid);
             
             if (!$this->task->isAffected()) {
-                throw new Exception(sprintf(_("unknow task [%s]") , $tid));
+                throw new Exception(sprintf(_("unknow task [%s]"), $tid));
             }
             if ($this->task->status != Task::STATE_INTERRUPTED) {
                 $this->task->interrupt();
             }
-            
-            $message = "<response status=\"OK\"></response>\n";
-            return $message;
-        }
-        catch(Exception $e) {
+
+            return "<response status=\"OK\"></response>\n";
+        } catch (Exception $e) {
             return $this->formatErrorReturn($e->getMessage());
         }
     }
@@ -443,7 +443,7 @@ Class TEServer
      * @throws Exception if socket lost
      * @return string  message to return
      */
-    function retrieveFile()
+    protected function retrieveFile()
     {
         if (false === ($buf = @fgets($this->msgsock))) {
             throw new Exception("retrieveFile::fget");
@@ -453,11 +453,11 @@ Class TEServer
             if (preg_match("/ id=[ ]*\"([^\"]*)\"/i", $buf, $match)) {
                 $tid = $match[1];
             } else {
-                throw new Exception(sprintf(_("header [%s] : syntax error") , $buf));
+                throw new Exception(sprintf(_("header [%s] : syntax error"), $buf));
             }
             $this->task = new Task($this->dbaccess, $tid);
             if (!$this->task->isAffected()) {
-                throw new Exception(sprintf(_("task [%s] not exist") , $tid));
+                throw new Exception(sprintf(_("task [%s] not exist"), $tid));
             }
             // normal case : now the file
             $filename = $this->task->outfile;
@@ -478,7 +478,7 @@ Class TEServer
             }
             $peername = stream_socket_get_name($this->msgsock, true);
             if ($peername) {
-                $this->task->log(sprintf(_("transferring to %s") , $peername));
+                $this->task->log(sprintf(_("transferring to %s"), $peername));
             }
             $handle = @fopen($filename, "r");
             if ($handle) {
@@ -495,8 +495,7 @@ Class TEServer
             fflush($this->msgsock);
             $this->task->delete();
             return "<response status=\"OK\"></response>";
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return $this->formatErrorReturn($e->getMessage());
         }
     }
@@ -505,7 +504,7 @@ Class TEServer
      * @param $string
      * @return int
      */
-    private function fwrite_stream($fp, $string)
+    private function fwriteStream($fp, $string)
     {
         for ($written = 0; $written < strlen($string); $written+= $fwrite) {
             $fwrite = fwrite($fp, substr($string, $written));
@@ -521,7 +520,7 @@ Class TEServer
      * @param $size
      * @return bool|string the data or bool(false) on error
      */
-    private function read_size($fp, $size)
+    private function readSize($fp, $size)
     {
         $buf = '';
         while ($size > 0) {
@@ -544,7 +543,7 @@ Class TEServer
      * @param $fp
      * @return bool|string the data or bool(false) on error
      */
-    private function read_eof($fp)
+    private function readEof($fp)
     {
         $buf = '';
         while (!feof($fp)) {
@@ -564,15 +563,14 @@ Class TEServer
                 throw new Exception("Found no engines");
             }
             $json = json_encode($response);
-            $buffer = sprintf("<response status=\"OK\" size=\"%d\" type=\"application/json\"/>\n%s", strlen($json) , $json);
-            $ret = $this->fwrite_stream($this->msgsock, $buffer);
+            $buffer = sprintf("<response status=\"OK\" size=\"%d\" type=\"application/json\"/>\n%s", strlen($json), $json);
+            $ret = $this->fwriteStream($this->msgsock, $buffer);
             if ($ret != strlen($buffer)) {
                 throw new Exception("Error writing content to socket");
             }
             fflush($this->msgsock);
             return '';
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return $this->formatErrorReturn($e->getMessage());
         }
     }
@@ -599,7 +597,7 @@ Class TEServer
             if ($type != 'application/json') {
                 throw new Exception(sprintf("Missing or unsupported args type ('%s')", $type));
             }
-            $buf = $this->read_size($this->msgsock, $size);
+            $buf = $this->readSize($this->msgsock, $size);
             if ($buf === false) {
                 throw new Exception(sprintf("Error reading args data from client"));
             }
@@ -613,15 +611,14 @@ Class TEServer
                 $response = array();
             }
             $json = json_encode($response);
-            $buf = sprintf("<response status=\"OK\" size=\"%d\" type=\"application/json\"/>\n%s", strlen($json) , $json);
-            $ret = $this->fwrite_stream($this->msgsock, $buf);
+            $buf = sprintf("<response status=\"OK\" size=\"%d\" type=\"application/json\"/>\n%s", strlen($json), $json);
+            $ret = $this->fwriteStream($this->msgsock, $buf);
             if ($ret != strlen($buf)) {
                 throw new Exception("Error writing content to socket");
             }
             fflush($this->msgsock);
             return '';
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return $this->formatErrorReturn($e->getMessage());
         }
     }
@@ -651,15 +648,14 @@ Class TEServer
                 $response = array();
             }
             $json = json_encode($response);
-            $buf = sprintf("<response status=\"OK\" size=\"%d\" type=\"application/json\"/>\n%s", strlen($json) , $json);
-            $ret = $this->fwrite_stream($this->msgsock, $buf);
+            $buf = sprintf("<response status=\"OK\" size=\"%d\" type=\"application/json\"/>\n%s", strlen($json), $json);
+            $ret = $this->fwriteStream($this->msgsock, $buf);
             if ($ret != strlen($buf)) {
                 throw new Exception("Error writing content to socket");
             }
             fflush($this->msgsock);
             return '';
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return $this->formatErrorReturn($e->getMessage());
         }
     }
@@ -685,7 +681,7 @@ Class TEServer
     {
         $task = new Task($this->dbaccess);
         $statusBreakdown = $task->getStatusBreakdown();
-        return array_merge($this->getServerInfo() , array(
+        return array_merge($this->getServerInfo(), array(
             "status_breakdown" => $statusBreakdown
         ));
     }
@@ -693,13 +689,12 @@ Class TEServer
     {
         try {
             $serverInfo = json_encode($this->getServerInfo());
-            $msg = sprintf("<response status=\"OK\" size=\"%d\" type=\"application/json\"/>\n%s", strlen($serverInfo) , $serverInfo);
-            $ret = $this->fwrite_stream($this->msgsock, $msg);
+            $msg = sprintf("<response status=\"OK\" size=\"%d\" type=\"application/json\"/>\n%s", strlen($serverInfo), $serverInfo);
+            $ret = $this->fwriteStream($this->msgsock, $msg);
             if ($ret != strlen($msg)) {
                 throw new Exception("Error writing content to socket");
             }
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return $this->formatErrorReturn($e->getMessage());
         }
         return '';
@@ -708,13 +703,12 @@ Class TEServer
     {
         try {
             $serverInfo = json_encode($this->getServerExtendedInfo());
-            $msg = sprintf("<response status=\"OK\" size=\"%d\" type=\"application/json\"/>\n%s", strlen($serverInfo) , $serverInfo);
-            $ret = $this->fwrite_stream($this->msgsock, $msg);
+            $msg = sprintf("<response status=\"OK\" size=\"%d\" type=\"application/json\"/>\n%s", strlen($serverInfo), $serverInfo);
+            $ret = $this->fwriteStream($this->msgsock, $msg);
             if ($ret != strlen($msg)) {
                 throw new Exception("Error writing content to socket");
             }
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return $this->formatErrorReturn($e->getMessage());
         }
         return '';
@@ -724,13 +718,12 @@ Class TEServer
         try {
             $test = new Selftest($this->workDir);
             $selftests = json_encode($test->getSelftests());
-            $msg = sprintf("<response status=\"OK\" size=\"%d\" type=\"application/json\"/>\n%s", strlen($selftests) , $selftests);
-            $ret = $this->fwrite_stream($this->msgsock, $msg);
+            $msg = sprintf("<response status=\"OK\" size=\"%d\" type=\"application/json\"/>\n%s", strlen($selftests), $selftests);
+            $ret = $this->fwriteStream($this->msgsock, $msg);
             if ($ret != strlen($msg)) {
                 throw new Exception("Error writing content to socket");
             }
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return $this->formatErrorReturn($e->getMessage());
         }
         return '';
@@ -757,13 +750,12 @@ Class TEServer
                 "status" => $status,
                 "output" => $output
             ));
-            $msg = sprintf("<response status=\"OK\" size=\"%d\" type=\"application/json\"/>\n%s", strlen($result) , $result);
-            $ret = $this->fwrite_stream($this->msgsock, $msg);
+            $msg = sprintf("<response status=\"OK\" size=\"%d\" type=\"application/json\"/>\n%s", strlen($result), $result);
+            $ret = $this->fwriteStream($this->msgsock, $msg);
             if ($ret != strlen($msg)) {
                 throw new Exception("Error writing content to socket");
             }
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return $this->formatErrorReturn($e->getMessage());
         }
         return '';
@@ -803,12 +795,11 @@ Class TEServer
                 $task->purgeTasks($maxdays, $status);
             }
             $msg = sprintf("<response status=\"OK\"></response>");
-            $ret = $this->fwrite_stream($this->msgsock, $msg);
+            $ret = $this->fwriteStream($this->msgsock, $msg);
             if ($ret != strlen($msg)) {
                 throw new Exception("Error writing content to socket");
             }
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return $this->formatErrorReturn($e->getMessage());
         }
         return '';
