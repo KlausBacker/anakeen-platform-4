@@ -8,9 +8,8 @@ namespace Anakeen\Ui;
 
 class HtmltextRenderOptions extends CommonRenderOptions
 {
-
     const type = "htmltext";
-    const toolbarOption = "toolbar";
+    const toolbarButtonsOption = "toolbarButtons";
     const heightOption = "height";
     const toolbarStartupExpandedOption = "toolbarStartupExpanded";
     const ckEditorConfigurationOption = "ckEditorConfiguration";
@@ -20,7 +19,108 @@ class HtmltextRenderOptions extends CommonRenderOptions
     const fullToolbar = "Full";
     const simpleToolbar = "Simple";
     const basicToolbar = "Basic";
-    const defaultToolbar = "Default";
+
+
+    const basicButtons=[
+        "bold",
+        "italic",
+        // ----------
+        "insertUnorderedList",
+        "insertOrderedList",
+        // ----------
+        "createLink",
+        "unlink"
+    ];
+    const simpleButtons=[
+        "bold",
+        "italic",
+        "underline",
+        "strikethrough",
+        "cleanFormatting",
+
+        // ----------
+        "insertUnorderedList",
+        "insertOrderedList",
+
+        "indent",
+        "outdent",
+
+        "justifyLeft",
+        "justifyCenter",
+        "justifyRight",
+        "justifyFull",
+
+        "createLink",
+        "unlink",
+
+        "insertImage",
+
+        "tableWizard",
+        "createTable",
+        "addRowAbove",
+        "addRowBelow",
+        "addColumnLeft",
+        "addColumnRight",
+        "deleteRow",
+        "deleteColumn",
+        "mergeCellsHorizontally",
+        "mergeCellsVertically",
+        "splitCellHorizontally",
+        "splitCellVertically",
+
+        "viewHtml",
+        "formatting",
+        "cleanFormatting",
+        "copyFormat",
+        "applyFormat",
+        "fontName",
+        "fontSize",
+        "foreColor",
+        "backColor",
+        "print"
+    ];
+    const fullButtons=[
+        "bold",
+        "italic",
+        "underline",
+        "strikethrough",
+        "justifyLeft",
+        "justifyCenter",
+        "justifyRight",
+        "justifyFull",
+        "insertUnorderedList",
+        "insertOrderedList",
+        "indent",
+        "outdent",
+        "createLink",
+        "unlink",
+        "insertImage",
+        "insertFile",
+        "subscript",
+        "superscript",
+        "tableWizard",
+        "createTable",
+        "addRowAbove",
+        "addRowBelow",
+        "addColumnLeft",
+        "addColumnRight",
+        "deleteRow",
+        "deleteColumn",
+        "mergeCellsHorizontally",
+        "mergeCellsVertically",
+        "splitCellHorizontally",
+        "splitCellVertically",
+        "viewHtml",
+        "formatting",
+        "cleanFormatting",
+        "copyFormat",
+        "applyFormat",
+        "fontName",
+        "fontSize",
+        "foreColor",
+        "backColor",
+        "print"
+    ];
 
     /**
      * Collapse or expand toolbar on startup
@@ -35,7 +135,7 @@ class HtmltextRenderOptions extends CommonRenderOptions
 
     /**
      * Use a predefined or a custom toolbar
-     * Predefined toolbars are "Full", "Default", "Simple", "Basic"
+     * Predefined toolbars are "Full", "Simple", "Basic"
      * @note use only in edition mode
      * @param string|array $toolbar definition .
      *
@@ -43,7 +143,20 @@ class HtmltextRenderOptions extends CommonRenderOptions
      */
     public function setToolbar($toolbar)
     {
-        return $this->setOption(self::toolbarOption, $toolbar);
+        switch ($toolbar) {
+            case self::fullToolbar:
+                $buttons=self::fullButtons;
+                break;
+            case self::simpleToolbar:
+                $buttons=self::simpleButtons;
+                break;
+            case self::basicToolbar:
+                $buttons=self::basicButtons;
+                break;
+            default:
+                throw new Exception("UI0215", $toolbar, implode(", ", [self::fullToolbar,self::basicToolbar, self::simpleToolbar ]));
+        }
+        return $this->setOption(self::toolbarButtonsOption, $buttons);
     }
 
     /**

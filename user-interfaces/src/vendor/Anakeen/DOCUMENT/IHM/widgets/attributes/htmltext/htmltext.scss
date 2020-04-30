@@ -6,16 +6,42 @@
 
 .dcpAttribute__content--htmltext div[contenteditable="true"] {
   overflow: auto;
-  height: 100%;
+  height: auto;
   min-height: 3em;
+  padding: 0.5rem;
   display: block;
   border: none;
+  resize:vertical;
 }
 
 .dcpDocument--edit,
 .dcpDocument--create {
   .dcpAttribute__content__htmltext--wrapper {
     width: 100%;
+    .editorToolbarWindow {
+      padding-right: 2rem;
+    }
+    .k-editor-toolbar .k-tool-group {
+      margin-bottom:0.375rem;
+      margin-right: 0.375rem;
+    }
+
+    .k-editor-toolbar  {
+      padding-bottom: 0;
+    }
+    .k-editor-toolbar .k-tool-group + .k-tool-group {
+      margin-left: 0;
+    }
+    .k-editor-widget {
+      border-style: none none solid none;
+
+      span {
+        border-style:none;
+      }
+    }
+    .dcpAttribute__content__button--delete {
+      margin-top: 0.5rem;
+    }
   }
 
   .dcpAttribute__content.dcpAttribute__content--htmltext {

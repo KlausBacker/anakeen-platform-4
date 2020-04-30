@@ -5,7 +5,12 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
   options: {
     type: "htmltext",
     renderOptions: {
-      kendoEditor: {}
+      kendoEditor: {},
+      anchors: {
+        target: "_blank"
+      },
+      toolbarButtons: ["bold", "italic"],
+      height: "100px"
     }
   },
 
@@ -25,6 +30,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
 
       if (this.getMode() === "write") {
         bindSuper();
+        this._initKendoEditorOptions();
         import("@progress/kendo-ui/js/kendo.editor").then(() => {
           currentWidget.kendoEditorInstance = currentWidget
             .getContentElements()
@@ -47,6 +53,12 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
     }
   },
 
+  _initKendoEditorOptions: function htmltext__initKendoEditorOptions() {
+    if (this.options.renderOptions.toolbarButtons) {
+      this.options.renderOptions.kendoEditor.tools = this.options.renderOptions.toolbarButtons;
+    }
+  },
+
   /**
    * Some hacks around the toolbar to pin it in the dom
    * see : https://medium.com/@unitehenry/hacking-the-kendo-inline-editor-for-tributejs-6dcf5824b20c
@@ -61,7 +73,11 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
     //Disable drag of the toolbar
     toolBarElement.find(".k-editortoolbar-dragHandle").hide();
     // Relative Position Toolbar
-    toolBarElement.css("position", "inherit");
+
+    toolBarElement.css({ width: "100%", position: "static", top: "", left: "", opacity: "" });
+    if (this.options.renderOptions.height) {
+      $(this.kendoEditorInstance.body).css("height", this.options.renderOptions.height);
+    }
     // Attach the element to a relative div
     const toolbar = toolBarElement.detach();
     this.element.find(".dcpAttribute__content__htmltext--toolbar").append(toolbar);
