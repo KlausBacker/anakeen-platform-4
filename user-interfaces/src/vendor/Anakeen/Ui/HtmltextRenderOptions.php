@@ -21,7 +21,7 @@ class HtmltextRenderOptions extends CommonRenderOptions
     const basicToolbar = "Basic";
 
 
-    const basicButtons=[
+    const basicButtons = [
         "bold",
         "italic",
         // ----------
@@ -31,7 +31,7 @@ class HtmltextRenderOptions extends CommonRenderOptions
         "createLink",
         "unlink"
     ];
-    const simpleButtons=[
+    const simpleButtons = [
         "bold",
         "italic",
         "underline",
@@ -68,18 +68,21 @@ class HtmltextRenderOptions extends CommonRenderOptions
         "splitCellHorizontally",
         "splitCellVertically",
 
-        "viewHtml",
         "formatting",
-        "cleanFormatting",
-        "copyFormat",
-        "applyFormat",
-        "fontName",
         "fontSize",
-        "foreColor",
-        "backColor",
-        "print"
+        [
+            "name" => "foreColor",
+            "palette" => null
+        ],
+        [
+            "name" => "backColor",
+            "palette" => null
+        ],
+
+
+        "viewHtml"
     ];
-    const fullButtons=[
+    const fullButtons = [
         "bold",
         "italic",
         "underline",
@@ -95,7 +98,6 @@ class HtmltextRenderOptions extends CommonRenderOptions
         "createLink",
         "unlink",
         "insertImage",
-        "insertFile",
         "subscript",
         "superscript",
         "tableWizard",
@@ -110,16 +112,21 @@ class HtmltextRenderOptions extends CommonRenderOptions
         "mergeCellsVertically",
         "splitCellHorizontally",
         "splitCellVertically",
-        "viewHtml",
         "formatting",
         "cleanFormatting",
         "copyFormat",
         "applyFormat",
         "fontName",
         "fontSize",
-        "foreColor",
-        "backColor",
-        "print"
+        [
+            "name" => "foreColor",
+            "palette" => null
+        ],
+        [
+            "name" => "backColor",
+            "palette" => null
+        ],
+        "viewHtml"
     ];
 
     /**
@@ -145,16 +152,20 @@ class HtmltextRenderOptions extends CommonRenderOptions
     {
         switch ($toolbar) {
             case self::fullToolbar:
-                $buttons=self::fullButtons;
+                $buttons = self::fullButtons;
                 break;
             case self::simpleToolbar:
-                $buttons=self::simpleButtons;
+                $buttons = self::simpleButtons;
                 break;
             case self::basicToolbar:
-                $buttons=self::basicButtons;
+                $buttons = self::basicButtons;
                 break;
             default:
-                throw new Exception("UI0215", $toolbar, implode(", ", [self::fullToolbar,self::basicToolbar, self::simpleToolbar ]));
+                throw new Exception(
+                    "UI0215",
+                    $toolbar,
+                    implode(", ", [self::fullToolbar, self::basicToolbar, self::simpleToolbar])
+                );
         }
         return $this->setOption(self::toolbarButtonsOption, $buttons);
     }

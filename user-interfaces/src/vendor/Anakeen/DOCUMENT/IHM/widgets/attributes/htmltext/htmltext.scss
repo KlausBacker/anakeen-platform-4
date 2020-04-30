@@ -24,6 +24,23 @@
     .k-editor-toolbar .k-tool-group {
       margin-bottom:0.375rem;
       margin-right: 0.375rem;
+
+      .k-selected-color {
+        height: 100%;
+        border-radius: 2px;
+      }
+      .k-icon {
+        display:inherit;
+        margin: auto;
+        &:before {
+          margin: auto;
+        }
+
+
+      }
+      .k-clear-value.k-icon {
+        display: none;
+      }
     }
 
     .k-editor-toolbar  {

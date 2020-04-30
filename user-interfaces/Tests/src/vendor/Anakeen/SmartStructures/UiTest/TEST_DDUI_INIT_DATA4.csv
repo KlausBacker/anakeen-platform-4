@@ -169,5 +169,7 @@ Air";"3243
 </ul>";"TST_EMPLOYE_DOE";"TABEDITCOLUMN";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 "DOC";"TST_RENDER";"TST_RENDER_0503";;503;"Htmltext::toolbar(basic)";"<p>HTML text avec toolbar BASIC</p>
 ";"TST_ALL_COMPLET";"HTMLTEXT_TOOLBAR_BASIC";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-"DOC";"TST_RENDER";"TST_RENDER_0504";;503;"Htmltext::toolbar(simple)";"<p>HTML text avec toolbar SIMPLE</p>
+"DOC";"TST_RENDER";"TST_RENDER_0504";;504;"Htmltext::toolbar(simple)";"<p>HTML text avec toolbar SIMPLE</p>
 ";"TST_ALL_COMPLET";"HTMLTEXT_TOOLBAR_SIMPLE";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+"DOC";"TST_RENDER";"TST_RENDER_0505";;505;"Htmltext::toolbar(full)";"<p>HTML text avec toolbar FULL</p>
+";"TST_ALL_COMPLET";"HTMLTEXT_TOOLBAR_FULL";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
