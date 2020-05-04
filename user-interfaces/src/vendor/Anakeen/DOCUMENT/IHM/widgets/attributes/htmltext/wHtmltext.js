@@ -250,6 +250,55 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
         currentWidget.kendoEditorInstance.bind("change", () => {
           currentWidget.setValue({ value: currentWidget.kendoEditorInstance.value() });
         });
+
+        //---------------------
+        // Resize inside images : use resizable css
+        $(this.kendoEditorInstance.body).on("click", e => {
+          const $img = $(e.target);
+
+          if (e.isTrigger) {
+            // Do nothing it is just to select img
+            return;
+          }
+          if ($img.prop("tagName") === "IMG") {
+            // insert a div container to add use resizable
+            const $imgContainer = $img.parent();
+
+            if (!$imgContainer.hasClass("htmltext-img-container")) {
+              const width = $img.width();
+              const height = $img.height();
+              const $imgcontainer = $("<div/>")
+                .addClass("htmltext-img-container")
+                .attr("style", $img.attr("style"))
+                .width(width)
+                .height(height)
+                .css("background-image", 'url("' + $img.attr("src") + '")');
+
+              if ($img.css("float") === "right") {
+                // Move scroll bar to the left
+                $imgcontainer.css("direction", "rtl");
+              }
+
+              $img.width("").height("");
+              $imgcontainer.insertBefore($img);
+              $imgcontainer.append($img);
+            }
+          } else {
+            // remove all img div container and restore new image dimension
+            const $containers = $(e.currentTarget).find(".htmltext-img-container");
+            $containers.each(function() {
+              $(this).css("padding", "0");
+              const $iImg = $(this).find("img");
+              const width = $(this).width();
+              const height = $(this).height();
+              $iImg.width(width).height(height);
+              $iImg.insertBefore($(this));
+              $(this).remove();
+              // Select image
+              $iImg.trigger("click");
+            });
+          }
+        });
       }
     }
 

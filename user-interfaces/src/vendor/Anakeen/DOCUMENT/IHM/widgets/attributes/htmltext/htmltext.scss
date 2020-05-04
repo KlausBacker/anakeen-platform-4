@@ -18,6 +18,25 @@
 .dcpDocument--create {
   .dcpAttribute__content__htmltext--wrapper {
     width: 100%;
+    .htmltext-img-container {
+      resize: both;
+      overflow: scroll;
+      outline: solid 2px grey;
+      background-size: 100% 100%;
+      scrollbar-width: none;
+
+      &::-webkit-scrollbar {
+       width: 15px;
+      }
+
+
+      img {
+        visibility: hidden;
+        height: 100%;
+        width: 100%;
+      }
+    }
+
     .editorToolbarWindow {
       padding-right: 2rem;
     }
