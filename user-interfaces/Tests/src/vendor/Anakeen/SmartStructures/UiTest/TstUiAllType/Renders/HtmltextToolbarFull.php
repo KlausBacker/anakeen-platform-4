@@ -10,7 +10,7 @@ class HtmltextToolbarFull extends \Anakeen\Ui\DefaultEdit
 {
 
 
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document): RenderOptions
     {
         $options = parent::getOptions($document);
 
@@ -18,6 +18,14 @@ class HtmltextToolbarFull extends \Anakeen\Ui\DefaultEdit
         $options->frame()->setCollapse(true);
         $options->frame(myAttributes::test_ddui_all__fr_text)->setCollapse(false);
         $options->htmltext()->setToolbar(HtmltextRenderOptions::fullToolbar);
+        $options->htmltext()->setTranslations(["bold" => "Grassouille"]);
+        $options->htmltext()->setKendoEditorConfiguration([
+            "tools" => [
+                "bold",
+                "italic",
+                "underline"
+            ]
+        ]);
 
 
         return $options;

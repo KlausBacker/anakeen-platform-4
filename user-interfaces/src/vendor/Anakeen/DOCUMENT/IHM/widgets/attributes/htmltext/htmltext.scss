@@ -73,3 +73,13 @@
   /* No bold for htmltext */
   font-family: inherit;
 }
+
+.htmltext--viewhtml {
+  display:flex;
+  flex-direction: column;
+   > textarea {
+     overflow: auto;
+     font-family: monospace;
+     flex:1;
+   }
+}

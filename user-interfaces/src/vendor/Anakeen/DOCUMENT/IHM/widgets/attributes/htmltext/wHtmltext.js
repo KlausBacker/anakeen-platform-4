@@ -1,15 +1,17 @@
 import $ from "jquery";
 import _ from "underscore";
 import "../text/wText";
+
 $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
   options: {
     type: "htmltext",
     renderOptions: {
-      kendoEditor: {},
+      kendoEditorConfiguration: {},
       anchors: {
         target: "_blank"
       },
-      toolbarButtons: ["bold", "italic"],
+      toolbar: "",
+      translatedLabels: [],
       height: "100px"
     }
   },
@@ -34,7 +36,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
         import("@progress/kendo-ui/js/kendo.editor").then(() => {
           currentWidget.kendoEditorInstance = currentWidget
             .getContentElements()
-            .kendoEditor(currentWidget.options.renderOptions.kendoEditor)
+            .kendoEditor(currentWidget.options.renderOptions.kendoEditorConfiguration)
             .data("kendoEditor");
           currentWidget.options.attributeValue.value = currentWidget.kendoEditorInstance.value();
           bindEvents();
@@ -54,9 +56,165 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
   },
 
   _initKendoEditorOptions: function htmltext__initKendoEditorOptions() {
-    if (this.options.renderOptions.toolbarButtons) {
-      this.options.renderOptions.kendoEditor.tools = this.options.renderOptions.toolbarButtons;
+    const buttons = {
+      Basic: [
+        "bold",
+        "italic",
+        // ----------
+        "insertUnorderedList",
+        "insertOrderedList",
+        // ----------
+        "createLink",
+        "unlink"
+      ],
+      Simple: [
+        "bold",
+        "italic",
+        "underline",
+        "strikethrough",
+        "cleanFormatting",
+        // ----------
+        "insertUnorderedList",
+        "insertOrderedList",
+
+        "indent",
+        "outdent",
+
+        "justifyLeft",
+        "justifyCenter",
+        "justifyRight",
+        "justifyFull",
+
+        "createLink",
+        "unlink",
+
+        "insertImage",
+        // table
+        "tableWizard",
+        "createTable",
+        "addRowAbove",
+        "addRowBelow",
+        "addColumnLeft",
+        "addColumnRight",
+        "deleteRow",
+        "deleteColumn",
+        "mergeCellsHorizontally",
+        "mergeCellsVertically",
+        "splitCellHorizontally",
+        "splitCellVertically",
+        //format
+        {
+          name: "formatting",
+          items: [
+            { text: "Heading 1", value: "h1" },
+            { text: "Heading 2", value: "h2" },
+            { text: "Heading 3", value: "h3" },
+            { text: "Paragraph", value: "p" },
+            { text: "Preformatted", value: "pre" }
+          ]
+        },
+        "fontSize",
+        {
+          name: "foreColor",
+          palette: null
+        },
+        {
+          name: "backColor",
+          palette: null
+        },
+
+        "viewHtml"
+      ],
+      Full: [
+        "bold",
+        "italic",
+        "underline",
+        "strikethrough",
+        "justifyLeft",
+        "justifyCenter",
+        "justifyRight",
+        "justifyFull",
+        "insertUnorderedList",
+        "insertOrderedList",
+        "indent",
+        "outdent",
+        "createLink",
+        "unlink",
+        "insertImage",
+        "subscript",
+        "superscript",
+        // table
+        "tableWizard",
+        "createTable",
+        "addRowAbove",
+        "addRowBelow",
+        "addColumnLeft",
+        "addColumnRight",
+        "deleteRow",
+        "deleteColumn",
+        "mergeCellsHorizontally",
+        "mergeCellsVertically",
+        "splitCellHorizontally",
+        "splitCellVertically",
+        // format
+        {
+          name: "formatting",
+          items: [
+            { text: "Heading 1", value: "h1" },
+            { text: "Heading 2", value: "h2" },
+            { text: "Heading 3", value: "h3" },
+            { text: "Paragraph", value: "p" },
+            { text: "Preformatted", value: "pre" }
+          ]
+        },
+        "cleanFormatting",
+        "copyFormat",
+        "applyFormat",
+        "fontName",
+        "fontSize",
+
+        {
+          name: "foreColor",
+          palette: null
+        },
+        {
+          name: "backColor",
+          palette: null
+        },
+        "viewHtml"
+      ]
+    };
+
+    if (this.options.renderOptions.toolbar && !this.options.renderOptions.kendoEditorConfiguration.tools) {
+      if (buttons[this.options.renderOptions.toolbar]) {
+        this.options.renderOptions.kendoEditorConfiguration.tools = buttons[this.options.renderOptions.toolbar];
+      }
     }
+    if (this.options.renderOptions.translatedLabels) {
+      this.options.renderOptions.kendoEditorConfiguration.messages = this.options.renderOptions.translatedLabels;
+      if (this.options.renderOptions.translatedLabels.formattingItems) {
+        this.options.renderOptions.kendoEditorConfiguration.tools.forEach(tool => {
+          if (tool.name === "formatting") {
+            tool.items.forEach(item => {
+              if (this.options.renderOptions.translatedLabels.formattingItems[item.value]) {
+                item.text = this.options.renderOptions.translatedLabels.formattingItems[item.value];
+              }
+            });
+          }
+        });
+      }
+    }
+    this.options.renderOptions.kendoEditorConfiguration.execute = e => {
+      if (e.name === "viewhtml") {
+        const label = this.options.label;
+        window.setTimeout(() => {
+          const $window = $(".k-viewhtml-dialog");
+          const kWindow = $window.getKendoWindow();
+          $window.addClass("htmltext--viewhtml");
+          kWindow.setOptions({ title: label, resizable: true, actions: ["Maximize", "Close"] });
+        }, 10);
+      }
+    };
   },
 
   /**
@@ -84,7 +242,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
   },
 
   _initEvent: function _initEvent() {
-    var currentWidget = this;
+    const currentWidget = this;
     this._super();
 
     if (this.getMode() === "write") {
@@ -101,7 +259,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
         "click." + this.eventNamespace,
         'a:not([href^="#action/"]):not([data-action])',
         function wHtmlAnchorClick(event) {
-          var internalEvent = { prevent: false },
+          let internalEvent = { prevent: false },
             anchor = this,
             $anchor = $(this),
             isNotPrevented,
@@ -220,8 +378,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
       var originalValue = this.kendoEditorInstance.value();
       // : explicit lazy equal
 
-      //noinspection JSHint
-      if (originalValue.trim() != value.value.trim()) {
+      if (originalValue.trim() !== value.value.trim()) {
         // Modify value only if different
 
         this.kendoEditorInstance.value(value.value);
@@ -233,6 +390,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
     }
 
     // call wAttribute::setValue()
+    // noinspection JSPotentiallyInvalidConstructorUsage
     $.dcp.dcpAttribute.prototype.setValue.call(this, value);
   },
 
@@ -241,7 +399,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
   },
 
   _destroy: function wHtmlTextDestroy() {
-    var currentWidget = this;
+    const currentWidget = this;
     if (this.kendoEditorInstance && this.kendoEditorInstance.destroy) {
       this.kendoEditorInstance.destroy();
       _.defer(function wHtmltext_deferDestroy() {
