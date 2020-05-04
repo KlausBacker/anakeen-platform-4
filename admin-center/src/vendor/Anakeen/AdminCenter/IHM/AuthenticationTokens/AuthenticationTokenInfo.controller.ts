@@ -9,8 +9,9 @@ import {
   IAuthenticationTokenRoute
 } from "./IAuthenticationToken";
 import IsoDates from "./IsoDates";
+import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
 
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch, Mixins } from "vue-property-decorator";
 
 // declare var $;
 // declare var kendo;
@@ -21,7 +22,7 @@ Vue.use(ButtonsInstaller);
 @Component({
   name: "ank-token-info"
 })
-export default class AuthenticationTokenInfoController extends Vue {
+export default class AuthenticationTokenInfoController extends Mixins(AnkI18NMixin) {
   public get creationDateFormatted() {
     if (this.info.creationDate) {
       return kendo.toString(this.info.creationDate, "yyyy, dd MMM HH:mm:ss");

@@ -2,7 +2,8 @@ import AnkPaneSplitter from "@anakeen/internal-components/lib/PaneSplitter";
 import "@progress/kendo-ui/js/kendo.button";
 import "@progress/kendo-ui/js/kendo.filtercell";
 import "@progress/kendo-ui/js/kendo.grid.js";
-import { Component, Vue, Watch } from "vue-property-decorator";
+import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
+import { Component, Mixins, Watch } from "vue-property-decorator";
 import WflData from "./WorkflowData/WorkflowData.vue";
 import WflList from "./WorkflowList/WorkflowList.vue";
 
@@ -13,7 +14,7 @@ import WflList from "./WorkflowList/WorkflowList.vue";
     "wfl-list": WflList
   }
 })
-export default class AdminCenterWorkflowController extends Vue {
+export default class AdminCenterWorkflowController extends Mixins(AnkI18NMixin) {
   public wflOrient: string = "TB";
   public wflUseLabel: string = "activity";
   public isEmpty: boolean = true;

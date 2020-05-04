@@ -4,7 +4,8 @@ import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
 import { Grid, GridInstaller } from "@progress/kendo-grid-vue-wrapper";
 import "@progress/kendo-ui/js/kendo.filtercell.js";
 import "@progress/kendo-ui/js/kendo.grid.js";
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
+import { Component, Prop, Vue, Watch, Mixins } from "vue-property-decorator";
 
 Vue.use(GridInstaller);
 Vue.use(DataSourceInstaller);
@@ -14,7 +15,7 @@ Vue.use(DataSourceInstaller);
     "smart-form": () => AnkSmartForm
   }
 })
-export default class SmartStructureManagerDefaultValuesController extends Vue {
+export default class SmartStructureManagerDefaultValuesController extends Mixins(AnkI18NMixin) {
   @Prop({
     default: "",
     type: String

@@ -4,7 +4,8 @@ import { DropdownsInstaller } from "@progress/kendo-dropdowns-vue-wrapper";
 import "@progress/kendo-ui/js/kendo.grid.js";
 import "@progress/kendo-ui/js/kendo.toolbar.js";
 import Component from "vue-class-component";
-import { Prop, Vue, Watch } from "vue-property-decorator";
+import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
+import { Prop, Vue, Watch, Mixins } from "vue-property-decorator";
 
 Vue.use(ButtonsInstaller);
 Vue.use(DropdownsInstaller);
@@ -21,7 +22,7 @@ Vue.use(DropdownsInstaller);
       })
   }
 })
-export default class VaultManagerController extends Vue {
+export default class VaultManagerController extends Mixins(AnkI18NMixin) {
   public static convertBytes(x) {
     const units = ["bytes", "kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
     let l = 0;
