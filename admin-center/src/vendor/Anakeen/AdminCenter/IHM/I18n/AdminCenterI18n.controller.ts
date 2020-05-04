@@ -3,14 +3,15 @@ import "@progress/kendo-ui/js/kendo.button";
 import "@progress/kendo-ui/js/kendo.filtercell";
 import "@progress/kendo-ui/js/kendo.grid.js";
 import "@progress/kendo-ui/js/kendo.toolbar.js";
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
+import { Component, Prop, Vue, Watch, Mixins } from "vue-property-decorator";
 import * as $ from "jquery";
 
 Vue.use(ButtonsInstaller);
 declare var kendo;
 // noinspection JSUnusedGlobalSymbols
 @Component
-export default class I18nManagerController extends Vue {
+export default class I18nManagerController extends Mixins(AnkI18NMixin) {
   private static formatForTextarea(str) {
     if (str === null || str.match(/^\s*$/) !== null) {
       return "";

@@ -1,12 +1,13 @@
 import Component from "vue-class-component";
-import { Prop, Vue } from "vue-property-decorator";
+import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
+import { Prop, Mixins } from "vue-property-decorator";
 
 declare var $;
 
 @Component({
   name: "admin-center-parameter-editor"
 })
-export default class ParameterEditorController extends Vue {
+export default class ParameterEditorController extends Mixins(AnkI18NMixin) {
   // Input type to use in template
   get parameterInputType() {
     const parameterType = this.editedItem.type.toLowerCase();
