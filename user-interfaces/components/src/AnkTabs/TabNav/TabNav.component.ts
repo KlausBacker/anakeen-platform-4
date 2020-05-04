@@ -45,7 +45,7 @@ export default class TabsNav extends Vue {
 
   public get navStyle() {
     return {
-      transform: `translateX-${this.navOffset}px)`
+      transform: `translateX(-${this.navOffset}px)`
     };
   }
 
