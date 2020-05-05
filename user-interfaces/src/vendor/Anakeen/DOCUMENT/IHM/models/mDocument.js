@@ -77,7 +77,7 @@ export default Backbone.Model.extend({
     }
 
     //We are in the special case of a creation
-    if (this.get("creationFamid") && this.id === null) {
+    if (this.get("creationFamid")) {
       if (currentMethod === "read") {
         //There is no defaultConsultation in creation but a defaultCreation sic
         if (viewId === "!defaultConsultation") {
