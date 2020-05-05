@@ -107,70 +107,73 @@ exports.parseStub = ({ globFile, info, targetPath, log, verbose }) => {
 
     // Init js config parameters
     const configs = info.buildInfo.build.config["stub-config"];
-    let jsConfig = null;
+    let jsConfig = {
+      target: "./stubs/fields.js",
+      imports: []
+    };
+    let jsImports = null;
     if (configs) {
       const config = configs[0]["stub-struct-js-config"];
       if (config) {
         jsConfig = {
-          target: config[0].$.target || "./stubs/fields.js",
+          target: config[0].$.target,
           imports: []
         };
+        jsImports = config[0]["stub-js-import"];
+      }
+      let dirPath = path.dirname(jsConfig.target);
+      if (!fs.existsSync(dirPath)) {
+        fs.mkdirSync(dirPath);
+      }
 
-        const jsImports = config[0]["stub-js-import"];
-        let dirPath = path.dirname(jsConfig.target);
-        if (!fs.existsSync(dirPath)) {
-          fs.mkdirSync(dirPath);
-        }
+      if (jsImports) {
+        let parentDirs = path
+          .dirname(jsConfig.target)
+          .split(path.sep)
+          .filter(dirPath => {
+            return dirPath !== ".";
+          })
+          .map(() => {
+            return "..";
+          });
 
-        if (jsImports) {
-          let parentDirs = path
-            .dirname(jsConfig.target)
-            .split(path.sep)
-            .filter(dirPath => {
-              return dirPath !== ".";
-            })
-            .map(() => {
-              return "..";
-            });
+        jsImports.forEach(importItem => {
+          let sourceParts = importItem.$.source.split(path.sep);
+          let sourcerelativePath = parentDirs.concat(sourceParts).join(path.sep);
+          let sourcePath = importItem.$.source;
 
-          jsImports.forEach(importItem => {
-            let sourceParts = importItem.$.source.split(path.sep);
-            let sourcerelativePath = parentDirs.concat(sourceParts).join(path.sep);
-            let sourcePath = importItem.$.source;
-
-            if (!fs.existsSync(sourcePath)) {
-              let nodePath = require.resolve(sourcePath);
-              if (nodePath) {
-                sourcerelativePath = sourcePath;
-                sourcePath = nodePath;
-              } else {
-                throw new Error(`Unable to find the stub js import source "${sourcePath}"`);
-              }
+          if (!fs.existsSync(sourcePath)) {
+            let nodePath = require.resolve(sourcePath);
+            if (nodePath) {
+              sourcerelativePath = sourcePath;
+              sourcePath = nodePath;
+            } else {
+              throw new Error(`Unable to find the stub js import source "${sourcePath}"`);
             }
+          }
 
-            jsConfig.imports.push({
-              name: importItem.$.name,
-              source: sourcePath,
-              relativeSource: sourcerelativePath,
-              exportedClass: []
-            });
+          jsConfig.imports.push({
+            name: importItem.$.name,
+            source: sourcePath,
+            relativeSource: sourcerelativePath,
+            exportedClass: []
           });
+        });
 
-          jsConfig.imports.forEach(jsConfigItem => {
-            const jsContent = fs.readFileSync(jsConfigItem.source, {
-              encoding: "utf8"
-            });
-            let parse = babelParser.parse(jsContent, {
-              sourceType: "module",
-              plugins: ["classProperties"]
-            });
-            parse.program.body.forEach(parseNode => {
-              if (parseNode.type === "ExportNamedDeclaration") {
-                jsConfigItem.exportedClass.push(parseNode.declaration.id.name);
-              }
-            });
+        jsConfig.imports.forEach(jsConfigItem => {
+          const jsContent = fs.readFileSync(jsConfigItem.source, {
+            encoding: "utf8"
           });
-        }
+          let parse = babelParser.parse(jsContent, {
+            sourceType: "module",
+            plugins: ["classProperties"]
+          });
+          parse.program.body.forEach(parseNode => {
+            if (parseNode.type === "ExportNamedDeclaration") {
+              jsConfigItem.exportedClass.push(parseNode.declaration.id.name);
+            }
+          });
+        });
       }
     }
 
@@ -426,70 +429,73 @@ exports.parseWorkflowContants = ({ globFile, info, log, verbose }) => {
 
     // Init js config parameters
     const configs = info.buildInfo.build.config["stub-config"];
-    let jsConfig = null;
+    let jsConfig = {
+      target: "./constants/workflows/",
+      imports: []
+    };
+    let jsImports = null;
     if (configs) {
       const config = configs[0]["stub-wfl-js-config"];
       if (config) {
         jsConfig = {
-          target: config[0].$.target || "./constants/workflows/",
+          target: config[0].$.target,
           imports: []
         };
+        jsImports = config[0]["stub-js-import"];
+      }
+      let dirPath = jsConfig.target;
+      if (!fs.existsSync(dirPath)) {
+        fs.mkdirSync(dirPath);
+      }
 
-        const jsImports = config[0]["stub-js-import"];
-        let dirPath = jsConfig.target;
-        if (!fs.existsSync(dirPath)) {
-          fs.mkdirSync(dirPath);
-        }
+      if (jsImports) {
+        let parentDirs = path
+          .dirname(jsConfig.target)
+          .split(path.sep)
+          .filter(dirPath => {
+            return dirPath !== ".";
+          })
+          .map(() => {
+            return "..";
+          });
 
-        if (jsImports) {
-          let parentDirs = path
-            .dirname(jsConfig.target)
-            .split(path.sep)
-            .filter(dirPath => {
-              return dirPath !== ".";
-            })
-            .map(() => {
-              return "..";
-            });
+        jsImports.forEach(importItem => {
+          let sourceParts = importItem.$.source.split(path.sep);
+          let sourcerelativePath = parentDirs.concat(sourceParts).join(path.sep);
+          let sourcePath = importItem.$.source;
 
-          jsImports.forEach(importItem => {
-            let sourceParts = importItem.$.source.split(path.sep);
-            let sourcerelativePath = parentDirs.concat(sourceParts).join(path.sep);
-            let sourcePath = importItem.$.source;
-
-            if (!fs.existsSync(sourcePath)) {
-              let nodePath = require.resolve(sourcePath);
-              if (nodePath) {
-                sourcerelativePath = sourcePath;
-                sourcePath = nodePath;
-              } else {
-                throw new Error(`Unable to find the stub js import source "${sourcePath}"`);
-              }
+          if (!fs.existsSync(sourcePath)) {
+            let nodePath = require.resolve(sourcePath);
+            if (nodePath) {
+              sourcerelativePath = sourcePath;
+              sourcePath = nodePath;
+            } else {
+              throw new Error(`Unable to find the stub js import source "${sourcePath}"`);
             }
+          }
 
-            jsConfig.imports.push({
-              name: importItem.$.name,
-              source: sourcePath,
-              relativeSource: sourcerelativePath,
-              exportedClass: []
-            });
+          jsConfig.imports.push({
+            name: importItem.$.name,
+            source: sourcePath,
+            relativeSource: sourcerelativePath,
+            exportedClass: []
           });
+        });
 
-          jsConfig.imports.forEach(jsConfigItem => {
-            const jsContent = fs.readFileSync(jsConfigItem.source, {
-              encoding: "utf8"
-            });
-            let parse = babelParser.parse(jsContent, {
-              sourceType: "module",
-              plugins: ["classProperties"]
-            });
-            parse.program.body.forEach(parseNode => {
-              if (parseNode.type === "ExportNamedDeclaration") {
-                jsConfigItem.exportedClass.push(parseNode.declaration.id.name);
-              }
-            });
+        jsConfig.imports.forEach(jsConfigItem => {
+          const jsContent = fs.readFileSync(jsConfigItem.source, {
+            encoding: "utf8"
           });
-        }
+          let parse = babelParser.parse(jsContent, {
+            sourceType: "module",
+            plugins: ["classProperties"]
+          });
+          parse.program.body.forEach(parseNode => {
+            if (parseNode.type === "ExportNamedDeclaration") {
+              jsConfigItem.exportedClass.push(parseNode.declaration.id.name);
+            }
+          });
+        });
       }
     }
 
@@ -658,70 +664,73 @@ exports.parseEnumContants = ({ globFile, info, log, verbose }) => {
     }
     // Init js config parameters
     const configs = info.buildInfo.build.config["stub-config"];
-    let jsConfig = null;
+    let jsConfig = {
+      target: "./constants/enumerates/",
+      imports: []
+    };
+    let jsImports = null;
     if (configs) {
       const config = configs[0]["stub-enum-js-config"];
       if (config) {
         jsConfig = {
-          target: config[0].$.target || "./constants/enumerates",
+          target: config[0].$.target,
           imports: []
         };
+        jsImports = config[0]["stub-js-import"];
+      }
+      let dirPath = jsConfig.target;
+      if (!fs.existsSync(dirPath)) {
+        fs.mkdirSync(dirPath);
+      }
 
-        const jsImports = config[0]["stub-js-import"];
-        let dirPath = jsConfig.target;
-        if (!fs.existsSync(dirPath)) {
-          fs.mkdirSync(dirPath);
-        }
+      if (jsImports) {
+        let parentDirs = path
+          .dirname(jsConfig.target)
+          .split(path.sep)
+          .filter(dirPath => {
+            return dirPath !== ".";
+          })
+          .map(() => {
+            return "..";
+          });
 
-        if (jsImports) {
-          let parentDirs = path
-            .dirname(jsConfig.target)
-            .split(path.sep)
-            .filter(dirPath => {
-              return dirPath !== ".";
-            })
-            .map(() => {
-              return "..";
-            });
+        jsImports.forEach(importItem => {
+          let sourceParts = importItem.$.source.split(path.sep);
+          let sourcerelativePath = parentDirs.concat(sourceParts).join(path.sep);
+          let sourcePath = importItem.$.source;
 
-          jsImports.forEach(importItem => {
-            let sourceParts = importItem.$.source.split(path.sep);
-            let sourcerelativePath = parentDirs.concat(sourceParts).join(path.sep);
-            let sourcePath = importItem.$.source;
-
-            if (!fs.existsSync(sourcePath)) {
-              let nodePath = require.resolve(sourcePath);
-              if (nodePath) {
-                sourcerelativePath = sourcePath;
-                sourcePath = nodePath;
-              } else {
-                throw new Error(`Unable to find the stub js import source "${sourcePath}"`);
-              }
+          if (!fs.existsSync(sourcePath)) {
+            let nodePath = require.resolve(sourcePath);
+            if (nodePath) {
+              sourcerelativePath = sourcePath;
+              sourcePath = nodePath;
+            } else {
+              throw new Error(`Unable to find the stub js import source "${sourcePath}"`);
             }
+          }
 
-            jsConfig.imports.push({
-              name: importItem.$.name,
-              source: sourcePath,
-              relativeSource: sourcerelativePath,
-              exportedClass: []
-            });
+          jsConfig.imports.push({
+            name: importItem.$.name,
+            source: sourcePath,
+            relativeSource: sourcerelativePath,
+            exportedClass: []
           });
+        });
 
-          jsConfig.imports.forEach(jsConfigItem => {
-            const jsContent = fs.readFileSync(jsConfigItem.source, {
-              encoding: "utf8"
-            });
-            let parse = babelParser.parse(jsContent, {
-              sourceType: "module",
-              plugins: ["classProperties"]
-            });
-            parse.program.body.forEach(parseNode => {
-              if (parseNode.type === "ExportNamedDeclaration") {
-                jsConfigItem.exportedClass.push(parseNode.declaration.id.name);
-              }
-            });
+        jsConfig.imports.forEach(jsConfigItem => {
+          const jsContent = fs.readFileSync(jsConfigItem.source, {
+            encoding: "utf8"
           });
-        }
+          let parse = babelParser.parse(jsContent, {
+            sourceType: "module",
+            plugins: ["classProperties"]
+          });
+          parse.program.body.forEach(parseNode => {
+            if (parseNode.type === "ExportNamedDeclaration") {
+              jsConfigItem.exportedClass.push(parseNode.declaration.id.name);
+            }
+          });
+        });
       }
     }
 
@@ -826,7 +835,6 @@ exports.parseEnumContants = ({ globFile, info, log, verbose }) => {
         .then(allEnumData => {
           // Write JS file stubs
           const tplJS = fs.readFileSync(__dirname + "/templates/enum.js.mustache", { encoding: "utf8" });
-
           allEnumData.forEach(enumData => {
             let jsBaseName = enumData.classname + ".js";
             let target = jsConfig.target.concat(jsBaseName);
