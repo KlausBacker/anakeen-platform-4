@@ -167,6 +167,10 @@ class ErrorCodeUI
      */
     const UI0214 = 'Value "%s" for Array option "collapse" is invalid : allowed are : %s';
     /**
+     * @errorCode Only preset toolbar are allowed
+     */
+    const UI0215 = 'Value "%s" for html toolbar config  is invalid : allowed are : %s';
+    /**
      * @errorCode Only view,edit, create are allowed
      */
     const UI0300 = 'Mode "%s" is not a valid render mode';

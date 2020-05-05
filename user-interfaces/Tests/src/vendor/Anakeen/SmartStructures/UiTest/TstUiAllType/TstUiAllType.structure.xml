@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0">
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <!--Structure Profil Accesses-->
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <smart:access-configuration name="PRF_TST_DDUI_ALLTYPE" label="TST doc access" profil-type="PDOC" access-structure="TST_DDUI_ALLTYPE">
+        <smart:description><![CDATA[Everybody can do everything]]></smart:description>
+        <smart:element-access access="view" account="all"/>
+        <smart:element-access access="edit" account="all"/>
+        <smart:element-access access="delete" account="all"/>
+    </smart:access-configuration>
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <!--View control accesses-->
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <smart:access-configuration name="CVDOC_TST_ALLTYPE" label="Contrôle de vue pour la famille &quot;Test tout type&quot;" profil-type="CVDOC"/>
+
+    <smart:structure-configuration name="TST_DDUI_ALLTYPE" label="Test tout type">
+        <!--region Structure Properties ============-->
+        <smart:icon file="testdduiall.png"/>
+        <smart:class>Anakeen\SmartStructures\UiTest\TstUiAllType\TstUiAllTypeHooks</smart:class>
+        <smart:usefor>N</smart:usefor>
+        <!--endregion Structure Properties =========-->
+        <!--region Structure Fields ================-->
+        <smart:fields>
+            <smart:field-set name="test_ddui_all__f_title" type="frame" label="Titre" access="ReadWrite">
+                <smart:field-text name="test_ddui_all__title" label="Le titre" access="ReadWrite" is-title="true" is-abstract="true"/>
+            </smart:field-set>
+            <smart:field-set name="test_ddui_all__t_tab" type="tab" label="Basiques" access="ReadWrite">
+                <smart:field-set name="test_ddui_all__fr_rels" type="frame" label="Relations" access="ReadWrite">
+                    <smart:field-account name="test_ddui_all__account" label="Un compte" access="ReadWrite"/>
+                    <smart:field-account name="test_ddui_all__account_multiple" label="Des comptes" access="ReadWrite" multiple="true"/>
+                    <smart:field-docid name="test_ddui_all__docid" label="Un document" access="ReadWrite" relation="TST_DDUI_ALLTYPE"/>
+                    <smart:field-docid name="test_ddui_all__docid_multiple" label="Des documents" access="ReadWrite" relation="TST_DDUI_ALLTYPE" multiple="true"/>
+                </smart:field-set>
+                <smart:field-set name="test_ddui_all__fr_date" type="frame" label="Le temps" access="ReadWrite">
+                    <smart:field-date name="test_ddui_all__date" label="Une date" access="ReadWrite"/>
+                    <smart:field-time name="test_ddui_all__time" label="Une heure" access="ReadWrite"/>
+                    <smart:field-timestamp name="test_ddui_all__timestamp" label="Une date avec  une heure" access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-set name="test_ddui_all__fr_number" type="frame" label="Les nombres" access="ReadWrite">
+                    <smart:field-int name="test_ddui_all__integer" label="Un entier" access="ReadWrite"/>
+                    <smart:field-double name="test_ddui_all__double" label="Un décimal" access="ReadWrite"/>
+                    <smart:field-money name="test_ddui_all__money" label="Un sous" access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-set name="test_ddui_all__fr_misc" type="frame" label="Divers" access="ReadWrite">
+                    <smart:field-password name="test_ddui_all__password" label="Un mot de passe" access="ReadWrite"/>
+                    <smart:field-color name="test_ddui_all__color" label="Une couleur" access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-set name="test_ddui_all__fr_file" type="frame" label="Fichiers &amp; images" access="ReadWrite">
+                    <smart:field-file name="test_ddui_all__file" label="Un fichier" access="ReadWrite"/>
+                    <smart:field-image name="test_ddui_all__image" label="Une image" access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-set name="test_ddui_all__fr_text" type="frame" label="Les textes" access="ReadWrite">
+                    <smart:field-htmltext name="test_ddui_all__htmltext" label="Un texte formaté" access="ReadWrite"/>
+                    <smart:field-longtext name="test_ddui_all__longtext" label="Un texte multiligne" access="ReadWrite"/>
+                    <smart:field-text name="test_ddui_all__text" label="Un texte simple" access="ReadWrite"/>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="test_ddui_all__t_tab_enums" type="tab" label="Les énumérés" access="ReadWrite">
+                <smart:field-set name="test_ddui_all__fr_enumsimple" type="frame" label="Énumérés directs simple" access="ReadWrite">
+                    <smart:field-enum name="test_ddui_all__enumlist" label="Un énuméré liste" access="ReadWrite" relation="TST_DDUI_ALLTYPE-test_ddui_all__enumlist">
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-enum name="test_ddui_all__enumauto" label="Un énuméré auto" access="ReadWrite" relation="TST_DDUI_ALLTYPE-test_ddui_all__enumauto">
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                        <smart:field-option name="eformat">auto</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-enum name="test_ddui_all__enumvertical" label="Un énuméré vertical" access="ReadWrite" relation="TST_DDUI_ALLTYPE-test_ddui_all__enumvertical">
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                        <smart:field-option name="eformat">vcheck</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-enum name="test_ddui_all__enumhorizontal" label="Un énuméré horizontal" access="ReadWrite" relation="TST_DDUI_ALLTYPE-test_ddui_all__enumhorizontal">
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                        <smart:field-option name="eformat">hcheck</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-enum name="test_ddui_all__enumbool" label="Un énuméré booléen" access="ReadWrite" relation="TST_DDUI_ALLTYPE-test_ddui_all__enumbool">
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                        <smart:field-option name="eformat">bool</smart:field-option>
+                    </smart:field-enum>
+                </smart:field-set>
+                <smart:field-set name="test_ddui_all__fr_enumserversimple" type="frame" label="Énumérés serveur simple" access="ReadWrite">
+                    <smart:field-enum name="test_ddui_all__enumserverlist" label="Un énuméré liste" access="ReadWrite" relation="TST_DDUI_ALLTYPE-test_ddui_all__enumserverlist">
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-enum name="test_ddui_all__enumserverauto" label="Un énuméré auto" access="ReadWrite" relation="TST_DDUI_ALLTYPE-test_ddui_all__enumserverauto">
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                        <smart:field-option name="eformat">auto</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-enum name="test_ddui_all__enumserververtical" label="Un énuméré vertical" access="ReadWrite" relation="TST_DDUI_ALLTYPE-test_ddui_all__enumserververtical">
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                        <smart:field-option name="eformat">vcheck</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-enum name="test_ddui_all__enumserverhorizontal" label="Un énuméré horizontal" access="ReadWrite" relation="TST_DDUI_ALLTYPE-test_ddui_all__enumserverhorizontal">
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                        <smart:field-option name="eformat">hcheck</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-enum name="test_ddui_all__enumserverbool" label="Un énuméré booléen" access="ReadWrite" relation="TST_DDUI_ALLTYPE-test_ddui_all__enumserverbool">
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                        <smart:field-option name="eformat">bool</smart:field-option>
+                    </smart:field-enum>
+                </smart:field-set>
+                <smart:field-set name="test_ddui_all__fr_enummultiple" type="frame" label="Énumérés directs multiple" access="ReadWrite">
+                    <smart:field-enum name="test_ddui_all__enumslist" label="Des énumérés liste" access="ReadWrite" relation="TST_DDUI_ALLTYPE-test_ddui_all__enumslist" multiple="true">
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-enum name="test_ddui_all__enumsauto" label="Des énumérés auto" access="ReadWrite" relation="TST_DDUI_ALLTYPE-test_ddui_all__enumsauto" multiple="true">
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                        <smart:field-option name="eformat">auto</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-enum name="test_ddui_all__enumsvertical" label="Des énumérés verticaux" access="ReadWrite" relation="TST_DDUI_ALLTYPE-test_ddui_all__enumsvertical" multiple="true">
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                        <smart:field-option name="eformat">vcheck</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-enum name="test_ddui_all__enumshorizontal" label="Des énumérés horizontaux" access="ReadWrite" relation="TST_DDUI_ALLTYPE-test_ddui_all__enumshorizontal" multiple="true">
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                        <smart:field-option name="eformat">hcheck</smart:field-option>
+                    </smart:field-enum>
+                </smart:field-set>
+                <smart:field-set name="test_ddui_all__fr_enumservermultiple" type="frame" label="Énumérés server multiple" access="ReadWrite">
+                    <smart:field-enum name="test_ddui_all__enumsserverlist" label="Des énumérés liste" access="ReadWrite" relation="TST_DDUI_ALLTYPE-test_ddui_all__enumsserverlist" multiple="true">
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-enum name="test_ddui_all__enumsserverauto" label="Des énumérés auto" access="ReadWrite" relation="TST_DDUI_ALLTYPE-test_ddui_all__enumsserverauto" multiple="true">
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                        <smart:field-option name="eformat">auto</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-enum name="test_ddui_all__enumsserververtical" label="Des énumérés verticaux" access="ReadWrite" relation="TST_DDUI_ALLTYPE-test_ddui_all__enumsserververtical" multiple="true">
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                        <smart:field-option name="eformat">vcheck</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-enum name="test_ddui_all__enumsserverhorizontal" label="Des énumérés horizontaux" access="ReadWrite" relation="TST_DDUI_ALLTYPE-test_ddui_all__enumsserverhorizontal" multiple="true">
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                        <smart:field-option name="eformat">hcheck</smart:field-option>
+                    </smart:field-enum>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="test_ddui_all__t_tab_date" type="tab" label="Les dates" access="ReadWrite">
+                <smart:field-set name="test_ddui_all__frame_date" type="frame" label="Date, heures &amp; date avec l'heure" access="ReadWrite">
+                    <smart:field-set name="test_ddui_all__array_dates" type="array" label="Le temps" access="ReadWrite">
+                        <smart:field-date name="test_ddui_all__date_array" label="Des dates" access="ReadWrite"/>
+                        <smart:field-time name="test_ddui_all__time_array" label="Des heures" access="ReadWrite"/>
+                        <smart:field-timestamp name="test_ddui_all__timestamp_array" label="Des dates avec l'heure" access="ReadWrite"/>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="test_ddui_all__t_tab_relations" type="tab" label="Les relations" access="ReadWrite">
+                <smart:field-set name="test_ddui_all__frame_relation" type="frame" label="Relations à entretenir" access="ReadWrite">
+                    <smart:field-set name="test_ddui_all__array_docid" type="array" label="Les documents" access="ReadWrite">
+                        <smart:field-docid name="test_ddui_all__docid_array" label="Des documents" access="ReadWrite" relation="TST_DDUI_ALLTYPE"/>
+                        <smart:field-docid name="test_ddui_all__docid_multiple_array" label="Encore plus de documents" access="ReadWrite" relation="TST_DDUI_ALLTYPE" multiple="true"/>
+                    </smart:field-set>
+                    <smart:field-set name="test_ddui_all__array_account" type="array" label="Les comptes" access="ReadWrite">
+                        <smart:field-account name="test_ddui_all__account_array" label="Des comptes" access="ReadWrite"/>
+                        <smart:field-account name="test_ddui_all__account_multiple_array" label="Encore plus de comptes" access="ReadWrite" multiple="true"/>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="test_ddui_all__t_tab_numbers" type="tab" label="Les nombres" access="ReadWrite">
+                <smart:field-set name="test_ddui_all__frame_numbers" type="frame" label="Entier, décimaux et monnaie" access="ReadWrite">
+                    <smart:field-set name="test_ddui_all__array_numbers" type="array" label="Quelques nombres" access="ReadWrite">
+                        <smart:field-double name="test_ddui_all__double_array" label="Des décimaux" access="ReadWrite"/>
+                        <smart:field-int name="test_ddui_all__integer_array" label="Des entiers" access="ReadWrite"/>
+                        <smart:field-money name="test_ddui_all__money_array" label="Des sous" access="ReadWrite"/>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="test_ddui_all__t_tab_misc" type="tab" label="Divers" access="ReadWrite">
+                <smart:field-set name="test_ddui_all__frame_misc" type="frame" label="Énuméré, couleur et mot de passe" access="ReadWrite">
+                    <smart:field-set name="test_ddui_all__array_misc" type="array" label="Quelques diverses données" access="ReadWrite">
+                        <smart:field-color name="test_ddui_all__color_array" label="Des couleurs" access="ReadWrite"/>
+                        <smart:field-password name="test_ddui_all__password_array" label="Des mots de passe" access="ReadWrite"/>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="test_ddui_all__t_tab_files" type="tab" label="Les fichiers" access="ReadWrite">
+                <smart:field-set name="test_ddui_all__frame_files" type="frame" label="Fichiers &amp; images" access="ReadWrite">
+                    <smart:field-set name="test_ddui_all__array_files" type="array" label="Quelques fichiers" access="ReadWrite">
+                        <smart:field-file name="test_ddui_all__file_array" label="Des fichiers" access="ReadWrite"/>
+                        <smart:field-image name="test_ddui_all__image_array" label="Des images" access="ReadWrite"/>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="test_ddui_all__t_tab_texts" type="tab" label="Les textes" access="ReadWrite">
+                <smart:field-set name="test_ddui_all__frame_texts" type="frame" label="Les textes non formatés" access="ReadWrite">
+                    <smart:field-set name="test_ddui_all__array_texts" type="array" label="Textes simples et multilignes" access="ReadWrite">
+                        <smart:field-text name="test_ddui_all__text_array" label="Des textes" access="ReadWrite"/>
+                        <smart:field-longtext name="test_ddui_all__longtext_array" label="Des textes multiligne" access="ReadWrite"/>
+                    </smart:field-set>
+                    <smart:field-set name="test_ddui_all__array_html" type="array" label="Les textes HTML" access="ReadWrite">
+                        <smart:field-htmltext name="test_ddui_all__htmltext_array" label="Des textes formatés" access="ReadWrite"/>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:fields>
+        <!--endregion Structure Fields =============-->
+        <!--region Structure Parameters ============-->
+        <smart:parameters/>
+        <!--endregion Structure Parameters =========-->
+        <!--region Hooks methods ===================-->
+        <smart:hooks>
+            <smart:field-hook type="constraint" event="onPreStore" field="test_ddui_all__integer">
+                <smart:field-callable function="::validConstraint"/>
+                <smart:field-argument type="field">test_ddui_all__integer</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
+        </smart:hooks>
+        <!--endregion Hooks methods ================-->
+        <!--region Autocomplete methods ============-->
+        <smart:autocompletion/>
+        <!--endregion Autocomplete methods =========-->
+        <!--region Default values ==================-->
+        <smart:defaults/>
+        <!--endregion Default values ===============-->
+        <smart:accesses>
+            <smart:element-access-configuration ref="PRF_TST_DDUI_ALLTYPE"/>
+        </smart:accesses>
+    </smart:structure-configuration>
+
+</smart:config>

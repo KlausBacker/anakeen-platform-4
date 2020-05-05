@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0">
+
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <!--View control definition-->
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <ui:view-control xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0" name="CVDOC_TST_ALLTYPE" label="Contrôle de vue pour la famille &quot;Test tout type&quot;" structure="TST_DDUI_ALLTYPE">
+        <!--region View control configuration ======-->
+        <ui:view-list>
+            <ui:view name="COLLAPSE" label="Collapse Frame" display-mode="consultation" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\AllRenderCollapseView"/>
+            </ui:view>
+            <ui:view name="NOCOLLAPSE" label="No Collapsable" display-mode="consultation" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\AllRenderNoneCollapseView"/>
+            </ui:view>
+            <ui:view name="NOARRAYCOLLAPSE" label="Array No Collapsable" display-mode="consultation" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\AllRenderNoneArrayCollapseView"/>
+            </ui:view>
+            <ui:view name="ARRAYCOLLAPSE" label="Array Collapsable" display-mode="consultation" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\AllRenderCollapeArrayView"/>
+            </ui:view>
+            <ui:view name="TABLEFT" label="Tab left" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\AllRenderTabLeft"/>
+            </ui:view>
+            <ui:view name="TABTOPSCROLL" label="Tab scroll" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\AllRenderTabTopScroll"/>
+            </ui:view>
+            <ui:view name="STICKYTAB" label="Sticky Tab" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\AllRenderStickyTab"/>
+            </ui:view>
+            <ui:view name="TABPROPORTIONAL" label="Tab scroll" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\AllRenderTabProportial"/>
+            </ui:view>
+            <ui:view name="ALLNEEDED" label="Tout obligatoire" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\AllRenderAllNeeded"/>
+            </ui:view>
+            <ui:view name="ALLVISR" label="Lecture seule" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\AllRenderVisibilityRead"/>
+            </ui:view>
+            <ui:view name="ALLVISH" label="Attribut caché" display-mode="consultation" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\AllRenderVisibilityHidden"/>
+            </ui:view>
+            <ui:view name="ALLVISS" label="Attribut static" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\AllRenderVisibilityStatic"/>
+            </ui:view>
+            <ui:view name="SETINPUT" label="Setinput" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\AllRenderSetInput"/>
+            </ui:view>
+            <ui:view name="NOTIFS" label="Notifications" display-mode="consultation" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\AllRenderNotification"/>
+            </ui:view>
+            <ui:view name="BUTTONS" label="BUTTONS" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\AllRenderButtons"/>
+            </ui:view>
+            <ui:view name="LABELLEFT" label="Label left" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\AllRenderLeftLabel"/>
+            </ui:view>
+            <ui:view name="LABELUP" label="Label up" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\AllRenderUpLabel"/>
+            </ui:view>
+            <ui:view name="LABELAUTO" label="Label auto" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\AllRenderAutoLabel"/>
+            </ui:view>
+            <ui:view name="LABELNONE" label="Label none" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\AllRenderNoneLabel"/>
+            </ui:view>
+            <ui:view name="CSSCOLOR" label="Colorisation" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\AllRenderCssColor"/>
+            </ui:view>
+            <ui:view name="SHOWEMPTY" label="Valeur vide" display-mode="consultation" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\AllRenderShowEmpty"/>
+            </ui:view>
+            <ui:view name="DISPLAYDELETEBUTTON" label="empty label" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\hideDeleteButton"/>
+            </ui:view>
+            <ui:view name="SETLINKTARGET_SELF" label="empty label" display-mode="consultation" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\setLinkTarget_self"/>
+            </ui:view>
+            <ui:view name="SETLINKTARGET_DIALOG" label="empty label" display-mode="consultation" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\setLinkTarget_dialog"/>
+            </ui:view>
+            <ui:view name="SETLINKTARGET_BLANK" label="empty label" display-mode="consultation" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\setLinkTarget_blank"/>
+            </ui:view>
+            <ui:view name="SET_AUTOCOMPLETE_HTML_LABEL" label="empty label" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\setAutoCompleteHtmlLabel"/>
+            </ui:view>
+            <ui:view name="ADDBUTTONEDITTARGET_SELF" label="empty label" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\addButtonEditTarget_self"/>
+            </ui:view>
+            <ui:view name="ADDBUTTONEDITTARGET_DIALOG" label="empty label" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\addButtonEditTarget_dialog"/>
+            </ui:view>
+            <ui:view name="ADDBUTTONCONSTARGET_SELF" label="empty label" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\addButtonConsTarget_self"/>
+            </ui:view>
+            <ui:view name="ADDBUTTONCONSTARGET_DIALOG" label="empty label" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\addButtonConsTarget_dialog"/>
+            </ui:view>
+            <ui:view name="SETATTRIBUTELABEL" label="empty label" display-mode="consultation" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\setAttributeLabel"/>
+            </ui:view>
+            <ui:view name="EVENTREADY" label="empty label" display-mode="consultation" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\eventReady"/>
+            </ui:view>
+            <ui:view name="EVENTCHANGE" label="empty label" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\eventChange"/>
+            </ui:view>
+            <ui:view name="ATTRIBUTEMODELGETVALUEEDITION" label="empty label" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\AttributeModel_getValueEdition"/>
+            </ui:view>
+            <ui:view name="ATTRIBUTEMODELGETVALUECONSULTATION" label="empty label" display-mode="consultation" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\AttributeModel_getValueConsultation"/>
+            </ui:view>
+            <ui:view name="ATTRIBUTEMODELSETVALUEEDITION" label="empty label" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\AttributeModel_setValueEdition"/>
+            </ui:view>
+            <ui:view name="ATTRIBUTEMODELSETVALUECONSULTATION" label="empty label" display-mode="consultation" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\AttributeModel_setValueConsultation"/>
+            </ui:view>
+            <ui:view name="DOCUMENTCONTROLLERGETVALUEEDITION" label="empty label" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\DocumentController_getValueEdition"/>
+            </ui:view>
+            <ui:view name="DOCUMENTCONTROLLERGETVALUECONSULTATION" label="empty label" display-mode="consultation" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\DocumentController_getValueConsultation"/>
+            </ui:view>
+            <ui:view name="DOCUMENTCONTROLLERSETVALUEEDITION" label="empty label" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\DocumentController_setValueEdition"/>
+            </ui:view>
+            <ui:view name="DOCUMENTCONTROLLERSETVALUECONSULTATION" label="empty label" display-mode="consultation" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\DocumentController_setValueConsultation"/>
+            </ui:view>
+            <ui:view name="SETTRANSLATION" label="empty label" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\setTranslation"/>
+            </ui:view>
+            <ui:view name="SETTEMPLATE" label="empty label" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\setTemplate"/>
+            </ui:view>
+            <ui:view name="DOCUMENTCONTROLLER_REINITDOCUMENT" label="empty label" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\DocumentController_reinitDocument"/>
+            </ui:view>
+            <ui:view name="DOCUMENTCONTROLLER_FETCHDOCUMENT" label="empty label" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\DocumentController_fetchDocument"/>
+            </ui:view>
+            <ui:view name="DOCUMENTCONTROLLER_SAVEDOCUMENT" label="empty label" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\DocumentController_saveDocument"/>
+            </ui:view>
+            <ui:view name="DOCUMENTCONTROLLER_CHANGESTATEDOCUMENTCLASS" label="empty label" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\DocumentController_changeStateDocumentclass"/>
+            </ui:view>
+            <ui:view name="DOCUMENTCON_ROLLER_DELETEDOCUMENT" label="empty label" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\DocumentController_deleteDocument"/>
+            </ui:view>
+            <ui:view name="DOCUMENTCONTROLLER_RESTOREDOCUMENT" label="empty label" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\DocumentController_restoreDocument"/>
+            </ui:view>
+            <ui:view name="DOCUMENTCONTROLLER_GETPROPERTY" label="empty label" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\DocumentController_getProperty"/>
+            </ui:view>
+            <ui:view name="DOCUMENTCONTROLLER_GETPROPERTIES" label="empty label" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\DocumentController_getProperties"/>
+            </ui:view>
+            <ui:view name="DOCUMENTCONTROLLER_HASATTRIBUTE" label="empty label" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\DocumentController_hasAttribute"/>
+            </ui:view>
+            <ui:view name="DOCUMENTCONTROLLER_GETATTRIBUTE" label="empty label" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\DocumentController_getAttribute"/>
+            </ui:view>
+            <ui:view name="DOCUMENTCONTROLLER_GETATTRIBUTES" label="empty label" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\DocumentController_getAttributes"/>
+            </ui:view>
+            <ui:view name="DOCUMENTCONTROLLER_HASMENU" label="empty label" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\DocumentController_hasMenu"/>
+            </ui:view>
+            <ui:view name="DOCUMENTCONTROLLER_GETMENU" label="empty label" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\DocumentController_getMenu"/>
+            </ui:view>
+            <ui:view name="DOCUMENTCONTROLLER_GETMENUS" label="empty label" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\DocumentController_getMenus"/>
+            </ui:view>
+            <ui:view name="HTMLTEXT_TOOLBAR_BASIC" label="empty label" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\HtmltextToolbarBasic"/>
+            </ui:view>
+            <ui:view name="HTMLTEXT_TOOLBAR_SIMPLE" label="empty label" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\HtmltextToolbarSimple"/>
+            </ui:view>
+            <ui:view name="HTMLTEXT_TOOLBAR_FULL" label="empty label" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\HtmltextToolbarFull"/>
+            </ui:view>
+        </ui:view-list>
+        <!--endregion View control configuration ===-->
+    </ui:view-control>
+
+    <smart:access-configuration name="CVDOC_TST_ALLTYPE" label="Contrôle de vue pour la famille &quot;Test tout type&quot;" profil-type="CVDOC"/>
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <!--Ui render configuration-->
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <ui:render ref="TST_DDUI_ALLTYPE">
+        <ui:view-control ref="CVDOC_TST_ALLTYPE"/>
+    </ui:render>
+</smart:config>

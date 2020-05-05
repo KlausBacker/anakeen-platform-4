@@ -1,17 +1,17 @@
-ORDER;TST_DDUI_EMPLOYEE;;;tst_civilite;tst_nom;tst_nom_naissance;tst_prenom;tst_mail_principal;tst_mail_secondaire;tst_nais_date;tst_nationalite;tst_statut;tst_statut_since;tst_stranger;tst_emp_pubpriv;tst_emp_evo;tst_emp_date_fin_pre;tst_emp_corps;tst_emp_titre;tst_emp_idetab;tst_exp_since;tst_exp_labo_rat;tst_exp_labo_acro;tst_adw_adresse1;tst_adw_adresse2;tst_adw_adresse3;tst_adw_codepostal;tst_adw_localite;tst_adw_pays;tst_emp_tel_type;tst_emp_tel_number;tst_lang;tst_lang_lu;tst_lang_ecrit;tst_lang_parle;tst_parc_pro_begin_date;tst_parc_pro_end_date;tst_parc_pro_title;tst_parc_pro_etab;tst_responsabilite_begin_date;tst_responsabilite_end_date;tst_responsabilite_responsable;tst_responsabilite_struct;tst_adp_adresse1;tst_adp_adresse2;tst_adp_adresse3;tst_adp_codepostal;tst_adp_localite;tst_adp_pays;tst_adp_phone_type;tst_adp_phone_num;tst_secusociale;tst_situation_fam;tst_use_bs;tst_finance_bs_date;tst_ban_agence;tst_ban_etablissement;tst_ban_guichet;tst_ban_numcompte;tst_ban_clecompte;tst_ban_iban;tst_ban_bic;tst_dest_nom;tst_dest_adresse1;tst_dest_adresse2;tst_dest_adresse3;tst_dest_codep;tst_dest_ville;tst_dest_pays;tst_ban_libcompte;tst_st_etablissment;tst_st_guichet;tst_st_numcompte;tst_st_clecompte;tst_st_bic;tst_red_type;tst_red_ref;tst_red_date_fin;tst_pj_label
-DOC;TST_DDUI_EMPLOYEE;TST_EMPLOYE_DOE;;M;Doe;Inconnu;John;john.doe@example.net;john.doe@example.org;1987-06-12;EUR;R;2017-11-09;FRA;;;;;Docteur;Clogu;1987;Centre national de recherche scientifique;CNRS;10 rue des coquelicots;Près du pont;A droite du platane;14000;CAEN;FRA;;;"Anglais
+"ORDER";"TST_DDUI_EMPLOYEE";;;"tst_civilite";"tst_nom";"tst_nom_naissance";"tst_prenom";"tst_mail_principal";"tst_mail_secondaire";"tst_nais_date";"tst_nationalite";"tst_statut";"tst_statut_since";"tst_stranger";"tst_emp_pubpriv";"tst_emp_evo";"tst_emp_date_fin_pre";"tst_emp_corps";"tst_emp_titre";"tst_emp_idetab";"tst_exp_since";"tst_exp_labo_rat";"tst_exp_labo_acro";"tst_adw_adresse1";"tst_adw_adresse2";"tst_adw_adresse3";"tst_adw_codepostal";"tst_adw_localite";"tst_adw_pays";"tst_emp_tel_type";"tst_emp_tel_number";"tst_lang";"tst_lang_lu";"tst_lang_ecrit";"tst_lang_parle";"tst_parc_pro_begin_date";"tst_parc_pro_end_date";"tst_parc_pro_title";"tst_parc_pro_etab";"tst_responsabilite_begin_date";"tst_responsabilite_end_date";"tst_responsabilite_responsable";"tst_responsabilite_struct";"tst_adp_adresse1";"tst_adp_adresse2";"tst_adp_adresse3";"tst_adp_codepostal";"tst_adp_localite";"tst_adp_pays";"tst_adp_phone_type";"tst_adp_phone_num";"tst_secusociale";"tst_situation_fam";"tst_use_bs";"tst_finance_bs_date";"tst_ban_agence";"tst_ban_etablissement";"tst_ban_guichet";"tst_ban_numcompte";"tst_ban_clecompte";"tst_ban_iban";"tst_ban_bic";"tst_dest_nom";"tst_dest_adresse1";"tst_dest_adresse2";"tst_dest_adresse3";"tst_dest_codep";"tst_dest_ville";"tst_dest_pays";"tst_ban_libcompte";"tst_st_etablissment";"tst_st_guichet";"tst_st_numcompte";"tst_st_clecompte";"tst_st_bic";"tst_red_type";"tst_red_ref";"tst_red_date_fin";"tst_pj_label"
+"DOC";"TST_DDUI_EMPLOYEE";"TST_EMPLOYE_DOE";;"M";"Doe";"Inconnu";"John";"john.doe@example.net";"john.doe@example.org";"1987-06-12";"EUR";"R";"2017-11-09";"FRA";;;;;"Docteur";"Clogu";1987;"Centre national de recherche scientifique";"CNRS";"10 rue des coquelicots";"Près du pont";"A droite du platane";14000;"CAEN";"FRA";;;"Anglais
 Chinois";"
 P";"P
 ";"
-Y";1;1;S;A;200;0;D;	;10 Rue de pommes;Près de la rivière;;75001;Paris;FRA;"F
+Y";1;1;"S";"A";200;0;"D";"	";"10 Rue de pommes";"Près de la rivière";;75001;"Paris";"FRA";"F
 M";"01562727
-064532632";;;;;UNIVERSAL BANK;32789;289;980378738;23;FR67376832768;BICORANGE;DOE JOHN;Rue du lac;;;CH67832;Genève;CH;JOHN DOE;;;;;;"SNCF
+064532632";;;;;"UNIVERSAL BANK";32789;289;980378738;23;"FR67376832768";"BICORANGE";"DOE JOHN";"Rue du lac";;;"CH67832";"Genève";"CH";"JOHN DOE";;;;;;"SNCF
 Air";"3243
 23AF34";"2017-12-20
 2017-12-28";
-//FAM;Test de rendu de document(TST_RENDER);<specid>;<fldid>;Référence;Le titre;Description;Nom logique;Identifiant de vue;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-ORDER;TST_RENDER;;;tst_ref;tst_title;tst_desc;tst_docname;tst_docviewid;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-DOC;TST_RENDER;TST_RENDER_0303;;303;Frame::addResponsiveColumns (view);"<p>Tous les cadres sont en 2 colonnes si la largeur du cadre est &gt; 70rem (840px). S'il n'y a qu'un cadre, le cadre est sur une seule colonne</p>
+"//FAM";"Test de rendu de document(TST_RENDER)";"<specid>";"<fldid>";"Référence";"Le titre";"Description";"Nom logique";"Identifiant de vue";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+"ORDER";"TST_RENDER";;;"tst_ref";"tst_title";"tst_desc";"tst_docname";"tst_docviewid";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+"DOC";"TST_RENDER";"TST_RENDER_0303";;303;"Frame::addResponsiveColumns (view)";"<p>Tous les cadres sont en 2 colonnes si la largeur du cadre est &gt; 70rem (840px). S'il n'y a qu'un cadre, le cadre est sur une seule colonne</p>
 
 <p><strong>Les attributs sont ordonnées du haut vers le bas.</strong></p>
 
@@ -40,8 +40,8 @@ DOC;TST_RENDER;TST_RENDER_0303;;303;Frame::addResponsiveColumns (view);"<p>Tous 
 	<li>4 =&gt; entre <strong>800px</strong> et <strong>1900px</strong></li>
 	<li>6 =&gt; entre <strong>1900px</strong> et <strong>2200px</strong></li>
 	<li>12 =&gt; plus de  <strong>2200px</strong></li>
-</ul>";TST_EMPLOYE_DOE;FRAMEVIEWCOLUMN;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-DOC;TST_RENDER;TST_RENDER_0304;;304;Frame::addResponsiveColumns (edit);"<p>Tous les cadres sont en 2 colonnes si la largeur du cadre est &gt; 70rem (840px). S'il n'y a qu'un cadre, le cadre est sur une seule colonne</p>
+</ul>";"TST_EMPLOYE_DOE";"FRAMEVIEWCOLUMN";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+"DOC";"TST_RENDER";"TST_RENDER_0304";;304;"Frame::addResponsiveColumns (edit)";"<p>Tous les cadres sont en 2 colonnes si la largeur du cadre est &gt; 70rem (840px). S'il n'y a qu'un cadre, le cadre est sur une seule colonne</p>
 
 <p><strong>Les attributs sont ordonnées du haut vers le bas.</strong></p>
 
@@ -70,8 +70,8 @@ DOC;TST_RENDER;TST_RENDER_0304;;304;Frame::addResponsiveColumns (edit);"<p>Tous 
 	<li>4 =&gt; entre <strong>800px</strong> et <strong>1900px</strong></li>
 	<li>6 =&gt; entre <strong>1900px</strong> et <strong>2200px</strong></li>
 	<li>12 =&gt; plus de  <strong>2200px</strong></li>
-</ul>";TST_EMPLOYE_DOE;FRAMEEDITCOLUMN;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-DOC;TST_RENDER;TST_RENDER_0305;;305;Frame::addResponsiveColumns (view) Top Bottom;"<p>Tous les cadres sont en 2 colonnes si la largeur du cadre est &gt; 70rem (840px). S'il n'y a qu'un cadre, le cadre est sur une seule colonne</p>
+</ul>";"TST_EMPLOYE_DOE";"FRAMEEDITCOLUMN";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+"DOC";"TST_RENDER";"TST_RENDER_0305";;305;"Frame::addResponsiveColumns (view) Top Bottom";"<p>Tous les cadres sont en 2 colonnes si la largeur du cadre est &gt; 70rem (840px). S'il n'y a qu'un cadre, le cadre est sur une seule colonne</p>
 
 <p><strong>Les attributs sont ordonnées du haut vers le bas.</strong></p>
 
@@ -100,8 +100,8 @@ DOC;TST_RENDER;TST_RENDER_0305;;305;Frame::addResponsiveColumns (view) Top Botto
 	<li>4 =&gt; entre <strong>800px</strong> et <strong>1900px</strong></li>
 	<li>6 =&gt; entre <strong>1900px</strong> et <strong>2200px</strong></li>
 	<li>12 =&gt; plus de  <strong>2200px</strong></li>
-</ul>";TST_EMPLOYE_DOE;FRAMEVIEWTBCOLUMN;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-DOC;TST_RENDER;TST_RENDER_0306;;306;Frame::addResponsiveColumns (edit) Top Bottom;"<p>Tous les cadres sont en 2 colonnes si la largeur du cadre est &gt; 70rem (840px). S'il n'y a qu'un cadre, le cadre est sur une seule colonne</p>
+</ul>";"TST_EMPLOYE_DOE";"FRAMEVIEWTBCOLUMN";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+"DOC";"TST_RENDER";"TST_RENDER_0306";;306;"Frame::addResponsiveColumns (edit) Top Bottom";"<p>Tous les cadres sont en 2 colonnes si la largeur du cadre est &gt; 70rem (840px). S'il n'y a qu'un cadre, le cadre est sur une seule colonne</p>
 
 <p><strong>Les attributs sont ordonnées du haut vers le bas.</strong></p>
 
@@ -130,8 +130,8 @@ DOC;TST_RENDER;TST_RENDER_0306;;306;Frame::addResponsiveColumns (edit) Top Botto
 	<li>4 =&gt; entre <strong>800px</strong> et <strong>1900px</strong></li>
 	<li>6 =&gt; entre <strong>1900px</strong> et <strong>2200px</strong></li>
 	<li>12 =&gt; plus de  <strong>2200px</strong></li>
-</ul>";TST_EMPLOYE_DOE;FRAMEEDITTBCOLUMN;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-DOC;TST_RENDER;TST_RENDER_0501;;501;TabRender::addResponsiveColumns (view);"<p>Les cadres dans les onglets sont en multicolonne.</p>
+</ul>";"TST_EMPLOYE_DOE";"FRAMEEDITTBCOLUMN";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+"DOC";"TST_RENDER";"TST_RENDER_0501";;501;"TabRender::addResponsiveColumns (view)";"<p>Les cadres dans les onglets sont en multicolonne.</p>
 
 <p>Tous les cadres sont en 2 colonnes si la largeur du cadre est &gt; 100rem (1200px). S'il n'y a qu'un cadre, le cadre est sur une seule colonne</p>
 
@@ -149,8 +149,8 @@ DOC;TST_RENDER;TST_RENDER_0501;;501;TabRender::addResponsiveColumns (view);"<p>L
 	<li>4 =&gt; plus de  <strong>400px </strong>(et si plus de un onglet)</li>
 </ul>
 
-<p> </p>";TST_EMPLOYE_DOE;TABVIEWCOLUMN;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-DOC;TST_RENDER;TST_RENDER_0502;;502;TabRender::addResponsiveColumns (edit);"<p>es cadres dans les onglets sont en multicolonne.</p>
+<p> </p>";"TST_EMPLOYE_DOE";"TABVIEWCOLUMN";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+"DOC";"TST_RENDER";"TST_RENDER_0502";;502;"TabRender::addResponsiveColumns (edit)";"<p>es cadres dans les onglets sont en multicolonne.</p>
 
 <p>Tous les cadres sont en 2 colonnes si la largeur du cadre est &gt; 100rem (1200px). S'il n'y a qu'un cadre, le cadre est sur une seule colonne</p>
 
@@ -166,4 +166,10 @@ DOC;TST_RENDER;TST_RENDER_0502;;502;TabRender::addResponsiveColumns (edit);"<p>e
 
 <ul>
 	<li>2 =&gt; plus de  <strong>400px </strong>(et si plus de un onglet)</li>
-</ul>";TST_EMPLOYE_DOE;TABEDITCOLUMN;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+</ul>";"TST_EMPLOYE_DOE";"TABEDITCOLUMN";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+"DOC";"TST_RENDER";"TST_RENDER_0503";;503;"Htmltext::toolbar(basic)";"<p>HTML text avec toolbar BASIC</p>
+";"TST_ALL_COMPLET";"HTMLTEXT_TOOLBAR_BASIC";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+"DOC";"TST_RENDER";"TST_RENDER_0504";;504;"Htmltext::toolbar(simple)";"<p>HTML text avec toolbar SIMPLE</p>
+";"TST_ALL_COMPLET";"HTMLTEXT_TOOLBAR_SIMPLE";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+"DOC";"TST_RENDER";"TST_RENDER_0505";;505;"Htmltext::toolbar(full)";"<p>HTML text avec toolbar FULL</p>
+";"TST_ALL_COMPLET";"HTMLTEXT_TOOLBAR_FULL";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -73,9 +73,8 @@ class RenderOptions implements \JsonSerializable
                 ImageRenderOptions::thumbnailSizeOption => 48,
             ) ,
             HtmltextRenderOptions::type => array(
-                HtmltextRenderOptions::toolbarOption => "Simple",
-                HtmltextRenderOptions::toolbarStartupExpandedOption => true,
-                HtmltextRenderOptions::heightOption => "120px"
+                HtmltextRenderOptions::toolbarOption => HtmltextRenderOptions::simpleToolbar,
+                HtmltextRenderOptions::heightOption => "10rem"
             ) ,
             LongtextRenderOptions::type => array(
                 LongtextRenderOptions::displayedLineNumberOption => 0

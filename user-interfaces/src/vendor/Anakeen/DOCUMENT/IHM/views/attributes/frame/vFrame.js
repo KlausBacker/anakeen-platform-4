@@ -312,6 +312,8 @@ export default Backbone.View.extend({
       $contentElement.slideToggle(200);
       if ($contentElement.hasClass("dcpFrame__content--open")) {
         this.model.getDocumentModel().trigger("redrawErrorMessages");
+        // To redraw responsive elements
+        $(window).trigger("resize");
       }
     }
   },
