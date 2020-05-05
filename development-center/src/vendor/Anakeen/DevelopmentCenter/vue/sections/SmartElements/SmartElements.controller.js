@@ -67,6 +67,7 @@ export default {
           size: "50%"
         }
       ],
+      pageableConfig: { pageSizes: [100, 200, 500], pageSize: 100 },
       viewURL: "",
       viewType: "html",
       viewRawContent: "",
