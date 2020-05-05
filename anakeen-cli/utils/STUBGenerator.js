@@ -323,6 +323,9 @@ namespace SmartStructure\\Fields {
 ${fieldsString}
     }
 }`;
+          if (!fs.existsSync(targetPath)) {
+            fs.mkdirSync(targetPath);
+          }
           fs.writeFileSync(path.join(targetPath, currentSS.name + "__STUB.php"), content);
           return currentSS;
         });
