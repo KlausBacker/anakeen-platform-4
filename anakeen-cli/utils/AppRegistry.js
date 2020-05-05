@@ -104,7 +104,7 @@ class AppRegistry {
     }
 
     /* Filter by semver version */
-    if (filterVersion !== "undefined" && filterVersion !== "latest") {
+    if (filterVersion !== "undefined" && filterVersion !== "latest" && filterVersion !== "dev") {
       index = index.filter(elmt => {
         return semver.satisfies(elmt.version, filterVersion);
       });
@@ -129,7 +129,24 @@ class AppRegistry {
         )
       ];
     }
-
+    if (filterVersion === "dev" && index.length > 0) {
+      //Suppress pre release from analysis
+      index = index.filter(currentIndex => {
+        return semver.patch(currentIndex.version);
+      });
+      //Get the greater index
+      return [
+        index.reduce(
+          (acc, currentIndex) => {
+            if (semver.gte(acc.version, currentIndex.version)) {
+              return acc;
+            }
+            return currentIndex;
+          },
+          { version: "0.0.1", name: undefined }
+        )
+      ];
+    }
     return index;
   }
 
