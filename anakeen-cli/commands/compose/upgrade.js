@@ -37,7 +37,11 @@ exports.handler = async argv => {
     await compose.checkIfInitialized();
     if (argv.moduleName === "all") {
       //Upgrade all module, make an install without lockfile
-      await compose.install({ withoutLockFile: true, latest: argv.latest });
+      if (argv.latest === true) {
+        await compose.install({ withoutLockFile: true, latest: argv.latest });
+      } else {
+        await compose.install({ withoutLockFile: true, dev: argv.dev });
+      }
     } else {
       await compose.addModule({
         moduleName: argv.moduleName,

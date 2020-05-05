@@ -42,6 +42,7 @@ class Compose {
     this.modeDebug = options.hasOwnProperty("debug") && options.debug === true;
     this.frozenLockfile = options.hasOwnProperty("frozenLockfile") && options.frozenLockfile === true;
     this.latest = options.hasOwnProperty("latest") && options.latest === true;
+    this.dev = options.hasOwnProperty("dev") && options.dev === true;
     this.cwd = options.cwd;
     this.currentRepoPath = path.resolve(this.cwd, REPO_NAME);
     this.currentLockPath = path.resolve(this.cwd, REPO_LOCK_NAME);
@@ -551,7 +552,7 @@ class Compose {
    *
    * @returns {Promise<void>}
    */
-  async install({ withoutLockFile = false, latest = false, customLocalPath = "" }) {
+  async install({ withoutLockFile = false, latest = false, customLocalPath = "", dev = false }) {
     let moduleLockList = [];
     //region prepare data
     await this.loadContext();
@@ -583,6 +584,12 @@ class Compose {
       //Process the module list to push all semver requirement to latest
       moduleList = moduleList.map(currentModule => {
         currentModule.$.version = "latest";
+        return currentModule;
+      });
+    } else if (dev) {
+      //Process the module list to push all semver requirement to latest
+      moduleList = moduleList.map(currentModule => {
+        currentModule.$.version = "dev";
         return currentModule;
       });
     }

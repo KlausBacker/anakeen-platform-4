@@ -130,7 +130,7 @@ class AppRegistry {
       ];
     }
     if (filterVersion === "dev" && index.length > 0) {
-      //Suppress pre release from analysis
+      // Get index list with RC versions
       index = index.filter(currentIndex => {
         return semver.patch(currentIndex.version);
       });
