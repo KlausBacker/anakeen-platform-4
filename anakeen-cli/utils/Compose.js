@@ -587,7 +587,7 @@ class Compose {
         return currentModule;
       });
     } else if (dev) {
-      //Process the module list to push all semver requirement to latest
+      //Process the module list to push all semver requirement to dev
       moduleList = moduleList.map(currentModule => {
         currentModule.$.version = "dev";
         return currentModule;
