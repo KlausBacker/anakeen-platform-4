@@ -18,8 +18,31 @@ import $ from "jquery";
 
 const CONTROLLER_URL = "/api/v2/grid/controllers/{controller}/{op}/{collection}";
 
-const deepEqual = (obj1, obj2): boolean => {
-  return JSON.stringify(obj1) === JSON.stringify(obj2);
+const needWatchUpdate = (newValue, oldValue) => {
+  // need an update if it's not the same type
+  if (typeof newValue !== typeof oldValue) {
+    return true;
+  }
+
+  // Quick case for array
+  if (Array.isArray(newValue)) {
+    if (newValue.length !== oldValue.length) {
+      return true;
+    }
+  }
+
+  // parameters have the same type
+  if (newValue !== null && (typeof newValue === "object" || Array.isArray(newValue))) {
+    let result = false;
+    // Compare if values of newValue object are contain in oldValue object
+    Object.keys(newValue).forEach(key => {
+      result = result || needWatchUpdate(newValue[key], oldValue[key]);
+    });
+    return result;
+  } else {
+    // simple types case
+    return newValue !== oldValue;
+  }
 };
 
 export interface SmartGridColumn {
@@ -367,7 +390,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   //region watchProps
   @Watch("sort", { deep: true })
   public async watchSort(newValue): Promise<void> {
-    if (!deepEqual(this.currentSort, newValue)) {
+    if (needWatchUpdate(newValue, this.currentSort)) {
       this.currentSort = newValue;
       return await this.refreshGrid();
     }
@@ -381,7 +404,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
       if (newValue === true) {
         toCompare = DEFAULT_PAGER;
       }
-      if (!deepEqual(this.pager, toCompare)) {
+      if (needWatchUpdate(toCompare, this.pager)) {
         this.pager = toCompare;
         return await this.refreshGrid();
       }
@@ -390,7 +413,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
 
   @Watch("sortable", { deep: true })
   public async watchSortable(newValue): Promise<void> {
-    if (this.sorter !== newValue) {
+    if (needWatchUpdate(newValue, this.sorter)) {
       this.sorter = newValue === true ? DEFAULT_SORT : newValue;
       return await this.refreshGrid();
     }
