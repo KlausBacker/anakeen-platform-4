@@ -78,16 +78,31 @@ class Between extends StandardAttributeFilter implements ElementSearchFilter
             $this->value[1] = INF;
         }
         sort($this->value);
-        $query = sprintf(
-            '%s <%s %s AND %s >%s %s',
-            pg_escape_literal($this->value[0]),
-            ($this->EQUALLEFT ? '=' : ''),
-            pg_escape_identifier($attr->id),
-            pg_escape_literal($this->value[1]),
-            ($this->EQUALRIGHT ? '=' : ''),
-            pg_escape_identifier($attr->id)
-        );
-        if ($this->NOT) {
+
+        $queries = array();
+
+        if ($this->value[0] !== -INF) {
+            $leftQuery = sprintf(
+                '%s <%s %s',
+                pg_escape_literal($this->value[0]),
+                ($this->EQUALLEFT ? '=' : ''),
+                pg_escape_identifier($attr->id)
+            );
+            array_push($queries, $leftQuery);
+        }
+
+        if ($this->value[1] !== INF) {
+            $rightQuery = sprintf(
+                '%s >%s %s',
+                pg_escape_literal($this->value[1]),
+                ($this->EQUALRIGHT ? '=' : ''),
+                pg_escape_identifier($attr->id)
+            );
+            array_push($queries, $rightQuery);
+        }
+
+        $query = implode(' AND ', $queries);
+        if ($this->NOT && !empty($query)) {
             $query = sprintf('NOT(%s)', $query);
         }
         $search->addFilter($query);

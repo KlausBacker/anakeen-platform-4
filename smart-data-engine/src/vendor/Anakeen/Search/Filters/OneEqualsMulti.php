@@ -15,7 +15,6 @@ use Anakeen\Search\SearchCriteria\SearchCriteriaTrait;
  */
 class OneEqualsMulti extends StandardAttributeFilter implements ElementSearchFilter
 {
-
     use SearchCriteriaTrait;
 
     const NOT = 1;
@@ -77,10 +76,8 @@ class OneEqualsMulti extends StandardAttributeFilter implements ElementSearchFil
      */
     public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
-        error_log(print_r($this->value, true));
         $attr = $this->verifyCompatibility($search);
-        error_log(print_r($this->value[0], true));
-        if (is_array($this->value) && isset($this->value[0]) && $this->value[0] !== "") {
+        if (!empty($this->value[0])) {
             $search->addFilter($this->_filter($attr, $this->value));
         }
         return $this;
@@ -93,8 +90,8 @@ class OneEqualsMulti extends StandardAttributeFilter implements ElementSearchFil
             throw new Exception("FLT0007", $attr->id);
         }
         if (isset($this->value) && !is_array($this->value)) {
-//            throw new Exception("FLT0009"); TODO: remove comment
-            $this->value = array($this->value);
+            throw new Exception("FLT0009");
+//            $this->value = array($this->value);
         }
         return $attr;
     }
@@ -107,7 +104,13 @@ class OneEqualsMulti extends StandardAttributeFilter implements ElementSearchFil
     protected function _filter(NormalAttribute & $attr, $value)
     {
         $pgArray = SmartElement::arrayToRawValue($value);
-        $sql = sprintf("%s IS NOT NULL AND %s && '%s'", pg_escape_identifier($attr->id), pg_escape_identifier($attr->id), $pgArray);
+        $sql = sprintf(
+            "%s IS NOT NULL AND %s %s '%s'",
+            pg_escape_identifier($attr->id),
+            pg_escape_identifier($attr->id),
+            $this->ALL ? '@>' : '&&',
+            $pgArray
+        );
         if ($this->NOT) {
             $sql = sprintf("NOT(%s)", $sql);
         }

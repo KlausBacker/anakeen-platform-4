@@ -45,6 +45,7 @@ export default {
         { field: "title", property: true },
         { field: "state", property: true },
         { field: "bill_clients", title: "Clients" },
+        { field: "bill_billdate" },
         { field: "bill_cost" },
       ]
     };
