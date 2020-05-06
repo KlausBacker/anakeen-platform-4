@@ -641,14 +641,10 @@ class Compose {
             return (moduleLocked[currentElement.$.name] = organizedLockList[currentElement.$.name]);
           } else {
             this.debug(`${currentElement.$.name} : The lock is good, the files not good, we refresh it`);
-            if (this.frozenLockfile) {
-              this.debug(`${currentElement.$.name} : Mode frozen lock we keep the exact ref of the lock`);
-              const refreshElement = JSON.parse(JSON.stringify(currentElement));
-              refreshElement.$.version = organizedLockList[currentElement.$.name].$.version;
-              return (moduleToRefresh[currentElement.$.name] = refreshElement);
-            } else {
-              return (moduleToInstall[currentElement.$.name] = currentElement);
-            }
+            this.debug(`${currentElement.$.name} : Mode frozen lock we keep the exact ref of the lock`);
+            const refreshElement = JSON.parse(JSON.stringify(currentElement));
+            refreshElement.$.version = organizedLockList[currentElement.$.name].$.version;
+            return (moduleToRefresh[currentElement.$.name] = refreshElement);
           }
         }
         this.debug(`${currentElement.$.name} : We need to install it`);
