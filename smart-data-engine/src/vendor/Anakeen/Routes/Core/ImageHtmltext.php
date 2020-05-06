@@ -2,14 +2,11 @@
 
 namespace Anakeen\Routes\Core;
 
-use Anakeen\Core\Settings;
 use Anakeen\Core\Utils\XDOMDocument;
 use Anakeen\Router\Exception;
-use Anakeen\Core\ContextManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\SmartElementManager;
-use Anakeen\Vault\FileInfo;
 
 /**
  *
@@ -19,10 +16,8 @@ use Anakeen\Vault\FileInfo;
  */
 class ImageHtmltext
 {
-    const CACHEIMGDIR = Settings::CacheDir . "file/";
     protected $revision;
 
-    private $tmpFlag = "_tmp_";
     /**
      * @var \Anakeen\Core\Internal\SmartElement
      */
@@ -96,9 +91,9 @@ class ImageHtmltext
             $this->inline = ($inlineQuery === "yes" || $inlineQuery === "true" || $inlineQuery === "1");
         }
 
-        $response=$response->withHeader("Cache-Control","max-age=86400");
+        // 24 days in cache
+        $response = $response->withHeader("Cache-Control", "max-age=86400");
 
-        
         $response = ApiV2Response::withFile($response, $fileInfo->path, $fileInfo->name, $this->inline);
         \Anakeen\Core\VaultManager::updateAccessDate($fileInfo->id_file);
 
@@ -145,15 +140,13 @@ class ImageHtmltext
     }
 
     /**
-     * @param string $resourceId
+     * @param string $vaultid
      *
      * @return \Anakeen\Vault\FileInfo
      * @throws Exception
      */
     protected function getFileInfo($vaultid)
     {
-
-
         $fileInfo = \Anakeen\Core\VaultManager::getFileInfo($vaultid);
         if (!$fileInfo) {
             throw new Exception(sprintf(
@@ -189,7 +182,6 @@ class ImageHtmltext
     /**
      * Find the current document and set it in the internal options
      *
-     * @param $resourceId
      *
      * @throws Exception
      */

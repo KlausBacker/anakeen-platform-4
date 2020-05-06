@@ -474,7 +474,6 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
     }
 
     formData.append("dcpFile", imgFile);
-    console.log(imgFile);
     $.ajax({
       type: "POST",
       url: "/api/v2/temporaryFiles/",
