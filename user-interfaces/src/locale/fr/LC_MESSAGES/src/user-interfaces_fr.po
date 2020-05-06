@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ANAKEEN-UI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-24 16:17+0100\n"
+"POT-Creation-Date: 2020-05-06 10:33+0200\n"
 "PO-Revision-Date: 2020-03-24 16:22+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
@@ -16,6 +16,14 @@ msgstr ""
 msgctxt "ddui"
 msgid "%s Creation"
 msgstr "Création %s"
+
+msgctxt "ddui-htmltext"
+msgid "(inherited font)"
+msgstr "(police héritée)"
+
+msgctxt "ddui-htmltext"
+msgid "(inherited size)"
+msgstr "(taille héritée)"
 
 msgctxt "smart-grid"
 msgid "-- Select another operator --"
@@ -33,6 +41,16 @@ msgstr ""
 "<p>Mettre la valeur à \"<b>-</b>\" (<i>minus</i>) pour créer un utilisateur "
 "sans login</p>"
 
+msgctxt "ddui-htmltext"
+msgid "A directory with this name was not found."
+msgstr "Un répertoire avec ce nom n'a pas été trouvé."
+
+msgctxt "ddui-htmltext"
+msgid ""
+"A file with name \"{0}\" already exists in the current directory. Do you "
+"want to overwrite it?"
+msgstr "Un fichier avec le nom \"{0}\" existe déjà dans le répertoire courant. Voulez-vous le remplacer?"
+
 #, php-format
 msgctxt "ddui"
 msgid "Access not granted for document #%s"
@@ -42,6 +60,10 @@ msgstr "Accès non autorisé pour créer #°%s"
 msgctxt "ddui"
 msgid "Access not granted to create \"%s\" document"
 msgstr "Accès non autorisé pour créer \"%s\""
+
+msgctxt "ddui-htmltext"
+msgid "Accessibility"
+msgstr "Accessibilité"
 
 #, php-format
 msgctxt "smart iuser"
@@ -72,9 +94,89 @@ msgctxt "ddui"
 msgid "Add a note to the history"
 msgstr "Ajouter une note à consigner dans l'historique"
 
+msgctxt "ddui-htmltext"
+msgid "Add column on the left"
+msgstr "Ajouter colonne à gauche"
+
+msgctxt "ddui-htmltext"
+msgid "Add column on the right"
+msgstr "Ajouter colonne à droite"
+
+msgctxt "ddui-htmltext"
+msgid "Add row above"
+msgstr "Ajouter ligne au-dessus"
+
+msgctxt "ddui-htmltext"
+msgid "Add row below"
+msgstr "Ajouter ligne au-dessous"
+
+msgctxt "ddui-htmltext"
+msgid "Align Center"
+msgstr "Aligner le centre"
+
+msgctxt "ddui-htmltext"
+msgid "Align Center Bottom"
+msgstr "Aligner le centre et bas"
+
+msgctxt "ddui-htmltext"
+msgid "Align Center Middle"
+msgstr "Aligner le centre et milieu"
+
+msgctxt "ddui-htmltext"
+msgid "Align Center Top"
+msgstr "Aligner le centre et haut"
+
+msgctxt "ddui-htmltext"
+msgid "Align Left"
+msgstr "Aligner à gauche"
+
+msgctxt "ddui-htmltext"
+msgid "Align Left Bottom"
+msgstr "Aligner à gauche en bas"
+
+msgctxt "ddui-htmltext"
+msgid "Align Left Middle"
+msgstr "Aligner à gauche et au centre"
+
+msgctxt "ddui-htmltext"
+msgid "Align Left Top"
+msgstr "Aligner à gauche et en haut"
+
+msgctxt "ddui-htmltext"
+msgid "Align Right"
+msgstr "Aligner à droite"
+
+msgctxt "ddui-htmltext"
+msgid "Align Right Bottom"
+msgstr "Aligner à droite et en bas"
+
+msgctxt "ddui-htmltext"
+msgid "Align Right Middle"
+msgstr "Aligner à droite et au milieu"
+
+msgctxt "ddui-htmltext"
+msgid "Align Right Top"
+msgstr "Aligner à droite et en haut"
+
+msgctxt "ddui-htmltext"
+msgid "Align text left"
+msgstr "Aligner le texte à gauche"
+
+msgctxt "ddui-htmltext"
+msgid "Align text right"
+msgstr "Aligner le texte à droite"
+
+msgctxt "ddui-htmltext"
+msgid "Alignment"
+msgstr "Alignement"
+
 msgctxt "grid-component"
 msgid "All text contains"
 msgstr "Chacun des textes contient"
+
+msgctxt "ddui-htmltext"
+msgid "Alternate text"
+msgstr "Le texte de remplacement"
 
 #, php-format
 msgctxt "authent"
@@ -101,6 +203,18 @@ msgctxt "grid-component"
 msgid "Any values is lesser than or equal to"
 msgstr "Toutes les valeurs sont inférieures ou égales à"
 
+msgctxt "ddui-htmltext"
+msgid "Are you sure you want to delete \"{0}\"?"
+msgstr "Etes-vous sûr de vouloir supprimer \"{0}\"?"
+
+msgctxt "ddui-htmltext"
+msgid "Arrange by"
+msgstr "Trier par"
+
+msgctxt "ddui-htmltext"
+msgid "Associate cells with headers"
+msgstr "Cellules associées aux entêtes"
+
 msgctxt "grid-component"
 msgid "At least one text not contains"
 msgstr "Un des textes ne contient pas"
@@ -114,7 +228,35 @@ msgctxt "ddui-file"
 msgid "B"
 msgstr "octets"
 
+msgctxt "ddui-htmltext"
+msgid "Background"
+msgstr "Fond"
+
+msgctxt "ddui-htmltext"
+msgid "Background color"
+msgstr "Couleur de fond"
+
+msgctxt "ddui-htmltext"
+msgid "Bold"
+msgstr "Gras"
+
+msgctxt "ddui-htmltext"
+msgid "Border"
+msgstr "Bordure"
+
+msgctxt "ddui-htmltext"
+msgid "Border Style"
+msgstr "Style de bordure"
+
+msgctxt "ddui-htmltext"
+msgid "CSS Class"
+msgstr "CSS classe"
+
 msgctxt "UiMenu"
+msgid "Cancel"
+msgstr "Annuler"
+
+msgctxt "ddui-htmltext"
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -130,6 +272,30 @@ msgstr "Annuler"
 msgctxt "authent"
 msgid "Cannot find user \"%s\"."
 msgstr "Utilisateur \"%s\" non trouvé."
+
+msgctxt "ddui-htmltext"
+msgid "Caption"
+msgstr "Sous-titre"
+
+msgctxt "ddui-htmltext"
+msgid "Cell"
+msgstr "Cellule"
+
+msgctxt "ddui-htmltext"
+msgid "Cell Margin"
+msgstr "Marge des cellules"
+
+msgctxt "ddui-htmltext"
+msgid "Cell Padding"
+msgstr "Rembourrage des cellules"
+
+msgctxt "ddui-htmltext"
+msgid "Cell Spacing"
+msgstr "Espacement des cellules"
+
+msgctxt "ddui-htmltext"
+msgid "Center text"
+msgstr "Centrer"
 
 msgctxt "ddui-enum"
 msgid "Choose"
@@ -162,6 +328,10 @@ msgctxt "smartCvdoc"
 msgid "Class \"%s\" problem : %s"
 msgstr "Classe \"%s\" problême : %s"
 
+msgctxt "ddui-htmltext"
+msgid "Clean formatting"
+msgstr "Supprimer le formattage"
+
 msgctxt "smart-grid"
 msgid "Clear"
 msgstr "Effacer"
@@ -193,6 +363,14 @@ msgstr "Fermer le message"
 msgctxt "smart-grid"
 msgid "Collapse / Expand rows"
 msgstr "Étendre / réduire les lignes"
+
+msgctxt "ddui-htmltext"
+msgid "Collapse borders"
+msgstr "Rétracter bordures"
+
+msgctxt "ddui-htmltext"
+msgid "Columns"
+msgstr "Colonnes"
 
 msgctxt "ddui"
 msgid "Confidential document"
@@ -255,6 +433,10 @@ msgctxt "UiMenu"
 msgid "Create new document to server"
 msgstr "Créer sur le serveur"
 
+msgctxt "ddui-htmltext"
+msgid "Create table"
+msgstr "Insérer un tableau"
+
 msgctxt "UiMenu"
 msgid "Create to server and view document"
 msgstr "Créer sur le serveur et quitter le formulaire "
@@ -275,8 +457,16 @@ msgctxt "UiMenu"
 msgid "Delete"
 msgstr "Supprimer"
 
+msgctxt "ddui-htmltext"
+msgid "Delete column"
+msgstr "Supprimer la colonne"
+
 msgctxt "ddui"
 msgid "Delete line"
+msgstr "Supprimer la ligne"
+
+msgctxt "ddui-htmltext"
+msgid "Delete row"
 msgstr "Supprimer la ligne"
 
 msgctxt "smart-grid"
@@ -330,6 +520,10 @@ msgctxt "identityComponent"
 msgid "Email address \"%s\" is not valid"
 msgstr "L'adresse email \"%s\" n'est pas valide"
 
+msgctxt "ddui-htmltext"
+msgid "Empty Folder"
+msgstr "Répertoire vide"
+
 msgctxt "smart exec"
 msgid "Execute now"
 msgstr "Démarrer la tâche"
@@ -359,6 +553,10 @@ msgctxt "ddui"
 msgid "Force transition"
 msgstr "Forcer la transition"
 
+msgctxt "ddui-htmltext"
+msgid "Format"
+msgstr "Format"
+
 msgctxt "UiMenu"
 msgid "Goto next activity"
 msgstr "Passer à l'étape suivante"
@@ -372,9 +570,33 @@ msgctxt "smart iuser"
 msgid "Groups of \"%s\" has been updated"
 msgstr "Les groupes de \"%s\" ont été mis à jour"
 
+msgctxt "ddui-htmltext"
+msgid "Heading 1"
+msgstr "Titre 1"
+
+msgctxt "ddui-htmltext"
+msgid "Heading 2"
+msgstr "Titre 2"
+
+msgctxt "ddui-htmltext"
+msgid "Heading 3"
+msgstr "Titre 3"
+
+msgctxt "ddui-htmltext"
+msgid "Height"
+msgstr "Hauteur"
+
+msgctxt "ddui-htmltext"
+msgid "Height (px)"
+msgstr "Hauteur (px)"
+
 msgctxt "UiMenu"
 msgid "Historic"
 msgstr "Historique"
+
+msgctxt "ddui-htmltext"
+msgid "ID"
+msgstr "ID"
 
 msgid "Impossible to have several identical names"
 msgstr "Impossible d'avoir plusieurs noms identiques"
@@ -395,9 +617,41 @@ msgctxt "ddui-numerical"
 msgid "Increase value"
 msgstr "Augmenter la valeur"
 
+msgctxt "ddui-htmltext"
+msgid "Indent"
+msgstr "Augmenter le retrait"
+
 msgctxt "ddui"
 msgid "Information access deny"
 msgstr "Information non accessible"
+
+msgctxt "ddui-htmltext"
+msgid "Insert"
+msgstr "Insérer"
+
+msgctxt "ddui-htmltext"
+msgid "Insert HTML"
+msgstr "Insérer HTML"
+
+msgctxt "ddui-htmltext"
+msgid "Insert file"
+msgstr "Insérer un fichier"
+
+msgctxt "ddui-htmltext"
+msgid "Insert hyperlink"
+msgstr "Insérer un lien hypertexte"
+
+msgctxt "ddui-htmltext"
+msgid "Insert image"
+msgstr "Insérer une image"
+
+msgctxt "ddui-htmltext"
+msgid "Insert ordered list"
+msgstr "Liste numérotée"
+
+msgctxt "ddui-htmltext"
+msgid "Insert unordered list"
+msgstr "Liste à puces"
 
 msgctxt "ddui-date"
 msgid "Invalid date"
@@ -463,6 +717,14 @@ msgctxt "grid-component"
 msgid "Is not equal to"
 msgstr "Est différent de"
 
+msgctxt "ddui-htmltext"
+msgid "Italic"
+msgstr "Italique"
+
+msgctxt "ddui-htmltext"
+msgid "Justify"
+msgstr "Justifier"
+
 msgctxt "grid-component"
 msgid "Label contains"
 msgstr "Le label contient"
@@ -525,6 +787,14 @@ msgctxt "ddui"
 msgid "Modifying by"
 msgstr "En cours de modification par"
 
+msgctxt "ddui-htmltext"
+msgid "More tools"
+msgstr "Plus d'outils"
+
+msgctxt "ddui-htmltext"
+msgid "Name"
+msgstr "Nom"
+
 msgctxt "smart iuser"
 msgid "No groups"
 msgstr "Pas de groupes"
@@ -578,6 +848,10 @@ msgctxt "smart report"
 msgid "Number of elements to display per page"
 msgstr "Nombre d'élément à afficher par page"
 
+msgctxt "ddui-htmltext"
+msgid "Ok"
+msgstr "OK"
+
 msgctxt "grid-component"
 msgid "One of values equal to"
 msgstr "Une des valeurs est égale à"
@@ -602,9 +876,17 @@ msgctxt "grid-component"
 msgid "One text contains"
 msgstr "Un des textes contient"
 
+msgctxt "ddui-htmltext"
+msgid "Open link in new window"
+msgstr "Ouvrir dans une nouvelle fenêtre"
+
 msgctxt " smart cvdoc"
 msgid "Order for control access"
 msgstr "Ordre des contrôles d'accès"
+
+msgctxt "ddui-htmltext"
+msgid "Outdent"
+msgstr "Diminuer le retrait"
 
 msgctxt " smart cvdoc"
 msgid "PHP Access render class used to fork the appropriate render config"
@@ -614,10 +896,22 @@ msgctxt " smart cvdoc"
 msgid "PHP Config render class used to custom render"
 msgstr "Classe PHP utilisée pour le render"
 
+msgctxt "ddui-htmltext"
+msgid "Paragraph"
+msgstr "Style du paragraphe"
+
 #, php-format
 msgctxt "authent"
 msgid "Password has been reseted for \"%s\""
 msgstr "Le mot de passe a été réinitialisé pour \"%s\""
+
+msgctxt "ddui-htmltext"
+msgid "Preformatted"
+msgstr "Texte préformaté"
+
+msgctxt "ddui-htmltext"
+msgid "Print"
+msgstr "Imprimer"
 
 msgctxt "UiMenu"
 msgid "Properties"
@@ -643,6 +937,10 @@ msgctxt "UiMenu"
 msgid "Record document without constraint check"
 msgstr "Enregistrer sans tenir compte des contraintes"
 
+msgctxt "iuser"
+msgid "Record parent groups"
+msgstr "Enregistrer les groupes parents"
+
 msgctxt "UiMenu"
 msgid "Record to server and view document"
 msgstr "Enregistrer et fermer le formulaire"
@@ -650,6 +948,14 @@ msgstr "Enregistrer et fermer le formulaire"
 msgctxt "ddui-file"
 msgid "Recording"
 msgstr "Enregistrement"
+
+msgctxt "ddui-htmltext"
+msgid "Remove Alignment"
+msgstr "Retirer alignement"
+
+msgctxt "ddui-htmltext"
+msgid "Remove hyperlink"
+msgstr "Supprimer le lien hypertexte"
 
 msgctxt "smart iuser"
 msgid "Reset login failure"
@@ -684,6 +990,10 @@ msgctxt "ddui"
 msgid "Row count limit to {{limit}}"
 msgstr "Le nombre maximum de rangée est de {{limit}}"
 
+msgctxt "ddui-htmltext"
+msgid "Rows"
+msgstr "Lignes"
+
 msgctxt "UiMenu"
 msgid "Save"
 msgstr "Enregistrer"
@@ -704,13 +1014,30 @@ msgctxt "ddui:notification"
 msgid "See more ..."
 msgstr "Voir l'intégralité du message ..."
 
+msgctxt "ddui-htmltext"
+msgid "Select All Cells"
+msgstr "Sélectionner toutes les cellules"
+
 msgctxt "ddui-enum"
 msgid "Select alternative choice"
 msgstr "Valider cet autre choix"
 
+msgctxt "ddui-htmltext"
+msgid "Select font family"
+msgstr "Police"
+
+#, fuzzy
+msgctxt "ddui-htmltext"
+msgid "Select font size"
+msgstr "Taille de police"
+
 msgctxt "ddui"
 msgid "Select line"
 msgstr "Sélectionner la ligne"
+
+msgctxt "ddui-htmltext"
+msgid "Size"
+msgstr "Taille"
 
 msgctxt "ddui"
 msgid "Smart ELement"
@@ -720,11 +1047,31 @@ msgctxt "grid-component"
 msgid "Start with"
 msgstr "Commence par"
 
+msgctxt "ddui-htmltext"
+msgid "Strikethrough"
+msgstr "Barré"
+
 msgctxt " smart cvdoc"
 msgid "Structure used to configure access profil with account attributes"
 msgstr ""
 "Structure utilisée pour configurer les accès des profils avec des smart "
 "fields accounts"
+
+msgctxt "ddui-htmltext"
+msgid "Styles"
+msgstr "Styles"
+
+msgctxt "ddui-htmltext"
+msgid "Subscript"
+msgstr "Indice"
+
+msgctxt "ddui-htmltext"
+msgid "Summary"
+msgstr "Sommaire"
+
+msgctxt "ddui-htmltext"
+msgid "Superscript"
+msgstr "Exposant"
 
 #, php-format
 msgctxt "UiMenu"
@@ -735,14 +1082,39 @@ msgctxt "UiMenu"
 msgid "System"
 msgstr "Système"
 
+msgctxt "ddui-htmltext"
+msgid "Table"
+msgstr "Table"
+
+msgctxt "ddui-htmltext"
+msgid "Table Wizard"
+msgstr "Assistant de tableau"
+
 #, php-format
 msgctxt "smart-task"
 msgid "Task \"%s\" is executed."
 msgstr "La tâche \"%s\" est exécutée."
 
+msgctxt "ddui-htmltext"
+msgid "Text"
+msgstr "Text"
+
+msgctxt "ddui-htmltext"
+msgid "Text color"
+msgstr "Couleur"
+
+msgctxt "ddui-htmltext"
+msgid "The selected file \"{0}\" is not valid. Supported file types are {1}."
+msgstr "Le fichier sélectionné \"{0}\" n'est pas valide. Les type fichiers supportés sont {1}."
+
 msgctxt "smart iuser"
 msgid "This account has no system identifier"
 msgstr "Ce compte n'a pas "
+
+#, fuzzy
+msgctxt "ddui-htmltext"
+msgid "Title"
+msgstr "titre"
 
 msgctxt "grid-component"
 msgid "Title contains"
@@ -752,6 +1124,10 @@ msgctxt "smart group"
 msgid "To avoid compute mail addresses when group has lot of members"
 msgstr ""
 "Pour éviter de calculer des adresses lorsque le groupe est très important"
+
+msgctxt "ddui-htmltext"
+msgid "ToolTip"
+msgstr "Infobulle"
 
 msgctxt "ddui-file"
 msgid "Transferring"
@@ -764,6 +1140,14 @@ msgstr "Commentaire de transition"
 msgctxt "ddui"
 msgid "Transition success"
 msgstr "Transition réussie"
+
+msgctxt "ddui-htmltext"
+msgid "Underline"
+msgstr "Souligné"
+
+msgctxt "ddui-htmltext"
+msgid "Units"
+msgstr "Unités"
 
 #, php-format
 msgid "Unlabeled menu (%s)"
@@ -780,6 +1164,14 @@ msgstr "Déverrouiller"
 msgctxt "ddui"
 msgid "Unlock document"
 msgstr "Déverrouiller"
+
+msgctxt "ddui-htmltext"
+msgid "Update"
+msgstr "Mise à jour"
+
+msgctxt "ddui-htmltext"
+msgid "Upload"
+msgstr "Charger"
 
 msgctxt "smart-grid"
 msgid "Upload all results"
@@ -819,6 +1211,10 @@ msgctxt "smart iuser"
 msgid "User is deactivated"
 msgstr "L'utilisateur est désactivé"
 
+msgctxt "ddui-htmltext"
+msgid "View HTML"
+msgstr "Voir HTML"
+
 msgctxt "UiMenu"
 msgid "View current revision"
 msgstr "Voir la version actuelle"
@@ -830,6 +1226,18 @@ msgstr "Voir les résultats précédents"
 msgctxt "UiMenu"
 msgid "View transition graph"
 msgstr "Prochaines étapes ..."
+
+msgctxt "ddui-htmltext"
+msgid "Web address"
+msgstr "Adresse Web"
+
+msgctxt "ddui-htmltext"
+msgid "Width"
+msgstr "Largeur"
+
+msgctxt "ddui-htmltext"
+msgid "Width (px)"
+msgstr "Largeur (px)"
 
 #, php-format
 msgctxt "ddui"
@@ -847,6 +1255,10 @@ msgstr ""
 msgctxt "ddui"
 msgid "Workflow Transition Comment"
 msgstr "Commentaire de transition du cycle de vie"
+
+msgctxt "ddui-htmltext"
+msgid "Wrap text"
+msgstr "Renvoi à la ligne"
 
 msgctxt "identityComponent"
 msgid "You entered an invalid current password"
@@ -907,6 +1319,10 @@ msgctxt "smart-grid"
 msgid "of"
 msgstr "sur"
 
+msgctxt "ddui-htmltext"
+msgid "or"
+msgstr "Ou"
+
 msgctxt "smart-grid"
 msgid "results per page"
 msgstr "résultats par page"
@@ -943,44 +1359,3 @@ msgstr "{0} - {1} of {2} résultats"
 msgctxt "ddui-enum"
 msgid "{{value}} **"
 msgstr "{{value}} (autre choix)"
-
-#, fuzzy
-#~ msgctxt "login"
-#~ msgid "Connexion à %s"
-#~ msgstr "Connexion à %s"
-
-#~ msgctxt "UiMenu"
-#~ msgid "Help"
-#~ msgstr "Aide"
-
-#~ msgctxt "ddui helppage"
-#~ msgid "Lang"
-#~ msgstr "Langue"
-
-#~ msgctxt "mask"
-#~ msgid "N"
-#~ msgstr "N"
-
-#~ msgctxt "smart report"
-#~ msgid "Number maximum of displayed elements"
-#~ msgstr "Nombre maximum d'éléments affichés"
-
-#~ msgctxt "smart:dsearch"
-#~ msgid "View"
-#~ msgstr "Voir"
-
-#~ msgctxt "mask"
-#~ msgid "Y"
-#~ msgstr "Y"
-
-#~ msgctxt "mask"
-#~ msgid "hidden"
-#~ msgstr "caché"
-
-#~ msgctxt "mask"
-#~ msgid "invisible"
-#~ msgstr "masque"
-
-#~ msgctxt "mask"
-#~ msgid "static array"
-#~ msgstr "Tableau statique"

@@ -134,7 +134,7 @@ class HtmltextRenderOptions extends CommonRenderOptions
             "emptyFolder" => ___("Empty Folder", "ddui-htmltext"),
             "uploadFile" => ___("Upload", "ddui-htmltext"),
             "overflowAnchor" => ___("More tools", "ddui-htmltext"),
-            "orderBy" => ___("Arrange by=>", "ddui-htmltext"),
+            "orderBy" => ___("Arrange by", "ddui-htmltext"),
             "orderBySize" => ___("Size", "ddui-htmltext"),
             "orderByName" => ___("Name", "ddui-htmltext"),
             "invalidFileType" => ___(
