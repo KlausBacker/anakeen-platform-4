@@ -1,45 +1,45 @@
 <?php
 /*
  * @author Anakeen
- * @package FDL
  */
+
 /**
  * This class is a generic DB Class that can be used to create objects
  * based on the description of a DB Table. More Complex Objects will
  * inherit from this basic Class.
  *
  */
-Class PgObj
+class PgObj
 {
     /**
      * the database connection resource
-     * @public resource
+     * @var resource|-1
      */
-    public $dbid = - 1;
+    public $dbid = -1;
     /**
      * coordinates to access to database
-     * @public string
+     * @var string
      */
     public $dbaccess = '';
     /**
      * array of SQL fields use for the object
-     * @public array
+     * @var array
      */
     public $fields = array(
         '*'
     );
-    
+
     public $id_fields = array();
     /**
      * name of the SQL table
-     * @public string
+     * @var string
      */
     public $dbtable = '';
-    
+
     public $criterias = array();
     /**
      * array of other SQL fields, not in attribute of object
-     * @public array
+     * @var array
      */
     public $sup_fields = array();
     public $sup_where = array();
@@ -47,13 +47,13 @@ Class PgObj
     public $fulltextfields = array();
     /**
      * sql field to order
-     * @public string
+     * @var string
      */
     public $order_by = "";
     /**
      * indicates if fields has been affected
-     * @public string
-     * @see Affect()
+     * @var string
+     * @see affect()
      */
     public $isset = false; // indicate if fields has been affected (call affect methods)
     public $sqlcreate;
@@ -64,7 +64,11 @@ Class PgObj
     public $res = '';
     protected $msg_err = '';
     //----------------------------------------------------------------------------
-    
+    /**
+     * @var false|string
+     */
+    protected $selectstring;
+
     /**
      * Database Object constructor
      *
@@ -72,78 +76,76 @@ Class PgObj
      * @param int|string $id identificator of the object
      * @param array|string $res array of result issue to QueryDb {@link QueryDb::Query()}
      * @param int|resource $dbid the database connection resource
-     * @return \PgObj false if error occured
+     * @return \PgObj|bool false if error occured
      */
-    function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
+    public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
-        
         $this->dbaccess = $dbaccess;
-        $this->init_dbid();
-        
+        $this->initDbid();
+
         if ($this->dbid == 0) {
-            $this->dbid = - 1;
+            $this->dbid = -1;
         }
-        
+
         $this->selectstring = "";
         // SELECTED FIELDS
-        reset($this->fields);
-        while (list($k, $v) = each($this->fields)) {
+        foreach ($this->fields as $v) {
             $this->selectstring = $this->selectstring . $this->dbtable . "." . $v . ",";
             $this->$v = "";
         }
-        
-        reset($this->sup_fields);
-        while (list($k, $v) = each($this->sup_fields)) {
+
+        foreach ($this->sup_fields as $v) {
             $this->selectstring = $this->selectstring . "" . $v . ",";
             $this->$v = "";
         }
         $this->selectstring = substr($this->selectstring, 0, strlen($this->selectstring) - 1);
         // select with the id
         if (($id != '') || (is_array($id)) || (!isset($this->id_fields[0]))) {
-            $ret = $this->Select($id);
-            
+            $ret = $this->select($id);
+
             return ($ret);
         }
         // affect with a query result
         if (is_array($res)) {
-            $this->Affect($res);
+            $this->affect($res);
         }
-        
+
         return true;
     }
-    
-    function Select($id)
+
+    public function select($id)
     {
-        if ($this->dbid == - 1) return FALSE;
-        
-        $msg = $this->PreSelect($id);
-        if ($msg != '') return $msg;
-        
+        if ($this->dbid == -1) {
+            return false;
+        }
+
+        $msg = $this->preSelect($id);
+        if ($msg != '') {
+            return $msg;
+        }
+
         if ($this->dbtable == '') {
             return ("error : No Tables");
         }
         $fromstr = "{$this->dbtable}";
         if (is_array($this->sup_tables)) {
-            reset($this->sup_tables);
-            while (list($k, $v) = each($this->sup_tables)) {
-                $fromstr.= "," . $v;
+            foreach ($this->sup_tables as $v) {
+                $fromstr .= "," . $v;
             }
         }
         $sql = "select {$this->selectstring} from {$fromstr} ";
-        
+
         $count = 0;
         if (is_array($id)) {
             $count = 0;
             $wherestr = " where ";
-            reset($this->id_fields);
-            while (list($k, $v) = each($this->id_fields)) {
+            foreach ($this->id_fields as $k => $v) {
                 if ($count > 0) {
                     $wherestr = $wherestr . " AND ";
                 }
                 $wherestr = $wherestr . "( " . $this->dbtable . "." . $v . "='" . pg_escape_string($id[$k]) . "' )";
                 $count = $count + 1;
                 //$this->$v = $id[$k];
-                
             }
         } else {
             if (isset($this->id_fields[0])) {
@@ -153,56 +155,58 @@ Class PgObj
             }
         }
         if (is_array($this->sup_where)) {
-            reset($this->sup_where);
-            while (list($k, $v) = each($this->sup_where)) {
+            foreach ($this->sup_where as $v) {
                 $wherestr = $wherestr . " AND ";
                 $wherestr = $wherestr . "( " . $v . " )";
                 $count = $count + 1;
             }
         }
-        
+
         $sql = $sql . " " . $wherestr;
-        
-        $this->exec_query($sql);
-        
+
+        $this->execQuery($sql);
+
         if ($this->numrows() > 0) {
-            $res = $this->fetch_array(0);
-            $this->Affect($res);
+            $res = $this->fetchArray(0);
+            $this->affect($res);
         } else {
             return false;
         }
-        $msg = $this->PostSelect($id);
-        if ($msg != '') return $msg;
+        $msg = $this->postSelect($id);
+        if ($msg != '') {
+            return $msg;
+        }
         return true;
     }
-    
-    function Affect($array)
+
+    public function affect($array)
     {
-        reset($array);
-        while (list($k, $v) = each($array)) {
+        foreach ($array as $k => $v) {
             if (!is_integer($k)) {
                 $this->$k = $v;
             }
         }
-        $this->Complete();
+        $this->complete();
         $this->isset = true;
     }
+
     /**
      * verify that the object exists
      *
      * if true values of the object has been set
      * @return bool
      */
-    function isAffected()
+    public function isAffected()
     {
         return $this->isset;
     }
-    
-    function Complete()
+
+    public function complete()
     {
         // This function should be replaced by the Child Class
         return '';
     }
+
     /**
      * Method use before Add method
      * This method should be replaced by the Child Class
@@ -210,11 +214,12 @@ Class PgObj
      * @return string error message, if no error empty string
      * @see Add()
      */
-    function PreInsert()
+    public function preInsert()
     {
         // This function should be replaced by the Child Class
         return '';
     }
+
     /**
      * Method use after Add method
      * This method should be replaced by the Child Class
@@ -223,66 +228,69 @@ Class PgObj
      * error not empty the Add method is not completed
      * @see Add()
      */
-    function PostInsert()
+    public function postInsert()
     {
         // This function should be replaced by the Child Class
         return '';
     }
+
     /**
      * Method use before Modify method
      * This method should be replaced by the Child Class
      *
      * @return string error message, if no error empty string
-     * @see Modify()
+     * @see modify()
      */
-    function PreUpdate()
+    public function preUpdate()
     {
         // This function should be replaced by the Child Class
         return '';
     }
+
     /**
      * Method use after Modify method
      * This method should be replaced by the Child Class
      *
      * @return string error message, if no error empty string, if message
      * error not empty the Modify method is not completed
-     * @see Modify()
+     * @see modify()
      */
-    function PostUpdate()
+    public function postUpdate()
     {
         // This function should be replaced by the Child Class
         return '';
     }
-    
-    function PreDelete()
+
+    public function preDelete()
     {
         // This function should be replaced by the Child Class
         return '';
     }
-    
-    function PostDelete()
+
+    public function postDelete()
     {
         // This function should be replaced by the Child Class
         return '';
     }
-    
-    function PreSelect($id)
+
+    public function preSelect($id)
     {
         // This function should be replaced by the Child Class
         return '';
     }
-    
-    function PostSelect($id)
+
+    public function postSelect($id)
     {
         // This function should be replaced by the Child Class
         return '';
     }
-    
-    function PostInit()
+
+    public function postInit()
     {
         // This function should be replaced by the Child Class
         return '';
     }
+
     /**
      * Add the object to the database
      * @param bool $nopost PostInsert method not apply if true
@@ -290,39 +298,41 @@ Class PgObj
      * @see PreInsert()
      * @see PostInsert()
      */
-    function Add($nopost = false)
+    public function add($nopost = false)
     {
-        if ($this->dbid == - 1) return false;
-        
-        $msg = $this->PreInsert();
+        if ($this->dbid == -1) {
+            return false;
+        }
+
+        $msg = $this->preInsert();
         if ($msg) {
             return $msg;
         }
-        
+
         $sfields = implode(",", $this->fields);
         $sql = "insert into " . $this->dbtable . "($sfields) values (";
-        
+
         $valstring = "";
-        reset($this->fields);
-        while (list($k, $v) = each($this->fields)) {
+        foreach ($this->fields as $k => $v) {
             $valstring = $valstring . $this->lw($this->$v) . ",";
         }
         $valstring = substr($valstring, 0, strlen($valstring) - 1);
         $sql = $sql . $valstring . ")";
         // requery execution
-        $msg = $this->exec_query($sql);
-        
+        $msg = $this->execQuery($sql);
+
         if ($msg) {
             return $msg;
         }
-        
+
         $this->isset = true;
         if (!$nopost) {
-            $msg = $this->PostInsert();
+            $msg = $this->postInsert();
         }
-        
+
         return $msg;
     }
+
     /**
      * update the object in database
      * @param bool $nopost PostUpdate() and method not apply if true
@@ -332,27 +342,27 @@ Class PgObj
      * @see PreUpdate()
      * @see PostUpdate()
      */
-    function Modify($nopost = false, $sfields = "", $nopre = false)
+    public function modify($nopost = false, $sfields = "", $nopre = false)
     {
-        if ($this->dbid == - 1) {
+        if ($this->dbid == -1) {
             return false;
         }
-        
+
         if (!$nopre) {
-            $msg = $this->PreUpdate();
+            $msg = $this->preUpdate();
             if ($msg) {
                 return $msg;
             }
         }
-        
+
         $sql = "update " . $this->dbtable . " set ";
-        
+
         $nb_keys = 0;
         foreach ($this->id_fields as $v) {
             $notset[$v] = "Y";
             $nb_keys++;
         }
-        
+
         if (!is_array($sfields)) {
             $fields = $this->fields;
         } else {
@@ -361,7 +371,7 @@ Class PgObj
                 $fields[] = $v;
             }
         }
-        
+
         $setstr = "";
         $wstr = "";
         foreach ($fields as $v) {
@@ -374,34 +384,33 @@ Class PgObj
         }
         $setstr = substr($setstr, 0, strlen($setstr) - 1);
         $wstr = substr($wstr, 0, strlen($wstr) - 3);
-        $sql.= $setstr;
+        $sql .= $setstr;
         if ($nb_keys > 0) {
-            $sql.= " where " . $wstr . ";";
+            $sql .= " where " . $wstr . ";";
         }
-        
-        $msg = $this->exec_query($sql);
+
+        $msg = $this->execQuery($sql);
         if ($msg) {
             return $msg;
         }
-        
+
         if (!$nopost) {
-            $msg = $this->PostUpdate();
+            $msg = $this->postUpdate();
         }
-        
+
         return $msg;
     }
-    
-    function Delete($nopost = false)
+
+    public function delete($nopost = false)
     {
-        $msg = $this->PreDelete();
+        $msg = $this->preDelete();
         if ($msg) {
             return $msg;
         }
         $wherestr = "";
         $count = 0;
-        
-        reset($this->id_fields);
-        while (list($k, $v) = each($this->id_fields)) {
+
+        foreach ($this->id_fields as $k => $v) {
             if ($count > 0) {
                 $wherestr = $wherestr . " AND ";
             }
@@ -410,111 +419,66 @@ Class PgObj
         }
         // suppression de l'enregistrement
         $sql = "delete from " . $this->dbtable . " where " . $wherestr . ";";
-        
-        $msg = $this->exec_query($sql);
+
+        $msg = $this->execQuery($sql);
         if ($msg) {
             return $msg;
         }
-        
+
         if (!$nopost) {
-            $msg = $this->PostDelete();
+            $msg = $this->postDelete();
         }
-        
+
         return $msg;
     }
-    /**
-     * Add several objects to the database
-     * no post neither preInsert are called
-     * @param $tcopy
-     * @param bool $nopost PostInsert method not apply if true
-     * @return string error message, if no error empty string
-     * @see PreInsert()
-     * @see PostInsert()
-     */
-    function Adds(&$tcopy, $nopost = false)
+
+    public function lw($prop)
     {
-        $msg = '';
-        
-        if ($this->dbid == - 1) {
-            return false;
-        }
-        if (!is_array($tcopy)) {
-            return false;
-        }
-        
-        $trow = array();
-        foreach ($tcopy as $kc => $vc) {
-            $row = "";
-            foreach ($this->fields as $field) {
-                if (isset($vc[$field])) {
-                    $row.= $vc[$field];
-                } elseif ($this->$field != '') {
-                    $row.= $this->$field;
-                }
-                $row.= "\t";
-            }
-            $trow[$kc] = substr($row, 0, -1);
-        }
-        // query execution
-        if (pg_copy_from($this->dbid, $this->dbtable, $trow, "\t")) {
-            return sprintf(_("Pgobj::Adds error in multiple insertion"));
-        }
-        
-        if (!$nopost) {
-            $msg = $this->PostInsert();
-        }
-        
-        return $msg;
+        return ($prop == '' ? "null" : "'" . pg_escape_string($prop) . "'");
     }
-    
-    function lw($prop)
-    {
-        $result = ($prop == '' ? "null" : "'" . pg_escape_string($prop) . "'");
-        return $result;
-    }
-    
-    function CloseConnect()
+
+    public function closeConnect()
     {
         return pg_close($this->dbid);
     }
-    
-    function Create($nopost = false)
+
+    public function create($nopost = false)
     {
         $msg = "";
-        
+
         if (isset($this->sqlcreate)) {
             // step by step
             if (is_array($this->sqlcreate)) {
-                while (list($k, $sqlquery) = each($this->sqlcreate)) {
-                    $msg.= $this->exec_query($sqlquery, 1);
+                foreach ($this->sqlcreate as $sqlquery) {
+                    $msg .= $this->execQuery($sqlquery, 1);
                 }
             } else {
                 $sqlcmds = explode(";", $this->sqlcreate);
-                while (list($k, $sqlquery) = each($sqlcmds)) {
-                    $msg.= $this->exec_query($sqlquery, 1);
+                foreach ($sqlcmds as $sqlquery) {
+                    $msg .= $this->execQuery($sqlquery, 1);
                 }
             }
         }
         if (isset($this->sqlinit)) {
-            $msg = $this->exec_query($this->sqlinit, 1);
+            $msg = $this->execQuery($this->sqlinit, 1);
         }
         if ($msg) {
             return $msg;
         }
-        
+
         if (!$nopost) {
-            $msg = $this->PostInit();
+            $msg = $this->postInit();
         }
-        
+
         return ($msg);
     }
-    
-    static function close_my_pg_connections()
+
+    public static function closeMyPgConnections()
     {
         global $_DBID;
-        
+
         $pid = getmypid();
-        
+
         if (!isset($_DBID[$pid])) {
             return;
         }
@@ -523,13 +487,13 @@ Class PgObj
         }
         unset($_DBID[$pid]);
     }
-    
-    function init_dbid()
+
+    public function initDbid()
     {
         global $_DBID;
-        
+
         $pid = getmypid();
-        
+
         if (isset($_DBID[$pid]) && isset($_DBID[$pid][$this->dbaccess]) && is_resource($_DBID[$pid][$this->dbaccess])) {
             $status = pg_connection_status($_DBID[$pid][$this->dbaccess]);
             if ($status !== PGSQL_CONNECTION_OK) {
@@ -539,48 +503,61 @@ Class PgObj
             $_DBID[$pid][$this->dbaccess] = pg_connect($this->dbaccess, PGSQL_CONNECT_FORCE_NEW);
         }
         $this->dbid = $_DBID[$pid][$this->dbaccess];
-        
+
         return $this->dbid;
     }
-    
-    function exec_query($sql, $lvl = 0)
+
+    public function execQuery($sql, $lvl = 0)
     {
         global $SQLDELAY, $SQLDEBUG;
-        
+
         if (!$sql) {
             return '';
         }
-        
+
         if ($SQLDEBUG) {
             $sqlt1 = microtime();
         }
-        
-        $this->init_dbid();
-        
+
+        $this->initDbid();
+
         $this->res = @pg_query($this->dbid, $sql);
-        
+
         $pgmess = pg_last_error($this->dbid);
-        
-        $this->msg_err = chop(preg_replace("/ERROR:  /", "", $pgmess));
+
+        $this->msg_err = chop(preg_replace("/ERROR: {2}/", "", $pgmess));
         // Use Postgresql error codes instead of localized text messages
         $action_needed = "";
         if ($lvl == 0) { // to avoid recursivity
             if ($this->msg_err != "") {
-                if ((preg_match("/Relation ['\"]([a-zA-Z_]*)['\"] does not exist/i", $this->msg_err) || preg_match("/Relation (.*) n'existe pas/i", $this->msg_err) || preg_match("/class \"([a-zA-Z_]*)\" not found/i", $this->msg_err))) {
+                if ((preg_match(
+                    "/Relation ['\"]([a-zA-Z_]*)['\"] does not exist/i",
+                    $this->msg_err
+                ) || preg_match("/Relation (.*) n'existe pas/i", $this->msg_err) || preg_match("/class \"([a-zA-Z_]*)\" not found/i", $this->msg_err))) {
                     $action_needed = "create";
-                } else if ((preg_match("/No such attribute or function '([a-zA-Z_0-9]*)'/i", $this->msg_err)) || (preg_match("/Attribute ['\"]([a-zA-Z_0-9]*)['\"] not found/i", $this->msg_err))) {
-                    $action_needed = "update";
-                } else if (preg_match("/relation ['\"](.*)['\"] already exists/i", $this->msg_err) || preg_match("/relation (.*) existe d/i", $this->msg_err)) {
-                    $action_needed = "none";
+                } else {
+                    if ((preg_match(
+                        "/No such attribute or function '([a-zA-Z_0-9]*)'/i",
+                        $this->msg_err
+                    )) || (preg_match("/Attribute ['\"]([a-zA-Z_0-9]*)['\"] not found/i", $this->msg_err))) {
+                        $action_needed = "update";
+                    } else {
+                        if (preg_match(
+                            "/relation ['\"](.*)['\"] already exists/i",
+                            $this->msg_err
+                        ) || preg_match("/relation (.*) existe d/i", $this->msg_err)) {
+                            $action_needed = "none";
+                        }
+                    }
                 }
             }
         }
-        
+
         switch ($action_needed) {
             case "create":
-                $st = $this->Create();
+                $st = $this->create();
                 if ($st == "") {
-                    $this->msg_err = $this->exec_query($sql);
+                    $this->msg_err = $this->execQuery($sql);
                 } else {
                     return "Table {$this->dbtable} doesn't exist and can't be created";
                 }
@@ -597,20 +574,20 @@ Class PgObj
             default:
                 break;
         }
-        
+
         if ($SQLDEBUG) {
             global $TSQLDELAY;
             /** @noinspection PhpUndefinedVariableInspection */
-            $SQLDELAY+= te_microtime_diff(microtime() , $sqlt1); // to test delay of request
+            $SQLDELAY += te_microtime_diff(microtime(), $sqlt1); // to test delay of request
             $TSQLDELAY[] = array(
-                "t" => sprintf("%.04f", te_microtime_diff(microtime() , $sqlt1)) ,
+                "t" => sprintf("%.04f", te_microtime_diff(microtime(), $sqlt1)),
                 "s" => str_replace("from", "<br/>from", $sql)
             );
         }
         return ($this->msg_err);
     }
-    
-    function numrows()
+
+    public function numrows()
     {
         if ($this->msg_err == "") {
             return (pg_num_rows($this->res));
@@ -618,10 +595,9 @@ Class PgObj
             return (0);
         }
     }
-    
-    function fetch_array($c, $type = PGSQL_ASSOC)
+
+    public function fetchArray($c, $type = PGSQL_ASSOC)
     {
         return (pg_fetch_array($this->res, $c, $type));
     }
 }
-?>

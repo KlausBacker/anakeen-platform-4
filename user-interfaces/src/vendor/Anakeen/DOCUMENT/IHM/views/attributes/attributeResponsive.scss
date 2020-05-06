@@ -1,10 +1,21 @@
 $spaceBeetween:1rem;
 
 
+.dcpDocument--edit , .dcpDocument--create  {
+  .dcp-column--leftright {
+    .dcpAttribute:last-child {
+      // To avoid specific rule  in attribute.scss
+      margin-bottom: 1.6666rem;
+    }
+  }
+}
+
 // ---------------------
 // FRAME LEFT - RIGHT
 // ---------------------
 .dcp-column--leftright {
+
+
   &.dcpFrame.dcp-column {
 
     > .dcpFrame__content {

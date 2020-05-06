@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/internal-components",
-  "version": "1.0.3-RC.2020.1.26",
+  "version": "1.0.3-RC.2020.1.27",
   "description": "Anakeen internal components",
   "author": "Anakeen",
   "license": "SEE LICENSE IN LICENSE",
@@ -29,7 +29,7 @@
     "rollup-plugin-scss": "^2.1.0",
     "rollup-plugin-string": "^3.0.0",
     "rollup-plugin-typescript2": "^0.25.3",
-    "rollup-plugin-vue": "^5.1.4",
+    "rollup-plugin-vue": "^5.1.6",
     "ts-loader": "^6.2.1",
     "typescript": "^3.7.4",
     "vue-style-loader": "^4.1.2",

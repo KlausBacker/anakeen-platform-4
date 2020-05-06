@@ -1,21 +1,13 @@
 <template>
-  <div class="ssm-parameters-grid">
-    <kendo-datasource
-      ref="parametersGridData"
-      class="parameters-grid-data"
-      :transport-read="getParameters"
-      :schema-data="parseParametersData"
-      :sort="[{ field: 'label', dir: 'asc' }]"
-    />
+  <div class="ssm-parameters">
+
     <smart-form
       v-if="haveParameters"
       ref="ssmForm"
       :config="generateSmartForm"
       :options="{ force: true }"
-      @actionClick="formClickMenu"
-      @ready="ssmFormReady"
-      @smartFieldChange="ssmFormChange"
-      @smartFieldArrayChange="ssmArrayChange"
+      @beforeSave="onSave"
+      @actionClick="onActionClick"
     />
     <div v-else class="no-records">
       <div class="empty-ssm-grid">

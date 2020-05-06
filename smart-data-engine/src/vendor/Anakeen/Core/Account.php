@@ -185,6 +185,10 @@ create sequence seq_id_users start 10;";
         if ($err) {
             return $err;
         }
+        if (!$substitute && !$this->substitute) {
+            // Nothing to do
+            return "";
+        }
         if ($substitute) {
             if (!(is_numeric($substitute))) {
                 $sql = sprintf("select id from users where login = '%s'", pg_escape_string($substitute));
@@ -302,8 +306,7 @@ create sequence seq_id_users start 10;";
 
     public function postInsert()
     {
-        $err = $this->synchroAccountDocument();
-        return $err;
+        return $this->synchroAccountDocument();
     }
 
     public function postUpdate()
@@ -383,11 +386,11 @@ create sequence seq_id_users start 10;";
      * return system user identifier from user document reference
      *
      * @static
-     * @see getFidFromUid
-     *
      * @param int $fid
      *
      * @return int
+     * @see getFidFromUid
+     *
      */
     public static function getUidFromFid($fid)
     {
@@ -402,11 +405,11 @@ create sequence seq_id_users start 10;";
      * return user document reference from system user identifier
      *
      * @static
-     * @see getUidFromFid
-     *
      * @param int $uid
      *
      * @return int
+     * @see getUidFromFid
+     *
      */
     public static function getFidFromUid($uid)
     {
@@ -421,18 +424,18 @@ create sequence seq_id_users start 10;";
     /**
      * update user from IUSER document
      *
-     * @param int    $fid        document id
-     * @param string $lname      last name
-     * @param string $fname      first name
-     * @param string $expires    expiration date
-     * @param int    $passdelay  password delay
-     * @param string $login      login
-     * @param string $status     'A' (Activate) , 'D' (Desactivated)
-     * @param string $pwd1       password one
-     * @param string $pwd2       password two
-     * @param string $extmail    mail address
-     * @param array  $roles
-     * @param int    $substitute system substitute id
+     * @param int $fid document id
+     * @param string $lname last name
+     * @param string $fname first name
+     * @param string $expires expiration date
+     * @param int $passdelay password delay
+     * @param string $login login
+     * @param string $status 'A' (Activate) , 'D' (Desactivated)
+     * @param string $pwd1 password one
+     * @param string $pwd2 password two
+     * @param string $extmail mail address
+     * @param array $roles
+     * @param int $substitute system substitute id
      *
      * @return string error message
      */
@@ -503,10 +506,10 @@ create sequence seq_id_users start 10;";
     /**
      * update user from FREEDOM IGROUP document
      *
-     * @param int    $fid   document id
+     * @param int $fid document id
      * @param string $gname group name
      * @param string $login login
-     * @param array  $roles system role ids
+     * @param array $roles system role ids
      * @return string error message
      */
     public function setGroups(
@@ -565,9 +568,9 @@ create sequence seq_id_users start 10;";
     public function getExpires()
     {
         if (intval($this->passdelay) == 0) {
+            // neither expire
             $this->expires = "0";
             $this->passdelay = "0";
-            // neither expire
         } elseif (intval($this->expires) == 0) {
             $this->expires = time() + $this->passdelay;
         }
@@ -585,8 +588,8 @@ create sequence seq_id_users start 10;";
              */
             $iuser = \Anakeen\Core\SEManager::getDocument($this->fid);
 
-            $err = $iuser->RefreshDocUser();
             //Update from what
+            $err = $iuser->RefreshDocUser();
         } else {
             if ($this->famid != "") {
                 $fam = $this->famid;
@@ -596,11 +599,20 @@ create sequence seq_id_users start 10;";
                 $fam = "ROLE";
             } else {
                 $fam = "IUSER";
-            };
+            }
             $filter = array(
                 "us_whatid = '" . $this->id . "'"
             );
-            $tdoc = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "LIST", $fam);
+            $tdoc = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection(
+                $dbaccess,
+                0,
+                0,
+                "ALL",
+                $filter,
+                1,
+                "LIST",
+                $fam
+            );
             if (count($tdoc) == 0) {
                 //Create a new doc IUSER
 
@@ -699,32 +711,17 @@ create sequence seq_id_users start 10;";
                 return $this->mail;
             } else {
                 $dn = trim($this->firstname . ' ' . $this->lastname);
-                $mail = sprintf('"%s" <%s>', str_replace('"', '-', $dn), $this->mail);
-                return $mail;
+                return sprintf('"%s" <%s>', str_replace('"', '-', $dn), $this->mail);
             }
         } else {
-            $sql = sprintf(
-                "with recursive amembers(uid) as (
- select iduser, users.login, users.mail from groups,users where idgroup = %d and users.id=groups.iduser
-union
- select iduser, users.login, users.mail from groups,users, amembers where groups.idgroup = amembers.uid and users.id=groups.iduser
-) select users.firstname, users.lastname, users.mail from amembers, users where users.id=amembers.uid and users.accounttype='U' and users.mail is not null order by users.mail;",
-                $this->id
-            );
-            DbManager::query($sql, $umail);
-            $tMail = array();
-            if ($rawmail) {
-                foreach ($umail as $aMail) {
-                    $tMail[] = $aMail["mail"];
-                }
-                $tMail = array_unique($tMail);
-            } else {
-                foreach ($umail as $aMail) {
-                    $dn = trim($aMail["firstname"] . ' ' . $aMail["lastname"]);
-                    $tMail[] = sprintf('"%s" <%s>', str_replace('"', '-', $dn), $aMail["mail"]);
-                }
+            if (!$this->id) {
+                return "";
             }
-            return implode(', ', $tMail);
+            if ($rawmail) {
+                return IgroupLib::getMailGroup($this->id, true);
+            } else {
+                return IgroupLib::getMailGroup($this->id);
+            }
         }
     }
 
@@ -784,11 +781,11 @@ union
      * get the first incumbent which has $acl privilege
      *
      * @param \Anakeen\Core\Internal\SmartElement $doc document to verify
-     * @param string                              $acl document acl name
+     * @param string $acl document acl name
      *
      * @return string incumbent's name which has privilege
      */
-    public function getIncumbentPrivilege(\Anakeen\Core\Internal\SmartElement & $doc, $acl)
+    public function getIncumbentPrivilege(\Anakeen\Core\Internal\SmartElement &$doc, $acl)
     {
         if ($this->id == 1) {
             return '';
@@ -811,9 +808,9 @@ union
      *
      * @static
      *
-     * @param string $qtype      return type LIST|TABLE|ITEM
-     * @param int    $start
-     * @param int    $slice
+     * @param string $qtype return type LIST|TABLE|ITEM
+     * @param int $start
+     * @param int $slice
      * @param string $filteruser keyword to filter user on login or lastname
      *
      * @return array
@@ -894,7 +891,7 @@ union
     /**
      * for group :: get All user & groups ids in all descendant(recursive);
      *
-     * @param int   $id group identifier
+     * @param int $id group identifier
      *
      * @param array $r
      * @return array of account array
@@ -930,7 +927,7 @@ union
     /**
      * for group :: get All direct user & groups ids
      *
-     * @param int  $gid       group identifier
+     * @param int $gid group identifier
      * @param bool $onlygroup set to true if you want only child groups
      * @return array
      */
@@ -977,7 +974,7 @@ union
 
         $sort = 'lastname';
         $sql = sprintf(
-            "SELECT distinct on (%s, users.id) users.id, users.login, users.firstname , users.lastname, users.mail,users.fid ".
+            "SELECT distinct on (%s, users.id) users.id, users.login, users.firstname , users.lastname, users.mail,users.fid " .
             "from users, groups where %s and (groups.iduser=users.id) %s and accounttype='U' order by %s",
             $sort,
             $cond,
@@ -1111,7 +1108,7 @@ union
      *
      * @static
      *
-     * @param int  $uid    user identifier
+     * @param int $uid user identifier
      *
      * @param bool $strict if true no use delegation
      * @return array|null
@@ -1176,9 +1173,9 @@ union
      * if it is a group : get all direct user member of a group
      * if it is a role : het user which has role directly
      *
-     * @param string     $qtype     LIST|TABLE|ITEM
-     * @param bool       $withgroup set to true to return sub group also
-     * @param int|string $limit     max users returned
+     * @param string $qtype LIST|TABLE|ITEM
+     * @param bool $withgroup set to true to return sub group also
+     * @param int|string $limit max users returned
      *
      * @return array of user properties
      */
@@ -1202,8 +1199,8 @@ union
     /**
      * get all users of a group/role direct or indirect
      *
-     * @param int|string $limit     max users returned
-     * @param bool       $onlyUsers set to true to have also sub groups
+     * @param int|string $limit max users returned
+     * @param bool $onlyUsers set to true to have also sub groups
      *
      * @return array of user properties
      */
@@ -1233,11 +1230,11 @@ union
      * Get user token for open access
      *
      * @param bool|int $expireDelay set expiration delay in seconds (-1 if nether expire)
-     * @param bool     $oneshot     set to true to use one token is consumed/deleted when used
+     * @param bool $oneshot set to true to use one token is consumed/deleted when used
      *
-     * @param array    $context     get http var restriction
-     * @param string   $description text description information
-     * @param bool     $forceCreate set to true to always return a new token
+     * @param array $context get http var restriction
+     * @param string $description text description information
+     * @param bool $forceCreate set to true to always return a new token
      *
      * @return string
      * @throws \Anakeen\Exception

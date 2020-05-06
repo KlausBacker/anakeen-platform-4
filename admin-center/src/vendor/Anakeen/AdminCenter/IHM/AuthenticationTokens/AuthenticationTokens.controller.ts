@@ -276,8 +276,17 @@ export default class AuthenticationTokensController extends Mixins(AnkI18NMixin)
           extra: false,
           operators: {
             string: {
-              contains: "Contains"
+              contains: this.$t("AdminCenterKendoGridTranslation.contains")
             }
+          },
+          messages: {
+            info: this.$t("AdminCenterKendoGridTranslation.Filter by") + ': ',
+            operator: this.$t("AdminCenterKendoGridTranslation.Choose operator"),
+            clear: this.$t("AdminCenterKendoGridTranslation.Clear"),
+            filter: this.$t("AdminCenterKendoGridTranslation.Apply"),
+            value: this.$t("AdminCenterKendoGridTranslation.Choose value"),
+            additionalValue: this.$t("AdminCenterKendoGridTranslation.Aditional value"),
+            title: this.$t("AdminCenterKendoGridTranslation.Aditional filter by")
           }
 
           // mode: "row"

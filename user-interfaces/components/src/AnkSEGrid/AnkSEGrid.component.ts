@@ -15,8 +15,37 @@ import GridExportEvent from "./AnkGridEvent/AnkGridExportEvent";
 import I18nMixin from "../../mixins/AnkVueComponentMixin/I18nMixin";
 
 import $ from "jquery";
+import AnkSmartCriteria from "../AnkSmartCriteria/AnkSmartCriteria.component";
+import ISmartFilter from "../AnkSmartCriteria/Types/ISmartFilter";
 
 const CONTROLLER_URL = "/api/v2/grid/controllers/{controller}/{op}/{collection}";
+
+const needWatchUpdate = (newValue, oldValue) => {
+  // need an update if it's not the same type
+  if (typeof newValue !== typeof oldValue) {
+    return true;
+  }
+
+  // Quick case for array
+  if (Array.isArray(newValue)) {
+    if (newValue.length !== oldValue.length) {
+      return true;
+    }
+  }
+
+  // parameters have the same type
+  if (newValue !== null && (typeof newValue === "object" || Array.isArray(newValue))) {
+    let result = false;
+    // Compare if values of newValue object are contain in oldValue object
+    Object.keys(newValue).forEach(key => {
+      result = result || needWatchUpdate(newValue[key], oldValue[key]);
+    });
+    return result;
+  } else {
+    // simple types case
+    return newValue !== oldValue;
+  }
+};
 
 export interface SmartGridColumn {
   withContext?: boolean;
@@ -172,18 +201,11 @@ function computeSkipFromPage(page, pageSize): number {
   name: "ank-se-grid-vue"
 })
 export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
-  // Deprecated use of collection prop, use smartCollection instead
   @Prop({
     default: "0",
     type: String
   })
   public collection: string;
-
-  @Prop({
-    default: "0",
-    type: String
-  })
-  public smartCollection: string;
 
   @Prop({
     type: Object
@@ -363,37 +385,145 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   })
   public autoFit!: boolean;
 
+  @Prop({
+    default: () => ({ logic: "and", filters: [] }),
+    type: Object
+  })
+  public smartCriteriaValue!: ISmartFilter;
+
   public $refs: {
     smartGridWidget: Grid;
   };
 
-  @Watch("$props", { deep: true })
-  protected async onPropsChange(newValue, oldValue): Promise<void> {
-    if (newValue.pageable !== this.pager) {
-      this.pager = newValue.pageable === true ? DEFAULT_PAGER : newValue.pageable;
+  //region watchProps
+  @Watch("sort", { deep: true })
+  public async watchSort(newValue): Promise<void> {
+    if (needWatchUpdate(newValue, this.currentSort)) {
+      this.currentSort = newValue;
+      return await this.refreshGrid();
     }
-    if (newValue.sortable !== this.sorter) {
-      this.sorter = newValue.sortable === true ? DEFAULT_SORT : newValue.sortable;
+  }
+  @Watch("pageable", { deep: true })
+  public async watchPageable(newValue): Promise<void> {
+    if (!newValue) {
+      this.pager = false;
+    } else {
+      let toCompare = newValue;
+      if (newValue === true) {
+        toCompare = DEFAULT_PAGER;
+      }
+      if (needWatchUpdate(toCompare, this.pager)) {
+        this.pager = toCompare;
+        return await this.refreshGrid();
+      }
     }
-    // apply sort prop change
-    if (this.currentSort !== newValue.sort) {
-      this.currentSort = newValue.sort;
-    }
+  }
 
-    // apply page prop change
-    const skip = computeSkipFromPage(newValue.page, this.currentPage.take);
+  @Watch("sortable", { deep: true })
+  public async watchSortable(newValue): Promise<void> {
+    if (needWatchUpdate(newValue, this.sorter)) {
+      this.sorter = newValue === true ? DEFAULT_SORT : newValue;
+      return await this.refreshGrid();
+    }
+  }
+  @Watch("page", { deep: true })
+  public async watchPage(newValue): Promise<void> {
+    const skip = computeSkipFromPage(newValue, this.currentPage.take);
     if (this.currentPage.skip !== skip) {
       this.currentPage.skip = skip;
+      return await this.refreshGrid();
     }
+  }
 
-    // apply filter prop change
-    if (this.currentFilter !== newValue.filter) {
-      this.currentFilter = newValue.filter;
+  @Watch("filter", { deep: true })
+  public async watchFilter(newValue): Promise<void> {
+    if (this.currentFilter !== newValue) {
+      this.currentFilter = newValue;
+      return await this.refreshGrid();
     }
+  }
 
-    // apply general changes
+  @Watch("collection")
+  protected async oncollectionChange(): Promise<void> {
     return await this.refreshGrid();
   }
+
+  @Watch("customData")
+  protected async oncustomDataChange(): Promise<void> {
+    return await this.refreshGrid();
+  }
+
+  @Watch("columns")
+  protected async oncolumnsChange(): Promise<void> {
+    return await this.refreshGrid();
+  }
+
+  @Watch("subHeader")
+  protected async onsubHeaderChange(): Promise<void> {
+    return await this.refreshGrid();
+  }
+
+  @Watch("persistStateKey")
+  protected async onpersistStateKeyChange(newValue, oldValue): Promise<void> {
+    return await this.refreshGrid();
+  }
+
+  @Watch("filterable")
+  protected async onfilterableChange(newValue, oldValue): Promise<void> {
+    return await this.refreshGrid();
+  }
+
+  @Watch("reorderable")
+  protected async onreorderableChange(newValue, oldValue): Promise<void> {
+    return await this.refreshGrid();
+  }
+
+  @Watch("resizable")
+  protected async onresizableChange(newValue, oldValue): Promise<void> {
+    return await this.refreshGrid();
+  }
+  @Watch("selectable")
+  protected async onselectableChange(newValue, oldValue): Promise<void> {
+    return await this.refreshGrid();
+  }
+  @Watch("checkable")
+  protected async oncheckableChange(newValue, oldValue): Promise<void> {
+    return await this.refreshGrid();
+  }
+
+  @Watch("persistSelection")
+  protected async onpersistSelectionChange(newValue, oldValue): Promise<void> {
+    return await this.refreshGrid();
+  }
+  @Watch("maxRowHeight")
+  protected async onmaxRowHeightChange(newValue, oldValue): Promise<void> {
+    return await this.refreshGrid();
+  }
+
+  @Watch("contentUrl")
+  protected async oncontentUrlChange(newValue, oldValue): Promise<void> {
+    return await this.refreshGrid();
+  }
+
+  @Watch("configUrl")
+  protected async onconfigUrlChange(newValue, oldValue): Promise<void> {
+    return await this.refreshGrid();
+  }
+
+  @Watch("exportUrl")
+  protected async onexportUrlChange(newValue, oldValue): Promise<void> {
+    return await this.refreshGrid();
+  }
+  @Watch("selectedField")
+  protected async onselectedFieldChange(newValue, oldValue): Promise<void> {
+    return await this.refreshGrid();
+  }
+
+  @Watch("autoFit")
+  protected async onautoFitChange(newValue, oldValue): Promise<void> {
+    return await this.refreshGrid();
+  }
+  //endregion watchProps
 
   @Watch("isLoading", { immediate: true })
   protected onLoadingChange(newValue): void {
@@ -403,6 +533,18 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   @Watch("dataItems")
   public watchDataItems(): void {
     this.$emit("dataBound", this.gridInstance);
+  }
+
+  @Watch("smartCriteriaValue")
+  public async watchSearchCriteriaValue(newValue): Promise<void> {
+    const filtered = this.currentFilter.filters.filter(filter => filter.operator !== "searchCriteria");
+    filtered.push({
+      field: "searchCriteriaField",
+      operator: "searchCriteria",
+      value: newValue
+    });
+    this.currentFilter.filters = filtered;
+    return await this._loadGridContent();
   }
 
   @Watch("selectedRows", { deep: true })
@@ -430,6 +572,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     downloadAgain: "Retry",
     downloadCancel: "Cancel"
   };
+
   public onlySelection = false;
   public allColumns: SmartGridColumn[] = this.columns;
   public columnsList: SmartGridColumn[] = this.columns;
@@ -484,7 +627,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     this.gridError = new GridError(this);
     this.$on("pageChange", this.onPageChange);
 
-    this.refreshGrid();
+    return await this.refreshGrid();
   }
 
   beforeDestroy(): void {
@@ -918,7 +1061,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
       this.currentPage = Object.assign({}, this.currentPage, pagerEvt.data.page);
       this.pager = Object.assign({}, this.pager, { pageSize: pagerEvt.data.page.take });
     }
-    await this._loadGridContent();
+    return await this._loadGridContent();
   }
 
   protected async onFilterChange(filterEvt): Promise<void> {
@@ -931,7 +1074,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
         this.currentFilter.filters = filters;
       }
     }
-    await this._loadGridContent();
+    return await this._loadGridContent();
   }
 
   protected onColumnReorder(reorderEvt): void {

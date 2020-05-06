@@ -178,7 +178,7 @@ class SearchElements
     {
         $allowed = [self::NOTRASH, self::ONLYTRASH, self::ALSOTRASH];
         if (!in_array($trash, $allowed)) {
-            throw new Exception("SD0012", $trash, implode($allowed, ", "));
+            throw new Exception("SD0012", $trash, implode(", ", $allowed));
         }
         $this->searchData->trash = $trash;
         return $this;

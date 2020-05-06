@@ -4,7 +4,7 @@
   flex-direction: column;
   background-color: #fbfbfb;
 
-  .smart-element-grid.smart-element-grid--selectable .k-master-row:not(.k-state-selected):hover {
+  .smart-element-grid .k-master-row:not(.k-state-selected):hover {
     color: #00b4fc;
   }
 
@@ -56,6 +56,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
 }
 .smart-element-list-item--heading {
   text-overflow: ellipsis;

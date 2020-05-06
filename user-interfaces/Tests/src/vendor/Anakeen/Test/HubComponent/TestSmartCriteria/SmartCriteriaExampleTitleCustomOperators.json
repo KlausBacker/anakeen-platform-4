@@ -1,0 +1,29 @@
+{
+  "title": "Test title Custom Operators",
+  "defaultStructure": "DEVBILL",
+  "criterias": [
+    {
+      "kind": "property",
+      "field": "title",
+      "operators": [
+        {
+          "key": "isEmpty",
+          "options": []
+        },
+        {
+          "key": "isEmpty",
+          "options": [
+            "not"
+          ]
+        },
+        {
+          "key": "contains",
+          "options": [
+            "not",
+            "startsWith"
+          ]
+        }
+      ]
+    }
+  ]
+}

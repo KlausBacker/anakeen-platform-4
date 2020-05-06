@@ -674,9 +674,10 @@ export default Backbone.View.extend({
     $.ajax({
       type: "POST",
       url: autocompleteUrl,
-      data: options.data,
+      data: JSON.stringify(options.data),
+      contentType: "application/json"
 
-      dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requestsons.error(result);
+      //dataType: "json" // No use json JQuery because is delete empty arrays
     })
       .pipe(
         function vAttributeAutocompletehandleSuccessRequest(response) {

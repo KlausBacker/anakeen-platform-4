@@ -1,5 +1,6 @@
 import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
+import { Component, Prop, Vue, Watch, Mixins } from "vue-property-decorator";
 
 Vue.use(DataSourceInstaller);
 @Component({
@@ -8,7 +9,7 @@ Vue.use(DataSourceInstaller);
     prop: "selected"
   }
 })
-export default class WorkflowListController extends Vue {
+export default class WorkflowListController extends Mixins(AnkI18NMixin) {
   @Prop({
     default: true,
     type: [Boolean, Object]

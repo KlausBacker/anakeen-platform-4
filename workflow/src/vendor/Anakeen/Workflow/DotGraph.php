@@ -73,7 +73,7 @@ class DotGraph
             $dot .= "\t{rank=1; \"$ft\";}\n";
         }
 
-        $dot .= implode($this->lines, "\n");
+        $dot .= implode("\n", $this->lines);
         $dot .= "\n}";
         return $dot;
     }

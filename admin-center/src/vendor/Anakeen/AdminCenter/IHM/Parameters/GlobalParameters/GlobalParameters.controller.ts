@@ -1,5 +1,6 @@
 //import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
-import { Component, Vue } from "vue-property-decorator";
+import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
+import { Component, Mixins } from "vue-property-decorator";
 
 const parameterEditor = () => import("../ParameterEditor/ParameterEditor.vue");
 
@@ -12,7 +13,7 @@ declare var kendo;
   },
   name: "admin-center-global-parameters"
 })
-export default class GlobalParametersController extends Vue {
+export default class GlobalParametersController extends Mixins(AnkI18NMixin) {
   // Verify if the value of the parameter is a Json
   public static isJson(value) {
     try {
@@ -58,12 +59,12 @@ export default class GlobalParametersController extends Vue {
   public initTreeList() {
     const toolbarTemplate = `
         <div class="global-parameters-toolbar">
-            <span>&nbsp${this.$t("globalParameter.System")}&nbsp</span>
+            <span>&nbsp;${this.$t("globalParameter.System")}&nbsp;</span>
             <label class="switch">
               <input type="checkbox" class="switch-btn">
               <span class="slider round"></span>
             </label>
-            <span>&nbsp${this.$t("globalParameter.User")}&nbsp</span>
+            <span>&nbsp;${this.$t("globalParameter.User")}&nbsp;</span>
             <a class="refresh-btn"></a>
             <a class="expand-btn"></a>
             <a class="collapse-btn"></a>

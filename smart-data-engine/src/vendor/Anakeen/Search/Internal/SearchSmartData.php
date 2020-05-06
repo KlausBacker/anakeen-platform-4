@@ -250,7 +250,9 @@ class SearchSmartData
         if (!$fld || $fld->fromid != \Anakeen\Core\SEManager::getFamilyIdFromName("SSEARCH")) {
             $this->recursiveSearchInit();
             $tqsql = $this->getQueries();
-            $this->debuginfo["query"] = $tqsql[0];
+            if ($tqsql !== false && is_array($tqsql)) {
+                $this->debuginfo["query"] = $tqsql[0];
+            }
             $count = 0;
             if (!is_array($tqsql)) {
                 if (!isset($this->debuginfo["error"]) || $this->debuginfo["error"] == "") {
@@ -383,12 +385,12 @@ class SearchSmartData
         } else {
             throw new \Anakeen\Search\Exception("SD0001", $jointure);
         }
-        $joinType=strtolower($joinType);
-        $allowed= ["inner", "left outer", "right outer", "full outer"];
+        $joinType = strtolower($joinType);
+        $allowed = ["inner", "left outer", "right outer", "full outer"];
         if (!in_array($joinType, $allowed)) {
             throw new \Anakeen\Search\Exception("SD0015", $joinType, implode(' or ', $allowed));
         }
-        $this->joinType=$joinType;
+        $this->joinType = $joinType;
     }
 
     /**
@@ -409,7 +411,7 @@ class SearchSmartData
                 $reg
             )) {
                 $joinid = \Anakeen\Core\SEManager::getFamilyIdFromName($reg['family']);
-                $joinTable= ($joinid) ? "doc" . $joinid : $reg['family'];
+                $joinTable = ($joinid) ? "doc" . $joinid : $reg['family'];
                 $sqlJoinCond = sprintf(
                     "%s.%s %s %s.%s",
                     $this->getMainTable(),

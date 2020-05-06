@@ -307,6 +307,7 @@ class RenderDefault implements IRenderConfig
             "increaseLabel" => ___("Increase value", "ddui-numerical"),
             "decreaseLabel" => ___("Decrease value", "ddui-numerical")
         ));
+        $opt->htmltext()->setTranslations(HtmltextRenderOptions::getTranslations());
 
 
         $selectedTab = $document->getUTag("lasttab");

@@ -149,6 +149,7 @@ export default {
     deleteCondition(event, row) {
       this.conditions.splice(row, 1);
       this.controllerProxy("removeArrayRow", "se_t_detail", row);
+      this.loadSmartElement();
     },
     updateFamIds() {
       this.conditions.forEach(condition => {
@@ -157,6 +158,10 @@ export default {
       });
     },
     loadSmartElement() {
+      // If function is called with an already initialized SmartElement
+      if (this.conditions.length > 0) {
+        this.conditions = [];
+      }
       this.famid = parseInt(this.controllerProxy("getValue", "se_famid").value); //init Famid
       const se_olValue = this.controllerProxy("getValue", "se_ol").value;
       if (se_olValue) {

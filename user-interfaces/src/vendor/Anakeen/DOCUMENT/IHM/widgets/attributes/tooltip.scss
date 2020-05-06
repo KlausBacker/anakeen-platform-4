@@ -9,28 +9,28 @@
 }
 
 .tooltip.dcpAttribute__editlabel .tooltip-inner {
-  background-color: $info;
+  background-color: $black;
   color: #ffffff;
   word-wrap: break-word;
 }
 .tooltip.dcpAttribute__editlabel.bs-tooltip-top .arrow::before {
-  border-top-color: $info;
+  border-top-color: $black;
 }
 .tooltip.dcpAttribute__editlabel.bs-tooltip-bottom .arrow::before {
-  border-bottom-color: $info;
+  border-bottom-color: $black;
 }
 
 
 .tooltip.dcpAttribute__linkvalue .tooltip-inner {
-  background-color: $info;
+  background-color: $black;
   color: $ank-ui-color-picto-colored;
   word-wrap: break-word;
 }
 .tooltip.dcpAttribute__linkvalue.tooltip.top .arrow {
-  border-top-color: $info;
+  border-top-color: $black;
 }
 .tooltip.dcpAttribute__linkvalue.tooltip.bottom .arrow {
-  border-bottom-color: $info;
+  border-bottom-color: $black;
 }
 
 .tooltip.has-error .tooltip-inner {

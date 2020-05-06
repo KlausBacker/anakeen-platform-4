@@ -174,7 +174,7 @@
   "AdminCenterSmartStructure.Informations": "Informations",
   "AdminCenterSmartStructure.Default Values": "Valeurs par défaut",
   "AdminCenterSmartStructure.Parameters": "Paramètres",
-  "AdminCenterSmartStructure.Smart Structure has no parameters": "Cette Smart Strucuture n'a pas de paramètre",
+  "AdminCenterSmartStructure.Smart Structure has no parameters": "Cette Smart Structure n'a pas de paramètre",
   "AdminCenterSmartStructure.Properties": "Propriétés",
   "AdminCenterSmartStructure.Parameters edition": "Paramètre d'édition",
   "AdminCenterSmartStructure.Property": "Propriété",
@@ -229,5 +229,11 @@
   "AdminCenterKendoGridTranslation.Choose value": "Valeur",
   "AdminCenterKendoGridTranslation.Aditional value": "Valeur",
   "AdminCenterKendoGridTranslation.Aditional filter by": "Afficher les éléments dont la valeur",
-  "AdminCenterKendoGridTranslation.contains": "Contient"
+  "AdminCenterKendoGridTranslation.contains": "Contient",
+  "AdminCenterSmartStructure.This is the inherited value.": "Ceci est la valeur héritée.",
+  "AdminCenterSmartStructure.Reset to inherit value": "Réinitialiser pour hériter de la valeur",
+  "AdminCenterSmartStructure.he inherited value": "il a hérité de la valeur",
+  "AdminCenterSmartStructure.is overrided.": "est remplacé",
+  "AdminCenterSmartStructure.Record parameters": "Enregistrer les paramètres",
+  "AdminCenterSmartStructure.parameters": "paramètres"
 }

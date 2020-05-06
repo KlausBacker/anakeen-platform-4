@@ -14,7 +14,7 @@ autoRelease: copyFiles
 
 app: copyFiles
 	rm -f ../$(ZIP_DIST_NAME)-$(PACKAGE_VERSION).zip
-	cd ./tmp && zip -q -r ../$(ZIP_DIST_NAME)-$(PACKAGE_VERSION).zip ./*
+	cd ./tmp && echo "$(PACKAGE_VERSION)" > VERSION && echo "0" > RELEASE && zip -q -r ../$(ZIP_DIST_NAME)-$(PACKAGE_VERSION).zip ./*
 	mv ./$(ZIP_DIST_NAME)-${PACKAGE_VERSION}.zip ${APP_OUTPUT_PATH}
 	cd ${APP_OUTPUT_PATH} && ln -sf ./$(ZIP_DIST_NAME)-${PACKAGE_VERSION}.zip ./$(ZIP_DIST_NAME)-latest.zip
 	cp tmp/package.json ${APP_OUTPUT_PATH}
@@ -23,7 +23,7 @@ app: copyFiles
 app-autorelease: autoRelease
 	$(eval PACKAGE_VERSION_AUTO_RELEASE := $(shell node ./getVersion.js))
 	rm -f ../$(ZIP_DIST_NAME)-$(PACKAGE_VERSION_AUTO_RELEASE).zip
-	cd ./tmp && zip -q -r ../$(ZIP_DIST_NAME)-$(PACKAGE_VERSION_AUTO_RELEASE).zip ./*
+	cd ./tmp && echo "$(PACKAGE_VERSION_AUTO_RELEASE)" > VERSION && echo "0" > RELEASE && zip -q -r ../$(ZIP_DIST_NAME)-$(PACKAGE_VERSION_AUTO_RELEASE).zip ./*
 	mv ./$(ZIP_DIST_NAME)-${PACKAGE_VERSION_AUTO_RELEASE}.zip ${APP_OUTPUT_PATH}
 	cd ${APP_OUTPUT_PATH} && ln -sf ./$(ZIP_DIST_NAME)-$(PACKAGE_VERSION_AUTO_RELEASE).zip ./$(ZIP_DIST_NAME)-latest.zip
 	cp tmp/package.json ${APP_OUTPUT_PATH}

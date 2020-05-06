@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:routes namespace="Ui:Component">
+        <sde:route name="SearchCriteria:CriteriaInfo">
+            <sde:callable>Anakeen\Components\SearchCriteria\Routes\SmartCriteriaDataProcessor</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/searchcriteria/{collection}/{field}</sde:pattern>
+            <sde:description>Get criteria information from collection and field/property</sde:description>
+            <sde:requiredAccess/>
+            <sde:authenticated>true</sde:authenticated>
+        </sde:route>
+    </sde:routes>
+</sde:config>

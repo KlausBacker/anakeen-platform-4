@@ -947,7 +947,7 @@ class DocHtmlFormat
             $this->cancelFormat = true;
         } else {
             if ($avalue !== '') {
-                $htmlval = money_format('%!.2n', doubleval($avalue));
+                $htmlval = \Anakeen\Core\Internal\Format\MoneyAttributeValue::formatMoney(doubleval($avalue));
                 // Be carreful replace normal space by non breaking spaces : Narrow No-Break Space
                 $htmlval = str_replace(" ", "\u202F", $htmlval);
             } else {

@@ -23,6 +23,7 @@ class SuiteDcpFilter
         $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterIsEqual');
         $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterIsGreater');
         $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterIsLesser');
+        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterBetween');
         $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterIsNotEmpty');
         $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterIsNotEqual');
         $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterNameEquals');
@@ -32,6 +33,8 @@ class SuiteDcpFilter
         $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterOneGreaterThan');
         $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterTitleContains');
         $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterOrOperator');
+        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterIsIn');
+        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterSearchCriteria');
 
         // ...
         return $suite;

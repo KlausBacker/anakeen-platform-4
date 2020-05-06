@@ -14,8 +14,8 @@ msgstr ""
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
 #, fuzzy
 msgctxt "TASK-task_result-status"
-msgid "success"
-msgstr "Succeed"
+msgid "fail"
+msgstr "Failed"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
 #, fuzzy
@@ -26,5 +26,5 @@ msgstr "Processing"
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
 #, fuzzy
 msgctxt "TASK-task_result-status"
-msgid "fail"
-msgstr "Failed"
+msgid "success"
+msgstr "Succeed"

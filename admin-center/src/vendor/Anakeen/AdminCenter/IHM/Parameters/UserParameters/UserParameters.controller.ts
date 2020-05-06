@@ -1,5 +1,6 @@
 import Component from "vue-class-component";
-import { Prop, Vue } from "vue-property-decorator";
+import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
+import { Prop, Mixins } from "vue-property-decorator";
 const parameterEditor = () => import("../ParameterEditor/ParameterEditor.vue");
 
 declare var $;
@@ -11,7 +12,7 @@ declare var kendo;
   },
   name: "admin-center-user-parameters"
 })
-export default class UserParametersController extends Vue {
+export default class UserParametersController extends Mixins(AnkI18NMixin) {
   // Destroy editor component
   public static destroyEditor() {
     const editor = $(".edition-window").data("kendoWindow");

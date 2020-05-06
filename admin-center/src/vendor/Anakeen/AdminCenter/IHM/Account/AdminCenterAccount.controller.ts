@@ -8,7 +8,8 @@ import { GridInstaller } from "@progress/kendo-grid-vue-wrapper";
 import { InputsInstaller } from "@progress/kendo-inputs-vue-wrapper";
 import "@progress/kendo-ui/js/kendo.grid";
 import "@progress/kendo-ui/js/kendo.toolbar";
-import { Component, Vue, Watch } from "vue-property-decorator";
+import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
+import { Component, Vue, Watch, Mixins } from "vue-property-decorator";
 
 Vue.use(ButtonsInstaller);
 Vue.use(GridInstaller);
@@ -24,7 +25,7 @@ declare const kendo;
     "ank-split-panes": AnkPaneSplitter
   }
 })
-export default class AdminCenterAccountController extends Vue {
+export default class AdminCenterAccountController extends Mixins(AnkI18NMixin) {
   public $refs!: {
     [key: string]: any;
   };

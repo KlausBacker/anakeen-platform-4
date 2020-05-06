@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<documents>
+    <igroup name="GTST_101">
+        <grp_hasmail>yes</grp_hasmail>
+    </igroup>
+    <igroup name="GTST_102">
+        <grp_hasmail>yes</grp_hasmail>
+    </igroup>
+    <igroup name="GTST_201">
+        <grp_hasmail>yes</grp_hasmail>
+    </igroup>
+    <igroup name="GTST_301">
+        <grp_hasmail>yes</grp_hasmail>
+    </igroup>
+    <igroup name="GTST_222">
+        <grp_hasmail>yes</grp_hasmail>
+    </igroup>
+</documents>

@@ -3,17 +3,17 @@
     <description>Tests for Anakeen Uis</description>
 
     <requires>
-        <module name="user-interfaces" version="^3.0.2-RC.2020.1.26"/>
-        <module name="workflow" version="^2.0.2-RC.2020.1.26"/>
+        <module name="user-interfaces" version="^3.0.2-RC.2020.1.27"/>
+        <module name="workflow" version="^2.0.2-RC.2020.1.27"/>
         <module name="smart-data-engine-test" version="2.0.x"/>
-        <module name="anakeen-hub-business-app" version="^1.0.4-RC.2020.1.26"/>
+        <module name="anakeen-hub-business-app" version="^1.0.4-RC.2020.1.27"/>
         <module name="anakeen-dev-data" version="2.0.x"/>
     </requires>
 
     <post-install>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiAllType/TST_DDUI_ALLTYPE__STRUCT.csv"/>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiAllType/TST_DDUI_ALLTYPE__CVDOC.xml"/>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiAllType/TST_DDUI_ALLTYPE__PARAM.csv"/>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiAllType/TstUiAllType.enum.xml"/>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiAllType/TstUiAllType.structure.xml"/>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiAllType/TstUiAllType.cvdoc.xml"/>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiAllType/TstUiAllType.profil.xml"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEnum/TST_DDUI_ENUM__STRUCT.csv"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEnum/TST_DDUI_ENUM__CVDOC.xml"/>
@@ -40,9 +40,9 @@
 
     </post-install>
     <post-upgrade>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiAllType/TST_DDUI_ALLTYPE__STRUCT.csv"/>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiAllType/TST_DDUI_ALLTYPE__CVDOC.xml"/>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiAllType/TST_DDUI_ALLTYPE__PARAM.csv"/>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiAllType/TstUiAllType.enum.xml"/>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiAllType/TstUiAllType.structure.xml"/>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiAllType/TstUiAllType.cvdoc.xml"/>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiAllType/TstUiAllType.profil.xml"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEnum/TST_DDUI_ENUM__STRUCT.csv"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEnum/TST_DDUI_ENUM__CVDOC.xml"/>

@@ -36,7 +36,7 @@ class Selftest
         if (!preg_match('/^te-task-test-/', basename($this->workDir))) {
             return;
         }
-        Task::rm_rf($this->workDir);
+        Task::rmRf($this->workDir);
     }
     public function setTmpDir($tmpDir)
     {

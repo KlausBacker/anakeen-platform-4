@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<accounts:accounts xmlns:accounts="https://platform.anakeen.com/4/schemas/account/1.0">
+    <!--
+                    gtst_000        __ gtst_101 _____
+                        |         /       \          \
+                    gtst_102    /        gtst_201     u0002 u0005
+                  /      \    /              \    \
+           u0005 u0006 gtst_222           gtst_301  u0003
+                        |                      \
+                      u0007                      u0004
+       -->
+
+    <accounts:users>
+        <accounts:user login="u0001">
+            <accounts:firstname>John</accounts:firstname>
+            <accounts:lastname>Doe</accounts:lastname>
+            <accounts:mail>john.doe@example.net</accounts:mail>
+        </accounts:user>
+        <accounts:user login="u0002">
+            <accounts:firstname>John</accounts:firstname>
+            <accounts:lastname>Snow</accounts:lastname>
+            <accounts:mail>john.snow@example.net</accounts:mail>
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="gtst_101"/>
+            </accounts:parentGroups>
+        </accounts:user>
+        <accounts:user login="u0003">
+            <accounts:firstname>Jane</accounts:firstname>
+            <accounts:lastname>Doe</accounts:lastname>
+            <accounts:mail>jane.doe@example.net</accounts:mail>
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="gtst_201"/>
+            </accounts:parentGroups>
+        </accounts:user>
+        <accounts:user login="u0004">
+            <accounts:firstname>R2</accounts:firstname>
+            <accounts:lastname>D2</accounts:lastname>
+            <accounts:mail>r2d2@example.net</accounts:mail>
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="gtst_301"/>
+            </accounts:parentGroups>
+        </accounts:user>
+        <accounts:user login="u0005">
+            <accounts:firstname>Han</accounts:firstname>
+            <accounts:lastname>Solo</accounts:lastname>
+            <accounts:mail>han.solo@example.net</accounts:mail>
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="gtst_101"/>
+                <accounts:parentGroup ref="gtst_102"/>
+            </accounts:parentGroups>
+        </accounts:user>
+        <accounts:user login="u0006">
+            <accounts:firstname>Obiwan</accounts:firstname>
+            <accounts:lastname>Kenobi</accounts:lastname>
+            <accounts:mail>obiwan.kenobi@example.net</accounts:mail>
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="gtst_102"/>
+            </accounts:parentGroups>
+        </accounts:user>
+        <accounts:user login="u0007">
+            <accounts:firstname>Leia</accounts:firstname>
+            <accounts:lastname>Skywalker</accounts:lastname>
+            <accounts:mail>leia.skywaker@example.net</accounts:mail>
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="gtst_222"/>
+            </accounts:parentGroups>
+        </accounts:user>
+    </accounts:users>
+</accounts:accounts>

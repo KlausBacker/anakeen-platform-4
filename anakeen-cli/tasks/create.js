@@ -115,7 +115,7 @@ const createBuildXML = ({ moduleName, vendorName }, isSmartStructure) => {
           },
           "acli:stub-struct-js-config": {
             $: {
-              target: "constants/structures/SmartStructuresFields.js"
+              target: "constants/SmartStructuresFields.js"
             }
           },
           "acli:stub-struct-wfl-config": {

@@ -22,17 +22,13 @@ export default class AnkGridExpandButtonController extends Vue {
 
   public button = null;
 
-  @Watch("gridComponent")
-  public watchGridComponent(newValue): void {
-    this.gridComponent = newValue;
-    this.initButton();
-  }
   public get translations(): { [key: string]: VueI18n.TranslateResult } {
     return {
       tooltip: this.$t("gridExpandButton.Tooltip")
     };
   }
-  public initButton(): void {
+
+  public mounted(): void {
     const options = this.getButtonOptions();
     this.button = $(this.$refs.expandButton)
       .kendoButton(options)

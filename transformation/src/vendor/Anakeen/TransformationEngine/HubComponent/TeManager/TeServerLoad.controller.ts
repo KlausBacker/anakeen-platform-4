@@ -105,19 +105,19 @@ export default class TeServerLoad extends Mixins(AnkI18NMixin) {
         axis: "Y",
         color: "#5484ca",
         data: [],
-        name: ""
+        name: "Processing"
       },
       {
         axis: "Y",
         color: "#c69e47",
         data: [],
-        name: ""
+        name: "Waiting"
       },
       {
         axis: "Y",
         color: "#a53935",
         data: [],
-        name: ""
+        name: "Transferring"
       }
     ],
     tooltiptemplate: "#= series.name #: #= value #"
@@ -185,9 +185,27 @@ export default class TeServerLoad extends Mixins(AnkI18NMixin) {
   }
 
   public mounted() {
-    this.statusData.series[0].name = `${this.$t("AdminCenterTransformationFileManager.Processing")}`;
-    this.statusData.series[1].name = `${this.$t("AdminCenterTransformationFileManager.Waiting")}`;
-    this.statusData.series[2].name = `${this.$t("AdminCenterTransformationFileManager.Transferring")}`;
+    const series = [
+      {
+        axis: "Y",
+        color: "#5484ca",
+        data: [],
+        name: `${this.$t("AdminCenterTransformationFileManager.Processing")}`
+      },
+      {
+        axis: "Y",
+        color: "#c69e47",
+        data: [],
+        name: `${this.$t("AdminCenterTransformationFileManager.Waiting")}`
+      },
+      {
+        axis: "Y",
+        color: "#a53935",
+        data: [],
+        name: `${this.$t("AdminCenterTransformationFileManager.Transferring")}`
+      }
+    ];
+    this.statusData.series = series;
     this.kCpuLoad = this.$refs.cpuLoadChart.kendoWidget();
     this.kStatusChart = this.$refs.statusChart.kendoWidget();
 

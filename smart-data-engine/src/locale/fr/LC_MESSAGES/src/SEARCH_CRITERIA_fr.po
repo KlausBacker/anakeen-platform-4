@@ -1,0 +1,306 @@
+# French translations for anakeen-platform package.
+# Copyright (C) 2020 THE anakeen-platform'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the anakeen-platform package.
+# Automatically generated, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: anakeen-platform 4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-04-28 19:29+0200\n"
+"PO-Revision-Date: 2020-04-28 12:55+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ASCII\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgctxt "SearchCriteriaUtilsTextual multi"
+msgid "All contain"
+msgstr "Toutes les valeurs contiennent"
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "All dates are between"
+msgstr "Toutes les dates sont entre"
+
+#, php-format
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "All of the '%s' are among"
+msgstr "Tous les '%s' sont parmi"
+
+#, php-format
+msgctxt "SearchCriteriaUtils.Relations multi"
+msgid "All of the '%s' are among"
+msgstr "Tous les '%s' sont parmi"
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "All values are between"
+msgstr "Toutes les valeurs sont entre"
+
+msgctxt "SearchCriteriaUtils.Textual simple"
+msgid "Contains"
+msgstr "Contient"
+
+msgctxt "SearchCriteriaUtils.Title simple"
+msgid "Contains"
+msgstr "Contient"
+
+msgctxt "SearchCriteriaUtils.Textual simple"
+msgid "Does not contain"
+msgstr "Ne contient pas"
+
+msgctxt "SearchCriteriaUtils.Title simple"
+msgid "Does not contain"
+msgstr "Ne contient pas"
+
+msgctxt "SearchCriteriaUtils.Textual simple"
+msgid "Does not start with"
+msgstr "Ne commence pas par"
+
+msgctxt "SearchCriteriaUtils.Title simple"
+msgid "Does not start with"
+msgstr "Ne commence pas par"
+
+msgctxt "SearchCriteriaUtils.Enum simple"
+msgid "Is among"
+msgstr "Est egal a l'une des valeurs"
+
+msgctxt "SearchCriteriaUtils.Relations simple"
+msgid "Is among"
+msgstr "Est parmi"
+
+msgctxt "SearchCriteriaUtils.State simple"
+msgid "Is among"
+msgstr "Est parmi"
+
+msgctxt "SearchCriteriaUtils.Numerical simple"
+msgid "Is between"
+msgstr "Est entre"
+
+msgctxt "SearchCriteriaUtils.Temporal simple"
+msgid "Is between"
+msgstr "Est entre"
+
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "Is empty"
+msgstr "Est vide"
+
+msgctxt "SearchCriteriaUtils.Enum simple"
+msgid "Is empty"
+msgstr "Est vide"
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "Is empty"
+msgstr "Est vide"
+
+msgctxt "SearchCriteriaUtils.Numerical simple"
+msgid "Is empty"
+msgstr "Est vide"
+
+msgctxt "SearchCriteriaUtils.Relations multi"
+msgid "Is empty"
+msgstr "Est vide"
+
+msgctxt "SearchCriteriaUtils.Relations simple"
+msgid "Is empty"
+msgstr "Est vide"
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "Is empty"
+msgstr "Est vide"
+
+msgctxt "SearchCriteriaUtils.Temporal simple"
+msgid "Is empty"
+msgstr "Est vide"
+
+msgctxt "SearchCriteriaUtils.Textual simple"
+msgid "Is empty"
+msgstr "Est vide"
+
+msgctxt "SearchCriteriaUtils.Title simple"
+msgid "Is empty"
+msgstr "Est vide"
+
+msgctxt "SearchCriteriaUtilsTextual multi"
+msgid "Is empty"
+msgstr "Est vide"
+
+msgctxt "SearchCriteriaUtils.Enum simple"
+msgid "Is not among"
+msgstr "N'est pas parmi"
+
+msgctxt "SearchCriteriaUtils.Relations simple"
+msgid "Is not among"
+msgstr "N'est pas parmi"
+
+msgctxt "SearchCriteriaUtils.State simple"
+msgid "Is not among"
+msgstr "N'est pas parmi"
+
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "Is not empty"
+msgstr "N'est pas vide"
+
+msgctxt "SearchCriteriaUtils.Enum simple"
+msgid "Is not empty"
+msgstr "N'est pas vide"
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "Is not empty"
+msgstr "N'est pas vide"
+
+msgctxt "SearchCriteriaUtils.Numerical simple"
+msgid "Is not empty"
+msgstr "N'est pas vide"
+
+msgctxt "SearchCriteriaUtils.Relations multi"
+msgid "Is not empty"
+msgstr "N'est pas vide"
+
+msgctxt "SearchCriteriaUtils.Relations simple"
+msgid "Is not empty"
+msgstr "N'est pas vide"
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "Is not empty"
+msgstr "N'est pas vide"
+
+msgctxt "SearchCriteriaUtils.Temporal simple"
+msgid "Is not empty"
+msgstr "N'est pas vide"
+
+msgctxt "SearchCriteriaUtils.Textual simple"
+msgid "Is not empty"
+msgstr "N'est pas vide"
+
+msgctxt "SearchCriteriaUtils.Title simple"
+msgid "Is not empty"
+msgstr "N'est pas vide"
+
+msgctxt "SearchCriteriaUtilsTextual multi"
+msgid "Is not empty"
+msgstr "N'est pas vide"
+
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "NA"
+msgstr "Ignorer"
+
+msgctxt "SearchCriteriaUtils.Enum simple"
+msgid "NA"
+msgstr "Ignorer"
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "NA"
+msgstr "Ignorer"
+
+msgctxt "SearchCriteriaUtils.Numerical simple"
+msgid "NA"
+msgstr "Ignorer"
+
+msgctxt "SearchCriteriaUtils.Relations multi"
+msgid "NA"
+msgstr "Ignorer"
+
+msgctxt "SearchCriteriaUtils.Relations simple"
+msgid "NA"
+msgstr "Ignorer"
+
+msgctxt "SearchCriteriaUtils.State simple"
+msgid "NA"
+msgstr "Ignorer"
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "NA"
+msgstr "Ignorer"
+
+msgctxt "SearchCriteriaUtils.Temporal simple"
+msgid "NA"
+msgstr "Ignorer"
+
+msgctxt "SearchCriteriaUtils.Textual multi"
+msgid "NA"
+msgstr "Ignorer"
+
+msgctxt "SearchCriteriaUtils.Textual simple"
+msgid "NA"
+msgstr "Ignorer"
+
+msgctxt "SearchCriteriaUtils.Title simple"
+msgid "NA"
+msgstr "Ignorer"
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "No dates are between"
+msgstr "Aucune date n'est entre"
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "No values are between"
+msgstr "Aucune valeur n'est entre"
+
+msgctxt "SearchCriteriaUtilsTextual multi"
+msgid "None contain"
+msgstr "Aucune valeur ne contient"
+
+#, php-format
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "None of the '%s' are among"
+msgstr "Aucun des '%s' n'est parmi"
+
+#, php-format
+msgctxt "SearchCriteriaUtils.Relations multi"
+msgid "None of the '%s' are among"
+msgstr "Aucun des '%s' n'est parmi"
+
+msgctxt "SearchCriteriaUtilsTextual multi"
+msgid "One contains"
+msgstr "Une des valeurs contient"
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "One date is between"
+msgstr "Une des dates est entre"
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "One date is not between"
+msgstr "Une des dates n'est pas entre"
+
+msgctxt "SearchCriteriaUtilsTextual multi"
+msgid "One does not contain"
+msgstr "Une valeur ne contient pas"
+
+#, php-format
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "One of the '%s' is among"
+msgstr "Un des '%s' est parmi"
+
+#, php-format
+msgctxt "SearchCriteriaUtils.Relations multi"
+msgid "One of the '%s' is among"
+msgstr "Un des '%s' est parmi"
+
+#, php-format
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "One of the '%s' is not among"
+msgstr "Un des '%s' n'est pas parmi"
+
+#, php-format
+msgctxt "SearchCriteriaUtils.Relations multi"
+msgid "One of the '%s' is not among"
+msgstr "Un des '%s' n'est pas parmi"
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "One value is between"
+msgstr "Une des valeurs est entre"
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "One value is not between"
+msgstr "Une des valeurs n'est pas entre"
+
+msgctxt "SearchCriteriaUtils.Textual simple"
+msgid "Starts with"
+msgstr "Commence par"
+
+msgctxt "SearchCriteriaUtils.Title simple"
+msgid "Starts with"
+msgstr "Commence par"

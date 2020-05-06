@@ -1,85 +1,50 @@
 import $ from "jquery";
 import _ from "underscore";
 import "../text/wText";
-import l from "little-loader";
 
 $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
   options: {
     type: "htmltext",
     renderOptions: {
+      kendoEditorConfiguration: {},
       anchors: {
         target: "_blank"
       },
-      toolbar: "Basic",
-      height: "100px",
-      toolbarStartupExpanded: true,
-      ckEditorConfiguration: {},
-      ckEditorAllowAllTags: false
-    },
-    locale: "en"
+      toolbar: "",
+      translatedLabels: [],
+      height: "100px"
+    }
   },
 
-  ckEditorInstance: null,
-
   _initDom: function wHtmltext_InitDom() {
-    var currentWidget = this,
-      bind_super = _.bind(this._super, this),
-      bindInitEvent = _.bind(this._initEvent, this);
+    const currentWidget = this;
+    const bindSuper = () => {
+      this._super();
+    };
+    const bindEvents = () => {
+      this._initEvent();
+    };
+    const bindInitToolbar = () => {
+      this._initToolBar();
+    };
     try {
       this.popupWindows = {};
 
       if (this.getMode() === "write") {
-        const loadCKEditor = () => {
-          var options = _.extend(currentWidget.ckOptions(), currentWidget.options.renderOptions.ckEditorConfiguration);
-          bind_super();
-          if (currentWidget.options.renderOptions.ckEditorAllowAllTags) {
-            // Allow all HTML tags
-            options.allowedContent = {
-              $1: {
-                // Use the ability to specify elements as an object.
-                elements: window.CKEDITOR.dtd,
-                attributes: true,
-                styles: true,
-                classes: true
-              }
-            };
-            options.disallowedContent = "script; *[on*]";
-          }
-          currentWidget.ckEditorInstance = window.CKEDITOR.replace(currentWidget.getContentElements()[0], options);
-          currentWidget.options.attributeValue.value = currentWidget.ckEditorInstance.getData();
-          bindInitEvent();
-        };
-
-        const loadCKJS = () => {
-          if (!window.ank) {
-            window.ank = {};
-          }
-          window.ank.ckeditorPromise = new Promise((resolve, reject) => {
-            l(`/uiAssets/externals/ckeditor/ckeditor.js?${_.uniqueId("loadingCK")}`, error => {
-              if (error) {
-                console.error(error);
-                reject(error);
-                currentWidget._trigger("displayNetworkError");
-                return;
-              }
-              resolve();
-              loadCKEditor();
-            });
-          });
-        };
-
-        //CKEDITOR is already is the current env
-        if (window.CKEDITOR) {
-          return loadCKEditor();
-        }
-        //CKEDITOR is already in loading
-        if (window.ank && window.ank.ckeditorPromise) {
-          return window.ank.ckeditorPromise.then(loadCKEditor).catch(loadCKJS);
-        }
-        //Import ckeditor
-        loadCKJS();
+        bindSuper();
+        this._initKendoEditorOptions();
+        import("@progress/kendo-ui/js/kendo.editor").then(() => {
+          currentWidget.kendoEditorInstance = currentWidget
+            .getContentElements()
+            .kendoEditor(currentWidget.options.renderOptions.kendoEditorConfiguration)
+            .data("kendoEditor");
+          currentWidget.options.attributeValue.value = currentWidget.kendoEditorInstance.value();
+          bindEvents();
+          bindInitToolbar();
+          currentWidget._trigger("widgetReady");
+        });
       } else {
-        bind_super();
+        bindSuper();
       }
     } catch (e) {
       if (window.dcp.logger) {
@@ -90,224 +55,260 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
     }
   },
 
-  /**
-   * Define option set for ckEditor widget
-   * @returns {{language: string, contentsCss: string[], removePlugins: string, toolbarCanCollapse: boolean, entities: boolean, filebrowserImageBrowseUrl: string, filebrowserImageUploadUrl: string, toolbar_Full: *[], toolbar_Default: *[], toolbar_Simple: *[], toolbar_Basic: *[], removeButtons: string}}
-   */
-  ckOptions: function wHtmlTextCkOptions() {
-    var locale = this.options.locale;
-    if (this.options.renderOptions.toolbar) {
-      this.options.renderOptions.ckEditorConfiguration.toolbar = this.options.renderOptions.toolbar;
+  _initKendoEditorOptions: function htmltext__initKendoEditorOptions() {
+    const buttons = {
+      Basic: [
+        "bold",
+        "italic",
+        // ----------
+        "insertUnorderedList",
+        "insertOrderedList",
+        // ----------
+        "createLink",
+        "unlink"
+      ],
+      Simple: [
+        "bold",
+        "italic",
+        "underline",
+        "strikethrough",
+        "cleanFormatting",
+        // ----------
+        "insertUnorderedList",
+        "insertOrderedList",
+
+        "indent",
+        "outdent",
+
+        "justifyLeft",
+        "justifyCenter",
+        "justifyRight",
+        "justifyFull",
+
+        "createLink",
+        "unlink",
+
+        "insertImage",
+        // table
+        "tableWizard",
+        "createTable",
+        "addRowAbove",
+        "addRowBelow",
+        "addColumnLeft",
+        "addColumnRight",
+        "deleteRow",
+        "deleteColumn",
+        "mergeCellsHorizontally",
+        "mergeCellsVertically",
+        "splitCellHorizontally",
+        "splitCellVertically",
+        //format
+        {
+          name: "formatting",
+          items: [
+            { text: "Heading 1", value: "h1" },
+            { text: "Heading 2", value: "h2" },
+            { text: "Heading 3", value: "h3" },
+            { text: "Paragraph", value: "p" },
+            { text: "Preformatted", value: "pre" }
+          ]
+        },
+        "fontSize",
+        {
+          name: "foreColor",
+          palette: null
+        },
+        {
+          name: "backColor",
+          palette: null
+        },
+
+        "viewHtml"
+      ],
+      Full: [
+        "bold",
+        "italic",
+        "underline",
+        "strikethrough",
+        "justifyLeft",
+        "justifyCenter",
+        "justifyRight",
+        "justifyFull",
+        "insertUnorderedList",
+        "insertOrderedList",
+        "indent",
+        "outdent",
+        "createLink",
+        "unlink",
+        "insertImage",
+        "subscript",
+        "superscript",
+        // table
+        "tableWizard",
+        "createTable",
+        "addRowAbove",
+        "addRowBelow",
+        "addColumnLeft",
+        "addColumnRight",
+        "deleteRow",
+        "deleteColumn",
+        "mergeCellsHorizontally",
+        "mergeCellsVertically",
+        "splitCellHorizontally",
+        "splitCellVertically",
+        // format
+        {
+          name: "formatting",
+          items: [
+            { text: "Heading 1", value: "h1" },
+            { text: "Heading 2", value: "h2" },
+            { text: "Heading 3", value: "h3" },
+            { text: "Paragraph", value: "p" },
+            { text: "Preformatted", value: "pre" }
+          ]
+        },
+        "cleanFormatting",
+        "copyFormat",
+        "applyFormat",
+        "fontName",
+        "fontSize",
+
+        {
+          name: "foreColor",
+          palette: null
+        },
+        {
+          name: "backColor",
+          palette: null
+        },
+        "viewHtml"
+      ]
+    };
+
+    if (this.options.renderOptions.toolbar && !this.options.renderOptions.kendoEditorConfiguration.tools) {
+      if (buttons[this.options.renderOptions.toolbar]) {
+        this.options.renderOptions.kendoEditorConfiguration.tools = buttons[this.options.renderOptions.toolbar];
+      }
     }
-    if (this.options.renderOptions.height) {
-      this.options.renderOptions.ckEditorConfiguration.height = this.options.renderOptions.height;
+    if (this.options.renderOptions.translatedLabels) {
+      this.options.renderOptions.kendoEditorConfiguration.messages = this.options.renderOptions.translatedLabels;
+      if (this.options.renderOptions.translatedLabels.formattingItems) {
+        this.options.renderOptions.kendoEditorConfiguration.tools.forEach(tool => {
+          if (tool.name === "formatting") {
+            tool.items.forEach(item => {
+              if (this.options.renderOptions.translatedLabels.formattingItems[item.value]) {
+                item.text = this.options.renderOptions.translatedLabels.formattingItems[item.value];
+              }
+            });
+          }
+        });
+      }
     }
-    if (!_.isUndefined(this.options.renderOptions.toolbarStartupExpanded)) {
-      this.options.renderOptions.ckEditorConfiguration.toolbarStartupExpanded = this.options.renderOptions.toolbarStartupExpanded;
-    }
-    return {
-      language: locale.substring(0, 2),
-      removePlugins: "elementspath", // no see HTML path elements
-      extraPlugins:
-        "a11yhelp,about,basicstyles,blockquote,clipboard,colorbutton,contextmenu,divarea,elementspath,enterkey,entities,filebrowser,floatingspace,font,format,horizontalrule,htmlwriter,image,indentlist,justify,link,list,magicline,maximize,pastefromword,pastetext,removeformat,resize,scayt,showborders,sourcearea,sourcedialog,specialchar,stylescombo,tab,table,tabletools,toolbar,undo,wsc,wysiwygarea",
-      toolbarCanCollapse: true,
-      entities: false, // no use HTML entities
-      baseHref: "/",
-      title: "",
-      toolbar_Full: [
-        {
-          name: "document",
-          items: ["Sourcedialog", "-", "NewPage", "DocProps", "Preview", "Print", "-", "Templates"]
-        },
-        {
-          name: "clipboard",
-          items: ["Cut", "Copy", "Paste", "PasteText", "PasteFromWord", "-", "Undo", "Redo"]
-        },
-        {
-          name: "editing",
-          items: ["Find", "Replace", "-", "SelectAll", "-"]
-        },
-        {
-          name: "forms",
-          items: [
-            "Form",
-            "Checkbox",
-            "Radio",
-            "TextField",
-            "Textarea",
-            "Select",
-            "Button",
-            "ImageButton",
-            "HiddenField"
-          ]
-        },
-        "/",
-        {
-          name: "basicstyles",
-          items: ["Bold", "Italic", "Underline", "Strike", "Subscript", "Superscript", "-", "RemoveFormat"]
-        },
-        {
-          name: "paragraph",
-          items: [
-            "NumberedList",
-            "BulletedList",
-            "-",
-            "Outdent",
-            "Indent",
-            "-",
-            "Blockquote",
-            "CreateDiv",
-            "-",
-            "JustifyLeft",
-            "JustifyCenter",
-            "JustifyRight",
-            "JustifyBlock",
-            "-",
-            "BidiLtr",
-            "BidiRtl"
-          ]
-        },
-        { name: "links", items: ["Link", "Unlink"] },
-        {
-          name: "insert",
-          items: ["Image", "Table", "HorizontalRule", "Smiley", "SpecialChar", "PageBreak", "Iframe"]
-        },
-        "/",
-        { name: "styles", items: ["Styles", "Format", "Font", "FontSize"] },
-        { name: "colors", items: ["TextColor", "BGColor"] },
-        { name: "tools", items: ["Maximize", "ShowBlocks", "-", "About"] }
-      ],
-      toolbar_Default: [
-        { name: "document", items: ["Sourcedialog"] },
-        {
-          name: "clipboard",
-          items: ["Cut", "Copy", "Paste", "PasteText", "PasteFromWord", "-", "Undo", "Redo"]
-        },
-        { name: "editing", items: ["Find", "Replace", "-", "SelectAll"] },
-        {
-          name: "basicstyles",
-          items: ["Bold", "Italic", "Underline", "Strike", "Subscript", "Superscript", "-", "RemoveFormat"]
-        },
-        {
-          name: "paragraph",
-          items: [
-            "NumberedList",
-            "BulletedList",
-            "-",
-            "Outdent",
-            "Indent",
-            "-",
-            "Blockquote",
-            "CreateDiv",
-            "-",
-            "JustifyLeft",
-            "JustifyCenter",
-            "JustifyRight",
-            "JustifyBlock",
-            "-",
-            "BidiLtr",
-            "BidiRtl"
-          ]
-        },
-        { name: "links", items: ["Link", "Unlink"] },
-        {
-          name: "insert",
-          items: ["Image", "Table", "HorizontalRule", "SpecialChar", "PageBreak", "Iframe"]
-        },
-        { name: "styles", items: ["Styles", "Format", "Font", "FontSize"] },
-        { name: "colors", items: ["TextColor", "BGColor"] },
-        { name: "tools", items: ["Maximize", "ShowBlocks", "-", "About"] }
-      ],
-      toolbar_Simple: [
-        { name: "document", items: [] },
-        {
-          name: "basicstyles",
-          items: ["Bold", "Italic", "Underline", "Strike", "-", "RemoveFormat"]
-        },
-        {
-          name: "paragraph",
-          items: [
-            "NumberedList",
-            "BulletedList",
-            "-",
-            "Outdent",
-            "Indent",
-            "-",
-            "-",
-            "JustifyLeft",
-            "JustifyCenter",
-            "JustifyRight",
-            "JustifyBlock"
-          ]
-        },
-        { name: "links", items: ["Link", "Unlink"] },
-        { name: "insert", items: ["Image", "Table", "SpecialChar"] },
-        { name: "styles", items: ["Format", "FontSize"] },
-        { name: "colors", items: ["TextColor", "BGColor"] },
-        { name: "tools", items: ["Maximize", "Sourcedialog", "-", "About"] }
-      ],
-      toolbar_Basic: [
-        {
-          name: "links",
-          items: [
-            "Bold",
-            "Italic",
-            "-",
-            "NumberedList",
-            "BulletedList",
-            "-",
-            "Link",
-            "Unlink",
-            "-",
-            "Maximize",
-            "About"
-          ]
-        }
-      ],
-      removeButtons: ""
+    this.options.renderOptions.kendoEditorConfiguration.execute = e => {
+      if (e.name === "viewhtml") {
+        const label = this.options.label;
+        window.setTimeout(() => {
+          const $window = $(".k-viewhtml-dialog");
+          const kWindow = $window.getKendoWindow();
+          $window.addClass("htmltext--viewhtml");
+          kWindow.setOptions({ title: label, resizable: true, actions: ["Maximize", "Close"] });
+        }, 10);
+      }
     };
   },
 
+  /**
+   * Some hacks around the toolbar to pin it in the dom
+   * see : https://medium.com/@unitehenry/hacking-the-kendo-inline-editor-for-tributejs-6dcf5824b20c
+   * @private
+   */
+  _initToolBar: function htmltext_initToolbar() {
+    const toolBarElement = this.kendoEditorInstance.toolbar.element.closest("div.k-editor-widget");
+    //Show the toolbar
+    this.kendoEditorInstance.toolbar.show();
+    //Disable auto hide
+    $(this.kendoEditorInstance.body).off("focusout.kendoEditor");
+    //Disable drag of the toolbar
+    toolBarElement.find(".k-editortoolbar-dragHandle").hide();
+    // Relative Position Toolbar
+
+    toolBarElement.css({ width: "100%", position: "static", top: "", left: "", opacity: "" });
+    if (this.options.renderOptions.height) {
+      $(this.kendoEditorInstance.body).css("height", this.options.renderOptions.height);
+    }
+    // Attach the element to a relative div
+    const toolbar = toolBarElement.detach();
+    this.element.find(".dcpAttribute__content__htmltext--toolbar").append(toolbar);
+  },
+
   _initEvent: function _initEvent() {
-    var currentWidget = this;
+    const currentWidget = this;
     this._super();
-    if (this.ckEditorInstance) {
-      this.ckEditorInstance.on("change", function wHtmltext_change() {
-        currentWidget.setValue({ value: this.getData() });
-      });
 
-      this.ckEditorInstance.on("focus", function wHtmltext_focus() {
-        var ktTarget = currentWidget.element.find(".input-group");
-        currentWidget.showInputTooltip(ktTarget);
-        currentWidget.element.find(".cke").addClass("k-state-focused");
-        currentWidget.element.closest(".dcpAttribute__content").addClass("dcpAttribute--focus");
-      });
+    if (this.getMode() === "write") {
+      if (currentWidget.kendoEditorInstance) {
+        currentWidget.kendoEditorInstance.bind("change", () => {
+          currentWidget.setValue({ value: currentWidget.kendoEditorInstance.value() });
+        });
 
-      this.ckEditorInstance.on("blur", function wHtmltext_blur() {
-        var ktTarget = currentWidget.element.find(".input-group");
-        currentWidget.hideInputTooltip(ktTarget);
-        currentWidget.element.find(".cke").removeClass("k-state-focused");
-        currentWidget.element.closest(".dcpAttribute__content").removeClass("dcpAttribute--focus");
-      });
+        //---------------------
+        // Resize inside images : use resizable css
+        $(this.kendoEditorInstance.body).on("click", e => {
+          const $img = $(e.target);
 
-      this.ckEditorInstance.on("instanceReady", function wHtmltext_loaded() {
-        currentWidget._trigger("widgetReady");
-      });
+          if (e.isTrigger) {
+            // Do nothing it is just to select img
+            return;
+          }
+          if ($img.prop("tagName") === "IMG") {
+            // insert a div container to add use resizable
+            const $imgContainer = $img.parent();
 
-      this.element.on("postMoved" + this.eventNamespace, function wHtmlTextOnPostMoved(event, eventData) {
-        if (eventData && eventData.to === currentWidget.options.index) {
-          currentWidget.redraw();
-        }
-      });
+            if (!$imgContainer.hasClass("htmltext-img-container")) {
+              const width = $img.width();
+              const height = $img.height();
+              const $imgcontainer = $("<div/>")
+                .addClass("htmltext-img-container")
+                .attr("style", $img.attr("style"))
+                .width(width)
+                .height(height)
+                .css("background-image", 'url("' + $img.attr("src") + '")');
+
+              if ($img.css("float") === "right") {
+                // Move scroll bar to the left
+                $imgcontainer.css("direction", "rtl");
+              }
+
+              $img.width("").height("");
+              $imgcontainer.insertBefore($img);
+              $imgcontainer.append($img);
+            }
+          } else {
+            // remove all img div container and restore new image dimension
+            const $containers = $(e.currentTarget).find(".htmltext-img-container");
+            $containers.each(function() {
+              $(this).css("padding", "0");
+              const $iImg = $(this).find("img");
+              const width = $(this).width();
+              const height = $(this).height();
+              $iImg.width(width).height(height);
+              $iImg.insertBefore($(this));
+              $(this).remove();
+              // Select image
+              $iImg.trigger("click");
+            });
+          }
+        });
+      }
     }
 
-    //If we are not in CKEDITOR mode, we take care of anchor and redirect it
+    //If we are not in edit mode, we take care of anchor and redirect it
     if (this.getMode() !== "write") {
       this.element.on(
         "click." + this.eventNamespace,
         'a:not([href^="#action/"]):not([data-action])',
         function wHtmlAnchorClick(event) {
-          var internalEvent = { prevent: false },
+          let internalEvent = { prevent: false },
             anchor = this,
             $anchor = $(this),
             isNotPrevented,
@@ -404,7 +405,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
   _initChangeEvent: function wHtmltext_initChangeEvent() {},
 
   getWidgetValue: function wHtmltext_getWidgetValue() {
-    return this.getContentElements().val();
+    return this.getContentElements().value();
   },
 
   /**
@@ -413,23 +414,23 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
    */
   setValue: function wHtmltextSetValue(value) {
     value = _.clone(value);
-    if (value.value === null) {
-      // ckEditor restore original value if set to null
-      value.value = "";
-    }
     if (_.has(value, "value") && !_.has(value, "displayValue")) {
       value.displayValue = value.value;
     }
+    //We don't take null value so replace it with ""
+    if (value.value === null) {
+      value.value = "";
+    }
+
     if (this.getMode() === "write") {
       // Flash element only
-      var originalValue = this.ckEditorInstance.getData();
+      var originalValue = this.kendoEditorInstance.value();
       // : explicit lazy equal
 
-      //noinspection JSHint
-      if (originalValue.trim() != value.value.trim()) {
+      if (originalValue.trim() !== value.value.trim()) {
         // Modify value only if different
 
-        this.ckEditorInstance.setData(value.value);
+        this.kendoEditorInstance.value(value.value);
       }
     } else if (this.getMode() === "read") {
       this.getContentElements().html(value.displayValue);
@@ -438,6 +439,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
     }
 
     // call wAttribute::setValue()
+    // noinspection JSPotentiallyInvalidConstructorUsage
     $.dcp.dcpAttribute.prototype.setValue.call(this, value);
   },
 
@@ -446,20 +448,13 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
   },
 
   _destroy: function wHtmlTextDestroy() {
-    var currentWidget = this;
-    if (this.ckEditorInstance && this.ckEditorInstance.destroy) {
-      if (this.ckEditorInstance.status === "loaded" || this.ckEditorInstance.status === "ready") {
-        this.ckEditorInstance.destroy();
-        _.defer(function wHtmltext_deferDestroy() {
-          currentWidget._destroy();
-        });
-        return;
-      } else if (this.ckEditorInstance.status === "unloaded") {
-        this.ckEditorInstance.on("loaded", function wHtmltext_loaded() {
-          currentWidget._destroy();
-        });
-        return;
-      }
+    const currentWidget = this;
+    if (this.kendoEditorInstance && this.kendoEditorInstance.destroy) {
+      this.kendoEditorInstance.destroy();
+      _.defer(function wHtmltext_deferDestroy() {
+        currentWidget._destroy();
+      });
+      return;
     }
     _.each(this.popupWindows, function wHtmltextDestroyPopup(pWindow) {
       pWindow.data("dcpWindow").destroy();

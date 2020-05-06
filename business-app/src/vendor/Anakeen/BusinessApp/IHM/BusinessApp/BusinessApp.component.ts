@@ -54,6 +54,10 @@ export default class BusinessApp extends Vue {
   public collectionDropDownList: kendo.ui.DropDownList = null;
   public currentListPage = 1;
   public currentListFilter = "";
+  public pageableConfig = {
+    pageSizes: [50, 100, 200],
+    pageSize: 50
+  };
 
   @Watch("selectedCollection")
   public onSelectedCollectionDataChange(newVal, oldVal) {

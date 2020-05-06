@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-17 15:02+0100\n"
+"POT-Creation-Date: 2020-04-28 19:29+0200\n"
 "PO-Revision-Date: 2016-11-18 15:26+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
@@ -217,6 +217,28 @@ msgstr ""
 msgid "Affected to %s %s"
 msgstr ""
 
+msgctxt "SearchCriteriaUtilsTextual multi"
+msgid "All contain"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "All dates are between"
+msgstr ""
+
+#, php-format
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "All of the '%s' are among"
+msgstr ""
+
+#, php-format
+msgctxt "SearchCriteriaUtils.Relations multi"
+msgid "All of the '%s' are among"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "All values are between"
+msgstr ""
+
 msgctxt "wdoc"
 msgid "Ask for"
 msgstr ""
@@ -285,6 +307,14 @@ msgstr ""
 
 #, php-format
 msgid "Config file %s : unknow attribute name %s"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Textual simple"
+msgid "Contains"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Title simple"
+msgid "Contains"
 msgstr ""
 
 msgctxt "smart iuser"
@@ -416,6 +446,24 @@ msgstr ""
 
 msgctxt "ank"
 msgid "Document update failed"
+msgstr ""
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Textual simple"
+msgid "Does not contain"
+msgstr "Connect"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Title simple"
+msgid "Does not contain"
+msgstr "Connect"
+
+msgctxt "SearchCriteriaUtils.Textual simple"
+msgid "Does not start with"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Title simple"
+msgid "Does not start with"
 msgstr ""
 
 msgid "Doing csv render"
@@ -622,6 +670,126 @@ msgstr ""
 msgid "Invalid directory '%s'."
 msgstr ""
 
+msgctxt "SearchCriteriaUtils.Enum simple"
+msgid "Is among"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Relations simple"
+msgid "Is among"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.State simple"
+msgid "Is among"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical simple"
+msgid "Is between"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal simple"
+msgid "Is between"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "Is empty"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Enum simple"
+msgid "Is empty"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "Is empty"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical simple"
+msgid "Is empty"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Relations multi"
+msgid "Is empty"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Relations simple"
+msgid "Is empty"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "Is empty"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal simple"
+msgid "Is empty"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Textual simple"
+msgid "Is empty"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Title simple"
+msgid "Is empty"
+msgstr ""
+
+msgctxt "SearchCriteriaUtilsTextual multi"
+msgid "Is empty"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Enum simple"
+msgid "Is not among"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Relations simple"
+msgid "Is not among"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.State simple"
+msgid "Is not among"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "Is not empty"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Enum simple"
+msgid "Is not empty"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "Is not empty"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical simple"
+msgid "Is not empty"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Relations multi"
+msgid "Is not empty"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Relations simple"
+msgid "Is not empty"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "Is not empty"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal simple"
+msgid "Is not empty"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Textual simple"
+msgid "Is not empty"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Title simple"
+msgid "Is not empty"
+msgstr ""
+
+msgctxt "SearchCriteriaUtilsTextual multi"
+msgid "Is not empty"
+msgstr ""
+
 #, php-format
 msgctxt "smart iuser"
 msgid "It must contains at least %d characters (total length)"
@@ -663,8 +831,60 @@ msgstr ""
 msgid "Method [%s] not exists"
 msgstr ""
 
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "NA"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Enum simple"
+msgid "NA"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "NA"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical simple"
+msgid "NA"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Relations multi"
+msgid "NA"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Relations simple"
+msgid "NA"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.State simple"
+msgid "NA"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "NA"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal simple"
+msgid "NA"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Textual multi"
+msgid "NA"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Textual simple"
+msgid "NA"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Title simple"
+msgid "NA"
+msgstr ""
+
 msgctxt "fusersimport"
 msgid "New password"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "No dates are between"
 msgstr ""
 
 #, php-format
@@ -674,6 +894,25 @@ msgstr ""
 #, php-format
 msgctxt "sde"
 msgid "No privilege \"%s\" for %d"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "No values are between"
+msgstr ""
+
+#, fuzzy
+msgctxt "SearchCriteriaUtilsTextual multi"
+msgid "None contain"
+msgstr "Connect"
+
+#, php-format
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "None of the '%s' are among"
+msgstr ""
+
+#, php-format
+msgctxt "SearchCriteriaUtils.Relations multi"
+msgid "None of the '%s' are among"
 msgstr ""
 
 #, php-format
@@ -698,6 +937,50 @@ msgstr ""
 
 msgctxt "smart iuser"
 msgid "Not enough uppercase characters."
+msgstr ""
+
+msgctxt "SearchCriteriaUtilsTextual multi"
+msgid "One contains"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "One date is between"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "One date is not between"
+msgstr ""
+
+msgctxt "SearchCriteriaUtilsTextual multi"
+msgid "One does not contain"
+msgstr ""
+
+#, php-format
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "One of the '%s' is among"
+msgstr ""
+
+#, php-format
+msgctxt "SearchCriteriaUtils.Relations multi"
+msgid "One of the '%s' is among"
+msgstr ""
+
+#, php-format
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "One of the '%s' is not among"
+msgstr ""
+
+#, php-format
+msgctxt "SearchCriteriaUtils.Relations multi"
+msgid "One of the '%s' is not among"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "One value is between"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "One value is not between"
 msgstr ""
 
 #, php-format
@@ -807,6 +1090,14 @@ msgstr ""
 #, php-format
 msgid ""
 "Some characters are not authorized for file name %s. They are replaced by -"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Textual simple"
+msgid "Starts with"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Title simple"
+msgid "Starts with"
 msgstr ""
 
 msgctxt "fusersimport"
@@ -2097,9 +2388,6 @@ msgstr ""
 
 #~ msgid "Do choice"
 #~ msgstr "Select"
-
-#~ msgid "Do connection"
-#~ msgstr "Connect"
 
 #~ msgid "DocProperties"
 #~ msgstr "Properties"

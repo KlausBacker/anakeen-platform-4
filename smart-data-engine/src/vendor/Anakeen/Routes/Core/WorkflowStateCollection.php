@@ -124,10 +124,7 @@ class WorkflowStateCollection
     {
         if ($tr && (!empty($tr["m0"]))) {
             // verify m0
-            return call_user_func(array(
-                $this->workflow,
-                $tr["m0"],
-            ), $state, $this->workflow->doc->state);
+            return $this->workflow->executeTransitionM($tr['id'], "m0", $state, $this->workflow->doc->state, '');
         }
         return null;
     }

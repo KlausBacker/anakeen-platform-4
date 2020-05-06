@@ -1,0 +1,10 @@
+{
+  "title": "Test title",
+  "defaultStructure": "DEVBILL",
+  "criterias": [
+    {
+      "kind": "property",
+      "field": "title"
+    }
+  ]
+}

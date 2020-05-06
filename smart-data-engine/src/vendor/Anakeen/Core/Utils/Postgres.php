@@ -213,7 +213,7 @@ class Postgres
             }
         }
 
-        return '{' . implode($values, ',') . '}';
+        return '{' . implode(',', $values) . '}';
     }
 
     /**

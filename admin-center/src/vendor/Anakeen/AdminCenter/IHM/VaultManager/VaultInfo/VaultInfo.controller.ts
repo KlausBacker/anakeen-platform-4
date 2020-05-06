@@ -3,7 +3,8 @@ import { DropdownsInstaller } from "@progress/kendo-dropdowns-vue-wrapper";
 import { GaugesInstaller } from "@progress/kendo-gauges-vue-wrapper";
 import "@progress/kendo-ui/js/dataviz/chart/chart";
 import "@progress/kendo-ui/js/dataviz/gauge/main";
-import { Component, Prop, Vue } from "vue-property-decorator";
+import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
+import { Component, Prop, Vue, Mixins } from "vue-property-decorator";
 import VaultManagerController from "../VaultManager.controller";
 
 Vue.use(ChartInstaller);
@@ -14,7 +15,7 @@ Vue.use(DropdownsInstaller);
 @Component({
   name: "ank-vault-info"
 })
-export default class VaultInfoController extends Vue {
+export default class VaultInfoController extends Mixins(AnkI18NMixin) {
   protected static getGaugeUnit(size) {
     const hasta = 2;
     if (size < hasta * 1024 * 1024) {

@@ -251,7 +251,7 @@ export default class GridPager extends Mixins(I18nMixin) {
             total: this.gridComponent.currentPage.total
           },
           pages: {
-            page: Math.ceil((this.gridComponent.currentPage.skip - this.pageSize) / this.pageSize) + 1,
+            page: Math.floor((this.gridComponent.currentPage.skip - this.pageSize) / this.pageSize) + 1,
             size: this.pageSize,
             total: Math.ceil(this.gridComponent.currentPage.total / this.pageSize)
           }
@@ -273,7 +273,7 @@ export default class GridPager extends Mixins(I18nMixin) {
             total: this.gridComponent.currentPage.total
           },
           pages: {
-            page: Math.ceil((this.gridComponent.currentPage.skip + this.pageSize) / this.pageSize) + 1,
+            page: Math.floor((this.gridComponent.currentPage.skip + this.pageSize) / this.pageSize) + 1,
             size: this.pageSize,
             total: Math.ceil(this.gridComponent.currentPage.total / this.pageSize)
           }
@@ -287,17 +287,18 @@ export default class GridPager extends Mixins(I18nMixin) {
 
   public lastPage(): void {
     if (this.gridComponent && this.hasNext) {
+      const skipLast = Math.floor(this.gridComponent.currentPage.total / this.pageSize) * this.pageSize;
       const gridEvent = new GridEvent(
         {
           page: {
-            skip: this.gridComponent.currentPage.total - this.pageSize,
+            skip: skipLast,
             take: this.pageSize,
             total: this.gridComponent.currentPage.total
           },
           pages: {
-            page: Math.ceil((this.gridComponent.currentPage.total - this.pageSize) / this.pageSize) + 1,
+            page: Math.ceil(this.gridComponent.currentPage.total / this.pageSize),
             size: this.pageSize,
-            totall: Math.ceil(this.gridComponent.currentPage.total / this.pageSize)
+            total: Math.ceil(this.gridComponent.currentPage.total / this.pageSize)
           }
         },
         null,

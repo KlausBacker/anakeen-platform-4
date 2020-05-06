@@ -53,4 +53,47 @@ class ErrorCodeFLT
      * @see \Anakeen\Search\Filters\OrOperator
      */
     const FLT0011 = "The OR operator cannot be used with several filters which use with join and no join conditions ('%s' - '%s')";
+    /**
+     * @errorCode when use docrel join and isgreater by exemple
+     * @see \Anakeen\Search\SearchCriteria\SearchCriteriaUtils
+     */
+    const FLT0012 = "The Search Criteria raw data must be an array";
+    /**
+     * @errorCode when use docrel join and isgreater by exemple
+     * @see \Anakeen\Search\SearchCriteria\SearchCriteriaUtils
+     */
+    const FLT0013 = "The Search Criteria kind value '%s' must be of 'field', 'property', 'virtual' or 'fulltext'";
+    /**
+     * @errorCode when use docrel join and isgreater by exemple
+     * @see \Anakeen\Search\SearchCriteria\SearchCriteriaUtils
+     */
+    const FLT0014 = "The Search Criteria logic value '%s' must be of 'and' or 'or'";
+    /**
+     * @errorCode when use docrel join and isgreater by exemple
+     * @see \Anakeen\Search\SearchCriteria\SearchCriteriaUtils
+     */
+    const FLT0015 = "The Search Criteria filter value of kind '%s' must specify a 'field' property";
+    /**
+     * @errorCode when use docrel join and isgreater by exemple
+     * @see \Anakeen\Search\SearchCriteria\SearchCriteriaUtils
+     */
+    const FLT0017 = "The Search Criteria filter value of kind '%s' must specify an operator value";
+    /**
+     * @errorCode when use docrel join and isgreater by exemple
+     * @see \Anakeen\Search\SearchCriteria\SearchCriteriaUtils
+     */
+    const FLT0018 = "The operator '%s' is not supported for type '%s' with field multiplicity to '%b' and filter multiplicity to '%b'";
+    /**
+     * @errorCode when use docrel join and isgreater by exemple
+     * @see \Anakeen\Search\SearchCriteria\SearchCriteriaUtils
+     */
+    const FLT0019 = "The Search Criteria filter does not support multiple filter values yet";
+    /**
+     * @errorCode the attribut must not be multiple
+     */
+    const FLT0020 = "Value must be an array of two values";
+    /**
+     * @errorCode the attribut must not be multiple
+     */
+    const FLT0021 = "The operator value must be an array with a 'key' value and a 'multipleFilter' flag";
 }

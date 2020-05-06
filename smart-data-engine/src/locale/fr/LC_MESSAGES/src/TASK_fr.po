@@ -14,66 +14,6 @@ msgstr ""
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
 #, fuzzy
 msgctxt "TASK"
-msgid "task_fr_ident"
-msgstr "Identification"
-
-#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
-msgctxt "TASK"
-msgid "task_title"
-msgstr "Title"
-
-#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
-msgctxt "TASK"
-msgid "task_iduser"
-msgstr "Executed by"
-
-#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
-msgctxt "TASK"
-msgid "task_status"
-msgstr "Status"
-
-#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
-msgctxt "TASK"
-msgid "task_desc"
-msgstr "Description"
-
-#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
-msgctxt "TASK"
-msgid "task_fr_route"
-msgstr "Route to execute"
-
-#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
-msgctxt "TASK"
-msgid "task_route_ns"
-msgstr "Namespace"
-
-#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
-msgctxt "TASK"
-msgid "task_route_name"
-msgstr "Name"
-
-#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
-msgctxt "TASK"
-msgid "task_route_method"
-msgstr "Method"
-
-#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
-msgctxt "TASK"
-msgid "task_t_args"
-msgstr "Arguments"
-
-#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
-msgctxt "TASK"
 msgid "task_arg_name"
 msgstr "Nom"
 
@@ -86,50 +26,14 @@ msgstr "Valeur"
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
 #, fuzzy
 msgctxt "TASK"
-msgid "task_t_queryfield"
-msgstr "Query fields"
-
-#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
-msgctxt "TASK"
-msgid "task_queryfield_name"
-msgstr "Nom"
-
-#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
-msgctxt "TASK"
-msgid "task_queryfield_value"
-msgstr "Valeur"
-
-#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
-msgctxt "TASK"
-msgid "task_fr_schedule"
-msgstr "Schedule"
-
-#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
-msgctxt "TASK"
 msgid "task_crontab"
 msgstr "Crontab periodicity"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
 #, fuzzy
 msgctxt "TASK"
-msgid "task_humancrontab"
-msgstr "Periodicity (comprehensive)"
-
-#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
-msgctxt "TASK"
-msgid "task_nextdate"
-msgstr "Next execution date"
-
-#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
-msgctxt "TASK"
-msgid "task_fr_result"
-msgstr "Task results"
+msgid "task_desc"
+msgstr "Description"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
 #, fuzzy
@@ -146,14 +50,110 @@ msgstr "Execution duration"
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
 #, fuzzy
 msgctxt "TASK"
+msgid "task_exec_output"
+msgstr "Output"
+
+#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
+#, fuzzy
+msgctxt "TASK"
 msgid "task_exec_state_result"
 msgstr "Execution status"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
 #, fuzzy
 msgctxt "TASK"
-msgid "task_exec_output"
-msgstr "Output"
+msgid "task_fr_ident"
+msgstr "Identification"
+
+#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
+#, fuzzy
+msgctxt "TASK"
+msgid "task_fr_result"
+msgstr "Task results"
+
+#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
+#, fuzzy
+msgctxt "TASK"
+msgid "task_fr_route"
+msgstr "Route to execute"
+
+#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
+#, fuzzy
+msgctxt "TASK"
+msgid "task_fr_schedule"
+msgstr "Schedule"
+
+#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
+#, fuzzy
+msgctxt "TASK"
+msgid "task_humancrontab"
+msgstr "Periodicity (comprehensive)"
+
+#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
+#, fuzzy
+msgctxt "TASK"
+msgid "task_iduser"
+msgstr "Executed by"
+
+#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
+#, fuzzy
+msgctxt "TASK"
+msgid "task_nextdate"
+msgstr "Next execution date"
+
+#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
+#, fuzzy
+msgctxt "TASK"
+msgid "task_queryfield_name"
+msgstr "Nom"
+
+#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
+#, fuzzy
+msgctxt "TASK"
+msgid "task_queryfield_value"
+msgstr "Valeur"
+
+#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
+#, fuzzy
+msgctxt "TASK"
+msgid "task_route_method"
+msgstr "Method"
+
+#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
+#, fuzzy
+msgctxt "TASK"
+msgid "task_route_name"
+msgstr "Name"
+
+#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
+#, fuzzy
+msgctxt "TASK"
+msgid "task_route_ns"
+msgstr "Namespace"
+
+#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
+#, fuzzy
+msgctxt "TASK"
+msgid "task_status"
+msgstr "Status"
+
+#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
+#, fuzzy
+msgctxt "TASK"
+msgid "task_t_args"
+msgstr "Arguments"
+
+#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
+#, fuzzy
+msgctxt "TASK"
+msgid "task_t_queryfield"
+msgstr "Query fields"
+
+#: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
+#, fuzzy
+msgctxt "TASK"
+msgid "task_title"
+msgstr "Title"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
 msgctxt "TASK"

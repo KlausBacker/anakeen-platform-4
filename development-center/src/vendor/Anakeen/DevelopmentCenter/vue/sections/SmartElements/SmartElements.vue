@@ -5,7 +5,7 @@
         <ank-se-grid
           ref="grid"
           class="se-grid"
-          :pageable="{ pageSizes: [100, 200, 500], pageSize: 100 }"
+          :pageable="pageableConfig"
           controller="ELEMENTS_GRID_CONTROLLER"
           filterable
           defaultExpandable

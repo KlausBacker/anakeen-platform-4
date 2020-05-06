@@ -122,11 +122,11 @@ class GroupHooks extends \SmartStructure\Dir
                 }
             }
             $gmail = implode(", ", array_unique($tmail));
-            $this->SetValue("GRP_MAIL", $gmail);
+            $this->SetValue("grp_mail", $gmail);
         }
 
         if ($this->getRawValue("grp_hasmail") == "no") {
-            $this->clearValue("GRP_MAIL");
+            $this->clearValue("grp_mail");
         }
 
         return $err;

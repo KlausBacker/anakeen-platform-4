@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<accounts:accounts xmlns:accounts="https://platform.anakeen.com/4/schemas/account/1.0">
+    <accounts:groups>
+        <!--
+                     gtst_000       gtst_101
+                         |         /       \
+                     gtst_102    /        gtst_201
+                          \    /              \
+                        gtst_222           gtst_301
+
+        -->
+
+        <accounts:group name="gtst_000"/>
+        <accounts:group name="gtst_101">
+            <accounts:structure name="GTST_101"/>
+        </accounts:group>
+        <accounts:group name="gtst_102">
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="gtst_000"/>
+            </accounts:parentGroups>
+            <accounts:structure name="GTST_102"/>
+        </accounts:group>
+        <accounts:group name="gtst_201">
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="gtst_101"/>
+            </accounts:parentGroups>
+            <accounts:structure name="GTST_201"/>
+        </accounts:group>
+        <accounts:group name="gtst_301">
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="gtst_201"/>
+            </accounts:parentGroups>
+            <accounts:structure name="GTST_301"/>
+        </accounts:group>
+
+        <accounts:group name="gtst_222">
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="gtst_101"/>
+                <accounts:parentGroup ref="gtst_102"/>
+            </accounts:parentGroups>
+            <accounts:structure name="GTST_222"/>
+        </accounts:group>
+    </accounts:groups>
+
+</accounts:accounts>

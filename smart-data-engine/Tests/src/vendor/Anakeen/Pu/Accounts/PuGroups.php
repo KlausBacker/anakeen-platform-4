@@ -86,7 +86,7 @@ class PuGroups extends TestCaseConfig
      * @dataProvider dataAccountRemoveFromGroup
      *
      * @param $targetGroupLogin
-     * @param $accountToAddLogin
+     * @param $accountToRemoveFromLogin
      * @param array $expectedLoginMembers
      * @throws \Anakeen\Core\Exception
      * @throws \Anakeen\Database\Exception

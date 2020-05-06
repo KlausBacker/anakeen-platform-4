@@ -1,0 +1,19 @@
+{
+  "title": "Test between",
+  "defaultStructure": "DEVBILL",
+  "criterias": [
+    {
+      "kind": "field",
+      "field": "bill_cost",
+      "default": {
+        "operator": {
+          "key": "between"
+        },
+        "value": [
+          25,
+          35
+        ]
+      }
+    }
+  ]
+}

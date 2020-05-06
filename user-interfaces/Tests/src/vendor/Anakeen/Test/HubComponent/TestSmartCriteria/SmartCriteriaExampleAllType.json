@@ -1,0 +1,66 @@
+{
+  "title": "Test AllTypes",
+  "defaultStructure": "TST_DDUI_ALLTYPE",
+  "criterias": [
+    {
+      "kind": "property",
+      "field": "title"
+    },
+    {
+      "kind": "field",
+      "field": "test_ddui_all__account"
+    },
+    {
+      "kind": "field",
+      "field": "test_ddui_all__account_multiple"
+    },
+    {
+      "kind": "field",
+      "field": "test_ddui_all__docid"
+    },
+    {
+      "kind": "field",
+      "field": "test_ddui_all__docid_multiple"
+    },
+    {
+      "kind": "field",
+      "field": "test_ddui_all__date"
+    },
+    {
+      "kind": "field",
+      "field": "test_ddui_all__time"
+    },
+    {
+      "kind": "field",
+      "field": "test_ddui_all__timestamp"
+    },
+    {
+      "kind": "field",
+      "field": "test_ddui_all__integer"
+    },
+    {
+      "kind": "field",
+      "field": "test_ddui_all__double"
+    },
+    {
+      "kind": "field",
+      "field": "test_ddui_all__money"
+    },
+    {
+      "kind": "field",
+      "field": "test_ddui_all__htmltext"
+    },
+    {
+      "kind": "field",
+      "field": "test_ddui_all__longtext"
+    },
+    {
+      "kind": "field",
+      "field": "test_ddui_all__text"
+    },
+    {
+      "kind": "field",
+      "field": "test_ddui_all__enumlist"
+    }
+  ]
+}

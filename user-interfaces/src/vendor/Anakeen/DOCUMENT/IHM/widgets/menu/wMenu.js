@@ -8,9 +8,8 @@ export default $.widget("dcp.dcpMenu", {
   options: {
     eventPrefix: "dcpmenu"
   },
-
   kendoMenuWidget: null,
-
+  isTooltip: false,
   _create: function wMenuCreate() {
     this.menuUID = _.uniqueId("menuWidget");
     this._tooltips = [];
@@ -256,7 +255,17 @@ export default $.widget("dcp.dcpMenu", {
         }, 2000);
       }
     });
-
+    $content.data("kendoMenu").bind("close", function(e) {
+      if (window.isTooltip) {
+        e.preventDefault();
+      }
+    });
+    $content.on("mouseover", e => {
+      window.isTooltip =
+        $(e.relatedTarget).hasClass("tooltip-inner") ||
+        $(e.relatedTarget).hasClass("tooltip fade") ||
+        $(e.relatedTarget).hasClass("menu__content");
+    });
     this.element
       .find(".menu--left")
       .last()
@@ -298,7 +307,6 @@ export default $.widget("dcp.dcpMenu", {
     $(window).on("resize.dcpMenu" + this.menuUID, _.debounce(_.bind(this.inhibitBarMenu, this), 100));
     $(window).on("resize.dcpMenu" + this.menuUID, _.debounce(_.bind(this.updateResponsiveMenu, this), 100, false));
   },
-
   callMenu: function callMenu($menuItem) {
     var scopeWidget = this;
     var $elementA = $menuItem.find("a");

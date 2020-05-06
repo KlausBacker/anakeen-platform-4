@@ -72,6 +72,46 @@
     </hge_jsassets>
     <hge_component_tag>ank-test-smart-grid</hge_component_tag>
   </hubconfigurationgeneric>
+  <hubconfigurationgeneric xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="hubconfigurationgeneric.xsd" name="HUBELT_2168" title="Test Smart Criteria" revision="0" modification-date="2020-03-10 10:44:56.880289" version="" state="">
+    <hub_config>
+      <hub_station_id_frame>
+        <hub_station_id name="UI_TEST">Interface de tests des rendus</hub_station_id>
+        <hub_title>Test Smart Criteria</hub_title>
+      </hub_station_id_frame>
+      <hub_slot_parameters>
+        <hub_order>4</hub_order>
+        <hub_docker_position>LEFT_TOP</hub_docker_position>
+        <hub_vue_router_entry>testsmartcriteria</hub_vue_router_entry>
+      </hub_slot_parameters>
+      <hub_activated_frame>
+        <hub_activated>FALSE</hub_activated>
+        <hub_activated_order xsi:nil="true"/>
+        <hub_selectable>TRUE</hub_selectable>
+        <hub_expandable>TRUE</hub_expandable>
+      </hub_activated_frame>
+    </hub_config>
+    <hub_component_tab>
+      <hub_component_parameters/>
+      <hge_fr_assets>
+        <hge_jsassets>
+          <hge_jsasset_type>MANIFEST</hge_jsasset_type>
+          <hge_jsasset>
+            Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("testSmartCriteria", "test-smart-criteria")
+          </hge_jsasset>
+        </hge_jsassets>
+      </hge_fr_assets>
+      <hge_fr_identification>
+        <hge_component_tag>ank-test-smart-criteria</hge_component_tag>
+        <hge_component_props xsi:nil="true"/>
+      </hge_fr_identification>
+    </hub_component_tab>
+    <hub_security>
+      <hub_security_frame>
+        <hub_visibility_roles xsi:nil="true"/>
+        <hub_execution_roles xsi:nil="true"/>
+      </hub_security_frame>
+    </hub_security>
+  </hubconfigurationgeneric>
   <hubconfigurationgeneric name="HGEA_TESTSMARTLIST">
     <hub_station_id name="UI_TEST">Test Smart Element List</hub_station_id>
     <hub_title>TESTSMARTLIST</hub_title>
