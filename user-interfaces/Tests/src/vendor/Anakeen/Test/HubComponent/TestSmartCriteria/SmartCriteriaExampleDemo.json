@@ -22,13 +22,7 @@
     {
       "kind": "field",
       "field": "bill_billdate",
-      "label": "Date de facturation",
-      "default": {
-        "value": [
-          "1970-01-01",
-          "2020-01-01"
-        ]
-      }
+      "label": "Date de facturation"
     },
     {
       "kind": "field",

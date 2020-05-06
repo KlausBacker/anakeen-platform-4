@@ -95,12 +95,8 @@ class Contains extends StandardAttributeFilter implements ElementSearchFilter
     public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
         $attr = $this->verifyCompatibility($search);
-        /*
-         * Prevent chars in $value to be interpreted as REGEX codes.
-         * The value is hence treated as a literal string.
-         * - http://www.postgresql.org/docs/9.1/static/functions-matching.html#POSIX-METASYNTAX
-        */
-        if (!empty($value)) {
+
+        if (!empty($this->value)) {
             $value = $this->regexpPrefix . $this->value . $this->regexpPostfix;
 
             $leftOperand = pg_escape_identifier($attr->id);

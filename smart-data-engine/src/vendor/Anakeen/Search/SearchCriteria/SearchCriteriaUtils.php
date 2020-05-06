@@ -587,8 +587,10 @@ class SearchCriteriaUtils
                 break;
             case "account":
             case "docid":
-            case self::ENUM_KIND:
                 $criteriaType = self::RELATION_KIND;
+                break;
+            case "enum":
+                $criteriaType = self::ENUM_KIND;
                 break;
             case self::FILE_KIND:
             case "image":
