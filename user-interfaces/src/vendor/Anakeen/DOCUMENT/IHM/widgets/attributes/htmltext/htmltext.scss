@@ -34,6 +34,10 @@
       overflow: scroll;
       outline: solid 2px grey;
       background-size: 100% 100%;
+
+      display: inline-block;
+      vertical-align: middle;
+
       scrollbar-width: none;
 
       &::-webkit-scrollbar {
