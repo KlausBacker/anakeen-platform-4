@@ -89,9 +89,8 @@ class OneEqualsMulti extends StandardAttributeFilter implements ElementSearchFil
         if (!$attr->isMultiple()) {
             throw new Exception("FLT0007", $attr->id);
         }
-        if (isset($this->value) && !is_array($this->value)) {
+        if (!is_array($this->value)) {
             throw new Exception("FLT0009");
-//            $this->value = array($this->value);
         }
         return $attr;
     }
