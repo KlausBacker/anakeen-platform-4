@@ -6,7 +6,6 @@ use Anakeen\Search\SearchCriteria\SearchCriteriaTrait;
 
 class Contains extends StandardAttributeFilter implements ElementSearchFilter
 {
-
     use SearchCriteriaTrait;
 
     const NOT = 1;
@@ -101,21 +100,23 @@ class Contains extends StandardAttributeFilter implements ElementSearchFilter
          * The value is hence treated as a literal string.
          * - http://www.postgresql.org/docs/9.1/static/functions-matching.html#POSIX-METASYNTAX
         */
-        $value = $this->regexpPrefix . $this->value. $this->regexpPostfix;
+        if (!empty($value)) {
+            $value = $this->regexpPrefix . $this->value . $this->regexpPostfix;
 
-        $leftOperand = pg_escape_identifier($attr->id);
-        $operator = $this->NOCASE ? '~*' : '~';
-        $rightOperand = pg_escape_literal($value);
+            $leftOperand = pg_escape_identifier($attr->id);
+            $operator = $this->NOCASE ? '~*' : '~';
+            $rightOperand = pg_escape_literal($value);
 
-        if ($this->NODIACRITIC) {
-            $leftOperand = sprintf("unaccent(%s)", $leftOperand);
-            $rightOperand = sprintf("unaccent(%s)", $rightOperand);
+            if ($this->NODIACRITIC) {
+                $leftOperand = sprintf("unaccent(%s)", $leftOperand);
+                $rightOperand = sprintf("unaccent(%s)", $rightOperand);
+            }
+            $sql = sprintf("%s IS NOT NULL AND %s %s %s", $leftOperand, $leftOperand, $operator, $rightOperand);
+            if ($this->NOT) {
+                $sql = sprintf("NOT(%s)", $sql);
+            }
+            $search->addFilter($sql);
         }
-        $sql = sprintf("%s IS NOT NULL AND %s %s %s", $leftOperand, $leftOperand, $operator, $rightOperand);
-        if ($this->NOT) {
-            $sql = sprintf("NOT(%s)", $sql);
-        }
-        $search->addFilter($sql);
         return $this;
     }
 }

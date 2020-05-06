@@ -266,8 +266,9 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
     // @ts-ignore
     const smartFormValue = isBetween ? [this.$refs.smartForm.getValue(SmartFormConfigurationBuilder.getValueName(index)), this.$refs.smartForm.getValue(SmartFormConfigurationBuilder.getValueBetweenName(index))] : (isFilterMultiple ? this.$refs.smartForm.getValue(SmartFormConfigurationBuilder.getValueMultipleName(index)) : this.$refs.smartForm.getValue(SmartFormConfigurationBuilder.getValueName(index)));
     let value;
-    if (isBetween) {
-      value = smartFormValue.map(valObject => (valObject.value ? valObject.value : null));
+
+    if (isBetween || isFilterMultiple) {
+      value = smartFormValue.map(valObject => (valObject ? valObject.value : null));
     } else {
       value = smartFormValue ? smartFormValue.value : null;
     }
