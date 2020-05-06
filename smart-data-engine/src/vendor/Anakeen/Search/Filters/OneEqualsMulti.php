@@ -110,6 +110,13 @@ class OneEqualsMulti extends StandardAttributeFilter implements ElementSearchFil
             $this->ALL ? '@>' : '&&',
             $pgArray
         );
+        if ($this->ALL) {
+            $sql = $sql . sprintf(
+                " AND %s <@ '%s'",
+                pg_escape_identifier($attr->id),
+                $pgArray
+            );
+        }
         if ($this->NOT) {
             $sql = sprintf("NOT(%s)", $sql);
         }

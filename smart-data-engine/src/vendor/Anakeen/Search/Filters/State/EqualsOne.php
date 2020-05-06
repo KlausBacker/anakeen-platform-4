@@ -12,16 +12,4 @@ use Anakeen\Search;
 class EqualsOne extends Search\Filters\EqualsOne
 {
 
-    /**
-     * EqualsOne constructor for state.
-     * @param array $value
-     * @param int $options <p>
-     * Bitmask consisting of
-     * <b>\Anakeen\Search\Filters\EqualsOne::$NOT</b>,
-     * </p>
-     */
-    public function __construct($value, $options = 0)
-    {
-        parent::__construct('state', $value, $options);
-    }
 }

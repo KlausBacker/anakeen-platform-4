@@ -71,13 +71,22 @@ class EqualsOne extends StandardAttributeFilter implements ElementSearchFilter
      */
     public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
+        /**
+         * @var NormalAttribute
+         */
         $attr = $this->verifyCompatibility($search);
+
         if (!empty($this->value)) {
             $search->addFilter($this->_filter($attr, $this->value));
         }
         return $this;
     }
 
+    /**
+     * @param \Anakeen\Search\Internal\SearchSmartData $search
+     * @return NormalAttribute
+     * @throws Exception
+     */
     public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData &$search)
     {
         $attr =  parent::verifyCompatibility($search);
@@ -87,14 +96,16 @@ class EqualsOne extends StandardAttributeFilter implements ElementSearchFilter
         if (!is_array($this->value)) {
             throw new Exception("FLT0009");
         }
+
+        return $attr;
     }
 
     /**
-     * @param NormalAttribute $attr
+     * @param $attr
      * @param $value
      * @return string
      */
-    protected function _filter(NormalAttribute & $attr, $value)
+    protected function _filter($attr, $value)
     {
         $pgArray = SmartElement::arrayToRawValue($value);
         $sql = sprintf("%s IS NOT NULL AND %s <@ '%s'", pg_escape_identifier($attr->id), pg_escape_identifier($attr->id), $pgArray);
