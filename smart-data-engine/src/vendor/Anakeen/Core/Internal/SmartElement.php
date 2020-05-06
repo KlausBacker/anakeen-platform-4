@@ -3562,7 +3562,8 @@ create unique index i_docir on doc(initid, revision);";
                                         /* Check for malformed HTML */
                                         $html = \Anakeen\Core\Utils\HtmlClean::normalizeHTMLFragment(
                                             $tvalues[$kvalue],
-                                            $error
+                                            $error,
+                                            ["initid"=>$this->initid, "revision"=>$this->revision, "attrid"=>$attrid]
                                         );
                                         if ($html === false) {
                                             $html = '';
@@ -3571,10 +3572,9 @@ create unique index i_docir on doc(initid, revision);";
                                         if ($error != '') {
                                             return _("Malformed HTML:") . "\n" . $error;
                                         }
-                                        /* If htmlclean is set, then use the normalized HTML fragment instead */
-                                        if ($oattr->getOption("htmlclean") == "yes") {
+
                                             $tvalues[$kvalue] = $html;
-                                        }
+
                                         /* Encode '[' to prevent further layout interpretation/evaluation */
                                         $tvalues[$kvalue] = str_replace(
                                             "[",

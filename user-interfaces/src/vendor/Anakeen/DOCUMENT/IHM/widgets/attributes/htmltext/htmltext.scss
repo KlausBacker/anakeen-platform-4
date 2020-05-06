@@ -18,6 +18,17 @@
 .dcpDocument--create {
   .dcpAttribute__content__htmltext--wrapper {
     width: 100%;
+    @keyframes myanim {
+      50% {
+        outline: 5px solid #378ae2;
+      }
+    }
+
+    .htmltext-img-transferring {
+      outline: 5px solid grey;
+      animation: myanim 3s infinite;
+    }
+
     .htmltext-img-container {
       resize: both;
       overflow: scroll;

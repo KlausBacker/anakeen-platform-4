@@ -211,6 +211,15 @@
       <sde:description>Download file image</sde:description>
       <sde:requiredAccess/>
     </sde:route>
+
+    <sde:route name="File:HtmltextImage">
+      <sde:priority>1</sde:priority>
+      <sde:callable>Anakeen\Routes\Core\ImageHtmltext</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/api/v2/images/htmltext/{docid}/{revision}/{attrid}/{vid}/{fileName}</sde:pattern>
+      <sde:description>Download file image</sde:description>
+      <sde:requiredAccess/>
+    </sde:route>
     <sde:route name="File:fileAttributeImage">
       <sde:priority>1</sde:priority>
       <sde:callable>Anakeen\Routes\Core\FileAttribute</sde:callable>
