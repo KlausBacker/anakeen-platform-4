@@ -11,6 +11,7 @@ const {
 const testSmartForm = require("./testSmartForm");
 const testSmartGrid = require("./testSmartGrid");
 const testSmartList = require("./testSmartList");
+const testSmartCriteria = require("./testSmartCriteria");
 
 const BASE_DIR = path.resolve(__dirname, "../");
 const PUBLIC_PATH = path.join(BASE_DIR, "Tests/src/public");
@@ -38,10 +39,10 @@ module.exports = () => {
     ]
   };
   if (process.env.conf === "PROD") {
-    return [prod(conf), lib(testSmartForm), lib(testSmartGrid), lib(testSmartList)];
+    return [prod(conf), lib(testSmartForm), lib(testSmartGrid), lib(testSmartList), lib(testSmartCriteria)];
   }
   if (process.env.conf === "DEV") {
-    return [dev(conf), lib({ ...testSmartForm, ...{ mode: "dev" } }), lib({ ...testSmartGrid, ...{ mode: "dev" } }), lib({ ...testSmartList, ...{ mode: "dev" } })];
+    return [dev(conf), lib({ ...testSmartForm, ...{ mode: "dev" } }), lib({ ...testSmartGrid, ...{ mode: "dev" } }), lib({ ...testSmartList, ...{ mode: "dev" } }), lib({ ...testSmartCriteria, ...{ mode: "dev" } })];
   }
   return [
     prod(conf),
@@ -51,6 +52,8 @@ module.exports = () => {
     lib(testSmartGrid),
     lib({ ...testSmartGrid, ...{ mode: "dev" } }),
     lib(testSmartList),
-    lib({ ...testSmartList, ...{ mode: "dev" } })
+    lib({ ...testSmartList, ...{ mode: "dev" } }),
+    lib(testSmartCriteria),
+    lib({ ...testSmartCriteria, ...{ mode: "dev" } })
   ];
 };

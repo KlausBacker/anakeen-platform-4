@@ -1,0 +1,14 @@
+{
+  "title": "Test textual",
+  "defaultStructure": "DEVBILL",
+  "criterias": [
+    {
+      "kind": "field",
+      "field": "bill_location"
+    },
+    {
+      "kind": "field",
+      "field": "bill_society"
+    }
+  ]
+}

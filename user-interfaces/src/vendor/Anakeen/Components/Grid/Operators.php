@@ -441,6 +441,38 @@ class Operators
                 ],
                 "filterClass" => IsNotEmpty::class
             ],
+
+            "searchCriteria" => [
+                "label" => "",
+                "type" => [
+                    "text",
+                    "longtext",
+                    "htmltext",
+                    "date",
+                    "timestamp",
+                    "account",
+                    "docid",
+                    "enum",
+                    "int",
+                    "double",
+                    "money",
+                    "file",
+                    "int[]",
+                    "double[]",
+                    "money[]",
+                    "date[]",
+                    "timestamp[]",
+                    "time[]",
+                    "enum[]",
+                    "enum[][]",
+                    "docid[]",
+                    "account[]",
+                    "docid[][]",
+                    "account[][]"
+                ],
+                "operands" => [":value"],
+                "filterClass" => \Anakeen\Search\Filters\SearchCriteria::class
+            ],
         ];
     }
 

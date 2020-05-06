@@ -5,8 +5,9 @@
         <module:po-struct source="src/**/*struct.xml"/>
         <module:po-enum source="src/**/*struct.xml"/>
         <module:po-workflow source="src/**/*Graph.xml"/>
+        <module:po-php source="src/vendor/Anakeen/Search/SearchCriteria/**/*.php" target="SEARCH_CRITERIA"/>
         <module:po-php source="src/**/*.php" target="smart-data-engine"/>
-    </module:po-config>
+        </module:po-config>
     <module:stub-config>
         <module:stub-struct source="src/config/**/*.xml"/>
         <module:stub-struct source="src/vendor/Anakeen/SmartStructures/**/*.xml"/>

@@ -1,0 +1,110 @@
+.smart-criteria-wrapper {
+  display: flex;
+  flex-direction: column;
+
+  .smart-criteria-form {
+    height: 100%;
+
+    section.dcpDocument__body.container-fluid {
+      padding: 0;
+
+      .dcpDocument__tabs {
+        padding: 0;
+
+        ul.dcpDocument__tabs__list.k-tabstrip-items.k-reset {
+          display: none;
+        }
+
+        [data-attrid=sc_tab] {
+          background: white;
+          border: none;
+
+          .dcpFrame[data-attrid^=sc_criteria_] {
+            box-shadow: black 0 0 0 0;
+            margin: 0;
+            padding: 0;
+
+            .dcpFrame__content[data-attrid^=sc_criteria_] {
+              flex-direction: row;
+              padding-bottom: 0.5rem;
+            }
+
+            .dcpAttribute[data-attrid^=sc_operator_] {
+              flex-basis: 100%;
+              align-items: center;
+              margin-bottom: 0.5rem;
+
+              .dcpAttribute__label {
+                flex-basis: 0;
+                white-space: nowrap;
+              }
+
+              .dcpAttribute__content--widget {
+                span.k-input {
+                  display: inline;
+                }
+              }
+            }
+
+            .dcpAttribute[data-attrid^=sc_value_] {
+              min-width: 10rem;
+              margin-bottom: 0.5rem;
+              .dcpAttribute__content.dcpAttribute__content--widget {
+                display: flex;
+                flex-direction: column;
+              }
+            }
+
+            .dcpAttribute__left.control-label.dcpAttribute__label.dcpLabel {
+            }
+
+            .card-body.dcpFrame__content.dcpFrame__content--open {
+            }
+
+            .dcpAttribute[data-attrid^=sc_value_multiple] {
+              .row {
+                display: flex;
+                flex-direction: column;
+              }
+            }
+
+            .dcpAttribute[data-attrid^=sc_value_between] {
+              .dcpAttribute__content {
+                padding-bottom: 0;
+                padding-left: 0.8rem;
+              }
+
+              .dcpLabel {
+                flex-basis: 0;
+                white-space: nowrap;
+              }
+
+              .dcpAttribute__label:after {
+                content: none;
+              }
+
+              .row {
+                display: flex;
+                flex-direction: column;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .smart-criteria-input {
+    display: flex;
+    flex-direction: row-reverse;
+    background: white;
+
+    .smart-criteria-input-button {
+      margin: 1rem 2rem;
+    }
+  }
+}
+
+.smart-criteria-value-hidden {
+  display: none;
+}

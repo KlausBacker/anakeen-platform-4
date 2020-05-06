@@ -1,0 +1,16 @@
+{
+  "title": "Test state",
+  "defaultStructure": "DEVBILL",
+  "criterias": [
+    {
+      "kind": "property",
+      "field": "state",
+      "stateList": [
+        {
+          "key": "a",
+          "label": "toto"
+        }
+      ]
+    }
+  ]
+}

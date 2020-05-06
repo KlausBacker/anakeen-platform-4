@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-17 15:02+0100\n"
+"POT-Creation-Date: 2020-04-28 19:29+0200\n"
 "PO-Revision-Date: 2019-05-10 14:39+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
@@ -220,6 +220,28 @@ msgstr "Affectation pour %s"
 msgid "Affected to %s %s"
 msgstr "Affectation à %s %s"
 
+msgctxt "SearchCriteriaUtilsTextual multi"
+msgid "All contain"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "All dates are between"
+msgstr ""
+
+#, php-format
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "All of the '%s' are among"
+msgstr ""
+
+#, php-format
+msgctxt "SearchCriteriaUtils.Relations multi"
+msgid "All of the '%s' are among"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "All values are between"
+msgstr ""
+
 msgctxt "wdoc"
 msgid "Ask for"
 msgstr "Informations demandées"
@@ -299,6 +321,14 @@ msgstr "Fichier de configuration %s: le nom de la famille n'est pas précisé"
 #, php-format
 msgid "Config file %s : unknow attribute name %s"
 msgstr "Fichier de configuration %s: nom de l'attribut %s inconnu"
+
+msgctxt "SearchCriteriaUtils.Textual simple"
+msgid "Contains"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Title simple"
+msgid "Contains"
+msgstr ""
 
 msgctxt "smart iuser"
 msgid "Control characters are not allowed"
@@ -439,6 +469,22 @@ msgstr "Mise à jour du document associé"
 msgctxt "ank"
 msgid "Document update failed"
 msgstr "La mise à jour de l'élement a échoué"
+
+msgctxt "SearchCriteriaUtils.Textual simple"
+msgid "Does not contain"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Title simple"
+msgid "Does not contain"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Textual simple"
+msgid "Does not start with"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Title simple"
+msgid "Does not start with"
+msgstr ""
 
 msgid "Doing csv render"
 msgstr "Composition du csv"
@@ -649,6 +695,150 @@ msgstr "Condition invalide pour l'attribut '%s' avec la valeur '%s': %s"
 msgid "Invalid directory '%s'."
 msgstr "Répertoire non valide '%s'."
 
+msgctxt "SearchCriteriaUtils.Enum simple"
+msgid "Is among"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Relations simple"
+msgid "Is among"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.State simple"
+msgid "Is among"
+msgstr "Est parmi"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Numerical simple"
+msgid "Is between"
+msgstr "entre"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Temporal simple"
+msgid "Is between"
+msgstr "entre"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "Is empty"
+msgstr "est vide"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Enum simple"
+msgid "Is empty"
+msgstr "est vide"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "Is empty"
+msgstr "est vide"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Numerical simple"
+msgid "Is empty"
+msgstr "est vide"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Relations multi"
+msgid "Is empty"
+msgstr "est vide"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Relations simple"
+msgid "Is empty"
+msgstr "est vide"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "Is empty"
+msgstr "est vide"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Temporal simple"
+msgid "Is empty"
+msgstr "est vide"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Textual simple"
+msgid "Is empty"
+msgstr "est vide"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Title simple"
+msgid "Is empty"
+msgstr "est vide"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtilsTextual multi"
+msgid "Is empty"
+msgstr "est vide"
+
+msgctxt "SearchCriteriaUtils.Enum simple"
+msgid "Is not among"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Relations simple"
+msgid "Is not among"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.State simple"
+msgid "Is not among"
+msgstr "N'est pas parmi"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "Is not empty"
+msgstr "n'est pas vide"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Enum simple"
+msgid "Is not empty"
+msgstr "n'est pas vide"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "Is not empty"
+msgstr "n'est pas vide"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Numerical simple"
+msgid "Is not empty"
+msgstr "n'est pas vide"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Relations multi"
+msgid "Is not empty"
+msgstr "n'est pas vide"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Relations simple"
+msgid "Is not empty"
+msgstr "n'est pas vide"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "Is not empty"
+msgstr "n'est pas vide"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Temporal simple"
+msgid "Is not empty"
+msgstr "n'est pas vide"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Textual simple"
+msgid "Is not empty"
+msgstr "n'est pas vide"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Title simple"
+msgid "Is not empty"
+msgstr "n'est pas vide"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtilsTextual multi"
+msgid "Is not empty"
+msgstr "n'est pas vide"
+
 #, php-format
 msgctxt "smart iuser"
 msgid "It must contains at least %d characters (total length)"
@@ -692,9 +882,61 @@ msgstr "La méthode \"%s\" n'a pas été exécutée : %s"
 msgid "Method [%s] not exists"
 msgstr "la méthode [%s] n'existe pas"
 
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "NA"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Enum simple"
+msgid "NA"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "NA"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical simple"
+msgid "NA"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Relations multi"
+msgid "NA"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Relations simple"
+msgid "NA"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.State simple"
+msgid "NA"
+msgstr "Ignorer"
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "NA"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal simple"
+msgid "NA"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Textual multi"
+msgid "NA"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Textual simple"
+msgid "NA"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Title simple"
+msgid "NA"
+msgstr ""
+
 msgctxt "fusersimport"
 msgid "New password"
 msgstr "Nouveau mot de passe"
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "No dates are between"
+msgstr ""
 
 #, php-format
 msgid "No identifier found for relation '%s' %s in %s file"
@@ -706,6 +948,24 @@ msgstr ""
 msgctxt "sde"
 msgid "No privilege \"%s\" for %d"
 msgstr "Pas de privilège \"%s\" pour l'élement \"%d\""
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "No values are between"
+msgstr ""
+
+msgctxt "SearchCriteriaUtilsTextual multi"
+msgid "None contain"
+msgstr ""
+
+#, php-format
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "None of the '%s' are among"
+msgstr ""
+
+#, php-format
+msgctxt "SearchCriteriaUtils.Relations multi"
+msgid "None of the '%s' are among"
+msgstr ""
 
 #, php-format
 msgid "Not a family [%s]"
@@ -730,6 +990,51 @@ msgstr "Pas assez de charactères spéciaux"
 msgctxt "smart iuser"
 msgid "Not enough uppercase characters."
 msgstr "Pas assez de majuscules"
+
+msgctxt "SearchCriteriaUtilsTextual multi"
+msgid "One contains"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "One date is between"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "One date is not between"
+msgstr ""
+
+msgctxt "SearchCriteriaUtilsTextual multi"
+msgid "One does not contain"
+msgstr ""
+
+#, php-format
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "One of the '%s' is among"
+msgstr ""
+
+#, php-format
+msgctxt "SearchCriteriaUtils.Relations multi"
+msgid "One of the '%s' is among"
+msgstr ""
+
+#, fuzzy, php-format
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "One of the '%s' is not among"
+msgstr "Fichier d'importation %s non trouvé"
+
+#, fuzzy, php-format
+msgctxt "SearchCriteriaUtils.Relations multi"
+msgid "One of the '%s' is not among"
+msgstr "Fichier d'importation %s non trouvé"
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "One value is between"
+msgstr ""
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "One value is not between"
+msgstr "la valeur [%s] n'est pas un entier"
 
 #, php-format
 msgid "Output file '%s' already exists."
@@ -848,6 +1153,14 @@ msgid ""
 msgstr ""
 "Certain caractères spéciaux ne sont pas autorisé pour un nom de fichier %s. "
 "Ils ont été remplacé par -"
+
+msgctxt "SearchCriteriaUtils.Textual simple"
+msgid "Starts with"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Title simple"
+msgid "Starts with"
+msgstr ""
 
 msgctxt "fusersimport"
 msgid "Stopped on first error"
@@ -2083,4 +2396,3 @@ msgstr "l'identifiant système {left} est différent de {right}"
 msgctxt "smartOperator"
 msgid "{left} title include {right}"
 msgstr "le titre de {left} inclus {right}"
-

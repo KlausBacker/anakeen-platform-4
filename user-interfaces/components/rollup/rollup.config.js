@@ -25,6 +25,7 @@ const conf = {
     AnkIdentity: path.resolve(BASE_PATH, "src/AnkIdentity/index.ts"),
     AnkLoading: path.resolve(BASE_PATH, "src/AnkLoading/index.ts"),
     AnkLogout: path.resolve(BASE_PATH, "src/AnkLogout/index.ts"),
+    AnkSmartCriteria: path.resolve(BASE_PATH, "src/AnkSmartCriteria/index.ts"),
     AnkSmartElementGrid: path.resolve(BASE_PATH, "src/AnkSEGrid/SmartGrid.ts"),
     AnkSmartElementGridPager: path.resolve(BASE_PATH, "src/AnkSEGrid/SmartGridPager.ts"),
     AnkSmartElementGridColumnsButton: path.resolve(BASE_PATH, "src/AnkSEGrid/SmartGridColumns.ts"),

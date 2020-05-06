@@ -16,3 +16,6 @@ node_modules
 .devtool/docker/Docker/Volumes/php/etc/apache2/sites-enabled/custom-vhost/001-anakeen-logs.conf
 .idea/watcherTasks.xml
 /hub-station/components/lib
+/.idea/php-test-framework.xml
+/.php_cs.cache
+/.idea/sqldialects.xml

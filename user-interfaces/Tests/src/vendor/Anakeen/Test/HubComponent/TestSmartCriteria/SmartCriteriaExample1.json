@@ -1,0 +1,76 @@
+{
+  "title": "Filtre des factures",
+  "defaultStructure": "DEVBILL",
+  "criterias": [
+    {
+      "kind": "property",
+      "field": "title",
+      "label": "Titre de facture",
+      "default": {
+        "operator": {
+          "key": "none"
+        }
+      }
+    },
+    {
+      "kind": "field",
+      "field": "bill_clients",
+      "default": {
+        "operator": {
+          "key": "oneEqualsMulti",
+          "options": [
+            "not"
+          ]
+        }
+      }
+    },
+    {
+      "kind": "field",
+      "field": "bill_billdate",
+      "operators": [
+        {
+          "key": "none",
+          "options": []
+        },
+        {
+          "key": "lesser",
+          "options": []
+        },
+        {
+          "key": "greater",
+          "options": []
+        },
+        {
+          "key": "between",
+          "options": []
+        }
+      ]
+    },
+    {
+      "kind": "field",
+      "field": "bill_cost",
+      "default": {
+        "operator": {
+          "key": "greater"
+        },
+        "value": 10000
+      }
+    },
+    {
+      "kind": "fulltext",
+      "default": {
+        "value": "Hi"
+      }
+    },
+    {
+      "kind": "virtual",
+      "field": "my_field",
+      "type": "int",
+      "default": {
+        "operator": {
+          "key": "between"
+        }
+      }
+    }
+  ]
+}
