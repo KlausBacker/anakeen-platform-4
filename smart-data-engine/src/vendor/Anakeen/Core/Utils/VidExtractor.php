@@ -81,7 +81,7 @@ class VidExtractor
      *
      * @return array
      */
-    public static function getVidsFromDocFam(\Anakeen\Core\SmartStructure & $docfam)
+    public static function getVidsFromDocFam(\Anakeen\Core\SmartStructure $docfam)
     {
         $values = array();
         /*
@@ -128,29 +128,93 @@ class VidExtractor
      *
      * @return array
      */
-    public static function getVidsFromDoc(\Anakeen\Core\Internal\SmartElement & $doc)
+    public static function getVidsFromDoc(\Anakeen\Core\Internal\SmartElement $doc)
     {
         $vids = array();
-        $fa = $doc->GetFileAttributes();
-        /* Track files from attributes */
-        foreach ($fa as $aid => $oattr) {
-            if ($oattr->inArray()) {
-                $ta = $doc->getMultipleRawValues($aid);
-            } else {
-                $ta = array(
-                    $doc->getRawValue($aid)
-                );
-            }
-            foreach ($ta as $k => $v) {
-                if (($vid = self::parseVid($v)) !== false) {
-                    $vids[$vid] = $vid;
+
+        $attrs=$doc->getNormalAttributes();
+        foreach ($attrs as $aid => $oattr) {
+            if ($oattr->type === "file" || $oattr->type === "image" ||$oattr->type === "htmltext") {
+                if ($oattr->inArray()) {
+                    $ta = $doc->getMultipleRawValues($aid);
+                } else {
+                    $ta = [$doc->getRawValue($aid)];
+                }
+                switch ($oattr->type) {
+                    case "file":
+                    case "image":
+                        /* Track files from attributes */
+                        foreach ($ta as $k => $v) {
+                            if (($vid = self::parseVid($v)) !== false) {
+                                $vids[$vid] = $vid;
+                            }
+                        }
+                        break;
+                    case "htmltext":
+                        /* Track images from htmltext */
+                        $htmlVids = self::getVidFromHtmltext($ta);
+                        foreach ($htmlVids as $htmlVid) {
+                            $vids[$htmlVid] = $htmlVid;
+                        }
+                        break;
                 }
             }
         }
+
         /* Track file from icon */
         if (isset($doc->icon)) {
             if (($vid = self::parseVid($doc->icon)) !== false) {
                 $vids[$vid] = $vid;
+            }
+        }
+        return $vids;
+    }
+
+    /**
+     * Extract vid from img tags
+     * @param string[] $htmlvalues
+     * @return string[]
+     * @throws XDOMDocumentException
+     */
+    public static function getVidFromHtmltext(array $htmlvalues)
+    {
+        $vids = [];
+
+        $dom = new XDOMDocument();
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput = false;
+        /**
+         * @var \libXMLError[] $libXMLErrors
+         */
+        $libXMLErrors = array();
+        $libXMLOpts = LIBXML_NONET;
+        if (defined('LIBXML_HTML_NOIMPLIED') && defined('LIBXML_HTML_NODEFDTD')) {
+            /*
+             * LIBXML_HTML_NOIMPLIED is available in libxml >= 2.7.7
+             * LIBXML_HTML_NODEFDTD is available in libxml >= 2.7.8
+            */
+            $libXMLOpts |= LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD;
+        }
+        foreach ($htmlvalues as $htmlvalue) {
+            if (!$htmlvalue) {
+                continue;
+            }
+            /*
+             * Add a HTML meta header to setup DOMDocument to UTF-8 encoding and no trailing </body></html>
+             * to not interfere with the given $html fragment.
+            */
+            $html = '<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/></head><body>' . ($htmlvalue);
+
+            $dom->loadHTML($html, $libXMLOpts, $libXMLErrors);
+
+            $imgs = $dom->documentElement->getElementsByTagName('img');
+
+            foreach ($imgs as $img) {
+                /** @var \DOMElement $img */
+                $tmpvid = $img->getAttribute("data-vid");
+                if ($tmpvid) {
+                    $vids[] = $tmpvid;
+                }
             }
         }
         return $vids;

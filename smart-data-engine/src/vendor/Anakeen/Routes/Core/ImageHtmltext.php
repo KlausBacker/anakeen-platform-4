@@ -2,7 +2,7 @@
 
 namespace Anakeen\Routes\Core;
 
-use Anakeen\Core\Utils\XDOMDocument;
+use Anakeen\Core\Utils\VidExtractor;
 use Anakeen\Router\Exception;
 use Anakeen\Core\SEManager;
 use Anakeen\Router\ApiV2Response;
@@ -74,7 +74,7 @@ class ImageHtmltext
             $htmlValues = [$htmlValue];
         }
 
-        $vids = $this->getImg($htmlValues);
+        $vids = VidExtractor::getVidFromHtmltext($htmlValues);
         if (!in_array($this->vid, $vids)) {
             throw new Exception(sprintf(
                 "cannot access image : Field \"%s\" image not referenced in element #%d",
@@ -98,45 +98,6 @@ class ImageHtmltext
         \Anakeen\Core\VaultManager::updateAccessDate($fileInfo->id_file);
 
         return $response;
-    }
-
-    protected function getImg(array $htmlvalues)
-    {
-        $vids = [];
-        foreach ($htmlvalues as $htmlvalue) {
-            $dom = new XDOMDocument();
-            $dom->preserveWhiteSpace = false;
-            $dom->formatOutput = false;
-            /*
-             * Add a HTML meta header to setup DOMDocument to UTF-8 encoding and no trailing </body></html>
-             * to not interfere with the given $html fragment.
-            */
-            $html = '<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/></head><body>' . ($htmlvalue);
-            /**
-             * @var \libXMLError[] $libXMLErrors
-             */
-            $libXMLErrors = array();
-            $libXMLOpts = LIBXML_NONET;
-            if (defined('LIBXML_HTML_NOIMPLIED') && defined('LIBXML_HTML_NODEFDTD')) {
-                /*
-                 * LIBXML_HTML_NOIMPLIED is available in libxml >= 2.7.7
-                 * LIBXML_HTML_NODEFDTD is available in libxml >= 2.7.8
-                */
-                $libXMLOpts |= LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD;
-            }
-            $dom->loadHTML($html, $libXMLOpts, $libXMLErrors);
-
-            $imgs = $dom->documentElement->getElementsByTagName('img');
-
-            foreach ($imgs as $img) {
-                /** @var \DOMElement $img */
-                $tmpvid = $img->getAttribute("data-vid");
-                if ($tmpvid) {
-                    $vids[] = $tmpvid;
-                }
-            }
-        }
-        return $vids;
     }
 
     /**
