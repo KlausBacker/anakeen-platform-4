@@ -17,6 +17,7 @@ use Anakeen\Core\IMailRecipient;
 use Anakeen\Core\Internal\ContextParameterManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\Utils\Postgres;
+use Anakeen\Core\VaultManager;
 use Anakeen\Exception;
 use Anakeen\LogManager;
 use Anakeen\SmartElementManager;
@@ -596,11 +597,7 @@ SQL;
 
     private function getUniqId()
     {
-        static $unid = 0;
-        if (!$unid) {
-            $unid = date('Ymdhis');
-        }
-        return $unid;
+        return uniqid("attach");
     }
 
     private function srcfile($src)
@@ -640,9 +637,9 @@ SQL;
         if (preg_match("/.*app=FDL.*action=EXPORTFILE.*vid=([0-9]*)/", $src, $reg)) {
             $info = \Anakeen\Core\VaultManager::getFileInfo($reg[1]);
             $src = $info->path;
-            $cid = "cid" . $this->getUniqId() . $reg[1] . '.' . \Anakeen\Core\Utils\FileMime::getFileExtension($info->path);
+            $cid =  $this->getUniqId() . '.' . \Anakeen\Core\Utils\FileMime::getFileExtension($info->path);
         } elseif (preg_match(
-            // /api/v2/smart-elements/112861/files/test_ddui_all__image/-1/H.pn
+            // /api/v2/smart-elements/112861/files/test_ddui_all__image/-1/H.png
             '!/api/v2/smart-elements/(?P<docid>\d+)/files/(?P<attrid>[^/]+)/(?P<index>[^/]+)/!',
             $src,
             $reg
@@ -653,10 +650,27 @@ SQL;
                     $fileValue = $source->getRawValue($reg['attrid']);
                     $info = $source->getFileInfo($fileValue, '', "object");
                     $src = $info->path;
-                    $cid = "cid" . $this->getUniqId() . $reg[1] . '.' . \Anakeen\Core\Utils\FileMime::getFileExtension($info->path);
+                    $cid =  $this->getUniqId() . '.' . \Anakeen\Core\Utils\FileMime::getFileExtension($info->path);
                 }
             } else {
                 throw new Exception(sprintf("Multiple image (%s) are not supported", $reg['attrid']));
+            }
+        } elseif (preg_match(
+            //api/v2/images/htmltext/112861/0/test_ddui_all__htmltext/6212653657700572704/paste.jpeg
+            '!/api/v2/images/htmltext/(?P<docid>\d+)/(?P<revision>\d+)/(?P<attrid>[^/]+)/(?P<vid>[^/]+)/!',
+            $src,
+            $reg
+        )) {
+            $source = SmartElementManager::getDocument($reg['docid']);
+            if ($source) {
+                $htmlValue = $source->getRawValue($reg['attrid']);
+                if ($htmlValue) {
+                    $fileInfo = VaultManager::getFileInfo($reg["vid"]);
+                    if ($fileInfo) {
+                        $src = $fileInfo->path;
+                        $cid = $this->getUniqId() . '.' . \Anakeen\Core\Utils\FileMime::getFileExtension($fileInfo->path);
+                    }
+                }
             }
         }
 

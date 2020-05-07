@@ -6,6 +6,8 @@
 
 namespace Anakeen\Core\Utils;
 
+use Anakeen\Core\Internal\SmartElement;
+
 class HtmlClean
 {
     /*
@@ -94,10 +96,11 @@ class HtmlClean
      *
      * @param string $html  The HTML fragment to cleanup/correct (HTML must be encoded in UTF-8)
      * @param string $error Empty string if no error or non-empty string containing the error message
+     * @param array $info context when rewrite url images
      *
      * @return bool(false)|string The resulting HTML on success or bool(false) on failure (the error message is returned in the $error argument)
      */
-    public static function normalizeHTMLFragment($html, &$error = '')
+    public static function normalizeHTMLFragment($html, &$error = '', $info = null)
     {
         $dom = new XDOMDocument();
         $dom->setLibXMLErrorIgnoreCodes(self::$libXMLErrorIgnoreCodes);
@@ -129,6 +132,30 @@ class HtmlClean
         $error = self::getFirstErrorMessage($libXMLErrors);
         /* Get back the top <body> wrapper node added by loadHTML() */
         $dom->normalizeDocument();
+
+        if ($info) {
+            // update temporary images to persistent image
+            $imgs = $dom->documentElement->getElementsByTagName('img');
+
+            foreach ($imgs as $img) {
+                /** @var \DOMElement $img */
+                $tmpvid = $img->getAttribute("data-tmpvid");
+                if ($tmpvid) {
+                    $src= $img->getAttribute("src");
+                    $url=sprintf("/api/v2/images/htmltext/%d/%d/%s/%s/paste.%s", $info["initid"], $info["revision"], $info["attrid"], $tmpvid, FileMime::getFileExtension($src));
+                    $img->setAttribute("src", $url);
+                    $img->setAttribute("data-vid", $tmpvid);
+                    $img->removeAttribute("data-tmpvid");
+                } else {
+                    $vid = $img->getAttribute("data-vid");
+                    if ($vid) {
+                        $src= $img->getAttribute("src");
+                        $url=sprintf("/api/v2/images/htmltext/%d/%d/%s/%s/paste.%s", $info["initid"], $info["revision"], $info["attrid"], $vid, FileMime::getFileExtension($src));
+                        $img->setAttribute("src", $url);
+                    }
+                }
+            }
+        }
         $wrapper = $dom->documentElement->getElementsByTagName('body')->item(0);
         if ($wrapper === null || $wrapper === false) {
             $error = "body wrapper not found";

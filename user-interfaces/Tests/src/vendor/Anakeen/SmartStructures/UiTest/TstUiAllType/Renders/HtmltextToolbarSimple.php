@@ -18,7 +18,7 @@ class HtmltextToolbarSimple extends \Anakeen\Ui\DefaultEdit
         $options->frame()->setCollapse(true);
         $options->frame(myAttributes::test_ddui_all__fr_text)->setCollapse(false);
         $options->htmltext()->setToolbar(HtmltextRenderOptions::simpleToolbar);
-        $options->htmltext()->setHeight("100%");
+        $options->htmltext()->setHeight("auto");
 
 
         return $options;
