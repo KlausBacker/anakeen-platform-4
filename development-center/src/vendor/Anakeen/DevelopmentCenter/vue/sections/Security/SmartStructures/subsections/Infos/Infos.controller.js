@@ -27,7 +27,8 @@ export default {
     return {
       isReady: false,
       structureDetails: {},
-      infoSections: []
+      infoSections: [],
+      otherInfoSections: []
     };
   },
   computed: {
@@ -49,6 +50,7 @@ export default {
   },
   mounted() {
     this.fetchStructureInfos();
+    this.otherInfoSections = [{ label: "Dynamic Profiles", path: "/devel/security/profiles?dpdoc_famid=${ssName}" }];
     this.infoSections = [
       {
         label: "Structure",
