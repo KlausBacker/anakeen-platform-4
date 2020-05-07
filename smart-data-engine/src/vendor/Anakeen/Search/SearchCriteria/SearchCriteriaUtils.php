@@ -442,7 +442,7 @@ class SearchCriteriaUtils
         self::STATE_KIND => [
             self::SIMPLE_FIELD => [
                 "defaultOperator" => [
-                    "key" => "none",
+                    "key" => "equalsOne",
                     "options" => [],
                 ],
                 self::SIMPLE_FILTER => [
@@ -456,15 +456,15 @@ class SearchCriteriaUtils
                     ],
                 ],
                 self::MULTIPLE_FILTER => [
-//                    "equalsOne" => [
-//                        "class" => \Anakeen\Search\Filters\State\EqualsOne::class,
-//                        "operands" => [self::FIELD, self::VALUE, 0],
-//                        "availableOptions" => [],
-//                        "labels" => [
-//                            0 => ___("Is among", "SearchCriteriaUtils.State simple"),
-//                            \Anakeen\Search\Filters\State\EqualsOne::NOT => ___("Is not among", "SearchCriteriaUtils.State simple"),
-//                        ],
-//                    ],
+                    "equalsOne" => [
+                        "class" => \Anakeen\Search\Filters\State\EqualsOne::class,
+                        "operands" => [self::FIELD, self::VALUE, 0],
+                        "availableOptions" => [],
+                        "labels" => [
+                            0 => ___("Is among", "SearchCriteriaUtils.State simple"),
+                            \Anakeen\Search\Filters\State\EqualsOne::NOT => ___("Is not among", "SearchCriteriaUtils.State simple"),
+                        ],
+                    ],
                 ]
             ],
         ],

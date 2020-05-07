@@ -4,13 +4,7 @@
   "criterias": [
     {
       "kind": "property",
-      "field": "state",
-      "stateList": [
-        {
-          "key": "a",
-          "label": "toto"
-        }
-      ]
+      "field": "state"
     }
   ]
 }

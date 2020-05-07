@@ -108,7 +108,7 @@ class EqualsOne extends StandardAttributeFilter implements ElementSearchFilter
     protected function _filter($attr, $value)
     {
         $pgArray = SmartElement::arrayToRawValue($value);
-        $sql = sprintf("%s IS NOT NULL AND %s <@ '%s'", pg_escape_identifier($attr->id), pg_escape_identifier($attr->id), $pgArray);
+        $sql = sprintf("%s IS NOT NULL AND ARRAY[%s] <@ '%s'", pg_escape_identifier($attr->id), pg_escape_identifier($attr->id), $pgArray);
         if ($this->NOT) {
             $sql = sprintf("NOT(%s)", $sql);
         }
