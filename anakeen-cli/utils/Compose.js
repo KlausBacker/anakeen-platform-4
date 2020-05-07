@@ -485,6 +485,10 @@ class Compose {
       if (!path.isAbsolute(addLocalApp)) {
         addLocalApp = path.resolve(process.cwd(), addLocalApp);
       }
+      const testLocalPath = await glob(addLocalApp, { absolute: true });
+      if (testLocalPath.length === 0) {
+        throw new ComposeError(`No elements were found at ${addLocalApp}`);
+      }
       signale.note(`Add local app from ${addLocalApp}`);
     }
     await this.install({ customLocalPath: addLocalApp });
