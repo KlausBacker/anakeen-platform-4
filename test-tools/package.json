@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/test-tools",
-  "version": "0.0.1",
+  "version": "1.0.0-RC.2020.1.27",
   "autorelease": true,
   "description": "Anakeen Platform Test Tools",
   "main": "components/lib/TestTools.js",
@@ -14,9 +14,7 @@
   },
   "files": [
     "/components/**/*",
-    "/components/README.md",
-    "/src/**/*",
-    "yarn.lock"
+    "/src/**/*"
   ],
   "repository": {
     "type": "git"

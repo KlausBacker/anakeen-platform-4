@@ -15,7 +15,7 @@ class Workspace {
         .then(data => {
             const splitData = data.split("\n");
             data = splitData.slice(1, splitData.length-1).join("\n");
-            return JSON.parse(data)
+            return JSON.parse(data);
         })
         .then(json => new WorkspaceSnapshot(this, json));
     }
