@@ -4,7 +4,7 @@
       <ank-smart-form
         ref="smartForm"
         :config="smartFormConfig"
-        :options="{ force: true }"
+        :options="{ force }"
         @smartElementMounted="initSmartCriteria"
         @smartFieldAfterTabSelect="onSmartCriteriaReady"
         @smartFieldChange="onSmartFieldChange"
