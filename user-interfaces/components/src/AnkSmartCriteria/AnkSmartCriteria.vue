@@ -1,5 +1,5 @@
 <template>
-  <div class="smart-criteria-wrapper">
+  <div class="smart-criteria-wrapper" @keyup.enter="onEnterKeyupEvent">
     <div class="smart-criteria-form">
       <ank-smart-form
         ref="smartForm"
@@ -18,6 +18,6 @@
   </div>
 </template>
 <style lang="scss">
-  @import "./AnkSmartCriteria.scss";
+@import "./AnkSmartCriteria.scss";
 </style>
 <script src="./AnkSmartCriteria.component.ts" lang="ts"></script>

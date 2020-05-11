@@ -83,7 +83,7 @@ export default {
       console.log("SmartCriteriaError : ", args);
     },
 
-    onSubmitButtonClick() {
+    onCriteriaValidated() {
       const filterValue = this.$refs.smartCriteria.getFilters();
       console.log(JSON.stringify(filterValue));
       this.smartFilter = filterValue;
