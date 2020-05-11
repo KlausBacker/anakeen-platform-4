@@ -223,52 +223,13 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
     options: object | ListenableEventCallable,
     callback?: ListenableEventCallable
   ) {
-    let currentEvent;
-    let eventCallback = callback;
-    let eventOptions = options;
-    // options is not mandatory and the callback can be the second parameters
-    if (_.isUndefined(eventCallback) && _.isFunction(eventOptions)) {
-      eventCallback = eventOptions as ListenableEventCallable;
-      eventOptions = {};
-    }
-
-    // the first parameters can be the final object (chain removeEvent and addEvent)
-    if (_.isObject(eventType) && _.isUndefined(eventOptions) && _.isUndefined(eventCallback)) {
-      currentEvent = eventType;
-      if (!currentEvent.name) {
-        throw new Error(
-          "When an event is initiated with a single object, this object needs to have the name property " +
-            JSON.stringify(currentEvent)
-        );
-      }
-    } else {
-      currentEvent = _.defaults(eventOptions, {
-        eventCallback,
-        eventType,
-        externalEvent: false,
-        name: _.uniqueId("event_" + eventType),
-        once: false
-      });
-    }
-    // the eventType must be one the list
-    this._checkEventName(currentEvent.eventType);
-    // callback is mandatory and must be a function
-    if (!_.isFunction(currentEvent.eventCallback)) {
-      throw new Error("An event needs a callback that is a function");
-    }
-
     // Listen all controllers for this event type
-    this._dispatcher.on(currentEvent.eventType, (controller, ...args) => {
-      // Check execution
-      if (
-        !_.isFunction(currentEvent.check) ||
-        currentEvent.check.call(controller._element, controller.getProperties())
-      ) {
-        currentEvent.eventCallback.call(controller._element, ...args);
-      }
+    const controllers = this._dispatcher.getControllers(false) as SmartElementController[];
+    const currentEventNames = [];
+    controllers.forEach(controller => {
+      currentEventNames.push(controller.addEventListener(eventType, options, callback));
     });
-    // return the name of the event
-    return currentEvent.name;
+    return currentEventNames;
   }
 
   public registerFunction(key: string, scriptFunction: (controller: SmartElementController) => void) {
