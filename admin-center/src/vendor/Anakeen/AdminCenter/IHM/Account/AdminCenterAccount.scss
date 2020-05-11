@@ -23,11 +23,11 @@
 
   .account-manager-splitter {
     &.splitter-tree > .splitpanes__pane:first-child {
-      min-width: 30rem;
+     // min-width: 30rem;
     }
 
     &.splitter-grid > .splitpanes__pane:first-child {
-      min-width: 40rem;
+     // min-width: 40rem;
     }
 
     .grid-group-section {
