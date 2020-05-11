@@ -33,6 +33,11 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
     default: false
   })
   public submit;
+  @Prop({
+    default: true,
+    type: Boolean
+  })
+  public force;
   private mountedDone = false;
   private innerConfig: ISmartCriteriaConfiguration = { title: "", defaultStructure: -1, criterias: [] };
   private operatorFieldRegex = /^sc_operator_(\d+)$/;
