@@ -24,7 +24,9 @@ export default class SmartFormConfigurationBuilder {
 
   private initSmartFormConfiguration(): void {
     this.smartFormConfiguration = {};
-    this.smartFormConfiguration.title = this.configuration.title ? this.configuration.title : "Titre de base";
+    if (this.configuration.title) {
+      this.smartFormConfiguration.title = this.configuration.title;
+    }
     this.smartFormConfiguration.structure = [
       {
         name: "sc_tab",

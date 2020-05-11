@@ -255,14 +255,10 @@ export default class {
 
   private initializeConfiguration(configuration: ISmartCriteriaConfiguration): void {
     if (!configuration) {
-      configuration = { criterias: [], title: "", defaultStructure: undefined };
+      configuration = { criterias: [] };
     } else {
       if (!configuration.criterias) {
         configuration.criterias = [];
-      }
-
-      if (!configuration.title) {
-        configuration.title = "";
       }
     }
   }

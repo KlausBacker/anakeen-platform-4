@@ -5,6 +5,14 @@
   .smart-criteria-form {
     height: 100%;
 
+    .dcpDocument__header {
+      min-height: 0;
+
+      .dcpDocument__header__title {
+        margin: 0.5rem;
+      }
+    }
+
     section.dcpDocument__body.container-fluid {
       padding: 0;
 
