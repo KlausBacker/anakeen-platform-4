@@ -45,7 +45,7 @@ export default {
       });
     },
     initData() {
-      if (this.initValue) {
+      if (this.initValue && this.initValue === "yes") {
         this.switch.check(this.initValue);
       }
     }

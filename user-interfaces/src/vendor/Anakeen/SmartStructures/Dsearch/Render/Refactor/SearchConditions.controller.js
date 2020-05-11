@@ -41,6 +41,10 @@ export default {
       famid: null,
       conditionRuleType: "and",
       conditions: [],
+      tempParentheses: {
+        leftp: [],
+        rightp: []
+      },
       andTitle: "",
       orTitle: "",
       customTitle: ""
@@ -140,13 +144,19 @@ export default {
       this.customTitle = this.$t("dsearch.se_ol-perso");
     },
     onConditionRuleTypeChange(event) {
+      this.manageTemporarySavedParentheses();
       this.conditionRuleType = event.target.value;
       this.controllerProxy("setValue", "se_ol", { value: this.conditionRuleType });
+      this.loadSmartElement();
     },
     onAddLineButtonClick() {
       this.conditions.push(this.createDefaultCondition());
     },
     deleteCondition(event, row) {
+      if (this.tempParentheses.leftp.length > 0) {
+        this.tempParentheses.leftp.splice(row, 1);
+        this.tempParentheses.rightp.splice(row, 1);
+      }
       this.conditions.splice(row, 1);
       this.controllerProxy("removeArrayRow", "se_t_detail", row);
       this.loadSmartElement();
@@ -156,6 +166,24 @@ export default {
         condition.fields.famid = this.famid;
         condition.keywords.famid = this.famid;
       });
+    },
+    manageTemporarySavedParentheses() {
+      if (this.isPerso !== true) {
+        // Temporary save parentheses
+        if (this.tempParentheses.leftp.length === 0) {
+          this.tempParentheses.leftp.push(...this.controllerProxy("getValue", "se_leftp"));
+          this.tempParentheses.rightp.push(...this.controllerProxy("getValue", "se_rightp"));
+        }
+        // Then puting them to null
+        this.controllerProxy("setValue", "se_leftp", Array(this.conditions.length).fill({ value: null }));
+        this.controllerProxy("setValue", "se_rightp", Array(this.conditions.length).fill({ value: null }));
+      } else if (this.tempParentheses.leftp.length > 0) {
+        // Apply temporary saved parentheses
+        this.controllerProxy("setValue", "se_leftp", this.tempParentheses.leftp);
+        this.controllerProxy("setValue", "se_rightp", this.tempParentheses.rightp);
+        this.tempParentheses.leftp = [];
+        this.tempParentheses.rightp = [];
+      }
     },
     loadSmartElement() {
       // If function is called with an already initialized SmartElement
@@ -196,6 +224,7 @@ export default {
         case "operator":
           break;
         case "leftp":
+          this.conditions[event.row].leftp.initValue = event.smartFieldValue.value;
           break;
         case "fields":
           this.conditions[event.row].functions.field = event.parentValue;
@@ -207,6 +236,7 @@ export default {
         case "keywords":
           break;
         case "rightp":
+          this.conditions[event.row].rightp.initValue = event.smartFieldValue.value;
           break;
       }
       this.controllerProxy("setValue", event.smartFieldId, event.smartFieldValue);
