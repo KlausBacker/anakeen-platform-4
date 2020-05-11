@@ -16,6 +16,7 @@ import { CriteriaOperator, ICriteriaOperator } from "./Types/ICriteriaOperator";
 import SmartCriteriaUtils from "./SmartCriteriaUtils";
 import AnkI18NMixin from "../../mixins/AnkVueComponentMixin/I18nMixin";
 import $ from "jquery";
+import SmartCriteriaEvent from "./Types/SmartCriteriaEvent";
 
 // @ts-ignore
 @Component({
@@ -78,10 +79,6 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
     }
   }
 
-  onSubmitButtonClick(): void {
-    this.$emit("smartCriteriaSubmitClick");
-  }
-
   onBeforeSave(...args): void {
     this.$emit("beforeSave", args);
   }
@@ -116,6 +113,26 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
    */
   mounted(): void {
     this.mountedDone = true;
+  }
+
+  onSubmitButtonClick(): void {
+    const submitEvent = new SmartCriteriaEvent();
+    this.$emit("smartCriteriaSubmitClick", submitEvent);
+    if (!submitEvent.isDefaultPrevented()) {
+      this._triggerValidated();
+    }
+  }
+
+  private onEnterKeyupEvent(): void {
+    const keyEvent = new SmartCriteriaEvent();
+    this.$emit("smartCriteriaEnterKey", keyEvent);
+    if (!keyEvent.isDefaultPrevented()) {
+      this._triggerValidated();
+    }
+  }
+
+  private _triggerValidated(): void {
+    this.$emit("smartCriteriaValidated");
   }
 
   private loadConfiguration(): void {
