@@ -8,6 +8,9 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
     type: "htmltext",
     renderOptions: {
       kendoEditorConfiguration: {
+        serialization: {
+          entities: false
+        },
         pasteCleanup: {
           msAllFormatting: true,
           msConvertLists: true,
