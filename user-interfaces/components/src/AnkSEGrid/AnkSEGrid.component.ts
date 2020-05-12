@@ -63,6 +63,7 @@ export interface SmartGridColumn {
   filterable?: boolean | SmartGridFilterable;
   transaction?: boolean | object;
   resizable?: boolean;
+  orderIndex?: number;
 }
 
 export interface SmartGridAction {
@@ -365,6 +366,11 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   })
   public selectedField: string;
   @Prop({
+    default: "smart_element_grid_action_menu",
+    type: String
+  })
+  public actionField: string;
+  @Prop({
     default: () => [],
     type: Array
   })
@@ -574,7 +580,6 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   };
 
   public onlySelection = false;
-  public allColumns: SmartGridColumn[] = this.columns;
   public columnsList: SmartGridColumn[] = this.columns;
   public actionsList: SmartGridAction[] = this.actions;
   public dataItems: SmartGridRowData[] = [];
@@ -703,29 +708,15 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     $(this.$refs.smartGridWidget.$el).toggleClass("grid-row-collapsed");
   }
 
-  public async onSettingsChange(changes): Promise<void> {
+  public onSettingsChange(changes): void {
     if (changes) {
       Object.keys(changes).forEach(colId => {
-        if (this.$refs.smartGridWidget) {
-          if (changes[colId].display === true) {
-            this.columns.map(function(column, index, tabColumns) {
-              if (column.field === colId) {
-                column.hidden = false;
-              }
-              return tabColumns;
-            });
-          } else if (changes[colId].display === false) {
-            this.columns.map(function(column, index, tabColumns) {
-              if (column.field === colId) {
-                column.hidden = true;
-              }
-              return tabColumns;
-            });
-          }
+        const column = this.columnsList.find(c => c.field === colId);
+        if (column) {
+          this.$set(column, "hidden", !changes[colId].display);
         }
       });
     }
-    await this._loadGridConfig();
   }
 
   protected get rowsData(): SmartGridRowData[] {
@@ -738,6 +729,49 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
       }
       return item;
     });
+  }
+
+  protected get allColumns(): SmartGridColumn[] {
+    const columns = [];
+    // Prepend checkable column if needed
+    if (this.checkable) {
+      columns.push({
+        field: this.selectedField,
+        filterable: false,
+        orderIndex: 0,
+        title: " ",
+        width: 35,
+        headerAttributes: {
+          class: "checkable-grid-header grid-cell-align-center toggle-all-rows",
+          "data-id": "ank-se-grid-checkable"
+        }
+      });
+    }
+
+    // Add data columns
+    columns.push(...this.columnsList);
+
+    // Add actions column if needed
+    if (this.actionsList.length > 0) {
+      let menuWidth = 120;
+      if (this.actionsList.length === 2) {
+        menuWidth = (this.actionsList[0].title.length + this.actionsList[1].title.length) * 10;
+      }
+      columns.push({
+        // @ts-ignore
+        width: menuWidth,
+        orderIndex: columns.length,
+        field: this.actionField,
+        title: this.actionColumnTitle,
+        abstract: true,
+        withContext: false,
+        filterable: false,
+        sortable: false,
+        resizable: false
+      });
+    }
+
+    return columns;
   }
 
   protected async _loadGridConfig(): Promise<void> {
@@ -760,12 +794,6 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
         .then(response => {
           this.collectionProperties = response.data.data.collection || {};
           this.columnsList = response.data.data.columns;
-          this.allColumns = response.data.data.columns;
-          this.columnsList = this.columnsList.filter(item => {
-            if (item.hidden === undefined || item.hidden === false) {
-              return item;
-            }
-          });
           if (response.data.data.pageable === true) {
             this.pager = DEFAULT_PAGER;
           } else if (response.data.data.pageable === false) {
@@ -773,34 +801,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
           } else {
             this.pager = Object.assign({}, DEFAULT_PAGER, response.data.data.pageable);
           }
-          if (this.checkable) {
-            this.columnsList.unshift({
-              field: this.selectedField,
-              title: " ",
-              width: 35,
-              headerAttributes: {
-                class: "checkable-grid-header grid-cell-align-center toggle-all-rows",
-                "data-id": "ank-se-grid-checkable"
-              }
-            });
-          }
           if (response.data.data.actions.length > 0) {
-            let menuWidth = 120;
-            if (response.data.data.actions.length === 2) {
-              const tabActions = response.data.data.actions;
-              menuWidth = (tabActions[0].title.length + tabActions[1].title.length) * 10;
-            }
-            this.columnsList.push({
-              // @ts-ignore
-              width: menuWidth,
-              field: "smart_element_grid_action_menu",
-              title: this.actionColumnTitle,
-              abstract: true,
-              withContext: false,
-              filterable: false,
-              sortable: false,
-              resizable: false
-            });
             this.actionsList = response.data.data.actions;
           }
           const config = response.data.data;
@@ -884,7 +885,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   }
 
   protected cellRenderFunction(createElement, tdElement: VNode, props, listeners): VNode | VNode[] {
-    const columnConfig = this.columnsList[props.columnIndex];
+    const columnConfig = this.allColumns.find(c => c.field === props.field);
     const event = new GridEvent(
       {
         rowData: props.dataItem,
@@ -966,14 +967,15 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   }
 
   protected headerCellRenderFunction(createElement, defaultRendering, props): VNode | VNode[] {
-    const columnConfig = this.columnsList.find(c => c.field === props.field);
+    const columnConfig = this.allColumns.find(c => c.field === props.field);
 
     const renderElement = createElement(AnkGridHeaderCell, {
       props: { ...props, columnConfig, grid: this },
       on: {
         sortChange: this.onSortChange,
         filterChange: this.onFilterChange
-      }
+      },
+      key: props.field
     });
 
     if (this.$scopedSlots && this.$scopedSlots.headerTemplate) {
@@ -993,7 +995,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   }
 
   protected subHeaderCellRenderFunction(createElement, defaultRendering, props): VNode {
-    const columnConfig = this.columnsList.find(c => c.field === props.field);
+    const columnConfig = this.allColumns.find(c => c.field === props.field);
     const options = {
       props: {
         ...props,
@@ -1078,7 +1080,11 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   }
 
   protected onColumnReorder(reorderEvt): void {
-    this.columnsList = reorderEvt.columns;
+    this.columnsList = this.columnsList.map(c => {
+      const columnReorder = reorderEvt.columns.find(col => col.field === c.field);
+      c.orderIndex = columnReorder.orderIndex;
+      return c;
+    });
   }
 
   protected export(

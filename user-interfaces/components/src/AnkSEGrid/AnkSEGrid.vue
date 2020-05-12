@@ -23,7 +23,7 @@
       style="height: auto;"
       ref="smartGridWidget"
       class="smart-element-grid-widget"
-      :columns="columnsList"
+      :columns="allColumns"
       :data-items="rowsData"
       :cell-render="cellRenderFunction"
       :header-cell-render="headerCellRenderFunction"
