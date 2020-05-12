@@ -2,7 +2,7 @@ include ../.devtool/Makefile.params.mk
 DEVTOOLS_DIR = ../.devtool
 
 #path
-MODULE_NAME=anakeen-platform-test-tools
+MODULE_NAME=test-tools
 CS_PATH_NAME=$(DEVTOOLS_DIR)/ci/check/checkPHP/anakeenPhpCs.xml
 
 #Build

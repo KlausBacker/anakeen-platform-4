@@ -2,6 +2,9 @@
 <module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="test-tools" vendor="Anakeen" version="1.0.0-RC.2020.1.27" license="https://ap4.anakeen.com/license4.html">
     <requires>
     </requires>
+    <replaces>
+        <module name="anakeen-platform-test-tools"/>
+    </replaces>
     <post-install>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/TestTools/Accounts/110-AnakeenTestToolsRoles.xml"/>
     </post-install>
