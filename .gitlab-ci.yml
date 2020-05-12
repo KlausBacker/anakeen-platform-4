@@ -461,7 +461,6 @@ transformation-integration-build:
    changes:
      - transformation/**/*
 
-
 fulltext-build:
   extends: .build-package
   stage: build
@@ -526,6 +525,37 @@ migration-tools-integration-build:
     changes:
       - migration-tools/**/*
 
+test-tools-build:
+  extends: .build-package
+  stage: build
+  tags:
+  - a4ppm
+  variables:
+    PACKAGE_PATH: test-tools
+    PACKAGE_NAME: test-tools
+    MODE: "app"
+    expire_in: 1 day
+  only:
+    refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - test-tools/**/*
+
+test-tools-integration-build:
+  extends: .build-package
+  stage: build
+  tags:
+  - a4ppm
+  variables:
+    PACKAGE_PATH: test-tools
+    PACKAGE_NAME: test-tools
+    MODE: "app-autorelease"
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - test-tools/**/*
+      
 #endregion build
 
 #buildControl
@@ -852,6 +882,32 @@ workflow-publish:
       - workflow/**/*
   dependencies:
     - workflow-build
+  
+test-tools-integration-publish:
+  extends: .npm-publish-package-integration-synchro
+  variables:
+    PACKAGE_PATH: test-tools
+    ANK_CI_APP_NAME: test-tools
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - test-tools/**/*
+  dependencies:
+    - test-tools-integration-build
+
+test-tools-publish:
+  extends: .npm-publish-package
+  variables:
+    PACKAGE_PATH: test-tools
+    ANK_CI_APP_NAME: test-tools
+  only:
+    refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - test-tools/**/*
+  dependencies:
+    - test-tools-build
 
 #endregion publishNpm
 
@@ -1012,6 +1068,32 @@ migration-tools-integration-register:
       - migration-tools/**/*
   dependencies:
     - migration-tools-integration-build
+
+test-tools-register:
+  extends: .registry
+  variables:
+    ANK_CI_APP_NAME: "test-tools"
+    ANK_CI_APP_PATH: "test-tools"
+  only:
+    refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - test-tools/**/*
+  dependencies:
+    - test-tools-build
+
+test-tools-integration-register:
+  extends: .registry
+  variables:
+    ANK_CI_APP_NAME: "test-tools"
+    ANK_CI_APP_PATH: "test-tools"
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - test-tools/**/*
+  dependencies:
+    - test-tools-integration-build
 
 hub-station-register:
   extends: .registry

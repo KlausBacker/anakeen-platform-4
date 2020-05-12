@@ -50,6 +50,12 @@ exports.versions = [
     moduleName: "migration-tools"
   },
   {
+    package: "@anakeen/test-tools",
+    version: "1.0.0",
+    modulePath: "test-tools",
+    moduleName: "test-tools"
+  },
+  {
     package: "@anakeen/security",
     version: "2.0.3",
     modulePath: "security",
@@ -110,6 +116,7 @@ exports.modulePath = [
   "development-center",
   "hub-station",
   "migration-tools",
+  "test-tools",
   "security",
   "transformation",
   "user-interfaces",
