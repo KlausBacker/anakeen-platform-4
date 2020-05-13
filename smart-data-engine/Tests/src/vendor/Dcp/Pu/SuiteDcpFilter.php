@@ -30,10 +30,12 @@ class SuiteDcpFilter
         $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterOneContains');
         $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterOneDocumentTitle');
         $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterOneEquals');
+        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterOneEqualsMulti');
         $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterOneGreaterThan');
         $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterTitleContains');
         $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterOrOperator');
         $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterIsIn');
+        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterOneBetween');
 
         // ...
         return $suite;

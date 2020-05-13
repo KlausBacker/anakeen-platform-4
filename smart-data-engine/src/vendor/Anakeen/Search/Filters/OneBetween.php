@@ -108,12 +108,12 @@ class OneBetween extends StandardAttributeFilter implements ElementSearchFilter
             $operator = ">~<=";
         }
         $query = sprintf(
-            '%s IS NOT NULL AND %s(%s) %s %s',
+            "%s IS NOT NULL AND '%s' %s %s(%s)",
             pg_escape_identifier($attr->id),
-            ($this->ALL ? 'ALL' : 'ANY'),
-            pg_escape_identifier($attr->id),
+            $pgBetweenArray,
             $operator,
-            $pgBetweenArray
+            ($this->ALL ? 'ALL' : 'ANY'),
+            pg_escape_identifier($attr->id)
         );
         if ($this->NOT) {
             $query = sprintf('NOT(%s)', $query);

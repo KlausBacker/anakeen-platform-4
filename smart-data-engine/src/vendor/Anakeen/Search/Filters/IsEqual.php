@@ -3,9 +3,19 @@
 namespace Anakeen\Search\Filters;
 
 use Anakeen\Core\Internal\SmartElement;
+use Anakeen\Search\SearchCriteria\SearchCriteriaTrait;
 
 class IsEqual extends StandardAttributeFilter implements ElementSearchFilter
 {
+    use SearchCriteriaTrait;
+
+    public static function getOptionMap()
+    {
+        return array(
+            self::NOT => "not",
+        );
+    }
+
     const NOT = 1;
     protected $NOT = false;
     protected $value = null;
@@ -52,8 +62,14 @@ class IsEqual extends StandardAttributeFilter implements ElementSearchFilter
     public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
         $this->verifyCompatibility($search);
-        $query = $this->NOT ? '%s <> %s' : '%s = %s';
-        $search->addFilter(sprintf($query, pg_escape_identifier($this->attributeId), pg_escape_literal($this->value)));
+        if (!empty($this->value)) {
+            $query = $this->NOT ? '%s <> %s' : '%s = %s';
+            $search->addFilter(sprintf(
+                $query,
+                pg_escape_identifier($this->attributeId),
+                pg_escape_literal($this->value)
+            ));
+        }
         return $this;
     }
 }

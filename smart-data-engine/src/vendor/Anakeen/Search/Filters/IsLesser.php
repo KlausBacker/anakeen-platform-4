@@ -8,13 +8,21 @@
 namespace Anakeen\Search\Filters;
 
 use Anakeen\Search;
+use Anakeen\Search\SearchCriteria\SearchCriteriaTrait;
 
 class IsLesser extends StandardAttributeFilter implements ElementSearchFilter
 {
+    use SearchCriteriaTrait;
+
+    public static function getOptionMap()
+    {
+        return array(
+            self::EQUAL => "equal",
+        );
+    }
+
     const EQUAL = 1;
-    const ALL = 2;
     private $EQUAL = false;
-    private $ALL = false;
     protected $value = null;
     protected $compatibleType = array(
         'int',
@@ -41,7 +49,6 @@ class IsLesser extends StandardAttributeFilter implements ElementSearchFilter
         $this->value = $value;
         if (isset($options)) {
             $this->EQUAL = ($options & self::EQUAL);
-            $this->ALL = ($options & self::ALL);
         }
     }
 
@@ -72,10 +79,13 @@ class IsLesser extends StandardAttributeFilter implements ElementSearchFilter
     public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
         $attr = $this->verifyCompatibility($search);
-        if ($attr->isMultiple()) {
-            $search->addFilter(sprintf('%s >%s %s(%s)', pg_escape_literal($this->value), ($this->EQUAL ? '=' : ''), ($this->ALL ? 'ALL' : 'ANY'), pg_escape_identifier($attr->id)));
-        } else {
-            $search->addFilter(sprintf('%s >%s %s', pg_escape_literal($this->value), ($this->EQUAL ? '=' : ''), pg_escape_identifier($attr->id)));
+        if (!empty($this->value)) {
+            $search->addFilter(sprintf(
+                '%s >%s %s',
+                pg_escape_literal($this->value),
+                ($this->EQUAL ? '=' : ''),
+                pg_escape_identifier($attr->id)
+            ));
         }
         return $this;
     }

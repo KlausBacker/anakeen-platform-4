@@ -61,6 +61,14 @@
     {
       "kind": "field",
       "field": "test_ddui_all__enumlist"
+    },
+    {
+      "kind": "field",
+      "field": "test_ddui_all__date_array"
+    },
+    {
+      "kind": "field",
+      "field": "test_ddui_all__money_array"
     }
   ]
 }
