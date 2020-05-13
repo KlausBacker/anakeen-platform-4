@@ -963,59 +963,59 @@
   dependencies:
     jquery "<=3"
 
-"@progress/kendo-vue-animation@0.4.4", "@progress/kendo-vue-animation@^0.4.4":
-  version "0.4.4"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-vue-animation/-/kendo-vue-animation-0.4.4.tgz#6c363ac29030f33f08524d8c6baf6396c241162f"
-  integrity sha512-BBCK3pVFl3NYkzYbg5IXqMjEAH8DkEq+2ppMpmBr4Tj4TU/KoXbm3Q9J3RIc3ESEojG7qjCMLhCg8ockr+CNWQ==
+"@progress/kendo-vue-animation@0.4.8", "@progress/kendo-vue-animation@^0.4.4":
+  version "0.4.8"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-vue-animation/-/kendo-vue-animation-0.4.8.tgz#64498d82357b85c4124cbed5898035faab184a39"
+  integrity sha512-PxcXpkFMslDiN6DT9B2fiP49PmK1uyGJO0PJxuuB3QHfRkaxuNy4kDoeK1SN0G8q0u12s+caLo7qxQ0zsjUxBg==
   dependencies:
-    "@progress/kendo-vue-common" "0.4.4"
+    "@progress/kendo-vue-common" "0.4.8"
 
-"@progress/kendo-vue-common@0.4.4":
-  version "0.4.4"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-vue-common/-/kendo-vue-common-0.4.4.tgz#1b4b4987fa7c4ecce47b9d30aa6981ee5d6b31b1"
-  integrity sha512-GiQJEuRDdUQ+HDf+z2eDLOjSkZQeovvKzTfgVMWA8IDmXPGLtg6VVawLHMRhqYOFER1HDHLM5zq+nANTwC7qAw==
+"@progress/kendo-vue-common@0.4.8":
+  version "0.4.8"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-vue-common/-/kendo-vue-common-0.4.8.tgz#9adbe2321ec6d6b2bb8ec0a2e709641dbc3ea92c"
+  integrity sha512-LFS9BmCiMLTY3/59UGqk+vQ8ruA3tP42oHTSujtzoEcrlIKYnI4FoqNTgv6SCiWz9A5jFdSkOaxuVT42b364Ww==
   dependencies:
     "@telerik/kendo-draggable" "2.0.0"
 
 "@progress/kendo-vue-dropdowns@^0.4.4":
-  version "0.4.4"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-vue-dropdowns/-/kendo-vue-dropdowns-0.4.4.tgz#92771287f312011ed0eea868815745c6bed42671"
-  integrity sha512-nwYBFUIQTbLxlJhroFyTZRpjtmaF2/XCCRQ6R3Z9/KDkH5GeQBgYKqF9EUeCXGcbpb05oYzUngxa4kS4QFveow==
+  version "0.4.8"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-vue-dropdowns/-/kendo-vue-dropdowns-0.4.8.tgz#010a6a69d12588569367f4a536d8dfca9cfaf7bd"
+  integrity sha512-fKY2SYJyboksJTUjc2O1DCala98+mKIrQOuLhoZWOkCY+Y4baxobmiXWZVvF982cv5vtJD8M8U8fXVnJ7Omb6A==
   dependencies:
-    "@progress/kendo-vue-common" "0.4.4"
-    "@progress/kendo-vue-popup" "0.4.4"
+    "@progress/kendo-vue-common" "0.4.8"
+    "@progress/kendo-vue-popup" "0.4.8"
 
 "@progress/kendo-vue-grid@^0.4.4":
-  version "0.4.4"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-vue-grid/-/kendo-vue-grid-0.4.4.tgz#b524f86a18d31694c8e4c493626de12a7c085026"
-  integrity sha512-rniIG8tgl5MSTB+oECf24DwCLVE28TYEEHjLqKHmGKU5QmD4rKEcBvHq2abYXANI+6i24oWvJ4WeDkFHt1QOuw==
+  version "0.4.8"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-vue-grid/-/kendo-vue-grid-0.4.8.tgz#8fb201c29bea710ccc8f7370742a28f101afbd72"
+  integrity sha512-lBrpN9mjLFnVpmyNo2DPyKAHCw4n4jUol4e94s9DCs4Gt6az5g2vDRxS4MgyZu4hosoNttG0mQ527wrHdvnvZQ==
   dependencies:
-    "@progress/kendo-vue-common" "0.4.4"
+    "@progress/kendo-vue-common" "0.4.8"
     "@telerik/kendo-draggable" "^1.9.0"
 
 "@progress/kendo-vue-inputs@^0.4.4":
-  version "0.4.4"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-vue-inputs/-/kendo-vue-inputs-0.4.4.tgz#72de559ad9fa10073c6592744a772a20828e9f6c"
-  integrity sha512-uYN1dgTS+qkyvIHufM6EY8RanuVdRCU62vCn0L5qHxaUnsmAaXZg1njC/meBgWhxbE4afah57aReKOG9ZCNdTQ==
+  version "0.4.8"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-vue-inputs/-/kendo-vue-inputs-0.4.8.tgz#8627937cea51320b871aaa5b0bd8c9f41c9de813"
+  integrity sha512-C9PQbKzLyh4H1ZdgJoF9zHWASJqP2XM+Xmq4fsNimqCudy5jAtlXPEg81pbLdhrZUUR+eLZPRdKRe6dKSUcI0g==
   dependencies:
-    "@progress/kendo-vue-common" "0.4.4"
+    "@progress/kendo-vue-common" "0.4.8"
 
 "@progress/kendo-vue-intl@^0.4.4":
-  version "0.4.4"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-vue-intl/-/kendo-vue-intl-0.4.4.tgz#2ad674745591b917ed010eaccd4366a3b51f07e3"
-  integrity sha512-T0Df4aUNLWGIlndaZ9ioEoeTX3gfCAUQOfBOwsHYUiBg1u0f7kXnup0Cp9gmpuZ8VfalhJCNJhnLPWtNNY0dLA==
+  version "0.4.8"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-vue-intl/-/kendo-vue-intl-0.4.8.tgz#9384489e2944c1b77af602351b2010132b686009"
+  integrity sha512-5NXcNWd1zZlVNYV2OAe+GCxvpbr1hvIxSBdX+GtHUKzc1t3MvplRrPe3Wzml0BYMwZXDcPBohLzpATOrg6TwRw==
   dependencies:
-    "@progress/kendo-vue-common" "0.4.4"
+    "@progress/kendo-vue-common" "0.4.8"
     "@telerik/kendo-intl" "^1.4.4"
 
-"@progress/kendo-vue-popup@0.4.4", "@progress/kendo-vue-popup@^0.4.4":
-  version "0.4.4"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-vue-popup/-/kendo-vue-popup-0.4.4.tgz#9d4657328b6f47d33ecb13ea6ce9809aa4efcc1b"
-  integrity sha512-LdEvCcPorm/Odedq+dwdp3Tzg2aBUlahwI/5KNOjJkzmqo60oguPW4AsyH30Yku0L5CPrpU7vuFleyePtvrFpQ==
+"@progress/kendo-vue-popup@0.4.8", "@progress/kendo-vue-popup@^0.4.4":
+  version "0.4.8"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-vue-popup/-/kendo-vue-popup-0.4.8.tgz#6dd6d5f9682a407cc7153f8286fc69d9d8a83f4f"
+  integrity sha512-tWFfK+gI0HFYZ5OfdiO/BYPEwN342WgVONX66HpAnMyTgkGsJ1hkwYafUFA149SerTycxttqv5Q/IPt4MsuSFw==
   dependencies:
     "@progress/kendo-popup-common" "^1.6.1"
-    "@progress/kendo-vue-animation" "0.4.4"
-    "@progress/kendo-vue-common" "0.4.4"
+    "@progress/kendo-vue-animation" "0.4.8"
+    "@progress/kendo-vue-common" "0.4.8"
 
 "@sphinxxxx/color-conversion@^2.2.2":
   version "2.2.2"
