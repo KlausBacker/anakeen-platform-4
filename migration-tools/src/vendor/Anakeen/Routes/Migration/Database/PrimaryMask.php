@@ -4,6 +4,7 @@ namespace Anakeen\Routes\Migration\Database;
 
 use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
+use Anakeen\Core\Utils\Postgres;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 use Anakeen\Search\SearchElements;
@@ -42,7 +43,9 @@ class PrimaryMask
     {
         $data = [];
 
-        $sql = sprintf("select * from dynacase.docattr where docid=%d", $this->structure->id);
+        $fids=self::getFromids($this->structure->id);
+        $fids[]=$this->structure->id;
+        $sql = sprintf("select * from dynacase.docattr where docid in (%s)", implode(",", $fids));
         DbManager::query($sql, $results);
 
         $name = sprintf("PRIMARYMASK_%s", $this->structure->name);
@@ -74,6 +77,12 @@ class PrimaryMask
 
         $data["cvdoc"] = $this->setCVid($mask->id);
         return $data;
+    }
+
+    protected function getFromids(int $structureId)
+    {
+        DbManager::query(sprintf("select getFromids(%d)", $structureId), $fromids, true, true);
+        return Postgres::stringToArray($fromids);
     }
 
     protected function setCVid($mskId)
