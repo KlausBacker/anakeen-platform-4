@@ -29,7 +29,7 @@
         <span class="smart-element-grid-cell-state--color" :style="{ backgroundColor: cellValue.color }"></span>
         <span>{{ cellValue.displayValue }}</span>
       </div>
-      <div v-if="field === 'cdate' || field === 'mdate'">
+      <div v-else-if="field === 'cdate' || field === 'mdate'">
         <span> {{ dateFormat(dataItem.properties[field]) }} </span>
       </div>
       <div v-else-if="field === 'title'" class="smart-element-grid-cell--title">
