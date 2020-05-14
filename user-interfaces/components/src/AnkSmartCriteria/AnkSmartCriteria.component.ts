@@ -39,6 +39,11 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
     type: Boolean
   })
   public force;
+  @Prop({
+    default: () => [],
+    type: Array
+  })
+  public responsiveColumns;
   private mountedDone = false;
   private innerConfig: ISmartCriteriaConfiguration = { title: "", defaultStructure: -1, criterias: [] };
   private operatorFieldRegex = /^sc_operator_(\d+)$/;
@@ -157,7 +162,11 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
     const translations = {
       and: `${this.$t("SmartFormConfigurationBuilder.And")}`
     };
-    this.smartFormConfigurationBuilder = new SmartFormConfigurationBuilder(this.innerConfig, translations);
+    this.smartFormConfigurationBuilder = new SmartFormConfigurationBuilder(
+      this.innerConfig,
+      translations,
+      this.responsiveColumns
+    );
     this.smartFormConfig = { ...this.smartFormConfigurationBuilder.build() };
     this.errorStack = this.errorStack.concat(this.smartFormConfigurationBuilder.getErrorStack());
   }
@@ -202,6 +211,10 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
     }
 
     AnkSmartCriteria.setSmartFieldVisibility(SmartFormConfigurationBuilder.getValueName(index), valueVisible);
+    AnkSmartCriteria.setSmartFieldVisibility(
+      SmartFormConfigurationBuilder.getValueBetweenLabelName(index),
+      betweenVisible
+    );
     AnkSmartCriteria.setSmartFieldVisibility(SmartFormConfigurationBuilder.getValueBetweenName(index), betweenVisible);
     AnkSmartCriteria.setSmartFieldVisibility(
       SmartFormConfigurationBuilder.getValueMultipleName(index),
