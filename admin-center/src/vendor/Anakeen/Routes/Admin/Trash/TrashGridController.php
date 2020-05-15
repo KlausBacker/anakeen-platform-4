@@ -110,7 +110,7 @@ class TrashGridController extends DefaultGridController
         $content = $fullContent["content"];
         foreach ($content as $key => $val) {
             $fullContent["content"][$key]["properties"]["fromid"] = SEManager::getNameFromId($val["properties"]["fromid"]);
-            $fullContent["content"][$key]["properties"]["mdate"] = Date::stringDateToLocaleDate($val["properties"]["mdate"]);
+            $fullContent["content"][$key]["properties"]["mdate"] = Date::stringDateToIso($val["properties"]["mdate"]);
         }
         return $fullContent;
     }
