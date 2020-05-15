@@ -191,8 +191,8 @@ class StructureFields
                         case "labeltext":
                         case "phpconstraint":
                             $attrData[$fieldId]["overrides"][$col] = [
-                                "before" => $originValues[$fieldId][$col],
-                                "after" => $attrData[$fieldId][$col]
+                                "before" => $originValues[$fieldId][$col]??null,
+                                "after" => $attrData[$fieldId][$col]??null
                             ];
                             break;
                     }
