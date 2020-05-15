@@ -43,7 +43,7 @@ class PrimaryMask
     {
         $data = [];
 
-        $fids=self::getFromids($this->structure->id);
+        $fids=ConfigStructureTransfert::getFromids($this->structure->id);
         $fids[]=$this->structure->id;
         $sql = sprintf("select * from dynacase.docattr where docid in (%s)", implode(",", $fids));
         DbManager::query($sql, $results);
