@@ -37,7 +37,20 @@
   .grid-row-collapsed {
     .k-grid-content {
       .k-master-row {
-        td:not(:first-child):not(:last-child) {
+
+        .smart-element-grid-cell-content {
+          display:block;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .smart-element-grid-cell--title-content,
+        .smart-element-grid-cell-content > div,
+        .smart-element-grid-cell-content > span,
+        .smart-element-grid-cell-content--value {
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        td {
           white-space: nowrap;
           overflow: hidden;
         }
