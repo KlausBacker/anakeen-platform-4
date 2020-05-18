@@ -108,7 +108,7 @@ class MaskHooks extends \SmartStructure\Base
 
         $tvisibilities = array();
         foreach ($tattrid as $k => $v) {
-            if ($tvisid[$k] !== "-") {
+            if ($tvisid[$k] !== "-" && $tvisid[$k] !== null) {
                 $tvisibilities[$v] = $tvisid[$k];
             }
         }
