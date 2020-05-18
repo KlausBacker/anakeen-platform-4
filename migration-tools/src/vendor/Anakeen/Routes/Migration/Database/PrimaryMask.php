@@ -43,11 +43,12 @@ class PrimaryMask
     {
         $data = [];
 
-        $fids=ConfigStructureTransfert::getFromids($this->structure->id);
-        $fids[]=$this->structure->id;
-        $sql = sprintf("select * from dynacase.docattr where docid in (%s)", implode(",", $fids));
+        $fids = ConfigStructureTransfert::getFromids($this->structure->id);
+        $fids[] = $this->structure->id;
+        $sql = sprintf("select * from dynacase.docattr where docid in (%s) order by docid", implode(",", $fids));
         DbManager::query($sql, $results);
 
+        print $sql;
         $name = sprintf("PRIMARYMASK_%s", $this->structure->name);
         /** @var \SmartStructure\Mask $mask */
         $mask = SEManager::getDocument($name);
@@ -57,20 +58,33 @@ class PrimaryMask
         $mask->setValue(MaskField::msk_famid, $this->structure->id);
         $mask->setValue(MaskField::ba_title, sprintf("Primary Mask for %s", $this->structure->getTitle()));
         $mask->clearArrayValues(MaskField::msk_t_contain);
+
+        $maskData = [];
         foreach ($results as $result) {
             $vis = $result["visibility"];
             $need = $result["needed"];
 
-            if ($vis !== "W" || $need === "Y") {
+            if (($vis !== "" && ($vis !== "W" || $result["id"][0] === ":")) || $need === "Y") {
+                $attrid = trim($result["id"], ":");
+                $maskData[$attrid] =
+                    [
+                        MaskField::msk_visibilities => $vis,
+                        MaskField::msk_needeeds => ($need === "Y" ? $need : "-")
+                    ];
+            }
+        }
+
+
+
+        foreach ($maskData as $attrid => $maskDatum) {
                 $mask->addArrayRow(
                     MaskField::msk_t_contain,
                     [
-                        MaskField::msk_attrids => trim($result["id"], ":"),
-                        MaskField::msk_visibilities => $vis,
-                        MaskField::msk_needeeds => ($need === "Y" ? $need : "-")
+                        MaskField::msk_attrids => $attrid,
+                        MaskField::msk_visibilities => $maskDatum[MaskField::msk_visibilities],
+                        MaskField::msk_needeeds => $maskDatum[MaskField::msk_needeeds],
                     ]
                 );
-            }
         }
         $mask->store();
         $mask->setLogicalName($name);
@@ -101,7 +115,12 @@ class PrimaryMask
             $this->structure->ccvid = $cv->id;
             $this->structure->modify();
 
-            DbManager::query(sprintf("update doc%d set cvid='%d' where cvid is null and fromid = %d", $this->structure->id, $this->structure->ccvid, $this->structure->id));
+            DbManager::query(sprintf(
+                "update doc%d set cvid='%d' where cvid is null and fromid = %d",
+                $this->structure->id,
+                $this->structure->ccvid,
+                $this->structure->id
+            ));
         }
 
         $searcCv = new SearchElements("CVDOC");
