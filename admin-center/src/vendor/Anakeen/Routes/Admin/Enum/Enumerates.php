@@ -78,9 +78,9 @@ SQL;
         foreach ($enums as $enum) {
             $entry["enumerate"] = $enum["name"];
             $entry["label"] = $enum["label"];
-            $isModifiable = true;
+            $isModifiable = false;
             if (in_array($enum["name"], $extendableEnums)) {
-                $isModifiable = false;
+                $isModifiable = true;
             }
             $entry["modifiable"] = $isModifiable;
             $entry["structures"] = $enum["labeltext"];
