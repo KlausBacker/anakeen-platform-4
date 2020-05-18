@@ -26,6 +26,7 @@ export default class AdminCenterEnumController extends Mixins(AnkI18NMixin) {
   public acualLabel: string = "";
   public language: string = "";
 
+  public isEnumEditable: boolean = false;
   public kendoGrid: any = null;
   // Store data to send to the server
   public modifications: any = {};
@@ -39,6 +40,8 @@ export default class AdminCenterEnumController extends Mixins(AnkI18NMixin) {
   private smartFormDataCounter: number = 0;
 
   get smartFormData() {
+    const display = this.isEnumEditable ? "write" : "read";
+    const visibility = this.isEnumEditable ? "visible" : "hidden";
     return {
       menu: [
         {
@@ -50,7 +53,7 @@ export default class AdminCenterEnumController extends Mixins(AnkI18NMixin) {
           target: "_self",
           type: "itemMenu",
           url: "#action/enum.save",
-          visibility: "visible"
+          visibility: visibility
         }
       ],
       renderOptions: {
@@ -75,7 +78,7 @@ export default class AdminCenterEnumController extends Mixins(AnkI18NMixin) {
               type: "array",
               content: [
                 {
-                  display: "write",
+                  display: display,
                   label: this.$t("AdminCenterEnum.Key"),
                   name: "enum_array_key",
                   type: "text"
@@ -83,7 +86,8 @@ export default class AdminCenterEnumController extends Mixins(AnkI18NMixin) {
                 {
                   label: this.$t("AdminCenterEnum.Label"),
                   name: "enum_array_label",
-                  type: "text"
+                  type: "text",
+                  display: display
                 },
                 {
                   label: this.$t("AdminCenterEnum.Translation"),
@@ -94,6 +98,7 @@ export default class AdminCenterEnumController extends Mixins(AnkI18NMixin) {
                   label: this.$t("AdminCenterEnum.Active"),
                   name: "enum_array_active",
                   type: "enum",
+                  display: display,
                   enumItems: [
                     {
                       key: "disable",
@@ -121,6 +126,7 @@ export default class AdminCenterEnumController extends Mixins(AnkI18NMixin) {
   }
   // Get entries from an Enum
   public loadEnumerate(e) {
+    this.isEnumEditable = JSON.parse(e.target.parentElement.previousElementSibling.firstChild.data);
     this.keysArray = [];
     this.labelArray = [];
     this.activeArray = [];
@@ -227,7 +233,7 @@ export default class AdminCenterEnumController extends Mixins(AnkI18NMixin) {
       let valid = true;
       Object.values(this.modifications).forEach(modif => {
         Object.values(modif).forEach(element => {
-          if (element === null) {
+        if (element === null) {
             valid = false;
             return;
           }
@@ -302,7 +308,7 @@ export default class AdminCenterEnumController extends Mixins(AnkI18NMixin) {
           {
             command: {
               click: this.loadEnumerate,
-              text: this.$t("AdminCenterEnum.Modify")
+              text: this.$t("AdminCenterEnum.Consult")
             },
             title: this.$t("AdminCenterEnum.header Actions")
           }
@@ -412,7 +418,6 @@ export default class AdminCenterEnumController extends Mixins(AnkI18NMixin) {
     selectButtonsList.each((key,val) => {
       val.remove();
     });
-
 
     // Make "keys" read-only for already existing enums and no deletables
     enumArrayKeyInputs.forEach(enumArrayKeyInput => {
