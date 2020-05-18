@@ -219,7 +219,7 @@ class DocumentAccess
                 $this->document->dprofid = 0;
                 $this->setViewProfil();
             }
-            if ($pdoc->profid == 0) {
+            if ($pdoc && $pdoc->profid == 0) {
                 $this->document->profid = -$profid;
             } // inhibition
         } elseif (($profid > 0) && ($profid == $this->document->id)) {
