@@ -28,6 +28,7 @@ export namespace AnakeenController {
       router?: boolean | { noRouter: boolean };
       customClientData?: any;
       loading?: boolean;
+      force?: boolean;
       notification?: boolean;
       controllerName?: string;
       controllerPrefix?: string;

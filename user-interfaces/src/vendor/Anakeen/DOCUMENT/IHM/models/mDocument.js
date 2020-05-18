@@ -149,13 +149,16 @@ export default Backbone.Model.extend({
    * Initialize event handling
    *
    */
-  initialize: function mDocumentinitialize() {
+  initialize: function mDocumentinitialize(initialValue, options) {
     var theModel = this;
 
     this.listenTo(this, "dduiDocumentFail", this.propagateSynchroError);
     this.listenTo(this, "destroy", this.destroySubcollection);
     this.listenTo(this, "destroy", this.unbindLoadEvent);
     $(window).on("beforeunload." + this.cid, function mDocumentBeforeUnload() {
+      if (options && options.force) {
+        return;
+      }
       var security = theModel.get("properties") ? theModel.get("properties").get("security") : null,
         event = { prevent: false };
       if (theModel.hasAttributesChanged()) {
