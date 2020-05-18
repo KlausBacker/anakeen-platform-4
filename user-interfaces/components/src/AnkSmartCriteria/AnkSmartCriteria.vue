@@ -13,7 +13,7 @@
       />
     </div>
     <div v-if="submit" class="smart-criteria-input">
-      <input class="smart-criteria-input-button" type="submit" @click="onSubmitButtonClick" />
+      <button class="smart-criteria-input-button k-primary" @click="onSubmitButtonClick">{{$t("smartCriteria.Search")}}</button>
     </div>
   </div>
 </template>

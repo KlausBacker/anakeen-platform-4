@@ -15,7 +15,6 @@
 
     section.dcpDocument__body.container-fluid {
       padding: 0;
-      background: white;
 
       .dcpDocument__tabs {
         padding: 0;
@@ -25,8 +24,7 @@
         }
 
         [data-attrid=sc_tab] {
-          margin-left: 0.5rem;
-          margin-right: 0.5rem;
+          background: white;
           border: none;
 
           .dcpFrame[data-attrid^=sc_criteria_] {
@@ -40,20 +38,17 @@
             }
 
             .dcpAttribute[data-attrid^=sc_label_operator_] {
-              flex-basis: 100%;
+              flex-basis: 20%;
               margin-left: 0;
               margin-right: 0;
               margin-bottom: 0.5rem;
             }
 
             .dcpAttribute[data-attrid^=sc_operator_] {
-              flex-basis: 25rem;
-              flex-grow: 0;
+              flex-basis: 80%;
               margin-left: 0;
               margin-right: 0;
               margin-bottom: 0.5rem;
-              min-width: 10rem;
-              padding-right: 1rem;
               .dcpAttribute__content--widget {
                 margin-bottom: 0;
                 span.k-input {
@@ -65,8 +60,7 @@
             .dcpAttribute[data-attrid^=sc_value_] {
               min-width: 10rem;
               margin-bottom: 0.5rem;
-              flex: 1;
-
+              flex-basis: 48%;
 
               margin-left: 0;
               margin-right: 0;
@@ -76,15 +70,16 @@
               }
             }
 
+
+
+
             .dcpAttribute[data-attrid^=sc_value_multiple] {
               min-width: 10rem;
               margin-bottom: 0.5rem;
-              flex: 1;
-
+              flex-basis: 100%;
 
               margin-left: 0;
               margin-right: 0;
-
               .row {
                 display: flex;
                 flex-direction: column;
@@ -92,23 +87,18 @@
             }
 
             .dcpAttribute[data-attrid^=sc_label_value_between_] {
-              flex: 0;
-              margin-left: 0.8rem;
-              margin-right: 0.8rem;
-            }
-
-            .dcpAttribute--type--date,.dcpAttribute--type--time,.dcpAttribute--type--timestamp,.dcpAttribute--type--int,.dcpAttribute--type--double,.dcpAttribute--type--money {
-              &[data-attrid^=sc_value_] {
-                max-width: 20rem;
-              }
+              flex-basis: 4%;
+              margin-left: 0;
+              margin-right: 0;
             }
 
             .dcpAttribute[data-attrid^=sc_value_between] {
-              flex: 1;
+              flex-basis: 48%;
               margin-left: 0;
               margin-right: 0;
               .dcpAttribute__content {
-                padding: 0;
+                padding-bottom: 0;
+                padding-left: 0.8rem;
               }
 
               .dcpLabel {
