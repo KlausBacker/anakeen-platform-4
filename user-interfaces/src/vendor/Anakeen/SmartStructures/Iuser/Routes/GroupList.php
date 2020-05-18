@@ -136,7 +136,8 @@ class GroupList
 
         return $response->withJson([
             "total" => $nResult,
-            "data" => array_values($result)
+            "data" => array_values($result),
+            "pagerTranslation" => ___("{0} - {1} of {2} results", "smart-grid")
         ]);
     }
 
