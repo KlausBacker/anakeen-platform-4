@@ -1,5 +1,4 @@
 .smart-element-grid-cell {
-  overflow: auto;
   word-break: break-word;
 }
 
@@ -15,6 +14,7 @@
 }
 
 .smart-element-grid-cell-content {
+  overflow: auto;
   display: flex;
   flex-direction: column;
 }

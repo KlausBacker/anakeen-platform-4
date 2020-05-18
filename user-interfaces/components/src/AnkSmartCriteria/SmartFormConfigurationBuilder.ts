@@ -14,17 +14,25 @@ export default class SmartFormConfigurationBuilder {
   smartFormConfiguration: ISmartFormConfiguration;
   errorStack: Array<any>;
   translations: any;
+  responsiveColumns: any[];
 
-  constructor(smartCriteriaConfiguration: ISmartCriteriaConfiguration, translations: any) {
+  constructor(
+    smartCriteriaConfiguration: ISmartCriteriaConfiguration,
+    translations: any,
+    responsiveColumnns: Array<any>
+  ) {
     this.configuration = smartCriteriaConfiguration;
-    this.initSmartFormConfiguration();
     this.errorStack = [];
     this.translations = translations;
+    this.responsiveColumns = responsiveColumnns;
+    this.initSmartFormConfiguration();
   }
 
   private initSmartFormConfiguration(): void {
     this.smartFormConfiguration = {};
-    this.smartFormConfiguration.title = this.configuration.title ? this.configuration.title : "Titre de base";
+    if (this.configuration.title) {
+      this.smartFormConfiguration.title = this.configuration.title;
+    }
     this.smartFormConfiguration.structure = [
       {
         name: "sc_tab",
@@ -36,14 +44,7 @@ export default class SmartFormConfigurationBuilder {
     this.smartFormConfiguration.renderOptions = {
       fields: {
         sc_tab: {
-          responsiveColumns: [
-            {
-              number: 2,
-              minWidth: "50rem",
-              maxWidth: null,
-              grow: true
-            }
-          ]
+          responsiveColumns: this.responsiveColumns
         }
       }
     };
@@ -85,6 +86,11 @@ export default class SmartFormConfigurationBuilder {
       formTemplate = {
         content: [
           {
+            name: SmartFormConfigurationBuilder.getOperatorLabelName(index),
+            type: "text",
+            display: "read"
+          },
+          {
             label: criteria.label,
             name: SmartFormConfigurationBuilder.getOperatorName(index),
             type: "enum",
@@ -96,14 +102,26 @@ export default class SmartFormConfigurationBuilder {
         type: "frame",
         name: `sc_criteria_${index}`
       };
+      this.smartFormConfiguration.values[SmartFormConfigurationBuilder.getOperatorLabelName(index)] = criteria.label;
       if (hasBetween) {
+        formTemplate.content.push({
+          name: SmartFormConfigurationBuilder.getValueBetweenLabelName(index),
+          type: "text",
+          display: "read"
+        });
         formTemplate.content.push(
           SmartFormConfigurationBuilder.getCriteriaSmartFormValue(criteria, index, false, this.translations, true)
         );
+        this.smartFormConfiguration.values[
+          SmartFormConfigurationBuilder.getValueBetweenLabelName(index)
+        ] = this.translations.and;
       }
+      this.smartFormConfiguration.renderOptions["fields"][SmartFormConfigurationBuilder.getOperatorLabelName(index)] = {
+        labelPosition: "none"
+      };
       this.smartFormConfiguration.renderOptions["fields"][SmartFormConfigurationBuilder.getOperatorName(index)] = {
         displayDeleteButton: false,
-        labelPosition: "left"
+        labelPosition: "none"
       };
       this.smartFormConfiguration.renderOptions["fields"][SmartFormConfigurationBuilder.getValueName(index)] = {
         labelPosition: "none"
@@ -113,9 +131,14 @@ export default class SmartFormConfigurationBuilder {
       };
       if (hasBetween) {
         this.smartFormConfiguration.renderOptions["fields"][
+          SmartFormConfigurationBuilder.getValueBetweenLabelName(index)
+        ] = {
+          labelPosition: "none"
+        };
+        this.smartFormConfiguration.renderOptions["fields"][
           SmartFormConfigurationBuilder.getValueBetweenName(index)
         ] = {
-          labelPosition: "left"
+          labelPosition: "none"
         };
       }
     }
@@ -218,12 +241,20 @@ export default class SmartFormConfigurationBuilder {
     return `sc_operator_${index}`;
   }
 
+  public static getOperatorLabelName(index: number): string {
+    return `sc_label_operator_${index}`;
+  }
+
   public static getValueName(index: number): string {
     return `sc_value_${index}`;
   }
 
   public static getValueBetweenName(index: number): string {
     return `sc_value_between_${index}`;
+  }
+
+  public static getValueBetweenLabelName(index: number): string {
+    return `sc_label_value_between_${index}`;
   }
 
   public static getValueMultipleName(index: number): string {

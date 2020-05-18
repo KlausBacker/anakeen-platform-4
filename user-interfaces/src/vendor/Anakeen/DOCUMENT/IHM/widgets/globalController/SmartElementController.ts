@@ -54,7 +54,8 @@ const DEFAULT_OPTIONS: IControllerOptions = {
   customClientData: {},
   loading: true,
   notification: true,
-  router: false
+  router: false,
+  force: false
 };
 
 class ErrorModelNonInitialized extends Error {
@@ -1240,7 +1241,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
 
     // Don't reinit the model
     if (!this._model) {
-      model = new Model(initialValue);
+      model = new Model(initialValue, { force: !!this._options && !!this._options.force });
       this._model = model;
       this._initModelEvents();
     } else {

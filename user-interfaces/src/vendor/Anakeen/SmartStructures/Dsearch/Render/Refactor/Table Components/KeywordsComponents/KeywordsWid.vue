@@ -93,6 +93,11 @@ export default {
         that.comboBox.setDataSource(that.dataWorkflow);
         that.initData();
       });
+    },
+    afterOfflineFetchData() {
+      if (this.workflows.length === 0) {
+        this.fetchData();
+      }
     }
   },
   mounted() {
@@ -106,7 +111,8 @@ export default {
         dataValueField: "id",
         dataTextField: "label",
         template: `<span style='background-color: #: color #; width: 100%;'>#: label #</span>`,
-        change: this.onComboBoxChange
+        change: this.onComboBoxChange,
+        open: this.afterOfflineFetchData
       })
       .data("kendoComboBox");
     this.fetchData();

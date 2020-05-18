@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/test-tools",
-  "version": "0.0.1",
+  "version": "1.0.0-RC.2020.1.28",
   "autorelease": true,
   "description": "Anakeen Platform Test Tools",
   "main": "components/lib/TestTools.js",
@@ -14,9 +14,7 @@
   },
   "files": [
     "/components/**/*",
-    "/components/README.md",
-    "/src/**/*",
-    "yarn.lock"
+    "/src/**/*"
   ],
   "repository": {
     "type": "git"
@@ -37,7 +35,7 @@
     "uuid": "^3.3.3"
   },
   "devDependencies": {
-    "@anakeen/anakeen-cli": "1.2.2-RC.2020.1.27",
+    "@anakeen/anakeen-cli": "1.2.2-RC.2020.1.28",
     "@anakeen/webpack-conf": "1.2.1",
     "core-js": "3.6.1",
     "@types/node": "^13.1.2",

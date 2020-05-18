@@ -1,12 +1,25 @@
 import $ from "jquery";
 import _ from "underscore";
 import "../text/wText";
+import i18n from "../../../i18n/documentCatalog";
 
 $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
   options: {
     type: "htmltext",
     renderOptions: {
-      kendoEditorConfiguration: {},
+      kendoEditorConfiguration: {
+        serialization: {
+          entities: false
+        },
+        pasteCleanup: {
+          msAllFormatting: true,
+          msConvertLists: true,
+          msTags: true,
+          span: true,
+          css: true,
+          all: false
+        }
+      },
       anchors: {
         target: "_blank"
       },
@@ -15,6 +28,8 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
       height: "100px"
     }
   },
+
+  _imgTransfertId: 0,
 
   _initDom: function wHtmltext_InitDom() {
     const currentWidget = this;
@@ -215,6 +230,21 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
         }, 10);
       }
     };
+    if (!this.options.renderOptions.kendoEditorConfiguration.pasteCleanup.custom) {
+      this.options.renderOptions.kendoEditorConfiguration.pasteCleanup.custom = html => {
+        if (html.substring(0, 5) === "<img ") {
+          try {
+            const $html = $(html);
+            if ($html.prop("tagName") === "IMG") {
+              return this.transfertImage(html);
+            }
+          } catch (e) {
+            // do nothing , it is not html continue paste
+          }
+        }
+        return html;
+      };
+    }
   },
 
   /**
@@ -291,7 +321,10 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
               const $iImg = $(this).find("img");
               const width = $(this).width();
               const height = $(this).height();
-              $iImg.width(width).height(height);
+              // use tag img tag dimension because kendo analyze this attributes to get dimension instead of style
+              $iImg.attr("width", Number.parseInt(width, 10));
+              $iImg.attr("height", Number.parseInt(height, 10));
+
               $iImg.insertBefore($(this));
               $(this).remove();
               // Select image
@@ -406,6 +439,138 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
 
   getWidgetValue: function wHtmltext_getWidgetValue() {
     return this.getContentElements().value();
+  },
+
+  dataURLtoFile: function dataURLtoFile(dataurl, filename) {
+    let arr = dataurl.split(","),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]),
+      n = bstr.length,
+      ext = mime.split("/")[1],
+      u8arr = new Uint8Array(n);
+
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new File([u8arr], filename + "." + ext, { type: mime });
+  },
+
+  transfertImage: function(html) {
+    const $img = $(html);
+    const localid = ++this._imgTransfertId;
+    const event = { prevent: false };
+    const imgFile = this.dataURLtoFile($img.attr("src"), "paste");
+    const formData = new FormData();
+    const currentWidget = this;
+
+    $img.attr("data-localid", localid);
+    $img.addClass("htmltext-img-transferring", localid);
+
+    var isNotPrevented = currentWidget._trigger("uploadfile", event, {
+      $el: currentWidget.element,
+      index: currentWidget._getIndex(),
+      file: imgFile
+    });
+    if (!isNotPrevented) {
+      return;
+    }
+
+    formData.append("dcpFile", imgFile);
+    $.ajax({
+      type: "POST",
+      url: "/api/v2/temporaryFiles/",
+      processData: false,
+      contentType: false,
+      cache: false,
+      data: formData,
+
+      xhr: function wFileXhrAddProgress() {
+        var xhrObject = $.ajaxSettings.xhr();
+        if (xhrObject.upload) {
+          xhrObject.upload.addEventListener(
+            "progress",
+            function wFileProgress(event) {
+              let percent = 0;
+              let position = event.loaded || event.position;
+              let total = event.total;
+              const $img = $(currentWidget.element).find('img[data-localid="' + localid + '"]');
+              if (event.lengthComputable) {
+                percent = Math.ceil((position / total) * 100);
+              }
+              if (percent >= 100) {
+                $img.removeClass("htmltext-img-transferring");
+                $img.css("opacity", "");
+              } else {
+                $img.css("opacity", percent / 100);
+              }
+            },
+            false
+          );
+        }
+        return xhrObject;
+      }
+    })
+      .done(function wFileUploadDone(data) {
+        const dataFile = data.data.file;
+        const event = { prevent: false };
+        const fileValue = {
+          value: dataFile.reference,
+          size: dataFile.size,
+          fileName: dataFile.fileName,
+          displayValue: dataFile.fileName,
+          creationDate: dataFile.cdate,
+          thumbnail: dataFile.thumbnailUrl,
+          url: dataFile.downloadUrl,
+          icon: dataFile.iconUrl
+        };
+
+        const $img = $(currentWidget.element).find('img[data-localid="' + localid + '"]');
+
+        $img.attr("src", fileValue.url);
+        $img.removeAttr("data-localid");
+        $img.attr("data-tmpvid", dataFile.id);
+        currentWidget._trigger("uploadfiledone", event, {
+          $el: currentWidget.element,
+          index: currentWidget._getIndex(),
+          file: fileValue
+        });
+      })
+      .fail(function wFileUploadFail(data) {
+        currentWidget.uploadingFiles--;
+        currentWidget._trigger("uploadfiledone", event, {
+          $el: currentWidget.element,
+          index: currentWidget._getIndex(),
+          file: null
+        });
+        currentWidget._trigger("uploadfileerror", event, {
+          index: currentWidget._getIndex(),
+          message: i18n.___("Your navigator seems offline, try later", "ddui")
+        });
+        currentWidget.setValue({
+          displayValue: "",
+          value: ""
+        });
+        const result = JSON.parse(data.responseText);
+        if (result) {
+          _.each(result.messages, function wFileErrorMessages(errorMessage) {
+            $("body").trigger("notification", {
+              htmlMessage: errorMessage.contentHtml,
+              message: errorMessage.contentText,
+
+              type: errorMessage.type
+            });
+          });
+        } else {
+          $("body").trigger("notification", {
+            htmlMessage: "Image cannot be uploaded",
+            message: event.statusText,
+            type: "error"
+          });
+        }
+      });
+
+    return $img[0].outerHTML;
   },
 
   /**

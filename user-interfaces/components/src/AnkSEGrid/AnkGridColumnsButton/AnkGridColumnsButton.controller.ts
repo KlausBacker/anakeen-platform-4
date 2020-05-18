@@ -28,15 +28,16 @@ export default class AnkGridColumnsButtonController extends Mixins(I18nMixin) {
   public kendoWindow = null;
   public searchInput = "";
 
-  @Watch("searchInput")
-  public watchSearchInput(newValue): void {
-    this.filter(newValue);
-  }
-
   public get validColumns(): SmartGridColumn[] {
-    return this.columns.filter(
-      c => !!c.field && c.field !== "ank-grid_selected_rows" && c.field !== "smart_element_grid_action_menu"
-    );
+    return this.gridComponent.columnsList.filter(c => {
+      if (!this.searchInput) {
+        return true;
+      }
+      const label = c.title ? c.title.toLowerCase() : c.field.toLowerCase();
+      if (label) {
+        return label.includes(this.searchInput.toLowerCase());
+      }
+    });
   }
   public get dialogTitle(): string {
     return this.title || this.translations.dialogTitle;
@@ -94,19 +95,6 @@ export default class AnkGridColumnsButtonController extends Mixins(I18nMixin) {
       .data("kendoWindow");
   }
 
-  public filter(filterInput = ""): void {
-    if (filterInput) {
-      this.columns = this.columns.filter(col => {
-        const title = col.title ? col.title.toLowerCase() : col.title;
-        if (title) {
-          return title.includes(filterInput.toLowerCase());
-        }
-        return false;
-      });
-    } else {
-      this.columns = this.gridComponent.columnsList;
-    }
-  }
   public close(): void {
     if (this.kendoWindow) {
       this.kendoWindow.close();
@@ -132,13 +120,6 @@ export default class AnkGridColumnsButtonController extends Mixins(I18nMixin) {
     } else {
       this.changes[colConfig.field] = { display: false };
     }
-  }
-
-  @Watch("gridComponent.allColumns")
-  public watchColumnsList(newValue): void {
-    this.columns = newValue.filter(
-      c => c.field !== "ank-grid_selected_rows" && c.field !== "smart_element_grid_action_menu"
-    );
   }
 
   private getButtonOptions(): { [key: string]: string | boolean } {

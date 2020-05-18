@@ -19,6 +19,9 @@ export default class GridFilterCell extends Mixins(AnkGridCellMixin) {
   public selectedOperator = null;
   public filterValue = "";
 
+  protected dateFormat(value): string {
+    return kendo.toString(new Date(value), "G");
+  }
   protected getSublevel(field): string[] {
     if (Array.isArray(field)) {
       return field;

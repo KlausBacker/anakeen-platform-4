@@ -16,6 +16,7 @@ import { CriteriaOperator, ICriteriaOperator } from "./Types/ICriteriaOperator";
 import SmartCriteriaUtils from "./SmartCriteriaUtils";
 import AnkI18NMixin from "../../mixins/AnkVueComponentMixin/I18nMixin";
 import $ from "jquery";
+import SmartCriteriaEvent from "./Types/SmartCriteriaEvent";
 
 // @ts-ignore
 @Component({
@@ -33,6 +34,16 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
     default: false
   })
   public submit;
+  @Prop({
+    default: true,
+    type: Boolean
+  })
+  public force;
+  @Prop({
+    default: () => [],
+    type: Array
+  })
+  public responsiveColumns;
   private mountedDone = false;
   private innerConfig: ISmartCriteriaConfiguration = { title: "", defaultStructure: -1, criterias: [] };
   private operatorFieldRegex = /^sc_operator_(\d+)$/;
@@ -78,10 +89,6 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
     }
   }
 
-  onSubmitButtonClick(): void {
-    this.$emit("smartCriteriaSubmitClick");
-  }
-
   onBeforeSave(...args): void {
     this.$emit("beforeSave", args);
   }
@@ -118,6 +125,26 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
     this.mountedDone = true;
   }
 
+  onSubmitButtonClick(): void {
+    const submitEvent = new SmartCriteriaEvent();
+    this.$emit("smartCriteriaSubmitClick", submitEvent);
+    if (!submitEvent.isDefaultPrevented()) {
+      this._triggerValidated();
+    }
+  }
+
+  private onEnterKeyupEvent(): void {
+    const keyEvent = new SmartCriteriaEvent();
+    this.$emit("smartCriteriaEnterKey", keyEvent);
+    if (!keyEvent.isDefaultPrevented()) {
+      this._triggerValidated();
+    }
+  }
+
+  private _triggerValidated(): void {
+    this.$emit("smartCriteriaValidated");
+  }
+
   private loadConfiguration(): void {
     if (this.mountedDone === false) {
       return;
@@ -135,7 +162,11 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
     const translations = {
       and: `${this.$t("SmartFormConfigurationBuilder.And")}`
     };
-    this.smartFormConfigurationBuilder = new SmartFormConfigurationBuilder(this.innerConfig, translations);
+    this.smartFormConfigurationBuilder = new SmartFormConfigurationBuilder(
+      this.innerConfig,
+      translations,
+      this.responsiveColumns
+    );
     this.smartFormConfig = { ...this.smartFormConfigurationBuilder.build() };
     this.errorStack = this.errorStack.concat(this.smartFormConfigurationBuilder.getErrorStack());
   }
@@ -180,6 +211,10 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
     }
 
     AnkSmartCriteria.setSmartFieldVisibility(SmartFormConfigurationBuilder.getValueName(index), valueVisible);
+    AnkSmartCriteria.setSmartFieldVisibility(
+      SmartFormConfigurationBuilder.getValueBetweenLabelName(index),
+      betweenVisible
+    );
     AnkSmartCriteria.setSmartFieldVisibility(SmartFormConfigurationBuilder.getValueBetweenName(index), betweenVisible);
     AnkSmartCriteria.setSmartFieldVisibility(
       SmartFormConfigurationBuilder.getValueMultipleName(index),

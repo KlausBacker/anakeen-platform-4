@@ -739,7 +739,7 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
             array(
                 'TST_HTML',
                 '<p>L&apos;avenir est &quot;ici&quot;</p>',
-                '<p>L&apos;avenir est "ici"</p>'
+                '<p>L\'avenir est "ici"</p>'
             ),
             array(
                 'TST_HTMLCLEAN',
@@ -764,7 +764,7 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
             array(
                 'TST_HTML',
                 '<p onload="alert(1)">Hou la là</p>',
-                '<p >Hou la là</p>'
+                '<p>Hou la là</p>'
             ),
             array(
                 'TST_HTMLCLEAN',
@@ -774,7 +774,7 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
             array(
                 'TST_HTML',
                 '<p onload=\'alert(1)\'>Hou la là quote</p>',
-                '<p >Hou la là quote</p>'
+                '<p>Hou la là quote</p>'
             ),
             array(
                 'TST_HTMLCLEAN',
@@ -784,7 +784,7 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
             array(
                 'TST_HTML',
                 '<p onload = "alert(1)">Hou la là espaces</p>',
-                '<p >Hou la là espaces</p>'
+                '<p>Hou la là espaces</p>'
             ),
             array(
                 'TST_HTMLCLEAN',
@@ -794,7 +794,7 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
             array(
                 'TST_HTML',
                 "<p onload\n=\n\t 'alert(1)' style='color:blue'>Hou la là espaces compliqués</p>",
-                "<p  style='color:blue'>Hou la là espaces compliqués</p>"
+                '<p style="color:blue">Hou la là espaces compliqués</p>'
             ),
             array(
                 'TST_HTMLCLEAN',
@@ -804,7 +804,7 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
             array(
                 'TST_HTML',
                 '<p onload=\'alert(1)\'>Hou la là</p>',
-                '<p >Hou la là</p>'
+                '<p>Hou la là</p>'
             ),
             array(
                 'TST_HTMLCLEAN',
@@ -814,7 +814,7 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
             array(
                 'TST_HTML',
                 '<script>alert("oh");</script><p data-oh="2" onclick="alert(1)" data-yo="1">Hou la là</p>',
-                'alert("oh");<p data-oh="2"  data-yo="1">Hou la là</p>'
+                'alert("oh");<p data-oh="2" data-yo="1">Hou la là</p>'
             ),
             array(
                 'TST_HTMLCLEAN',
@@ -862,7 +862,7 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
             array(
                 'TST_HTML',
                 '<div>A<iframe style="color:red" onload="alert(1)" src="about:blank"/>Z</div>',
-                '<div>A<iframe style="color:red"  src="about:blank"/>Z</div>'
+                '<div>A<iframe style="color:red" src="about:blank"></iframe>Z</div>'
             ),
             array(
                 'TST_HTMLCLEAN',
@@ -872,7 +872,7 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
             array(
                 'TST_HTML',
                 '<div>A<iframe style="color:red" onload="alert(1)" src="about:blank"/>Z</div>',
-                '<div>A<iframe style="color:red"  src="about:blank"/>Z</div>'
+                '<div>A<iframe style="color:red" src="about:blank"></iframe>Z</div>'
             ),
             array(
                 'TST_HTMLCLEAN',
@@ -892,7 +892,7 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
             array(
                 'TST_HTML',
                 '<p>Hello <em>world',
-                '<p>Hello <em>world'
+                '<p>Hello <em>world</em></p>'
             ),
             array(
                 'TST_HTMLCLEAN',

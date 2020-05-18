@@ -47,6 +47,14 @@ export default {
         { field: "bill_clients", title: "Clients" },
         { field: "bill_billdate" },
         { field: "bill_cost" },
+      ],
+      responsiveColumns: [
+        {
+          number: 2,
+          minWidth: "50rem",
+          maxWidth: null,
+          grow: true
+        }
       ]
     };
   },
@@ -83,7 +91,7 @@ export default {
       console.log("SmartCriteriaError : ", args);
     },
 
-    onSubmitButtonClick() {
+    onCriteriaValidated() {
       const filterValue = this.$refs.smartCriteria.getFilters();
       console.log(JSON.stringify(filterValue));
       this.smartFilter = filterValue;

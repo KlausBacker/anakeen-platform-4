@@ -310,7 +310,6 @@ export default class AdminCenterAccountController extends Mixins(AnkI18NMixin) {
   }
 
   public selectMaxDepth(e): void {
-    console.log("selectMaxDepth", e);
     if (e.checked) {
       this.selectedDepth = this.dataDepth.length;
     } else {

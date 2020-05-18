@@ -31,6 +31,7 @@
       <excludeFolder url="file://$MODULE_DIR$/control/src/vendor/symfony/service-contracts" />
       <excludeFolder url="file://$MODULE_DIR$/control/src/vendor/vierbergenlars/php-semver" />
       <excludeFolder url="file://$MODULE_DIR$/development-center/src/public/Anakeen" />
+      <excludeFolder url="file://$MODULE_DIR$/fulltext-search/src/public" />
       <excludeFolder url="file://$MODULE_DIR$/hub-station/components/lib" />
       <excludeFolder url="file://$MODULE_DIR$/hub-station/src/public/Anakeen" />
       <excludeFolder url="file://$MODULE_DIR$/internal-components/lib" />
@@ -38,6 +39,7 @@
       <excludeFolder url="file://$MODULE_DIR$/test-tools/components/lib" />
       <excludeFolder url="file://$MODULE_DIR$/transformation/lib" />
       <excludeFolder url="file://$MODULE_DIR$/transformation/src/public/Anakeen" />
+      <excludeFolder url="file://$MODULE_DIR$/user-interfaces/Tests/src/public" />
       <excludeFolder url="file://$MODULE_DIR$/user-interfaces/components/lib" />
       <excludeFolder url="file://$MODULE_DIR$/user-interfaces/lib" />
       <excludeFolder url="file://$MODULE_DIR$/user-interfaces/src/public/Anakeen" />
@@ -45,6 +47,7 @@
     </content>
     <content url="file://$MODULE_DIR$/control/node_modules" />
     <content url="file://$MODULE_DIR$/node_modules" />
+    <content url="file://$MODULE_DIR$/user-interfaces/Tests/src/public/Anakeen" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>

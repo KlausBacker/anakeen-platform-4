@@ -340,7 +340,6 @@ class SEManager
             $wdoc = SEManager::getDocument($doc->wid);
             if ($wdoc) {
                 /** @var Wdoc $wdoc */
-                SEManager::cache()->addDocument($wdoc);
                 $wdoc->set($doc);
             }
         }

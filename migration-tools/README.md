@@ -171,7 +171,11 @@ Elle finalise aussi les données sur les workflows.
 ```bash
 ./ank.php --route=Migration::FinalUpdates --method=POST
 ```
+### Convert Html text
 
+```
+./ank.php --route=Migration::HtmltextLinks --method=POST --query=include=img-data
+```
 
 ## Récupération de la configuration d'un vendor
 

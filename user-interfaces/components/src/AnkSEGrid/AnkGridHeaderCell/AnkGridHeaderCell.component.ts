@@ -3,7 +3,6 @@ import AnkGridFilter from "./AnkGridFilter/AnkGridFilter.vue";
 import AnkSmartElementGrid, { SmartGridFilter } from "../AnkSEGrid.component";
 import { Popup } from "@progress/kendo-vue-popup";
 import $ from "jquery";
-
 @Component({
   name: "ank-se-grid-header-cell",
   components: {
@@ -50,7 +49,7 @@ export default class GridHeaderCell extends Vue {
   };
   public animate = { closeDuration: 0 };
   public get hasSubtitle(): boolean {
-    return this.grid.contextTitles && Array.isArray(this.columnConfig.context) && this.columnConfig.context.length;
+    return this.grid.contextTitles && this.columnConfig.context && this.columnConfig.context.length;
   }
 
   public get subtitle(): string {
@@ -173,6 +172,14 @@ export default class GridHeaderCell extends Vue {
         }
       }
     });
+  }
+
+  public beforeCreate(): void {
+    // Fix kendo edge case, give key to parent component to identify the vue instance in the grid
+    // Without this fix, in case of column reorder, vuejs does not correctly restore the good component
+    if (this.$parent) {
+      this.$parent.$vnode.key = this.$vnode.key;
+    }
   }
 
   public mounted(): void {

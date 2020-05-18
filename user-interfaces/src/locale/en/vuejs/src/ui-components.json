@@ -72,5 +72,6 @@
   "gridPager.No items to display": "No items to display",
   "gridPager.items per page": "items per page",
   "gridPager.of {0}": "of {0}",
-  "SmartFormConfigurationBuilder.And": "and"
+  "SmartFormConfigurationBuilder.And": "and",
+  "smartCriteria.Search": "Search"
 }

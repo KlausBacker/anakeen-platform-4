@@ -161,7 +161,6 @@ export default $.widget("dcp.dcpMenu", {
         // Due to iOs artefact, an resize event is send, so need to inhibated during opening menu
         scopeWidget.element.data("menu-opening", true);
         $menuElement.data("bodyWidth", $("body").width());
-
         if (!$menuElement.hasClass("menu__element--item")) {
           var menuUrl = $menuElement.data("menu-url");
           if (menuUrl) {
@@ -237,7 +236,6 @@ export default $.widget("dcp.dcpMenu", {
         var menuLeft = $menuElement.offset().left;
         var listWidth = $container.outerWidth();
         var listLeft = $container.offset().left;
-
         // The first condition is for iOS because no scroll window exists
         if (
           $("body").width() > bodyWidth ||
@@ -248,7 +246,13 @@ export default $.widget("dcp.dcpMenu", {
             $container.css("left", "auto").css("right", menuLeft - bodyWidth + menuWidth + "px");
           }
         }
-
+        var $menuElementList = $(".menu__content[data-role='menu']")[0].children;
+        if ($menuElementList[$menuElementList.length - 2] === $menuElement[0]) {
+          if (bodyWidth - listWidth < menuLeft) {
+            $container.css("right", 0);
+            $container.css("left", "auto");
+          }
+        }
         _.delay(function wMenuOpenDelay() {
           // Due to iOs artefact, an resize event is send, so need to inhibated during opening menu
           scopeWidget.element.data("menu-opening", false);

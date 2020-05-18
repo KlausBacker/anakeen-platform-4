@@ -6,6 +6,7 @@ use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure\DocAttr;
+use Anakeen\Core\Utils\Postgres;
 use Anakeen\Migration\Utils;
 use Anakeen\Router\Exception;
 
@@ -84,8 +85,7 @@ class ConfigStructureTransfert extends DataElementTransfert
         if ($subDirName) {
             $namePath = [$vendorName, $subDirName, self::SMART_STRUCTURES, $structName];
         }
-        $stubPath = sprintf("%s/%s/%s.php", $vendorPath, implode("/", $namePath), $className);
-        return $stubPath;
+        return sprintf("%s/%s/%s.php", $vendorPath, implode("/", $namePath), $className);
     }
 
     protected static function getBehaviorTemplateContent()
@@ -188,7 +188,13 @@ insert into docenum ("name", key, label, parentkey, disabled, eorder)
                select  '%s', key, label, parentkey, disabled, eorder from dynacase.docenum 
                where attrid='%s' and famid=%d returning key
 SQL;
-            $sql = sprintf($qsql, pg_escape_string($enumSetName), pg_escape_string($enum["id"]), $enum["docid"], pg_escape_string($structureName));
+            $sql = sprintf(
+                $qsql,
+                pg_escape_string($enumSetName),
+                pg_escape_string($enum["id"]),
+                $enum["docid"],
+                pg_escape_string($structureName)
+            );
             //print "$sql\n";
             DbManager::query($sql, $keys);
             $transferedEnum = array_merge($transferedEnum, $keys);
@@ -214,7 +220,7 @@ SQL;
 
         $attrObject = new DocAttr();
 
-
+        $fields = [];
         foreach ($attrObject->fields as $field) {
             $fields[$field] = $field;
         }
@@ -260,7 +266,158 @@ SQL;
         $sql = "update docattr set type = 'docid(\"THCONCEPT\")'  where type ~ 'thesaurus';";
         DbManager::query($sql);
 
+        self::reorderFields($structureName, "tab");
+        self::reorderFields($structureName);
         return $ids;
+    }
+
+    protected static function reorderFields($structureName, $typeFilter = '')
+    {
+        DbManager::query(
+            sprintf("select id from docfam where name='%s'", pg_escape_string($structureName)),
+            $famid,
+            true,
+            true
+        );
+
+        if ($typeFilter) {
+            $condType = sprintf("type = '%s'", pg_escape_string($typeFilter));
+        } else {
+            $condType = "type != 'tab'";
+        }
+        $fids = ConfigStructureTransfert::getFromids($famid);
+        $fids[] = $famid;
+        $sql = sprintf(
+            "select * from docattr where ordered is not null and docid in (%s) and id !~ '^:' and %s order by ordered",
+            implode(",", $fids),
+            $condType
+        );
+        DbManager::query($sql, $results);
+
+        $attrData = [];
+        //print_r($results);
+
+        foreach ($results as $ka => $attr) {
+            $attrData[$attr["id"]] = $attr;
+        }
+        $sql = sprintf(
+            "select * from docattr where ordered is not null and docid in (%s) and id ~ '^:' and %s order by docid, ordered",
+            implode(",", $fids),
+            $condType
+        );
+        DbManager::query($sql, $modAttrs);
+
+
+        foreach ($modAttrs as $ka => $attr) {
+            $attrid = trim($attr["id"], ":");
+
+            if (!empty($attr["frameid"]) && $attrData[$attrid]["frameid"] !== $attr["frameid"]) {
+                $attrData[$attrid]["frameid"] = $attr["frameid"];
+            }
+            if ($attrData[$attrid]["ordered"] !== $attr["ordered"]) {
+                if ($attr["docid"] === $famid) {
+                    $modAttr = $attrData[$attrid];
+                    $modAttr["ordered"] = $attr["ordered"];
+                    $modAttr["docid"] = $attr["docid"];
+                    $modAttr["id"] = $attr["id"];
+                    // add to the end
+                    unset($attrData[$attrid]);
+                    // print_r($modAttr);
+                    $attrData[$attr["id"]] = $modAttr;
+                } else {
+                    $attrData[$attrid]["ordered"] = $attr["ordered"];
+                }
+            }
+        }
+
+        uasort($attrData, function ($a, $b) {
+            if ($a["ordered"] > $b["ordered"]) {
+                return 1;
+            }
+            if ($a["ordered"] < $b["ordered"]) {
+                return -1;
+            }
+            return 0;
+        });
+
+        foreach ($attrData as $attr) {
+            if ($attr["docid"] === $famid && $attr["ordered"]) {
+                // find previous sibling
+                $inhPreviousSibling = self::getPreviousSibling($attr, $attrData);
+                if (!$inhPreviousSibling) {
+                    if (self::getNextSibling($attr, $attrData)) {
+                        $previousSibling = self::getPreviousSibling($attr, $attrData, true);
+                        if (!$previousSibling) {
+                            self::setRelativeOrder($attr, "::first", $structureName);
+                        } else {
+                            // insert after
+                            self::setRelativeOrder($attr, trim($previousSibling["id"], ":"), $structureName);
+                        }
+                    } else {
+                        self::setRelativeOrder($attr, "::auto", $structureName);
+                    }
+                } else {
+                    $previousSibling = self::getPreviousSibling($attr, $attrData, true);
+                    if (!$previousSibling) {
+                        self::setRelativeOrder($attr, "::first", $structureName);
+                    } else {
+                        // insert after
+                        self::setRelativeOrder($attr, trim($previousSibling["id"], ":"), $structureName);
+                    }
+                }
+            }
+        }
+    }
+
+    protected static function getPreviousSibling(array $refAttr, array $attrs, $searchItself = false)
+    {
+        $previous = null;
+        if ($refAttr["id"][0] === ":") {
+            // $refAttr["id"] = trim($refAttr["id"], ":");
+            $searchItself = true;
+        }
+        foreach ($attrs as $attr) {
+            if ($attr["id"] === $refAttr["id"]) {
+                break;
+            }
+
+            if ($attr["frameid"] === $refAttr["frameid"] && ($searchItself || ($attr["docid"] !== $refAttr["docid"]))) {
+                $previous = $attr;
+            }
+        }
+        return $previous;
+    }
+
+    protected static function getNextSibling(array $refAttr, array $attrs)
+    {
+        return self::getPreviousSibling($refAttr, array_reverse($attrs));
+    }
+
+    protected static function setRelativeOrder(array $refAttr, $relativeOrder, $structureName)
+    {
+        printf("%-40s | %-50s | %s\n", $structureName, $refAttr["id"], $relativeOrder);
+
+        $refAttr["options"] = preg_replace("/relativeOrder=[^|]*/", "", $refAttr["options"] ?? "");
+        if (empty($refAttr["options"])) {
+            $refAttr["options"] = '';
+        } else {
+            $refAttr["options"] .= "|";
+        }
+        $refAttr["options"] .= sprintf("relativeOrder=%s", $relativeOrder);
+
+        $sql = sprintf(
+            "update docattr set options='%s' where id='%s' and docid='%d'",
+            pg_escape_string($refAttr["options"]),
+            pg_escape_string($refAttr["id"]),
+            $refAttr["docid"]
+        );
+        DbManager::query($sql);
+    }
+
+    public static function getFromids(int $structureId)
+    {
+        DbManager::query(sprintf("select getFromids(%d)", $structureId), $fromids, true, true);
+        return Postgres::stringToArray($fromids);
     }
 
     protected static function importStructureProperties($structureName)
@@ -293,13 +450,21 @@ SQL;
 
         if ($config["defval"]) {
             $defaultValues = self::explodeX($config["defval"]);
-            $sql = sprintf("update docfam set defaultvalues='%s' where name='%s'", pg_escape_string(json_encode($defaultValues)), pg_escape_string($structureName));
+            $sql = sprintf(
+                "update docfam set defaultvalues='%s' where name='%s'",
+                pg_escape_string(json_encode($defaultValues)),
+                pg_escape_string($structureName)
+            );
             //print "$sql\n";
             DbManager::query($sql);
         }
         if ($config["param"]) {
             $param = self::explodeX($config["param"]);
-            $sql = sprintf("update docfam set param='%s' where name='%s'", pg_escape_string(json_encode($param)), pg_escape_string($structureName));
+            $sql = sprintf(
+                "update docfam set param='%s' where name='%s'",
+                pg_escape_string(json_encode($param)),
+                pg_escape_string($structureName)
+            );
             //print "$sql\n";
             DbManager::query($sql);
         }
@@ -307,13 +472,15 @@ SQL;
 
     protected static function getStructConfigMapping()
     {
-        return ["dfldid" => "dfldid",
+        return [
+            "dfldid" => "dfldid",
             "cfldid" => "cfldid",
             "ccvid" => "ccvid",
             "cprofid" => "cprofid",
             "ddocid" => "ddocid",
             //  "methods" => "methods",
-            "schar" => "schar"];
+            "schar" => "schar"
+        ];
     }
 
     private static function explodeX($sx)

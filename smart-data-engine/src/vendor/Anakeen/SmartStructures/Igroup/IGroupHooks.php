@@ -198,7 +198,7 @@ class IGroupHooks extends \SmartStructure\Group
     public function getMail($rawmail = false)
     {
         $wu = $this->getAccount();
-        if ($wu->isAffected()) {
+        if ($wu && $wu->isAffected()) {
             return $wu->getMail($rawmail);
         }
         return '';
