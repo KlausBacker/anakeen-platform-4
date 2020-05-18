@@ -266,11 +266,12 @@ SQL;
         $sql = "update docattr set type = 'docid(\"THCONCEPT\")'  where type ~ 'thesaurus';";
         DbManager::query($sql);
 
+        self::reorderFields($structureName, "tab");
         self::reorderFields($structureName);
         return $ids;
     }
 
-    protected static function reorderFields($structureName)
+    protected static function reorderFields($structureName, $typeFilter = '')
     {
         DbManager::query(
             sprintf("select id from docfam where name='%s'", pg_escape_string($structureName)),
@@ -278,11 +279,18 @@ SQL;
             true,
             true
         );
+
+        if ($typeFilter) {
+            $condType = sprintf("type = '%s'", pg_escape_string($typeFilter));
+        } else {
+            $condType = "type != 'tab'";
+        }
         $fids = ConfigStructureTransfert::getFromids($famid);
         $fids[] = $famid;
         $sql = sprintf(
-            "select * from docattr where ordered is not null and docid in (%s) and id !~ '^:' order by ordered",
-            implode(",", $fids)
+            "select * from docattr where ordered is not null and docid in (%s) and id !~ '^:' and %s order by ordered",
+            implode(",", $fids),
+            $condType
         );
         DbManager::query($sql, $results);
 
@@ -293,8 +301,9 @@ SQL;
             $attrData[$attr["id"]] = $attr;
         }
         $sql = sprintf(
-            "select * from docattr where ordered is not null and docid in (%s) and id ~ '^:' order by docid, ordered",
-            implode(",", $fids)
+            "select * from docattr where ordered is not null and docid in (%s) and id ~ '^:' and %s order by docid, ordered",
+            implode(",", $fids),
+            $condType
         );
         DbManager::query($sql, $modAttrs);
 
@@ -336,8 +345,14 @@ SQL;
                 // find previous sibling
                 $inhPreviousSibling = self::getPreviousSibling($attr, $attrData);
                 if (!$inhPreviousSibling) {
-                    if ($attr["id"][0] === ":") {
-                        self::setRelativeOrder($attr, "::first", $structureName);
+                    if (self::getNextSibling($attr, $attrData)) {
+                        $previousSibling = self::getPreviousSibling($attr, $attrData, true);
+                        if (!$previousSibling) {
+                            self::setRelativeOrder($attr, "::first", $structureName);
+                        } else {
+                            // insert after
+                            self::setRelativeOrder($attr, trim($previousSibling["id"], ":"), $structureName);
+                        }
                     } else {
                         self::setRelativeOrder($attr, "::auto", $structureName);
                     }
@@ -360,13 +375,12 @@ SQL;
         if ($refAttr["id"][0] === ":") {
             // $refAttr["id"] = trim($refAttr["id"], ":");
             $searchItself = true;
-            //  print_r($refAttr);
-            //  print_r($attrs);
         }
         foreach ($attrs as $attr) {
             if ($attr["id"] === $refAttr["id"]) {
                 break;
             }
+
             if ($attr["frameid"] === $refAttr["frameid"] && ($searchItself || ($attr["docid"] !== $refAttr["docid"]))) {
                 $previous = $attr;
             }
@@ -381,7 +395,9 @@ SQL;
 
     protected static function setRelativeOrder(array $refAttr, $relativeOrder, $structureName)
     {
-        // printf("%-40s | %-50s | %s\n", $structureName, $refAttr["id"], $relativeOrder);
+        printf("%-40s | %-50s | %s\n", $structureName, $refAttr["id"], $relativeOrder);
+
+        $refAttr["options"] = preg_replace("/relativeOrder=[^|]*/", "", $refAttr["options"] ?? "");
         if (empty($refAttr["options"])) {
             $refAttr["options"] = '';
         } else {
