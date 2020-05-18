@@ -55,7 +55,8 @@ const DEFAULT_OPTIONS: IControllerOptions = {
   loading: true,
   notification: true,
   router: false,
-  force: false
+  force: false,
+  autoInitialize: true
 };
 
 class ErrorModelNonInitialized extends Error {
@@ -153,7 +154,9 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       return;
     }
     // noinspection JSIgnoredPromiseFromCall
-    this._initializeSmartElement({}, this._options);
+    if (this._options.autoInitialize) {
+      this._initializeSmartElement({}, this._options);
+    }
   }
 
   /***************************************************************************************************************
@@ -1078,6 +1081,17 @@ export default class SmartElementController extends AnakeenController.BusEvents.
           reject("Unable to destroy because before close refuses it : " + err);
         });
     });
+  }
+
+  /**
+   * Start smart element model initialization
+   * @param options
+   * @param config
+   * @returns Promise - fullfiled when model is ready
+   */
+  public initializeSmartElement(options = {}, config) {
+    config = config || this._options;
+    return this._initializeSmartElement(options, config);
   }
 
   public emit(eventOptions: { name: string; type: "smartElement" | "smartField" | "constraint" }, ...args: any[]) {
