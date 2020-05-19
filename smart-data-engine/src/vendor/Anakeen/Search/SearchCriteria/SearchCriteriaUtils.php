@@ -68,6 +68,15 @@ class SearchCriteriaUtils
                             \Anakeen\Search\Filters\Textual\IsEmpty::NOT => ___("Is not empty", "SearchCriteriaUtils.Textual simple"),
                         ],
                     ],
+                    "equals" => [
+                        "class" => \Anakeen\Search\Filters\Textual\Equals::class,
+                        "operands" => [self::FIELD, self::VALUE, 0],
+                        "availableOptions" => [],
+                        "labels" => [
+                            0 => ___("Is equal to", "SearchCriteriaUtils.Textual simple"),
+                            \Anakeen\Search\Filters\Textual\Equals::NOT => ___("Is different from", "SearchCriteriaUtils.Textual simple"),
+                        ],
+                    ],
                     "contains" => [
                         "class" => \Anakeen\Search\Filters\Textual\Contains::class,
                         "operands" => [self::FIELD, self::VALUE, \Anakeen\Search\Filters\Textual\Contains::NOCASE + \Anakeen\Search\Filters\Textual\Contains::NODIACRITIC],
@@ -107,6 +116,17 @@ class SearchCriteriaUtils
                         "labels" => [
                             0 => ___("Is empty", "SearchCriteriaUtilsTextual multi"),
                             \Anakeen\Search\Filters\Textual\IsEmpty::NOT => ___("Is not empty", "SearchCriteriaUtilsTextual multi"),
+                        ],
+                    ],
+                    "oneEquals" => [
+                        "class" => \Anakeen\Search\Filters\Textual\OneEquals::class,
+                        "operands" => [self::FIELD, self::VALUE, 0],
+                        "availableOptions" => [
+                            \Anakeen\Search\Filters\Textual\OneEquals::NOT,
+                        ],
+                        "labels" => [
+                            0 => ___("One Equals", "SearchCriteriaUtils.Textual multi"),
+                            \Anakeen\Search\Filters\Textual\OneEquals::NOT => ___("One is not equal to", "SearchCriteriaUtils.Textual multi"),
                         ],
                     ],
                     "oneContains" => [
@@ -152,6 +172,33 @@ class SearchCriteriaUtils
                             \Anakeen\Search\Filters\Temporal\IsEmpty::NOT => ___("Is not empty", "SearchCriteriaUtils.Temporal simple"),
                         ],
                     ],
+                    "equals" => [
+                        "class" => \Anakeen\Search\Filters\Temporal\Equals::class,
+                        "operands" => [self::FIELD, self::VALUE, 0],
+                        "availableOptions" => [],
+                        "labels" => [
+                            0 => ___("Is equal to", "SearchCriteriaUtils.Temporal simple"),
+                            \Anakeen\Search\Filters\Temporal\Equals::NOT => ___("Is different from", "SearchCriteriaUtils.Temporal simple"),
+                        ],
+                    ],
+                    "lesser" => [
+                        "class" => \Anakeen\Search\Filters\Temporal\Lesser::class,
+                        "operands" => [self::FIELD, self::VALUE, 0],
+                        "availableOptions" => [],
+                        "labels" => [
+                            0 => ___("Is strictly before", "SearchCriteriaUtils.Temporal simple"),
+                            \Anakeen\Search\Filters\Temporal\Lesser::EQUAL => ___("Is before", "SearchCriteriaUtils.Temporal simple"),
+                        ],
+                    ],
+                    "greater" => [
+                        "class" => \Anakeen\Search\Filters\Temporal\Greater::class,
+                        "operands" => [self::FIELD, self::VALUE, 0],
+                        "availableOptions" => [],
+                        "labels" => [
+                            0 => ___("Is strictly after", "SearchCriteriaUtils.Temporal simple"),
+                            \Anakeen\Search\Filters\Temporal\Greater::EQUAL => ___("Is after", "SearchCriteriaUtils.Temporal simple"),
+                        ],
+                    ],
                     "between" => [
                         "class" => \Anakeen\Search\Filters\Temporal\Between::class,
                         "operands" => [self::FIELD, self::VALUE, \Anakeen\Search\Filters\Temporal\Between::EQUALRIGHT + \Anakeen\Search\Filters\Temporal\Between::EQUALLEFT],
@@ -184,6 +231,30 @@ class SearchCriteriaUtils
                         "labels" => [
                             0 => ___("Is empty", "SearchCriteriaUtils.Temporal multi"),
                             \Anakeen\Search\Filters\Temporal\IsEmpty::NOT => ___("Is not empty", "SearchCriteriaUtils.Temporal multi"),
+                        ],
+                    ],
+                    "oneLesser" => [
+                        "class" => \Anakeen\Search\Filters\Temporal\OneLesser::class,
+                        "operands" => [self::FIELD, self::VALUE, 0],
+                        "availableOptions" => [],
+                        "labels" => [
+                            0 => ___("One date is strictly before", "SearchCriteriaUtils.Temporal multi"),
+                            \Anakeen\Search\Filters\Temporal\OneLesser::EQUAL => ___("One date is before", "SearchCriteriaUtils.Temporal multi"),
+                            \Anakeen\Search\Filters\Temporal\OneLesser::ALL => ___("All dates are strictly before", "SearchCriteriaUtils.Temporal multi"),
+                            \Anakeen\Search\Filters\Temporal\OneLesser::ALL + \Anakeen\Search\Filters\Temporal\OneLesser::EQUAL =>
+                                ___("All dates are before", "SearchCriteriaUtils.Temporal multi"),
+                        ],
+                    ],
+                    "oneGreater" => [
+                        "class" => \Anakeen\Search\Filters\Temporal\OneGreater::class,
+                        "operands" => [self::FIELD, self::VALUE, 0],
+                        "availableOptions" => [],
+                        "labels" => [
+                            0 => ___("One date is strictly after", "SearchCriteriaUtils.Temporal multi"),
+                            \Anakeen\Search\Filters\Temporal\OneGreater::EQUAL => ___("One date is after", "SearchCriteriaUtils.Temporal multi"),
+                            \Anakeen\Search\Filters\Temporal\OneGreater::ALL => ___("All dates are strictly after", "SearchCriteriaUtils.Temporal multi"),
+                            \Anakeen\Search\Filters\Temporal\OneGreater::ALL + \Anakeen\Search\Filters\Temporal\OneGreater::EQUAL =>
+                                ___("All dates are after", "SearchCriteriaUtils.Temporal multi"),
                         ],
                     ],
                     "oneBetween" => [
@@ -229,6 +300,33 @@ class SearchCriteriaUtils
                             \Anakeen\Search\Filters\Numerical\IsEmpty::NOT => ___("Is not empty", "SearchCriteriaUtils.Numerical simple"),
                         ],
                     ],
+                    "equals" => [
+                        "class" => \Anakeen\Search\Filters\Numerical\Equals::class,
+                        "operands" => [self::FIELD, self::VALUE, 0],
+                        "availableOptions" => [],
+                        "labels" => [
+                            0 => ___("Is equal to", "SearchCriteriaUtils.Numerical simple"),
+                            \Anakeen\Search\Filters\Numerical\Equals::NOT => ___("Is different from", "SearchCriteriaUtils.Numerical simple"),
+                        ],
+                    ],
+                    "lesser" => [
+                        "class" => \Anakeen\Search\Filters\Numerical\Lesser::class,
+                        "operands" => [self::FIELD, self::VALUE, 0],
+                        "availableOptions" => [],
+                        "labels" => [
+                            0 => ___("Is strictly lesser than", "SearchCriteriaUtils.Numerical simple"),
+                            \Anakeen\Search\Filters\Numerical\Lesser::EQUAL => ___("Is lesser than", "SearchCriteriaUtils.Numerical simple"),
+                        ],
+                    ],
+                    "greater" => [
+                        "class" => \Anakeen\Search\Filters\Numerical\Greater::class,
+                        "operands" => [self::FIELD, self::VALUE, 0],
+                        "availableOptions" => [],
+                        "labels" => [
+                            0 => ___("Is strictly greater than", "SearchCriteriaUtils.Numerical simple"),
+                            \Anakeen\Search\Filters\Numerical\Greater::EQUAL => ___("Is greater than", "SearchCriteriaUtils.Numerical simple"),
+                        ],
+                    ],
                     "between" => [
                         "class" => \Anakeen\Search\Filters\Numerical\Between::class,
                         "operands" => [self::FIELD, self::VALUE, \Anakeen\Search\Filters\Numerical\Between::EQUALRIGHT + \Anakeen\Search\Filters\Numerical\Between::EQUALLEFT],
@@ -261,6 +359,30 @@ class SearchCriteriaUtils
                         "labels" => [
                             0 => ___("Is empty", "SearchCriteriaUtils.Numerical multi"),
                             \Anakeen\Search\Filters\Numerical\IsEmpty::NOT => ___("Is not empty", "SearchCriteriaUtils.Numerical multi"),
+                        ],
+                    ],
+                    "oneLesser" => [
+                        "class" => \Anakeen\Search\Filters\Numerical\OneLesser::class,
+                        "operands" => [self::FIELD, self::VALUE, 0],
+                        "availableOptions" => [],
+                        "labels" => [
+                            0 => ___("One value is strictly lesser than", "SearchCriteriaUtils.Numerical multi"),
+                            \Anakeen\Search\Filters\Numerical\OneLesser::EQUAL => ___("One value is lesser than", "SearchCriteriaUtils.Numerical multi"),
+                            \Anakeen\Search\Filters\Numerical\OneLesser::ALL => ___("All values are strictly lesser than", "SearchCriteriaUtils.Numerical multi"),
+                            \Anakeen\Search\Filters\Numerical\OneLesser::ALL + \Anakeen\Search\Filters\Numerical\OneLesser::EQUAL =>
+                                ___("All values are lesser than", "SearchCriteriaUtils.Numerical multi"),
+                        ],
+                    ],
+                    "oneGreater" => [
+                        "class" => \Anakeen\Search\Filters\Numerical\OneGreater::class,
+                        "operands" => [self::FIELD, self::VALUE, 0],
+                        "availableOptions" => [],
+                        "labels" => [
+                            0 => ___("One value is strictly greater than", "SearchCriteriaUtils.Numerical multi"),
+                            \Anakeen\Search\Filters\Numerical\OneGreater::EQUAL => ___("One value is greater than", "SearchCriteriaUtils.Numerical multi"),
+                            \Anakeen\Search\Filters\Numerical\OneGreater::ALL => ___("All values are strictly greater than", "SearchCriteriaUtils.Numerical multi"),
+                            \Anakeen\Search\Filters\Numerical\OneGreater::ALL + \Anakeen\Search\Filters\Numerical\OneGreater::EQUAL =>
+                                ___("All values are greater than", "SearchCriteriaUtils.Numerical multi"),
                         ],
                     ],
                     "oneBetween" => [
@@ -305,6 +427,15 @@ class SearchCriteriaUtils
                         "labels" => [
                             0 => ___("Is empty", "SearchCriteriaUtils.Relations simple"),
                             \Anakeen\Search\Filters\Relation\IsEmpty::NOT => ___("Is not empty", "SearchCriteriaUtils.Relations simple"),
+                        ],
+                    ],
+                    "equals" => [
+                        "class" => \Anakeen\Search\Filters\Relation\Equals::class,
+                        "operands" => [self::FIELD, self::VALUE, 0],
+                        "availableOptions" => [],
+                        "labels" => [
+                            0 => ___("Is equal to", "SearchCriteriaUtils.Relations simple"),
+                            \Anakeen\Search\Filters\Relation\Equals::NOT => ___("Is different from", "SearchCriteriaUtils.Relations simple"),
                         ],
                     ],
                 ],
@@ -385,6 +516,15 @@ class SearchCriteriaUtils
                             \Anakeen\Search\Filters\Enum\IsEmpty::NOT => ___("Is not empty", "SearchCriteriaUtils.Enum simple"),
                         ],
                     ],
+                    "equals" => [
+                        "class" => \Anakeen\Search\Filters\Enum\Equals::class,
+                        "operands" => [self::FIELD, self::VALUE, 0],
+                        "availableOptions" => [],
+                        "labels" => [
+                            0 => ___("Is equal to", "SearchCriteriaUtils.Enum simple"),
+                            \Anakeen\Search\Filters\Enum\Equals::NOT => ___("Is different from", "SearchCriteriaUtils.Enum simple"),
+                        ],
+                    ],
                 ],
                 self::MULTIPLE_FILTER => [
                     "equalsOne" => [
@@ -418,7 +558,16 @@ class SearchCriteriaUtils
                         "availableOptions" => [],
                         "labels" => [
                             0 => ___("Is empty", "SearchCriteriaUtils.Enum multi"),
-                            \Anakeen\Search\Filters\Relation\IsEmpty::NOT => ___("Is not empty", "SearchCriteriaUtils.Enum multi"),
+                            \Anakeen\Search\Filters\Enum\IsEmpty::NOT => ___("Is not empty", "SearchCriteriaUtils.Enum multi"),
+                        ],
+                    ],
+                    "oneEquals" => [
+                        "class" => \Anakeen\Search\Filters\Enum\OneEquals::class,
+                        "operands" => [self::FIELD, self::VALUE, 0],
+                        "availableOptions" => [],
+                        "labels" => [
+                            0 => ___("One of the value is equal to", "SearchCriteriaUtils.Enum multi"),
+                            \Anakeen\Search\Filters\Enum\OneEquals::NOT => ___("One of the value is different from", "SearchCriteriaUtils.Enum multi"),
                         ],
                     ],
                 ],
@@ -452,6 +601,15 @@ class SearchCriteriaUtils
                         "availableOptions" => [],
                         "labels" => [
                             0 => ___("NA", "SearchCriteriaUtils.State simple"),
+                        ],
+                    ],
+                    "equals" => [
+                        "class" => \Anakeen\Search\Filters\State\Equals::class,
+                        "operands" => [self::FIELD, self::VALUE, 0],
+                        "availableOptions" => [],
+                        "labels" => [
+                            0 => ___("Is equal to", "SearchCriteriaUtils.State simple"),
+                            \Anakeen\Search\Filters\State\Equals::NOT => ___("Is different from", "SearchCriteriaUtils.State simple"),
                         ],
                     ],
                 ],
@@ -490,6 +648,15 @@ class SearchCriteriaUtils
                         "labels" => [
                             0 => ___("Is empty", "SearchCriteriaUtils.Title simple"),
                             \Anakeen\Search\Filters\Title\IsEmpty::NOT => ___("Is not empty", "SearchCriteriaUtils.Title simple"),
+                        ],
+                    ],
+                    "equals" => [
+                        "class" => \Anakeen\Search\Filters\Title\Equals::class,
+                        "operands" => [self::FIELD, self::VALUE, 0],
+                        "availableOptions" => [],
+                        "labels" => [
+                            0 => ___("Is equal to", "SearchCriteriaUtils.Title simple"),
+                            \Anakeen\Search\Filters\Title\Equals::NOT => ___("Is different from", "SearchCriteriaUtils.Title simple"),
                         ],
                     ],
                     "contains" => [

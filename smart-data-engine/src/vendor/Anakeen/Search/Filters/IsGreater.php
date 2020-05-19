@@ -8,9 +8,19 @@
 namespace Anakeen\Search\Filters;
 
 use Anakeen\Search;
+use Anakeen\Search\SearchCriteria\SearchCriteriaTrait;
 
 class IsGreater extends StandardAttributeFilter implements ElementSearchFilter
 {
+    use SearchCriteriaTrait;
+
+    public static function getOptionMap()
+    {
+        return array(
+            self::EQUAL => "equal",
+        );
+    }
+
     const EQUAL = 1;
     private $EQUAL = false;
     protected $value = null;
@@ -68,7 +78,14 @@ class IsGreater extends StandardAttributeFilter implements ElementSearchFilter
     public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
         $attr = $this->verifyCompatibility($search);
-        $search->addFilter(sprintf('%s <%s %s', pg_escape_literal($this->value), ($this->EQUAL ? '=' : ''), pg_escape_identifier($attr->id)));
+        if (!empty($this->value)) {
+            $search->addFilter(sprintf(
+                '%s <%s %s',
+                pg_escape_literal($this->value),
+                ($this->EQUAL ? '=' : ''),
+                pg_escape_identifier($attr->id)
+            ));
+        }
         return $this;
     }
 }

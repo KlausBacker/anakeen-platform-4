@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-28 19:29+0200\n"
+"POT-Creation-Date: 2020-05-18 16:47+0200\n"
 "PO-Revision-Date: 2016-11-18 15:26+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
@@ -222,7 +222,23 @@ msgid "All contain"
 msgstr ""
 
 msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "All dates are after"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "All dates are before"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "All dates are between"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "All dates are strictly after"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "All dates are strictly before"
 msgstr ""
 
 #, php-format
@@ -237,6 +253,22 @@ msgstr ""
 
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "All values are between"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "All values are greater than"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "All values are lesser than"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "All values are strictly greater than"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "All values are strictly lesser than"
 msgstr ""
 
 msgctxt "wdoc"
@@ -670,6 +702,10 @@ msgstr ""
 msgid "Invalid directory '%s'."
 msgstr ""
 
+msgctxt "SearchCriteriaUtils.Temporal simple"
+msgid "Is after"
+msgstr ""
+
 msgctxt "SearchCriteriaUtils.Enum simple"
 msgid "Is among"
 msgstr ""
@@ -682,12 +718,44 @@ msgctxt "SearchCriteriaUtils.State simple"
 msgid "Is among"
 msgstr ""
 
+msgctxt "SearchCriteriaUtils.Temporal simple"
+msgid "Is before"
+msgstr ""
+
 msgctxt "SearchCriteriaUtils.Numerical simple"
 msgid "Is between"
 msgstr ""
 
 msgctxt "SearchCriteriaUtils.Temporal simple"
 msgid "Is between"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Enum simple"
+msgid "Is different from"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical simple"
+msgid "Is different from"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Relations simple"
+msgid "Is different from"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.State simple"
+msgid "Is different from"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal simple"
+msgid "Is different from"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Textual simple"
+msgid "Is different from"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Title simple"
+msgid "Is different from"
 msgstr ""
 
 msgctxt "SearchCriteriaUtils.Enum multi"
@@ -735,6 +803,42 @@ msgid "Is empty"
 msgstr ""
 
 msgctxt "SearchCriteriaUtils.Enum simple"
+msgid "Is equal to"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical simple"
+msgid "Is equal to"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Relations simple"
+msgid "Is equal to"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.State simple"
+msgid "Is equal to"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal simple"
+msgid "Is equal to"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Textual simple"
+msgid "Is equal to"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Title simple"
+msgid "Is equal to"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical simple"
+msgid "Is greater than"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical simple"
+msgid "Is lesser than"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Enum simple"
 msgid "Is not among"
 msgstr ""
 
@@ -788,6 +892,22 @@ msgstr ""
 
 msgctxt "SearchCriteriaUtilsTextual multi"
 msgid "Is not empty"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal simple"
+msgid "Is strictly after"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal simple"
+msgid "Is strictly before"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical simple"
+msgid "Is strictly greater than"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical simple"
+msgid "Is strictly lesser than"
 msgstr ""
 
 #, php-format
@@ -939,8 +1059,20 @@ msgctxt "smart iuser"
 msgid "Not enough uppercase characters."
 msgstr ""
 
+msgctxt "SearchCriteriaUtils.Textual multi"
+msgid "One Equals"
+msgstr ""
+
 msgctxt "SearchCriteriaUtilsTextual multi"
 msgid "One contains"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "One date is after"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "One date is before"
 msgstr ""
 
 msgctxt "SearchCriteriaUtils.Temporal multi"
@@ -951,10 +1083,22 @@ msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "One date is not between"
 msgstr ""
 
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "One date is strictly after"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "One date is strictly before"
+msgstr ""
+
 msgctxt "SearchCriteriaUtilsTextual multi"
 msgid "One does not contain"
 msgstr ""
 
+msgctxt "SearchCriteriaUtils.Textual multi"
+msgid "One is not equal to"
+msgstr ""
+
 #, php-format
 msgctxt "SearchCriteriaUtils.Enum multi"
 msgid "One of the '%s' is among"
@@ -973,6 +1117,14 @@ msgstr ""
 #, php-format
 msgctxt "SearchCriteriaUtils.Relations multi"
 msgid "One of the '%s' is not among"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "One of the value is different from"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "One of the value is equal to"
 msgstr ""
 
 msgctxt "SearchCriteriaUtils.Numerical multi"
@@ -980,7 +1132,23 @@ msgid "One value is between"
 msgstr ""
 
 msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "One value is greater than"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "One value is lesser than"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "One value is not between"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "One value is strictly greater than"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "One value is strictly lesser than"
 msgstr ""
 
 #, php-format

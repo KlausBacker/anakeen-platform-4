@@ -50,7 +50,7 @@ export default {
       ],
       responsiveColumns: [
         {
-          number: 2,
+          number: 3,
           minWidth: "50rem",
           maxWidth: null,
           grow: true

@@ -3,9 +3,21 @@
 namespace Anakeen\Search\Filters;
 
 use Anakeen\Core\SmartStructure\NormalAttribute;
+use Anakeen\Search\SearchCriteria\SearchCriteriaTrait;
 
 class OneGreaterThan extends StandardAttributeFilter implements ElementSearchFilter
 {
+
+    use SearchCriteriaTrait;
+
+    public static function getOptionMap()
+    {
+        return array(
+            self::EQUAL => "equal",
+            self::ALL => "all",
+        );
+    }
+
     const EQUAL = 1;
     const ALL = 2;
     protected $EQUAL = false;
@@ -61,13 +73,15 @@ class OneGreaterThan extends StandardAttributeFilter implements ElementSearchFil
     public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
         $attr = $this->verifyCompatibility($search);
-        $search->addFilter($this->_filter($attr, $this->value));
+        if (!empty($this->value)) {
+            $search->addFilter($this->_filter($attr, $this->value));
+        }
         return $this;
     }
 
     protected function _filter(NormalAttribute & $attr, $value)
     {
-        $sql = sprintf(
+        return sprintf(
             "%s IS NOT NULL AND %s <%s %s(%s)",
             pg_escape_identifier($attr->id),
             pg_escape_literal($value),
@@ -75,6 +89,5 @@ class OneGreaterThan extends StandardAttributeFilter implements ElementSearchFil
             ($this->ALL ? 'ALL' : 'ANY'),
             pg_escape_identifier($attr->id)
         );
-        return $sql;
     }
 }

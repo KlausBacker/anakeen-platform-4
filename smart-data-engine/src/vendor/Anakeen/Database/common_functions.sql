@@ -101,10 +101,10 @@ CREATE OPERATOR >~< ( leftarg = text, rightarg = text[], procedure = between_com
 CREATE OPERATOR >=~< ( leftarg = text, rightarg = text[], procedure = leq_between_commutator);
 CREATE OPERATOR >~<= ( leftarg = text, rightarg = text[], procedure = req_between_commutator);
 CREATE OPERATOR >=~<= ( leftarg = text, rightarg = text[], procedure = leq_req_between_commutator);
-COMMENT ON OPERATOR >~<(text, text) IS 'between commutator';
-COMMENT ON OPERATOR >=~<(text, text) IS 'leftEqual between commutator';
-COMMENT ON OPERATOR >~<=(text, text) IS 'rightEqual between commutator';
-COMMENT ON OPERATOR >=~<=(text, text) IS 'leftEqual rightEqual between commutator';
+COMMENT ON OPERATOR >~<(text, text[]) IS 'between commutator';
+COMMENT ON OPERATOR >=~<(text, text[]) IS 'leftEqual between commutator';
+COMMENT ON OPERATOR >~<=(text, text[]) IS 'rightEqual between commutator';
+COMMENT ON OPERATOR >=~<=(text, text[]) IS 'leftEqual rightEqual between commutator';
 
 -- change type of column
 create or replace function alter_table_column(text, text, text)

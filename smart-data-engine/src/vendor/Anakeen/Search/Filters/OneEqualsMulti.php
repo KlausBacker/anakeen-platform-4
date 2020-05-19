@@ -11,7 +11,7 @@ use Anakeen\Search\SearchCriteria\SearchCriteriaTrait;
  *
  * Filter for multiple fields and multiple values
  * Verify if the field value is included in a set of filter values
- * e.g. [B, D] oneEqualsMulti [A, B, C]
+ * e.g. [B, D] oneEqualsMulti [A, B, C] is true
  */
 class OneEqualsMulti extends StandardAttributeFilter implements ElementSearchFilter
 {
@@ -110,7 +110,7 @@ class OneEqualsMulti extends StandardAttributeFilter implements ElementSearchFil
             $this->ALL ? '@>' : '&&',
             $pgArray
         );
-        if ($this->ALL) {
+        if ($this->ALL && !$this->NOT) {
             $sql = $sql . sprintf(
                 " AND %s <@ '%s'",
                 pg_escape_identifier($attr->id),

@@ -23,7 +23,7 @@
           </div>
           <div splitpanes-size="45" class="criteria-section criteria-right">
             <header :title="tooltip"><h1>Smart Criteria</h1></header>
-            <ank-smart-criteria :config="criteriaConfig" :submit="true" @hook:mounted="initCriteriaExample" @smartCriteriaValidated="onCriteriaValidated" @smartCriteriaReady="testSmartCriteriaReady" @smartCriteriaChange="testSmartCriteriaChange" @smartCriteriaError="testSmartCriteriaError" ref="smartCriteria"/>
+            <ank-smart-criteria :config="criteriaConfig" :responsiveColumns="responsiveColumns" :submit="true" @hook:mounted="initCriteriaExample" @smartCriteriaValidated="onCriteriaValidated" @smartCriteriaReady="testSmartCriteriaReady" @smartCriteriaChange="testSmartCriteriaChange" @smartCriteriaError="testSmartCriteriaError" ref="smartCriteria"/>
             <ank-smart-grid collection="DEVBILL" ref="smartGrid" :smartCriteriaValue="smartFilter" :columns="gridColumns"/>
           </div>
         </ank-pane-splitter>

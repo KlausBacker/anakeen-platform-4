@@ -2,7 +2,7 @@
 
 namespace Anakeen\Search\Filters;
 
-use Anakeen\Search;
+use Anakeen\Search\SearchCriteria\SearchCriteriaTrait;
 
 /**
  * Class OneEquals
@@ -12,6 +12,16 @@ use Anakeen\Search;
  */
 class OneEquals extends ContainsValues implements ElementSearchFilter
 {
+
+    use SearchCriteriaTrait;
+
+    public static function getOptionMap()
+    {
+        return array(
+            self::NOT => "not",
+        );
+    }
+
     public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData & $search)
     {
         $attr = parent::verifyCompatibility($search);

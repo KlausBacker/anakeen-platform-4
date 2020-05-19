@@ -11,6 +11,10 @@ import { Component, Vue } from "vue-property-decorator";
 export default class TestExamplesSmartCriteriaController extends Vue {
   public examples: any[] = [
     {
+      config: exampleAllType,
+      label: exampleAllType.title || "Example All Type"
+    },
+    {
       config: exampleDemo,
       label: exampleDemo.title || "Example Demo"
     },
@@ -34,12 +38,9 @@ export default class TestExamplesSmartCriteriaController extends Vue {
       config: exampleBetween,
       label: exampleBetween.title || "Example Between"
     },
-    {
-      config: exampleAllType,
-      label: exampleAllType.title || "Example All Type"
-    },
   ];
   public selectedIndex: number = -1;
+
 
   protected storageKey = "smartCriteriaExamples";
   private staticExampleLength: number;
