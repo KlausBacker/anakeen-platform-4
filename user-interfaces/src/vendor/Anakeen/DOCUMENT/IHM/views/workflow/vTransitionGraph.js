@@ -55,9 +55,10 @@ export default Backbone.View.extend({
       }
     });
 
-    this.$el.find(".dcpTransitionGraph_state ").tooltip({
+    this.$el.find(".dcpTransitionGraph_state").tooltip({
       placement: "top",
-      html: true
+      html: true,
+      container: ".dcpTransitionGraph--to"
     });
 
     if (!this.transitionGraphWindow) {

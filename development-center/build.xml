@@ -1,7 +1,11 @@
 <?xml version="1.0" ?>
 <module:config xmlns:module="https://platform.anakeen.com/4/schemas/module/1.0">
     <module:source path="src" />
+    <module:po-config>
+        <module:po-vuejs source="src/vendor/Anakeen/DevelopmentCenter/**/*.?(vue|ts|js)" target="DEVELOPMENT_CENTER"/>
+    </module:po-config>
     <module:check-config>
         <module:config-xml source="src/**/*.xml"/>
     </module:check-config>
 </module:config>
+<!-- src/vendor/Anakeen/DevelopmentCenter/vue/components/SSTreeList/SSTreeList.component.js -->
