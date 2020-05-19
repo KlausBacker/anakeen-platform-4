@@ -36,7 +36,7 @@ export default {
       mockData: {},
       hubConfig: [],
       selectedComponent: this.hubComponentSelected,
-      isListenActivated: false,
+      isSmartElementMounted: false,
       panes: [
         {
           scrollable: false,
@@ -147,7 +147,6 @@ export default {
             icon: this.hubElement.properties.icon
           });
         });
-      //this.listenSmartElement();
     },
 
     displayMockUp: function(e) {
@@ -173,10 +172,10 @@ export default {
       });
 
       data.sort((a, b) => {
-        const idxa = positionKey.indexOf(a.abstract.hub_docker_position);
-        const idxb = positionKey.indexOf(b.abstract.hub_docker_position);
-        const posa = a.abstract.hub_order || 0;
-        const posb = b.abstract.hub_order || 0;
+        const idxa = positionKey.indexOf(a.attributes.hub_docker_position.value);
+        const idxb = positionKey.indexOf(a.attributes.hub_docker_position.value);
+        const posa = a.attributes.hub_order.value || 0;
+        const posb = b.attributes.hub_order.value || 0;
 
         const pa = idxa * 100 + posa;
         const pb = idxb * 100 + posb;
@@ -200,7 +199,7 @@ export default {
 
       data.forEach((datum, k) => {
         datum.abstract.key = { value: k + 1, displayValue: k + 1 };
-        this.mockData[datum.abstract.hub_docker_position].push({
+        this.mockData[datum.attributes.hub_docker_position.value].push({
           key: datum.abstract.key,
           title: datum.properties.title,
           initid: datum.properties.initid
@@ -208,19 +207,16 @@ export default {
       });
     },
     openDetailConfig(seid) {
-      let e = new Event("click");
-      e.data = {
-        type: "detail",
-        row: {
-          id: seid
-        }
-      };
-
       this.$refs.hubAdminSplitter.disableEmptyContent();
-      this.$nextTick(() => {
+      if (this.isSmartElementMounted) {
         this.openConfig(seid);
-        //this.listenSmartElement();
-      });
+      } else {
+        this.$watch("isSmartElementMounted", (val, oldVal) => {
+          if (!oldVal && !!val) {
+            this.openConfig(seid);
+          }
+        });
+      }
     },
 
     openConfig(eid) {
@@ -239,7 +235,7 @@ export default {
     },
 
     listenSmartElement() {
-      if (!this.isListenActivated) {
+      if (!this.isSmartElementMounted) {
         this.$refs.smartConfig.addEventListener("afterSave", (e, d) => {
           const seId = d.initid;
           if (d.family.name === "HUBINSTANCIATION") {
@@ -258,7 +254,7 @@ export default {
             this.selectedComponent = 0;
           }
         });
-        this.isListenActivated = true;
+        this.isSmartElementMounted = true;
       }
     }
   }

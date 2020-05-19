@@ -158,8 +158,13 @@ export default {
     },
     onListDataBound() {
       if (this.hubInstanceSelected) {
-        this.$nextTick(() => {
-          this.$refs.hubInstanciationList.selectSmartElement(this.hubInstanceSelected);
+        this.$refs.hubInstanciationList.selectSmartElement(this.hubInstanceSelected);
+        this.openConfig({
+          data: {
+            properties: {
+              initid: this.hubInstanceSelected
+            }
+          }
         });
       }
     },
