@@ -9,6 +9,7 @@ namespace Anakeen\Search\Filters;
 
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Search;
+use String\sprintf;
 
 class OneBetween extends StandardAttributeFilter implements ElementSearchFilter
 {
@@ -95,30 +96,31 @@ class OneBetween extends StandardAttributeFilter implements ElementSearchFilter
     {
         $attr = $this->verifyCompatibility($search);
         sort($this->value);
-        $this->value = array_map(function ($val) {
-            return pg_escape_literal($val);
-        }, $this->value);
-        $pgBetweenArray =  SmartElement::arrayToRawValue($this->value);
-        $operator = ">~<";
-        if ($this->LEFTEQUAL && $this->RIGHTEQUAL) {
-            $operator = ">=~<=";
-        } elseif ($this->LEFTEQUAL) {
-            $operator = ">=~<";
-        } elseif ($this->RIGHTEQUAL) {
-            $operator = ">~<=";
+        if (isset($this->value[0]) && isset($this->value[1])) {
+            $this->value = SmartElement::arrayToRawValue($this->value);
+            $pgBetweenArray = sprintf("'%s'", $this->value);
+            $pgBetweenArray = $pgBetweenArray . '::text[]';
+            $operator = ">~<";
+            if ($this->LEFTEQUAL && $this->RIGHTEQUAL) {
+                $operator = ">=~<=";
+            } elseif ($this->LEFTEQUAL) {
+                $operator = ">=~<";
+            } elseif ($this->RIGHTEQUAL) {
+                $operator = ">~<=";
+            }
+            $query = sprintf(
+                "%s IS NOT NULL AND %s %s %s(%s::text[])",
+                pg_escape_identifier($attr->id),
+                $pgBetweenArray,
+                $operator,
+                ($this->ALL ? 'ALL' : 'ANY'),
+                $attr->id
+            );
+            if ($this->NOT) {
+                $query = sprintf('NOT(%s)', $query);
+            }
+            $search->addFilter($query);
         }
-        $query = sprintf(
-            "%s IS NOT NULL AND '%s' %s %s(%s)",
-            pg_escape_identifier($attr->id),
-            $pgBetweenArray,
-            $operator,
-            ($this->ALL ? 'ALL' : 'ANY'),
-            pg_escape_identifier($attr->id)
-        );
-        if ($this->NOT) {
-            $query = sprintf('NOT(%s)', $query);
-        }
-        $search->addFilter($query);
         return $this;
     }
 }
