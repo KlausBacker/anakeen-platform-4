@@ -14,7 +14,9 @@ use Anakeen\Core\SmartStructure\NormalAttribute;
 class ContainsValues extends StandardAttributeFilter implements ElementSearchFilter
 {
     const NOT = 1;
+    const ALL = 2;
     protected $NOT = false;
+    protected $ALL = false;
     protected $compatibleType = array(
         'text',
         'htmltext',
@@ -46,6 +48,7 @@ class ContainsValues extends StandardAttributeFilter implements ElementSearchFil
         $this->value = $value;
         if (isset($options)) {
             $this->NOT = ($options & self::NOT);
+            $this->ALL = ($options & self::ALL);
         }
     }
 
@@ -90,6 +93,9 @@ class ContainsValues extends StandardAttributeFilter implements ElementSearchFil
     {
         $pgArray = SmartElement::arrayToRawValue($value);
         $sql = sprintf("%s IS NOT NULL AND %s @> '%s'", pg_escape_identifier($attr->id), pg_escape_identifier($attr->id), $pgArray);
+        if ($this->ALL) {
+            $sql = $sql . sprintf(" AND %s <@ '%s'", pg_escape_identifier($attr->id), $pgArray);
+        }
         if ($this->NOT) {
             $sql = sprintf("NOT(%s)", $sql);
         }

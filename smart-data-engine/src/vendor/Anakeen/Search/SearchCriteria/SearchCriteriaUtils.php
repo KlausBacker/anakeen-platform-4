@@ -233,6 +233,18 @@ class SearchCriteriaUtils
                             \Anakeen\Search\Filters\Temporal\IsEmpty::NOT => ___("Is not empty", "SearchCriteriaUtils.Temporal multi"),
                         ],
                     ],
+                    "oneEquals" => [
+                        "class" => \Anakeen\Search\Filters\Temporal\OneEquals::class,
+                        "operands" => [self::FIELD, self::VALUE, 0],
+                        "availableOptions" => [],
+                        "labels" => [
+                            0 => ___("One date is equal to", "SearchCriteriaUtils.Temporal multi"),
+                            \Anakeen\Search\Filters\Temporal\OneEquals::NOT => ___("One date is different from", "SearchCriteriaUtils.Temporal multi"),
+                            \Anakeen\Search\Filters\Temporal\OneEquals::ALL => ___("All dates are equal to", "SearchCriteriaUtils.Temporal multi"),
+                            \Anakeen\Search\Filters\Temporal\OneEquals::NOT + \Anakeen\Search\Filters\Temporal\OneEquals::ALL =>
+                                ___("All dates are different from", "SearchCriteriaUtils.Temporal multi"),
+                        ],
+                    ],
                     "oneLesser" => [
                         "class" => \Anakeen\Search\Filters\Temporal\OneLesser::class,
                         "operands" => [self::FIELD, self::VALUE, 0],

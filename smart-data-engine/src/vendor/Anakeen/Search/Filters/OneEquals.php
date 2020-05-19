@@ -19,6 +19,7 @@ class OneEquals extends ContainsValues implements ElementSearchFilter
     {
         return array(
             self::NOT => "not",
+            self::ALL => "all",
         );
     }
 

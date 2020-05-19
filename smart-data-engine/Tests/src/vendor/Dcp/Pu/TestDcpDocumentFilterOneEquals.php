@@ -35,7 +35,8 @@ class TestDcpDocumentFilterOneEquals extends TestDcpDocumentFiltercommon
                     "attr" => "M_ENUM",
                     "value" => "Y",
                     "expected" => array(
-                        "ONEEQUALS_2"
+                        "ONEEQUALS_2",
+                        "ONEEQUALS_4",
                     )
                 )
             ) ,
@@ -51,6 +52,17 @@ class TestDcpDocumentFilterOneEquals extends TestDcpDocumentFiltercommon
                     )
                 )
             ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "M_ENUM",
+                    "value" => "Y",
+                    "flags" => \Anakeen\Search\Filters\OneEquals::ALL,
+                    "expected" => array(
+                        "ONEEQUALS_4",
+                    )
+                )
+            ),
             // M_DOCID
             array(
                 array(
@@ -418,7 +430,7 @@ class TestDcpDocumentFilterOneEquals extends TestDcpDocumentFiltercommon
                         "ONEEQUALS_3"
                     )
                 )
-            )
+            ) ,
         );
     }
 }
