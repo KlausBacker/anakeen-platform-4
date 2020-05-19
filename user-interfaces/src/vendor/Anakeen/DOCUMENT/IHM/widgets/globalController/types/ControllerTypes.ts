@@ -32,6 +32,7 @@ export namespace AnakeenController {
       notification?: boolean;
       controllerName?: string;
       controllerPrefix?: string;
+      autoInitialize?: boolean;
       globalHandler?: (...args: any[]) => void;
     }
 
