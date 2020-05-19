@@ -94,7 +94,10 @@ export default Backbone.View.extend({
 
     //Made to JSON for all the values, or to data for value indexed (in cas of multiple)
     data = this.model.toData(index, true);
-    data.viewCid = this.cid + "-" + this.model.id;
+    // check whether smart field is in an array or not to assign an id
+    if (data.index === undefined) {
+      data.viewCid = this.cid + "-" + this.model.id;
+    }
     data.labels.deleteAttributeNames = this.getDeleteLabels();
     // autoComplete detected
     data.autocompleteRequest = _.bind(this.autocompleteRequestRead, this);

@@ -10,7 +10,7 @@
         </button>
     </span>
     {{/isMultiple}}
-    <input type="text" name="{{id}}" id="{{viewCid}}"
+    <input type="text" name="{{id}}" {{#viewCid}} id="{{viewCid}}" {{/viewCid}}
            {{# options.size}}style="width : {{options.size}}em;"{{/ options.size}}
            class="{{#hadButtons}}form-control{{/hadButtons}} dcpAttribute__value dcpAttribute__value--edit"
            value="{{attributeValue.value}}"/>

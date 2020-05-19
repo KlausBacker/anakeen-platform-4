@@ -11,7 +11,7 @@
 
     <div class="dcpAttribute__content__htmltext--wrapper">
         <div class="dcpAttribute__content__htmltext--toolbar"></div>
-        <div name="{{id}}" id="{{viewCid}}" contenteditable="true"
+        <div name="{{id}}" {{#viewCid}} id="{{viewCid}}" {{/viewCid}} contenteditable="true"
              class="form-control dcpAttribute__value dcpAttribute__value--edit">{{{attributeValue.value}}}</div>
     </div>
 
