@@ -43,6 +43,7 @@ class SuiteDcp
         $suite->addTestSuite('Dcp\Pu\TestExportCollection');
         $suite->addTestSuite('Dcp\Pu\TestExportRevision');
         $suite->addTestSuite('Dcp\Pu\TestGetParam');
+        $suite->addTestSuite('Dcp\Pu\TestSetParam');
         $suite->addTestSuite('Dcp\Pu\TestUsage');
         $suite->addTestSuite('Dcp\Pu\TestHelpUsage');
         $suite->addTestSuite('Dcp\Pu\TestParseFunction');

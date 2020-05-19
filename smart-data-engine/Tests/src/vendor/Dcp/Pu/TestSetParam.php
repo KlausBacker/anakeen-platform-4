@@ -8,157 +8,130 @@ namespace Dcp\Pu;
 
 //require_once 'PU_testcase_dcp.php';
 
-class TestGetParam extends TestCaseDcp
+use Anakeen\Core\AccountManager;
+use Anakeen\Core\Internal\ContextParameterManager;
+use Anakeen\Exception;
+
+class TestSetParam extends TestCaseDcp
 {
     /**
-     * @dataProvider dataGetCoreParamNonExisting
+     * @dataProvider dataSetGlobParameter
      */
-    public function testGetCoreParamNonExisting($data)
+    public function testSetGlobParameter($name, $ns, $value)
     {
-        $value = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, $data['name'], $data['def']);
-        
-        $sameType = (gettype($value) == gettype($data['expected']));
-        $sameValue = ($value == $data['expected']);
-        
-        $this->assertTrue($sameType, sprintf("Result type mismatch: found type '%s' while expecting type '%s'.", gettype($value), gettype($data['expected'])));
-        $this->assertTrue($sameValue, sprintf("Unexpected result: found '%s' while expecting '%s'.", $value, $data['expected']));
-    }
-    /**
-     * @dataProvider dataGetParamNonExisting
-     */
-    public function testGetParamNonExisting($data)
-    {
-        $value = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, $data['name'], $data['def']);
-        
-        $sameType = (gettype($value) == gettype($data['expected']));
-        $sameValue = ($value == $data['expected']);
-        
-        $this->assertTrue($sameType, sprintf("Result type mismatch: found type '%s' while expecting type '%s'.", gettype($value), gettype($data['expected'])));
-        $this->assertTrue($sameValue, sprintf("Unexpected result: found '%s' while expecting '%s'.", $value, $data['expected']));
-    }
-    /**
-     * @dataProvider dataGetCoreParamIsSet
-     */
-    public function testGetCoreParamIsSet($data)
-    {
-        $value = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, $data['name'], null);
-        
-        $this->assertTrue(($value !== null), "Returned value is not set.");
-    }
-    /**
-     * @dataProvider dataGetCoreParamIsSet
-     */
-    public function testGetParamIsSet($data)
-    {
-        $value = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, $data['name'], null);
-        
-        $this->assertTrue(($value !== null), "Returned value is not set.");
+        \Anakeen\Core\ContextManager::setParameterValue($ns, $name, $value);
+
+        $getValue = \Anakeen\Core\ContextManager::getParameterValue($ns, $name);
+
+        $this->assertEquals($value, $getValue);
     }
 
-    
-    public function dataGetParamDef()
+    /**
+     * @dataProvider dataSetUserParameter
+     */
+    public function testSetUserParameter($login, $name, $ns, $value)
     {
-        return array(
-            array(
-                'name' => 'CORE_NON_EXISTING_PARAM',
-                'app' => 'CORE',
-                'expected' => ''
-            ) ,
+        \Anakeen\Core\ContextManager::setParameterValue($ns, $name, $value);
+        $u = AccountManager::getAccount($login);
 
-            array(
-                'name' => 'CORE_CLIENT',
-                'app' => 'CORE',
-                'expected' => array(
-                    "name" => "CORE_CLIENT",
-                    "isglob" => "Y"
-                )
-            ) ,
-            array(
-                'name' => 'CORE_CLIENT',
-                'app' => '',
-                'expected' => array(
-                    "name" => "CORE_CLIENT",
-                    "isglob" => "Y"
-                )
-            ) ,
-            array(
-                'name' => 'CORE_CLIENT',
-                'app' => 'FDL',
-                'expected' => array(
-                    "name" => "CORE_CLIENT",
-                    "isglob" => "Y"
-                )
-            ) ,
-            array(
-                'name' => 'CORE_CLIENT',
-                'app' => 'FDL',
-                'expected' => array(
-                    "name" => "CORE_CLIENT",
-                    "isglob" => "Y"
-                )
-            )
-        );
+        ContextParameterManager::setUserValue($ns, $name, $value, $u->id);
+
+        $getValue = ContextParameterManager::getUserValue($ns, $name, $u->id);
+
+        $this->assertEquals($value, $getValue);
     }
-    
-    public function dataGetCoreParamNonExisting()
+
+
+    /**
+     * @dataProvider dataErrorSetGlobParameter
+     */
+    public function testErrorSetGlobParameter($name, $ns, $value)
+    {
+        try {
+            \Anakeen\Core\ContextManager::setParameterValue($ns, $name, $value);
+            $this->assertTrue(false, "A error must occurs");
+        } catch (Exception $e) {
+            $this->assertEquals("CORE0102", $e->getDcpCode());
+        }
+    }
+
+
+    /**
+     * @dataProvider dataErrorSetUserParameter
+     */
+    public function testErrorSetUserParameter($login, $name, $ns, $value)
+    {
+        $u = AccountManager::getAccount($login);
+        try {
+            ContextParameterManager::setUserValue($ns, $name, $value, $u->id);
+            $this->assertTrue(false, "A error must occurs");
+        } catch (Exception $e) {
+            $this->assertEquals("CORE0103", $e->getDcpCode());
+        }
+    }
+
+    public function dataSetGlobParameter()
     {
         return array(
-            array(
-                array(
-                    'name' => 'CORE_NON_EXISTING_PARAM',
-                    'def' => 'DOES_NOT_EXISTS',
-                    'expected' => 'DOES_NOT_EXISTS'
-                )
-            )
+            [
+                'name' => 'CORE_CLIENT',
+                'ns' => 'Core',
+                'value' => 'Yeah'
+            ],
+            [
+                'name' => 'CORE_SESSIONMAXAGE',
+                'ns' => 'Core',
+                'value' => '1 day'
+            ]
         );
     }
-    
-    public function dataGetParamNonExisting()
+
+
+    public function dataSetUserParameter()
     {
         return array(
-            array(
-                array(
-                    'name' => 'CORE_NON_EXISTING_PARAM',
-                    'def' => 'DOES_NOT_EXISTS',
-                    'expected' => 'DOES_NOT_EXISTS'
-                )
-            )
+            [
+                'login' => 'anonymous',
+                'name' => 'CORE_LANG',
+                'ns' => 'Core',
+                'value' => 'en_US'
+            ]
         );
     }
-    
-    public function dataGetCoreParamIsSet()
+
+    public function dataErrorSetUserParameter()
     {
         return array(
-            array(
-                array(
-                    'name' => 'CORE_CLIENT'
-                    // CORE 'G'
-                    
-                ) ,
-                array(
-                    'name' => 'CORE_DB'
-                    // CORE 'A'
-                    
-                )
-            )
+            [
+                'login' => 'anonymous',
+                'name' => 'Bof',
+                'ns' => 'Bof',
+                'value' => 'en_US'
+            ],
+
+            [
+                'login' => 'anonymous',
+                'name' => 'CORE_SESSIONMAXAGE',
+                'ns' => 'Core',
+                'value' => '1 day'
+            ]
         );
     }
-    
-    public function dataGetParamIsSet()
+
+
+    public function dataErrorSetGlobParameter()
     {
         return array(
-            array(
-                array(
-                    'name' => 'CORE_CLIENT'
-                    // CORE 'G'
-                    
-                ) ,
-                array(
-                    'name' => 'CORE_DB'
-                    // CORE 'A'
-                    
-                )
-            )
+            [
+                'name' => 'Bof',
+                'ns' => 'Core',
+                'value' => 'Yeah'
+            ],
+            [
+                'name' => 'CORE_SESSIONMAXAGE',
+                'ns' => 'Bof',
+                'value' => '1 day'
+            ]
         );
     }
 }

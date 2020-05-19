@@ -112,11 +112,36 @@ namespace {
         /**
          * @errorCode Try to register another pat for config files
          */
-        const CORE0025 = 'Connot register config directory "%s" : this directory not exists';
+        const CORE0025 = 'Cannot register config directory "%s" : this directory not exists';
         /**
          * @errorCode Try to get current user
          * @see ContextManager::getCurrentUser()
          */
         const CORE0026 = 'User not authenticated';
+        /**
+         * @errorCode When get user parameter
+         * @see \Anakeen\Core\Internal\ContextParameterManager::getUserValue
+         */
+        const CORE0100 = 'User parameter "%s" not exists';
+        /**
+         * @errorCode When get user parameter
+         * @see \Anakeen\Core\Internal\ContextParameterManager::setValue
+         */
+        const CORE0101 = 'Cannot modify context parameter "%s" : %s';
+        /**
+         * @errorCode When get user parameter
+         * @see \Anakeen\Core\Internal\ContextParameterManager::setValue
+         */
+        const CORE0102 = 'Unknow context parameter "%s"';
+        /**
+         * @errorCode When get user parameter
+         * @see \Anakeen\Core\Internal\ContextParameterManager::setValue
+         */
+        const CORE0103 = 'Unknow context user parameter "%s"';
+        /**
+         * @errorCode When get user parameter
+         * @see \Anakeen\Core\Internal\ContextParameterManager::getUserValue
+         */
+        const CORE0104 = 'Context parameter "%s" is not a user parameter';
     }
 }
