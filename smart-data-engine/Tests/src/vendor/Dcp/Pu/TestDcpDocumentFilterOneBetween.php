@@ -265,79 +265,227 @@ class TestDcpDocumentFilterOneBetween extends TestDcpDocumentFiltercommon
                 )
             ) ,
             // A_DATE
-//            array(
-//                array(
-//                    "fam" => self::FAM,
-//                    "attr" => "A_DATE",
-//                    "value" => array(
-//                        "01-01-2000",
-//                        "03-03-2003",
-//                    ),
-//                    "expected" => array(
-//                        "ONEBETWEEN_2",
-//                        "ONEBETWEEN_3",
-//                    )
-//                )
-//            ) ,
-//            array(
-//                array(
-//                    "fam" => self::FAM,
-//                    "attr" => "A_DATE",
-//                    "flags" => OneBetween::NOT,
-//                    "value" => array(
-//                        "01-01-2000",
-//                        "03-03-2003",
-//                    ),
-//                    "expected" => array(
-//                        "ONEBETWEEN_1",
-//                        "ONEBETWEEN_4",
-//                    )
-//                )
-//            ) ,
-//            array(
-//                array(
-//                    "fam" => self::FAM,
-//                    "attr" => "A_DATE",
-//                    "flags" => OneBetween::ALL,
-//                    "value" => array(
-//                        "01-01-2000",
-//                        "03-03-2003",
-//                    ),
-//                    "expected" => array(
-//                        "ONEBETWEEN_2",
-//                    )
-//                )
-//            ) ,
-//            array(
-//                array(
-//                    "fam" => self::FAM,
-//                    "attr" => "A_DATE",
-//                    "flags" => OneBetween::LEFTEQUAL,
-//                    "value" => array(
-//                        "02-02-2002",
-//                        "03-03-2003",
-//                    ),
-//                    "expected" => array(
-//                        "ONEBETWEEN_2",
-//                        "ONEBETWEEN_3",
-//                    )
-//                )
-//            ) ,
-//            array(
-//                array(
-//                    "fam" => self::FAM,
-//                    "attr" => "A_DATE",
-//                    "flags" => OneBetween::RIGHTEQUAL,
-//                    "value" => array(
-//                        "02-02-2002",
-//                        "03-03-2003",
-//                    ),
-//                    "expected" => array(
-//                        "ONEBETWEEN_3",
-//                        "ONEBETWEEN_4",
-//                    )
-//                )
-//            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_DATE",
+                    "value" => array(
+                        "2000-01-01",
+                        "2003-03-03",
+                    ),
+                    "expected" => array(
+                        "ONEBETWEEN_2",
+                        "ONEBETWEEN_3",
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_DATE",
+                    "flags" => OneBetween::NOT,
+                    "value" => array(
+                        "2000-01-01",
+                        "2003-03-03",
+                    ),
+                    "expected" => array(
+                        "ONEBETWEEN_1",
+                        "ONEBETWEEN_4",
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_DATE",
+                    "flags" => OneBetween::ALL,
+                    "value" => array(
+                        "2000-01-01",
+                        "2003-03-03",
+                    ),
+                    "expected" => array(
+                        "ONEBETWEEN_2",
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_DATE",
+                    "flags" => OneBetween::LEFTEQUAL,
+                    "value" => array(
+                        "2002-02-02",
+                        "2003-03-03",
+                    ),
+                    "expected" => array(
+                        "ONEBETWEEN_2",
+                        "ONEBETWEEN_3",
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_DATE",
+                    "flags" => OneBetween::RIGHTEQUAL,
+                    "value" => array(
+                        "2002-02-02",
+                        "2003-03-03",
+                    ),
+                    "expected" => array(
+                        "ONEBETWEEN_3",
+                        "ONEBETWEEN_4",
+                    )
+                )
+            ) ,
+            // A_TIMESTAMP
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_TIMESTAMP",
+                    "value" => array(
+                        "2000-01-01 01:01:01",
+                        "2003-03-03 03:03:03",
+                    ),
+                    "expected" => array(
+                        "ONEBETWEEN_2",
+                        "ONEBETWEEN_3",
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_TIMESTAMP",
+                    "flags" => OneBetween::NOT,
+                    "value" => array(
+                        "2000-01-01 01:01:01",
+                        "2003-03-03 03:03:03",
+                    ),
+                    "expected" => array(
+                        "ONEBETWEEN_1",
+                        "ONEBETWEEN_4",
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_TIMESTAMP",
+                    "flags" => OneBetween::ALL,
+                    "value" => array(
+                        "2000-01-01 01:01:01",
+                        "2003-03-03 03:03:03",
+                    ),
+                    "expected" => array(
+                        "ONEBETWEEN_2",
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_TIMESTAMP",
+                    "flags" => OneBetween::LEFTEQUAL,
+                    "value" => array(
+                        "2002-02-02 02:02:02",
+                        "2003-03-03 03:03:03",
+                    ),
+                    "expected" => array(
+                        "ONEBETWEEN_2",
+                        "ONEBETWEEN_3",
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_TIMESTAMP",
+                    "flags" => OneBetween::RIGHTEQUAL,
+                    "value" => array(
+                        "2002-02-02 02:02:02",
+                        "2003-03-03 03:03:03",
+                    ),
+                    "expected" => array(
+                        "ONEBETWEEN_3",
+                        "ONEBETWEEN_4",
+                    )
+                )
+            ) ,
+            // A_TIME
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_TIME",
+                    "value" => array(
+                        "01:01:01",
+                        "03:03:03",
+                    ),
+                    "expected" => array(
+                        "ONEBETWEEN_2",
+                        "ONEBETWEEN_3",
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_TIME",
+                    "flags" => OneBetween::NOT,
+                    "value" => array(
+                        "01:01:01",
+                        "03:03:03",
+                    ),
+                    "expected" => array(
+                        "ONEBETWEEN_1",
+                        "ONEBETWEEN_4",
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_TIME",
+                    "flags" => OneBetween::ALL,
+                    "value" => array(
+                        "00:00:01",
+                        "03:03:03",
+                    ),
+                    "expected" => array(
+                        "ONEBETWEEN_2",
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_TIME",
+                    "flags" => OneBetween::LEFTEQUAL,
+                    "value" => array(
+                        "02:02:02",
+                        "03:03:03",
+                    ),
+                    "expected" => array(
+                        "ONEBETWEEN_2",
+                        "ONEBETWEEN_3",
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_TIME",
+                    "flags" => OneBetween::RIGHTEQUAL,
+                    "value" => array(
+                        "02:02:02",
+                        "03:03:03",
+                    ),
+                    "expected" => array(
+                        "ONEBETWEEN_3",
+                        "ONEBETWEEN_4",
+                    )
+                )
+            ) ,
         );
     }
 }

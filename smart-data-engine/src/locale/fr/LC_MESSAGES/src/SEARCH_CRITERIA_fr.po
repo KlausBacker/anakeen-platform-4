@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anakeen-platform 4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-18 16:47+0200\n"
-"PO-Revision-Date: 2020-05-18 16:48+0200\n"
+"POT-Creation-Date: 2020-05-20 09:52+0200\n"
+"PO-Revision-Date: 2020-05-20 09:55+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -35,6 +35,22 @@ msgid "All dates are between"
 msgstr "Toutes les dates sont entre"
 
 msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "All dates are different from"
+msgstr "Toutes les dates sont différentes de"
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "All dates are empty"
+msgstr "Toutes les dates sont vides"
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "All dates are empty"
+msgstr "Toutes les dates sont vides"
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "All dates are equal to"
+msgstr "Toutes les dates sont égales à"
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "All dates are strictly after"
 msgstr "Toutes les dates sont strictement postérieures à"
 
@@ -55,6 +71,34 @@ msgstr "Tous les '%s' sont parmi"
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "All values are between"
 msgstr "Toutes les valeurs sont entre"
+
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "All values are different from"
+msgstr "Toutes les valeurs sont différentes de"
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "All values are different from"
+msgstr "Toutes les valeurs sont différentes de"
+
+msgctxt "SearchCriteriaUtils.Textual multi"
+msgid "All values are different from"
+msgstr "Toutes les valeurs sont différentes de"
+
+msgctxt "SearchCriteriaUtils.Textual multi"
+msgid "All values are empty"
+msgstr "Toutes les valeurs sont vides"
+
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "All values are equal to"
+msgstr "Toutes les valeurs sont égales à"
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "All values are equal to"
+msgstr "Toutes les valeurs sont égales à"
+
+msgctxt "SearchCriteriaUtils.Textual multi"
+msgid "All values are equal to"
+msgstr "Toutes les valeurs sont égales à"
 
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "All values are greater than"
@@ -352,9 +396,21 @@ msgctxt "SearchCriteriaUtils.Title simple"
 msgid "NA"
 msgstr "Ignorer"
 
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "No date is empty"
+msgstr "Aucune date n'est vide"
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "No date is empty"
+msgstr "Aucune date n'est vide"
+
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "No dates are between"
 msgstr "Aucune date n'est entre"
+
+msgctxt "SearchCriteriaUtils.Textual multi"
+msgid "No value is empty"
+msgstr "Aucune valeur n'est vide"
 
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "No values are between"
@@ -374,10 +430,6 @@ msgctxt "SearchCriteriaUtils.Relations multi"
 msgid "None of the '%s' are among"
 msgstr "Aucun des '%s' n'est parmi"
 
-msgctxt "SearchCriteriaUtils.Textual multi"
-msgid "One Equals"
-msgstr "Une des valeurs est égale à"
-
 msgctxt "SearchCriteriaUtilsTextual multi"
 msgid "One contains"
 msgstr "Une des valeurs contient"
@@ -395,8 +447,32 @@ msgid "One date is between"
 msgstr "Une des dates est entre"
 
 msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "One date is different from"
+msgstr "Une des dates est différente de"
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "One date is empty"
+msgstr "Une des dates est vide"
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "One date is empty"
+msgstr "Une des dates est vide"
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "One date is equal to"
+msgstr "Une des dates est égale de"
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "One date is not between"
 msgstr "Une des dates n'est pas entre"
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "One date is not empty"
+msgstr "Une des dates n'est pas vide"
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "One date is not empty"
+msgstr "Une des dates n'est pas vide"
 
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "One date is strictly after"
@@ -410,10 +486,6 @@ msgctxt "SearchCriteriaUtilsTextual multi"
 msgid "One does not contain"
 msgstr "Une valeur ne contient pas"
 
-msgctxt "SearchCriteriaUtils.Textual multi"
-msgid "One is not equal to"
-msgstr "Est différent de"
-
 #, php-format
 msgctxt "SearchCriteriaUtils.Enum multi"
 msgid "One of the '%s' is among"
@@ -433,18 +505,38 @@ msgstr "Un des '%s' n'est pas parmi"
 msgctxt "SearchCriteriaUtils.Relations multi"
 msgid "One of the '%s' is not among"
 msgstr "Un des '%s' n'est pas parmi"
-
-msgctxt "SearchCriteriaUtils.Enum multi"
-msgid "One of the value is different from"
-msgstr "Une des valeurs est différente de"
-
-msgctxt "SearchCriteriaUtils.Enum multi"
-msgid "One of the value is equal to"
-msgstr "Une des valeurs est égale à"
 
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "One value is between"
 msgstr "Une des valeurs est entre"
+
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "One value is different from"
+msgstr "Une valeur est différente de"
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "One value is different from"
+msgstr "Une valeur est différente de"
+
+msgctxt "SearchCriteriaUtils.Textual multi"
+msgid "One value is different from"
+msgstr "Une valeur est différente de"
+
+msgctxt "SearchCriteriaUtils.Textual multi"
+msgid "One value is empty"
+msgstr "Une valeur est vide"
+
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "One value is equal to"
+msgstr "Une valeur est égale à"
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "One value is equal to"
+msgstr "Une valeur est égale à"
+
+msgctxt "SearchCriteriaUtils.Textual multi"
+msgid "One value is equal to"
+msgstr "Une valeur est égale à"
 
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "One value is greater than"
@@ -457,6 +549,10 @@ msgstr "Une des valeurs est inférieure à"
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "One value is not between"
 msgstr "Une des valeurs n'est pas entre"
+
+msgctxt "SearchCriteriaUtils.Textual multi"
+msgid "One value is not empty"
+msgstr "Une des valeurs n'est pas vide"
 
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "One value is strictly greater than"
@@ -473,3 +569,7 @@ msgstr "Commence par"
 msgctxt "SearchCriteriaUtils.Title simple"
 msgid "Starts with"
 msgstr "Commence par"
+
+#~ msgctxt "SearchCriteriaUtils.Textual multi"
+#~ msgid "One Equals"
+#~ msgstr "Une des valeurs est égale à"

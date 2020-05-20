@@ -6,12 +6,12 @@ use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SmartStructure\NormalAttribute;
 
 /**
- * Class ContainsValues
+ * Class OneEmpty
  *
  * Filter for multiple values
- * Verify if values are included in value set of field
+ * Verify if one of the value is empty
  */
-class ContainsValues extends StandardAttributeFilter implements ElementSearchFilter
+class OneEmpty extends StandardAttributeFilter implements ElementSearchFilter
 {
     const NOT = 1;
     const ALL = 2;
@@ -34,18 +34,17 @@ class ContainsValues extends StandardAttributeFilter implements ElementSearchFil
     protected $value = null;
 
     /**
-     * ContainsValues constructor.
+     * OneEmpty constructor.
      * @param string $attrId
-     * @param string|array $value
      * @param int $options <p>
      * Bitmask consisting of
-     * <b>\Anakeen\Search\Filters\ContainsValues::$NOT</b>,
+     * <b>\Anakeen\Search\Filters\OneEmpty::NOT</b>,
+     * <b>\Anakeen\Search\Filters\OneEmpty::ALL</b>,
      * </p>
      */
-    public function __construct($attrId, $value, $options = 0)
+    public function __construct($attrId, $options = 0)
     {
         parent::__construct($attrId);
-        $this->value = $value;
         if (isset($options)) {
             $this->NOT = ($options & self::NOT);
             $this->ALL = ($options & self::ALL);
@@ -76,29 +75,24 @@ class ContainsValues extends StandardAttributeFilter implements ElementSearchFil
     public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
         $attr = $this->verifyCompatibility($search);
-        $value = $this->value;
-        if (!is_array($value)) {
-            $value = [$value];
-        }
-        $search->addFilter($this->_filter($attr, $value));
+        $search->addFilter($this->_filter($attr));
         return $this;
     }
 
     /**
      * @param NormalAttribute $attr
-     * @param $value
      * @return string
      */
-    protected function _filter(NormalAttribute & $attr, $value)
+    protected function _filter(NormalAttribute & $attr)
     {
-        $pgArray = SmartElement::arrayToRawValue($value);
-        $sql = sprintf("%s IS NOT NULL AND %s @> '%s'", pg_escape_identifier($attr->id), pg_escape_identifier($attr->id), $pgArray);
-        if ($this->ALL) {
-            $sql = $sql . sprintf(" AND %s <@ '%s'", pg_escape_identifier($attr->id), $pgArray);
-        }
-        if ($this->NOT) {
-            $sql = sprintf("NOT(%s)", $sql);
-        }
-        return $sql;
+        return sprintf(
+            "%s IS %s NULL %s true = %s(select unnest(%s) IS %s NULL)",
+            pg_escape_identifier($attr->id),
+            $this->NOT ? 'NOT' : '',
+            $this->NOT ? 'AND' : 'OR',
+            $this->ALL ? 'ALL' : 'ANY',
+            pg_escape_identifier($attr->id),
+            $this->NOT ? 'NOT' : ''
+        );
     }
 }

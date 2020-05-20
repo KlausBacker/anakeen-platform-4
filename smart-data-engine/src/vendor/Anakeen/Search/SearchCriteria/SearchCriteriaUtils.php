@@ -118,15 +118,28 @@ class SearchCriteriaUtils
                             \Anakeen\Search\Filters\Textual\IsEmpty::NOT => ___("Is not empty", "SearchCriteriaUtilsTextual multi"),
                         ],
                     ],
+                    "oneEmpty" => [
+                        "class" => \Anakeen\Search\Filters\Textual\OneEmpty::class,
+                        "operands" => [self::FIELD, 0],
+                        "availableOptions" => [],
+                        "labels" => [
+                            0 => ___("One value is empty", "SearchCriteriaUtils.Textual multi"),
+                            \Anakeen\Search\Filters\Textual\OneEmpty::NOT => ___("One value is not empty", "SearchCriteriaUtils.Textual multi"),
+                            \Anakeen\Search\Filters\Textual\OneEmpty::ALL => ___("All values are empty", "SearchCriteriaUtils.Textual multi"),
+                            \Anakeen\Search\Filters\Textual\OneEmpty::ALL + \Anakeen\Search\Filters\Textual\OneEmpty::NOT =>
+                                ___("No value is empty", "SearchCriteriaUtils.Textual multi"),
+                        ],
+                    ],
                     "oneEquals" => [
                         "class" => \Anakeen\Search\Filters\Textual\OneEquals::class,
                         "operands" => [self::FIELD, self::VALUE, 0],
-                        "availableOptions" => [
-                            \Anakeen\Search\Filters\Textual\OneEquals::NOT,
-                        ],
+                        "availableOptions" => [],
                         "labels" => [
-                            0 => ___("One Equals", "SearchCriteriaUtils.Textual multi"),
-                            \Anakeen\Search\Filters\Textual\OneEquals::NOT => ___("One is not equal to", "SearchCriteriaUtils.Textual multi"),
+                            0 => ___("One value is equal to", "SearchCriteriaUtils.Textual multi"),
+                            \Anakeen\Search\Filters\Textual\OneEquals::NOT => ___("One value is different from", "SearchCriteriaUtils.Textual multi"),
+                            \Anakeen\Search\Filters\Textual\OneEquals::ALL => ___("All values are equal to", "SearchCriteriaUtils.Textual multi"),
+                            \Anakeen\Search\Filters\Textual\OneEquals::ALL + \Anakeen\Search\Filters\Textual\OneEquals::NOT =>
+                                ___("All values are different from", "SearchCriteriaUtils.Textual multi"),
                         ],
                     ],
                     "oneContains" => [
@@ -231,6 +244,30 @@ class SearchCriteriaUtils
                         "labels" => [
                             0 => ___("Is empty", "SearchCriteriaUtils.Temporal multi"),
                             \Anakeen\Search\Filters\Temporal\IsEmpty::NOT => ___("Is not empty", "SearchCriteriaUtils.Temporal multi"),
+                        ],
+                    ],
+                    "oneEmpty" => [
+                        "class" => \Anakeen\Search\Filters\Temporal\OneEmpty::class,
+                        "operands" => [self::FIELD, 0],
+                        "availableOptions" => [],
+                        "labels" => [
+                            0 => ___("One date is empty", "SearchCriteriaUtils.Temporal multi"),
+                            \Anakeen\Search\Filters\Temporal\OneEmpty::NOT => ___("One date is not empty", "SearchCriteriaUtils.Temporal multi"),
+                            \Anakeen\Search\Filters\Temporal\OneEmpty::ALL => ___("All dates are empty", "SearchCriteriaUtils.Temporal multi"),
+                            \Anakeen\Search\Filters\Temporal\OneEmpty::ALL + \Anakeen\Search\Filters\Temporal\OneEmpty::NOT =>
+                                ___("No date is empty", "SearchCriteriaUtils.Temporal multi"),
+                        ],
+                    ],
+                    "oneEquals" => [
+                        "class" => \Anakeen\Search\Filters\Temporal\OneEquals::class,
+                        "operands" => [self::FIELD, self::VALUE, 0],
+                        "availableOptions" => [],
+                        "labels" => [
+                            0 => ___("One date is equal to", "SearchCriteriaUtils.Temporal multi"),
+                            \Anakeen\Search\Filters\Temporal\OneEquals::NOT => ___("One date is different from", "SearchCriteriaUtils.Temporal multi"),
+                            \Anakeen\Search\Filters\Temporal\OneEquals::ALL => ___("All dates are equal to", "SearchCriteriaUtils.Temporal multi"),
+                            \Anakeen\Search\Filters\Temporal\OneEquals::NOT + \Anakeen\Search\Filters\Temporal\OneEquals::ALL =>
+                                ___("All dates are different from", "SearchCriteriaUtils.Temporal multi"),
                         ],
                     ],
                     "oneLesser" => [
@@ -359,6 +396,30 @@ class SearchCriteriaUtils
                         "labels" => [
                             0 => ___("Is empty", "SearchCriteriaUtils.Numerical multi"),
                             \Anakeen\Search\Filters\Numerical\IsEmpty::NOT => ___("Is not empty", "SearchCriteriaUtils.Numerical multi"),
+                        ],
+                    ],
+                    "oneEmpty" => [
+                        "class" => \Anakeen\Search\Filters\Numerical\OneEmpty::class,
+                        "operands" => [self::FIELD, 0],
+                        "availableOptions" => [],
+                        "labels" => [
+                            0 => ___("One date is empty", "SearchCriteriaUtils.Numerical multi"),
+                            \Anakeen\Search\Filters\Numerical\OneEmpty::NOT => ___("One date is not empty", "SearchCriteriaUtils.Numerical multi"),
+                            \Anakeen\Search\Filters\Numerical\OneEmpty::ALL => ___("All dates are empty", "SearchCriteriaUtils.Numerical multi"),
+                            \Anakeen\Search\Filters\Numerical\OneEmpty::ALL + \Anakeen\Search\Filters\Numerical\OneEmpty::NOT =>
+                                ___("No date is empty", "SearchCriteriaUtils.Numerical multi"),
+                        ],
+                    ],
+                    "oneEquals" => [
+                        "class" => \Anakeen\Search\Filters\Numerical\OneEquals::class,
+                        "operands" => [self::FIELD, self::VALUE, 0],
+                        "availableOptions" => [],
+                        "labels" => [
+                            0 => ___("One value is equal to", "SearchCriteriaUtils.Numerical multi"),
+                            \Anakeen\Search\Filters\Numerical\OneEquals::NOT => ___("One value is different from", "SearchCriteriaUtils.Numerical multi"),
+                            \Anakeen\Search\Filters\Numerical\OneEquals::ALL => ___("All values are equal to", "SearchCriteriaUtils.Numerical multi"),
+                            \Anakeen\Search\Filters\Numerical\OneEquals::ALL + \Anakeen\Search\Filters\Numerical\OneEquals::NOT =>
+                                ___("All values are different from", "SearchCriteriaUtils.Numerical multi"),
                         ],
                     ],
                     "oneLesser" => [
@@ -565,9 +626,19 @@ class SearchCriteriaUtils
                         "class" => \Anakeen\Search\Filters\Enum\OneEquals::class,
                         "operands" => [self::FIELD, self::VALUE, 0],
                         "availableOptions" => [],
-                        "labels" => [
-                            0 => ___("One of the value is equal to", "SearchCriteriaUtils.Enum multi"),
-                            \Anakeen\Search\Filters\Enum\OneEquals::NOT => ___("One of the value is different from", "SearchCriteriaUtils.Enum multi"),
+                        "labels" => [0 => ___("One value is equal to", "SearchCriteriaUtils.Enum multi"),
+                            \Anakeen\Search\Filters\Enum\OneEquals::NOT => ___(
+                                "One value is different from",
+                                "SearchCriteriaUtils.Enum multi"
+                            ),
+                            \Anakeen\Search\Filters\Enum\OneEquals::ALL => ___(
+                                "All values are equal to",
+                                "SearchCriteriaUtils.Enum multi"
+                            ),
+                            \Anakeen\Search\Filters\Enum\OneEquals::ALL + \Anakeen\Search\Filters\Enum\OneEquals::NOT => ___(
+                                "All values are different from",
+                                "SearchCriteriaUtils.Enum multi"
+                            )
                         ],
                     ],
                 ],

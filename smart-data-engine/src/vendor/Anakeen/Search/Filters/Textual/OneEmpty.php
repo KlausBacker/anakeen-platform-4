@@ -2,7 +2,7 @@
 
 namespace Anakeen\Search\Filters\Textual;
 
-class Equals extends \Anakeen\Search\Filters\IsEqual
+class OneEmpty extends \Anakeen\Search\Filters\OneEmpty
 {
 
     protected $compatibleType = array(
