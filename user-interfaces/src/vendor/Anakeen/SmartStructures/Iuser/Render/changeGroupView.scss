@@ -95,5 +95,26 @@
     flex: 1;
     overflow: auto;
   }
+  .group-list {
+    height: 2rem;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .group-list-legend {
+      margin-left: 4px;
+      width: 15px;
+      height: 10px;
+    }
+    .parent-group-to-add {
+      background-color: #bddcbd;
+    }
+    .available-group-to-delete {
+      background-color: #ffbfbf;
+    }
+    span {
+      margin-left: 4px;
+    }
+  }
 }
 

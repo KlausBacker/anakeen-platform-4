@@ -4,6 +4,7 @@
     <module:po-config>
         <module:po-struct source="src/**/*struct.xml"/>
         <module:po-enum source="src/**/*struct.xml"/>
+        <module:po-cvdoc source="src/**/*views.xml"/>
         <module:po-mustache target="user-interfaces" source="src/**/*.mustache"/>
         <module:po-php source="src/**/*.php" target="user-interfaces"/>
         <module:po-php source="src/vendor/Anakeen/Ui/PhpLib/**/*.php" target="user-interfaces" ignore="true"/>

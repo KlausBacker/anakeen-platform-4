@@ -40,10 +40,14 @@ window.ank.smartElement.globalController.registerFunction("iuserGroup", controll
       },
       pageSize: 100
     });
-
-    $pager.kendoPager({
-      dataSource: dataSource
-      // pageSizes: [10, 25, 50]
+    dataSource.one("requestEnd", e => {
+      $pager.kendoPager({
+        dataSource: dataSource,
+        messages: {
+          display: e.response.pagerTranslation
+        }
+        // pageSizes: [10, 25, 50]
+      });
     });
 
     $list.kendoListView({

@@ -1,6 +1,6 @@
 <div class="igroup-changegroup">
     <div class="igroup-list igroup-ag">
-        <h3>Available groups</h3>
+        <h3>[[#i18n]]iuser::Available groups[[/i18n]]</h3>
         <script type="text/x-kendo-template" name="availableGroupTemplate">
             <div data-id="#:accountId#" class="igroup-item add-group #:tag#">
 
@@ -23,14 +23,18 @@
             </div>
         </script>
         <form name="availableGroupForm">
-            <input type="search" class="form-control"  name="availableGroupSearch" placeholder="Search..."/>
+            <input type="search" class="form-control"  name="availableGroupSearch" placeholder="[[#i18n]]iuser::Search[[/i18n]]"/>
         </form>
         <div name="availableGroupList" data-filter="not"/>
+        <div class="group-list">
+            <div class="group-list-legend available-group-to-delete"/>
+            <span>[[#i18n]]iuser::Parent group to delete[[/i18n]]</span>
+        </div>
         <div name="availableGroupPager"/>
     </div>
 
     <div class="igroup-list igroup-pg">
-        <h3>Parent groups</h3>
+        <h3>[[#i18n]]iuser::Parent groups[[/i18n]]</h3>
         <script type="text/x-kendo-template" name="parentGroupTemplate">
             <div data-id="#:accountId#" class="igroup-item delete-group #:tag#">
                 <button  class="btn btn-primary delete-group"> &lt;&lt;</button>
@@ -51,9 +55,13 @@
             </div>
         </script>
         <form name="parentGroupForm">
-            <input type="search" class="form-control"  name="parentGroupSearch" placeholder="Search..."/>
+            <input type="search" class="form-control"  name="parentGroupSearch" placeholder="[[#i18n]]iuser::Search[[/i18n]]"/>
         </form>
         <div name="parentGroupList"/>
+        <div class="group-list">
+            <div class="group-list-legend parent-group-to-add"/>
+            <span>[[#i18n]]iuser::Parent group to add[[/i18n]]</span>
+        </div>
         <div name="parentGroupPager"/>
     </div>
 </div>

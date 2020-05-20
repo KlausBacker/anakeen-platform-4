@@ -17,6 +17,11 @@ msgctxt "ddui"
 msgid "Add new line"
 msgstr ""
 
+#: src/vendor/Anakeen/SmartStructures/Iuser/Render/groupModify.mustache
+msgctxt "iuser"
+msgid "Available groups"
+msgstr "Available groups"
+
 #: src/vendor/Anakeen/SmartStructures/Report/Render/reportHTML5_edit.mustache
 msgctxt "dsearch"
 msgid "Conditions"
@@ -48,6 +53,21 @@ msgctxt "ddui"
 msgid "Editing form"
 msgstr "Form is under modification"
 
+#: src/vendor/Anakeen/SmartStructures/Iuser/Render/groupModify.mustache
+msgctxt "iuser"
+msgid "Parent group to add"
+msgstr "Parent groups to add"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/Render/groupModify.mustache
+msgctxt "iuser"
+msgid "Parent group to delete"
+msgstr "Parent groups to delete"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/Render/groupModify.mustache
+msgctxt "iuser"
+msgid "Parent groups"
+msgstr "Parent groups"
+
 #: src/vendor/Anakeen/SmartStructures/Report/Render/reportHTML5_edit.mustache
 msgctxt "dsearch"
 msgid "Results"
@@ -63,3 +83,12 @@ msgstr "Revision created at"
 msgctxt "ddui"
 msgid "RevisionCreated"
 msgstr "Revision created at"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/Render/groupModify.mustache
+msgctxt "iuser"
+msgid "Search"
+msgstr "Search..."
+
+#~ msgctxt "smart-grid"
+#~ msgid "{0} - {1} of {2} results"
+#~ msgstr "{0} - {1} of {2} results"
