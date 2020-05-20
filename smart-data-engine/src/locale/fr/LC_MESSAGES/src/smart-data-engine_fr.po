@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-18 16:47+0200\n"
+"POT-Creation-Date: 2020-05-20 09:11+0200\n"
 "PO-Revision-Date: 2020-05-18 14:15+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
@@ -237,6 +237,16 @@ msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "All dates are between"
 msgstr ""
 
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "All dates are different from"
+msgstr "Un des '%s' n'est pas parmi"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "All dates are equal to"
+msgstr "[%s] doit être supérieur à %s"
+
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "All dates are strictly after"
 msgstr ""
@@ -258,6 +268,36 @@ msgstr ""
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "All values are between"
 msgstr ""
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "All values are different from"
+msgstr "Un des '%s' n'est pas parmi"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "All values are different from"
+msgstr "Un des '%s' n'est pas parmi"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Textual multi"
+msgid "All values are different from"
+msgstr "Un des '%s' n'est pas parmi"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "All values are equal to"
+msgstr "[%s] doit être supérieur à %s"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "All values are equal to"
+msgstr "[%s] doit être supérieur à %s"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Textual multi"
+msgid "All values are equal to"
+msgstr "[%s] doit être supérieur à %s"
 
 #, fuzzy
 msgctxt "SearchCriteriaUtils.Numerical multi"
@@ -1123,10 +1163,6 @@ msgctxt "smart iuser"
 msgid "Not enough uppercase characters."
 msgstr "Pas assez de majuscules"
 
-msgctxt "SearchCriteriaUtils.Textual multi"
-msgid "One Equals"
-msgstr "Une des valeurs est égale à"
-
 msgctxt "SearchCriteriaUtilsTextual multi"
 msgid "One contains"
 msgstr "Une des valeurs contient"
@@ -1144,6 +1180,16 @@ msgstr "Une des dates est entre"
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "One date is between"
 msgstr "Une des dates est entre"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "One date is different from"
+msgstr "Un des '%s' n'est pas parmi"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "One date is equal to"
+msgstr "Une valeur est différente de"
 
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "One date is not between"
@@ -1163,10 +1209,6 @@ msgctxt "SearchCriteriaUtilsTextual multi"
 msgid "One does not contain"
 msgstr "Une valeur ne contient pas"
 
-msgctxt "SearchCriteriaUtils.Textual multi"
-msgid "One is not equal to"
-msgstr "Une valeur est différente de"
-
 #, php-format
 msgctxt "SearchCriteriaUtils.Enum multi"
 msgid "One of the '%s' is among"
@@ -1186,20 +1228,40 @@ msgstr "Un des '%s' n'est pas parmi"
 msgctxt "SearchCriteriaUtils.Relations multi"
 msgid "One of the '%s' is not among"
 msgstr "Un des '%s' n'est pas parmi"
-
-#, fuzzy
-msgctxt "SearchCriteriaUtils.Enum multi"
-msgid "One of the value is different from"
-msgstr "Un des '%s' n'est pas parmi"
-
-#, fuzzy
-msgctxt "SearchCriteriaUtils.Enum multi"
-msgid "One of the value is equal to"
-msgstr "Un des '%s' est parmi"
 
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "One value is between"
 msgstr "Une des valeurs est entre"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "One value is different from"
+msgstr "Un des '%s' n'est pas parmi"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "One value is different from"
+msgstr "Un des '%s' n'est pas parmi"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Textual multi"
+msgid "One value is different from"
+msgstr "Un des '%s' n'est pas parmi"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "One value is equal to"
+msgstr "Un des '%s' est parmi"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "One value is equal to"
+msgstr "Un des '%s' est parmi"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Textual multi"
+msgid "One value is equal to"
+msgstr "Un des '%s' est parmi"
 
 #, fuzzy
 msgctxt "SearchCriteriaUtils.Numerical multi"
@@ -2600,3 +2662,7 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgctxt "SearchCriteriaUtils.Textual simple"
 #~ msgid "Is not equal to"
 #~ msgstr "pas égal"
+
+#~ msgctxt "SearchCriteriaUtils.Textual multi"
+#~ msgid "One Equals"
+#~ msgstr "Une des valeurs est égale à"

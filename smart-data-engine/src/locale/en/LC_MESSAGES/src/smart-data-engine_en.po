@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-18 16:47+0200\n"
+"POT-Creation-Date: 2020-05-20 09:11+0200\n"
 "PO-Revision-Date: 2016-11-18 15:26+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
@@ -234,6 +234,14 @@ msgid "All dates are between"
 msgstr ""
 
 msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "All dates are different from"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "All dates are equal to"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "All dates are strictly after"
 msgstr ""
 
@@ -253,6 +261,30 @@ msgstr ""
 
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "All values are between"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "All values are different from"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "All values are different from"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Textual multi"
+msgid "All values are different from"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "All values are equal to"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "All values are equal to"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Textual multi"
+msgid "All values are equal to"
 msgstr ""
 
 msgctxt "SearchCriteriaUtils.Numerical multi"
@@ -1059,10 +1091,6 @@ msgctxt "smart iuser"
 msgid "Not enough uppercase characters."
 msgstr ""
 
-msgctxt "SearchCriteriaUtils.Textual multi"
-msgid "One Equals"
-msgstr ""
-
 msgctxt "SearchCriteriaUtilsTextual multi"
 msgid "One contains"
 msgstr ""
@@ -1077,6 +1105,14 @@ msgstr ""
 
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "One date is between"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "One date is different from"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "One date is equal to"
 msgstr ""
 
 msgctxt "SearchCriteriaUtils.Temporal multi"
@@ -1095,10 +1131,6 @@ msgctxt "SearchCriteriaUtilsTextual multi"
 msgid "One does not contain"
 msgstr ""
 
-msgctxt "SearchCriteriaUtils.Textual multi"
-msgid "One is not equal to"
-msgstr ""
-
 #, php-format
 msgctxt "SearchCriteriaUtils.Enum multi"
 msgid "One of the '%s' is among"
@@ -1117,18 +1149,34 @@ msgstr ""
 #, php-format
 msgctxt "SearchCriteriaUtils.Relations multi"
 msgid "One of the '%s' is not among"
-msgstr ""
-
-msgctxt "SearchCriteriaUtils.Enum multi"
-msgid "One of the value is different from"
-msgstr ""
-
-msgctxt "SearchCriteriaUtils.Enum multi"
-msgid "One of the value is equal to"
 msgstr ""
 
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "One value is between"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "One value is different from"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "One value is different from"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Textual multi"
+msgid "One value is different from"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Enum multi"
+msgid "One value is equal to"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "One value is equal to"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Textual multi"
+msgid "One value is equal to"
 msgstr ""
 
 msgctxt "SearchCriteriaUtils.Numerical multi"
