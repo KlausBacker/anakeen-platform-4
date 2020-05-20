@@ -131,7 +131,7 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
             $search = new SearchElements($this->fromname);
             $search->addFilter("%s = '%d'", HubConfigurationFields::hub_station_id, $hubInstanceId);
             $search->addFilter("id <> '%d'", $this->initid);
-            $search->addFilter("%s SIMILAR TO '%s'", HubConfigurationFields::hub_title, $hubElementName);
+            $search->addFilter("%s = '%s'", HubConfigurationFields::hub_title, $hubElementName);
             $results = $search->getResults();
             $titles = [];
             foreach ($results as $result) {

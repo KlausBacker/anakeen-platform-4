@@ -65,6 +65,14 @@
             </smart:field-set>
         </smart:parameters>
 
+        <smart:hooks>
+            <smart:field-hook type="constraint" event="onPreStore" field="hub_title">
+                <smart:field-callable function="::checkHubElementName"/>
+                <smart:field-argument type="field">hub_title</smart:field-argument>
+                <smart:field-argument type="field">hub_station_id</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
+        </smart:hooks>
 
         <smart:defaults>
             <smart:default field="hub_activated">FALSE</smart:default>
