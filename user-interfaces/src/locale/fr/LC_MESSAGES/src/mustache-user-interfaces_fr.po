@@ -80,36 +80,3 @@ msgstr "Révision n°"
 msgctxt "ddui"
 msgid "RevisionCreated"
 msgstr "Créée le"
-
-#: src/vendor/Anakeen/SmartStructures/Iuser/Render/groupModify.mustache
-msgctxt "iuser"
-msgid "Search"
-msgstr "Recherche..."
-
-#~ msgctxt "ddui"
-#~ msgid "Click to reload the document"
-#~ msgstr "Cliquez pour recharger la page"
-
-msgctxt "ddui"
-msgid "Delete line"
-msgstr "Supprimer la ligne"
-
-msgctxt "ddui"
-msgid "Drag to move line"
-msgstr "Cliquer pour déplacer la ligne"
-
-#~ msgctxt "dsearch"
-#~ msgid "Loading criteria ..."
-#~ msgstr "Chargement des critères..."
-
-#~ msgctxt "dsearch"
-#~ msgid "Searching ..."
-#~ msgstr "Recherche en cours"
-
-msgctxt "ddui"
-msgid "Select line"
-msgstr "Sélectionner la ligne"
-
-#~ msgctxt "ddui"
-#~ msgid "Unable to load try again"
-#~ msgstr "Impossible de charger la page, veuillez essayer à nouveau."

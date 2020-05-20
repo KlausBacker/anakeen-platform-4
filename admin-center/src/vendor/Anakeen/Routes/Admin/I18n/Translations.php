@@ -333,23 +333,22 @@ class Translations
             if ($entry->isFuzzy()) {
                 //continue;
             }
-            if ($entry->isObsolete()) {
-                //continue;
-            }
-            $key = sprintf("%s-%s", $entry->getMsgCtxt(), $entry->getMsgId());
-            if (empty($this->filters) || $this->filterContainsTranslations($entry, $this->filters)) {
-                if (!isset($data[$key])) {
-                    $data[$key] = [
-                        "gridId" => $i++,
-                        "section" => "",
-                        "msgctxt" => $entry->getMsgCtxt(),
-                        "msgid" => $entry->getMsgId(),
-                    ];
-                }
-                $data[$key]["msgstr"] = $entry->getMsgStr();
-                if (($entry->getMsgIdPlural())) {
-                    $data[$key]["pluralid"] = $entry->getMsgIdPlural();
-                    $data[$key]["plurals"] = $entry->getMsgStrPlurals();
+            if ($entry->isObsolete() === false) {
+                $key = sprintf("%s-%s", $entry->getMsgCtxt(), $entry->getMsgId());
+                if (empty($this->filters) || $this->filterContainsTranslations($entry, $this->filters)) {
+                    if (!isset($data[$key])) {
+                        $data[$key] = [
+                            "gridId" => $i++,
+                            "section" => "",
+                            "msgctxt" => $entry->getMsgCtxt(),
+                            "msgid" => $entry->getMsgId(),
+                        ];
+                    }
+                    $data[$key]["msgstr"] = $entry->getMsgStr();
+                    if (($entry->getMsgIdPlural())) {
+                        $data[$key]["pluralid"] = $entry->getMsgIdPlural();
+                        $data[$key]["plurals"] = $entry->getMsgStrPlurals();
+                    }
                 }
             }
         }
