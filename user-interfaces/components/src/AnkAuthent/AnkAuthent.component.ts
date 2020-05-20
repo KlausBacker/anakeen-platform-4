@@ -177,6 +177,8 @@ export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin
     const $connectForm = $(this.$refs.authentForm);
     let helpWindow;
 
+    // this.$refs.authentForm.input.focus();
+
     $(this.$refs.authentHelpButton).kendoButton({
       click: () => {
         helpWindow
@@ -217,6 +219,7 @@ export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin
     } else {
       this.authent.initForgetElements();
     }
+    this.$refs.authentForm.getElementsByTagName("input")[0].focus();
     this._enableReady();
   }
 
