@@ -1,0 +1,56 @@
+# English translations for ap package.
+# Copyright (C) 2020 THE ap'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the ap package.
+# Automatically generated, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ap 4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-20 11:27+0200\n"
+"PO-Revision-Date: 2020-05-19 14:52+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ASCII\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#, php-format
+msgctxt "timer"
+msgid "Interval \"%s\" is not correct"
+msgstr "Interval \"%s\" is not correct"
+
+#, php-format
+msgid "activity for %s"
+msgstr "activity for %s"
+
+#, php-format
+msgid "apply method %s"
+msgstr "apply method %s"
+
+#, php-format
+msgctxt "timer"
+msgid "cannot execute : document %s is not found"
+msgstr "cannot execute : document %s is not found"
+
+#, php-format
+msgid "change state to %s"
+msgstr "change state to %s"
+
+#, php-format
+msgid "execute timer %s  : %s"
+msgstr "execute timer %s  : %s"
+
+#, php-format
+msgid "execute timer %s : %s"
+msgstr "execute timer %s : %s"
+
+#, php-format
+msgid "no processes specified in timer %s [%d]"
+msgstr "no processes specified in timer %s [%d]"
+
+#, php-format
+msgid "send mail with template %s [%d]"
+msgstr "send mail with template %s [%d]"
