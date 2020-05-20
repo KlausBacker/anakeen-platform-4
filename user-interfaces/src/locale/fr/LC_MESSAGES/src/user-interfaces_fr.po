@@ -898,7 +898,7 @@ msgstr "Classe PHP utilisée pour le render"
 
 msgctxt "ddui-htmltext"
 msgid "Paragraph"
-msgstr "Style du paragraphe"
+msgstr "Paragraphe"
 
 #, php-format
 msgctxt "authent"
