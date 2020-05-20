@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-20 09:11+0200\n"
+"POT-Creation-Date: 2020-05-20 09:52+0200\n"
 "PO-Revision-Date: 2020-05-18 14:15+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
@@ -243,6 +243,16 @@ msgid "All dates are different from"
 msgstr "Un des '%s' n'est pas parmi"
 
 #, fuzzy
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "All dates are empty"
+msgstr "[%s] doit être supérieur à %s"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "All dates are empty"
+msgstr "[%s] doit être supérieur à %s"
+
+#, fuzzy
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "All dates are equal to"
 msgstr "[%s] doit être supérieur à %s"
@@ -283,6 +293,11 @@ msgstr "Un des '%s' n'est pas parmi"
 msgctxt "SearchCriteriaUtils.Textual multi"
 msgid "All values are different from"
 msgstr "Un des '%s' n'est pas parmi"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Textual multi"
+msgid "All values are empty"
+msgstr "[%s] doit être supérieur à %s"
 
 #, fuzzy
 msgctxt "SearchCriteriaUtils.Enum multi"
@@ -1106,6 +1121,16 @@ msgctxt "fusersimport"
 msgid "New password"
 msgstr "Nouveau mot de passe"
 
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "No date is empty"
+msgstr "est vide"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "No date is empty"
+msgstr "est vide"
+
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "No dates are between"
 msgstr ""
@@ -1120,6 +1145,11 @@ msgstr ""
 msgctxt "sde"
 msgid "No privilege \"%s\" for %d"
 msgstr "Pas de privilège \"%s\" pour l'élement \"%d\""
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Textual multi"
+msgid "No value is empty"
+msgstr "Une des valeurs est entre"
 
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "No values are between"
@@ -1187,12 +1217,32 @@ msgid "One date is different from"
 msgstr "Un des '%s' n'est pas parmi"
 
 #, fuzzy
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "One date is empty"
+msgstr "Une des dates est entre"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "One date is empty"
+msgstr "Une des dates est entre"
+
+#, fuzzy
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "One date is equal to"
 msgstr "Une valeur est différente de"
 
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "One date is not between"
+msgstr "Une des dates n'est pas entre"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "One date is not empty"
+msgstr "Une des dates n'est pas entre"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "One date is not empty"
 msgstr "Une des dates n'est pas entre"
 
 #, fuzzy
@@ -1249,6 +1299,11 @@ msgid "One value is different from"
 msgstr "Un des '%s' n'est pas parmi"
 
 #, fuzzy
+msgctxt "SearchCriteriaUtils.Textual multi"
+msgid "One value is empty"
+msgstr "Une des valeurs est entre"
+
+#, fuzzy
 msgctxt "SearchCriteriaUtils.Enum multi"
 msgid "One value is equal to"
 msgstr "Un des '%s' est parmi"
@@ -1275,6 +1330,11 @@ msgstr "Une des valeurs est entre"
 
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "One value is not between"
+msgstr "Une des valeurs n'est pas entre"
+
+#, fuzzy
+msgctxt "SearchCriteriaUtils.Textual multi"
+msgid "One value is not empty"
 msgstr "Une des valeurs n'est pas entre"
 
 #, fuzzy

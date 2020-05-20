@@ -36,6 +36,7 @@ class SuiteDcpFilter
         $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterOrOperator');
         $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterIsIn');
         $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterOneBetween');
+        $suite->addTestSuite('Dcp\Pu\TestDcpDocumentFilterOneEmpty');
 
         // ...
         return $suite;

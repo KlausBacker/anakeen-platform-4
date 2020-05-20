@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-20 09:11+0200\n"
+"POT-Creation-Date: 2020-05-20 09:52+0200\n"
 "PO-Revision-Date: 2016-11-18 15:26+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
@@ -237,6 +237,14 @@ msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "All dates are different from"
 msgstr ""
 
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "All dates are empty"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "All dates are empty"
+msgstr ""
+
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "All dates are equal to"
 msgstr ""
@@ -273,6 +281,10 @@ msgstr ""
 
 msgctxt "SearchCriteriaUtils.Textual multi"
 msgid "All values are different from"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Textual multi"
+msgid "All values are empty"
 msgstr ""
 
 msgctxt "SearchCriteriaUtils.Enum multi"
@@ -1035,6 +1047,14 @@ msgctxt "fusersimport"
 msgid "New password"
 msgstr ""
 
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "No date is empty"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "No date is empty"
+msgstr ""
+
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "No dates are between"
 msgstr ""
@@ -1046,6 +1066,10 @@ msgstr ""
 #, php-format
 msgctxt "sde"
 msgid "No privilege \"%s\" for %d"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Textual multi"
+msgid "No value is empty"
 msgstr ""
 
 msgctxt "SearchCriteriaUtils.Numerical multi"
@@ -1111,12 +1135,28 @@ msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "One date is different from"
 msgstr ""
 
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "One date is empty"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "One date is empty"
+msgstr ""
+
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "One date is equal to"
 msgstr ""
 
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "One date is not between"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "One date is not empty"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Temporal multi"
+msgid "One date is not empty"
 msgstr ""
 
 msgctxt "SearchCriteriaUtils.Temporal multi"
@@ -1167,6 +1207,10 @@ msgctxt "SearchCriteriaUtils.Textual multi"
 msgid "One value is different from"
 msgstr ""
 
+msgctxt "SearchCriteriaUtils.Textual multi"
+msgid "One value is empty"
+msgstr ""
+
 msgctxt "SearchCriteriaUtils.Enum multi"
 msgid "One value is equal to"
 msgstr ""
@@ -1189,6 +1233,10 @@ msgstr ""
 
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "One value is not between"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Textual multi"
+msgid "One value is not empty"
 msgstr ""
 
 msgctxt "SearchCriteriaUtils.Numerical multi"

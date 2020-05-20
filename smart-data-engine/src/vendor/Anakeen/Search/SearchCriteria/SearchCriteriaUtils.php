@@ -118,6 +118,18 @@ class SearchCriteriaUtils
                             \Anakeen\Search\Filters\Textual\IsEmpty::NOT => ___("Is not empty", "SearchCriteriaUtilsTextual multi"),
                         ],
                     ],
+                    "oneEmpty" => [
+                        "class" => \Anakeen\Search\Filters\Textual\OneEmpty::class,
+                        "operands" => [self::FIELD, 0],
+                        "availableOptions" => [],
+                        "labels" => [
+                            0 => ___("One value is empty", "SearchCriteriaUtils.Textual multi"),
+                            \Anakeen\Search\Filters\Textual\OneEmpty::NOT => ___("One value is not empty", "SearchCriteriaUtils.Textual multi"),
+                            \Anakeen\Search\Filters\Textual\OneEmpty::ALL => ___("All values are empty", "SearchCriteriaUtils.Textual multi"),
+                            \Anakeen\Search\Filters\Textual\OneEmpty::ALL + \Anakeen\Search\Filters\Textual\OneEmpty::NOT =>
+                                ___("No value is empty", "SearchCriteriaUtils.Textual multi"),
+                        ],
+                    ],
                     "oneEquals" => [
                         "class" => \Anakeen\Search\Filters\Textual\OneEquals::class,
                         "operands" => [self::FIELD, self::VALUE, 0],
@@ -232,6 +244,18 @@ class SearchCriteriaUtils
                         "labels" => [
                             0 => ___("Is empty", "SearchCriteriaUtils.Temporal multi"),
                             \Anakeen\Search\Filters\Temporal\IsEmpty::NOT => ___("Is not empty", "SearchCriteriaUtils.Temporal multi"),
+                        ],
+                    ],
+                    "oneEmpty" => [
+                        "class" => \Anakeen\Search\Filters\Temporal\OneEmpty::class,
+                        "operands" => [self::FIELD, 0],
+                        "availableOptions" => [],
+                        "labels" => [
+                            0 => ___("One date is empty", "SearchCriteriaUtils.Temporal multi"),
+                            \Anakeen\Search\Filters\Temporal\OneEmpty::NOT => ___("One date is not empty", "SearchCriteriaUtils.Temporal multi"),
+                            \Anakeen\Search\Filters\Temporal\OneEmpty::ALL => ___("All dates are empty", "SearchCriteriaUtils.Temporal multi"),
+                            \Anakeen\Search\Filters\Temporal\OneEmpty::ALL + \Anakeen\Search\Filters\Temporal\OneEmpty::NOT =>
+                                ___("No date is empty", "SearchCriteriaUtils.Temporal multi"),
                         ],
                     ],
                     "oneEquals" => [
@@ -372,6 +396,18 @@ class SearchCriteriaUtils
                         "labels" => [
                             0 => ___("Is empty", "SearchCriteriaUtils.Numerical multi"),
                             \Anakeen\Search\Filters\Numerical\IsEmpty::NOT => ___("Is not empty", "SearchCriteriaUtils.Numerical multi"),
+                        ],
+                    ],
+                    "oneEmpty" => [
+                        "class" => \Anakeen\Search\Filters\Numerical\OneEmpty::class,
+                        "operands" => [self::FIELD, 0],
+                        "availableOptions" => [],
+                        "labels" => [
+                            0 => ___("One date is empty", "SearchCriteriaUtils.Numerical multi"),
+                            \Anakeen\Search\Filters\Numerical\OneEmpty::NOT => ___("One date is not empty", "SearchCriteriaUtils.Numerical multi"),
+                            \Anakeen\Search\Filters\Numerical\OneEmpty::ALL => ___("All dates are empty", "SearchCriteriaUtils.Numerical multi"),
+                            \Anakeen\Search\Filters\Numerical\OneEmpty::ALL + \Anakeen\Search\Filters\Numerical\OneEmpty::NOT =>
+                                ___("No date is empty", "SearchCriteriaUtils.Numerical multi"),
                         ],
                     ],
                     "oneEquals" => [
