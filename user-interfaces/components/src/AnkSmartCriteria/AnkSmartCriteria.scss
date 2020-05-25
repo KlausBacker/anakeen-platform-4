@@ -2,6 +2,16 @@
   display: flex;
   flex-direction: column;
 
+  .smart-criteria-loading-screen{
+    display: flex;
+    justify-content: center;
+
+    .dcpLoading--logo {
+      margin-top: 5rem;
+      margin-bottom: 5rem;
+    }
+  }
+
   .smart-criteria-form {
     height: 100%;
 

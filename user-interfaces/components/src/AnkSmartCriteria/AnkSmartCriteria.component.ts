@@ -3,6 +3,7 @@ import { Component, Mixins, Prop, Watch } from "vue-property-decorator";
 import EventUtilsMixin from "../../mixins/AnkVueComponentMixin/EventUtilsMixin";
 import ReadyMixin from "../../mixins/AnkVueComponentMixin/ReadyMixin";
 import AnkSmartForm from "../AnkSmartForm";
+import AnkLoading from "../AnkLoading";
 import ISmartFilter from "./Types/ISmartFilter";
 import IConfigurationCriteria, { ICriteriaConfigurationOperator } from "./Types/IConfigurationCriteria";
 import { SmartCriteriaKind } from "./Types/SmartCriteriaKind";
@@ -24,7 +25,8 @@ import SmartCriteriaEvent from "./Types/SmartCriteriaEvent";
   components: {
     "ank-smart-form": () => {
       return AnkSmartForm;
-    }
+    },
+    "ank-loading": AnkLoading
   }
 })
 export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin, AnkI18NMixin) {
@@ -64,6 +66,7 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
     logic: SmartFilterLogic.AND,
     filters: []
   };
+  private loading = true;
 
   @Watch("config", { immediate: false, deep: true })
   public onConfigChanged(newConfig: ISmartCriteriaConfiguration): void {
@@ -101,6 +104,7 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
     if (smartField.id === "sc_tab") {
       $(".smart-criteria-input-button", this.$el).kendoButton();
       this.initVisibilities();
+      this.loading = false;
     }
   }
 
@@ -149,6 +153,7 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
     if (this.mountedDone === false) {
       return;
     }
+    this.loading = true;
     const ajaxPromises = this.smartCriteriaConfigurationLoader.load();
     this.errorStack = this.smartCriteriaConfigurationLoader.getErrorStack();
     // @ts-ignore
