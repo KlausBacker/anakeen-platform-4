@@ -41,6 +41,7 @@ export default interface IConfigurationCriteria {
   enumItems?: ISmartFormFieldEnumConfig[];
   typeFormat?: string;
   customData?: any;
+  modifiableOperator?: boolean;
 
   // For state property
   stateStructure?: string;
