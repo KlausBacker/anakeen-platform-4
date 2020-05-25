@@ -4,6 +4,7 @@ namespace Anakeen\Search\Filters;
 
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SmartStructure\NormalAttribute;
+use Anakeen\Search\SearchCriteria\SearchCriteriaTrait;
 
 /**
  * Class OneEmpty
@@ -13,6 +14,17 @@ use Anakeen\Core\SmartStructure\NormalAttribute;
  */
 class OneEmpty extends StandardAttributeFilter implements ElementSearchFilter
 {
+
+    use SearchCriteriaTrait;
+
+    public static function getOptionMap()
+    {
+        return array(
+            self::NOT => "not",
+            self::ALL => "all",
+        );
+    }
+
     const NOT = 1;
     const ALL = 2;
     protected $NOT = false;
