@@ -1,0 +1,21 @@
+{
+  "title": "Test Modifiable Operator",
+  "defaultStructure": "DEVBILL",
+  "criterias": [
+    {
+      "kind": "field",
+      "field": "bill_cost",
+      "label": "Cost is between",
+      "modifiableOperator": false,
+      "default": {
+        "operator": {
+          "key": "between"
+        },
+        "value": [
+          25,
+          35
+        ]
+      }
+    }
+  ]
+}

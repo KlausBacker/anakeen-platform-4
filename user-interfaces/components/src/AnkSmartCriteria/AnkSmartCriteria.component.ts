@@ -190,6 +190,7 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
     let betweenVisible;
 
     const criteria = this.innerConfig.criterias[index];
+    const operatorVisible = criteria.modifiableOperator;
     const operatorData: ICriteriaConfigurationOperator = SmartCriteriaUtils.getOperatorData(operator, criteria);
     if (!operatorData) {
       valueVisible = false;
@@ -210,6 +211,7 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
       }
     }
 
+    AnkSmartCriteria.setSmartFieldVisibility(SmartFormConfigurationBuilder.getOperatorName(index), operatorVisible);
     AnkSmartCriteria.setSmartFieldVisibility(SmartFormConfigurationBuilder.getValueName(index), valueVisible);
     AnkSmartCriteria.setSmartFieldVisibility(
       SmartFormConfigurationBuilder.getValueBetweenLabelName(index),
