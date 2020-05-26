@@ -6,6 +6,7 @@ import DefaultValues from "./SmartStructureDefaultValues/SmartStructureManagerDe
 import Info from "./SmartStructureInformations/SmartStructureManagerInformations.vue";
 import SSList from "./SmartStructureList/SSList.vue";
 import Parameters from "./SmartStructureParameters/SmartStructureManagerParameters.vue";
+import SmartElements from "./SmartStructureSmartElements/SmartStructureManagerSmartElements.vue";
 
 @Component({
   components: {
@@ -14,7 +15,8 @@ import Parameters from "./SmartStructureParameters/SmartStructureManagerParamete
     "ss-list": SSList,
     "ssm-default-values": DefaultValues,
     "ssm-info": Info,
-    "ssm-parameters": Parameters
+    "ssm-parameters": Parameters,
+    "ssm-smart-elements": SmartElements
   }
 })
 export default class AdminCenterStructureController extends Mixins(AnkI18NMixin) {
@@ -44,7 +46,7 @@ export default class AdminCenterStructureController extends Mixins(AnkI18NMixin)
       this.selectedSS = this.value;
     }
   }
-  protected gotoParentStructure(structureId){
+  protected gotoParentStructure(structureId) {
     this.selectedSS = structureId.toString();
   }
 }
