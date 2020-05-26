@@ -46,6 +46,10 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mask/mask.views.xml">
             <label>MASK Structure view</label>
         </process>
+
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mail/mail.views.xml">
+            <label>MAIL Structure view</label>
+        </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Igroup/igroup.views.xml">
             <label>IGROUP Structure view</label>
         </process>
@@ -114,6 +118,9 @@
 
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mask/mask.views.xml">
             <label>MASK Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mail/mail.views.xml">
+            <label>MAIL Structure view</label>
         </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Igroup/igroup.views.xml">
             <label>IGROUP Structure view</label>
