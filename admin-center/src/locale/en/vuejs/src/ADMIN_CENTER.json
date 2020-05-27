@@ -236,5 +236,8 @@
   "AdminCenterSmartStructure.he inherited value": "he inherited value",
   "AdminCenterSmartStructure.is overrided.": "is overrided.",
   "AdminCenterSmartStructure.Record parameters": "Record parameters",
-  "AdminCenterSmartStructure.parameters": "parameters"
+  "AdminCenterSmartStructure.parameters": "parameters",
+  "AdminCenterSmartStructure.SmartElements": "Smart Elements",
+  "AdminCenterSmartStructure.Display": "Display",
+  "AdminCenterSmartStructure.Select a SmartElement": "Select a SmartElement"
 }

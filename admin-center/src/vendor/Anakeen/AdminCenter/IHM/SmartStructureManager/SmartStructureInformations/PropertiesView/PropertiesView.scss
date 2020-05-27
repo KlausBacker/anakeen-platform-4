@@ -2,6 +2,8 @@
   background: white;
   flex-direction: column;
   flex: 1;
+  height: 100%;
+  overflow-y: auto;
 
   .se-properties-value:before, .se-properties-header--value:before {
     content: ":";

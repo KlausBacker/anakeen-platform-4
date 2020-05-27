@@ -1,0 +1,38 @@
+<template>
+  <div class="smart-elements-section">
+    <ank-split-panes
+      watch-slots
+      vertical
+      ref="splitter"
+      class="ssm-smart-element-splitter"
+      localStorageKey="admin-center-ssm-smart-element-splitter"
+    >
+      <ank-se-grid
+        ref="grid"
+        class="se-grid"
+        :pageable="pageableConfig"
+        :collection="ssName"
+        :actions="gridActions"
+        :columns="gridColumns"
+        filterable
+        defaultExpandable
+        @rowActionClick="actionClick"
+      ></ank-se-grid>
+      <div v-if="!selectedElement" class="element-empty full-pane-size">
+        <span class="material-icons">info</span>
+        <p>{{ $t("AdminCenterSmartStructure.Select a SmartElement") }}</p>
+      </div>
+      <div v-else-if="selectedElement.component === 'element-view'" class="full-pane-size">
+        <element-view :initid="selectedElement.props.initid" :viewId="selectedElement.props.viewId"></element-view>
+      </div>
+      <div v-else-if="selectedElement.component === 'element-properties'" class="full-pane-size">
+        <element-properties :elementId="selectedElement.name"></element-properties>
+      </div>
+    </ank-split-panes>
+  </div>
+</template>
+<!-- Global CSS -->
+<style scoped lang="scss">
+@import "./SmartStructureManagerSmartElements.scss";
+</style>
+<script src="./SmartStructureManagerSmartElements.controller.js"></script>
