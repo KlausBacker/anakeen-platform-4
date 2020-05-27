@@ -21,7 +21,16 @@ class SmartGridContentBuilder implements SmartGridBuilder
      */
     protected $formatter = null;
 
-    protected $fields = [];
+    /**
+     * Fields to returns, by default add revision property in addition of id, initid defaults properties
+     * @var array[] fields
+     */
+    protected $fields = [
+        [
+            "field" => "revision",
+            "property" => true
+        ]
+    ];
     protected $sort = [];
 
     protected $smartCollectionId = null;
