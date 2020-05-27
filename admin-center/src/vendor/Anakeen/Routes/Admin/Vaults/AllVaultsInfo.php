@@ -23,6 +23,7 @@ class AllVaultsInfo
         $q->order_by = "id_fs";
         $fsList = $q->query();
         if ($q->nb > 0) {
+            \Anakeen\Core\VaultManager::recomputeDirectorySize();
             /** @var \Anakeen\Vault\DiskFsStorage $fsItem */
             foreach ($fsList as $key => $fsItem) {
                 $info = \Anakeen\Vault\VaultFsManager::getInfo($fsItem);
