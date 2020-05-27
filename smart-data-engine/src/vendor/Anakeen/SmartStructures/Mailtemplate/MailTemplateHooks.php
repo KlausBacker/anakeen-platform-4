@@ -16,6 +16,7 @@ use Anakeen\Core\DbManager;
 use Anakeen\Core\IMailRecipient;
 use Anakeen\Core\Internal\ContextParameterManager;
 use Anakeen\Core\SEManager;
+use Anakeen\Core\Settings;
 use Anakeen\Core\Utils\Postgres;
 use Anakeen\Core\VaultManager;
 use Anakeen\Exception;
@@ -229,6 +230,7 @@ class MailTemplateHooks extends \Anakeen\SmartElement
                         $tmail = array();
                         $it = new \DocumentList();
                         $it->addDocumentIdentifiers($tvdoc);
+
                         /**
                          * @var \SmartStructure\IUSER|\SmartStructure\IGROUP|\SmartStructure\ROLE $aDoc
                          */
@@ -541,6 +543,8 @@ class MailTemplateHooks extends \Anakeen\SmartElement
         $ulink = ($this->getRawValue("tmail_ulink") == "yes");
         /* Expand layout's [TAGS] */
         $doc->viewdefaultcard("mail", $ulink, false, true);
+
+        $doc->lay->set("CORE_URLINDEX", ContextManager::getParameterValue(Settings::NsSde, "CORE_URLINDEX"));
         foreach ($this->keys as $k => $v) {
             $doc->lay->set($k, $v);
         }
