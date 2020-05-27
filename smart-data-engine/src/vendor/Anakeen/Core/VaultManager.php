@@ -137,6 +137,8 @@ class VaultManager
      */
     public static function recomputeDirectorySize()
     {
+        $sql = "update vaultdiskdirstorage set isfull=false where isfull is null;";
+        DbManager::query($sql);
         $sql = "update vaultdiskdirstorage set size=(select sum(size) from vaultdiskstorage where id_dir=vaultdiskdirstorage.id_dir) where isfull;";
         DbManager::query($sql);
         $sql = "update vaultdiskdirstorage set size=0 where isfull and size is null;";
