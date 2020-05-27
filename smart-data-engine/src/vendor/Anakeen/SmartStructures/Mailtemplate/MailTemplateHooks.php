@@ -231,6 +231,8 @@ class MailTemplateHooks extends \Anakeen\SmartElement
                         $it = new \DocumentList();
                         $it->addDocumentIdentifiers($tvdoc);
 
+                        $it->getSearchDocument()->overrideViewControl();
+
                         /**
                          * @var \SmartStructure\IUSER|\SmartStructure\IGROUP|\SmartStructure\ROLE $aDoc
                          */
