@@ -47,9 +47,12 @@ class VaultAnalyzerCLI
     public static function mainAnalyzeOrphans()
     {
         $vaultAnalyzer = new VaultAnalyzer();
+        $vaultAnalyzer->setVerbose(false);
+        printf("* Check indexes... ");
         self::checkDocVaultIndex($vaultAnalyzer);
+        printf("Done.\n");
 
-        printf("* Analyzing... ");
+        printf("* Analyzing...");
         $report = $vaultAnalyzer->summary();
 
         printf("Done.\n");
@@ -86,7 +89,8 @@ class VaultAnalyzerCLI
     public static function mainCleanOrphans($skipTrash = false)
     {
         $vaultAnalyzer = new VaultAnalyzer();
-        self::checkDocVaultIndex($vaultAnalyzer);
+        $vaultAnalyzer->setVerbose(false);
+        $vaultAnalyzer->regenerateDocVaultIndex($reportIndex);
 
         printf("* Cleanup docvaultindex: ");
         $report = $vaultAnalyzer->cleanDocVaultIndex();
@@ -140,7 +144,7 @@ class VaultAnalyzerCLI
         }
         $pom->finish();
 
-        printf("* Reset sizes...\n");
+        printf("* Reset sizes... ");
         VaultManager::recomputeDirectorySize();
 
         printf("\nDone.\n");
