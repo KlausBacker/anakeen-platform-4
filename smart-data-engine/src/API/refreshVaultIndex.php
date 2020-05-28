@@ -9,33 +9,50 @@ use Anakeen\Vault\VaultAnalyzer;
 $usage = new ApiUsage();
 $usage->setDefinitionText("Re-initialize docvaultindex table");
 /* --dryrun=no|yes (default 'no') */
-$check = ($usage->addEmptyParameter("dryrun", "Check consistency only (non-destructive mode)") !== false);
+$checkOnly = ($usage->addEmptyParameter("dry-run", "Check consistency only (non-destructive mode)") !== false);
 $csv = $usage->addOptionalParameter(
     "csv",
     "Output details to CSV file (with comma delimiter [,], double-quote enclosure [\"], and backslash escape char [\\])",
     null,
     false
 );
+
+$cleanOrphans = $usage->addEmptyParameter(
+    "clean-orphans",
+    "Delete orphans vault file"
+);
 $usage->verify();
 
 $vaultAnalyzer = new VaultAnalyzer();
 $report = array();
 $consistent = false;
-if ($check) {
+if ($cleanOrphans) {
+    printf("\nRegenerating indexes... ");
+    $vaultAnalyzer->setVerbose(false);
+    $consistent = $vaultAnalyzer->regenerateDocVaultIndex($report);
+    printf("Done.\n");
+    printf("\nAnalyzing orphans... ");
+    \Anakeen\Vault\VaultAnalyzerCLI::mainAnalyzeOrphans();
+    printf("Done.\n");
+    printf("\nDelete orphans files...\n");
+    \Anakeen\Vault\VaultAnalyzerCLI::mainCleanOrphans(true);
+    printf("Done.\n");
+} elseif ($checkOnly) {
     $consistent = $vaultAnalyzer->checkDocVaultIndex($report);
 } else {
     $consistent = $vaultAnalyzer->regenerateDocVaultIndex($report);
 }
-if ($csv !== false) {
-    report2csv($report, $csv);
-} else {
-    report2cli($report);
+if (!$cleanOrphans) {
+    if ($csv !== false) {
+        report2csv($report, $csv);
+    } else {
+        report2cli($report);
+    }
+    if (!$consistent) {
+        throw new Exception("Check vault index failed");
+    }
 }
-if ($consistent) {
-    exit(0);
-} else {
-    exit(1);
-}
+
 
 function report2cli($report)
 {
