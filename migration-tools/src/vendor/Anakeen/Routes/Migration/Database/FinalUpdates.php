@@ -40,6 +40,10 @@ class FinalUpdates
         DbManager::query("update family.igroup set cvid=(select ccvid from docfam where name='IGROUP') where cvid is null and fromid=127;");
         DbManager::query("update family.iuser set cvid=(select ccvid from docfam where name='IUSER') where cvid is null and fromid=128;");
 
+
+        // Update revdate to mdate in searches
+        DbManager::query("update family.dsearch set se_attrids=array_replace(se_attrids, 'revdate', 'mdate') where 'revdate' = any(se_attrids);");
+        DbManager::query("update family.report set rep_idcols=array_replace(rep_idcols, 'revdate', 'mdate') where 'revdate' = any(rep_idcols);");
         // update fieldvalues column for workflows
         DbManager::query("update family.wdoc set id=id;");
 
