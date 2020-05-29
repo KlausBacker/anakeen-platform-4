@@ -93,6 +93,9 @@ export default class AuthentComponent extends Mixins(EventUtilsMixin, ReadyMixin
     if (!uri) {
       uri = "/";
     }
+    if (window.location.hash) {
+      uri += window.location.hash;
+    }
     return uri.replace(/(https?:\/\/)|(\/)+/g, "$1$2");
   }
 
