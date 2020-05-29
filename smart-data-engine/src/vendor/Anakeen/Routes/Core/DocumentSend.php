@@ -9,6 +9,7 @@ use Anakeen\Routes\Core\Lib\ApiMessage;
 use Anakeen\SmartElementManager;
 use Anakeen\SmartStructures\Mailtemplate\MailTemplateHooks;
 use SmartStructure\Fields\Mail as MailAttr;
+use SmartStructure\Fields\Mailtemplate;
 
 /**
  *
@@ -81,6 +82,8 @@ class DocumentSend
         if ($mt) {
             $keys["state"] = htmlspecialchars($targetDocument->getStepLabel());
 
+            // Send new body
+            $mt->setValue(Mailtemplate::tmail_body, $body);
             /** @var MailTemplateHooks $mt */
             $mailMessage = $mt->getMailMessage($targetDocument, $keys);
 
@@ -93,16 +96,19 @@ class DocumentSend
             } else {
                 $mailMessage->setSubject($targetDocument->getTitle());
             }
+            $mailMessage->to = [];
             foreach ($address["to"] as $to) {
                 if ($to) {
                     $mailMessage->addTo($to);
                 }
             }
+            $mailMessage->cc = [];
             foreach ($address["cc"] as $cc) {
                 if ($cc) {
                     $mailMessage->addCc($cc);
                 }
             }
+            $mailMessage->bcc = [];
             foreach ($address["bcc"] as $bcc) {
                 if ($bcc) {
                     $mailMessage->addBcc($bcc);
@@ -111,7 +117,9 @@ class DocumentSend
 
             $err = $mailMessage->send();
             if ($err) {
-                throw new Exception($err);
+                $exc = new Exception($err);
+                $exc->setUserMessage($err);
+                throw $exc;
             }
 
             $msg = new ApiMessage(sprintf(___("\"%s\" has been sended.", "mail"), $targetDocument->getTitle()));

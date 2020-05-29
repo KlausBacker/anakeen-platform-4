@@ -12,6 +12,10 @@
     max-width: 10em;
   }
 
+  .dcpDocument__frames,
+  .dcpDocument__form {
+    height: 100%;
+  }
   td.dcpArray__cell[data-attrid=mail_sendformat] .k-dropdown {
 
     max-width: 10em;
@@ -125,5 +129,9 @@
 
   .card.card-default.dcpFrame {
     margin: 0;
+  }
+
+  .card.card-default.dcpFrame[data-attrid=mail_fr_cm] {
+    flex:1;
   }
 }

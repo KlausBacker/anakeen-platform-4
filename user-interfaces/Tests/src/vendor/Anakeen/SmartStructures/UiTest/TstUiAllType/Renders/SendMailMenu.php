@@ -2,6 +2,7 @@
 
 namespace Anakeen\SmartStructures\UiTest\TstUiAllType\Renders;
 
+use Anakeen\Core\ContextManager;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Ui\BarMenu;
 use Anakeen\Ui\HtmltextRenderOptions;
@@ -14,7 +15,7 @@ class SendMailMenu extends \Anakeen\Ui\DefaultView
 {
 
 
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document): RenderOptions
     {
         $options = parent::getOptions($document);
 
@@ -25,25 +26,47 @@ class SendMailMenu extends \Anakeen\Ui\DefaultView
 
 
         return $options;
-
     }
 
 
-    public function getMenu(SmartElement $document) : BarMenu
+    public function getMenu(SmartElement $document): BarMenu
     {
         $menu = parent::getMenu($document);
-        if (! $document->control("send")) {
-            $mail = new ItemMenu("ccfd-mail");
-            $mail->setUrl("#action/ccfd.mail");
+        if (!$document->control("send")) {
+            // Mail standard (par défaut)
+            $mail = new ItemMenu("zou-mail");
             $url = "/api/v2/smart-elements/MAIL/views/!defaultCreation.html";
             $url .= sprintf("?customClientData=%s", urlencode(json_encode(["targetDocument" => $document->initid])));
             $mail->setUrl($url);
 
-            $option=new MenuTargetOptions();
-            $option->windowHeight=500;
-            $option->windowWidth=700;
+            $option = new MenuTargetOptions();
+            $option->windowHeight = 400;
+            $option->windowWidth = 700;
             $mail->setTarget("_dialog", $option);
-            $mail->setTextLabel(___("Mail", "ccfd"));
+            $mail->setTextLabel("Mail par défaut");
+            $mail->setBeforeContent('<i class="fa fa-envelope" />');
+
+            $menu->appendElement($mail);
+
+            // Mail de changement de mot de passe
+            $mail = new ItemMenu("zou-pass");
+            $url = "/api/v2/smart-elements/MAIL/views/!defaultCreation.html";
+            $url .= sprintf("?customClientData=%s", urlencode(json_encode([
+                "targetDocument" => ContextManager::getCurrentUser()->fid,
+                "mailTemplate" => [
+                    "name" => "AUTH_TPLMAILASKPWD",
+                    "keys" => [
+                        "LINK_CHANGE_PASSWORD" => "<h1>HOHO</h1>"
+                    ]
+                ]
+            ])));
+            $mail->setUrl($url);
+
+            $option = new MenuTargetOptions();
+            $option->windowHeight = 500;
+            $option->windowWidth = 700;
+            $mail->setTarget("_dialog", $option);
+            $mail->setTextLabel("Mot de passe oublié");
             $mail->setBeforeContent('<i class="fa fa-envelope" />');
 
             $menu->appendElement($mail);

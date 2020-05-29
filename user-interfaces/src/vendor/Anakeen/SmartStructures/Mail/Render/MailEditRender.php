@@ -4,6 +4,7 @@ namespace Anakeen\SmartStructures\Mail\Render;
 
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
+use Anakeen\Exception;
 use Anakeen\SmartStructures\Mailtemplate\MailTemplateHooks;
 use Anakeen\Ui\BarMenu;
 use Anakeen\Ui\CommonRenderOptions;
@@ -119,11 +120,25 @@ class MailEditRender extends DefaultConfigEditRender
 
 
         $mailTemplateId = $this->customClientData["mailTemplate"] ?? "MAILTEMPLATE_DEFAULT";
+        if (!empty($this->customClientData["mailTemplate"]["name"])) {
+            $mailTemplateId = $this->customClientData["mailTemplate"]["name"];
+        }
+        $extraKeys=[];
+        if (!empty($this->customClientData["mailTemplate"]["keys"])) {
+            $extraKeys = $this->customClientData["mailTemplate"]["keys"];
+            if (!is_array($extraKeys)) {
+                throw new Exception("Syntax error for keys use by mail template key");
+            };
+        }
+
         $mailTemplate = SEManager::getDocument($mailTemplateId);
 
         if ($mailTemplate) {
             $keys["state"] = htmlspecialchars($target->getStepLabel());
 
+            foreach ($extraKeys as $k=>$v) {
+                $keys[$k]=$v;
+            }
             /** @var MailTemplateHooks $mailTemplate */
             $mailMessage = $mailTemplate->getMailMessage($target, $keys);
             $subject = $mailMessage->subject;

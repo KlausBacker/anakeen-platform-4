@@ -51,9 +51,11 @@ window.ank.smartElement.globalController.registerFunction("mailEdit", async scop
             });
           })
           .fail(function(response) {
-            let error = "Copy error";
+            let error = "Send error";
             if (response.responseJSON) {
-              if (response.responseJSON.exceptionMessage) {
+              if (response.responseJSON.userMessage) {
+                error = response.responseJSON.userMessage;
+              } else if (response.responseJSON.exceptionMessage) {
                 error = response.responseJSON.exceptionMessage;
               } else if (response.responseJSON.messages) {
                 error = response.responseJSON.messages[0].contentText;
