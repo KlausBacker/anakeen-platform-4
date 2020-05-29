@@ -294,7 +294,7 @@ msgstr ""
 
 msgctxt "ddui"
 msgid "Unable to lock"
-msgstr "An error has occured, Smart Element lock is currently impossible"
+msgstr "An error has occured, cannot currently lock the form."
 
 msgctxt "ddui"
 msgid "Unable to save"
