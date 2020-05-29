@@ -16,7 +16,7 @@ class DocumentTitle extends StandardDocumentTitleFilter implements ElementSearch
             throw new Exception("FLT0008", $attr->id);
         }
         if (!is_scalar($this->value)) {
-            throw new Exception("FLT0006");
+            throw new Exception("FLT0006", $attr->id);
         }
         return $attr;
     }

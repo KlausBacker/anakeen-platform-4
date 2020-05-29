@@ -8,7 +8,7 @@
                 <span class="k-icon k-i-arrow-60-down"></span>
         </button>
     </span>
-    <input name="{{id}}" id="{{viewCid}}"
+    <input name="{{id}}" {{#viewCid}} id="{{viewCid}}" {{/viewCid}}
             class="form-control dcpAttribute__value dcpAttribute__value--docid">
     </input>
     {{#hadButtons}}

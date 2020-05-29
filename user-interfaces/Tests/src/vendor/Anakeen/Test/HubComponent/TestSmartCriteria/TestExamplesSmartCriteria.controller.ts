@@ -5,11 +5,20 @@ import * as exampleTextual from "./SmartCriteriaExampleTextual.json";
 import * as exampleTitleCustomOperators from "./SmartCriteriaExampleTitleCustomOperators.json";
 import * as exampleAllType from "./SmartCriteriaExampleAllType.json";
 import * as exampleDemo from "./SmartCriteriaExampleDemo.json";
+import * as exampleModifiableOperator from "./SmartCriteriaExampleModifiableOperator.json";
 import { Component, Vue } from "vue-property-decorator";
 // noinspection JSUnusedGlobalSymbols
 @Component({})
 export default class TestExamplesSmartCriteriaController extends Vue {
   public examples: any[] = [
+    {
+      config: exampleModifiableOperator,
+      label: exampleModifiableOperator.title || "Example Modifiable Operator"
+    },
+    {
+      config: exampleAllType,
+      label: exampleAllType.title || "Example All Type"
+    },
     {
       config: exampleDemo,
       label: exampleDemo.title || "Example Demo"
@@ -34,12 +43,9 @@ export default class TestExamplesSmartCriteriaController extends Vue {
       config: exampleBetween,
       label: exampleBetween.title || "Example Between"
     },
-    {
-      config: exampleAllType,
-      label: exampleAllType.title || "Example All Type"
-    },
   ];
   public selectedIndex: number = -1;
+
 
   protected storageKey = "smartCriteriaExamples";
   private staticExampleLength: number;

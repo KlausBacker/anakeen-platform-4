@@ -30,15 +30,15 @@ class ErrorCodeFLT
     /**
      * @errorCode the operation cannnot be performed with array values
      */
-    const FLT0006 = "Value must be scalar.";
+    const FLT0006 = "Field \"%s\" Value must be scalar.";
     /**
      * @errorCode the attribute must be multiple
      */
-    const FLT0007 = "Attribute '%s' must be multiple.";
+    const FLT0007 = "Field '%s' must be multiple.";
     /**
      * @errorCode the attribut must not be multiple
      */
-    const FLT0008 = "Attribute '%s' must not be multiple.";
+    const FLT0008 = "Field '%s' must not be multiple.";
     /**
      * @errorCode
      */
@@ -96,4 +96,8 @@ class ErrorCodeFLT
      * @errorCode the attribut must not be multiple
      */
     const FLT0021 = "The operator value must be an array with a 'key' value and a 'multipleFilter' flag";
+    /**
+     * @errorCode value is mandatory
+     */
+    const FLT0022 = "The value for \"%s\" must not be empty";
 }

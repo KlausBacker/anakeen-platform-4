@@ -23,20 +23,25 @@ globalController.then(() => {
 
       if (window.dcp.viewData !== false && window.dcp.viewData.initid) {
         /* @var controller GlobalController */
-        controller.addSmartElement($document, window.dcp.viewData, {
-          router: true
+        const controllerUid = controller.addSmartElement($document, window.dcp.viewData, {
+          router: true,
+          autoInitialize: false
         });
-        currentController = controller.getScopedController($document);
-        currentController.addEventListener("ready", (event, properties) => {
-          window.document.title = properties.title;
-          $("link[rel='shortcut icon']").attr("href", properties.icon);
+        currentController = controller.getScopedController(controllerUid);
+        currentController.initializeSmartElement().then(() => {
+          currentController.addEventListener("ready", (event, properties) => {
+            window.document.title = properties.title;
+            $("link[rel='shortcut icon']").attr("href", properties.icon);
+          });
         });
       } else {
-        controller.addSmartElement($document);
-        currentController = controller.getScopedController($document);
-        currentController.addEventListener("ready", (event, properties) => {
-          window.document.title = properties.title;
-          $("link[rel='shortcut icon']").attr("href", properties.icon);
+        const controllerUid = controller.addSmartElement($document, null, { autoInitialize: false });
+        currentController = controller.getScopedController(controllerUid);
+        currentController.initializeSmartElement().then(() => {
+          currentController.addEventListener("ready", (event, properties) => {
+            window.document.title = properties.title;
+            $("link[rel='shortcut icon']").attr("href", properties.icon);
+          });
         });
       }
 

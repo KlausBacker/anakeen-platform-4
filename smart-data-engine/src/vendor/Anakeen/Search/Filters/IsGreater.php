@@ -8,9 +8,19 @@
 namespace Anakeen\Search\Filters;
 
 use Anakeen\Search;
+use Anakeen\Search\SearchCriteria\SearchCriteriaTrait;
 
 class IsGreater extends StandardAttributeFilter implements ElementSearchFilter
 {
+    use SearchCriteriaTrait;
+
+    public static function getOptionMap()
+    {
+        return array(
+            self::EQUAL => "equal",
+        );
+    }
+
     const EQUAL = 1;
     private $EQUAL = false;
     protected $value = null;
@@ -46,29 +56,41 @@ class IsGreater extends StandardAttributeFilter implements ElementSearchFilter
      * @return \Anakeen\Core\SmartStructure\NormalAttribute
      * @throws Exception
      */
-    public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData & $search)
+    public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData &$search)
     {
         $attr = parent::verifyCompatibility($search);
         if (!is_scalar($this->value)) {
-            throw new Exception("FLT0006");
+            throw new Exception("FLT0006", $attr->id);
         }
         if ($attr->isMultiple()) {
             throw new Exception("FLT0008", $attr->id);
         }
+
+        if ($this->value === null || $this->value === "") {
+            throw new Exception("FLT0022", $attr->id);
+        }
         return $attr;
     }
+
     /**
      * Generate sql part
      *
      * @param \Anakeen\Search\Internal\SearchSmartData $search
      *
-     * @throws Exception
      * @return string sql where condition
+     * @throws Exception
      */
     public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
         $attr = $this->verifyCompatibility($search);
-        $search->addFilter(sprintf('%s <%s %s', pg_escape_literal($this->value), ($this->EQUAL ? '=' : ''), pg_escape_identifier($attr->id)));
+
+        $search->addFilter(sprintf(
+            '%s <%s %s',
+            pg_escape_literal($this->value),
+            ($this->EQUAL ? '=' : ''),
+            pg_escape_identifier($attr->id)
+        ));
+
         return $this;
     }
 }

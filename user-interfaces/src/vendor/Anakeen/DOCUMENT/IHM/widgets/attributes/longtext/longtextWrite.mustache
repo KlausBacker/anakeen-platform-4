@@ -8,7 +8,7 @@
         </button>
     </span>
     {{/hasAutocomplete}}
-    <textarea type="text" name="{{id}}" id="{{viewCid}}"
+    <textarea type="text" name="{{id}}" {{#viewCid}} id="{{viewCid}}" {{/viewCid}}
            {{# renderOptions.maxLength}}maxlength="{{renderOptions.maxLength}}"{{/ renderOptions.maxLength}}
            {{# renderOptions.placeHolder}}placeHolder="{{renderOptions.placeHolder}}"{{/ renderOptions.placeHolder}}
           class="form-control dcpAttribute__value dcpAttribute__value--edit k-textbox">{{attributeValue.value}}</textarea>

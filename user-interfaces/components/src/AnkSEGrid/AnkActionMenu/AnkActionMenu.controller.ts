@@ -87,13 +87,22 @@ export default class AnkActionMenuController extends Vue {
       isStandardAction(action.action),
       "GridActionEvent"
     );
-    this.$emit("rowActionClick", event);
     if (isStandardAction(action.action) && !event.isDefaultPrevented()) {
       const viewId = action.action === "modify" ? "defaultEdition" : "defaultConsultation";
-      window.open(
-        `/api/v2/smart-elements/${this.rowData.properties.id || this.rowData.properties.initid}/views/!${viewId}.html`,
-        "_blank"
-      );
+      const revision = this.rowData.properties.revision;
+      let url = `/api/v2/smart-elements/${this.rowData.properties.id || this.rowData.properties.initid}`;
+      if (typeof revision === "number" && revision >= 0) {
+        url += `/revisions/${revision}`;
+      }
+      if (viewId) {
+        url += `/views/!${viewId}`;
+      }
+      url += ".html";
+      event.data.url = url;
+    }
+    this.$emit("rowActionClick", event);
+    if (isStandardAction(action.action) && !event.isDefaultPrevented() && event.data.url) {
+      window.open(event.data.url, "_blank");
     }
     this.showSecondaryActionsMenu = false;
   }

@@ -1,6 +1,11 @@
 <template>
   <div class="smart-criteria-wrapper" @keyup.enter="onEnterKeyupEvent">
-    <div class="smart-criteria-form">
+    <slot v-if="loading">
+      <div class="smart-criteria-loading-screen">
+        <ank-loading></ank-loading>
+      </div>
+    </slot>
+    <div v-show="!loading" class="smart-criteria-form">
       <ank-smart-form
         ref="smartForm"
         :config="smartFormConfig"
@@ -12,7 +17,7 @@
         @save="onSave"
       />
     </div>
-    <div v-if="submit" class="smart-criteria-input">
+    <div v-if="submit" v-show="!loading" class="smart-criteria-input">
       <button class="smart-criteria-input-button k-primary" @click="onSubmitButtonClick">{{$t("smartCriteria.Search")}}</button>
     </div>
   </div>

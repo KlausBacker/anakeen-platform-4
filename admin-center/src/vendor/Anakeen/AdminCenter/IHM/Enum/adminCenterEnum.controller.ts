@@ -6,7 +6,7 @@ import "@progress/kendo-ui/js/kendo.switch";
 import * as _ from "underscore";
 import { Component, Mixins } from "vue-property-decorator";
 import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
-import * as $ from "jquery"
+import * as $ from "jquery";
 
 @Component({
   components: {
@@ -62,7 +62,9 @@ export default class AdminCenterEnumController extends Mixins(AnkI18NMixin) {
             editDisplay: "bool"
           },
           enum_array_translation: {
-            template: `<a data-role="adminRouterLink" class="translate-button" href="#">${this.$t("AdminCenterEnum.btn Translate")}</a>`
+            template: `<a data-role="adminRouterLink" class="translate-button" href="#">${this.$t(
+              "AdminCenterEnum.btn Translate"
+            )}</a>`
           }
         }
       },
@@ -76,9 +78,9 @@ export default class AdminCenterEnumController extends Mixins(AnkI18NMixin) {
               label: this.$t("AdminCenterEnum.Entries"),
               name: "enum_array",
               type: "array",
+              display: display,
               content: [
                 {
-                  display: display,
                   label: this.$t("AdminCenterEnum.Key"),
                   name: "enum_array_key",
                   type: "text"
@@ -86,8 +88,7 @@ export default class AdminCenterEnumController extends Mixins(AnkI18NMixin) {
                 {
                   label: this.$t("AdminCenterEnum.Label"),
                   name: "enum_array_label",
-                  type: "text",
-                  display: display
+                  type: "text"
                 },
                 {
                   label: this.$t("AdminCenterEnum.Translation"),
@@ -98,7 +99,6 @@ export default class AdminCenterEnumController extends Mixins(AnkI18NMixin) {
                   label: this.$t("AdminCenterEnum.Active"),
                   name: "enum_array_active",
                   type: "enum",
-                  display: display,
                   enumItems: [
                     {
                       key: "disable",
@@ -126,27 +126,30 @@ export default class AdminCenterEnumController extends Mixins(AnkI18NMixin) {
   }
   // Get entries from an Enum
   public loadEnumerate(e) {
-    this.isEnumEditable = JSON.parse(e.target.parentElement.previousElementSibling.firstChild.data);
     this.keysArray = [];
     this.labelArray = [];
     this.activeArray = [];
     this.selectedEnum = this.kendoGrid.dataItem($(e.currentTarget).closest("tr")).enumerate;
+    this.isEnumEditable = this.kendoGrid.dataItem($(e.currentTarget).closest("tr")).modifiable;
     const that = this;
     kendo.ui.progress($(".enum-form-wrapper", this.$el), true);
-    this.$http.get(`/api/v2/admin/enumdata/${this.selectedEnum}`).then(response => {
-      kendo.ui.progress($(".enum-form-wrapper", this.$el), false);
-      const enumData = response.data.data;
-      this.modifications = {};
-      enumData.forEach((value, index) => {
-        that.smartFormModel[index] = _.defaults(value, { key: "", label: "", active: "", eorder: "" });
-        that.modifications[index] = that.smartFormModel[index];
-        that.smartFormDataCounter++;
+    this.$http
+      .get(`/api/v2/admin/enumdata/${this.selectedEnum}`)
+      .then(response => {
+        kendo.ui.progress($(".enum-form-wrapper", this.$el), false);
+        const enumData = response.data.data;
+        this.modifications = {};
+        enumData.forEach((value, index) => {
+          that.smartFormModel[index] = _.defaults(value, { key: "", label: "", active: "", eorder: "" });
+          that.modifications[index] = that.smartFormModel[index];
+          that.smartFormDataCounter++;
+        });
+        that.smartFormModel.size = that.smartFormDataCounter;
+        that.buildInitialFormData();
+      })
+      .catch(() => {
+        kendo.ui.progress($(".enum-form-wrapper", this.$el), false);
       });
-      that.smartFormModel.size = that.smartFormDataCounter;
-      that.buildInitialFormData();
-    }).catch(() => {
-      kendo.ui.progress($(".enum-form-wrapper", this.$el), false);
-    });
   }
 
   // Manage how SmartForm's lines are added and act accordingly
@@ -187,10 +190,16 @@ export default class AdminCenterEnumController extends Mixins(AnkI18NMixin) {
       // Add event listeners on "Translate" buttons
       const translateButtons = document.getElementsByClassName("translate-button");
       for (let i = 0; i < translateButtons.length; i++) {
-        const key = translateButtons[i]
-          .closest("[data-line]")
-          .querySelector("[name=enum_array_key]")
-          .getAttribute("value");
+        let key;
+        if (this.isEnumEditable === true) {
+          key = translateButtons[i]
+            .closest("[data-line]")
+            .querySelector("[name=enum_array_key]")
+            .getAttribute("value");
+        } else {
+          key = translateButtons[i].closest("[data-line]").querySelector(".dcpAttribute__content__value").textContent;
+        }
+
         const selectedEnum = this.selectedEnum;
         const language = this.language;
         // @ts-ignore
@@ -233,7 +242,7 @@ export default class AdminCenterEnumController extends Mixins(AnkI18NMixin) {
       let valid = true;
       Object.values(this.modifications).forEach(modif => {
         Object.values(modif).forEach(element => {
-        if (element === null) {
+          if (element === null) {
             valid = false;
             return;
           }
@@ -272,13 +281,13 @@ export default class AdminCenterEnumController extends Mixins(AnkI18NMixin) {
       }
     }
   }
+
   public mounted() {
     const that = this;
     this.$http
       .get(`/api/v2/ui/users/current`)
       .then(response => (this.language = response.data.locale === "fr_FR.UTF-8" ? "fr" : "en"));
 
-     // TODO: enlever ts ignore
     // @ts-ignore
     this.kendoGrid = $(this.$refs.gridWrapper)
       .kendoGrid({
@@ -297,20 +306,25 @@ export default class AdminCenterEnumController extends Mixins(AnkI18NMixin) {
           },
           {
             field: "fields",
-            title:
-            this.$t("AdminCenterEnum.Fields")
+            title: this.$t("AdminCenterEnum.Fields")
           },
           {
-            field: "modifiable",
-            title: this.$t("AdminCenterEnum.Modifiable"),
-            filterable: false
-          },
-          {
-            command: {
-              click: this.loadEnumerate,
-              text: this.$t("AdminCenterEnum.Consult")
-            },
-            title: this.$t("AdminCenterEnum.header Actions")
+            field: "action",
+            title: "Action",
+            template: data => {
+              if (data.modifiable === true) {
+                return (
+                  '<a role="button" class="k-button k-button-icontext action-button" href="#">' +
+                  this.$t("AdminCenterEnum.Modify") +
+                  "</a>"
+                );
+              }
+              return (
+                '<a role="button" class="k-button k-button-icontext action-button" href="#">' +
+                this.$t("AdminCenterEnum.Consult") +
+                "</a>"
+              );
+            }
           }
         ],
         dataSource: {
@@ -356,7 +370,7 @@ export default class AdminCenterEnumController extends Mixins(AnkI18NMixin) {
             }
           },
           messages: {
-            info: this.$t("AdminCenterKendoGridTranslation.Filter by") + ': ',
+            info: this.$t("AdminCenterKendoGridTranslation.Filter by") + ": ",
             operator: this.$t("AdminCenterKendoGridTranslation.Choose operator"),
             clear: this.$t("AdminCenterKendoGridTranslation.Clear"),
             filter: this.$t("AdminCenterKendoGridTranslation.Apply"),
@@ -377,6 +391,11 @@ export default class AdminCenterEnumController extends Mixins(AnkI18NMixin) {
                 that.kendoGrid.dataSource.filter({});
               }
             });
+        },
+        dataBound: e => {
+          $(".action-button").on("click", e => {
+            this.loadEnumerate(e);
+          });
         }
       })
       .data("kendoGrid");
@@ -407,15 +426,17 @@ export default class AdminCenterEnumController extends Mixins(AnkI18NMixin) {
     const delButtonsList = $(".dcpArray__content__tollCell__delete");
     const selectButtonsList = $(".dcpArray__content__toolCell__check");
     // Remove the "duplicate selected line" button
-    $(".dcpArray__button--copy")[0].remove();
+    if (this.isEnumEditable === true) {
+      $(".dcpArray__button--copy")[0].remove();
+    }
     // Remove the "delete line" button
     // @ts-ignore
-    delButtonsList.each((key,val) => {
+    delButtonsList.each((key, val) => {
       val.remove();
     });
     // Remove the "select line" button
     // @ts-ignore
-    selectButtonsList.each((key,val) => {
+    selectButtonsList.each((key, val) => {
       val.remove();
     });
 

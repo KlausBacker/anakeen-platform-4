@@ -8,7 +8,7 @@
         </button>
     </span>
     {{/hasAutocomplete}}
-    <input type="file" name="{{id}}" id="{{viewCid}}" style="display:none;"
+    <input type="file" name="{{id}}" {{#viewCid}} id="{{viewCid}}" {{/viewCid}} style="display:none;"
            class="dcpAttribute__value--file"
            value="{{attributeValue.value}}"/>
 

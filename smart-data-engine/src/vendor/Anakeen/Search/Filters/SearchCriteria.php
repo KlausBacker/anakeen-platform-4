@@ -107,6 +107,7 @@ class SearchCriteria implements ElementSearchFilter
                         $field,
                         $value
                     );
+
                     array_push($currentFilters, $filterObject);
                 }
             }

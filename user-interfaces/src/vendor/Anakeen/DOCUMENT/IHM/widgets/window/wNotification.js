@@ -110,6 +110,13 @@ export default $.widget("dcp.dcpNotification", {
     }
   },
 
+  sanitize: function sanitizeHtml(html) {
+    var temp = $("<div></div>").html(html);
+    temp.find("object").remove();
+    temp.find("script").remove();
+    return temp.html() || "\ufeff";
+  },
+
   show: function wNotificationShow(type, options) {
     options.title = options.title || "";
     options.message = options.message || "";
@@ -120,8 +127,8 @@ export default $.widget("dcp.dcpNotification", {
     this.notificationElement.data("kendoNotification").show(
       {
         title: options.title,
-        message: options.message,
-        htmlMessage: options.htmlMessage // @TODO NEED TO CLEAN HTML TO PREVENT XSS
+        message: _.unescape(options.message),
+        htmlMessage: this.sanitize(options.htmlMessage) // @TODO NEED TO CLEAN HTML TO PREVENT XSS
       },
       type
     );

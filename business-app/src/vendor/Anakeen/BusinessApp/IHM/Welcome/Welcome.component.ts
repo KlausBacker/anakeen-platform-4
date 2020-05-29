@@ -26,7 +26,7 @@ export default class Welcome extends Vue {
 
   protected onActionClick(event) {
     switch (event.data.type) {
-      case "consult":
+      case "display":
         event.preventDefault();
         this.$emit("tabWelcomeGridConsult", event.data.row);
     }

@@ -35,7 +35,8 @@ class TestDcpDocumentFilterOneEquals extends TestDcpDocumentFiltercommon
                     "attr" => "M_ENUM",
                     "value" => "Y",
                     "expected" => array(
-                        "ONEEQUALS_2"
+                        "ONEEQUALS_2",
+                        "ONEEQUALS_4",
                     )
                 )
             ) ,
@@ -51,6 +52,17 @@ class TestDcpDocumentFilterOneEquals extends TestDcpDocumentFiltercommon
                     )
                 )
             ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "M_ENUM",
+                    "value" => "Y",
+                    "flags" => \Anakeen\Search\Filters\OneEquals::ALL,
+                    "expected" => array(
+                        "ONEEQUALS_4",
+                    )
+                )
+            ),
             // M_DOCID
             array(
                 array(
@@ -70,10 +82,22 @@ class TestDcpDocumentFilterOneEquals extends TestDcpDocumentFiltercommon
                     "flags" => \Anakeen\Search\Filters\OneEquals::NOT,
                     "expected" => array(
                         "ONEEQUALS_1",
-                        "ONEEQUALS_3"
+                        "ONEEQUALS_3",
+                        "ONEEQUALS_4",
                     )
                 )
             ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "M_DOCID",
+                    "value" => new LateNameResolver("FOO_3"),
+                    "flags" => \Anakeen\Search\Filters\OneEquals::ALL,
+                    "expected" => array(
+                        "ONEEQUALS_4",
+                    )
+                )
+            ),
             // M_ACCOUNT
             array(
                 array(
@@ -93,7 +117,19 @@ class TestDcpDocumentFilterOneEquals extends TestDcpDocumentFiltercommon
                     "flags" => \Anakeen\Search\Filters\OneEquals::NOT,
                     "expected" => array(
                         "ONEEQUALS_1",
-                        "ONEEQUALS_3"
+                        "ONEEQUALS_3",
+                        "ONEEQUALS_4"
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "M_ACCOUNT",
+                    "value" => new LateNameResolver("U_3") ,
+                    "flags" => \Anakeen\Search\Filters\OneEquals::ALL,
+                    "expected" => array(
+                        "ONEEQUALS_4"
                     )
                 )
             ) ,
@@ -116,7 +152,19 @@ class TestDcpDocumentFilterOneEquals extends TestDcpDocumentFiltercommon
                     "flags" => \Anakeen\Search\Filters\OneEquals::NOT,
                     "expected" => array(
                         "ONEEQUALS_1",
-                        "ONEEQUALS_3"
+                        "ONEEQUALS_3",
+                        "ONEEQUALS_4",
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_TEXT",
+                    "value" => "Trois",
+                    "flags" => \Anakeen\Search\Filters\OneEquals::ALL,
+                    "expected" => array(
+                        "ONEEQUALS_4",
                     )
                 )
             ) ,
@@ -139,7 +187,19 @@ class TestDcpDocumentFilterOneEquals extends TestDcpDocumentFiltercommon
                     "flags" => \Anakeen\Search\Filters\OneEquals::NOT,
                     "expected" => array(
                         "ONEEQUALS_1",
-                        "ONEEQUALS_3"
+                        "ONEEQUALS_3",
+                        "ONEEQUALS_4",
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_HTMLTEXT",
+                    "value" => "<b>Trois</b>",
+                    "flags" => \Anakeen\Search\Filters\OneEquals::ALL,
+                    "expected" => array(
+                        "ONEEQUALS_4",
                     )
                 )
             ) ,
@@ -162,7 +222,19 @@ class TestDcpDocumentFilterOneEquals extends TestDcpDocumentFiltercommon
                     "flags" => \Anakeen\Search\Filters\OneEquals::NOT,
                     "expected" => array(
                         "ONEEQUALS_1",
-                        "ONEEQUALS_3"
+                        "ONEEQUALS_3",
+                        "ONEEQUALS_4",
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_LONGTEXT",
+                    "value" => "Trois\nTrois",
+                    "flags" => \Anakeen\Search\Filters\OneEquals::ALL,
+                    "expected" => array(
+                        "ONEEQUALS_4",
                     )
                 )
             ) ,
@@ -185,7 +257,19 @@ class TestDcpDocumentFilterOneEquals extends TestDcpDocumentFiltercommon
                     "flags" => \Anakeen\Search\Filters\OneEquals::NOT,
                     "expected" => array(
                         "ONEEQUALS_1",
-                        "ONEEQUALS_3"
+                        "ONEEQUALS_3",
+                        "ONEEQUALS_4",
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_INT",
+                    "value" => "44",
+                    "flags" => \Anakeen\Search\Filters\OneEquals::ALL,
+                    "expected" => array(
+                        "ONEEQUALS_4",
                     )
                 )
             ) ,
@@ -208,7 +292,19 @@ class TestDcpDocumentFilterOneEquals extends TestDcpDocumentFiltercommon
                     "flags" => \Anakeen\Search\Filters\OneEquals::NOT,
                     "expected" => array(
                         "ONEEQUALS_1",
-                        "ONEEQUALS_3"
+                        "ONEEQUALS_3",
+                        "ONEEQUALS_4",
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_DOUBLE",
+                    "value" => "44.44",
+                    "flags" => \Anakeen\Search\Filters\OneEquals::ALL,
+                    "expected" => array(
+                        "ONEEQUALS_4",
                     )
                 )
             ) ,
@@ -231,7 +327,19 @@ class TestDcpDocumentFilterOneEquals extends TestDcpDocumentFiltercommon
                     "flags" => \Anakeen\Search\Filters\OneEquals::NOT,
                     "expected" => array(
                         "ONEEQUALS_1",
-                        "ONEEQUALS_3"
+                        "ONEEQUALS_3",
+                        "ONEEQUALS_4",
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_MONEY",
+                    "value" => "44.44",
+                    "flags" => \Anakeen\Search\Filters\OneEquals::ALL,
+                    "expected" => array(
+                        "ONEEQUALS_4",
                     )
                 )
             ) ,
@@ -254,7 +362,19 @@ class TestDcpDocumentFilterOneEquals extends TestDcpDocumentFiltercommon
                     "flags" => \Anakeen\Search\Filters\OneEquals::NOT,
                     "expected" => array(
                         "ONEEQUALS_1",
-                        "ONEEQUALS_3"
+                        "ONEEQUALS_3",
+                        "ONEEQUALS_4",
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_DATE",
+                    "value" => "30/06/2015",
+                    "flags" => \Anakeen\Search\Filters\OneEquals::ALL,
+                    "expected" => array(
+                        "ONEEQUALS_4",
                     )
                 )
             ) ,
@@ -277,7 +397,19 @@ class TestDcpDocumentFilterOneEquals extends TestDcpDocumentFiltercommon
                     "flags" => \Anakeen\Search\Filters\OneEquals::NOT,
                     "expected" => array(
                         "ONEEQUALS_1",
-                        "ONEEQUALS_3"
+                        "ONEEQUALS_3",
+                        "ONEEQUALS_4",
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_TIMESTAMP",
+                    "value" => "30/06/2015 12:13",
+                    "flags" => \Anakeen\Search\Filters\OneEquals::ALL,
+                    "expected" => array(
+                        "ONEEQUALS_4",
                     )
                 )
             ) ,
@@ -300,7 +432,19 @@ class TestDcpDocumentFilterOneEquals extends TestDcpDocumentFiltercommon
                     "flags" => \Anakeen\Search\Filters\OneEquals::NOT,
                     "expected" => array(
                         "ONEEQUALS_1",
-                        "ONEEQUALS_3"
+                        "ONEEQUALS_3",
+                        "ONEEQUALS_4",
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_TIME",
+                    "value" => "14:15:16",
+                    "flags" => \Anakeen\Search\Filters\OneEquals::ALL,
+                    "expected" => array(
+                        "ONEEQUALS_4",
                     )
                 )
             ) ,
@@ -323,7 +467,19 @@ class TestDcpDocumentFilterOneEquals extends TestDcpDocumentFiltercommon
                     "flags" => \Anakeen\Search\Filters\OneEquals::NOT,
                     "expected" => array(
                         "ONEEQUALS_1",
-                        "ONEEQUALS_3"
+                        "ONEEQUALS_3",
+                        "ONEEQUALS_4",
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_ENUM",
+                    "value" => "B",
+                    "flags" => \Anakeen\Search\Filters\OneEquals::ALL,
+                    "expected" => array(
+                        "ONEEQUALS_4",
                     )
                 )
             ) ,
@@ -346,7 +502,19 @@ class TestDcpDocumentFilterOneEquals extends TestDcpDocumentFiltercommon
                     "flags" => \Anakeen\Search\Filters\OneEquals::NOT,
                     "expected" => array(
                         "ONEEQUALS_1",
-                        "ONEEQUALS_3"
+                        "ONEEQUALS_3",
+                        "ONEEQUALS_4",
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_DOCID",
+                    "value" => new LateNameResolver("FOO_3") ,
+                    "flags" => \Anakeen\Search\Filters\OneEquals::ALL,
+                    "expected" => array(
+                        "ONEEQUALS_4",
                     )
                 )
             ) ,
@@ -369,7 +537,19 @@ class TestDcpDocumentFilterOneEquals extends TestDcpDocumentFiltercommon
                     "flags" => \Anakeen\Search\Filters\OneEquals::NOT,
                     "expected" => array(
                         "ONEEQUALS_1",
-                        "ONEEQUALS_3"
+                        "ONEEQUALS_3",
+                        "ONEEQUALS_4",
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "A_ACCOUNT",
+                    "value" => new LateNameResolver("U_3") ,
+                    "flags" => \Anakeen\Search\Filters\OneEquals::ALL,
+                    "expected" => array(
+                        "ONEEQUALS_4",
                     )
                 )
             ) ,
@@ -392,7 +572,19 @@ class TestDcpDocumentFilterOneEquals extends TestDcpDocumentFiltercommon
                     "flags" => \Anakeen\Search\Filters\OneEquals::NOT,
                     "expected" => array(
                         "ONEEQUALS_1",
-                        "ONEEQUALS_3"
+                        "ONEEQUALS_3",
+                        "ONEEQUALS_4",
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "X_DOCID",
+                    "value" => new LateNameResolver("FOO_3"),
+                    "flags" => \Anakeen\Search\Filters\OneEquals::ALL,
+                    "expected" => array(
+                        "ONEEQUALS_4",
                     )
                 )
             ) ,
@@ -415,10 +607,22 @@ class TestDcpDocumentFilterOneEquals extends TestDcpDocumentFiltercommon
                     "flags" => \Anakeen\Search\Filters\OneEquals::NOT,
                     "expected" => array(
                         "ONEEQUALS_1",
-                        "ONEEQUALS_3"
+                        "ONEEQUALS_3",
+                        "ONEEQUALS_4",
                     )
                 )
-            )
+            ) ,
+            array(
+                array(
+                    "fam" => self::FAM,
+                    "attr" => "X_ACCOUNT",
+                    "value" => new LateNameResolver("U_3"),
+                    "flags" => \Anakeen\Search\Filters\OneEquals::ALL,
+                    "expected" => array(
+                        "ONEEQUALS_4",
+                    )
+                )
+            ) ,
         );
     }
 }

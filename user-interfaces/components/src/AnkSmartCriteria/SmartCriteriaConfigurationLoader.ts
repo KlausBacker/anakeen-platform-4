@@ -260,6 +260,11 @@ export default class {
       if (!configuration.criterias) {
         configuration.criterias = [];
       }
+      for (const criteria of this.configuration.criterias) {
+        if (criteria.modifiableOperator === undefined) {
+          criteria.modifiableOperator = true;
+        }
+      }
     }
   }
 }

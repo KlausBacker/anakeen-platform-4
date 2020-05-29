@@ -1,11 +1,13 @@
 <?php
+
 /**
  * Enable to record parameters values to the database.
  */
 $usage = new \Anakeen\Script\ApiUsage();
 
 $usage->setDefinitionText("set context parameter value");
-$parname = $usage->addRequiredParameter("param", "parameter name with its namespace (<NS>::<NAME>)"); // parameter name
+$parname = $usage->addRequiredParameter("param", "parameter name with its namespace"); // parameter name
+$parnamespace = $usage->addOptionalParameter("namespace", "namespace parameter's name"); // namespace
 $parval = $usage->addOptionalParameter("value", "parameter value to set. If not defined, the value will be cleared"); // parameter value (option)
 $paruser = $usage->addOptionalParameter("userid", "user system id", function ($val) {
     $u = new \Anakeen\Core\Account("", $val);
@@ -22,7 +24,12 @@ $appid = 0;
 
 $dbaccess = \Anakeen\Core\DbManager::getDbAccess();
 
-
+if (strpos($parname, '::') === false && (!$parnamespace || $parnamespace === "")) {
+    throw new \Anakeen\Script\Exception("You need to put the namespace (--namespace=Value) option");
+}
+if ($parnamespace) {
+    $parname = $parnamespace . "::" . $parname;
+}
 $paramDefinition = new \Anakeen\Core\Internal\ParamDef($dbaccess, $parname);
 if (!$paramDefinition->isAffected()) {
     throw new \Anakeen\Script\Exception(sprintf("Parameter \"%s\" not found", $parname));

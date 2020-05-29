@@ -16,6 +16,11 @@ msgctxt "ddui"
 msgid "Add new line"
 msgstr "Ajouter une nouvelle ligne"
 
+#: src/vendor/Anakeen/SmartStructures/Iuser/Render/groupModify.mustache
+msgctxt "iuser"
+msgid "Available groups"
+msgstr "Groupes disponibles"
+
 #: src/vendor/Anakeen/SmartStructures/Report/Render/reportHTML5_edit.mustache
 msgctxt "dsearch"
 msgid "Conditions"
@@ -46,6 +51,21 @@ msgctxt "ddui"
 msgid "Editing form"
 msgstr "Formulaire en cours de modification"
 
+#: src/vendor/Anakeen/SmartStructures/Iuser/Render/groupModify.mustache
+msgctxt "iuser"
+msgid "Parent group to add"
+msgstr "Groupes parent à ajouter"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/Render/groupModify.mustache
+msgctxt "iuser"
+msgid "Parent group to delete"
+msgstr "Groupes parent à supprimer"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/Render/groupModify.mustache
+msgctxt "iuser"
+msgid "Parent groups"
+msgstr "Groupes parent"
+
 #: src/vendor/Anakeen/SmartStructures/Report/Render/reportHTML5_edit.mustache
 msgctxt "dsearch"
 msgid "Results"
@@ -60,31 +80,3 @@ msgstr "Révision n°"
 msgctxt "ddui"
 msgid "RevisionCreated"
 msgstr "Créée le"
-
-#~ msgctxt "ddui"
-#~ msgid "Click to reload the document"
-#~ msgstr "Cliquez pour recharger la page"
-
-msgctxt "ddui"
-msgid "Delete line"
-msgstr "Supprimer la ligne"
-
-msgctxt "ddui"
-msgid "Drag to move line"
-msgstr "Cliquer pour déplacer la ligne"
-
-#~ msgctxt "dsearch"
-#~ msgid "Loading criteria ..."
-#~ msgstr "Chargement des critères..."
-
-#~ msgctxt "dsearch"
-#~ msgid "Searching ..."
-#~ msgstr "Recherche en cours"
-
-msgctxt "ddui"
-msgid "Select line"
-msgstr "Sélectionner la ligne"
-
-#~ msgctxt "ddui"
-#~ msgid "Unable to load try again"
-#~ msgstr "Impossible de charger la page, veuillez essayer à nouveau."

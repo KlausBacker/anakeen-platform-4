@@ -96,8 +96,8 @@ export default class SmartFormConfigurationBuilder {
             type: "enum",
             enumItems: operators
           },
-          SmartFormConfigurationBuilder.getCriteriaSmartFormValue(criteria, index, false, this.translations),
-          SmartFormConfigurationBuilder.getCriteriaSmartFormValue(criteria, index, true, this.translations)
+          SmartFormConfigurationBuilder.getCriteriaSmartFormValue(criteria, index, false),
+          SmartFormConfigurationBuilder.getCriteriaSmartFormValue(criteria, index, true)
         ],
         type: "frame",
         name: `sc_criteria_${index}`
@@ -110,7 +110,7 @@ export default class SmartFormConfigurationBuilder {
           display: "read"
         });
         formTemplate.content.push(
-          SmartFormConfigurationBuilder.getCriteriaSmartFormValue(criteria, index, false, this.translations, true)
+          SmartFormConfigurationBuilder.getCriteriaSmartFormValue(criteria, index, false, true)
         );
         this.smartFormConfiguration.values[
           SmartFormConfigurationBuilder.getValueBetweenLabelName(index)
@@ -200,7 +200,6 @@ export default class SmartFormConfigurationBuilder {
     criteria: IConfigurationCriteria,
     index: number,
     multipleFilter: boolean,
-    translations: any,
     between = false
   ): ISmartFormFieldSet | ISmartFormFieldItem | ISmartFormFieldEnumItem {
     const name = between
@@ -208,7 +207,7 @@ export default class SmartFormConfigurationBuilder {
       : multipleFilter
       ? SmartFormConfigurationBuilder.getValueMultipleName(index)
       : SmartFormConfigurationBuilder.getValueName(index);
-    const label = between ? translations.and : "";
+    const label = criteria.label;
     const formValue: ISmartFormFieldSet | ISmartFormFieldItem | ISmartFormFieldEnumItem = {
       name,
       label,

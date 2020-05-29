@@ -21,17 +21,6 @@ class HtmltextRenderOptions extends CommonRenderOptions
 
 
     /**
-     * Collapse or expand toolbar on startup
-     * @note use only in edition mode
-     * @param bool $expand : false to collapse at startup
-     * @return $this
-     */
-    public function setToolbarStartupExpanded($expand)
-    {
-        return $this->setOption(self::toolbarStartupExpandedOption, (bool)$expand);
-    }
-
-    /**
      * Use a predefined or a custom toolbar
      * Predefined toolbars are "Full", "Simple", "Basic"
      * @note use only in edition mode

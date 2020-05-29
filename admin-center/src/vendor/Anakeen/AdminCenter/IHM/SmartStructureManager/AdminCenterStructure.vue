@@ -24,7 +24,17 @@
             <template slot="label">
               <span class="ssm-parameters-title">{{ $t("AdminCenterSmartStructure.Parameters") }}</span>
             </template>
-            <ssm-parameters  :ssName="selectedSS" class="ssm-parameters" ref="paramsComp"></ssm-parameters>
+            <ssm-parameters :ssName="selectedSS" class="ssm-parameters" ref="paramsComp"></ssm-parameters>
+          </ank-tab>
+          <ank-tab :closable="false" tab-id="smartElements">
+            <template slot="label">
+              <span class="ssm-smart-elements-title">{{ $t("AdminCenterSmartStructure.SmartElements") }}</span>
+            </template>
+            <ssm-smart-elements
+              ref="smartElementsComp"
+              :ssName="selectedSS"
+              class="ssm-smart-elements"
+            ></ssm-smart-elements>
           </ank-tab>
         </ank-tabs>
       </div>

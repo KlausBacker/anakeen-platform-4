@@ -359,6 +359,7 @@ EOF;
     protected function sqlConnect()
     {
         $this->_conn = \Anakeen\Core\DbManager::getDbId();
+
         $this->sqlPrepare(self::STMT_DELETE_ID_FILE, 'DELETE FROM vaultdiskstorage WHERE id_file = $1 RETURNING *');
     }
 
@@ -427,10 +428,13 @@ EOF;
 
     protected function sqlPrepare($stmt, $query)
     {
-        $res = pg_prepare($this->_conn, $stmt, $query);
-        if ($res === false) {
-            throw new VaultAnalyzerException(pg_last_error($this->_conn));
+        static $first=[];
+        if (empty($first[$stmt])) {
+            $res = pg_prepare($this->_conn, $stmt, $query);
+            if ($res === false) {
+                throw new VaultAnalyzerException(pg_last_error($this->_conn));
+            }
+            $first[$stmt]=true;
         }
-        return $res;
     }
 }

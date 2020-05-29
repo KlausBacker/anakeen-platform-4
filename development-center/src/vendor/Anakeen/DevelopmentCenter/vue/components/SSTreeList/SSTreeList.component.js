@@ -3,16 +3,18 @@ import "@progress/kendo-ui/js/kendo.treelist";
 import "@progress/kendo-ui/js/kendo.columnmenu";
 import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
 import { TreeList, TreeListInstaller } from "@progress/kendo-treelist-vue-wrapper";
+import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
 
 Vue.use(DataSourceInstaller);
 Vue.use(TreeListInstaller);
 
 export default {
   name: "ss-treelist",
+  mixins: [AnkI18NMixin],
   props: {
     messages: {
       type: String,
-      default: () => "There are no data for this SmartStructure"
+      default: () => ""
     },
     ssName: {
       type: String,
@@ -99,6 +101,7 @@ export default {
     }
   },
   mounted() {
+    this.messages = this.$t("DevelopmentCenter.There are no data for this SmartStructure");
     this.remoteDataSource = new kendo.data.TreeListDataSource({
       transport: {
         read: options => {

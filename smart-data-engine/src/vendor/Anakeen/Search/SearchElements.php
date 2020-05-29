@@ -77,6 +77,9 @@ class SearchElements
      */
     public function count()
     {
+        if (!$this->searchData->isExecuted()) {
+            $this->searchData->search();
+        }
         return $this->searchData->count();
     }
 

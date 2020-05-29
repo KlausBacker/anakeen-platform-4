@@ -69,42 +69,42 @@ COMMENT ON OPERATOR ~%*<(text, text) IS 'insensitive nodiacritic regexp commutat
 
 -- One Between Operators
 
-CREATE OR REPLACE FUNCTION between_commutator(text, text[])
+CREATE OR REPLACE FUNCTION between_commutator(text[], text)
   RETURNS bool AS
 $func$
-SELECT ($1 > $2[1]) and ($1 < $2[2])
+SELECT ($2 > $1[1]) and ($2 < $1[2])
 $func$  LANGUAGE sql IMMUTABLE;
 
-CREATE OR REPLACE FUNCTION leq_between_commutator(text, text[])
+CREATE OR REPLACE FUNCTION leq_between_commutator(text[], text)
   RETURNS bool AS
 $func$
-SELECT ($1 >= $2[1]) and ($1 < $2[2])
+SELECT ($2 >= $1[1]) and ($2 < $1[2])
 $func$  LANGUAGE sql IMMUTABLE;
 
-CREATE OR REPLACE FUNCTION req_between_commutator(text, text[])
+CREATE OR REPLACE FUNCTION req_between_commutator(text[], text)
   RETURNS bool AS
 $func$
-SELECT ($1 > $2[1]) and ($1 <= $2[2])
+SELECT ($2 > $1[1]) and ($2 <= $1[2])
 $func$  LANGUAGE sql IMMUTABLE;
 
-CREATE OR REPLACE FUNCTION leq_req_between_commutator(text, text[])
+CREATE OR REPLACE FUNCTION leq_req_between_commutator(text[], text)
   RETURNS bool AS
 $func$
-SELECT ($1 >= $2[1]) and ($1 <= $2[2])
+SELECT ($2 >= $1[1]) and ($2 <= $1[2])
 $func$  LANGUAGE sql IMMUTABLE;
 
-DROP OPERATOR IF EXISTS >~<(text, text[]);
-DROP OPERATOR IF EXISTS >=~<(text, text[]);
-DROP OPERATOR IF EXISTS >~<=(text, text[]);
-DROP OPERATOR IF EXISTS >=~<=(text, text[]);
-CREATE OPERATOR >~< ( leftarg = text, rightarg = text[], procedure = between_commutator);
-CREATE OPERATOR >=~< ( leftarg = text, rightarg = text[], procedure = leq_between_commutator);
-CREATE OPERATOR >~<= ( leftarg = text, rightarg = text[], procedure = req_between_commutator);
-CREATE OPERATOR >=~<= ( leftarg = text, rightarg = text[], procedure = leq_req_between_commutator);
-COMMENT ON OPERATOR >~<(text, text) IS 'between commutator';
-COMMENT ON OPERATOR >=~<(text, text) IS 'leftEqual between commutator';
-COMMENT ON OPERATOR >~<=(text, text) IS 'rightEqual between commutator';
-COMMENT ON OPERATOR >=~<=(text, text) IS 'leftEqual rightEqual between commutator';
+DROP OPERATOR IF EXISTS >~<(text[], text);
+DROP OPERATOR IF EXISTS >=~<(text[], text);
+DROP OPERATOR IF EXISTS >~<=(text[], text);
+DROP OPERATOR IF EXISTS >=~<=(text[], text);
+CREATE OPERATOR >~< ( leftarg = text[], rightarg = text, procedure = between_commutator);
+CREATE OPERATOR >=~< ( leftarg = text[], rightarg = text, procedure = leq_between_commutator);
+CREATE OPERATOR >~<= ( leftarg = text[], rightarg = text, procedure = req_between_commutator);
+CREATE OPERATOR >=~<= ( leftarg = text[], rightarg = text, procedure = leq_req_between_commutator);
+COMMENT ON OPERATOR >~<(text[], text) IS 'between commutator';
+COMMENT ON OPERATOR >=~<(text[], text) IS 'leftEqual between commutator';
+COMMENT ON OPERATOR >~<=(text[], text) IS 'rightEqual between commutator';
+COMMENT ON OPERATOR >=~<=(text[], text) IS 'leftEqual rightEqual between commutator';
 
 -- change type of column
 create or replace function alter_table_column(text, text, text)
