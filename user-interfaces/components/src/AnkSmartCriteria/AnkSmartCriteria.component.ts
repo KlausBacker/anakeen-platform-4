@@ -18,12 +18,12 @@ import SmartCriteriaUtils from "./SmartCriteriaUtils";
 import AnkI18NMixin from "../../mixins/AnkVueComponentMixin/I18nMixin";
 import $ from "jquery";
 import SmartCriteriaEvent from "./Types/SmartCriteriaEvent";
+import { default as AnkSmartFormDefinition } from "../AnkSmartForm/AnkSmartForm.component";
 
-// @ts-ignore
 @Component({
   name: "ank-smart-criteria",
   components: {
-    "ank-smart-form": () => {
+    "ank-smart-form": (): Promise<unknown> => {
       return AnkSmartForm;
     },
     "ank-loading": AnkLoading
@@ -46,6 +46,10 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
     type: Array
   })
   public responsiveColumns;
+
+  public $refs!: {
+    smartForm: AnkSmartFormDefinition;
+  };
   private mountedDone = false;
   private innerConfig: ISmartCriteriaConfiguration = { title: "", defaultStructure: -1, criterias: [] };
   private operatorFieldRegex = /^sc_operator_(\d+)$/;
@@ -110,7 +114,6 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
 
   initVisibilities(): void {
     for (let i = 0; i < this.smartFormConfig.structure[0].content.length; i++) {
-      // @ts-ignore
       let value = this.$refs.smartForm.getValue(`sc_operator_${i}`);
       value = value ? value.value : "";
       this.evaluateSmartFieldVisibilities(value, i);
@@ -156,7 +159,6 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
     this.loading = true;
     const ajaxPromises = this.smartCriteriaConfigurationLoader.load();
     this.errorStack = this.smartCriteriaConfigurationLoader.getErrorStack();
-    // @ts-ignore
     Promise.all(ajaxPromises).then(() => {
       this.buildSmartFormConfig();
       this.$emit("smartCriteriaReady");
@@ -176,11 +178,11 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
     this.errorStack = this.errorStack.concat(this.smartFormConfigurationBuilder.getErrorStack());
   }
 
-  private static getSmartFieldDom(smartFieldId: string): any {
-    return $(`.dcpAttribute[data-attrid=${smartFieldId}]`);
+  private getSmartFieldDom(smartFieldId: string): JQuery {
+    return $(`.dcpAttribute[data-attrid=${smartFieldId}]`, this.$el);
   }
 
-  private static setSmartFieldVisibility(smartFieldId: string, visible: boolean): void {
+  private setSmartFieldVisibility(smartFieldId: string, visible: boolean): void {
     const dom = this.getSmartFieldDom(smartFieldId);
     if (visible) {
       dom.removeClass("smart-criteria-value-hidden");
@@ -216,17 +218,11 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
       }
     }
 
-    AnkSmartCriteria.setSmartFieldVisibility(SmartFormConfigurationBuilder.getOperatorName(index), operatorVisible);
-    AnkSmartCriteria.setSmartFieldVisibility(SmartFormConfigurationBuilder.getValueName(index), valueVisible);
-    AnkSmartCriteria.setSmartFieldVisibility(
-      SmartFormConfigurationBuilder.getValueBetweenLabelName(index),
-      betweenVisible
-    );
-    AnkSmartCriteria.setSmartFieldVisibility(SmartFormConfigurationBuilder.getValueBetweenName(index), betweenVisible);
-    AnkSmartCriteria.setSmartFieldVisibility(
-      SmartFormConfigurationBuilder.getValueMultipleName(index),
-      multipleVisible
-    );
+    this.setSmartFieldVisibility(SmartFormConfigurationBuilder.getOperatorName(index), operatorVisible);
+    this.setSmartFieldVisibility(SmartFormConfigurationBuilder.getValueName(index), valueVisible);
+    this.setSmartFieldVisibility(SmartFormConfigurationBuilder.getValueBetweenLabelName(index), betweenVisible);
+    this.setSmartFieldVisibility(SmartFormConfigurationBuilder.getValueBetweenName(index), betweenVisible);
+    this.setSmartFieldVisibility(SmartFormConfigurationBuilder.getValueMultipleName(index), multipleVisible);
   }
 
   static getOperator(operatorKey: string, operators: Array<ISmartFormFieldEnumConfig>): ISmartFormFieldEnumConfig {
@@ -238,7 +234,6 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
   }
 
   private showError(message: string, type = "error"): void {
-    // @ts-ignore
     this.$refs.smartForm.showMessage({
       type,
       message
@@ -253,9 +248,11 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
 
   public getFilters(): ISmartFilter {
     let filter: ISmartFilter;
+    let initFilter = false;
     filter = {
       field: undefined,
       filters: [],
+      disabled: true,
       kind: undefined,
       logic: undefined,
       operator: {
@@ -268,10 +265,14 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
     };
     for (let i = 0; i < this.innerConfig.criterias.length; i++) {
       const criteria = this.innerConfig.criterias[i];
-      if (i != 0) {
-        filter.filters.push(this.computeFilterValue(criteria, i));
-      } else {
-        filter = this.computeFilterValue(criteria, i);
+      const computeFilter = this.computeFilterValue(criteria, i);
+      if (computeFilter.disabled !== true) {
+        if (initFilter === true) {
+          filter.filters.push(computeFilter);
+        } else {
+          initFilter = true;
+          filter = computeFilter;
+        }
       }
     }
     return filter;
@@ -282,6 +283,7 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
       field: undefined,
       filters: [],
       kind: criteria.kind,
+      disabled: false,
       logic: SmartFilterLogic.AND,
       operator: {
         key: CriteriaOperator.NONE,
@@ -292,7 +294,6 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
       value: ""
     };
 
-    // @ts-ignore
     const smartFormOperatorValue = this.$refs.smartForm.getValue(SmartFormConfigurationBuilder.getOperatorName(index));
     const operatorString = smartFormOperatorValue ? smartFormOperatorValue.value : "";
     const operatorData: ICriteriaConfigurationOperator = SmartCriteriaUtils.getOperatorData(operatorString, criteria);
@@ -305,8 +306,15 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
 
     const isBetween = operatorData.isBetween;
     const isFilterMultiple = operatorData.filterMultiple;
-    // @ts-ignore
-    const smartFormValue = isBetween ? [this.$refs.smartForm.getValue(SmartFormConfigurationBuilder.getValueName(index)), this.$refs.smartForm.getValue(SmartFormConfigurationBuilder.getValueBetweenName(index))] : (isFilterMultiple ? this.$refs.smartForm.getValue(SmartFormConfigurationBuilder.getValueMultipleName(index)) : this.$refs.smartForm.getValue(SmartFormConfigurationBuilder.getValueName(index)));
+    const smartFormValue = isBetween
+      ? [
+          this.$refs.smartForm.getValue(SmartFormConfigurationBuilder.getValueName(index)),
+
+          this.$refs.smartForm.getValue(SmartFormConfigurationBuilder.getValueBetweenName(index))
+        ]
+      : isFilterMultiple
+      ? this.$refs.smartForm.getValue(SmartFormConfigurationBuilder.getValueMultipleName(index))
+      : this.$refs.smartForm.getValue(SmartFormConfigurationBuilder.getValueName(index));
     let value;
 
     if (isBetween || isFilterMultiple) {
@@ -316,7 +324,11 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
     }
 
     smartFilter.operator = operator;
-    smartFilter.value = value ? value : "";
+    smartFilter.value = value;
+
+    if (operatorData.acceptValues === true && value === null) {
+      smartFilter.disabled = true;
+    }
     if (criteria.kind !== SmartCriteriaKind.FULLTEXT) {
       smartFilter.field = criteria.field;
     }
@@ -337,7 +349,6 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
     return this.computeFilterValue(this.innerConfig.criterias[index], <number>index);
   }
 
-  // @ts-ignore
   private getIndex(id: string): number {
     const errorIndex = -1;
     this.innerConfig.criterias.forEach((criteria, index) => {
@@ -361,5 +372,6 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
       }
       return errorIndex;
     });
+    return 0;
   }
 }

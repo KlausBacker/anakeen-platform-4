@@ -224,7 +224,7 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
     return this.smartElementWidget.getMenus();
   }
 
-  public getValue(smartFieldId, type) {
+  public getValue(smartFieldId, type?: string) {
     return this.smartElementWidget.getValue(smartFieldId, type);
   }
 

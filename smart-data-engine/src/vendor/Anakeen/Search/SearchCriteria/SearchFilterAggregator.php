@@ -19,8 +19,10 @@ class SearchFilterAggregator
      */
     public function __construct($rawData)
     {
-        SearchCriteriaUtils::checkRawData($rawData);
-        $this->parseData($rawData);
+        if ($rawData["disabled"] !== true) {
+            SearchCriteriaUtils::checkRawData($rawData);
+            $this->parseData($rawData);
+        }
     }
 
     /**

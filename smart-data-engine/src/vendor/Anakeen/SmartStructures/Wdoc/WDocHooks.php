@@ -1170,6 +1170,13 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         $this->askValue[$fieldId] = $value;
     }
 
+    /**
+     * Return ask value from transition form
+     * The value are raw values
+     * If the value is multiple, values are in an array
+     * @param $fieldId
+     * @return string|string[]|null
+     */
     public function getAskValue($fieldId)
     {
         return $this->askValue[$fieldId] ?? null;

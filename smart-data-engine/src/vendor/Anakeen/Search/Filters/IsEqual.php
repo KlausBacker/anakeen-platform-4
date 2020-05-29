@@ -69,6 +69,12 @@ class IsEqual extends StandardAttributeFilter implements ElementSearchFilter
                 pg_escape_identifier($this->attributeId),
                 pg_escape_literal($this->value)
             ));
+        } else {
+            $query = $this->NOT ? '%s is not null' : '%s is null';
+            $search->addFilter(sprintf(
+                $query,
+                pg_escape_identifier($this->attributeId)
+            ));
         }
         return $this;
     }

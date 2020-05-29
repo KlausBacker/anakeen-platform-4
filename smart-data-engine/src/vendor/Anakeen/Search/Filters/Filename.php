@@ -45,7 +45,7 @@ class Filename extends StandardAttributeFilter implements ElementSearchFilter
     {
         $attr = parent::verifyCompatibility($search);
         if (!is_scalar($this->value)) {
-            throw new Exception("FLT0006");
+            throw new Exception("FLT0006", $attr->id);
         }
         return $attr;
     }
