@@ -56,9 +56,9 @@ export default Backbone.View.extend({
     });
 
     this.$el.find(".dcpTransitionGraph_state").tooltip({
-      placement: "top",
+      placement: "left",
       html: true,
-      container: ".dcpTransitionGraph--to"
+      container: this.$el[0]
     });
 
     if (!this.transitionGraphWindow) {
@@ -188,10 +188,6 @@ export default Backbone.View.extend({
     var htmlLine =
       "<div class='dcpTransitionGraph__arrow dcpTransitionGraph__arrow--{{id}} {{#error}}dcpTransitionGraph__arrow--error{{/error}}' " +
       "style=' height:{{height}}px;left:{{left}}px; top:{{top}}px; width:{{width}}px;" +
-      " -moz-transform:rotate({{angle}}deg); " +
-      "-webkit-transform:rotate({{angle}}deg); " +
-      "-o-transform:rotate({{angle}}deg); " +
-      "-ms-transform:rotate({{angle}}deg); " +
       "transform:rotate({{angle}}deg);' ><div class='dcpTransitionGraph__arrow__label'>{{text}}</div>" +
       "<span class='dcpTransitionGraph__arrow__end fa fa-2x fa-caret-right'></span> </div>";
 
