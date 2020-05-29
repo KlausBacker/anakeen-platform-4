@@ -756,7 +756,6 @@ class SearchCriteriaUtils
     /**
      * @param $rawData array the json representing the value of the Search Criteria
      * @param bool $deep if true, will check deeply the object
-     * @return bool true if the object is correctly formed
      * @throws Exception
      */
     public static function checkRawData($rawData, $deep = true)
@@ -766,7 +765,7 @@ class SearchCriteriaUtils
                 self::checkRawData($filterValue);
             }
         } else { //If top level or leaf level
-            $kind = $rawData["kind"];
+            $kind = $rawData["kind"]??null;
             if (isset($kind) && in_array($kind, self::KIND_SUPPORTED_VALUES)) {
                 $logic = $rawData["logic"];
                 if (isset($logic) && in_array($logic, self::LOGIC_SUPPORTED_VALUES)) {
@@ -790,7 +789,6 @@ class SearchCriteriaUtils
                             self::checkRawData($rawData["filters"]);
                         }
                     }
-                    return true;
                 } else {
                     throw new Exception("FLT0014", $logic);
                 }
@@ -798,7 +796,6 @@ class SearchCriteriaUtils
                 throw new Exception("FLT0013", $kind);
             }
         }
-        return true;
     }
 
     public static function isMultidimensionalArray($object)

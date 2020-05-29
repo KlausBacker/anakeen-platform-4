@@ -59,6 +59,9 @@ class OneGreaterThan extends StandardAttributeFilter implements ElementSearchFil
         if (!$attr->isMultiple()) {
             throw new Exception("FLT0007", $attr->id);
         }
+        if ($this->value === null || $this->value === "") {
+            throw new Exception("FLT0022", $attr->id);
+        }
         return $attr;
     }
 
@@ -73,9 +76,9 @@ class OneGreaterThan extends StandardAttributeFilter implements ElementSearchFil
     public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
         $attr = $this->verifyCompatibility($search);
-        if (!empty($this->value)) {
-            $search->addFilter($this->_filter($attr, $this->value));
-        }
+
+        $search->addFilter($this->_filter($attr, $this->value));
+
         return $this;
     }
 
