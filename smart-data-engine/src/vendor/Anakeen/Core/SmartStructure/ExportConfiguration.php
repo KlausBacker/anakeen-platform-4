@@ -343,7 +343,7 @@ class ExportConfiguration
     public function extractEnums()
     {
         $smartEnums = $this->cel("enumerates");
-        $attrs = $this->sst->getNormalAttributes();
+        $attrs = $this->sst->getAttributes();
         $enumNames = [];
         foreach ($attrs as $attr) {
             if ($attr->type === "enum" && $attr->format && $attr->structureId == $this->sst->id) {
@@ -369,20 +369,24 @@ class ExportConfiguration
                     $enumConfs[$enumName] = $this->cel("enum-configuration");
                     $enumConfs[$enumName]->setAttribute("name", $enumName);
                 }
-                $enumTag = $this->cel("enum");
-                $enumTag->setAttribute("name", $enum["key"]);
-                $enumTag->setAttribute("label", $enum["label"]);
-                if ($enum["parentkey"]) {
-                    $parentId = $enum["parentkey"];
-                    if (!isset($parents[$enumName][$parentId])) {
-                        $parents[$enumName][$parentId] = $this->cel("enum");
-                        $parents[$enumName][$parentId]->setAttribute("name", $parentId);
-                        $enumConfs[$enumName]->appendChild($parents[$enumName][$parentId]);
-                    }
-                    $parents[$enumName][$parentId]->appendChild($enumTag);
+                if ($enum["key"] === \Anakeen\Core\EnumManager::EXTENDABLEKEY) {
+                    $enumConfs[$enumName]->setAttribute("extendable", "true");
                 } else {
-                    $enumConfs[$enumName]->appendChild($enumTag);
-                    $parents[$enumName][$enum["key"]] = $enumTag;
+                    $enumTag = $this->cel("enum");
+                    $enumTag->setAttribute("name", $enum["key"]);
+                    $enumTag->setAttribute("label", $enum["label"]);
+                    if ($enum["parentkey"]) {
+                        $parentId = $enum["parentkey"];
+                        if (!isset($parents[$enumName][$parentId])) {
+                            $parents[$enumName][$parentId] = $this->cel("enum");
+                            $parents[$enumName][$parentId]->setAttribute("name", $parentId);
+                            $enumConfs[$enumName]->appendChild($parents[$enumName][$parentId]);
+                        }
+                        $parents[$enumName][$parentId]->appendChild($enumTag);
+                    } else {
+                        $enumConfs[$enumName]->appendChild($enumTag);
+                        $parents[$enumName][$enum["key"]] = $enumTag;
+                    }
                 }
             }
 
