@@ -15,6 +15,7 @@ window.ank.smartElement.globalController.registerFunction("mailEdit", async scop
         const values = scopedController.getValues();
         const targetDocument = window.dcp.viewData.customClientData.targetDocument;
         const url = `/api/v2/smart-elements/${targetDocument}/send/`;
+        const $menu = $(options.target).closest(".dcpDocument__menu");
 
         let sendValues = {};
 
@@ -31,7 +32,7 @@ window.ank.smartElement.globalController.registerFunction("mailEdit", async scop
         const menuSend = scopedController.getMenu("sendmail");
         if (menuSend) {
           menuSend.disable();
-          $(".fa-send").addClass("fa-spin");
+          $(".fa-send", $menu).addClass("fa-spin");
         }
 
         $.ajax({
@@ -69,7 +70,7 @@ window.ank.smartElement.globalController.registerFunction("mailEdit", async scop
           .always(function() {
             if (menuSend) {
               menuSend.enable();
-              $(".fa-send.fa-spin").removeClass("fa-spin");
+              $(".fa-send.fa-spin", $menu).removeClass("fa-spin");
             }
           });
       }
