@@ -62,7 +62,7 @@ class ImportXml
         self::extractFilesFromXmlDirectory($splitdir);
 
         $log = $this->importXmlDirectory($splitdir);
-        system(sprintf("/bin/rm -fr %s ", $splitdir));
+        system(sprintf("/bin/rm -fr %s ", escapeshellarg($splitdir)));
         // print "look : $splitdir\n";
         return $log;
     }
@@ -79,7 +79,7 @@ class ImportXml
         self::extractFilesFromXmlDirectory($splitdir);
 
         $log = $this->importXmlDirectory($splitdir);
-        system(sprintf("/bin/rm -fr %s ", $splitdir));
+        system(sprintf("/bin/rm -fr %s ", escapeshellarg($splitdir)));
         //print "look : $splitdir\n";
         return $log;
     }

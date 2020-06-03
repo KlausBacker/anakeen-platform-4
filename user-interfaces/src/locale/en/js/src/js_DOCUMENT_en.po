@@ -293,6 +293,10 @@ msgid "Unable to close the document"
 msgstr ""
 
 msgctxt "ddui"
+msgid "Unable to lock"
+msgstr "An error has occured, cannot currently lock the form."
+
+msgctxt "ddui"
 msgid "Unable to save"
 msgstr ""
 

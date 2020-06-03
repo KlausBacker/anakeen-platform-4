@@ -294,6 +294,10 @@ msgid "Unable to close the document"
 msgstr "Impossible de fermer le Smart Element"
 
 msgctxt "ddui"
+msgid "Unable to lock"
+msgstr "Une erreur est survenue, impossible de verrouiller le Smart Element."
+
+msgctxt "ddui"
 msgid "Unable to save"
 msgstr "Enregistrement impossible"
 

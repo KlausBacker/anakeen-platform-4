@@ -384,7 +384,7 @@ class ModuleManager
 
     public static function runJobInBackground()
     {
-        $command = sprintf("%s/anakeen-control dojob", realpath(__DIR__ . "/../../../"));
+        $command = sprintf("%s/anakeen-control dojob", escapeshellarg(realpath(__DIR__ . "/../../../")));
         exec("exec nohup $command > /dev/null 2>&1 &", $result, $status);
 
         if ($status !== 0) {
@@ -394,7 +394,7 @@ class ModuleManager
 
     public static function runJob()
     {
-        $command = sprintf("%s/anakeen-control dojob", realpath(__DIR__ . "/../../../"));
+        $command = sprintf("%s/anakeen-control dojob", escapeshellarg(realpath(__DIR__ . "/../../../")));
         exec("$command > /dev/null 2>&1", $result, $status);
 
         if ($status !== 0) {
