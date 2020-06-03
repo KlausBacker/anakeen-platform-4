@@ -118,14 +118,14 @@ const createBuildXML = ({ moduleName, vendorName }, isSmartStructure) => {
               target: "constants/SmartStructuresFields.js"
             }
           },
-          "acli:stub-struct-wfl-config": {
-            $: {
-              target: "constants/workflows/"
-            }
-          },
-          "acli:stub-struct-enum-config": {
+          "acli:stub-enum-js-config": {
             $: {
               target: "constants/enumerates/"
+            }
+          },
+          "acli:stub-wfl-js-config": {
+            $: {
+              target: "constants/workflows/"
             }
           }
         }
