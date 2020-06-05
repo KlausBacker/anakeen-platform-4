@@ -29,9 +29,9 @@ export default ViewDocument.extend({
       '<div class="dcpTransition--loading"><span class="fa fa-2x fa-spinner fa-spin"></span> {{labels.inprogress}}</div>',
 
     htmlButtons:
-      '{{#hasAttributes}}<button class="dcpTransition-button-cancel btn btn-outline-secondary btn-sm">{{labels.cancel}}</button>' +
+      '{{#hasAttributes}}<button class="dcpTransition-button-cancel">{{labels.cancel}}</button>' +
       '<button title="{{transition.label}}" ' +
-      'class="dcpTransition-button-ok btn {{#transition.id}}btn-primary{{/transition.id}}  {{^transition.id}}btn-danger{{/transition.id}} btn-sm">' +
+      'class="dcpTransition-button-ok {{#transition.id}}button-ok-primary{{/transition.id}}  {{^transition.id}}button-ok-danger{{/transition.id}}">' +
       "{{labels.confirm}}</button>{{/hasAttributes}}"
   },
 
@@ -209,7 +209,6 @@ export default ViewDocument.extend({
       this.$el.find(".dcpTransition--messages").append(Mustache.render(this.templates.htmlLoading || "", workflow));
       this.$el.find(".dcpTransition--buttons").append(Mustache.render(this.templates.htmlButtons || "", workflow));
       this.$el.find(".dcpTransition-button-ok").tooltip();
-
       if (attributes.length === 0) {
         // Direct send transition without user control
         _.defer(function vTransition_saveForMe() {
@@ -279,6 +278,15 @@ export default ViewDocument.extend({
             height: "auto",
             resize: function resizeTransition() {
               $(window).trigger("resize");
+            },
+            open: e => {
+              var event = { prevent: false };
+              if (event.prevent !== false) {
+                e.preventDefault();
+              } else {
+                $(".dcpTransition-button-ok", this.$el).kendoButton();
+                $(".dcpTransition-button-cancel", this.$el).kendoButton();
+              }
             },
             close: function registerCloseEvent(e) {
               var event = { prevent: false };

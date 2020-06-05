@@ -282,6 +282,14 @@ $.widget("dcp.dcpArray", {
             .catch(reject);
           this._isInitialized(true);
         }
+        $.each($(".dcpArray__add"), () => {
+          const buttonTab = $(".dcpArray__add");
+          buttonTab[buttonTab.length - 1].className = "dcpArray__add " + this.eventNamespace.split(".")[1];
+        });
+        $.each($(".dcpArray__copy"), () => {
+          const buttonTab = $(".dcpArray__copy");
+          buttonTab[buttonTab.length - 1].className = "dcpArray__copy " + this.eventNamespace.split(".")[1];
+        });
       }, this)
     );
   },
@@ -381,41 +389,47 @@ $.widget("dcp.dcpArray", {
         }
       }
     );
-    this.element.on("click" + this.eventNamespace, ".dcpArray__add", function addLineEvent() {
-      var selectedLine = currentWidget.getSelectedLineIndex();
-      currentWidget._hideTooltips();
-      if (
-        currentWidget.options.renderOptions.rowMaxLimit < 0 ||
-        currentWidget.options.nbLines < currentWidget.options.renderOptions.rowMaxLimit
-      ) {
-        if (selectedLine === null || _.isUndefined(selectedLine)) {
+    const addButtonTab = $(".dcpArray__add ," + this.eventNamespace, this.$el);
+    addButtonTab.kendoButton({
+      click: function addLineEvent() {
+        var selectedLine = currentWidget.getSelectedLineIndex();
+        currentWidget._hideTooltips();
+        if (
+          currentWidget.options.renderOptions.rowMaxLimit < 0 ||
+          currentWidget.options.nbLines < currentWidget.options.renderOptions.rowMaxLimit
+        ) {
+          if (selectedLine === null || _.isUndefined(selectedLine)) {
+            currentWidget.options.nbLines += 1;
+            currentWidget.addLine(currentWidget.options.nbLines - 1, {
+              needAddValue: true,
+              useSelectedLine: true
+            });
+          } else {
+            currentWidget.options.nbLines += 1;
+            currentWidget.addLine(selectedLine, {
+              needAddValue: true,
+              useSelectedLine: true
+            });
+          }
+        }
+      }
+    });
+    const copyButtonTab = $(".dcpArray__copy ," + this.eventNamespace, this.$el);
+    copyButtonTab.kendoButton({
+      click: function copyLineEvent() {
+        var selectedLine = currentWidget.getSelectedLineIndex();
+
+        currentWidget._hideTooltips();
+        if (
+          currentWidget.options.renderOptions.rowMaxLimit < 0 ||
+          currentWidget.options.nbLines < currentWidget.options.renderOptions.rowMaxLimit
+        ) {
           currentWidget.options.nbLines += 1;
-          currentWidget.addLine(currentWidget.options.nbLines - 1, {
-            needAddValue: true,
-            useSelectedLine: true
-          });
-        } else {
-          currentWidget.options.nbLines += 1;
-          currentWidget.addLine(selectedLine, {
+          currentWidget.copyLine(selectedLine, {
             needAddValue: true,
             useSelectedLine: true
           });
         }
-      }
-    });
-    this.element.on("click" + this.eventNamespace, ".dcpArray__copy", function copyLineEvent() {
-      var selectedLine = currentWidget.getSelectedLineIndex();
-
-      currentWidget._hideTooltips();
-      if (
-        currentWidget.options.renderOptions.rowMaxLimit < 0 ||
-        currentWidget.options.nbLines < currentWidget.options.renderOptions.rowMaxLimit
-      ) {
-        currentWidget.options.nbLines += 1;
-        currentWidget.copyLine(selectedLine, {
-          needAddValue: true,
-          useSelectedLine: true
-        });
       }
     });
     this.element.on(
