@@ -473,7 +473,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
       file: imgFile
     });
     if (!isNotPrevented) {
-      return;
+      return html;
     }
 
     formData.append("dcpFile", imgFile);
