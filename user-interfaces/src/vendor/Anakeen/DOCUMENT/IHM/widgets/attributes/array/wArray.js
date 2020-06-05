@@ -389,7 +389,7 @@ $.widget("dcp.dcpArray", {
         }
       }
     );
-    const addButtonTab = $(".dcpArray__add ," + this.eventNamespace, this.$el);
+    const addButtonTab = $(".dcpArray__add" + this.eventNamespace, this.$el);
     addButtonTab.kendoButton({
       click: function addLineEvent() {
         var selectedLine = currentWidget.getSelectedLineIndex();
@@ -414,7 +414,7 @@ $.widget("dcp.dcpArray", {
         }
       }
     });
-    const copyButtonTab = $(".dcpArray__copy ," + this.eventNamespace, this.$el);
+    const copyButtonTab = $(".dcpArray__copy" + this.eventNamespace, this.$el);
     copyButtonTab.kendoButton({
       click: function copyLineEvent() {
         var selectedLine = currentWidget.getSelectedLineIndex();
