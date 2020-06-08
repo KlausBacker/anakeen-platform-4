@@ -65,7 +65,7 @@ class Operators
             ],
             "labelcontains" => [
                 "label" => ___("Label contains", "grid-component"),
-                "operands" => [":field", ":value", StateLabel::NOCASE],
+                "operands" => [":field", ":value", StateLabel::NOCASE | StateLabel::NODIACRITIC],
                 "properties" => [
                     "state"
                 ],
@@ -73,7 +73,7 @@ class Operators
             ],
             "labeldoesnotcontain" => [
                 "label" => ___("Label not contain", "grid-component"),
-                "operands" => [":field", ":value", StateLabel::NOT | StateLabel::NOCASE],
+                "operands" => [":field", ":value", StateLabel::NOT | StateLabel::NOCASE | StateLabel::NODIACRITIC],
                 "properties" => [
                     "state"
                 ],
