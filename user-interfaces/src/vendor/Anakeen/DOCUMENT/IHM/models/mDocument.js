@@ -443,11 +443,15 @@ export default Backbone.Model.extend({
         xhr = { status: 500, statusText: "Internal - No HTTP response" };
       } else {
         if (!xhr.message) {
-          result = JSON.parse(xhr.responseText);
-          if (result.message) {
-            messages.push(result);
-          } else if (result.messages) {
-            messages = result.messages;
+          try {
+            result = JSON.parse(xhr.responseText);
+            if (result.message) {
+              messages.push(result);
+            } else if (result.messages) {
+              messages = result.messages;
+            }
+          } catch (e) {
+            messages.push({ type: "error", contentText: xhr.responseText });
           }
         }
       }
