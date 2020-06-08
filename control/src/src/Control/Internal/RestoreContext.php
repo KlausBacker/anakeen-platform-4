@@ -53,6 +53,9 @@ class RestoreContext
 DROP SCHEMA IF EXISTS public CASCADE;  
 CREATE SCHEMA public;
 DROP SCHEMA IF EXISTS family CASCADE;
+DROP SCHEMA IF EXISTS searches CASCADE;
+ALTER TEXT SEARCH CONFIGURATION french  ALTER MAPPING FOR hword, hword_part, word WITH french_stem;
+ALTER TEXT SEARCH CONFIGURATION simple  ALTER MAPPING FOR hword, hword_part, word WITH simple;
 SQL;
             $cleanDocCmd = sprintf(
                 "PGSERVICE=\"%s\" psql -q -c %s",
