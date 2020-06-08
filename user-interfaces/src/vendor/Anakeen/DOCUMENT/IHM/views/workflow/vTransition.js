@@ -274,8 +274,9 @@ export default ViewDocument.extend({
       this.transitionWindow = this.$el
         .dcpDialog({
           window: {
-            // maxWidth: "600px",
             height: "auto",
+            maxHeight: "80%",
+            overflowY: "scroll",
             resize: function resizeTransition() {
               $(window).trigger("resize");
             },
@@ -284,6 +285,9 @@ export default ViewDocument.extend({
               if (event.prevent !== false) {
                 e.preventDefault();
               } else {
+                const parentWindow = $($(this)[0].$el[0], this.$el).parent();
+                const offsetTop = $(window).height() * 0.1;
+                $(parentWindow, this.$el).css("top", offsetTop + "px");
                 $(".dcpTransition-button-ok", this.$el).kendoButton();
                 $(".dcpTransition-button-cancel", this.$el).kendoButton();
               }
