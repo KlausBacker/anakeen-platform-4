@@ -77,6 +77,13 @@ $.widget("dcp.dcpFile", $.dcp.dcpText, {
       visibleInput.attr("placeholder", this.options.renderOptions.placeHolder);
       this.element.find(".dcpAttribute__content__button--file").attr("title", this.options.labels.downloadLabel);
 
+      if (!visibleInput.val()) {
+        this.element.find(".dcpAttribute__content__button--file").attr("disabled", "disabled");
+        this.element.find(".dcpAttribute__content__button--file").css("cursor", "not-allowed");
+      } else {
+        this.element.find(".dcpAttribute__content__button--file").removeAttr("disabled");
+        this.element.find(".dcpAttribute__content__button--file").css("cursor", "pointer");
+      }
       visibleInput.tooltip({
         trigger: "hover",
         placement: "bottom",
