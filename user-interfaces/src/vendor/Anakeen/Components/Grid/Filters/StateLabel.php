@@ -9,6 +9,7 @@ namespace Anakeen\Components\Grid\Filters;
 
 use Anakeen\Components\Grid\Exceptions\Exception;
 use Anakeen\Core\SEManager;
+use Anakeen\Core\Utils\Strings;
 use Anakeen\Search\Filters\ElementSearchFilter;
 use Anakeen\Search\Filters\StandardAttributeFilter;
 use Anakeen\SmartStructures\Wdoc\WDocHooks;
@@ -73,6 +74,9 @@ class StateLabel extends StandardAttributeFilter implements ElementSearchFilter
                 $search->addFilter(sprintf("state IN (%s)", implode(", ", array_map(function ($state) {
                     return pg_escape_literal($state);
                 }, $states))));
+            } else {
+                // No states match the searched label, empty the result
+                $search->addFilter("FALSE");
             }
         }
         return $this;
@@ -87,6 +91,10 @@ class StateLabel extends StandardAttributeFilter implements ElementSearchFilter
                 $stateLabel = $wdoc->getStateLabel($state);
                 $left = $stateLabel;
                 $right = $this->value;
+                if ($this->NODIACRITIC) {
+                    $left = Strings::unaccent($left);
+                    $right = Strings::unaccent($right);
+                }
                 if ($this->NOCASE) {
                     // no case sensitive
                     $left = strtolower($left);
