@@ -70,6 +70,8 @@
 
 .history-button-showdetail {
   margin-left: 10px;
+  background-color: $ank-ui-color-font-document;
+  color: $ank-ui-color-text-colored;
 }
 .history-main.table td {
   vertical-align: middle;
@@ -84,6 +86,14 @@
 }
 
 .history-button-shownotice {
+  border-color: $ank-ui-color-picto;
+  color: $ank-ui-color-picto;
+  background-color: transparent;
+}
+
+.history-button-shownotice:hover {
+  background-color: $ank-ui-color-font-document;
+  color: $ank-ui-color-text-colored;
 }
 
 .document-history tbody > tr > th {

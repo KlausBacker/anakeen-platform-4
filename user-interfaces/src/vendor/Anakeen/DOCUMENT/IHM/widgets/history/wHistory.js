@@ -68,54 +68,52 @@ export default $.widget("dcp.dcpDocumentHistory", $.dcp.dcpDialog, {
     this.element.data("dcpDocumentHistory", this);
 
     this._super();
+    setTimeout(() => {
+      const showDetailHistoryButton = $(".history-button-showdetail", this.$el).data("kendoButton");
+      showDetailHistoryButton.bind("click", function whistoryShowDetail() {
+        $(".history-button-showdetail").toggleClass(".history-button-showdetail-toggle");
+        var noticeSelector = $(".history-button-shownotice");
+        var noticeButton = noticeSelector.data("kendoButton");
+        var noticeShowed = noticeButton.enable(true);
 
-    this.element.on("click" + this.eventNamespace, ".history-button-showdetail", function whistoryShowDetail() {
-      var noticeButton = widget.element.find(".history-button-shownotice");
-      var noticeShowed = noticeButton.data("showNotice");
-      if ($widget.data("showDetail")) {
-        $widget.data("showDetail", false);
-        $widget.data("showNotice", false);
-        $(this)
-          .text(widget.options.labels.showDetail)
-          .removeClass("btn-primary");
-        widget.element.find(".history-comment").hide();
+        if (!$(".history-button-showdetail", widget.$el).hasClass(".history-button-showdetail-toggle")) {
+          $(".history-button-showdetail", $(this).$el).text(widget.options.labels.showDetail);
+          widget.element.find(".history-comment").hide();
 
-        noticeButton
-          .attr("disabled", "disabled")
-          .removeClass("btn-primary")
-          .text(widget.options.labels.showNotice);
-      } else {
-        $widget.data("showDetail", true);
-        widget.element.find(".history-comment").show();
-        if (!noticeShowed) {
-          widget.element.find(".history-level--notice").hide();
-        }
-        $(this)
-          .text(widget.options.labels.hideDetail)
-          .addClass("btn-primary");
-        noticeButton.removeAttr("disabled");
-      }
-    });
-    this.element.on("click" + this.eventNamespace, ".history-button-shownotice", function whistoryShowNotice() {
-      var $notices = widget.element.find(".history-level--notice");
-      if ($widget.data("showNotice")) {
-        $widget.data("showNotice", false);
-        $(this)
-          .text(widget.options.labels.showNotice)
-          .removeClass("btn-primary");
-        widget.element.find(".history-level--notice").hide();
-      } else {
-        $widget.data("showNotice", true);
-        if ($notices.length > 0) {
-          $notices.show();
-          $(this)
-            .text(widget.options.labels.hideNotice)
-            .addClass("btn-primary");
+          noticeButton.enable(false);
+          noticeSelector.text(widget.options.labels.showNotice);
+          noticeSelector.removeClass(".history-button-shownotice-toggle");
         } else {
-          $(this).text(widget.options.labels.noOneNotice);
+          $widget.data("showDetail", true);
+          widget.element.find(".history-comment").show();
+          if (!noticeShowed) {
+            widget.element.find(".history-level--notice").hide();
+          }
+          $(".history-button-showdetail", $(this).$el).text(widget.options.labels.hideDetail);
+          noticeButton.enable(true);
         }
-      }
-    });
+      });
+      const showNoticeHistoryButton = $(".history-button-shownotice", this.$el).data("kendoButton");
+      showNoticeHistoryButton.bind("click", function whistoryShowNotice() {
+        var noticeSelector = $(".history-button-shownotice");
+        noticeSelector.toggleClass(".history-button-shownotice-toggle");
+        var $notices = widget.element.find(".history-level--notice");
+        if (!$(".history-button-shownotice", widget.$el).hasClass(".history-button-shownotice-toggle")) {
+          $widget.data("showNotice", false);
+          noticeSelector.text(widget.options.labels.showNotice);
+          widget.element.find(".history-level--notice").hide();
+        } else {
+          $widget.data("showNotice", true);
+          if ($notices.length > 0) {
+            $notices.show();
+            noticeSelector.text(widget.options.labels.hideNotice);
+          } else {
+            noticeSelector.text(widget.options.labels.noOneNotice);
+          }
+        }
+      });
+    }, 1000);
+
     this.element.on("click" + this.eventNamespace, ".history-diff-input", function whistoryShowDiff() {
       var selectedDiff = widget.element.find(".history-diff-input:checked");
 
@@ -412,23 +410,24 @@ export default $.widget("dcp.dcpDocumentHistory", $.dcp.dcpDialog, {
 
             $buttons.append(
               $(
-                '<button class="history-button-showdetail btn btn-secondary btn-sm" >' +
+                '<button class="history-button-showdetail k-button" >' +
                   historyWidget.options.labels.showDetail +
                   "</button>"
               )
             );
             $buttons.append(
               $(
-                '<button disabled="disabled" class="history-button-shownotice btn btn-outline-secondary btn-sm" >' +
+                '<button disabled="disabled" class="history-button-shownotice k-button" >' +
                   historyWidget.options.labels.showNotice +
                   "</button>"
               )
             );
-
             historyWidget.element
               .find(".dataTables_filter input")
               .attr("placeholder", historyWidget.options.labels.filterMessages);
           }
+          $(".history-button-showdetail", this.$el).kendoButton();
+          $(".history-button-shownotice", this.$el).kendoButton();
         },
 
         ajax: function whistory_getData(data, callback) {
