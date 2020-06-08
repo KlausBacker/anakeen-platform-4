@@ -25,7 +25,7 @@ SUBDIRS := control smart-data-engine security workflow internal-components user-
 CONTROL_ARCHIVE = $(BUILD_DIR)/control/anakeen-control-latest.zip
 
 # User specific variables come last
--include Makefile.local.mk
+-include Makefile.local
 
 BUILDDIR_PREFIX := app-
 
