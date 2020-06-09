@@ -674,18 +674,26 @@ export default class SmartElementController extends AnakeenController.BusEvents.
         "Values must be an object where each properties is an smart field of the array for " + smartFieldId
       );
     }
+
+    // get next index row
+    let indexRow = 0;
     attribute.get("content").each(currentAttribute => {
-      let newValue = values[currentAttribute.id];
       const currentValue = currentAttribute.getValue();
-      if (_.isUndefined(newValue)) {
-        // Set default value if no value defined
-        currentAttribute.createIndexedValue(currentValue.length, false, _.isEmpty(values));
-      } else {
-        newValue = _.defaults(newValue, {
-          displayValue: newValue.value,
-          value: ""
+      indexRow = currentValue.length;
+    });
+    // first add empty row, and set value on success
+    attribute.addIndexedLine(indexRow, {
+      success: function onAddIndexedLineSuccess() {
+        attribute.get("content").each(currentAttribute => {
+          let newValue = values[currentAttribute.id];
+          if (!_.isUndefined(newValue)) {
+            newValue = _.defaults(newValue, {
+              displayValue: newValue.value,
+              value: ""
+            });
+            currentAttribute.addValue(newValue, indexRow);
+          }
         });
-        currentAttribute.addValue(newValue);
       }
     });
   }
