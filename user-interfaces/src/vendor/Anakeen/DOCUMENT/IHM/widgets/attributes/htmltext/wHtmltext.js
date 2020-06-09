@@ -54,6 +54,9 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
             .kendoEditor(currentWidget.options.renderOptions.kendoEditorConfiguration)
             .data("kendoEditor");
           currentWidget.options.attributeValue.value = currentWidget.kendoEditorInstance.value();
+          if (!currentWidget.options.attributeValue.value) {
+            this.kendoEditorInstance.value("<p></p>");
+          }
           bindEvents();
           bindInitToolbar();
           currentWidget._trigger("widgetReady");
@@ -596,6 +599,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
         // Modify value only if different
 
         this.kendoEditorInstance.value(value.value);
+        this.kendoEditorInstance.value(value.value || "<p></p>");
       }
     } else if (this.getMode() === "read") {
       this.getContentElements().html(value.displayValue);
