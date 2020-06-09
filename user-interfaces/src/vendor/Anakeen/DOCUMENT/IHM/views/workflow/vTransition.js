@@ -285,9 +285,6 @@ export default ViewDocument.extend({
               if (event.prevent !== false) {
                 e.preventDefault();
               } else {
-                const parentWindow = $($(this)[0].$el[0], this.$el).parent();
-                const offsetTop = $(window).height() * 0.1;
-                $(parentWindow, this.$el).css("top", offsetTop + "px");
                 $(".dcpTransition-button-ok", this.$el).kendoButton();
                 $(".dcpTransition-button-cancel", this.$el).kendoButton();
               }
@@ -297,6 +294,19 @@ export default ViewDocument.extend({
               currentView.model.trigger("beforeChangeStateClose", event);
               if (event.prevent !== false) {
                 e.preventDefault();
+              }
+            },
+            activate: e => {
+              // parent window actual height
+              const parentWindowHeight = e.sender.element.prop("offsetHeight");
+              // parent window element
+              const parentWindow = $($(this)[0].$el[0], this.$el).parent();
+              // parent window actuel offset from the top of the window
+              const windowOffsetTop = parentWindow.position().top;
+              if (parentWindowHeight + windowOffsetTop >= $(window).height()) {
+                // compute offset top to center the transition window
+                const parentWindowOffset = ($(window).height() - parentWindowHeight) / 2;
+                $(parentWindow, this.$el).css("top", parentWindowOffset + "px");
               }
             }
           }
