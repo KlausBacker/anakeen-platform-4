@@ -343,6 +343,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     } catch (e) {
       ready = false;
       properties = {
+        controller: this,
         notLoaded: true
       };
     }
@@ -351,6 +352,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       properties.isModified = this._model.isModified();
       properties.url = this._model.url();
       properties.pageUrl = this._computeUrl(properties);
+      properties.controller = this;
     }
 
     return properties as ISmartElement;
@@ -1069,7 +1071,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
         return;
       }
 
-      this._triggerControllerEvent("beforeClose", null, this._model.getModelProperties())
+      this._triggerControllerEvent("beforeClose", null, this._getEventProperties(this._model.getModelProperties()))
         .then(() => {
           this._model.trigger("destroy");
           this._model
@@ -1157,6 +1159,12 @@ export default class SmartElementController extends AnakeenController.BusEvents.
 
   private _reinitListeners() {
     return this.offAll();
+  }
+
+  private _getEventProperties(originalProps = {}) {
+    return Object.assign({}, originalProps, {
+      controller: this
+    });
   }
 
   private _initializeSmartElement(options, config) {
@@ -1875,7 +1883,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       this._model.fetchDocument();
     });
     this._view.on("renderCss", css => {
-      this._triggerControllerEvent("renderCss", null, this.getProperties, css);
+      this._triggerControllerEvent("renderCss", null, this.getProperties(), css);
     });
   }
 

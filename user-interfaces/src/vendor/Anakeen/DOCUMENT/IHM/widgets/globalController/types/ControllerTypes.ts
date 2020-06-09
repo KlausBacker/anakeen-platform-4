@@ -640,6 +640,7 @@ export namespace AnakeenController {
       url: string;
       pageUrl: string;
       viewId: string;
+      controller: ISmartElementAPI;
     }
 
     export interface ISmartField {
