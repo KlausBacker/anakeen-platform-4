@@ -540,33 +540,38 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
         });
       })
       .fail(function wFileUploadFail(data) {
+        const $img = $(currentWidget.element).find('img[data-localid="' + localid + '"]');
         currentWidget.uploadingFiles--;
         currentWidget._trigger("uploadfiledone", event, {
           $el: currentWidget.element,
           index: currentWidget._getIndex(),
           file: null
         });
-        currentWidget._trigger("uploadfileerror", event, {
-          index: currentWidget._getIndex(),
-          message: i18n.___("Your navigator seems offline, try later", "ddui")
-        });
-        const result = JSON.parse(data.responseText);
-        if (result) {
-          _.each(result.messages, function wFileErrorMessages(errorMessage) {
-            $("body").trigger("notification", {
-              htmlMessage: errorMessage.contentHtml,
-              message: errorMessage.contentText,
+        try {
+          const result = JSON.parse(data.responseText);
 
-              type: errorMessage.type
-            });
+          _.each(result.messages, function wFileErrorMessages(errorMessage) {
+            if (errorMessage.type === "error") {
+              currentWidget._trigger("uploadfileerror", event, {
+                index: currentWidget._getIndex(),
+                message: errorMessage.contentText
+              });
+            } else {
+              $("body").trigger("notification", {
+                htmlMessage: errorMessage.contentHtml,
+                message: errorMessage.contentText,
+
+                type: errorMessage.type
+              });
+            }
           });
-        } else {
-          $("body").trigger("notification", {
-            htmlMessage: "Image cannot be uploaded",
-            message: event.statusText,
-            type: "error"
+        } catch (e) {
+          currentWidget._trigger("uploadfileerror", event, {
+            index: currentWidget._getIndex(),
+            message: data.responseText || i18n.___("Your navigator seems offline, try later", "ddui")
           });
         }
+        $img.remove();
       });
 
     return $img[0].outerHTML;
