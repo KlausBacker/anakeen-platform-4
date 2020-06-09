@@ -279,8 +279,30 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
     this._super();
 
     if (this.getMode() === "write") {
+      const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutationRecord) {
+          // Observe style img mutation to synchro with its container
+          if (mutationRecord.target.tagName === "IMG") {
+            const $container = $(mutationRecord.target).closest(".htmltext-img-container");
+            if ($container.length === 1) {
+              const targetStyle = mutationRecord.target.style;
+              let newStyle = {
+                width: $container.get(0).style.width,
+                height: $container.get(0).style.height,
+                "background-image": $container.get(0).style.backgroundImage
+              };
+              for (let i = 0; i < targetStyle.length; i++) {
+                let cssItem = targetStyle.item(i);
+                newStyle[cssItem] = targetStyle.getPropertyValue(cssItem);
+              }
+              $container.attr("style", "").css(newStyle);
+            }
+          }
+        });
+      });
       if (currentWidget.kendoEditorInstance) {
         currentWidget.kendoEditorInstance.bind("change", () => {
+          this._removeResizeImageContainers();
           currentWidget.setValue({ value: currentWidget.kendoEditorInstance.value() });
         });
 
@@ -313,26 +335,16 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
               }
 
               $img.width("").height("");
+
               $imgcontainer.insertBefore($img);
               $imgcontainer.append($img);
+              observer.observe($imgcontainer.get(0), { attributes: true, subtree: true, attributeFilter: ["style"] });
             }
           } else {
-            // remove all img div container and restore new image dimension
-            const $containers = $(e.currentTarget).find(".htmltext-img-container");
-            $containers.each(function() {
-              $(this).css("padding", "0");
-              const $iImg = $(this).find("img");
-              const width = $(this).width();
-              const height = $(this).height();
-              // use tag img tag dimension because kendo analyze this attributes to get dimension instead of style
-              $iImg.attr("width", Number.parseInt(width, 10));
-              $iImg.attr("height", Number.parseInt(height, 10));
-
-              $iImg.insertBefore($(this));
-              $(this).remove();
-              // Select image
-              $iImg.trigger("click");
-            });
+            const $innerImg = $img.find("img");
+            observer.disconnect();
+            this._removeResizeImageContainers();
+            $innerImg.trigger("click");
           }
         });
       }
@@ -428,6 +440,23 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
       );
     }
   },
+
+  _removeResizeImageContainers: function wHtmltext_removeResizeImageContainers() {
+    const $containers = $(this.element).find(".htmltext-img-container");
+    $containers.each(function() {
+      // $(this).css("padding", "0");
+      const $iImg = $(this).find("img");
+      const width = $(this).width();
+      const height = $(this).height();
+      // use tag img tag dimension because kendo analyze this attributes to get dimension instead of style
+      $iImg.attr("width", Number.parseInt(width, 10));
+      $iImg.attr("height", Number.parseInt(height, 10));
+      $(this).css("background-image", "");
+      $iImg.attr("style", $(this).attr("style"));
+      $iImg.insertBefore($(this));
+      $(this).remove();
+    });
+  },
   /**
    * Define inputs for focus
    * @protected
@@ -462,7 +491,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
   transfertImage: function(html) {
     const $img = $(html);
     const localid = ++this._imgTransfertId;
-    const event = { prevent: false };
+    const event = { prevent: false, target: $img };
     const imgFile = this.dataURLtoFile($img.attr("src"), "paste");
     const formData = new FormData();
     const currentWidget = this;
@@ -470,7 +499,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
     $img.attr("data-localid", localid);
     $img.addClass("htmltext-img-transferring", localid);
 
-    var isNotPrevented = currentWidget._trigger("uploadfile", event, {
+    const isNotPrevented = currentWidget._trigger("uploadfile", event, {
       $el: currentWidget.element,
       index: currentWidget._getIndex(),
       file: imgFile
@@ -489,8 +518,11 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
       data: formData,
 
       xhr: function wFileXhrAddProgress() {
-        var xhrObject = $.ajaxSettings.xhr();
+        const xhrObject = $.ajaxSettings.xhr();
         if (xhrObject.upload) {
+          const styleTag = document.head.appendChild(document.createElement("style"));
+          styleTag.textContent = 'img.htmltext-img-transferring[data-localid="' + localid + '"] { opacity: 0}';
+
           xhrObject.upload.addEventListener(
             "progress",
             function wFileProgress(event) {
@@ -503,9 +535,10 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
               }
               if (percent >= 100) {
                 $img.removeClass("htmltext-img-transferring");
-                $img.css("opacity", "");
+                styleTag.remove();
               } else {
-                $img.css("opacity", percent / 100);
+                styleTag.textContent =
+                  'img.htmltext-img-transferring[data-localid="' + localid + '"] { opacity: ' + percent / 100 + "}";
               }
             },
             false
