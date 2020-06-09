@@ -589,13 +589,6 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
                 index: currentWidget._getIndex(),
                 message: errorMessage.contentText
               });
-            } else {
-              $("body").trigger("notification", {
-                htmlMessage: errorMessage.contentHtml,
-                message: errorMessage.contentText,
-
-                type: errorMessage.type
-              });
             }
           });
         } catch (e) {
