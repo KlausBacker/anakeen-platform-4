@@ -550,10 +550,6 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
           index: currentWidget._getIndex(),
           message: i18n.___("Your navigator seems offline, try later", "ddui")
         });
-        currentWidget.setValue({
-          displayValue: "",
-          value: ""
-        });
         const result = JSON.parse(data.responseText);
         if (result) {
           _.each(result.messages, function wFileErrorMessages(errorMessage) {
