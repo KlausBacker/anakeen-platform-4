@@ -594,7 +594,6 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
       if (originalValue.trim() !== value.value.trim()) {
         // Modify value only if different
 
-        this.kendoEditorInstance.value(value.value);
         this.kendoEditorInstance.value(value.value || "<p></p>");
       }
     } else if (this.getMode() === "read") {
