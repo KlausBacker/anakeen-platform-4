@@ -3,7 +3,6 @@
 namespace Anakeen\Routes\Core\Lib;
 
 use Anakeen\Core\SmartStructure\Attributes;
-use Anakeen\Router\URLUtils;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\Settings;
@@ -79,8 +78,8 @@ class DocumentApiData
      *
      * @param \Anakeen\Core\Internal\SmartElement $document Document
      *
-     * @throws Exception
      * @return mixed
+     * @throws Exception
      */
     public function getInternal(\Anakeen\Core\Internal\SmartElement $document)
     {
@@ -117,7 +116,11 @@ class DocumentApiData
             return array();
         }
 
-        return \Anakeen\Routes\Core\Lib\DocumentUtils::getAttributesFields($this->_document, self::GET_ATTRIBUTE, $this->getFields());
+        return \Anakeen\Routes\Core\Lib\DocumentUtils::getAttributesFields(
+            $this->_document,
+            self::GET_ATTRIBUTE,
+            $this->getFields()
+        );
     }
 
     /**
@@ -150,8 +153,8 @@ class DocumentApiData
     /**
      * Check if the current restrict field exist
      *
-     * @param string  $fieldId field
-     * @param boolean $strict  strict test
+     * @param string $fieldId field
+     * @param boolean $strict strict test
      *
      * @return bool
      */
@@ -182,8 +185,8 @@ class DocumentApiData
     /**
      * Get document data
      *
-     * @throws Exception
      * @return array
+     * @throws Exception
      */
     public function getDocumentData()
     {
@@ -237,10 +240,16 @@ class DocumentApiData
      */
     protected function _getDocumentStructure()
     {
+        $this->_document->attributes->orderAttributes();
         $normalAttributes = $this->_document->getNormalAttributes();
 
+        $pos = 1;
+        $attrsOrder = [];
+        foreach ($this->_document->attributes->attr as $attrs) {
+            $attrsOrder[$attrs->id] = $pos++;
+        }
+
         $return = array();
-        $order = 0;
         foreach ($normalAttributes as $attribute) {
             if ($attribute->type === "array") {
                 continue;
@@ -259,20 +268,27 @@ class DocumentApiData
             foreach ($parentIds as $aid) {
                 if ($previousId === null) {
                     if (!isset($return[$aid])) {
-                        $return[$aid] = $this->getAttributeInfo($this->_document->getAttribute($aid), $order++);
+                        $return[$aid] = $this->getAttributeInfo(
+                            $this->_document->getAttribute($aid),
+                            $attrsOrder[$aid]
+                        );
                         $return[$aid]["content"] = array();
                     }
                     $target = &$return[$aid]["content"];
                 } else {
                     if (!isset($target[$aid])) {
-                        $target[$aid] = $this->getAttributeInfo($this->_document->getAttribute($aid), $order++);
+                        $target[$aid] = $this->getAttributeInfo(
+                            $this->_document->getAttribute($aid),
+                            $attrsOrder[$aid]
+                        );
                         $target[$aid]["content"] = array();
                     }
                     $target = &$target[$aid]["content"];
                 }
                 $previousId = $aid;
             }
-            $target[$attribute->id] = $this->getAttributeInfo($attribute, $order++);
+
+            $target[$attribute->id] = $this->getAttributeInfo($attribute, $attrsOrder[$attribute->id]);
         }
         return $return;
     }
@@ -281,7 +297,7 @@ class DocumentApiData
      * Get the attribute info
      *
      * @param \Anakeen\Core\SmartStructure\BasicAttribute $attribute
-     * @param int                                         $order
+     * @param int $order
      *
      * @return array
      */
@@ -296,6 +312,7 @@ class DocumentApiData
             "options" => $attribute->getOptions()
         );
 
+        /** @noinspection PhpPossiblePolymorphicInvocationInspection */
         if (isset($attribute->needed)) {
             /**
              * @var \Anakeen\Core\SmartStructure\NormalAttribute $attribute ;
@@ -354,7 +371,11 @@ class DocumentApiData
                 }
             }
 
-            $formatDefaultValue = $this->documentFormater->getFormatCollection()->getInfo($attribute, $defaultValue, $this->_document);
+            $formatDefaultValue = $this->documentFormater->getFormatCollection()->getInfo(
+                $attribute,
+                $defaultValue,
+                $this->_document
+            );
 
             if ($formatDefaultValue) {
                 if ($attribute->isMultipleInArray()) {
