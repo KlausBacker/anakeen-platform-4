@@ -229,6 +229,9 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
     controllers.forEach(controller => {
       currentEventNames.push(controller.addEventListener(eventType, options, callback));
     });
+    this.on("controllerSmartElementAdded", controller => {
+      controller.addEventListener(eventType, options, callback());
+    });
     return currentEventNames;
   }
 
