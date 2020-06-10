@@ -232,6 +232,31 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
           kWindow.setOptions({ title: label, resizable: true, actions: ["Maximize", "Close"] });
         }, 10);
       }
+      if (e.name === "insertimage") {
+        const RangeUtils = kendo.ui.editor.RangeUtils;
+        const range = e.command.getRange();
+        const img = RangeUtils.image(range);
+        const editor = this.kendoEditorInstance;
+
+        if (!img) {
+          // If image selected : keep orignal behavior
+          e.preventDefault();
+
+          this.selectImage("image/*", false).then(currentImage => {
+            const reader = new FileReader();
+            reader.addEventListener(
+              "load",
+              function() {
+                editor.exec("inserthtml", {
+                  value: `<img src="${reader.result}">`
+                });
+              },
+              false
+            );
+            reader.readAsDataURL(currentImage);
+          });
+        }
+      }
     };
     if (!this.options.renderOptions.kendoEditorConfiguration.pasteCleanup.custom) {
       this.options.renderOptions.kendoEditorConfiguration.pasteCleanup.custom = html => {
@@ -329,6 +354,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
                 .height(height)
                 .css("background-image", 'url("' + $img.attr("src") + '")');
 
+              this._removeResizeImageContainers();
               if ($img.css("float") === "right") {
                 // Move scroll bar to the left
                 $imgcontainer.css("direction", "rtl");
@@ -338,13 +364,18 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
 
               $imgcontainer.insertBefore($img);
               $imgcontainer.append($img);
+
+              // Need disable button because, the insertion is always to the beginning and not and the current position
+              this._disableButton("insertImage", true);
               observer.observe($imgcontainer.get(0), { attributes: true, subtree: true, attributeFilter: ["style"] });
             }
           } else {
-            const $innerImg = $img.find("img");
             observer.disconnect();
-            this._removeResizeImageContainers();
-            $innerImg.trigger("click");
+            const $innerImg = this._removeResizeImageContainers();
+            if ($innerImg) {
+              // Original image selection
+              $innerImg.trigger("click");
+            }
           }
         });
       }
@@ -441,11 +472,41 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
     }
   },
 
+  /**
+   * Disable/Enable a specific button in toolbar
+   * @param buttonName
+   * @param disabled
+   * @private
+   */
+  _disableButton: function(buttonName, disabled) {
+    const editor = this.kendoEditorInstance;
+    const toolbar = editor.toolbar;
+    const items = editor.toolbar.items();
+    let itemName;
+
+    for (let i = 0; i < items.length; i++) {
+      itemName = toolbar._toolName(items[i]);
+      if (itemName === buttonName) {
+        if (disabled === true) {
+          $(items[i]).addClass("k-state-disabled");
+        } else {
+          $(items[i]).removeClass("k-state-disabled");
+        }
+      }
+    }
+  },
+
+  /**
+   * Remove temporary div used for resize images
+   * @returns {*}
+   * @private
+   */
   _removeResizeImageContainers: function wHtmltext_removeResizeImageContainers() {
     const $containers = $(this.element).find(".htmltext-img-container");
+
+    let $iImg = null;
     $containers.each(function() {
-      // $(this).css("padding", "0");
-      const $iImg = $(this).find("img");
+      $iImg = $(this).find("img");
       const width = $(this).width();
       const height = $(this).height();
       // use tag img tag dimension because kendo analyze this attributes to get dimension instead of style
@@ -456,7 +517,34 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
       $iImg.insertBefore($(this));
       $(this).remove();
     });
+
+    this._disableButton("insertImage", false);
+    return $iImg;
   },
+
+  /**
+   * Select file(s).
+   * @param {String} contentType The content type of files you wish to select. For instance "image/*" to select all kinds of images.
+   * @param {Boolean} multiple Indicates if the user can select multiples file.
+   * @returns {Promise<File|File[]>} A promise of a file or array of files in case the multiple parameter is true.
+   */
+  selectImage: function(contentType, multiple) {
+    return new Promise(resolve => {
+      let input = document.createElement("input");
+      input.type = "file";
+      input.multiple = multiple;
+      input.accept = contentType;
+
+      input.onchange = () => {
+        let files = Array.from(input.files);
+        if (multiple) resolve(files);
+        else resolve(files[0]);
+      };
+
+      input.click();
+    });
+  },
+
   /**
    * Define inputs for focus
    * @protected
@@ -495,6 +583,18 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
     const imgFile = this.dataURLtoFile($img.attr("src"), "paste");
     const formData = new FormData();
     const currentWidget = this;
+
+    const img = new Image();
+    img.onload = function() {
+      // Limit width to content when paste it
+      const wWidget = $(currentWidget.element).width();
+      const wImg = this.width;
+      if (wWidget < wImg) {
+        const $imgLocal = $(currentWidget.element).find('img[data-localid="' + localid + '"]');
+        $imgLocal.attr("width", wWidget - 30);
+      }
+    };
+    img.src = $img.attr("src");
 
     $img.attr("data-localid", localid);
     $img.addClass("htmltext-img-transferring", localid);
@@ -566,10 +666,13 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
         $img.attr("src", fileValue.url);
         $img.removeAttr("data-localid");
         $img.attr("data-tmpvid", dataFile.id);
-        currentWidget._trigger("uploadfiledone", event, {
-          $el: currentWidget.element,
-          index: currentWidget._getIndex(),
-          file: fileValue
+
+        _.defer(function wHtmltext_uploadImageDone() {
+          currentWidget._trigger("uploadfiledone", event, {
+            $el: currentWidget.element,
+            index: currentWidget._getIndex(),
+            file: fileValue
+          });
         });
       })
       .fail(function wFileUploadFail(data) {
@@ -582,7 +685,6 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
         });
         try {
           const result = JSON.parse(data.responseText);
-
           _.each(result.messages, function wFileErrorMessages(errorMessage) {
             if (errorMessage.type === "error") {
               currentWidget._trigger("uploadfileerror", event, {
