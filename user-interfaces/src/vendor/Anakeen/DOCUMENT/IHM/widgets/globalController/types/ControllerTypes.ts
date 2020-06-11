@@ -297,6 +297,11 @@ export namespace AnakeenController {
       restoreSmartElement(options?);
 
       /**
+       * Return element JQuery
+       */
+      getElement();
+
+      /**
        * Get a property value
        *
        * @param property

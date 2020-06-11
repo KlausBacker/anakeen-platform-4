@@ -11,6 +11,7 @@ import EVENTS_LIST = AnakeenController.SmartElement.EVENTS_LIST;
 import ListenableEventCallable = AnakeenController.BusEvents.ListenableEventCallable;
 import ListenableEvent = AnakeenController.BusEvents.ListenableEvent;
 import SmartElementEvent = AnakeenController.SmartElement.SmartElementEvent;
+import DOMReference = AnakeenController.Types.DOMReference;
 
 @Component({
   name: "ank-smart-element"
@@ -198,6 +199,10 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
 
   public restoreSmartElement(options) {
     return this.smartElementWidget.restoreSmartElement(options);
+  }
+
+  public getElement(): JQuery<DOMReference> {
+    return this.smartElementWidget.getElement();
   }
 
   public getProperty(property) {

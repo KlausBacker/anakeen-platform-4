@@ -318,6 +318,13 @@ export default class SmartElementController extends AnakeenController.BusEvents.
   }
 
   /**
+   * Return element JQuery
+   */
+  public getElement(): JQuery<DOMReference> {
+    return this._element;
+  }
+
+  /**
    * Get a property value
    *
    * @param property
