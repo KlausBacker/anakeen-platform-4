@@ -199,7 +199,7 @@ class ExportXml
             }
             system(sprintf("cd %s && zip -r %s -- * > /dev/null", escapeshellarg($foutdir), escapeshellarg($zipfile)), $ret);
             if (is_file($zipfile)) {
-                system(sprintf("rm -fr %s", $foutdir));
+                system(sprintf("rm -fr %s", escapeshellarg($foutdir)));
                 if ($toDownload) {
                     Http_DownloadFile($zipfile, "$exportname.zip", "application/x-zip", false, false, true);
                 }

@@ -305,21 +305,21 @@ export default {
     },
     filterShow(id, show = true) {
       if (show) {
-        this.$(".filter-row").append(`<th class="k-header" >
+        this.$(".filter-row", this.$el).append(`<th class="k-header" >
                 <div class="filter-clearable" style="position:relative;">
                   <input class="k-textbox filter ${id}-filter" type="text"/>
                 </div>
               </th>`);
       } else {
         this.$nextTick(() => {
-          this.$(`.${id}-filter`)
+          this.$(`.${id}-filter`, this.$el)
             .closest("th")
             .remove();
         });
       }
     },
     filterButton() {
-      this.$(".filter-drop-config").kendoButton({
+      this.$(".filter-drop-config", this.$el).kendoButton({
         click: e => {
           let result = "";
           switch (this.operatorconfig) {
@@ -330,7 +330,9 @@ export default {
               e.sender.element[0].previousElementSibling.value = "is not empty:";
               this.$refs.ssTreelist.kendoWidget().dataSource.filter({
                 field: "config",
-                operator: "isnotempty"
+                operator: item => {
+                  return !item ? false : item.length > 0;
+                }
               });
               break;
             case "isnotempty":
@@ -345,7 +347,7 @@ export default {
           }
         }
       });
-      this.$(".filter-drop-value").kendoButton({
+      this.$(".filter-drop-value", this.$el).kendoButton({
         click: e => {
           let result = "";
           switch (this.operatorvalue) {
@@ -357,19 +359,7 @@ export default {
               this.$refs.ssTreelist.kendoWidget().dataSource.filter({
                 field: "value",
                 operator: item => {
-                  if (!item) {
-                    return false;
-                  }
-                  if (item instanceof String) {
-                    return item.length > 0;
-                  }
-                  if (item instanceof Object) {
-                    const realArray = item.toJSON();
-                    if (Array.isArray(realArray)) {
-                      return realArray.length > 0;
-                    }
-                    return false;
-                  }
+                  return !item ? false : item.length > 0;
                 }
               });
               break;
@@ -387,78 +377,82 @@ export default {
       });
     },
     filterRow(field) {
-      this.$(this.$refs.ssTreelist.kendoWidget().thead).on("change", `[data-field=${field}] input.filter`, event => {
-        let newFilter = {};
-        let computedFilter = { filters: [], logic: "and" };
-        let oldFilter = this.$refs.ssTreelist.kendoWidget().dataSource.filter() || {};
-        let value = this.getFilterValue(event.currentTarget.value);
-        value = value.replace(" ", "");
-        const colId = event.target.className.split(" ")[2].split("-")[0];
-        if (value) {
-          switch (colId) {
-            case "config":
-              event.target.value = value;
-              newFilter = {
-                field: colId,
-                operator: "contains",
-                value: value
-              };
-              this.removeEmptyFilter(event);
-              this.operatorconfig = "contains";
-              break;
-            case "value":
-              event.target.value = value;
-              newFilter = {
-                field: colId,
-                operator: (item, val) => {
-                  if (!item) {
-                    return false;
-                  }
-                  if (item instanceof String) {
-                    return val.includes(item);
-                  }
-                  if (item instanceof Object) {
-                    const realArray = item.toJSON();
-                    if (Array.isArray(realArray)) {
-                      let result = false;
-                      let i = 0;
-                      while (i < realArray.length && !result) {
-                        const currentValue = realArray[i];
-                        result = currentValue.indexOf(val) > -1;
-                        i++;
-                      }
-                      return result;
+      this.$(this.$refs.ssTreelist.kendoWidget().thead, this.$el).on(
+        "change",
+        `[data-field=${field}] input.filter`,
+        event => {
+          let newFilter = {};
+          let computedFilter = { filters: [], logic: "and" };
+          let oldFilter = this.$refs.ssTreelist.kendoWidget().dataSource.filter() || {};
+          let value = this.getFilterValue(event.currentTarget.value);
+          value = value.replace(" ", "");
+          const colId = event.target.className.split(" ")[2].split("-")[0];
+          if (value) {
+            switch (colId) {
+              case "config":
+                event.target.value = value;
+                newFilter = {
+                  field: colId,
+                  operator: "contains",
+                  value: value
+                };
+                this.removeEmptyFilter(event);
+                this.operatorconfig = "contains";
+                break;
+              case "value":
+                event.target.value = value;
+                newFilter = {
+                  field: colId,
+                  operator: (item, val) => {
+                    if (!item) {
+                      return false;
                     }
-                    return false;
-                  }
-                },
-                value: value
-              };
-              this.removeEmptyFilter(event);
-              this.operatorvalue = "contains";
-              break;
-            default:
-              newFilter = {
-                field: colId,
-                operator: "contains",
-                value: value
-              };
-              break;
+                    if (item instanceof String) {
+                      return val.includes(item);
+                    }
+                    if (item instanceof Object) {
+                      const realArray = item.toJSON();
+                      if (Array.isArray(realArray)) {
+                        let result = false;
+                        let i = 0;
+                        while (i < realArray.length && !result) {
+                          const currentValue = realArray[i];
+                          result = currentValue.indexOf(val) > -1;
+                          i++;
+                        }
+                        return result;
+                      }
+                      return false;
+                    }
+                  },
+                  value: value
+                };
+                this.removeEmptyFilter(event);
+                this.operatorvalue = "contains";
+                break;
+              default:
+                newFilter = {
+                  field: colId,
+                  operator: "contains",
+                  value: value
+                };
+                break;
+            }
+            computedFilter.filters = (oldFilter.filters || []).concat(newFilter);
+          } else {
+            computedFilter.filters = oldFilter.filters.filter(f => f.field !== colId);
           }
-          computedFilter.filters = (oldFilter.filters || []).concat(newFilter);
-        } else {
-          computedFilter.filters = oldFilter.filters.filter(f => f.field !== colId);
+          this.$refs.ssTreelist.kendoWidget().dataSource.filter(computedFilter);
+          this.$emit("filter", {
+            sender: this.$refs.ssTreelist.kendoWidget(),
+            filter: {
+              field: colId,
+              operator: "contains",
+              value: value
+            }
+          });
         }
-        this.$refs.ssTreelist.kendoWidget().dataSource.filter(computedFilter);
-        this.$emit("filter", {
-          sender: this.$refs.ssTreelist.kendoWidget(),
-          filter: {
-            field: colId,
-            operator: "contains",
-            value: value
-          }
-        });
-      });
+      );
     },
     removeEmptyFilter(event) {
       let result = "";

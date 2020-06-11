@@ -3,15 +3,29 @@
 namespace Anakeen\Components\Grid\Routes;
 
 use Anakeen\Core\SEManager;
+use Anakeen\Core\Utils\Strings;
 use Anakeen\SmartAutocomplete;
 use Anakeen\SmartStructures\Wdoc\WDocHooks;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use SmartStructure\Fields\Search;
 
+/**
+ * Class GridFilterAutocomplete
+ * Autocomplete for state list in Smart Grid state column filter
+ * @package Anakeen\Components\Grid\Routes
+ * @note used by route: POST /api/v2/grid/filter/{collectionId}/state/autocomplete
+ */
 class GridFilterAutocomplete
 {
     protected $searchElements = null;
+
+    protected static function compareFilterValue($haystack, $needle)
+    {
+        $haystackString = strtolower(Strings::unaccent($haystack));
+        $needleString = strtolower(Strings::unaccent($needle));
+        return strpos($haystackString, $needleString) !== false;
+    }
 
     public static function stateAutocomplete(Request $request, Response $response, array $args)
     {
@@ -44,7 +58,7 @@ class GridFilterAutocomplete
                  */
                 $wdoc = SEManager::getDocument($wid);
                 foreach ($wdoc->getStates() as $state) {
-                    if (empty($filterValue) || strpos(strtolower($wdoc->getStateLabel($state)), strtolower($filterValue)) !== false) {
+                    if (empty($filterValue) || self::compareFilterValue($wdoc->getStateLabel($state), $filterValue)) {
                         $result[] = [
                             "stateValue" => [
                                 "value" => $state,

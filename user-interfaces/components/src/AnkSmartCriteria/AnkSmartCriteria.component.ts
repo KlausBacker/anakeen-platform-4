@@ -82,7 +82,12 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
   initSmartCriteria(): void {
     this.innerConfig = JSON.parse(JSON.stringify(this.config));
     this.smartCriteriaConfigurationLoader = new SmartCriteriaConfigurationLoader(this.innerConfig);
-    this.loadConfiguration();
+    if (this.mountedDone === false) {
+      this.$once("hook:mounted", this.loadConfiguration);
+    } else {
+      this.loadConfiguration();
+    }
+
   }
 
   onSmartFieldChange(event, smartElement, smartField, values): void {
@@ -347,6 +352,11 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
     }
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     return this.computeFilterValue(this.innerConfig.criterias[index], <number>index);
+  }
+  
+  public beforeDestroy() {
+    // Remove smart form controller on vue component destroy
+    this.$refs.smartForm.tryToDestroy({ testDirty: false });
   }
 
   private getIndex(id: string): number {

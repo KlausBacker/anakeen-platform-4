@@ -318,6 +318,13 @@ export default class SmartElementController extends AnakeenController.BusEvents.
   }
 
   /**
+   * Return element JQuery
+   */
+  public getElement(): JQuery<DOMReference> {
+    return this._element;
+  }
+
+  /**
    * Get a property value
    *
    * @param property
@@ -343,6 +350,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     } catch (e) {
       ready = false;
       properties = {
+        controller: this,
         notLoaded: true
       };
     }
@@ -351,6 +359,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       properties.isModified = this._model.isModified();
       properties.url = this._model.url();
       properties.pageUrl = this._computeUrl(properties);
+      properties.controller = this;
     }
 
     return properties as ISmartElement;
@@ -479,7 +488,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
    * @param type string (current|previous|initial|all) what kind of value (default : current)
    * @returns {*}
    */
-  public getValue(smartFieldId, type) {
+  public getValue(smartFieldId, type = "current") {
     let attribute;
     this.checkInitialisedModel();
     const attributeModel = this._getAttributeModel(smartFieldId);
@@ -674,18 +683,26 @@ export default class SmartElementController extends AnakeenController.BusEvents.
         "Values must be an object where each properties is an smart field of the array for " + smartFieldId
       );
     }
+
+    // get next index row
+    let indexRow = 0;
     attribute.get("content").each(currentAttribute => {
-      let newValue = values[currentAttribute.id];
       const currentValue = currentAttribute.getValue();
-      if (_.isUndefined(newValue)) {
-        // Set default value if no value defined
-        currentAttribute.createIndexedValue(currentValue.length, false, _.isEmpty(values));
-      } else {
-        newValue = _.defaults(newValue, {
-          displayValue: newValue.value,
-          value: ""
+      indexRow = currentValue.length;
+    });
+    // first add empty row, and set value on success
+    attribute.addIndexedLine(indexRow, {
+      success: function onAddIndexedLineSuccess() {
+        attribute.get("content").each(currentAttribute => {
+          let newValue = values[currentAttribute.id];
+          if (!_.isUndefined(newValue)) {
+            newValue = _.defaults(newValue, {
+              displayValue: newValue.value,
+              value: ""
+            });
+            currentAttribute.addValue(newValue, indexRow);
+          }
         });
-        currentAttribute.addValue(newValue);
       }
     });
   }
@@ -970,7 +987,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
    * @param message
    * @param px
    */
-  public maskSmartElement(message, px) {
+  public maskSmartElement(message?: string, px?: number): void {
     this.loading.show();
     if (message) {
       this.loading.setTitle(message);
@@ -983,7 +1000,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
   /**
    * Hide loading bar
    */
-  public unmaskSmartElement(force) {
+  public unmaskSmartElement(force?: boolean): void {
     this.loading.hide(force);
   }
 
@@ -1069,7 +1086,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
         return;
       }
 
-      this._triggerControllerEvent("beforeClose", null, this._model.getModelProperties())
+      this._triggerControllerEvent("beforeClose", null, this._getEventProperties(this._model.getModelProperties()))
         .then(() => {
           this._model.trigger("destroy");
           this._model
@@ -1157,6 +1174,12 @@ export default class SmartElementController extends AnakeenController.BusEvents.
 
   private _reinitListeners() {
     return this.offAll();
+  }
+
+  private _getEventProperties(originalProps = {}) {
+    return Object.assign({}, originalProps, {
+      controller: this
+    });
   }
 
   private _initializeSmartElement(options, config) {
@@ -1875,7 +1898,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       this._model.fetchDocument();
     });
     this._view.on("renderCss", css => {
-      this._triggerControllerEvent("renderCss", null, this.getProperties, css);
+      this._triggerControllerEvent("renderCss", null, this.getProperties(), css);
     });
   }
 

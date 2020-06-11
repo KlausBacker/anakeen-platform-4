@@ -297,6 +297,11 @@ export namespace AnakeenController {
       restoreSmartElement(options?);
 
       /**
+       * Return element JQuery
+       */
+      getElement();
+
+      /**
        * Get a property value
        *
        * @param property
@@ -640,6 +645,7 @@ export namespace AnakeenController {
       url: string;
       pageUrl: string;
       viewId: string;
+      controller: ISmartElementAPI;
     }
 
     export interface ISmartField {

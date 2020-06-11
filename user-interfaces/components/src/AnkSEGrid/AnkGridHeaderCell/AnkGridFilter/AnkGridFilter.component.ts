@@ -363,6 +363,8 @@ export default class GridFilterCell extends Mixins(I18nMixin) {
           [fieldValueId]: "stateValue"
         }
       };
+      // set docid to enable value/displayValue behavior, enum type would be a breaking change
+      this.$set(valueField, "type", "docid");
     } else if (
       type === "enum" &&
       (fieldOperatorValue === "eq" ||

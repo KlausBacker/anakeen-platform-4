@@ -296,11 +296,18 @@ export default Backbone.Model.extend({
           docModel.get("properties").trigger("change");
         },
         error: function mDocumentLockDocumentError(theModel, HttpResponse) {
-          var response = JSON.parse(HttpResponse.responseText);
-
-          docModel.trigger("showError", {
-            title: response.exceptionMessage
-          });
+          if (HttpResponse && HttpResponse.status === 0) {
+            docModel.trigger("showError", {
+              errorCode: "offline",
+              title: i18n.___("Your navigator seems offline, try later", "ddui")
+            });
+          } else {
+            docModel.trigger("showError", {
+              errorCode: "unableToParseJson",
+              title: i18n.___("Unable to lock", "ddui")
+            });
+          }
+          docModel.trigger("displayNetworkError");
         }
       }
     );
@@ -436,11 +443,15 @@ export default Backbone.Model.extend({
         xhr = { status: 500, statusText: "Internal - No HTTP response" };
       } else {
         if (!xhr.message) {
-          result = JSON.parse(xhr.responseText);
-          if (result.message) {
-            messages.push(result);
-          } else if (result.messages) {
-            messages = result.messages;
+          try {
+            result = JSON.parse(xhr.responseText);
+            if (result.message) {
+              messages.push(result);
+            } else if (result.messages) {
+              messages = result.messages;
+            }
+          } catch (e) {
+            messages.push({ type: "error", contentText: xhr.responseText });
           }
         }
       }

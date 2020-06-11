@@ -80,6 +80,21 @@
 .dcpTransition-button-ok .fa {
   margin-right: 1em;
 }
+.dcpTransition-button-ok.button-ok-primary {
+  background-color: $ank-ui-color-btn-action;
+  color: $ank-ui-color-text-colored;
+}
+
+.dcpTransition-button-ok.button-ok-danger {
+  background-color: $ank-ui-color-error;
+  color: $ank-ui-color-text-colored;
+}
+
+.dcpTransition-button-cancel {
+  background-color: transparent;
+  color: $ank-ui-color-picto;
+  border-color: $ank-ui-color-picto;
+}
 
 .dcpTransition--error {
   color: white;
