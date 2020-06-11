@@ -10,7 +10,7 @@
                     "id": "tst_f2_f_title",
                     "label": "Titre",
                     "type": "frame",
-                    "logicalOrder": 0,
+                    "logicalOrder": 2,
                     "multiple": false,
                     "options": {
                         "relativeOrder": "::auto"
@@ -20,7 +20,7 @@
                             "id": "tst_f2_title",
                             "label": "Le titre",
                             "type": "text",
-                            "logicalOrder": 1,
+                            "logicalOrder": 3,
                             "multiple": false,
                             "options": {
                                 "relativeOrder": "::auto"
@@ -33,7 +33,7 @@
                     "id": "tst_f2_fr_date",
                     "label": "Le temps",
                     "type": "frame",
-                    "logicalOrder": 2,
+                    "logicalOrder": 4,
                     "multiple": false,
                     "options": {
                         "relativeOrder": "::auto"
@@ -43,7 +43,7 @@
                             "id": "tst_f2_date",
                             "label": "Une date",
                             "type": "date",
-                            "logicalOrder": 3,
+                            "logicalOrder": 5,
                             "multiple": false,
                             "options": {
                                 "relativeOrder": "::auto"
@@ -54,7 +54,7 @@
                             "id": "tst_f2_time",
                             "label": "Une heure",
                             "type": "time",
-                            "logicalOrder": 4,
+                            "logicalOrder": 6,
                             "multiple": false,
                             "options": {
                                 "relativeOrder": "::auto"
@@ -67,7 +67,7 @@
                     "id": "tst_f2_fr_number",
                     "label": "Les nombres",
                     "type": "frame",
-                    "logicalOrder": 5,
+                    "logicalOrder": 7,
                     "multiple": false,
                     "options": {
                         "relativeOrder": "::auto"
@@ -77,7 +77,7 @@
                             "id": "tst_f2_integer",
                             "label": "Un entier",
                             "type": "int",
-                            "logicalOrder": 6,
+                            "logicalOrder": 8,
                             "multiple": false,
                             "options": {
                                 "relativeOrder": "::auto"
@@ -88,7 +88,7 @@
                             "id": "tst_f2_double",
                             "label": "Un d\u00e9cimal",
                             "type": "double",
-                            "logicalOrder": 7,
+                            "logicalOrder": 9,
                             "multiple": false,
                             "options": {
                                 "relativeOrder": "::auto"
