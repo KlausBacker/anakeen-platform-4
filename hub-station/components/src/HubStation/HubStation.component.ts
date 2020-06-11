@@ -185,7 +185,7 @@ class HubStation extends Mixins(AnkI18NMixin) {
     }
     const stationContent = $(".hub-station-content", this.$el);
     const style = getComputedStyle(stationContent[0]);
-    const stationMargin = parseInt(style.marginTop.replace("px", "")) * 2;
+    const stationMargin = parseInt(style.marginTop.replace("px", "")) + parseInt(style.marginBottom.replace("px", ""));
     stationContent.css("height", "calc(100% - " + stationMargin + "px)");
   }
 
