@@ -666,6 +666,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
         $img.attr("src", fileValue.url);
         $img.removeAttr("data-localid");
         $img.attr("data-tmpvid", dataFile.id);
+        currentWidget.setValue({ value: currentWidget.kendoEditorInstance.value() });
 
         _.defer(function wHtmltext_uploadImageDone() {
           currentWidget._trigger("uploadfiledone", event, {
