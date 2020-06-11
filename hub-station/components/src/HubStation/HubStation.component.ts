@@ -183,6 +183,10 @@ class HubStation extends Mixins(AnkI18NMixin) {
     if (this.withDefaultRouter) {
       this.initRouterConfig(this.configData);
     }
+    const stationContent = $(".hub-station-content", this.$el);
+    const style = getComputedStyle(stationContent[0]);
+    const stationMargin = parseInt(style.marginTop.replace("px", "")) + parseInt(style.marginBottom.replace("px", ""));
+    stationContent.css("height", "calc(100% - " + stationMargin + "px)");
   }
 
   public render(createElement) {

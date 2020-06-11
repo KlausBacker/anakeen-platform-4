@@ -1,6 +1,7 @@
 @import "~@anakeen/theme-variables/scss/variables.scss";
 .ank-tabs {
   display: flex;
+  height: 100%;
 
   &.ank-tabs--top {
     flex-direction: column;
@@ -42,5 +43,6 @@
 
   .ank-tabs-contents {
     flex: 1;
+    height: 100%;
   }
 }
