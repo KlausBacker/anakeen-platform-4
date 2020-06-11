@@ -488,7 +488,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
    * @param type string (current|previous|initial|all) what kind of value (default : current)
    * @returns {*}
    */
-  public getValue(smartFieldId, type) {
+  public getValue(smartFieldId, type = "current") {
     let attribute;
     this.checkInitialisedModel();
     const attributeModel = this._getAttributeModel(smartFieldId);
@@ -987,7 +987,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
    * @param message
    * @param px
    */
-  public maskSmartElement(message, px) {
+  public maskSmartElement(message?: string, px?: number): void {
     this.loading.show();
     if (message) {
       this.loading.setTitle(message);
@@ -1000,7 +1000,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
   /**
    * Hide loading bar
    */
-  public unmaskSmartElement(force) {
+  public unmaskSmartElement(force?: boolean): void {
     this.loading.hide(force);
   }
 
