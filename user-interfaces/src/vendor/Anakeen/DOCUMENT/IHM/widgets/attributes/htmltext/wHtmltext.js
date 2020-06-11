@@ -54,6 +54,9 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
             .kendoEditor(currentWidget.options.renderOptions.kendoEditorConfiguration)
             .data("kendoEditor");
           currentWidget.options.attributeValue.value = currentWidget.kendoEditorInstance.value();
+          if (!currentWidget.options.attributeValue.value) {
+            this.kendoEditorInstance.value("<p></p>");
+          }
           bindEvents();
           bindInitToolbar();
           currentWidget._trigger("widgetReady");
@@ -229,6 +232,31 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
           kWindow.setOptions({ title: label, resizable: true, actions: ["Maximize", "Close"] });
         }, 10);
       }
+      if (e.name === "insertimage") {
+        const RangeUtils = kendo.ui.editor.RangeUtils;
+        const range = e.command.getRange();
+        const img = RangeUtils.image(range);
+        const editor = this.kendoEditorInstance;
+
+        if (!img) {
+          // If image selected : keep orignal behavior
+          e.preventDefault();
+
+          this.selectImage("image/*", false).then(currentImage => {
+            const reader = new FileReader();
+            reader.addEventListener(
+              "load",
+              function() {
+                editor.exec("inserthtml", {
+                  value: `<img src="${reader.result}">`
+                });
+              },
+              false
+            );
+            reader.readAsDataURL(currentImage);
+          });
+        }
+      }
     };
     if (!this.options.renderOptions.kendoEditorConfiguration.pasteCleanup.custom) {
       this.options.renderOptions.kendoEditorConfiguration.pasteCleanup.custom = html => {
@@ -276,8 +304,30 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
     this._super();
 
     if (this.getMode() === "write") {
+      const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutationRecord) {
+          // Observe style img mutation to synchro with its container
+          if (mutationRecord.target.tagName === "IMG") {
+            const $container = $(mutationRecord.target).closest(".htmltext-img-container");
+            if ($container.length === 1) {
+              const targetStyle = mutationRecord.target.style;
+              let newStyle = {
+                width: $container.get(0).style.width,
+                height: $container.get(0).style.height,
+                "background-image": $container.get(0).style.backgroundImage
+              };
+              for (let i = 0; i < targetStyle.length; i++) {
+                let cssItem = targetStyle.item(i);
+                newStyle[cssItem] = targetStyle.getPropertyValue(cssItem);
+              }
+              $container.attr("style", "").css(newStyle);
+            }
+          }
+        });
+      });
       if (currentWidget.kendoEditorInstance) {
         currentWidget.kendoEditorInstance.bind("change", () => {
+          this._removeResizeImageContainers();
           currentWidget.setValue({ value: currentWidget.kendoEditorInstance.value() });
         });
 
@@ -304,32 +354,28 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
                 .height(height)
                 .css("background-image", 'url("' + $img.attr("src") + '")');
 
+              this._removeResizeImageContainers();
               if ($img.css("float") === "right") {
                 // Move scroll bar to the left
                 $imgcontainer.css("direction", "rtl");
               }
 
               $img.width("").height("");
+
               $imgcontainer.insertBefore($img);
               $imgcontainer.append($img);
+
+              // Need disable button because, the insertion is always to the beginning and not and the current position
+              this._disableButton("insertImage", true);
+              observer.observe($imgcontainer.get(0), { attributes: true, subtree: true, attributeFilter: ["style"] });
             }
           } else {
-            // remove all img div container and restore new image dimension
-            const $containers = $(e.currentTarget).find(".htmltext-img-container");
-            $containers.each(function() {
-              $(this).css("padding", "0");
-              const $iImg = $(this).find("img");
-              const width = $(this).width();
-              const height = $(this).height();
-              // use tag img tag dimension because kendo analyze this attributes to get dimension instead of style
-              $iImg.attr("width", Number.parseInt(width, 10));
-              $iImg.attr("height", Number.parseInt(height, 10));
-
-              $iImg.insertBefore($(this));
-              $(this).remove();
-              // Select image
-              $iImg.trigger("click");
-            });
+            observer.disconnect();
+            const $innerImg = this._removeResizeImageContainers();
+            if ($innerImg) {
+              // Original image selection
+              $innerImg.trigger("click");
+            }
           }
         });
       }
@@ -425,6 +471,80 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
       );
     }
   },
+
+  /**
+   * Disable/Enable a specific button in toolbar
+   * @param buttonName
+   * @param disabled
+   * @private
+   */
+  _disableButton: function(buttonName, disabled) {
+    const editor = this.kendoEditorInstance;
+    const toolbar = editor.toolbar;
+    const items = editor.toolbar.items();
+    let itemName;
+
+    for (let i = 0; i < items.length; i++) {
+      itemName = toolbar._toolName(items[i]);
+      if (itemName === buttonName) {
+        if (disabled === true) {
+          $(items[i]).addClass("k-state-disabled");
+        } else {
+          $(items[i]).removeClass("k-state-disabled");
+        }
+      }
+    }
+  },
+
+  /**
+   * Remove temporary div used for resize images
+   * @returns {*}
+   * @private
+   */
+  _removeResizeImageContainers: function wHtmltext_removeResizeImageContainers() {
+    const $containers = $(this.element).find(".htmltext-img-container");
+
+    let $iImg = null;
+    $containers.each(function() {
+      $iImg = $(this).find("img");
+      const width = $(this).width();
+      const height = $(this).height();
+      // use tag img tag dimension because kendo analyze this attributes to get dimension instead of style
+      $iImg.attr("width", Number.parseInt(width, 10));
+      $iImg.attr("height", Number.parseInt(height, 10));
+      $(this).css("background-image", "");
+      $iImg.attr("style", $(this).attr("style"));
+      $iImg.insertBefore($(this));
+      $(this).remove();
+    });
+
+    this._disableButton("insertImage", false);
+    return $iImg;
+  },
+
+  /**
+   * Select file(s).
+   * @param {String} contentType The content type of files you wish to select. For instance "image/*" to select all kinds of images.
+   * @param {Boolean} multiple Indicates if the user can select multiples file.
+   * @returns {Promise<File|File[]>} A promise of a file or array of files in case the multiple parameter is true.
+   */
+  selectImage: function(contentType, multiple) {
+    return new Promise(resolve => {
+      let input = document.createElement("input");
+      input.type = "file";
+      input.multiple = multiple;
+      input.accept = contentType;
+
+      input.onchange = () => {
+        let files = Array.from(input.files);
+        if (multiple) resolve(files);
+        else resolve(files[0]);
+      };
+
+      input.click();
+    });
+  },
+
   /**
    * Define inputs for focus
    * @protected
@@ -459,15 +579,27 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
   transfertImage: function(html) {
     const $img = $(html);
     const localid = ++this._imgTransfertId;
-    const event = { prevent: false };
+    const event = { prevent: false, target: $img };
     const imgFile = this.dataURLtoFile($img.attr("src"), "paste");
     const formData = new FormData();
     const currentWidget = this;
 
+    const img = new Image();
+    img.onload = function() {
+      // Limit width to content when paste it
+      const wWidget = $(currentWidget.element).width();
+      const wImg = this.width;
+      if (wWidget < wImg) {
+        const $imgLocal = $(currentWidget.element).find('img[data-localid="' + localid + '"]');
+        $imgLocal.attr("width", wWidget - 30);
+      }
+    };
+    img.src = $img.attr("src");
+
     $img.attr("data-localid", localid);
     $img.addClass("htmltext-img-transferring", localid);
 
-    var isNotPrevented = currentWidget._trigger("uploadfile", event, {
+    const isNotPrevented = currentWidget._trigger("uploadfile", event, {
       $el: currentWidget.element,
       index: currentWidget._getIndex(),
       file: imgFile
@@ -486,8 +618,11 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
       data: formData,
 
       xhr: function wFileXhrAddProgress() {
-        var xhrObject = $.ajaxSettings.xhr();
+        const xhrObject = $.ajaxSettings.xhr();
         if (xhrObject.upload) {
+          const styleTag = document.head.appendChild(document.createElement("style"));
+          styleTag.textContent = 'img.htmltext-img-transferring[data-localid="' + localid + '"] { opacity: 0}';
+
           xhrObject.upload.addEventListener(
             "progress",
             function wFileProgress(event) {
@@ -500,9 +635,10 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
               }
               if (percent >= 100) {
                 $img.removeClass("htmltext-img-transferring");
-                $img.css("opacity", "");
+                styleTag.remove();
               } else {
-                $img.css("opacity", percent / 100);
+                styleTag.textContent =
+                  'img.htmltext-img-transferring[data-localid="' + localid + '"] { opacity: ' + percent / 100 + "}";
               }
             },
             false
@@ -530,44 +666,41 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
         $img.attr("src", fileValue.url);
         $img.removeAttr("data-localid");
         $img.attr("data-tmpvid", dataFile.id);
-        currentWidget._trigger("uploadfiledone", event, {
-          $el: currentWidget.element,
-          index: currentWidget._getIndex(),
-          file: fileValue
+        currentWidget.setValue({ value: currentWidget.kendoEditorInstance.value() });
+
+        _.defer(function wHtmltext_uploadImageDone() {
+          currentWidget._trigger("uploadfiledone", event, {
+            $el: currentWidget.element,
+            index: currentWidget._getIndex(),
+            file: fileValue
+          });
         });
       })
       .fail(function wFileUploadFail(data) {
+        const $img = $(currentWidget.element).find('img[data-localid="' + localid + '"]');
         currentWidget.uploadingFiles--;
         currentWidget._trigger("uploadfiledone", event, {
           $el: currentWidget.element,
           index: currentWidget._getIndex(),
           file: null
         });
-        currentWidget._trigger("uploadfileerror", event, {
-          index: currentWidget._getIndex(),
-          message: i18n.___("Your navigator seems offline, try later", "ddui")
-        });
-        currentWidget.setValue({
-          displayValue: "",
-          value: ""
-        });
-        const result = JSON.parse(data.responseText);
-        if (result) {
+        try {
+          const result = JSON.parse(data.responseText);
           _.each(result.messages, function wFileErrorMessages(errorMessage) {
-            $("body").trigger("notification", {
-              htmlMessage: errorMessage.contentHtml,
-              message: errorMessage.contentText,
-
-              type: errorMessage.type
-            });
+            if (errorMessage.type === "error") {
+              currentWidget._trigger("uploadfileerror", event, {
+                index: currentWidget._getIndex(),
+                message: errorMessage.contentText
+              });
+            }
           });
-        } else {
-          $("body").trigger("notification", {
-            htmlMessage: "Image cannot be uploaded",
-            message: event.statusText,
-            type: "error"
+        } catch (e) {
+          currentWidget._trigger("uploadfileerror", event, {
+            index: currentWidget._getIndex(),
+            message: data.responseText || i18n.___("Your navigator seems offline, try later", "ddui")
           });
         }
+        $img.remove();
       });
 
     return $img[0].outerHTML;
@@ -595,7 +728,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
       if (originalValue.trim() !== value.value.trim()) {
         // Modify value only if different
 
-        this.kendoEditorInstance.value(value.value);
+        this.kendoEditorInstance.value(value.value || "<p></p>");
       }
     } else if (this.getMode() === "read") {
       this.getContentElements().html(value.displayValue);
