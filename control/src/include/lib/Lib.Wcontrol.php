@@ -566,6 +566,7 @@ function wcontrol_check_pgversion(Process & $process)
     
     if (!$return) {
         $process->errorMessage = "Server version (currently " . $row[0] . ") must be " . $op . " " . $version . ".";
+        pg_close($conn);
         return false;
     }
     
@@ -576,9 +577,11 @@ function wcontrol_check_pgversion(Process & $process)
         'utf8'
     ))) {
         $process->errorMessage = "Database encoding : " . $encoding . ". UTF8 required. ";
+        pg_close($conn);
         return false;
     }
-    
+
+    pg_close($conn);
     return true;
 }
 
