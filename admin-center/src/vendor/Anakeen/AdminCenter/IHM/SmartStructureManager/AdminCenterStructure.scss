@@ -9,6 +9,9 @@
     flex: 1;
     height: 100%;
     // width: 100%;
+    .ssm-tabs-parent {
+      height: 100%;
+    }
     /deep/ {
       .ssm-tabs-parent {
         display: flex;
