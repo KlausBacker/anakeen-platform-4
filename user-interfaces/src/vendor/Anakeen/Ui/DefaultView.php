@@ -237,11 +237,11 @@ class DefaultView extends RenderDefault
             foreach ($fstate as $v) {
                 $tr = $wdoc->searchTransition($doc->state, $v);
 
-                $label = $tr['id'] ? $wdoc->getTransitionLabel($tr['id']) : $wdoc->getActivity($v, Strings::mbUcfirst($wdoc->getStateLabel($v)));
+                $label = (!empty($tr['id'])) ? $wdoc->getTransitionLabel($tr['id']) : $wdoc->getActivity($v, Strings::mbUcfirst($wdoc->getStateLabel($v)));
 
                 $itemMenu = new ItemMenu($v, $label);
 
-                $itemMenu->setUrl(sprintf("#action/document.transition:%s:%s", urlencode($tr['id']), urlencode($v)));
+                $itemMenu->setUrl(sprintf("#action/document.transition:%s:%s", urlencode($tr['id']??''), urlencode($v)));
                 $itemMenu->setTarget("_dialog"); // alternative to data-popup
                 $visibility = $itemMenu::VisibilityVisible;
                 $tooltip = $wdoc->getActivity($v, Strings::mbUcfirst($wdoc->getStateLabel($v)));
