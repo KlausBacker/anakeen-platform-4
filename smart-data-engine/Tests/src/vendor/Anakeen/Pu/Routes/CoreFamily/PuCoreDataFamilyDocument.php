@@ -104,11 +104,11 @@ class PuCoreDataFamilyDocument extends \Anakeen\Pu\Routes\TestCaseRoutes
                 'GET /api/v2/smart-structures/TST_F2_2?fields=document.properties.all',
                 __DIR__ . "/Expects/TST_F2_2_all.json"
             ),
-            array(
+            "S1"=>array(
                 'GET /api/v2/smart-structures/TST_F2_1?fields=family.structure',
                 __DIR__ . "/Expects/TST_F2_1_struct.json"
             ),
-            array(
+            "S2"=>array(
                 'GET /api/v2/smart-structures/TST_F2_2?fields=family.structure',
                 __DIR__ . "/Expects/TST_F2_2_struct.json"
             ),
