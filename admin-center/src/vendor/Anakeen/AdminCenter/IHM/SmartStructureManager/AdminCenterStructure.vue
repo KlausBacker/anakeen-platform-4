@@ -4,27 +4,32 @@
     <div class="ssm-content">
       <div class="ssm-content__empty" v-if="isEmpty">
         <i class="material-icons hub-icon ssm-content__empty-icon">code</i>
-        <span class="ssm-content__empty-text"> {{ $t("AdminCenterSmartStructure.Select a structure") }} </span>
+        <span class="ssm-content__empty-text">{{ $t("AdminCenterSmartStructure.Select a structure") }}</span>
       </div>
       <div class="ssm-tabs-parent" v-else>
-        <ank-tabs class="ssm-tabs" ref="ssmTabs" v-model="selectedTab">
+        <ank-tabs class="ssm-tabs" ref="ssmTabs" @tabClick="emitTabId">
           <ank-tab :closable="false" tab-id="informations">
             <template slot="label">
               <span class="ssm-informations-title">{{ $t("AdminCenterSmartStructure.Informations") }}</span>
             </template>
-            <ssm-info class="ssm-info" :ssName="selectedSS" @parent-structure-selected="gotoParentStructure"></ssm-info>
+            <ssm-info
+              class="ssm-info"
+              :ssName="selectedSS"
+              @parentStructureSelected="gotoParentStructure"
+              @structure-infos="recordStructureInfos"
+            ></ssm-info>
           </ank-tab>
           <ank-tab :closable="false" tab-id="defaultValues">
             <template slot="label">
               <span class="ssm-informations-title">{{ $t("AdminCenterSmartStructure.Default Values") }}</span>
             </template>
-            <ssm-default-values :ssName="selectedSS" class="ssm-default-values" ref="defaultComp"></ssm-default-values>
+            <ssm-default-values ref="defaultComp" :ssName="selectedSS" class="ssm-default-values"></ssm-default-values>
           </ank-tab>
           <ank-tab :closable="false" tab-id="parameters">
             <template slot="label">
               <span class="ssm-parameters-title">{{ $t("AdminCenterSmartStructure.Parameters") }}</span>
             </template>
-            <ssm-parameters :ssName="selectedSS" class="ssm-parameters" ref="paramsComp"></ssm-parameters>
+            <ssm-parameters ref="paramsComp" :ssName="selectedSS" class="ssm-parameters"></ssm-parameters>
           </ank-tab>
           <ank-tab :closable="false" tab-id="smartElements">
             <template slot="label">
@@ -33,6 +38,7 @@
             <ssm-smart-elements
               ref="smartElementsComp"
               :ssName="selectedSS"
+              :ssInfos="structureInfos"
               class="ssm-smart-elements"
             ></ssm-smart-elements>
           </ank-tab>

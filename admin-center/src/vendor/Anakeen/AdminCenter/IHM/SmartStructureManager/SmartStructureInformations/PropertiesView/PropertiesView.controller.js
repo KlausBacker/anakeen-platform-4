@@ -69,9 +69,6 @@ export default {
   mounted() {
     this.fetchProperties(this.elementId);
   },
-  devCenterRefreshData() {
-    this.fetchProperties(this.elementId);
-  },
   methods: {
     fetchProperties(eId) {
       this.$http
@@ -133,6 +130,7 @@ export default {
           });
         }
       });
+      this.$parent.$emit("structure-infos", result);
       return result;
     },
     renderPropValue(propId, propValue) {
@@ -164,7 +162,7 @@ export default {
       return "None";
     },
     gotoParentStructure(structureId) {
-      this.$parent.$emit("parent-structure-selected", structureId);
+      this.$parent.$emit("parentStructureSelected", structureId);
     }
   }
 };
