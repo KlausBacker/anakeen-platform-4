@@ -13,13 +13,14 @@ class SuiteWorkflow
         $suite = new FrameworkDcp('Package');
         
         
-        $suite->addTestSuite('Dcp\Pu\TestFormatCollection');
+        $suite->addTestSuite(\Dcp\Pu\TestFormatCollection::class);
 
-        $suite->addTestSuite('Dcp\Pu\TestExtendProfil');
-        $suite->addTestSuite('Dcp\Pu\TestImportFamilyProperty');
-        $suite->addTestSuite('Dcp\Pu\TestImportWorkflow');
-        $suite->addTestSuite('Dcp\Pu\TestWorflowTransition');
-        $suite->addTestSuite('Dcp\Pu\TestImportDocumentsExtra');
+        $suite->addTestSuite(\Dcp\Pu\TestExtendProfil::class);
+        $suite->addTestSuite(\Dcp\Pu\TestImportFamilyProperty::class);
+        $suite->addTestSuite(\Dcp\Pu\TestImportWorkflow::class);
+        $suite->addTestSuite(\Dcp\Pu\TestWorflowTransition::class);
+        $suite->addTestSuite(\Dcp\Pu\TestImportDocumentsExtra::class);
+        $suite->addTestSuite(\Dcp\Pu\TestWorflowMXControl::class);
         // ...
         return $suite;
     }
