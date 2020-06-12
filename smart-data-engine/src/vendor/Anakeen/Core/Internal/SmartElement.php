@@ -3222,7 +3222,8 @@ create unique index i_docir on doc(initid, revision);";
                 foreach ($ta as $k => $v) {
                     $k = strtolower($k);
                     $tnv = $this->getMultipleRawValues($k);
-                    $val = isset($tv[$k]) ? $tv[$k] : '';
+                    $hasColValue=isset($tv[$k]);
+                    $val = $hasColValue===true ? $tv[$k] : '';
                     if ($index == 0) {
                         array_unshift($tnv, $val);
                     } elseif ($index > 0 && $index < count($tnv)) {
@@ -3234,7 +3235,13 @@ create unique index i_docir on doc(initid, revision);";
                     } else {
                         $tnv[] = $val;
                     }
+                    if ($hasColValue===false) {
+                        $this->disableAccessControl();
+                    }
                     $err .= $this->setValue($k, $tnv);
+                    if ($hasColValue===false) {
+                        $this->restoreAccessControl();
+                    }
                 }
                 if ($err == "") {
                     $err = $this->completeArrayRow($idAttr, false);

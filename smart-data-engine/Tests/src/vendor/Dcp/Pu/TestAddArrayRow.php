@@ -6,6 +6,9 @@
 
 namespace Dcp\Pu;
 
+use Anakeen\Core\SEManager;
+use Anakeen\SmartElementManager;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -25,48 +28,75 @@ class TestAddArrayRow extends TestCaseDcpCommonFamily
             "PU_data_dcp_addArrayRow_family.csv"
         );
     }
+
     /**
      * @dataProvider dataAddArrayRow
+     * @param $data
+     * @throws \Anakeen\Exception
      */
     public function testExecuteAddArrayRow($data)
     {
-        $doc = createDoc(self::$dbaccess, $data['fam'], false);
+        $doc = SmartElementManager::createDocument($data['fam']);
         $this->assertTrue(is_object($doc), sprintf("Could not create new document from family '%s'.", $data['fam']));
         
         $err = $doc->add();
         $this->assertEmpty($err, sprintf("Error adding new document in database: %s", $err));
-        
+
+
         $err = $doc->setLogicalName($data['name']);
         $this->assertEmpty($err, sprintf("Error setting logical identifier '%s' on new document: %s", $data['name'], $err));
-        
-        foreach ($data['rows'] as & $row) {
+
+        if (!empty($data["login"])) {
+            $doc->disableAccessControl(false);
+            $this->sudo($data["login"]);
+        }
+        foreach ($data['rows'] as $row) {
             $err = $doc->addArrayRow($data['array_attr_name'], $row['data'], $row['index']);
             $this->assertEmpty($err, sprintf("Error adding row {%s} to '%s': %s", join(', ', $row['data']), $data['name'], $err));
         }
-        unset($row);
         $this->assertTrue($doc->isChanged(), sprintf("no changed value detected"));
         $err = $doc->store();
         $this->assertEmpty($err, sprintf("modify() on '%s' returned with error: %s", $data['name'], $err));
-        
+
         self::resetDocumentCache();
         
-        $doc = new_Doc(self::$dbaccess, $data['name'], true);
+        $doc = SEManager::getDocument($data['name']);
         $this->assertTrue(is_object($doc), sprintf("Error retrieving document '%s': %s", $data['name'], $err));
         
-        foreach ($data['expected_tvalues'] as $colName => & $colData) {
+        foreach ($data['expected_tvalues'] as $colName => $colData) {
             $tvalue = $doc->getMultipleRawValues($colName);
             $this->assertTrue(is_array($tvalue), sprintf("getMultipleRawValues(%s) on document '%s' did not returned an array.", $colName, $data['name']));
             
             $tvalueCount = count($tvalue);
             $expectedCount = count($colData);
-            $this->assertTrue(($tvalueCount == $expectedCount), sprintf("Column size mismatch on column '%s' from document '%s' (actual size is '%s', while expecting '%s').", $colName, $data['name'], $tvalueCount, $expectedCount));
+            $this->assertTrue(
+                ($tvalueCount == $expectedCount),
+                sprintf(
+                    "Column size mismatch on column '%s' from document '%s' (actual size is '%s', while expecting '%s').",
+                    $colName,
+                    $data['name'],
+                    $tvalueCount,
+                    $expectedCount
+                )
+            );
             
             foreach ($colData as $i => $expectedCellContent) {
                 $tvalueCellContent = $tvalue[$i];
-                $this->assertTrue(($tvalueCellContent == $expectedCellContent), sprintf("Cell content '%s' did not matched expected content '%s' (document '%s' / column '%s' / line '%s' / column cells {%s})", $tvalueCellContent, $expectedCellContent, $data['name'], $colName, $i, join(', ', $tvalue)));
+                $this->assertTrue(($tvalueCellContent == $expectedCellContent), sprintf(
+                    "Cell content '%s' did not matched expected content '%s' (document '%s' / column '%s' / line '%s' / column cells {%s})",
+                    $tvalueCellContent,
+                    $expectedCellContent,
+                    $data['name'],
+                    $colName,
+                    $i,
+                    join(', ', $tvalue)
+                ));
             }
         }
         unset($colData);
+        if (!empty($data["login"])) {
+            $this->exitSudo();
+        }
     }
     
     public function dataAddArrayRow()
@@ -287,6 +317,68 @@ class TestAddArrayRow extends TestCaseDcpCommonFamily
                         'col_2' => array(
                             '',
                             'Line 2, Col 2'
+                        )
+                    )
+                )
+            ),
+
+            array(
+                array(
+                    "login" => "iuser_aar1",
+                    'fam' => 'TST_ADDARRAYROW_DOCID',
+                    'name' => 'TST_ADDARRAYROW_DOCID_01',
+                    'array_attr_name' => 'ARR',
+                    'rows' => array(
+                        array(
+                            'index' => - 1,
+                            'data' => array(
+                                'index' => '1',
+                            )
+                        ) ,
+                        array(
+                            'index' => - 1,
+                            'data' => array(
+                                'index' => '2',
+                            )
+                        ) ,
+                    ) ,
+                    'expected_tvalues' => array(
+                        'index' => array(
+                            '1',
+                            '2'
+                        ) ,
+                        'rel1' => array(
+                            '',
+                            ''
+                        )
+                    )
+                )
+            ),
+
+            array(
+                array(
+                    "login" => "iuser_aar1",
+                    'fam' => 'TST_ADDARRAYROW_DOCID',
+                    'name' => 'TST_ADDARRAYROW_DOCID_02',
+                    'array_attr_name' => 'ARR',
+                    'rows' => array(
+                        array(
+                            'index' => - 1,
+                            'data' => array(
+                                'rel1' => 'TST_AAR1',
+                            )
+                        ) ,
+                        array(
+                            'index' => - 1,
+                            'data' => array(
+                                'rel1' => 'TST_AAR2',
+                            )
+                        ) ,
+                    ) ,
+                    'expected_tvalues' => array(
+                        'rel1_title' => array(
+                            'Hello',
+                            'World'
                         )
                     )
                 )
