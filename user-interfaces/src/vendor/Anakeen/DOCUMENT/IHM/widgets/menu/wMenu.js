@@ -119,7 +119,10 @@ export default $.widget("dcp.dcpMenu", {
                     height: targetOptions.windowHeight,
                     modal: targetOptions.modal,
                     content: href,
-                    iframe: true
+                    iframe: true,
+                    close: function () {
+                      this.destroy();
+                    }
                   });
 
                   scopeWidget.popupWindows.push(dcpWindow.data("dcpWindow"));
