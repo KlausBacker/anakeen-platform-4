@@ -37,5 +37,4 @@ class AdminParametersPluginMigration
     {
         return !self::checkOldPluginExists();
     }
-
 }
