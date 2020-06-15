@@ -77,8 +77,8 @@ class HubConfigurationGenericBehavior extends \SmartStructure\Hubconfigurationvu
                         return $result;
                     }
                 } else {
-                    if (!file_exists($assetPath)) {
-                        throw new Exception("HUB0001", $assetPath);
+                    if (!file_exists(PUBLIC_DIR."/".$assetPath)) {
+                        throw new Exception("HUB0001", PUBLIC_DIR."/".$assetPath);
                     }
                     return $assetPath;
                 }

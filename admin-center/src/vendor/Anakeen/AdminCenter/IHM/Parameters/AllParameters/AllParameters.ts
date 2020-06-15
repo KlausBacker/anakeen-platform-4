@@ -1,0 +1,607 @@
+import AnkPaneSplitter from "@anakeen/internal-components/lib/PaneSplitter";
+import AnkSmartForm from "@anakeen/user-interfaces/components/lib/AnkSmartForm.esm";
+import "@progress/kendo-ui/js/kendo.grid";
+import "@progress/kendo-ui/js/kendo.switch";
+import * as _ from "underscore";
+import { Component, Mixins, Prop, Vue, Watch } from "vue-property-decorator";
+import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
+import * as $ from "jquery";
+import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
+import { LayoutInstaller } from "@progress/kendo-layout-vue-wrapper";
+
+Vue.use(ButtonsInstaller);
+Vue.use(LayoutInstaller);
+
+@Component({
+  components: {
+    "ank-smart-form": () => {
+      return AnkSmartForm;
+    },
+    "ank-split-panes": AnkPaneSplitter
+  }
+})
+export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
+  @Prop({
+    default: true,
+    type: Boolean
+  })
+  public force;
+
+  @Prop({ type: Boolean, default: true })
+  public isUserTab!: boolean;
+
+  @Prop({ type: Boolean, default: true })
+  public isGlobalTab!: boolean;
+
+  @Prop({ type: String, default: "" })
+  public namespace!: string;
+
+  @Prop({ type: String, default: "" })
+  public specificUser!: string;
+
+  @Prop({ type: String, default: "" })
+  public selectedTab!: string;
+
+  @Prop({ type: String, default: "" })
+  public userId!: string;
+
+  @Prop({ type: String, default: "" })
+  public paramId!: string;
+
+  @Prop({ type: Boolean, required: true })
+  public userTab!: boolean;
+
+  @Watch("selectedTab")
+  protected watchSelectedTab(newValue): void {
+    // Condition to pass only once time
+    if (this.userTab === (newValue === "userTab")) {
+      // remove value in the user smart form
+      if (this.userTab === true) {
+        this.$refs.userSmartForm.setValue("my_user", {
+          value: "",
+          displayValue: ""
+        });
+      }
+      this.account = "";
+      this.selectUserForm.structure = [];
+      this.smartFormData.structure = [];
+      this.selectedParam = false;
+      this.kendoGrid.dataSource.read();
+      this.changeUrl();
+    }
+    this.account = "";
+    $(window).trigger("resize");
+  }
+
+  public $refs!: {
+    [key: string]: any;
+  };
+
+  public kendoGrid: any = null;
+  public isGridCreated = false;
+
+  public selectedParam = false;
+  public selectedParamObj = {
+    selectedParamName: "",
+    selectedParamNameSpace: "",
+    selectedParamDesc: "",
+    selectedParamInitialValue: "",
+    selectedParamValue: ""
+  };
+
+  // public selectedParamName = "";
+  // public selectedParamNameSpace = "";
+  // public selectedParamDesc = "";
+  // public selectedParamInitialValue = "";
+  // public selectedParamValue = "";
+
+  public element: any;
+  public modifications: any = {};
+  public account = "";
+
+  public titleFormParam = "";
+  public paramGridData: kendo.data.DataSource = new kendo.data.DataSource({
+    schema: {
+      data: response => {
+        return response.data.data.gridData;
+      }, // "data.total"
+      total: response => {
+        if (response.data.data.gridData) {
+          return response.data.data.gridData.filter(d => d.nameSpace).length;
+        } else {
+          return 0;
+        }
+      }
+    },
+    serverFiltering: false,
+    serverPaging: false,
+    serverSorting: false,
+    transport: {
+      read: options => {
+        this.$http
+          .get(this.urlParameters(), {
+            params: options.data,
+            paramsSerializer: kendo.jQuery.param
+          })
+          .then(result => {
+            const gridData = result.data.data.gridData || [];
+            // filter to remove if nameSpace in the response data not exist (filter by ONE nameSpace)
+            result.data.data.gridData = gridData.filter(
+              d => d.nameSpace && (!this.namespace || d.namespace === this.namespace)
+            );
+            // notify the data source that the request succeeded
+            options.success(result);
+          })
+          .catch(options.error);
+        return options;
+      }
+    }
+  });
+
+  get smartFormData() {
+    // eslint-disable-next-line prefer-const
+    let smartFormDataParameter = {
+      renderOptions: {
+        types: {
+          menu: {
+            labelPosition: "right"
+          }
+        }
+      },
+      menu: [
+        {
+          beforeContent: '<div class="fa fa-close" />',
+          iconUrl: "",
+          id: "close",
+          important: false,
+          label: this.$t("AdminCenterAllParameter.Close"),
+          target: "_self",
+          type: "itemMenu",
+          url: "#action/param.close"
+        }
+      ],
+      structure: [],
+      title: this.selectedParamObj.selectedParamName,
+      type: "",
+      force: false,
+      values: {
+        description: this.selectedParamObj.selectedParamDesc,
+        default_value: this.selectedParamObj.selectedParamInitialValue,
+        value: this.selectedParamObj.selectedParamValue
+      }
+    };
+    if (this.element && this.element.isReadOnly === false) {
+      const configSaveParamMenu = {
+        beforeContent: '<div class="fa fa-save" />',
+        iconUrl: "",
+        id: "submit",
+        important: false,
+        label: this.$t("AdminCenterAllParameter.Save the modifications"),
+        target: "_self",
+        type: "itemMenu",
+        url: "#action/param.save"
+      };
+      smartFormDataParameter.menu.unshift(configSaveParamMenu);
+      if (this.userTab) {
+        const configRestoreParamMenu = {
+          beforeContent: '<div class="fa fa-undo" />',
+          visibility: this.selectedParamObj.selectedParamValue === "" ? "disabled" : "visible",
+          iconUrl: "",
+          id: "reset",
+          important: false,
+          label: this.$t("AdminCenterAllParameter.Reset default value"),
+          target: "_self",
+          type: "itemMenu",
+          url: "#action/param.restore"
+        };
+        smartFormDataParameter.menu.push(configRestoreParamMenu);
+      }
+    }
+
+    return smartFormDataParameter;
+  }
+
+  get selectUserForm() {
+    // eslint-disable-next-line prefer-const
+    let configUserForm = {
+      renderOptions: {
+        types: {
+          account: {
+            labelPosition: "none"
+          }
+        }
+      },
+      structure: [
+        {
+          label: this.$t("AdminCenterAllParameter.Select account"),
+          name: "my_fr_ident",
+          type: "frame",
+          icon: "/api/v2/images/assets/sizes/24x24c/se-iuser.png",
+          url: "#action/param.cancel",
+          content: [
+            {
+              label: this.$t("AdminCenterAllParameter.User"),
+              name: "my_user",
+              type: "account",
+              display: "write"
+            }
+          ]
+        }
+      ]
+    };
+    if (this.specificUser) {
+      configUserForm.structure[0].label = this.$t("AdminCenterAllParameter.User parameters");
+      configUserForm.structure[0].content[0].type = "text";
+      configUserForm.structure[0].content[0].display = "read";
+    }
+
+    return configUserForm;
+  }
+
+  public changeUrl(): void {
+    let url = "/";
+    // if (this.userTab === false) {
+    if (this.selectedTab === "globalTab") {
+      url += "global/";
+    } else {
+      url += "user/";
+      if (this.account) {
+        url += this.account + "/";
+      }
+    }
+    if (this.selectedParam === true) {
+      url += this.selectedParamObj.selectedParamNameSpace + ":" + this.selectedParamObj.selectedParamName + "/";
+    }
+    this.$emit("navigate", url);
+  }
+
+  // Input type to use in template
+  public parameterInputType() {
+    const parameterType = this.element.type.toLowerCase();
+
+    const eachLine = this.element.value.split("\n");
+    if (parameterType === "text" && eachLine.length > 1) {
+      return "longText";
+    }
+    if (parameterType === "number" || parameterType === "integer" || parameterType === "double") {
+      return "int";
+    } else if (parameterType.startsWith("enum")) {
+      return "enum";
+    } else if (parameterType === "json") {
+      return "longText";
+    } else if (parameterType === "") {
+      return "longText";
+    } else {
+      return parameterType;
+    }
+  }
+
+  // Return the possible values of an enum parameter
+  public enumPossibleValues() {
+    if (this.parameterInputType() === "enum") {
+      let rawEnum = this.element.type;
+      rawEnum = rawEnum.slice(5);
+      rawEnum = rawEnum.slice(0, -1);
+      return rawEnum.split("|");
+    }
+  }
+
+  // Get entries from an Param
+  public loadParameterFromClick(e): void {
+    this.selectedParamObj.selectedParamName = this.kendoGrid.dataItem($(e.currentTarget).closest("tr")).name;
+    this.selectedParamObj.selectedParamNameSpace = this.kendoGrid.dataItem($(e.currentTarget).closest("tr")).nameSpace;
+    this.selectedParamObj.selectedParamDesc = this.kendoGrid.dataItem($(e.currentTarget).closest("tr")).description;
+    this.selectedParamObj.selectedParamInitialValue = this.kendoGrid.dataItem(
+      $(e.currentTarget).closest("tr")
+    ).initialValue;
+    this.selectedParamObj.selectedParamValue = this.kendoGrid.dataItem($(e.currentTarget).closest("tr")).value;
+    this.element = this.kendoGrid.dataItem($(e.currentTarget).closest("tr"));
+    this.displayParameter();
+  }
+
+  public loadParameterFromRouter(nameParameter): void {
+    this.$http
+      .get(this.urlParameters())
+      .then(result => {
+        if (this.userTab && this.selectedTab === "userTab" && this.account !== "") {
+          this.$refs.userSmartForm.setValue("my_user", {
+            value: this.account,
+            displayValue: result.data.data.user.displayValue
+          });
+        }
+        if (this.namespace && this.namespace !== "") {
+          result.data.data.gridData = result.data.data.gridData.filter(d => d.nameSpace === this.namespace);
+        }
+        const param = result.data.data.gridData.find(d => d.nameSpace + ":" + d.name === nameParameter);
+        if (param) {
+          this.selectedParamObj.selectedParamName = param.name;
+          this.selectedParamObj.selectedParamNameSpace = param.nameSpace;
+          this.selectedParamObj.selectedParamDesc = param.description;
+          this.selectedParamObj.selectedParamInitialValue = param.initialValue;
+          this.selectedParamObj.selectedParamValue = param.value;
+          this.element = param;
+          this.smartFormData.structure = [];
+          this.selectedParam = true;
+          this.displayParameter();
+        } else {
+          if (nameParameter && nameParameter !== "") {
+            this.$emit(
+              "notify",
+              "warning",
+              this.$t("AdminCenterAllParameter.Invalid name parameter") + "\n(" + nameParameter + ")"
+            );
+            this.changeUrl();
+          }
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
+
+  public displayParameter() {
+    this.modifications = {};
+    this.smartFormData.values.description = this.selectedParamObj.selectedParamDesc;
+    this.smartFormData.values.default_value = this.selectedParamObj.selectedParamInitialValue;
+    const type = this.parameterInputType();
+    let item = {};
+
+    if (type === "enum") {
+      item = {
+        label: this.$t("AdminCenterAllParameter.Value"),
+        name: "value",
+        type: type,
+        enumItems: [],
+        display: "read"
+      };
+      const possibleEnum = this.enumPossibleValues();
+      for (let i = 0; i < possibleEnum.length; i++) {
+        const val = { key: possibleEnum[i], label: possibleEnum[i] };
+        item["enumItems"].push(val);
+      }
+    } else {
+      item = {
+        label: this.$t("AdminCenterAllParameter.Value"),
+        name: "value",
+        type: type,
+        display: "read"
+      };
+    }
+    if (this.element.isReadOnly === false) {
+      item["display"] = "";
+    }
+    const structureSmartForm = {
+      label: this.$t("AdminCenterAllParameter.Parameters"),
+      name: "param_frame",
+      type: "frame",
+      content: [
+        {
+          label: this.$t("AdminCenterAllParameter.Description"),
+          name: "description",
+          type: "text",
+          display: "read"
+        },
+        item
+      ],
+      renderOptions: {
+        fields: {
+          param_frame: {
+            stickyTabs: "auto"
+          }
+        }
+      }
+    };
+    if (this.userTab === true && this.account) {
+      const defaultValue = {
+        label: this.$t("AdminCenterAllParameter.Default value"),
+        name: "default_value",
+        type: "text",
+        display: "read"
+      };
+      structureSmartForm.content.splice(1, 0, defaultValue);
+    }
+    this.smartFormData.structure.push(structureSmartForm);
+    this.changeUrl();
+    kendo.ui.progress($(".param-form-wrapper", this.$el), false);
+  }
+
+  public userChange(event, smartElement, smartField, params): void {
+    this.smartFormData.structure = [];
+    this.selectedParam = false;
+    this.account = params.current.value;
+    this.kendoGrid.dataSource.read();
+    this.changeUrl();
+  }
+  public deleteConfirmationWindow: any = null;
+
+  public menuClick(event, smartElement, params): void {
+    if (params.eventId === "param.save") {
+      this.$http
+        .put(this.urlParameters(true) + this.element.nameSpace + "/" + this.element.name + "/", {
+          value: this.modifications.toString()
+        })
+        .then(() => {
+          for (let i = 0; i < document.getElementsByClassName("dcpDocument__header__modified").length; i++) {
+            // @ts-ignore
+            document.getElementsByClassName("dcpDocument__header__modified")[i].style.display = "none";
+          }
+          this.$emit(
+            "notify",
+            "success",
+            this.element.name +
+              " = " +
+              this.modifications.toString() +
+              "\n" +
+              this.$t("AdminCenterAllParameter.Save of the element")
+          );
+          this.kendoGrid.dataSource.read();
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    } else if (params.eventId === "param.restore") {
+      this.$http
+        .delete(this.urlParameters(true) + this.element.nameSpace + "/" + this.element.name + "/")
+        .then(() => {
+          for (let i = 0; i < document.getElementsByClassName("dcpDocument__header__modified").length; i++) {
+            // @ts-ignore
+            document.getElementsByClassName("dcpDocument__header__modified")[i].style.display = "none";
+          }
+          // this.smartFormData.values.value = this.selectedParamInitialValue;
+          this.$emit(
+            "notify",
+            "success",
+            this.element.name + "\n" + this.$t("AdminCenterAllParameter.Restore parameter")
+          );
+          this.loadParameterFromRouter(this.element.nameSpace + ":" + this.element.name);
+          this.kendoGrid.dataSource.read();
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    } else if (params.eventId === "param.close") {
+      this.smartFormData.structure = [];
+      this.selectedParam = false;
+    }
+  }
+
+  public updateModifications(event, smartElement, smartField, values) {
+    this.modifications = values.current.value;
+  }
+
+  public urlParameters(saveFormUser = false) {
+    const urlParam = "/api/v2/admin/parameters/";
+
+    if (this.userTab === false) {
+      return urlParam;
+    } else if (this.userTab === true && this.account && saveFormUser === false) {
+      return urlParam + "users/" + this.account + "/";
+    } else if (this.userTab === true && saveFormUser === true) {
+      return urlParam + this.account + "/";
+    }
+    return urlParam + "users/";
+  }
+
+  public mounted() {
+    // if (this.userTab) {
+    //   this.titleFormParam = "Global pramaeters";
+    // } else {
+    //   this.titleFormParam = "User pramaeters";
+    // }
+
+    if (this.userId && this.userId !== "") {
+      this.account = this.userId;
+    }
+    // @ts-ignore
+    this.kendoGrid = $(this.$refs.gridWrapper)
+      .kendoGrid({
+        columns: [
+          {
+            field: "nameSpace",
+            title: this.$t("AdminCenterAllParameter.NameSpace")
+          },
+          {
+            field: "category",
+            title: this.$t("AdminCenterAllParameter.Sub-category")
+          },
+          {
+            field: "name",
+            title: this.$t("AdminCenterAllParameter.Name")
+          },
+          {
+            field: "description",
+            title: this.$t("AdminCenterAllParameter.Description")
+          },
+          {
+            field: "value",
+            title: this.$t("AdminCenterAllParameter.Value"),
+            template: data => {
+              if (data.value && data.value !== "") {
+                return data.value;
+              } else if (!data.initialValue) {
+                return "";
+              }
+              return `<p class="param-value-bold"> ${data.initialValue}</p>`;
+            }
+          },
+          {
+            field: "action",
+            title: this.$t("AdminCenterAllParameter.Action"),
+            filterable: false,
+            attributes: {
+              class: "k-command-cell"
+            },
+            template: data => {
+              if (data.isReadOnly === false) {
+                return `<a role="button" class="k-button k-button-icontext k-grid-button action-button" href="#">
+                  ${this.$t("AdminCenterAllParameter.Modify")}</a>`;
+              }
+              return `<a role="button" class="k-button k-button-icontext k-grid-button action-button" href="#">
+                ${this.$t("AdminCenterAllParameter.Consult")}</a>`;
+            }
+          }
+        ],
+        dataSource: this.paramGridData,
+        pageable: {
+          alwaysVisible: true,
+          // page: 1,
+          refresh: true,
+          info: true,
+          // pageSize: 50,
+          // pageSizes: [50, 100, 200],
+          // pageSizes: false,
+          messages: {
+            itemsPerPage: this.$t("AdminCenterKendoGridTranslation.items per page"),
+            display: this.$t("AdminCenterKendoGridTranslation.{2}items"),
+            refresh: this.$t("AdminCenterKendoGridTranslation.Refresh"),
+            NoData: this.$t("AdminCenterKendoGridTranslation.No data"),
+            empty: this.$t("AdminCenterKendoGridTranslation.No data")
+          }
+        },
+        scrollable: true,
+        sortable: true,
+        filterable: {
+          extra: false,
+          operators: {
+            string: {
+              contains: this.$t("AdminCenterKendoGridTranslation.contains")
+            }
+          },
+          messages: {
+            info: this.$t("AdminCenterKendoGridTranslation.Filter by") + ": ",
+            operator: this.$t("AdminCenterKendoGridTranslation.Choose operator"),
+            clear: this.$t("AdminCenterKendoGridTranslation.Clear"),
+            filter: this.$t("AdminCenterKendoGridTranslation.Apply"),
+            value: this.$t("AdminCenterKendoGridTranslation.Choose value"),
+            additionalValue: this.$t("AdminCenterKendoGridTranslation.Aditional value"),
+            title: this.$t("AdminCenterKendoGridTranslation.Aditional filter by")
+          }
+        },
+        filterMenuInit(e) {
+          $(e.container)
+            .find(".k-primary")
+            .click(function(event) {
+              const val = $(e.container)
+                .find('[title="Value"]')
+                .val();
+              if (val == "") {
+                this.kendoGrid.dataSource.filter({});
+              }
+            });
+        },
+        dataBound: e => {
+          $(".action-button").on("click", e => {
+            this.smartFormData.structure = [];
+            this.selectedParam = true;
+            if (this.userTab === (this.selectedTab === "userTab")) {
+              this.loadParameterFromClick(e);
+            }
+          });
+          if (this.paramId !== "" || this.account !== "") {
+            this.loadParameterFromRouter(this.paramId);
+          }
+        }
+      })
+      .data("kendoGrid");
+  }
+}

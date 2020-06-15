@@ -1,0 +1,179 @@
+// .global-param {
+//   // background-color: white;
+//   // padding:0.5rem;
+//   height: 100%;
+
+  .k-tabstrip-items li.k-state-default:not(.k-state-active) {
+    color:var(--primary);
+  }
+
+  .global-param.k-content.k-state-active,
+  .user-param.k-content.k-state-active {
+    position:relative;
+
+    display: flex!important;
+    flex:1;
+    flex-direction: column;
+    overflow: unset !important;
+  }
+
+  .k-pager-nav {
+    display: "none";
+  }
+// }
+.param-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .param-grid-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    // .dcpDocument__header__modified.fa.fa-asterisk {
+    //   display: none;
+    // }
+    // .user-search-smart-form {
+    //   margin-top: -50px;
+    // }
+
+      .dcpDocument__header {
+        display: none;
+      }
+
+    .k-grid-content {
+      height: 100% !important;
+      min-height: 0;
+    }
+
+    .k-grid.k-widget.k-display-block {
+      display: flex !important;
+      flex-direction: column;
+      height: 100%;
+
+      .k-pager-nav {
+        display: none;
+      }
+
+      .k-pager-numbers-wrap {
+        display: none;
+      }
+    }
+    
+    .param-value-bold {
+      font-weight: bold;
+    }
+
+    .k-command-cell {
+      text-align: center;
+  
+      .a.k-button.k-button-icontext.k-grid-Modify {
+        text-align: center;
+        color: #157efb;
+        font-weight: bold;
+        background-color: transparent;
+        box-shadow: none;
+        border: none;
+        padding-right: 0.5rem;
+        padding-left: 0.5rem;
+      }
+  
+      .a.k-button.k-button-icontext.k-grid-Modify:hover {
+        color: white;
+        font-weight: bold;
+        background-color: #157efb;
+        box-shadow: none;
+        border: none;
+      }
+    }
+
+    a.k-button.k-button-icontext.k-grid-button {
+      color: #157efb;
+      font-weight: bold;
+      background-color: transparent;
+      box-shadow: none;
+      border: none;
+      padding-right: 0.5rem;
+      padding-left: 0.5rem;
+    }
+    a.k-button.k-button-icontext.k-grid-button:hover {
+      color: white;
+      font-weight: bold;
+      background-color: #157efb;
+      box-shadow: none;
+      border: none;
+    }
+  }
+
+  .param-form-wrapper {
+    // display: flex;
+    height: 100%;
+
+    .param-empty {
+      display: flex;
+      height: 100%;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      background-color: #dedede;
+      font-size: 1.5rem;
+      color: #a4a4a4;
+      > span {
+        font-size: 5rem;
+      }
+    }
+
+    .else-user-smart-form-parameter {
+      height: 100%;
+
+      .user-smart-form-parameter {
+        height: 100%;
+
+        .smart-element-wrapper {
+          height: 100%;
+
+          .document {
+            height: 100%;
+
+            .dcpAttribute__label label {
+              font-weight: bold;
+            }
+          }
+        }
+      }
+    }
+
+    .user-param-smart-form {
+      width: 50%;
+      .title-form-bold-param {
+        font-weight: "bold"
+      }
+    }
+
+    .hide-button {
+      display: none;
+    }
+
+    // "Translate" button
+    a {
+      color: #157EFB;
+      text-transform: uppercase;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    // Overwrite "active"\'s switch button (SmartElement)
+    [data-heading="Active"]>div>div{
+      border: none;
+      box-shadow: none;
+      .k-textbox{
+        background: transparent;
+      }
+      // Hide the cross
+      span {
+        display: none;
+      }
+    }
+  }
+}

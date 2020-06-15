@@ -1,21 +1,30 @@
 <template>
   <div class="parameter-plugin">
-    <admin-center-global-parameters
-      v-if="globalParameters"
-      @switchParameters="switchParameters"
-      :switch="globalParameters"
-    ></admin-center-global-parameters>
-    <admin-center-user-parameters
-      v-else
-      @switchParameters="switchParameters"
-      :switch="globalParameters"
-    ></admin-center-user-parameters>
+    <ank-tabs ref="smartTab" v-model="mySelectedTab">
+      <ank-tab v-if="isGlobalTab" tab-id="globalTab" :label="translations.globalParameters">
+        <admin-center-all-parameters
+          :selected-tab="mySelectedTab"
+          v-bind="$props"
+          :user-tab="false"
+          @navigate="onNavigate"
+          @notify="handleNotification"
+        ></admin-center-all-parameters>
+      </ank-tab>
+      <ank-tab v-if="isUserTab" tab-id="userTab" :label="translations.userParameters">
+        <admin-center-all-parameters
+          :selected-tab="mySelectedTab"
+          v-bind="$props"
+          :user-tab="true"
+          @navigate="onNavigate"
+          @notify="handleNotification"
+        ></admin-center-all-parameters>
+      </ank-tab>
+    </ank-tabs>
   </div>
 </template>
 
-<style>
-@import "./AdminCenterParameters.css";
+<style lang="scss">
+@import "./AdminCenterParameters.scss";
 </style>
 
-<script src="./AdminCenterParameters.controller.ts" lang="ts">
-</script>
+<script src="./AdminCenterParameters.controller.ts" lang="ts"></script>

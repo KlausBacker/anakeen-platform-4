@@ -1,0 +1,18 @@
+<migration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="migrationRules.xsd">
+
+    <action id="adminParametersClean" label="Remove old parameters admin plugin">
+        <condition>
+            <php-assert-true label="verify the old admin parameters plugin exists" callable="Anakeen\AdminCenter\Migration\AdminParametersPluginMigration::checkOldPluginExists()">
+            </php-assert-true>
+        </condition>
+        <process>
+            <php label="Remove old parameters admin plugin" callable="Anakeen\AdminCenter\Migration\AdminParametersPluginMigration::removeOldPlugin()">
+            </php>
+        </process>
+        <check>
+            <php-assert-true label="verify old parameters admin plugin has been removed" callable="Anakeen\AdminCenter\Migration\AdminParametersPluginMigration::checkOldPluginRemoved()">
+            </php-assert-true>
+        </check>
+    </action>
+</migration>

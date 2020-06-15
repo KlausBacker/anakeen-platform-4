@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:enumerates>
+        <smart:enum-configuration name="Admin_Param_TrueFalse">
+            <smart:enum name="FALSE" label="No" />
+            <smart:enum name="TRUE" label="Yes" />
+        </smart:enum-configuration>
+    </smart:enumerates>
+    <smart:structure-configuration name="ADMINPARAMETERSHUBCONFIGURATION" label="Parameters configuration">
+        <smart:extends ref="HUBCONFIGURATIONGENERIC" />
+        <smart:class>Anakeen\AdminCenter\SmartStructures\AdminParametersHubConfiguration\AdminParametersHubConfigurationBehavior</smart:class>
+        <smart:tag name="vendor">Anakeen</smart:tag>
+        <smart:fields>
+            <smart:field-set name="hub_component_tab" extended="true">
+                <smart:field-set type="frame" name="admin_hub_configuration_options" access="ReadWrite" label="Options">
+                    <smart:field-enum name="admin_hub_configuration_global" label="Global parameters" relation="Admin_Param_TrueFalse" access="ReadWrite" />
+                    <smart:field-enum name="admin_hub_configuration_user" label="User parameters" relation="Admin_Param_TrueFalse" access="ReadWrite" />
+                    <smart:field-account name="admin_hub_configuration_account" access="ReadWrite" label="Specific user"></smart:field-account>
+                    <smart:field-text name="admin_hub_configuration_namespace" access="ReadWrite" label="Namespace"></smart:field-text>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:fields>
+        <smart:field-override access="ReadWrite" field="hub_component_tab" label="Parameters options" />
+
+        <smart:hooks>
+            <smart:field-hook type="constraint" event="onPreStore" field="admin_hub_configuration_global">
+                <smart:field-callable function="Anakeen\AdminCenter\SmartStructures\AdminParametersHubConfiguration\AdminParametersHubConfigurationBehavior::checkGlobalTab" />
+                <smart:field-argument type="field">admin_hub_configuration_global</smart:field-argument>
+                <smart:field-argument type="field">admin_hub_configuration_account</smart:field-argument>
+            </smart:field-hook>
+            <smart:field-hook type="constraint" event="onPreStore" field="admin_hub_configuration_user">
+                <smart:field-callable function="Anakeen\AdminCenter\SmartStructures\AdminParametersHubConfiguration\AdminParametersHubConfigurationBehavior::checkUserTab" />
+                <smart:field-argument type="field">admin_hub_configuration_user</smart:field-argument>
+                <smart:field-argument type="field">admin_hub_configuration_account</smart:field-argument>
+            </smart:field-hook>
+        </smart:hooks>
+        <smart:defaults reset="true">
+            <smart:default reset="true" field="hge_jsasset_type">MANIFEST</smart:default>
+            <smart:default reset="true" field="hge_jsasset">
+                <smart:field-callable function="Anakeen\AdminCenter\SmartStructures\AdminParametersHubConfiguration\AdminParametersHubConfigurationBehavior::getParameterAssetPath"></smart:field-callable>
+            </smart:default>
+            <smart:default field="hge_component_tag">ank-admin-parameter</smart:default>
+            <smart:default field="admin_hub_configuration_global">TRUE</smart:default>
+            <smart:default field="admin_hub_configuration_user">TRUE</smart:default>
+        </smart:defaults>
+    </smart:structure-configuration>
+</smart:config>

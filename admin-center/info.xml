@@ -9,16 +9,22 @@
     <post-install>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/AdminCenter/Accounts/110-AdminCenterRoles.xml"/>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/AdminCenter/Accounts/111-AdminManagerProfile.xml"/>
+        <!-- import admin parameters hub configuration structure -->
+        <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/AdminCenter/SmartStructures/AdminParametersHubConfiguration/**/*.xml"/>
         <!-- import default configuration of admin center -->
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/AdminCenter/Config/hubConfiguration.xml"/>
         <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Admin/Trash/trash-grid-controller.xml"/>
     </post-install>
     <post-upgrade>
+        <process command="./programs/runMigrationScript.php --file=./vendor/Anakeen/AdminCenter/Migration/cleanOldParametersPlugin.xml">
+            <label>Apply Migrate Parameters admin plugin</label>
+        </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/AdminCenter/Accounts/110-AdminCenterRoles.xml"/>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/AdminCenter/Accounts/111-AdminManagerProfile.xml"/>
+        <!-- import admin parameters hub configuration structure -->
+        <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/AdminCenter/SmartStructures/AdminParametersHubConfiguration/**/*.xml"/>
 
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/AdminCenter/Config/hubConfiguration.xml"/>
         <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Admin/Trash/trash-grid-controller.xml"/>
-        <process command="./ank.php --script=migrateAdminPlugins"/>
     </post-upgrade>
 </module>

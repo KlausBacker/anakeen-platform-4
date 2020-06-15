@@ -2,6 +2,7 @@
 <module:config xmlns:module="https://platform.anakeen.com/4/schemas/module/1.0">
     <module:source path="src" />
     <module:po-config>
+        <module:po-php source="src/vendor/Anakeen/AdminCenter/SmartStructures/AdminParametersHubConfiguration/**/*.php" target="ADMIN_CENTER"/>
         <module:po-php source="src/vendor/Anakeen/Routes/Admin/**/*.php" target="ADMIN_CENTER"/>
         <module:po-vuejs source="src/vendor/Anakeen/**/*.?(vue|ts|js)" target="ADMIN_CENTER"/>
     </module:po-config>
