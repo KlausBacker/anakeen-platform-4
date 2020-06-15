@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-20 09:52+0200\n"
+"POT-Creation-Date: 2020-06-15 12:23+0200\n"
 "PO-Revision-Date: 2016-11-18 15:26+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
@@ -11,6 +11,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#, fuzzy, php-format
+msgctxt "mail"
+msgid "\"%s\" has been sended."
+msgstr "No column had been selected for report presentation."
 
 #, php-format
 msgctxt "search"
@@ -367,6 +372,11 @@ msgstr ""
 msgctxt "sde"
 msgid ""
 "ChangeState :: the new state '%s' is not known or is not allowed from %s"
+msgstr ""
+
+#, php-format
+msgctxt "mail"
+msgid "Closing in %ds"
 msgstr ""
 
 #, php-format
@@ -1063,6 +1073,10 @@ msgstr ""
 msgid "No identifier found for relation '%s' %s in %s file"
 msgstr ""
 
+msgctxt "mail"
+msgid "No mail address set"
+msgstr ""
+
 #, php-format
 msgctxt "sde"
 msgid "No privilege \"%s\" for %d"
@@ -1336,6 +1350,10 @@ msgstr ""
 
 #, php-format
 msgid "Send mail info : can't send mail %s: no sendee found"
+msgstr ""
+
+msgctxt "mail"
+msgid "Sended"
 msgstr ""
 
 #, php-format
@@ -3390,9 +3408,6 @@ msgstr ""
 
 #~ msgid "Mail action URL"
 #~ msgstr "Mail action URL"
-
-#~ msgid "No columns has been defined"
-#~ msgstr "No column had been selected for report presentation."
 
 #~ msgid "OP_AND"
 #~ msgstr "and"

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ANAKEEN-UI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-20 11:27+0200\n"
-"PO-Revision-Date: 2020-03-24 16:22+0100\n"
+"POT-Creation-Date: 2020-06-15 12:24+0200\n"
+"PO-Revision-Date: 2020-06-15 10:08+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -1028,7 +1028,6 @@ msgctxt "ddui-htmltext"
 msgid "Select font family"
 msgstr "Police"
 
-#, fuzzy
 msgctxt "ddui-htmltext"
 msgid "Select font size"
 msgstr "Taille de police"
@@ -1036,6 +1035,19 @@ msgstr "Taille de police"
 msgctxt "ddui"
 msgid "Select line"
 msgstr "Sélectionner la ligne"
+
+msgctxt "mail"
+msgid "Send"
+msgstr "Envoyer"
+
+#, php-format
+msgctxt "mail"
+msgid "Send \"%s\""
+msgstr "Envoi de \"%s\""
+
+msgctxt "mail"
+msgid "Send type"
+msgstr "Type d'envoi"
 
 msgctxt "ddui-htmltext"
 msgid "Size"
@@ -1115,10 +1127,9 @@ msgctxt "smart iuser"
 msgid "This account has no system identifier"
 msgstr "Ce compte n'a pas "
 
-#, fuzzy
 msgctxt "ddui-htmltext"
 msgid "Title"
-msgstr "titre"
+msgstr "Titre"
 
 msgctxt "grid-component"
 msgid "Title contains"

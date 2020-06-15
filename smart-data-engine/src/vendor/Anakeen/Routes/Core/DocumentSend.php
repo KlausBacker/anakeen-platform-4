@@ -73,7 +73,7 @@ class DocumentSend
         }
 
         if (empty($address)) {
-            throw new Exception(___("No mail address set", "ccfd"));
+            throw new Exception(___("No mail address set", "mail"));
         }
 
         $mailStructure = SEManager::getFamily("MAIL");
@@ -124,7 +124,9 @@ class DocumentSend
 
             $msg = new ApiMessage(sprintf(___("\"%s\" has been sended.", "mail"), $targetDocument->getTitle()));
 
-            return ["adresses" => $address, "subject" => $mailMessage->subject];
+            return ["adresses" => $address, "subject" => $mailMessage->subject,
+                "closingText" => ___("Closing in %ds", "mail"),
+                "statusText"=>___("Sended", "mail")];
         }
 
 

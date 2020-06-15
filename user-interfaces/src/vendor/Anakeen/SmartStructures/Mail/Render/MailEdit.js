@@ -30,9 +30,12 @@ window.ank.smartElement.globalController.registerFunction("mailEdit", async scop
         });
 
         const menuSend = scopedController.getMenu("sendmail");
+        let $menuSend = $menu.find('[data-menu-id="sendmail"]');
         if (menuSend) {
           menuSend.disable();
-          $(".fa-send", $menu).addClass("fa-spin");
+          // Need research because DOM change
+          $menuSend = $menu.find('[data-menu-id="sendmail"]');
+          $(".fa", $menuSend).addClass("fa-spin");
         }
 
         $.ajax({
@@ -44,12 +47,38 @@ window.ank.smartElement.globalController.registerFunction("mailEdit", async scop
         })
           .then(function(data) {
             let messages = data.messages;
+
+            menuSend.setLabel(data.data.statusText);
             _.each(messages, function(message) {
               if (message.type !== "notice") {
                 message.message = message.contentText;
                 scopedController.showMessage(message);
               }
             });
+            // Closes dialog in 3 seconds
+
+            window.setTimeout(function() {
+              const P$ = window.parent.$;
+              const $iframes = P$(window.parent.document.body).find("iframe");
+              $iframes.each(function() {
+                if (this.contentWindow === window) {
+                  menuSend.setLabel(data.data.closingText.replace("%d", 3));
+                  $menuSend = $menu.find('[data-menu-id="sendmail"]');
+                  $(".fa", $menuSend)
+                    .addClass("fa-spin fa-circle-o-notch ")
+                    .removeClass("fa-send");
+                  window.setTimeout(() => {
+                    const $dialog = P$(this).closest(".dialog-window");
+                    if ($dialog.length > 0) {
+                      const kDialog = $dialog.data("kendoWindow");
+                      if (kDialog) {
+                        kDialog.destroy();
+                      }
+                    }
+                  }, 3000);
+                }
+              });
+            }, 1000);
           })
           .fail(function(response) {
             let error = "Send error";
@@ -66,12 +95,11 @@ window.ank.smartElement.globalController.registerFunction("mailEdit", async scop
             }
 
             scopedController.showMessage({ type: "error", message: error });
+
+            menuSend.enable();
           })
           .always(function() {
-            if (menuSend) {
-              menuSend.enable();
-              $(".fa-send.fa-spin", $menu).removeClass("fa-spin");
-            }
+            $(".fa-spin", $menuSend).removeClass("fa-spin");
           });
       }
     }
