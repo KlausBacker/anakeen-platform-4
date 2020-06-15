@@ -92,7 +92,6 @@ export default class SETab extends Vue {
     if (this.$refs.smartElement) {
       this.bindSmartElementEvents();
     }
-    this.$emit("smartElementTabMounted");
   }
 
   public closeSmartElement() {
@@ -136,5 +135,6 @@ export default class SETab extends Vue {
 
   private onSmartElementLoaded() {
     this.smartElementLoaded = true;
+    this.$emit("smartElementTabMounted");
   }
 }
