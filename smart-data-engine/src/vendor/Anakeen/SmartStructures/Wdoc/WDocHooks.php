@@ -449,7 +449,14 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $tr = $this->transitions[$transitionName];
             if (!empty($tr[$mIndex])) {
                 if (is_callable($tr[$mIndex])) {
-                    $err = call_user_func($tr[$mIndex], ...$args);
+                    try {
+                        $this->doc->disableAccessControl();
+                        $err = call_user_func($tr[$mIndex], ...$args);
+                        $this->doc->restoreAccessControl();
+                    } catch (\Exception $e) {
+                        $this->doc->restoreAccessControl();
+                        throw $e;
+                    }
                 } else {
                     if (!method_exists($this, $tr[$mIndex])) {
                         return (sprintf(
@@ -459,10 +466,20 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                             get_class($this)
                         ));
                     }
-                    $err = call_user_func(array(
-                        $this,
-                        $tr[$mIndex]
-                    ), ...$args);
+                    try {
+                        $this->doc->disableAccessControl();
+                        $err = call_user_func(
+                            [
+                            $this,
+                            $tr[$mIndex]
+                            ],
+                            ...$args
+                        );
+                        $this->doc->restoreAccessControl();
+                    } catch (\Exception $e) {
+                        $this->doc->restoreAccessControl();
+                        throw $e;
+                    }
                 }
                 return $err;
             }
@@ -984,6 +1001,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
         $msg .= $this->workflowSendMailTemplate($newstate, $addcomment, $tname);
         $this->workflowAttachTimer($newstate, $tname);
+        $this->doc->restoreAccessControl();
         // post action
         $msg3 = '';
         if ($wm3 && (!empty($tr["m3"]))) {
@@ -997,7 +1015,6 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $msg .= "\n";
         }
         $msg .= $msg3;
-        $this->doc->restoreAccessControl();
         $this->logChangeState($tname, $previousState, $msg2, $msg3);
         return $err;
     }
