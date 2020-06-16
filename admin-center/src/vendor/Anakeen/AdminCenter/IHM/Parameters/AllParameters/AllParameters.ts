@@ -2,7 +2,6 @@ import AnkPaneSplitter from "@anakeen/internal-components/lib/PaneSplitter";
 import AnkSmartForm from "@anakeen/user-interfaces/components/lib/AnkSmartForm.esm";
 import "@progress/kendo-ui/js/kendo.grid";
 import "@progress/kendo-ui/js/kendo.switch";
-import * as _ from "underscore";
 import { Component, Mixins, Prop, Vue, Watch } from "vue-property-decorator";
 import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
 import * as $ from "jquery";
@@ -62,9 +61,14 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
           displayValue: ""
         });
       }
+      this.selectedParamObj = {
+        selectedParamName: "",
+        selectedParamNameSpace: "",
+        selectedParamDesc: "",
+        selectedParamInitialValue: "",
+        selectedParamValue: ""
+      };
       this.account = "";
-      this.selectUserForm.structure = [];
-      this.smartFormData.structure = [];
       this.selectedParam = false;
       this.kendoGrid.dataSource.read();
       this.changeUrl();
@@ -76,9 +80,7 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
   public $refs!: {
     [key: string]: any;
   };
-
   public kendoGrid: any = null;
-  public isGridCreated = false;
 
   public selectedParam = false;
   public selectedParamObj = {
@@ -89,22 +91,16 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
     selectedParamValue: ""
   };
 
-  // public selectedParamName = "";
-  // public selectedParamNameSpace = "";
-  // public selectedParamDesc = "";
-  // public selectedParamInitialValue = "";
-  // public selectedParamValue = "";
-
   public element: any;
   public modifications: any = {};
   public account = "";
 
-  public titleFormParam = "";
+  // funtion to set the dataSource on the kendoGrid
   public paramGridData: kendo.data.DataSource = new kendo.data.DataSource({
     schema: {
       data: response => {
         return response.data.data.gridData;
-      }, // "data.total"
+      },
       total: response => {
         if (response.data.data.gridData) {
           return response.data.data.gridData.filter(d => d.nameSpace).length;
@@ -197,7 +193,6 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
         smartFormDataParameter.menu.push(configRestoreParamMenu);
       }
     }
-
     return smartFormDataParameter;
   }
 
@@ -234,10 +229,10 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
       configUserForm.structure[0].content[0].type = "text";
       configUserForm.structure[0].content[0].display = "read";
     }
-
     return configUserForm;
   }
 
+  // change url to emit to the router
   public changeUrl(): void {
     let url = "/";
     // if (this.userTab === false) {
@@ -256,7 +251,7 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
   }
 
   // Input type to use in template
-  public parameterInputType() {
+  public parameterInputType(): string {
     const parameterType = this.element.type.toLowerCase();
 
     const eachLine = this.element.value.split("\n");
@@ -277,7 +272,7 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
   }
 
   // Return the possible values of an enum parameter
-  public enumPossibleValues() {
+  public enumPossibleValues(): string[] {
     if (this.parameterInputType() === "enum") {
       let rawEnum = this.element.type;
       rawEnum = rawEnum.slice(5);
@@ -286,7 +281,7 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
     }
   }
 
-  // Get entries from an Param
+  // Get entries from an Parameters
   public loadParameterFromClick(e): void {
     this.selectedParamObj.selectedParamName = this.kendoGrid.dataItem($(e.currentTarget).closest("tr")).name;
     this.selectedParamObj.selectedParamNameSpace = this.kendoGrid.dataItem($(e.currentTarget).closest("tr")).nameSpace;
@@ -299,11 +294,13 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
     this.displayParameter();
   }
 
+  // Get the parameters value from an request (in the request we get the id and displayValue user)
   public loadParameterFromRouter(nameParameter): void {
     this.$http
       .get(this.urlParameters())
       .then(result => {
         if (this.userTab && this.selectedTab === "userTab" && this.account !== "") {
+          this.fromRouter = true;
           this.$refs.userSmartForm.setValue("my_user", {
             value: this.account,
             displayValue: result.data.data.user.displayValue
@@ -339,7 +336,7 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
       });
   }
 
-  public displayParameter() {
+  public displayParameter(): void {
     this.modifications = {};
     this.smartFormData.values.description = this.selectedParamObj.selectedParamDesc;
     this.smartFormData.values.default_value = this.selectedParamObj.selectedParamInitialValue;
@@ -405,14 +402,19 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
     kendo.ui.progress($(".param-form-wrapper", this.$el), false);
   }
 
+  public fromRouter = false;
+
   public userChange(event, smartElement, smartField, params): void {
     this.smartFormData.structure = [];
-    this.selectedParam = false;
+    if (this.fromRouter) {
+      this.fromRouter = false;
+    } else {
+      this.selectedParam = false;
+    }
     this.account = params.current.value;
     this.kendoGrid.dataSource.read();
     this.changeUrl();
   }
-  public deleteConfirmationWindow: any = null;
 
   public menuClick(event, smartElement, params): void {
     if (params.eventId === "param.save") {
@@ -447,7 +449,6 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
             // @ts-ignore
             document.getElementsByClassName("dcpDocument__header__modified")[i].style.display = "none";
           }
-          // this.smartFormData.values.value = this.selectedParamInitialValue;
           this.$emit(
             "notify",
             "success",
@@ -465,11 +466,11 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
     }
   }
 
-  public updateModifications(event, smartElement, smartField, values) {
+  public updateModifications(event, smartElement, smartField, values): void {
     this.modifications = values.current.value;
   }
 
-  public urlParameters(saveFormUser = false) {
+  public urlParameters(saveFormUser = false): string {
     const urlParam = "/api/v2/admin/parameters/";
 
     if (this.userTab === false) {
@@ -482,13 +483,15 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
     return urlParam + "users/";
   }
 
-  public mounted() {
-    // if (this.userTab) {
-    //   this.titleFormParam = "Global pramaeters";
-    // } else {
-    //   this.titleFormParam = "User pramaeters";
-    // }
+  public loadParamFromVu(): void {
+    if (this.userTab === (this.selectedTab === "userTab")) {
+      if (this.paramId !== "" || this.account !== "") {
+        this.loadParameterFromRouter(this.paramId);
+      }
+    }
+  }
 
+  public mounted() {
     if (this.userId && this.userId !== "") {
       this.account = this.userId;
     }
@@ -516,12 +519,16 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
             field: "value",
             title: this.$t("AdminCenterAllParameter.Value"),
             template: data => {
-              if (data.value && data.value !== "") {
-                return data.value;
-              } else if (!data.initialValue) {
+              if (data.initialValue && data.value && data.initialValue !== data.value) {
+                return `<div title="${this.$t(
+                  "AdminCenterAllParameter.Element modified"
+                )}" class="param-value-modified"> ${data.value}</div>`;
+              } else if (data.initialValue && !data.value) {
+                return `<div"> ${data.initialValue}</div>`;
+              } else if (!data.initialValue && !data.value) {
                 return "";
               }
-              return `<p class="param-value-bold"> ${data.initialValue}</p>`;
+              return `<div"> ${data.value}</div>`;
             }
           },
           {
@@ -543,13 +550,12 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
         ],
         dataSource: this.paramGridData,
         pageable: {
-          alwaysVisible: true,
-          // page: 1,
-          refresh: true,
           info: true,
-          // pageSize: 50,
-          // pageSizes: [50, 100, 200],
-          // pageSizes: false,
+          input: false,
+          numeric: false,
+          pageSizes: false,
+          previousNext: false,
+          refresh: true,
           messages: {
             itemsPerPage: this.$t("AdminCenterKendoGridTranslation.items per page"),
             display: this.$t("AdminCenterKendoGridTranslation.{2}items"),
@@ -577,19 +583,7 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
             title: this.$t("AdminCenterKendoGridTranslation.Aditional filter by")
           }
         },
-        filterMenuInit(e) {
-          $(e.container)
-            .find(".k-primary")
-            .click(function(event) {
-              const val = $(e.container)
-                .find('[title="Value"]')
-                .val();
-              if (val == "") {
-                this.kendoGrid.dataSource.filter({});
-              }
-            });
-        },
-        dataBound: e => {
+        dataBound: () => {
           $(".action-button").on("click", e => {
             this.smartFormData.structure = [];
             this.selectedParam = true;
@@ -597,9 +591,6 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
               this.loadParameterFromClick(e);
             }
           });
-          if (this.paramId !== "" || this.account !== "") {
-            this.loadParameterFromRouter(this.paramId);
-          }
         }
       })
       .data("kendoGrid");

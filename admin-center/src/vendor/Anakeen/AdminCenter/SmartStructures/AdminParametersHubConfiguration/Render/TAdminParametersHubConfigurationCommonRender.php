@@ -3,6 +3,7 @@
 namespace Anakeen\AdminCenter\SmartStructures\AdminParametersHubConfiguration\Render;
 
 use SmartStructure\Fields\Hubconfigurationgeneric as HubConfigurationGenericFields;
+use SmartStructure\Fields\Adminparametershubconfiguration as AdminParametersHubConfigurationFields;
 use Anakeen\Ui\RenderAttributeVisibilities;
 
 trait TAdminParametersHubConfigurationCommonRender
@@ -13,6 +14,7 @@ trait TAdminParametersHubConfigurationCommonRender
 
         $visibilities->setVisibility(HubConfigurationGenericFields::hge_fr_assets, RenderAttributeVisibilities::HiddenVisibility);
         $visibilities->setVisibility(HubConfigurationGenericFields::hge_fr_identification, RenderAttributeVisibilities::HiddenVisibility);
+        $visibilities->setVisibility(AdminParametersHubConfigurationFields::admin_hub_configuration_namespace, RenderAttributeVisibilities::HiddenVisibility);
         return $visibilities;
     }
 }

@@ -49,6 +49,7 @@ export default {
     }
   },
   created () {
+    this.paramId = "";
     this.isGlobalTab = this.hasGlobal;
     this.isUserTab = this.hasUsers;
     this.isSpecificUser();

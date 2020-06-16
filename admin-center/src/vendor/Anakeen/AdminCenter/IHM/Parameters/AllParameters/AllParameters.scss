@@ -1,8 +1,3 @@
-// .global-param {
-//   // background-color: white;
-//   // padding:0.5rem;
-//   height: 100%;
-
   .k-tabstrip-items li.k-state-default:not(.k-state-active) {
     color:var(--primary);
   }
@@ -10,17 +5,13 @@
   .global-param.k-content.k-state-active,
   .user-param.k-content.k-state-active {
     position:relative;
-
     display: flex!important;
     flex:1;
     flex-direction: column;
     overflow: unset !important;
   }
+  
 
-  .k-pager-nav {
-    display: "none";
-  }
-// }
 .param-wrapper {
   display: flex;
   flex-direction: column;
@@ -31,15 +22,11 @@
     flex-direction: column;
     height: 100%;
 
-    // .dcpDocument__header__modified.fa.fa-asterisk {
-    //   display: none;
-    // }
-    // .user-search-smart-form {
-    //   margin-top: -50px;
-    // }
-
+    .dcpDocument__header__modified.fa.fa-asterisk {
+      display: none!important;
+    }
       .dcpDocument__header {
-        display: none;
+        // display: none;
       }
 
     .k-grid-content {
@@ -51,18 +38,17 @@
       display: flex !important;
       flex-direction: column;
       height: 100%;
-
-      .k-pager-nav {
-        display: none;
-      }
-
-      .k-pager-numbers-wrap {
-        display: none;
-      }
     }
     
-    .param-value-bold {
+    .param-value-modified {
       font-weight: bold;
+    }
+
+    .param-value-modified:after {
+      font-family: "WebComponentsIcons";
+      content: '\e905';
+      margin-left: .6rem;
+      color: var(--primary);
     }
 
     .k-command-cell {
@@ -107,7 +93,6 @@
   }
 
   .param-form-wrapper {
-    // display: flex;
     height: 100%;
 
     .param-empty {

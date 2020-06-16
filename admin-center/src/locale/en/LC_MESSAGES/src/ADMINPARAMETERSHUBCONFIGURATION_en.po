@@ -1,0 +1,48 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: smart ADMINPARAMETERSHUBCONFIGURATION \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2020-06-16T09:40:48.804Z\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/vendor/Anakeen/AdminCenter/SmartStructures/AdminParametersHubConfiguration/100-AdminParametersHubConfigurationStructure.xml
+msgctxt "ADMINPARAMETERSHUBCONFIGURATION"
+msgid "admin_hub_configuration_account"
+msgstr "Specific user"
+
+#: src/vendor/Anakeen/AdminCenter/SmartStructures/AdminParametersHubConfiguration/100-AdminParametersHubConfigurationStructure.xml
+msgctxt "ADMINPARAMETERSHUBCONFIGURATION"
+msgid "admin_hub_configuration_global"
+msgstr "Global parameters"
+
+#: src/vendor/Anakeen/AdminCenter/SmartStructures/AdminParametersHubConfiguration/100-AdminParametersHubConfigurationStructure.xml
+msgctxt "ADMINPARAMETERSHUBCONFIGURATION"
+msgid "admin_hub_configuration_namespace"
+msgstr "Namespace"
+
+#: src/vendor/Anakeen/AdminCenter/SmartStructures/AdminParametersHubConfiguration/100-AdminParametersHubConfigurationStructure.xml
+msgctxt "ADMINPARAMETERSHUBCONFIGURATION"
+msgid "admin_hub_configuration_options"
+msgstr "Options"
+
+#: src/vendor/Anakeen/AdminCenter/SmartStructures/AdminParametersHubConfiguration/100-AdminParametersHubConfigurationStructure.xml
+msgctxt "ADMINPARAMETERSHUBCONFIGURATION"
+msgid "admin_hub_configuration_user"
+msgstr "User parameters"
+
+#: src/vendor/Anakeen/AdminCenter/SmartStructures/AdminParametersHubConfiguration/100-AdminParametersHubConfigurationStructure.xml
+#, fuzzy
+msgctxt "ADMINPARAMETERSHUBCONFIGURATION"
+msgid "hub_component_tab"
+msgstr "hub_component_tab"
+
+#: src/vendor/Anakeen/AdminCenter/SmartStructures/AdminParametersHubConfiguration/500-AdminParametersHubConfigurationSettings.xml
+msgctxt "ADMINPARAMETERSHUBCONFIGURATION"
+msgid "title"
+msgstr "title"

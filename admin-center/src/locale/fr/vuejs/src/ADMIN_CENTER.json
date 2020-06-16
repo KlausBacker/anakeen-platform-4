@@ -243,7 +243,7 @@
   "AdminCenterSmartStructure.Select a SmartElement": "Sélectionner un SmartElement"
   "AdminCenterSmartStructure.parameters": "paramètres",
   "AdminCenterAllParameter.NameSpace": "Section",
-  "AdminCenterAllParameter.Sub-category": "Sous-catégorie",
+  "AdminCenterAllParameter.Sub-category": "Catégorie",
   "AdminCenterAllParameter.Name": "Nom",
   "AdminCenterAllParameter.Description": "Description",
   "AdminCenterAllParameter.Value": "Valeur",
@@ -262,5 +262,6 @@
   "AdminCenterAllParameter.User parameters": "Paramètres de l'utilisateur",
   "AdminCenterAllParameter.Save of the element": "Enregistrement du paramètre",
   "AdminCenterAllParameter.Restore parameter": "Paramètre restauré à sa valeur par défaut",
-  "AdminCenterAllParameter.Invalid name parameter": "Nom du paramètre invalide"
+  "AdminCenterAllParameter.Invalid name parameter": "Nom du paramètre invalide",
+  "AdminCenterAllParameter.Element modified": "Élément modifié"
 }

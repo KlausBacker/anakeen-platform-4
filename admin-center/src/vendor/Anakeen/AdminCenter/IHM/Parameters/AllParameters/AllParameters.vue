@@ -10,12 +10,13 @@
       <div class="param-grid-wrapper">
         <div class="user-search-smart-form">
           <ank-smart-form
-            v-show="userTab"
+            v-if="userTab"
             ref="userSmartForm"
             class="user-param-smart-form"
             :config="selectUserForm"
             :options="{ force }"
             @smartFieldChange="userChange"
+            @ready="loadParamFromVu"
           />
         </div>
 
@@ -30,7 +31,7 @@
         </div>
         <div v-else class="else-user-smart-form-parameter">
           <ank-smart-form
-            v-show="selectedParam"
+            v-if="selectedParam"
             ref="formParameters"
             class="user-smart-form-parameter"
             :config="smartFormData"
