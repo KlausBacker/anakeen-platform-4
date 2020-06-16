@@ -2,9 +2,12 @@
 
 namespace Anakeen\SmartStructures\Mail\Render;
 
+use Anakeen\Core\ContextManager;
+use Anakeen\Core\Internal\ContextParameterManager;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
 use Anakeen\Exception;
+use Anakeen\SmartElementManager;
 use Anakeen\SmartStructures\Mailtemplate\MailTemplateHooks;
 use Anakeen\Ui\BarMenu;
 use Anakeen\Ui\CommonRenderOptions;
@@ -119,28 +122,42 @@ class MailEditRender extends DefaultConfigEditRender
         $mailForm->title = sprintf(___("Send \"%s\"", "mail"), $target->getTitle());
 
 
-        $mailTemplateId = $this->customClientData["mailTemplate"] ?? "MAILTEMPLATE_DEFAULT";
-        if (!empty($this->customClientData["mailTemplate"]["name"])) {
-            $mailTemplateId = $this->customClientData["mailTemplate"]["name"];
+        $extraKeys = [];
+        $mailTemplateId = "MAILTEMPLATE_DEFAULT";
+        if (!empty($this->customClientData["mailTemplate"])) {
+            if (is_string($this->customClientData["mailTemplate"])) {
+                // Simple config
+                $mailTemplateId = $this->customClientData["mailTemplate"];
+            } else {
+                // Extended config
+                if (!empty($this->customClientData["mailTemplate"]["name"])) {
+                    $mailTemplateId = $this->customClientData["mailTemplate"]["name"];
+                }
+                if (!empty($this->customClientData["mailTemplate"]["keys"])) {
+                    $extraKeys = $this->customClientData["mailTemplate"]["keys"];
+                    if (!is_array($extraKeys)) {
+                        throw new Exception("Syntax error for keys use by mail template key");
+                    }
+                }
+                if (!empty($this->customClientData["mailTemplate"]["selink"])) {
+                    ContextParameterManager::setVolatile(
+                        \Anakeen\Core\Settings::NsSde,
+                        "CORE_MAILACTIONURL",
+                        $this->customClientData["mailTemplate"]["selink"]
+                    );
+                }
+            }
         }
-        $extraKeys=[];
-        if (!empty($this->customClientData["mailTemplate"]["keys"])) {
-            $extraKeys = $this->customClientData["mailTemplate"]["keys"];
-            if (!is_array($extraKeys)) {
-                throw new Exception("Syntax error for keys use by mail template key");
-            };
-        }
-
-        $mailTemplate = SEManager::getDocument($mailTemplateId);
-
+        $mailTemplate = SmartElementManager::getDocument($mailTemplateId);
         if ($mailTemplate) {
             $keys["state"] = htmlspecialchars($target->getStepLabel());
 
-            foreach ($extraKeys as $k=>$v) {
+            foreach ($extraKeys as $k => $v) {
                 $keys[$k]=$v;
             }
             /** @var MailTemplateHooks $mailTemplate */
             $mailMessage = $mailTemplate->getMailMessage($target, $keys);
+
             $subject = $mailMessage->subject;
             if ($subject) {
                 $mailForm->setValue(MyAttr::mail_subject, $subject);
@@ -183,6 +200,8 @@ class MailEditRender extends DefaultConfigEditRender
                     ]
                 );
             }
+        } else {
+            throw new Exception(sprintf("Cannot access mail template \"%s\".", $mailTemplateId));
         }
     }
 }
