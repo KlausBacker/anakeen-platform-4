@@ -2,7 +2,9 @@
   <div class="smart-criteria-wrapper" @keyup.enter="onEnterKeyupEvent">
     <slot v-if="loading">
       <div class="smart-criteria-loading-screen">
-        <ank-loading></ank-loading>
+        <div class="dcpLoading">
+          <ank-loading></ank-loading>
+        </div>
       </div>
     </slot>
     <div v-show="!loading" class="smart-criteria-form">
