@@ -214,7 +214,7 @@ class ErrorCodeATTR
     /**
      * @errorCode  The autocomplete response results indexes must be compatioble with description
      */
-    const ATTR1102 = 'the autocomplete send less data as specified, missing index "%s" for field "%s"';
+    const ATTR1102 = 'the autocomplete send less data as specified, missing index "%s" for field "%s". You should check the php definition of the autocomplete';
     /**
      * @errorCode  The option name are composed only of alpha characters
      */
