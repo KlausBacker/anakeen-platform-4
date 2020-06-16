@@ -107,6 +107,234 @@ export default class SETab extends Vue {
       return Promise.resolve();
     }
   }
+  public addEventListener(eventType, options?, callback?) {
+    // @ts-ignore
+    this.$refs.smartElement.addEventListener(eventType, options, callback);
+  }
+
+  public fetchSmartElement(value, options?) {
+    // @ts-ignore
+    return this.$refs.smartElement.fetchSmartElement(value, options);
+  }
+
+  public saveSmartElement(options) {
+    // @ts-ignore
+    return this.$refs.smartElement.saveSmartElement(options);
+  }
+
+  public showMessage(message) {
+    // @ts-ignore
+    this.$refs.smartElement.showMessage(message);
+  }
+
+  public getSmartFields() {
+    // @ts-ignore
+    return this.$refs.smartElement.getSmartFields();
+  }
+
+  public getSmartField(smartFieldId) {
+    // @ts-ignore
+    return this.$refs.smartElement.getSmartField(smartFieldId);
+  }
+
+  public setValue(smartFieldId, newValue) {
+    // @ts-ignore
+    this.$refs.smartElement.setValue(smartFieldId, newValue);
+  }
+
+  public reinitSmartElement(values, options) {
+    // @ts-ignore
+    return this.$refs.smartElement.reinitSmartElement(values, options);
+  }
+
+  public changeStateSmartElement(parameters, reinitOptions, options) {
+    // @ts-ignore
+    return this.$refs.smartElement.changeStateSmartElement(parameters, reinitOptions, options);
+  }
+
+  public deleteSmartElement(options) {
+    // @ts-ignore
+    return this.$refs.smartElement.deleteSmartElement(options);
+  }
+
+  public restoreSmartElement(options) {
+    // @ts-ignore
+    return this.$refs.smartElement.restoreSmartElement(options);
+  }
+
+  public getElement() {
+    // @ts-ignore
+    return this.$refs.smartElement.getElement();
+  }
+
+  public getProperty(property) {
+    // @ts-ignore
+    return this.$refs.smartElement.getProperty(property);
+  }
+  public getProperties() {
+    // @ts-ignore
+    return this.$refs.smartElement.getProperties();
+  }
+
+  public hasSmartField(smartFieldId) {
+    // @ts-ignore
+    return this.$refs.smartElement.hasSmartField(smartFieldId);
+  }
+
+  public hasMenu(menuId) {
+    // @ts-ignore
+    return this.$refs.smartElement.hasMenu(menuId);
+  }
+
+  public getMenu(menuId) {
+    // @ts-ignore
+    return this.$refs.smartElement.getMenu(menuId);
+  }
+
+  public getMenus() {
+    // @ts-ignore
+    return this.$refs.smartElement.getMenus();
+  }
+
+  public getValue(smartFieldId, type?: string) {
+    // @ts-ignore
+    return this.$refs.smartElement.getValue(smartFieldId, type);
+  }
+
+  public getValues() {
+    // @ts-ignore
+    return this.$refs.smartElement.getValues();
+  }
+
+  public getCustomServerData() {
+    // @ts-ignore
+    return this.$refs.smartElement.getCustomServerData();
+  }
+
+  public isModified() {
+    // @ts-ignore
+    return this.$refs.smartElement.isModified();
+  }
+
+  public addCustomClientData(check, value) {
+    // @ts-ignore
+    this.$refs.smartElement.addCustomClientData(check, value);
+  }
+
+  public getCustomClientData(deleteOnce) {
+    // @ts-ignore
+    return this.$refs.smartElement.getCustomClientData(deleteOnce);
+  }
+
+  public removeCustomClientData(key) {
+    // @ts-ignore
+    this.$refs.smartElement.removeCustomClientData(key);
+  }
+
+  public appendArrayRow(smartFieldId, values) {
+    // @ts-ignore
+    this.$refs.smartElement.appendArrayRow(smartFieldId, values);
+  }
+
+  public insertBeforeArrayRow(smartFieldId, values, index) {
+    // @ts-ignore
+    this.$refs.smartElement.insertBeforeArrayRow(smartFieldId, values, index);
+  }
+
+  public removeArrayRow(smartFieldId, index) {
+    // @ts-ignore
+    this.$refs.smartElement.removeArrayRow(smartFieldId, index);
+  }
+
+  public addConstraint(options, callback) {
+    // @ts-ignore
+    this.$refs.smartElement.addConstraint(options, callback);
+  }
+
+  public listConstraints() {
+    // @ts-ignore
+    return this.$refs.smartElement.listConstraints();
+  }
+
+  public removeConstraint(constraintName, allKind) {
+    // @ts-ignore
+    this.$refs.smartElement.removeConstraint(constraintName, allKind);
+  }
+
+  public listEventListeners() {
+    // @ts-ignore
+    return this.$refs.smartElement.listEventListeners();
+  }
+
+  public removeEventListener(eventName, allKind) {
+    // @ts-ignore
+    this.$refs.smartElement.removeEventListener(eventName, allKind);
+  }
+
+  public triggerEvent(eventName, ...parameters) {
+    // @ts-ignore
+    return this.$refs.smartElement.triggerEvent(eventName, ...parameters);
+  }
+
+  public hideSmartField(smartFieldId) {
+    // @ts-ignore
+    this.$refs.smartElement.hideSmartField(smartFieldId);
+  }
+
+  public showSmartField(smartFieldId) {
+    // @ts-ignore
+    this.$refs.smartElement.showSmartField(smartFieldId);
+  }
+
+  public maskSmartElement(message, px) {
+    // @ts-ignore
+    this.$refs.smartElement.maskSmartElement(message, px);
+  }
+
+  public unmaskSmartElement(force) {
+    // @ts-ignore
+    this.$refs.smartElement.unmaskSmartElement(force);
+  }
+
+  public tryToDestroy({ testDirty }) {
+    // @ts-ignore
+    return this.$refs.smartElement.tryToDestroy({ testDirty });
+  }
+
+  public injectJS(jsToInject) {
+    // @ts-ignore
+    return this.$refs.smartElement.injectJS(jsToInject);
+  }
+
+  public injectCSS(cssToInject) {
+    // @ts-ignore
+    return this.$refs.smartElement.injectCSS(cssToInject);
+  }
+
+  public selectTab(tabId) {
+    // @ts-ignore
+    return this.$refs.smartElement.selectTab(tabId);
+  }
+
+  public drawTab(tabId) {
+    // @ts-ignore
+    return this.$refs.smartElement.drawTab(tabId);
+  }
+
+  public setCustomClientData(smartElementCheck, value) {
+    // @ts-ignore
+    this.$refs.smartElement.setCustomClientData(smartElementCheck, value);
+  }
+
+  public setSmartFieldErrorMessage(smartFieldId, message, index) {
+    // @ts-ignore
+    this.$refs.smartElement.setSmartFieldErrorMessage(smartFieldId, message, index);
+  }
+
+  public cleanSmartFieldErrorMessage(smartFieldId, index) {
+    // @ts-ignore
+    this.$refs.smartElement.cleanSmartFieldErrorMessage(smartFieldId, index);
+  }
 
   @Watch("label")
   protected onLabelPropCHange() {
