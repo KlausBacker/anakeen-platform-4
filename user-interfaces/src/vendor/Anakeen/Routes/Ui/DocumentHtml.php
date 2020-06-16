@@ -24,6 +24,8 @@ class DocumentHtml
     const templateFile = __DIR__ . "/Templates/document-view.html.mustache";
     protected $viewId = "!defaultConsultation";
     protected $revision = -1;
+    /** @var \Slim\Http\request */
+    protected $request;
 
     /**
      * Send Document Html page
@@ -49,6 +51,7 @@ class DocumentHtml
             // Special case to load HTML page without documents
             $resourceId = false;
         }
+        $this->request=$request;
         $html = $this->view($resourceId, $this->viewId, $this->revision);
         return $response->write($html);
     }
@@ -113,7 +116,7 @@ class DocumentHtml
                 }
             }
             SEManager::cache()->addDocument($doc);
-            $otherParameters = $_GET;
+            $otherParameters = $this->request->getQueryParams();
 
             unset($otherParameters["initid"]);
 
