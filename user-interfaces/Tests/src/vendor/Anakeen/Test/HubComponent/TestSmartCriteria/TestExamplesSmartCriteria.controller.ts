@@ -17,7 +17,15 @@ export default class TestExamplesSmartCriteriaController extends Vue {
     },
     {
       config: exampleAllType,
-      label: exampleAllType.title || "Example All Type"
+      label: exampleAllType.title || "Example All Type",
+      responsiveColumns: [
+        {
+          number: 3,
+          minWidth: "50rem",
+          maxWidth: null,
+          grow: true
+        }
+      ]
     },
     {
       config: exampleDemo,
