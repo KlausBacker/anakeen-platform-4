@@ -5,7 +5,7 @@ import { Component, Prop, Vue, Watch, Mixins } from "vue-property-decorator";
 Vue.use(DataSourceInstaller);
 @Component({
   model: {
-    event: "structure-selected",
+    event: "structureSelected",
     prop: "selected"
   }
 })
@@ -35,8 +35,7 @@ export default class SmartStructureListController extends Mixins(AnkI18NMixin) {
     }
   }
   public onListItemClicked(ssId) {
-    this.$emit("structure-selected", `${ssId}`);
-    this.$parent.$emit("structure-selected", `${ssId}`);
+    this.$parent.$emit("structureSelected", `${ssId}`);
   }
 
   public hasFilter() {

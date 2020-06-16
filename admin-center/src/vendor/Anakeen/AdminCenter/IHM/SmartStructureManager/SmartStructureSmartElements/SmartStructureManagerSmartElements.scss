@@ -6,7 +6,6 @@
   min-height: 0;
   overflow-y: hidden;
 
-  & /deep/ {
     .smart-element-grid {
       .grid-cell-content {
         word-break: break-all;
@@ -21,7 +20,6 @@
         top: 0.6rem;
       }
     }
-  }
 
   .se-splitter {
     height: 100%;
