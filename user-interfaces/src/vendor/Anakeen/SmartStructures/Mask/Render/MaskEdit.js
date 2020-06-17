@@ -243,7 +243,7 @@ export default AnkInitGlobalController.then(globalController => {
             },
             template:
               "#if (data.setVisibility === true) {#" +
-              '<div class="mask-visibility mask-visibility-set"><input class="mask-visibility--dropdown"/></div>' +
+              '<div class="mask-visibility mask-visibility-set" title="modified"><input class="mask-visibility--dropdown"/></div>' +
               "# } else if (data.setVisibility === false && data.visibility !== data.mVisibility)" +
               ' {#<div class="mask-visibility mask-visibility-modified"><input class="mask-visibility--dropdown"/></div>#}' +
               'else if (data.mVisibility) {# <div class="mask-visibility"><input class="mask-visibility--dropdown"/></div>  #}#'
