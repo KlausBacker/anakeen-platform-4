@@ -39,7 +39,7 @@ class MailForm extends DocumentHtml
             $customClientData["mailTemplate"]["selink"] = $queries["selink"];
         }
         if (!empty($queries["keys"])) {
-            $customClientData["mailTemplate"]["keys"] = json_decode($queries["keys"],true);
+            $customClientData["mailTemplate"]["keys"] = json_decode($queries["keys"], true);
         }
 
         $request = $request->withQueryParams(["customClientData" => json_encode($customClientData)]);

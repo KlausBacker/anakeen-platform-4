@@ -120,7 +120,7 @@ export default $.widget("dcp.dcpMenu", {
                     modal: targetOptions.modal,
                     content: href,
                     iframe: true,
-                    close: function () {
+                    close: function() {
                       this.destroy();
                     }
                   });
