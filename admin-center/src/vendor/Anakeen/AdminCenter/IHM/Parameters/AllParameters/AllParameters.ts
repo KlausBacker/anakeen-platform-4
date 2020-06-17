@@ -436,6 +436,8 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
               "\n" +
               this.$t("AdminCenterAllParameter.Save of the element")
           );
+          this.selectedParamObj.selectedParamValue = this.modifications;
+          this.displayParameter();
           this.kendoGrid.dataSource.read();
         })
         .catch(err => {
