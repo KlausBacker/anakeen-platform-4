@@ -2,7 +2,6 @@
 
 namespace Anakeen\SmartStructures\Mail\Render;
 
-use Anakeen\Core\ContextManager;
 use Anakeen\Core\Internal\ContextParameterManager;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
@@ -150,11 +149,16 @@ class MailEditRender extends DefaultConfigEditRender
         }
         $mailTemplate = SmartElementManager::getDocument($mailTemplateId);
         if ($mailTemplate) {
+            // Use copy to rewrite image url
+            $copy=$mailTemplate->duplicate(true);
+            $copy->store();
             $keys["state"] = htmlspecialchars($target->getStepLabel());
 
+            $mailForm->setValue(MyAttr::mail_template, $mailTemplate->id);
             foreach ($extraKeys as $k => $v) {
                 $keys[$k]=$v;
             }
+
             /** @var MailTemplateHooks $mailTemplate */
             $mailMessage = $mailTemplate->getMailMessage($target, $keys);
 
@@ -165,9 +169,20 @@ class MailEditRender extends DefaultConfigEditRender
             $body = $mailMessage->body;
             if ($body) {
                 // need magic set to get original image url
-                $mailTemplate->setValue(Mailtemplate::tmail_body, $body->getData());
+                $copy->setValue(Mailtemplate::tmail_body, $body->getData());
+
                 /** @noinspection PhpUndefinedFieldInspection */
-                $mailForm->mail_body = $mailTemplate->getRawValue(Mailtemplate::tmail_body);
+                $mailForm->mail_body = $copy->getRawValue(Mailtemplate::tmail_body);
+                // Need to reparse due to images in htmltext
+                $mailForm->mail_body = \Anakeen\Core\Utils\HtmlClean::normalizeHTMLFragment(
+                    $mailForm->mail_body,
+                    $err,
+                    ['initid'=>$copy->initid,
+                    "revision" => $copy->revision,
+                    "attrid"=> Mailtemplate::tmail_body]
+                );
+
+                $copy->store();
             }
 
             $tos = $mailMessage->to;
@@ -203,5 +218,9 @@ class MailEditRender extends DefaultConfigEditRender
         } else {
             throw new Exception(sprintf("Cannot access mail template \"%s\".", $mailTemplateId));
         }
+    }
+    public function getEtag(\Anakeen\Core\Internal\SmartElement $document)
+    {
+        return null;
     }
 }

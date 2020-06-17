@@ -13,6 +13,12 @@ namespace SmartStructure\Fields {
     class Mail
     {
         /**
+        * <ul>
+        * <li> <i>reset</i> true </li>
+        * </ul>
+        */ 
+        const undefined='undefined';
+        /**
         * Adresses
         * <ul>
         * <li> <i>type</i> frame </li>
@@ -91,6 +97,15 @@ namespace SmartStructure\Fields {
         * </ul>
         */ 
         const mail_savecopy='mail_savecopy';
+        /**
+        * Modèle de mail
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>relation</i> MAILTEMPLATE </li>
+        * <li> <i>type</i> docid </li>
+        * </ul>
+        */ 
+        const mail_template='mail_template';
         /**
         * Commentaire
         * <ul>

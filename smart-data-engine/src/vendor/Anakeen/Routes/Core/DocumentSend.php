@@ -58,6 +58,8 @@ class DocumentSend
         $body = $request->getParam(MailAttr::mail_body);
         $from = $request->getParam(MailAttr::mail_from);
 
+        $mtid = $request->getParam(MailAttr::mail_template);
+
         $userinfo = null;
 
         $recipients = $request->getParam(MailAttr::mail_recip);
@@ -77,7 +79,11 @@ class DocumentSend
         }
 
         $mailStructure = SEManager::getFamily("MAIL");
-        $mtDefaultId = $mailStructure->getFamilyParameterValue(MailAttr::mail_tpl_default, "MAILTEMPLATE_DEFAULT");
+        if ($mtid) {
+            $mtDefaultId = $mtid;
+        } else {
+            $mtDefaultId = $mailStructure->getFamilyParameterValue(MailAttr::mail_tpl_default, "MAILTEMPLATE_DEFAULT");
+        }
         $mt = SEManager::getDocument($mtDefaultId);
         if ($mt) {
             $keys["state"] = htmlspecialchars($targetDocument->getStepLabel());

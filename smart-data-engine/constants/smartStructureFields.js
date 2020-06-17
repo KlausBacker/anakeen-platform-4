@@ -235,6 +235,11 @@ export class IUSER {
 }
 export class MAIL {
   /**
+   *
+   * @smartType
+   */
+  static = "";
+  /**
    * Adresses
    * @smartType frame
    */
@@ -279,6 +284,11 @@ export class MAIL {
    * @smartType enum MAIL-mail_savecopy
    */
   static mail_savecopy = "mail_savecopy";
+  /**
+   * Modèle de mail
+   * @smartType docid MAILTEMPLATE
+   */
+  static mail_template = "mail_template";
   /**
    * Commentaire
    * @smartType frame

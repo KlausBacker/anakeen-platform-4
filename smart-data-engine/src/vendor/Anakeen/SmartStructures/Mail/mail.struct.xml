@@ -39,6 +39,9 @@
                 <smart:field-text name="mail_subject" label="Sujet" access="ReadWrite" is-abstract="true"/>
                 <smart:field-enum name="mail_savecopy" label="Enregistrer une copie" access="ReadWrite"
                                   relation="MAIL-mail_savecopy"/>
+
+                <smart:field-docid name="mail_template" label="Modèle de mail" access="ReadWrite"
+                                  relation="MAILTEMPLATE"/>
             </smart:field-set>
             <smart:field-set name="mail_fr_cm" type="frame" label="Commentaire" access="ReadWrite">
                 <smart:field-htmltext name="mail_body" label="Corps du message" access="ReadWrite" is-abstract="true"/>
