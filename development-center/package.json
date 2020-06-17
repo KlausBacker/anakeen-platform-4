@@ -32,7 +32,7 @@
     "@progress/kendo-dropdowns-vue-wrapper": "^2019.3.1023",
     "@progress/kendo-grid-vue-wrapper": "^2019.3.1023",
     "@progress/kendo-layout-vue-wrapper": "^2019.3.1023",
-    "@progress/kendo-theme-bootstrap": "4.8.0",
+    "@progress/kendo-theme-bootstrap": "^4.8.0",
     "@progress/kendo-treelist-vue-wrapper": "^2019.3.1023",
     "@progress/kendo-ui": "2019.3.1113",
     "axios": "^0.19.0",
