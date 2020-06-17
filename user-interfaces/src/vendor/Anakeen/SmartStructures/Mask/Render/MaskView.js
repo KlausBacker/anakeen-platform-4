@@ -65,8 +65,13 @@ window.ank.smartElement.globalController.registerFunction("mask", controller => 
           },
           data: response => {
             response.data.forEach(item => {
+              var itemType = item.type;
               item.mNeededLabel = item.mNeeded ? "Mandatory" : "Optional";
-              item.neededLabel = item.needed ? "Mandatory" : "Optional";
+              if (itemType === "tab" || itemType === "array" || itemType === "frame") {
+                item.neededLabel = "";
+              } else {
+                item.neededLabel = item.needed ? "Mandatory" : "Optional";
+              }
             });
             return response.data;
           }
