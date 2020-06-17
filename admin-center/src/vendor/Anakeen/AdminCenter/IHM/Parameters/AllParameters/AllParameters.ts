@@ -92,7 +92,7 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
   };
 
   public element: any;
-  public modifications: any = {};
+  public modifications: any;
   public account = "";
 
   // funtion to set the dataSource on the kendoGrid
@@ -337,7 +337,7 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
   }
 
   public displayParameter(): void {
-    this.modifications = {};
+    // this.modifications = {};
     this.smartFormData.values.description = this.selectedParamObj.selectedParamDesc;
     this.smartFormData.values.default_value = this.selectedParamObj.selectedParamInitialValue;
     const type = this.parameterInputType();
@@ -593,6 +593,11 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
               this.loadParameterFromClick(e);
             }
           });
+          if (this.userTab === false) {
+            if (this.paramId !== "" || this.account !== "") {
+              this.loadParameterFromRouter(this.paramId);
+            }
+          }
         }
       })
       .data("kendoGrid");

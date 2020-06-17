@@ -36,10 +36,9 @@
             class="user-smart-form-parameter"
             :config="smartFormData"
             :options="{ force }"
-            @actionClick="menuClick"
             @smartFieldChange="updateModifications"
+            @actionClick="menuClick"
           ></ank-smart-form>
-          <!-- <ank-smart-form v-show="selectedUserParam" :config="smartFormData"></ank-smart-form> -->
         </div>
         <div ref="smartFormAlert"></div>
       </div>
