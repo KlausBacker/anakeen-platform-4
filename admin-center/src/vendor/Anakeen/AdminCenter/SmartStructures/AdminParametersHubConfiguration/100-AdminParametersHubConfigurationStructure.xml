@@ -5,6 +5,9 @@
             <smart:enum name="FALSE" label="No" />
             <smart:enum name="TRUE" label="Yes" />
         </smart:enum-configuration>
+        <smart:enum-configuration name="Admin_Param_NameSpace">
+            <smart:enum-callable function="Anakeen\AdminCenter\SmartStructures\AdminParametersHubConfiguration\AdminParametersHubConfigurationBehavior::getAllNameSpace"/>
+        </smart:enum-configuration>
     </smart:enumerates>
     <smart:structure-configuration name="ADMINPARAMETERSHUBCONFIGURATION" label="Parameters configuration">
         <smart:extends ref="HUBCONFIGURATIONGENERIC" />
@@ -16,7 +19,7 @@
                     <smart:field-enum name="admin_hub_configuration_global" label="Global parameters" relation="Admin_Param_TrueFalse" access="ReadWrite" />
                     <smart:field-enum name="admin_hub_configuration_user" label="User parameters" relation="Admin_Param_TrueFalse" access="ReadWrite" />
                     <smart:field-account name="admin_hub_configuration_account" access="ReadWrite" label="Specific user"></smart:field-account>
-                    <smart:field-text name="admin_hub_configuration_namespace" access="ReadWrite" label="Namespace"></smart:field-text>
+                    <smart:field-enum name="admin_hub_configuration_namespace" access="ReadWrite" label="Namespace" multiple="true" relation="Admin_Param_NameSpace"></smart:field-enum>
                 </smart:field-set>
             </smart:field-set>
         </smart:fields>

@@ -14,7 +14,6 @@ trait TAdminParametersHubConfigurationCommonRender
 
         $visibilities->setVisibility(HubConfigurationGenericFields::hge_fr_assets, RenderAttributeVisibilities::HiddenVisibility);
         $visibilities->setVisibility(HubConfigurationGenericFields::hge_fr_identification, RenderAttributeVisibilities::HiddenVisibility);
-        $visibilities->setVisibility(AdminParametersHubConfigurationFields::admin_hub_configuration_namespace, RenderAttributeVisibilities::HiddenVisibility);
         return $visibilities;
     }
 }

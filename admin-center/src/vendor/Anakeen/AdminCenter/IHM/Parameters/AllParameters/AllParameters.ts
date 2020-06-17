@@ -121,10 +121,19 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
           })
           .then(result => {
             const gridData = result.data.data.gridData || [];
-            // filter to remove if nameSpace in the response data not exist (filter by ONE nameSpace)
-            result.data.data.gridData = gridData.filter(
-              d => d.nameSpace && (!this.namespace || d.namespace === this.namespace)
-            );
+
+            // filter to remove if nameSpace in the response data not exist and filter by an nameSpace array
+            result.data.data.gridData = gridData.filter(data => {
+              if (data.nameSpace) {
+                if (this.namespace.length > 0 && !this.namespace.includes(data.nameSpace)) {
+                  return false;
+                }
+                return data;
+              } else {
+                return false;
+              }
+            });
+
             // notify the data source that the request succeeded
             options.success(result);
           })
@@ -306,8 +315,17 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
             displayValue: result.data.data.user.displayValue
           });
         }
-        if (this.namespace && this.namespace !== "") {
-          result.data.data.gridData = result.data.data.gridData.filter(d => d.nameSpace === this.namespace);
+        if (this.namespace && this.namespace.length > 0) {
+          result.data.data.gridData = result.data.data.gridData.filter(data => {
+            if (data.nameSpace) {
+              if (this.namespace.length > 0 && !this.namespace.includes(data.nameSpace)) {
+                return false;
+              }
+              return data;
+            } else {
+              return false;
+            }
+          });
         }
         const param = result.data.data.gridData.find(d => d.nameSpace + ":" + d.name === nameParameter);
         if (param) {

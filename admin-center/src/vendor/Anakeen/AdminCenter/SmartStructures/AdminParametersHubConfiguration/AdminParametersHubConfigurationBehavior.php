@@ -2,12 +2,8 @@
 
 namespace Anakeen\AdminCenter\SmartStructures\AdminParametersHubConfiguration;
 
-use Anakeen\Core\SmartStructure\Callables\InputArgument;
-use Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod;
-use Anakeen\Exception;
-use Anakeen\SmartHooks;
-use phpDocumentor\Reflection\Types\Boolean;
 use SmartStructure\Fields\Adminparametershubconfiguration as AdminParametersHubConfigFields;
+use Anakeen\EnumItem;
 
 class AdminParametersHubConfigurationBehavior extends \SmartStructure\Hubconfigurationgeneric
 {
@@ -27,6 +23,18 @@ class AdminParametersHubConfigurationBehavior extends \SmartStructure\Hubconfigu
     {
         // Return callable string for retrieve the good asset
         return "Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath('admin', 'AdminParameterManager')";
+    }
+
+    public static function getAllNameSpace()
+    {
+        $items = [];
+        \Anakeen\Core\DbManager::query("select distinct(substring(name for position('::' in name) -1)) from paramdef", $allNamespaces, true);
+
+        sort($allNamespaces);
+        foreach ($allNamespaces as $nameSpace) {
+            $items[] = new EnumItem($nameSpace);
+        }
+        return $items;
     }
 
     public static function checkGlobalTab(string $hasGlobal, string $specificUser)
