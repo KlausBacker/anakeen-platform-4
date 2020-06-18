@@ -13,7 +13,7 @@
       {
         "type": "local",
         "name": "Docker Volumes",
-        "dir": ".devtool/docker/Docker/Volumes/_private/php/var/www/html/platform",
+        "dir": ".devtool/docker/Volumes/_private/php/var/www/html/anakeen/platform",
         "mappings": [
           {
             "source": "admin-center/src",
