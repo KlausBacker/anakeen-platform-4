@@ -55,7 +55,7 @@
     .k-command-cell {
       text-align: center;
   
-      .a.k-button.k-button-icontext.k-grid-Modify {
+      .k-button.k-button-icontext.k-grid-Modify {
         text-align: center;
         color: #157efb;
         font-weight: bold;
@@ -66,13 +66,33 @@
         padding-left: 0.5rem;
       }
   
-      .a.k-button.k-button-icontext.k-grid-Modify:hover {
+      .k-button.k-button-icontext.k-grid-Modify:hover {
         color: white;
         font-weight: bold;
         background-color: #157efb;
         box-shadow: none;
         border: none;
       }
+
+      .k-button.k-button-icontext.k-grid-Consult {
+        text-align: center;
+        color: #157efb;
+        font-weight: bold;
+        background-color: transparent;
+        box-shadow: none;
+        border: none;
+        padding-right: 0.5rem;
+        padding-left: 0.5rem;
+      }
+
+      .k-button.k-button-icontext.k-grid-Consult:hover {
+        color: white;
+        font-weight: bold;
+        background-color: #157efb;
+        box-shadow: none;
+        border: none;
+      }
+
     }
 
     a.k-button.k-button-icontext.k-grid-button {
@@ -123,6 +143,10 @@
           .document {
             height: 100%;
 
+            .dcpAttribute__content__value {
+              white-space: pre;
+            }
+
             .dcpAttribute__label label {
               font-weight: bold;
             }
@@ -142,7 +166,7 @@
       display: none;
     }
 
-    // "Translate" button
+    // "Action" button
     a {
       color: #157EFB;
       text-transform: uppercase;

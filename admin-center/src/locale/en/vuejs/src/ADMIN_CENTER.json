@@ -262,5 +262,6 @@
   "AdminCenterAllParameter.Save of the element": "Save of the element",
   "AdminCenterAllParameter.Restore parameter": "Parameter redtored to his default value",
   "AdminCenterAllParameter.Invalid name parameter": "Invalid name parameter",
-  "AdminCenterAllParameter.Element modified": "Element modified"
+  "AdminCenterAllParameter.Element modified": "Element modified",
+  "AdminCenterAllParameter.Invalid user id": "Invalid user id"
 }

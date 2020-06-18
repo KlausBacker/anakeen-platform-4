@@ -32,8 +32,8 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
   @Prop({ type: Boolean, default: true })
   public isGlobalTab!: boolean;
 
-  @Prop({ type: String, default: "" })
-  public namespace!: string;
+  @Prop({ type: Array, default: [] })
+  public namespace!: Array<string>;
 
   @Prop({ type: String, default: "" })
   public specificUser!: string;
@@ -121,19 +121,21 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
           })
           .then(result => {
             const gridData = result.data.data.gridData || [];
-
-            // filter to remove if nameSpace in the response data not exist and filter by an nameSpace array
-            result.data.data.gridData = gridData.filter(data => {
-              if (data.nameSpace) {
-                if (this.namespace.length > 0 && !this.namespace.includes(data.nameSpace)) {
+            if ((this.userTab && result.data.data.user) || !this.userTab) {
+              // filter to remove if nameSpace in the response data not exist and filter by an nameSpace array
+              result.data.data.gridData = gridData.filter(data => {
+                if (data.nameSpace) {
+                  if (this.namespace.length > 0 && !this.namespace.includes(data.nameSpace)) {
+                    return false;
+                  }
+                  return data;
+                } else {
                   return false;
                 }
-                return data;
-              } else {
-                return false;
-              }
-            });
-
+              });
+            } else {
+              this.$emit("notify", "warning", this.$t("AdminCenterAllParameter.Invalid user id"));
+            }
             // notify the data source that the request succeeded
             options.success(result);
           })
@@ -263,18 +265,21 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
   public parameterInputType(): string {
     const parameterType = this.element.type.toLowerCase();
 
-    const eachLine = this.element.value.split("\n");
+    let eachLine = [];
+    if (this.element && this.element.value) {
+      eachLine = this.element.value.split("\n");
+    }
     if (parameterType === "text" && eachLine.length > 1) {
-      return "longText";
+      return "longtext";
     }
     if (parameterType === "number" || parameterType === "integer" || parameterType === "double") {
       return "int";
     } else if (parameterType.startsWith("enum")) {
       return "enum";
     } else if (parameterType === "json") {
-      return "longText";
+      return "longtext";
     } else if (parameterType === "") {
-      return "longText";
+      return "longtext";
     } else {
       return parameterType;
     }
@@ -308,45 +313,51 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
     this.$http
       .get(this.urlParameters())
       .then(result => {
-        if (this.userTab && this.selectedTab === "userTab" && this.account !== "") {
-          this.fromRouter = true;
-          this.$refs.userSmartForm.setValue("my_user", {
-            value: this.account,
-            displayValue: result.data.data.user.displayValue
-          });
-        }
-        if (this.namespace && this.namespace.length > 0) {
-          result.data.data.gridData = result.data.data.gridData.filter(data => {
-            if (data.nameSpace) {
-              if (this.namespace.length > 0 && !this.namespace.includes(data.nameSpace)) {
+        if ((this.userTab && result.data.data.user) || !this.userTab) {
+          if (this.userTab && this.selectedTab === "userTab" && this.account !== "") {
+            this.fromRouter = true;
+            this.$refs.userSmartForm.setValue("my_user", {
+              value: this.account,
+              displayValue: result.data.data.user.displayValue
+            });
+          }
+          if (this.namespace && this.namespace.length > 0) {
+            result.data.data.gridData = result.data.data.gridData.filter(data => {
+              if (data.nameSpace) {
+                if (this.namespace.length > 0 && !this.namespace.includes(data.nameSpace)) {
+                  return false;
+                }
+                return data;
+              } else {
                 return false;
               }
-              return data;
-            } else {
-              return false;
-            }
-          });
-        }
-        const param = result.data.data.gridData.find(d => d.nameSpace + ":" + d.name === nameParameter);
-        if (param) {
-          this.selectedParamObj.selectedParamName = param.name;
-          this.selectedParamObj.selectedParamNameSpace = param.nameSpace;
-          this.selectedParamObj.selectedParamDesc = param.description;
-          this.selectedParamObj.selectedParamInitialValue = param.initialValue;
-          this.selectedParamObj.selectedParamValue = param.value;
-          this.element = param;
-          this.smartFormData.structure = [];
-          this.selectedParam = true;
-          this.displayParameter();
-        } else {
-          if (nameParameter && nameParameter !== "") {
-            this.$emit(
-              "notify",
-              "warning",
-              this.$t("AdminCenterAllParameter.Invalid name parameter") + "\n(" + nameParameter + ")"
-            );
-            this.changeUrl();
+            });
           }
+
+          const param = result.data.data.gridData.find(d => d.nameSpace + ":" + d.name === nameParameter);
+          if (param) {
+            this.selectedParamObj.selectedParamName = param.name;
+            this.selectedParamObj.selectedParamNameSpace = param.nameSpace;
+            this.selectedParamObj.selectedParamDesc = param.description;
+            this.selectedParamObj.selectedParamInitialValue = param.initialValue;
+            this.selectedParamObj.selectedParamValue = param.value;
+            this.element = param;
+            this.smartFormData.structure = [];
+            this.selectedParam = true;
+            this.displayParameter();
+          } else {
+            if (nameParameter && nameParameter !== "") {
+              this.$emit(
+                "notify",
+                "warning",
+                this.$t("AdminCenterAllParameter.Invalid name parameter") + "\n(" + nameParameter + ")"
+              );
+              this.changeUrl();
+            }
+          }
+        } else {
+          this.$emit("notify", "warning", this.$t("AdminCenterAllParameter.Invalid user id"));
+          return;
         }
       })
       .catch(err => {
@@ -355,12 +366,18 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
   }
 
   public displayParameter(): void {
-    // this.modifications = {};
     this.smartFormData.values.description = this.selectedParamObj.selectedParamDesc;
     this.smartFormData.values.default_value = this.selectedParamObj.selectedParamInitialValue;
     const type = this.parameterInputType();
     let item = {};
 
+    if (this.element.type.toLowerCase() === "json" || this.element.type.toLowerCase() === "") {
+      this.smartFormData.values.value = JSON.stringify(
+        JSON.parse(this.selectedParamObj.selectedParamValue),
+        undefined,
+        2
+      );
+    }
     if (type === "enum") {
       item = {
         label: this.$t("AdminCenterAllParameter.Value"),
@@ -383,7 +400,7 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
       };
     }
     if (this.element.isReadOnly === false) {
-      item["display"] = "";
+      item["display"] = "write";
     }
     const structureSmartForm = {
       label: this.$t("AdminCenterAllParameter.Parameters"),
@@ -435,7 +452,9 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
   }
 
   public menuClick(event, smartElement, params): void {
+    const smartForm = this.$refs.formParameters;
     if (params.eventId === "param.save") {
+      this.modifications = smartForm.getValue("value").value;
       this.$http
         .put(this.urlParameters(true) + this.element.nameSpace + "/" + this.element.name + "/", {
           value: this.modifications.toString()
@@ -511,6 +530,15 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
     }
   }
 
+  // action click to last column of kendoGrid
+  public onClickAction(e) {
+    this.smartFormData.structure = [];
+    this.selectedParam = true;
+    if (this.userTab === (this.selectedTab === "userTab")) {
+      this.loadParameterFromClick(e);
+    }
+  }
+
   public mounted() {
     if (this.userId && this.userId !== "") {
       this.account = this.userId;
@@ -552,20 +580,25 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
             }
           },
           {
-            field: "action",
-            title: this.$t("AdminCenterAllParameter.Action"),
-            filterable: false,
-            attributes: {
-              class: "k-command-cell"
-            },
-            template: data => {
-              if (data.isReadOnly === false) {
-                return `<a role="button" class="k-button k-button-icontext k-grid-button action-button" href="#">
-                  ${this.$t("AdminCenterAllParameter.Modify")}</a>`;
+            command: [
+              {
+                text: this.$t("AdminCenterAllParameter.Consult"),
+                click: this.onClickAction,
+                name: "Consult",
+                visible: function(dataItem): boolean {
+                  return dataItem.isReadOnly === true;
+                }
+              },
+              {
+                name: "Modify",
+                click: this.onClickAction,
+                text: this.$t("AdminCenterAllParameter.Modify"),
+                visible: function(dataItem): boolean {
+                  return dataItem.isReadOnly === false;
+                }
               }
-              return `<a role="button" class="k-button k-button-icontext k-grid-button action-button" href="#">
-                ${this.$t("AdminCenterAllParameter.Consult")}</a>`;
-            }
+            ],
+            filterable: false
           }
         ],
         dataSource: this.paramGridData,
@@ -604,14 +637,7 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
           }
         },
         dataBound: () => {
-          $(".action-button").on("click", e => {
-            this.smartFormData.structure = [];
-            this.selectedParam = true;
-            if (this.userTab === (this.selectedTab === "userTab")) {
-              this.loadParameterFromClick(e);
-            }
-          });
-          if (this.userTab === false) {
+          if (this.userTab === false && this.selectedTab === "globalTab") {
             if (this.paramId !== "" || this.account !== "") {
               this.loadParameterFromRouter(this.paramId);
             }

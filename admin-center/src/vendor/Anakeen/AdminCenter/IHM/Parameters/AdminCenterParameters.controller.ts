@@ -23,8 +23,8 @@ export default class AdminCenterParametersController extends Mixins(AnkI18NMixin
   @Prop({ type: Boolean, default: true })
   public isGlobalTab!: boolean;
 
-  @Prop({ type: String, default: "" })
-  public namespace!: string;
+  @Prop({ type: Array, default: [] })
+  public namespace!: Array<string>;
 
   @Prop({ type: String, default: "" })
   public specificUser!: string;

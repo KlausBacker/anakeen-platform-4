@@ -262,5 +262,6 @@
   "AdminCenterAllParameter.Save of the element": "Enregistrement du paramètre",
   "AdminCenterAllParameter.Restore parameter": "Paramètre restauré à sa valeur par défaut",
   "AdminCenterAllParameter.Invalid name parameter": "Nom du paramètre invalide",
-  "AdminCenterAllParameter.Element modified": "Élément modifié"
+  "AdminCenterAllParameter.Element modified": "Élément modifié",
+  "AdminCenterAllParameter.Invalid user id": "L'id de l'utilisateur est incorrect"
 }
