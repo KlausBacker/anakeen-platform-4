@@ -112,7 +112,7 @@ window.ank.smartElement.globalController.registerFunction("mask", controller => 
           },
           template:
             "#if (data.setVisibility === true) {#" +
-            '<div class="mask-visibility mask-visibility-set">#:mVisibilityLabel#</div>' +
+            '<div class="mask-visibility mask-visibility-set" title="modified">#:mVisibilityLabel#</div>' +
             "# } else if (data.setVisibility === false && data.visibility !== data.mVisibility)" +
             ' {#<div class="mask-visibility mask-visibility-modified">#:mVisibilityLabel#</div>#}' +
             'else if (data.mVisibility) {# <div class="mask-visibility">#:mVisibilityLabel#</div>  #}#'
