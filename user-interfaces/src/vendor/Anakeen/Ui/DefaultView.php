@@ -250,7 +250,7 @@ class DefaultView extends RenderDefault
                 if (!$tr) {
                     // $itemMenu->setHtmlLabel(sprintf('%s <div class="fa fa-warning menu--transition-unknow" /> ', htmlspecialchars($label)));
                     $itemMenu->setTextLabel('');
-                    $itemMenu->setHtmlLabel(sprintf('<div class="menu--transition-unknow" >%s <div class="fa fa-warning" /> </div>', htmlspecialchars($label)));
+                    $itemMenu->setHtmlLabel(sprintf('<div class="menu--transition-unknow" ><div class="menu--transition-unknow-text">%s</div></div>', htmlspecialchars($label)));
 
                     $itemMenu->setBeforeContent(sprintf('<div style="color:%s" class="fa fa-square menu--transition" />', $wdoc->getColor($v)));
                 } else {

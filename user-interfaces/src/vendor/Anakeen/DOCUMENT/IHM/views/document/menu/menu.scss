@@ -100,9 +100,15 @@ $menu-before-width: 1rem;
   font-size: 1.2em;
 }
 
-.menu--transition-unknow .fa {
+.menu--transition-unknow:after {
+  font-family: FontAwesome;
   color: red;
-  float: right;
+  content: "";
+}
+
+.menu--transition-unknow > .menu--transition-unknow-text {
+  display:inline-block;
+  width:100%;
 }
 
 .menu--transition-unknow {
