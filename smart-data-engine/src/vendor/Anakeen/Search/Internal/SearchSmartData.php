@@ -46,7 +46,7 @@ class SearchSmartData
     /**
      * recursive search for folders
      *
-     * @public boolean
+     * @public bool
      */
     public $recursiveSearch = false;
     /**
@@ -551,7 +551,7 @@ class SearchSmartData
     /**
      * Verify if query is already sended to database
      *
-     * @return boolean
+     * @return bool
      */
     public function isExecuted()
     {
@@ -815,7 +815,7 @@ class SearchSmartData
      *
      * @param int $slice the limit ('ALL' means no limit)
      *
-     * @return boolean
+     * @return bool
      * @api set maximum number of document to return
      */
     public function setSlice($slice)
@@ -855,7 +855,7 @@ class SearchSmartData
      *
      * @param int $dirid identifier of the collection
      *
-     * @return boolean true if set
+     * @return bool true if set
      * @api use folder or search document
      */
     public function useCollection($dirid)
@@ -876,7 +876,7 @@ class SearchSmartData
      *
      * @param int $start the offset (0 is the begin)
      *
-     * @return boolean true if set
+     * @return bool true if set
      * @api set offset where start the result window
      */
     public function setStart($start)
@@ -1128,7 +1128,7 @@ class SearchSmartData
     /**
      * add a filter to not return confidential document if current user cannot see it
      *
-     * @param boolean $exclude set to true to exclude confidential
+     * @param bool $exclude set to true to exclude confidential
      *
      * @return void
      * @api add a filter to not return confidential
