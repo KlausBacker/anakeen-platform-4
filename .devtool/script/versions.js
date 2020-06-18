@@ -108,7 +108,7 @@ exports.versions = [
     npmOnly: true
   }
 ];
-exports.RC = "31";
+exports.RC = "32";
 exports.release = "2020.1";
 exports.modulePath = [
   "admin-center",
