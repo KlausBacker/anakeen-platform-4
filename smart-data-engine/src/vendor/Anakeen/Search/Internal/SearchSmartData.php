@@ -815,7 +815,7 @@ class SearchSmartData
      *
      * @param int $slice the limit ('ALL' means no limit)
      *
-     * @return Boolean
+     * @return boolean
      * @api set maximum number of document to return
      */
     public function setSlice($slice)
@@ -855,7 +855,7 @@ class SearchSmartData
      *
      * @param int $dirid identifier of the collection
      *
-     * @return Boolean true if set
+     * @return boolean true if set
      * @api use folder or search document
      */
     public function useCollection($dirid)
@@ -876,7 +876,7 @@ class SearchSmartData
      *
      * @param int $start the offset (0 is the begin)
      *
-     * @return Boolean true if set
+     * @return boolean true if set
      * @api set offset where start the result window
      */
     public function setStart($start)
