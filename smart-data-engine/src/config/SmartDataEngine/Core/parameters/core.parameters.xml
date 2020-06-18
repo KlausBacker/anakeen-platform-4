@@ -91,12 +91,6 @@
             <sde:access>admin</sde:access>
         </sde:parameter>
 
-        <sde:parameter name="CORE_MAIL_LINK">
-            <sde:description>produce link for</sde:description>
-            <sde:value>optimal</sde:value>
-            <sde:type>enum(optimal|mailto)</sde:type>
-            <sde:isUser>true</sde:isUser>
-        </sde:parameter>
         <sde:parameter name="CORE_START_APP">
             <sde:description>Default start application</sde:description>
             <sde:value>CORE</sde:value>

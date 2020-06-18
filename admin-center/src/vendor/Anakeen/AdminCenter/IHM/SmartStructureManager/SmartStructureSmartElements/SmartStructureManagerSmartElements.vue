@@ -14,16 +14,21 @@
         :collection="ssName"
         :actions="gridActions"
         :columns="gridColumns"
+        :resizable="false"
         filterable
         defaultExpandable
         @rowActionClick="actionClick"
-      ></ank-se-grid>
+      >
+        <template v-slot:cellTemplate="options">
+          <td v-if="options.columnConfig.field === 'name' && options.props.dataItem.properties.name === null"></td>
+        </template>
+      </ank-se-grid>
       <div v-if="!selectedElement" class="element-empty full-pane-size">
         <span class="material-icons">info</span>
         <p>{{ $t("AdminCenterSmartStructure.Select a SmartElement") }}</p>
       </div>
       <div v-else-if="selectedElement.component === 'element-view'" class="full-pane-size">
-        <element-view :initid="selectedElement.props.initid" :viewId="selectedElement.props.viewId"></element-view>
+        <element-view :initid="selectedElement.props.initid" :viewId="selectedElement.props.viewId" @se-after-save="refreshGrid"></element-view>
       </div>
       <div v-else-if="selectedElement.component === 'element-properties'" class="full-pane-size">
         <element-properties :elementId="selectedElement.name"></element-properties>

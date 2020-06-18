@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/fulltext-search",
-  "version": "1.0.0-RC.2020.1.31",
+  "version": "1.0.0-RC.2020.1.32",
   "description": "Anakeen Platform Fulltext Search",
   "main": "index.js",
   "author": "anakeen",
@@ -21,9 +21,9 @@
     "dev": "dev=DEV npx webpack-dev-server --config=./webpack/config.js"
   },
   "devDependencies": {
-    "@anakeen/anakeen-cli": "1.2.2-RC.2020.1.31",
-    "@anakeen/hub-components": "1.0.4-RC.2020.1.31",
-    "@anakeen/internal-components": "1.0.3-RC.2020.1.31",
+    "@anakeen/anakeen-cli": "1.2.2-RC.2020.1.32",
+    "@anakeen/hub-components": "1.0.4-RC.2020.1.32",
+    "@anakeen/internal-components": "1.0.3-RC.2020.1.32",
     "@anakeen/webpack-conf": "1.2.1",
     "@progress/kendo-buttons-vue-wrapper": "^2019.3.1023",
     "@progress/kendo-charts-vue-wrapper": "^2019.3.1023",
@@ -31,7 +31,7 @@
     "@progress/kendo-dropdowns-vue-wrapper": "^2019.3.1023",
     "@progress/kendo-inputs-vue-wrapper": "^2019.3.1023",
     "@progress/kendo-layout-vue-wrapper": "^2019.3.1023",
-    "@progress/kendo-theme-bootstrap": "4.8.0",
+    "@progress/kendo-theme-bootstrap": "^4.8.0",
     "@progress/kendo-ui": "2019.3.1113",
     "@progress/kendo-vue-animation": "^0.4.4",
     "@progress/kendo-vue-grid": "^0.4.4",
@@ -41,7 +41,7 @@
     "core-js": "3.6.1",
     "jquery": "^3.3.1",
     "vue": "2.6.11",
-    "vue-property-decorator": "8.3.0",
+    "vue-property-decorator": "^8.3.0",
     "vue-template-compiler": "2.6.11",
     "vuex": "3.1.2",
     "webpack-dev-server": "^3.10.3"

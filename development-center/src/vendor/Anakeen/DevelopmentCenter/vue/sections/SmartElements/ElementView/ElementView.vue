@@ -89,7 +89,9 @@
         event.preventDefault();
         const id = action.options[0];
         if (id) {
-          this.$router.push(`/devel/smartElements/${id}/view?filters=${this.$.param( { id })}`);
+          const url = `/devel/smartElements/${id}/view?filters=${this.$.param({ id })}`;
+          this.$ankHubRouter.internal.navigate(url, true);
+          this.$ankHubRouter.external.navigate(url, true);
         }
       },
       onShowError(event, element, error) {

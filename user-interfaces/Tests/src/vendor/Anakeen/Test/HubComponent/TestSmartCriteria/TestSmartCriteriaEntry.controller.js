@@ -31,7 +31,10 @@ export default {
         // schema: jsonSchema,
         onChangeText: () => {
           try {
-            this.$refs.jsonEditorRef.editor.get();
+            const result = this.$refs.jsonEditorRef.editor.get();
+            if (result.responsiveColumns) {
+              this.responsiveColumns = result.responsiveColumns;
+            }
             this.hasError = false;
           } catch (e) {
             this.hasError = true;
@@ -48,14 +51,7 @@ export default {
         { field: "bill_billdate" },
         { field: "bill_cost" },
       ],
-      responsiveColumns: [
-        {
-          number: 3,
-          minWidth: "50rem",
-          maxWidth: null,
-          grow: true
-        }
-      ]
+      responsiveColumns: []
     };
   },
   created() {
@@ -68,6 +64,8 @@ export default {
     setConfig(configObject) {
       this.localIndex = configObject.localIndex ? configObject.localIndex : -1;
       this.criteriaConfig = configObject.config ? configObject.config : {};
+
+      this.responsiveColumns = configObject.responsiveColumns ? configObject.responsiveColumns : [];
       this.initialSet = true;
     },
     onError(errorMsg) {

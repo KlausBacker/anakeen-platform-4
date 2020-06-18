@@ -2,11 +2,18 @@
   <hub-element-layout>
     <nav>
       <i class="material-icons hub-icon">code</i>
-      <span v-if="!isDockCollapsed">{{ $t("AdminCenterSmartStructure.Title Smart Structure Manager")}}</span>
+      <span
+        v-if="!isDockCollapsed"
+      >{{ $t("AdminCenterSmartStructure.Title Smart Structure Manager")}}</span>
     </nav>
     <template v-slot:hubContent>
       <div class="structure-parent">
-        <admin-center-structure v-model="selectedSS" @structure-selected="newSelectedSS"></admin-center-structure>
+        <admin-center-structure
+          v-model="selectedSS"
+          @structureSelected="newSelectedSS"
+          @tabChange="newSelectedTab"
+          :tabFromUrl="selectedTab"
+        ></admin-center-structure>
       </div>
     </template>
   </hub-element-layout>
@@ -22,8 +29,14 @@ export default {
   },
   watch: {
     selectedSS(newValue) {
-      this.navigate(this.routeUrl() + "/" + newValue);
+      if (this.selectedTab === "") {
+        this.selectedTab = "informations";
+      }
+      this.navigate(this.routeUrl() + "/" + newValue + "/" + this.selectedTab);
     },
+    selectedTab(newValue) {
+      this.navigate(this.routeUrl() + "/" + this.selectedSS + "/" + newValue);
+    }
   },
   created() {
     this.subRouting();
@@ -31,20 +44,25 @@ export default {
   data() {
     const that = this;
     return {
+      actualUrl: "",
       selectedSS: "",
+      selectedTab: "",
       routeUrl: () => {
         return this.entryOptions.completeRoute;
       },
       subRouting: () => {
-        const url = (this.routeUrl() + "/:structureId").replace(/\/\/+/g, "/");
-
+        const url = (this.routeUrl() + "/:structureId/:tab").replace(/\/\/+/g, "/");
         this.registerRoute(url, params => {
           this.selectedSS = params.structureId;
+          this.selectedTab = params.tab;
         }).resolve(window.location.pathname);
       },
       newSelectedSS(newValue) {
         that.selectedSS = newValue;
-      }
+      },
+      newSelectedTab(newValue) {
+        that.selectedTab = newValue;
+      },
     };
   }
 };

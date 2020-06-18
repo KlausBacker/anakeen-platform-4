@@ -1,6 +1,6 @@
 {
   "name": "development-center",
-  "version": "2.2.2-RC.2020.1.31",
+  "version": "2.2.2-RC.2020.1.32",
   "description": "Developement Center for Anakeen Platform",
   "main": "index.js",
   "scripts": {
@@ -21,10 +21,10 @@
     "developement"
   ],
   "devDependencies": {
-    "@anakeen/anakeen-cli": "1.2.2-RC.2020.1.31",
-    "@anakeen/hub-components": "1.0.4-RC.2020.1.31",
-    "@anakeen/internal-components": "1.0.3-RC.2020.1.31",
-    "@anakeen/user-interfaces": "3.0.2-RC.2020.1.31",
+    "@anakeen/anakeen-cli": "1.2.2-RC.2020.1.32",
+    "@anakeen/hub-components": "1.0.4-RC.2020.1.32",
+    "@anakeen/internal-components": "1.0.3-RC.2020.1.32",
+    "@anakeen/user-interfaces": "3.0.2-RC.2020.1.32",
     "@anakeen/webpack-conf": "1.2.1",
     "core-js": "3.6.1",
     "@progress/kendo-buttons-vue-wrapper": "^2019.3.1023",
@@ -32,7 +32,7 @@
     "@progress/kendo-dropdowns-vue-wrapper": "^2019.3.1023",
     "@progress/kendo-grid-vue-wrapper": "^2019.3.1023",
     "@progress/kendo-layout-vue-wrapper": "^2019.3.1023",
-    "@progress/kendo-theme-bootstrap": "4.8.0",
+    "@progress/kendo-theme-bootstrap": "^4.8.0",
     "@progress/kendo-treelist-vue-wrapper": "^2019.3.1023",
     "@progress/kendo-ui": "2019.3.1113",
     "axios": "^0.19.0",

@@ -12,9 +12,19 @@ export default {
     "element-view": ElementView,
     "element-properties": PropertiesView
   },
-  props: ["ssName"],
+  props: ["ssName", "ssInfos"],
+  watch: {
+    ssInfos(newValue) {
+      if (newValue.find(element => element.id === "workflow").value.id !== 0) {
+        this.ssHasWorkflow = true;
+      } else {
+        this.ssHasWorkflow = false;
+      }
+    }
+  },
   data() {
     return {
+      ssHasWorkflow: false,
       selectedElement: null,
       pageableConfig: { pageSizes: [100, 200, 500], pageSize: 100 },
       viewURL: "",
@@ -25,28 +35,45 @@ export default {
       gridActions: [
         {
           action: "display",
-          title: this.$t("AdminCenterSmartStructure.Display")
+          title: this.$t("AdminCenterSmartStructure.Display"),
+          width: "90%"
         },
         {
           action: "viewProps",
-          title: this.$t("AdminCenterSmartStructure.Properties")
+          title: this.$t("AdminCenterSmartStructure.Properties"),
+          width: "90%"
         }
-      ],
-      gridColumns: [
+      ]
+    };
+  },
+  computed: {
+    gridColumns() {
+      let columns = [
         {
           field: "title",
           property: true
         },
         {
+          title: "Ref. logique",
           field: "name",
-          property: true
+          property: true,
+          width: "160%"
         },
         {
+          title: "Id.",
           field: "initid",
-          property: true
+          property: true,
+          width: "100%"
         }
-      ]
-    };
+      ];
+      if (this.ssHasWorkflow === true) {
+        columns.push({
+          field: "state",
+          property: true
+        });
+      }
+      return columns;
+    }
   },
   methods: {
     actionClick(event) {
@@ -65,7 +92,6 @@ export default {
             name: seIdentifier,
             label: seIdentifier
           };
-
           break;
         case "viewProps":
           seIdentifier = event.data.row.properties.name || event.data.row.properties.initid;
@@ -80,23 +106,10 @@ export default {
             label: seIdentifier
           };
           break;
-        case "security":
-          if (event.data.row.properties.profid) {
-            seIdentifier = event.data.row.properties.name || event.data.row.properties.initid;
-            event.preventDefault();
-            this.selectedElement = {
-              url: `${seIdentifier}/security?profileId=${event.data.row.properties.profid}`,
-              component: "element-security",
-              props: {
-                profileId: event.data.row.properties.profid,
-                detachable: true
-              },
-              name: seIdentifier,
-              label: seIdentifier
-            };
-          }
-          break;
       }
+    },
+    refreshGrid() {
+      this.$refs.grid.refreshGrid(true);
     }
   }
 };

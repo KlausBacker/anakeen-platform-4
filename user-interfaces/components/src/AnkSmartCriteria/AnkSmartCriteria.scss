@@ -6,6 +6,10 @@
     display: flex;
     justify-content: center;
 
+    .dcpLoading {
+      position: relative;
+      width: 100%;
+    }
     .dcpLoading--logo {
       margin-top: 5rem;
       margin-bottom: 5rem;
@@ -38,6 +42,10 @@
           margin-left: 0.5rem;
           margin-right: 0.5rem;
           border: none;
+          &.dcpTab__content.dcp-column.k-content {
+            // force flex display for responsiveColumns because kendo set inline block display
+            display: flex !important;
+          }
 
           .dcpFrame[data-attrid^=sc_criteria_] {
             box-shadow: black 0 0 0 0;

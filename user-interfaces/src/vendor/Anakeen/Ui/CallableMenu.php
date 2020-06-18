@@ -7,6 +7,7 @@
 namespace Anakeen\Ui;
 
 use Anakeen\Routes\Ui\CallMenuResponse;
+use phpDocumentor\Reflection\Types\Boolean;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -17,6 +18,7 @@ class CallableMenu extends ElementMenu
      */
     protected $contentDefinition = null;
     protected $method="PUT";
+    protected $unsafe=false;
     
     protected $url = '';
     
@@ -84,10 +86,33 @@ class CallableMenu extends ElementMenu
     /**
      * @param string $method
      * @return CallableMenu
+     *
      */
     public function setMethod(string $method)
     {
         $this->method = $method;
         return $this;
+    }
+
+    /**
+     * @param bool $unsafe
+     * @return CallableMenu
+     * activate or desactivate the tests
+     * made according to the http method
+     */
+    public function setUnsafe(bool $unsafe)
+    {
+        $this->unsafe = $unsafe;
+        return $this;
+    }
+
+    /**
+     * @param bool $unsafe
+     * @return bool
+     * return value of unsafe
+     */
+    public function getUnsafe(): bool
+    {
+        return $this->unsafe;
     }
 }

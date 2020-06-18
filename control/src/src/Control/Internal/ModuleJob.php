@@ -987,12 +987,9 @@ class ModuleJob
     {
         foreach ($processList as & $process) {
             self::$processIndex++;
-            $command = $process->getAttribute("command");
-            if ($command) {
-                $index = hash("md5", $command);
-            } else {
-                $index = self::$processIndex;
-            }
+
+            $index = self::$processIndex;
+
             $configStatus = JobLog::getProcessStatus($process->phase->module->name, $process->phase->name, $index);
             if ($configStatus === "IGNORED") {
                 continue;

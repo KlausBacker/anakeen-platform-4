@@ -104,7 +104,7 @@
             <xs:element type="ns:attachmentsType" name="attachments" minOccurs="0"/>
         </xs:sequence>
         <xs:attribute type="ns:elementName" name="name" use="required"/>
-        <xs:attribute type="ns:elementName" name="structure" use="required"/>
+        <xs:attribute type="ns:elementNameEmpty" name="structure" use="required"/>
         <xs:attribute type="ns:elementName" name="workflow-model"/>
         <xs:attribute type="xs:string" name="label"/>
     </xs:complexType>
@@ -160,6 +160,11 @@
     <xs:simpleType name="elementName">
         <xs:restriction base="xs:token">
             <xs:pattern value="[a-zA-Z][A-Za-z0-9_-]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="elementNameEmpty">
+        <xs:restriction base="xs:token">
+            <xs:pattern value="([a-zA-Z][A-Za-z0-9_-]+)?"/>
         </xs:restriction>
     </xs:simpleType>
 </xs:schema>
