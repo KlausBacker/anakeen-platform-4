@@ -45,7 +45,7 @@
             <accounts:structure name="AC_MAILTEMPLATEMANAGER"/>
         </accounts:role>
         <accounts:role name="trash_manager_role">
-            <accounts:displayName>Mail Template Manager</accounts:displayName>
+            <accounts:displayName>Trash Manager</accounts:displayName>
             <accounts:structure name="AC_TRASHMANAGER"/>
         </accounts:role>
         <accounts:role name="enum_manager_role">
