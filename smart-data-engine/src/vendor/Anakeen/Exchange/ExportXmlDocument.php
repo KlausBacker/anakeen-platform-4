@@ -376,7 +376,7 @@ class ExportXmlDocument
                 break;
             default:
                 if (is_array($v)) {
-                    $v=Postgres::arrayToString($v);
+                    $v=SmartElement::arrayToRawValue($v);
                 }
                 return sprintf("<%s>%s</%s>", $attribute->id, $attribute->encodeXml($v), $attribute->id);
         }

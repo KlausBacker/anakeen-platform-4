@@ -1624,7 +1624,7 @@ create unique index i_docir on doc(initid, revision);";
                     foreach ($ra as $colValue) {
                         $rs[]=$colValue[$paramAttr->id]??"";
                     }
-                    $r=Postgres::arrayToString($rs);
+                    $r=self::arrayToRawValue($rs);
                 } else {
                     $r=$def;
                 }
@@ -4106,7 +4106,7 @@ create unique index i_docir on doc(initid, revision);";
             foreach ($moreValues as $attrid => $v) {
                 if (empty($this->$attrid)) {
                     if (is_array($v)) {
-                        $v = Postgres::arrayToString($v);
+                        $v = self::arrayToRawValue($v);
                     }
                     $this->$attrid = $v;
                     $this->mvalues[$attrid] = $v; // to be use in getValues()
@@ -4240,7 +4240,7 @@ create unique index i_docir on doc(initid, revision);";
                                         if ($attr->inArray()) {
                                             $args[$ki] = $this->getMultipleRawValues($input->name, "", $index);
                                             if ($index >= 0 && is_array($args[$ki])) {
-                                                $args[$ki] = Postgres::arrayToString($args[$ki]);
+                                                $args[$ki] = self::arrayToRawValue($args[$ki]);
                                             }
                                         } else {
                                             $args[$ki] = $this->getRawValue($input->name);
