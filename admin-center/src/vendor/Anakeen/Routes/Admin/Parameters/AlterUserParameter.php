@@ -6,6 +6,7 @@ use Anakeen\Core\AccountManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\Internal\ContextParameterManager;
 use Anakeen\Router\ApiV2Response;
+use phpDocumentor\Reflection\Types\Null_;
 
 /**
  * Class AlterUserParameter
@@ -55,8 +56,11 @@ class AlterUserParameter
      */
     private function initParameters(\Slim\Http\request $request, $args)
     {
-        $this->userLogin = $args['user'];
-        $this->userId = AccountManager::getIdFromLogin($this->userLogin);
+        if (is_numeric($args["user"])) {
+            $this->userId = intval($args["user"]);
+        } else {
+            $this->userId = AccountManager::getIdFromLogin($args["user"]);
+        }
 
         $this->nameSpace = $args['namespace'];
         $this->parameterName = $args['parameter_name'];
@@ -93,7 +97,7 @@ class AlterUserParameter
      */
     private function isCorrect($nameSpace, $parameterName, $newValue)
     {
-        $full = $nameSpace.'::'.$parameterName;
+        $full = $nameSpace . '::' . $parameterName;
         $sqlRequest = sprintf(
             "select paramdef.*, paramv.val as value, paramv.type as usefor from paramdef, paramv where paramdef.name = paramv.name and paramv.type='G' and paramdef.name='%s';",
             pg_escape_string($full)
@@ -143,10 +147,10 @@ class AlterUserParameter
      */
     private function getUserParameterValue($nameSpace, $parameterName, $userId)
     {
-        $full = $nameSpace.'::'.$parameterName;
+        $full = $nameSpace . '::' . $parameterName;
         $sqlRequest = sprintf(
             "select paramv.val as value, paramv.type as usefor from paramdef, paramv where paramdef.name = paramv.name and paramv.type='%s' and paramdef.name='%s';",
-            pg_escape_string("U".$userId),
+            pg_escape_string("U" . $userId),
             pg_escape_string($full)
         );
         $output = [];

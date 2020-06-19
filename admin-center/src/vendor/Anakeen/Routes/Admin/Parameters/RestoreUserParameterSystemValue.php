@@ -47,8 +47,11 @@ class RestoreUserParameterSystemValue
      */
     private function initParameters($args)
     {
-        $this->userLogin = $args['user'];
-        $this->userId = AccountManager::getIdFromLogin($this->userLogin);
+        if (is_numeric($args["user"])) {
+            $this->userId = intval($args["user"]);
+        } else {
+            $this->userId = AccountManager::getIdFromLogin($args["user"]);
+        }
 
         $this->nameSpace = $args['name_space'];
         $this->parameterName = $args['parameter_name'];
