@@ -117,7 +117,7 @@ SQL;
             /* Fetch file or image attributes */
             $attrList = array();
             foreach ($fam->getAttributes() as $attr) {
-                if (!$attr || ($attr->type != 'file' && $attr->type != 'image')) {
+                if (!$attr || ($attr->type != 'file' && $attr->type != 'image' && $attr->type != 'htmltext')) {
                     continue;
                 }
                 if ($attr->usefor != 'Q') {
