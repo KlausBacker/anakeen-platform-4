@@ -143,13 +143,17 @@
           .document {
             height: 100%;
 
-            .dcpAttribute__content__value {
-              white-space: pre;
+            .dcpAttribute__content--longtext {
+
+              .dcpAttribute__content__value {
+                white-space: pre;
+                font-family: monospace;
+              }
             }
 
-            .dcpAttribute__label label {
-              font-weight: bold;
-            }
+              .dcpAttribute__label label {
+                font-weight: bold;
+              }
           }
         }
       }

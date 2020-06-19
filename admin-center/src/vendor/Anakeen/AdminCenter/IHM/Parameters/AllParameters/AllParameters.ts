@@ -54,13 +54,7 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
   protected watchSelectedTab(newValue): void {
     // Condition to pass only once time
     if (this.userTab === (newValue === "userTab")) {
-      // remove value in the user smart form
-      if (this.userTab === true) {
-        this.$refs.userSmartForm.setValue("my_user", {
-          value: "",
-          displayValue: ""
-        });
-      }
+      this.paramNameSpace = "";
       this.selectedParamObj = {
         selectedParamName: "",
         selectedParamNameSpace: "",
@@ -68,12 +62,10 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
         selectedParamInitialValue: "",
         selectedParamValue: ""
       };
-      this.account = "";
       this.selectedParam = false;
       this.kendoGrid.dataSource.read();
       this.changeUrl();
     }
-    this.account = "";
     $(window).trigger("resize");
   }
 
@@ -94,6 +86,8 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
   public element: any;
   public modifications: any;
   public account = "";
+  public accountDisplayValue = "";
+  public paramNameSpace = "";
 
   // funtion to set the dataSource on the kendoGrid
   public paramGridData: kendo.data.DataSource = new kendo.data.DataSource({
@@ -316,9 +310,10 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
         if ((this.userTab && result.data.data.user) || !this.userTab) {
           if (this.userTab && this.selectedTab === "userTab" && this.account !== "") {
             this.fromRouter = true;
+            this.accountDisplayValue = result.data.data.user.displayValue;
             this.$refs.userSmartForm.setValue("my_user", {
               value: this.account,
-              displayValue: result.data.data.user.displayValue
+              displayValue: this.accountDisplayValue
             });
           }
           if (this.namespace && this.namespace.length > 0) {
@@ -371,12 +366,18 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
     const type = this.parameterInputType();
     let item = {};
 
-    if (this.element.type.toLowerCase() === "json" || this.element.type.toLowerCase() === "") {
-      this.smartFormData.values.value = JSON.stringify(
-        JSON.parse(this.selectedParamObj.selectedParamValue),
-        undefined,
-        2
-      );
+    const value = this.selectedParamObj.selectedParamValue;
+    if (
+      this.element.type.toLowerCase() === "json" ||
+      (type === "longtext" && value.charAt(value.length - 1) === "}" && value.charAt(0) === "{") ||
+      (type === "longtext" && value.charAt(value.length - 1) === "]" && value.charAt(0) === "[")
+    ) {
+      try {
+        this.smartFormData.values.value = JSON.stringify(JSON.parse(value), undefined, 2);
+      } catch {
+        this.smartFormData.values.value = value;
+        console.warn("Bad json");
+      }
     }
     if (type === "enum") {
       item = {
@@ -431,6 +432,9 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
         display: "read"
       };
       structureSmartForm.content.splice(1, 0, defaultValue);
+      this.smartFormData.title = `${this.$t("AdminCenterAllParameter.Parameter from")} " ${
+        this.accountDisplayValue
+      } " : ${this.selectedParamObj.selectedParamName}`;
     }
     this.smartFormData.structure.push(structureSmartForm);
     this.changeUrl();
@@ -447,6 +451,7 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
       this.selectedParam = false;
     }
     this.account = params.current.value;
+    this.accountDisplayValue = params.current.displayValue;
     this.kendoGrid.dataSource.read();
     this.changeUrl();
   }
@@ -523,9 +528,10 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
   }
 
   public loadParamFromVu(): void {
+    this.paramNameSpace = this.paramId;
     if (this.userTab === (this.selectedTab === "userTab")) {
-      if (this.paramId !== "" || this.account !== "") {
-        this.loadParameterFromRouter(this.paramId);
+      if (this.paramNameSpace !== "" || this.account !== "") {
+        this.loadParameterFromRouter(this.paramNameSpace);
       }
     }
   }
@@ -540,6 +546,9 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
   }
 
   public mounted() {
+    if (this.paramId && this.paramId !== "") {
+      this.paramNameSpace = this.paramId;
+    }
     if (this.userId && this.userId !== "") {
       this.account = this.userId;
     }
@@ -638,8 +647,8 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
         },
         dataBound: () => {
           if (this.userTab === false && this.selectedTab === "globalTab") {
-            if (this.paramId !== "" || this.account !== "") {
-              this.loadParameterFromRouter(this.paramId);
+            if (this.paramNameSpace !== "" || this.account !== "") {
+              this.loadParameterFromRouter(this.paramNameSpace);
             }
           }
         }

@@ -253,9 +253,9 @@
   "AdminCenterAllParameter.User": "User",
   "AdminCenterAllParameter.Save the modifications": "Save the modifications",
   "AdminCenterAllParameter.Close": "Close",
-  "AdminCenterAllParameter.Reset default value": "Reset default value",
+  "AdminCenterAllParameter.Reset default value": "Delete user value",
   "AdminCenterAllParameter.Parameters": "Parameters",
-  "AdminCenterAllParameter.Default value": "Default value",
+  "AdminCenterAllParameter.Default value": "Global value",
   "AdminCenterAllParameter.Select parametrer": "Select parametrer",
   "AdminCenterAllParameter.Global parameters": "Global parameters",
   "AdminCenterAllParameter.User parameters": "User parameters",
@@ -263,5 +263,7 @@
   "AdminCenterAllParameter.Restore parameter": "Parameter redtored to his default value",
   "AdminCenterAllParameter.Invalid name parameter": "Invalid name parameter",
   "AdminCenterAllParameter.Element modified": "Element modified",
-  "AdminCenterAllParameter.Invalid user id": "Invalid user id"
+  "AdminCenterAllParameter.Invalid user id": "Invalid user id",
+  "AdminCenterAllParameter.Parameter from": "Parameter from",
+  "AdminCenterAllParameter.Title Parameters": "Parameters"
 }
