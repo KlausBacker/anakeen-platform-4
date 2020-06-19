@@ -613,6 +613,8 @@ SQL;
             "png",
             "jpg",
             "jpeg",
+            "svg",
+            "svg+xml",
             "bmp"
         );
 

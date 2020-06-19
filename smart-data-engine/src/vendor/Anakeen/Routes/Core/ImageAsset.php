@@ -26,9 +26,9 @@ class ImageAsset
     /**
      * Download resized image
      *
-     * @param \Slim\Http\request  $request
+     * @param \Slim\Http\request $request
      * @param \Slim\Http\response $response
-     * @param array               $args
+     * @param array $args
      *
      * @return mixed
      * @throws Exception
@@ -97,10 +97,10 @@ class ImageAsset
      */
     protected function getSourceImage()
     {
-        $location = sprintf("Images/%s", $this->imageFileName);
+        $location = sprintf("%s/Images/%s", PUBLIC_DIR, $this->imageFileName);
         if (!file_exists($location)) {
             // Use Another Default Image
-            $location = sprintf("Images/%s", self::DEFAULTIMG);
+            $location = sprintf("%s/Images/%s", PUBLIC_DIR, self::DEFAULTIMG);
             if (!file_exists($location)) {
                 throw new Exception("ROUTES0115", $location);
             }

@@ -173,3 +173,5 @@ Air";"3243
 ";"TST_ALL_COMPLET";"HTMLTEXT_TOOLBAR_SIMPLE";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 "DOC";"TST_RENDER";"TST_RENDER_0505";;505;"Htmltext::toolbar(full)";"<p>HTML text avec toolbar FULL</p>
 ";"TST_ALL_COMPLET";"HTMLTEXT_TOOLBAR_FULL";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+"DOC";"TST_RENDER";"TST_RENDER_0506";;505;"Send menu";"<p>Send menuL</p>
+";"TST_ALL_COMPLET";"SENDMAIL_MENU";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

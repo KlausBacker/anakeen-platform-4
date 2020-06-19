@@ -6024,7 +6024,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param string $target window target
      * @param bool $htmllink must be true else return nothing
      * @param bool|string $title should we override default title
-     * @param bool $js should we add a javascript contextual menu
+     * @param bool $js (not used)
      * @param string $docrev style of link (default:latest, other values: fixed or state(xxx))
      * @param bool $viewIcon set to true to have icon in html link
      *
@@ -6060,7 +6060,6 @@ create unique index i_docir on doc(initid, revision);";
                 $specialUl = false;
                 switch ($target) {
                     case "mail":
-                        $js = false;
                         $mUrl = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_MAILACTIONURL");
                         if (strstr($mUrl, '%')) {
                             if ($this->id != $id) {
@@ -6075,7 +6074,6 @@ create unique index i_docir on doc(initid, revision);";
                                 \Anakeen\Core\Settings::NsSde,
                                 "CORE_MAILACTIONURL"
                             ));
-                            $ul .= "&amp;id=$id";
                         }
                         break;
 
@@ -6084,24 +6082,8 @@ create unique index i_docir on doc(initid, revision);";
                         $ul .= sprintf("/api/v2/smart-elements/%s.html", $id);
                 }
                 /* Add target's specific elements to base URL */
-
-                if (!$specialUl) {
-                    if ($docrev == "latest" || $docrev == "" || !$docrev) {
-                        $ul .= "&amp;latest=Y";
-                    } elseif ($docrev != "fixed") {
-                        // validate that docrev looks like state(xxx)
-                        if (preg_match("/^state\\(([a-zA-Z0-9_:-]+)\\)/", $docrev, $matches)) {
-                            $ul .= "&amp;state=" . $matches[1];
-                        }
-                    }
-                }
-                if ($js) {
-                    $ajs = "oncontextmenu=\"popdoc(event,'$ul');return false;\"";
-                } else {
-                    $ajs = "";
-                }
-
-                $ajs .= sprintf(' documentId="%s" ', $id);
+                
+                $ajs = sprintf(' documentId="%s" ', $id);
                 if ($viewIcon) {
                     DbManager::query(sprintf('select icon from docread where id=%d', $id), $iconValue, true, true);
                     $ajs .= sprintf(

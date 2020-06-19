@@ -196,11 +196,14 @@
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Dir/dir.data.csv">
             <label>Import Root dir</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mail/mail.struct.xml">
-            <label>Add Mail form Structure</label>
-        </process>
+
+
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml">
             <label>Add Mail Template form Structure</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mail/mailTemplateDefault.xml"/>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mail/mail.struct.xml">
+            <label>Add Mail form Structure</label>
         </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml">
             <label>Add Sent message Structure</label>

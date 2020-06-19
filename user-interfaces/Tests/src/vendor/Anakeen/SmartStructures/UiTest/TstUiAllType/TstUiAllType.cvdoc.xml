@@ -187,6 +187,9 @@
             <ui:view name="HTMLTEXT_TOOLBAR_FULL" label="empty label" display-mode="edition" menu-displayed="false">
                 <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\HtmltextToolbarFull"/>
             </ui:view>
+            <ui:view name="SENDMAIL_MENU" label="empty label" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\SendMailMenu"/>
+            </ui:view>
         </ui:view-list>
         <!--endregion View control configuration ===-->
     </ui:view-control>

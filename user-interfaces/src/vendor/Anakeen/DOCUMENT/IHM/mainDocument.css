@@ -14,8 +14,8 @@ body > .smart-element > .smart-element-wrapper {
     height: 100%;
 }
 
-body > .smart-element > .smart-element-wrapper > .document {
-   /* height: 100%; No need because sticky menu not work if is set */
+body.window-dialog > .smart-element > .smart-element-wrapper > .document {
+    height: 100%;
 }
 
 body > .smart-element > .smart-element-wrapper > .document > .dcpDocument {

@@ -13,6 +13,12 @@ namespace SmartStructure\Fields {
     class Mail
     {
         /**
+        * <ul>
+        * <li> <i>reset</i> true </li>
+        * </ul>
+        */ 
+        const undefined='undefined';
+        /**
         * Adresses
         * <ul>
         * <li> <i>type</i> frame </li>
@@ -92,6 +98,15 @@ namespace SmartStructure\Fields {
         */ 
         const mail_savecopy='mail_savecopy';
         /**
+        * Modèle de mail
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>relation</i> MAILTEMPLATE </li>
+        * <li> <i>type</i> docid </li>
+        * </ul>
+        */ 
+        const mail_template='mail_template';
+        /**
         * Commentaire
         * <ul>
         * <li> <i>type</i> frame </li>
@@ -100,14 +115,14 @@ namespace SmartStructure\Fields {
         */ 
         const mail_fr_cm='mail_fr_cm';
         /**
-        * Commentaire
+        * Corps du message
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
         * <li> <i>is-abstract</i> true </li>
-        * <li> <i>type</i> longtext </li>
+        * <li> <i>type</i> htmltext </li>
         * </ul>
         */ 
-        const mail_cm='mail_cm';
+        const mail_body='mail_body';
         /**
         * Format
         * <ul>
@@ -118,6 +133,25 @@ namespace SmartStructure\Fields {
         * </ul>
         */ 
         const mail_format='mail_format';
+        /**
+        * Modèles
+        * <ul>
+        * <li> <i>type</i> frame </li>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>kind</i> Parameter </li>
+        * </ul>
+        */ 
+        const mail_fr_parameters='mail_fr_parameters';
+        /**
+        * Modèle par défaut
+        * <ul>
+        * <li> <i>relation</i> MAILTEMPLATE </li>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> docid </li>
+        * <li> <i>kind</i> Parameter </li>
+        * </ul>
+        */ 
+        const mail_tpl_default='mail_tpl_default';
 
     }
 }

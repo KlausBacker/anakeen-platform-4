@@ -100,6 +100,22 @@ namespace SmartStructure\Fields {
         */ 
         const us_fr_userchange='us_fr_userchange';
         /**
+        * Nouveau mot de passe
+        * <ul>
+        * <li> <i>access</i> None </li>
+        * <li> <i>type</i> password </li>
+        * </ul>
+        */ 
+        const us_passwd1='us_passwd1';
+        /**
+        * Confirmation mot de passe
+        * <ul>
+        * <li> <i>access</i> None </li>
+        * <li> <i>type</i> password </li>
+        * </ul>
+        */ 
+        const us_passwd2='us_passwd2';
+        /**
         * Technical Settings
         * <ul>
         * <li> <i>type</i> tab </li>
