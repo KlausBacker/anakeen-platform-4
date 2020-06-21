@@ -6,6 +6,7 @@
     <requires>
         <module name="smart-data-engine" version="^2.1.0"/>
         <module name="admin-center" version="^2.1.0"/>
+        <module name="user-interfaces" version="^3.0.2-RC.2020.1.32"/>
     </requires>
 
 

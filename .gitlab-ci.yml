@@ -171,6 +171,25 @@ hub-station-buildJS:
       - development-center/**/*
       - transformation/**/*
 
+fulltext-search-buildJS:
+  <<: *pull-cache
+  stage: buildJS
+  tags:
+    - a4ppm
+  script:
+    - make -C fulltext-search buildComponent
+  artifacts:
+    paths:
+      - fulltext-search/components/lib/
+    expire_in: 1 day
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - user-interfaces/**/*
+      - fulltext-search/**/*
+
 #endregion buildJS
 
 #region build

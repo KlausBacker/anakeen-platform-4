@@ -8,6 +8,7 @@
 namespace Anakeen\Search\Filters;
 
 use Anakeen\Search;
+use Anakeen\SmartCriteria\SmartCriteriaTrait;
 
 /**
  * Class NAFilter
@@ -18,7 +19,7 @@ use Anakeen\Search;
 class NAFilter extends StandardAttributeFilter implements ElementSearchFilter
 {
 
-    use Search\SearchCriteria\SearchCriteriaTrait;
+    use SmartCriteriaTrait;
 
     /**
      * @param Search\Internal\SearchSmartData $search

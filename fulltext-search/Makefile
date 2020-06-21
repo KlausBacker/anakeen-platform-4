@@ -74,6 +74,8 @@ stub: install-deps
 buildJS: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build JS $@${RESET_COLOR}\n"
 	$(YARN_BIN) buildJs
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Build ank component $@$(COLOR_RESET)\n"
+	$(YARN_BIN) lib:rollup
 
 app: install-deps buildJS
 	@${PRINT_COLOR} "${DEBUG_COLOR}Make app${RESET_COLOR}\n"
@@ -95,6 +97,10 @@ app-test-autorelease: install-deps
 
 app-all-autorelease: app-autorelease app-test-autorelease
 
+buildComponent: install-deps
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Build ank component $@$(COLOR_RESET)\n"
+	$(YARN_CMD) lib:rollup
+
 ########################################################################################################################
 ##
 ## Deploy
@@ -104,9 +110,13 @@ deploy: install-deps buildJS
 	@${PRINT_COLOR} "${DEBUG_COLOR}Deploy${RESET_COLOR}\n"
 	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath . 
 
-deploy-test: install-deps
+deploy-test: install-deps buildJS-test
 	@${PRINT_COLOR} "${DEBUG_COLOR}Deploy test${RESET_COLOR}\n"
 	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ./Tests 
+
+buildJS-test: install-deps
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Build $@$(COLOR_RESET)\n"
+	${YARN_BIN} buildTest
 
 deploy-all: deploy deploy-test
 

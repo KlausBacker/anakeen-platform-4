@@ -1,0 +1,9 @@
+{
+  "title": "Test Fulltext",
+  "criterias": [
+    {
+      "kind": "fulltext",
+      "searchDomain": "testSearchDomain"
+    }
+  ]
+}

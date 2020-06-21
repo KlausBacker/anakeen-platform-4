@@ -2,7 +2,7 @@
 
 namespace Anakeen\Search\Filters;
 
-use Anakeen\Search\SearchCriteria\SearchCriteriaTrait;
+use Anakeen\SmartCriteria\SmartCriteriaTrait;
 
 /**
  * Class OneEquals
@@ -13,7 +13,7 @@ use Anakeen\Search\SearchCriteria\SearchCriteriaTrait;
 class OneEquals extends ContainsValues implements ElementSearchFilter
 {
 
-    use SearchCriteriaTrait;
+    use SmartCriteriaTrait;
 
     public static function getOptionMap()
     {

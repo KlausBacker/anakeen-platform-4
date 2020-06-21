@@ -1,8 +1,8 @@
 <?php
 
-namespace Anakeen\Search\SearchCriteria;
+namespace Anakeen\SmartCriteria;
 
-trait SearchCriteriaTrait
+trait SmartCriteriaTrait
 {
     protected static $delimiter = ",";
 

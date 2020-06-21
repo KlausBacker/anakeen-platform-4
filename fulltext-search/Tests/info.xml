@@ -7,10 +7,14 @@
 
     <requires>
         <module name="fulltext-search" version="*"/>
+        <module name="user-interfaces-test" version="*"/>
     </requires>
 
+    <post-install>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/Test/HubConfiguration/hubFulltextConfiguration.xml"/>
+    </post-install>
 
-
-
-
+    <post-upgrade>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/Test/HubConfiguration/hubFulltextConfiguration.xml"/>
+    </post-upgrade>
 </module>

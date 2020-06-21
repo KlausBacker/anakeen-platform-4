@@ -7,7 +7,8 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "types": [
-      "jquery"
+      "jquery",
+      "node"
     ],
     "noImplicitAny": false,
     "strictNullChecks": false,
@@ -19,8 +20,8 @@
     ]
   },
   "include": [
-    "./src/**/*.vue",
-    "./src/**/*.ts"
+    "./components/**/*.ts",
+    "./components/**/*.vue"
   ],
   "files": [
     "./vue-shims.d.ts",

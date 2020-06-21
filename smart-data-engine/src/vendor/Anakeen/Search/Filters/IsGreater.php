@@ -8,11 +8,11 @@
 namespace Anakeen\Search\Filters;
 
 use Anakeen\Search;
-use Anakeen\Search\SearchCriteria\SearchCriteriaTrait;
+use Anakeen\SmartCriteria\SmartCriteriaTrait;
 
 class IsGreater extends StandardAttributeFilter implements ElementSearchFilter
 {
-    use SearchCriteriaTrait;
+    use SmartCriteriaTrait;
 
     public static function getOptionMap()
     {

@@ -1,3 +1,4 @@
 src/vendor/Anakeen/Fullsearch/lib/vendor
 src/public/
 lib/
+Tests/src/public/
