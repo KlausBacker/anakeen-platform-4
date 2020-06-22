@@ -1355,7 +1355,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       );
       // Bind reload action in case of static error
       this._element.find(".dcpStaticErrorMessage .staticErrorReloadButton").on("click", () => {
-        this._model.fetchDocument();
+        this._model.fetchDocument(this._getModelValue());
       });
       this._smartElement = this._element.find(".dcpDocument");
     }
