@@ -555,7 +555,7 @@ test-tools-integration-build:
       - master@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - test-tools/**/*
-      
+
 #endregion build
 
 #buildControl
@@ -728,6 +728,32 @@ module-validation-publish:
       - module-validation/**/*
   dependencies: []
 
+module-validation-web-build:
+  stage: build
+  script:
+    - cd module-validation
+    - ./web-build.sh
+  rules:
+    - changes:
+        - module-validation/**/*
+
+module-validation-web-deploy:
+  stage: publish
+  script:
+    # Setup SSH deploy key
+    - eval $(ssh-agent -s)
+    - echo "${SCHEMA_DEPLOY_SSH_PRIVATE_KEY}" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh && chmod 0700 ~/.ssh
+    - ssh-keyscan -H "${SCHEMA_DEPLOY_HOST}" >> ~/.ssh/known_hosts
+    # Build and deploy to public web server
+    - cd module-validation
+    - ./web-build.sh
+    - ./web-deploy.sh
+  rules:
+    - if: '$CI_PROJECT_PATH == "Anakeen/Platform-4/anakeen-platform-4" && $CI_COMMIT_REF_NAME =~ /^\d+\.\d+-stable$/'
+      changes:
+        - module-validation/**/*
+
 theme-variable-integration-publish:
   extends: .npm-publish-package-integration
   variables:
@@ -882,7 +908,7 @@ workflow-publish:
       - workflow/**/*
   dependencies:
     - workflow-build
-  
+
 test-tools-integration-publish:
   extends: .npm-publish-package-integration-synchro
   variables:
