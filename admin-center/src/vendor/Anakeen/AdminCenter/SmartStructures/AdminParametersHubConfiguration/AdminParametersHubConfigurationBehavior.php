@@ -14,7 +14,9 @@ class AdminParametersHubConfigurationBehavior extends \SmartStructure\Hubconfigu
             "hasGlobal" => $this->getAttributeValue(AdminParametersHubConfigFields::admin_hub_configuration_global) === "TRUE",
             "hasUsers" => $this->getAttributeValue(AdminParametersHubConfigFields::admin_hub_configuration_user) === "TRUE",
             "specificUser" => $this->getAttributeValue(AdminParametersHubConfigFields::admin_hub_configuration_account),
-            "namespace" => $this->getAttributeValue(AdminParametersHubConfigFields::admin_hub_configuration_namespace)
+            "namespace" => $this->getAttributeValue(AdminParametersHubConfigFields::admin_hub_configuration_namespace),
+            "icon" => $this->getAttributeValue(AdminParametersHubConfigFields::admin_hub_configuration_icon),
+            "label" => $this->getAttributeValue(AdminParametersHubConfigFields::admin_hub_configuration_label)
         ];
         return $config;
     }

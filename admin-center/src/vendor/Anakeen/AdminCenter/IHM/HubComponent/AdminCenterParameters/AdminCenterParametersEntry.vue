@@ -1,8 +1,10 @@
 <template>
   <hub-element-layout>
     <nav>
-      <i class="material-icons hub-icon">settings</i>
-      <span v-if="!isDockCollapsed">{{ $t("globalParameter.Title Parameters")}}</span>
+      <i v-if="icon" class="material-icons hub-icon">{{ icon }}</i>
+      <i v-else class="material-icons hub-icon">settings</i>
+      <span v-if="!isDockCollapsed && label">{{ label }}</span>
+      <span v-else-if="!isDockCollapsed">{{ this.$t("AdminCenterAllParameter.Title Parameters") }}</span>
     </nav>
     <template v-slot:hubContent>
       <div class="parameters-parent">
@@ -27,7 +29,7 @@ import { Watch } from "vue-property-decorator";
 export default {
   name: "ank-admin-parameter",
   extends: HubElement,
-  props: ["hasUsers", "hasGlobal", "namespace", "specificUser"],
+  props: ["hasUsers", "hasGlobal", "namespace", "specificUser", "icon", "label"],
   components: {
     "admin-center-parameters": resolve => import("../../Parameters/AdminCenterParameters.vue").then(Component => {
       resolve(Component.default);
