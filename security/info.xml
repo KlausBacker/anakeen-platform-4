@@ -25,9 +25,7 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Profiles/system-profil.xml">
             <label>Profiling system structures</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Profiles/AuthentMailProfil.xml">
-            <label>Profiling authent mail</label>
-        </process>
+
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.profil.xml">
             <label>Field Access Layer Security</label>
         </process>
