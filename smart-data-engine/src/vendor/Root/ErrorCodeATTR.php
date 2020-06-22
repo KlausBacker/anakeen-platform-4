@@ -150,7 +150,7 @@ class ErrorCodeATTR
     /**
      * @errorCode The Smart Field's order must be a number or an Smart Field id reference
      */
-    const ATTR0700 = 'the order "%s" must be a number or an Smart Field reference in Smart Field "%s"';
+    const ATTR0700 = 'the order "%s" must be a ::auto or ::first or an Smart Field reference in Smart Field "%s"';
     /**
      * @errorCode  The Smart Field's order is required when  Smart Field is not a frame or a tab
      */
