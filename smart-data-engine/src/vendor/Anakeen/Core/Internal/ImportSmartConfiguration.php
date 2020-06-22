@@ -613,7 +613,10 @@ class ImportSmartConfiguration
             $attr = new ImportSmartAttr();
             $attr->id = $autoNode->getAttribute("field");
 
-            $attr->autocomplete = $this->getCallableString($autoNode);
+            $attr->autocomplete = $this->getCallableString(
+                $autoNode,
+                ["id", "initid", "fromid", "title", "viewId"]
+            );
 
             $data[] = $attr->getData("UPDTATTR");
         }
@@ -891,7 +894,7 @@ class ImportSmartConfiguration
         foreach ($hooks as $hook) {
             if ($hook->getAttribute("field") === $attrid) {
                 if ($filter($hook)) {
-                    $method = $this->getCallableString($hook);
+                    $method = $this->getCallableString($hook, ["id", "initid", "fromid", "title", "viewId"]);
                     $callable = $this->getNode($hook, "field-callable");
                     $file = $callable->getAttribute("external-file");
                     $hook->setAttribute("__used__", "true");
@@ -1101,11 +1104,12 @@ class ImportSmartConfiguration
     }
 
     /**
-     * @param $hook
+     * @param \DOMElement $hook node
+     * @param  string[] $allowedProperties if not empty, restreint properties possibilities
      *
      * @return string
      */
-    protected function getCallableString(\DOMElement $hook): string
+    protected function getCallableString(\DOMElement $hook, $allowedProperties = []): string
     {
         $callableNode = $this->getNode($hook, "field-callable");
         if (!$callableNode) {
@@ -1121,6 +1125,13 @@ class ImportSmartConfiguration
             $type = $argNode->getAttribute("type");
             $name = $argNode->getAttribute("name");
             $arg = $argNode->nodeValue;
+
+            if ($allowedProperties && $type === "property") {
+                if (array_search($arg, $allowedProperties)===false) {
+                    throw new Exception("ATTR1103", $arg, implode(", ", $allowedProperties));
+                }
+            }
+
             if ($type === "string") {
                 // Escape quote
                 $arg = '"' . str_replace('"', '\\"', $arg) . '"';

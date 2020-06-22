@@ -75,9 +75,9 @@ class Autocomplete
             $attributeObject = new NormalAttribute(
                 $fieldInfo["id"],
                 $this->contentParameters["fromid"],
-                $fieldInfo["label"]??"",
+                $fieldInfo["label"] ?? "",
                 $fieldInfo["type"],
-                $fieldInfo["typeFormat"]??"",
+                $fieldInfo["typeFormat"] ?? "",
                 false,
                 1,
                 "",
@@ -262,10 +262,25 @@ class Autocomplete
     {
         $args = [];
         foreach ($strucFunc->inputs as $k => $inpArg) {
-            if ($inpArg->type === "string") {
-                $args[$k] = $inpArg->name;
-            } else {
-                $args[$k] = $this->getInputValue($inpArg->name);
+            switch ($inpArg->type) {
+                case "string":
+                    $args[$k] = $inpArg->name;
+                    break;
+                case "this":
+                    if (!empty($this->contentParameters["properties"]["initid"])) {
+                        $args[$k] = SmartElementManager::getDocument($this->contentParameters["properties"]["initid"]);
+                    } else {
+                        $args[$k] = "";
+                    }
+                    break;
+                case "index":
+                    $args[$k] = $this->contentParameters["index"] ?? "";
+                    break;
+                case "property":
+                    $args[$k] = $this->getPropValue($inpArg->name);
+                    break;
+                default:
+                    $args[$k] = $this->getInputValue($inpArg->name);
             }
         }
         return $args;
@@ -280,7 +295,7 @@ class Autocomplete
                 $index = intval($this->contentParameters["index"]);
             }
         }
-        $attributes = $this->contentParameters["attributes"]??[];
+        $attributes = $this->contentParameters["attributes"] ?? [];
         $attrName = strtolower($name);
 
         if (isset($attributes[$attrName])) {
@@ -314,7 +329,23 @@ class Autocomplete
                 }
             }
         }
-        throw new \Anakeen\Exception(sprintf("No find attribute argument \"%s\" for autocomplete", $name));
+        throw new \Anakeen\Exception(sprintf("No find attribute argument \"%s\" for autocomplete in requesr", $name));
+    }
+
+    protected function getPropValue($name)
+    {
+        $properties = $this->contentParameters["properties"] ?? [];
+        $attrName = strtolower($name);
+        $properties["fromid"] = $this->contentParameters["fromid"];
+
+        $find = array_filter($properties, function ($k) use ($attrName) {
+            return strtolower($k) === $attrName;
+        }, ARRAY_FILTER_USE_KEY);
+
+        if ($find) {
+            return current($find);
+        }
+        throw new \Anakeen\Exception(sprintf("No find property argument \"%s\" for autocomplete", $name));
     }
 
     protected function dduiSetHttpVar($name, $def)

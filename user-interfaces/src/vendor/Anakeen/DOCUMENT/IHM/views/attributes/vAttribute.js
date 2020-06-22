@@ -600,6 +600,7 @@ export default Backbone.View.extend({
 
     //Add helperSearch event (can prevent default ajax request)
     options.data.attributes = documentModel.getValues();
+    options.data.properties = documentModel.getModelProperties();
     this.model.trigger("helperSearch", event, this.model.id, externalOptions, index);
     if (event.prevent) {
       return this;

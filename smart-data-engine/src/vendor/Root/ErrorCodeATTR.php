@@ -216,6 +216,10 @@ class ErrorCodeATTR
      */
     const ATTR1102 = 'the autocomplete send less data as specified, missing index "%s" for field "%s". You should check the php definition of the autocomplete';
     /**
+ * @errorCode  The autocomplete response results indexes must be compatioble with description
+ */
+    const ATTR1103 = 'the callable has incorrect property atttribute "%s" : allowed are %s';
+    /**
      * @errorCode  The option name are composed only of alpha characters
      */
     const ATTR1500 = 'the option name "%s" is not valid in Smart Field "%s"';
