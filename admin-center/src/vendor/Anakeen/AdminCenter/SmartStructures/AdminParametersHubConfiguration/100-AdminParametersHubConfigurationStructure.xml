@@ -26,6 +26,7 @@
             </smart:field-set>
         </smart:fields>
         <smart:field-override access="ReadWrite" field="hub_component_tab" label="Parameters options" />
+        <smart:field-override access="Read" field="hub_execution_roles" />
 
         <smart:hooks>
             <smart:field-hook type="constraint" event="onPreStore" field="admin_hub_configuration_global">
@@ -40,6 +41,7 @@
             </smart:field-hook>
         </smart:hooks>
         <smart:defaults reset="true">
+            <smart:default reset="true" field="hub_execution_roles">["AC_FUNCADMIN","AC_PARAMETERSMANAGER"]</smart:default>
             <smart:default reset="true" field="hge_jsasset_type">MANIFEST</smart:default>
             <smart:default reset="true" field="hge_jsasset">
                 <smart:field-callable function="Anakeen\AdminCenter\SmartStructures\AdminParametersHubConfiguration\AdminParametersHubConfigurationBehavior::getParameterAssetPath"></smart:field-callable>
