@@ -476,7 +476,7 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
               " = " +
               this.modifications.toString() +
               "\n" +
-              this.$t("AdminCenterAllParameter.Save of the element")
+              this.$t("AdminCenterAllParameter.Modification saved")
           );
           this.selectedParamObj.selectedParamValue = this.modifications;
           this.displayParameter();
