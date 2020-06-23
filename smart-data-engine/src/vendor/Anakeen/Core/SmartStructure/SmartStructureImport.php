@@ -453,22 +453,27 @@ class SmartStructureImport
                 }
             }
 
-            SmartFieldAbsoluteOrder::completeForNumericOrder($allAttributes, $tdoc["id"]);
-            $absoluteOrders = SmartFieldAbsoluteOrder::getAbsoluteOrders($allAttributes, $tdoc["id"]);
-            $tAbsOrders = [];
-            foreach ($absoluteOrders as $kOrder => $attrid) {
-                $tAbsOrders[] = sprintf('"%s"=>%d', $attrid, ($kOrder + 1) * 10);
-            }
-            $phpAdoc->Set("sattr", implode(",", $attrids));
-            $phpAdoc->Set("sAbsoluteOrders", implode(",", $tAbsOrders));
-            $phpAdoc->SetBlockData("MATTR", $tmenu);
-            $phpAdoc->SetBlockData("FATTR", $tfield);
-            $phpAdoc->SetBlockData("AATTR", $taction);
-            $phpAdoc->SetBlockData("NATTR", $tnormal);
-            $phpAdoc->SetBlockData("ATTRFIELD", $tattr);
+            try {
+                SmartFieldAbsoluteOrder::completeForNumericOrder($allAttributes, $tdoc["id"]);
+                $absoluteOrders = SmartFieldAbsoluteOrder::getAbsoluteOrders($allAttributes, $tdoc["id"]);
 
-            $phpAdoc->set("hasattr", (count($tattr) > 0));
-            $phpAdoc->SetBlockData("ACALC", $tcattr);
+                $tAbsOrders = [];
+                foreach ($absoluteOrders as $kOrder => $attrid) {
+                    $tAbsOrders[] = sprintf('"%s"=>%d', $attrid, ($kOrder + 1) * 10);
+                }
+                $phpAdoc->Set("sattr", implode(",", $attrids));
+                $phpAdoc->Set("sAbsoluteOrders", implode(",", $tAbsOrders));
+                $phpAdoc->SetBlockData("MATTR", $tmenu);
+                $phpAdoc->SetBlockData("FATTR", $tfield);
+                $phpAdoc->SetBlockData("AATTR", $taction);
+                $phpAdoc->SetBlockData("NATTR", $tnormal);
+                $phpAdoc->SetBlockData("ATTRFIELD", $tattr);
+
+                $phpAdoc->set("hasattr", (count($tattr) > 0));
+                $phpAdoc->SetBlockData("ACALC", $tcattr);
+            } catch (Exception $e) {
+                throw new Exception(sprintf("Structure \"%s\" : %s", $tdoc["name"], $e->getMessage()));
+            }
         } else {
             $phpAdoc->Set("sAbsoluteOrders", "");
         }

@@ -397,7 +397,7 @@ class SmartFieldAbsoluteOrder
             }
 
             if ($child["parent"] !== $parent) {
-                throw new Exception("ATTR0213", $child["id"], $parent, $child["parent"]);
+                throw new Exception("ATTR0213", $child["id"], $child["before"], $child["id"], $child["parent"], $parent);
             }
 
             if ($child["content"]) {
@@ -431,10 +431,10 @@ class SmartFieldAbsoluteOrder
             if (!empty($orders[$attrid]["id"])) {
                 $node = self::deleteNode($tree, $attrid); // To Move it
                 if ($node === false) {
-                    $node = ["id" => $attrid, "content" => []];
+                    $node = ["id" => $attrid, "before"=>$prev, "content" => []];
                 }
             } else {
-                $node = ["id" => $attrid, "content" => self::getTreeContent($tree, $attrid)];
+                $node = ["id" => $attrid, "before"=>$prev, "content" => self::getTreeContent($tree, $attrid)];
             }
 
             if (!$parent) {
