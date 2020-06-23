@@ -22,6 +22,13 @@
     flex-direction: column;
     height: 100%;
 
+    td[role=gridcell]  > div {
+      max-height: 5rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-family: monospace;
+    }
+
     .dcpDocument__header__modified.fa.fa-asterisk {
       display: none!important;
     }
