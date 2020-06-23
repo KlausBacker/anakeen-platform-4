@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="user-interfaces" version="3.0.2-RC.2020.1.32" vendor="Anakeen" license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0">
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="user-interfaces" version="3.0.2-RC.2020.1.33" vendor="Anakeen" license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0">
 
     <description>Anakeen Platform : User interfaces</description>
     <requires>
-        <module name="smart-data-engine" version="^2.1.2-RC.2020.1.32"/>
+        <module name="smart-data-engine" version="2.1.2-RC.2020.1.33"/>
     </requires>
     <replaces>
         <module name="anakeen-theme"/>
@@ -17,7 +17,6 @@
         </process>
         <process command="./ank.php --system --reloadConfig"/>
         <process command="programs/ui_setHtmlAuthentMode"/>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Components/Authent/AuthentMail.csv"/>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.constraint.xml">
             <label>CVDOC Add Render Constraint</label>
         </process>
@@ -45,6 +44,10 @@
 
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mask/mask.views.xml">
             <label>MASK Structure view</label>
+        </process>
+
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mail/mail.views.xml">
+            <label>MAIL Structure view</label>
         </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Igroup/igroup.views.xml">
             <label>IGROUP Structure view</label>
@@ -114,6 +117,9 @@
 
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mask/mask.views.xml">
             <label>MASK Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mail/mail.views.xml">
+            <label>MAIL Structure view</label>
         </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Igroup/igroup.views.xml">
             <label>IGROUP Structure view</label>

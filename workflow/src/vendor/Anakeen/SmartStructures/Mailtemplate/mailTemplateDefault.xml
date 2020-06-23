@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0"
+              xmlns:mail="https://platform.anakeen.com/4/schemas/mailtemplate/1.0">
+    <mail:mailtemplate xmlns:mail="https://platform.anakeen.com/4/schemas/mailtemplate/1.0" name="MAILTEMPLATE_DEFAULT"
+                       label="Modèle de mail par défaut" structure="">
+        <mail:from/>
+        <mail:recipients/>
+        <mail:subject>[TITLE]</mail:subject>
+        <mail:savecopy>false</mail:savecopy>
+        <mail:use-html-anchor>true</mail:use-html-anchor>
+        <mail:body content-type="html"><![CDATA[
+
+	<p>Lien vers <b>[V_TITLE]</b> <i>[state]</i></p>
+
+]]></mail:body>
+    </mail:mailtemplate>
+    <smart:access-configuration name="MAILTEMPLATE_DEFAULT" ref="PRF_ADMIN_EDIT"/>
+</smart:config>

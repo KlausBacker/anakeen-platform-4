@@ -94,7 +94,8 @@ class ErrorCodeATTR
     /**
      * @errorCode  Smart Field order reference is not in the current frame
      */
-    const ATTR0213 = 'the Smart Field "%s" has incorrect order  : parent is "%s" must be "%s": out of field';
+    const ATTR0213 = 'The Smart Field "%s" has incorrect insert-after "%s" directive. 
+    The fieldset of "%s" is "%s" and the fieldset of the insert-after is "%s", the two fieldsets must be equals.';
 
     /**
      * @errorCode A parent id reference a child id
@@ -150,7 +151,7 @@ class ErrorCodeATTR
     /**
      * @errorCode The Smart Field's order must be a number or an Smart Field id reference
      */
-    const ATTR0700 = 'the order "%s" must be a number or an Smart Field reference in Smart Field "%s"';
+    const ATTR0700 = 'the order "%s" must be a ::auto or ::first or an Smart Field reference in Smart Field "%s"';
     /**
      * @errorCode  The Smart Field's order is required when  Smart Field is not a frame or a tab
      */
@@ -215,6 +216,10 @@ class ErrorCodeATTR
      * @errorCode  The autocomplete response results indexes must be compatioble with description
      */
     const ATTR1102 = 'the autocomplete send less data as specified, missing index "%s" for field "%s". You should check the php definition of the autocomplete';
+    /**
+     * @errorCode  The autocomplete response results indexes must be compatioble with description
+     */
+    const ATTR1103 = 'the callable has incorrect property atttribute "%s" : allowed are %s';
     /**
      * @errorCode  The option name are composed only of alpha characters
      */

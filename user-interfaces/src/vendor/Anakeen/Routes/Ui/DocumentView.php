@@ -342,7 +342,7 @@ class DocumentView
                     break;
 
                 case self::fieldRenderLabel:
-                    $viewInfo[self::fieldRenderLabel] = $config->getLabel();
+                    $viewInfo[self::fieldRenderLabel] = $config->getLabel($this->document);
                     break;
 
                 case self::fieldMenu:

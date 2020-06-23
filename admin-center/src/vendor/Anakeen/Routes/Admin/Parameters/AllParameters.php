@@ -42,7 +42,7 @@ class AllParameters
     {
         $rawParameters = $this->getDataFromDb();
         $formatedParameters = $this->formatParameters($rawParameters);
-        $treeListParameters = $this->formatTreeDataSource($formatedParameters);
+        $treeListParameters["gridData"] = $this->formatTreeDataSource($formatedParameters);
 
         return $treeListParameters;
     }

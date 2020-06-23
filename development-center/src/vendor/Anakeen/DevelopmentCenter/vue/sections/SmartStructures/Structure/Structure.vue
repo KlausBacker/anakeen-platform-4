@@ -94,7 +94,7 @@ export default {
             cellData += "";
           }
           if (className) {
-            return `<div class="${className}">${cellData}</div>`;
+            return `<div class="${className}" title="overridden">${cellData}</div>`;
           }
           return cellData;
         };

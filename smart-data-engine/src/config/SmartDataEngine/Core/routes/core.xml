@@ -76,6 +76,13 @@
       <sde:description>Document locks information</sde:description>
       <sde:requiredAccess/>
     </sde:route>
+    <sde:route name="Document:Send">
+      <sde:callable>Anakeen\Routes\Core\DocumentSend</sde:callable>
+      <sde:method>POST</sde:method>
+      <sde:pattern>/api/v2/smart-elements/{docid}/send/</sde:pattern>
+      <sde:description>Send document by email</sde:description>
+      <sde:requiredAccess/>
+    </sde:route>
     <sde:route name="DocumentUserTag">
       <sde:priority>1</sde:priority>
       <sde:callable>Anakeen\Routes\Core\DocumentUserTag</sde:callable>

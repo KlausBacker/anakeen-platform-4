@@ -1,0 +1,137 @@
+.dcpFamily--MAIL {
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  > section {
+
+    flex: 1;
+    overflow: auto;
+  }
+  th.dcpArray__head__cell[data-attrid=mail_sendformat] {
+    width: 10em;
+    max-width: 10em;
+  }
+
+  .dcpDocument__frames,
+  .dcpDocument__form {
+    height: 100%;
+  }
+  td.dcpArray__cell[data-attrid=mail_sendformat] .k-dropdown {
+
+    max-width: 10em;
+  }
+
+  th.dcpArray__head__cell[data-attrid=mail_copymode] {
+    width: 6em;
+    min-width: 6em;
+  }
+
+  .k-menu {
+    justify-content: flex-end;
+  }
+
+  .dcpDocument__menu .k-menu a.k-link {
+    color: white;
+    background-color: #157EFB;
+    border-radius: 0.25rem;
+    min-width: 6rem;
+    text-align: center;
+  }
+
+
+  .dcpAttribute__labelPosition--left .dcpAttribute__left[data-attrid=mail_subject] {
+    flex-basis: auto;
+    label {
+      font-weight: bold;
+    }
+  }
+  .dcpDocument__menu .k-menu a.k-link:hover {
+    color: white !important;
+    background-color: #3391ff;
+  }
+
+  .dcpDocument__body {
+    padding: 0;
+  }
+
+  li.k-item.menu__element[data-menu-id=sendmail] {
+    padding: 0;
+  }
+
+  td.dcpArray__cell[data-attrid=mail_copymode] {
+    padding-left: 0;
+    width: 10rem;
+
+    .dcpAttribute__value--enumbuttons {
+      display:flex;
+      > div {
+        flex:1;
+      }
+    }
+
+    .dcpAttribute__value--edit {
+      display: none;
+    }
+
+    .dcpAttribute__value--enumlabel {
+      justify-content: center;
+    }
+
+    label.dcpAttribute__value--enumlabel--text {
+      margin:0;
+      flex: 1;
+      text-align: center;
+    }
+    .orientation-horizontal {
+      padding:0;
+    }
+    .orientation-horizontal .dcpAttribute__value--enumlabel {
+      width:3rem;
+      &.selected {
+        background-color:#157EFB ;
+        color:white;
+      }
+    }
+  }
+
+  td.dcpArray__cell[data-attrid=mail_recip] {
+    padding-right: 0;
+  }
+
+  .dcpArray[data-attrid=mail_dest] {
+    margin: 0;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+
+    .dcpArray__cell {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    .dcpArray__copy {
+      display: none;
+    }
+  }
+
+  textarea.form-control[name=mail_cm] {
+    height: 4rem;
+  }
+
+  td.dcpArray__toolCell,
+  th.dcpArray__head__toolCell {
+    display: none;
+  }
+
+  .dcpAttribute__value--enumbuttons.orientation-horizontal .dcpAttribute__value--enumlabel {
+    width: auto;
+  }
+
+  .card.card-default.dcpFrame {
+    margin: 0;
+  }
+
+  .card.card-default.dcpFrame[data-attrid=mail_fr_cm] {
+    flex:1;
+  }
+}

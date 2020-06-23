@@ -2,6 +2,7 @@
 
 namespace Anakeen\Routes\Admin\Parameters;
 
+use Anakeen\Core\Account;
 use Anakeen\Core\AccountManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Router\ApiV2Response;
@@ -16,6 +17,7 @@ class UserParameters
 {
     protected $userLogin;
     protected $userId;
+    protected $userDisplayValue;
 
     /**
      * Get user defined parameters and user definable parameters
@@ -45,8 +47,19 @@ class UserParameters
      */
     private function initParameters($args)
     {
-        $this->userLogin = $args['user'];
-        $this->userId = "U" . AccountManager::getIdFromLogin($this->userLogin);
+        if (is_numeric($args["user"])) {
+            $this->userId = "U" . intval($args["user"]);
+            $user = new Account();
+            $user->setFid(intval($args["user"]));
+            if ($user->isAffected()) {
+                $this->userDisplayValue = [
+                    "userId" => intval($args["user"]),
+                    "displayValue" => $user->lastname . " " . $user->firstname
+                ];
+            }
+        } else {
+            $this->userId = AccountManager::getIdFromLogin($args["user"]);
+        }
     }
 
     /**
@@ -60,8 +73,8 @@ class UserParameters
         $rawParameters = $this->getDataFromDb();
         $rawFilteredParameters = $this->filterParameters($rawParameters, $this->userId);
         $formatedParameters = $this->formatParameters($rawFilteredParameters);
-        $treeListParameters = $this->formatTreeDataSource($formatedParameters);
-
+        $treeListParameters["gridData"] = $this->formatTreeDataSource($formatedParameters);
+        $treeListParameters["user"] = $this->userDisplayValue;
         return $treeListParameters;
     }
 

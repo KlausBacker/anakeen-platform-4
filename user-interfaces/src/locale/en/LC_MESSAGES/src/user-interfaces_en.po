@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ANAKEEN-UI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-20 11:27+0200\n"
+"POT-Creation-Date: 2020-06-15 12:24+0200\n"
 "PO-Revision-Date: 2018-06-01 08:42+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -1030,6 +1030,19 @@ msgstr ""
 
 msgctxt "ddui"
 msgid "Select line"
+msgstr ""
+
+msgctxt "mail"
+msgid "Send"
+msgstr ""
+
+#, php-format
+msgctxt "mail"
+msgid "Send \"%s\""
+msgstr ""
+
+msgctxt "mail"
+msgid "Send type"
 msgstr ""
 
 msgctxt "ddui-htmltext"

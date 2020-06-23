@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+  <sde:routes namespace="Ui">
+    <sde:route name="Ui:Smart:Mail:Form">
+      <sde:callable>Anakeen\SmartStructures\Mail\Routes\MailForm</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/api/v2/ui/mail/form/{docid}.html</sde:pattern>
+      <sde:description>Display form to send mail</sde:description>
+      <sde:requiredAccess/>
+    </sde:route>
+  </sde:routes>
+</sde:config>

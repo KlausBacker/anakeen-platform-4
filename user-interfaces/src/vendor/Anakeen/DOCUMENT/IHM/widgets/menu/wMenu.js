@@ -30,7 +30,9 @@ export default $.widget("dcp.dcpMenu", {
     this.element.append($mainElement);
     //Init kendo widget
     $content.kendoMenu({
-      openOnClick: true,
+      openOnClick: {
+        rootMenuItems: true
+      },
       closeOnClick: true,
 
       select: function wMenuSelect(event) {
@@ -119,7 +121,10 @@ export default $.widget("dcp.dcpMenu", {
                     height: targetOptions.windowHeight,
                     modal: targetOptions.modal,
                     content: href,
-                    iframe: true
+                    iframe: true,
+                    close: function() {
+                      this.destroy();
+                    }
                   });
 
                   scopeWidget.popupWindows.push(dcpWindow.data("dcpWindow"));
@@ -192,8 +197,10 @@ export default $.widget("dcp.dcpMenu", {
                   scopeWidget,
                   $menuElement
                 );
-                $menuElement.kendoMenu({
-                  openOnClick: true,
+                $content.kendoMenu({
+                  openOnClick: {
+                    rootMenuItems: true
+                  },
                   closeOnClick: true
                 });
 
@@ -253,6 +260,8 @@ export default $.widget("dcp.dcpMenu", {
             $container.css("left", "auto");
           }
         }
+        $container.css("width", "auto");
+        $container.find("ul").css("position", "relative");
         _.delay(function wMenuOpenDelay() {
           // Due to iOs artefact, an resize event is send, so need to inhibated during opening menu
           scopeWidget.element.data("menu-opening", false);

@@ -1,0 +1,757 @@
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- Structure Profil Accesses -->
+
+    <smart:structure-configuration name="TST_ORDER_01" label="Famille Un">
+        <!-- region Structure Properties ============ -->
+        
+        <!-- endregion Structure Properties ========= -->
+        <!-- region Structure Fields ================ -->
+        <smart:fields>
+            <smart:field-set name="tst01_t_histo" type="tab" label="Acteurs  Historique" access="ReadWrite">
+                <smart:field-set name="tst01_f_acteurs" type="frame" label="Acteurs" access="ReadWrite">
+                    <smart:field-account name="tst01_createur" label="Créateur" access="ReadWrite">
+
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+                    </smart:field-account>
+                    <smart:field-date name="tst01_date_creation" label="Date de création" access="ReadWrite"/>
+                    <smart:field-account name="tst01_doc_access_grp" label="Group d'accès au document"
+                                         access="ReadWrite">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+                    </smart:field-account>
+                </smart:field-set>
+                <smart:field-set name="tst01_f_historique" type="frame" label="Historique" access="ReadWrite">
+                    <smart:field-timestamp name="tst01_date_reprise" label="Date de reprise" access="ReadWrite"/>
+                    <smart:field-set name="tst01_a_historique" type="array" label="Modifications" access="ReadWrite">
+                        <smart:field-option name="vlabel">up</smart:field-option>
+
+                        <smart:field-timestamp name="tst01_historique_date" label="Date" access="ReadWrite"/>
+                        <smart:field-account name="tst01_historique_auteur" label="Acteur" access="ReadWrite">
+
+                            <smart:field-option name="doctitle">auto</smart:field-option>
+                        </smart:field-account>
+                        <smart:field-htmltext name="tst01_historique_commentaire" label="Commentaire" access="ReadWrite">
+                        </smart:field-htmltext>
+                        <smart:field-docid name="tst01_historique_documents" label="Documents" access="ReadWrite"
+                                           relation="TST_ORDER_01" multiple="true">
+                            <smart:field-option name="doctitle">auto</smart:field-option>
+                        </smart:field-docid>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:fields>
+        <!-- endregion Structure Fields ============= -->
+        <!-- region Structure Parameters ============ -->
+        <smart:parameters/>
+        <!-- endregion Structure Parameters ========= -->
+        <!-- region Hooks methods =================== -->
+
+    </smart:structure-configuration>
+
+    <smart:structure-configuration name="TST_ORDER_02" label="Famille Deux">
+        <!-- region Structure Properties ============ -->
+        <smart:extends ref="TST_ORDER_01"/>
+        
+        <!-- endregion Structure Properties ========= -->
+        <!-- region Structure Fields ================ -->
+        <smart:fields>
+            <smart:field-set name="tst02_t_attachments" type="tab" label="Pièces jointes" access="ReadWrite"
+                             insert-after="::first">
+                <smart:field-set name="tst02_f_pieces_jointes" type="frame" label="Pièces jointes" access="ReadWrite">
+                    <smart:field-set name="tst02_a_fichiers_associes" type="array" label="Autres fichiers"
+                                     access="ReadWrite">
+                        <smart:field-file name="tst02_fichier_attache_file" label="Fichier" access="ReadWrite">
+                        </smart:field-file>
+                        <smart:field-text name="tst02_fichier_attache_titre" label="Titre" access="ReadWrite"/>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst02_t_complements" type="tab" label="Compléments" access="ReadWrite"
+                             insert-after="tst02_t_attachments">
+                <smart:field-set name="tst02_f_liens" type="frame" label="Liens réciproques" access="ReadWrite">
+                    <smart:field-set name="tst02_a_voir_aussi" type="array" label="Voir aussi" access="ReadWrite">
+                        <smart:field-option name="vlabel">up</smart:field-option>
+                        <smart:field-enum name="tst02_voir_aussi_relation" label="Relation" access="ReadWrite"
+                                          relation="TST_ORDER_02-sysbf_voir_aussi_relation">
+
+
+                        </smart:field-enum>
+                        <smart:field-docid name="tst02_voir_aussi_document" label="Document" access="ReadWrite"
+                                           relation="TST_ORDER_02">
+                            <smart:field-option name="doctitle">auto</smart:field-option>
+
+                        </smart:field-docid>
+                        <smart:field-text name="tst02_libelle_document" label="Intitulé" access="ReadWrite"/>
+                    </smart:field-set>
+                    <smart:field-set name="tst02_a_voir_aussi_fige" type="array" label="Voir aussi (Version figée)"
+                                     access="ReadWrite">
+                        <smart:field-option name="vlabel">up</smart:field-option>
+                        <smart:field-enum name="tst02_voir_aussi_relation_fige" label="Relation" access="ReadWrite"
+                                          relation="TST_ORDER_02-sysbf_voir_aussi_relation_fige">
+
+
+                        </smart:field-enum>
+                        <smart:field-docid name="tst02_voir_aussi_document_fige" label="Document" access="ReadWrite"
+                                           relation="TST_ORDER_02">
+                            <smart:field-option name="doctitle">auto</smart:field-option>
+
+                            <smart:field-option name="docrev">fixed</smart:field-option>
+                        </smart:field-docid>
+                        <smart:field-text name="tst02_libelle_document_fige" label="Intitulé" access="ReadWrite"/>
+                    </smart:field-set>
+                    <smart:field-set name="tst02_a_ref_par" type="array" label="Référencé par" access="ReadWrite">
+                        <smart:field-option name="vlabel">up</smart:field-option>
+                        <smart:field-docid name="tst02_ref_par_document" label="Document" access="ReadWrite"
+                                           relation="TST_ORDER_02">
+                            <smart:field-option name="doctitle">auto</smart:field-option>
+                        </smart:field-docid>
+                    </smart:field-set>
+                    <smart:field-set name="tst02_a_ref_par_fige" type="array" label="Référencé par (Version figée)"
+                                     access="ReadWrite">
+                        <smart:field-option name="vlabel">up</smart:field-option>
+                        <smart:field-docid name="tst02_ref_par_document_fige" label="Document" access="ReadWrite"
+                                           relation="TST_ORDER_02">
+                            <smart:field-option name="doctitle">auto</smart:field-option>
+                            <smart:field-option name="docrev">fixed</smart:field-option>
+                        </smart:field-docid>
+                        <smart:field-docid name="tst02_ref_par_document_fige_initid" label="Document" access="ReadWrite"
+                                           relation="TST_ORDER_02">
+                            <smart:field-option name="doctitle">auto</smart:field-option>
+                            <smart:field-option name="docrev">fixed</smart:field-option>
+                        </smart:field-docid>
+                    </smart:field-set>
+                </smart:field-set>
+                <smart:field-set name="tst02_f_caracterisation" type="frame" label="Caractérisation" access="ReadWrite">
+                    <smart:field-text name="tst02_ref" label="Référence ministérielle" access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-set name="tst02_f_details" type="frame" label="Accès" access="ReadWrite">
+                    <smart:field-enum name="tst02_visibility" label="Visibilité finale" access="ReadWrite"
+                                      relation="TST_ORDER_02-sysbf_visibility">
+
+                        <smart:field-option name="eunset">no</smart:field-option>
+                        <smart:field-option name="tsttem">yes</smart:field-option>
+                        <smart:field-option name="eformat">vcheck</smart:field-option>
+                        <smart:field-option name="esort">key</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-account name="tst02_extra_visibility" label="Visibilité nominative" access="ReadWrite"
+                                         multiple="true">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+                    </smart:field-account>
+                    <smart:field-account name="tst02_visibility_authorized_accounts" label="Visibilité (accounts)"
+                                         access="ReadWrite" multiple="true">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+                    </smart:field-account>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst02_t_rattachements" type="tab" label="Rattachements" access="ReadWrite"
+                             insert-after="tst02_t_complements">
+                <smart:field-set name="tst02_f_domaine" type="frame" label="Domaine d'application" access="ReadWrite">
+                    <smart:field-docid name="tst02_domaine_app" label="Domaine d'application" access="ReadWrite"
+                                       relation="TST_ORDER_DOMAINE_APPLICATION">
+
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+
+
+                    </smart:field-docid>
+                    <smart:field-docid name="tst02_all_domaines_app" label="Domaines d'applications" access="ReadWrite"
+                                       relation="TST_ORDER_DOMAINE_APPLICATION" multiple="true">
+
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+
+                    </smart:field-docid>
+                    <smart:field-docid name="tst02_domaine_app_search" label="Domaine d'application" access="ReadWrite"
+                                       relation="TST_ORDER_DOMAINE_APPLICATION" multiple="true">
+
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+
+                    </smart:field-docid>
+                </smart:field-set>
+                <smart:field-set name="tst02_f_processus" type="frame" label="Processus" access="ReadWrite">
+                    <smart:field-docid name="tst02_processus" label="Processus" access="ReadWrite"
+                                       relation="TST_ORDER_PROCESSUS">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+
+
+                    </smart:field-docid>
+                    <smart:field-docid name="tst02_processus_parents" label="Processus" access="ReadWrite"
+                                       relation="TST_ORDER_PROCESSUS" multiple="true">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+                    </smart:field-docid>
+                    <smart:field-docid name="tst02_activite" label="Activité" access="ReadWrite"
+                                       relation="TST_ORDER_ACTIVITE">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+
+                    </smart:field-docid>
+                    <smart:field-docid name="tst02_operation" label="Opération" access="ReadWrite"
+                                       relation="TST_ORDER_OPERATION">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+
+                    </smart:field-docid>
+                </smart:field-set>
+                <smart:field-set name="tst02_f_systeme_mng" type="frame" label="Système de management"
+                                 access="ReadWrite">
+                    <smart:field-docid name="tst02_systeme_mng" label="Système de management" access="ReadWrite"
+                                       relation="TST_ORDER_SYSTEME_MANAGEMENT" multiple="true">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+
+                    </smart:field-docid>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst02_t_commentaires" type="tab" label="Commentaires" access="ReadWrite"
+                             insert-after="tst01_t_histo">
+                <smart:field-set name="tst02_f_commentaires" type="frame" label="Commentaires" access="ReadWrite">
+                    <smart:field-set name="tst02_a_commentaires" type="array" label="Commentaires" access="ReadWrite">
+
+                        <smart:field-account name="tst02_commentaire_utilisateur" label="Utilisateur"
+                                             access="ReadWrite">
+                            <smart:field-option name="doctitle">auto</smart:field-option>
+                        </smart:field-account>
+                        <smart:field-docid name="tst02_commentaire_commentaire" label="Commentaire" access="ReadWrite"
+                                           relation="TST_ORDER_COMMENTAIRE">
+                            <smart:field-option name="doctitle">auto</smart:field-option>
+                        </smart:field-docid>
+                        <smart:field-text name="tst02_commentaire_etat" label="Etat du commentaire" access="ReadWrite"/>
+                        <smart:field-file name="tst02_commentaire_fichier" label="Fichier attaché" access="ReadWrite"/>
+                    </smart:field-set>
+                </smart:field-set>
+                <smart:field-set name="tst02_f_notes_gestionnaires" type="frame" label="Notes Gestionnaires"
+                                 access="ReadWrite">
+                    <smart:field-set name="tst02_a_notes_gestionnaires" type="array" label="Notes Gestionnaires"
+                                     access="ReadWrite">
+
+                        <smart:field-docid name="tst02_note_gestionnaire_note" label="Note Gestionnaire"
+                                           access="ReadWrite" relation="TST_ORDER_NOTE_GESTIONNAIRE">
+                            <smart:field-option name="doctitle">auto</smart:field-option>
+                        </smart:field-docid>
+                        <smart:field-account name="tst02_note_gestionnaire_utilisateur" label="Utilisateur"
+                                             access="ReadWrite">
+                            <smart:field-option name="doctitle">auto</smart:field-option>
+                        </smart:field-account>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst02_f_general" type="frame" label="Général" access="ReadWrite">
+                <smart:field-docid name="tst02_entite_entretien" label="Entité d'entretien" access="ReadWrite"
+                                   relation="TST_ORDER_ENTITE">
+                    <smart:field-option name="doctitle">auto</smart:field-option>
+                </smart:field-docid>
+                <smart:field-text name="tst02_ref_interne" label="Référence interne" access="ReadWrite"/>
+                <smart:field-text name="tst02_reference" label="Référence" access="ReadWrite"/>
+            </smart:field-set>
+        </smart:fields>
+        <!-- endregion Structure Fields ============= -->
+        <!-- region Structure Parameters ============ -->
+        <smart:parameters>
+            <smart:field-set name="tst02_parametres" type="frame" label="Paramètres" access="ReadWrite">
+                <smart:field-set name="tst02_a_closed_states" type="array"
+                                 label="États clos du workflow associé à cette famille" access="ReadWrite">
+                    <smart:field-text name="tst02_closed_states_keys" label="Clefs" access="ReadWrite"/>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:parameters>
+        <!-- endregion Structure Parameters ========= -->
+        <!-- region Hooks methods =================== -->
+
+    </smart:structure-configuration>
+    <smart:structure-configuration name="TST_ORDER_03" label="Famille Trois">
+        <!-- region Structure Properties ============ -->
+        <smart:extends ref="TST_ORDER_02"/>
+        
+        <!-- endregion Structure Properties ========= -->
+        <!-- region Structure Fields ================ -->
+        <smart:fields>
+            <smart:field-set name="tst03_f_fichier_attache" type="frame" label="Fichier attaché" access="ReadWrite"
+                             insert-after="::first">
+                <smart:field-file name="tst03_fichier_attache_file" label="Fichier" access="ReadWrite"
+                                  is-abstract="true">
+                    
+                </smart:field-file>
+                <smart:field-text name="tst03_lien_fichier" label="Lien vers le fichier" access="ReadWrite"/>
+                <smart:field-text name="tst03_lien_indication" label="Indication concernant le lien"
+                                  access="ReadWrite"/>
+            </smart:field-set>
+            <smart:field-set name="tst02_f_pieces_jointes" extended="true">
+                <smart:field-set name="tst03_a_annexes" type="array" label="Tableau annexes" access="ReadWrite">
+                    <smart:field-option name="vlabel">up</smart:field-option>
+                    <smart:field-file name="tst03_annexe_fichier" label="Fichier" access="ReadWrite"/>
+                    <smart:field-text name="tst03_annexe_titre" label="Titre" access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-set name="tst03_a_sources" type="array" label="Fichiers sources" access="ReadWrite">
+                    <smart:field-option name="vlabel">up</smart:field-option>
+                    <smart:field-file name="tst03_sources_fichier" label="Fichier" access="ReadWrite"/>
+                    <smart:field-text name="tst03_sources_titre" label="Titre" access="ReadWrite"/>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst02_f_caracterisation" extended="true">
+                <smart:field-text name="tst03_docu_externe" label="Source du document externe" access="ReadWrite"
+                                  insert-after="tst02_ref"/>
+            </smart:field-set>
+            <smart:field-set name="tst02_t_complements" extended="true">
+                <smart:field-set name="tst03_f_details" type="frame" label="Détails" access="ReadWrite"
+                                 insert-after="tst02_f_caracterisation">
+                    <smart:field-htmltext name="tst03_commentaire" label="Commentaires" access="ReadWrite">
+                        <smart:field-option name="doclink">{"famId":"TST_ORDER_02"}</smart:field-option>
+                    </smart:field-htmltext>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst02_t_rattachements" extended="true">
+                <smart:field-set name="tst03_f_pole_metiers" type="frame" label="Pôle et Métiers" access="ReadWrite"
+                                 insert-after="tst02_f_systeme_mng">
+                    <smart:field-docid name="tst03_pole" label="Pôles" access="ReadWrite" relation="TST_ORDER_POLE"
+                                       multiple="true">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+
+
+                    </smart:field-docid>
+                    <smart:field-docid name="tst03_metiers" label="Métiers" access="ReadWrite"
+                                       relation="TST_ORDER_METIER" multiple="true">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+
+
+                    </smart:field-docid>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst01_f_acteurs" extended="true">
+                <smart:field-account name="tst03_redacteur" label="Rédacteur" access="ReadWrite"
+                                     insert-after="tst01_date_creation">
+
+                    <smart:field-option name="doctitle">auto</smart:field-option>
+                </smart:field-account>
+                <smart:field-account name="tst03_approbateur" label="Approbateur" access="ReadWrite">
+                    <smart:field-option name="doctitle">auto</smart:field-option>
+                </smart:field-account>
+                <smart:field-date name="tst03_date_approbation" label="Date d'approbation" access="ReadWrite"
+                                  insert-after="tst03_approbateur">
+
+                </smart:field-date>
+                <smart:field-account name="tst03_gestionnaire" label="Gestionnaire référent" access="ReadWrite"
+                                     insert-after="tst03_date_approbation">
+
+                    <smart:field-option name="doctitle">auto</smart:field-option>
+                </smart:field-account>
+                <smart:field-account name="tst03_gestionnaires_da" label="Gestionnaires du domaine d'application"
+                                     access="ReadWrite" multiple="true" insert-after="tst03_gestionnaire">
+                    <smart:field-option name="doctitle">auto</smart:field-option>
+                </smart:field-account>
+            </smart:field-set>
+            <smart:field-set name="tst01_t_histo" extended="true">
+                <smart:field-set name="tst03_f_anciennes_versions" type="frame" label="Éditions" access="ReadWrite"
+                                 insert-after="tst01_f_acteurs">
+                    <smart:field-set name="tst03_a_anciennes_versions" type="array" label="Éditions"
+                                     access="ReadWrite">
+
+                        <smart:field-docid name="tst03_ancienne_version_document" label="Document" access="ReadWrite"
+                                           relation="TST_ORDER_03">
+                            <smart:field-option name="docrev">fixed</smart:field-option>
+                            <smart:field-option name="doctitle">auto</smart:field-option>
+                        </smart:field-docid>
+                        <smart:field-date name="tst03_ancienne_version_date_version" label="Date" access="ReadWrite"/>
+                        <smart:field-docid name="tst03_ancienne_version_document_travail" label="Document de travail"
+                                           access="ReadWrite" relation="TST_ORDER_03">
+                            <smart:field-option name="docrev">fixed</smart:field-option>
+                            <smart:field-option name="doctitle">auto</smart:field-option>
+
+                        </smart:field-docid>
+                        <smart:field-text name="tst03_ancienne_version_edition" label="Edition" access="ReadWrite"/>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst03_t_gestion" type="tab" label="Gestion" access="ReadWrite"
+                             insert-after="tst01_t_histo">
+                <smart:field-set name="tst03_f_gestion" type="frame" label="Gestion" access="ReadWrite">
+                    <smart:field-date name="tst03_date_limite_revue" label="Date limite de revue" access="ReadWrite"/>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst03_t_enregistrements" type="tab" label="Enregistrements" access="ReadWrite"
+                             insert-after="tst03_t_gestion">
+                <smart:field-set name="tst03_f_enregistrements" type="frame" label="Enregistrements"
+                                 access="ReadWrite">
+                    <smart:field-set name="tst03_a_enregistrements" type="array" label="Enregistrements"
+                                     access="ReadWrite">
+                        <smart:field-option name="vlabel">up</smart:field-option>
+                        <smart:field-text name="tst03_enregistrement" label="Enregistrement" access="ReadWrite"/>
+                        <smart:field-text name="tst03_enregistrement_identification" label="Identification"
+                                          access="ReadWrite"/>
+                        <smart:field-text name="tst03_enregistrement_stockage" label="Stockage" access="ReadWrite"/>
+                        <smart:field-text name="tst03_enregistrement_protection" label="Protection"
+                                          access="ReadWrite"/>
+                        <smart:field-text name="tst03_enregistrement_accessibilite" label="Accessibilité"
+                                          access="ReadWrite"/>
+                        <smart:field-text name="tst03_enregistrement_duree_conservation" label="Durée conservation"
+                                          access="ReadWrite"/>
+                        <smart:field-text name="tst03_enregistrement_elimination" label="Élimination"
+                                          access="ReadWrite"/>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst02_f_general" extended="true">
+                <smart:field-text name="tst03_titre" label="Titre" access="ReadWrite" is-title="true"
+                                  insert-after="::first">
+
+                </smart:field-text>
+                <smart:field-text name="tst03_intitule" label="Intitulé" access="ReadWrite" needed="true"
+                                  is-abstract="true" insert-after="tst02_ref_interne">
+
+                </smart:field-text>
+                <smart:field-text name="tst03_edition" label="Edition" access="ReadWrite"
+                                  insert-after="tst02_reference">
+
+                </smart:field-text>
+                <smart:field-date name="tst03_date_publication" label="Date de publication" access="ReadWrite"
+                                  insert-after="tst03_edition">
+
+                </smart:field-date>
+                <smart:field-docid name="tst03_type_doc" label="Type de document" access="ReadWrite" needed="true"
+                                   relation="TST_ORDER_TYPE_DOCUMENT" insert-after="tst03_date_publication">
+                    <smart:field-option name="doctitle">auto</smart:field-option>
+                </smart:field-docid>
+                <smart:field-enum name="tst03_origine" label="Origine" access="ReadWrite"
+                                  relation="TST_ORDER_03-sysgdoc_origine" insert-after="tst03_type_doc">
+
+                    <smart:field-option name="eunset">no</smart:field-option>
+                    <smart:field-option name="tsttem">yes</smart:field-option>
+                    <smart:field-option name="eformat">hcheck</smart:field-option>
+
+
+                </smart:field-enum>
+            </smart:field-set>
+        </smart:fields>
+        <!-- endregion Structure Fields ============= -->
+        <!-- region Structure Parameters ============ -->
+        <smart:parameters/>
+        <!-- endregion Structure Parameters ========= -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Alterated Fields -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <smart:field-override field="tst02_ref_interne" insert-after="tst03_titre" label="Référence interne"
+                              fieldset="tst02_f_general">
+
+        </smart:field-override>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Alterated Fields -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <smart:field-override field="tst02_all_domaines_app" insert-after="tst02_domaine_app"
+                              label="Domaines d'application" fieldset="tst02_f_domaine"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Alterated Fields -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <smart:field-override field="tst02_domaine_app" insert-after="::first" label="Domaine d'application d'origine"
+                              fieldset="tst02_f_domaine">
+
+            <smart:field-option name="doctitle">auto</smart:field-option>
+
+
+        </smart:field-override>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Alterated Fields -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <smart:field-override field="tst02_domaine_app_search" insert-after="tst02_all_domaines_app"
+                              label="Domaine d'application d'origine" fieldset="tst02_f_domaine"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Alterated Fields -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <smart:field-override field="tst02_entite_entretien" insert-after="::first" label="Service d'entretien"
+                              fieldset="tst03_f_gestion">
+            <smart:field-option name="doctitle">auto</smart:field-option>
+        </smart:field-override>
+        <!-- region Hooks methods =================== -->
+
+        <!-- endregion Hooks methods ================ -->
+
+    </smart:structure-configuration>
+    <smart:structure-configuration name="TST_ORDER_04" label="Famille Quatre">
+        <!-- region Structure Properties ============ -->
+        <smart:extends ref="TST_ORDER_03"/>
+        
+        <!-- endregion Structure Properties ========= -->
+        <!-- region Structure Fields ================ -->
+        <smart:fields reset="true">
+            <smart:field-set name="tst04_t_document" type="tab" label="Le document" access="ReadWrite"
+                             insert-after="::first">
+                <smart:field-set name="tst04_f_annexes" type="frame" label="Annexes du document"
+                                 access="ReadWrite"/>
+                <smart:field-set name="tst04_f_sources" type="frame"
+                                 label="Fichiers sources du document et des annexes" access="ReadWrite"/>
+            </smart:field-set>
+            <smart:field-set name="tst02_f_general" extended="true">
+                <smart:field-docid name="tst04_declinaisons_document" label="Déclinaisons de ce document"
+                                   access="ReadWrite" relation="TST_ORDER_04" multiple="true">
+                    <smart:field-option name="doctitle">auto</smart:field-option>
+                </smart:field-docid>
+                <smart:field-enum name="tst04_applicabilite" label="Applicabilité" access="ReadWrite"
+                                  relation="TST_ORDER_04-sysdocref_applicabilite">
+
+
+                </smart:field-enum>
+                <smart:field-docid name="tst04_decline" label="Décliné depuis" access="ReadWrite"
+                                   relation="TST_ORDER_04" insert-after="tst04_applicabilite">
+                    <smart:field-option name="doctitle">auto</smart:field-option>
+                </smart:field-docid>
+                <smart:field-date name="tst04_date_abrogation" label="Date d'abrogation" access="ReadWrite"
+                                  insert-after="tst04_decline">
+
+                </smart:field-date>
+                <smart:field-docid name="tst04_documents_abrogateurs" label="Documents abrogateurs"
+                                   access="ReadWrite" relation="TST_ORDER_04" multiple="true"
+                                   insert-after="tst04_date_abrogation">
+                    <smart:field-option name="doctitle">auto</smart:field-option>
+                </smart:field-docid>
+                <smart:field-text name="tst04_last_dt" label="Dernier increment document de travail"
+                                  access="ReadWrite"/>
+            </smart:field-set>
+            <smart:field-set name="tst02_f_details" extended="true">
+                <smart:field-longtext name="tst04_justification_abrogation" label="Justification de l'abrogation"
+                                      access="ReadWrite">
+
+                </smart:field-longtext>
+            </smart:field-set>
+            <smart:field-set name="tst02_f_domaine" extended="true">
+                <smart:field-docid name="tst04_domaines_application_rattachement"
+                                   label="Domaines d'application de rattachement" access="ReadWrite"
+                                   relation="TST_ORDER_DOMAINE_APPLICATION" multiple="true"
+                                   insert-after="tst02_domaine_app_search">
+                    <smart:field-option name="doctitle">auto</smart:field-option>
+                </smart:field-docid>
+            </smart:field-set>
+            <smart:field-set name="tst01_f_acteurs" extended="true">
+                <smart:field-set name="tst04_a_dernieres_verifications" type="array"
+                                 label="Dernier cycle de vérification" access="ReadWrite"
+                                 insert-after="tst03_gestionnaires_da">
+                    <smart:field-option name="vlabel">up</smart:field-option>
+                    <smart:field-account name="tst04_dernier_verificateur" label="Vérificateur" access="ReadWrite"/>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst03_f_gestion" extended="true">
+                <smart:field-docid name="tst04_doc_travail_courant" label="Document de travail courant"
+                                   access="ReadWrite" relation="TST_ORDER_05"
+                                   insert-after="tst03_date_limite_revue">
+                    <smart:field-option name="doctitle">auto</smart:field-option>
+                </smart:field-docid>
+            </smart:field-set>
+            <smart:field-set name="tst03_t_gestion" extended="true">
+                <smart:field-set name="tst04_f_accuses_lecture" type="frame" label="Accusés de lecture"
+                                 access="ReadWrite" insert-after="tst03_f_gestion">
+                    <smart:field-set name="tst04_a_accuses_lecture" type="array" label="Accusés de lecture"
+                                     access="ReadWrite">
+
+
+                        <smart:field-account name="tst04_accuse_lecture_personne" label="Personne"
+                                             access="ReadWrite"/>
+                        <smart:field-date name="tst04_accuse_lecture_date" label="Date" access="ReadWrite"/>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst04_t_historique" type="tab" label="Versions antérieures" access="ReadWrite"
+                             insert-after="tst03_t_enregistrements"/>
+            <smart:field-set name="tst02_f_caracterisation" extended="true">
+                <smart:field-longtext name="tst04_commentaire_fichier" label="Commentaire sur l'origine du fichier"
+                                      access="ReadWrite" insert-after="tst02_ref">
+
+                </smart:field-longtext>
+            </smart:field-set>
+        </smart:fields>
+        <!-- endregion Structure Fields ============= -->
+        <!-- region Structure Parameters ============ -->
+        <smart:parameters/>
+        <!-- endregion Structure Parameters ========= -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Alterated Fields -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- FIXME -->
+        <!--        <smart:field-override field="tst02_a_fichiers_associes" fieldset="tst04_f_fichiers_associes"/>-->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Alterated Fields -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <smart:field-override field="tst02_domaine_app" needed="true" insert-after="::first"
+                              label="Domaine d'application d'origine" fieldset="tst02_f_domaine">
+
+            <smart:field-option name="doctitle">auto</smart:field-option>
+
+
+        </smart:field-override>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Alterated Fields -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <smart:field-override field="tst02_f_caracterisation" insert-after="tst03_f_fichier_attache"
+                              fieldset="tst04_t_document"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Alterated Fields -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <smart:field-override field="tst02_f_general" insert-after="tst02_f_caracterisation"
+                              fieldset="tst04_t_document"/>
+        <smart:field-override field="tst03_f_details" insert-after="::auto" fieldset="tst04_t_document"/>
+        <smart:field-override field="tst02_f_details" insert-after="tst02_f_general" label="Visibilité"
+                              fieldset="tst04_t_document"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Alterated Fields -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Alterated Fields -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!--        <smart:field-override field="tst02_f_liens" insert-after="tst04_f_fichiers_associes" fieldset="tst04_t_document"/>-->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Alterated Fields -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <smart:field-override field="tst02_f_pieces_jointes" fieldset="tst04_t_document"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Alterated Fields -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <!--        <smart:field-override field="tst04_f_fichiers_associes" insert-after="tst02_f_details"/>-->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Alterated Fields -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <smart:field-override field="tst01_f_historique" label="Versions antérieures" fieldset="tst04_t_historique"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Alterated Fields -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <smart:field-override field="tst03_a_annexes" fieldset="tst04_f_annexes"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Alterated Fields -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <smart:field-override field="tst03_a_sources" fieldset="tst04_f_sources"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Alterated Fields -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <smart:field-override field="tst03_f_fichier_attache" insert-after="::first" label="Fichier attaché"
+                              fieldset="tst04_t_document"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Alterated Fields -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <smart:field-override field="tst03_lien_indication" fieldset="tst02_f_general"/>
+        <!-- region Hooks methods =================== -->
+        <smart:hooks/>
+        <!-- endregion Hooks methods ================ -->
+        <!-- region Autocomplete methods ============ -->
+
+        <!-- endregion Autocomplete methods ========= -->
+        <!-- region Default values ================== -->
+
+    </smart:structure-configuration>
+
+    <smart:structure-configuration name="TST_ORDER_05" label="Famille Cinq">
+        <!-- region Structure Properties ============ -->
+        <smart:extends ref="TST_ORDER_04"/>
+        
+        <!-- endregion Structure Properties ========= -->
+        <!-- region Structure Fields ================ -->
+        <smart:fields>
+            <smart:field-set name="tst05_t_consignes" type="tab" label="Consignes" access="ReadWrite"
+                             insert-after="::first">
+                <smart:field-set name="tst05_f_consignes" type="frame" label="Gestion" access="ReadWrite">
+                    <smart:field-longtext name="tst05_modif_en_cours" label="Info. consultant sur modif. en cours"
+                                          access="ReadWrite">
+
+                    </smart:field-longtext>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst04_a_dernieres_verifications" extended="true">
+                <smart:field-longtext name="tst04_derniere_decision" label="Décision" access="ReadWrite"
+                                      insert-after="tst04_dernier_verificateur"/>
+            </smart:field-set>
+            <smart:field-set name="tst01_t_histo" extended="true">
+                <smart:field-set name="tst05_f_participants" type="frame" label="Participants" access="ReadWrite">
+                    <smart:field-account name="tst05_anciens_participants" label="Anciens participants"
+                                         access="ReadWrite" multiple="true">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+                    </smart:field-account>
+                    <smart:field-account name="tst05_participants_recueil_default"
+                                         label="Participants pressentis au recueil" access="ReadWrite" multiple="true">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+                    </smart:field-account>
+                    <smart:field-account name="tst05_participants_verification_default"
+                                         label="Participants pressentis à la vérification" access="ReadWrite"
+                                         multiple="true">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+                    </smart:field-account>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst03_f_gestion" extended="true">
+                <smart:field-docid name="tst05_docref_source" label="Document de référentiel courant"
+                                   access="ReadWrite" relation="TST_ORDER_04"
+                                   insert-after="tst04_doc_travail_courant">
+                    <smart:field-option name="doctitle">auto</smart:field-option>
+
+                </smart:field-docid>
+            </smart:field-set>
+            <smart:field-set name="tst05_t_complement_gestionnaire" type="tab" label="Compléments gestionnaire"
+                             access="ReadWrite">
+                <smart:field-set name="tst05_f_complement_gestionnaire" type="frame"
+                                 label="Compléments gestionnaire" access="ReadWrite">
+                    <smart:field-text name="tst05_ref_min" label="Référence ministérielle" access="ReadWrite"/>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst02_f_general" extended="true">
+                <smart:field-date name="tst05_date_limite_redaction" label="Date limite de rédaction"
+                                  access="ReadWrite" insert-after="tst04_last_dt">
+
+                </smart:field-date>
+            </smart:field-set>
+        </smart:fields>
+        <!-- endregion Structure Fields ============= -->
+        <!-- region Structure Parameters ============ -->
+        <smart:parameters/>
+        <!-- endregion Structure Parameters ========= -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Alterated Fields -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <smart:field-override field="tst02_f_details" insert-after="tst02_f_general" label="Visibilité"
+                              fieldset="tst04_t_document"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Alterated Fields -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <smart:field-override field="tst02_f_general" insert-after="::first" fieldset="tst04_t_document"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Alterated Fields -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <smart:field-override field="tst02_processus" insert-after="::first" label="Processus"
+                              fieldset="tst02_f_processus">
+            <smart:field-option name="doctitle">auto</smart:field-option>
+
+
+        </smart:field-override>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Alterated Fields -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <smart:field-override field="tst02_ref" insert-after="::first" label="Numéro ministériel"
+                              fieldset="tst02_f_caracterisation"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Alterated Fields -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <smart:field-override field="tst04_t_document" insert-after="tst05_t_consignes"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Alterated Fields -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <smart:field-override field="tst01_t_histo" insert-after="tst04_t_document"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Alterated Fields -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <smart:field-override field="tst03_commentaire" insert-after="tst03_origine" fieldset="tst02_f_general">
+
+        </smart:field-override>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Alterated Fields -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <smart:field-override field="tst03_fichier_attache_file" insert-after="::first" label="Fichier"
+                              fieldset="tst02_f_general">
+
+        </smart:field-override>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Alterated Fields -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <smart:field-override field="tst03_t_enregistrements" insert-after="tst01_t_histo" label="Enregistrements"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Alterated Fields -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <smart:field-override field="tst03_type_doc" insert-after="::first"
+                              fieldset="tst05_f_complement_gestionnaire">
+            <smart:field-option name="doctitle">auto</smart:field-option>
+        </smart:field-override>
+
+        <smart:field-override field="tst03_origine" insert-after="::auto"/>
+        <!-- region Hooks methods =================== -->
+
+
+    </smart:structure-configuration>
+</smart:config>

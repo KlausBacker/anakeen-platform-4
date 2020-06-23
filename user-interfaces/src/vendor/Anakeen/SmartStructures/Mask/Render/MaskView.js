@@ -65,8 +65,13 @@ window.ank.smartElement.globalController.registerFunction("mask", controller => 
           },
           data: response => {
             response.data.forEach(item => {
+              var itemType = item.type;
               item.mNeededLabel = item.mNeeded ? "Mandatory" : "Optional";
-              item.neededLabel = item.needed ? "Mandatory" : "Optional";
+              if (itemType === "tab" || itemType === "array" || itemType === "frame") {
+                item.neededLabel = "";
+              } else {
+                item.neededLabel = item.needed ? "Mandatory" : "Optional";
+              }
             });
             return response.data;
           }
@@ -112,7 +117,7 @@ window.ank.smartElement.globalController.registerFunction("mask", controller => 
           },
           template:
             "#if (data.setVisibility === true) {#" +
-            '<div class="mask-visibility mask-visibility-set">#:mVisibilityLabel#</div>' +
+            '<div class="mask-visibility mask-visibility-set" title="modified">#:mVisibilityLabel#</div>' +
             "# } else if (data.setVisibility === false && data.visibility !== data.mVisibility)" +
             ' {#<div class="mask-visibility mask-visibility-modified">#:mVisibilityLabel#</div>#}' +
             'else if (data.mVisibility) {# <div class="mask-visibility">#:mVisibilityLabel#</div>  #}#'

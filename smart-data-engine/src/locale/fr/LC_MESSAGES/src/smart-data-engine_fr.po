@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-20 09:52+0200\n"
-"PO-Revision-Date: 2020-05-18 14:15+0200\n"
+"POT-Creation-Date: 2020-06-15 12:23+0200\n"
+"PO-Revision-Date: 2020-06-15 12:25+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -15,6 +15,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 2.3.1\n"
+
+#, php-format
+msgctxt "mail"
+msgid "\"%s\" has been sended."
+msgstr "\"%s\" a été envoyé."
 
 #, php-format
 msgctxt "search"
@@ -392,6 +397,11 @@ msgid ""
 msgstr ""
 "Changement d'état: le nouvel état '%s' n'est pas connu ou n'est pas autorisé "
 "depuis %s"
+
+#, php-format
+msgctxt "mail"
+msgid "Closing in %ds"
+msgstr "Fermeture dans %ds"
 
 #, php-format
 msgid "Config file %s : attribute name not set"
@@ -1141,6 +1151,10 @@ msgstr ""
 "Impossible de trouver d'identifiant pour la relation '%s' %s dans le fichier "
 "%s"
 
+msgctxt "mail"
+msgid "No mail address set"
+msgstr "Aucune addresse de courriel n'est indiquée"
+
 #, php-format
 msgctxt "sde"
 msgid "No privilege \"%s\" for %d"
@@ -1444,6 +1458,10 @@ msgstr ""
 #, php-format
 msgid "Send mail info : can't send mail %s: no sendee found"
 msgstr "Échec lors de l'envoi du mail %s: aucun destinataire trouvé"
+
+msgctxt "mail"
+msgid "Sended"
+msgstr "Envoyé"
 
 #, php-format
 msgid "SetBlock:error [%s]"

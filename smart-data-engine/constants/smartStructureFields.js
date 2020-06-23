@@ -103,6 +103,16 @@ export class IUSER {
    */
   static us_fr_userchange = "us_fr_userchange";
   /**
+   * Nouveau mot de passe
+   * @smartType password
+   */
+  static us_passwd1 = "us_passwd1";
+  /**
+   * Confirmation mot de passe
+   * @smartType password
+   */
+  static us_passwd2 = "us_passwd2";
+  /**
    * Technical Settings
    * @smartType tab
    */
@@ -225,6 +235,11 @@ export class IUSER {
 }
 export class MAIL {
   /**
+   *
+   * @smartType
+   */
+  static = "";
+  /**
    * Adresses
    * @smartType frame
    */
@@ -270,20 +285,35 @@ export class MAIL {
    */
   static mail_savecopy = "mail_savecopy";
   /**
+   * Modèle de mail
+   * @smartType docid MAILTEMPLATE
+   */
+  static mail_template = "mail_template";
+  /**
    * Commentaire
    * @smartType frame
    */
   static mail_fr_cm = "mail_fr_cm";
   /**
-   * Commentaire
-   * @smartType longtext
+   * Corps du message
+   * @smartType htmltext
    */
-  static mail_cm = "mail_cm";
+  static mail_body = "mail_body";
   /**
    * Format
    * @smartType enum MAIL-mail_format
    */
   static mail_format = "mail_format";
+  /**
+   * Modèles
+   * @smartType frame
+   */
+  static mail_fr_parameters = "mail_fr_parameters";
+  /**
+   * Modèle par défaut
+   * @smartType docid MAILTEMPLATE
+   */
+  static mail_tpl_default = "mail_tpl_default";
 }
 export class MAILTEMPLATE {
   /**

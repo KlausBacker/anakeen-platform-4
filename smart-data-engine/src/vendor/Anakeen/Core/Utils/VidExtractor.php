@@ -32,22 +32,8 @@ class VidExtractor
         if (!is_array($raw)) {
             throw new Exception('VIDEXTRACTOR0001', gettype($raw));
         }
-        if ($fileAttrIdList === null) {
-            if (!isset($raw['id'])) {
-                throw new Exception('VIDEXTRACTOR0002');
-            }
-            $fileAttrIdList = array();
-
-            $doc = SEManager::getDocument($raw['id']);
-            if (!is_object($doc)) {
-                throw new Exception('VIDEXTRACTOR0003', $raw['id']);
-            }
-            $fileAttrList = $doc->getFileAttributes();
-            foreach ($fileAttrList as $attrId => $attr) {
-                $fileAttrIdList[] = $attrId;
-            }
-        }
         $vidList = array();
+
         /* icon */
         if (!empty($raw['icon']) && ($vid = self::parseVid($raw['icon'])) !== false) {
             $vidList[] = $vid;
@@ -66,11 +52,19 @@ class VidExtractor
             }
 
             foreach ($values as $value) {
-                if (($vid = self::parseVid($value)) !== false) {
-                    $vidList[] = $vid;
+                if ($value) {
+                    if (($vid = self::parseVid($value)) !== false) {
+                        $vidList[] = $vid;
+                    } else {
+                        $htmlVids = self::getVidFromHtmltext([$value]);
+                        foreach ($htmlVids as $htmlVid) {
+                            $vidList[] = $htmlVid;
+                        }
+                    }
                 }
             }
         }
+
         return $vidList;
     }
 
