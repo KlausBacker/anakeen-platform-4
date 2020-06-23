@@ -58,12 +58,8 @@ msgstr ""
 "un utilisateur specifique selectionné"
 
 msgctxt "AdminCenterAccounts"
-msgid "No privilege to create an IUSER"
-msgstr "Pas de droit en création pour IUSER"
-
-msgctxt "AdminCenterAccounts"
-msgid "No privilege to create an IGROUP"
-msgstr "Pas de droit en création pour IGROUP"
+msgid "Structure '%s' do not exist"
+msgstr "La structure '%s' n'existe pas"
 
 #~ msgctxt "AdminCenterTrash.title"
 #~ msgid "title"

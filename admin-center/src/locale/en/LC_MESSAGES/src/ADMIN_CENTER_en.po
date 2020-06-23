@@ -55,12 +55,8 @@ msgid "You need to turn on the button user parameters"
 msgstr ""
 
 msgctxt "AdminCenterAccounts"
-msgid "No privilege to create an IUSER"
-msgstr "No privilege to create an IUSER"
-
-msgctxt "AdminCenterAccounts"
-msgid "No privilege to create an IGROUP"
-msgstr "No privilege to create an IGROUP"
+msgid "Structure '%s' do not exist"
+msgstr "Structure '%s' do not exist"
 
 #, fuzzy
 #~ msgctxt "AdminCenterTrash.title"
