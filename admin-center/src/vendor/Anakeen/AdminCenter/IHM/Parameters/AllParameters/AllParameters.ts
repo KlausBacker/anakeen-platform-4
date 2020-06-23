@@ -132,6 +132,8 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
             }
             // notify the data source that the request succeeded
             options.success(result);
+            // To display number of results : the first time
+            $(window).trigger("resize");
           })
           .catch(options.error);
         return options;
@@ -581,11 +583,11 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
                   "AdminCenterAllParameter.Element modified"
                 )}" class="param-value-modified"> ${data.value}</div>`;
               } else if (data.initialValue && !data.value) {
-                return `<div"> ${data.initialValue}</div>`;
+                return `<div> ${data.initialValue}</div>`;
               } else if (!data.initialValue && !data.value) {
                 return "";
               }
-              return `<div"> ${data.value}</div>`;
+              return `<div> ${data.value}</div>`;
             }
           },
           {
