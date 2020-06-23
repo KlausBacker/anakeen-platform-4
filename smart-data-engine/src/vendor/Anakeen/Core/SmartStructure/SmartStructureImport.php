@@ -248,7 +248,10 @@ class SmartStructureImport
                     foreach ($allAttributes as $ka => $attr) {
                         if ($attr["id"] === $mAttrid) {
                             if (!empty($parentAttr["frameid"])) {
+                                $kap = $mAttrid . "/" . $parentAttr["docid"];
                                 $allAttributes[$ka]["parent"] = $parentAttr["frameid"];
+                                $allAttributes[$kap] = $allAttributes[$ka];
+                                $allAttributes[$kap]["family"] = $parentAttr["docid"];
                             }
                         }
                     }
@@ -1033,7 +1036,7 @@ class SmartStructureImport
                             $vtitle["id"] = strtolower($m['attrid']);
                         }
                         $vtitle["type"] = "text";
-                        $vtitle["options"] = "";
+                        $vtitle["options"] = "relativeOrder=" . $v["id"];
                         $paf[$vtitle["id"]] = $vtitle;
                     }
                 }

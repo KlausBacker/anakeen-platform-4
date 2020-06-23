@@ -2146,6 +2146,9 @@ class ImportDocumentDescription
 
     protected function doModattr(array $data)
     {
+        if (! $this->doc) {
+            return;
+        }
         $attrid = strtolower($data[1]);
 
 

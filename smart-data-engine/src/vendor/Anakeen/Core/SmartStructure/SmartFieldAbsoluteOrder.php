@@ -54,6 +54,7 @@ class SmartFieldAbsoluteOrder
         // First get all family ancestors
         $familyIds = self::getFamilyInherits($familyId);
         $tree = [];
+
         foreach ($familyIds as $familyId) {
             $subTree = [];
             foreach ($relativeOrders as $relativeOrder) {
@@ -66,6 +67,7 @@ class SmartFieldAbsoluteOrder
         self::checkTree($tree);
 
         $linear = self::linearOrderTree($tree);
+
         foreach ($relativeOrders as $relativeOrder) {
             if (array_search($relativeOrder["id"], $linear) === false) {
                 $linear[] = $relativeOrder["id"];
@@ -153,14 +155,14 @@ class SmartFieldAbsoluteOrder
         printf("\n========= %s======== \n", $text);
 
         $first = current($r);
-        printf("%20s|", "index");
+        printf("%40s|", "index");
         foreach (array_keys($first) as $h) {
             printf("%20s|", $h);
         }
         print "\n";
 
         foreach ($r as $k => $sr) {
-            printf("%20s|", $k);
+            printf("%40s|", $k);
             foreach ($sr as $item) {
                 printf("%20s|", $item);
             }
