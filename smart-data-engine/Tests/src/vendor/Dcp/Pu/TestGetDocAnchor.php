@@ -79,7 +79,7 @@ class TestGetDocAnchor extends TestCaseDcpCommonFamily
                             "value" => ""
                         )
                     ),
-                    "expected_href" => "http://www2.example.net/?app=FOO&amp;action=BAR&amp;id=%ID%&amp;latest=Y"
+                    "expected_href" => "http://www2.example.net/?app=FOO&amp;action=BAR"
                 )
             )
         );
