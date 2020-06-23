@@ -21,6 +21,9 @@
     <!-- mailtemplate -->
     <public uri="./xsd/mailtemplate/1.0/config.xsd" publicId="https://platform.anakeen.com/4/schemas/mailtemplate/1.0"/>
     <uri uri="./xsd/mailtemplate/1.0/config.xsd" name="https://platform.anakeen.com/4/schemas/mailtemplate/1.0" />
+    <!-- migration -->
+    <public uri="./xsd/migration/1.0/config.xsd" publicId="https://platform.anakeen.com/4/schemas/migration/1.0"/>
+    <uri uri="./xsd/migration/1.0/config.xsd" name="https://platform.anakeen.com/4/schemas/migration/1.0" />
     <!-- module -->
     <public uri="./xsd/module/1.0/config.xsd" publicId="https://platform.anakeen.com/4/schemas/module/1.0"/>
     <uri uri="./xsd/module/1.0/config.xsd" name="https://platform.anakeen.com/4/schemas/module/1.0" />
