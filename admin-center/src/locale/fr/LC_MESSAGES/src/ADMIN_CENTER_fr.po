@@ -57,6 +57,14 @@ msgstr ""
 "Le boutton d'activation de l'onglet user doit être à \"true\" lorsqu'il y a "
 "un utilisateur specifique selectionné"
 
+msgctxt "AdminCenterAccounts"
+msgid "No privilege to create an IUSER"
+msgstr "Pas de droit en création pour IUSER"
+
+msgctxt "AdminCenterAccounts"
+msgid "No privilege to create an IGROUP"
+msgstr "Pas de droit en création pour IGROUP"
+
 #~ msgctxt "AdminCenterTrash.title"
 #~ msgid "title"
 #~ msgstr "Titre"
