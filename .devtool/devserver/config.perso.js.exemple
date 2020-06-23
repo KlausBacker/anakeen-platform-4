@@ -11,6 +11,7 @@ module.exports.getConfig = () => {
   //const configUISmartStructure = require(path.resolve(BASE_DIR, "user-interfaces/webpackConfig/smartStructures"))();
   //const configUICSS = require(path.resolve(BASE_DIR, "user-interfaces/webpackConfig/buildCss"))();
   //const configTestUi = require(path.resolve(BASE_DIR, "user-interfaces/webpackConfig/test"))();
+  //const configFulltextTestUi = require(path.resolve(BASE_DIR, "fulltext-search/webpack/test"))();
   return [
     //...configAdmin
      ...configBusinessApp,
@@ -18,13 +19,15 @@ module.exports.getConfig = () => {
     //...configHub,
     //...configLogin
     //...configUICSS,
-    //...configTestUi
+    //...configTestUi,
+    //...configFulltextTestUi
   ];
 };
 
 module.exports.getRollupConfig = () => {
   return [
     require(path.resolve(BASE_DIR, "user-interfaces/components/rollup/rollup.config.js")),
+    //require(path.resolve(BASE_DIR, "fulltext-search/components/rollup/rollup.config.js")),
     //require(path.resolve(BASE_DIR, "internal-components/rollup/rollup.config.js")),
     //require(path.resolve(BASE_DIR, "hub-station/components/rollup/rollup.config.js"))
   ];

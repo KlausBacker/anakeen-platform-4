@@ -19,7 +19,8 @@ const MONOREPO_PATH = path.resolve(BASE_PATH, "../..");
 // rollup.config.js
 const conf = {
   input: {
-    AnkFulltextSmartCriteria: path.resolve(BASE_PATH, "src/AnkFulltextSmartCriteria/index.ts")
+    AnkFulltextSmartCriteria: path.resolve(BASE_PATH, "src/AnkFulltextSmartCriteria/index.ts"),
+    AnkFulltextSmartElementGrid: path.resolve(BASE_PATH, "src/AnkFulltextSmartElementGrid/index.ts")
   },
   output: {
     dir: OUTPUT_DIR,
