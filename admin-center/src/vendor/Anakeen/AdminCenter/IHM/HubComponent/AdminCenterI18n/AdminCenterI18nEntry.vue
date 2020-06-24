@@ -7,6 +7,8 @@
     <template v-slot:hubContent>
       <div class="i18n-station">
         <admin-center-i18n
+          @filterI18n="onFilter"
+          @localeChange="onLocaleChange"
           @changeLocaleWrongArgument="handleLocaleWrongArgumentError"
           @i18nOffline="handleLocaleNetworkError"
           :i18nFilters="i18nFilters"
@@ -37,7 +39,7 @@ export default {
   data() {
     return {
       i18nFilters: [],
-      lang: "",
+      lang: "fr",
       routeUrl: () => {
         return "/" + this.entryOptions.route;
       },
@@ -112,6 +114,17 @@ export default {
           title: "Network error"
         }
       });
+    },
+    onFilter(filter) {
+      let search = "";
+      if (filter && Object.keys(filter).length) {
+        search = `?${kendo.jQuery.param(filter)}`;
+      }
+      this.navigate(`/admin/${this.entryOptions.route}/${this.lang}${search}`);
+    },
+    onLocaleChange(locale) {
+      this.lang = locale.value;
+      this.navigate(`/admin/${this.entryOptions.route}/${locale.value}`);
     }
   }
 };
