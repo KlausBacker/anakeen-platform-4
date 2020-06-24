@@ -3,12 +3,12 @@
  * @author Anakeen
 */
 
-require_once __DIR__."/Lib.TE.php";
-require_once __DIR__."/Class.Task.php";
-require_once __DIR__."/Class.QueryPg.php";
-require_once __DIR__."/Class.Engine.php";
+require_once __DIR__ . "/Lib.TE.php";
+require_once __DIR__ . "/Class.Task.php";
+require_once __DIR__ . "/Class.QueryPg.php";
+require_once __DIR__ . "/Class.Engine.php";
 // for signal handler function
-declare(ticks = 1);
+declare(ticks=1);
 
 class TERendering
 {
@@ -19,11 +19,12 @@ class TERendering
     public $purge_days = 7;
     public $purge_interval = 100;
     private $purge_count = 0;
-    
+
     private $good = true;
     /** @var Task $task */
     public $task;
     public $status;
+
     // main loop condition
     protected function decreaseChild($sig)
     {
@@ -33,7 +34,7 @@ class TERendering
             // pcntl_wait($status); // to suppress zombies
         }
     }
-    
+
     public function rewaiting()
     {
         if ($this->task) {
@@ -43,16 +44,17 @@ class TERendering
         }
         exit(0);
     }
-    
+
     public function childTermReq()
     {
         exit(0);
     }
-    
+
     public function breakloop()
     {
         $this->good = false;
     }
+
     /**
      * main loop to listen socket
      */
@@ -60,9 +62,9 @@ class TERendering
     {
         /* unlimit execution time. */
         set_time_limit(0);
-        
+
         $this->setMainSignals();
-        
+
         while ($this->good) {
             if ($this->cur_client >= $this->max_client) {
                 echo "Too many [" . $this->cur_client . "]\n";
@@ -96,32 +98,41 @@ class TERendering
             }
         }
     }
+
     private function setMainSignals()
     {
-        pcntl_signal(SIGCHLD, array(&$this,
+        pcntl_signal(SIGCHLD, array(
+            &$this,
             "decreaseChild"
         ));
-        pcntl_signal(SIGPIPE, array(&$this,
+        pcntl_signal(SIGPIPE, array(
+            &$this,
             "decreaseChild"
         ));
-        pcntl_signal(SIGINT, array(&$this,
+        pcntl_signal(SIGINT, array(
+            &$this,
             "breakloop"
         ));
-        pcntl_signal(SIGTERM, array(&$this,
+        pcntl_signal(SIGTERM, array(
+            &$this,
             "breakloop"
         ));
     }
+
     private function setChildSignals()
     {
         pcntl_signal(SIGCHLD, SIG_DFL);
         pcntl_signal(SIGPIPE, SIG_DFL);
-        pcntl_signal(SIGINT, array(&$this,
+        pcntl_signal(SIGINT, array(
+            &$this,
             "rewaiting"
         ));
-        pcntl_signal(SIGTERM, array(&$this,
+        pcntl_signal(SIGTERM, array(
+            &$this,
             "childTermReq"
         ));
     }
+
     /**
      * verify if has a task winting
      * @return bool
@@ -244,14 +255,14 @@ class TERendering
         }
         $this->task->runCallback();
     }
-    
+
     public function flushProcessingTasks()
     {
         $tasks = new Task($this->dbaccess);
         $tasks->execQuery(sprintf("DELETE FROM task WHERE status = 'P'"));
         return true;
     }
-    
+
     public function purgeTrigger()
     {
         if ($this->purge_interval <= 0) {
@@ -261,11 +272,13 @@ class TERendering
         $this->purge_count = $this->purge_count % $this->purge_interval;
         return ($this->purge_count === 0);
     }
+
     public function purgeTasks()
     {
         $task = new Task($this->dbaccess);
         $task->purgeTasks($this->purge_days);
     }
+
     public function setTmpDir($tmpDir)
     {
         $TMPDIR = getenv('TMPDIR');
