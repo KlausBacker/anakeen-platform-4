@@ -67,33 +67,37 @@ class TERendering
 
         while ($this->good) {
             if ($this->cur_client >= $this->max_client) {
-                echo "Too many [" . $this->cur_client . "]\n";
-                sleep(10);
+                echo "MAIN:Too many [" . $this->cur_client . "]\n";
+                sleep(1);
             } else {
-                echo "Wait [" . $this->cur_client . "]\n";
+                //echo "Wait [" . $this->cur_client . "]\n";
                 if ($this->hasWaitingTask()) {
-                    echo "Accept [" . $this->cur_client . "]\n";
                     $this->cur_client++;
-                    $pid = pcntl_fork();
-                    
-                    PgObj::closeMyPgConnections();
-                    
-                    if ($pid == - 1) {
-                        // Fork failed
-                        exit(1);
-                    } elseif ($pid) {
-                        // We are the parent
-                        if ($this->purgeTrigger()) {
-                            $this->purgeTasks();
+
+                    $nextTask = $this->getNextTask();
+
+                    if ($nextTask) {
+                        echo "MAIN:New task [" . $nextTask->tid . "]/[" . $this->cur_client . "]\n";
+                        $pid = pcntl_fork();
+
+                        PgObj::closeMyPgConnections();
+
+                        if ($pid == -1) {
+                            // Fork failed
+                            exit(1);
+                        } elseif ($pid) {
+                            // We are the parent
+                            if ($this->purgeTrigger()) {
+                                $this->purgeTasks();
+                            }
+                        } else {
+                            $this->processOneTask($nextTask);
+                            exit(0);
                         }
-                        echo "Parent Waiting Accept:" . $this->cur_client . "\n";
-                        sleep(1); // need to wait rewaiting signal
-                    } else {
-                        $this->processOneTask();
-                        exit(0);
                     }
                 } else {
-                    sleep(10); // to not load CPU
+                    // echo "MAIN:No task [" . $this->cur_client . "]\n";
+                    sleep(1); // to not load CPU
                 }
             }
         }
@@ -181,12 +185,14 @@ class TERendering
             // It will get closed upon exit
             /* Send instructions. */
             $this->setChildSignals();
-            $this->task = $this->getNextTask();
+            $this->task = $task;
             if (!$this->task) {
                 /* No tasks to process */
                 return;
             }
-            echo "Processing :" . $this->task->tid . "\n";
+            echo "\nProcessing :" . "#" . posix_getpid() . ":" . $this->task->tid . "\n";
+            $this->task->pid = posix_getpid();
+            $this->task->modify();
             $eng = new Engine($this->dbaccess, array(
                 $this->task->engine,
                 $this->task->inmime
