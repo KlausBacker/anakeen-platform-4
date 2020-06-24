@@ -4,7 +4,7 @@ namespace Anakeen\Search\Filters;
 
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SmartStructure\NormalAttribute;
-use Anakeen\Search\SearchCriteria\SearchCriteriaTrait;
+use Anakeen\SmartCriteria\SmartCriteriaTrait;
 
 /**
  * Class EqualsOne
@@ -15,7 +15,7 @@ use Anakeen\Search\SearchCriteria\SearchCriteriaTrait;
  */
 class EqualsOne extends StandardAttributeFilter implements ElementSearchFilter
 {
-    use SearchCriteriaTrait;
+    use SmartCriteriaTrait;
 
     const NOT = 1;
 

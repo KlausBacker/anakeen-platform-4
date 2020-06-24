@@ -468,7 +468,8 @@ class Operators
                     "docid[]",
                     "account[]",
                     "docid[][]",
-                    "account[][]"
+                    "account[][]",
+                    "fulltext"
                 ],
                 "operands" => [":value"],
                 "filterClass" => \Anakeen\Search\Filters\SearchCriteria::class

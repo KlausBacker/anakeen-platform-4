@@ -3,11 +3,11 @@
 namespace Anakeen\Search\Filters;
 
 use Anakeen\Core\Internal\SmartElement;
-use Anakeen\Search\SearchCriteria\SearchCriteriaTrait;
+use Anakeen\SmartCriteria\SmartCriteriaTrait;
 
 class IsEqual extends StandardAttributeFilter implements ElementSearchFilter
 {
-    use SearchCriteriaTrait;
+    use SmartCriteriaTrait;
 
     public static function getOptionMap()
     {

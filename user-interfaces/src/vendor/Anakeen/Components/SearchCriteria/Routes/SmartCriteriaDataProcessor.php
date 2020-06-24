@@ -4,7 +4,8 @@ namespace Anakeen\Components\SearchCriteria\Routes;
 use Anakeen\Components\SearchCriteria\Exceptions\Exception;
 use Anakeen\Core\SEManager;
 use Anakeen\Router\ApiV2Response;
-use Anakeen\Search\SearchCriteria\SearchCriteriaUtils;
+use Anakeen\SmartCriteria\SmartCriteriaConfigurationSingleton;
+use Anakeen\SmartCriteria\SmartCriteriaUtils;
 use Anakeen\SmartStructures\Wdoc\WDocHooks;
 
 /**
@@ -33,8 +34,8 @@ class SmartCriteriaDataProcessor
         $this->field = $args["field"];
 
         if ($this->collection === "property") {
-            $operators = SearchCriteriaUtils::getDefaultOperators($this->field, false);
-            $defaultOperator = SearchCriteriaUtils::getDefaultOperator($this->field, false);
+            $operators = SmartCriteriaConfigurationSingleton::getInstance()->getDefaultOperators($this->field, false);
+            $defaultOperator = SmartCriteriaConfigurationSingleton::getInstance()->getDefaultOperator($this->field, false);
 
             $propertyTitle = "Titre";
             if ($this->field === "state") {
@@ -69,8 +70,8 @@ class SmartCriteriaDataProcessor
                 }
             }
         } elseif ($this->collection === "virtual") {
-            $operators = SearchCriteriaUtils::getDefaultOperators($this->field, false);
-            $defaultOperator = SearchCriteriaUtils::getDefaultOperator($this->field, false);
+            $operators = SmartCriteriaConfigurationSingleton::getInstance()->getDefaultOperators($this->field, false);
+            $defaultOperator = SmartCriteriaConfigurationSingleton::getInstance()->getDefaultOperator($this->field, false);
             $data = [
                 "operators" => $operators,
                 "defaultOperator" => $defaultOperator,
@@ -81,8 +82,8 @@ class SmartCriteriaDataProcessor
                 $structField = $structureRef->getAttribute($this->field);
                 if (!empty($structField)) {
                     $fieldMultiple = $structField->isMultiple();
-                    $operators = SearchCriteriaUtils::getDefaultOperators($structField->type, $fieldMultiple, $structField->getLabel());
-                    $defaultOperator = SearchCriteriaUtils::getDefaultOperator($structField->type, $fieldMultiple);
+                    $operators = SmartCriteriaConfigurationSingleton::getInstance()->getDefaultOperators($structField->type, $fieldMultiple, $structField->getLabel());
+                    $defaultOperator = SmartCriteriaConfigurationSingleton::getInstance()->getDefaultOperator($structField->type, $fieldMultiple);
                     $type = $structField->type;
                     $data = [
                         "field" => $structField->id,

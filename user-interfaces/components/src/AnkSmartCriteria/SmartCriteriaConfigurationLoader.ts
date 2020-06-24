@@ -3,10 +3,11 @@ import { SmartCriteriaKind } from "./Types/SmartCriteriaKind";
 import IConfigurationCriteria from "./Types/IConfigurationCriteria";
 import SmartCriteriaUtils from "./SmartCriteriaUtils";
 import $ from "jquery";
+import SmartCriteriaRequest from "./Types/SmartCriteriaRequest";
 
 export default class {
   configuration: ISmartCriteriaConfiguration;
-  ajaxRequests: Array<any>;
+  ajaxRequests: Array<SmartCriteriaRequest>;
   ajaxPromises: Array<Promise<any>>;
   errorStack: Array<any>;
 
@@ -29,10 +30,8 @@ export default class {
         case SmartCriteriaKind.VIRTUAL:
           this.prepareVirtualRequest(criteria);
           break;
-        case SmartCriteriaKind.FULLTEXT:
-          criteria.label = criteria.label ? criteria.label : "Recherche générale";
-          break;
         default:
+          this.prepareCustomRequest(criteria);
           break;
       }
     }
@@ -253,9 +252,14 @@ export default class {
     }
   }
 
+  /**
+   * Modifies configuration in place to set default values when needed
+   * @param configuration the smart criteria configuration
+   */
   private initializeConfiguration(configuration: ISmartCriteriaConfiguration): void {
     if (!configuration) {
-      configuration = { criterias: [] };
+      //Default empty configuration
+      configuration = this.getEmptyConfiguration();
     } else {
       if (!configuration.criterias) {
         configuration.criterias = [];
@@ -267,4 +271,17 @@ export default class {
       }
     }
   }
+
+  private getEmptyConfiguration(): ISmartCriteriaConfiguration {
+    return { criterias: [] };
+  }
+
+  /**
+   * Method used to handle smart criteria custom kind (i.e. fulltext)
+   * If needed, an AJAX request can be added to ajaxRequests field.
+   * Errors can be added with the stack error method.
+   * @param criteriaConfiguration
+   */
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  protected prepareCustomRequest(criteriaConfiguration: IConfigurationCriteria): void {}
 }

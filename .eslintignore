@@ -53,4 +53,7 @@ test-tools/test
 fulltext-search/node_modules/
 fulltext-search/src/public/
 fulltext-search/webpack/
+fulltext-search/components/rollup/
+fulltext-search/components/lib/
+fulltext-search/Tests/
 user-interfaces-dojo/webpackConfig/

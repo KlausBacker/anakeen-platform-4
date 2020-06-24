@@ -1,9 +1,9 @@
 <?php
 
 
-namespace Anakeen\Search\SearchCriteria;
+namespace Anakeen\SmartCriteria;
 
-class SearchFilterOperator
+class SmartFilterOperator
 {
 
     /**

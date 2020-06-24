@@ -8,10 +8,11 @@
 namespace Anakeen\Search\Filters;
 
 use Anakeen\Search;
+use Anakeen\SmartCriteria\SmartCriteriaTrait;
 
 class Between extends StandardAttributeFilter implements ElementSearchFilter
 {
-    use Search\SearchCriteria\SearchCriteriaTrait;
+    use SmartCriteriaTrait;
 
     const NOT = 1;
     const EQUALLEFT = 2;

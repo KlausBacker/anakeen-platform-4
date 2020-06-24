@@ -4,9 +4,12 @@ namespace Anakeen\Fullsearch;
 
 use Anakeen\Search\Filters\ElementSearchFilter;
 use Anakeen\Search\SearchElements;
+use Anakeen\SmartCriteria\SmartCriteriaTrait;
 
 class FilterMatch implements ElementSearchFilter
 {
+    use SmartCriteriaTrait;
+
     protected $domainName;
     protected $searchPattern;
     /**
@@ -44,15 +47,17 @@ class FilterMatch implements ElementSearchFilter
      */
     public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
-        //("id = dochisto(id)");
-        $search->join(sprintf("id = %s(docid)", $this->dbDomain->getTableName()));
+        if (!empty($this->searchPattern)) {
+            //("id = dochisto(id)");
+            $search->join(sprintf("id = %s(docid)", $this->dbDomain->getTableName()));
 
-        $search->addFilter(sprintf(
-            "to_tsquery('%s', '%s') @@ %s.v",
-            "simple",
-            pg_escape_string($this->getPattern()),
-            $this->dbDomain->getTableName()
-        ));
+            $search->addFilter(sprintf(
+                "to_tsquery('%s', '%s') @@ %s.v",
+                "simple",
+                pg_escape_string($this->getPattern()),
+                $this->dbDomain->getTableName()
+            ));
+        }
     }
 
     /**

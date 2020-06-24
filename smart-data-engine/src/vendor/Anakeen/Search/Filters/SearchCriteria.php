@@ -5,10 +5,11 @@ namespace Anakeen\Search\Filters;
 
 use Anakeen\Core\SEManager;
 use Anakeen\Search\Internal\SearchSmartData;
-use Anakeen\Search\SearchCriteria\SearchCriteriaUtils;
-use Anakeen\Search\SearchCriteria\SearchFilter;
-use Anakeen\Search\SearchCriteria\SearchFilterAggregator;
-use Anakeen\Search\SearchCriteria\SearchFilterOperator;
+use Anakeen\SmartCriteria\SmartCriteriaConfig;
+use Anakeen\SmartCriteria\SmartCriteriaConfigurationSingleton;
+use Anakeen\SmartCriteria\SmartCriteriaUtils;
+use Anakeen\SmartCriteria\SmartFilter;
+use Anakeen\SmartCriteria\SmartFilterAggregator;
 
 class SearchCriteria implements ElementSearchFilter
 {
@@ -17,7 +18,7 @@ class SearchCriteria implements ElementSearchFilter
      */
     protected $filters;
     /**
-     * @var SearchFilterAggregator
+     * @var SmartFilterAggregator
      */
     protected $searchFilters;
 
@@ -29,7 +30,7 @@ class SearchCriteria implements ElementSearchFilter
      */
     public function __construct($searchFilterRawData)
     {
-        $this->searchFilters = new SearchFilterAggregator($searchFilterRawData);
+        $this->searchFilters = new SmartFilterAggregator($searchFilterRawData);
         $this->filters = [];
     }
 
@@ -69,7 +70,7 @@ class SearchCriteria implements ElementSearchFilter
 
     /**
      * Parse criteria raw data to build filters
-     * @param array<SearchFilter> $filters : the search criteria raw data
+     * @param array<SmartFilter> $filters : the smart criteria raw data
      * @param SearchSmartData $search
      * @return array
      * @throws Exception
@@ -87,29 +88,29 @@ class SearchCriteria implements ElementSearchFilter
                     throw new Exception("FLT0001");
                 }
                 $kind = $filter->kind;
-                if ($kind !== SearchCriteriaUtils::KIND_FULLTEXT) {
-                    $value = $filter->value;
-                    $isFilterMultiple = $operator->filterMultiple;
-                    $field = $filter->field;
-                    $isFieldMultiple = false;
-                    if ($kind === SearchCriteriaUtils::KIND_VIRTUAL || $kind === SearchCriteriaUtils::KIND_FIELD) {
-                        $structField = $structureRef->getAttribute($field);
-                        $fieldType = $structField->type;
-                        $isFieldMultiple = $structField->isMultiple();
-                    } else {
-                        $fieldType = SearchCriteriaUtils::getCriteriaKind($field);
-                    }
-                    $filterObject = SearchCriteriaUtils::getFilterObject(
-                        $fieldType,
-                        $isFieldMultiple,
-                        $isFilterMultiple,
-                        $operator,
-                        $field,
-                        $value
-                    );
-
-                    array_push($currentFilters, $filterObject);
+                $value = $filter->value;
+                $isFilterMultiple = isset($operator->filterMultiple) ? $operator->filterMultiple : false;
+                $field = $filter->field;
+                $isFieldMultiple = false;
+                if ($kind === SmartCriteriaConfig::KIND_VIRTUAL || $kind === SmartCriteriaConfig::KIND_FIELD) {
+                    $structField = $structureRef->getAttribute($field);
+                    $fieldType = $structField->type;
+                    $isFieldMultiple = $structField->isMultiple();
+                } elseif ($kind === SmartCriteriaConfig::KIND_PROPERTY) {
+                    $fieldType = SmartCriteriaUtils::getCriteriaKind($field);
+                } else {
+                    $fieldType = $kind;
                 }
+                $filterObject = SmartCriteriaConfigurationSingleton::getInstance()->getFilterObject(
+                    $fieldType,
+                    $isFieldMultiple,
+                    $isFilterMultiple,
+                    $operator,
+                    $field,
+                    $value
+                );
+
+                array_push($currentFilters, $filterObject);
             }
         }
 

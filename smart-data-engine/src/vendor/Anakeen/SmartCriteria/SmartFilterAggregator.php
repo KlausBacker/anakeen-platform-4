@@ -1,14 +1,14 @@
 <?php
 
 
-namespace Anakeen\Search\SearchCriteria;
+namespace Anakeen\SmartCriteria;
 
 use Anakeen\Search\Filters\Exception;
 
-class SearchFilterAggregator
+class SmartFilterAggregator
 {
     /**
-     * @var array<SearchFilter>
+     * @var array<SmartFilter>
      */
     public $filters = array();
 
@@ -20,7 +20,7 @@ class SearchFilterAggregator
     public function __construct($rawData)
     {
         if ($rawData["disabled"] !== true) {
-            SearchCriteriaUtils::checkRawData($rawData);
+            SmartCriteriaUtils::checkRawData($rawData);
             $this->parseData($rawData);
         }
     }
@@ -30,7 +30,7 @@ class SearchFilterAggregator
      */
     public function parseData($rawData)
     {
-        if (SearchCriteriaUtils::isMultidimensionalArray($rawData)) { //If not top level nor leaf level
+        if (SmartCriteriaUtils::isMultidimensionalArray($rawData)) { //If not top level nor leaf level
             foreach ($rawData as $filterValue) {
                 $this->parseData($filterValue);
             }
@@ -46,8 +46,8 @@ class SearchFilterAggregator
             if (array_key_exists("additionalOptions", $operatorArray)) {
                 $additionalOptions = $operatorArray["additionalOptions"];
             }
-            $operator = new SearchFilterOperator($operatorArray["key"], $options, $operatorArray["filterMultiple"], $additionalOptions);
-            array_push($this->filters, new SearchFilter($kind, $field, $operator, $value, $logic));
+            $operator = new SmartFilterOperator($operatorArray["key"], $options, $operatorArray["filterMultiple"], $additionalOptions);
+            array_push($this->filters, new SmartFilter($kind, $field, $operator, $value, $logic));
 
             if (array_key_exists("filters", $rawData)) {
                 $filters = $rawData["filters"];

@@ -75,19 +75,18 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
   @Watch("config", { immediate: false, deep: true })
   public onConfigChanged(newConfig: ISmartCriteriaConfiguration): void {
     this.innerConfig = JSON.parse(JSON.stringify(newConfig));
-    this.smartCriteriaConfigurationLoader = new SmartCriteriaConfigurationLoader(this.innerConfig);
+    this.smartCriteriaConfigurationLoader = this.getConfigurationLoader(this.innerConfig);
     this.loadConfiguration();
   }
 
   initSmartCriteria(): void {
     this.innerConfig = JSON.parse(JSON.stringify(this.config));
-    this.smartCriteriaConfigurationLoader = new SmartCriteriaConfigurationLoader(this.innerConfig);
+    this.smartCriteriaConfigurationLoader = this.getConfigurationLoader(this.innerConfig);
     if (this.mountedDone === false) {
       this.$once("hook:mounted", this.loadConfiguration);
     } else {
       this.loadConfiguration();
     }
-
   }
 
   onSmartFieldChange(event, smartElement, smartField, values): void {
@@ -179,6 +178,11 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
       translations,
       this.responsiveColumns
     );
+    this.smartFormConfigurationBuilder = this.getSmartFormConfigurationBuilder(
+      this.innerConfig,
+      translations,
+      this.responsiveColumns
+    );
     this.smartFormConfig = { ...this.smartFormConfigurationBuilder.build() };
     this.errorStack = this.errorStack.concat(this.smartFormConfigurationBuilder.getErrorStack());
   }
@@ -213,8 +217,8 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
       multipleVisible = operatorData.filterMultiple;
       valueVisible = operatorData.acceptValues;
 
-      const isFulltext = criteria.kind === SmartCriteriaKind.FULLTEXT;
-      if (!isFulltext && !operatorData.acceptValues) {
+      const isStandardKind = SmartCriteriaUtils.isStandardKind(criteria.kind);
+      if (!isStandardKind && !operatorData.acceptValues) {
         valueVisible = false;
         multipleVisible = false;
       }
@@ -334,8 +338,16 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
     if (operatorData.acceptValues === true && value === null) {
       smartFilter.disabled = true;
     }
-    if (criteria.kind !== SmartCriteriaKind.FULLTEXT) {
-      smartFilter.field = criteria.field;
+
+    switch (criteria.kind) {
+      case SmartCriteriaKind.FIELD:
+      case SmartCriteriaKind.PROPERTY:
+      case SmartCriteriaKind.VIRTUAL:
+        smartFilter.field = criteria.field;
+        break;
+      default:
+        this.customFilterValueAdditionalProcessing(smartFilter, criteria);
+        break;
     }
 
     return smartFilter;
@@ -353,8 +365,8 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     return this.computeFilterValue(this.innerConfig.criterias[index], <number>index);
   }
-  
-  public beforeDestroy() {
+
+  public beforeDestroy(): void {
     // Remove smart form controller on vue component destroy
     this.$refs.smartForm.tryToDestroy({ testDirty: false });
   }
@@ -371,12 +383,10 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
               return index;
             }
             break;
-          case SmartCriteriaKind.FULLTEXT:
+          default:
             if (criteria.label === id) {
               return index;
             }
-            break;
-          default:
             break;
         }
       }
@@ -384,4 +394,37 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
     });
     return 0;
   }
+
+  /**
+   * Returns the configuration loader used by the smart criteria based component.
+   * If another loader must be used to extend functionnalities, this method must be overriden.
+   * @param config the user defined smart criteria configuration.
+   */
+  protected getConfigurationLoader(config: ISmartCriteriaConfiguration): SmartCriteriaConfigurationLoader {
+    return new SmartCriteriaConfigurationLoader(config);
+  }
+
+  /**
+   * Returns the smart form configuration builder used by the smart criteria based component.
+   * If another loader must be used to extend functionnalities, this method must be overriden.
+   * @param innerConfig the smart criteria configuration
+   * @param translations the translations
+   * @param responsiveColumns the responsive columns prop value
+   */
+  protected getSmartFormConfigurationBuilder(
+    innerConfig: ISmartCriteriaConfiguration,
+    translations: { and: string },
+    responsiveColumns: any
+  ): SmartFormConfigurationBuilder {
+    return new SmartFormConfigurationBuilder(innerConfig, translations, responsiveColumns);
+  }
+
+  /**
+   * Modifies in place the smart filter value before returning it.
+   * For additional functionalities, this method must be overriden.
+   * @param smartFilter the initial smart filter value
+   * @param criteria the current criteria value
+   */
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  protected customFilterValueAdditionalProcessing(smartFilter: ISmartFilter, criteria: IConfigurationCriteria): void {}
 }

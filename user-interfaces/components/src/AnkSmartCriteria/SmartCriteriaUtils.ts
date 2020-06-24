@@ -58,7 +58,7 @@ export default class {
       label: "",
       filterMultiple: false
     };
-    if (criteria.kind !== SmartCriteriaKind.FULLTEXT) {
+    if (this.isStandardKind(criteria.kind)) {
       result = criteria.operators.find(op => {
         return this.areOpatorEquals(operator, op);
       });
@@ -74,5 +74,13 @@ export default class {
       }
     }
     return hasBetween;
+  }
+
+  /**
+   * returns true if kind is standard, false otherwise
+   * @param kind
+   */
+  public static isStandardKind(kind): boolean {
+    return Object.values(SmartCriteriaKind).includes(kind);
   }
 }
