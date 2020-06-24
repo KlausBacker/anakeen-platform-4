@@ -3,8 +3,10 @@
     <smart:access-configuration name="PRF_ACCOUNTS_CREATION" profil-type="PFAM">
         <smart:element-access access="create" account="accounts_manager_role"/>
         <smart:element-access access="icreate" account="accounts_manager_role"/>
+        <smart:element-access access="view" account="accounts_manager_role"/>
         <smart:element-access access="create" account="system_administrator"/>
         <smart:element-access access="icreate" account="system_administrator"/>
+        <smart:element-access access="view" account="system_administrator"/>
     </smart:access-configuration>
 
     <smart:access-configuration name="PRF_ADMIN_CREATION" label="Création administrateur" profil-type="PFAM">

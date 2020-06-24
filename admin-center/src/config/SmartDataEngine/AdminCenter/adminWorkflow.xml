@@ -42,4 +42,10 @@
             </sde:requiredAccess>
         </sde:route>
     </sde:routes>
+    <sde:accesses namespace="AdminCenter">
+        <sde:access name="AdminWorkflow">
+            <sde:description>Workflow administrator access</sde:description>
+        </sde:access>
+        <sde:route-access ref="AdminWorkflow" account="workflow_manager_role" />
+    </sde:accesses>
 </sde:config>
