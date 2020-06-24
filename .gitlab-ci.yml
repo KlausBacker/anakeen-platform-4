@@ -729,6 +729,9 @@ module-validation-publish:
   dependencies: []
 
 module-validation-web-build:
+  tags:
+    - a4ppm
+  dependencies: []
   stage: build
   script:
     - cd module-validation
@@ -738,6 +741,9 @@ module-validation-web-build:
         - module-validation/**/*
 
 module-validation-web-deploy:
+  tags:
+    - a4ppm
+  dependencies: []
   stage: publish
   script:
     # Setup SSH deploy key
