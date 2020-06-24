@@ -148,12 +148,19 @@ export default {
     },
     filterList(filterValue) {
       if (this.dataSource) {
-        // if (this.$router.currentRoute.query.filter !== filterValue) {
-        //   this.$router.addQueryParams({ filter: filterValue });
-        // }
         let filterObject = {
           logic: "or",
           filters: [
+            {
+              field: "id",
+              operator: "contains",
+              value: filterValue
+            },
+            {
+              field: "title",
+              operator: "contains",
+              value: filterValue
+            },
             {
               field: "name",
               operator: "contains",
