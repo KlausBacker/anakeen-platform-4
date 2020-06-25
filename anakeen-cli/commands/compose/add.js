@@ -24,6 +24,12 @@ exports.builder = {
     type: "string",
     default: ""
   },
+  type: {
+    alias: "t",
+    description: "(dev)elopment or (prod)uction module",
+    type: "string",
+    default: "prod"
+  },
   debug: {
     alias: "d",
     descriptions: "Print debug messages",
@@ -31,7 +37,7 @@ exports.builder = {
     default: false
   },
   cwd: {
-    description: "working directory to use",
+    description: "Working directory to use",
     type: "string",
     default: "."
   }
