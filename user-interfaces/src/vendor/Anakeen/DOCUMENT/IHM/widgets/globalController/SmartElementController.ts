@@ -31,6 +31,7 @@ import Router from "../../routers/router.js";
 import View from "../../views/document/vDocument";
 // @ts-ignore
 import TransitionView from "../../views/workflow/vTransition";
+import "./SmartElementController.css";
 import "../../widgets/widget";
 import "../../widgets/window/wConfirm";
 import "../../widgets/window/wLoading";
@@ -1325,12 +1326,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     const $se = this._element.find(".dcpDocument");
     if (!this._smartElement || $se.length === 0) {
       this._element.attr("data-controller", this.uid);
-      const domTemplate = `<div class="smart-element-wrapper">
-            <style>
-                .smart-element-wrapper {
-                    position: relative;
-                }
-            </style>
+      const domTemplate = `<div class="smart-element-wrapper">       
             <div class="document">
                 <div class="dcpDocument"></div>
             </div>

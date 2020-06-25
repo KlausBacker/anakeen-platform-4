@@ -10,11 +10,8 @@ body > .smart-element {
     overflow:auto;
 }
 
-body > .smart-element > .smart-element-wrapper {
-    height: 100%;
-}
-
 body.window-dialog > .smart-element > .smart-element-wrapper > .document {
+    /* for kendo window */
     height: 100%;
 }
 

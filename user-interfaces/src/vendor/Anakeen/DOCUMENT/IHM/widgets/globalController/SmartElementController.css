@@ -1,0 +1,8 @@
+.smart-element-wrapper {
+    position: relative;
+    height: 100%;
+}
+.smart-element-wrapper > .document{
+    /* no use height here because of sticky bar menu */
+    min-height: 100%;
+}
