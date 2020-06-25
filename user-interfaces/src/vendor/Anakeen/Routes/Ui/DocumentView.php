@@ -377,9 +377,9 @@ class DocumentView
                     $config->setCustomClientData($this->document, $this->getCustomClientData());
                     break;
             }
-
-            $messages = $this->getMessages($config, $this->document);
         }
+
+        $messages = $this->getMessages($config, $this->document);
         return $viewInfo;
     }
 
