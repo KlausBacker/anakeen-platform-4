@@ -71,7 +71,7 @@
     "webpack-node-externals": "^1.7.2"
   },
   "peerDependencies": {
-    "@progress/kendo-theme-bootstrap": "^4.8.0",
+    "@progress/kendo-theme-bootstrap": "4.8.0",
     "@progress/kendo-ui": "2019.3.1113",
     "jquery": "3.4.1",
     "vue": "2.6.11"
@@ -79,7 +79,7 @@
   "dependencies": {
     "@anakeen/theme-variables": "1.0.0-RC.2020.1.33",
     "@progress/kendo-data-query": "^1.5.2",
-    "@progress/kendo-theme-bootstrap": "^4.8.0",
+    "@progress/kendo-theme-bootstrap": "4.8.0",
     "@progress/kendo-ui": "2019.3.1113",
     "@progress/kendo-vue-animation": "^0.4.4",
     "@progress/kendo-vue-dropdowns": "^0.4.4",
