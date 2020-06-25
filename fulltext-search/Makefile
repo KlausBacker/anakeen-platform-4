@@ -99,7 +99,7 @@ app-all-autorelease: app-autorelease app-test-autorelease
 
 buildComponent: install-deps
 	@$(PRINT_COLOR) "$(COLOR_DEBUG)Build ank component $@$(COLOR_RESET)\n"
-	$(YARN_CMD) lib:rollup
+	$(YARN_BIN) lib:rollup
 
 ########################################################################################################################
 ##
