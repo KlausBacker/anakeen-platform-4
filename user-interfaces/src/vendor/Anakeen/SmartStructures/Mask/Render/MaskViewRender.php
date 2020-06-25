@@ -2,7 +2,9 @@
 
 namespace Anakeen\SmartStructures\Mask\Render;
 
+use Anakeen\Ui\BarMenu;
 use Anakeen\Ui\DefaultConfigViewRender;
+use Anakeen\Ui\ItemMenu;
 use Anakeen\Ui\UIGetAssetPath;
 
 class MaskViewRender extends DefaultConfigViewRender
@@ -23,5 +25,16 @@ class MaskViewRender extends DefaultConfigViewRender
             "file" => __DIR__.'/MaskView.mustache'
         );
         return $templates;
+    }
+
+    public function getMenu(\Anakeen\Core\Internal\SmartElement $document): BarMenu
+    {
+        $myMenu = parent::getMenu($document);
+        $alteredSfButton = new ItemMenu("alteredSf");
+        $alteredSfButton->setTextLabel(___("Voir visibilités altérées", "maskUi"));
+        $alteredSfButton->setUrl("#action/alteredSf");
+        $myMenu->appendElement($alteredSfButton);
+
+        return $myMenu;
     }
 }

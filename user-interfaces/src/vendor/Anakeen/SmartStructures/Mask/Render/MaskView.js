@@ -176,4 +176,23 @@ window.ank.smartElement.globalController.registerFunction("mask", controller => 
 
     fitMaskGridToBottom($tree);
   });
+
+  controller.addEventListener(
+    "actionClick",
+    {
+      name: "showAlteredSF"
+    },
+    function eventButtonView(event, documentObject, data) {
+      if (data.eventId === "alteredSf") {
+        $("td.cell--m-visibility div:not(.mask-visibility-modified, .mask-visibility-set)", this.$el)
+          .closest("tr")
+          .toggle();
+        const menu = controller.getMenu("alteredSf");
+        const menuLabel = controller.getMenu("alteredSf")._menuModel.attributes.label;
+        menuLabel === "Voir visibilités altérées"
+          ? menu.setLabel("Voir toutes les visibilités")
+          : menu.setLabel("Voir visibilités altérées");
+      }
+    }
+  );
 });
