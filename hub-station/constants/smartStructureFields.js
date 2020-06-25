@@ -268,6 +268,11 @@ export class HUBCONFIGURATIONGENERIC extends HUBCONFIGURATIONVUE {
    * @smartType text
    */
   static hge_component_tag = "hge_component_tag";
+  /**
+   * Component properties
+   * @smartType json
+   */
+  static hge_component_props = "hge_component_props";
 }
 export class HUBCONFIGURATIONIDENTITY extends HUBCONFIGURATIONSLOT {
   /**

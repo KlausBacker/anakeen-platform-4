@@ -39,7 +39,7 @@ const generateDescription = attr => {
 
 const extractSmartField = (fields, currentFilePath, kind = null) => {
   return Object.keys(fields).reduce((acc, currentKey) => {
-    if (currentKey === "$") {
+    if (currentKey === "$" && !fields[currentKey].hasOwnProperty("reset")) {
       //We are on the properties
       acc[fields[currentKey].name] = {
         field: fields[currentKey],
