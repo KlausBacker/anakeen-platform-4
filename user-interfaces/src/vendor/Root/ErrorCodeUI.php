@@ -218,6 +218,11 @@ class ErrorCodeUI
     const UI0401 = 'The module %s is not known in the theme';
 
     /**
+     * @errorCode The smart field : \"%s\" doesn't exist in the structure
+     */
+    const UI0402 = "The definition of the autocomplete for the smart field \"%s\" seems to have an issue, the smart field : \"%s\" doesn't exist in the structure \"%s\"";
+
+    /**
      * for beautifier
      */
     private function _bo()

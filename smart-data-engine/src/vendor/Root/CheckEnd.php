@@ -4,6 +4,8 @@
  * @package FDL
 */
 
+use Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod;
+
 class CheckEnd extends CheckData
 {
     /**
@@ -19,7 +21,7 @@ class CheckEnd extends CheckData
      */
     protected $importer = null;
 
-    public function __construct(\Anakeen\Exchange\ImportDocumentDescription & $importer = null)
+    public function __construct(\Anakeen\Exchange\ImportDocumentDescription &$importer = null)
     {
         $this->importer = $importer;
     }
@@ -46,6 +48,7 @@ class CheckEnd extends CheckData
         $this->checkDefault();
         $this->checkParameters();
         $this->checkLinks();
+        $this->checkAutoComplete();
         return $this;
     }
 
@@ -68,7 +71,7 @@ class CheckEnd extends CheckData
      * Verify if max sql column is reached
      * @param \Anakeen\Core\Internal\SmartElement $doc
      */
-    public function checkMaxAttributes(\Anakeen\Core\Internal\SmartElement & $doc)
+    public function checkMaxAttributes(\Anakeen\Core\Internal\SmartElement &$doc)
     {
         $this->doc = $doc;
         $c = $this->getColumnCount();
@@ -77,11 +80,47 @@ class CheckEnd extends CheckData
         }
     }
 
+    public function checkAutoComplete()
+    {
+        $AttributesObjects = $this->doc->GetNormalAttributes();
+        foreach ($AttributesObjects as $attributeObject) {
+            if (isset($attributeObject->properties->autocomplete)) {
+                $parse = new ParseFamilyMethod();
+                $parse->parse($attributeObject->properties->autocomplete);
+
+                $isMethode = method_exists($parse->className, $parse->methodName);
+                if (!$isMethode) {
+                    $this->addError(ErrorCode::getError('ATTR1802', $parse->methodName, $parse->className));
+                }
+                $isFieldName = false;
+                foreach ($parse->inputs as $input) {
+                    $arg = false;
+                    $name = $input->name;
+                    foreach ($AttributesObjects as $Object) {
+                        if ($Object->id === $parse->outputString && !$isFieldName) {
+                            $isFieldName = true;
+                        }
+                        if ($Object->id === $name && !$arg) {
+                            $arg = true;
+                        }
+                    }
+                    if (!$arg) {
+                        $this->addError(ErrorCode::getError('UI0402', $attributeObject->id, $name, $attributeObject->docname));
+                    }
+                    $arg = false;
+                }
+                if (!$isFieldName) {
+                    $this->addError(ErrorCode::getError('ATTR1801', $attributeObject->docname, $parse->outputString));
+                }
+            }
+        }
+    }
+
     protected function checkSetAttributes()
     {
         $this->doc->getAttributes(); // force reattach attributes
         $la = $this->doc->GetNormalAttributes();
-        foreach ($la as & $oa) {
+        foreach ($la as &$oa) {
             $foa = $oa->fieldSet;
             if (!$foa) {
                 $this->addError(ErrorCode::getError('ATTR0203', $oa->id, $this->doc->name));
@@ -96,7 +135,7 @@ class CheckEnd extends CheckData
         }
 
         $la = $this->doc->GetFieldAttributes();
-        foreach ($la as & $oa) {
+        foreach ($la as &$oa) {
             $foa = $oa->fieldSet;
             if ($foa) {
                 $type = $oa->type;
@@ -111,7 +150,7 @@ class CheckEnd extends CheckData
     protected function checkOrderAttributes()
     {
         $la = $this->doc->getAttributes(); // force reattach attributes
-        foreach ($la as & $oa) {
+        foreach ($la as &$oa) {
             if ($oa) {
                 $relativeOrder = $oa->getOption("relativeOrder");
                 if ($relativeOrder && $relativeOrder !== \Anakeen\Core\SmartStructure\SmartFieldAbsoluteOrder::firstOrder &&
@@ -128,7 +167,7 @@ class CheckEnd extends CheckData
     {
         $this->doc->getAttributes(); // force reattach attributes
         $la = $this->doc->GetNormalAttributes();
-        foreach ($la as & $oa) {
+        foreach ($la as &$oa) {
             if (($oa->phpfile == '' || $oa->phpfile == '-') && (preg_match('/^[a-z0-9_\\\\]*::/i', $oa->phpfunc))) {
                 $this->checkMethod($oa);
             }
@@ -142,7 +181,7 @@ class CheckEnd extends CheckData
      * check method validity for phpfunc property
      * @param \Anakeen\Core\SmartStructure\NormalAttribute $oa
      */
-    private function checkMethod(\Anakeen\Core\SmartStructure\NormalAttribute & $oa)
+    private function checkMethod(\Anakeen\Core\SmartStructure\NormalAttribute &$oa)
     {
         $oParse = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
         $strucFunc = $oParse->parse($oa->phpfunc);
@@ -164,7 +203,7 @@ class CheckEnd extends CheckData
     protected function checkLinks()
     {
         $la = $this->doc->getAttributes();
-        foreach ($la as & $oa) {
+        foreach ($la as &$oa) {
             if ($oa) {
                 $this->checkLinkMethod($oa);
             }
@@ -176,7 +215,7 @@ class CheckEnd extends CheckData
      *
      * @param \Anakeen\Core\SmartStructure\BasicAttribute|\Anakeen\Core\SmartStructure\MenuAttribute|Anakeen\Core\SmartStructure\NormalAttribute $oa
      */
-    private function checkLinkMethod(\Anakeen\Core\SmartStructure\BasicAttribute & $oa)
+    private function checkLinkMethod(\Anakeen\Core\SmartStructure\BasicAttribute &$oa)
     {
         if (empty($oa->link)) {
             return;
@@ -305,7 +344,7 @@ class CheckEnd extends CheckData
     {
         $this->doc->getAttributes(); // force reattach attributes
         $la = $this->doc->getParamAttributes();
-        foreach ($la as & $oa) {
+        foreach ($la as &$oa) {
             $foa = $oa->fieldSet;
             if (!$foa) {
                 $this->addError(ErrorCode::getError('ATTR0208', $oa->id, $this->doc->name));
@@ -358,7 +397,7 @@ class CheckEnd extends CheckData
      * check method validity for constraint property
      * @param \Anakeen\Core\SmartStructure\NormalAttribute $oa
      */
-    private function checkConstraint(\Anakeen\Core\SmartStructure\NormalAttribute & $oa)
+    private function checkConstraint(\Anakeen\Core\SmartStructure\NormalAttribute &$oa)
     {
         $oParse = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
         $strucFunc = $oParse->parse($oa->phpconstraint, true);
@@ -384,8 +423,8 @@ class CheckEnd extends CheckData
                     } else {
                         foreach ($oParse->inputs as $input) {
                             if ($input->type === "field") {
-                                $oi=$this->doc->getAttribute($input->name);
-                                if (! $oi) {
+                                $oi = $this->doc->getAttribute($input->name);
+                                if (!$oi) {
                                     $this->addError(ErrorCode::getError('ATTR1405', $phpLongName, $this->doc->name, $oa->id, $input->name));
                                 }
                             } elseif ($input->type === "property") {
