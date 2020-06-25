@@ -92,25 +92,15 @@ class CheckEnd extends CheckData
                 if (!$isMethode) {
                     $this->addError(ErrorCode::getError('ATTR1802', $parse->methodName, $parse->className));
                 }
-                $isFieldName = false;
                 foreach ($parse->inputs as $input) {
-                    $arg = false;
-                    $name = $input->name;
-                    foreach ($AttributesObjects as $Object) {
-                        if ($Object->id === $parse->outputString && !$isFieldName) {
-                            $isFieldName = true;
-                        }
-                        if ($Object->id === $name && !$arg) {
-                            $arg = true;
-                        }
+                    if (!isset($AttributesObjects[$input->name])) {
+                        $this->addError(ErrorCode::getError('UI0402', $attributeObject->id, $input->name, $attributeObject->docname));
                     }
-                    if (!$arg) {
-                        $this->addError(ErrorCode::getError('UI0402', $attributeObject->id, $name, $attributeObject->docname));
-                    }
-                    $arg = false;
                 }
-                if (!$isFieldName) {
-                    $this->addError(ErrorCode::getError('ATTR1801', $attributeObject->docname, $parse->outputString));
+                foreach ($parse->outputs as $output) {
+                    if (!isset($AttributesObjects[$output])) {
+                        $this->addError(ErrorCode::getError('ATTR1801', $attributeObject->docname, $output));
+                    }
                 }
             }
         }
