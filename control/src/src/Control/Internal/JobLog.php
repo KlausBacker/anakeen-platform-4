@@ -68,10 +68,10 @@ class JobLog
         $data = ModuleJob::getJobData();
 
         if ($moduleName) {
-            foreach ($data["tasks"] as &$task) {
+            foreach ($data["tasks"] as $task) {
                 if ($task["module"] === $moduleName) {
                     if ($phaseName) {
-                        foreach ($task["phases"] as &$phase) {
+                        foreach ($task["phases"] as $phase) {
                             if ($phase["name"] === $phaseName) {
                                 if ($index !== -1) {
                                     return $phase[$key][$index]["status"] ?? null;

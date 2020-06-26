@@ -9,6 +9,7 @@ class RestoreContext
 {
     const PHASE_PGRESTORE = "restore-database";
     const PHASE_RECONFIGURE = "reconfigure-parameters";
+    const PHASE_POSTSTORE = "module-post-store";
 
     protected $pgService;
     protected $vaultsPath;
@@ -20,7 +21,9 @@ class RestoreContext
 
         $this->updateContext();
         $this->restoreDatacase();
-        $this->reconfigureModules();
+        $this->reconfigureModules(self::PHASE_RECONFIGURE, 'reconfigure');
+        $this->reconfigureModules(self::PHASE_POSTSTORE, 'post-restore');
+
 
         JobLog::setStatus("restoring", "", ModuleJob::RUNNING_STATUS);
     }
@@ -87,9 +90,9 @@ SQL;
     }
 
 
-    public function reconfigureModules()
+    public function reconfigureModules($phaseName, $phaseRef)
     {
-        JobLog::setStatus("restoring", self::PHASE_RECONFIGURE, ModuleJob::RUNNING_STATUS);
+        JobLog::setStatus("restoring", $phaseName, ModuleJob::RUNNING_STATUS);
 
         $context = Context::getContext();
 
@@ -98,10 +101,10 @@ SQL;
             /**
              * @var \Module $module
              */
-            $phase = $module->getPhase('reconfigure');
+            $phase = $module->getPhase($phaseRef);
             $processList = $phase->getProcessList();
             if ($processList) {
-                JobLog::setStatus($module->name, self::PHASE_RECONFIGURE, ModuleJob::RUNNING_STATUS);
+                JobLog::setStatus($module->name, $phaseName, ModuleJob::RUNNING_STATUS);
                 foreach ($processList as $index => $process) {
                     /**
                      * @var \Process $process
@@ -124,10 +127,12 @@ SQL;
                     JobLog::setProcess($process->phase->module->name, $process->phase->name, $processInfo, $index);
                 }
             }
-            JobLog::setStatus($module->name, self::PHASE_RECONFIGURE, ModuleJob::DONE_STATUS);
+            JobLog::setStatus($module->name, $phaseName, ModuleJob::DONE_STATUS);
         }
-        JobLog::setStatus("restoring", self::PHASE_RECONFIGURE, ModuleJob::DONE_STATUS);
+        JobLog::setStatus("restoring", $phaseName, ModuleJob::DONE_STATUS);
     }
+
+
 
     /**
      * @param string $pgService
