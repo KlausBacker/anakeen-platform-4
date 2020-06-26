@@ -108,11 +108,11 @@ buildComponent: install-deps
 ########################################################################################################################
 deploy: install-deps buildJS
 	@${PRINT_COLOR} "${DEBUG_COLOR}Deploy${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath . 
+	${ANAKEEN_CLI_BIN} deploy --sourcePath .
 
 deploy-test: install-deps buildJS-test
 	@${PRINT_COLOR} "${DEBUG_COLOR}Deploy test${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ./Tests 
+	${ANAKEEN_CLI_BIN} deploy --sourcePath ./Tests
 
 buildJS-test: install-deps
 	@$(PRINT_COLOR) "$(COLOR_DEBUG)Build $@$(COLOR_RESET)\n"
