@@ -168,7 +168,7 @@ class SEManager
      */
     public static function getInitIdFromName($name)
     {
-        if (is_numeric($name)) {
+        if (!$name || is_numeric($name)) {
             return null;
         }
         DbManager::query(sprintf("select initid from docread where name='%s' limit 1;", pg_escape_string($name)), $initid, true, true);
