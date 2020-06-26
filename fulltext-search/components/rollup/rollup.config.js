@@ -1,5 +1,5 @@
 const path = require("path");
-const Scss = require("rollup-plugin-scss");
+const Scss = require("rollup-plugin-postcss");
 const typescript = require("rollup-plugin-typescript2");
 const VuePlugin = require("rollup-plugin-vue");
 const magicImporter = require("node-sass-magic-importer");
