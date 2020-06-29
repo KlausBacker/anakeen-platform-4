@@ -20,12 +20,10 @@
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Fullsearch/Config/hubConfiguration.xml"/>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/Fullsearch/Config/tasks.xml"/>
         <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Fullsearch/Config/gridFulltextController.xml"/>
-        <process command="./ank.php --script=importSearchDomain --file=./vendor/Anakeen/Config/testSearch.xml"/>
     </post-install>
 
     <post-upgrade>
         <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Fullsearch/Config/gridFulltextController.xml"/>
-        <process command="./ank.php --script=importSearchDomain --file=./vendor/Anakeen/Config/testSearch.xml"/>
     </post-upgrade>
 
     <reconfigure>
