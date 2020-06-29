@@ -73,7 +73,7 @@ env-stop: | _env-stop ## Stop docker environment
 .PHONY: env-clean
 env-clean: | env-stop ## Clean docker environment
 	@$(PRINT_COLOR) "$(COLOR_WARNING)Delete private volumes$(COLOR_RESET)\n"
-	#rm -rf $(filter-out $(KEEP_VOLUMES),$(VOLUMES_PRIVATE))
+#	rm -rf $(filter-out $(KEEP_VOLUMES),$(VOLUMES_PRIVATE))
 	rm -rf $(VOLUMES_PRIVATE) $(BUILD_DIR)
 
 .PHONY: env-reboot
