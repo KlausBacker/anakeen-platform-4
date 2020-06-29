@@ -9,6 +9,7 @@ const {
   addVueGlobal
 } = require("@anakeen/webpack-conf/parts");
 const testFulltextSmartCriteria = require("./testFulltextSmartCriteria");
+const testFulltextSmartElementGrid = require("./testFulltextSmartElementGrid");
 
 const BASE_DIR = path.resolve(__dirname, "../");
 const PUBLIC_PATH = path.join(BASE_DIR, "Tests/src/public");
@@ -29,13 +30,18 @@ module.exports = () => {
     ]
   };
   if (process.env.conf === "PROD") {
-    return [lib(testFulltextSmartCriteria)];
+    return [lib(testFulltextSmartCriteria), lib(testFulltextSmartElementGrid)];
   }
   if (process.env.conf === "DEV") {
-    return [lib({ ...testFulltextSmartCriteria, ...{ mode: "dev" } })];
+    return [
+      lib({ ...testFulltextSmartCriteria, ...{ mode: "dev" } }),
+      lib({ ...testFulltextSmartElementGrid, ...{ mode: "dev" } })
+    ];
   }
   return [
     lib(testFulltextSmartCriteria),
-    lib({ ...testFulltextSmartCriteria, ...{ mode: "dev" } })
+    lib({ ...testFulltextSmartCriteria, ...{ mode: "dev" } }),
+    lib(testFulltextSmartElementGrid),
+    lib({ ...testFulltextSmartElementGrid, ...{ mode: "dev" } })
   ];
 };
