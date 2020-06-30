@@ -88,12 +88,12 @@ class CheckEnd extends CheckData
                 $parse = new ParseFamilyMethod();
                 $parse->parse($attributeObject->properties->autocomplete);
 
-                $isMethode = method_exists($parse->className, $parse->methodName);
-                if (!$isMethode) {
+                $isMethod = method_exists($parse->className, $parse->methodName);
+                if (!$isMethod) {
                     $this->addError(ErrorCode::getError('ATTR1802', $parse->methodName, $parse->className));
                 }
                 foreach ($parse->inputs as $input) {
-                    if (!isset($AttributesObjects[$input->name])) {
+                    if (!isset($AttributesObjects[strtolower($input->name)]) && $input->type === "field") {
                         $this->addError(ErrorCode::getError('UI0402', $attributeObject->id, $input->name, $attributeObject->docname));
                     }
                 }

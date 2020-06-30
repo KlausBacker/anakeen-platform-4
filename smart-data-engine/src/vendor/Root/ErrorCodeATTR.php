@@ -415,7 +415,7 @@ class ErrorCodeATTR
      * @errorCode The Structure not have an field named ...
      */
     const ATTR1801 = "The Structure configuration \"%s\" not have an field named \"%s\"";
-        /**
+    /**
      * @errorCode Method name in the nameSpace not exist
      */
     const ATTR1802 = "The method \"%s\" in the nameSpace \"%s\" not exist";
