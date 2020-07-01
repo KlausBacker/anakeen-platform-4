@@ -15,7 +15,7 @@ class PastTimers extends ScheduledTimers
     {
         $data = [];
 
-        $timers = TimerManager::getPastTasks();
+        $timers = TimerManager::getPastTasks($this->start, $this->slice, $this->filters);
 
         $this->getTitles($timers);
         /*
@@ -45,9 +45,12 @@ class PastTimers extends ScheduledTimers
         )
          */
         foreach ($timers as $timer) {
-            $data[] = $this->getTimerData($timer);
+            $data["results"][] = $this->getTimerData($timer);
         }
         // @TODO total , slice take
+
+        $timers = TimerManager::getPastTasks(0, 0, $this->filters);
+        $data["total"] = count($timers);
         return $data;
     }
 

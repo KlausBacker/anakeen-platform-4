@@ -39,6 +39,9 @@ const conf = {
     AdminTrashManager: [
       path.resolve(BASE_DIR, "src/vendor/Anakeen/AdminCenter/IHM/HubComponent/AdminCenterTrash/index.js")
     ],
+    AdminSchedulerManager: [
+      path.resolve(BASE_DIR, "src/vendor/Anakeen/AdminCenter/IHM/HubComponent/AdminCenterScheduler/index.js")
+    ],
     AdminVaultManager: [
       path.resolve(BASE_DIR, "src/vendor/Anakeen/AdminCenter/IHM/HubComponent/AdminCenterVaultManager/index.js")
     ],

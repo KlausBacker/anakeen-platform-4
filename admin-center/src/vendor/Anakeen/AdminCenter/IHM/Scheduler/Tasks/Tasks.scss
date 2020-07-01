@@ -1,0 +1,21 @@
+.tasks-plugin {
+  height: 100%;
+  width: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: stretch;
+
+  .ank-tabs {
+    height: 100%;
+
+    .ank-tabs-header {
+      min-height: 0;    
+    }
+
+    .ank-tabs-contents {
+      min-height: 0;
+    }
+  }
+}

@@ -20,7 +20,7 @@ use SmartStructure\Wdoc;
 class ScheduledTimers
 {
     protected $start = 0;
-    protected $slice = -1;
+    protected $slice = 0;
     protected $filters = [];
     protected $fields = [TaskFields::task_status, TaskFields::task_nextdate, TaskFields::task_exec_state_result];
     protected $smartInfo = [];
@@ -39,12 +39,13 @@ class ScheduledTimers
         $filters = $request->getQueryParam("filter");
         if ($filters) {
             $requestFilters = DataSource::getFlatLevelFilters($filters);
+
             foreach ($requestFilters as $requestFilter) {
                 $field = $requestFilter["field"];
                 if ($requestFilter["value"]) {
                     switch ($field) {
-                        case "title":
-                            $this->filters[$field] = sprintf("%s", pg_escape_string($requestFilter["value"]));
+                        case "attachTo.title":
+                            $this->filters["title"] = sprintf("%s", pg_escape_string($requestFilter["value"]));
                             break;
                     }
                 }
@@ -57,7 +58,7 @@ class ScheduledTimers
     {
         $data = [];
 
-        $timers = TimerManager::getNextTaskToExecute();
+        $timers = TimerManager::getNextTaskToExecute($this->start, $this->slice, $this->filters);
 
         $this->getTitles($timers);
         /*
@@ -87,9 +88,11 @@ class ScheduledTimers
         )
          */
         foreach ($timers as $timer) {
-            $data[] = $this->getTimerData($timer);
+            $data["results"][] = $this->getTimerData($timer);
         }
         // @TODO total , slice take
+        $timers = TimerManager::getNextTaskToExecute(0, 0, $this->filters);
+        $data["total"] = count($timers);
 
         return $data;
     }
@@ -105,17 +108,25 @@ class ScheduledTimers
             "todoDate" => $timerTask->tododate,
             "attachTo" => $this->smartInfo[$timerTask->docid],
             "timer" => $this->smartInfo[$timerTask->timerid],
-            "attachBy" => $this->smartInfo[$timerTask->originid] ?? null
+            "attachBy" => $this->smartInfo[$timerTask->originid] ?? null,
         ];
         $data["mails"] = [];
+        $data["planedActions"] = [];
         foreach ($timerTask->actions["tmail"] as $mail) {
             if ($mail) {
                 $data["mails"][] = $this->smartInfo[$mail];
+                $data["planedActions"][] = sprintf(___("Send the \"%s\" email", "AdminCenterTimer"), $this->smartInfo[$mail]["title"]);
             }
         }
 
         $data["workflow"] = $this->getStepInfo($timerTask);
+        if (isset($data["workflow"]["transitionLabel"])) {
+            $data["planedActions"][] = sprintf(___("Transition \"%s\"", "AdminCenterTimer"), $data["workflow"]["transitionLabel"]);
+        }
         $data["method"] = $timerTask->actions["method"] ?? '';
+        if ($data["method"]) {
+            $data["planedActions"][] = sprintf(___("Call the \"%s\" method", "AdminCenterTimer"), $data["method"]);
+        }
 
         return $data;
     }
@@ -189,26 +200,7 @@ class ScheduledTimers
         }
     }
 
-    /**
-     * @return SearchElements
-     * @throws \Anakeen\Search\Exception
-     */
-    protected function getSearch()
-    {
-        $s = new SearchElements("TASK");
 
-        if ($this->start) {
-            $s->setStart($this->start);
-        }
-        if ($this->slice > 0) {
-            $s->setSlice($this->slice);
-        }
-        foreach ($this->filters as $field => $value) {
-            $s->addFilter("%s ~* '%s'", $field, $value);
-        }
-
-        return $s;
-    }
 
     protected function getTotal($s)
     {
