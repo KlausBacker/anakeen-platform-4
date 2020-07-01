@@ -37,52 +37,52 @@ class DocTimer extends \Anakeen\Core\Internal\DbObj
 
     /**
      * identifier of timer
-     * @public int
+     * @var int
      */
     public $id;
     /**
      * comment date to execute
-     * @public date
+     * @var string
      */
     public $tododate;
     /**
      * level of timer (number of iterations)
-     * @public int
+     * @var int
      */
     public $level;
     /**
      * Timer identifier
-     * @public int $timerid
+     * @var int $timerid
      */
     public $timerid;
     /**
      * Document identifier
-     * @public int $docid
+     * @var int $docid
      */
     public $docid;
     /**
      * Reference date to compute process execution date
-     * @public string $referencedate
+     * @var string $referencedate
      */
     public $referencedate;
     /**
      * Executed date
-     * @public string $donedate
+     * @var string $donedate
      */
     public $donedate;
     /**
      * Attach date to document
-     * @public string $attachdate
+     * @var string $attachdate
      */
     public $attachdate;
     /**
      * Action result
-     * @public string $result
+     * @var string $result
      */
     public $result;
     /**
      * Actions to be executed
-     * @public string $actions
+     * @var string $actions
      */
     public $actions;
     public $originid;
