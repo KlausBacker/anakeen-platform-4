@@ -11,6 +11,12 @@
         <smart:element-access access="edit" account="gadmin"/>
         <smart:element-access access="delete" account="gadmin"/>
     </smart:access-configuration>
+    <smart:access-configuration name="PRF_TASK_ACCESS" label="Administration des tâches et minuteurs">
+        <smart:description>Task and timers only by administrators.</smart:description>
+        <smart:element-access access="view" account="gadmin"/>
+        <smart:element-access access="edit" account="gadmin"/>
+        <smart:element-access access="delete" account="gadmin"/>
+    </smart:access-configuration>
     <smart:access-configuration name="PRF_ADMIN_CREATION" label="Création administrateur" profil-type="PFAM">
         <smart:description>Can be create only by administrators.</smart:description>
         <smart:element-access access="view" account="all"/>

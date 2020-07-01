@@ -61,6 +61,10 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Igroup/igroup.profil.xml">
             <label>Profiling account structures</label>
         </process>
+
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Profiles/system-profil-update.xml">
+            <label>Update profiles for system structures</label>
+        </process>
         <process command="programs/resetAccess">
             <label>Reset Default Access</label>
         </process>
