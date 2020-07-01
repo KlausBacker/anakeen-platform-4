@@ -98,6 +98,7 @@ class ScheduledTimers
     {
         $data = [
             "id" => $timerTask->id,
+            "uri" => sprintf("/api/v2/admin/sheduling/timers/%d", $timerTask->id),
             "status" => $timerTask->donestatus,
             "attachDate" => $timerTask->attachdate,
             "referenceDate" => $timerTask->referencedate,
