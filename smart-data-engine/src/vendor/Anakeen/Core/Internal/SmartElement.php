@@ -1,4 +1,6 @@
-<?php /** @noinspection PhpUnusedParameterInspection */
+<?php
+
+/** @noinspection PhpUnusedParameterInspection */
 
 namespace Anakeen\Core\Internal;
 
@@ -516,7 +518,7 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
     /**
      * @var int[] user permission masks
      */
-    public $uperm=[];
+    public $uperm = [];
     /**
      * param value cache
      *
@@ -1600,7 +1602,7 @@ create unique index i_docir on doc(initid, revision);";
                 for ($i = 0; $i < $max; $i++) {
                     $val = $this->applyMethod($paramAttr->phpfunc, "", $i);
                     if ($val != $paramAttr->phpfunc) {
-                        $tmpVal [] = $val;
+                        $tmpVal[] = $val;
                     }
                 }
                 $r = self::arrayToRawValue($tmpVal);
@@ -1620,22 +1622,22 @@ create unique index i_docir on doc(initid, revision);";
                     $ra = $this->getValueMethod($ra);
                 }
                 if (is_array($ra)) {
-                    $rs=[];
+                    $rs = [];
                     foreach ($ra as $colValue) {
-                        $rs[]=$colValue[$paramAttr->id]??"";
+                        $rs[] = $colValue[$paramAttr->id] ?? "";
                     }
-                    $r=self::arrayToRawValue($rs);
+                    $r = self::arrayToRawValue($rs);
                 } else {
-                    $r=$def;
+                    $r = $def;
                 }
             } else {
-                 $r=$def;
+                $r = $def;
             }
         }
 
         if (is_array($r)) {
             if (empty($r)) {
-                $r='{}';
+                $r = '{}';
             } else {
                 $r = Postgres::arrayToString($r);
             }
@@ -1684,7 +1686,7 @@ create unique index i_docir on doc(initid, revision);";
         $dl = $s->getDocumentList();
         $t = array();
         foreach ($dl as $doc) {
-            $t[] = clone($doc);
+            $t[] = clone ($doc);
         }
         return ($t);
     }
@@ -2438,7 +2440,8 @@ create unique index i_docir on doc(initid, revision);";
         foreach ($this->attributes->attr as $k => $v) {
             if (is_object($v) && $v->isNormal && ($v->usefor != 'Q')
                 && ((($v->type == "image") && (!$onlyfile))
-                    || ($v->type == "file"))) {
+                    || ($v->type == "file"))
+            ) {
                 $tsa[$v->id] = $v;
             }
         }
@@ -2544,7 +2547,8 @@ create unique index i_docir on doc(initid, revision);";
         }
         $err = '';
         if (\Anakeen\Core\Internal\Autoloader::classExists('Anakeen\TransformationEngine\Manager')
-            && \Anakeen\TransformationEngine\Manager::isActivated()) {
+            && \Anakeen\TransformationEngine\Manager::isActivated()
+        ) {
             if (preg_match(PREGEXPFILE, $va, $reg)) {
                 $vidin = $reg[2];
                 $vidout = 0;
@@ -2775,7 +2779,8 @@ create unique index i_docir on doc(initid, revision);";
                 || ($a->type == "htmltext")
                 || ($a->type == "image")
                 || ($a->type == "file")
-                || ($a->getOption('sortable') != 'asc' && $a->getOption('sortable') != 'desc')) {
+                || ($a->getOption('sortable') != 'asc' && $a->getOption('sortable') != 'desc')
+            ) {
                 continue;
             }
             $tsa[$a->id] = $a;
@@ -3190,7 +3195,7 @@ create unique index i_docir on doc(initid, revision);";
      * the attribute must be an array type
      *
      * @param string $idAttr identifier of array attribute
-     * @param array $tv values of each column. Array index must be the attribute identifier
+     * @param string[] $tv values of each column. Array index must be the attribute identifier
      * @param int $index $index row (first is 0) -1 at the end; x means before x row
      *
      * @return string error message, if no error empty string
@@ -3200,7 +3205,7 @@ create unique index i_docir on doc(initid, revision);";
     final public function addArrayRow($idAttr, $tv, $index = -1)
     {
         if (!is_array($tv)) {
-            return sprintf('values "%s" must be an array', $tv);
+            throw new Exception("CORE0107", $tv);
         }
         $old_setValueCompleteArrayRow = $this->_setValueNeedCompleteArray;
         $this->_setValueNeedCompleteArray = false;
@@ -3214,16 +3219,16 @@ create unique index i_docir on doc(initid, revision);";
                 $attrOut = array_diff(array_keys($tv), array_keys($ta));
                 if ($attrOut) {
                     $this->_setValueNeedCompleteArray = $old_setValueCompleteArrayRow;
-                    return sprintf(_('attribute "%s" is not a part of array "%s"'), implode(', ', $attrOut), $idAttr);
+                    // return sprintf(_('attribute "%s" is not a part of array "%s"'), implode(', ', $attrOut), $idAttr);
+                    throw new Exception('CORE0108', implode(', ', $attrOut), $idAttr);
                 }
-
                 $err = "";
                 // add in each columns
                 foreach ($ta as $k => $v) {
                     $k = strtolower($k);
                     $tnv = $this->getMultipleRawValues($k);
-                    $hasColValue=isset($tv[$k]);
-                    $val = $hasColValue===true ? $tv[$k] : '';
+                    $hasColValue = isset($tv[$k]);
+                    $val = $hasColValue === true ? $tv[$k] : '';
                     if ($index == 0) {
                         array_unshift($tnv, $val);
                     } elseif ($index > 0 && $index < count($tnv)) {
@@ -3235,11 +3240,35 @@ create unique index i_docir on doc(initid, revision);";
                     } else {
                         $tnv[] = $val;
                     }
-                    if ($hasColValue===false) {
+                    if ($hasColValue === false) {
                         $this->disableAccessControl();
                     }
+
+                    if (gettype($tnv) === "array" || is_scalar($tnv)) {
+                        if (!is_scalar($tnv)) {
+                            foreach ($tnv as $tnvLevel1) {
+                                $typeTnvLevel1 = gettype($tnvLevel1);
+                                if ($typeTnvLevel1 === "array" || is_scalar($tnvLevel1)) {
+                                    if (!is_scalar($tnvLevel1)) {
+                                        foreach ($tnvLevel1 as $tnvLevel2) {
+                                            if (!is_scalar($tnvLevel2)) {
+                                                throw new Exception("CORE0106", gettype($tnvLevel2));
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    if ($typeTnvLevel1 !== "NULL") {
+                                        throw new Exception("CORE0105", $typeTnvLevel1);
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        throw new Exception("CORE0105", gettype($tnv));
+                    }
+                    // if $tnv === string || string[] || string[][]
                     $err .= $this->setValue($k, $tnv);
-                    if ($hasColValue===false) {
+                    if ($hasColValue === false) {
                         $this->restoreAccessControl();
                     }
                 }
@@ -3408,7 +3437,8 @@ create unique index i_docir on doc(initid, revision);";
                 }
 
                 if (strcmp($this->$attrid, $value) != 0
-                    && strcmp($this->$attrid, str_replace("\n ", "\n", $value)) != 0) {
+                    && strcmp($this->$attrid, str_replace("\n ", "\n", $value)) != 0
+                ) {
                     if ($oattr->repeat) {
                         $tvalues = $this->rawValueToArray($value);
                     } else {
@@ -3450,7 +3480,7 @@ create unique index i_docir on doc(initid, revision);";
                                                 return sprintf(_("value [%s] is not a number"), $tvalues[$kvalue]);
                                             } else {
                                                 $tvalues[$kvalue]
-                                                    = (string)((double)$tvalues[$kvalue]); // delete non signifiant zeros
+                                                    = (string) ((float) $tvalues[$kvalue]); // delete non signifiant zeros
                                             }
                                         }
 
@@ -3477,7 +3507,8 @@ create unique index i_docir on doc(initid, revision);";
                                             return sprintf(_("value [%s] is not a number"), $avalue);
                                         }
                                         if (floatval($avalue) < -floatval(pow(2, 31))
-                                            || floatval($avalue) > floatval(pow(2, 31) - 1)) {
+                                            || floatval($avalue) > floatval(pow(2, 31) - 1)
+                                        ) {
                                             // signed int32 overflow
                                             return sprintf(
                                                 _("[%s] must be between %s and %s"),
@@ -3570,7 +3601,7 @@ create unique index i_docir on doc(initid, revision);";
                                         $html = \Anakeen\Core\Utils\HtmlClean::normalizeHTMLFragment(
                                             $tvalues[$kvalue],
                                             $error,
-                                            ["initid"=>$this->initid, "revision"=>$this->revision, "attrid"=>$attrid]
+                                            ["initid" => $this->initid, "revision" => $this->revision, "attrid" => $attrid]
                                         );
                                         if ($html === false) {
                                             $html = '';
@@ -3580,7 +3611,7 @@ create unique index i_docir on doc(initid, revision);";
                                             return _("Malformed HTML:") . "\n" . $error;
                                         }
 
-                                            $tvalues[$kvalue] = $html;
+                                        $tvalues[$kvalue] = $html;
 
                                         /* Encode '[' to prevent further layout interpretation/evaluation */
                                         $tvalues[$kvalue] = str_replace(
@@ -4317,7 +4348,7 @@ create unique index i_docir on doc(initid, revision);";
                     );
                 }
                 if (!array_key_exists("err", $res)) {
-                     throw new Exception("DOC0013", $this->getTitle(), $oattr->phpconstraint, print_r($res, true));
+                    throw new Exception("DOC0013", $this->getTitle(), $oattr->phpconstraint, print_r($res, true));
                 }
                 if (is_array($res) && $res["err"] != "") {
                     $this->constraintbroken = "[$attrid] " . $res["err"];
@@ -6082,7 +6113,7 @@ create unique index i_docir on doc(initid, revision);";
                         $ul .= sprintf("/api/v2/smart-elements/%s.html", $id);
                 }
                 /* Add target's specific elements to base URL */
-                
+
                 $ajs = sprintf(' documentId="%s" ', $id);
                 if ($viewIcon) {
                     DbManager::query(sprintf('select icon from docread where id=%d', $id), $iconValue, true, true);
@@ -6271,7 +6302,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @return string
      */
-    protected function noPrivilegeMessage(\Anakeen\Core\Internal\SmartElement & $doc, $aclname)
+    protected function noPrivilegeMessage(\Anakeen\Core\Internal\SmartElement &$doc, $aclname)
     {
         /*
          * If the error message concerns the 'view' privilege, or the document
