@@ -200,7 +200,7 @@ export default class SmartFormConfigurationBuilder {
 
   /**
    * Method used to build smart form configuration from smart criteria custom kind (i.e. fulltext)
-   * Too extend functionnalities, this method can be overriden.
+   * To extend functionnalities, this method can be overriden.
    * @param criteria the criteria parameter
    * @param index of the criteria
    */

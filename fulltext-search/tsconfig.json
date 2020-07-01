@@ -8,7 +8,8 @@
     "allowSyntheticDefaultImports": true,
     "types": [
       "jquery",
-      "node"
+      "node",
+      "kendo-ui"
     ],
     "noImplicitAny": false,
     "strictNullChecks": false,
