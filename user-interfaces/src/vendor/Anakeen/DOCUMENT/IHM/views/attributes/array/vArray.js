@@ -298,18 +298,7 @@ export default Backbone.View.extend({
   },
 
   addWidgetLine: function vArray_addWidgetLine(options) {
-    this.$el
-      .dcpArray("addLine", options.index)
-      .then(() => {
-        if (options.success) {
-          options.success();
-        }
-      })
-      .catch(err => {
-        if (options.error) {
-          options.error(err);
-        }
-      });
+    this.$el.dcpArray("addLine", options.index);
   },
 
   addLine: function vArray_AddLine(event, options) {
