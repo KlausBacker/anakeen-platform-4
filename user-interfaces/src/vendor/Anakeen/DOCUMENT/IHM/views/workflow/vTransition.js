@@ -278,7 +278,7 @@ export default ViewDocument.extend({
             maxHeight: "80%",
             overflowY: "scroll",
             resize: function resizeTransition() {
-              $(window).trigger("resize");
+              this.trigger("smartElementResize");
             },
             open: e => {
               var event = { prevent: false };

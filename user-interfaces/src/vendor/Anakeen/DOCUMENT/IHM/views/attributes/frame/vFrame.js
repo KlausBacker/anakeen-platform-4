@@ -28,7 +28,7 @@ export default Backbone.View.extend({
     this.listenTo(this.model, "errorMessage", this.setError);
     this.listenTo(this.model, "change:errorMessage", this.setError);
     this.listenTo(this.model, "destroy", this.remove);
-    this.listenTo(this.model, "resize", this.setResponsiveClasse);
+    this.listenTo(this.model, "smartElementResize", this.setResponsiveClasse);
     this.listenTo(this.model, "cleanView", this.remove);
     this.listenTo(this.model, "hide", this.hide);
     this.listenTo(this.model, "show", this.show);
@@ -281,7 +281,6 @@ export default Backbone.View.extend({
     });
 
     $fake.remove();
-    $(window).on("resize.v" + this.model.cid, _.bind(this.setResponsiveClasse, this));
     _.defer(_.bind(this.setResponsiveClasse, this));
   },
 
@@ -313,7 +312,7 @@ export default Backbone.View.extend({
       if ($contentElement.hasClass("dcpFrame__content--open")) {
         this.model.getDocumentModel().trigger("redrawErrorMessages");
         // To redraw responsive elements
-        $(window).trigger("resize");
+        this.trigger("smartElementResize");
       }
     }
   },

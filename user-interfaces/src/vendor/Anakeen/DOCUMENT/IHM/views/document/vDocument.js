@@ -54,6 +54,8 @@ export default Backbone.View.extend({
     this.listenTo(this.model, "doDrawTab", this.drawTab);
     this.listenTo(this.model, "dduiDocumentReady", this.cleanAndRender);
     this.listenTo(this.model, "dduiDocumentDisplayView", this.showView);
+    this.resizeObserver = new ResizeObserver(_.debounce(_.bind(this.resizeSmartElement, this), 100));
+    this.resizeObserver.observe(this.$el[0]);
     this.renderInProgress = Promise.resolve();
   },
 
@@ -143,8 +145,10 @@ export default Backbone.View.extend({
         locale = "fr-FR";
       }
       $(window).off(".v" + this.model.cid);
-
-      $(window).on("resize.v" + this.model.cid, _.bind(this.resizeForFooter, this));
+      // disconnect resizeObserver and listen again
+      this.resizeObserver.disconnect();
+      this.resizeObserver.observe(this.$el[0]);
+      $(window).on("resize.v" + this.model.cid, _.debounce(_.bind(this.resizeSmartElement, this), 100));
 
       kendo.culture(locale);
       //add document base
@@ -325,7 +329,6 @@ export default Backbone.View.extend({
 
               if (tabPlacement === "top" && this.kendoTabs) {
                 this.$(".dcpDocument__tabs").addClass("dcpDocument__tabs--fixed");
-                $(window).on("resize.v" + this.model.cid, _.debounce(_.bind(this.scrollTabList, this), 100, false));
                 _.delay(_.bind(this.scrollTabList, this), 500);
               }
 
@@ -343,16 +346,6 @@ export default Backbone.View.extend({
               function vDocumentPreventDragDrop(e) {
                 e.preventDefault();
               }
-            );
-            $(window).on(
-              "resize.v" + this.model.cid,
-              _.debounce(
-                function vDocumentResizeDebounce() {
-                  documentView.scrollTobVisibleTab();
-                },
-                100,
-                false
-              )
             );
 
             this.$el.addClass("dcpDocument--show");
@@ -388,14 +381,6 @@ export default Backbone.View.extend({
 
                 $tabList.append($tab.find("> .k-tabstrip-next"));
                 $tabList.prepend($tab.find("> .k-tabstrip-prev"));
-                $(window).on(
-                  "resize.v" + documentView.model.cid,
-                  _.debounce(function() {
-                    var $tabList = documentView.$el.find(".dcpDocument__tabs__list");
-                    $tabList.append($tab.find("> .k-tabstrip-next"));
-                    $tabList.prepend($tab.find("> .k-tabstrip-prev"));
-                  }, 200)
-                );
 
                 $tab.addClass("tab--sticky");
               }
@@ -1070,7 +1055,24 @@ export default Backbone.View.extend({
     }
     $(window).off(".v" + this.model.cid);
     $(window.document).off(".v" + this.model.cid);
+    this.resizeObserver.disconnect();
 
     return Backbone.View.prototype.remove.call(this);
+  },
+  resizeSmartElement() {
+    _.debounce(() => this.model.trigger("smartElementResize"), 50)();
+    let $tab = this.$el.find(".dcpDocument__tabs");
+    const tabPlacement = this.model.getOption("tabPlacement") || "top";
+    if (tabPlacement === "top" && this.kendoTabs) {
+      _.debounce(() => this.scrollTabList(), 100, false)();
+    }
+    _.debounce(() => this.scrollTobVisibleTab(), 200, false)();
+    if (this.model.getOption("stickyTabs") !== undefined) {
+      _.debounce(() => {
+        let $tabList = this.$el.find(".dcpDocument__tabs__list");
+        $tabList.append($tab.find("> .k-tabstrip-next"));
+        $tabList.prepend($tab.find("> .k-tabstrip-prev"));
+      }, 200)();
+    }
   }
 });
