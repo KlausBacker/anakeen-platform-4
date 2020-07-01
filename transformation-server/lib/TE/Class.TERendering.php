@@ -169,10 +169,12 @@ class TERendering
         }
         return false;
     }
+
     /**
      * Get a waiting task and process it
+     * @param $task
      */
-    protected function processOneTask()
+    protected function processOneTask($task)
     {
         /*
          * Become a session leader so we can kill the whole process group
