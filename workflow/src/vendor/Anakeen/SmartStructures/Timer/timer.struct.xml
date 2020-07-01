@@ -67,8 +67,6 @@
         <smart:defaults>
             <smart:default field="tm_iteration">1</smart:default>
         </smart:defaults>
-        <smart:accesses>
-            <smart:structure-access-configuration ref="PRF_ADMIN_CREATION"/>
-        </smart:accesses>
+
     </smart:structure-configuration>
 </smart:config>

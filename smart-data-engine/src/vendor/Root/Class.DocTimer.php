@@ -15,6 +15,10 @@
  */
 class DocTimer extends \Anakeen\Core\Internal\DbObj
 {
+    const successStatus="success";
+    const waitingStatus="waiting";
+    const failStatus="failed";
+    const expiredStatus="expired";
     public $fields = array(
         "timerid", // timer id
         "level", // current level
@@ -26,6 +30,7 @@ class DocTimer extends \Anakeen\Core\Internal\DbObj
         "referencedate", // reference date
         "tododate", // date to execute
         "donedate", // executed date
+        "donestatus", // done states
         "actions", // actions to execute
         "result"
         // result text
@@ -85,11 +90,15 @@ class DocTimer extends \Anakeen\Core\Internal\DbObj
      * @var string $actions
      */
     public $actions;
+    /**
+     * @var string success, failed, waiting
+     */
+    public $donestatus;
     public $originid;
     public $fromid;
     /**
      * Timer title
-     * @public string title
+     * @var string title
      */
     public $title;
     public $id_fields = array(
@@ -110,10 +119,16 @@ create table doctimer ( id serial,
                    referencedate timestamp,
                    tododate timestamp,
                    donedate timestamp,
+                   donestatus text,
                    actions text,
                    result text  );
 ";
 
+
+    public function preInsert()
+    {
+        $this->donestatus=self::waitingStatus;
+    }
 
     /**
      * delete all timers which comes from same origin
@@ -203,9 +218,21 @@ create table doctimer ( id serial,
         if (!$timer || !$timer->isAlive()) {
             return sprintf(_("cannot execute timer : timer %s is not found"), $this->timerid);
         }
-        $err = $timer->executeTask(unserialize($this->actions), $this->docid, $msg);
+        try {
+            $err = $timer->executeTask(unserialize($this->actions), $this->docid, $msg);
+            $this->result = $msg;
+            if ($err) {
+                 $this->result = sprintf("ERROR: %s.\n%s", $err, $msg);
+                $this->donestatus = self::failStatus;
+            } else {
+                $this->donestatus = self::successStatus;
+            }
+        } catch (Exception $e) {
+            $err = $e->getMessage();
+            $this->result = sprintf("ERROR: %s", $err);
+        }
+
         $this->donedate = date('Y-m-d H:i:s');
-        $this->result = $msg;
         $err .= $this->modify();
 
         return $err;
