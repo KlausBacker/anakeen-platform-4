@@ -13,6 +13,7 @@ class TimerTask
     public $fromid;
     public $attachdate;
     public $donedate;
+    public $donestatus;
     public $referencedate;
     public $tododate;
     public $result;

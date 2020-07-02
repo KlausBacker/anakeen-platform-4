@@ -1,13 +1,13 @@
 <migration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:noNamespaceSchemaLocation="migrationRules.xsd">
 
-    <action id="docLog" label="Add data column on doclog table">
+    <action id="docLog" label="Rename arg column to data column on doclog table">
         <condition>
             <sql-assert-empty label="verify column data of table doclog not exists">
-                select * from information_schema.columns where table_schema = 'public' and column_name='data';
+                select * from information_schema.columns where table_schema = 'public'  and table_name = 'doclog' and column_name='data';
             </sql-assert-empty>
             <sql-assert-not-empty label="verify column arg of table doclog exists">
-                select * from information_schema.columns where table_schema = 'public' and column_name='arg';
+                select * from information_schema.columns where table_schema = 'public' and table_name = 'doclog' and column_name='arg';
             </sql-assert-not-empty>
         </condition>
         <process>
@@ -17,7 +17,24 @@
         </process>
         <check>
             <sql-assert-not-empty label="verify column data of table doclog has been created">
-                select * from information_schema.columns where table_schema = 'public' and column_name='data';
+                select * from information_schema.columns where table_schema = 'public'   and table_name = 'doclog' and column_name='data';
+            </sql-assert-not-empty>
+        </check>
+    </action>
+    <action id="docTimer" label="Add donestatus column on doctimer table">
+        <condition>
+            <sql-assert-empty label="verify column donestatus of table doclog not exists">
+                select * from information_schema.columns where table_schema = 'public' and table_name = 'doctimer' and column_name='donestatus';
+            </sql-assert-empty>
+        </condition>
+        <process>
+            <sql-query label="Add doctimer column">
+                alter table doctimer add column donestatus text;
+            </sql-query>
+        </process>
+        <check>
+            <sql-assert-not-empty label="verify column donestatus of table doctimer has been created">
+                select * from information_schema.columns where table_schema = 'public'  and table_name = 'doctimer' and column_name='donestatus';
             </sql-assert-not-empty>
         </check>
     </action>
