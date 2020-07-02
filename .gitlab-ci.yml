@@ -6,6 +6,7 @@ stages:
   - lint
   - buildJS
   - buildHub
+  - buildFulltext
   - build
   - test
   - registry
@@ -173,7 +174,7 @@ hub-station-buildJS:
 
 fulltext-search-buildJS:
   <<: *pull-cache
-  stage: buildJS
+  stage: buildFulltext
   tags:
     - a4ppm
   script:
@@ -189,6 +190,8 @@ fulltext-search-buildJS:
     changes:
       - user-interfaces/**/*
       - fulltext-search/**/*
+  dependencies:
+    - user-interfaces-buildJS
 
 #endregion buildJS
 
