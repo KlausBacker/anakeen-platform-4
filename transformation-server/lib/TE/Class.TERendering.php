@@ -151,6 +151,7 @@ class TERendering
         }
         return false;
     }
+
     /**
      * return next task to process
      * the new status ogf task is 'P' and yje pid is set to current process
@@ -159,20 +160,26 @@ class TERendering
     protected function getNextTask()
     {
         $wt = new Task($this->dbaccess);
-        $wt->execQuery(sprintf("update task set pid=%d, status='P' where tid = (select tid from task where status='W' limit 1)", posix_getpid())); // no need lock table
-        $q = new QueryPg($this->dbaccess, "Task");
-        $q->AddQuery("status='P'");
-        $q->AddQuery("pid=" . posix_getpid());
-        $l = $q->Query(0, 1);
-        if ($q->nb > 0) {
-            return $l[0];
+        $wt->execQuery(sprintf("update task set  status='P' where tid = (select tid from task where status='W' order by cdate limit 1) returning tid")); // no need lock table
+
+        $nextTask = $wt->fetchArray(0);
+        if ($nextTask) {
+            $q = new QueryPg($this->dbaccess, "Task");
+            $q->AddQuery("status='P'");
+            $q->AddQuery(sprintf("tid='%s'", pg_escape_string($nextTask["tid"])));
+            $l = $q->Query(0, 1);
+
+
+            if ($q->nb > 0) {
+                return $l[0];
+            }
         }
         return false;
     }
 
     /**
      * Get a waiting task and process it
-     * @param $task
+     * @param Task $task
      */
     protected function processOneTask($task)
     {
@@ -218,7 +225,10 @@ class TERendering
             $orifile = $this->task->infile;
             $taskWorkDir = $this->task->getTaskWorkDir();
             if (!is_dir($taskWorkDir)) {
-                throw new Exception(sprintf(_("Invalid task directory from task's input file '%s'."), $this->task->infile));
+                throw new Exception(sprintf(
+                    _("Invalid task directory from task's input file '%s'."),
+                    $this->task->infile
+                ));
             }
             $outfile = tempnam($taskWorkDir, 'ter-');
             if ($outfile === false) {
@@ -233,7 +243,13 @@ class TERendering
             if (is_file($errfile)) {
                 throw new Exception(sprintf(_("error file '%s' already exists."), $errfile));
             }
-            $tc = sprintf("%s %s %s > %s 2>&1", $eng->command, escapeshellarg($orifile), escapeshellarg($outfile), escapeshellarg($errfile));
+            $tc = sprintf(
+                "%s %s %s > %s 2>&1",
+                $eng->command,
+                escapeshellarg($orifile),
+                escapeshellarg($outfile),
+                escapeshellarg($errfile)
+            );
             $this->task->log(sprintf(_("execute [%s] command"), $tc));
             /* Save original TMPDIR */
             $TMPDIR = $this->setTmpDir($taskWorkDir);
