@@ -359,7 +359,9 @@ export default Backbone.View.extend({
             currentAttr.trigger("renderHtmlText");
           });
           this.model.trigger("array", "addLine", this.model, options.line);
-          options.resolve();
+          if (options.resolve) {
+            options.resolve();
+          }
         }, this)
       )
       .catch(options.reject);
