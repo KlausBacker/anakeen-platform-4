@@ -1,5 +1,12 @@
 import { Vue } from "vue/types/vue";
 
+export enum DockCollapseStatus {
+  AlwaysCollapsed = "ALWAYSCOLLAPSED",
+  NeverCollapsed = "NEVERCOLLAPSED",
+  DefaultCollapsed = "DEFAULTCOLLAPSED",
+  DefaultNonCollapsed = "DEFAULTNONCOLLAPSED"
+}
+
 export enum DockPosition {
   TOP = "TOP",
   BOTTOM = "BOTTOM",
