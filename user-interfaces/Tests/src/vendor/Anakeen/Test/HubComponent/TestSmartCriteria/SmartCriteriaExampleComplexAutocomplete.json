@@ -1,0 +1,29 @@
+{
+  "title": "Aide à la saisie Complexe",
+  "defaultStructure": "DEVBILL",
+  "criterias": [
+    {
+      "kind": "field",
+      "field": "bill_author",
+      "autocomplete": {
+        "url": "/api/v2/uitest/smartcriteriacomplexautocomplete",
+        "inputs": {
+          "title": "titleEntry"
+        },
+        "outputs": {
+          "bill_author": "Country"
+        }
+      },
+      "default": {
+        "operator": {
+          "key": "equals",
+          "options": []
+        }
+      }
+    },
+    {
+      "kind": "property",
+      "field": "title"
+    }
+  ]
+}

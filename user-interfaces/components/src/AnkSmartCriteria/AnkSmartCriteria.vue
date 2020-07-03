@@ -17,6 +17,7 @@
         @smartFieldChange="onSmartFieldChange"
         @beforeSave="onBeforeSave"
         @save="onSave"
+        @smartFieldHelperSearch="onSmartFieldHelperSearch"
       />
     </div>
     <div v-if="submit" v-show="!loading" class="smart-criteria-input">
