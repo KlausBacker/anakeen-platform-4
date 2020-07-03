@@ -3,7 +3,6 @@
     ref="innerDock"
     :position="position"
     :expandable="isExpandable"
-    collapsableOptions="DEFAULTNONCOLLAPSED"
     @dockResized="resizeWindow"
   >
     <template slot="header">
