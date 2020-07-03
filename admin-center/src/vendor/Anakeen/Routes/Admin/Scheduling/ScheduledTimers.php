@@ -98,6 +98,7 @@ class ScheduledTimers
     {
         $data = [
             "id" => $timerTask->id,
+            "uri" => sprintf("/api/v2/admin/sheduling/timers/%d", $timerTask->id),
             "status" => $timerTask->donestatus,
             "attachDate" => $timerTask->attachdate,
             "referenceDate" => $timerTask->referencedate,
@@ -114,7 +115,7 @@ class ScheduledTimers
         }
 
         $data["workflow"] = $this->getStepInfo($timerTask);
-        $data["method"] = $timerTask->actions["methods"] ?? '';
+        $data["method"] = $timerTask->actions["method"] ?? '';
 
         return $data;
     }
@@ -127,22 +128,22 @@ class ScheduledTimers
             $wid = $this->smartInfo[$timer->docid]["wid"] ?? "";
 
             if ($wid) {
-                $currentState=$this->smartInfo[$timer->docid]["state"];
+                $currentState = $this->smartInfo[$timer->docid]["state"];
                 $workflow = SEManager::getDocument($wid);
                 /** @var Wdoc $workflow */
                 if ($workflow) {
                     SEManager::cache()->addDocument($workflow);
 
-                    $stepInfo= [
+                    $stepInfo = [
                         "nextStateid" => $state,
                         "nextStateLabel" => $workflow->getStateLabel($state),
                         "currentStateColor" => $workflow->getColor($currentState),
                         "nextStateColor" => $workflow->getColor($state)
                     ];
                     foreach ($workflow->cycle as $transition) {
-                        if ($transition["e1"] ===$currentState && $transition["e2"] ===$state) {
-                            $stepInfo["transitionId"] =  $transition["t"];
-                            $stepInfo["transitionLabel"] =  $workflow->getTransitionLabel($transition["t"]);
+                        if ($transition["e1"] === $currentState && $transition["e2"] === $state) {
+                            $stepInfo["transitionId"] = $transition["t"];
+                            $stepInfo["transitionLabel"] = $workflow->getTransitionLabel($transition["t"]);
                         }
                     }
                     return $stepInfo;
