@@ -38,7 +38,7 @@
             <sde:callable>Anakeen\Routes\Admin\Scheduling\ScheduledTimerInfo</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/admin/sheduling/timers/{timerid}</sde:pattern>
-            <sde:description>Get all timer prevision</sde:description>
+            <sde:description>Get timer detail</sde:description>
             <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>
                 <sde:access ns="AdminCenter">AdminScheduling</sde:access>
