@@ -81,9 +81,11 @@ export default class HubStationDock extends Vue {
   public rootUrl!: string;
   @Prop({ default: "", type: String })
   public activeRoute!: string;
+  @Prop({ default: {}, type: Object })
+  public dockConfiguration!: object;
   // endregion props
 
-  public dockIsCollapsed: boolean = true;
+  public dockIsCollapsed = true;
 
   public mounted() {
     this.dockIsCollapsed = this.$refs.innerDock.collapsed;

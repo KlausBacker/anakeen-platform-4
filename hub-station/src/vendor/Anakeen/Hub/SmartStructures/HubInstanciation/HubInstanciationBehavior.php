@@ -36,9 +36,11 @@ class HubInstanciationBehavior extends \Anakeen\SmartElement
         $currentLanguage = ContextManager::getLanguage();
         if ($titles) {
             foreach ($titles as $title) {
-                if (strpos($currentLanguage, "fr_FR") !== false && $title[HubinstanciationFields::hub_instance_language] === "Français") {
+                if (strpos($currentLanguage,
+                        "fr_FR") !== false && $title[HubinstanciationFields::hub_instance_language] === "Français") {
                     $this->title = $title[HubinstanciationFields::hub_instance_title];
-                } elseif (strpos($currentLanguage, "en_US") !== false && $title[HubinstanciationFields::hub_instance_language] === "English") {
+                } elseif (strpos($currentLanguage,
+                        "en_US") !== false && $title[HubinstanciationFields::hub_instance_language] === "English") {
                     $this->title = $title[HubinstanciationFields::hub_instance_title];
                 }
             }
@@ -80,12 +82,18 @@ class HubInstanciationBehavior extends \Anakeen\SmartElement
             "instanceName" => $this->getRawValue(HubinstanciationFields::instance_logical_name),
             "routerEntry" => $this->getRawValue(
                 HubinstanciationFields::hub_instanciation_router_entry,
-                "/hub/station/".$this->getRawValue(HubinstanciationFields::instance_logical_name)."/"
+                "/hub/station/" . $this->getRawValue(HubinstanciationFields::instance_logical_name) . "/"
+            ),
+            "dockConfiguration" => array(
+                "left" => $this->getRawValue(HubinstanciationFields::hub_instanciation_dock_left),
+                "right" => $this->getRawValue(HubinstanciationFields::hub_instanciation_dock_right),
+                "top" => $this->getRawValue(HubinstanciationFields::hub_instanciation_dock_top),
+                "bottom" => $this->getRawValue(HubinstanciationFields::hub_instanciation_dock_bottom)
             ),
             "globalAssets" => [
-                "js" => $this->getAttributeValue(HubinstanciationFields::hub_instance_jsasset),
-                "css" => $this->getAttributeValue(HubinstanciationFields::hub_instance_cssasset)
-            ]
+        "js" => $this->getAttributeValue(HubinstanciationFields::hub_instance_jsasset),
+        "css" => $this->getAttributeValue(HubinstanciationFields::hub_instance_cssasset)
+    ]
         ];
     }
 

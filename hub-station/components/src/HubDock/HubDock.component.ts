@@ -97,6 +97,7 @@ export default class HubDock extends Vue {
     }
     return result;
   }
+
   public $vuebar: any;
 
   @Prop({ default: DockPosition.LEFT }) public position!: DockPosition;
@@ -115,7 +116,10 @@ export default class HubDock extends Vue {
   @Prop({ default: 1000, type: Number }) public hoverDelay!: number;
   @Prop({ default: false, type: Boolean }) public multiselection!: boolean;
   @Prop({ default: () => [], type: Array }) public content!: object[];
-  @Prop({ default: DockCollapseStatus.DefaultCollapsed}) public collapsableOptions !: DockCollapseStatus;
+  @Prop({
+    default: DockCollapseStatus.DefaultNonCollapsed,
+    type: String
+  }) public dockConfiguration!: DockCollapseStatus;
 
   public animate: boolean = false;
   public collapsed: boolean = !this.expanded;
@@ -132,6 +136,7 @@ export default class HubDock extends Vue {
     dockContent: HTMLElement;
   };
   protected overTimer: number = -1;
+
   @Watch("collapsed")
   public onCollapsed(val: boolean) {
     if (val) {
@@ -150,9 +155,9 @@ export default class HubDock extends Vue {
     this.$emit("dockEntriesSelected", this.multiselection ? val : val[0]);
   }
 
-  @Watch("collapsableOptions")
-  public watchCollapsableOptions(newValue) {
-    switch(newValue) {
+  @Watch("dockConfiguration")
+  public watchDockConfiguration(newValue) {
+    switch (newValue) {
       case "NEVERCOLLAPSED":
         this.collapsable = false;
         this.collapsed = false;
@@ -197,25 +202,28 @@ export default class HubDock extends Vue {
     ) {
       this.$vuebar.initScrollbar(this.$refs.dockContent, {});
     }
-
-    switch(this.collapsableOptions) {
+    switch (this.dockConfiguration) {
       case "NEVERCOLLAPSED":
+        this.expand();
         this.collapsable = false;
         this.collapsed = false;
         this.$emit("dockExpanded");
         break;
       case "ALWAYSCOLLAPSED":
+        this.collapse();
         this.collapsed = true;
         this.collapsable = false;
         this.$emit("dockCollapsed");
         break;
       case "DEFAULTCOLLAPSED":
         this.collapsed = this.storageCollapseStatus();
+        this.collapsed ? this.collapse() : this.expand();
         this.collapsable = true;
         this.$emit("dockCollapsed");
         break;
       case "DEFAULTNONCOLLAPSED":
         this.collapsed = this.storageCollapseStatus();
+        this.collapsed ? this.collapse() : this.expand();
         this.collapsable = true;
         this.$emit("dockExpanded");
         break;
@@ -224,14 +232,14 @@ export default class HubDock extends Vue {
 
   public expand() {
     this.collapsed = false;
-    window.localStorage.setItem("hub-dock.collapse.status", "expanded");
+    window.localStorage.setItem("hub-dock.collapse.status." + this.position, "expanded");
     this.$emit("dockExpanded");
     this.$emit("dockResized");
   }
 
   public collapse() {
     this.collapsed = true;
-    window.localStorage.setItem("hub-dock.collapse.status", "collapsed");
+    window.localStorage.setItem("hub-dock.collapse.status." + this.position, "collapsed");
     this.$emit("dockCollapsed");
     this.$emit("dockResized");
   }
@@ -276,7 +284,7 @@ export default class HubDock extends Vue {
   }
 
   protected onOverDock() {
-    if (this.collapsableOptions !== "ALWAYSCOLLAPSED") {
+    if (this.dockConfiguration !== "ALWAYSCOLLAPSED") {
       if (this.expandOnHover && this.collapsed && this.overTimer === -1) {
         if (
           this.position === DockPosition.LEFT ||
@@ -293,8 +301,9 @@ export default class HubDock extends Vue {
       }
     }
   }
+
   protected onLeaveDock() {
-    if (this.collapsableOptions !== "NEVERCOLLAPSED") {
+    if (this.dockConfiguration !== "NEVERCOLLAPSED") {
       if (this.expandOnHover) {
         if (this.superposeOnHover && !this.superposeDock) {
           this.superposable = false;
@@ -327,10 +336,10 @@ export default class HubDock extends Vue {
   }
 
   protected storageCollapseStatus() {
-    const storageCollapse = window.localStorage.getItem("hub-dock.collapse.status");
+    const storageCollapse = window.localStorage.getItem("hub-dock.collapse.status." + this.position);
     if (storageCollapse) {
       return storageCollapse === "collapsed";
     }
-    return this.collapsableOptions === "DEFAULTCOLLAPSED";
+    return this.dockConfiguration === "DEFAULTNONCOLLAPSED";
   }
 }
