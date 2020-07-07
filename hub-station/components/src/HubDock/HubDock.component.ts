@@ -120,6 +120,8 @@ export default class HubDock extends Vue {
     default: DockCollapseStatus.DefaultNonCollapsed,
     type: String
   }) public dockConfiguration!: DockCollapseStatus;
+  @Prop({ default: HUB_DOCK_ENTRY_NAME, type: String })
+  public hubStation!: string;
 
   public animate: boolean = false;
   public collapsed: boolean = !this.expanded;
@@ -232,14 +234,14 @@ export default class HubDock extends Vue {
 
   public expand() {
     this.collapsed = false;
-    window.localStorage.setItem("hub-dock.collapse.status." + this.position, "expanded");
+    window.localStorage.setItem("hub-dock."+this.hubStation+".collapse.status." + this.position, "expanded");
     this.$emit("dockExpanded");
     this.$emit("dockResized");
   }
 
   public collapse() {
     this.collapsed = true;
-    window.localStorage.setItem("hub-dock.collapse.status." + this.position, "collapsed");
+    window.localStorage.setItem("hub-dock."+this.hubStation+".collapse.status." + this.position, "collapsed");
     this.$emit("dockCollapsed");
     this.$emit("dockResized");
   }
@@ -336,7 +338,7 @@ export default class HubDock extends Vue {
   }
 
   protected storageCollapseStatus() {
-    const storageCollapse = window.localStorage.getItem("hub-dock.collapse.status." + this.position);
+    const storageCollapse = window.localStorage.getItem("hub-dock."+this.hubStation+".collapse.status." + this.position);
     if (storageCollapse) {
       return storageCollapse === "collapsed";
     }
