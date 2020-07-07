@@ -1353,6 +1353,15 @@ union
         if ($this->accounttype == self::ROLE_TYPE) {
             return \ErrorCode::getError("ACCT0007", implode(',', $roleIds), $this->login);
         }
+        $currentRoles=$this->getRoles();
+        if (count($roleIds) === count($currentRoles)) {
+            sort($roleIds);
+            sort($currentRoles);
+            if ($roleIds === $currentRoles) {
+                // Nothing to do
+                return "";
+            }
+        }
         $this->deleteRoles();
         $err = '';
         if ($this->accounttype == self::USER_TYPE || $this->accounttype == self::GROUP_TYPE) {
