@@ -230,7 +230,8 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
                 } else {
                     $this->clearArrayValues(MyAttributes::us_groups);
                 }
-                $err = $this->modify();
+                // No need recompute profile
+                $err = $this->modify(true);
                 if ($this->getOldRawValue(MyAttributes::us_mail) !== false && $this->getOldRawValue(MyAttributes::us_mail) !== $this->getRawValue(MyAttributes::us_mail)) {
                     IgroupLib::refreshMailGroupsOfUser($wuser->id);
                 }
