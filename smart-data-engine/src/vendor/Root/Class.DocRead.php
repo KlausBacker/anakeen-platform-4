@@ -23,6 +23,7 @@ create table docread as (select * from only doc) with no data;
 ALTER TABLE docread ADD CONSTRAINT docread_pkey PRIMARY KEY (id);
 create index fromid_docread on docread(fromid);
 create index initid_docread on docread(initid);
+create index name_docread on docread(name);
 create index title_docread on docread(title);
 create index docty_docread on docread(doctype);";
     
