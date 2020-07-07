@@ -109,6 +109,8 @@ create table users ( id      int not null,
                         mail       text,
                         fid int);
 create index users_idx2 on users(lastname);
+create index users_idx3 on users(accounttype);
+create index users_idx4 on users(substitute);
 CREATE UNIQUE INDEX users_login on users (login);
 create sequence seq_id_users start 10;";
 
