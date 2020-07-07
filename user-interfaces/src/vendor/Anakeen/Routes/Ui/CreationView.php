@@ -9,7 +9,7 @@ use Anakeen\Core\SEManager;
 
 /**
  * Class CreationView
- * @note    Used by route : POST /api/v2/family/{family}/documentsViews/
+ * @note    Used by route : POST /api/v2/smart-structures/{family}/smartElementCreation/
  * @package Anakeen\Routes\Ui
  */
 class CreationView
