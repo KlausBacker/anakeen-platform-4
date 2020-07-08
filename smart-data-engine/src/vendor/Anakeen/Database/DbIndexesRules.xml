@@ -1,0 +1,90 @@
+<migration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="migrationRules.xsd">
+
+    <action id="user index" label="Add user indexes">
+        <condition>
+            <sql-assert-empty label="verify user index not exists">
+                select * from pg_indexes where indexname = 'users_idx3' and tablename='users';
+            </sql-assert-empty>
+        </condition>
+        <process>
+            <sql-query label="Add users indexes">
+    create index if not exists users_idx3 on users(accounttype);
+	create index if not exists users_idx4 on users(substitute);
+            </sql-query>
+        </process>
+        <check>
+            <sql-assert-not-empty label="verify user index accounttype not exists">
+                select * from pg_indexes where indexname = 'users_idx3' and tablename='users';
+            </sql-assert-not-empty>
+            <sql-assert-not-empty label="verify user index substitute not exists">
+                select * from pg_indexes where indexname = 'users_idx4' and tablename='users';
+            </sql-assert-not-empty>
+        </check>
+    </action>
+
+
+    <action id="group index" label="Add group indexes">
+        <condition>
+            <sql-assert-empty label="verify group index not exists">
+                select * from pg_indexes where indexname = 'groups_idx3' and tablename='groups';
+            </sql-assert-empty>
+        </condition>
+        <process>
+            <sql-query label="Add group index">
+                create index if not exists groups_idx3 on groups(idgroup);
+            </sql-query>
+        </process>
+        <check>
+            <sql-assert-not-empty label="verify group index idgroup not exists">
+                select * from pg_indexes where indexname = 'groups_idx3' and tablename='groups';
+            </sql-assert-not-empty>
+        </check>
+    </action>
+
+
+
+    <action id="docread index" label="Add docread indexes">
+        <condition>
+            <sql-assert-empty label="verify docread index not exists">
+                select * from pg_indexes where indexname = 'name_docread' and tablename='docread';
+            </sql-assert-empty>
+        </condition>
+        <process>
+            <sql-query label="Add docread index">
+                create index if not exists name_docread on docread(name);
+            </sql-query>
+        </process>
+        <check>
+            <sql-assert-not-empty label="verify docread index name not exists">
+                select * from pg_indexes where indexname = 'name_docread' and tablename='docread';
+            </sql-assert-not-empty>
+        </check>
+    </action>
+
+
+
+    <action id="fld index" label="Add fld indexes">
+        <condition>
+            <sql-assert-empty label="verify fld index not exists">
+                select * from pg_indexes where indexname = 'fld_idir' and tablename='fld';
+            </sql-assert-empty>
+        </condition>
+        <process>
+            <sql-query label="Add fld index">
+                create index if not exists fld_idir on fld(dirid);
+                create unique index if not exists fld_dc on fld(dirid,childid);
+
+            </sql-query>
+        </process>
+        <check>
+            <sql-assert-not-empty label="verify fld index dirid not exists">
+                select * from pg_indexes where indexname = 'fld_idir' and tablename='fld';
+            </sql-assert-not-empty>
+            <sql-assert-not-empty label="verify fld index dirid,childid not exists">
+                select * from pg_indexes where indexname = 'fld_dc' and tablename='fld';
+            </sql-assert-not-empty>
+        </check>
+    </action>
+
+</migration>

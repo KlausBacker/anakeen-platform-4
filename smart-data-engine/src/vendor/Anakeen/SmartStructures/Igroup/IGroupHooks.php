@@ -414,12 +414,11 @@ class IGroupHooks extends \SmartStructure\Group
                 $this->setValue("US_MEID", $this->id);
                 // search group of the group
                 $g = new \Group("", $wid);
-                $tglogin = $tgid = array();
+                $tgid = array();
                 if (count($g->groups) > 0) {
                     foreach ($g->groups as $gid) {
                         $gt = new \Anakeen\Core\Account("", $gid);
                         $tgid[$gid] = $gt->fid;
-                        $tglogin[$gid] = $this->getTitle($gt->fid);
                     }
                     $this->setValue("GRP_IDPGROUP", $tgid);
                 } else {

@@ -338,7 +338,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
                 }
 
                 if ($insertOne == "") {
-                    $insertOne = $qf->add();
+                    $insertOne = $qf->add(false, true);
                     if ($insertOne == "") {
                         $this->addHistoryEntry(
                             sprintf(_("Document %s inserted"), $tdoc["title"]),

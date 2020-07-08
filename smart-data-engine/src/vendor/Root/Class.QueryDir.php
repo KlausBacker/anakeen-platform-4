@@ -59,8 +59,10 @@ create table fld (
                     doctype char
                    );
 create index fld_iqd on fld(qtype,dirid);
+create index fld_idir on fld(dirid);
 create index fld_iqc on fld(qtype,childid);
 create unique index fld_u on fld(qtype,dirid,childid);
+create unique index fld_dc on fld(dirid,childid);
 create sequence seq_id_fld start 100;
 CREATE TRIGGER tfldfrom before insert on fld FOR EACH ROW execute procedure fromfld();";
 
