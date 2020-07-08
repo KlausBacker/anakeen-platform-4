@@ -1,4 +1,4 @@
-export default class SearchCriteriaOperator {
+export default class SmartCriteriaOperator {
   buildMap() {
     return {
       isEmpty: {
