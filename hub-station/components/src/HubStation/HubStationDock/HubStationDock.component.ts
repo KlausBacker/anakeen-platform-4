@@ -81,8 +81,8 @@ export default class HubStationDock extends Vue {
   public rootUrl!: string;
   @Prop({ default: "", type: String })
   public activeRoute!: string;
-  @Prop({ default: {}, type: Object })
-  public dockConfiguration!: object;
+  @Prop({ default: "", type: String })
+  public dockConfiguration!: string;
   @Prop({ default: "", type: String })
   public hubStation!: string;
   // endregion props
