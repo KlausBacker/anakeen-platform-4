@@ -1,4 +1,6 @@
-<?php /** @noinspection PhpUnusedParameterInspection */
+<?php
+
+/** @noinspection PhpUnusedParameterInspection */
 
 /**
  * Workflow Class Document
@@ -470,8 +472,8 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                         $this->doc->disableAccessControl();
                         $err = call_user_func(
                             [
-                            $this,
-                            $tr[$mIndex]
+                                $this,
+                                $tr[$mIndex]
                             ],
                             ...$args
                         );
@@ -810,7 +812,8 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         }
         \Anakeen\Core\DbManager::setMasterLock(false);
         return \Anakeen\Core\SmartStructure\SmartStructureImport::refreshPhpPgDoc($this->dbaccess, $cid);
-    }/** @noinspection PhpUnusedParameterInspection */
+    }
+    /** @noinspection PhpUnusedParameterInspection */
 
     /**
      * change state of a document
@@ -1136,24 +1139,12 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         $tr = ($tname) ? $this->transitions[$tname] : null;
         if ($tmtid && (count($tmtid) > 0)) {
             foreach ($tmtid as $mtid) {
-                $keys = array();
                 /**
                  * @var \SmartStructure\MAILTEMPLATE $mt
                  */
                 $mt = SEManager::getDocument($mtid);
                 if ($mt && $mt->isAlive()) {
-                    $keys["WCOMMENT"] = nl2br($comment);
-                    if (isset($tr["ask"])) {
-                        foreach ($tr["ask"] as $vpid) {
-                            if (is_a($vpid, BasicAttribute::class)) {
-                                $keys["V_" . strtoupper($vpid)] = $this->getHtmlAttrValue($vpid);
-                                $keys[strtoupper($vpid)] = $this->getRawValue($vpid);
-                            } else {
-                                $keys["V_" . strtoupper($vpid)] = $this->getHtmlAttrValue($vpid);
-                                $keys[strtoupper($vpid)] = $this->getRawValue($vpid);
-                            }
-                        }
-                    }
+                    $keys = $this->getMailAskKeys($tname, $comment);
                     $err .= $mt->sendDocument($this->doc, $keys);
                 }
             }
@@ -1162,19 +1153,12 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         $tmtid = $this->getMultipleRawValues($this->_aid("_MTID", $state));
         if ($tmtid && (count($tmtid) > 0)) {
             foreach ($tmtid as $mtid) {
-                $keys = array();
                 $mt = SEManager::getDocument($mtid);
                 /**
                  * @var \SmartStructure\MAILTEMPLATE $mt
                  */
                 if ($mt && $mt->isAlive()) {
-                    $keys["WCOMMENT"] = nl2br($comment);
-                    if (isset($tr["ask"])) {
-                        foreach ($tr["ask"] as $vpid) {
-                            $keys["V_" . strtoupper($vpid)] = $this->getHtmlAttrValue($vpid);
-                            $keys[strtoupper($vpid)] = $this->getRawValue($vpid);
-                        }
-                    }
+                    $keys = $this->getMailAskKeys($tname, $comment);
                     $err .= $mt->sendDocument($this->doc, $keys);
                 }
             }
@@ -1182,6 +1166,43 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         return $err;
     }
 
+    /**
+     * Fetch differents asks values to send them into mail template
+     * @param string $transitionName
+     * @param string $comment
+     * @return string[]
+     */
+    protected function getMailAskKeys(string $transitionName, string $comment): array
+    {
+        $keys = [];
+        $keys["WCOMMENT"] = htmlspecialchars($comment);
+        if ($transitionName) {
+            $asks = $this->getTransition($transitionName)->getAsks();
+            foreach ($asks as $askField) {
+                // Workflow parameter
+                $field = $this->getAttribute($askField->id);
+                if ($field && $field->structureId === $askField->structureId && $field->usefor === "Q") {
+                    $keys[strtoupper($field->id)] = $this->getAskValue($field->id);
+                    $keys["V_" . strtoupper($field->id)] = $this->getHtmlValue($field, $this->getAskValue($field->id));
+                }
+
+                // Smart Element parameter
+                $field = $this->getSmartElement()->getAttribute($askField->id);
+                if ($field && $field->structureId === $askField->structureId  && $field->usefor === "Q") {
+                    $keys[strtoupper($field->id)] = $this->getAskValue($field->id);
+                    $keys["V_" . strtoupper($field->id)] = $this->getSmartElement()->getHtmlValue($field, $this->getAskValue($field->id));
+                }
+
+                // Workflow field
+                $field = $this->getAttribute($askField->id);
+                if ($field && $field->structureId === $askField->structureId  && $field->usefor !== "Q") {
+                    $keys[strtoupper($field->id)] = $this->getAskValue($field->id);
+                    $keys["V_" . strtoupper($field->id)] = $this->getHtmlValue($field, $this->getAskValue($field->id));
+                }
+            }
+        }
+        return $keys;
+    }
     public function setAskValue($fieldId, $value)
     {
         $this->askValue[$fieldId] = $value;
