@@ -48,6 +48,9 @@ export default interface IConfigurationCriteria {
   stateWorkflow?: number | string;
   stateList?: Array<ISmartFormFieldEnumConfig>;
   searchDomain?: string;
+
+  // Autocomplete
+  autocomplete?: ICriteriaAutocomplete;
 }
 
 export interface ICriteriaConfigurationOperator extends ISmartFormFieldEnumConfig {
@@ -60,4 +63,10 @@ export interface ICriteriaConfigurationOperator extends ISmartFormFieldEnumConfi
   options: CriteriaOption[];
   additionalOptions: CriteriaAdditionalOptions[];
   key: CriteriaOperator;
+}
+
+export interface ICriteriaAutocomplete {
+  url?: string;
+  inputs?: any;
+  outputs?: any;
 }

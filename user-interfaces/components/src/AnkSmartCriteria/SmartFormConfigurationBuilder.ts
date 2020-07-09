@@ -2,12 +2,13 @@ import ISmartCriteriaConfiguration from "./Types/ISmartCriteriaConfiguration";
 import IConfigurationCriteria, { ICriteriaConfigurationOperator } from "./Types/IConfigurationCriteria";
 import {
   ISmartFormConfiguration,
-  ISmartFormFieldSet,
+  ISmartFormFieldEnumItem,
   ISmartFormFieldItem,
-  ISmartFormFieldEnumItem
+  ISmartFormFieldSet
 } from "../AnkSmartForm/ISmartForm";
 import { SmartCriteriaKind } from "./Types/SmartCriteriaKind";
 import SmartCriteriaUtils from "./SmartCriteriaUtils";
+import ISmartFormCriteriaConfiguration from "./Types/ISmartFormCriteriaConfiguration";
 
 export default class SmartFormConfigurationBuilder {
   configuration: ISmartCriteriaConfiguration;
@@ -15,6 +16,7 @@ export default class SmartFormConfigurationBuilder {
   errorStack: Array<any>;
   translations: any;
   responsiveColumns: any[];
+  fieldTranslationMap: any;
 
   constructor(
     smartCriteriaConfiguration: ISmartCriteriaConfiguration,
@@ -25,6 +27,7 @@ export default class SmartFormConfigurationBuilder {
     this.errorStack = [];
     this.translations = translations;
     this.responsiveColumns = responsiveColumnns;
+    this.fieldTranslationMap = {};
     this.initSmartFormConfiguration();
   }
 
@@ -52,6 +55,8 @@ export default class SmartFormConfigurationBuilder {
 
   build(): ISmartFormConfiguration {
     this.configuration.criterias.map(criteria => this.addCriteriaTemplateToSmartForm(criteria));
+
+    this.buildSmartFormAutocompleteFields(this.smartFormConfiguration);
     return this.smartFormConfiguration;
   }
 
@@ -134,8 +139,9 @@ export default class SmartFormConfigurationBuilder {
       ? SmartFormConfigurationBuilder.getValueMultipleName(index)
       : SmartFormConfigurationBuilder.getValueName(index);
     const label = criteria.label;
-    const formValue: ISmartFormFieldSet | ISmartFormFieldItem | ISmartFormFieldEnumItem = {
+    const formValue: ISmartFormCriteriaConfiguration = {
       name,
+      originalName: criteria.field,
       label,
       type: criteria.type,
       multiple: multipleFilter
@@ -151,6 +157,12 @@ export default class SmartFormConfigurationBuilder {
       default:
         break;
     }
+
+    // Autocomplete
+    if (criteria.autocomplete) {
+      formValue.autocomplete = JSON.parse(JSON.stringify(criteria.autocomplete));
+    }
+
     return formValue;
   }
 
@@ -216,6 +228,8 @@ export default class SmartFormConfigurationBuilder {
   private buildDefaultCriteriaTemplate(criteria: IConfigurationCriteria, index: number): ISmartFormFieldSet {
     const hasBetween = SmartCriteriaUtils.hasBetweenOperator(criteria);
     const operators = SmartFormConfigurationBuilder.buildSmartFormOperators(criteria.operators);
+
+    // Content and values
     const formTemplate: ISmartFormFieldSet = {
       content: [
         {
@@ -247,6 +261,8 @@ export default class SmartFormConfigurationBuilder {
         SmartFormConfigurationBuilder.getValueBetweenLabelName(index)
       ] = this.translations.and;
     }
+
+    // Render Options
     this.smartFormConfiguration.renderOptions["fields"][SmartFormConfigurationBuilder.getOperatorLabelName(index)] = {
       labelPosition: "none"
     };
@@ -271,5 +287,69 @@ export default class SmartFormConfigurationBuilder {
       };
     }
     return formTemplate;
+  }
+
+  /**
+   * Sets autocompletes to be readable
+   * @param smartFormConfiguration
+   */
+  private buildSmartFormAutocompleteFields(smartFormConfiguration: ISmartFormConfiguration) {
+    this.fieldTranslationMap = {};
+
+    // build matching fields map
+    const criteriaFrames = smartFormConfiguration.structure[0].content;
+    for (const criteriaFrame of criteriaFrames) {
+      // @ts-ignore
+      const criteriaFields = criteriaFrame.content;
+      for (const criteriaField of criteriaFields) {
+        const originalName = criteriaField.originalName;
+        if (originalName) {
+          const multiple = criteriaField.multiple ? "multiple" : "single";
+          if (!this.fieldTranslationMap[originalName]) {
+            this.fieldTranslationMap[originalName] = {};
+          }
+          this.fieldTranslationMap[originalName][multiple] = criteriaField.name;
+        }
+      }
+    }
+
+    for (const criteriaFrame of criteriaFrames) {
+      // @ts-ignore
+      const criteriaFields = criteriaFrame.content;
+      for (const criteriaField of criteriaFields) {
+        const autocomplete = criteriaField.autocomplete;
+        if (autocomplete) {
+          const multiple = criteriaField.multiple ? "multiple" : "single";
+          if (autocomplete.outputs) {
+            autocomplete.outputs = this.getTranslatedKeysObject(
+              autocomplete.outputs,
+              this.fieldTranslationMap,
+              multiple
+            );
+          }
+          if (autocomplete.inputs) {
+            autocomplete.inputs = this.getTranslatedKeysObject(autocomplete.inputs, this.fieldTranslationMap, multiple);
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Translates keys given a map and its multiplicity
+   * @param object
+   * @param map
+   * @param multiple
+   */
+  private getTranslatedKeysObject(object, map, multiple) {
+    const translatedObject = {};
+    Object.keys(object).forEach(key => {
+      if (map[key] && map[key][multiple]) {
+        translatedObject[map[key][multiple]] = object[key];
+      } else {
+        translatedObject[key] = object[key];
+      }
+    });
+    return translatedObject;
   }
 }

@@ -69,6 +69,7 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
     filters: []
   };
   private loading = true;
+  private fieldTranslationMap = {};
 
   @Watch("config", { immediate: false, deep: true })
   public onConfigChanged(newConfig: ISmartCriteriaConfiguration): void {
@@ -174,11 +175,12 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
       and: `${this.$t("SmartFormConfigurationBuilder.And")}`
     };
     this.smartFormConfigurationBuilder = this.getSmartFormConfigurationBuilder(
-      this.innerConfig,
+      JSON.parse(JSON.stringify(this.innerConfig)),
       translations,
       this.responsiveColumns
     );
     this.smartFormConfig = { ...this.smartFormConfigurationBuilder.build() };
+    this.fieldTranslationMap = { ...this.smartFormConfigurationBuilder.fieldTranslationMap };
     this.errorStack = this.errorStack.concat(this.smartFormConfigurationBuilder.getErrorStack());
   }
 
@@ -416,5 +418,34 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
 
   protected getLoaderUrl(): string {
     return "/api/v2/smartcriteria/loadconfiguration";
+  }
+
+  private onSmartFieldHelperSearch(event, smartElement, smartField, options) {
+    const attributes = options.data.attributes;
+    const autocomplete = smartField._attributeModel.attributes.autocomplete;
+    if (autocomplete && autocomplete.inputs) {
+      const inputsResult = {};
+      Object.keys(autocomplete.inputs).forEach(key => {
+        const referencedIndex = parseInt(key.substr(-1, 1));
+        const sfOperatorValue = this.$refs.smartForm.getValue(
+          SmartFormConfigurationBuilder.getOperatorName(referencedIndex)
+        );
+        const referencedCriteria = this.innerConfig.criterias[referencedIndex];
+        const operatorString = sfOperatorValue ? sfOperatorValue.value : "";
+        const referencedOperatorData: ICriteriaConfigurationOperator = SmartCriteriaUtils.getOperatorData(
+          operatorString,
+          referencedCriteria
+        );
+        const operatorMultiple = referencedOperatorData.filterMultiple;
+        const multipleKey = operatorMultiple ? "multiple" : "single";
+        const referencedField = referencedCriteria.field;
+        if (this.fieldTranslationMap[referencedField] && this.fieldTranslationMap[referencedField][multipleKey]) {
+          inputsResult[this.fieldTranslationMap[referencedField][multipleKey]] = autocomplete.inputs[key];
+        } else {
+          inputsResult[key] = autocomplete.inputs[key];
+        }
+      });
+      autocomplete.inputs = inputsResult;
+    }
   }
 }
