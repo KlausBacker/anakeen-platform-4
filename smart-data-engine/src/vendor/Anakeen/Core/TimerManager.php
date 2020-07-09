@@ -69,7 +69,6 @@ class TimerManager
             $timerhourlimit = 2;
         }
         $q->addQuery(sprintf("tododate > now() - interval '%d hour'", $timerhourlimit));
-        // error_log(print_r($filters, true));
         foreach ($filters as $column => $value) {
             switch ($column) {
                 case "title":
@@ -96,7 +95,7 @@ class TimerManager
      * @param array $filters = array with all filter to execute
      * @return TimerTask[]
      */
-    public static function getPastTasks(int $start = 0, int $slice = 0, array $filters)
+    public static function getPastTasks(int $start = 0, int $slice = 0, array $filters = [])
     {
         $q = new \Anakeen\Core\Internal\QueryDb("", \DocTimer::class);
 
