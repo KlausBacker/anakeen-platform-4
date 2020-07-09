@@ -4,6 +4,7 @@
     <module:po-config>
         <module:po-struct source="src/**/*struct.xml"/>
         <module:po-enum source="src/**/*struct.xml"/>
+        <module:po-php source="src/**/*.php" target="fulltext"/>
         <module:po-vuejs source="src/vendor/Anakeen/**/*.?(vue|ts|js)" target="FULL_SEARCH"/>
     </module:po-config>
 

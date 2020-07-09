@@ -106,4 +106,25 @@ class SmartCriteriaUtils
         }
         return $criteriaType;
     }
+
+    public static function areOperatorsEqual(&$op1, &$op2)
+    {
+        if (array_key_exists("key", $op1) && array_key_exists("key", $op2) && $op1["key"] === $op2["key"]) {
+            if (!array_key_exists("options", $op1)) {
+                $op1["options"] = array();
+            }
+            if (!array_key_exists("options", $op2)) {
+                $op1["options"] = array();
+            }
+            if (count($op1Options = $op1["options"]) === count($op2Options = $op2["options"])) {
+                $optionIntersection = array_filter($op1Options, function ($op) use ($op2Options) {
+                    return !in_array($op, $op2Options);
+                });
+                if (empty($optionIntersection)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
