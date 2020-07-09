@@ -85,8 +85,11 @@ class TaskBehavior extends \Anakeen\SmartElement
         $this->setValue(TaskFields::task_exec_duration, $diff->format("%H:%I:%S"));
         $this->setValue(TaskFields::task_exec_state_result, $return === 0 ? "success" : "fail");
 
+        $nextDate=$this->getRawValue(TaskFields::task_nextdate);
+        $this->clearValue(TaskFields::task_nextdate);
 
         $this->revise();
+        $this->setValue(TaskFields::task_nextdate, $nextDate);
         $this->clearValue(TaskFields::task_exec_output);
         $this->clearValue(TaskFields::task_exec_state_result);
         $this->clearValue(TaskFields::task_exec_duration);

@@ -7,8 +7,8 @@ export default AttributeStructuralModel.extend({
     this.trigger("array", "remove", this, index);
   },
 
-  addIndexedLine: function mAttributeArrayaddIndexedLine(index, options = {}) {
-    this.trigger("addWidgetLine", { index: index, success: options.success, error: options.error });
+  addIndexedLine: function mAttributeArrayaddIndexedLine(index) {
+    this.trigger("addWidgetLine", { index: index });
     this.trigger("array", "add", this, index);
   }
 });

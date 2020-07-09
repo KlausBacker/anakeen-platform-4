@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:access-configuration name="PRF_TASK_ACCESS" label="Administration des tâches et minuteurs">
+        <smart:description>Task and timers only by administrators.</smart:description>
+        <smart:element-access access="view" account="gadmin"/>
+        <smart:element-access access="edit" account="gadmin"/>
+        <smart:element-access access="delete" account="gadmin"/>
+    </smart:access-configuration>
+
+    <smart:structure-configuration name="TASK">
+        <smart:accesses>
+            <smart:element-access-configuration ref="PRF_TASK_ACCESS"/>
+        </smart:accesses>
+    </smart:structure-configuration>
+
+</smart:config>

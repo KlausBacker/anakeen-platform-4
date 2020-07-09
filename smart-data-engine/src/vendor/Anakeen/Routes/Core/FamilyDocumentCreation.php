@@ -45,9 +45,9 @@ class FamilyDocumentCreation extends DocumentUpdateData
     }
 
     /**
-     * @param \Slim\Http\request           $request
+     * @param \Slim\Http\request $request
      * @param \Anakeen\Core\SmartStructure $family
-     * @param array                        $messages
+     * @param array $messages
      * @return \Anakeen\Core\Internal\SmartElement
      * @throws Exception
      */
@@ -66,6 +66,31 @@ class FamilyDocumentCreation extends DocumentUpdateData
         }
 
         $this->updateDocument($request, $messages);
+        $this->updateHtmlImageLinks();
+
         return $this->_document;
+    }
+
+    /**
+     * Recompute image url in htmltext after id has been set
+     */
+    protected function updateHtmlImageLinks()
+    {
+        $fields = $this->_document->getNormalAttributes();
+        $htmlFields = [];
+        foreach ($fields as $field) {
+            if ($field->type === "htmltext") {
+                $value = $this->_document->getRawValue($field->id);
+                if ($value) {
+                    $err = $this->_document->setValue($field->id, $value . "\n");
+                    if (!$err && $this->_document->getRawValue($field->id) !== $value) {
+                        $htmlFields[] = $field->id;
+                    }
+                }
+            }
+        }
+        if ($htmlFields) {
+            $this->_document->modify(false, $htmlFields, false);
+        }
     }
 }

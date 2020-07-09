@@ -282,13 +282,9 @@ $.widget("dcp.dcpArray", {
             .catch(reject);
           this._isInitialized(true);
         }
-        $.each($(".dcpArray__add"), () => {
-          const buttonTab = $(".dcpArray__add");
-          buttonTab[buttonTab.length - 1].className = "dcpArray__add " + this.eventNamespace.split(".")[1];
-        });
-        $.each($(".dcpArray__copy"), () => {
-          const buttonTab = $(".dcpArray__copy");
-          buttonTab[buttonTab.length - 1].className = "dcpArray__copy " + this.eventNamespace.split(".")[1];
+
+        $.each($(".dcpArray__add, .dcpArray__copy", this.element), (index, target) => {
+          $(target).addClass(this.eventNamespace.split(".")[1]);
         });
       }, this)
     );
@@ -374,22 +370,25 @@ $.widget("dcp.dcpArray", {
         var isAlreadyChecked = $this.closest(".dcpArray__content__line").hasClass("dcpArray__content__line--selected");
         currentWidget._hideTooltips();
         currentWidget._unSelectLines();
+        const $Button = $(currentWidget.element.find(".dcpArray__copy"));
+        const kButton = $Button.data("kendoButton");
         if (isAlreadyChecked) {
-          currentWidget.element.find(".dcpArray__copy").prop("disabled", true);
+          if (kButton) kButton.enable(false);
           $(this)
             .prop("checked", false)
             .removeAttr("checked");
         } else {
           $this.find(".fa-check").show();
           $this.closest(".dcpArray__content__line").addClass("dcpArray__content__line--selected active");
-          currentWidget.element.find(".dcpArray__copy").prop("disabled", false);
+          if (kButton) kButton.enable(true);
+
           $(this)
             .prop("checked", true)
             .attr("checked", "checked");
         }
       }
     );
-    const addButtonTab = $(".dcpArray__add" + this.eventNamespace, this.$el);
+    const addButtonTab = $(".dcpArray__add" + this.eventNamespace, this.element);
     addButtonTab.kendoButton({
       click: function addLineEvent() {
         var selectedLine = currentWidget.getSelectedLineIndex();
@@ -414,7 +413,7 @@ $.widget("dcp.dcpArray", {
         }
       }
     });
-    const copyButtonTab = $(".dcpArray__copy" + this.eventNamespace, this.$el);
+    const copyButtonTab = $(".dcpArray__copy" + this.eventNamespace, this.element);
     copyButtonTab.kendoButton({
       click: function copyLineEvent() {
         var selectedLine = currentWidget.getSelectedLineIndex();

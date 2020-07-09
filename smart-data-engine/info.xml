@@ -413,6 +413,9 @@
         <process command="./programs/runMigrationScript.php --file=./vendor/Anakeen/Database/DbMigrationRules.xml">
             <label>Apply Migrate Database Rules</label>
         </process>
+        <process command="./programs/runMigrationScript.php --file=./vendor/Anakeen/Database/DbIndexesRules.xml">
+            <label>Apply Migrate Database Indexes Rules</label>
+        </process>
         <process command="./programs/runMigrationScript.php --file=./vendor/Anakeen/Database/ResyncFallid.xml">
             <label>Resync fallid if needed</label>
         </process>

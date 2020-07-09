@@ -56,6 +56,10 @@
             <accounts:displayName>Smart Structure Manager</accounts:displayName>
             <accounts:structure name="AC_STRUCTUREMANAGER"/>
         </accounts:role>
+        <accounts:role name="scheduling_manager_role">
+            <accounts:displayName>Tasks and timers Manager</accounts:displayName>
+            <accounts:structure name="AC_SCHEDULINGMANAGER"/>
+        </accounts:role>
     </accounts:roles>
     <accounts:groups>
 

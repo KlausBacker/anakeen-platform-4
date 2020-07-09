@@ -19,6 +19,7 @@ class TimerManager
         }
         return $tasks;
     }
+
     /**
      * get all actions need to be executed now
      * @return TimerTask[]
@@ -28,7 +29,11 @@ class TimerManager
         $q = new \Anakeen\Core\Internal\QueryDb("", \DocTimer::class);
         $q->addQuery("donedate is null");
         $q->addQuery("tododate < now()");
-        $timerhourlimit = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_TIMERHOURLIMIT", 2);
+        $timerhourlimit = \Anakeen\Core\ContextManager::getParameterValue(
+            \Anakeen\Core\Settings::NsSde,
+            "CORE_TIMERHOURLIMIT",
+            2
+        );
         if ((int)$timerhourlimit <= 0) {
             $timerhourlimit = 2;
         }
@@ -42,5 +47,90 @@ class TimerManager
             return $tasks;
         }
         return array();
+    }
+
+    /**
+     * get all actions need to be executed in the future
+     * @return TimerTask[]
+     */
+    public static function getNextTaskToExecute()
+    {
+        $q = new \Anakeen\Core\Internal\QueryDb("", \DocTimer::class);
+        $q->addQuery("donedate is null");
+        $timerhourlimit = \Anakeen\Core\ContextManager::getParameterValue(
+            \Anakeen\Core\Settings::NsSde,
+            "CORE_TIMERHOURLIMIT",
+            2
+        );
+        if ((int)$timerhourlimit <= 0) {
+            $timerhourlimit = 2;
+        }
+        $q->addQuery(sprintf("tododate > now() - interval '%d hour'", $timerhourlimit));
+        $q->order_by = "tododate asc, id";
+        $l = $q->Query(0, 0, "TABLE");
+        if ($q->nb > 0) {
+            $tasks = [];
+            foreach ($l as $result) {
+                $tasks[] = new TimerTask($result);
+            }
+            return $tasks;
+        }
+        return array();
+    }
+
+    /**
+     * get all actions need to be executed in the future
+     * @return TimerTask[]
+     */
+    public static function getPastTasks()
+    {
+        $q = new \Anakeen\Core\Internal\QueryDb("", \DocTimer::class);
+
+        $timerhourlimit = \Anakeen\Core\ContextManager::getParameterValue(
+            \Anakeen\Core\Settings::NsSde,
+            "CORE_TIMERHOURLIMIT",
+            2
+        );
+        if ((int)$timerhourlimit <= 0) {
+            $timerhourlimit = 2;
+        }
+        $q->addQuery(sprintf("donedate is not null or tododate < now() - interval '%d hour'", $timerhourlimit));
+        $q->order_by = "tododate asc, id";
+        $l = $q->Query(0, 0, "TABLE");
+        if ($q->nb > 0) {
+            $tasks = [];
+            foreach ($l as $result) {
+                $tasks[] = new TimerTask($result);
+            }
+            return $tasks;
+        }
+        return array();
+    }
+
+    /**
+     * Change status
+     * @return array
+     * @throws \Anakeen\Database\Exception
+     */
+    public static function detectNewExpired()
+    {
+        $timerhourlimit = \Anakeen\Core\ContextManager::getParameterValue(
+            \Anakeen\Core\Settings::NsSde,
+            "CORE_TIMERHOURLIMIT",
+            2
+        );
+        if ((int)$timerhourlimit <= 0) {
+            $timerhourlimit = 2;
+        }
+
+        $sql = sprintf(
+            "update doctimer set donestatus = '%s' where (donestatus = '%s' or donestatus is null ) and donedate is null and tododate < now() - interval '%d hour' returning id",
+            pg_escape_string(\DocTimer::expiredStatus),
+            pg_escape_string(\DocTimer::waitingStatus),
+            $timerhourlimit
+        );
+
+        DbManager::query($sql, $expired, true);
+        return $expired;
     }
 }

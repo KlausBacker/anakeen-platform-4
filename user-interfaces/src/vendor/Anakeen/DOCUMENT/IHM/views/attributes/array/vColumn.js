@@ -71,7 +71,6 @@ export default ViewAttribute.extend({
                 '.dcpArray__content__cell[data-attrid="' + this.model.id + '"]'
               ),
               $el,
-              data = this.getData(index),
               event = { prevent: false };
 
             if (cells[index]) {
@@ -109,7 +108,7 @@ export default ViewAttribute.extend({
                         resolve();
                       }, this)
                     );
-                    this.widgetInit($el, data);
+                    this.widgetInit($el, this.getData(index));
                     attributeTemplate.insertDescription(this, $el.parent());
                     resolve();
                   }

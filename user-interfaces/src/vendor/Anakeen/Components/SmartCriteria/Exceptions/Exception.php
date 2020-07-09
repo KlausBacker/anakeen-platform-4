@@ -1,6 +1,6 @@
 <?php
 
-namespace Anakeen\Components\SearchCriteria\Exceptions;
+namespace Anakeen\Components\SmartCriteria\Exceptions;
 
 use Anakeen\Exception as AnakeenException;
 
