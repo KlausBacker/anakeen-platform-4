@@ -20,6 +20,9 @@ export default {
       } else {
         this.ssHasWorkflow = false;
       }
+    },
+    ssName() {
+      this.selectedElement = null;
     }
   },
   data() {
