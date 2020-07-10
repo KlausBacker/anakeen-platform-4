@@ -174,7 +174,7 @@ class SmartAutocomplete
                     }
                 }, $formInputs[$inputName]);
             } else {
-                return $formInputs[$inputName]["value"];
+                return $formInputs[$inputName]["value"] ?? null;
             }
         }
         return null;
