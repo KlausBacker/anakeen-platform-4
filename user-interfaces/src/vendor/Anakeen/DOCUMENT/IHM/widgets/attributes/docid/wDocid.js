@@ -305,6 +305,9 @@ $.widget("dcp.dcpDocid", $.dcp.dcpAttribute, {
         if (_.isArray(widgetValue)) {
           _.each(widgetValue, function wDocidSelectChange(val) {
             if (!_.isUndefined(val)) {
+              if (typeof val === "number") {
+                val = val.toString();
+              }
               displayValue = _.where(oldValues, { value: val });
               if (displayValue.length === 0) {
                 displayValue = _.where(kMultiSelect.dataSource.data(), {
@@ -318,7 +321,6 @@ $.widget("dcp.dcpDocid", $.dcp.dcpAttribute, {
               } else {
                 displayValue = displayValue[0].displayValue;
               }
-
               newValues.push({ value: val, displayValue: displayValue });
             }
           });
@@ -326,6 +328,9 @@ $.widget("dcp.dcpDocid", $.dcp.dcpAttribute, {
           if (!currentWidget._isMultiple()) {
             if (newValues.length > 0) {
               newValues = newValues[0];
+              if (typeof newValues.value === "number") {
+                newValues.value = newValues.value.toString();
+              }
             } else {
               newValues = { value: null, displayValue: "" };
             }
@@ -336,6 +341,9 @@ $.widget("dcp.dcpDocid", $.dcp.dcpAttribute, {
               docId: widgetValue
             });
             if (displayValue.length > 0) {
+              if (typeof widgetValue === "number") {
+                widgetValue = widgetValue.toString();
+              }
               displayValue = displayValue[0].docTitle;
               newValues = { value: widgetValue, displayValue: displayValue };
             } else {
