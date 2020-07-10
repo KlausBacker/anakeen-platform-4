@@ -819,9 +819,7 @@ export default Backbone.Model.extend({
         var childAttributes = value.filter(function mDocumentsetValuesEachAttributesFilter(candidateChildModel) {
           return candidateChildModel.get("parent") === currentAttributeModel.id;
         });
-        if (childAttributes.length > 0) {
-          currentAttributeModel.setContentCollection(childAttributes);
-        }
+        currentAttributeModel.setContentCollection(childAttributes);
       });
       //Propagate the change event to the model
       currentModel.listenTo(value, "change:attributeValue", function mDocumentsetValuesListenChange(model) {
