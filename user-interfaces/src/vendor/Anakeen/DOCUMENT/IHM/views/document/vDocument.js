@@ -69,7 +69,7 @@ export default Backbone.View.extend({
             .closest(".smart-element-wrapper")
             .find(".dcpStaticErrorMessage")
             .attr("hidden", true);
-          this.$el.show();
+          this.$el.closest(".document").show();
           this.$el[0].className = this.$el[0].className.replace(/\bdcpFamily.*\b/g, "");
           this.$el.removeClass("dcpDocument--view").removeClass("dcpDocument--edit");
           try {
@@ -1025,7 +1025,7 @@ export default Backbone.View.extend({
   },
 
   displayNetworkError: function vDocument_displayNetworkError() {
-    this.$el.hide();
+    this.$el.closest(".document").hide();
     const wrapper = this.$el.closest(".smart-element-wrapper");
     wrapper.find(".dcpStaticErrorMessage").removeAttr("hidden");
   },
