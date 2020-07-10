@@ -162,12 +162,18 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
     $.ajax({
       url: this.getLoaderUrl(),
       data: this.innerConfig
-    }).done(response => {
-      this.innerConfig = response.data.configuration;
-      this.errorStack = this.errorStack.concat(response.data.errors);
-      this.buildSmartFormConfig();
-      this.$emit("smartCriteriaReady");
-    });
+    })
+      .done(response => {
+        this.innerConfig = response.data.configuration;
+        this.errorStack = this.errorStack.concat(response.data.errors);
+        this.buildSmartFormConfig();
+        this.$emit("smartCriteriaReady");
+      })
+      .fail((jqXHR, textStatus, errorThrown) => {
+        // @ts-ignore
+        this.showError("Something went wrong while getting the full smart criteria configuration from the server.");
+
+      });
   }
 
   private buildSmartFormConfig(): void {

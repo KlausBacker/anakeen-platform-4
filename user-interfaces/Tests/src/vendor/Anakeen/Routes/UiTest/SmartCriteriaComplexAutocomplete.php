@@ -17,17 +17,15 @@ class SmartCriteriaComplexAutocomplete
 
         // Here my data to returns
         $countries = ["France", "Italie", "Espagne"];
-        $inputGroup = $autocomplete->getInputValue("titleEntry");
+        $inputGroup = $autocomplete->getInputValue("extraEntry");
         if (!empty($inputGroup)) {
-            error_log(print_r($inputGroup, true));
             if (is_array($inputGroup)) {
                 foreach ($inputGroup as $input) {
                     $doc = SmartElementManager::getDocument($input);
                     array_push($countries, $doc->title);
                 }
             } else {
-                $doc = SmartElementManager::getDocument($inputGroup);
-                array_push($countries, $doc->title);
+                array_push($countries, $inputGroup);
             }
         }
 
