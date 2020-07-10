@@ -35,7 +35,7 @@ class SmartCriteriaConfigurationLoader
 
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        $this->config = new \ArrayObject($request->getParams());
+        $this->config = $request->getParams();
         $this->defaultStructure = array_key_exists(
             "defaultStructure",
             $this->config
