@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:structure-configuration name="Test0002AutoCompleteGood" label="Test 0002 good file">
+        <smart:fields>
+            <smart:field-set name="frame_1" type="frame" access="ReadWrite" label="Identification">
+                <smart:field-docid name="field_1" relation="-1" access="ReadWrite" label="field_1" />
+                <smart:field-text name="field_2" is-title="true" access="Read" label="field_2"/>
+                <smart:field-text name="field_3" access="Read" label="field_3"/>
+            </smart:field-set>
+        </smart:fields>
+        <smart:autocompletion>
+            <smart:field-autocomplete field="field_1">
+                <smart:field-callable function="Anakeen\Pu\SmartStructures\TestAutoCompleteHook::testCallableFunction"/>
+                <smart:field-argument type="field">field_2</smart:field-argument>
+                <smart:field-argument type="field">field_3</smart:field-argument>
+                <smart:field-returns>
+                    <smart:field-return field="field_1"/>
+                </smart:field-returns>
+            </smart:field-autocomplete>
+        </smart:autocompletion>
+        <smart:defaults/>
+    </smart:structure-configuration>
+</smart:config>

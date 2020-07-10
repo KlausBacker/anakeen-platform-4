@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:structure-configuration name="Test0001AutoCompleteGood" label="Test 0001 good file">
+        <smart:tag name="vendor">Anakeen</smart:tag>
+        <smart:fields>
+            <smart:field-set name="tst_p_info1" type="frame" label="Titre" access="ReadWrite">
+                <smart:field-text name="tst_p1" label="Titre p1" access="ReadWrite" needed="true" is-title="true"/>
+                <smart:field-docid name="tst_p2" label="2" access="ReadWrite" relation="-1"/>
+                <smart:field-docid name="tst_p3" label="3" access="ReadWrite" relation="-1"/>
+                <smart:field-set name="tst_t1" type="array" label="" access="ReadWrite">
+                    <smart:field-text name="tst_p5" label="5" access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-set name="tst_t2" type="array" label="" access="ReadWrite">
+                    <smart:field-text name="tst_p8" label="8" access="ReadWrite"/>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst_p_info2" type="frame" label="" access="ReadWrite">
+                <smart:field-set name="tst_t3" type="array" label="" access="ReadWrite">
+                    <smart:field-text name="tst_p16" label="16" access="ReadWrite"/>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:fields>
+        <smart:parameters/>
+        <smart:hooks/>
+        <smart:autocompletion>
+            <smart:field-autocomplete field="tst_p3">
+                <smart:field-callable function="Anakeen\Pu\SmartStructures\TestAutoCompleteHook::testCallableFunction"/>
+                <smart:field-returns>
+                    <smart:field-return field="tst_p3"/>
+                </smart:field-returns>
+            </smart:field-autocomplete>
+            <smart:field-autocomplete field="tst_p5">
+                <smart:field-callable function="Anakeen\Pu\SmartStructures\TestAutoCompleteHook::testCallableFunction"/>
+                <smart:field-argument name="smartstructure" type="field">TST_P2</smart:field-argument>
+                <smart:field-argument name="workflow" type="field">TST_P3</smart:field-argument>
+                <smart:field-argument name="from" type="field">TST_P5</smart:field-argument>
+                <smart:field-returns>
+                    <smart:field-return field="tst_p5"/>
+                </smart:field-returns>
+            </smart:field-autocomplete>
+            <smart:field-autocomplete field="tst_p8">
+                <smart:field-callable function="Anakeen\Pu\SmartStructures\TestAutoCompleteHook::testCallableFunction"/>
+                <smart:field-argument name="smartstructure" type="field">TST_P2</smart:field-argument>
+                <smart:field-argument name="workflow" type="field">TST_P3</smart:field-argument>
+                <smart:field-argument name="from" type="field">TST_P8</smart:field-argument>
+                <smart:field-returns>
+                    <smart:field-return field="tst_p8"/>
+                </smart:field-returns>
+            </smart:field-autocomplete>
+            <smart:field-autocomplete field="tst_p16">
+                <smart:field-callable function="Anakeen\Pu\SmartStructures\TestAutoCompleteHook::testCallableFunction"/>
+                <smart:field-argument name="smartstructure" type="field">TST_P2</smart:field-argument>
+                <smart:field-argument name="workflow" type="field">TST_P3</smart:field-argument>
+                <smart:field-argument name="from" type="field">TST_P16</smart:field-argument>
+                <smart:field-returns>
+                    <smart:field-return field="tst_p16"/>
+                </smart:field-returns>
+            </smart:field-autocomplete>
+        </smart:autocompletion>
+        <smart:accesses/>
+    </smart:structure-configuration>
+</smart:config>
