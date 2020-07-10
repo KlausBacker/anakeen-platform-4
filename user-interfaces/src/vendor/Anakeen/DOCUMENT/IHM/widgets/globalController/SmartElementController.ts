@@ -586,6 +586,9 @@ export default class SmartElementController extends AnakeenController.BusEvents.
         }
       }
     });
+    _.each(this._options.customClientData, (currentCustom: any, key) => {
+      values[key] = currentCustom;
+    });
     if (deleteOnce === true) {
       this._customClientData = newCustomData;
     }
