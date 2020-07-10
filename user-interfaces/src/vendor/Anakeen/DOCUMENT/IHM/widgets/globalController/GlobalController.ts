@@ -216,16 +216,26 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
    * Add global event listener
    * @param eventType
    * @param options
-   * @param callback
+   * @param callback?
    */
   public addEventListener(
-    eventType: string | ListenableEvent,
-    options: object | ListenableEventCallable,
-    callback?: ListenableEventCallable
+    eventType: string | AnakeenController.BusEvents.ListenableEvent,
+    options: AnakeenController.BusEvents.ListenableEventCallable | AnakeenController.BusEvents.ListenableEventOptions,
+    callback?: AnakeenController.BusEvents.ListenableEventCallable
   ) {
     // Listen all controllers for this event type
     const controllers = this._dispatcher.getControllers(false) as SmartElementController[];
     const currentEventNames = [];
+
+    if (_.isUndefined(callback) && _.isFunction(options)) {
+      callback = options;
+      options = {};
+    }
+    // Set event as persistent
+    if (typeof options === "object" && options.persistent === undefined) {
+      options.persistent = true;
+    }
+
     controllers.forEach(controller => {
       currentEventNames.push(controller.addEventListener(eventType, options, callback));
     });
