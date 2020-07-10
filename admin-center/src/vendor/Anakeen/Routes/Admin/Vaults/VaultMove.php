@@ -30,11 +30,7 @@ class VaultMove
         $fsInfo = $this->doRequest();
         $messages = [];
 
-        $messages[] = new ApiMessage(sprintf(
-            "New path is %s",
-            $this->vaultFs->r_path
-        ));
-
+        $messages[] = new ApiMessage(sprintf(___("New path is \"%s\"", "AdminCenterVaultManager"), $this->vaultFs->r_path));
 
         return \Anakeen\Router\ApiV2Response::withData($response, $fsInfo, $messages);
     }
@@ -49,7 +45,7 @@ class VaultMove
         $this->vaultFs = new DiskFsStorage("", $this->vaultid);
         if (!$this->vaultFs->isAffected()) {
             $e = new Exception("Vault unknow");
-            $e->setUserMessage(sprintf("Vault #%d not exists", $this->vaultid));
+            $e->setUserMessage(sprintf(___("Vault \"#%d\" not exists", "AdminCenterVaultManager"), $this->vaultid));
             throw $e;
         }
     }
@@ -58,20 +54,20 @@ class VaultMove
     {
         if (!$path || $path[0] !== '/') {
             $e = new Exception("Invalid path");
-            $e->setUserMessage(sprintf("Path \"%s\" must be an absolute path", $path));
+            $e->setUserMessage(sprintf(___("Path \"%s\" must be an absolute path", "AdminCenterVaultManager"), $path));
             throw $e;
         }
 
         if (!is_dir($path) && !is_link($path)) {
             $e = new Exception("Invalid path");
-            $e->setUserMessage(sprintf("Path \"%s\" must reference an existing directory", $path));
+            $e->setUserMessage(sprintf(___("Path \"%s\" must reference an existing directory", "AdminCenterVaultManager"), $path));
             throw $e;
         }
 
 
         if (!is_writable($path)) {
             $e = new Exception("Invalid path");
-            $e->setUserMessage(sprintf("Path \"%s\" is not writable", $path));
+            $e->setUserMessage(sprintf(___("Path \"%s\" is not writable", "AdminCenterVaultManager"), $path));
             throw $e;
         }
     }
@@ -83,7 +79,6 @@ class VaultMove
         if ($err) {
             throw new Exception($err);
         }
-
 
         return \Anakeen\Vault\VaultFsManager::getInfo($this->vaultFs);
     }
