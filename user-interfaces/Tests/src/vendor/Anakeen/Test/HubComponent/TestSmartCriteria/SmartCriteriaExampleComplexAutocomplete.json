@@ -8,7 +8,7 @@
       "autocomplete": {
         "url": "/api/v2/uitest/smartcriteriacomplexautocomplete",
         "inputs": {
-          "title": "titleEntry"
+          "bill_clients": "extraEntry"
         },
         "outputs": {
           "bill_author": "Country"
@@ -22,8 +22,8 @@
       }
     },
     {
-      "kind": "property",
-      "field": "title"
+      "kind": "field",
+      "field": "bill_clients"
     }
   ]
 }
