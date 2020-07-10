@@ -55,37 +55,37 @@ class ErrorCodeFLT
     const FLT0011 = "The OR operator cannot be used with several filters which use with join and no join conditions ('%s' - '%s')";
     /**
      * @errorCode when use docrel join and isgreater by exemple
-     * @see \Anakeen\Search\SearchCriteria\SearchCriteriaUtils
+     * @see \Anakeen\SmartCriteria\SmartCriteriaUtils
      */
     const FLT0012 = "The Search Criteria raw data must be an array";
     /**
      * @errorCode when use docrel join and isgreater by exemple
-     * @see \Anakeen\Search\SearchCriteria\SearchCriteriaUtils
+     * @see \Anakeen\SmartCriteria\SmartCriteriaUtils
      */
     const FLT0013 = "The Search Criteria kind value '%s' must be of 'field', 'property', 'virtual' or 'fulltext'";
     /**
      * @errorCode when use docrel join and isgreater by exemple
-     * @see \Anakeen\Search\SearchCriteria\SearchCriteriaUtils
+     * @see \Anakeen\SmartCriteria\SmartCriteriaUtils
      */
     const FLT0014 = "The Search Criteria logic value '%s' must be of 'and' or 'or'";
     /**
      * @errorCode when use docrel join and isgreater by exemple
-     * @see \Anakeen\Search\SearchCriteria\SearchCriteriaUtils
+     * @see \Anakeen\SmartCriteria\SmartCriteriaUtils
      */
     const FLT0015 = "The Search Criteria filter value of kind '%s' must specify a 'field' property";
     /**
      * @errorCode when use docrel join and isgreater by exemple
-     * @see \Anakeen\Search\SearchCriteria\SearchCriteriaUtils
+     * @see \Anakeen\SmartCriteria\SmartCriteriaUtils
      */
     const FLT0017 = "The Search Criteria filter value of kind '%s' must specify an operator value";
     /**
      * @errorCode when use docrel join and isgreater by exemple
-     * @see \Anakeen\Search\SearchCriteria\SearchCriteriaUtils
+     * @see \Anakeen\SmartCriteria\SmartCriteriaUtils
      */
     const FLT0018 = "The operator '%s' is not supported for type '%s' with field multiplicity to '%b' and filter multiplicity to '%b'";
     /**
      * @errorCode when use docrel join and isgreater by exemple
-     * @see \Anakeen\Search\SearchCriteria\SearchCriteriaUtils
+     * @see \Anakeen\SmartCriteria\SmartCriteriaUtils
      */
     const FLT0019 = "The Search Criteria filter does not support multiple filter values yet";
     /**

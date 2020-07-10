@@ -3,12 +3,12 @@
 namespace Anakeen\Search\Filters;
 
 use Anakeen\Core\SmartStructure\NormalAttribute;
-use Anakeen\Search\SearchCriteria\SearchCriteriaTrait;
+use Anakeen\SmartCriteria\SmartCriteriaTrait;
 
 class OneGreaterThan extends StandardAttributeFilter implements ElementSearchFilter
 {
 
-    use SearchCriteriaTrait;
+    use SmartCriteriaTrait;
 
     public static function getOptionMap()
     {

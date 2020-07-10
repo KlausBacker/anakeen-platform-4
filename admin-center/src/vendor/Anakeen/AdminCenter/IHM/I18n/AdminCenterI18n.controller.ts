@@ -35,7 +35,7 @@ export default class I18nManagerController extends Mixins(AnkI18NMixin) {
   }
   public filters = [];
 
-  private translationLocale: string = "fr";
+  private translationLocale = this.lang;
   private translationFilterableOptions: kendo.data.DataSourceFilter = {
     cell: {
       operator: "contains",
@@ -106,12 +106,15 @@ export default class I18nManagerController extends Mixins(AnkI18NMixin) {
         $(".overriden-translation-input").attr("placeholder", "edit translation");
       }
     }, 300);
+    this.$emit("localeChange", Object.assign({}, value, { value: value }));
   }
 
   public mounted() {
     window.addEventListener("offline", e => {
       this.$emit("i18nOffline", e.type);
     });
+    const tb = $(".i18n-toolbar-locale").data("kendoToolBar");
+    tb.toggle("#i18n-locale-button-" + this.lang, true);
     // @ts-ignore
     $(this.$refs.i18nGrid).kendoGrid({
       columns: [
@@ -210,6 +213,7 @@ export default class I18nManagerController extends Mixins(AnkI18NMixin) {
         this.setEventPluralConfirm();
         this.setEventSingularCancel();
         this.setEventPluralCancel();
+        this.bindFilters();
         if (this.filters.length > 0) {
           this.setFilters();
         }
@@ -287,6 +291,38 @@ export default class I18nManagerController extends Mixins(AnkI18NMixin) {
       .dataSource.filter(this.filters);
     this.filters = [];
   }
+
+  private bindFilters() {
+    $(this.$refs.i18nGrid)
+      .data("kendoGrid")
+      .bind("filter", event => {
+        const filter = event.filter ? event.filter.filters[0] || null : null;
+        if (filter) {
+          const currentFilter = event.sender.dataSource.filter();
+          let nextFilter = {};
+          if (currentFilter) {
+            nextFilter = currentFilter.filters.reduce((acc, curr) => {
+              acc[curr.field] = curr.value;
+              return acc;
+            }, {});
+          }
+          this.$emit("filterI18n", Object.assign({}, nextFilter, { [filter.field]: filter.value }));
+        } else {
+          const currentFilter = event.sender.dataSource.filter();
+          let nextFilter = {};
+          if (currentFilter) {
+            nextFilter = currentFilter.filters.reduce((acc, curr) => {
+              if (curr.field !== event.field) {
+                acc[curr.field] = curr.value;
+              }
+              return acc;
+            }, {});
+          }
+          this.$emit("filterI18n", Object.assign({}, nextFilter));
+        }
+      });
+  }
+
   private setEventSingularConfirm() {
     $(".confirm-override-translation-singular").kendoButton({
       click: confirmEvent => {

@@ -11,7 +11,7 @@ class ProcessExecuteAPI
 {
     public static $debug = false;
     /** @var \Exception[] */
-    protected static $recordError=[];
+    protected static $recordError = [];
 
 
     protected static function lock()
@@ -48,9 +48,9 @@ class ProcessExecuteAPI
             self::bgExecTaskElements();
             self::bgExecRecordedTimers();
             if (self::$recordError) {
-                $msg=[];
+                $msg = [];
                 foreach (self::$recordError as $e) {
-                    $msg[]=$e->getMessage();
+                    $msg[] = $e->getMessage();
                 }
                 throw new Exception(implode("\n", $msg));
             }
@@ -69,7 +69,13 @@ class ProcessExecuteAPI
         $time_end = microtime(true);
         $time = $time_end - $time_start;
         if ($err) {
-            \Anakeen\LogManager::error(sprintf("Error while executing timer %s (%d): %s in %.03f seconds", $dt->title, $dt->id, $err, $time));
+            \Anakeen\LogManager::error(sprintf(
+                "Error while executing timer %s (%d): %s in %.03f seconds",
+                $dt->title,
+                $dt->id,
+                $err,
+                $time
+            ));
             print sprintf("Error while executing timer %s (%d): %s in %.03f seconds", $dt->title, $dt->id, $err, $time);
         } else {
             \Anakeen\LogManager::info(sprintf("Timer %s (%d) executed in %.03f seconds", $dt->title, $dt->id, $time));
@@ -108,7 +114,7 @@ class ProcessExecuteAPI
                 self::bgExecuteProcess(["task-id" => $task->id]);
                 $task->updateRunDate();
             } catch (\Exception $e) {
-                self::$recordError[]=$e;
+                self::$recordError[] = $e;
             }
         }
     }
@@ -122,11 +128,12 @@ class ProcessExecuteAPI
             try {
                 self::bgExecuteProcess(["timer-id" => $task->id]);
             } catch (\Exception $e) {
-                self::$recordError[]=$e;
+                self::$recordError[] = $e;
             }
         }
+        // Update status for expired timers
+        \Anakeen\Core\TimerManager::detectNewExpired();
     }
-
 
 
     protected static function bgExecuteProcess(array $args)

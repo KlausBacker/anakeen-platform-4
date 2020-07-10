@@ -31,27 +31,38 @@ class Config
             "user"=> [],
             "group"=> []
         ];
-        $user = SmartElementManager::getDocument(self::$defaultFamUser);
+        $user = SmartElementManager::getFamily(self::$defaultFamUser);
+        if (!$user) {
+            $result["user"][] = [
+                "text" => sprintf(___("Structure '%s' do not exist", "AdminCenterAccounts"), self::$defaultFamUser),
+                "accessDenied" => true
+            ];
+        } else {
+            $result["user"][] = [
+                "id"=> $user->name,
+                "text" => $user->getTitle(),
+                "imageUrl" => $user->getIcon("", 15),
+                "canCreate" => !$user->control("icreate")
+            ];
+            $this->getChildrenFamilies($user, $result["user"]);
+        }
 
-        $result["user"][] = [
-            "id"=> $user->name,
-            "text" => $user->getTitle(),
-            "imageUrl" => $user->getIcon("", 15),
-            "canCreate" => !$user->control("icreate")
-        ];
+        $group = SmartElementManager::getFamily(self::$defaultFamGroup);
+        if (!$group) {
+            $result["group"][] = [
+                "text" => sprintf(___("Structure '%s' do not exist", "AdminCenterAccounts"), self::$defaultFamGroup),
+                "accessDenied" => true
+            ];
+        } else {
+            $result["group"][] = [
+                "id"=> $group->name,
+                "text" => $group->getTitle(),
+                "imageUrl" => $group->getIcon("", 5),
+                "canCreate" => !$group->control("icreate")
+            ];
 
-        $this->getChildrenFamilies($user, $result["user"]);
-
-        $group = SmartElementManager::getDocument(self::$defaultFamGroup);
-
-        $result["group"][] = [
-            "id"=> $group->name,
-            "text" => $group->getTitle(),
-            "imageUrl" => $group->getIcon("", 5),
-            "canCreate" => !$group->control("icreate")
-        ];
-
-        $this->getChildrenFamilies($group, $result["group"]);
+            $this->getChildrenFamilies($group, $result["group"]);
+        }
 
         return $response->withJson($result);
     }
@@ -66,6 +77,7 @@ class Config
     {
         $search =  new \Anakeen\Search\Internal\SearchSmartData("", -1);
         $search->setObjectReturn();
+        $search->overrideViewControl();
         $search->addFilter("fromid = %d", $smartElement->id);
         foreach ($search->getDocumentList() as $currentDoc) {
             $result[] = [

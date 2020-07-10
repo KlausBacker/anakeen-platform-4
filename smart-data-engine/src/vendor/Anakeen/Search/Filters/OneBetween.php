@@ -9,12 +9,12 @@ namespace Anakeen\Search\Filters;
 
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Search;
-use String\sprintf;
+use Anakeen\SmartCriteria\SmartCriteriaTrait;
 
 class OneBetween extends StandardAttributeFilter implements ElementSearchFilter
 {
 
-    use Search\SearchCriteria\SearchCriteriaTrait;
+    use SmartCriteriaTrait;
 
     const NOT = 1;
     const LEFTEQUAL = 2;

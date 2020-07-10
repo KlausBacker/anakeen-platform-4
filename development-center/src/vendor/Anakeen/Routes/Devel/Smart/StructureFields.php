@@ -162,7 +162,7 @@ class StructureFields
             $fieldId = substr($modAttrRow["id"], 1);
             foreach ($modAttrRow as $col => $modValue) {
                 if ($modValue) {
-                    $attrData[$fieldId]["declaration"] = "overrided";
+                    $attrData[$fieldId]["declaration"] = "Inserted after";
                     switch ($col) {
                         case "title":
                             $attrData[$fieldId]["overrides"]["isTitle"] = [];

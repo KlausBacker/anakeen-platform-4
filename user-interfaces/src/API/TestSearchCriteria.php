@@ -23,7 +23,7 @@ const filterValue = [
 ];
 
 $s = new \Anakeen\Search\SearchElements("DEVBILL");
-$s->addFilter(new Anakeen\Search\SearchCriteria\SearchCriteria(filterValue));
+$s->addFilter(new Anakeen\SmartCriteria\SearchCriteria(filterValue));
 $res = $s->search()->getResults();
 print "RESULTS : ";
 print_r($s->getSearchInfo());

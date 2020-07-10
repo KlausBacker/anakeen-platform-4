@@ -235,11 +235,6 @@ export class IUSER {
 }
 export class MAIL {
   /**
-   *
-   * @smartType
-   */
-  static = "";
-  /**
    * Adresses
    * @smartType frame
    */
@@ -687,6 +682,68 @@ export class TST_DOCENUM {
    */
   static tst_enuma = "tst_enuma";
 }
+export class TST_ORDER_01 {
+  /**
+   * Acteurs  Historique
+   * @smartType tab
+   */
+  static tst01_t_histo = "tst01_t_histo";
+  /**
+   * Acteurs
+   * @smartType frame
+   */
+  static tst01_f_acteurs = "tst01_f_acteurs";
+  /**
+   * Créateur
+   * @smartType account
+   */
+  static tst01_createur = "tst01_createur";
+  /**
+   * Group d&#39;accès au document
+   * @smartType account
+   */
+  static tst01_doc_access_grp = "tst01_doc_access_grp";
+  /**
+   * Date de création
+   * @smartType date
+   */
+  static tst01_date_creation = "tst01_date_creation";
+  /**
+   * Historique
+   * @smartType frame
+   */
+  static tst01_f_historique = "tst01_f_historique";
+  /**
+   * Date de reprise
+   * @smartType timestamp
+   */
+  static tst01_date_reprise = "tst01_date_reprise";
+  /**
+   * Modifications
+   * @smartType array
+   */
+  static tst01_a_historique = "tst01_a_historique";
+  /**
+   * Date
+   * @smartType timestamp
+   */
+  static tst01_historique_date = "tst01_historique_date";
+  /**
+   * Acteur
+   * @smartType account
+   */
+  static tst01_historique_auteur = "tst01_historique_auteur";
+  /**
+   * Commentaire
+   * @smartType htmltext
+   */
+  static tst01_historique_commentaire = "tst01_historique_commentaire";
+  /**
+   * Documents
+   * @smartType docid TST_ORDER_01
+   */
+  static tst01_historique_documents = "tst01_historique_documents";
+}
 export class DIR extends BASE {
   /**
    * Description
@@ -825,6 +882,291 @@ export class SEARCH extends BASE {
    * @smartType int
    */
   static se_sublevel = "se_sublevel";
+}
+export class TST_ORDER_02 extends TST_ORDER_01 {
+  /**
+   * Pièces jointes
+   * @smartType tab
+   */
+  static tst02_t_attachments = "tst02_t_attachments";
+  /**
+   * Pièces jointes
+   * @smartType frame
+   */
+  static tst02_f_pieces_jointes = "tst02_f_pieces_jointes";
+  /**
+   * Autres fichiers
+   * @smartType array
+   */
+  static tst02_a_fichiers_associes = "tst02_a_fichiers_associes";
+  /**
+   * Fichier
+   * @smartType file
+   */
+  static tst02_fichier_attache_file = "tst02_fichier_attache_file";
+  /**
+   * Titre
+   * @smartType text
+   */
+  static tst02_fichier_attache_titre = "tst02_fichier_attache_titre";
+  /**
+   * Compléments
+   * @smartType tab
+   */
+  static tst02_t_complements = "tst02_t_complements";
+  /**
+   * Liens réciproques
+   * @smartType frame
+   */
+  static tst02_f_liens = "tst02_f_liens";
+  /**
+   * Voir aussi
+   * @smartType array
+   */
+  static tst02_a_voir_aussi = "tst02_a_voir_aussi";
+  /**
+   * Relation
+   * @smartType enum TST_ORDER_02-sysbf_voir_aussi_relation
+   */
+  static tst02_voir_aussi_relation = "tst02_voir_aussi_relation";
+  /**
+   * Document
+   * @smartType docid TST_ORDER_02
+   */
+  static tst02_voir_aussi_document = "tst02_voir_aussi_document";
+  /**
+   * Intitulé
+   * @smartType text
+   */
+  static tst02_libelle_document = "tst02_libelle_document";
+  /**
+   * Voir aussi (Version figée)
+   * @smartType array
+   */
+  static tst02_a_voir_aussi_fige = "tst02_a_voir_aussi_fige";
+  /**
+   * Relation
+   * @smartType enum TST_ORDER_02-sysbf_voir_aussi_relation_fige
+   */
+  static tst02_voir_aussi_relation_fige = "tst02_voir_aussi_relation_fige";
+  /**
+   * Document
+   * @smartType docid TST_ORDER_02
+   */
+  static tst02_voir_aussi_document_fige = "tst02_voir_aussi_document_fige";
+  /**
+   * Intitulé
+   * @smartType text
+   */
+  static tst02_libelle_document_fige = "tst02_libelle_document_fige";
+  /**
+   * Référencé par
+   * @smartType array
+   */
+  static tst02_a_ref_par = "tst02_a_ref_par";
+  /**
+   * Document
+   * @smartType docid TST_ORDER_02
+   */
+  static tst02_ref_par_document = "tst02_ref_par_document";
+  /**
+   * Référencé par (Version figée)
+   * @smartType array
+   */
+  static tst02_a_ref_par_fige = "tst02_a_ref_par_fige";
+  /**
+   * Document
+   * @smartType docid TST_ORDER_02
+   */
+  static tst02_ref_par_document_fige = "tst02_ref_par_document_fige";
+  /**
+   * Document
+   * @smartType docid TST_ORDER_02
+   */
+  static tst02_ref_par_document_fige_initid =
+    "tst02_ref_par_document_fige_initid";
+  /**
+   * Caractérisation
+   * @smartType frame
+   */
+  static tst02_f_caracterisation = "tst02_f_caracterisation";
+  /**
+   * Référence ministérielle
+   * @smartType text
+   */
+  static tst02_ref = "tst02_ref";
+  /**
+   * Accès
+   * @smartType frame
+   */
+  static tst02_f_details = "tst02_f_details";
+  /**
+   * Visibilité finale
+   * @smartType enum TST_ORDER_02-sysbf_visibility
+   */
+  static tst02_visibility = "tst02_visibility";
+  /**
+   * Visibilité nominative
+   * @smartType account
+   */
+  static tst02_extra_visibility = "tst02_extra_visibility";
+  /**
+   * Visibilité (accounts)
+   * @smartType account
+   */
+  static tst02_visibility_authorized_accounts =
+    "tst02_visibility_authorized_accounts";
+  /**
+   * Rattachements
+   * @smartType tab
+   */
+  static tst02_t_rattachements = "tst02_t_rattachements";
+  /**
+   * Domaine d&#39;application
+   * @smartType frame
+   */
+  static tst02_f_domaine = "tst02_f_domaine";
+  /**
+   * Domaine d&#39;application
+   * @smartType docid TST_ORDER_DOMAINE_APPLICATION
+   */
+  static tst02_domaine_app = "tst02_domaine_app";
+  /**
+   * Domaines d&#39;applications
+   * @smartType docid TST_ORDER_DOMAINE_APPLICATION
+   */
+  static tst02_all_domaines_app = "tst02_all_domaines_app";
+  /**
+   * Domaine d&#39;application
+   * @smartType docid TST_ORDER_DOMAINE_APPLICATION
+   */
+  static tst02_domaine_app_search = "tst02_domaine_app_search";
+  /**
+   * Processus
+   * @smartType frame
+   */
+  static tst02_f_processus = "tst02_f_processus";
+  /**
+   * Processus
+   * @smartType docid TST_ORDER_PROCESSUS
+   */
+  static tst02_processus = "tst02_processus";
+  /**
+   * Processus
+   * @smartType docid TST_ORDER_PROCESSUS
+   */
+  static tst02_processus_parents = "tst02_processus_parents";
+  /**
+   * Activité
+   * @smartType docid TST_ORDER_ACTIVITE
+   */
+  static tst02_activite = "tst02_activite";
+  /**
+   * Opération
+   * @smartType docid TST_ORDER_OPERATION
+   */
+  static tst02_operation = "tst02_operation";
+  /**
+   * Système de management
+   * @smartType frame
+   */
+  static tst02_f_systeme_mng = "tst02_f_systeme_mng";
+  /**
+   * Système de management
+   * @smartType docid TST_ORDER_SYSTEME_MANAGEMENT
+   */
+  static tst02_systeme_mng = "tst02_systeme_mng";
+  /**
+   * Commentaires
+   * @smartType tab
+   */
+  static tst02_t_commentaires = "tst02_t_commentaires";
+  /**
+   * Commentaires
+   * @smartType frame
+   */
+  static tst02_f_commentaires = "tst02_f_commentaires";
+  /**
+   * Commentaires
+   * @smartType array
+   */
+  static tst02_a_commentaires = "tst02_a_commentaires";
+  /**
+   * Utilisateur
+   * @smartType account
+   */
+  static tst02_commentaire_utilisateur = "tst02_commentaire_utilisateur";
+  /**
+   * Commentaire
+   * @smartType docid TST_ORDER_COMMENTAIRE
+   */
+  static tst02_commentaire_commentaire = "tst02_commentaire_commentaire";
+  /**
+   * Etat du commentaire
+   * @smartType text
+   */
+  static tst02_commentaire_etat = "tst02_commentaire_etat";
+  /**
+   * Fichier attaché
+   * @smartType file
+   */
+  static tst02_commentaire_fichier = "tst02_commentaire_fichier";
+  /**
+   * Notes Gestionnaires
+   * @smartType frame
+   */
+  static tst02_f_notes_gestionnaires = "tst02_f_notes_gestionnaires";
+  /**
+   * Notes Gestionnaires
+   * @smartType array
+   */
+  static tst02_a_notes_gestionnaires = "tst02_a_notes_gestionnaires";
+  /**
+   * Note Gestionnaire
+   * @smartType docid TST_ORDER_NOTE_GESTIONNAIRE
+   */
+  static tst02_note_gestionnaire_note = "tst02_note_gestionnaire_note";
+  /**
+   * Utilisateur
+   * @smartType account
+   */
+  static tst02_note_gestionnaire_utilisateur =
+    "tst02_note_gestionnaire_utilisateur";
+  /**
+   * Général
+   * @smartType frame
+   */
+  static tst02_f_general = "tst02_f_general";
+  /**
+   * Entité d&#39;entretien
+   * @smartType docid TST_ORDER_ENTITE
+   */
+  static tst02_entite_entretien = "tst02_entite_entretien";
+  /**
+   * Référence interne
+   * @smartType text
+   */
+  static tst02_ref_interne = "tst02_ref_interne";
+  /**
+   * Référence
+   * @smartType text
+   */
+  static tst02_reference = "tst02_reference";
+  /**
+   * Paramètres
+   * @smartType frame
+   */
+  static tst02_parametres = "tst02_parametres";
+  /**
+   * États clos du workflow associé à cette famille
+   * @smartType array
+   */
+  static tst02_a_closed_states = "tst02_a_closed_states";
+  /**
+   * Clefs
+   * @smartType text
+   */
+  static tst02_closed_states_keys = "tst02_closed_states_keys";
 }
 export class DSEARCH extends SEARCH {
   /**
@@ -994,6 +1336,243 @@ export class SSEARCH extends SEARCH {
    */
   static se_phparg = "se_phparg";
 }
+export class TST_ORDER_03 extends TST_ORDER_02 {
+  /**
+   * Fichier attaché
+   * @smartType frame
+   */
+  static tst03_f_fichier_attache = "tst03_f_fichier_attache";
+  /**
+   * Fichier
+   * @smartType file
+   */
+  static tst03_fichier_attache_file = "tst03_fichier_attache_file";
+  /**
+   * Lien vers le fichier
+   * @smartType text
+   */
+  static tst03_lien_fichier = "tst03_lien_fichier";
+  /**
+   * Indication concernant le lien
+   * @smartType text
+   */
+  static tst03_lien_indication = "tst03_lien_indication";
+  /**
+   * Tableau annexes
+   * @smartType array
+   */
+  static tst03_a_annexes = "tst03_a_annexes";
+  /**
+   * Fichier
+   * @smartType file
+   */
+  static tst03_annexe_fichier = "tst03_annexe_fichier";
+  /**
+   * Titre
+   * @smartType text
+   */
+  static tst03_annexe_titre = "tst03_annexe_titre";
+  /**
+   * Fichiers sources
+   * @smartType array
+   */
+  static tst03_a_sources = "tst03_a_sources";
+  /**
+   * Fichier
+   * @smartType file
+   */
+  static tst03_sources_fichier = "tst03_sources_fichier";
+  /**
+   * Titre
+   * @smartType text
+   */
+  static tst03_sources_titre = "tst03_sources_titre";
+  /**
+   * Source du document externe
+   * @smartType text
+   */
+  static tst03_docu_externe = "tst03_docu_externe";
+  /**
+   * Détails
+   * @smartType frame
+   */
+  static tst03_f_details = "tst03_f_details";
+  /**
+   * Commentaires
+   * @smartType htmltext
+   */
+  static tst03_commentaire = "tst03_commentaire";
+  /**
+   * Pôle et Métiers
+   * @smartType frame
+   */
+  static tst03_f_pole_metiers = "tst03_f_pole_metiers";
+  /**
+   * Pôles
+   * @smartType docid TST_ORDER_POLE
+   */
+  static tst03_pole = "tst03_pole";
+  /**
+   * Métiers
+   * @smartType docid TST_ORDER_METIER
+   */
+  static tst03_metiers = "tst03_metiers";
+  /**
+   * Rédacteur
+   * @smartType account
+   */
+  static tst03_redacteur = "tst03_redacteur";
+  /**
+   * Approbateur
+   * @smartType account
+   */
+  static tst03_approbateur = "tst03_approbateur";
+  /**
+   * Gestionnaire référent
+   * @smartType account
+   */
+  static tst03_gestionnaire = "tst03_gestionnaire";
+  /**
+   * Gestionnaires du domaine d&#39;application
+   * @smartType account
+   */
+  static tst03_gestionnaires_da = "tst03_gestionnaires_da";
+  /**
+   * Date d&#39;approbation
+   * @smartType date
+   */
+  static tst03_date_approbation = "tst03_date_approbation";
+  /**
+   * Éditions
+   * @smartType frame
+   */
+  static tst03_f_anciennes_versions = "tst03_f_anciennes_versions";
+  /**
+   * Éditions
+   * @smartType array
+   */
+  static tst03_a_anciennes_versions = "tst03_a_anciennes_versions";
+  /**
+   * Document
+   * @smartType docid TST_ORDER_03
+   */
+  static tst03_ancienne_version_document = "tst03_ancienne_version_document";
+  /**
+   * Document de travail
+   * @smartType docid TST_ORDER_03
+   */
+  static tst03_ancienne_version_document_travail =
+    "tst03_ancienne_version_document_travail";
+  /**
+   * Date
+   * @smartType date
+   */
+  static tst03_ancienne_version_date_version =
+    "tst03_ancienne_version_date_version";
+  /**
+   * Edition
+   * @smartType text
+   */
+  static tst03_ancienne_version_edition = "tst03_ancienne_version_edition";
+  /**
+   * Gestion
+   * @smartType tab
+   */
+  static tst03_t_gestion = "tst03_t_gestion";
+  /**
+   * Gestion
+   * @smartType frame
+   */
+  static tst03_f_gestion = "tst03_f_gestion";
+  /**
+   * Date limite de revue
+   * @smartType date
+   */
+  static tst03_date_limite_revue = "tst03_date_limite_revue";
+  /**
+   * Enregistrements
+   * @smartType tab
+   */
+  static tst03_t_enregistrements = "tst03_t_enregistrements";
+  /**
+   * Enregistrements
+   * @smartType frame
+   */
+  static tst03_f_enregistrements = "tst03_f_enregistrements";
+  /**
+   * Enregistrements
+   * @smartType array
+   */
+  static tst03_a_enregistrements = "tst03_a_enregistrements";
+  /**
+   * Enregistrement
+   * @smartType text
+   */
+  static tst03_enregistrement = "tst03_enregistrement";
+  /**
+   * Identification
+   * @smartType text
+   */
+  static tst03_enregistrement_identification =
+    "tst03_enregistrement_identification";
+  /**
+   * Stockage
+   * @smartType text
+   */
+  static tst03_enregistrement_stockage = "tst03_enregistrement_stockage";
+  /**
+   * Protection
+   * @smartType text
+   */
+  static tst03_enregistrement_protection = "tst03_enregistrement_protection";
+  /**
+   * Accessibilité
+   * @smartType text
+   */
+  static tst03_enregistrement_accessibilite =
+    "tst03_enregistrement_accessibilite";
+  /**
+   * Durée conservation
+   * @smartType text
+   */
+  static tst03_enregistrement_duree_conservation =
+    "tst03_enregistrement_duree_conservation";
+  /**
+   * Élimination
+   * @smartType text
+   */
+  static tst03_enregistrement_elimination = "tst03_enregistrement_elimination";
+  /**
+   * Titre
+   * @smartType text
+   */
+  static tst03_titre = "tst03_titre";
+  /**
+   * Intitulé
+   * @smartType text
+   */
+  static tst03_intitule = "tst03_intitule";
+  /**
+   * Edition
+   * @smartType text
+   */
+  static tst03_edition = "tst03_edition";
+  /**
+   * Date de publication
+   * @smartType date
+   */
+  static tst03_date_publication = "tst03_date_publication";
+  /**
+   * Type de document
+   * @smartType docid TST_ORDER_TYPE_DOCUMENT
+   */
+  static tst03_type_doc = "tst03_type_doc";
+  /**
+   * Origine
+   * @smartType enum TST_ORDER_03-sysgdoc_origine
+   */
+  static tst03_origine = "tst03_origine";
+}
 export class IGROUP extends GROUP {
   /**
    * Système
@@ -1102,4 +1681,176 @@ export class REPORT extends DSEARCH {
    * @smartType int
    */
   static rep_maxdisplaylimit = "rep_maxdisplaylimit";
+}
+export class TST_ORDER_04 extends TST_ORDER_03 {
+  /**
+   * Le document
+   * @smartType tab
+   */
+  static tst04_t_document = "tst04_t_document";
+  /**
+   * Annexes du document
+   * @smartType frame
+   */
+  static tst04_f_annexes = "tst04_f_annexes";
+  /**
+   * Fichiers sources du document et des annexes
+   * @smartType frame
+   */
+  static tst04_f_sources = "tst04_f_sources";
+  /**
+   * Déclinaisons de ce document
+   * @smartType docid TST_ORDER_04
+   */
+  static tst04_declinaisons_document = "tst04_declinaisons_document";
+  /**
+   * Décliné depuis
+   * @smartType docid TST_ORDER_04
+   */
+  static tst04_decline = "tst04_decline";
+  /**
+   * Documents abrogateurs
+   * @smartType docid TST_ORDER_04
+   */
+  static tst04_documents_abrogateurs = "tst04_documents_abrogateurs";
+  /**
+   * Applicabilité
+   * @smartType enum TST_ORDER_04-sysdocref_applicabilite
+   */
+  static tst04_applicabilite = "tst04_applicabilite";
+  /**
+   * Date d&#39;abrogation
+   * @smartType date
+   */
+  static tst04_date_abrogation = "tst04_date_abrogation";
+  /**
+   * Dernier increment document de travail
+   * @smartType text
+   */
+  static tst04_last_dt = "tst04_last_dt";
+  /**
+   * Justification de l&#39;abrogation
+   * @smartType longtext
+   */
+  static tst04_justification_abrogation = "tst04_justification_abrogation";
+  /**
+   * Domaines d&#39;application de rattachement
+   * @smartType docid TST_ORDER_DOMAINE_APPLICATION
+   */
+  static tst04_domaines_application_rattachement =
+    "tst04_domaines_application_rattachement";
+  /**
+   * Dernier cycle de vérification
+   * @smartType array
+   */
+  static tst04_a_dernieres_verifications = "tst04_a_dernieres_verifications";
+  /**
+   * Vérificateur
+   * @smartType account
+   */
+  static tst04_dernier_verificateur = "tst04_dernier_verificateur";
+  /**
+   * Document de travail courant
+   * @smartType docid TST_ORDER_05
+   */
+  static tst04_doc_travail_courant = "tst04_doc_travail_courant";
+  /**
+   * Accusés de lecture
+   * @smartType frame
+   */
+  static tst04_f_accuses_lecture = "tst04_f_accuses_lecture";
+  /**
+   * Accusés de lecture
+   * @smartType array
+   */
+  static tst04_a_accuses_lecture = "tst04_a_accuses_lecture";
+  /**
+   * Personne
+   * @smartType account
+   */
+  static tst04_accuse_lecture_personne = "tst04_accuse_lecture_personne";
+  /**
+   * Date
+   * @smartType date
+   */
+  static tst04_accuse_lecture_date = "tst04_accuse_lecture_date";
+  /**
+   * Versions antérieures
+   * @smartType tab
+   */
+  static tst04_t_historique = "tst04_t_historique";
+  /**
+   * Commentaire sur l&#39;origine du fichier
+   * @smartType longtext
+   */
+  static tst04_commentaire_fichier = "tst04_commentaire_fichier";
+}
+export class TST_ORDER_05 extends TST_ORDER_04 {
+  /**
+   * Consignes
+   * @smartType tab
+   */
+  static tst05_t_consignes = "tst05_t_consignes";
+  /**
+   * Gestion
+   * @smartType frame
+   */
+  static tst05_f_consignes = "tst05_f_consignes";
+  /**
+   * Info. consultant sur modif. en cours
+   * @smartType longtext
+   */
+  static tst05_modif_en_cours = "tst05_modif_en_cours";
+  /**
+   * Décision
+   * @smartType longtext
+   */
+  static tst04_derniere_decision = "tst04_derniere_decision";
+  /**
+   * Participants
+   * @smartType frame
+   */
+  static tst05_f_participants = "tst05_f_participants";
+  /**
+   * Anciens participants
+   * @smartType account
+   */
+  static tst05_anciens_participants = "tst05_anciens_participants";
+  /**
+   * Participants pressentis au recueil
+   * @smartType account
+   */
+  static tst05_participants_recueil_default =
+    "tst05_participants_recueil_default";
+  /**
+   * Participants pressentis à la vérification
+   * @smartType account
+   */
+  static tst05_participants_verification_default =
+    "tst05_participants_verification_default";
+  /**
+   * Document de référentiel courant
+   * @smartType docid TST_ORDER_04
+   */
+  static tst05_docref_source = "tst05_docref_source";
+  /**
+   * Compléments gestionnaire
+   * @smartType tab
+   */
+  static tst05_t_complement_gestionnaire = "tst05_t_complement_gestionnaire";
+  /**
+   * Compléments gestionnaire
+   * @smartType frame
+   */
+  static tst05_f_complement_gestionnaire = "tst05_f_complement_gestionnaire";
+  /**
+   * Référence ministérielle
+   * @smartType text
+   */
+  static tst05_ref_min = "tst05_ref_min";
+  /**
+   * Date limite de rédaction
+   * @smartType date
+   */
+  static tst05_date_limite_redaction = "tst05_date_limite_redaction";
 }

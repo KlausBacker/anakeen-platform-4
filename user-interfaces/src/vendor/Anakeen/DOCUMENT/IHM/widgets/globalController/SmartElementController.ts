@@ -31,6 +31,7 @@ import Router from "../../routers/router.js";
 import View from "../../views/document/vDocument";
 // @ts-ignore
 import TransitionView from "../../views/workflow/vTransition";
+import "./SmartElementController.css";
 import "../../widgets/widget";
 import "../../widgets/window/wConfirm";
 import "../../widgets/window/wLoading";
@@ -683,26 +684,22 @@ export default class SmartElementController extends AnakeenController.BusEvents.
         "Values must be an object where each properties is an smart field of the array for " + smartFieldId
       );
     }
-
-    // get next index row
-    let indexRow = 0;
     attribute.get("content").each(currentAttribute => {
+      let newValue = values[currentAttribute.id];
       const currentValue = currentAttribute.getValue();
-      indexRow = currentValue.length;
-    });
-    // first add empty row, and set value on success
-    attribute.addIndexedLine(indexRow, {
-      success: function onAddIndexedLineSuccess() {
-        attribute.get("content").each(currentAttribute => {
-          let newValue = values[currentAttribute.id];
-          if (!_.isUndefined(newValue)) {
-            newValue = _.defaults(newValue, {
-              displayValue: newValue.value,
-              value: ""
-            });
-            currentAttribute.addValue(newValue, indexRow);
-          }
+      if (_.isUndefined(newValue)) {
+        // Set default value if no value defined
+        currentAttribute.createIndexedValue(currentValue.length, false, _.isEmpty(values));
+      } else {
+        newValue = _.defaults(newValue, {
+          displayValue: newValue.value,
+          value: ""
         });
+        let indexRow = 0;
+        if (currentValue.length > 0) {
+          indexRow = currentValue.length - 1;
+        }
+        currentAttribute.addValue(newValue, indexRow);
       }
     });
   }
@@ -1325,12 +1322,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     const $se = this._element.find(".dcpDocument");
     if (!this._smartElement || $se.length === 0) {
       this._element.attr("data-controller", this.uid);
-      const domTemplate = `<div class="smart-element-wrapper">
-            <style>
-                .smart-element-wrapper {
-                    position: relative;
-                }
-            </style>
+      const domTemplate = `<div class="smart-element-wrapper">       
             <div class="document">
                 <div class="dcpDocument"></div>
             </div>

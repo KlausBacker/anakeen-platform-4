@@ -54,6 +54,10 @@ msgctxt "AdminCenterParameters.user btn specific user"
 msgid "You need to turn on the button user parameters"
 msgstr ""
 
+msgctxt "AdminCenterAccounts"
+msgid "Structure '%s' do not exist"
+msgstr "Structure '%s' do not exist"
+
 #, fuzzy
 #~ msgctxt "AdminCenterTrash.title"
 #~ msgid "title"

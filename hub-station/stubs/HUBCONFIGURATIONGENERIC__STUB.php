@@ -93,6 +93,14 @@ namespace SmartStructure\Fields {
         * </ul>
         */ 
         const hge_component_tag='hge_component_tag';
+        /**
+        * Component properties
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> json </li>
+        * </ul>
+        */ 
+        const hge_component_props='hge_component_props';
 
     }
 }

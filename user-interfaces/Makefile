@@ -153,11 +153,11 @@ app-all-autorelease: app-autorelease app-test-autorelease
 ########################################################################################################################
 deploy: install-deps buildJS
 	@$(PRINT_COLOR) "$(COLOR_DEBUG)Deploy$(COLOR_RESET)\n"
-	$(ANAKEEN_CLI_CMD) deploy --auto-release --sourcePath ${ANAKEEN_UI_SRC_PATH}
+	$(ANAKEEN_CLI_CMD) deploy  --sourcePath ${ANAKEEN_UI_SRC_PATH}
 
 deploy-test: install-deps buildJS-test
 	@$(PRINT_COLOR) "$(COLOR_DEBUG)Deploy test$(COLOR_RESET)\n"
-	$(ANAKEEN_CLI_CMD) deploy --auto-release --sourcePath ${TEST_SRC_PATH}
+	$(ANAKEEN_CLI_CMD) deploy  --sourcePath ${TEST_SRC_PATH}
 
 deploy-all: deploy deploy-test
 

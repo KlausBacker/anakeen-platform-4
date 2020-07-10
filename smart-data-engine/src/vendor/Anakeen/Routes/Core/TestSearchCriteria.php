@@ -3,7 +3,7 @@
 namespace Anakeen\Routes\Core;
 
 use Anakeen\Router\ApiV2Response;
-use Anakeen\Search\SearchCriteria\SearchCriteria;
+use Anakeen\SmartCriteria\SmartCriteria;
 
 /**
  * Class DocumentHistory

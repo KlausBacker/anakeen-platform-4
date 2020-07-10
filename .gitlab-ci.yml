@@ -6,6 +6,7 @@ stages:
   - lint
   - buildJS
   - buildHub
+  - buildFulltext
   - build
   - test
   - registry
@@ -170,6 +171,27 @@ hub-station-buildJS:
       - business-app/**/*
       - development-center/**/*
       - transformation/**/*
+
+fulltext-search-buildJS:
+  <<: *pull-cache
+  stage: buildFulltext
+  tags:
+    - a4ppm
+  script:
+    - make -C fulltext-search buildComponent
+  artifacts:
+    paths:
+      - fulltext-search/components/lib/
+    expire_in: 1 day
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - user-interfaces/**/*
+      - fulltext-search/**/*
+  dependencies:
+    - user-interfaces-buildJS
 
 #endregion buildJS
 
@@ -729,6 +751,9 @@ module-validation-publish:
   dependencies: []
 
 module-validation-web-build:
+  tags:
+    - a4ppm
+  dependencies: []
   stage: build
   script:
     - cd module-validation
@@ -738,6 +763,9 @@ module-validation-web-build:
         - module-validation/**/*
 
 module-validation-web-deploy:
+  tags:
+    - a4ppm
+  dependencies: []
   stage: publish
   script:
     # Setup SSH deploy key

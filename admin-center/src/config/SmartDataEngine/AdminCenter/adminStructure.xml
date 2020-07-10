@@ -72,4 +72,10 @@
             </sde:requiredAccess>
         </sde:route>
     </sde:routes>
+    <sde:accesses namespace="AdminCenter">
+        <sde:access name="AdminStructure">
+            <sde:description>Structure administrator access</sde:description>
+        </sde:access>
+        <sde:route-access ref="AdminStructure" account="structure_manager_role" />
+    </sde:accesses>
 </sde:config>

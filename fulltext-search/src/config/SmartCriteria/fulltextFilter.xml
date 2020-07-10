@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<sc:config xmlns:sc="https://platform.anakeen.com/4/schemas/sc/1.0">
+    <sc:filters>
+        <sc:filter>
+            <sc:type>fulltext</sc:type>
+            <sc:fieldMultiplicity>simple</sc:fieldMultiplicity>
+            <sc:filterMultiplicity>simple</sc:filterMultiplicity>
+            <sc:key>fulltext</sc:key>
+            <sc:filterValueCallable>\Anakeen\Fullsearch\SmartCriteriaFullsearchConfig::getSmartCriteriaFilterConfiguration</sc:filterValueCallable>
+        </sc:filter>
+    </sc:filters>
+</sc:config>

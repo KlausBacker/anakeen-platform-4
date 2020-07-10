@@ -58,89 +58,15 @@ export default class SmartFormConfigurationBuilder {
   private addCriteriaTemplateToSmartForm(criteria: IConfigurationCriteria): void {
     const index = this.smartFormConfiguration.structure[0].content.length;
     let formTemplate: ISmartFormFieldSet;
-
-    //Fulltext
-    if (criteria.kind === SmartCriteriaKind.FULLTEXT) {
-      formTemplate = {
-        content: [
-          {
-            label: criteria.label,
-            name: SmartFormConfigurationBuilder.getValueName(index),
-            type: "text"
-          }
-        ],
-        type: "frame",
-        name: `sc_criteria_${index}`
-      };
-      this.smartFormConfiguration.renderOptions["fields"][SmartFormConfigurationBuilder.getValueName(index)] = {
-        displayDeleteButton: false
-      };
-      if (criteria.default) {
-        this.smartFormConfiguration.values[SmartFormConfigurationBuilder.getValueName(index)] = criteria.default.value;
-      }
-
-      //Others
-    } else {
-      const hasBetween = SmartCriteriaUtils.hasBetweenOperator(criteria);
-      const operators = SmartFormConfigurationBuilder.buildSmartFormOperators(criteria.operators);
-      formTemplate = {
-        content: [
-          {
-            name: SmartFormConfigurationBuilder.getOperatorLabelName(index),
-            type: "text",
-            display: "read"
-          },
-          {
-            label: criteria.label,
-            name: SmartFormConfigurationBuilder.getOperatorName(index),
-            type: "enum",
-            enumItems: operators
-          },
-          SmartFormConfigurationBuilder.getCriteriaSmartFormValue(criteria, index, false),
-          SmartFormConfigurationBuilder.getCriteriaSmartFormValue(criteria, index, true)
-        ],
-        type: "frame",
-        name: `sc_criteria_${index}`
-      };
-      this.smartFormConfiguration.values[SmartFormConfigurationBuilder.getOperatorLabelName(index)] = criteria.label;
-      if (hasBetween) {
-        formTemplate.content.push({
-          name: SmartFormConfigurationBuilder.getValueBetweenLabelName(index),
-          type: "text",
-          display: "read"
-        });
-        formTemplate.content.push(
-          SmartFormConfigurationBuilder.getCriteriaSmartFormValue(criteria, index, false, true)
-        );
-        this.smartFormConfiguration.values[
-          SmartFormConfigurationBuilder.getValueBetweenLabelName(index)
-        ] = this.translations.and;
-      }
-      this.smartFormConfiguration.renderOptions["fields"][SmartFormConfigurationBuilder.getOperatorLabelName(index)] = {
-        labelPosition: "none"
-      };
-      this.smartFormConfiguration.renderOptions["fields"][SmartFormConfigurationBuilder.getOperatorName(index)] = {
-        displayDeleteButton: false,
-        labelPosition: "none"
-      };
-      this.smartFormConfiguration.renderOptions["fields"][SmartFormConfigurationBuilder.getValueName(index)] = {
-        labelPosition: "none"
-      };
-      this.smartFormConfiguration.renderOptions["fields"][SmartFormConfigurationBuilder.getValueMultipleName(index)] = {
-        labelPosition: "none"
-      };
-      if (hasBetween) {
-        this.smartFormConfiguration.renderOptions["fields"][
-          SmartFormConfigurationBuilder.getValueBetweenLabelName(index)
-        ] = {
-          labelPosition: "none"
-        };
-        this.smartFormConfiguration.renderOptions["fields"][
-          SmartFormConfigurationBuilder.getValueBetweenName(index)
-        ] = {
-          labelPosition: "none"
-        };
-      }
+    switch (criteria.kind) {
+      case SmartCriteriaKind.PROPERTY:
+      case SmartCriteriaKind.VIRTUAL:
+      case SmartCriteriaKind.FIELD:
+        formTemplate = this.buildDefaultCriteriaTemplate(criteria, index);
+        break;
+      default:
+        formTemplate = this.buildCustomCriteriaTemplate(criteria, index);
+        break;
     }
     this.smartFormConfiguration.structure[0].content.push(formTemplate);
     this.smartFormConfiguration.renderOptions["fields"][`sc_criteria_${index}`] = {
@@ -270,5 +196,80 @@ export default class SmartFormConfigurationBuilder {
       }
     });
     return operators;
+  }
+
+  /**
+   * Method used to build smart form configuration from smart criteria custom kind (i.e. fulltext)
+   * To extend functionnalities, this method can be overriden.
+   * @param criteria the criteria parameter
+   * @param index of the criteria
+   */
+  protected buildCustomCriteriaTemplate(criteria: IConfigurationCriteria, index: number): ISmartFormFieldSet {
+    return { name: "", type: undefined };
+  }
+
+  /**
+   * Build the smart form template for default kind
+   * @param criteria the criteria parameter
+   * @param index of the criteria
+   */
+  private buildDefaultCriteriaTemplate(criteria: IConfigurationCriteria, index: number): ISmartFormFieldSet {
+    const hasBetween = SmartCriteriaUtils.hasBetweenOperator(criteria);
+    const operators = SmartFormConfigurationBuilder.buildSmartFormOperators(criteria.operators);
+    const formTemplate: ISmartFormFieldSet = {
+      content: [
+        {
+          name: SmartFormConfigurationBuilder.getOperatorLabelName(index),
+          type: "text",
+          display: "read"
+        },
+        {
+          label: criteria.label,
+          name: SmartFormConfigurationBuilder.getOperatorName(index),
+          type: "enum",
+          enumItems: operators
+        },
+        SmartFormConfigurationBuilder.getCriteriaSmartFormValue(criteria, index, false),
+        SmartFormConfigurationBuilder.getCriteriaSmartFormValue(criteria, index, true)
+      ],
+      type: "frame",
+      name: `sc_criteria_${index}`
+    };
+    this.smartFormConfiguration.values[SmartFormConfigurationBuilder.getOperatorLabelName(index)] = criteria.label;
+    if (hasBetween) {
+      formTemplate.content.push({
+        name: SmartFormConfigurationBuilder.getValueBetweenLabelName(index),
+        type: "text",
+        display: "read"
+      });
+      formTemplate.content.push(SmartFormConfigurationBuilder.getCriteriaSmartFormValue(criteria, index, false, true));
+      this.smartFormConfiguration.values[
+        SmartFormConfigurationBuilder.getValueBetweenLabelName(index)
+      ] = this.translations.and;
+    }
+    this.smartFormConfiguration.renderOptions["fields"][SmartFormConfigurationBuilder.getOperatorLabelName(index)] = {
+      labelPosition: "none"
+    };
+    this.smartFormConfiguration.renderOptions["fields"][SmartFormConfigurationBuilder.getOperatorName(index)] = {
+      displayDeleteButton: false,
+      labelPosition: "none"
+    };
+    this.smartFormConfiguration.renderOptions["fields"][SmartFormConfigurationBuilder.getValueName(index)] = {
+      labelPosition: "none"
+    };
+    this.smartFormConfiguration.renderOptions["fields"][SmartFormConfigurationBuilder.getValueMultipleName(index)] = {
+      labelPosition: "none"
+    };
+    if (hasBetween) {
+      this.smartFormConfiguration.renderOptions["fields"][
+        SmartFormConfigurationBuilder.getValueBetweenLabelName(index)
+      ] = {
+        labelPosition: "none"
+      };
+      this.smartFormConfiguration.renderOptions["fields"][SmartFormConfigurationBuilder.getValueBetweenName(index)] = {
+        labelPosition: "none"
+      };
+    }
+    return formTemplate;
   }
 }

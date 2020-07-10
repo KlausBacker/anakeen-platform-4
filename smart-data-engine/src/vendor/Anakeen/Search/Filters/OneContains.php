@@ -3,11 +3,11 @@
 namespace Anakeen\Search\Filters;
 
 use Anakeen\Core\SmartStructure\NormalAttribute;
-use Anakeen\Search\SearchCriteria\SearchCriteriaTrait;
+use Anakeen\SmartCriteria\SmartCriteriaTrait;
 
 class OneContains extends StandardAttributeFilter implements ElementSearchFilter
 {
-    use SearchCriteriaTrait;
+    use SmartCriteriaTrait;
 
     const NOT = 1;
     const NOCASE = 2;

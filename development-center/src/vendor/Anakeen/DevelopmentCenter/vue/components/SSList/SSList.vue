@@ -39,7 +39,8 @@
           >
             <img class="smart-structure-list-item-icon" :src="tab.icon" />
             <div class="smart-structure-list-item-title">
-              {{ tab.name || tab.title }} ({{ tab.id }})
+              {{ tab.title }} ({{ tab.id }}) <br />
+              ({{ tab.name }})
             </div>
           </div>
         </div>

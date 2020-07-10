@@ -15,7 +15,6 @@ import GridExportEvent from "./AnkGridEvent/AnkGridExportEvent";
 import I18nMixin from "../../mixins/AnkVueComponentMixin/I18nMixin";
 
 import $ from "jquery";
-import AnkSmartCriteria from "../AnkSmartCriteria/AnkSmartCriteria.component";
 import ISmartFilter from "../AnkSmartCriteria/Types/ISmartFilter";
 
 const CONTROLLER_URL = "/api/v2/grid/controllers/{controller}/{op}/{collection}";

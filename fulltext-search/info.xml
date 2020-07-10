@@ -6,6 +6,7 @@
     <requires>
         <module name="smart-data-engine" version="^2.1.0"/>
         <module name="admin-center" version="^2.1.0"/>
+        <module name="user-interfaces" version="^3.0.2-RC.2020.1.32"/>
     </requires>
 
 
@@ -18,7 +19,12 @@
         <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/Fullsearch/Config/FullsearchRoles.xml"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Fullsearch/Config/hubConfiguration.xml"/>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/Fullsearch/Config/tasks.xml"/>
+        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Fullsearch/Config/gridFulltextController.xml"/>
     </post-install>
+
+    <post-upgrade>
+        <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Fullsearch/Config/gridFulltextController.xml"/>
+    </post-upgrade>
 
     <reconfigure>
         <process command="./ank.php --script=../vendor/Anakeen/Fullsearch/Config/unaccentPgParser"/>

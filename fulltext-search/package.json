@@ -18,6 +18,10 @@
     "buildJs:fsdock:prod": "npx webpack --config webpack/config.js",
     "buildJs:fsdock:dev": "dev=DEV npx webpack --config webpack/config.js",
     "buildJs": "yarn run buildJs:fsdock:prod && yarn run buildJs:fsdock:dev",
+    "buildTest:prod": "conf=PROD npx webpack --config ./webpack/test.js",
+    "buildTest:dev": "conf=DEV npx webpack --config ./webpack/test.js",
+    "buildTest": "yarn run buildTest:prod && yarn run buildTest:dev",
+    "lib:rollup": "CLEAN=true npx rollup -c ./components/rollup/rollup.config.js",
     "dev": "dev=DEV npx webpack-dev-server --config=./webpack/config.js"
   },
   "devDependencies": {
@@ -40,10 +44,18 @@
     "@types/jquery": "^3.3.30",
     "core-js": "3.6.1",
     "jquery": "^3.3.1",
+    "rollup": "^1.27.14",
+    "rollup-plugin-cleaner": "^1.0.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-json": "^4.0.0",
+    "rollup-plugin-postcss": "^3.1.2",
+    "rollup-plugin-progress": "^1.1.1",
+    "rollup-plugin-typescript2": "^0.25.3",
+    "rollup-plugin-vue": "^5.1.6",
     "vue": "2.6.11",
     "vue-property-decorator": "^8.3.0",
     "vue-template-compiler": "2.6.11",
     "vuex": "3.1.2",
-    "webpack-dev-server": "^3.10.3"
+    "webpack-dev-server": "^3.11.0"
   }
 }

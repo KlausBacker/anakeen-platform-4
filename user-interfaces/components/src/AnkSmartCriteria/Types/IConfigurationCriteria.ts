@@ -47,6 +47,7 @@ export default interface IConfigurationCriteria {
   stateStructure?: string;
   stateWorkflow?: number | string;
   stateList?: Array<ISmartFormFieldEnumConfig>;
+  searchDomain?: string;
 }
 
 export interface ICriteriaConfigurationOperator extends ISmartFormFieldEnumConfig {

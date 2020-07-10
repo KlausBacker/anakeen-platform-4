@@ -1,0 +1,74 @@
+<documents date="2019-04-25T15:59:19" author="Anakeen Platform Master" name="Interface de tests des rendus de recherche générale">
+    <hubconfigurationgeneric name="HUBELT_SCF" title="Test Smart Criteria Fulltext">
+        <hub_config>
+            <hub_station_id_frame>
+                <hub_station_id name="UI_TEST">Interface de tests des rendus</hub_station_id>
+                <hub_title>Test Smart Criteria Fulltext</hub_title>
+            </hub_station_id_frame>
+            <hub_slot_parameters>
+                <hub_order>10</hub_order>
+                <hub_docker_position>LEFT_TOP</hub_docker_position>
+                <hub_vue_router_entry>testfulltextsmartcriteria</hub_vue_router_entry>
+            </hub_slot_parameters>
+            <hub_activated_frame>
+                <hub_activated>FALSE</hub_activated>
+                <hub_selectable>TRUE</hub_selectable>
+                <hub_expandable>TRUE</hub_expandable>
+            </hub_activated_frame>
+        </hub_config>
+        <hub_component_tab>
+            <hub_component_parameters/>
+            <hge_fr_assets>
+                <hge_jsassets>
+                    <hge_jsasset_type>MANIFEST</hge_jsasset_type>
+                    <hge_jsasset>
+                        Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("testFulltextSmartCriteria", "test-fulltext-smart-criteria")
+                    </hge_jsasset>
+                </hge_jsassets>
+            </hge_fr_assets>
+            <hge_fr_identification>
+                <hge_component_tag>ank-test-fulltext-smart-criteria</hge_component_tag>
+            </hge_fr_identification>
+        </hub_component_tab>
+        <hub_security>
+            <hub_security_frame>
+            </hub_security_frame>
+        </hub_security>
+    </hubconfigurationgeneric>
+    <hubconfigurationgeneric name="HUBELT_SEGF" title="Test Smart Element Grid Fulltext">
+        <hub_config>
+            <hub_station_id_frame>
+                <hub_station_id name="UI_TEST">Interface de tests des rendus</hub_station_id>
+                <hub_title>Test Smart Element Grid Fulltext</hub_title>
+            </hub_station_id_frame>
+            <hub_slot_parameters>
+                <hub_order>11</hub_order>
+                <hub_docker_position>LEFT_TOP</hub_docker_position>
+                <hub_vue_router_entry>testFulltextSmartElementGrid</hub_vue_router_entry>
+            </hub_slot_parameters>
+            <hub_activated_frame>
+                <hub_activated>FALSE</hub_activated>
+                <hub_selectable>TRUE</hub_selectable>
+                <hub_expandable>TRUE</hub_expandable>
+            </hub_activated_frame>
+        </hub_config>
+        <hub_component_tab>
+            <hub_component_parameters/>
+            <hge_fr_assets>
+                <hge_jsassets>
+                    <hge_jsasset_type>MANIFEST</hge_jsasset_type>
+                    <hge_jsasset>
+                        Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("testFulltextSmartElementGrid", "test-fulltext-smart-element-grid")
+                    </hge_jsasset>
+                </hge_jsassets>
+            </hge_fr_assets>
+            <hge_fr_identification>
+                <hge_component_tag>ank-test-fulltext-smart-grid</hge_component_tag>
+            </hge_fr_identification>
+        </hub_component_tab>
+        <hub_security>
+            <hub_security_frame>
+            </hub_security_frame>
+        </hub_security>
+    </hubconfigurationgeneric>
+</documents>

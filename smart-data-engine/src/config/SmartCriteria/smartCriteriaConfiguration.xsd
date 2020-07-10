@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:rout="https://platform.anakeen.com/4/schemas/sc/1.0" elementFormDefault="qualified" targetNamespace="https://platform.anakeen.com/4/schemas/sc/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="config" type="rout:configType"/>
+  <xs:complexType name="filterType">
+    <xs:sequence>
+      <xs:element type="xs:string" name="type"/>
+      <xs:element name="fieldMultiplicity">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="simple"/>
+            <xs:enumeration value="multiple"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="filterMultiplicity">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="simple"/>
+            <xs:enumeration value="multiple"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element type="xs:string" name="key"/>
+      <xs:element type="xs:string" name="filterValueCallable"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="filtersType">
+    <xs:sequence>
+      <xs:element type="ns:filterType" name="filter" maxOccurs="unbounded" minOccurs="0" xmlns:ns="https://platform.anakeen.com/4/schemas/sc/1.0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="configType">
+    <xs:sequence>
+      <xs:element type="ns:filtersType" name="filters" xmlns:ns="https://platform.anakeen.com/4/schemas/sc/1.0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

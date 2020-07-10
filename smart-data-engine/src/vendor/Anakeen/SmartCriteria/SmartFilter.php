@@ -1,9 +1,9 @@
 <?php
 
 
-namespace Anakeen\Search\SearchCriteria;
+namespace Anakeen\SmartCriteria;
 
-class SearchFilter
+class SmartFilter
 {
 
     /**
@@ -16,7 +16,7 @@ class SearchFilter
     public $field;
 
     /**
-     * @var SearchFilterOperator
+     * @var SmartFilterOperator
      */
     public $operator;
     /**
@@ -32,11 +32,11 @@ class SearchFilter
      * SearchFilter constructor.
      * @param string $kind
      * @param string $field
-     * @param SearchFilterOperator $operator
+     * @param SmartFilterOperator $operator
      * @param $value
      * @param string $logic
      */
-    public function __construct(string $kind, string $field, SearchFilterOperator $operator, $value, string $logic)
+    public function __construct(string $kind, string $field, SmartFilterOperator $operator, $value, string $logic)
     {
         $this->kind = $kind;
         $this->field = $field;

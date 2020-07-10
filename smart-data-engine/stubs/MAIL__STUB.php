@@ -13,12 +13,6 @@ namespace SmartStructure\Fields {
     class Mail
     {
         /**
-        * <ul>
-        * <li> <i>reset</i> true </li>
-        * </ul>
-        */ 
-        const undefined='undefined';
-        /**
         * Adresses
         * <ul>
         * <li> <i>type</i> frame </li>
