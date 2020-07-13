@@ -3,7 +3,7 @@ version: '3'
 services:
   transformation-server:
     build:
-      context: ./Addons/transformation-server
+      context: './Addons/transformation-server'
       args:
         ANK_RUN_UID: ${COMPOSE_UID}
         ANK_RUN_GID: ${COMPOSE_GID}
@@ -15,21 +15,24 @@ services:
       - './Volumes/_private/webroot/var/www/html/anakeen/certs/:/usr/local/share/ca-certificates/anakeen-certs/'
       - '../../build/:/build'
     environment:
-      PG_SERVER_NAME: postgres
-      PG_SERVER_PORT: 5432
-      PG_SERVER_DBNAME: te
-      PG_SERVER_USER: te
-      PG_SERVER_PASSWORD: secret
-      TRANSFORMATION_SERVER_ZIP_FILE: /build/transformation-server/transformation-server-latest.zip
+      RESET_ON_START: 'no'
+      PG_SERVER_NAME: 'postgres'
+      PG_SERVER_PORT: '5432'
+      PG_SERVER_DBNAME: 'te'
+      PG_SERVER_USER: 'te'
+      PG_SERVER_PASSWORD: 'secret'
+      TRANSFORMATION_SERVER_ZIP_FILE: '/build/transformation-server/transformation-server-latest.zip'
+      CUSTOM_SETUP_SCRIPT: ''
+      TE_SERVER_DEBUG: 'no'
     depends_on:
-      - postgres
+      - 'postgres'
     ports:
       - '${PROJECT_TE_PORT-51968}:51968'
     networks:
       internal:
         aliases:
-          - transformation-server
-          - te
+          - 'transformation-server'
+          - 'te'
 
 networks:
   internal: {}
