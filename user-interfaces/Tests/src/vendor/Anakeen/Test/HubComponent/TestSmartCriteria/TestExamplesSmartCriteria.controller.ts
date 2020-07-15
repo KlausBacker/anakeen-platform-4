@@ -9,11 +9,16 @@ import * as exampleTitleCustomOperators from "./SmartCriteriaExampleTitleCustomO
 import * as exampleAllType from "./SmartCriteriaExampleAllType.json";
 import * as exampleDemo from "./SmartCriteriaExampleDemo.json";
 import * as exampleModifiableOperator from "./SmartCriteriaExampleModifiableOperator.json";
+import * as exampleCorrectStandalone from "./SmartCriteriaExampleCorrectStandalone.json";
 import { Component, Vue } from "vue-property-decorator";
 // noinspection JSUnusedGlobalSymbols
 @Component({})
 export default class TestExamplesSmartCriteriaController extends Vue {
   public examples: any[] = [
+    {
+      config: exampleCorrectStandalone,
+      label: exampleCorrectStandalone.title || "Example correct standalone"
+    },
     {
       config: exampleAutocomplete,
       label: exampleAutocomplete.title || "Example Autocomplete"

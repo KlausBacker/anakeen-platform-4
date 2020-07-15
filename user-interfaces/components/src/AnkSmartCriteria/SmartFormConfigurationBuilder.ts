@@ -203,7 +203,7 @@ export default class SmartFormConfigurationBuilder {
   ): Array<ICriteriaConfigurationOperator> {
     const operators = JSON.parse(JSON.stringify(operatorsConfig));
     operators.map(operator => {
-      if (operator.options.length > 0) {
+      if (operator.options && operator.options.length > 0) {
         operator.key = operator.key + "%" + operator.options.join("%");
       }
     });
