@@ -1,0 +1,22 @@
+{
+  "title": "Aide à la saisie d'auteur",
+  "defaultStructure": "DEVBILL",
+  "criterias": [
+    {
+      "kind": "field",
+      "field": "bill_author",
+      "autocomplete": {
+        "url": "/api/v2/uitest/smartcriteriaauthorsearchautocomplete",
+        "outputs": {
+          "bill_author": "Author"
+        }
+      },
+      "default": {
+        "operator": {
+          "key": "equals",
+          "options": []
+        }
+      }
+    }
+  ]
+}

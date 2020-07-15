@@ -5,6 +5,12 @@
             <smart:enum name="manifest" label="Manifest"/>
             <smart:enum name="path" label="Path"/>
         </smart:enum-configuration>
+        <smart:enum-configuration name="collapsed_configuration">
+            <smart:enum name="NEVERCOLLAPSED" label="Never collapsed"/>
+            <smart:enum name="ALWAYSCOLLAPSED" label="Always collapsed"/>
+            <smart:enum name="DEFAULTNONCOLLAPSED" label="Expanded by default"/>
+            <smart:enum name="DEFAULTCOLLAPSED" label="Collapsed by default"/>
+        </smart:enum-configuration>
     </smart:enumerates>
     <smart:structure-configuration name="HUBINSTANCIATION" label="HubInstanciation">
         <smart:icon file="HubInstanciation.png"/>
@@ -29,6 +35,10 @@
                 </smart:field-set>
                 <smart:field-set name="hub_instance_advanced_settings" type="frame" access="ReadWrite" label="Advanced Settings">
                     <smart:field-text access="ReadWrite" name="hub_instanciation_router_entry" label="Router entry"/>
+                    <smart:field-enum access="ReadWrite" name="hub_instanciation_dock_left" relation="collapsed_configuration" label="Left dock"/>
+                    <smart:field-enum access="ReadWrite" name="hub_instanciation_dock_right" relation="collapsed_configuration" label="Right dock"/>
+                    <smart:field-enum access="ReadWrite" name="hub_instanciation_dock_top" relation="collapsed_configuration" label="Top dock"/>
+                    <smart:field-enum access="ReadWrite" name="hub_instanciation_dock_bottom" relation="collapsed_configuration" label="Bottom dock"/>
                 </smart:field-set>
             </smart:field-set>
             <smart:field-set name="hub_instance_tab_assets" type="tab" label="Global assets" access="ReadWrite">

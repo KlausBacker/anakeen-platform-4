@@ -208,6 +208,8 @@ class HubStation extends Mixins(AnkI18NMixin) {
                 hubElementSelected: this.onHubElementSelected
               },
               props: {
+                hubStation: this.config.instanceName,
+                dockConfiguration: this.config.dockConfiguration.top,
                 activeRoute: this.activeRoute,
                 dockContent: this.configData.top,
                 position: DockPosition.TOP,
@@ -235,6 +237,8 @@ class HubStation extends Mixins(AnkI18NMixin) {
                 hubElementSelected: this.onHubElementSelected
               },
               props: {
+                hubStation: this.config.instanceName,
+                dockConfiguration: this.config.dockConfiguration.left,
                 activeRoute: this.activeRoute,
                 dockContent: this.configData.left,
                 position: DockPosition.LEFT,
@@ -293,6 +297,8 @@ class HubStation extends Mixins(AnkI18NMixin) {
                 hubElementSelected: this.onHubElementSelected
               },
               props: {
+                hubStation: this.config.instanceName,
+                dockConfiguration: this.config.dockConfiguration.right,
                 activeRoute: this.activeRoute,
                 dockContent: this.configData.right,
                 position: DockPosition.RIGHT,
@@ -331,6 +337,8 @@ class HubStation extends Mixins(AnkI18NMixin) {
                 hubElementSelected: this.onHubElementSelected
               },
               props: {
+                hubStation: this.config.instanceName,
+                dockConfiguration: this.config.dockConfiguration.bottom,
                 activeRoute: this.activeRoute,
                 dockContent: this.configData.bottom,
                 position: DockPosition.BOTTOM,

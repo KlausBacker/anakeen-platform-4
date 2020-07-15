@@ -3,6 +3,8 @@
     ref="innerDock"
     :position="position"
     :expandable="isExpandable"
+    :dockConfiguration="dockConfiguration"
+    :hubStation="hubStation"
     @dockResized="resizeWindow"
   >
     <template slot="header">

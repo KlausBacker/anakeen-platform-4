@@ -33,7 +33,7 @@ class VaultCreate
         $messages = [];
 
         $messages[] = new ApiMessage(sprintf(
-            "New vault created. Location is \"%s\", size is %s",
+            ___("New vault created. Location is \"%s\", size is \"%s\"", "AdminCenterVaultManager"),
             $this->vaultFs->r_path,
             AllVaultsInfo::formatBytes($this->vaultFs->max_size)
         ), ApiMessage::SUCCESS);

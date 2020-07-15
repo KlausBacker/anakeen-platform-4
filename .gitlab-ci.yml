@@ -1,5 +1,5 @@
 image:
-  name: gitlab.anakeen.com:4567/anakeen/platform-4/docker/build/build:latest
+  name: git.ap4.anakeen.com:4567/anakeen/platform-4/docker/build/build:latest
 
 stages:
   - tear-up

@@ -1,5 +1,12 @@
 import { Vue } from "vue/types/vue";
 
+export enum DockCollapseStatus {
+  AlwaysCollapsed = "ALWAYSCOLLAPSED",
+  NeverCollapsed = "NEVERCOLLAPSED",
+  DefaultCollapsed = "DEFAULTCOLLAPSED",
+  DefaultNonCollapsed = "DEFAULTNONCOLLAPSED"
+}
+
 export enum DockPosition {
   TOP = "TOP",
   BOTTOM = "BOTTOM",
@@ -54,12 +61,19 @@ interface IHubStationAssets {
 }
 
 export interface IHubStationConfig {
+  dockConfiguration: IHubStationDockCollapsableConfig;
   instanceName: string;
   routerEntry: string;
   globalAssets: IHubStationAssets;
   hubElements: IHubStationPropConfig[];
 }
 
+export interface IHubStationDockCollapsableConfig {
+  left: string;
+  right: string;
+  top: string;
+  bottom: string;
+}
 export interface IAnkDock extends Vue {
   expand(): void;
   contract(): void;

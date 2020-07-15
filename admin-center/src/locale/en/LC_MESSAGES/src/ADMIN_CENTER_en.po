@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anakeen-platform 4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-08 16:37+0200\n"
+"POT-Creation-Date: 2020-07-10 14:30+0200\n"
 "PO-Revision-Date: 2020-04-17 09:22+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -85,6 +85,36 @@ msgctxt "timer"
 msgid "Method \"%s\" will be executed"
 msgstr ""
 
+#, php-format
+msgctxt "AdminCenterVaultManager"
+msgid "New maximum size is \"%s\""
+msgstr "New maximum size is \"%s\""
+
+#, php-format
+msgctxt "AdminCenterVaultManager"
+msgid "New path is \"%s\""
+msgstr "New path is \"%s\""
+
+#, php-format
+msgctxt "AdminCenterVaultManager"
+msgid "New vault created. Location is \"%s\", size is \"%s\""
+msgstr "New vault created. Location is \"%s\", size is \"%s\""
+
+#, php-format
+msgctxt "AdminCenterVaultManager"
+msgid "Path \"%s\" is not writable"
+msgstr "Path \"%s\" is not writable"
+
+#, php-format
+msgctxt "AdminCenterVaultManager"
+msgid "Path \"%s\" must be an absolute path"
+msgstr "Path \"%s\" must be an absolute path"
+
+#, php-format
+msgctxt "AdminCenterVaultManager"
+msgid "Path \"%s\" must reference an existing directory"
+msgstr "Path \"%s\" must reference an existing directory"
+
 #, fuzzy
 msgctxt "AdminCenterTrash.btn restore"
 msgid "Restore"
@@ -136,9 +166,18 @@ msgctxt "AdminCenterTrash.type"
 msgid "Type"
 msgstr "Type"
 
+#, php-format
+msgctxt "AdminCenterVaultManager"
+msgid "Vault \"#%d\" not exists"
+msgstr "Vault \"#%d\" not exists"
+
 msgctxt "AdminCenterParameters.user btn specific user"
 msgid "You need to turn on the button user parameters"
 msgstr ""
+
+msgctxt "AdminCenterAccounts"
+msgid "Structure '%s' do not exist"
+msgstr "Structure '%s' do not exist"
 
 #, fuzzy
 #~ msgctxt "AdminCenterTrash.title"

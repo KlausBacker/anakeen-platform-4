@@ -30,10 +30,7 @@ class VaultResize
         $fsInfo = $this->doRequest();
         $messages = [];
 
-        $messages[] = new ApiMessage(sprintf(
-            "New maximum size is %s",
-            AllVaultsInfo::formatBytes($this->vaultFs->max_size)
-        ));
+        $messages[] = new ApiMessage(sprintf(___("New maximum size is \"%s\"", "AdminCenterVaultManager"), AllVaultsInfo::formatBytes($this->vaultFs->max_size)));
 
         return \Anakeen\Router\ApiV2Response::withData($response, $fsInfo, $messages);
     }
@@ -46,7 +43,7 @@ class VaultResize
         $this->vaultFs = new DiskFsStorage("", $this->vaultid);
         if (!$this->vaultFs->isAffected()) {
             $e = new Exception("Vault unknow");
-            $e->setUserMessage(sprintf("Vault #%d not exists", $this->vaultid));
+            $e->setUserMessage(sprintf(___("Vault \"#%d\" not exists", "AdminCenterVaultManager"), $this->vaultid));
             throw $e;
         }
     }

@@ -411,4 +411,12 @@ class ErrorCodeATTR
      * @errorCode The value of the Smart Field will not be computed because the visibility is 'I'
      */
     const ATTR1800 = "value of Smart Field \"%s\" with phpfunc \"%s\" will not be computed because visibility is \"I\".";
+    /**
+     * @errorCode The Structure not have an field named ...
+     */
+    const ATTR1801 = "The Structure configuration \"%s\" not have an field named \"%s\"";
+    /**
+     * @errorCode Method name in the nameSpace not exist
+     */
+    const ATTR1802 = "The method \"%s\" in the nameSpace \"%s\" not exist";
 }

@@ -95,6 +95,42 @@ namespace SmartStructure\Fields {
         */ 
         const hub_instance_advanced_settings='hub_instance_advanced_settings';
         /**
+        * Left dock
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>relation</i> collapsed_configuration </li>
+        * <li> <i>type</i> enum </li>
+        * </ul>
+        */ 
+        const hub_instanciation_dock_left='hub_instanciation_dock_left';
+        /**
+        * Right dock
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>relation</i> collapsed_configuration </li>
+        * <li> <i>type</i> enum </li>
+        * </ul>
+        */ 
+        const hub_instanciation_dock_right='hub_instanciation_dock_right';
+        /**
+        * Top dock
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>relation</i> collapsed_configuration </li>
+        * <li> <i>type</i> enum </li>
+        * </ul>
+        */ 
+        const hub_instanciation_dock_top='hub_instanciation_dock_top';
+        /**
+        * Bottom dock
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>relation</i> collapsed_configuration </li>
+        * <li> <i>type</i> enum </li>
+        * </ul>
+        */ 
+        const hub_instanciation_dock_bottom='hub_instanciation_dock_bottom';
+        /**
         * Global assets
         * <ul>
         * <li> <i>type</i> tab </li>

@@ -1,4 +1,7 @@
 import * as exampleTitle from "./SmartCriteriaExampleTitle.json";
+import * as exampleAutocomplete from "./SmartCriteriaExampleAutocomplete.json";
+import * as exampleAuthorAutocomplete from "./SmartCriteriaExampleAuthorAutocomplete.json";
+import * as exampleComplexAutocomplete from "./SmartCriteriaExampleComplexAutocomplete.json";
 import * as exampleState from "./SmartCriteriaExampleState.json";
 import * as exampleBetween from "./SmartCriteriaExampleBetweenValue.json";
 import * as exampleTextual from "./SmartCriteriaExampleTextual.json";
@@ -11,6 +14,19 @@ import { Component, Vue } from "vue-property-decorator";
 @Component({})
 export default class TestExamplesSmartCriteriaController extends Vue {
   public examples: any[] = [
+    {
+      config: exampleAutocomplete,
+      label: exampleAutocomplete.title || "Example Autocomplete"
+    },
+    {
+      config: exampleAuthorAutocomplete,
+      label: exampleAuthorAutocomplete.title || "Example Author Autocomplete"
+    },
+    {
+      config: exampleComplexAutocomplete,
+      label: exampleComplexAutocomplete.title || "Example Complex Autocomplete"
+
+    },
     {
       config: exampleModifiableOperator,
       label: exampleModifiableOperator.title || "Example Modifiable Operator"

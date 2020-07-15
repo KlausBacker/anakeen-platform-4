@@ -45,10 +45,6 @@ export default {
       this.element.name = this.$refs.smartElement.getProperty("name");
       kendo.ui.progress(this.$(this.$el), false);
     },
-    onShowError(event, element, error) {
-      this.errorMessage = error.message;
-      kendo.ui.progress(this.$(this.$el), false);
-    },
     refreshGrid() {
       this.$emit("se-after-save");
     }

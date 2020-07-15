@@ -40,7 +40,7 @@ import SmartElementProperties = AnakeenController.Types.SmartElementProperties;
 import ViewData = AnakeenController.Types.IViewData;
 import DOMReference = AnakeenController.Types.DOMReference;
 import ListenableEventCallable = AnakeenController.BusEvents.ListenableEventCallable;
-import ListenableEventOptions = AnakeenController.BusEvents.IListenableEventOptions;
+import ListenableEventOptions = AnakeenController.BusEvents.ListenableEventOptions;
 import IControllerOptions = AnakeenController.Types.IControllerOptions;
 import $ from "jquery";
 import Mustache from "mustache";
@@ -586,6 +586,9 @@ export default class SmartElementController extends AnakeenController.BusEvents.
         }
       }
     });
+    _.each(this._options.customClientData, (currentCustom: any, key) => {
+      values[key] = currentCustom;
+    });
     if (deleteOnce === true) {
       this._customClientData = newCustomData;
     }
@@ -815,7 +818,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
    */
   public addEventListener(
     eventType: SmartElementEvent | ListenableEvent,
-    options?: object | ListenableEventCallable,
+    options?: ListenableEventCallable | ListenableEventOptions,
     callback?: ListenableEventCallable
   ) {
     let currentEvent;
@@ -2384,7 +2387,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     });
   }
 
-  private _addAndInitNewEvents(newEvent: ListenableEventOptions) {
+  private _addAndInitNewEvents(newEvent: ListenableEvent) {
     // let uniqueName = (newEvent.externalEvent ? "external_" : "internal_") + newEvent.name;
     const currentElementProperties = this.getProperties();
     if (newEvent.persistent) {

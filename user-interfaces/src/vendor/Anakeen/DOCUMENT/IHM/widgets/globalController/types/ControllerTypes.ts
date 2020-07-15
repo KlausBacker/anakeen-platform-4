@@ -48,7 +48,7 @@ export namespace AnakeenController {
 
     export type ListenableEventCallable = (...args: ListenableEventCallableArgs) => void;
 
-    export interface IListenableEventOptions {
+    export interface IListenableEvent {
       eventCallback: ListenableEventCallable;
       check?: (...args: any[]) => boolean;
       smartFieldCheck?: (...args: any[]) => boolean;
@@ -59,7 +59,16 @@ export namespace AnakeenController {
       [key: string]: any;
     }
 
-    export type ListenableEvent = IListenableEventOptions;
+    export interface IEventOptions {
+      check?: (...args: any[]) => boolean;
+      smartFieldCheck?: (...args: any[]) => boolean;
+      once?: boolean;
+      name?: string;
+      persistent?: boolean;
+    }
+
+    export type ListenableEvent = IListenableEvent;
+    export type ListenableEventOptions = IEventOptions;
 
     export interface IListenableEvents {
       [key: string]: ListenableEvent[];
