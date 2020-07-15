@@ -178,10 +178,6 @@ msgstr ""
 "Le boutton d'activation de l'onglet user doit être à \"true\" lorsqu'il y a "
 "un utilisateur specifique selectionné"
 
-msgctxt "AdminCenterAccounts"
-msgid "Structure '%s' do not exist"
-msgstr "La structure '%s' n'existe pas"
-
 #~ msgctxt "AdminCenterTrash.title"
 #~ msgid "title"
 #~ msgstr "Titre"
