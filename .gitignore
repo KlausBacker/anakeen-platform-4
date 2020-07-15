@@ -5,7 +5,7 @@ node_modules
 /.idea/workspace.xml
 /.idea/compiler.xml
 /build/
-/Makefile.local
+Makefile.local.mk
 /.devtool/ci/check/checkPHP/vendor/
 /.devtool/docker/Volumes/_private/
 .eslintcache
