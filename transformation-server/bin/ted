@@ -295,8 +295,10 @@ function status2 {
 
 function run {
     if [ "$TE_SERVER_DEBUG" = "yes" ]; then
-	if [ ! -e "/.dockerenv" ]; then
+	if [ "$TE_SERVER_DEBUG_LOG" = "syslog" ]; then
 	    exec 1> >(logger -t "$1")
+	else
+	    exec 1> >(sed "s/^/$1: /")
 	fi
     else
 	    exec 1> /dev/null
