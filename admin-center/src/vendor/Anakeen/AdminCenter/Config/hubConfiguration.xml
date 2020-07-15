@@ -29,11 +29,39 @@
         <label>
             <![CDATA[<i class="material-icons hub-icon">assignment</i>]]>
         </label>
+        <hubconfigurationlabel name="HUBA_LABEL">
+            <hub_station_id name="ADMINCENTER">Admin Center/Admin Center</hub_station_id>
+            <hub_title>Admin Center</hub_title>
+            <hub_order>100</hub_order>
+            <hub_docker_position>TOP_LEFT</hub_docker_position>
+            <hub_activated>FALSE</hub_activated>
+            <hub_selectable>FALSE</hub_selectable>
+            <email_alterable>FALSE</email_alterable>
+            <password_alterable>FALSE</password_alterable>
+        </hubconfigurationlabel>
+        <hubconfigurationidentity name="HUBA_IDENTITY">
+            <hub_station_id name="ADMINCENTER">Admin Center/Admin Center</hub_station_id>
+            <hub_title>Me</hub_title>
+            <hub_order>200</hub_order>
+            <hub_docker_position>TOP_RIGHT</hub_docker_position>
+            <hub_activated>FALSE</hub_activated>
+            <hub_selectable>FALSE</hub_selectable>
+            <email_alterable>FALSE</email_alterable>
+            <password_alterable>FALSE</password_alterable>
+        </hubconfigurationidentity>
+        <hubconfigurationlogout name="HUBA_LOGOUT">
+            <hub_station_id name="ADMINCENTER">Admin Center/Admin Center</hub_station_id>
+            <hub_title>Logout</hub_title>
+            <hub_order>300</hub_order>
+            <hub_docker_position>TOP_RIGHT</hub_docker_position>
+            <hub_activated>FALSE</hub_activated>
+            <hub_selectable>TRUE</hub_selectable>
+        </hubconfigurationlogout>
     </hubconfigurationlabel>
     <hubconfigurationgeneric name="HGEA_ACCOUNTS">
         <hub_station_id name="ADMINCENTER">Admin Center</hub_station_id>
         <hub_title>ADMINACCOUNTS</hub_title>
-        <hub_order>1</hub_order>
+        <hub_order>400</hub_order>
         <hub_docker_position>LEFT_TOP</hub_docker_position>
         <hub_vue_router_entry>accounts</hub_vue_router_entry>
         <hub_activated>TRUE</hub_activated>
@@ -51,7 +79,7 @@
     <adminparametershubconfiguration name="HGEA_PARAMETERS">
         <hub_station_id name="ADMINCENTER">Admin Center</hub_station_id>
         <hub_title>ADMINPARAMETERS</hub_title>
-        <hub_order>2</hub_order>
+        <hub_order>500</hub_order>
         <hub_docker_position>LEFT_TOP</hub_docker_position>
         <hub_vue_router_entry>parameters</hub_vue_router_entry>
         <hub_activated>FALSE</hub_activated>
@@ -59,28 +87,28 @@
         <hub_expandable>TRUE</hub_expandable>
         <hub_execution_roles name="AC_FUNCADMIN,AC_PARAMETERSMANAGER">document multiple</hub_execution_roles>
     </adminparametershubconfiguration>
-    <hubconfigurationgeneric name="HGEA_TOKENS">
+    <hubconfigurationgeneric name="HGEA_STRUCTURE">
         <hub_station_id name="ADMINCENTER">Admin Center</hub_station_id>
-        <hub_title>ADMINTOKENS</hub_title>
-        <hub_order>3</hub_order>
+        <hub_title>ADMINSTRUCTURE</hub_title>
+        <hub_order>600</hub_order>
         <hub_docker_position>LEFT_TOP</hub_docker_position>
-        <hub_vue_router_entry>tokens</hub_vue_router_entry>
+        <hub_vue_router_entry>structure</hub_vue_router_entry>
         <hub_activated>FALSE</hub_activated>
         <hub_selectable>TRUE</hub_selectable>
         <hub_expandable>TRUE</hub_expandable>
         <hge_jsassets>
             <hge_jsasset_type>MANIFEST</hge_jsasset_type>
             <hge_jsasset>
-                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("admin", "AdminTokenManager")
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("admin", "AdminStructureManager")
             </hge_jsasset>
         </hge_jsassets>
-        <hge_component_tag>ank-hub-authentication-tokens</hge_component_tag>
-        <hub_execution_roles name="AC_FUNCADMIN,AC_TOKENSMANAGER">document multiple</hub_execution_roles>
+        <hge_component_tag>ank-admin-structure</hge_component_tag>
+        <hub_execution_roles name="AC_FUNCADMIN,AC_STRUCTUREMANAGER">document multiple</hub_execution_roles>
     </hubconfigurationgeneric>
     <hubconfigurationgeneric name="HGEA_VAULTS">
         <hub_station_id name="ADMINCENTER">Admin Center</hub_station_id>
         <hub_title>ADMINVAULT</hub_title>
-        <hub_order>4</hub_order>
+        <hub_order>700</hub_order>
         <hub_docker_position>LEFT_TOP</hub_docker_position>
         <hub_vue_router_entry>vaults</hub_vue_router_entry>
         <hub_activated>FALSE</hub_activated>
@@ -95,26 +123,10 @@
         <hge_component_tag>ank-admin-vault-manager</hge_component_tag>
         <hub_execution_roles name="AC_FUNCADMIN,AC_VAULTSMANAGER">document multiple</hub_execution_roles>
     </hubconfigurationgeneric>
-    <hubconfigurationgeneric name="HGEA_I18N">
-        <hub_station_id name="ADMINCENTER">Admin Center</hub_station_id>
-        <hub_title>ADMINI18N</hub_title>
-        <hub_order>6</hub_order>
-        <hub_docker_position>LEFT_TOP</hub_docker_position>
-        <hub_vue_router_entry>i18n</hub_vue_router_entry>
-        <hub_activated>FALSE</hub_activated>
-        <hub_selectable>TRUE</hub_selectable>
-        <hub_expandable>TRUE</hub_expandable>
-        <hge_jsassets>
-            <hge_jsasset_type>MANIFEST</hge_jsasset_type>
-            <hge_jsasset>Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("admin","Admini18nManager")</hge_jsasset>
-        </hge_jsassets>
-        <hge_component_tag>ank-admin-i18n</hge_component_tag>
-        <hub_execution_roles name="AC_FUNCADMIN,AC_I18NMANAGER">document multiple</hub_execution_roles>
-    </hubconfigurationgeneric>
     <hubconfigurationgeneric name="HGEA_WORKFLOW">
         <hub_station_id name="ADMINCENTER">Admin Center</hub_station_id>
         <hub_title>ADMINWORKFLOW</hub_title>
-        <hub_order>7</hub_order>
+        <hub_order>800</hub_order>
         <hub_docker_position>LEFT_TOP</hub_docker_position>
         <hub_vue_router_entry>workflow</hub_vue_router_entry>
         <hub_activated>TRUE</hub_activated>
@@ -132,7 +144,7 @@
     <hubconfigurationgeneric name="HGEA_MAIL">
         <hub_station_id name="ADMINCENTER">Admin Center</hub_station_id>
         <hub_title>ADMINMAIL</hub_title>
-        <hub_order>5</hub_order>
+        <hub_order>900</hub_order>
         <hub_docker_position>LEFT_TOP</hub_docker_position>
         <hub_vue_router_entry>mail</hub_vue_router_entry>
         <hub_activated>FALSE</hub_activated>
@@ -147,46 +159,10 @@
         <hge_component_tag>ank-admin-mail-manager</hge_component_tag>
         <hub_execution_roles name="AC_FUNCADMIN,AC_MAILTEMPLATEMANAGER">document multiple</hub_execution_roles>
     </hubconfigurationgeneric>
-    <hubconfigurationgeneric name="HGEA_ENUM">
-        <hub_station_id name="ADMINCENTER">Admin Center</hub_station_id>
-        <hub_title>ADMINENUM</hub_title>
-        <hub_order>12</hub_order>
-        <hub_docker_position>LEFT_TOP</hub_docker_position>
-        <hub_vue_router_entry>enum</hub_vue_router_entry>
-        <hub_activated>FALSE</hub_activated>
-        <hub_selectable>TRUE</hub_selectable>
-        <hub_expandable>TRUE</hub_expandable>
-        <hge_jsassets>
-            <hge_jsasset_type>MANIFEST</hge_jsasset_type>
-            <hge_jsasset>
-                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("admin", "AdminEnumManager")
-            </hge_jsasset>
-        </hge_jsassets>
-        <hge_component_tag>ank-admin-enum-manager</hge_component_tag>
-        <hub_execution_roles name="AC_FUNCADMIN,AC_ENUMMANAGER">document multiple</hub_execution_roles>
-    </hubconfigurationgeneric>
-    <hubconfigurationgeneric name="HGEA_STRUCTURE">
-        <hub_station_id name="ADMINCENTER">Admin Center</hub_station_id>
-        <hub_title>ADMINSTRUCTURE</hub_title>
-        <hub_order>12</hub_order>
-        <hub_docker_position>LEFT_TOP</hub_docker_position>
-        <hub_vue_router_entry>structure</hub_vue_router_entry>
-        <hub_activated>FALSE</hub_activated>
-        <hub_selectable>TRUE</hub_selectable>
-        <hub_expandable>TRUE</hub_expandable>
-        <hge_jsassets>
-            <hge_jsasset_type>MANIFEST</hge_jsasset_type>
-            <hge_jsasset>
-                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("admin", "AdminStructureManager")
-            </hge_jsasset>
-        </hge_jsassets>
-        <hge_component_tag>ank-admin-structure</hge_component_tag>
-        <hub_execution_roles name="AC_FUNCADMIN,AC_STRUCTUREMANAGER">document multiple</hub_execution_roles>
-    </hubconfigurationgeneric>
     <hubconfigurationgeneric name="HGEA_TRASH">
         <hub_station_id name="ADMINCENTER">Admin Center</hub_station_id>
         <hub_title>ADMINTRASH</hub_title>
-        <hub_order>5</hub_order>
+        <hub_order>1000</hub_order>
         <hub_docker_position>LEFT_TOP</hub_docker_position>
         <hub_vue_router_entry>trash</hub_vue_router_entry>
         <hub_activated>FALSE</hub_activated>
@@ -201,50 +177,56 @@
         <hge_component_tag>ank-admin-trash-manager</hge_component_tag>
         <hub_execution_roles name="AC_FUNCADMIN,AC_TRASHMANAGER">document multiple</hub_execution_roles>
     </hubconfigurationgeneric>
-    <hubconfigurationgeneric name="HGEA_SCHEDULER">
+    <hubconfigurationgeneric name="HGEA_ENUM">
         <hub_station_id name="ADMINCENTER">Admin Center</hub_station_id>
-        <hub_title>ADMINSCHEDULER</hub_title>
-        <hub_order>5</hub_order>
+        <hub_title>ADMINENUM</hub_title>
+        <hub_order>1100</hub_order>
         <hub_docker_position>LEFT_TOP</hub_docker_position>
-        <hub_vue_router_entry>scheduler</hub_vue_router_entry>
+        <hub_vue_router_entry>enum</hub_vue_router_entry>
         <hub_activated>FALSE</hub_activated>
         <hub_selectable>TRUE</hub_selectable>
         <hub_expandable>TRUE</hub_expandable>
         <hge_jsassets>
             <hge_jsasset_type>MANIFEST</hge_jsasset_type>
             <hge_jsasset>
-                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("admin", "AdminSchedulerManager")
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("admin", "AdminEnumManager")
             </hge_jsasset>
         </hge_jsassets>
-        <hge_component_tag>ank-admin-scheduler-manager</hge_component_tag>
-        <hub_execution_roles name="AC_FUNCADMIN,AC_SCHEDULINGMANAGER">document multiple</hub_execution_roles>
+        <hge_component_tag>ank-admin-enum-manager</hge_component_tag>
+        <hub_execution_roles name="AC_FUNCADMIN,AC_ENUMMANAGER">document multiple</hub_execution_roles>
     </hubconfigurationgeneric>
-    <hubconfigurationlabel name="HUBA_LABEL">
-        <hub_station_id name="ADMINCENTER">Admin Center/Admin Center</hub_station_id>
-        <hub_title>Admin Center</hub_title>
-        <hub_order>1</hub_order>
-        <hub_docker_position>TOP_LEFT</hub_docker_position>
-        <hub_activated>FALSE</hub_activated>
-        <hub_selectable>FALSE</hub_selectable>
-        <email_alterable>FALSE</email_alterable>
-        <password_alterable>FALSE</password_alterable>
-    </hubconfigurationlabel>
-    <hubconfigurationidentity name="HUBA_IDENTITY">
-        <hub_station_id name="ADMINCENTER">Admin Center/Admin Center</hub_station_id>
-        <hub_title>Me</hub_title>
-        <hub_order>1</hub_order>
-        <hub_docker_position>TOP_RIGHT</hub_docker_position>
-        <hub_activated>FALSE</hub_activated>
-        <hub_selectable>FALSE</hub_selectable>
-        <email_alterable>FALSE</email_alterable>
-        <password_alterable>FALSE</password_alterable>
-    </hubconfigurationidentity>
-    <hubconfigurationlogout name="HUBA_LOGOUT">
-        <hub_station_id name="ADMINCENTER">Admin Center/Admin Center</hub_station_id>
-        <hub_title>Logout</hub_title>
-        <hub_order>2</hub_order>
-        <hub_docker_position>TOP_RIGHT</hub_docker_position>
+    <hubconfigurationgeneric name="HGEA_I18N">
+        <hub_station_id name="ADMINCENTER">Admin Center</hub_station_id>
+        <hub_title>ADMINI18N</hub_title>
+        <hub_order>1200</hub_order>
+        <hub_docker_position>LEFT_TOP</hub_docker_position>
+        <hub_vue_router_entry>i18n</hub_vue_router_entry>
         <hub_activated>FALSE</hub_activated>
         <hub_selectable>TRUE</hub_selectable>
-    </hubconfigurationlogout>
+        <hub_expandable>TRUE</hub_expandable>
+        <hge_jsassets>
+            <hge_jsasset_type>MANIFEST</hge_jsasset_type>
+            <hge_jsasset>Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("admin","Admini18nManager")</hge_jsasset>
+        </hge_jsassets>
+        <hge_component_tag>ank-admin-i18n</hge_component_tag>
+        <hub_execution_roles name="AC_FUNCADMIN,AC_I18NMANAGER">document multiple</hub_execution_roles>
+    </hubconfigurationgeneric>
+    <hubconfigurationgeneric name="HGEA_TOKENS">
+        <hub_station_id name="ADMINCENTER">Admin Center</hub_station_id>
+        <hub_title>ADMINTOKENS</hub_title>
+        <hub_order>1300</hub_order>
+        <hub_docker_position>LEFT_TOP</hub_docker_position>
+        <hub_vue_router_entry>tokens</hub_vue_router_entry>
+        <hub_activated>FALSE</hub_activated>
+        <hub_selectable>TRUE</hub_selectable>
+        <hub_expandable>TRUE</hub_expandable>
+        <hge_jsassets>
+            <hge_jsasset_type>MANIFEST</hge_jsasset_type>
+            <hge_jsasset>
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("admin", "AdminTokenManager")
+            </hge_jsasset>
+        </hge_jsassets>
+        <hge_component_tag>ank-hub-authentication-tokens</hge_component_tag>
+        <hub_execution_roles name="AC_FUNCADMIN,AC_TOKENSMANAGER">document multiple</hub_execution_roles>
+    </hubconfigurationgeneric>
 </documents>
