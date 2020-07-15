@@ -42,6 +42,26 @@
                 <sde:access ns="Uitest">user</sde:access>
             </sde:requiredAccess>
         </sde:route>
+        <sde:route name="SmartCriteriaAutocomplete">
+            <sde:priority>1</sde:priority>
+            <sde:callable>Anakeen\Routes\UiTest\SmartCriteriaAutocomplete</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/uitest/smartcriteriaautocomplete</sde:pattern>
+            <sde:description>Test UI d'aide à la saisie pour le smartCriteria</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="Uitest">user</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="SmartCriteriaComplexAutocomplete">
+            <sde:priority>1</sde:priority>
+            <sde:callable>Anakeen\Routes\UiTest\SmartCriteriaComplexAutocomplete</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/uitest/smartcriteriacomplexautocomplete</sde:pattern>
+            <sde:description>Test UI d'aide à la saisie complexe pour le smartCriteria</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="Uitest">user</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
     </sde:routes>
     <sde:accesses namespace="Uitest">
         <sde:access name="user">

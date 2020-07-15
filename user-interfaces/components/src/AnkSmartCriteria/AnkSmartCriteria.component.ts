@@ -11,7 +11,6 @@ import ISmartCriteriaConfiguration from "./Types/ISmartCriteriaConfiguration";
 import { ISmartFormConfiguration, ISmartFormFieldEnumConfig } from "../AnkSmartForm/ISmartForm";
 import { SmartFilterLogic } from "./Types/SmartFilterLogic";
 import IFilter from "./Types/IFilter";
-import SmartCriteriaConfigurationLoader from "./SmartCriteriaConfigurationLoader";
 import SmartFormConfigurationBuilder from "./SmartFormConfigurationBuilder";
 import { CriteriaOperator, ICriteriaOperator } from "./Types/ICriteriaOperator";
 import SmartCriteriaUtils from "./SmartCriteriaUtils";
@@ -55,7 +54,6 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
   private operatorFieldRegex = /^sc_operator_(\d+)$/;
   private errorStack = [];
   public smartFormConfig: ISmartFormConfiguration = {};
-  private smartCriteriaConfigurationLoader: SmartCriteriaConfigurationLoader;
   private smartFormConfigurationBuilder: SmartFormConfigurationBuilder;
   public filterValue: ISmartFilter = {
     kind: SmartCriteriaKind.FIELD,
@@ -71,17 +69,16 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
     filters: []
   };
   private loading = true;
+  private fieldTranslationMap = {};
 
   @Watch("config", { immediate: false, deep: true })
   public onConfigChanged(newConfig: ISmartCriteriaConfiguration): void {
     this.innerConfig = JSON.parse(JSON.stringify(newConfig));
-    this.smartCriteriaConfigurationLoader = this.getConfigurationLoader(this.innerConfig);
     this.loadConfiguration();
   }
 
   initSmartCriteria(): void {
     this.innerConfig = JSON.parse(JSON.stringify(this.config));
-    this.smartCriteriaConfigurationLoader = this.getConfigurationLoader(this.innerConfig);
     if (this.mountedDone === false) {
       this.$once("hook:mounted", this.loadConfiguration);
     } else {
@@ -123,8 +120,9 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
       this.evaluateSmartFieldVisibilities(value, i);
     }
 
-    for (const msg of this.errorStack) {
-      this.sendError(msg.message, msg.type);
+    while (this.errorStack.length) {
+      const error = this.errorStack.pop();
+      this.sendError(error.message, error.type);
     }
   }
 
@@ -161,29 +159,34 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
       return;
     }
     this.loading = true;
-    const ajaxPromises = this.smartCriteriaConfigurationLoader.load();
-    this.errorStack = this.smartCriteriaConfigurationLoader.getErrorStack();
-    Promise.all(ajaxPromises).then(() => {
-      this.buildSmartFormConfig();
-      this.$emit("smartCriteriaReady");
-    });
+    $.ajax({
+      url: this.getLoaderUrl(),
+      data: this.innerConfig
+    })
+      .done(response => {
+        this.innerConfig = response.data.configuration;
+        this.errorStack = this.errorStack.concat(response.data.errors);
+        this.buildSmartFormConfig();
+        this.$emit("smartCriteriaReady");
+      })
+      .fail((jqXHR, textStatus, errorThrown) => {
+        // @ts-ignore
+        this.showError("Something went wrong while getting the full smart criteria configuration from the server.");
+
+      });
   }
 
   private buildSmartFormConfig(): void {
     const translations = {
       and: `${this.$t("SmartFormConfigurationBuilder.And")}`
     };
-    this.smartFormConfigurationBuilder = new SmartFormConfigurationBuilder(
-      this.innerConfig,
-      translations,
-      this.responsiveColumns
-    );
     this.smartFormConfigurationBuilder = this.getSmartFormConfigurationBuilder(
-      this.innerConfig,
+      JSON.parse(JSON.stringify(this.innerConfig)),
       translations,
       this.responsiveColumns
     );
     this.smartFormConfig = { ...this.smartFormConfigurationBuilder.build() };
+    this.fieldTranslationMap = { ...this.smartFormConfigurationBuilder.fieldTranslationMap };
     this.errorStack = this.errorStack.concat(this.smartFormConfigurationBuilder.getErrorStack());
   }
 
@@ -396,15 +399,6 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
   }
 
   /**
-   * Returns the configuration loader used by the smart criteria based component.
-   * If another loader must be used to extend functionnalities, this method must be overriden.
-   * @param config the user defined smart criteria configuration.
-   */
-  protected getConfigurationLoader(config: ISmartCriteriaConfiguration): SmartCriteriaConfigurationLoader {
-    return new SmartCriteriaConfigurationLoader(config);
-  }
-
-  /**
    * Returns the smart form configuration builder used by the smart criteria based component.
    * If another loader must be used to extend functionnalities, this method must be overriden.
    * @param innerConfig the smart criteria configuration
@@ -427,4 +421,37 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
    */
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   protected customFilterValueAdditionalProcessing(smartFilter: ISmartFilter, criteria: IConfigurationCriteria): void {}
+
+  protected getLoaderUrl(): string {
+    return "/api/v2/smartcriteria/loadconfiguration";
+  }
+
+  private onSmartFieldHelperSearch(event, smartElement, smartField, options) {
+    const attributes = options.data.attributes;
+    const autocomplete = smartField._attributeModel.attributes.autocomplete;
+    if (autocomplete && autocomplete.inputs) {
+      const inputsResult = {};
+      Object.keys(autocomplete.inputs).forEach(key => {
+        const referencedIndex = parseInt(key.substr(-1, 1));
+        const sfOperatorValue = this.$refs.smartForm.getValue(
+          SmartFormConfigurationBuilder.getOperatorName(referencedIndex)
+        );
+        const referencedCriteria = this.innerConfig.criterias[referencedIndex];
+        const operatorString = sfOperatorValue ? sfOperatorValue.value : "";
+        const referencedOperatorData: ICriteriaConfigurationOperator = SmartCriteriaUtils.getOperatorData(
+          operatorString,
+          referencedCriteria
+        );
+        const operatorMultiple = referencedOperatorData.filterMultiple;
+        const multipleKey = operatorMultiple ? "multiple" : "single";
+        const referencedField = referencedCriteria.field;
+        if (this.fieldTranslationMap[referencedField] && this.fieldTranslationMap[referencedField][multipleKey]) {
+          inputsResult[this.fieldTranslationMap[referencedField][multipleKey]] = autocomplete.inputs[key];
+        } else {
+          inputsResult[key] = autocomplete.inputs[key];
+        }
+      });
+      autocomplete.inputs = inputsResult;
+    }
+  }
 }

@@ -17,6 +17,7 @@ class Group extends \Anakeen\Core\Internal\DbObj
 create table groups ( iduser      int not null,
                       idgroup    int not null);
 create index groups_idx1 on groups(iduser);
+create index groups_idx3 on groups(idgroup);
 create unique index groups_idx2 on groups(iduser,idgroup);
 create trigger t_nogrouploop before insert or update on groups for each row execute procedure nogrouploop();";
 
