@@ -57,7 +57,17 @@ class InitTransfert
 
         $sql = "delete from docread where id not in (select id from doc);";
         DbManager::query($sql);
+
+        $this->moveDocSeq();
         return $data;
+    }
+
+    protected function moveDocSeq()
+    {
+        Utils::importForeignTable("docread");
+
+        $sql = "select setval('seq_id_doc', (select max(id) from dynacase.docread where doctype != 'T'));";
+        DbManager::query($sql, $sqldocval, true, true);
     }
 
     protected function move1000()
