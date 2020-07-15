@@ -39,8 +39,7 @@ class FieldAccessLayerAutoComplete
                 $response->appendEntry(
                     self::getDisplayLabel($attr),
                     [
-                        $attr->id,
-                        FieldAccessManager::getTextAccess($attr->access)
+                        $attr->id
                     ]
                 );
             }
