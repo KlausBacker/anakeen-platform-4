@@ -152,6 +152,10 @@ class DataElementTransfert
             unset($propMapping["tm_deltainterval"]);
             unset($propMapping["tm_taskinterval"]);
         }
+        if ($structure->name === "MAIL") {
+            unset($propMapping["mail_template"]);
+            unset($propMapping["mail_body"]);
+        }
 
         if (strpos($structure->usefor, "W") !== false) {
             // Delete fall because not exists in 3.2
