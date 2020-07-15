@@ -58,9 +58,7 @@ class DataElementTransfert
         $sql = sprintf("select setval('seq_doc%d', (select count(id) + 1 from only doc%d where doctype != 'T'))", $structure->id, $structure->id);
         DbManager::query($sql, $sqlval, true, true);
 
-        $sql = "select setval('seq_id_doc', (select max(id) from doc where doctype != 'T'));";
-        DbManager::query($sql, $sqldocval, true, true);
-        return ["seq" => $sqlval, "sqldoc" => $sqldocval];
+        return ["seq" => $sqlval];
     }
 
     protected function getProperties()
@@ -153,6 +151,10 @@ class DataElementTransfert
         if ($structure->name === "TIMER") {
             unset($propMapping["tm_deltainterval"]);
             unset($propMapping["tm_taskinterval"]);
+        }
+        if ($structure->name === "MAIL") {
+            unset($propMapping["mail_template"]);
+            unset($propMapping["mail_body"]);
         }
 
         if (strpos($structure->usefor, "W") !== false) {
