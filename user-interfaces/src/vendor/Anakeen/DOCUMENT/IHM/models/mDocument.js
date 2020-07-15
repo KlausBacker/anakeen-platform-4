@@ -1369,8 +1369,19 @@ export default Backbone.Model.extend({
         if (_.isFunction(options.error)) {
           options.error(values);
         }
-        if (values.promiseArguments && values.promiseArguments[0].message) {
-          currentModel.message = values.promiseArguments[0].message;
+        if (values.promiseArguments) {
+          if (values.promiseArguments[0].message) {
+            currentModel.message = values.promiseArguments[0].message;
+          } else if (values.promiseArguments[1].responseJSON) {
+            const msg = values.promiseArguments[1].responseJSON;
+            if (msg.userMessage) {
+              currentModel.message = msg.userMessage;
+            } else if (msg.message) {
+              currentModel.message = msg.message;
+            } else {
+              currentModel.message = msg.exceptionMessage;
+            }
+          }
           currentModel.trigger.apply(
             currentModel,
             _.union(["dduiDocumentFail", currentModel], values.promiseArguments)
