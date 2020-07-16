@@ -82,6 +82,9 @@ export default {
   },
   methods: {
     isValid() {
+      if (this.operator === "is null" || this.operator === "is not null") {
+        return true;
+      }
       let valid;
       if (this.isTextBox) {
         valid = this.$refs.keywordsTimeTextBoxWrapper.value !== "";

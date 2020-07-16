@@ -22,6 +22,9 @@ export default {
   },
   methods: {
     isValid() {
+      if (this.operator === "is null" || this.operator === "is not null") {
+        return true;
+      }
       return this.$refs.keysInput.value !== "";
     },
     onInputChange(event) {
