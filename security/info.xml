@@ -32,6 +32,12 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayerList/fieldaccesslayerlist.profil.xml">
             <label>Field Access Layer List Security</label>
         </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.views.xml">
+            <label>FIELDACCESSLAYER Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayerList/fieldaccesslayerlist.views.xml">
+            <label>FIELDACCESSLAYERLIST Structure view</label>
+        </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/File/file.profil.xml">
             <label>Profiling File</label>
         </process>
@@ -54,6 +60,12 @@
         </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayerList/fieldaccesslayerlist.struct.xml">
             <label>Field Access Layer List</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.views.xml">
+            <label>FIELDACCESSLAYER Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayerList/fieldaccesslayerlist.views.xml">
+            <label>FIELDACCESSLAYERLIST Structure view</label>
         </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Iuser/iuser.profil.xml">
             <label>Profiling account structures</label>
