@@ -308,6 +308,6 @@
   "AdminCenterTimersDetails.attachdate": "Date d'attachement : ",
   "AdminCenterTimersDetails.tododate": "Date d'exécution : ",
   "AdminCenterTimersDetails.donestatus": "Statut :",
-  "AdminCenterTimersDetails.formatAttachDate": "Date d'attachement : "
-  "AdminCenterAllParameter.Title Parameters": "Paramètres"
+  "AdminCenterTimersDetails.formatAttachDate": "Date d'attachement : ",
+  "AdminCenterTimersDetails.Attached by": "Attaché par "
 }

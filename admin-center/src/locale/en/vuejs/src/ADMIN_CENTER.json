@@ -308,5 +308,6 @@
   "AdminCenterTimersDetails.tododate": "Execution date : ",
   "AdminCenterIncomingTranslation.Planned actions": "Planned actions",
   "AdminCenterTimersDetails.donestatus": "Status",
-  "AdminCenterTimersDetails.formatAttachDate": "Date of attachment : "
+  "AdminCenterTimersDetails.formatAttachDate": "Date of attachment : ",
+  "AdminCenterTimersDetails.Attached by": "Attached by "
 }
