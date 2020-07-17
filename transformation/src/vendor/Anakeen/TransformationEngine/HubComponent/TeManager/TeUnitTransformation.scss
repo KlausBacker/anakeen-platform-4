@@ -1,0 +1,97 @@
+.te-unit-transformation-parent {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  .k-progressbar .k-state-running {
+    animation: pulse 2s infinite;
+  }
+
+  .te-unit-transformation-splitter {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    min-height: 0;
+    .te-task-check-info {
+      display: flex;
+      flex: 1;
+      height: 100%;
+      .te-task-information {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        overflow: auto;
+      }
+
+      .te-empty {
+        display: flex;
+        height: 100%;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        background-color: #dedede;
+        font-size: 1.5rem;
+        color: #a4a4a4;
+
+        > span {
+          font-size: 5rem;
+        }
+      }
+    }
+
+    .te-check {
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      margin: 0.5rem 0 0.5rem 0.5rem;
+      padding: 0.5rem;
+
+      .te-checkbar {
+        display: flex;
+        flex-direction: column;
+      }
+
+      ol {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .te-check-log {
+        overflow: auto;
+      }
+
+      .k-progressbar {
+        height: 4rem;
+        background-color: transparent;
+        display: block;
+
+        > ul {
+          justify-content: center;
+          align-items: center;
+        }
+
+        .k-item {
+          border-color: transparent;
+          height: 2rem;
+          width: 2rem !important;
+          /* position: absolute; */
+          border-radius: 50%;
+          margin: 1rem;
+          background: #dadada;
+          box-shadow: none;
+
+          &.k-state-selected {
+            background-color: var(--success);
+          }
+
+          &.k-state-failed {
+            background-color: var(--danger);
+          }
+        }
+      }
+    }
+  }
+}
