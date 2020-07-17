@@ -102,6 +102,11 @@ $.widget("dcp.dcpArray", {
     return $tbody.data("eventsBinded");
   },
 
+  /**
+   * handles the resize of the widget
+   */
+  resize: function wAttributeResize() {},
+
   _initDom: function dcpArray_initDom() {
     return new Promise(
       _.bind(function dcpArray_initDom_initDom(resolve, reject) {
