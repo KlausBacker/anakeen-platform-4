@@ -20,12 +20,6 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.constraint.xml">
             <label>CVDOC Add Render Constraint</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.views.xml">
-            <label>FIELDACCESSLAYER Structure view</label>
-        </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayerList/fieldaccesslayerlist.views.xml">
-            <label>FIELDACCESSLAYERLIST Structure view</label>
-        </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Dsearch/dsearch.views.xml">
             <label>DSEARCH Structure view</label>
         </process>
@@ -93,12 +87,6 @@
             <label>CVDOC Structure</label>
         </process>
 
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.views.xml">
-            <label>FIELDACCESSLAYER Structure view</label>
-        </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayerList/fieldaccesslayerlist.views.xml">
-            <label>FIELDACCESSLAYERLIST Structure view</label>
-        </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Dsearch/dsearch.views.xml">
             <label>DSEARCH Structure view</label>
         </process>
