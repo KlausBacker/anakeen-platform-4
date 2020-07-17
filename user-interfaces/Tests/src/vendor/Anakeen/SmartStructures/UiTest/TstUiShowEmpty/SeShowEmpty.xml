@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documents>
+    <tst_se_showempty xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" title="Test CommonRenderOptions::showEmptyContent()" name="TST_SHOWEMPTY">
+        <tst_showempty__frame_title_text />
+        <tst_showempty__frame_description_text xsi:nil="true"/>
+        <tst_showempty__frame_emptycontent_text xsi:nil="true"/>
+        <tst_showempty__frame_write_field_read xsi:nil="true"/>
+        </tst_se_showempty>
+</documents>

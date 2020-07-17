@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0">
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <!--Structure Profil Accesses-->
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <smart:structure-configuration name="TST_SE_SHOWEMPTY" label="Test Show Empty">
+        <smart:fields reset="true">
+            <smart:field-set name="tst_showempty__frame_title" type="frame" label="Cadre possédant un champs texte vide" access="ReadWrite">
+                <smart:field-text name="tst_showempty__frame_title_text" label="Champs texte vide" access="ReadWrite" is-title="true" />
+            </smart:field-set>
+            <smart:field-set name="tst_showempty__frame_description" type="frame" label="Cadre possédant un champs texte accessible en écriture uniquement" access="ReadWrite">
+                <smart:field-text name="tst_showempty__frame_description_text" label="Champs texte accessible en écriture uniquement" access="Write"/>
+            </smart:field-set>
+            <smart:field-set name="tst_showempty__frame_empty" type="frame" label="Cadre vide" access="ReadWrite">
+            </smart:field-set>
+            <smart:field-set name="tst_showempty__frame_write" type="frame" label="Cadre possédant un champs texte accessible en lecture uniquement " access="ReadWrite">
+                <smart:field-text name="tst_showempty__frame_write_field_read" label="Champs texte visible en lecture uniquement" access="Read"/>
+            </smart:field-set>
+            <smart:field-set name="tst_showempty__tab_aaa" type="tab" label="1. Onglet vide" access="ReadWrite">
+            </smart:field-set>
+            <smart:field-set name="tst_showempty__tab_bbb" type="tab" label="2. Onglet + cadre vide" access="ReadWrite">
+                <smart:field-set name="tst_showempty__tab_bbb_frame" type="frame" label="Cadre sans showEmptyContent" access="ReadWrite">
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst_showempty__tab_ccc" type="tab" label="3. Onglet + cadre vide" access="ReadWrite">
+                <smart:field-set name="tst_showempty__tab_ccc_frame" type="frame" label="Cadre avec showEmptyContent" access="ReadWrite">
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst_showempty__tab_write" type="tab" label="4. Onglet + cadre vide" access="ReadWrite">
+                <smart:field-set name="tst_showempty__tab_write_frame_read" type="frame" label="Cadre avec showEmptyContent" access="Read">
+                </smart:field-set>
+            </smart:field-set>
+        </smart:fields>
+     
+        <smart:accesses>
+            <smart:element-access-configuration ref="PRF_TST_DDUI_ALLTYPE"/>
+        </smart:accesses>
+    </smart:structure-configuration>
+    <ui:render ref="TST_SE_SHOWEMPTY">
+        <ui:render-access class="Anakeen\SmartStructures\UiTest\TstUiShowEmpty\Renders\TstUiShowEmptyAccess"/>
+    </ui:render>
+</smart:config>

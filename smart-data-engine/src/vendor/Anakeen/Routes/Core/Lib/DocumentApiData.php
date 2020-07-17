@@ -241,7 +241,7 @@ class DocumentApiData
     protected function _getDocumentStructure()
     {
         $this->_document->attributes->orderAttributes();
-        $normalAttributes = $this->_document->getNormalAttributes();
+        $attributes = $this->_document->getAttributes();
 
         $pos = 1;
         $attrsOrder = [];
@@ -250,8 +250,8 @@ class DocumentApiData
         }
 
         $return = array();
-        foreach ($normalAttributes as $attribute) {
-            if ($attribute->type === "array") {
+        foreach ($attributes as $attribute) {
+            if ($attribute->usefor === "Q") {
                 continue;
             }
             $parentAttribute = $attribute->fieldSet;
@@ -264,6 +264,15 @@ class DocumentApiData
             $parentIds = array_reverse($parentIds);
             $previousId = null;
             unset($target);
+            if (!$parentIds && $attribute->id !== Attributes::HIDDENFIELD) {
+                if (!isset($return[$attribute->id])) {
+                    $return[$attribute->id] = $this->getAttributeInfo(
+                        $this->_document->getAttribute($attribute->id),
+                        $attrsOrder[$attribute->id]
+                    );
+                    $return[$attribute->id]["content"] = array();
+                }
+            }
 
             foreach ($parentIds as $aid) {
                 if ($previousId === null) {
@@ -394,7 +403,7 @@ class DocumentApiData
                 $enumItems = array();
                 foreach ($enums as $key => $label) {
                     $enumItems[] = array(
-                        "key" => (string)$key,
+                        "key" => (string) $key,
                         "label" => $label
                     );
                 }
@@ -446,7 +455,7 @@ class DocumentApiData
     protected function checkId($identifier, &$initid)
     {
         if (is_numeric($identifier)) {
-            $identifier = (int)$identifier;
+            $identifier = (int) $identifier;
             $initid = SEManager::getInitIdFromIdOrName($identifier);
 
             if ($initid !== 0 && $initid != $identifier) {

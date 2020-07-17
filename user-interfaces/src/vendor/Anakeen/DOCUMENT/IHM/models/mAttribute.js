@@ -85,7 +85,7 @@ export default Backbone.Model.extend({
       }
     }
     if (this.get("content").length === 0) {
-      return false;
+      return this.getOption("showEmptyContent") !== null;
     }
     if (this.getOption("showEmptyContent") === null) {
       if (this.get("content").some) {
