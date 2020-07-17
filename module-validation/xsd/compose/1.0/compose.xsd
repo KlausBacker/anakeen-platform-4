@@ -47,6 +47,7 @@
                                     <xs:attribute name="name"/>
                                     <xs:attribute name="version"/>
                                     <xs:attribute name="registry"/>
+                                    <xs:attribute name="type"/>
                                 </xs:complexType>
                             </xs:element>
                         </xs:sequence>

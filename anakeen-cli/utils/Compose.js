@@ -222,8 +222,9 @@ class Compose {
    * @param {string} moduleName Module's name
    * @param {string} moduleVersion Module's semver version
    * @param {string} registryName Registry's unique name/identifier from which the module is to be downloaded.
+   * @param {string} type Define module's type (dev or prod)
    */
-  async addModule({ moduleName: moduleName, moduleVersion: moduleVersion, registry: registryName }) {
+  async addModule({ moduleName: moduleName, moduleVersion: moduleVersion, registry: registryName, type }) {
     await this.loadContext();
 
     if (!registryName || !moduleVersion) {
@@ -243,13 +244,15 @@ class Compose {
     const moduleToAdd = await this._getModuleRefFromRegistry({
       moduleName,
       moduleVersion,
-      registryName
+      registryName,
+      type
     });
 
     await this.repoXML.addModule({
       name: moduleToAdd.name,
       version: moduleVersion !== "latest" ? moduleVersion : `^${moduleToAdd.version}`,
-      registry: registryName
+      registry: registryName,
+      type
     });
 
     return moduleToAdd;
@@ -261,6 +264,7 @@ class Compose {
    * @param moduleName
    * @param moduleVersion
    * @param registryName
+   * @param type
    * @returns {Promise<{name, version}>}
    * @private
    */
@@ -296,15 +300,16 @@ class Compose {
    * @private
    */
   async _installSemverModule(
-    { name: moduleName, version: moduleVersion, registry: registryName },
+    { name: moduleName, version: moduleVersion, registry: registryName, type },
     noUpdateRepo = false
   ) {
-    const module = await this._getModuleRefFromRegistry({ moduleName, moduleVersion, registryName });
+    const module = await this._getModuleRefFromRegistry({ moduleName, moduleVersion, registryName, type });
 
     await this._installAndLockModuleVersion({
       name: module.name,
       version: module.version,
-      registry: registryName
+      registry: registryName,
+      type
     });
 
     if (noUpdateRepo) {
@@ -314,11 +319,12 @@ class Compose {
     await this.repoXML.addModule({
       name: module.name,
       version: moduleVersion !== "latest" ? moduleVersion : `^${module.version}`,
-      registry: registryName
+      registry: registryName,
+      type
     });
   }
 
-  async _installAndLockModuleVersion({ name: moduleName, version: moduleVersion, registry: registryName }) {
+  async _installAndLockModuleVersion({ name: moduleName, version: moduleVersion, registry: registryName, type }) {
     const localRepo = this._convertPathToAbsolute(this.repoXML.getConfigLocalRepo());
     const localSrc = this._convertPathToAbsolute(this.repoXML.getConfigLocalSrc());
 
@@ -363,6 +369,7 @@ class Compose {
     const newModule = {
       name: moduleName,
       version: moduleVersion,
+      type,
       resources: []
     };
     if (typeof resources.app !== "undefined") {
@@ -477,7 +484,8 @@ class Compose {
     localRepoName = "repo",
     controlTarget = "control.zip",
     customReadme = "",
-    addLocalApp = ""
+    addLocalApp = "",
+    installDevDependencies
   }) {
     await this.loadContext();
     signale.note(`Launch install to refresh repo and add custom app`);
@@ -514,8 +522,23 @@ class Compose {
     });
     signale.note(`Add app from ${localRepo}`);
     //add localRepo files
-    const appFile = await glob(path.join(localRepo, "/**/*.app"), { absolute: true });
-    appFile.map(currentApp => {
+    const moduleList = this.repoXML.getModuleList();
+    let appFileList = await glob(path.join(localRepo, "/**/*.app"), { absolute: true });
+
+    if (installDevDependencies === false) {
+      this.debug("==> Installing non dev packages");
+      moduleList.forEach(moduleObject => {
+        const module = moduleObject.$;
+        appFileList.forEach((appFile, appIdx) => {
+          if (appFile.includes(module.name) && module.type === "dev") {
+            this.debug(`Removing ${module.name}, ${module.type}`);
+            appFileList.splice(appIdx, 1);
+            return;
+          }
+        });
+      });
+    }
+    appFileList.map(currentApp => {
       const stream = fs.createReadStream(currentApp);
       this.debug(`Add app ${currentApp}`);
       zipFile.file(path.join(localRepoName, path.basename(currentApp)), stream);
@@ -556,7 +579,7 @@ class Compose {
    *
    * @returns {Promise<void>}
    */
-  async install({ withoutLockFile = false, latest = false, customLocalPath = "", dev = false }) {
+  async install({ moduleName, type, withoutLockFile = false, latest = false, customLocalPath = "", dev = false }) {
     let moduleLockList = [];
     //region prepare data
     await this.loadContext();
@@ -584,6 +607,11 @@ class Compose {
       moduleLockList = this.repoLockXML.getModuleList();
     }
     let moduleList = this.repoXML.getModuleList();
+    let newModuleIndex = moduleList.findIndex(module => module.$.name === moduleName);
+    if (newModuleIndex !== -1) {
+      moduleList[newModuleIndex].$ = { ...moduleList[newModuleIndex].$, type };
+    }
+
     if (latest) {
       //Process the module list to push all semver requirement to latest
       moduleList = moduleList.map(currentModule => {
@@ -681,7 +709,8 @@ class Compose {
             {
               name: module.$.name,
               version: module.$.version,
-              registry: module.$.registry
+              registry: module.$.registry,
+              type: module.$.type
             },
             true
           );
@@ -695,7 +724,8 @@ class Compose {
         return await this._installSemverModule({
           name: module.$.name,
           version: module.$.version,
-          registry: module.$.registry
+          registry: module.$.registry,
+          type: module.$.type
         });
       })
     );

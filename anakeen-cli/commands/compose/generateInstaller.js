@@ -17,6 +17,12 @@ exports.builder = {
     default: "./control.zip",
     type: "string"
   },
+  installDevDependencies: {
+    alias: "dev",
+    description: "Choose to include or not developments dependencies",
+    default: false,
+    type: "boolean"
+  },
   addLocalApp: {
     alias: "a",
     description: "Glob to local app to add to the delivery",
