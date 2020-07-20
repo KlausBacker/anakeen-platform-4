@@ -21,7 +21,10 @@ class HubConfigurationGenericBehavior extends \SmartStructure\Hubconfigurationvu
     {
         $assets = parent::getAssets();
         $assets["js"][] = $this->resolveAssets("js");
-        $assets["css"][] = $this->resolveAssets("css");
+        $assetcss = $this->resolveAssets("css");
+        if ($assetcss) {
+            $assets["css"][] = $assetcss;
+        }
         return $assets;
     }
 
@@ -53,11 +56,11 @@ class HubConfigurationGenericBehavior extends \SmartStructure\Hubconfigurationvu
     protected function resolveAssets($type)
     {
         $prefix = sprintf("hge_%s", $type);
-        $assets = $this->getArrayRawValues($prefix."assets");
+        $assets = $this->getArrayRawValues($prefix . "assets");
         if (!empty($assets)) {
             return array_filter(array_map(function ($item) use ($prefix, $type) {
-                $assetType = $item[$prefix."asset_type"];
-                $assetPath = $item[$prefix."asset"];
+                $assetType = $item[$prefix . "asset_type"];
+                $assetPath = $item[$prefix . "asset"];
                 if (empty($assetPath)) {
                     return null;
                 }
@@ -77,8 +80,8 @@ class HubConfigurationGenericBehavior extends \SmartStructure\Hubconfigurationvu
                         return $result;
                     }
                 } else {
-                    if (!file_exists(PUBLIC_DIR."/".$assetPath)) {
-                        throw new Exception("HUB0001", PUBLIC_DIR."/".$assetPath);
+                    if (!file_exists(PUBLIC_DIR . "/" . $assetPath)) {
+                        throw new Exception("HUB0001", PUBLIC_DIR . "/" . $assetPath);
                     }
                     return $assetPath;
                 }
