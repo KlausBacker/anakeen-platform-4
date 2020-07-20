@@ -58,14 +58,14 @@ $(VOLUMES_WEBROOT_CERTS):
 	mkdir -p "$@"
 
 $(VOLUMES_WEBROOT_CONTROL_CONF)/contexts.xml: | _env-start
-	@$(PRINT_COLOR) "$(COLOR_INFO)[I]$@ not found, initializing context$(COLOR_RESET)\n"
+	@$(PRINT_COLOR) "$(COLOR_HINT)[I]$@ not found, initializing context$(COLOR_RESET)\n"
 	$(_CONTROL_CMD) status --format json | jq -e '.status != "Not Initialized"' > /dev/null \
 		|| $(_CONTROL_CMD) init --pg-service=platform --password=$(CONTEXT_PASSWORD)
 	$(_CONTROL_CMD) registry show --format json | jq -e '.[] | select(.name=="$(LOCAL_REPO_NAME)").name == "$(LOCAL_REPO_NAME)"' > /dev/null \
 		|| $(_CONTROL_CMD) registry add $(LOCAL_REPO_NAME) $(DOCKER_INTERNAL_WEBROOT_REPO_PATH)
 	#$(_CONTROL_CMD) install --no-interaction --no-ansi
 	#$(_CONTROL_CMD) update --no-interaction --no-ansi
-	@$(PRINT_COLOR) "$(COLOR_INFO)[I]context initialized$(COLOR_RESET)\n"
+	@$(PRINT_COLOR) "$(COLOR_HINT)[I]context initialized$(COLOR_RESET)\n"
 
 .PHONY: _env-start
 _env-start: | $(VOLUMES_PRIVATE) $(BUILD_DIR)
