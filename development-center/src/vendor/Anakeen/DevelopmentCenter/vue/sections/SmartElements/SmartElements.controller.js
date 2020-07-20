@@ -4,6 +4,7 @@ import PropertiesView from "devComponents/PropertiesView/PropertiesView.vue";
 import ElementView from "./ElementView/ElementView.vue";
 import RawElementView from "./RawElementView/RawElementView.vue";
 import ProfileGrid from "../../components/profile/profile.vue";
+import LogicalNameForm from "../../components/LogicalName/LogicalName.vue";
 
 const docTypeString = doctype => {
   switch (doctype) {
@@ -35,6 +36,7 @@ export default {
     "element-view": ElementView,
     "element-properties": PropertiesView,
     "element-security": ProfileGrid,
+    "element-logical-name": LogicalNameForm,
     "element-raw": RawElementView
   },
   props: ["smartElement"],
@@ -246,7 +248,27 @@ export default {
             });
           }
           break;
+        case "logicalName":
+          seIdentifier = event.data.row.properties.initid;
+          this.$refs.splitter.disableEmptyContent();
+          event.preventDefault();
+          this.selectedElement = {
+            url: `/api/v2/devel/smart-elements/logical-name/${seIdentifier}`,
+            component: "element-logical-name",
+            props: {
+              properties: event.data.row.properties
+            },
+            name: seIdentifier,
+            label: seIdentifier
+          };
+          this.getRoute().then(route => {
+            this.$emit("navigate", route);
+          });
+          break;
       }
+    },
+    onRefresh() {
+      this.$refs.grid.refreshGrid(true);
     }
   }
 };
