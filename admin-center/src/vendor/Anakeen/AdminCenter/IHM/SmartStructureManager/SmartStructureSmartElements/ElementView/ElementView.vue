@@ -11,7 +11,6 @@
     </div>
     <ank-smart-element
       ref="smartElement"
-      :auto-unload="false"
       class="smart-element"
       :initid="initid"
       :view-id="viewId"
