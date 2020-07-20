@@ -1,6 +1,8 @@
 .smart-element-wrapper {
     position: relative;
     height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 .smart-element-wrapper > .document{
     /* no use height here because of sticky bar menu */
