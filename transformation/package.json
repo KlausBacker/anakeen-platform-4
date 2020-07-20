@@ -21,7 +21,7 @@
     "@progress/kendo-dropdowns-vue-wrapper": "^2019.3.1023",
     "@progress/kendo-inputs-vue-wrapper": "^2019.3.1023",
     "@progress/kendo-layout-vue-wrapper": "^2019.3.1023",
-    "@progress/kendo-theme-bootstrap": "^4.8.0",
+    "@progress/kendo-theme-bootstrap": "4.8.0",
     "@progress/kendo-ui": "2019.3.1113",
     "@types/jquery": "^3.3.30",
     "jquery": "^3.3.1",
