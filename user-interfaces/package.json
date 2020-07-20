@@ -71,7 +71,7 @@
     "webpack-node-externals": "^1.7.2"
   },
   "peerDependencies": {
-    "@progress/kendo-theme-bootstrap": "4.8.0",
+    "@progress/kendo-theme-bootstrap": "^4.8.0",
     "@progress/kendo-ui": "2019.3.1113",
     "jquery": "3.4.1",
     "vue": "2.6.11"
