@@ -1,20 +1,9 @@
-import "./MaskView.css";
+import "./MaskView.scss";
 import $ from "jquery";
 import "@progress/kendo-ui/js/kendo.treelist";
 import "@progress/kendo-ui/js/kendo.columnmenu";
 
 window.ank.smartElement.globalController.registerFunction("mask", controller => {
-  const fitMaskGridToBottom = $tree => {
-    if ($tree.length === 1) {
-      let kTree = $tree.data("kendoTreeList");
-
-      if (kTree) {
-        $tree.height($(window).height() - $tree.offset().top - 4);
-        kTree.resize();
-      }
-    }
-  };
-
   /**
    * add class by type in tr tag
    * @param grid
@@ -26,7 +15,7 @@ window.ank.smartElement.globalController.registerFunction("mask", controller => 
     window.setTimeout(() => {
       items.each(function addTypeClass() {
         let dataItem = grid.dataItem(this);
-        if (dataItem.type) {
+        if (dataItem && dataItem.type) {
           $(this).addClass(" attr-type--" + dataItem.type);
         }
       });
@@ -34,23 +23,14 @@ window.ank.smartElement.globalController.registerFunction("mask", controller => 
   };
 
   controller.addEventListener("ready", function maskViewReady(event, smartElementObject) {
-    let $tree = $("#maskGrid");
+    let $tree = $(event.target).find(".mask-grid");
 
     if ($tree.length === 0) {
       return;
     }
 
-    $(window).on("resize.mask", () => {
-      let $tree = $("#maskGrid");
-
-      if ($tree.length === 1) {
-        fitMaskGridToBottom($tree);
-      } else {
-        $(window).off("resize.mask");
-      }
-    });
-
     $tree.kendoTreeList({
+      height: "auto",
       dataSource: {
         transport: {
           read: {
@@ -173,8 +153,6 @@ window.ank.smartElement.globalController.registerFunction("mask", controller => 
         }
       ]
     });
-
-    fitMaskGridToBottom($tree);
   });
 
   controller.addEventListener(
