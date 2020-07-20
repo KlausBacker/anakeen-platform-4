@@ -108,7 +108,7 @@ app-all-autorelease: app-autorelease
 ## Deploy
 ##
 ########################################################################################################################
-deploy: install-deps buildJS
+deploy: install-deps buildJS buildCSS
 	@$(PRINT_COLOR) "$(COLOR_DEBUG)Deploy$(COLOR_RESET)\n"
 	$(ANAKEEN_CLI_CMD) deploy  --sourcePath .
 
