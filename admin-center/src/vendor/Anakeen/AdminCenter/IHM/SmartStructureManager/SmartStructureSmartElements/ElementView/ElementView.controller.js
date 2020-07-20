@@ -14,18 +14,6 @@ export default {
       return !!this.element;
     }
   },
-  watch: {
-    initid(newValue) {
-      if (this.$refs.smartElement) {
-        this.$refs.smartElement.fetchSmartElement({ initid: newValue, viewId: this.viewId });
-      }
-    },
-    viewId(newValue) {
-      if (this.$refs.smartElement) {
-        this.$refs.smartElement.fetchSmartElement({ initid: this.initid, viewId: newValue });
-      }
-    }
-  },
   mounted() {
     kendo.ui.progress(this.$(this.$el), true);
   },
