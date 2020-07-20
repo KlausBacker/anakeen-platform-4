@@ -16,7 +16,17 @@ export default function searchUISEGridProcess(controller) {
         },
         el: ".search-ui-se-grid",
         data: { searchId: null },
-        template: "<search-grid :searchId='searchId'></search-grid>"
+        template: "<search-grid :searchId='searchId' @searchGridError='onSearchGridError'></search-grid>",
+        methods: {
+          onSearchGridError(event) {
+            event.forEach(err => {
+              controller.showMessage({
+                type: "error",
+                message: err.data.message
+              });
+            });
+          }
+        }
       });
       controller.addEventListener(
         "custom:content",
