@@ -155,7 +155,6 @@ export default Backbone.Model.extend({
     this.listenTo(this, "dduiDocumentFail", this.propagateSynchroError);
     this.listenTo(this, "destroy", this.destroySubcollection);
     this.listenTo(this, "destroy", this.unbindLoadEvent);
-    this.listenTo(this, "smartElementResize", this._triggerResize);
     $(window).on("beforeunload." + this.cid, function mDocumentBeforeUnload() {
       if (options && options.force) {
         return;
@@ -1731,20 +1730,5 @@ export default Backbone.Model.extend({
       error: structurePromise.error
     });
     return structurePromise.promise;
-  },
-  /**
-   * Propagates the smartElementResize event to the children models
-   * @private
-   */
-  _triggerResize() {
-    const attributes = this.get("attributes");
-    if (!_.isUndefined(attributes)) {
-      attributes.each(function mDocumentTriggerResizeEach(attr) {
-        if (attr) {
-          attr.trigger("smartElementResize");
-          return; //Only trigger the first attribute model. By extension, the event will be triggered to the other models of the collection.
-        }
-      });
-    }
   }
 });

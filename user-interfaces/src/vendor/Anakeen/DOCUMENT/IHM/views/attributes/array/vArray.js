@@ -36,7 +36,6 @@ export default Backbone.View.extend({
     this.listenTo(this.model, "removeWidgetLine", this.removeWidgetLine);
     this.listenTo(this.model, "addWidgetLine", this.addWidgetLine);
     this.listenTo(this.model, "haveView", this._identifyView);
-    this.listenTo(this.model, "smartElementResize", this.setResponsiveClasse);
     this.options = options;
   },
 
@@ -188,6 +187,7 @@ export default Backbone.View.extend({
                 });
               }
             }
+            $(window).on("resize.v" + this.model.cid, _.bind(this.setResponsiveClasse, this));
             _.defer(_.bind(this.setResponsiveClasse, this));
           })
             .then(onDone)

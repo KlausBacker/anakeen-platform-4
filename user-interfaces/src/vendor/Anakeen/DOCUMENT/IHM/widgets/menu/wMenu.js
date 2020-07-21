@@ -320,6 +320,8 @@ export default $.widget("dcp.dcpMenu", {
         items: [] // List items
       }
     ]);
+    $(window).on("resize.dcpMenu" + this.menuUID, _.debounce(_.bind(this.inhibitBarMenu, this), 100));
+    $(window).on("resize.dcpMenu" + this.menuUID, _.debounce(_.bind(this.updateResponsiveMenu, this), 100, false));
   },
   callMenu: function callMenu($menuItem) {
     var scopeWidget = this;
@@ -354,14 +356,6 @@ export default $.widget("dcp.dcpMenu", {
           message: info.responseJSON.error || info.responseJSON.exceptionMessage
         });
       });
-  },
-
-  /**
-   * Resizes the menu
-   */
-  resize: function wMenuResize() {
-    _.debounce(_.bind(this.inhibitBarMenu, this), 100);
-    _.debounce(_.bind(this.updateResponsiveMenu, this), 100, false);
   },
 
   inhibitBarMenu: function wMenuInhibitBarMenu() {

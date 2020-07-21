@@ -76,11 +76,6 @@ $.widget("dcp.dcpAttribute", {
   },
 
   /**
-   * handles the resize of the widget
-   */
-  resize: function wAttributeResize() {},
-
-  /**
    * Display tooltip an error message
    *
    * @param message string or array of [{message:, index:}, ...]

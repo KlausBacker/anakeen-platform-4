@@ -26,7 +26,6 @@ export default Backbone.View.extend({
     this.listenTo(this.model.get("attributes"), "changeMenuVisibility", this.changeVisibility);
     this.listenTo(this.model, "destroy", this.remove);
     this.listenTo(this.model, "cleanView", this.remove);
-    this.listenTo(this.model, "smartElementResize", this._triggerResize);
     this.menuModel = this.model.get("menus");
   },
 
@@ -117,15 +116,6 @@ export default Backbone.View.extend({
   refresh: function vMenu_refresh() {
     if (this.$el.dcpMenu && this._findWidgetName(this.$el)) {
       this.$el.dcpMenu("updateResponsiveMenu");
-    }
-  },
-  /**
-   * Resizes the menu
-   * @private
-   */
-  _triggerResize() {
-    if (this.$el.dcpMenu && this._findWidgetName(this.$el)) {
-      this.$el.dcpMenu("resize");
     }
   }
 });
