@@ -24,6 +24,7 @@
 
     <post-upgrade>
         <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Fullsearch/Config/gridFulltextController.xml"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Fullsearch/Config/hubConfiguration.xml"/>
     </post-upgrade>
 
     <reconfigure>
