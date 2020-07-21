@@ -6,7 +6,6 @@
 
 namespace Anakeen\Core\SmartStructure;
 
-use Anakeen\Core\Exception;
 use Anakeen\Core\Utils\Date;
 
 class SmartFieldValue
