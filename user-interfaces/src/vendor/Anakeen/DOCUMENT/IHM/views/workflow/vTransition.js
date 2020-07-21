@@ -275,19 +275,14 @@ export default ViewDocument.extend({
         .dcpDialog({
           window: {
             height: "auto",
-            maxHeight: "80%",
             overflowY: "scroll",
             resize: () => {
               this.trigger("smartElementResize");
             },
-            open: e => {
-              var event = { prevent: false };
-              if (event.prevent !== false) {
-                e.preventDefault();
-              } else {
-                $(".dcpTransition-button-ok", this.$el).kendoButton();
-                $(".dcpTransition-button-cancel", this.$el).kendoButton();
-              }
+            open: () => {
+              $(".dcpTransition-button-ok", this.$el).kendoButton();
+              $(".dcpTransition-button-cancel", this.$el).kendoButton();
+              this.$el.closest(".k-window").addClass("dcpTransition-window");
             },
             close: function registerCloseEvent(e) {
               var event = { prevent: false };
