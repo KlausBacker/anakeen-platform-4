@@ -159,9 +159,14 @@ namespace {
          */
         const CORE0107 = 'Values "%s" must be an array';
         /**
-         * @errorCode The attribute is not part of array (bad format array)
+         * @errorCode The smart field is not part of array (bad format array)
          * @see \Anakeen\Core\Internal::addArrayRow
          */
-        const CORE0108 = "attribute \"%s\" is not a part of array \"%s\"";
+        const CORE0108 = "Smart field \"%s\" is not a part of array \"%s\"";
+        /**
+        * @errorCode The attribute is not part of array (bad format array)
+        * @see \Anakeen\Core\Internal::addArrayRow
+        */
+        const CORE0109 = "Index must reference Smart Field identifier";
     }
 }

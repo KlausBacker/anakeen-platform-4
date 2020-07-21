@@ -198,7 +198,7 @@ class TestAddArrayRow extends TestCaseDcpCommonFamily
                         ),
                     ),
                 ),
-            ),
+            )
         );
     }
 

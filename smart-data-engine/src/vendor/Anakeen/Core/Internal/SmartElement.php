@@ -3217,7 +3217,12 @@ create unique index i_docir on doc(initid, revision);";
             if ($err == "") {
                 $ta = $this->attributes->getArrayElements($a->id);
                 $attrOut = array_diff(array_keys($tv), array_keys($ta));
-                if ($attrOut) {
+                if (!empty($attrOut)) {
+                    foreach ($attrOut as $k => $attrOutValue) {
+                        if (is_numeric($attrOutValue)) {
+                            throw new Exception('CORE0109');
+                        }
+                    }
                     $this->_setValueNeedCompleteArray = $old_setValueCompleteArrayRow;
                     // return sprintf(_('attribute "%s" is not a part of array "%s"'), implode(', ', $attrOut), $idAttr);
                     throw new Exception('CORE0108', implode(', ', $attrOut), $idAttr);
@@ -3251,7 +3256,7 @@ create unique index i_docir on doc(initid, revision);";
                                 if ($typeTnvLevel1 === "array" || is_scalar($tnvLevel1)) {
                                     if (!is_scalar($tnvLevel1)) {
                                         foreach ($tnvLevel1 as $tnvLevel2) {
-                                            if (!is_scalar($tnvLevel2)) {
+                                            if (!is_scalar($tnvLevel2) && $tnvLevel2 !== null) {
                                                 throw new Exception("CORE0106", gettype($tnvLevel2));
                                             }
                                         }
@@ -6613,9 +6618,13 @@ create unique index i_docir on doc(initid, revision);";
                             }
                             $terr = [];
                             foreach ($values as $row) {
-                                $err = $this->addArrayRow($aid, $row);
-                                if ($err) {
-                                    $terr[] = $err;
+                                try {
+                                    $err = $this->addArrayRow($aid, $row);
+                                    if ($err) {
+                                        $terr[] = $err;
+                                    }
+                                } catch (\Exception $e) {
+                                    $terr[] = $e;
                                 }
                             }
                             if ($terr) {
