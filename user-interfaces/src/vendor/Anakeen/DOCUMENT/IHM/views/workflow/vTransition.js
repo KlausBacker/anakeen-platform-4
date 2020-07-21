@@ -277,7 +277,7 @@ export default ViewDocument.extend({
             height: "auto",
             maxHeight: "80%",
             overflowY: "scroll",
-            resize: function resizeTransition() {
+            resize: () => {
               this.trigger("smartElementResize");
             },
             open: e => {
