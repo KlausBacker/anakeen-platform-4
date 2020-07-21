@@ -217,13 +217,20 @@ class SmartFieldValue
         }
         throw new SmartFieldValueException('VALUE0100', $oAttr->id, $doc->title, $doc->fromname);
     }
-    private static function array_transpose($array, $selectKey = false) {
-        if (!is_array($array)) return false;
+    private static function arrayTranspose($array, $selectKey = false)
+    {
+        if (!is_array($array)) {
+            return false;
+        }
         $return = array();
-        foreach($array as $key => $value) {
-            if (!is_array($value)) return $array;
+        foreach ($array as $key => $value) {
+            if (!is_array($value)) {
+                return $array;
+            }
             if ($selectKey) {
-                if (isset($value[$selectKey])) $return[] = $value[$selectKey];
+                if (isset($value[$selectKey])) {
+                    $return[] = $value[$selectKey];
+                }
             } else {
                 foreach ($value as $key2 => $value2) {
                     $return[$key2][$key] = $value2;
@@ -236,7 +243,7 @@ class SmartFieldValue
     private static function setTypedArrayValue(\Anakeen\Core\Internal\SmartElement & $doc, \Anakeen\Core\SmartStructure\NormalAttribute & $oAttr, array $value)
     {
         $doc->clearArrayValues($oAttr->id);
-        $tabTranspose = self::array_transpose($value);
+        $tabTranspose = self::arrayTranspose($value);
         $err = "";
         foreach ($tabTranspose as $columnName => $columnValue) {
             if (!is_array($columnValue)) {
