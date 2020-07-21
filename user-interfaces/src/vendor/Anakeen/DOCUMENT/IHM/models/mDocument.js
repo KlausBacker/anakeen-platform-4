@@ -1368,10 +1368,17 @@ export default Backbone.Model.extend({
         if (_.isFunction(options.error)) {
           options.error(values);
         }
-        if (values.promiseArguments) {
+        if (values.promiseArguments && values.promiseArguments.length === 1) {
+          // @FIMXE: Workaround because in some case : the args are into the first value of array
+          if (values.promiseArguments[0].length === 3) {
+            values.promiseArguments = values.promiseArguments[0];
+          }
+        }
+
+        if (values.promiseArguments && values.promiseArguments.length > 0) {
           if (values.promiseArguments[0].message) {
             currentModel.message = values.promiseArguments[0].message;
-          } else if (values.promiseArguments[1].responseJSON) {
+          } else if (values.promiseArguments.length > 1 && values.promiseArguments[1].responseJSON) {
             const msg = values.promiseArguments[1].responseJSON;
             if (msg.userMessage) {
               currentModel.message = msg.userMessage;
