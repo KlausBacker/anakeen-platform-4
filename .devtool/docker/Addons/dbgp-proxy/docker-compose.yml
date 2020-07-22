@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  dbgp-proxy:
+    build:
+      context: ./Addons/dbgp-proxy/
+      args: []
+    environment:
+      IDE_PORT:   "0.0.0.0:${PROJECT_DBGP_PROXY_IDE_PORT-9001}"
+      DEBUG_PORT: "0.0.0.0:${PROJECT_DBGP_PROXY_DEBUG_PORT-9000}"
+    sysctls:
+      # Allows mapping of port 80 from unprivileged user COMPOSE_UID
+      net.ipv4.ip_unprivileged_port_start: 0
+    volumes: []
+    depends_on: []
+    ports:
+      - '${PROJECT_DBGP_PROXY_IDE_PORT-9001}:9001'
+    networks:
+      internal:
+        aliases: []
+
+networks:
+  internal: {}
