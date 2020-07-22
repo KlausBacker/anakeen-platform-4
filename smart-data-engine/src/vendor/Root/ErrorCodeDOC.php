@@ -244,6 +244,12 @@ class ErrorCodeDOC
      * @see       \Anakeen\Core\SmartStructure::setParam
      */
     const DOC0137 = 'cannot set smart structure ("%s") parameter "%s". Need array value and has single value "%s"';
+
+    /**
+     * @errorCode when update  smart structure  parameter
+     * @see       \Anakeen\Core\SmartStructure::setParam
+     */
+    const DOC0138 = 'Connot compute profile dynamic access for "%s" #%d (profile "%s"): "%s"';
     /**
      * @errorCode the smart element cannot be inserted in folder target
      * @note when DOC has defined a folder target

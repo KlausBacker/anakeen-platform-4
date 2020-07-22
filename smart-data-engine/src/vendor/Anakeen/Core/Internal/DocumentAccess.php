@@ -6,6 +6,7 @@ use Anakeen\Core\Account;
 use Anakeen\Core\AccountManager;
 use Anakeen\Core\ContextManager;
 use \Anakeen\Core\DbManager;
+use Anakeen\Core\Exception;
 use \Anakeen\Core\SEManager;
 use Anakeen\Core\Utils\Postgres;
 use Anakeen\LogManager;
@@ -351,7 +352,6 @@ class DocumentAccess
      * @param int $dprofid identifier for dynamic profil document
      * @param \Anakeen\Core\Internal\SmartElement $fromdocidvalues other document to reference dynamic profiling (default itself)
      *
-     * @return string error message
      * @throws \Anakeen\Core\Exception
      * @throws \Anakeen\Database\Exception
      */
@@ -445,9 +445,7 @@ class DocumentAccess
                                     $tduid = Postgres::stringToFlatArray($duid);
                                 }
                             } else {
-                                $errorMessage = \ErrorCode::getError('DOC0134', $aid);
-                                LogManager::error($errorMessage);
-                                $this->document->addHistoryEntry($errorMessage, \DocHisto::ERROR);
+                                throw new Exception("DOC0134", $aid, $pdoc->getTitle());
                             }
                         } else {
                             $tduid = $duid;
@@ -527,7 +525,10 @@ class DocumentAccess
             $this->document->restoreAccessControl();
         }
         $this->document->uperm = []; // force recompute privileges
-        return $err;
+
+        if ($err) {
+            throw new Exception("DOC0138", $this->document->getTitle(), $this->document->id, $pdoc->getTitle(), $err);
+        }
     }
 
     /**
