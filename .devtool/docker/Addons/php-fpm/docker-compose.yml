@@ -8,6 +8,10 @@ services:
         ANK_RUN_UID: ${COMPOSE_UID}
         ANK_RUN_GID: ${COMPOSE_GID}
         PROJECT_PHP_VERSION: ${PROJECT_PHP_VERSION-7.3}
+        DEBUG_DOCKERFILE_ONBUILD: "no"
+    environment:
+      DEBUG_CRON: "no"
+      DEBUG_ENTRYPOINT: "no"
     volumes:
       - './Volumes/_private/webroot/var/www/html/anakeen:/var/www/html/anakeen'
       - './Volumes/_private/webroot/var/spool/cron/crontabs/:/var/spool/cron/crontabs'
@@ -16,11 +20,9 @@ services:
       - "../../build/:/var/www/html/anakeen/repo"
 
       - './Volumes/php/usr/local/etc/php/conf.d/10-base.ini:/usr/local/etc/php/conf.d/10-base.ini'
+      - './Volumes/php/usr/local/etc/php/conf.d/20-xdebug.ini:/usr/local/etc/php/conf.d/20-xdebug.ini'
     depends_on:
       - postgres
-    links:
-      - 'postgres:postgres'
-      - 'mail:mail'
     networks:
       internal:
         aliases:
