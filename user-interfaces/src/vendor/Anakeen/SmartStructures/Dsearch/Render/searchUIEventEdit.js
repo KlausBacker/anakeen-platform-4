@@ -27,7 +27,7 @@ export default function searchUIEventEditProcess(controller) {
         },
         show: function() {
           // To update responsiveColumn
-          this.trigger("smartElementResize");
+          $(window).trigger("resize");
         }
       });
     }

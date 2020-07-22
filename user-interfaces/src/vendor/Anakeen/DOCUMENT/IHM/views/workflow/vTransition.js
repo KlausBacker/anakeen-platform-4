@@ -277,7 +277,7 @@ export default ViewDocument.extend({
             height: "auto",
             overflowY: "scroll",
             resize: () => {
-              this.trigger("smartElementResize");
+              $(window).trigger("resize");
             },
             open: () => {
               $(".dcpTransition-button-ok", this.$el).kendoButton();

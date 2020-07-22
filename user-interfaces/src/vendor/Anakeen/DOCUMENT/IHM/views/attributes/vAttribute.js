@@ -58,7 +58,6 @@ export default Backbone.View.extend({
     this.listenTo(this.model, "show", this.show);
     this.listenTo(this.model, "haveView", this._identifyView);
     this.listenTo(this.model, "closeWidget", this._closeWidget);
-    this.listenTo(this.model, "smartElementResize", this._triggerResize);
     this.templateWrapper = this.model.getTemplates().attribute.simpleWrapper;
 
     options = options || {};
@@ -924,26 +923,5 @@ export default Backbone.View.extend({
     event.haveView = true;
     //Add the pointer to the current jquery element to a list passed by the event
     event.elements = event.elements.add(this.$el);
-  },
-  /**
-   * propagates resize event to widgets
-   * @private
-   */
-  _triggerResize() {
-    try {
-      if (
-        this.currentDcpWidget &&
-        this.getWidgetClass(this.currentDcpWidget) &&
-        this._findWidgetName(this.currentDcpWidget)
-      ) {
-        this.getWidgetClass(this.currentDcpWidget).call(this.currentDcpWidget, "resize");
-      }
-    } catch (e) {
-      if (window.dcp.logger) {
-        window.dcp.logger(e);
-      } else {
-        console.error(e);
-      }
-    }
   }
 });
