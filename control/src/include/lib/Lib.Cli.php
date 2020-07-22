@@ -80,14 +80,6 @@ function wiff_context_shell(&$context, &$argv)
 
     $uid = posix_getuid();
 
-    $httpuser = $context->getParamByName("apacheuser");
-    if ($httpuser === false) {
-        throw new \Exception(sprintf("%s\n", $context->errorMessage));
-    }
-    if ($httpuser == '') {
-        $httpuser = $uid;
-    }
-
     $envs = array();
     exec("env 2> /dev/null", $current_envvars, $ret);
     if ($ret === 0) {
@@ -109,7 +101,7 @@ function wiff_context_shell(&$context, &$argv)
     $envs['WIFF_CONTEXT_NAME'] = $context->name;
     $envs['pgservice_core'] = $context->getParamByName("core_db");
     $envs['PS1'] = sprintf("Anakeen-Control(%s)\\w\\$ ", $context->name);
-    $envs['USER'] = $httpuser;
+    $envs['USER'] = $uid;
     if (getenv('PATH') !== false) {
         $envs['PATH'] = getenv('PATH');
     }
@@ -121,13 +113,10 @@ function wiff_context_shell(&$context, &$argv)
         throw new \Exception(sprintf("Error: empty core_db parameter!\n"));
     }
 
-    if (is_numeric($httpuser)) {
-        $http_pw = posix_getpwuid($httpuser);
-    } else {
-        $http_pw = posix_getpwnam($httpuser);
-    }
+
+    $http_pw = posix_getpwuid($uid);
     if ($http_pw === false) {
-        throw new \Exception(sprintf("Error: could not get information for httpuser '%s'\n", $httpuser));
+        throw new \Exception(sprintf("Error: could not get information for httpuser '%s'\n", $uid));
     }
 
     $http_uid = $http_pw['uid'];

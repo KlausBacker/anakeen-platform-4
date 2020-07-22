@@ -333,12 +333,10 @@ class DocHtmlFormat
      */
     public function formatImage($kvalue, $avalue)
     {
-        if ($this->target == "mail2") {
-            $htmlval = "cid:" . $this->oattr->id;
-            if ($this->index >= 0) {
-                $htmlval .= "+$this->index";
-            }
-        } elseif ($this->target == "te") {
+        if (!$avalue) {
+            return "";
+        }
+        if ($this->target == "te") {
             $htmlval = "file://" . $this->doc->vaultFilename($this->oattr->id, true, $kvalue);
         } else {
             if (preg_match(PREGEXPFILE, $avalue, $reg)) {
