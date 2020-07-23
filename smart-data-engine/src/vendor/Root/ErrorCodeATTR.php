@@ -20,7 +20,7 @@ class ErrorCodeATTR
     /**
      * @errorCode  Smart Field identifier cannot be equal to a reserved postgresql word
      */
-    const ATTR0101 = 'Smart Field identifier "%s" use a reserved word';
+    const ATTR0101 = 'Smart Field identifier "%s" uses a reserved word';
     /**
      * @errorCode  Smart Field identifier is required
      */
@@ -215,7 +215,7 @@ class ErrorCodeATTR
     /**
      * @errorCode  The autocomplete response results indexes must be compatioble with description
      */
-    const ATTR1102 = 'the autocomplete send less data as specified, missing index "%s" for field "%s". You should check the php definition of the autocomplete';
+    const ATTR1102 = 'the autocomplete sent less data than specified, missing index "%s" for field "%s". You should check the php definition of the autocomplete';
     /**
      * @errorCode  The autocomplete response results indexes must be compatioble with description
      */
@@ -414,7 +414,7 @@ class ErrorCodeATTR
     /**
      * @errorCode The Structure not have an field named ...
      */
-    const ATTR1801 = "The Structure configuration \"%s\" not have an field named \"%s\"";
+    const ATTR1801 = "The Structure configuration \"%s\" has no field named \"%s\"";
     /**
      * @errorCode Method name in the nameSpace not exist
      */
