@@ -29,8 +29,6 @@ class FileContentDatabase extends DbObj
     public $taskid;
     public $status;
     public $textcontent;
-
-
     public $order_by = "";
 
     public $sqlcreate = <<<SQL
