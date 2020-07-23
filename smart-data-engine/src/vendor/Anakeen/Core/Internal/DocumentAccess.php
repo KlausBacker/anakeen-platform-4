@@ -166,11 +166,13 @@ class DocumentAccess
             $perm->docid = $this->document->id;
             $perm->userid = ContextManager::getCurrentUser()->id;
             $perm->upacl = -2; // all privileges
-            if (!$perm->IsAffected()) {
-                // add all privileges to current user
-                $perm->add();
-            } else {
-                $perm->Modify();
+            if ($perm->userid != Account::ADMIN_ID) {
+                if (!$perm->IsAffected()) {
+                    // add all privileges to current user
+                    $perm->add();
+                } else {
+                    $perm->Modify();
+                }
             }
         }
         // reactivation of doc with its profil
@@ -504,12 +506,14 @@ class DocumentAccess
                         ));
                         $perm->upacl = $vupacl[$uid];
 
-                        if ($perm->isAffected()) {
-                            $err = $perm->modify();
-                        } else {
-                            if ($perm->upacl) {
-                                // add if necessary
-                                $err = $perm->add();
+                        if ($perm->userid != Account::ADMIN_ID) {
+                            if ($perm->isAffected()) {
+                                $err = $perm->modify();
+                            } else {
+                                if ($perm->upacl) {
+                                    // add if necessary
+                                    $err = $perm->add();
+                                }
                             }
                         }
                     }
@@ -616,7 +620,9 @@ class DocumentAccess
             // add right in case of multiple use of the same user : possible in dynamic profile
             $pe->userid = $uid["uid"];
             $pe->acl = $uid["acl"];
-            $err .= $pe->add();
+            if ($pe->userid != Account::ADMIN_ID) {
+                $err .= $pe->add();
+            }
         }
 
         return $err;
@@ -641,7 +647,7 @@ class DocumentAccess
         $pos = self::$dacls[$aclname]["pos"];
         $uid = $this->getUid($uid);
 
-        if ($uid > 0) {
+        if ($uid >  Account::ADMIN_ID) {
             $perm = new \DocPerm($this->document->dbaccess, array(
                 $this->document->id,
                 $uid
@@ -867,22 +873,24 @@ class DocumentAccess
     {
         $err = '';
         $uid = $this->getUid($uName);
-        $eacl = new \DocPermExt($this->document->dbaccess, array(
-            $this->document->id,
-            $uid,
-            $aclname
-        ));
-        if ($deletecontrol) {
-            if ($eacl->isAffected()) {
-                $err = $eacl->Delete();
-            }
-        } else {
-            // add extended acl
-            if (!$eacl->isAffected()) {
-                $eacl->userid = $uid;
-                $eacl->acl = $aclname;
-                $eacl->docid = $this->document->id;
-                $err = $eacl->add();
+        if ($uid != Account::ADMIN_ID) {
+            $eacl = new \DocPermExt($this->document->dbaccess, array(
+                $this->document->id,
+                $uid,
+                $aclname
+            ));
+            if ($deletecontrol) {
+                if ($eacl->isAffected()) {
+                    $err = $eacl->Delete();
+                }
+            } else {
+                // add extended acl
+                if (!$eacl->isAffected()) {
+                    $eacl->userid = $uid;
+                    $eacl->acl = $aclname;
+                    $eacl->docid = $this->document->id;
+                    $err = $eacl->add();
+                }
             }
         }
         return $err;
