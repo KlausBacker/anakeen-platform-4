@@ -45,6 +45,7 @@ populate-cache-before:
     - rm -rf ./build/
     - rm -rf ./user-interfaces/components/lib
     - rm -rf ./hub-station/components/lib
+    - rm -rf ./fulltext-search/components/lib
 #endregion tear-up
 
 # region tear-down
@@ -59,6 +60,7 @@ populate-cache-master:
     - rm -rf ./build/
     - rm -rf ./user-interfaces/components/lib
     - rm -rf ./hub-station/components/lib
+    - rm -rf ./fulltext-search/components/lib
 
 #endregion tear-down
 
@@ -125,6 +127,7 @@ user-interfaces-buildJS:
       - business-app/**/*
       - development-center/**/*
       - transformation/**/*
+      - fulltext-search/**/*
 
 internal-components-buildJS:
   <<: *pull-cache
@@ -188,8 +191,6 @@ fulltext-search-buildJS:
       - master@Anakeen/Platform-4/anakeen-platform-4
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
     changes:
-      - user-interfaces/**/*
-      - fulltext-search/**/*
   dependencies:
     - user-interfaces-buildJS
 
@@ -483,7 +484,7 @@ transformation-integration-build:
    changes:
      - transformation/**/*
 
-fulltext-build:
+fulltext-search-build:
   extends: .build-package
   stage: build
   tags:
@@ -498,7 +499,7 @@ fulltext-build:
     changes:
       - fulltext-search/**/*
 
-fulltext-integration-build:
+fulltext-search-integration-build:
   extends: .build-package
   stage: build
   tags:
@@ -858,6 +859,33 @@ hub-station-publish:
   dependencies:
     - hub-station-build
     - hub-station-buildJS
+
+fulltext-search-integration-publish:
+  extends: .npm-publish-package-integration-synchro
+  variables:
+    PACKAGE_PATH: fulltext-search
+    ANK_CI_APP_NAME: fulltext-search
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - fulltext-search/**/*
+  dependencies:
+    - fulltext-search-integration-build
+
+fulltext-search-publish:
+  extends: .npm-publish-package
+  variables:
+    PACKAGE_PATH: fulltext-search
+    ANK_CI_APP_NAME: fulltext-search
+  only:
+    refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - fulltext-search/**/*
+  dependencies:
+    - fulltext-search-build
+    - fulltext-search-buildJS
 
 smart-data-engine-integration-publish:
   extends: .npm-publish-package-integration-synchro
@@ -1282,7 +1310,7 @@ transformation-integration-register:
     - transformation-integration-build
 
 
-fulltext-register:
+fulltext-search-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "fulltext-search"
@@ -1293,9 +1321,10 @@ fulltext-register:
     changes:
       - fulltext-search/**/*
   dependencies:
-    - fulltext-build
+    - fulltext-search-build
+    - fulltext-search-buildJS
 
-fulltext-integration-register:
+fulltext-search-integration-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "fulltext-search"
@@ -1306,7 +1335,8 @@ fulltext-integration-register:
     changes:
       - fulltext-search/**/*
   dependencies:
-    - fulltext-integration-build
+    - fulltext-search-integration-build
+    - fulltext-search-buildJS
 
 #endregion registry
 
