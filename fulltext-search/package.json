@@ -1,6 +1,7 @@
 {
   "name": "@anakeen/fulltext-search",
   "version": "1.0.0-RC.2020.1.34",
+  "autorelease":  true,
   "description": "Anakeen Platform Fulltext Search",
   "main": "index.js",
   "author": "anakeen",
@@ -12,6 +13,12 @@
     "smart",
     "fulltext",
     "search"
+  ],
+  "files": [
+    "components/**/*",
+    "src/public/Anakeen/manifest/**/*.json",
+    "LICENSE",
+    "README.md"
   ],
   "scripts": {
     "beautify": "eslint ./src --fix",
