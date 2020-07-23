@@ -1,16 +1,15 @@
-  .k-tabstrip-items li.k-state-default:not(.k-state-active) {
-    color:var(--primary);
-  }
+.k-tabstrip-items li.k-state-default:not(.k-state-active) {
+  color: var(--primary);
+}
 
-  .global-param.k-content.k-state-active,
-  .user-param.k-content.k-state-active {
-    position:relative;
-    display: flex!important;
-    flex:1;
-    flex-direction: column;
-    overflow: unset !important;
-  }
-  
+.global-param.k-content.k-state-active,
+.user-param.k-content.k-state-active {
+  position: relative;
+  display: flex !important;
+  flex: 1;
+  flex-direction: column;
+  overflow: unset !important;
+}
 
 .param-wrapper {
   display: flex;
@@ -22,19 +21,11 @@
     flex-direction: column;
     height: 100%;
 
-    td[role=gridcell]  > div {
+    td[role="gridcell"] > div {
       max-height: 5rem;
       overflow: hidden;
       text-overflow: ellipsis;
       font-family: monospace;
-    }
-
-    .dcpDocument__header__modified.fa.fa-asterisk {
-      display: none!important;
-    }
-
-    .dcpDocument__header {
-      display: none;
     }
 
     .k-grid-content {
@@ -47,21 +38,21 @@
       flex-direction: column;
       height: 100%;
     }
-    
+
     .param-value-modified {
       font-weight: bold;
     }
 
     .param-value-modified:after {
       font-family: "WebComponentsIcons";
-      content: '\e905';
-      margin-left: .6rem;
+      content: "\e905";
+      margin-left: 0.6rem;
       color: var(--primary);
     }
 
     .k-command-cell {
       text-align: center;
-  
+
       .k-button.k-button-icontext.k-grid-Modify {
         text-align: center;
         color: #157efb;
@@ -72,7 +63,7 @@
         padding-right: 0.5rem;
         padding-left: 0.5rem;
       }
-  
+
       .k-button.k-button-icontext.k-grid-Modify:hover {
         color: white;
         font-weight: bold;
@@ -99,7 +90,6 @@
         box-shadow: none;
         border: none;
       }
-
     }
 
     a.k-button.k-button-icontext.k-grid-button {
@@ -138,6 +128,14 @@
       }
     }
 
+    .dcpDocument__header {
+      display: none;
+
+      .dcpDocument__header__modified.fa.fa-asterisk {
+        display: none !important;
+      }
+    }
+
     .else-user-smart-form-parameter {
       height: 100%;
 
@@ -151,16 +149,15 @@
             height: 100%;
 
             .dcpAttribute__content--longtext {
-
               .dcpAttribute__content__value {
                 white-space: pre;
                 font-family: monospace;
               }
             }
 
-              .dcpAttribute__label label {
-                font-weight: bold;
-              }
+            .dcpAttribute__label label {
+              font-weight: bold;
+            }
           }
         }
       }
@@ -169,7 +166,7 @@
     .user-param-smart-form {
       width: 50%;
       .title-form-bold-param {
-        font-weight: "bold"
+        font-weight: "bold";
       }
     }
 
@@ -179,16 +176,16 @@
 
     // "Action" button
     a {
-      color: #157EFB;
+      color: #157efb;
       text-transform: uppercase;
       font-weight: bold;
       text-decoration: none;
     }
     // Overwrite "active"\'s switch button (SmartElement)
-    [data-heading="Active"]>div>div{
+    [data-heading="Active"] > div > div {
       border: none;
       box-shadow: none;
-      .k-textbox{
+      .k-textbox {
         background: transparent;
       }
       // Hide the cross

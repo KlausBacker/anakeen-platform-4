@@ -30,17 +30,12 @@ class AlterParameter
     {
         $this->initParameters($request, $args);
 
-        try {
-            if ($this->isCorrect($this->nameSpace, $this->parameterName, $this->newValue)) {
-                $return = $this->alterValue($this->nameSpace, $this->parameterName, $this->newValue);
-                return ApiV2Response::withData($response, $return);
-            } else {
-                $response->withStatus(400, 'Wrong value');
-                return ApiV2Response::withMessages($response, ['Wrong value']);
-            }
-        } catch (\Exception $e) {
-            $response->withStatus(500, 'Error modifying value');
-            return ApiV2Response::withMessages($response, ['Error modifying value']);
+        if ($this->isCorrect($this->nameSpace, $this->parameterName, $this->newValue)) {
+            $return = $this->alterValue($this->nameSpace, $this->parameterName, $this->newValue);
+            return ApiV2Response::withData($response, $return);
+        } else {
+            $response->withStatus(400, 'Wrong value');
+            return ApiV2Response::withMessages($response, ['Wrong value']);
         }
     }
 
@@ -75,7 +70,7 @@ class AlterParameter
         // Get saved new value
         $returnNewValue = ContextParameterManager::getValue($nameSpace, $parameterName);
 
-        return['namespace' => $nameSpace, 'parameter_name' => $parameterName, 'value' => $returnNewValue];
+        return ['namespace' => $nameSpace, 'parameter_name' => $parameterName, 'value' => $returnNewValue];
     }
 
     /**
@@ -89,7 +84,7 @@ class AlterParameter
      */
     private function isCorrect($nameSpace, $parameterName, $newValue)
     {
-        $full = $nameSpace.'::'.$parameterName;
+        $full = $nameSpace . '::' . $parameterName;
         $sqlRequest = sprintf(
             "select paramdef.*, paramv.val as value, paramv.type as usefor from paramdef, paramv where paramdef.name = paramv.name and paramv.type='G' and paramdef.name='%s';",
             pg_escape_string($full)

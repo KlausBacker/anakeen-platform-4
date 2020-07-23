@@ -2,7 +2,6 @@
 
 namespace Anakeen\Routes\Admin\Parameters;
 
-use Anakeen\Core\Account;
 use Anakeen\Core\AccountManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Router\ApiV2Response;
@@ -15,9 +14,10 @@ use Anakeen\Router\ApiV2Response;
  */
 class UserParameters
 {
-    protected $userLogin;
-    protected $userId;
+    protected $user;
     protected $userDisplayValue;
+    protected $outputGlobalParamResult;
+    protected $outputUserParamResult;
 
     /**
      * Get user defined parameters and user definable parameters
@@ -31,13 +31,8 @@ class UserParameters
     {
         $this->initParameters($args);
 
-        try {
-            $return = $this->doRequest();
-            return ApiV2Response::withData($response, $return);
-        } catch (\Exception $e) {
-            $response->withStatus(500, 'Error fechting parameters');
-            return ApiV2Response::withMessages($response, ['Error fetching parameters']);
-        }
+        $return = $this->doRequest();
+        return ApiV2Response::withData($response, $return);
     }
 
     /**
@@ -47,72 +42,77 @@ class UserParameters
      */
     private function initParameters($args)
     {
-        if (is_numeric($args["user"])) {
-            $this->userId = "U" . intval($args["user"]);
-            $user = new Account();
-            $user->setFid(intval($args["user"]));
-            if ($user->isAffected()) {
-                $this->userDisplayValue = [
-                    "userId" => intval($args["user"]),
-                    "displayValue" => $user->lastname . " " . $user->firstname
-                ];
-            }
-        } else {
-            $this->userId = AccountManager::getIdFromLogin($args["user"]);
+        $this->user = AccountManager::getAccount($args["user"]);
+        if ($this->user) {
+            $this->userDisplayValue = [
+                "userId" => $this->user->id,
+                "login" => $this->user->login,
+                "displayValue" => $this->user->getAccountName()
+            ];
         }
     }
 
     /**
-     * Execute function to get all parameters for user
+     * Execute function to get all parameters for the user
      *
      * @return array
      * @throws \Anakeen\Database\Exception
      */
     private function doRequest()
     {
-        $rawParameters = $this->getDataFromDb();
-        $rawFilteredParameters = $this->filterParameters($rawParameters, $this->userId);
-        $formatedParameters = $this->formatParameters($rawFilteredParameters);
-        $treeListParameters["gridData"] = $this->formatTreeDataSource($formatedParameters);
+        $this->getDataFromDb();
+        $rawFilteredParameters = $this->filterParameters();
+        $treeListParameters["gridData"] = $this->formatParameters($rawFilteredParameters);
         $treeListParameters["user"] = $this->userDisplayValue;
         return $treeListParameters;
     }
 
     /**
-     * Get all parameters from database
+     * - Get global parameters from database
+     * - Get user parameters from database
      *
-     * @return array
      * @throws \Anakeen\Database\Exception
      */
     private function getDataFromDb()
     {
-        $sqlRequest = 'select paramdef.*, paramv.val as value, paramv.type as usefor from paramdef, paramv where  paramdef.name = paramv.name;';
-        $outputResult = [];
+        $sqlGlobalParamRequest = <<<SQL
+select paramdef.*, paramv.val as value, paramv.type as usefor 
+from paramdef, paramv 
+where paramdef.isuser = 'Y' and  paramdef.name = paramv.name and paramv.type = 'G';
+SQL;
 
-        DbManager::query($sqlRequest, $outputResult);
+        $sqlUserParamRequest = <<<SQL
+select paramdef.*, paramv.val as value, paramv.type as usefor 
+from paramdef, paramv 
+where paramdef.isuser = 'Y' and  paramdef.name = paramv.name and paramv.type = 'U%d';
+SQL;
 
-        return $outputResult;
+        $sqlUserParamRequest = sprintf($sqlUserParamRequest, $this->user->id);
+        $this->outputGlobalParamResult = [];
+        $this->outputUserParamResult = [];
+
+        DbManager::query($sqlGlobalParamRequest, $this->outputGlobalParamResult);
+        DbManager::query($sqlUserParamRequest, $this->outputUserParamResult);
     }
 
-    private function filterParameters($parameters, $userId)
+    /**
+     * Filter to unduplicate parameters (between global and user parameters)
+     * @return array
+     */
+    private function filterParameters()
     {
         $data = [];
 
-        foreach ($parameters as $param) {
-            if ($param['usefor'] === $userId) {
-                $param['initialValue'] = $this->initialValue($param, $parameters);
-                $param['forUser'] = true;
-                $data[] = $param;
-            } elseif ($param['isuser'] === 'Y'
-                && !$this->userDefined($param, $parameters, $userId)
-                && ($param['usefor'] === 'G' || $param['usefor'] === 'A')) {
-                $param['initialValue'] = $param['value'];
-                $param['value'] = '';
-                $param['forUser'] = false;
-                $data[] = $param;
-            }
+        foreach ($this->outputGlobalParamResult as $globalParam) {
+            $globalParam['initialValue'] = $globalParam['value'];
+            $globalParam['value'] = '';
+            $globalParam['forUser'] = false;
+            $data[$globalParam["name"]] = $globalParam;
         }
-
+        foreach ($this->outputUserParamResult as $userParam) {
+            $data[$userParam["name"]]["value"] = $userParam["value"];
+            $data[$userParam["name"]]["forUser"] = true;
+        }
         return $data;
     }
 
@@ -157,122 +157,5 @@ class UserParameters
         }
 
         return $allParameters;
-    }
-
-    /** Format the parameters as a treListDataSource to be displayed in a kendoTreeList
-     *
-     * @param $parameters
-     * @return array
-     */
-    private function formatTreeDataSource($parameters)
-    {
-        $params = $parameters;
-        uasort($params, function ($a, $b) {
-            if ($a['nameSpace'] < $b['nameSpace']) {
-                return -1;
-            } elseif ($a['nameSpace'] > $b['nameSpace']) {
-                return 1;
-            } else {
-                if ($a['category'] && !$b['category']) {
-                    return -1;
-                } elseif (!$a['category'] && $b['category']) {
-                    return 1;
-                } elseif ($a['category'] && $b['category']) {
-                    if ($a['category'] < $b['category']) {
-                        return -1;
-                    } elseif ($a['category'] > $b['category']) {
-                        return 1;
-                    } else {
-                        return ($a['name'] < $b['name']) ? -1 : 1;
-                    }
-                } else {
-                    return ($a['name'] < $b['name']) ? -1 : 1;
-                }
-            }
-        });
-
-        // treeData to return
-        $data = [];
-
-        // Id iterator
-        $currentId = 1;
-
-        // Memorize  namespace / catgories id
-        $nameSpaceIds = [];
-        $categoryIds = [];
-
-        foreach ($params as $param) {
-            $param['id'] = $currentId++;
-            if (isset($nameSpaceIds[$param['nameSpace']])) {
-                $currentNameSpace = $nameSpaceIds[$param['nameSpace']];
-            } else {
-                $currentNameSpace = null;
-            }
-            if ($currentNameSpace === null) {
-                $newId = $currentId++;
-                $data[] = ['id' => $newId, 'parentId' => null, 'name' => $param['nameSpace'], 'rowLevel' => 1];
-                $nameSpaceIds[$param['nameSpace']] = $newId;
-                $categoryIds[$param['nameSpace']] = [];
-                $currentNameSpace = $newId;
-            }
-
-            if (!empty($param['category'])) {
-                if (isset($categoryIds[$param['nameSpace']][$param['category']])) {
-                    $currentCategory = $categoryIds[$param['nameSpace']][$param['category']] ?? null;
-                } else {
-                    $currentCategory = null;
-                }
-                if ($currentCategory === null) {
-                    $newId = $currentId++;
-                    $data[] = ['id' => $newId, 'parentId' => $currentNameSpace, 'name' => $param['category'], 'rowLevel' => 2];
-                    $categoryIds[$param['nameSpace']][$param['category']] = $newId;
-                    $currentCategory = $newId;
-                }
-
-                $param['parentId'] = $currentCategory;
-                $data[] = $param;
-            } else {
-                $param['parentId'] = $currentNameSpace;
-                $data[] = $param;
-            }
-        }
-
-        return $data;
-    }
-
-    /**
-     * Get the system value for a user defined parameter
-     *
-     * @param $param
-     * @param $allParams
-     * @return null
-     */
-    private function initialValue($param, $allParams)
-    {
-        foreach ($allParams as $parameter) {
-            if ($parameter['name'] === $param['name'] && ($parameter['usefor'] === 'A' || $parameter['usefor'] === 'G')) {
-                return $parameter['value'];
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * determine if a system parameter is redefined for the specified user
-     *
-     * @param $param
-     * @param $allParams
-     * @param $user
-     * @return bool
-     */
-    private function userDefined($param, $allParams, $user)
-    {
-        foreach ($allParams as $parameter) {
-            if ($parameter['name'] === $param['name'] && $parameter['usefor'] === $user) {
-                return true;
-            }
-        }
-        return false;
     }
 }
