@@ -49,7 +49,7 @@ class ErrorCode
                             $msg = sprintf("{%s} %s", $code, $label);
                         } else {
                             $gl = error_get_last();
-                            $msg = sprintf("{%s} %s", $code, $gl['message']);
+                            $msg = sprintf("{%s} %s : \"%s\" (%s)", $code, $gl['message'], $fmt, implode(",", $sp));
                         }
                     } else {
                         $msg = sprintf("unknow error code %s", $code);
