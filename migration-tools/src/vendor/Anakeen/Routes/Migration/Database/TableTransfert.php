@@ -41,7 +41,7 @@ class TableTransfert
     {
         $data = [];
 
-        $data["table"] =  $this->tableObject->dbtable;
+        $data["table"] = $this->tableObject->dbtable;
         $data["count"] = count($this->transfertRequest($this->tableObject));
 
         return $data;
@@ -79,6 +79,12 @@ SQL;
         $qsql .= " returning " . $tableObject->id_fields[0];
 
         $fields = $tableObject->fields;
+        // Not import new column in timer
+        if ($tableObject->dbtable === "doctimer") {
+            if ($pos = array_search("donestatus", $fields)) {
+                unset($fields[$pos]);
+            }
+        }
         $sql = sprintf(
             $qsql,
             $pgTable,
@@ -87,7 +93,6 @@ SQL;
             $pgTable
         );
 
-        //print_r($sql . "\n");
         DbManager::query($sql, $ids, true);
         return $ids;
     }
