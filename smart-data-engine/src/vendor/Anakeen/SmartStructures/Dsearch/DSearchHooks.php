@@ -546,6 +546,7 @@ class DSearchHooks extends \SmartStructure\Search
 
                             case "date":
                             case "time":
+                            case "timestamp":
                                 $cond = sprintf(" (%s is null) ", $col);
                                 break;
 

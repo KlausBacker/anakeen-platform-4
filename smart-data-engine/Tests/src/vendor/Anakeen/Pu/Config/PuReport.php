@@ -83,8 +83,6 @@ class PuReport extends TestCaseConfig
     }
 
     /**
-     *
-     * @dataProvider dataFieldDefault
      * @dataProvider dataFieldEmptyValue
      * @param array $smartElementToFind
      * @param array $reportData
@@ -118,13 +116,17 @@ class PuReport extends TestCaseConfig
             $report->setAttributeValue($id, $value);
         }
         $report->store();
+        $query = $report->getAttributeValue(Report::se_sqlselect);
+
+        print "\n\n$query";
 
         $results = [];
         foreach ($report->getContent() as $foundSE) {
             $results[] = $foundSE["title"];
         }
 
-        self::assertEquals($expectedSEFound, $results, "Report found elements are not correct");
+
+        self::assertEquals($expectedSEFound, $results, "\nReport found elements are not correct");
     }
 
     public function dataFieldDefault()
@@ -133,29 +135,6 @@ class PuReport extends TestCaseConfig
             /****************************************** TYPES SIMPLES *****************************************************/
 
             /**************************** text ******************************************/
-            [
-                [
-                    "TST_0" => [],
-                    "TST_1" => [
-                        "test_ddui_all__text" => "Un"
-                    ],
-                    "TST_2" => [
-                        "test_ddui_all__text" => "Deux"
-                    ],
-                ],
-                [
-                    Report::se_attrids => ["test_ddui_all__text"],
-                    Report::se_funcs => [self::EQUAL],
-                    Report::se_keys => [],
-
-                ],
-                [
-                    "TST_0",
-                    "TST_1",
-                    "TST_2",
-                ]
-            ],
-
             [
                 [
                     "TST_0" => [],
@@ -1422,26 +1401,25 @@ class PuReport extends TestCaseConfig
                     "TST_1",
                 ]
             ],
-//            TODO :KO [
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__timestamp" => '2000-01-01 01:02:03'
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__timestamp" => '2020-01-01 04:05:06'
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__timestamp"],
-//                    Report::se_funcs => [self::IS_NULL],
-//                    Report::se_keys => [],
-//
-//                ],
-//                [
-//                    "TST_0",
-//                ]
-//            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__timestamp" => '2000-01-01 01:02:03'
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__timestamp" => '2020-01-01 04:05:06'
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__timestamp"],
+                    Report::se_funcs => [self::IS_NULL],
+                    Report::se_keys => [],
+                ],
+                [
+                    "TST_0",
+                ]
+            ],
             [
                 [
                     "TST_0" => [],
