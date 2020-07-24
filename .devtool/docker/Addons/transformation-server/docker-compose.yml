@@ -33,6 +33,10 @@ services:
         aliases:
           - 'transformation-server'
           - 'te'
+  # Add custom initdb script in postgres container
+  postgres:
+    volumes:
+      - './Volumes/_private/postgres/docker-entrypoint-initdb.d/20-initdb-te.sh:/docker-entrypoint-initdb.d/20-initdb-te.sh'
 
 networks:
   internal: {}
