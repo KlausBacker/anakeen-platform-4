@@ -3205,7 +3205,7 @@ create unique index i_docir on doc(initid, revision);";
     final public function addArrayRow($idAttr, $tv, $index = -1)
     {
         if (!is_array($tv)) {
-            throw new Exception("CORE0107", $tv);
+            return \ErrorCode::getError("CORE0107", $tv);
         }
         $old_setValueCompleteArrayRow = $this->_setValueNeedCompleteArray;
         $this->_setValueNeedCompleteArray = false;
@@ -3225,7 +3225,7 @@ create unique index i_docir on doc(initid, revision);";
                     }
                     $this->_setValueNeedCompleteArray = $old_setValueCompleteArrayRow;
                     // return sprintf(_('attribute "%s" is not a part of array "%s"'), implode(', ', $attrOut), $idAttr);
-                    throw new Exception('CORE0108', implode(', ', $attrOut), $idAttr);
+                    return \ErrorCode::getError('CORE0108', implode(', ', $attrOut), $idAttr);
                 }
                 $err = "";
                 // add in each columns
@@ -3269,7 +3269,7 @@ create unique index i_docir on doc(initid, revision);";
                             }
                         }
                     } else {
-                        throw new Exception("CORE0105", gettype($tnv));
+                        return \ErrorCode::getError("CORE0105", gettype($tnv));
                     }
                     // if $tnv === string || string[] || string[][]
                     $err .= $this->setValue($k, $tnv);
