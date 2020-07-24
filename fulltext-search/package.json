@@ -16,6 +16,7 @@
   ],
   "files": [
     "components/**/*",
+    "/constants/*.js",
     "src/public/Anakeen/manifest/**/*.json",
     "LICENSE",
     "README.md"
