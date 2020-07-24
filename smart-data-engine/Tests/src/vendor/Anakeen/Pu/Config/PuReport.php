@@ -8,6 +8,11 @@ use SmartStructure\Fields\Devbill;
 use SmartStructure\Fields\Iuser;
 use SmartStructure\Fields\Report;
 
+/**
+ * To get debug trace, add the --debug option to phpunit
+ * Class PuReport
+ * @package Anakeen\Pu\Config
+ */
 class PuReport extends TestCaseConfig
 {
     const CONTAINS = "~*";
@@ -87,9 +92,9 @@ class PuReport extends TestCaseConfig
      * @param array $smartElementToFind
      * @param array $reportData
      * @param array $expectedSEFound
-     * @param string $skippedTestMessage
      * @param $seProcess
      * @param $reportProcess
+     * @param string $skippedTestMessage
      * @throws \Anakeen\Core\DocManager\Exception
      * @throws \Anakeen\Core\Exception
      * @throws \Anakeen\Core\SmartStructure\SmartFieldAccessException
@@ -104,6 +109,9 @@ class PuReport extends TestCaseConfig
         $reportProcess,
         string $skippedTestMessage = ""
     ) {
+        $debug = in_array('--debug', $_SERVER['argv'], true);
+
+        $debug ? print "\n\n" : null;
         $allTypeStructure = SEManager::getFamily("TST_REPORT_ALLTYPE");
         $this->assertNotEmpty($allTypeStructure, "Structure TST_REPORT_ALLTYPE not found");
 
@@ -123,11 +131,22 @@ class PuReport extends TestCaseConfig
         $report->setAttributeValue(Report::se_famid, $allTypeStructure->id);
         foreach ($reportData as $id => $value) {
             $reportProcess($report, $id, $value);
+            if ($debug) {
+                if ($id === Report::se_attrids) {
+                    print "\n ATTRIBUTE :";
+                    print_r($value);
+                } elseif ($id === Report::se_funcs) {
+                    print "\nOPERATOR :";
+                    print_r($value);
+                }
+            }
         }
         $report->store();
-        $query = $report->getAttributeValue(Report::se_sqlselect);
 
-//        print "\n\n$query";
+        if ($debug) {
+            $query = $report->getAttributeValue(Report::se_sqlselect);
+            print "\nQUERY : $query";
+        }
 
         $results = [];
         foreach ($report->getContent() as $foundSE) {
@@ -135,10 +154,14 @@ class PuReport extends TestCaseConfig
         }
 
 
-        if (empty($skippedTestMessage)) {
+        if (!empty($skippedTestMessage)) {
             self::markTestSkipped($skippedTestMessage);
         } else {
             self::assertEquals($expectedSEFound, $results, "\nReport found elements are not correct");
+        }
+
+        if ($debug) {
+            print "\n";
         }
     }
 
