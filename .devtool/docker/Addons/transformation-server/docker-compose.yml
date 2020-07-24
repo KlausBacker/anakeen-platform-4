@@ -13,6 +13,8 @@ services:
       net.ipv4.ip_unprivileged_port_start: 0
     volumes:
       - './Volumes/_private/webroot/var/www/html/anakeen/certs/:/usr/local/share/ca-certificates/anakeen-certs/'
+      - '../../transformation-server/:/opt/transformation-server/'
+      - './Volumes/_private/transformation-server/opt/transformation-server/etc/te.conf:/opt/transformation-server/etc/te.conf'
       - '../../build/:/build'
     environment:
       RESET_ON_START: 'no'
