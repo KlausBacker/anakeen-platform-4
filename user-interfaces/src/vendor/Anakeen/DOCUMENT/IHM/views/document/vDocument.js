@@ -69,7 +69,7 @@ export default Backbone.View.extend({
             .closest(".smart-element-wrapper")
             .find(".dcpStaticErrorMessage")
             .attr("hidden", true);
-          this.$el.show();
+          this.$el.closest(".document").show();
           this.$el[0].className = this.$el[0].className.replace(/\bdcpFamily.*\b/g, "");
           this.$el.removeClass("dcpDocument--view").removeClass("dcpDocument--edit");
           try {
@@ -143,7 +143,6 @@ export default Backbone.View.extend({
         locale = "fr-FR";
       }
       $(window).off(".v" + this.model.cid);
-
       $(window).on("resize.v" + this.model.cid, _.bind(this.resizeForFooter, this));
 
       kendo.culture(locale);
@@ -1025,7 +1024,7 @@ export default Backbone.View.extend({
   },
 
   displayNetworkError: function vDocument_displayNetworkError() {
-    this.$el.hide();
+    this.$el.closest(".document").hide();
     const wrapper = this.$el.closest(".smart-element-wrapper");
     wrapper.find(".dcpStaticErrorMessage").removeAttr("hidden");
   },

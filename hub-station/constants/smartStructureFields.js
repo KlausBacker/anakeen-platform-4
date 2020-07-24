@@ -154,6 +154,26 @@ export class HUBINSTANCIATION {
    */
   static hub_instance_advanced_settings = "hub_instance_advanced_settings";
   /**
+   * Left dock
+   * @smartType enum collapsed_configuration
+   */
+  static hub_instanciation_dock_left = "hub_instanciation_dock_left";
+  /**
+   * Right dock
+   * @smartType enum collapsed_configuration
+   */
+  static hub_instanciation_dock_right = "hub_instanciation_dock_right";
+  /**
+   * Top dock
+   * @smartType enum collapsed_configuration
+   */
+  static hub_instanciation_dock_top = "hub_instanciation_dock_top";
+  /**
+   * Bottom dock
+   * @smartType enum collapsed_configuration
+   */
+  static hub_instanciation_dock_bottom = "hub_instanciation_dock_bottom";
+  /**
    * Global assets
    * @smartType tab
    */

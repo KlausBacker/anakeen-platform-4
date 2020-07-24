@@ -2,10 +2,6 @@
   <div class="smart-element-view">
     <div v-if="isReady && !errorMessage" class="smart-element-view-toolbar">
       <div>
-        Title :
-        <b>{{ element.title }}</b>
-      </div>
-      <div>
         Id :
         <b>{{ element.initid }}</b>
       </div>
@@ -14,15 +10,11 @@
       </button>
     </div>
     <ank-smart-element
-      v-show="!errorMessage"
       ref="smartElement"
-      :auto-unload="false"
       class="smart-element"
       :initid="initid"
       :view-id="viewId"
       @ready="onReady"
-      @displayError="onShowError"
-      @internalComponentError="onShowError"
       @beforeClose="refreshGrid"
     ></ank-smart-element>
     <div v-show="errorMessage" class="smart-element-error-view">

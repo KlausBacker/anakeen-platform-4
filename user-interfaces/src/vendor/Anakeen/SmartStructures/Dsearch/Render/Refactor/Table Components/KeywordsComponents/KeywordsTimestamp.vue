@@ -2,20 +2,20 @@
   <div class="condition-table-keywords-timestamp-group">
     <div v-show="isTextBox" class="condition-table-keywords-timestamp-textbox">
       <input
+        ref="keywordsTimestampTextBoxWrapper"
         type="text"
         class="condition-table-keywords-timestamp-textbox k-textbox"
-        ref="keywordsTimestampTextBoxWrapper"
         @change="onInputChange"
       />
     </div>
     <div v-show="!isTextBox" class="condition-table-keywords-timestamp-datepicker">
       <div v-show="dateMode" class="condition-table-keywords-timestamp-timestamp">
-        <input class="condition-table-keywords-timestamp-datetimepicker" ref="keywordsTimestampWrapper" />
+        <input ref="keywordsTimestampWrapper" class="condition-table-keywords-timestamp-datetimepicker" />
       </div>
       <div v-show="!dateMode" class="condition-table-keywords-timestamp-combobox">
-        <div class="condition-table-keywords-timestamp-function" ref="keywordsTimestampFunctionWrapper"></div>
+        <div ref="keywordsTimestampFunctionWrapper" class="condition-table-keywords-timestamp-function"></div>
       </div>
-      <button class="condition-table-keywords-timestamp-funcBtn" ref="funcButton" @click="onFuncButtonClick">Σ</button>
+      <button ref="funcButton" class="condition-table-keywords-timestamp-funcBtn" @click="onFuncButtonClick">Σ</button>
     </div>
   </div>
 </template>
@@ -26,7 +26,7 @@ import "@progress/kendo-ui/js/kendo.button";
 import $ from "jquery";
 
 export default {
-  name: "condition-table-keywords-timestamp",
+  name: "ConditionTableKeywordsTimestamp",
   props: {
     operator: "",
     methods: null,
@@ -46,10 +46,48 @@ export default {
       return this.textBoxOperators.indexOf(this.operator) !== -1;
     }
   },
+  watch: {
+    methods: function(newValue) {
+      if (this.methodsComboBox) {
+        this.methodsComboBox.setDataSource(newValue);
+      }
+    }
+  },
+  mounted() {
+    this.dateTimePicker = $(this.$refs.keywordsTimestampWrapper)
+      .kendoDateTimePicker({
+        parseFormats: ["yyyy-MM-dd HH:mm:ss", "yyyy-MM-ddTHH:mm:ss", "yyyy-MM-ddTHH:mm"],
+        timeFormat: "HH:mm",
+        format: null, // standard format depends of the user's langage
+        /* trigger a fonction that change the value of the date from the displayValue according to ISO 8601 */
+        change: () => this.onDateChange()
+      })
+      .data("kendoDateTimePicker");
+    this.methodsComboBox = $(this.$refs.keywordsTimestampFunctionWrapper)
+      .kendoComboBox({
+        width: 200,
+        filter: "contains",
+        clearButton: false,
+        minLength: 0,
+        dataValueField: "method",
+        dataTextField: "label",
+        template: "#: label #",
+        change: () => this.onFuncChange(),
+        dataSource: this.methods
+      })
+      .data("kendoComboBox");
+    this.funcButton = $(this.$refs.funcButton)
+      .kendoButton()
+      .data("kendoButton");
+    this.initData();
+  },
   methods: {
     isValid() {
+      if (this.operator === "is null" || this.operator === "is not null") {
+        return true;
+      }
       let valid;
-      if (this.isTextBox){
+      if (this.isTextBox) {
         valid = this.$refs.keywordsTimestampTextBoxWrapper.value !== "";
       } else {
         if (this.dateMode) {
@@ -138,46 +176,10 @@ export default {
       this.methodsComboBox.value("");
       $(this.$refs.keywordsTimestampTextBoxWrapper).val("");
     }
-  },
-  mounted() {
-    this.dateTimePicker = $(this.$refs.keywordsTimestampWrapper)
-      .kendoDateTimePicker({
-        parseFormats: ["yyyy-MM-dd HH:mm:ss", "yyyy-MM-ddTHH:mm:ss", "yyyy-MM-ddTHH:mm"],
-        timeFormat: "HH:mm",
-        format: null, // standard format depends of the user's langage
-        /* trigger a fonction that change the value of the date from the displayValue according to ISO 8601 */
-        change: () => this.onDateChange()
-      })
-      .data("kendoDateTimePicker");
-    this.methodsComboBox = $(this.$refs.keywordsTimestampFunctionWrapper)
-      .kendoComboBox({
-        width: 200,
-        filter: "contains",
-        clearButton: false,
-        minLength: 0,
-        dataValueField: "method",
-        dataTextField: "label",
-        template: "#: label #",
-        change: () => this.onFuncChange(),
-        dataSource: this.methods
-      })
-      .data("kendoComboBox");
-    this.funcButton = $(this.$refs.funcButton)
-      .kendoButton()
-      .data("kendoButton");
-    this.initData();
-  },
-  watch: {
-    methods: function(newValue) {
-      if (this.methodsComboBox) {
-        this.methodsComboBox.setDataSource(newValue);
-      }
-    }
   }
 };
 </script>
 <style>
-
 .condition-table-keywords-timestamp-combobox {
   width: 100%;
 }

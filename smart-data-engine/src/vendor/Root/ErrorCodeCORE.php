@@ -143,5 +143,30 @@ namespace {
          * @see \Anakeen\Core\Internal\ContextParameterManager::getUserValue
          */
         const CORE0104 = 'Context parameter "%s" is not a user parameter';
+        /**
+         * @errorCode The array parameters to the addArrayRow method need to contain strings
+         * @see \Anakeen\Core\Internal::addArrayRow
+         */
+        const CORE0105 = 'The array parameter in the "addArrayRow" method contain an "%s" type';
+        /**
+         * @errorCode The third level to do the addArrayRow need to be an string
+         * @see \Anakeen\Core\Internal::addArrayRow
+         */
+        const CORE0106 = 'The third level in the array parameter in the "addArrayRow" method need to be an string not an "%s"';
+        /**
+         * @errorCode The argument is scalar, but you need to send an array
+         * @see \Anakeen\Core\Internal::addArrayRow
+         */
+        const CORE0107 = 'Values "%s" must be an array';
+        /**
+         * @errorCode The smart field is not part of array (bad format array)
+         * @see \Anakeen\Core\Internal::addArrayRow
+         */
+        const CORE0108 = "Smart field \"%s\" is not a part of array \"%s\"";
+        /**
+        * @errorCode The attribute is not part of array (bad format array)
+        * @see \Anakeen\Core\Internal::addArrayRow
+        */
+        const CORE0109 = "Index must reference Smart Field identifier";
     }
 }

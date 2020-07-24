@@ -901,7 +901,8 @@ class TestTypedValue extends TestCaseDcpCommonFamily
                         45
                     )
                 ),
-                "VALUE0007"
+                "CORE0109"
+                // VALUE0007 changed by CORE0109
             )
         );
     }

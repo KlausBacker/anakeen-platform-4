@@ -7,6 +7,7 @@
     ref="searchGrid"
     controller="REPORT_GRID_CONTROLLER"
     defaultExpandable
+    @gridError="onGridError"
   >
   </ank-se-grid>
 </template>
@@ -18,7 +19,12 @@ export default {
   components: {
     "ank-se-grid": AnkSEGrid
   },
-  props: ["searchId"]
+  props: ["searchId"],
+  methods: {
+    onGridError(...args) {
+      this.$emit("searchGridError", args);
+    }
+  }
 };
 </script>
 <style lang="scss"></style>

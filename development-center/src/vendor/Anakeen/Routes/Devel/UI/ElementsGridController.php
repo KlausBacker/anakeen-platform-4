@@ -28,6 +28,7 @@ class ElementsGridController extends DefaultGridController
         $configBuilder->addRowAction(array("action"=>"viewXML", "title"=>"XML"));
         $configBuilder->addRowAction(array("action"=>"viewProps", "title"=>"Properties"));
         $configBuilder->addRowAction(array("action"=>"security", "title"=>"Security"));
+        $configBuilder->addRowAction(array("action"=>"logicalName", "title"=>"Modify logical name"));
         return $configBuilder->getConfig();
     }
 

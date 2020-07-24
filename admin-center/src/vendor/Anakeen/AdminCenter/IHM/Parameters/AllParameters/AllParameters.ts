@@ -42,7 +42,7 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
   public selectedTab!: string;
 
   @Prop({ type: String, default: "" })
-  public userId!: string;
+  public userLogin!: string;
 
   @Prop({ type: String, default: "" })
   public paramId!: string;
@@ -445,14 +445,19 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
 
   public fromRouter = false;
 
-  public userChange(event, smartElement, smartField, params): void {
+  public async userChange(event, smartElement, smartField, params): Promise<void> {
     this.smartFormData.structure = [];
     if (this.fromRouter) {
       this.fromRouter = false;
     } else {
       this.selectedParam = false;
+      try {
+        const response = await this.$http.get("/api/v2/admin/parameters/smartform/" + params.current.value);
+        this.account = response.data.data.login;
+      } catch (err) {
+        console.error(err);
+      }
     }
-    this.account = params.current.value;
     this.accountDisplayValue = params.current.displayValue;
     this.kendoGrid.dataSource.read();
     this.changeUrl();
@@ -467,10 +472,6 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
           value: this.modifications.toString()
         })
         .then(() => {
-          for (let i = 0; i < document.getElementsByClassName("dcpDocument__header__modified").length; i++) {
-            // @ts-ignore
-            document.getElementsByClassName("dcpDocument__header__modified")[i].style.display = "none";
-          }
           this.$emit(
             "notify",
             "success",
@@ -491,10 +492,6 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
       this.$http
         .delete(this.urlParameters(true) + this.element.nameSpace + "/" + this.element.name + "/")
         .then(() => {
-          for (let i = 0; i < document.getElementsByClassName("dcpDocument__header__modified").length; i++) {
-            // @ts-ignore
-            document.getElementsByClassName("dcpDocument__header__modified")[i].style.display = "none";
-          }
           this.$emit(
             "notify",
             "success",
@@ -551,8 +548,8 @@ export default class AdminCenterAllParam extends Mixins(AnkI18NMixin) {
     if (this.paramId && this.paramId !== "") {
       this.paramNameSpace = this.paramId;
     }
-    if (this.userId && this.userId !== "") {
-      this.account = this.userId;
+    if (this.userLogin && this.userLogin !== "") {
+      this.account = this.userLogin;
     }
     // @ts-ignore
     this.kendoGrid = $(this.$refs.gridWrapper)

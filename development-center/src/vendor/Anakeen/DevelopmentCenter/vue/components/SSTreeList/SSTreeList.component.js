@@ -438,7 +438,19 @@ export default {
                 };
                 break;
             }
-            computedFilter.filters = (oldFilter.filters || []).concat(newFilter);
+            if (oldFilter.filters) {
+              oldFilter.filters.forEach(filter => {
+                if (filter.field === newFilter.field) {
+                  computedFilter.filters = oldFilter.filters.filter(f => f.field !== newFilter.field);
+                  oldFilter.filters = oldFilter.filters.filter(f => f.field !== newFilter.field);
+                  computedFilter.filters = (oldFilter.filters || []).concat(newFilter);
+                } else {
+                  computedFilter.filters = (oldFilter.filters || []).concat(newFilter);
+                }
+              });
+            } else {
+              computedFilter.filters = (oldFilter.filters || []).concat(newFilter);
+            }
           } else {
             computedFilter.filters = oldFilter.filters.filter(f => f.field !== colId);
           }

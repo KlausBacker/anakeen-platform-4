@@ -1,0 +1,163 @@
+{
+  "title": "Correct standalone",
+  "standalone": true,
+  "criterias": [
+    {
+      "kind": "property",
+      "field": "title",
+      "label": "Titre de facture",
+      "operators": [
+        {
+          "key": "none",
+          "options": [],
+          "label": "Ignorer",
+          "acceptValues": false,
+          "filterMultiple": false,
+          "isBetween": false
+        },
+        {
+          "key": "isEmpty",
+          "options": [],
+          "label": "Est vide",
+          "acceptValues": false,
+          "filterMultiple": false,
+          "isBetween": false
+        },
+        {
+          "key": "isEmpty",
+          "options": ["not"],
+          "label": "N'est pas vide",
+          "acceptValues": false,
+          "filterMultiple": false,
+          "isBetween": false
+        },
+        {
+          "key": "equals",
+          "options": [],
+          "label": "Est égal à",
+          "acceptValues": true,
+          "filterMultiple": false,
+          "isBetween": false
+        },
+        {
+          "key": "equals",
+          "options": ["not"],
+          "label": "Est différent de",
+          "acceptValues": true,
+          "filterMultiple": false,
+          "isBetween": false
+        },
+        {
+          "key": "contains",
+          "options": [],
+          "label": "Contient",
+          "acceptValues": true,
+          "filterMultiple": false,
+          "isBetween": false
+        },
+        {
+          "key": "contains",
+          "options": ["not"],
+          "label": "Ne contient pas",
+          "acceptValues": true,
+          "filterMultiple": false,
+          "isBetween": false
+        },
+        {
+          "key": "contains",
+          "options": ["startsWith"],
+          "label": "Commence par",
+          "acceptValues": true,
+          "filterMultiple": false,
+          "isBetween": false
+        },
+        {
+          "key": "contains",
+          "options": ["not", "startsWith"],
+          "label": "Ne commence pas par",
+          "acceptValues": true,
+          "filterMultiple": false,
+          "isBetween": false
+        }
+      ],
+      "modifiableOperator": true,
+      "type": "text",
+      "default": { "operator": { "key": "contains", "options": [] } }
+    },
+    {
+      "kind": "field",
+      "field": "bill_clients",
+      "default": {
+        "operator": {
+          "key": "oneEqualsMulti",
+          "option": ["all"],
+          "options": []
+        }
+      },
+      "operators": [
+        {
+          "key": "none",
+          "options": [],
+          "label": "Ignorer",
+          "acceptValues": false,
+          "filterMultiple": false,
+          "isBetween": false
+        },
+        {
+          "key": "isEmpty",
+          "options": [],
+          "label": "Est vide",
+          "acceptValues": false,
+          "filterMultiple": false,
+          "isBetween": false
+        },
+        {
+          "key": "isEmpty",
+          "options": ["not"],
+          "label": "N'est pas vide",
+          "acceptValues": false,
+          "filterMultiple": false,
+          "isBetween": false
+        },
+        {
+          "key": "oneEqualsMulti",
+          "options": [],
+          "label": "Un des 'Clients' est parmi",
+          "acceptValues": true,
+          "filterMultiple": true,
+          "isBetween": false
+        },
+        {
+          "key": "oneEqualsMulti",
+          "options": ["not"],
+          "label": "Un des 'Clients' n'est pas parmi",
+          "acceptValues": true,
+          "filterMultiple": true,
+          "isBetween": false
+        },
+        {
+          "key": "oneEqualsMulti",
+          "options": ["all"],
+          "label": "Tous les 'Clients' sont parmi",
+          "acceptValues": true,
+          "filterMultiple": true,
+          "isBetween": false
+        },
+        {
+          "key": "oneEqualsMulti",
+          "options": ["not", "all"],
+          "label": "Aucun des 'Clients' n'est parmi",
+          "acceptValues": true,
+          "filterMultiple": true,
+          "isBetween": false
+        }
+      ],
+      "modifiableOperator": true,
+      "structure": "DEVBILL",
+      "label": "Clients",
+      "type": "docid",
+      "multipleField": true,
+      "typeFormat": "DEVCLIENT"
+    }
+  ]
+}

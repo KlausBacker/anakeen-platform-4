@@ -275,38 +275,20 @@ export default ViewDocument.extend({
         .dcpDialog({
           window: {
             height: "auto",
-            maxHeight: "80%",
             overflowY: "scroll",
-            resize: function resizeTransition() {
+            resize: () => {
               $(window).trigger("resize");
             },
-            open: e => {
-              var event = { prevent: false };
-              if (event.prevent !== false) {
-                e.preventDefault();
-              } else {
-                $(".dcpTransition-button-ok", this.$el).kendoButton();
-                $(".dcpTransition-button-cancel", this.$el).kendoButton();
-              }
+            open: () => {
+              $(".dcpTransition-button-ok", this.$el).kendoButton();
+              $(".dcpTransition-button-cancel", this.$el).kendoButton();
+              this.$el.closest(".k-window").addClass("dcpTransition-window");
             },
             close: function registerCloseEvent(e) {
               var event = { prevent: false };
               currentView.model.trigger("beforeChangeStateClose", event);
               if (event.prevent !== false) {
                 e.preventDefault();
-              }
-            },
-            activate: e => {
-              // parent window actual height
-              const parentWindowHeight = e.sender.element.prop("offsetHeight");
-              // parent window element
-              const parentWindow = $($(this)[0].$el[0], this.$el).parent();
-              // parent window actuel offset from the top of the window
-              const windowOffsetTop = parentWindow.position().top;
-              if (parentWindowHeight + windowOffsetTop >= $(window).height()) {
-                // compute offset top to center the transition window
-                const parentWindowOffset = ($(window).height() - parentWindowHeight) / 2;
-                $(parentWindow, this.$el).css("top", parentWindowOffset + "px");
               }
             }
           }

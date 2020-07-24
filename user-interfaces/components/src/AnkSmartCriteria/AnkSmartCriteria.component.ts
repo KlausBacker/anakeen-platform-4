@@ -50,6 +50,7 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
     smartForm: AnkSmartFormDefinition;
   };
   private mountedDone = false;
+  private standalone = false;
   private innerConfig: ISmartCriteriaConfiguration = { title: "", defaultStructure: -1, criterias: [] };
   private operatorFieldRegex = /^sc_operator_(\d+)$/;
   private errorStack = [];
@@ -73,11 +74,13 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
 
   @Watch("config", { immediate: false, deep: true })
   public onConfigChanged(newConfig: ISmartCriteriaConfiguration): void {
+    this.errorStack = [];
     this.innerConfig = JSON.parse(JSON.stringify(newConfig));
     this.loadConfiguration();
   }
 
   initSmartCriteria(): void {
+    this.errorStack = [];
     this.innerConfig = JSON.parse(JSON.stringify(this.config));
     if (this.mountedDone === false) {
       this.$once("hook:mounted", this.loadConfiguration);
@@ -159,21 +162,26 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
       return;
     }
     this.loading = true;
-    $.ajax({
-      url: this.getLoaderUrl(),
-      data: this.innerConfig
-    })
-      .done(response => {
-        this.innerConfig = response.data.configuration;
-        this.errorStack = this.errorStack.concat(response.data.errors);
-        this.buildSmartFormConfig();
-        this.$emit("smartCriteriaReady");
+    if (!this.innerConfig.standalone) {
+      $.ajax({
+        url: this.getLoaderUrl(),
+        data: this.innerConfig
       })
-      .fail((jqXHR, textStatus, errorThrown) => {
-        // @ts-ignore
-        this.showError("Something went wrong while getting the full smart criteria configuration from the server.");
-
-      });
+        .done(response => {
+          this.innerConfig = response.data.configuration;
+          this.errorStack = this.errorStack.concat(response.data.errors);
+          this.checkConfig();
+          this.buildSmartFormConfig();
+          this.$emit("smartCriteriaReady");
+        })
+        .fail(() => {
+          this.showError("Something went wrong while getting the full smart criteria configuration from the server.");
+        });
+    } else {
+      this.checkConfig();
+      this.buildSmartFormConfig();
+      this.$emit("smartCriteriaReady");
+    }
   }
 
   private buildSmartFormConfig(): void {
@@ -452,6 +460,58 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
         }
       });
       autocomplete.inputs = inputsResult;
+    }
+  }
+
+  private checkConfig(): void {
+    const criterias = this.innerConfig.criterias;
+    criterias.forEach(this.checkCriteria);
+  }
+
+  private checkCriteria(criteria: IConfigurationCriteria, index: number): void {
+    if (!criteria.kind) {
+      this.errorStack.push({ message: `Missing 'kind' parameter in criteria ${index}` });
+    }
+
+    if (!criteria.field) {
+      this.errorStack.push({ message: `Missing 'field' parameter in criteria ${index}` });
+    }
+
+    if (criteria.kind === SmartCriteriaKind.FIELD) {
+      if (!criteria.structure) {
+        this.errorStack.push({ message: `Missing 'structure' parameter in criteria ${index}` });
+      }
+    }
+
+    if (!criteria.type) {
+      this.errorStack.push({ message: `Missing 'type' parameter in criteria ${index}` });
+    }
+
+    if (!criteria.label) {
+      this.errorStack.push({
+        message: `Missing 'type' parameter in criteria ${index}`,
+        type: "warning"
+      });
+    }
+
+    if (!criteria.operators || !criteria.operators.length) {
+      this.errorStack.push({
+        message: `Missing 'operators' parameter in criteria ${index}`,
+        type: "warning"
+      });
+    }
+
+    for (const operator of criteria.operators) {
+      if (!operator.key) {
+        this.errorStack.push({ message: `Missing 'key' parameter for operator configuration in criteria ${index}` });
+      }
+
+      if (!operator.label) {
+        this.errorStack.push({
+          message: `Missing 'label' parameter for operator '${operator.key}' in criteria ${index}`,
+          type: "warning"
+        });
+      }
     }
   }
 }

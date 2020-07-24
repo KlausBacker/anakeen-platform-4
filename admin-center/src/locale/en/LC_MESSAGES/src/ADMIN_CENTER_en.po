@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anakeen-platform 4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-15 18:56+0200\n"
+"POT-Creation-Date: 2020-07-10 14:30+0200\n"
 "PO-Revision-Date: 2020-04-17 09:22+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -17,6 +17,25 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#, php-format
+msgctxt "timer"
+msgid "\"%s\" will change state to \"%s\""
+msgstr ""
+
+msgctxt "timer"
+msgid "Aborted:"
+msgstr ""
+
+#, php-format
+msgctxt "timer"
+msgid "Attach timer \"%s\""
+msgstr ""
+
+#, php-format
+msgctxt "timer"
+msgid "Attach timer \"%s\" by \"%s\""
+msgstr ""
+
 msgctxt "AdminCenterTrash.author deletion"
 msgid "Author of the deletion"
 msgstr "Author of the deletion"
@@ -24,6 +43,16 @@ msgstr "Author of the deletion"
 msgctxt "AdminCenterTrash.authorization"
 msgid "Authorization"
 msgstr "Authorization"
+
+#, php-format
+msgctxt "AdminCenterTimer"
+msgid "Call the \"%s\" method"
+msgstr "Call the \"%s\" method"
+
+#, php-format
+msgctxt "timer"
+msgid "Change state to \"%s\""
+msgstr ""
 
 msgctxt "AdminCenterTrash.date deletion"
 msgid "Date of deletion"
@@ -41,22 +70,110 @@ msgctxt "AdminCenterParameters.global btn specific user"
 msgid "Global button need to be false with specific user option"
 msgstr ""
 
+#, php-format
+msgctxt "timer"
+msgid "Mail \"%s\" will be send"
+msgstr ""
+
+#, php-format
+msgctxt "timer"
+msgid "Method \"%s\" has been executed"
+msgstr ""
+
+#, php-format
+msgctxt "timer"
+msgid "Method \"%s\" will be executed"
+msgstr ""
+
+#, php-format
+msgctxt "AdminCenterVaultManager"
+msgid "New maximum size is \"%s\""
+msgstr "New maximum size is \"%s\""
+
+#, php-format
+msgctxt "AdminCenterVaultManager"
+msgid "New path is \"%s\""
+msgstr "New path is \"%s\""
+
+#, php-format
+msgctxt "AdminCenterVaultManager"
+msgid "New vault created. Location is \"%s\", size is \"%s\""
+msgstr "New vault created. Location is \"%s\", size is \"%s\""
+
+#, php-format
+msgctxt "AdminCenterVaultManager"
+msgid "Path \"%s\" is not writable"
+msgstr "Path \"%s\" is not writable"
+
+#, php-format
+msgctxt "AdminCenterVaultManager"
+msgid "Path \"%s\" must be an absolute path"
+msgstr "Path \"%s\" must be an absolute path"
+
+#, php-format
+msgctxt "AdminCenterVaultManager"
+msgid "Path \"%s\" must reference an existing directory"
+msgstr "Path \"%s\" must reference an existing directory"
+
 #, fuzzy
 msgctxt "AdminCenterTrash.btn restore"
 msgid "Restore"
 msgstr "Restore"
 
+#, php-format
+msgctxt "timer"
+msgid "Run transition \"%s\""
+msgstr ""
+
+#, php-format
+msgctxt "timer"
+msgid "Send mail \"%s\""
+msgstr ""
+
+#, php-format
+msgctxt "AdminCenterTimer"
+msgid "Send the \"%s\" email"
+msgstr "Send the \"%s\" email"
+
+#, php-format
+msgctxt "AdminCenterAccounts"
+msgid "Structure '%s' do not exist"
+msgstr "Structure '%s' do not exist"
+
+#, php-format
+msgctxt "AdminCenterTimer"
+msgid "Transition \"%s\""
+msgstr "Transition \"%s\""
+
+#, php-format
+msgctxt "timer"
+msgid "Transition \"%s\" will be executed"
+msgstr ""
+
+#, php-format
+msgctxt "timer"
+msgid "Transition will not succeed because \"%s\" is not linked to a workflow"
+msgstr ""
+
+#, php-format
+msgctxt "timer"
+msgid ""
+"Transition will not succeed because \"%s\" no transition to go to state \"%s"
+"\" from \"%s\""
+msgstr ""
+
 msgctxt "AdminCenterTrash.type"
 msgid "Type"
 msgstr "Type"
 
+#, php-format
+msgctxt "AdminCenterVaultManager"
+msgid "Vault \"#%d\" not exists"
+msgstr "Vault \"#%d\" not exists"
+
 msgctxt "AdminCenterParameters.user btn specific user"
 msgid "You need to turn on the button user parameters"
 msgstr ""
-
-msgctxt "AdminCenterAccounts"
-msgid "Structure '%s' do not exist"
-msgstr "Structure '%s' do not exist"
 
 #, fuzzy
 #~ msgctxt "AdminCenterTrash.title"

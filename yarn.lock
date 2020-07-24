@@ -937,7 +937,7 @@
   resolved "https://registry.yarnpkg.com/@progress/kendo-popup-common/-/kendo-popup-common-1.7.0.tgz#d0d29dbc5eacdaba8803aa3d0f69f8a8ad05dbff"
   integrity sha512-KxPIXDkirDpJaF/UWFKbe8QpbO5CwdQH/HyNT5Fj1qZb25YaO68VZCisls2qkcEVPHBlXesDcN3QJlt4vJ6tJw==
 
-"@progress/kendo-theme-bootstrap@4.8.0", "@progress/kendo-theme-bootstrap@^4.8.0":
+"@progress/kendo-theme-bootstrap@4.8.0":
   version "4.8.0"
   resolved "https://registry.yarnpkg.com/@progress/kendo-theme-bootstrap/-/kendo-theme-bootstrap-4.8.0.tgz#695147e2444cb9858a8073cd147e7cd4fb7b7c2c"
   integrity sha512-nRmsKw9RFs9zJ2GisgSWUDVSXuqozslows/pOJL8tgWhTm7HtotQEfWk5p/csjzfxiYBsHhQ3j5I4tiobtjOYQ==

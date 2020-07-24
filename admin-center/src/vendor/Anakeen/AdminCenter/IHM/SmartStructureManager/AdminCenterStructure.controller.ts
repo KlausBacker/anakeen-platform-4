@@ -40,6 +40,12 @@ export default class AdminCenterStructureController extends Mixins(AnkI18NMixin)
   public watchSelectedSS(newValue, oldValue) {
     this.isEmpty = false;
   }
+  @Watch("tabFromUrl")
+  public watchTabFromUrl(newValue, oldValue) {
+    this.$nextTick(() => {
+      this.$refs.ssmTabs.setSelectedTab(this.tabFromUrl);
+    });
+  }
   public mounted() {
     if (this.value) {
       this.selectedSS = this.value;

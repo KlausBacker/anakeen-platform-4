@@ -36,7 +36,6 @@ export default Backbone.View.extend({
     this.listenTo(this.model, "removeWidgetLine", this.removeWidgetLine);
     this.listenTo(this.model, "addWidgetLine", this.addWidgetLine);
     this.listenTo(this.model, "haveView", this._identifyView);
-    this.listenTo(this.model, "resize", this.setResponsiveClasse);
     this.options = options;
   },
 

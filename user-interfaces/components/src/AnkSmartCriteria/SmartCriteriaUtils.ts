@@ -8,23 +8,20 @@ export default class {
     operator2: ICriteriaConfigurationOperator
   ): boolean {
     let equals = false;
+
+    if (!operator1.options) {
+      operator1.options = [];
+    }
+    if (!operator2.options) {
+      operator2.options = [];
+    }
+
     if (operator1.key === operator2.key && operator1.options.length === operator2.options.length) {
       const optionIntersection = operator1.options.filter(op1 => {
         return !operator2.options.includes(op1);
       });
       if (optionIntersection.length === 0) {
         equals = true;
-        // TODO: additional options
-        // const opAddtionalOptions1 = [...operator1.additionalOptions];
-        // const opAddtionalOptions2 = [...operator2.additionalOptions];
-        // if (opAddtionalOptions1.length === opAddtionalOptions2.length) {
-        //   const additionalOptionsIntersection = opAddtionalOptions1.filter(op1 => {
-        //     return !opAddtionalOptions2.includes(op1);
-        //   });
-        //   if (additionalOptionsIntersection.length === 0) {
-        //     equals = true;
-        //   }
-        // }
       }
     }
     return equals;

@@ -676,6 +676,9 @@ export default Backbone.View.extend({
     options.data.fromid = documentModel.get("properties").get("family").id;
     options.data.fieldInfo = this.model.toData();
     $.ajax({
+      headers: {
+        Accept: "application/json; charset=utf-8"
+      },
       type: "POST",
       url: autocompleteUrl,
       data: JSON.stringify(options.data),
@@ -704,9 +707,10 @@ export default Backbone.View.extend({
               error: response.responseJSON.exceptionMessage
             };
           }
+          console.error(response);
           return {
             success: false,
-            error: "Unexpected error: " + response.status + " " + response.statusText
+            error: "Unexpected error: " + response.status + " " + response.responseText
           };
         }
       )

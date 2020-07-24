@@ -3,7 +3,7 @@
     <hubconfigurationgeneric>
         <hub_station_id name="ADMINCENTER">Admin Center</hub_station_id>
         <hub_title>ADMINTE</hub_title>
-        <hub_order>5</hub_order>
+        <hub_order>1500</hub_order>
         <hub_docker_position>LEFT_TOP</hub_docker_position>
         <hub_vue_router_entry>te</hub_vue_router_entry>
         <hub_activated>FALSE</hub_activated>

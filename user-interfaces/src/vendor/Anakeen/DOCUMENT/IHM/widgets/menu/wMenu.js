@@ -162,10 +162,12 @@ export default $.widget("dcp.dcpMenu", {
       },
       open: function wMenuOpen(event) {
         var $menuElement = $(event.item);
+        var $menu = $menuElement.closest("nav.dcpDocument__menu");
 
         // Due to iOs artefact, an resize event is send, so need to inhibated during opening menu
         scopeWidget.element.data("menu-opening", true);
-        $menuElement.data("bodyWidth", $("body").width());
+        $menuElement.data("bodyWidth", $menu.width());
+
         if (!$menuElement.hasClass("menu__element--item")) {
           var menuUrl = $menuElement.data("menu-url");
           if (menuUrl) {
@@ -236,6 +238,7 @@ export default $.widget("dcp.dcpMenu", {
       activate: function wMenuActivate(event) {
         // Correct Kendo position list when scrollbar is displayed
         var $menuElement = $(event.item);
+        var $menu = $menuElement.closest("nav.dcpDocument__menu");
         var $container = $menuElement.find(".k-animation-container");
 
         var bodyWidth = $menuElement.data("bodyWidth");
@@ -245,7 +248,7 @@ export default $.widget("dcp.dcpMenu", {
         var listLeft = $container.offset().left;
         // The first condition is for iOS because no scroll window exists
         if (
-          $("body").width() > bodyWidth ||
+          $menu.width() > bodyWidth ||
           window.document.documentElement.scrollHeight > window.document.documentElement.clientHeight
         ) {
           // If the list menu is out of the body box, need to move it to the right

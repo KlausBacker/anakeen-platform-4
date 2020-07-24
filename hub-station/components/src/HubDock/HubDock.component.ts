@@ -1,7 +1,8 @@
 /* eslint-disable*/
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import Vuebar from "vuebar";
-import { DockPosition } from "../HubStation/HubStationsTypes";
+import { DockCollapseStatus, DockPosition } from "../HubStation/HubStationsTypes";
+
 import {
   dockEntryEvents,
   HUB_DOCK_ENTRY_NAME
@@ -96,6 +97,7 @@ export default class HubDock extends Vue {
     }
     return result;
   }
+
   public $vuebar: any;
 
   @Prop({ default: DockPosition.LEFT }) public position!: DockPosition;
@@ -114,6 +116,12 @@ export default class HubDock extends Vue {
   @Prop({ default: 1000, type: Number }) public hoverDelay!: number;
   @Prop({ default: false, type: Boolean }) public multiselection!: boolean;
   @Prop({ default: () => [], type: Array }) public content!: object[];
+  @Prop({
+    default: DockCollapseStatus.DefaultNonCollapsed,
+    type: String
+  }) public dockConfiguration!: DockCollapseStatus;
+  @Prop({ default: HUB_DOCK_ENTRY_NAME, type: String })
+  public hubStation!: string;
 
   public animate: boolean = false;
   public collapsed: boolean = !this.expanded;
@@ -130,6 +138,7 @@ export default class HubDock extends Vue {
     dockContent: HTMLElement;
   };
   protected overTimer: number = -1;
+
   @Watch("collapsed")
   public onCollapsed(val: boolean) {
     if (val) {
@@ -146,6 +155,32 @@ export default class HubDock extends Vue {
         val.findIndex((i: any) => i.name === entry.name) > -1;
     });
     this.$emit("dockEntriesSelected", this.multiselection ? val : val[0]);
+  }
+
+  @Watch("dockConfiguration")
+  public watchDockConfiguration(newValue) {
+    switch (newValue) {
+      case "NEVERCOLLAPSED":
+        this.collapsable = false;
+        this.collapsed = false;
+        this.$emit("dockExpanded");
+        break;
+      case "ALWAYSCOLLAPSED":
+        this.collapsed = true;
+        this.collapsable = false;
+        this.$emit("dockCollapsed");
+        break;
+      case "DEFAULTCOLLAPSED":
+        this.collapsed = true;
+        this.collapsable = true;
+        this.$emit("dockCollapsed");
+        break;
+      case "DEFAULTNONCOLLAPSED":
+        this.collapsed = false;
+        this.collapsable = true;
+        this.$emit("dockExpanded");
+        break;
+    }
   }
 
   public mounted() {
@@ -169,16 +204,44 @@ export default class HubDock extends Vue {
     ) {
       this.$vuebar.initScrollbar(this.$refs.dockContent, {});
     }
+    switch (this.dockConfiguration) {
+      case "NEVERCOLLAPSED":
+        this.expand();
+        this.collapsable = false;
+        this.collapsed = false;
+        this.$emit("dockExpanded");
+        break;
+      case "ALWAYSCOLLAPSED":
+        this.collapse();
+        this.collapsed = true;
+        this.collapsable = false;
+        this.$emit("dockCollapsed");
+        break;
+      case "DEFAULTCOLLAPSED":
+        this.collapsed = this.storageCollapseStatus();
+        this.collapsed ? this.collapse() : this.expand();
+        this.collapsable = true;
+        this.$emit("dockCollapsed");
+        break;
+      case "DEFAULTNONCOLLAPSED":
+        this.collapsed = this.storageCollapseStatus();
+        this.collapsed ? this.collapse() : this.expand();
+        this.collapsable = true;
+        this.$emit("dockExpanded");
+        break;
+    }
   }
 
   public expand() {
     this.collapsed = false;
+    window.localStorage.setItem("hub-dock."+this.hubStation+".collapse.status." + this.position, "expanded");
     this.$emit("dockExpanded");
     this.$emit("dockResized");
   }
 
   public collapse() {
     this.collapsed = true;
+    window.localStorage.setItem("hub-dock."+this.hubStation+".collapse.status." + this.position, "collapsed");
     this.$emit("dockCollapsed");
     this.$emit("dockResized");
   }
@@ -223,33 +286,37 @@ export default class HubDock extends Vue {
   }
 
   protected onOverDock() {
-    if (this.expandOnHover && this.collapsed && this.overTimer === -1) {
-      if (
-        this.position === DockPosition.LEFT ||
-        this.position === DockPosition.RIGHT
-      ) {
-        this.overTimer = window.setTimeout(() => {
-          if (this.superposeOnHover && !this.superposeDock) {
-            this.superposable = true;
-            this.setDockWrapperAbsoluteSize();
-          }
-          this.expand();
-        }, this.hoverDelay);
+    if (this.dockConfiguration !== "ALWAYSCOLLAPSED") {
+      if (this.expandOnHover && this.collapsed && this.overTimer === -1) {
+        if (
+          this.position === DockPosition.LEFT ||
+          this.position === DockPosition.RIGHT
+        ) {
+          this.overTimer = window.setTimeout(() => {
+            if (this.superposeOnHover && !this.superposeDock) {
+              this.superposable = true;
+              this.setDockWrapperAbsoluteSize();
+            }
+            this.expand();
+          }, this.hoverDelay);
+        }
       }
     }
   }
 
   protected onLeaveDock() {
-    if (this.expandOnHover) {
-      if (this.superposeOnHover && !this.superposeDock) {
-        this.superposable = false;
-        this.setDockWrapperAbsoluteSize("auto");
-      }
-      if (this.overTimer !== -1) {
-        clearTimeout(this.overTimer);
-        this.overTimer = -1;
-        if (!this.collapsed) {
-          this.collapse();
+    if (this.dockConfiguration !== "NEVERCOLLAPSED") {
+      if (this.expandOnHover) {
+        if (this.superposeOnHover && !this.superposeDock) {
+          this.superposable = false;
+          this.setDockWrapperAbsoluteSize("auto");
+        }
+        if (this.overTimer !== -1) {
+          clearTimeout(this.overTimer);
+          this.overTimer = -1;
+          if (!this.collapsed) {
+            this.collapse();
+          }
         }
       }
     }
@@ -268,5 +335,13 @@ export default class HubDock extends Vue {
       default:
         break;
     }
+  }
+
+  protected storageCollapseStatus() {
+    const storageCollapse = window.localStorage.getItem("hub-dock."+this.hubStation+".collapse.status." + this.position);
+    if (storageCollapse) {
+      return storageCollapse === "collapsed";
+    }
+    return this.dockConfiguration === "DEFAULTNONCOLLAPSED";
   }
 }

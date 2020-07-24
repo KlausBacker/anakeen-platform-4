@@ -106,12 +106,12 @@ class RepoXML extends XMLLoader {
    * @param {string} registry Module's registry name
    * @returns {RepoXML}
    */
-  addModule({ name, version, registry }) {
+  addModule({ name, version, registry, type }) {
     if (!this.registryExists(registry)) {
       throw new RepoXMLError(`Registry '${registry}' does not exists`);
     }
 
-    let newModule = { $: { name, version, registry } };
+    let newModule = { $: { name, version, registry, type } };
 
     const moduleList = this.getModuleList();
     const newList = moduleList.reduce(

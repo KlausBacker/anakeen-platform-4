@@ -1,0 +1,86 @@
+      .incoming-tasks-wrapper {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+
+        .tasks-splitter {
+
+          .tasks-grid-wrapper {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+
+            td[role=gridcell]  > div {
+              max-height: 5rem;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              font-family: monospace;
+            }
+
+            .tr-selected {
+              background-color: #157efb;
+              color: #FFFFFF;
+            }
+
+.k-grid.k-widget.k-display-block {
+  display: flex!important;
+  flex-direction: column;
+  height: 100%;
+
+            .k-button.k-button-icontext.k-grid-Detail {
+              color: #157efb;
+              font-weight: bold;
+              background-color: transparent;
+              box-shadow: none;
+              border: none;
+              padding-right: 0.5rem;
+              padding-left: 0.5rem;
+            }
+            .k-button.k-button-icontext.k-grid-Detail:hover {
+              color: white;
+              font-weight: bold;
+              background-color: #157efb;
+              box-shadow: none;
+              border: none;
+            }
+          }
+
+        }
+            .tasks-form-wrapper {
+              height: 100%;
+  
+              .tasks-empty {
+                  display: flex;
+                  height: 100%;
+                  width: 100%;
+                  align-items: center;
+                  justify-content: center;
+                  flex-direction: column;
+                  background-color: #dedede;
+                  font-size: 1.5rem;
+                  color: #a4a4a4;
+                  > span {
+                    font-size: 5rem;
+                  }
+                
+              }
+  
+              height: 100%;
+              > .smart-element-wrapper {
+                height: 100%;
+                > .document {
+                  height: 100%;
+                  > .dcpDocument {
+          
+                    display: flex;
+                    flex-direction: column;
+                    height: 100%;
+          
+                  }
+          
+                }
+          
+              }
+            }
+}
+}

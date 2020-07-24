@@ -31,6 +31,16 @@
                 <sde:access ns="AdminCenter">AdminTE</sde:access>
             </sde:requiredAccess>
         </sde:route>
+        <sde:route name="CheckUnitTransformation">
+            <sde:callable>Anakeen\Routes\TransformationEngine\Admin\CheckUnitTransformation</sde:callable>
+            <sde:method>PUT</sde:method>
+            <sde:pattern>/api/admin/transformationengine/check/unit-transformation/{step}</sde:pattern>
+            <sde:description>Check unit transformation progress</sde:description>
+            <sde:requiredAccess operator="or">
+                <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminTE</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
         <sde:route name="TestCallbackConfiguration">
             <sde:callable>Anakeen\Routes\TransformationEngine\Admin\TestTeConfiguration</sde:callable>
             <sde:method>GET</sde:method>
@@ -80,8 +90,18 @@
                 <sde:access ns="AdminCenter">AdminTE</sde:access>
             </sde:requiredAccess>
         </sde:route>
+        <sde:route name="Autocomplete:EngineList">
+            <sde:priority>0</sde:priority>
+            <sde:callable>Anakeen\Routes\TransformationEngine\Admin\AutocompleteEngineList</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/admin/transformationengine/engine-list/</sde:pattern>
+            <sde:description>Get engine list</sde:description>
+            <sde:requiredAccess operator="or">
+                <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminTE</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
     </sde:routes>
-
     <sde:accesses namespace="AdminCenter">
         <sde:access name="AdminTE">
             <sde:description>Accounts administrator access</sde:description>

@@ -14,18 +14,6 @@ export default {
       return !!this.element;
     }
   },
-  watch: {
-    initid(newValue) {
-      if (this.$refs.smartElement) {
-        this.$refs.smartElement.fetchSmartElement({ initid: newValue, viewId: this.viewId });
-      }
-    },
-    viewId(newValue) {
-      if (this.$refs.smartElement) {
-        this.$refs.smartElement.fetchSmartElement({ initid: this.initid, viewId: newValue });
-      }
-    }
-  },
   mounted() {
     kendo.ui.progress(this.$(this.$el), true);
   },
@@ -43,10 +31,6 @@ export default {
       this.errorMessage = "";
       this.element = element;
       this.element.name = this.$refs.smartElement.getProperty("name");
-      kendo.ui.progress(this.$(this.$el), false);
-    },
-    onShowError(event, element, error) {
-      this.errorMessage = error.message;
       kendo.ui.progress(this.$(this.$el), false);
     },
     refreshGrid() {

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:structure-configuration name="TEST_ARG_ERROR" label="Test">
+        <smart:fields>
+            <smart:field-set name="tst_1" type="frame" access="ReadWrite" label="tst_1">
+                <smart:field-docid name="field_1" relation="-1" access="ReadWrite" label="field_1" />
+            </smart:field-set>
+        </smart:fields>
+        <smart:autocompletion>
+            <smart:field-autocomplete field="field_1">
+                <smart:field-callable function="Anakeen\Pu\SmartStructures\TestAutoCompleteHook::testCallableFunction"/>
+                <smart:field-argument type="field">Error_1</smart:field-argument>
+                <smart:field-argument type="field">Error_2</smart:field-argument>
+                <smart:field-returns>
+                    <smart:field-return field="field_1"/>
+                </smart:field-returns>
+            </smart:field-autocomplete>
+        </smart:autocompletion>
+        <smart:defaults/>
+    </smart:structure-configuration>
+</smart:config>

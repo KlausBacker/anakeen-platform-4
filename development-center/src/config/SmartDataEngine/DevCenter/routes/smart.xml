@@ -116,5 +116,25 @@
                 <sde:access ns="DevCenter">DevelAccess</sde:access>
             </sde:requiredAccess>
         </sde:route>
+        <sde:route name="SetDocumentLogicalName">
+            <sde:priority>1</sde:priority>
+            <sde:callable>Anakeen\Routes\Devel\Smart\ChangeLogicalName</sde:callable>
+            <sde:method>PUT</sde:method>
+            <sde:pattern>/api/v2/devel/smart-elements/logical-name/{id}</sde:pattern>
+            <sde:description>Put document logical name</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+                <sde:route name="DeleteDocumentLogicalName">
+            <sde:priority>1</sde:priority>
+            <sde:callable>Anakeen\Routes\Devel\Smart\DeleteLogicalName</sde:callable>
+            <sde:method>DELETE</sde:method>
+            <sde:pattern>/api/v2/devel/smart-elements/logical-name/{id}</sde:pattern>
+            <sde:description>Delete document logical name</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
     </sde:routes>
 </sde:config>

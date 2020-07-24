@@ -329,7 +329,7 @@ class Autocomplete
                 }
             }
         }
-        throw new \Anakeen\Exception(sprintf("No find attribute argument \"%s\" for autocomplete in requesr", $name));
+        throw new \Anakeen\Exception("UI0402", $this->attributeId, $name, $this->currentElement->fromname);
     }
 
     protected function getPropValue($name)

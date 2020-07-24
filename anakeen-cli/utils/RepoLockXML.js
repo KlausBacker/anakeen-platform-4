@@ -111,9 +111,9 @@ class RepoLockXML extends XMLLoader {
    * @param {string} version
    * @param {[{ type, src, sha256 }]} resources
    */
-  addOrUpdateModule({ name, version, resources }) {
+  addOrUpdateModule({ name, version, type, resources }) {
     this.deleteModuleByName(name, false);
-    this.addModule({ name, version, resources });
+    this.addModule({ name, version, type, resources });
   }
 
   /**
@@ -123,7 +123,7 @@ class RepoLockXML extends XMLLoader {
    * @param {[{ type, src, sha256, pathname }]} resources
    * @returns {RepoLockXML}
    */
-  addModule({ name, version, resources }) {
+  addModule({ name, version, type, resources }) {
     if (this.getModuleByName(name)) {
       throw new RepoLockXMLError(`Module '${name}' already exists in locked dependencies`);
     }
@@ -131,7 +131,8 @@ class RepoLockXML extends XMLLoader {
     let newModule = {
       $: {
         name,
-        version
+        version,
+        type
       },
       resources: {
         app: [],

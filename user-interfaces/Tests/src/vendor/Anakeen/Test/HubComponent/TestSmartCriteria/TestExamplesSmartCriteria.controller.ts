@@ -1,5 +1,6 @@
 import * as exampleTitle from "./SmartCriteriaExampleTitle.json";
 import * as exampleAutocomplete from "./SmartCriteriaExampleAutocomplete.json";
+import * as exampleAuthorAutocomplete from "./SmartCriteriaExampleAuthorAutocomplete.json";
 import * as exampleComplexAutocomplete from "./SmartCriteriaExampleComplexAutocomplete.json";
 import * as exampleState from "./SmartCriteriaExampleState.json";
 import * as exampleBetween from "./SmartCriteriaExampleBetweenValue.json";
@@ -8,18 +9,28 @@ import * as exampleTitleCustomOperators from "./SmartCriteriaExampleTitleCustomO
 import * as exampleAllType from "./SmartCriteriaExampleAllType.json";
 import * as exampleDemo from "./SmartCriteriaExampleDemo.json";
 import * as exampleModifiableOperator from "./SmartCriteriaExampleModifiableOperator.json";
+import * as exampleCorrectStandalone from "./SmartCriteriaExampleCorrectStandalone.json";
 import { Component, Vue } from "vue-property-decorator";
 // noinspection JSUnusedGlobalSymbols
 @Component({})
 export default class TestExamplesSmartCriteriaController extends Vue {
   public examples: any[] = [
     {
-      config: exampleComplexAutocomplete,
-      label: exampleComplexAutocomplete.title || "Example Complex Autocomplete"
+      config: exampleCorrectStandalone,
+      label: exampleCorrectStandalone.title || "Example correct standalone"
     },
     {
       config: exampleAutocomplete,
       label: exampleAutocomplete.title || "Example Autocomplete"
+    },
+    {
+      config: exampleAuthorAutocomplete,
+      label: exampleAuthorAutocomplete.title || "Example Author Autocomplete"
+    },
+    {
+      config: exampleComplexAutocomplete,
+      label: exampleComplexAutocomplete.title || "Example Complex Autocomplete"
+
     },
     {
       config: exampleModifiableOperator,

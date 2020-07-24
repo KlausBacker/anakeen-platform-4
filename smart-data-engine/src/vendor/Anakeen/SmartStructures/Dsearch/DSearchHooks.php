@@ -552,7 +552,7 @@ class DSearchHooks extends \SmartStructure\Search
                 }
                 if (trim($val) != "") {
                     if ($oa && $oa->isMultiple()) {
-                        $cond = sprintf("%s ~*< ANY (%s)", $this->_pgVal($val), $col);
+                        $cond = sprintf("%s ~*< ANY (%s::text[])", $this->_pgVal($val), $col);
                     } else {
                         $cond = " " . $col . " " . trim($op) . " " . $this->_pgVal($val) . " ";
                     }
@@ -580,7 +580,7 @@ class DSearchHooks extends \SmartStructure\Search
                 unset($v);
                 if (count($val) > 0) {
                     if ($oa && $oa->isMultiple()) {
-                        $cond = sprintf("%s ~< ANY (%s)", $this->_pgVal($val[0]), $col);
+                        $cond = sprintf("%s ~< ANY (%s::text[])", $this->_pgVal($val[0]), $col);
                     } else {
                         $cond = " " . $col . " ~ E'\\\\y(" . pg_escape_string(implode('|', $val)) . ")\\\\y' ";
                     }
@@ -709,7 +709,7 @@ class DSearchHooks extends \SmartStructure\Search
                                     return '';
                                 }
                             }
-                            $cond = sprintf("( (%s is null) or (%s %s %s) )", $col, $col, trim($op), $this->_pgVal($val));
+                            $cond = sprintf("( (%s is null) or (NOT(%s ~*< ANY(%s::text[]))))", $col, $this->_pgVal($val), $col);
                         }
 
                         break;
@@ -720,16 +720,25 @@ class DSearchHooks extends \SmartStructure\Search
                                 $val = SEManager::getIdFromName($val);
                             }
                         }
-                        $cond1 = " " . $col . " " . trim($op) . $this->_pgVal($val) . " ";
-                        if (($op == '!=') || ($op == '!~*')) {
+                        if ($op === "!~*") {
                             if ($validateCond && $op == '!~*') {
                                 if (($err = $this->isValidPgRegex($val)) != '') {
                                     return '';
                                 }
                             }
-                            $cond = "(($cond1) or ($col is null))";
+                            $cond = (trim($val) != '') ? sprintf("((%s is null) or (NOT(%s ~*< ANY(%s::text[]))))", $col, $this->_pgVal($val), $col) : '';
                         } else {
-                            $cond = $cond1;
+                            $cond1 = " " . $col . " " . trim($op) . $this->_pgVal($val) . " ";
+                            if (($op == '!=')) {
+                                if ($validateCond && $op == '!~*') {
+                                    if (($err = $this->isValidPgRegex($val)) != '') {
+                                        return '';
+                                    }
+                                }
+                                $cond = "(($cond1) or ($col is null))";
+                            } else {
+                                $cond = $cond1;
+                            }
                         }
                 }
         }

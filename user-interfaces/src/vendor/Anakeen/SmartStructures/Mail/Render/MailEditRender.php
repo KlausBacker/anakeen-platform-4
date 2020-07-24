@@ -150,13 +150,13 @@ class MailEditRender extends DefaultConfigEditRender
         $mailTemplate = SmartElementManager::getDocument($mailTemplateId);
         if ($mailTemplate) {
             // Use copy to rewrite image url
-            $copy=$mailTemplate->duplicate(true);
+            $copy = $mailTemplate->duplicate(true);
             $copy->store();
             $keys["state"] = htmlspecialchars($target->getStepLabel());
 
             $mailForm->setValue(MyAttr::mail_template, $mailTemplate->id);
             foreach ($extraKeys as $k => $v) {
-                $keys[$k]=$v;
+                $keys[$k] = $v;
             }
 
             /** @var MailTemplateHooks $mailTemplate */
@@ -177,9 +177,11 @@ class MailEditRender extends DefaultConfigEditRender
                 $mailForm->mail_body = \Anakeen\Core\Utils\HtmlClean::normalizeHTMLFragment(
                     $mailForm->mail_body,
                     $err,
-                    ['initid'=>$copy->initid,
-                    "revision" => $copy->revision,
-                    "attrid"=> Mailtemplate::tmail_body]
+                    [
+                        'initid' => $copy->initid,
+                        "revision" => $copy->revision,
+                        "attrid" => Mailtemplate::tmail_body
+                    ]
                 );
 
                 $copy->store();
@@ -191,7 +193,7 @@ class MailEditRender extends DefaultConfigEditRender
                     MyAttr::mail_dest,
                     [
                         MyAttr::mail_copymode => "to",
-                        MyAttr::mail_recip => $to
+                        MyAttr::mail_recip => (string)$to
                     ]
                 );
             }
@@ -201,7 +203,7 @@ class MailEditRender extends DefaultConfigEditRender
                     MyAttr::mail_dest,
                     [
                         MyAttr::mail_copymode => "cc",
-                        MyAttr::mail_recip => $cc
+                        MyAttr::mail_recip => (string)$cc
                     ]
                 );
             }
@@ -211,7 +213,7 @@ class MailEditRender extends DefaultConfigEditRender
                     MyAttr::mail_dest,
                     [
                         MyAttr::mail_copymode => "bcc",
-                        MyAttr::mail_recip => $bcc
+                        MyAttr::mail_recip => (string)$bcc
                     ]
                 );
             }
@@ -219,6 +221,7 @@ class MailEditRender extends DefaultConfigEditRender
             throw new Exception(sprintf("Cannot access mail template \"%s\".", $mailTemplateId));
         }
     }
+
     public function getEtag(\Anakeen\Core\Internal\SmartElement $document)
     {
         return null;
