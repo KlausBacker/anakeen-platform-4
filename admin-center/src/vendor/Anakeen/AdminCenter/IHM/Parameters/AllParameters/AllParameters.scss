@@ -28,6 +28,19 @@
       font-family: monospace;
     }
 
+    .user-search-smart-form {
+      .user-param-smart-form {
+        .smart-element-wrapper {
+          .document {
+            .dcpDocument {
+              .dcpDocument__header {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+    }
     .k-grid-content {
       height: 100% !important;
       min-height: 0;
