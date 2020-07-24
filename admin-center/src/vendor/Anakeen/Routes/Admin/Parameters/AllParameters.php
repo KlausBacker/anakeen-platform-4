@@ -23,13 +23,8 @@ class AllParameters
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        try {
-            $return = $this->doRequest();
-            return ApiV2Response::withData($response, $return);
-        } catch (\Exception $e) {
-            $response->withStatus(500, 'Error fetching parameters');
-            return ApiV2Response::withMessages($response, ['Error fetching paramters']);
-        }
+        $return = $this->doRequest();
+        return ApiV2Response::withData($response, $return);
     }
 
     /**

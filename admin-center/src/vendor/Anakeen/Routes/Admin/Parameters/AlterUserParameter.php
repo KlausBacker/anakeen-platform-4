@@ -56,11 +56,7 @@ class AlterUserParameter
      */
     private function initParameters(\Slim\Http\request $request, $args)
     {
-        if (is_numeric($args["user"])) {
-            $this->userId = intval($args["user"]);
-        } else {
-            $this->userId = AccountManager::getIdFromLogin($args["user"]);
-        }
+        $this->userId = AccountManager::getIdFromLogin($args["user"]);
 
         $this->nameSpace = $args['namespace'];
         $this->parameterName = $args['parameter_name'];

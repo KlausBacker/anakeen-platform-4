@@ -9,7 +9,7 @@
     <template v-slot:hubContent>
       <div class="parameters-parent">
         <admin-center-parameters
-          :user-id="userId"
+          :user-login="userLogin"
           :param-id="paramId"
           :is-global-tab="isGlobalTab"
           :is-user-tab="isUserTab"
@@ -42,7 +42,7 @@ export default {
   },
   data () {
     return {
-      userId: "",
+      userLogin: "",
       paramId: "",
       selectedTab: "globalTab",
       isGlobalTab: true,
@@ -60,11 +60,11 @@ export default {
   methods: {
     isSpecificUser () {
       if (this.specificUser) {
-        this.userId = this.specificUser;
+        this.userLogin = this.specificUser;
       }
     },
     registerRouterPattern () {
-      const parametersPattern = [{ pattern: "/global/", global: true }, { pattern: "/global/:paramId", global: true }, { pattern: "/user/" }, { pattern: "/user/:userId" }, { pattern: "/user/:userId/:paramId" }];
+      const parametersPattern = [{ pattern: "/global/", global: true }, { pattern: "/global/:paramId", global: true }, { pattern: "/user/" }, { pattern: "/user/:userLogin" }, { pattern: "/user/:userLogin/:paramId" }];
       const routesHandlers = parametersPattern.reduce((acc, curr) => {
         acc[this.routeUrl + curr.pattern] = this.onParameterRouteChanged(!!curr.global);
         return acc;
@@ -88,8 +88,8 @@ export default {
         } else {
           if (this.isUserTab === true) {
             this.selectedTab = "userTab";
-            if (params && params.userId && !this.specificUser) {
-              this.userId = params.userId;
+            if (params && params.userLogin && !this.specificUser) {
+              this.userLogin = params.userLogin;
               if (params && params.paramId) {
                 this.paramId = params.paramId;
               }

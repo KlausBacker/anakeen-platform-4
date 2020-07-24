@@ -31,13 +31,8 @@ class RestoreUserParameterSystemValue
     {
         $this->initParameters($args);
 
-        try {
-            $this->restoreParameter($this->nameSpace, $this->parameterName, $this->userId);
-            return ApiV2Response::withData($response, ['success' => 'true']);
-        } catch (\Exception $e) {
-            $response->withStatus(500, 'Error during value restoration');
-            return ApiV2Response::withMessages($response, ['Error during value restoration']);
-        }
+        $this->restoreParameter($this->nameSpace, $this->parameterName, $this->userId);
+        return ApiV2Response::withData($response, ["Value" => ""]);
     }
 
     /**
@@ -47,11 +42,7 @@ class RestoreUserParameterSystemValue
      */
     private function initParameters($args)
     {
-        if (is_numeric($args["user"])) {
-            $this->userId = intval($args["user"]);
-        } else {
-            $this->userId = AccountManager::getIdFromLogin($args["user"]);
-        }
+        $this->userId = AccountManager::getIdFromLogin($args["user"]);
 
         $this->nameSpace = $args['name_space'];
         $this->parameterName = $args['parameter_name'];

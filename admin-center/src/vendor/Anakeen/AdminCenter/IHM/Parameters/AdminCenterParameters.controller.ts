@@ -30,7 +30,7 @@ export default class AdminCenterParametersController extends Mixins(AnkI18NMixin
   public specificUser!: string;
 
   @Prop({ type: String, default: "" })
-  public userId!: string;
+  public userLogin!: string;
 
   @Prop({ type: String, default: "" })
   public paramId!: string;
