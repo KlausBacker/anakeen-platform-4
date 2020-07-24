@@ -95,3 +95,16 @@
     }
   }
 }
+.te-task-check-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.te-unit-download {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .te-unit-download-btn {
+    width: 20%;
+  }
+}
