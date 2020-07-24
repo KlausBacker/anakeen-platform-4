@@ -872,6 +872,7 @@ fulltext-search-integration-publish:
       - fulltext-search/**/*
   dependencies:
     - fulltext-search-integration-build
+    - fulltext-search-buildJS
 
 fulltext-search-publish:
   extends: .npm-publish-package
