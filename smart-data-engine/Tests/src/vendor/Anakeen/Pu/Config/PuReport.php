@@ -145,7 +145,7 @@ class PuReport extends TestCaseConfig
 
         if ($debug) {
             $query = $report->getAttributeValue(Report::se_sqlselect);
-            print "\nQUERY : $query";
+            print "\nQUERY : $query\n";
         }
 
         $results = [];
@@ -158,10 +158,6 @@ class PuReport extends TestCaseConfig
             self::markTestSkipped($skippedTestMessage);
         } else {
             self::assertEquals($expectedSEFound, $results, "\nReport found elements are not correct");
-        }
-
-        if ($debug) {
-            print "\n";
         }
     }
 
@@ -3983,126 +3979,132 @@ class PuReport extends TestCaseConfig
             ],
 
             /************** date ******************/
-//            [
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__date" => '2000-01-01'
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__date" => '2020-01-01'
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__date"],
-//                    Report::se_funcs => [self::EQUAL],
-//                ],
-//                [
-//                    "TST_0",
-//                    "TST_1",
-//                    "TST_2",
-//                ]
-//            ],
-//            [
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__date" => '2000-01-01'
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__date" => '2020-01-01'
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__date"],
-//                    Report::se_funcs => [self::NOT_EQUAL],
-//                ],
-//                [
-//                    "TST_0",
-//                    "TST_1",
-//                    "TST_2",
-//                ]
-//            ],
-//            [
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__date" => '2000-01-01'
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__date" => '2020-01-01'
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__date"],
-//                    Report::se_funcs => [self::GREATER_THAN],
-//                ],
-//                [
-//                    "TST_0",
-//                    "TST_1",
-//                    "TST_2",
-//                ]
-//            ],
-//            [
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__date" => '2000-01-01'
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__date" => '2020-01-01'
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__date"],
-//                    Report::se_funcs => [self::GREATER_THAN_EQ],
-//                ],
-//                [
-//                    "TST_0",
-//                    "TST_1",
-//                    "TST_2",
-//                ]
-//            ],
-//            [
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__date" => '2000-01-01'
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__date" => '2020-01-01'
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__date"],
-//                    Report::se_funcs => [self::LOWER_THAN],
-//                ],
-//                [
-//                    "TST_0",
-//                    "TST_1",
-//                    "TST_2",
-//                ]
-//            ],
-//            [
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__date" => '2000-01-01'
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__date" => '2020-01-01'
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__date"],
-//                    Report::se_funcs => [self::LOWER_THAN_EQ],
-//                ],
-//                [
-//                    "TST_0",
-//                    "TST_1",
-//                    "TST_2",
-//                ]
-//            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__date" => '2000-01-01'
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__date" => '2020-01-01'
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__date"],
+                    Report::se_funcs => [self::EQUAL],
+                ],
+                [
+                    "TST_0",
+                    "TST_1",
+                    "TST_2",
+                ],
+                "Report search test skipped: date type search with operator '=' and no value must only return the smart elements from the report se_famid value structure"
+            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__date" => '2000-01-01'
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__date" => '2020-01-01'
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__date"],
+                    Report::se_funcs => [self::NOT_EQUAL],
+                ],
+                [
+                    "TST_0",
+                    "TST_1",
+                    "TST_2",
+                ],
+                "Report search test skipped: date type search with operator '!=' and no value must only return the smart elements from the report se_famid value structure"
+            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__date" => '2000-01-01'
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__date" => '2020-01-01'
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__date"],
+                    Report::se_funcs => [self::GREATER_THAN],
+                ],
+                [
+                    "TST_0",
+                    "TST_1",
+                    "TST_2",
+                ],
+                "Report search test skipped: date type search with operator '>' and no value must only return the smart elements from the report se_famid value structure"
+            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__date" => '2000-01-01'
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__date" => '2020-01-01'
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__date"],
+                    Report::se_funcs => [self::GREATER_THAN_EQ],
+                ],
+                [
+                    "TST_0",
+                    "TST_1",
+                    "TST_2",
+                ],
+                "Report search test skipped: date type search with operator '>=' and no value must only return the smart elements from the report se_famid value structure"
+            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__date" => '2000-01-01'
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__date" => '2020-01-01'
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__date"],
+                    Report::se_funcs => [self::LOWER_THAN],
+                ],
+                [
+                    "TST_0",
+                    "TST_1",
+                    "TST_2",
+                ],
+                "Report search test skipped: date type search with operator '<' and no value must only return the smart elements from the report se_famid value structure"
+            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__date" => '2000-01-01'
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__date" => '2020-01-01'
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__date"],
+                    Report::se_funcs => [self::LOWER_THAN_EQ],
+                ],
+                [
+                    "TST_0",
+                    "TST_1",
+                    "TST_2",
+                ],
+                "Report search test skipped: date type search with operator '<=' and no value must only return the smart elements from the report se_famid value structure"
+            ],
             [
                 [
                     "TST_0" => [],
@@ -4308,146 +4310,152 @@ class PuReport extends TestCaseConfig
             ],
 
             /************** timestamp ******************/
-//            [
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__timestamp" => '2000-01-01 01:02:03'
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__timestamp" => '2020-01-01 04:05:06'
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__timestamp"],
-//                    Report::se_funcs => [self::EQUAL],
-//                ],
-//                [
-//                    "TST_0",
-//                    "TST_1",
-//                    "TST_2",
-//                ]
-//            ],
-//            [
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__timestamp" => '2000-01-01 01:02:03'
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__timestamp" => '2020-01-01 04:05:06'
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__timestamp"],
-//                    Report::se_funcs => [self::NOT_EQUAL],
-//                ],
-//                [
-//                    "TST_0",
-//                    "TST_1",
-//                    "TST_2",
-//                ]
-//            ],
-//            [
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__timestamp" => '2000-01-01 01:02:03'
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__timestamp" => '2020-01-01 04:05:06'
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__timestamp"],
-//                    Report::se_funcs => [self::GREATER_THAN],
-//                ],
-//                [
-//                    "TST_0",
-//                    "TST_1",
-//                    "TST_2",
-//                ]
-//            ],
-//            [
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__timestamp" => '2000-01-01 01:02:03'
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__timestamp" => '2020-01-01 04:05:06'
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__timestamp"],
-//                    Report::se_funcs => [self::GREATER_THAN_EQ],
-//                ],
-//                [
-//                    "TST_0",
-//                    "TST_1",
-//                    "TST_2",
-//                ]
-//            ],
-//            [
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__timestamp" => '2000-01-01 01:02:03'
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__timestamp" => '2020-01-01 04:05:06'
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__timestamp"],
-//                    Report::se_funcs => [self::LOWER_THAN],
-//                ],
-//                [
-//                    "TST_0",
-//                    "TST_1",
-//                    "TST_2",
-//                ]
-//            ],
-//            [
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__timestamp" => '2000-01-01 01:02:03'
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__timestamp" => '2020-01-01 04:05:06'
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__timestamp"],
-//                    Report::se_funcs => [self::LOWER_THAN_EQ],
-//                ],
-//                [
-//                    "TST_0",
-//                    "TST_1",
-//                    "TST_2",
-//                ]
-//            ],
-//            [
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__timestamp" => '2000-01-01 01:02:03'
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__timestamp" => '2020-01-01 04:05:06'
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__timestamp"],
-//                    Report::se_funcs => [self::IS_NULL],
-//                    Report::se_keys => ['2020-01-01 04:05:06'],
-//
-//                ],
-//                [
-//                    "TST_0",
-//                ]
-//            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__timestamp" => '2000-01-01 01:02:03'
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__timestamp" => '2020-01-01 04:05:06'
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__timestamp"],
+                    Report::se_funcs => [self::EQUAL],
+                ],
+                [
+                    "TST_0",
+                    "TST_1",
+                    "TST_2",
+                ],
+                "Report search test skipped: timestamp type search with operator '=' and no value must only return the smart elements from the report se_famid value structure"
+            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__timestamp" => '2000-01-01 01:02:03'
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__timestamp" => '2020-01-01 04:05:06'
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__timestamp"],
+                    Report::se_funcs => [self::NOT_EQUAL],
+                ],
+                [
+                    "TST_0",
+                    "TST_1",
+                    "TST_2",
+                ],
+                "Report search test skipped: timestamp type search with operator '!=' and no value must only return the smart elements from the report se_famid value structure"
+            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__timestamp" => '2000-01-01 01:02:03'
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__timestamp" => '2020-01-01 04:05:06'
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__timestamp"],
+                    Report::se_funcs => [self::GREATER_THAN],
+                ],
+                [
+                    "TST_0",
+                    "TST_1",
+                    "TST_2",
+                ],
+                "Report search test skipped: timestamp type search with operator '>' and no value must only return the smart elements from the report se_famid value structure"
+            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__timestamp" => '2000-01-01 01:02:03'
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__timestamp" => '2020-01-01 04:05:06'
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__timestamp"],
+                    Report::se_funcs => [self::GREATER_THAN_EQ],
+                ],
+                [
+                    "TST_0",
+                    "TST_1",
+                    "TST_2",
+                ],
+                "Report search test skipped: timestamp type search with operator '>=' and no value must only return the smart elements from the report se_famid value structure"
+            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__timestamp" => '2000-01-01 01:02:03'
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__timestamp" => '2020-01-01 04:05:06'
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__timestamp"],
+                    Report::se_funcs => [self::LOWER_THAN],
+                ],
+                [
+                    "TST_0",
+                    "TST_1",
+                    "TST_2",
+                ],
+                "Report search test skipped: timestamp type search with operator '<' and no value must only return the smart elements from the report se_famid value structure"
+            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__timestamp" => '2000-01-01 01:02:03'
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__timestamp" => '2020-01-01 04:05:06'
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__timestamp"],
+                    Report::se_funcs => [self::LOWER_THAN_EQ],
+                ],
+                [
+                    "TST_0",
+                    "TST_1",
+                    "TST_2",
+                ],
+                "Report search test skipped: timestamp type search with operator '<=' and no value must only return the smart elements from the report se_famid value structure"
+            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__timestamp" => '2000-01-01 01:02:03'
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__timestamp" => '2020-01-01 04:05:06'
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__timestamp"],
+                    Report::se_funcs => [self::IS_NULL],
+                    Report::se_keys => ['2020-01-01 04:05:06'],
+
+                ],
+                [
+                    "TST_0",
+                ]
+            ],
             [
                 [
                     "TST_0" => [],
@@ -5434,84 +5442,85 @@ class PuReport extends TestCaseConfig
             ],
 
             /******************** date[] *****************************/
-//            [
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__date_array" => [
-//                            '2000-01-01',
-//                            '2010-01-01',
-//                        ]
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__date_array" => [
-//                            '2010-01-01',
-//                            '2020-01-01',
-//                        ]
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__date_array"],
-//                    Report::se_funcs => [self::CONTAINS],
-//                ],
-//                [
-//                    "TST_0",
-//                    "TST_1",
-//                    "TST_2",
-//                ]
-//            ],
-//            [
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__date_array" => [
-//                            '2000-01-01',
-//                            '2010-01-01',
-//                        ]
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__date_array" => [
-//                            '2010-01-01',
-//                            '2020-01-01',
-//                        ]
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__date_array"],
-//                    Report::se_funcs => [self::NOT_CONTAINS],
-//                ],
-//                [
-//                    "TST_0",
-//                    "TST_1",
-//                    "TST_2",
-//                ]
-//            ],
-//            [
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__date_array" => [
-//                            '2000-01-01',
-//                            '2010-01-01',
-//                        ]
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__date_array" => [
-//                            '2010-01-01',
-//                            '2020-01-01',
-//                        ]
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__date_array"],
-//                    Report::se_funcs => [self::ONE_EQUALS],
-//                ],
-//                [
-//                    "TST_0",
-//                    "TST_1",
-//                    "TST_2",
-//                ]
-//            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__date_array" => [
+                            '2000-01-01',
+                            '2010-01-01',
+                        ]
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__date_array" => [
+                            '2010-01-01',
+                            '2020-01-01',
+                        ]
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__date_array"],
+                    Report::se_funcs => [self::CONTAINS],
+                ],
+                [
+                    "TST_0",
+                    "TST_1",
+                    "TST_2",
+                ]
+            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__date_array" => [
+                            '2000-01-01',
+                            '2010-01-01',
+                        ]
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__date_array" => [
+                            '2010-01-01',
+                            '2020-01-01',
+                        ]
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__date_array"],
+                    Report::se_funcs => [self::NOT_CONTAINS],
+                ],
+                [
+                    "TST_0",
+                    "TST_1",
+                    "TST_2",
+                ]
+            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__date_array" => [
+                            '2000-01-01',
+                            '2010-01-01',
+                        ]
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__date_array" => [
+                            '2010-01-01',
+                            '2020-01-01',
+                        ]
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__date_array"],
+                    Report::se_funcs => [self::ONE_EQUALS],
+                ],
+                [
+                    "TST_0",
+                    "TST_1",
+                    "TST_2",
+                ],
+                "Report search test skipped: date[] type search with operator '~y' and no value must only return the smart elements from the report se_famid value structure"
+            ],
             [
                 [
                     "TST_0" => [],
@@ -5701,110 +5710,111 @@ class PuReport extends TestCaseConfig
 
 
             /******************** timestamp[] *****************************/
-//            [
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__timestamp_array" => [
-//                            '2000-01-01 01:02:03',
-//                            '2010-01-01 04:05:06',
-//                        ]
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__timestamp_array" => [
-//                            '2010-01-01 04:05:06',
-//                            '2020-01-01 07:08:09',
-//                        ]
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__timestamp_array"],
-//                    Report::se_funcs => [self::CONTAINS],
-//                ],
-//                [
-//                    "TST_0",
-//                    "TST_1",
-//                    "TST_2",
-//                ]
-//            ],
-//            [
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__timestamp_array" => [
-//                            '2000-01-01 01:02:03',
-//                            '2010-01-01 04:05:06',
-//                        ]
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__timestamp_array" => [
-//                            '2010-01-01 04:05:06',
-//                            '2020-01-01 07:08:09',
-//                        ]
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__timestamp_array"],
-//                    Report::se_funcs => [self::NOT_CONTAINS],
-//                ],
-//                [
-//                    "TST_0",
-//                    "TST_1",
-//                    "TST_2",
-//                ]
-//            ],
-//            [
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__timestamp_array" => [
-//                            '2000-01-01 01:02:03',
-//                            '2010-01-01 04:05:06',
-//                        ]
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__timestamp_array" => [
-//                            '2010-01-01 04:05:06',
-//                            '2020-01-01 07:08:09',
-//                        ]
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__timestamp_array"],
-//                    Report::se_funcs => [self::ONE_EQUALS],
-//                ],
-//                [
-//                    "TST_0",
-//                    "TST_1",
-//                    "TST_2",
-//                ]
-//            ],
-//            [
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__timestamp_array" => [
-//                            '2000-01-01 01:02:03',
-//                            '2010-01-01 04:05:06',
-//                        ]
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__timestamp_array" => [
-//                            '2010-01-01 04:05:06',
-//                            '2020-01-01 07:08:09',
-//                        ]
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__timestamp_array"],
-//                    Report::se_funcs => [self::IS_NULL],
-//                    Report::se_keys => ['2020-01-01 07:08:09'],
-//
-//                ],
-//                [
-//                    "TST_0",
-//                ]
-//            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__timestamp_array" => [
+                            '2000-01-01 01:02:03',
+                            '2010-01-01 04:05:06',
+                        ]
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__timestamp_array" => [
+                            '2010-01-01 04:05:06',
+                            '2020-01-01 07:08:09',
+                        ]
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__timestamp_array"],
+                    Report::se_funcs => [self::CONTAINS],
+                ],
+                [
+                    "TST_0",
+                    "TST_1",
+                    "TST_2",
+                ]
+            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__timestamp_array" => [
+                            '2000-01-01 01:02:03',
+                            '2010-01-01 04:05:06',
+                        ]
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__timestamp_array" => [
+                            '2010-01-01 04:05:06',
+                            '2020-01-01 07:08:09',
+                        ]
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__timestamp_array"],
+                    Report::se_funcs => [self::NOT_CONTAINS],
+                ],
+                [
+                    "TST_0",
+                    "TST_1",
+                    "TST_2",
+                ]
+            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__timestamp_array" => [
+                            '2000-01-01 01:02:03',
+                            '2010-01-01 04:05:06',
+                        ]
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__timestamp_array" => [
+                            '2010-01-01 04:05:06',
+                            '2020-01-01 07:08:09',
+                        ]
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__timestamp_array"],
+                    Report::se_funcs => [self::ONE_EQUALS],
+                ],
+                [
+                    "TST_0",
+                    "TST_1",
+                    "TST_2",
+                ],
+                "Report search test skipped: timestamp[] type search with operator '~y' and no value must only return the smart elements from the report se_famid value structure"
+            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__timestamp_array" => [
+                            '2000-01-01 01:02:03',
+                            '2010-01-01 04:05:06',
+                        ]
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__timestamp_array" => [
+                            '2010-01-01 04:05:06',
+                            '2020-01-01 07:08:09',
+                        ]
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__timestamp_array"],
+                    Report::se_funcs => [self::IS_NULL],
+                    Report::se_keys => ['2020-01-01 07:08:09'],
+
+                ],
+                [
+                    "TST_0",
+                ]
+            ],
             [
                 [
                     "TST_0" => [],
@@ -6171,25 +6181,26 @@ class PuReport extends TestCaseConfig
                     "TST_1",
                 ]
             ],
-            /**[
-             * [
-             * "TST_0" => [],
-             * "TST_1" => [
-             * "test_ddui_all__docid" => "FOO_1"
-             * ],
-             * "TST_2" => [
-             * "test_ddui_all__docid" => "FOO_2"
-             * ],
-             * ],
-             * [
-             * Report::se_attrids => ["test_ddui_all__docid"],
-             * Report::se_funcs => [self::TITLE_CONTAINS],
-             * Report::se_keys => ["2"]
-             * ],
-             * [
-             * "TST_2",
-             * ]
-             * ],**/
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__docid" => "FOO_1"
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__docid" => "FOO_2"
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__docid"],
+                    Report::se_funcs => [self::TITLE_CONTAINS],
+                    Report::se_keys => ["2"]
+                ],
+                [
+                    "TST_2",
+                ],
+                "Report search test skipped: docid type search with operator '=~*' must return referenced smart elements matching the corresponding value"
+            ],
             [
                 [
                     "TST_0" => [],
@@ -6331,32 +6342,33 @@ class PuReport extends TestCaseConfig
             ],
 
             /******************** docid[] *****************************/
-            /**[
-             * [
-             * "TST_0" => [],
-             * "TST_1" => [
-             * "test_ddui_all__docid_multiple" => [
-             * 'FOO_1',
-             * 'FOO_2',
-             * ]
-             * ],
-             * "TST_2" => [
-             * "test_ddui_all__docid_multiple" => [
-             * 'FOO_2',
-             * 'FOO_3',
-             * ]
-             * ],
-             * ],
-             * [
-             * Report::se_attrids => ["test_ddui_all__docid_multiple"],
-             * Report::se_funcs => [self::CONTAINS],
-             * Report::se_keys => ['O_3'],
-             *
-             * ],
-             * [
-             * "TST_2",
-             * ]
-             * ], **/
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__docid_multiple" => [
+                            'FOO_1',
+                            'FOO_2',
+                        ]
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__docid_multiple" => [
+                            'FOO_2',
+                            'FOO_3',
+                        ]
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__docid_multiple"],
+                    Report::se_funcs => [self::CONTAINS],
+                    Report::se_keys => ['O_3'],
+
+                ],
+                [
+                    "TST_2",
+                ],
+                "Report search test skipped: docid[] type search with operator '~*' must return referenced smart elements matching the corresponding value"
+            ],
             [
                 [
                     "TST_0" => [],
@@ -6466,32 +6478,32 @@ class PuReport extends TestCaseConfig
             ],
 
             /******************** account[] *****************************/
-            /**[
-             * [
-             * "TST_0" => [],
-             * "TST_1" => [
-             * "test_ddui_all__account_multiple" => [
-             * 'ACCOUNT 1',
-             * 'ACCOUNT 2',
-             * ]
-             * ],
-             * "TST_2" => [
-             * "test_ddui_all__account_multiple" => [
-             * 'ACCOUNT 2',
-             * 'ACCOUNT 3',
-             * ]
-             * ],
-             * ],
-             * [
-             * Report::se_attrids => ["test_ddui_all__account_multiple"],
-             * Report::se_funcs => [self::CONTAINS],
-             * Report::se_keys => ['3'],
-             *
-             * ],
-             * [
-             * "TST_2",
-             * ]
-             * ], **/
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__account_multiple" => [
+                            'ACCOUNT 1',
+                            'ACCOUNT 2',
+                        ]
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__account_multiple" => [
+                            'ACCOUNT 2',
+                            'ACCOUNT 3',
+                        ]
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__account_multiple"],
+                    Report::se_funcs => [self::CONTAINS],
+                    Report::se_keys => ['UNT 3'],
+                ],
+                [
+                    "TST_2",
+                ],
+                "Report search test skipped: account[] type search with operator '~*' must return referenced smart elements matching the corresponding value"
+            ],
             [
                 [
                     "TST_0" => [],
@@ -6601,32 +6613,33 @@ class PuReport extends TestCaseConfig
             ],
 
             /******************** docid[][] *****************************/
-            /**[
-             * [
-             * "TST_0" => [],
-             * "TST_1" => [
-             * "test_ddui_all__docid_multiple_array" => [
-             * ['FOO_1','FOO_2'],
-             * ['FOO_2','FOO_3'],
-             * ]
-             * ],
-             * "TST_2" => [
-             * "test_ddui_all__docid_multiple_array" => [
-             * ['FOO_2','FOO_3'],
-             * ['FOO_3','FOO_4'],
-             * ]
-             * ],
-             * ],
-             * [
-             * Report::se_attrids => ["test_ddui_all__docid_multiple_array"],
-             * Report::se_funcs => [self::CONTAINS],
-             * Report::se_keys => ['O_3'],
-             *
-             * ],
-             * [
-             * "TST_2",
-             * ]
-             * ], **/
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__docid_multiple_array" => [
+                            ['FOO_1', 'FOO_2'],
+                            ['FOO_2', 'FOO_3'],
+                        ]
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__docid_multiple_array" => [
+                            ['FOO_2', 'FOO_3'],
+                            ['FOO_3', 'FOO_4'],
+                        ]
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__docid_multiple_array"],
+                    Report::se_funcs => [self::CONTAINS],
+                    Report::se_keys => ['O_4'],
+
+                ],
+                [
+                    "TST_2",
+                ],
+                "Report search test skipped: docid[][] type search with operator '~*' must return referenced smart elements matching the corresponding value"
+            ],
             [
                 [
                     "TST_0" => [],
@@ -6736,60 +6749,60 @@ class PuReport extends TestCaseConfig
             ],
 
             /******************** account[][] *****************************/
-            /**[
-             * [
-             * "TST_0" => [],
-             * "TST_1" => [
-             * "test_ddui_all__account_multiple_array" => [
-             * ['ACCOUNT 1','ACCOUNT 2'],
-             * ['ACCOUNT 2','ACCOUNT 3'],
-             * ]
-             * ],
-             * "TST_2" => [
-             * "test_ddui_all__account_multiple_array" => [
-             * ['ACCOUNT 2','ACCOUNT 3'],
-             * ['ACCOUNT 3','ACCOUNT 4'],
-             * ]
-             * ],
-             * ],
-             * [
-             * Report::se_attrids => ["test_ddui_all__account_multiple_array"],
-             * Report::se_funcs => [self::CONTAINS],
-             * Report::se_keys => ['O_3'],
-             *
-             * ],
-             * [
-             * "TST_2",
-             * ]
-             * ], **/
-//            [
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__account_multiple_array" => [
-//                            ['ACCOUNT 1','ACCOUNT 2'],
-//                            ['ACCOUNT 2','ACCOUNT 3'],
-//                        ]
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__account_multiple_array" => [
-//                            ['ACCOUNT 2','ACCOUNT 3'],
-//                            ['ACCOUNT 3','ACCOUNT 4'],
-//                        ]
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__account_multiple_array"],
-//                    Report::se_funcs => [self::NOT_CONTAINS],
-//                    Report::se_keys => ['ACCOUNT 4'],
-//
-//                ],
-//                [
-//                    "TST_0",
-//                    "TST_1",
-//                ],
-//                true
-//            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__account_multiple_array" => [
+                            ['ACCOUNT 1', 'ACCOUNT 2'],
+                            ['ACCOUNT 2', 'ACCOUNT 3'],
+                        ]
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__account_multiple_array" => [
+                            ['ACCOUNT 2', 'ACCOUNT 3'],
+                            ['ACCOUNT 3', 'ACCOUNT 4'],
+                        ]
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__account_multiple_array"],
+                    Report::se_funcs => [self::CONTAINS],
+                    Report::se_keys => ['O_3'],
+
+                ],
+                [
+                    "TST_2",
+                ],
+                "Report search test skipped: account[][] type search with operator '~*' must return referenced smart elements matching the corresponding value"
+            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__account_multiple_array" => [
+                            ['ACCOUNT 1', 'ACCOUNT 2'],
+                            ['ACCOUNT 2', 'ACCOUNT 3'],
+                        ]
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__account_multiple_array" => [
+                            ['ACCOUNT 2', 'ACCOUNT 3'],
+                            ['ACCOUNT 3', 'ACCOUNT 4'],
+                        ]
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__account_multiple_array"],
+                    Report::se_funcs => [self::NOT_CONTAINS],
+                    Report::se_keys => ['ACCOUNT 4'],
+                ],
+                [
+                    "TST_0",
+                    "TST_1",
+                ],
+                "Report search test skipped: account[][] type search with operator '!~*' must only return smart elements which don't match the value"
+            ],
             [
                 [
                     "TST_0" => [],
@@ -7658,45 +7671,86 @@ class PuReport extends TestCaseConfig
     {
         return [
             /************** file ******************/
-//            [
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__file" => __DIR__. "/Inputs/dummy_file.txt"
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__file" => __DIR__. "/Inputs/dummy_file2.txt"
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__file"],
-//                    Report::se_funcs => [self::CONTAINS],
-//                    Report::se_keys => ["2"]
-//                ],
-//                [
-//                    "TST_2",
-//                ]
-//            ],
-//          TODO:  [
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__file" => __DIR__. "/Inputs/dummy_file.txt"
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__file" => __DIR__. "/Inputs/dummy_file2.txt"
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__file"],
-//                    Report::se_funcs => [self::NOT_CONTAINS],
-//                    Report::se_keys => ["2"]
-//                ],
-//                [
-//                    "TST_0",
-//                    "TST_1",
-//                ]
-//            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__file" => __DIR__ . "/Inputs/dummy_file.txt"
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__file" => __DIR__ . "/Inputs/dummy_file2.txt"
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__file"],
+                    Report::se_funcs => [self::CONTAINS],
+                    Report::se_keys => ["file2"]
+                ],
+                [
+                    "TST_2",
+                ]
+            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__file" => __DIR__ . "/Inputs/dummy_file.txt"
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__file" => __DIR__ . "/Inputs/dummy_file2.txt"
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__file"],
+                    Report::se_funcs => [self::CONTAINS],
+                    Report::se_keys => ["2"]
+                ],
+                [
+                    "TST_2",
+                ],
+                "Report search test skipped: file type search with operator '~*' must return smart elements matching the corresponding filename value"
+            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__file" => __DIR__ . "/Inputs/dummy_file.txt"
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__file" => __DIR__ . "/Inputs/dummy_file2.txt"
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__file"],
+                    Report::se_funcs => [self::NOT_CONTAINS],
+                    Report::se_keys => ["file2"]
+                ],
+                [
+                    "TST_0",
+                    "TST_1",
+                ]
+            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__file" => __DIR__ . "/Inputs/dummy_file.txt"
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__file" => __DIR__ . "/Inputs/dummy_file2.txt"
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__file"],
+                    Report::se_funcs => [self::NOT_CONTAINS],
+                    Report::se_keys => ["2"]
+                ],
+                [
+                    "TST_0",
+                    "TST_1",
+                ],
+                "Report search test skipped: file type search with operator '!~*' must return smart elements not matching the corresponding filename value"
+            ],
             [
                 [
                     "TST_0" => [],
@@ -7738,45 +7792,86 @@ class PuReport extends TestCaseConfig
             ],
 
             /************** image ******************/
-//            TODO:[
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__image" => __DIR__. "/Inputs/dummy_image.jpeg"
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__image" => __DIR__. "/Inputs/dummy_image2.png"
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__image"],
-//                    Report::se_funcs => [self::CONTAINS],
-//                    Report::se_keys => ["2"]
-//                ],
-//                [
-//                    "TST_2",
-//                ]
-//            ],
-//            [
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__image" => __DIR__. "/Inputs/dummy_image.jpeg"
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__image" => __DIR__. "/Inputs/dummy_image2.png"
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__image"],
-//                    Report::se_funcs => [self::NOT_CONTAINS],
-//                    Report::se_keys => ["2"]
-//                ],
-//                [
-//                    "TST_0",
-//                    "TST_1",
-//                ]
-//            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__image" => __DIR__ . "/Inputs/dummy_image.jpeg"
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__image" => __DIR__ . "/Inputs/dummy_image2.png"
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__image"],
+                    Report::se_funcs => [self::CONTAINS],
+                    Report::se_keys => ["image2"]
+                ],
+                [
+                    "TST_2",
+                ]
+            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__image" => __DIR__ . "/Inputs/dummy_image.jpeg"
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__image" => __DIR__ . "/Inputs/dummy_image2.png"
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__image"],
+                    Report::se_funcs => [self::CONTAINS],
+                    Report::se_keys => ["2"]
+                ],
+                [
+                    "TST_2",
+                ],
+                "Report search test skipped: image type search with operator '~*' must return smart elements matching the corresponding filename value"
+            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__image" => __DIR__ . "/Inputs/dummy_image.jpeg"
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__image" => __DIR__ . "/Inputs/dummy_image2.png"
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__image"],
+                    Report::se_funcs => [self::NOT_CONTAINS],
+                    Report::se_keys => ["image2"]
+                ],
+                [
+                    "TST_0",
+                    "TST_1",
+                ]
+            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__image" => __DIR__ . "/Inputs/dummy_image.jpeg"
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__image" => __DIR__ . "/Inputs/dummy_image2.png"
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__image"],
+                    Report::se_funcs => [self::NOT_CONTAINS],
+                    Report::se_keys => ["2"]
+                ],
+                [
+                    "TST_0",
+                    "TST_1",
+                ],
+                "Report search test skipped: image type search with operator '!~*' must return smart elements not matching the corresponding filename value"
+            ],
             [
                 [
                     "TST_0" => [],
@@ -7818,64 +7913,136 @@ class PuReport extends TestCaseConfig
             ],
 
             /************** file[] ******************/
-//            TODO: [
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__file_array" => [ __DIR__. "/Inputs/dummy_file.txt", __DIR__. "/Inputs/dummy_file2.txt" ]
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__file_array" => [ __DIR__. "/Inputs/dummy_file2.txt", __DIR__. "/Inputs/dummy_file3.txt" ]
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__file_array"],
-//                    Report::se_funcs => [self::CONTAINS],
-//                    Report::se_keys => ["3"]
-//                ],
-//                [
-//                    "TST_2",
-//                ]
-//            ],
-//            [
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__file_array" => [ __DIR__. "/Inputs/dummy_file.txt", __DIR__. "/Inputs/dummy_file2.txt" ]
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__file_array" => [ __DIR__. "/Inputs/dummy_file2.txt", __DIR__. "/Inputs/dummy_file3.txt" ]
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__file_array"],
-//                    Report::se_funcs => [self::NOT_CONTAINS],
-//                    Report::se_keys => ["3"]
-//                ],
-//                [
-//                    "TST_0",
-//                    "TST_1",
-//                ]
-//            ],
-//            [
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__file_array" => [ __DIR__. "/Inputs/dummy_file.txt", __DIR__. "/Inputs/dummy_file2.txt" ]
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__file_array" => [ __DIR__. "/Inputs/dummy_file2.txt", __DIR__. "/Inputs/dummy_file3.txt" ]
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__file_array"],
-//                    Report::se_funcs => [self::ONE_EQUALS],
-//                    Report::se_keys => [__DIR__. "/Inputs/dummy_file.txt"]
-//                ],
-//                [
-//                    "TST_1",
-//                ]
-//            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__file_array" => [
+                            __DIR__ . "/Inputs/dummy_file.txt",
+                            __DIR__ . "/Inputs/dummy_file2.txt"
+                        ]
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__file_array" => [
+                            __DIR__ . "/Inputs/dummy_file2.txt",
+                            __DIR__ . "/Inputs/dummy_file3.txt"
+                        ]
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__file_array"],
+                    Report::se_funcs => [self::CONTAINS],
+                    Report::se_keys => ["file3"]
+                ],
+                [
+                    "TST_2",
+                ]
+            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__file_array" => [
+                            __DIR__ . "/Inputs/dummy_file.txt",
+                            __DIR__ . "/Inputs/dummy_file2.txt"
+                        ]
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__file_array" => [
+                            __DIR__ . "/Inputs/dummy_file2.txt",
+                            __DIR__ . "/Inputs/dummy_file3.txt"
+                        ]
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__file_array"],
+                    Report::se_funcs => [self::CONTAINS],
+                    Report::se_keys => ["3"]
+                ],
+                [
+                    "TST_2",
+                ],
+                "Report search test skipped: file[] type search with operator '~*' must return smart elements matching the corresponding filename value"
+            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__file_array" => [
+                            __DIR__ . "/Inputs/dummy_file.txt",
+                            __DIR__ . "/Inputs/dummy_file2.txt"
+                        ]
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__file_array" => [
+                            __DIR__ . "/Inputs/dummy_file2.txt",
+                            __DIR__ . "/Inputs/dummy_file3.txt"
+                        ]
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__file_array"],
+                    Report::se_funcs => [self::NOT_CONTAINS],
+                    Report::se_keys => ["file3"]
+                ],
+                [
+                    "TST_0",
+                    "TST_1",
+                ]
+            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__file_array" => [
+                            __DIR__ . "/Inputs/dummy_file.txt",
+                            __DIR__ . "/Inputs/dummy_file2.txt"
+                        ]
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__file_array" => [
+                            __DIR__ . "/Inputs/dummy_file2.txt",
+                            __DIR__ . "/Inputs/dummy_file3.txt"
+                        ]
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__file_array"],
+                    Report::se_funcs => [self::NOT_CONTAINS],
+                    Report::se_keys => ["3"]
+                ],
+                [
+                    "TST_0",
+                    "TST_1",
+                ],
+                "Report search test skipped: file[] type search with operator '!~*' must return smart elements not matching the corresponding filename value"
+            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__file_array" => [
+                            __DIR__ . "/Inputs/dummy_file.txt",
+                            __DIR__ . "/Inputs/dummy_file2.txt"
+                        ]
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__file_array" => [
+                            __DIR__ . "/Inputs/dummy_file2.txt",
+                            __DIR__ . "/Inputs/dummy_file3.txt"
+                        ]
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__file_array"],
+                    Report::se_funcs => [self::ONE_EQUALS],
+                    Report::se_keys => [__DIR__ . "/Inputs/dummy_file.txt"]
+                ],
+                [
+                    "TST_1",
+                ],
+                "Report search test skipped: check value for file[] type search with operator '~y'. Does this operator has a sense ?"
+            ],
             [
                 [
                     "TST_0" => [],
@@ -7928,64 +8095,136 @@ class PuReport extends TestCaseConfig
             ],
 
             /************** image[] ******************/
-//            TODO: [
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__image_array" => [ __DIR__. "/Inputs/dummy_image.jpeg", __DIR__. "/Inputs/dummy_image2.png" ]
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__image_array" => [ __DIR__. "/Inputs/dummy_image2.png", __DIR__. "/Inputs/dummy_image3.jpeg" ]
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__image_array"],
-//                    Report::se_funcs => [self::CONTAINS],
-//                    Report::se_keys => ["3"]
-//                ],
-//                [
-//                    "TST_2",
-//                ]
-//            ],
-//            [
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__image_array" => [ __DIR__. "/Inputs/dummy_image.jpeg", __DIR__. "/Inputs/dummy_image2.png" ]
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__image_array" => [ __DIR__. "/Inputs/dummy_image2.png", __DIR__. "/Inputs/dummy_image3.jpeg" ]
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__image_array"],
-//                    Report::se_funcs => [self::NOT_CONTAINS],
-//                    Report::se_keys => ["3"]
-//                ],
-//                [
-//                    "TST_0",
-//                    "TST_1",
-//                ]
-//            ],
-//            [
-//                [
-//                    "TST_0" => [],
-//                    "TST_1" => [
-//                        "test_ddui_all__image_array" => [ __DIR__. "/Inputs/dummy_image.jpeg", __DIR__. "/Inputs/dummy_image2.png" ]
-//                    ],
-//                    "TST_2" => [
-//                        "test_ddui_all__image_array" => [ __DIR__. "/Inputs/dummy_image2.png", __DIR__. "/Inputs/dummy_image3.jpeg" ]
-//                    ],
-//                ],
-//                [
-//                    Report::se_attrids => ["test_ddui_all__image_array"],
-//                    Report::se_funcs => [self::ONE_EQUALS],
-//                    Report::se_keys => [__DIR__. "/Inputs/dummy_image.jpeg"]
-//                ],
-//                [
-//                    "TST_1",
-//                ]
-//            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__image_array" => [
+                            __DIR__ . "/Inputs/dummy_image.jpeg",
+                            __DIR__ . "/Inputs/dummy_image2.png"
+                        ]
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__image_array" => [
+                            __DIR__ . "/Inputs/dummy_image2.png",
+                            __DIR__ . "/Inputs/dummy_image3.jpeg"
+                        ]
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__image_array"],
+                    Report::se_funcs => [self::CONTAINS],
+                    Report::se_keys => ["image3"]
+                ],
+                [
+                    "TST_2",
+                ]
+            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__image_array" => [
+                            __DIR__ . "/Inputs/dummy_image.jpeg",
+                            __DIR__ . "/Inputs/dummy_image2.png"
+                        ]
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__image_array" => [
+                            __DIR__ . "/Inputs/dummy_image2.png",
+                            __DIR__ . "/Inputs/dummy_image3.jpeg"
+                        ]
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__image_array"],
+                    Report::se_funcs => [self::CONTAINS],
+                    Report::se_keys => ["3"]
+                ],
+                [
+                    "TST_2",
+                ],
+                "Report search test skipped: image[] type search with operator '~*' must return smart elements matching the corresponding filename value"
+            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__image_array" => [
+                            __DIR__ . "/Inputs/dummy_image.jpeg",
+                            __DIR__ . "/Inputs/dummy_image2.png"
+                        ]
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__image_array" => [
+                            __DIR__ . "/Inputs/dummy_image2.png",
+                            __DIR__ . "/Inputs/dummy_image3.jpeg"
+                        ]
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__image_array"],
+                    Report::se_funcs => [self::NOT_CONTAINS],
+                    Report::se_keys => ["image3"]
+                ],
+                [
+                    "TST_0",
+                    "TST_1",
+                ]
+            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__image_array" => [
+                            __DIR__ . "/Inputs/dummy_image.jpeg",
+                            __DIR__ . "/Inputs/dummy_image2.png"
+                        ]
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__image_array" => [
+                            __DIR__ . "/Inputs/dummy_image2.png",
+                            __DIR__ . "/Inputs/dummy_image3.jpeg"
+                        ]
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__image_array"],
+                    Report::se_funcs => [self::NOT_CONTAINS],
+                    Report::se_keys => ["3"]
+                ],
+                [
+                    "TST_0",
+                    "TST_1",
+                ],
+                "Report search test skipped: image[] type search with operator '!~*' must return smart elements not matching the corresponding filename value"
+            ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__image_array" => [
+                            __DIR__ . "/Inputs/dummy_image.jpeg",
+                            __DIR__ . "/Inputs/dummy_image2.png"
+                        ]
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__image_array" => [
+                            __DIR__ . "/Inputs/dummy_image2.png",
+                            __DIR__ . "/Inputs/dummy_image3.jpeg"
+                        ]
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__image_array"],
+                    Report::se_funcs => [self::ONE_EQUALS],
+                    Report::se_keys => [__DIR__ . "/Inputs/dummy_image.jpeg"]
+                ],
+                [
+                    "TST_1",
+                ],
+                "Report search test skipped: check value for image[] type search with operator '~y'. Does this operator has a sense ?"
+            ],
             [
                 [
                     "TST_0" => [],
@@ -8465,10 +8704,7 @@ class PuReport extends TestCaseConfig
                     "TST_0",
                 ]
             ],
-
-
         ];
     }
-
     //endregion
 }
