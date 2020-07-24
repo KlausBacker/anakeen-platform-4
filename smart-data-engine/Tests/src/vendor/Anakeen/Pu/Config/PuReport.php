@@ -3,6 +3,7 @@
 namespace Anakeen\Pu\Config;
 
 use Anakeen\Core\SEManager;
+use phpDocumentor\Reflection\Types\Boolean;
 use SmartStructure\Fields\Devbill;
 use SmartStructure\Fields\Iuser;
 use SmartStructure\Fields\Report;
@@ -83,18 +84,26 @@ class PuReport extends TestCaseConfig
     }
 
     /**
-     * @dataProvider dataFieldEmptyValue
      * @param array $smartElementToFind
      * @param array $reportData
      * @param array $expectedSEFound
+     * @param string $skippedTestMessage
+     * @param $seProcess
+     * @param $reportProcess
      * @throws \Anakeen\Core\DocManager\Exception
      * @throws \Anakeen\Core\Exception
      * @throws \Anakeen\Core\SmartStructure\SmartFieldAccessException
      * @throws \Anakeen\Database\Exception
      * @throws \Anakeen\Exception
      */
-    public function testFieldDefault(array $smartElementToFind, array $reportData, array $expectedSEFound)
-    {
+    public function genericTest(
+        array $smartElementToFind,
+        array $reportData,
+        array $expectedSEFound,
+        $seProcess,
+        $reportProcess,
+        string $skippedTestMessage = ""
+    ) {
         $allTypeStructure = SEManager::getFamily("TST_REPORT_ALLTYPE");
         $this->assertNotEmpty($allTypeStructure, "Structure TST_REPORT_ALLTYPE not found");
 
@@ -103,7 +112,7 @@ class PuReport extends TestCaseConfig
             $elt = SEManager::createDocument($allTypeStructure->id);
             $elt->setAttributeValue("test_ddui_all__title", $name);
             foreach ($attrs as $id => $value) {
-                $elt->setAttributeValue($id, $value);
+                $seProcess($elt, $id, $value);
             }
             $elt->store();
         }
@@ -113,12 +122,12 @@ class PuReport extends TestCaseConfig
         $report = SEManager::createDocument($reportStructure->id);
         $report->setAttributeValue(Report::se_famid, $allTypeStructure->id);
         foreach ($reportData as $id => $value) {
-            $report->setAttributeValue($id, $value);
+            $reportProcess($report, $id, $value);
         }
         $report->store();
         $query = $report->getAttributeValue(Report::se_sqlselect);
 
-        print "\n\n$query";
+//        print "\n\n$query";
 
         $results = [];
         foreach ($report->getContent() as $foundSE) {
@@ -126,7 +135,43 @@ class PuReport extends TestCaseConfig
         }
 
 
-        self::assertEquals($expectedSEFound, $results, "\nReport found elements are not correct");
+        if (empty($skippedTestMessage)) {
+            self::markTestSkipped($skippedTestMessage);
+        } else {
+            self::assertEquals($expectedSEFound, $results, "\nReport found elements are not correct");
+        }
+    }
+
+    /**
+     * @dataProvider dataFieldDefault
+     * @dataProvider dataFieldEmptyValue
+     * @param array $smartElementToFind
+     * @param array $reportData
+     * @param array $expectedSEFound
+     * @param string $skippedTestMessage
+     */
+    public function testFieldDefault(
+        array $smartElementToFind,
+        array $reportData,
+        array $expectedSEFound,
+        string $skippedTestMessage = ""
+    ) {
+        $seProcess = function ($elt, $id, $value) {
+            $elt->setAttributeValue($id, $value);
+        };
+
+        $reportProcess = function ($report, $id, $value) {
+            $report->setAttributeValue($id, $value);
+        };
+
+        $this->genericTest(
+            $smartElementToFind,
+            $reportData,
+            $expectedSEFound,
+            $seProcess,
+            $reportProcess,
+            $skippedTestMessage
+        );
     }
 
     public function dataFieldDefault()
@@ -6010,44 +6055,32 @@ class PuReport extends TestCaseConfig
      * @param array $smartElementToFind
      * @param array $reportData
      * @param array $expectedSEFound
-     * @throws \Anakeen\Core\DocManager\Exception
-     * @throws \Anakeen\Core\Exception
-     * @throws \Anakeen\Core\SmartStructure\SmartFieldAccessException
-     * @throws \Anakeen\Database\Exception
-     * @throws \Anakeen\Exception
+     * @param string $skippedTestMessage
      */
-    public function testFieldRelations(array $smartElementToFind, array $reportData, array $expectedSEFound)
-    {
-        $allTypeStructure = SEManager::getFamily("TST_REPORT_ALLTYPE");
-        $this->assertNotEmpty($allTypeStructure, "Structure TST_REPORT_ALLTYPE not found");
-
-        foreach ($smartElementToFind as $name => $attrs) {
-            $elt = SEManager::createDocument($allTypeStructure->id);
-            $elt->setAttributeValue("test_ddui_all__title", $name);
-            foreach ($attrs as $id => $value) {
-                if (is_array($value)) {
-                    $newValues = array_map(function (&$name) {
-                        if (is_array($name)) {
-                            return array_map(function ($subName) {
-                                return self::$idMap[$subName];
-                            }, $name);
-                        } else {
-                            return self::$idMap[$name];
-                        }
-                    }, $value);
-                    $elt->setAttributeValue($id, $newValues);
-                } else {
-                    $elt->setAttributeValue($id, self::$idMap[$value]);
-                }
+    public function testFieldRelations(
+        array $smartElementToFind,
+        array $reportData,
+        array $expectedSEFound,
+        string $skippedTestMessage = ""
+    ) {
+        $seProcess = function ($elt, $id, $value) {
+            if (is_array($value)) {
+                $newValues = array_map(function (&$name) {
+                    if (is_array($name)) {
+                        return array_map(function ($subName) {
+                            return self::$idMap[$subName];
+                        }, $name);
+                    } else {
+                        return self::$idMap[$name];
+                    }
+                }, $value);
+                $elt->setAttributeValue($id, $newValues);
+            } else {
+                $elt->setAttributeValue($id, self::$idMap[$value]);
             }
-            $elt->store();
-        }
+        };
 
-        $reportStructure = SEManager::getFamily("REPORT");
-        $this->assertNotEmpty($reportStructure, "Structure REPORT not found");
-        $report = SEManager::createDocument($reportStructure->id);
-        $report->setAttributeValue(Report::se_famid, $allTypeStructure->id);
-        foreach ($reportData as $id => $value) {
+        $reportProcess = function ($report, $id, $value) {
             if ($id === Report::se_keys) {
                 $newValues = array_map(function ($name) {
                     if (in_array($name, self::RELATIONS_NAME)) {
@@ -6060,15 +6093,16 @@ class PuReport extends TestCaseConfig
             } else {
                 $report->setAttributeValue($id, $value);
             }
-        }
-        $report->store();
+        };
 
-        $results = [];
-        foreach ($report->getContent() as $foundSE) {
-            $results[] = $foundSE["title"];
-        }
-
-        self::assertEquals($expectedSEFound, $results, "Report found elements are not correct");
+        $this->genericTest(
+            $smartElementToFind,
+            $reportData,
+            $expectedSEFound,
+            $seProcess,
+            $reportProcess,
+            $skippedTestMessage
+        );
     }
 
     public function dataFieldRelations()
@@ -7564,47 +7598,37 @@ class PuReport extends TestCaseConfig
      * @param array $smartElementToFind
      * @param array $reportData
      * @param array $expectedSEFound
-     * @throws \Anakeen\Core\DocManager\Exception
-     * @throws \Anakeen\Core\Exception
-     * @throws \Anakeen\Core\SmartStructure\SmartFieldAccessException
-     * @throws \Anakeen\Database\Exception
-     * @throws \Anakeen\Exception
+     * @param string $skippedTestMessage
      */
-    public function testFieldFiles(array $smartElementToFind, array $reportData, array $expectedSEFound)
-    {
-        $allTypeStructure = SEManager::getFamily("TST_REPORT_ALLTYPE");
-        $this->assertNotEmpty($allTypeStructure, "Structure TST_REPORT_ALLTYPE not found");
+    public function testFieldFiles(
+        array $smartElementToFind,
+        array $reportData,
+        array $expectedSEFound,
+        string $skippedTestMessage = ""
+    ) {
 
-        foreach ($smartElementToFind as $name => $attrs) {
-            $elt = SEManager::createDocument($allTypeStructure->id);
-            $elt->setAttributeValue("test_ddui_all__title", $name);
-            foreach ($attrs as $id => $value) {
-                if (is_array($value)) {
-                    foreach ($value as $index => $filename) {
-                        $elt->setFile($id, $filename, "", $index);
-                    }
-                } else {
-                    $elt->setFile($id, $value);
+        $seProcess = function ($elt, $id, $value) {
+            if (is_array($value)) {
+                foreach ($value as $index => $filename) {
+                    $elt->setFile($id, $filename, "", $index);
                 }
+            } else {
+                $elt->setFile($id, $value);
             }
-            $elt->store();
-        }
+        };
 
-        $reportStructure = SEManager::getFamily("REPORT");
-        $this->assertNotEmpty($reportStructure, "Structure REPORT not found");
-        $report = SEManager::createDocument($reportStructure->id);
-        $report->setAttributeValue(Report::se_famid, $allTypeStructure->id);
-        foreach ($reportData as $id => $value) {
+        $reportProcess = function ($report, $id, $value) {
             $report->setAttributeValue($id, $value);
-        }
-        $report->store();
+        };
 
-        $results = [];
-        foreach ($report->getContent() as $foundSE) {
-            $results[] = $foundSE["title"];
-        }
-
-        self::assertEquals($expectedSEFound, $results, "Report found elements are not correct");
+        $this->genericTest(
+            $smartElementToFind,
+            $reportData,
+            $expectedSEFound,
+            $seProcess,
+            $reportProcess,
+            $skippedTestMessage
+        );
     }
 
     public function dataFieldFiles()
