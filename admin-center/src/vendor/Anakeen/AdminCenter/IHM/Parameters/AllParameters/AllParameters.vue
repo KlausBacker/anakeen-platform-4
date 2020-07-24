@@ -14,7 +14,7 @@
             ref="userSmartForm"
             class="user-param-smart-form"
             :config="selectUserForm"
-            :options="{ force }"
+            :options="{ withCloseConfirmation: false }"
             @smartFieldChange="userChange"
             @ready="loadParamFromVu"
           />
@@ -35,7 +35,7 @@
             ref="formParameters"
             class="user-smart-form-parameter"
             :config="smartFormData"
-            :options="{ force }"
+            :options="{ withCloseConfirmation: false }"
             @smartFieldChange="updateModifications"
             @actionClick="menuClick"
           ></ank-smart-form>

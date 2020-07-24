@@ -5,7 +5,7 @@
       v-if="haveParameters"
       ref="ssmForm"
       :config="generateSmartForm"
-      :options="{ force: true }"
+      :options="{ withCloseConfirmation: false }"
       @beforeSave="onSave"
       @actionClick="onActionClick"
     />

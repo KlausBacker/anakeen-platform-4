@@ -112,3 +112,8 @@ export interface ISmartFormConfiguration {
   values?: ISmartFormFieldsValues;
   menu?: ISmartFormMenuElement[];
 }
+
+export interface ISmartFormOptions {
+  withCloseConfirmation?: true;
+  force?: false;
+}
