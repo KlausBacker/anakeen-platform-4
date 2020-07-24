@@ -225,12 +225,12 @@ class ExportConfiguration
                     $smartOver->setAttribute("insert-after", $attr->getOption("relativeOrder"));
                 } else {
                     if (is_numeric($docattr->ordered)) {
-                        $previous=null;
-                        $allAttrs=$this->sst->getAttributes();
+                        $previous = null;
+                        $allAttrs = $this->sst->getAttributes();
                         $this->sst->attributes->orderAttributes();
-                        
+
                         foreach ($allAttrs as $fields) {
-                            if (!$fields || $fields->usefor==='Q') {
+                            if (!$fields || $fields->usefor === 'Q') {
                                 continue;
                             }
                             if ($fields->id === $attr->id) {
@@ -240,29 +240,28 @@ class ExportConfiguration
                                 case "frame":
                                     if ($fields->type === "frame") {
                                         if ($attr->fieldSet && $fields->fieldSet && $attr->fieldSet->id === $fields->fieldSet->id) {
-                                            $previous=$fields;
+                                            $previous = $fields;
                                         } elseif (!$attr->fieldSet && !$fields->fieldSet) {
-                                            $previous=$fields;
+                                            $previous = $fields;
                                         }
                                     }
                                     break;
                                 case "tab":
                                     if ($fields->type === "tab") {
-                                        $previous=$fields;
+                                        $previous = $fields;
                                     }
                                     break;
                                 default:
                                     if ($fields->type !== "frame" && $fields->type !== "tab" && $fields->fieldSet && $fields->fieldSet->id === $attr->fieldSet->id) {
-                                        if ($fields->getOption("autotitle")!=="yes") {
-                                            $previous=$fields;
+                                        if ($fields->getOption("autotitle") !== "yes") {
+                                            $previous = $fields;
                                         }
                                     }
                             }
                         }
 
 
-
-                            $smartOver->setAttribute("insert-after", $previous?$previous->id:"::first");
+                        $smartOver->setAttribute("insert-after", $previous ? $previous->id : "::first");
                     } else {
                         $smartOver->setAttribute("insert-after", $docattr->ordered);
                     }
@@ -376,13 +375,19 @@ class ExportConfiguration
                     $enumTag->setAttribute("name", $enum["key"]);
                     $enumTag->setAttribute("label", $enum["label"]);
                     if ($enum["parentkey"]) {
-                        $parentId = $enum["parentkey"];
-                        if (!isset($parents[$enumName][$parentId])) {
-                            $parents[$enumName][$parentId] = $this->cel("enum");
-                            $parents[$enumName][$parentId]->setAttribute("name", $parentId);
-                            $enumConfs[$enumName]->appendChild($parents[$enumName][$parentId]);
+                        if ($enum["parentkey"] === \Anakeen\Core\EnumManager::CALLABLEKEY) {
+                            $enumCallableTag = $this->cel("enum-callable");
+                            $enumCallableTag->setAttribute("function", $enum["key"]);
+                            $enumConfs[$enumName]->appendChild($enumCallableTag);
+                        } else {
+                            $parentId = $enum["parentkey"];
+                            if (!isset($parents[$enumName][$parentId])) {
+                                $parents[$enumName][$parentId] = $this->cel("enum");
+                                $parents[$enumName][$parentId]->setAttribute("name", $parentId);
+                                $enumConfs[$enumName]->appendChild($parents[$enumName][$parentId]);
+                            }
+                            $parents[$enumName][$parentId]->appendChild($enumTag);
                         }
-                        $parents[$enumName][$parentId]->appendChild($enumTag);
                     } else {
                         $enumConfs[$enumName]->appendChild($enumTag);
                         $parents[$enumName][$enum["key"]] = $enumTag;

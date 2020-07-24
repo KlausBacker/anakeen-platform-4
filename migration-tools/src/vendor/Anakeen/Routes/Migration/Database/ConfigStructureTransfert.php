@@ -5,6 +5,7 @@ namespace Anakeen\Routes\Migration\Database;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
+use Anakeen\Core\SmartStructure\Callables\ParseFamilyFunction;
 use Anakeen\Core\SmartStructure\DocAttr;
 use Anakeen\Core\Utils\Postgres;
 use Anakeen\Migration\Utils;
@@ -13,6 +14,11 @@ use Anakeen\Router\Exception;
 class ConfigStructureTransfert extends DataElementTransfert
 {
     const SMART_STRUCTURES = "SmartStructures";
+    protected static $vendorName;
+    /**
+     * @var string
+     */
+    protected static $subDirName;
 
     protected function initParameters($args)
     {
@@ -27,7 +33,14 @@ class ConfigStructureTransfert extends DataElementTransfert
     {
         $data = [];
 
-
+        self::$vendorName = ContextManager::getParameterValue("Migration", "VENDOR");
+        self::$subDirName = ContextManager::getParameterValue("Migration", "MODULE");
+        if (!self::$vendorName) {
+            throw new Exception("Migration VENDOR parameter is not set");
+        }
+        if (!self::$subDirName) {
+            throw new Exception("Migration MODULE parameter is not set");
+        }
         $data["count"] = count($this->transfertConfig($this->structureName));
 
         $data["properties"] = $this->getProperties();
@@ -72,25 +85,35 @@ class ConfigStructureTransfert extends DataElementTransfert
 
     protected static function getBehaviorPath($structureName)
     {
-        $vendorName = ContextManager::getParameterValue("Migration", "VENDOR");
-        $subDirName = ContextManager::getParameterValue("Migration", "MODULE");
-        if (!$vendorName) {
-            throw new Exception("Migration VENDOR parameter is not set");
-        }
+
         $structName = ucfirst(strtolower($structureName));
 
-        $namePath = [$vendorName, self::SMART_STRUCTURES, $structName];
+        $namePath = [self::$vendorName, self::SMART_STRUCTURES, $structName];
         $className = sprintf("%sBehavior", $structName);
         $vendorPath = sprintf("%s/vendor", ContextManager::getRootDirectory());
-        if ($subDirName) {
-            $namePath = [$vendorName, $subDirName, self::SMART_STRUCTURES, $structName];
+        if (self::$subDirName) {
+            $namePath = [self::$vendorName, self::$subDirName, self::SMART_STRUCTURES, $structName];
         }
         return sprintf("%s/%s/%s.php", $vendorPath, implode("/", $namePath), $className);
+    }
+
+    protected static function getEnumPath($enumClassName)
+    {
+        $namePath = [self::$vendorName, "Enums"];
+        $vendorPath = sprintf("%s/vendor", ContextManager::getRootDirectory());
+        if (self::$subDirName) {
+            $namePath = [self::$vendorName, self::$subDirName, "Enums"];
+        }
+        return sprintf("%s/%s/%s.php", $vendorPath, implode("/", $namePath), $enumClassName);
     }
 
     protected static function getBehaviorTemplateContent()
     {
         return file_get_contents(__DIR__ . '/../../../Migration/StructureBehavior.php.mustache');
+    }
+    protected static function getEnumTemplateContent()
+    {
+        return file_get_contents(__DIR__ . '/../../../Migration/EnumCallable.php.mustache');
     }
 
     protected static function createBehaviorStub($structureName)
@@ -104,18 +127,14 @@ class ConfigStructureTransfert extends DataElementTransfert
             "select name from docfam where id=(select fromid from docfam where name='%s');",
             pg_escape_string($structureName)
         );
-        $vendorName = ContextManager::getParameterValue("Migration", "VENDOR");
-        $subDirName = ContextManager::getParameterValue("Migration", "MODULE");
-        if (!$vendorName) {
-            throw new Exception("Migration VENDOR parameter is not set");
-        }
+
         DbManager::query($sql, $parentName, true, true);
         $structDir = ucfirst(strtolower($structureName));
 
-        if ($subDirName) {
-            $namePath = [$vendorName, $subDirName, self::SMART_STRUCTURES, $structDir];
+        if (self::$subDirName) {
+            $namePath = [self::$vendorName, self::$subDirName, self::SMART_STRUCTURES, $structDir];
         } else {
-            $namePath = [$vendorName, self::SMART_STRUCTURES, $structDir];
+            $namePath = [self::$vendorName, self::SMART_STRUCTURES, $structDir];
         }
         $className = sprintf("%sBehavior", $structDir);
         $template = static::getBehaviorTemplateContent();
@@ -132,7 +151,7 @@ class ConfigStructureTransfert extends DataElementTransfert
 
         $sql = sprintf(
             "update docfam set atags = atags || E'{\"vendor\":\"%s\"}' where name='%s'",
-            $vendorName,
+            self::$vendorName,
             pg_escape_string($structureName)
         );
         DbManager::query($sql);
@@ -147,7 +166,7 @@ class ConfigStructureTransfert extends DataElementTransfert
 
         $mustache = new \Mustache_Engine();
         $stubBehaviorContent = $mustache->render($template, [
-            "VENDOR" => $vendorName,
+            "VENDOR" => self::$vendorName,
             "Classname" => $className,
             "Namespace" => implode("\\", $namePath),
             "Extends" => $extends,
@@ -156,7 +175,44 @@ class ConfigStructureTransfert extends DataElementTransfert
             "structureName" => $structureName
         ]);
         Utils::writeFileContent($stubPath, $stubBehaviorContent);
-        //print "$stubPath\n";
+    }
+
+    protected static function createEnumStub($enumClassName, $enumFunctionName, $attrInfo)
+    {
+        $sql = sprintf(
+            "select classname from docfam where name='%s'",
+            pg_escape_string($enumClassName)
+        );
+        DbManager::query($sql, $classPath, true, true);
+        $sql = sprintf(
+            "select name from docfam where id=(select fromid from docfam where name='%s');",
+            pg_escape_string($enumClassName)
+        );
+
+        DbManager::query($sql, $parentName, true, true);
+        $structDir = ucfirst(strtolower($enumClassName));
+
+        if (self::$subDirName) {
+            $namePath = [self::$vendorName, self::$subDirName, "Enums", $structDir];
+        } else {
+            $namePath = [self::$vendorName, "Enums", $structDir];
+        }
+        $template = static::getEnumTemplateContent();
+
+        $stubPath = static::getEnumPath($enumClassName);
+
+        $mustache = new \Mustache_Engine();
+        $stubBehaviorContent = $mustache->render($template, [
+            "VENDOR" => self::$vendorName,
+            "EnumCallableFunction" => $enumFunctionName,
+            "Namespace" => implode("\\", $namePath),
+            "EnumCallableClass" => $enumClassName,
+            "AttrId" => $attrInfo["id"],
+            "AttrPhpFile" => $attrInfo["phpfile"],
+            "AttrPhpFunc" => $attrInfo["phpfunc"],
+            "structureName" => $enumClassName
+        ]);
+        Utils::writeFileContent($stubPath, $stubBehaviorContent);
     }
 
     protected static function importStructureEnums($structureName)
@@ -176,30 +232,80 @@ class ConfigStructureTransfert extends DataElementTransfert
         }
         $transferedEnum = [];
         foreach ($enums as $enum) {
-            $attrObject = new DocAttr("", [$enum["docid"], $enum["id"]]);
+            if ($enum["phpfunc"] && $enum["phpfile"] && strlen($enum["phpfile"]) > 2) {
+                // Callable enum
+                $ft = new ParseFamilyFunction();
+                $ft->parse($enum["phpfunc"], true);
 
-            $enumSetName = sprintf("%s-%s", $structureName, $enum["id"]);
+                if ($ft->functionName === "linkenum" &&  $enum["phpfile"]==="fdl.php") {
+                    // linkenum special case
+                    $enumRelname=sprintf("%s-%s", $ft->inputs[0]->name, $ft->inputs[1]->name);
 
-            $sql = sprintf("delete from docenum where name = '%s'", pg_escape_string($enumSetName));
-            DbManager::query($sql);
+                    $sql = sprintf(
+                        "update docattr set type='enum(\"%s\")', phpfunc = null, phpfile=null where id = '%s'  and docid=%d",
+                        pg_escape_string($enumRelname),
+                        pg_escape_string($enum["id"]),
+                        $enum["docid"]
+                    );
+                    DbManager::query($sql);
+                } else {
+                    $basePhpFile = strtok($enum["phpfile"], ".");
 
-            $qsql = <<<SQL
+                    $enumClassName = sprintf(
+                        "%s\%s\Enums\%s::%s",
+                        self::$vendorName,
+                        self::$subDirName,
+                        $basePhpFile,
+                        $ft->functionName
+                    );
+                    $enumSetName = sprintf("%s-%s", $structureName, $enum["id"]);
+
+                    $sql = sprintf("delete from docenum where name = '%s'", pg_escape_string($enumSetName));
+                    DbManager::query($sql);
+                    $sql = sprintf(
+                        "insert into docenum (\"name\", key, label, parentkey, disabled, eorder) values ('%s', E'%s', '', '%s', null, 1) ",
+                        pg_escape_string($enumSetName),
+                        pg_escape_string($enumClassName),
+                        \Anakeen\Core\EnumManager::CALLABLEKEY
+                    );
+                    DbManager::query($sql);
+
+                    $sql = sprintf(
+                        "update docattr set type='enum(\"%s\")', phpfunc = null, phpfile=null where id = '%s'  and docid=%d",
+                        pg_escape_string($enumSetName),
+                        pg_escape_string($enum["id"]),
+                        $enum["docid"]
+                    );
+                    DbManager::query($sql);
+
+                    self::createEnumStub($basePhpFile, $ft->functionName, $enum);
+                }
+            } else {
+                // Static enum
+                $attrObject = new DocAttr("", [$enum["docid"], $enum["id"]]);
+
+                $enumSetName = sprintf("%s-%s", $structureName, $enum["id"]);
+
+                $sql = sprintf("delete from docenum where name = '%s'", pg_escape_string($enumSetName));
+                DbManager::query($sql);
+
+                $qsql = <<<SQL
 insert into docenum ("name", key, label, parentkey, disabled, eorder) 
                select  '%s', key, label, parentkey, disabled, eorder from dynacase.docenum 
                where attrid='%s' and famid=%d returning key
 SQL;
-            $sql = sprintf(
-                $qsql,
-                pg_escape_string($enumSetName),
-                pg_escape_string($enum["id"]),
-                $enum["docid"],
-                pg_escape_string($structureName)
-            );
-            //print "$sql\n";
-            DbManager::query($sql, $keys);
-            $transferedEnum = array_merge($transferedEnum, $keys);
-            $attrObject->type = sprintf("enum(\"%s\")", $enumSetName);
-            $attrObject->modify();
+                $sql = sprintf(
+                    $qsql,
+                    pg_escape_string($enumSetName),
+                    pg_escape_string($enum["id"]),
+                    $enum["docid"],
+                    pg_escape_string($structureName)
+                );
+                DbManager::query($sql, $keys);
+                $transferedEnum = array_merge($transferedEnum, $keys);
+                $attrObject->type = sprintf("enum(\"%s\")", $enumSetName);
+                $attrObject->modify();
+            }
         }
 
         // Clean declaration of enum
@@ -259,7 +365,7 @@ SQL;
 
 
         // Delete old autocomplete
-        $sql = "update docattr set phpfile=null, phpfunc=null  where phpfile like '%.php';";
+        $sql = "update docattr set phpfile=null, phpfunc=null  where phpfile like '%.php' and type !~ '^enum';";
         DbManager::query($sql);
 
         // Thesaurus are only docid
@@ -295,7 +401,6 @@ SQL;
         DbManager::query($sql, $results);
 
         $attrData = [];
-        //print_r($results);
 
         foreach ($results as $ka => $attr) {
             $attrData[$attr["id"]] = $attr;
@@ -322,7 +427,6 @@ SQL;
                     $modAttr["id"] = $attr["id"];
                     // add to the end
                     unset($attrData[$attrid]);
-                    // print_r($modAttr);
                     $attrData[$attr["id"]] = $modAttr;
                 } else {
                     $attrData[$attrid]["ordered"] = $attr["ordered"];
