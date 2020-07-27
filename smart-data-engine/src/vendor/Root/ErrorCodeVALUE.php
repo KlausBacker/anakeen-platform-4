@@ -57,7 +57,10 @@ class ErrorCodeVALUE
      * @see       \Anakeen\Core\Internal\SmartElement::setAttributeValue
      */
     const VALUE0009 = 'attribute "%s", (family "%s", document "%s") : a row is not an array. Cannot update array  "%s"';
-
+    /**
+     * @errorCode The attribute is not an array
+     */
+    const VALUE0010 = 'attribute "%s", (family "%s", document "%s") : "%s" must be an array.';
 
     /**
      * @errorCode a int attribute must containt int value
@@ -93,4 +96,5 @@ class ErrorCodeVALUE
      * @errorCode The smart field is in read or none access
      */
     const VALUE0102 = 'Field "%s" : write access not granted : %s';
+
 }

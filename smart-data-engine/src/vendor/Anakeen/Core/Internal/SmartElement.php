@@ -3103,6 +3103,16 @@ create unique index i_docir on doc(initid, revision);";
         return sprintf(_("%s is not an array attribute"), $idAttr);
     }
 
+
+    public function setColumnValue($idAttr, array $values)
+    {
+        $this->_setValueNeedCompleteArray=false;
+        $err=$this->setValue($idAttr, $values);
+
+        $this->_setValueNeedCompleteArray=true;
+        return $err;
+    }
+
     /**
      * in case of array where each column are not the same length
      *

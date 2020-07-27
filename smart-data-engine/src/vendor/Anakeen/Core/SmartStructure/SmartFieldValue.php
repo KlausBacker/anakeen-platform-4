@@ -6,6 +6,7 @@
 
 namespace Anakeen\Core\SmartStructure;
 
+use Anakeen\Core\Exception;
 use Anakeen\Core\Utils\Date;
 
 class SmartFieldValue
@@ -217,43 +218,58 @@ class SmartFieldValue
         }
         throw new SmartFieldValueException('VALUE0100', $oAttr->id, $doc->title, $doc->fromname);
     }
-    private static function arrayTranspose($array, $selectKey = false)
+    private static function transposeArray($array, $oAttr, $doc)
     {
         if (!is_array($array)) {
             return false;
         }
+
+        $columns= $doc->attributes->getArrayElements($oAttr->id);
+        $columnIds=[];
+        foreach ($columns as $field) {
+            $columnIds[]= $field->id;
+        }
+        foreach ($array as $k => &$v) {
+            foreach ($columnIds as $columnId) {
+                if (!is_array($v)) {
+                    throw new SmartFieldValueException(
+                        'VALUE0010',
+                        $oAttr->id,
+                        $doc->fromname,
+                        $doc->getTitle(),
+                        print_r($v, true)
+                    );
+                }
+                if (!array_key_exists($columnId, $v)) {
+                    $v[$columnId] = null;
+                }
+            }
+        }
         $return = array();
         foreach ($array as $key => $value) {
-            if (!is_array($value)) {
-                return $array;
-            }
-            if ($selectKey) {
-                if (isset($value[$selectKey])) {
-                    $return[] = $value[$selectKey];
-                }
-            } else {
-                foreach ($value as $key2 => $value2) {
-                    $return[$key2][$key] = $value2;
-                }
+            foreach ($value as $key2 => $value2) {
+                $return[$key2][$key] = $value2;
             }
         }
         return $return;
     }
-
     private static function setTypedArrayValue(\Anakeen\Core\Internal\SmartElement & $doc, \Anakeen\Core\SmartStructure\NormalAttribute & $oAttr, array $value)
     {
         $doc->clearArrayValues($oAttr->id);
-        $tabTranspose = self::arrayTranspose($value);
         $err = "";
-        foreach ($tabTranspose as $columnName => $columnValue) {
-            if (!is_array($columnValue)) {
-                throw new SmartFieldValueException("VALUE0009", $oAttr->id, $doc->fromname, $doc->getTitle(), print_r($columnValue, true));
+        foreach ($value as $row) {
+            if (!is_array($row)) {
+                throw new SmartFieldValueException('VALUE0009', $oAttr->id, $doc->fromname, $doc->getTitle(), print_r($row, true));
             }
+        }
+
+        $tabTranspose = self::transposeArray($value, $oAttr, $doc);
+        foreach ($tabTranspose as $columnName => $columnValue) {
             $cAttr = $doc->getAttribute($columnName);
             if ($cAttr) {
                 $columnValue = self::typed2string($cAttr->type, $columnValue);
             }
-            $err .= $doc->setValue($columnName, $columnValue);
+            $err .= $doc->setColumnValue($columnName, $columnValue);
         }
         if ($err !== "") {
             throw new SmartFieldValueException('VALUE0007', $oAttr->id, $doc->fromname, $doc->getTitle(), $err);
