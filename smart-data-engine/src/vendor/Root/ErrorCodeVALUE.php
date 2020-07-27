@@ -96,5 +96,4 @@ class ErrorCodeVALUE
      * @errorCode The smart field is in read or none access
      */
     const VALUE0102 = 'Field "%s" : write access not granted : %s';
-
 }
