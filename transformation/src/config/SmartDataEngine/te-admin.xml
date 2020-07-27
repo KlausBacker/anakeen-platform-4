@@ -41,6 +41,16 @@
                 <sde:access ns="AdminCenter">AdminTE</sde:access>
             </sde:requiredAccess>
         </sde:route>
+        <sde:route name="UnitTransformationOutputFile">
+            <sde:callable>Anakeen\Routes\TransformationEngine\Admin\CheckUnitTransformationFile</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/admin/transformationengine/check/unit-transformation/file/{task}</sde:pattern>
+            <sde:description>unit transformation file</sde:description>
+            <sde:requiredAccess operator="or">
+                <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminTE</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
         <sde:route name="TestCallbackConfiguration">
             <sde:callable>Anakeen\Routes\TransformationEngine\Admin\TestTeConfiguration</sde:callable>
             <sde:method>GET</sde:method>

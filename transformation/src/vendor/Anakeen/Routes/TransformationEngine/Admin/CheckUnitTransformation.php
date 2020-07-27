@@ -4,7 +4,6 @@
 namespace Anakeen\Routes\TransformationEngine\Admin;
 
 use Anakeen\Core\ContextManager;
-use Anakeen\Core\Internal\ContextParameterManager;
 use Anakeen\Core\VaultManager;
 use Anakeen\Exception;
 use Anakeen\Router\ApiV2Response;
@@ -24,7 +23,6 @@ class CheckUnitTransformation
     protected $inFile = null;
     protected $engine = null;
     protected $clientTe;
-
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $this->initParameters($request, $args);
@@ -94,11 +92,11 @@ class CheckUnitTransformation
                 }
                 if ($status === Client::TASK_STATE_SUCCESS) {
                     $this->step = 6;
+                    $data["status"] = Client::TASK_STATE_SUCCESS;
                     $data["progressText"] = sprintf("Conversion succeeded");
                 }
                 if ($status !== Client::TASK_STATE_SUCCESS && $status !== Client::TASK_STATE_ERROR) {
                     $this->step--;
-
                     $data["progressText"] = sprintf("Waiting for server to complete conversion");
                 }
 
@@ -140,7 +138,6 @@ class CheckUnitTransformation
         };
         $data["stepNumber"] = $this->step + 1;
         $data["maxStep"] = self::maxStep;
-
         return $data;
     }
 
