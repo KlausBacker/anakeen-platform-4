@@ -3,10 +3,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import Vuebar from "vuebar";
 import { DockCollapseStatus, DockPosition } from "../HubStation/HubStationsTypes";
 
-import {
-  dockEntryEvents,
-  HUB_DOCK_ENTRY_NAME
-} from "./HubDockEntry/HubDockEntry.component";
+import { dockEntryEvents, HUB_DOCK_ENTRY_NAME } from "./HubDockEntry/HubDockEntry.component";
 
 Vue.use(Vuebar);
 
@@ -84,9 +81,7 @@ export default class HubDock extends Vue {
             nodeSlots
               .filter(slot => {
                 if (slot.componentInstance && slot.componentInstance.$options) {
-                  return (
-                    slot.componentInstance.$options.name === HUB_DOCK_ENTRY_NAME
-                  );
+                  return slot.componentInstance.$options.name === HUB_DOCK_ENTRY_NAME;
                 }
                 return false;
               })
@@ -103,12 +98,8 @@ export default class HubDock extends Vue {
   @Prop({ default: DockPosition.LEFT }) public position!: DockPosition;
   @Prop({ default: true }) public expandable!: boolean;
   @Prop({ default: false }) public expanded!: boolean;
-  @Prop({ default: "5rem", type: [String, Number] }) public collapsedSize!:
-    | string
-    | number;
-  @Prop({ default: "15rem", type: [String, Number] }) public size!:
-    | string
-    | number;
+  @Prop({ default: "5rem", type: [String, Number] }) public collapsedSize!: string | number;
+  @Prop({ default: "15rem", type: [String, Number] }) public size!: string | number;
   @Prop({ default: true, type: Boolean }) public collapseOnSelection!: boolean;
   @Prop({ default: false, type: Boolean }) public superposeDock!: boolean;
   @Prop({ default: true, type: Boolean }) public expandOnHover!: boolean;
@@ -119,7 +110,8 @@ export default class HubDock extends Vue {
   @Prop({
     default: DockCollapseStatus.DefaultNonCollapsed,
     type: String
-  }) public dockConfiguration!: DockCollapseStatus;
+  })
+  public dockConfiguration!: DockCollapseStatus;
   @Prop({ default: HUB_DOCK_ENTRY_NAME, type: String })
   public hubStation!: string;
 
@@ -127,9 +119,7 @@ export default class HubDock extends Vue {
   public collapsed: boolean = !this.expanded;
   public collapsable: boolean = this.expandable;
   public superposable: boolean = this.superposeDock;
-  public currentSize: string | number = this.expanded
-    ? this.size
-    : this.collapsedSize;
+  public currentSize: string | number = this.expanded ? this.size : this.collapsedSize;
   public selectedItems: object[] = [];
   public hubEntries: Vue[] = [];
 
@@ -151,8 +141,7 @@ export default class HubDock extends Vue {
   @Watch("selectedItems")
   public onSelectedItems(val) {
     this.hubEntries.forEach((entry: any) => {
-      entry.entrySelected =
-        val.findIndex((i: any) => i.name === entry.name) > -1;
+      entry.entrySelected = val.findIndex((i: any) => i.name === entry.name) > -1;
     });
     this.$emit("dockEntriesSelected", this.multiselection ? val : val[0]);
   }
@@ -184,11 +173,8 @@ export default class HubDock extends Vue {
   }
 
   public mounted() {
-    this.hubEntries = HubDock.getHubEntriesInstance(
-      this.$slots.default,
-      this.$slots.header,
-      this.$slots.footer
-    );
+    const collapseStatus = this.storageCollapseStatus();
+    this.hubEntries = HubDock.getHubEntriesInstance(this.$slots.default, this.$slots.header, this.$slots.footer);
     this.hubEntries.forEach(hubEntry => {
       if (hubEntry) {
         Object.keys(dockEntryEvents).forEach(key => {
@@ -198,34 +184,35 @@ export default class HubDock extends Vue {
       }
     });
 
-    if (
-      this.position === DockPosition.LEFT ||
-      this.position === DockPosition.RIGHT
-    ) {
+    if (this.position === DockPosition.LEFT || this.position === DockPosition.RIGHT) {
       this.$vuebar.initScrollbar(this.$refs.dockContent, {});
     }
     switch (this.dockConfiguration) {
       case "NEVERCOLLAPSED":
         this.expand();
         this.collapsable = false;
-        this.collapsed = false;
         this.$emit("dockExpanded");
         break;
       case "ALWAYSCOLLAPSED":
         this.collapse();
-        this.collapsed = true;
         this.collapsable = false;
         this.$emit("dockCollapsed");
         break;
       case "DEFAULTCOLLAPSED":
-        this.collapsed = this.storageCollapseStatus();
-        this.collapsed ? this.collapse() : this.expand();
+        if (collapseStatus === null) {
+          this.collapse();
+        } else {
+          collapseStatus ? this.collapse() : this.expand();
+        }
         this.collapsable = true;
         this.$emit("dockCollapsed");
         break;
       case "DEFAULTNONCOLLAPSED":
-        this.collapsed = this.storageCollapseStatus();
-        this.collapsed ? this.collapse() : this.expand();
+        if (collapseStatus === null) {
+          this.expand();
+        } else {
+          collapseStatus ? this.collapse() : this.expand();
+        }
         this.collapsable = true;
         this.$emit("dockExpanded");
         break;
@@ -234,23 +221,20 @@ export default class HubDock extends Vue {
 
   public expand() {
     this.collapsed = false;
-    window.localStorage.setItem("hub-dock."+this.hubStation+".collapse.status." + this.position, "expanded");
+    window.localStorage.setItem("hub-dock." + this.hubStation + ".collapse.status." + this.position, "expanded");
     this.$emit("dockExpanded");
     this.$emit("dockResized");
   }
 
   public collapse() {
     this.collapsed = true;
-    window.localStorage.setItem("hub-dock."+this.hubStation+".collapse.status." + this.position, "collapsed");
+    window.localStorage.setItem("hub-dock." + this.hubStation + ".collapse.status." + this.position, "collapsed");
     this.$emit("dockCollapsed");
     this.$emit("dockResized");
   }
 
   public toggleDock() {
-    if (
-      this.position === DockPosition.BOTTOM ||
-      this.position === DockPosition.TOP
-    ) {
+    if (this.position === DockPosition.BOTTOM || this.position === DockPosition.TOP) {
       // Use opacity animation for top/bottom docks
       this.animate = true;
       window.setTimeout(() => {
@@ -270,11 +254,7 @@ export default class HubDock extends Vue {
       switch (eventName) {
         case dockEntryEvents.selected:
           if (this.multiselection) {
-            if (
-              this.selectedItems.findIndex(
-                (i: any) => i.name === eventOption.name
-              ) === -1
-            ) {
+            if (this.selectedItems.findIndex((i: any) => i.name === eventOption.name) === -1) {
               this.selectedItems.push(eventOption);
             }
           } else {
@@ -288,10 +268,7 @@ export default class HubDock extends Vue {
   protected onOverDock() {
     if (this.dockConfiguration !== "ALWAYSCOLLAPSED") {
       if (this.expandOnHover && this.collapsed && this.overTimer === -1) {
-        if (
-          this.position === DockPosition.LEFT ||
-          this.position === DockPosition.RIGHT
-        ) {
+        if (this.position === DockPosition.LEFT || this.position === DockPosition.RIGHT) {
           this.overTimer = window.setTimeout(() => {
             if (this.superposeOnHover && !this.superposeDock) {
               this.superposable = true;
@@ -338,10 +315,12 @@ export default class HubDock extends Vue {
   }
 
   protected storageCollapseStatus() {
-    const storageCollapse = window.localStorage.getItem("hub-dock."+this.hubStation+".collapse.status." + this.position);
+    const storageCollapse = window.localStorage.getItem(
+      "hub-dock." + this.hubStation + ".collapse.status." + this.position
+    );
     if (storageCollapse) {
       return storageCollapse === "collapsed";
     }
-    return this.dockConfiguration === "DEFAULTNONCOLLAPSED";
+    return null;
   }
 }
