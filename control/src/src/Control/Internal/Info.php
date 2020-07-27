@@ -7,8 +7,6 @@ class Info
     public static function getInfo() {
         $data["version"]=Context::getVersion();
         $data["availableVersion"]=Context::getAvailableVersion();
-
-        $data["userStatistics"]=Platform::getUserStats();
         return $data;
     }
     /**
