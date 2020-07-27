@@ -209,10 +209,13 @@ export default class BusinessApp extends Vue {
 
   protected onActionClick(event, elementData, data) {
     if (data.eventId === "document.load") {
+      if (event.originalEvent) {
+        event.originalEvent.preventDefault();
+      }
       event.preventDefault();
       this.addTab({
         closable: true,
-        name: data.options[0],
+        name: data.options[0].toString(),
         revision: data.options.length === 3 ? parseInt(data.options[2], 10) : -1,
         viewId: data.options[1]
       });

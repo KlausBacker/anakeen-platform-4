@@ -927,7 +927,11 @@ export default class SmartElementController extends AnakeenController.BusEvents.
   public triggerEvent(eventName, ...args) {
     this.checkInitialisedModel();
     this.checkEventName(eventName);
-    return this._triggerControllerEvent(eventName, null, ...args);
+    let originalEvent = null;
+    if (args[1] && args[1].originalEvent) {
+      originalEvent = args[1].originalEvent;
+    }
+    return this._triggerControllerEvent(eventName, originalEvent, ...args);
   }
 
   /**

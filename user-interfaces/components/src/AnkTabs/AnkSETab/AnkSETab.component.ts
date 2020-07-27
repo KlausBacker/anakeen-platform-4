@@ -64,7 +64,7 @@ export default class SETab extends Vue {
   @Prop({ type: String, default: "!defaultConsultation" })
   public viewId!: string;
   @Prop({ type: Number, default: -1 })
-  public revision!: string;
+  public revision!: number;
   @Prop({ default: false, type: Boolean }) public closable!: boolean;
   @Prop({ default: false, type: Boolean }) public lazy!: boolean;
   @Prop({ type: Boolean, default: true }) public autoUnload!: boolean;
