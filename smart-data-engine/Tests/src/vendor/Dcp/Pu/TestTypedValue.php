@@ -292,6 +292,49 @@ class TestTypedValue extends TestCaseDcpCommonFamily
         }
     }
 
+    /**
+     * @dataProvider dataArraySetAttributeValuePerformances
+     */
+    public function testArraySetAttributeValuePerformances($docName, array $setValues, array $expectedValues)
+    {
+        $d = SEManager::getDocument($docName);
+        $this->assertTrue($d->isAlive(), sprintf("cannot access %s Smart Element", $docName));
+        $start = microtime(true);
+        foreach ($expectedValues as $attrid => $value) {
+            $d->setAttributeValue($attrid, $value);
+        }
+        $d->store();
+        $end = microtime(true);
+        foreach ($expectedValues as $attrid => $expectedValue) {
+            $value = $d->getAttributeValue($attrid);
+            $this->assertTrue($expectedValue === $value, sprintf('wrong value "%s" : expected %s, has %s', $attrid, $this->getDump($expectedValue), $this->getDump($value, true)));
+        }
+        echo sprintf("\nsetAttributeValue (without addArrayRow) performance time :%s seconds", number_format(doubleval($end - $start), 4, ',', ' '));
+    }
+
+    public function dataArraySetAttributeValuePerformances()
+    {
+        $tab = array();
+        for ($i = 0; $i < 1000; $i++) {
+            $tab[] = array(
+                "tst_doubles1" => doubleval(sprintf("0.01%d", $i)),
+                "tst_ints1" => $i,
+                "tst_dates" => array(
+                    "2013-04-20"
+                ),
+            );
+        }
+        return array(
+            array(
+                'TST_DOCTYPE1',
+                "set" => $tab,
+                "get" => array(
+                    "tst_ints1" => [531,43],
+                    "tst_doubles1" => [0.0195, 0.011]
+                )
+            )
+        );
+    }
     public function dataArraySetAttributeValue()
     {
         return array(
@@ -901,8 +944,8 @@ class TestTypedValue extends TestCaseDcpCommonFamily
                         45
                     )
                 ),
-                "CORE0109"
-                // VALUE0007 changed by CORE0109
+                "VALUE0007"
+                // CORE0109 changed by VALUE0007
             )
         );
     }
