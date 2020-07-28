@@ -4,7 +4,7 @@
 import { Component, Mixins, Prop, Watch } from "vue-property-decorator";
 import AnkSmartElement from "../AnkSmartElement/AnkSmartElement.component";
 // eslint-disable-next-line no-unused-vars
-import { ISmartFormConfiguration, ISmartFormValue } from "./ISmartForm";
+import { ISmartFormConfiguration, ISmartFormValue, ISmartFormOptions } from "./ISmartForm";
 
 // noinspection JSUnusedGlobalSymbols
 @Component({
@@ -26,7 +26,7 @@ export default class AnkSmartForm extends Mixins(AnkSmartElement) {
     default: () => ({}),
     type: Object
   })
-  public options!: any;
+  public options!: ISmartFormOptions;
 
   @Watch("config", { immediate: false, deep: true })
   public onConfigChanged(newConfig: ISmartFormConfiguration) {

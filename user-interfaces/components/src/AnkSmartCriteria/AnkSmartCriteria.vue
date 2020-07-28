@@ -11,7 +11,7 @@
       <ank-smart-form
         ref="smartForm"
         :config="smartFormConfig"
-        :options="{ force }"
+        :options="{ withCloseConfirmation: false }"
         @smartElementMounted="initSmartCriteria"
         @smartFieldAfterTabSelect="onSmartCriteriaReady"
         @smartFieldChange="onSmartFieldChange"
