@@ -81,7 +81,7 @@ class AuthenticatorManager
                     }
                 }
             }
-            self::clearGDocs();
+            static::clearGDocs();
 
             return $error;
         }
@@ -118,7 +118,7 @@ class AuthenticatorManager
             }
         }
 
-        self::clearGDocs();
+        static::clearGDocs();
         return self::AccessOk;
     }
 
@@ -339,6 +339,16 @@ class AuthenticatorManager
         \Anakeen\Core\SEManager::cache()->clear();
     }
 
+    public static function clearSession()
+    {
+        if (method_exists(self::$auth, 'getAuthSession')) {
+            self::$session = self::$auth->getAuthSession();
+            if (self::$session) {
+                self::$session->close();
+            }
+        }
+    }
+
     public static function getAccount()
     {
         $login = self::$auth->getAuthUser();
@@ -475,6 +485,7 @@ class AuthenticatorManager
                     $_SERVER["HTTP_USER_AGENT"]
                 );
                 static::clearGDocs();
+                static::clearSession();
                 return static::AccessHasNoLocalAccount;
             }
             // First check if account is active
@@ -488,6 +499,7 @@ class AuthenticatorManager
                     $_SERVER["HTTP_USER_AGENT"]
                 );
                 static::clearGDocs();
+                static::clearSession();
                 return static::AccessAccountIsNotActive;
             }
             // check if the account expiration date is elapsed
@@ -501,6 +513,7 @@ class AuthenticatorManager
                     $_SERVER["HTTP_USER_AGENT"]
                 );
                 static::clearGDocs();
+                static::clearSession();
                 return static::AccessAccountHasExpired;
             }
             // check count of login failure
@@ -514,7 +527,9 @@ class AuthenticatorManager
                     $login,
                     $_SERVER["HTTP_USER_AGENT"]
                 );
+
                 static::clearGDocs();
+                static::clearSession();
                 return static::AccessMaxLoginFailure;
             }
             // authen OK, max login failure OK => reset count of login failure
