@@ -558,7 +558,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
   _initChangeEvent: function wHtmltext_initChangeEvent() {},
 
   getWidgetValue: function wHtmltext_getWidgetValue() {
-    return this.getContentElements().value();
+    return this.getContentElements().val();
   },
 
   dataURLtoFile: function dataURLtoFile(dataurl, filename) {
@@ -731,7 +731,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
         this.kendoEditorInstance.value(value.value || "<p></p>");
       }
     } else if (this.getMode() === "read") {
-      this.getContentElements().html(value.displayValue);
+      this._super(value);
     } else {
       throw new Error("Attribute " + this.options.id + " unknown mode " + this.getMode());
     }
