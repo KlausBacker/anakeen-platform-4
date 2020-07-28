@@ -3104,6 +3104,11 @@ create unique index i_docir on doc(initid, revision);";
     }
 
 
+    /**
+     * @param string $idAttr identifier of array attribute
+     * @param array $values new value for the attribute
+     * @return string
+     */
     public function setColumnValue($idAttr, array $values)
     {
         $this->_setValueNeedCompleteArray=false;
