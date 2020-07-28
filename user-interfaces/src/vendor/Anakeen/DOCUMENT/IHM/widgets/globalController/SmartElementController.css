@@ -6,5 +6,5 @@
 }
 .smart-element-wrapper > .document{
     /* no use height here because of sticky bar menu */
-    //min-height: 100%;
+    flex: 1;
 }
