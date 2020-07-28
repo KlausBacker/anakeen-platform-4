@@ -3107,7 +3107,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * alter the values ​​of an array column
      *
-     * the Smart Field must be of array type
+     * the Smart Field parent must be of array type
      *
      * @param string $idAttr identifier of array Smart Field
      * @param array $values new value for the Smart Field
