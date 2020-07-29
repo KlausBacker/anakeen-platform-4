@@ -38,7 +38,7 @@ class TestTypedValue extends TestCaseDcpCommonFamily
         $this->assertTrue($d->isAlive(), sprintf("cannot access %s document", $docName));
         foreach ($expectedValues as $attrid => $expectedValue) {
             $value = $d->getAttributeValue($attrid);
-            $this->assertTrue($expectedValue === $value, sprintf('wrong value "%s" : expected %s, has %s', $attrid, $this->getDump($expectedValue), $this->getDump($value, true)));
+            $this->assertTrue($expectedValue === $value, sprintf('wrong value "%s" : expected %s, has %s', $attrid, $this->getDump($expectedValue), $this->getDump($value)));
         }
     }
 
@@ -117,7 +117,7 @@ class TestTypedValue extends TestCaseDcpCommonFamily
                 sprintf(
                     'wrong value "%s" : expected %s, has %s \nRaw is :"%s"',
                     $attrid,
-                    $this->getDump($expectedValue, true),
+                    $this->getDump($expectedValue),
                     $this->getDump($stringDates),
                     $d->getRawValue($attrid)
                 )
@@ -142,7 +142,7 @@ class TestTypedValue extends TestCaseDcpCommonFamily
 
             $this->assertTrue(
                 $expectedDocId === $value,
-                sprintf('wrong value "%s" : expected %s, has %s \nRaw is :"%s"', $attrid, $this->getDump($expectedDocId), $this->getDump($value, true), $d->getRawValue($attrid))
+                sprintf('wrong value "%s" : expected %s, has %s \nRaw is :"%s"', $attrid, $this->getDump($expectedDocId), $this->getDump($value), $d->getRawValue($attrid))
             );
         }
     }
@@ -174,7 +174,7 @@ class TestTypedValue extends TestCaseDcpCommonFamily
 
             $this->assertTrue(
                 $expectedValue === $value,
-                sprintf('wrong value "%s" : expected %s, has %s \nRaw is :"%s"', $attrid, $this->getDump($expectedValue), $this->getDump($value, true), $this->getDump($oriValue))
+                sprintf('wrong value "%s" : expected %s, has %s \nRaw is :"%s"', $attrid, $this->getDump($expectedValue), $this->getDump($value), $this->getDump($oriValue))
             );
         }
     }
@@ -251,7 +251,7 @@ class TestTypedValue extends TestCaseDcpCommonFamily
 
         foreach ($expectedValues as $attrid => $expectedValue) {
             $value = $d->getAttributeValue($attrid);
-            $this->assertTrue($expectedValue === $value, sprintf('wrong value "%s" : expected %s, has %s', $attrid, $this->getDump($expectedValue), $this->getDump($value, true)));
+            $this->assertTrue($expectedValue === $value, sprintf('wrong value "%s" : expected %s, has %s', $attrid, $this->getDump($expectedValue), $this->getDump($value)));
         }
     }
 
@@ -269,7 +269,7 @@ class TestTypedValue extends TestCaseDcpCommonFamily
         $d->store(); // verify database record
         foreach ($expectedValues as $attrid => $expectedValue) {
             $value = $d->getAttributeValue($attrid);
-            $this->assertTrue($expectedValue === $value, sprintf('wrong value "%s" : expected %s, has %s', $attrid, $this->getDump($expectedValue), $this->getDump($value, true)));
+            $this->assertTrue($expectedValue === $value, sprintf('wrong value "%s" : expected %s, has %s', $attrid, $this->getDump($expectedValue), $this->getDump($value)));
         }
     }
 
@@ -288,7 +288,7 @@ class TestTypedValue extends TestCaseDcpCommonFamily
         $d->store(); // verify database record
         foreach ($expectedValues as $attrid => $expectedValue) {
             $value = $d->getAttributeValue($attrid);
-            $this->assertTrue($expectedValue === $value, sprintf('wrong value "%s" : expected %s, has %s', $attrid, $this->getDump($expectedValue), $this->getDump($value, true)));
+            $this->assertTrue($expectedValue === $value, sprintf('wrong value "%s" : expected %s, has %s', $attrid, $this->getDump($expectedValue), $this->getDump($value)));
         }
     }
 
@@ -307,9 +307,9 @@ class TestTypedValue extends TestCaseDcpCommonFamily
         $end = microtime(true);
         foreach ($expectedValues as $attrid => $expectedValue) {
             $value = $d->getAttributeValue($attrid);
-            $this->assertTrue($expectedValue === $value, sprintf('wrong value "%s" : expected %s, has %s', $attrid, $this->getDump($expectedValue), $this->getDump($value, true)));
+            $this->assertTrue($expectedValue === $value, sprintf('wrong value "%s" : expected %s, has %s', $attrid, $this->getDump($expectedValue), $this->getDump($value)));
         }
-        echo sprintf("\nsetAttributeValue (without addArrayRow) performance time :%s seconds", number_format(doubleval($end - $start), 4, ',', ' '));
+         self::log(sprintf("\nsetAttributeValue (without addArrayRow) performance time :%s seconds", number_format(doubleval($end - $start), 4, ',', ' ')));
     }
 
     public function dataArraySetAttributeValuePerformances()
