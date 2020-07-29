@@ -65,6 +65,7 @@ class RecordFileTextContent
             $d->updateSmartWithFiles($se);
 
             $data["title"]=$se->getTitle();
+            $data["targetId"]=$this->elementid;
         }
         return $data;
     }
