@@ -33,20 +33,27 @@ class DSearchHooks extends \SmartStructure\Search
      * return sql query to search wanted document
      *
      * @param string $keyword
-     * @param int    $famid
+     * @param int $famid
      * @param string $latest
-     * @param bool   $sensitive
-     * @param int    $dirid
-     * @param bool   $subfolder
-     * @param bool   $full
+     * @param bool $sensitive
+     * @param int $dirid
+     * @param bool $subfolder
+     * @param bool $full
      *
      * @return array|bool|string
      * @throws Exception
      * @throws \Anakeen\Database\Exception
      * @throws \Exception
      */
-    public function computeQuery($keyword = "", $famid = -1, $latest = "yes", $sensitive = false, $dirid = -1, $subfolder = true, $full = false)
-    {
+    public function computeQuery(
+        $keyword = "",
+        $famid = -1,
+        $latest = "yes",
+        $sensitive = false,
+        $dirid = -1,
+        $subfolder = true,
+        $full = false
+    ) {
         if ($dirid > 0) {
             if ($subfolder) {
                 $cdirid = DirLib::getRChildDirId($this->dbaccess, $dirid);
@@ -198,7 +205,11 @@ class DSearchHooks extends \SmartStructure\Search
                 } // don't update specified filter created by data API
             }
             if ($this->getRawValue("se_famid")) {
-                $filterXml = sprintf("<filter><family>%s%s</family>", $this->getRawValue("se_famid"), ($this->getRawValue("se_famonly") == "yes" ? " strict" : ""));
+                $filterXml = sprintf(
+                    "<filter><family>%s%s</family>",
+                    $this->getRawValue("se_famid"),
+                    ($this->getRawValue("se_famonly") == "yes" ? " strict" : "")
+                );
 
                 $filterXml .= "</filter>";
                 $this->setValue("se_typefilter", ["generated"]); // only one
@@ -352,8 +363,8 @@ class DSearchHooks extends \SmartStructure\Search
     /**
      * Check validity of a condition tuple (attr, op, value)
      *
-     * @param string $attr  The attribute for the condition
-     * @param string $op    The operator for the condition
+     * @param string $attr The attribute for the condition
+     * @param string $op The operator for the condition
      * @param string $value The value for the condition
      *
      * @return array|string empty string if valid or error message
@@ -429,12 +440,12 @@ class DSearchHooks extends \SmartStructure\Search
     /**
      * return sql part from operator
      *
-     * @param string $col  a column : property or attribute name
-     * @param string $op   one of this ::top keys : =, !=, >, ....
-     * @param string $val  value use for test
+     * @param string $col a column : property or attribute name
+     * @param string $op one of this ::top keys : =, !=, >, ....
+     * @param string $val value use for test
      * @param string $val2 second value use for test with >< operator
      * @param string $err
-     * @param bool   $validateCond
+     * @param bool $validateCond
      *
      * @return string the sql query part
      * @throws Exception
@@ -519,228 +530,265 @@ class DSearchHooks extends \SmartStructure\Search
             }
         }
         $cond = '';
-        switch ($op) {
-            case "is null":
-                switch ($atype) {
-                    case "int":
-                    case "uid":
-                    case "double":
-                    case "money":
-                        $cond = sprintf(" (%s is null or %s = 0) ", $col, $col);
-                        break;
-
-                    case "date":
-                    case "time":
-                        $cond = sprintf(" (%s is null) ", $col);
-                        break;
-
-                    default:
-                        $cond = sprintf(" (%s is null or %s = '') ", $col, $col);
-                }
-
-                break;
-
-            case "is not null":
-                $cond = " " . $col . " " . trim($op) . " ";
-                break;
-
-            case "~*":
-                if ($validateCond) {
-                    if (($err = $this->isValidPgRegex($val)) != '') {
-                        return '';
-                    }
-                }
-                if (trim($val) != "") {
-                    if ($oa && $oa->isMultiple()) {
-                        $cond = sprintf("%s ~*< ANY (%s::text[])", $this->_pgVal($val), $col);
+        if (!empty(trim($val)) || in_array($op, ["is null", "is not null"])) {
+            switch ($op) {
+                case "is null":
+                    if ($oa && $oa->isMultiple()) { //If multiple
+                        $cond = sprintf(" (%s is null or %s = '{}') ", $col, $col);
                     } else {
-                        $cond = " " . $col . " " . trim($op) . " " . $this->_pgVal($val) . " ";
-                    }
-                }
-                break;
+                        switch ($atype) {
+                            case "int":
+                            case "uid":
+                            case "double":
+                            case "money":
+                                $cond = sprintf(" (%s is null or %s = 0) ", $col, $col);
+                                break;
 
-            case "~^":
-                if ($validateCond) {
-                    if (($err = $this->isValidPgRegex($val)) != '') {
-                        return '';
-                    }
-                }
-                if (trim($val) != "") {
-                    $cond = " " . $col . "~* '^" . pg_escape_string(trim($val)) . "' ";
-                }
-                break;
+                            case "date":
+                            case "time":
+                            case "timestamp":
+                                $cond = sprintf(" (%s is null) ", $col);
+                                break;
 
-            case "~y":
-                if (!is_array($val)) {
-                    $val = $this->rawValueToArray($val, true);
-                }
-                foreach ($val as & $v) {
-                    $v = self::pgRegexpQuote($v);
-                }
-                unset($v);
-                if (count($val) > 0) {
-                    if ($oa && $oa->isMultiple()) {
-                        $cond = sprintf("%s ~< ANY (%s::text[])", $this->_pgVal($val[0]), $col);
-                    } else {
-                        $cond = " " . $col . " ~ E'\\\\y(" . pg_escape_string(implode('|', $val)) . ")\\\\y' ";
-                    }
-                }
-                break;
-
-            case "><":
-                if ((trim($val) != "") && (trim($val2) != "")) {
-                    $cond = sprintf("%s >= %s and %s <= %s", $col, $this->_pgVal($val), $col, $this->_pgVal($val2));
-                }
-                break;
-
-            case "=~*":
-                switch ($atype) {
-                    case "uid":
-                        if ($validateCond) {
-                            if (($err = $this->isValidPgRegex($val)) != '') {
-                                return '';
-                            }
+                            default:
+                                $cond = sprintf(" (%s is null or %s = '') ", $col, $col);
                         }
-                        DbManager::query(sprintf("select id from users where firstname ~* '%s' or lastname ~* '%s'", pg_escape_string($val), pg_escape_string($val)), $ids, true);
+                    }
 
-                        if (count($ids) == 0) {
-                            $cond = "false";
-                        } elseif (count($ids) == 1) {
-                            $cond = " " . $col . " = " . intval($ids[0]) . " ";
+                    break;
+
+                case "is not null":
+                    $cond = " " . $col . " " . trim($op) . " ";
+                    break;
+
+                case "~*":
+                    if ($validateCond) {
+                        if (($err = $this->isValidPgRegex($val)) != '') {
+                            return '';
+                        }
+                    }
+                    if (trim($val) != "") {
+                        if ($oa && $oa->isMultiple()) {
+                            $cond = sprintf("%s ~*< ANY (%s::text[])", $this->_pgVal($val), $col);
                         } else {
-                            $cond = " " . $col . " in (" . implode(',', $ids) . ") ";
+                            $cond = " " . $col . " " . trim($op) . " " . $this->_pgVal($val) . " ";
                         }
+                    }
+                    break;
 
-                        break;
-
-                    case "account":
-                    case "docid":
-                        if ($validateCond) {
-                            if (($err = $this->isValidPgRegex($val)) != '') {
-                                return '';
-                            }
+                case "~^":
+                    if ($validateCond) {
+                        if (($err = $this->isValidPgRegex($val)) != '') {
+                            return '';
                         }
-                        if ($oa) {
-                            $otitle = $oa->getOption("doctitle");
-                            if (!$otitle) {
-                                $fid = $oa->format;
-                                if (!$fid && $oa->type == "account") {
-                                    $fid = "IUSER";
-                                }
-                                if (!$fid) {
-                                    $err = sprintf(_("no compatible type with operator %s"), $op);
-                                } else {
-                                    if (!is_numeric($fid)) {
-                                        $fid = SEManager::getFamilyIdFromName($fid);
-                                    }
-                                    DbManager::query(sprintf("select id from doc%d where title ~* '%s'", $fid, pg_escape_string($val)), $ids, true);
+                    }
+                    if (trim($val) != "") {
+                        $cond = " " . $col . "~* '^" . pg_escape_string(trim($val)) . "' ";
+                    }
+                    break;
 
-                                    if (count($ids) == 0) {
-                                        $cond = "false";
-                                    } elseif (count($ids) == 1) {
-                                        $cond = " " . $col . " = '" . intval($ids[0]) . "' ";
-                                    } else {
-                                        $cond = " " . $col . " in ('" . implode("','", $ids) . "') ";
-                                    }
-                                }
-                            } else {
-                                if ($otitle == "auto") {
-                                    $otitle = $oa->id . "_title";
-                                }
-                                $oat = $this->searchfam->getAttribute($otitle);
-                                if ($oat) {
-                                    $cond = " " . $oat->id . " ~* '" . pg_escape_string(trim($val)) . "' ";
-                                } else {
-                                    $err = sprintf(_("attribute %s : cannot detect title attribute"), $col);
+                case "~y":
+                    if (!is_array($val)) {
+                        $val = $this->rawValueToArray($val, true);
+                    }
+                    foreach ($val as & $v) {
+                        $v = self::pgRegexpQuote($v);
+                    }
+                    unset($v);
+                    if (count($val) > 0) {
+                        if ($oa && $oa->isMultiple()) {
+                            $cond = sprintf("%s ~< ANY (%s::text[])", $this->_pgVal($val[0]), $col);
+                        } else {
+                            $cond = " " . $col . " ~ E'\\\\y(" . pg_escape_string(implode('|', $val)) . ")\\\\y' ";
+                        }
+                    }
+                    break;
+
+                case "><":
+                    if ((trim($val) != "") && (trim($val2) != "")) {
+                        $cond = sprintf("%s >= %s and %s <= %s", $col, $this->_pgVal($val), $col, $this->_pgVal($val2));
+                    }
+                    break;
+
+                case "=~*":
+                    switch ($atype) {
+                        case "uid":
+                            if ($validateCond) {
+                                if (($err = $this->isValidPgRegex($val)) != '') {
+                                    return '';
                                 }
                             }
-                        } elseif ($col == "fromid") {
-                            DbManager::query(sprintf("select id from docfam where title ~* '%s'", pg_escape_string($val)), $ids, true);
+                            DbManager::query(sprintf(
+                                "select id from users where firstname ~* '%s' or lastname ~* '%s'",
+                                pg_escape_string($val),
+                                pg_escape_string($val)
+                            ), $ids, true);
 
                             if (count($ids) == 0) {
                                 $cond = "false";
                             } elseif (count($ids) == 1) {
                                 $cond = " " . $col . " = " . intval($ids[0]) . " ";
                             } else {
-                                $cond = " " . $col . " in (" . implode(",", $ids) . ") ";
+                                $cond = " " . $col . " in (" . implode(',', $ids) . ") ";
                             }
-                        }
-                        break;
 
-                    default:
-                        if ($atype) {
-                            $err = sprintf(_("attribute %s : %s type is not allowed with %s operator"), $col, $atype, $op);
-                        } else {
-                            $err = sprintf(_("attribute %s not found [%s]"), $col, $atype);
-                        }
-                }
-                break;
+                            break;
 
-            default:
-                switch ($atype) {
-                    case "enum":
-                        $enum = $oa->getEnum();
-                        if (strrpos($val, '.') !== false) {
-                            $val = substr($val, strrpos($val, '.') + 1);
-                        }
-                        $tkids = array();
-                        foreach ($enum as $k => $v) {
-                            if (in_array($val, explode(".", $k))) {
-                                $tkids[] = substr($k, strrpos("." . $k, '.'));
-                            }
-                        }
-
-                        if ($op == '=') {
-                            if ($oa->repeat) {
-                                $cond = sprintf("%s && ARRAY['%s']", $col, implode("','", $tkids));
-                            } else {
-                                $cond = " $col='" . implode("' or $col='", $tkids) . "'";
-                            }
-                        } elseif ($op == '!=') {
-                            if ($oa->repeat) {
-                                $cond1 = sprintf("not(%s && ARRAY['%s'])", $col, implode("','", $tkids));
-                            } else {
-                                $cond1 = " $col !='" . implode("' and $col != '", $tkids) . "'";
-                            }
-                            $cond = " (($cond1) or ($col is null))";
-                        } elseif ($op == '!~*') {
+                        case "account":
+                        case "docid":
                             if ($validateCond) {
                                 if (($err = $this->isValidPgRegex($val)) != '') {
                                     return '';
                                 }
                             }
-                            $cond = sprintf("( (%s is null) or (NOT(%s ~*< ANY(%s::text[]))))", $col, $this->_pgVal($val), $col);
-                        }
+                            if ($oa) {
+                                $otitle = $oa->getOption("doctitle");
+                                if (!$otitle) {
+                                    $fid = $oa->format;
+                                    if (!$fid && $oa->type == "account") {
+                                        $fid = "IUSER";
+                                    }
+                                    if (!$fid) {
+                                        $err = sprintf(_("no compatible type with operator %s"), $op);
+                                    } else {
+                                        if (!is_numeric($fid)) {
+                                            $fid = SEManager::getFamilyIdFromName($fid);
+                                        }
+                                        DbManager::query(sprintf(
+                                            "select id from doc%d where title ~* '%s'",
+                                            $fid,
+                                            pg_escape_string($val)
+                                        ), $ids, true);
 
-                        break;
+                                        if (count($ids) == 0) {
+                                            $cond = "false";
+                                        } elseif (count($ids) == 1) {
+                                            $cond = " " . $col . " = '" . intval($ids[0]) . "' ";
+                                        } else {
+                                            $cond = " " . $col . " in ('" . implode("','", $ids) . "') ";
+                                        }
+                                    }
+                                } else {
+                                    if ($otitle == "auto") {
+                                        $otitle = $oa->id . "_title";
+                                    }
+                                    $oat = $this->searchfam->getAttribute($otitle);
+                                    if ($oat) {
+                                        $cond = " " . $oat->id . " ~* '" . pg_escape_string(trim($val)) . "' ";
+                                    } else {
+                                        $err = sprintf(_("attribute %s : cannot detect title attribute"), $col);
+                                    }
+                                }
+                            } elseif ($col == "fromid") {
+                                DbManager::query(sprintf(
+                                    "select id from docfam where title ~* '%s'",
+                                    pg_escape_string($val)
+                                ), $ids, true);
 
-                    default:
-                        if ($atype == "docid") {
-                            if (!is_numeric($val)) {
-                                $val = SEManager::getIdFromName($val);
-                            }
-                        }
-                        if ($op === "!~*") {
-                            if ($validateCond && $op == '!~*') {
-                                if (($err = $this->isValidPgRegex($val)) != '') {
-                                    return '';
+                                if (count($ids) == 0) {
+                                    $cond = "false";
+                                } elseif (count($ids) == 1) {
+                                    $cond = " " . $col . " = " . intval($ids[0]) . " ";
+                                } else {
+                                    $cond = " " . $col . " in (" . implode(",", $ids) . ") ";
                                 }
                             }
-                            $cond = (trim($val) != '') ? sprintf("((%s is null) or (NOT(%s ~*< ANY(%s::text[]))))", $col, $this->_pgVal($val), $col) : '';
-                        } else {
-                            $cond1 = " " . $col . " " . trim($op) . $this->_pgVal($val) . " ";
-                            if (($op == '!=')) {
+                            break;
+
+                        default:
+                            if ($atype) {
+                                $err = sprintf(
+                                    _("attribute %s : %s type is not allowed with %s operator"),
+                                    $col,
+                                    $atype,
+                                    $op
+                                );
+                            } else {
+                                $err = sprintf(_("attribute %s not found [%s]"), $col, $atype);
+                            }
+                    }
+                    break;
+
+                default:
+                    switch ($atype) {
+                        case "enum":
+                            $enum = $oa->getEnum();
+                            if (strrpos($val, '.') !== false) {
+                                $val = substr($val, strrpos($val, '.') + 1);
+                            }
+                            $tkids = array();
+                            foreach ($enum as $k => $v) {
+                                if (in_array($val, explode(".", $k))) {
+                                    $tkids[] = substr($k, strrpos("." . $k, '.'));
+                                }
+                            }
+
+                            if ($op == '=') {
+                                if ($oa->repeat) {
+                                    $cond = sprintf("%s && ARRAY['%s']", $col, implode("','", $tkids));
+                                } else {
+                                    $cond = " $col='" . implode("' or $col='", $tkids) . "'";
+                                }
+                            } elseif ($op == '!=') {
+                                if ($oa->repeat) {
+                                    $cond1 = sprintf("not(%s && ARRAY['%s'])", $col, implode("','", $tkids));
+                                } else {
+                                    $cond1 = " $col !='" . implode("' and $col != '", $tkids) . "'";
+                                }
+                                $cond = " (($cond1) or ($col is null))";
+                            } elseif ($op == '!~*') {
+                                if ($validateCond) {
+                                    if (($err = $this->isValidPgRegex($val)) != '') {
+                                        return '';
+                                    }
+                                }
+                                $cond = sprintf(
+                                    "( (%s is null) or (NOT(%s ~*< ANY(%s::text[]))))",
+                                    $col,
+                                    $this->_pgVal($val),
+                                    $col
+                                );
+                            }
+
+                            break;
+
+                        default:
+                            if ($atype == "docid") {
+                                if (!is_numeric($val)) {
+                                    $val = SEManager::getIdFromName($val);
+                                }
+                            }
+                            if ($op === "!~*") {
                                 if ($validateCond && $op == '!~*') {
                                     if (($err = $this->isValidPgRegex($val)) != '') {
                                         return '';
                                     }
                                 }
-                                $cond = "(($cond1) or ($col is null))";
+                                if ($oa && $oa->isMultiple()) {
+                                    $cond = (trim($val) != '') ? sprintf(
+                                        "((%s is null) or (NOT(%s ~*< ANY(%s::text[]))))",
+                                        $col,
+                                        $this->_pgVal($val),
+                                        $col
+                                    ) : '';
+                                } else {
+                                    $cond = sprintf("(%s is null) or (%s %s %s)", $col, $col, $op, $this->_pgVal($val));
+                                }
                             } else {
-                                $cond = $cond1;
+                                $cond1 = " " . $col . " " . trim($op) . $this->_pgVal($val) . " ";
+                                if (($op == '!=')) {
+                                    if ($validateCond && $op == '!~*') {
+                                        if (($err = $this->isValidPgRegex($val)) != '') {
+                                            return '';
+                                        }
+                                    }
+                                    $cond = "(($cond1) or ($col is null))";
+                                } else {
+                                    $cond = $cond1;
+                                }
                             }
-                        }
-                }
+                    }
+            }
         }
         if (!$cond) {
             $cond = "true";
@@ -749,6 +797,7 @@ class DSearchHooks extends \SmartStructure\Search
         } elseif ($stateCol == "fixstate") {
             $cond = sprintf("(%s and locked = -1)", $cond);
         }
+        //print("\n$op\n".$cond);
         return $cond;
     }
 
