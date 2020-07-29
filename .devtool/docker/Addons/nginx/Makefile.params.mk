@@ -1,5 +1,6 @@
-PROJECT_NGINX_VERSION = 1.17
+PROJECT_NGINX_VERSION = 1.17-1
 
+DOCKER_COMPOSE_ENV += PROJECT_NGINX_VERSION=$(PROJECT_NGINX_VERSION)
 DOCKER_COMPOSE_OVERRIDES += -f $(DOCKER_DIR)/Addons/nginx/docker-compose.yml
 
 docker-prompt-web: ## Opens a bash shell in Nginx's container

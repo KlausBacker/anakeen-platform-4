@@ -7,7 +7,7 @@ services:
       args:
         ANK_RUN_UID: ${COMPOSE_UID}
         ANK_RUN_GID: ${COMPOSE_GID}
-        PROJECT_PHP_VERSION: ${PROJECT_PHP_VERSION-7.3}
+        PROJECT_PHP_VERSION: ${PROJECT_PHP_VERSION}
         DEBUG_DOCKERFILE_ONBUILD: "no"
     environment:
       DEBUG_CRON: "no"
