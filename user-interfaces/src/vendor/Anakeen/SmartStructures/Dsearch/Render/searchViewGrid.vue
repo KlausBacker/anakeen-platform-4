@@ -3,6 +3,7 @@
     :collection="searchId"
     :pageable="{ pageSizes: [50, 100, 200], pageSize: 50 }"
     defaultExpandable
+    refresh
     controller="REPORT_GRID_CONTROLLER"
     class="dsearch-result-grid"
     ref="gridPreview"
