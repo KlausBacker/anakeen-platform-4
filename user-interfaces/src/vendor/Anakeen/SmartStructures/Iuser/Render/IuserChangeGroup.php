@@ -94,7 +94,7 @@ class IuserChangeGroup extends DefaultConfigEditRender
                     $groupSE->insertDocument($currentUserSEId);
                 } catch (Exception $e) {
                     DbManager::rollbackPoint("CHGGROUP");
-                    if (strpos($e->getMessage(), "group loop")) {
+                    if (strpos($e->getMessage(), "GROUPLOOP0001") !== false) {
                         $e->setUserMessage(sprintf(
                             "Cannot insert group \"%s\": it is a subgroup",
                             $groupSE->getTitle()
