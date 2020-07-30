@@ -14,7 +14,6 @@ PROJECT_PHP_VERSION = 7.3
 PROJECT_PSQL_PORT = 54321
 PROJECT_HTTP_PORT = 8080
 PROJECT_DEVSERVER_PORT = 8001
-PROJECT_MAIL_PORT = 8081
 
 TOPTARGETS := deploy deploy-test deploy-all lint po stub checkXML clean beautify
 

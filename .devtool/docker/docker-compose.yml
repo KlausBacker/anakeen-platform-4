@@ -48,12 +48,5 @@ services:
     networks:
       - internal
 
-  mail:
-    image: mailhog/mailhog
-    networks:
-      - internal
-    ports:
-      - '${PROJECT_MAIL_PORT-8081}:8025'
-
 networks:
   internal: {}
