@@ -8,5 +8,6 @@
   "AdminCenterFullsearch.Total not up to date": "Total pas à jour",
   "AdminCenterFullsearch.Database table size": "Taille de la table de la base de donnée",
   "AdminCenterFullsearch.Searching in": "Chercher dans",
-  "AdminCenterFullsearch.Fullsearch Manager": "Recherche générale"
+  "AdminCenterFullsearch.Fullsearch Manager": "Recherche générale",
+  "AdminCenterFullsearch.No domain configured": "Aucun domaine n'a été configuré"
 }

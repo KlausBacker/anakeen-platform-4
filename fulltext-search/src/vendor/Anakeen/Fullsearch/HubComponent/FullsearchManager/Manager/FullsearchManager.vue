@@ -1,7 +1,7 @@
 <template>
   <div class="fullsearch-manager">
     <ank-split-panes ref="splitter" class="ank-fullsearch-splitter" vertical watch-slots>
-      <search-configs class="fullsearch-config" @selected="onSelectedDomain"  splitpanes-size="30"/>
+      <search-configs class="fullsearch-config" splitpanes-size="30" @selected="onSelectedDomain" />
       <search-search class="fullsearch-search" :domain="domainConfig" splitpanes-size="70" />
     </ank-split-panes>
   </div>
