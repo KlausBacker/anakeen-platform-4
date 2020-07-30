@@ -3,6 +3,7 @@ import AnkActionMenu from "./AnkActionMenu/AnkActionMenu.vue";
 import AnkGridCell from "./AnkGridCell/AnkGridCell.vue";
 import AnkExportButton from "./AnkExportButton/AnkExportButton.vue";
 import AnkGridExpandButton from "./AnkGridExpandButton/AnkGridExpandButton.vue";
+import AnkGridReloadButton from "./AnkGridReloadButton/AnkGridReloadButton.vue";
 import AnkGridColumnsButton from "./AnkGridColumnsButton/AnkGridColumnsButton.vue";
 
 import AnkGridPager from "./AnkGridPager/AnkGridPager.vue";
@@ -201,6 +202,7 @@ function computePage(currentPage, pageable): number {
     "ank-action-menu": AnkActionMenu,
     "ank-export-button": AnkExportButton,
     "ank-expand-button": AnkGridExpandButton,
+    "ank-reload-button": AnkGridReloadButton,
     "ank-grid-pager": AnkGridPager,
     "ank-columns-button": AnkGridColumnsButton
   },

@@ -6,9 +6,9 @@ import VueI18n from "vue-i18n";
 import { Component, Prop, Watch } from "vue-property-decorator";
 
 @Component({
-  name: "ank-se-grid-expand-button"
+  name: "ank-se-grid-reload-button"
 })
-export default class AnkGridExpandButtonController extends Vue {
+export default class AnkGridReloadButtonController extends Vue {
   @Prop({
     default: "",
     type: String
@@ -24,20 +24,22 @@ export default class AnkGridExpandButtonController extends Vue {
 
   public get translations(): { [key: string]: VueI18n.TranslateResult } {
     return {
-      tooltip: this.$t("gridExpandButton.Tooltip")
+      tooltip: this.$t("gridReloadButton.Tooltip")
     };
   }
 
   public mounted(): void {
     const options = this.getButtonOptions();
-    this.button = $(this.$refs.expandButton)
+    this.button = $(this.$refs.reloadButton)
       .kendoButton(options)
       .data("kendoButton");
     this.button.bind("click", () => {
-      $(this.$el).toggleClass("k-state-expand-active");
-      this.gridComponent.expandColumns();
+      $(this.$el).addClass("k-state-reload-active");
+      this.gridComponent.refreshGrid(true).then(() => {
+        $(this.$el).removeClass("k-state-reload-active");
+      });
     });
-    $(this.$refs.expandButton).kendoTooltip({
+    $(this.$refs.reloadButton).kendoTooltip({
       width: 120,
       position: "top",
       autoHide: true,
@@ -57,7 +59,7 @@ export default class AnkGridExpandButtonController extends Vue {
     if (this.iconClass) {
       options.iconClass = this.iconClass;
     } else {
-      options.icon = "arrows-resizing";
+      options.icon = "reload";
     }
     return options;
   }

@@ -49,6 +49,7 @@
       <slot name="gridFooter" v-bind:gridComponent="gridInstance">
         <ank-grid-pager v-if="pager" v-bind="pager" :gridComponent="gridInstance"></ank-grid-pager>
         <ank-expand-button v-if="defaultExpandable" :gridComponent="gridInstance"></ank-expand-button>
+        <ank-reload-button v-if="refresh" :gridComponent="gridInstance"></ank-reload-button>
       </slot>
     </div>
   </div>
