@@ -36,11 +36,14 @@ const deployPipe = (exports.deployPipe = async ({
   log("Check control connexion");
   //Send gulpSrc to temp dest
   try {
-    await control.getControlStatus({
+    const controlStatus = await control.getControlStatus({
       controlUrl,
       controlUsername,
       controlPassword
     });
+    if (controlStatus.status === "Not Initialized") {
+      throw new Error(controlStatus.message);
+    }
     log("Post the module");
     if (reinstall) {
       log("Force installation mode");
