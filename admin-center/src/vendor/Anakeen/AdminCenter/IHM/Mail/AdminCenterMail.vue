@@ -12,6 +12,9 @@
         class="mail-grid"
         collection="MAILTEMPLATE"
         controller="DEFAULT_GRID_CONTROLLER"
+        :pageable="pageable"
+        :contextTitles="false"
+        refresh
         :actions="actions"
         :columns="columns"
         @rowActionClick="selectMailTemplate"
