@@ -88,9 +88,10 @@ HTML;
         \SmartStructure\Mask $mask = null
     ): RenderAttributeVisibilities {
         $visibilities = parent::getVisibilities($document, $mask);
-        $visibilities->setVisibility(DescriptionFields::rd_fieldlabel,
-            RenderAttributeVisibilities::StaticWriteVisibility);
+        $visibilities->setVisibility(
+            DescriptionFields::rd_fieldlabel,
+            RenderAttributeVisibilities::StaticWriteVisibility
+        );
         return $visibilities;
     }
-
 }

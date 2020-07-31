@@ -3,7 +3,6 @@
 
 namespace Anakeen\SmartStructures\RenderDescription;
 
-
 use Anakeen\SmartHooks;
 use Anakeen\SmartStructures\Dir\DirHooks;
 
@@ -18,7 +17,7 @@ class RenderDescriptionHooks extends \Anakeen\SmartElement
         });
     }
 
-    protected function completeFieldDescription() {
-
+    protected function completeFieldDescription()
+    {
     }
 }

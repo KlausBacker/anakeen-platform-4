@@ -1,7 +1,7 @@
 import "./RenderDescriptionEdit.scss";
-import $ from "jquery";
 import AnkInitGlobalController from "@anakeen/user-interfaces/components/lib/AnkInitController.esm";
+//import $ from "jquery";
 
 export default AnkInitGlobalController.then(globalController => {
-  globalController.registerFunction("renderDescriptionEdit", controller => {});
+  globalController.registerFunction("renderDescriptionEdit", () /*controller*/ => {});
 });

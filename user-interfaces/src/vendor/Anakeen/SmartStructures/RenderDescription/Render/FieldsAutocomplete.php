@@ -27,8 +27,10 @@ class FieldsAutocomplete
             if ($attr->usefor === "Q" || $attr->id === \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD) {
                 continue;
             }
-            if (($name == "") || (preg_match("/$pattern/i", $attr->getLabel())) || (preg_match("/$pattern/i",
-                    $attr->id))) {
+            if (($name == "") || (preg_match("/$pattern/i", $attr->getLabel())) || (preg_match(
+                "/$pattern/i",
+                $attr->id
+            ))) {
                 $html = sprintf(
                     "<b><i>%s</i></b><br/><span>&nbsp;&nbsp;%s</span>",
                     \Anakeen\Core\Utils\Strings::xmlEncode(self::getParentLabel($attr)),

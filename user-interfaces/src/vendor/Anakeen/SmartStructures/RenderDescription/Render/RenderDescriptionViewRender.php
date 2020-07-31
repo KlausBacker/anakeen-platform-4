@@ -17,6 +17,4 @@ class RenderDescriptionViewRender extends DefaultConfigViewRender
 
         return $js;
     }
-
-
 }
