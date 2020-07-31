@@ -26,6 +26,10 @@ module.exports = () => {
       MaskEdit: [
         path.resolve(__dirname,
           "../src/vendor/Anakeen/SmartStructures/Mask/Render/MaskEdit.js")
+      ],  
+      MailEdit: [
+        path.resolve(__dirname,
+          "../src/vendor/Anakeen/SmartStructures/Mail/Render/MailEdit.js")
       ],
       RenderDescriptionView: [
         path.resolve(__dirname,
