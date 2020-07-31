@@ -71,6 +71,8 @@ stub: install-deps
 ########################################################################################################################
 
 buildJS: install-deps
+	@$(PRINT_COLOR) "$(COLOR_DEBUG)Build Css $@$(COLOR_RESET)\n"
+	$(YARN_CMD) buildCss
 	@$(PRINT_COLOR) "$(COLOR_DEBUG)Build JS $@$(COLOR_RESET)\n"
 	$(YARN_CMD) buildJS
 

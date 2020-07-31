@@ -21,8 +21,9 @@
             <hub_instance_language>Français</hub_instance_language>
         </hub_instance_titles>
         <hub_instance_cssassets>
-            <hub_instance_cssasset_type>path</hub_instance_cssasset_type>
-            <hub_instance_cssasset>/Anakeen/adminCenter/assets/adminCenter.css</hub_instance_cssasset>
+            <hub_instance_cssasset_type>manifest</hub_instance_cssasset_type>
+            <hub_instance_cssasset>Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getCSSPath("adminCenter",
+                "adminCenter")</hub_instance_cssasset>
         </hub_instance_cssassets>
         <hub_access_roles name="AC_FUNCADMIN,AC_SYSADMIN"/>
         <hub_super_role name="AC_SYSADMIN">System administrator</hub_super_role>

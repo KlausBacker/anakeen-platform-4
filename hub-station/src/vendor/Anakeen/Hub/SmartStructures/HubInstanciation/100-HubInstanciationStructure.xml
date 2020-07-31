@@ -17,7 +17,7 @@
 
         <smart:class>Anakeen\Hub\SmartStructures\HubInstanciation\HubInstanciationBehavior</smart:class>
         <smart:tag name="vendor">Anakeen</smart:tag>
-        <smart:fields>
+        <smart:fields reset="true">
             <smart:field-set name="hub_instance_config" type="tab" label="Configuration" access="ReadWrite">
                 <smart:field-set name="hub_instance" type="frame" access="ReadWrite" label="Information">
                     <smart:field-text access="ReadWrite" name="instance_logical_name" label="Logical Name"
@@ -70,24 +70,19 @@
                 <smart:field-argument type="field">instance_logical_name</smart:field-argument>
                 <smart:field-return/>
             </smart:field-hook>
+            <smart:field-hook type="constraint" event="onPreStore" field="hub_instance_jsasset">
+                <smart:field-callable function="::checkAssetCallable"/>
+                <smart:field-argument type="field">hub_instance_jsasset_type</smart:field-argument>
+                <smart:field-argument type="field">hub_instance_jsasset</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
+            <smart:field-hook type="constraint" event="onPreStore" field="hub_instance_cssasset">
+                <smart:field-callable function="::checkAssetCallable"/>
+                <smart:field-argument type="field">hub_instance_cssasset_type</smart:field-argument>
+                <smart:field-argument type="field">hub_instance_cssasset</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
         </smart:hooks>
-
-        <smart:autocompletion>
-            <smart:field-autocomplete field="hub_instance_jsasset">
-                <smart:field-callable
-                        function="Anakeen\Hub\SmartStructures\HubInstanciation\HubInstanciationAutocomplete\HubInstanciationAutocomplete::getManifests"/>
-                <smart:field-returns>
-                    <smart:field-return field="hub_instance_jsasset"/>
-                </smart:field-returns>
-            </smart:field-autocomplete>
-            <smart:field-autocomplete field="hub_instance_cssasset">
-                <smart:field-callable
-                        function="Anakeen\Hub\SmartStructures\HubInstanciation\HubInstanciationAutocomplete\HubInstanciationAutocomplete::getManifests"/>
-                <smart:field-returns>
-                    <smart:field-return field="hub_instance_cssasset"/>
-                </smart:field-returns>
-            </smart:field-autocomplete>
-        </smart:autocompletion>
 
         <smart:defaults>
             <smart:default field="hub_instance_cssasset_type">manifest</smart:default>

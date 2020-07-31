@@ -3,6 +3,8 @@
 namespace Anakeen\Hub\SmartStructures\HubInstanciation;
 
 use Anakeen\Core\ContextManager;
+use Anakeen\Core\SmartStructure\Callables\InputArgument;
+use Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod;
 use Anakeen\Exception;
 use Anakeen\SmartHooks;
 use SmartStructure\Fields\Hubinstanciation as HubinstanciationFields;
@@ -95,10 +97,69 @@ class HubInstanciationBehavior extends \Anakeen\SmartElement
                 "bottom" => $this->getRawValue(HubinstanciationFields::hub_instanciation_dock_bottom)
             ),
             "globalAssets" => [
-        "js" => $this->getAttributeValue(HubinstanciationFields::hub_instance_jsasset),
-        "css" => $this->getAttributeValue(HubinstanciationFields::hub_instance_cssasset)
+                "js" => $this->resolveAssets("js"),
+                "css" => $this->resolveAssets("css")
             ]
         ];
+    }
+
+    protected function resolveAssets($type)
+    {
+        $prefix = sprintf("hub_instance_%s", $type);
+        $assets = $this->getArrayRawValues($prefix . "assets");
+
+        if (!empty($assets)) {
+            return array_filter(array_map(function ($item) use ($prefix, $type) {
+                $assetType = $item[$prefix . "asset_type"];
+                $assetPath = $item[$prefix . "asset"];
+                if (empty($assetPath)) {
+                    return null;
+                }
+                if ($assetType === "manifest") {
+                    $checkassetCall = $this->checkAssetCallable($assetType, $assetPath);
+                    if (!$checkassetCall) {
+                        throw new Exception($checkassetCall);
+                    }
+                    $parseMethod = new ParseFamilyMethod();
+                    $parsed = $parseMethod->parse($assetPath);
+                    $args = array_map(function (InputArgument $input) {
+                        return $input->name;
+                    }, $parsed->inputs);
+                    $result = forward_static_call(
+                        sprintf("%s::%s", $parsed->className, $parsed->methodName),
+                        ...$args
+                    );
+                    if (!$result) {
+                        throw new Exception("HUB0003", $assetPath);
+                    } else {
+                        return $result;
+                    }
+                } else {
+                    if (!file_exists(PUBLIC_DIR . "/" . $assetPath)) {
+                        throw new Exception("HUB0004", PUBLIC_DIR . "/" . $assetPath);
+                    }
+                    return $assetPath;
+                }
+            }, $assets));
+        }
+        return [];
+    }
+
+    public function checkAssetCallable($assetType, $assetValue)
+    {
+        if ($assetType === "manifest") {
+            $parseMethod = new ParseFamilyMethod();
+            $parsed = $parseMethod->parse($assetValue);
+            if (empty($parsed->className) || !is_subclass_of($parsed->className, AssetPath::class)) {
+                return ___(
+                    sprintf("The callable must be a static method of a class
+                 that implements Anakeen\Hub\SmartStructures\HubConfigurationGeneric\AssetPath"),
+                    "HubConfigurationGenericBehavior"
+                );
+            }
+            return "";
+        }
+        return "";
     }
 
     public function checkLogicalName($logicalName)

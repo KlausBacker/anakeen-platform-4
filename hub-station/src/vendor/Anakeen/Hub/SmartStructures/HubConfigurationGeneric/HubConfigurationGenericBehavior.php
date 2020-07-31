@@ -65,6 +65,10 @@ class HubConfigurationGenericBehavior extends \SmartStructure\Hubconfigurationvu
                     return null;
                 }
                 if ($assetType === "MANIFEST") {
+                    $checkassetCall = $this->checkAssetCallable($assetType, $assetPath);
+                    if (!$checkassetCall) {
+                        throw new Exception($checkassetCall);
+                    }
                     $parseMethod = new ParseFamilyMethod();
                     $parsed = $parseMethod->parse($assetPath);
                     $args = array_map(function (InputArgument $input) {
@@ -81,7 +85,7 @@ class HubConfigurationGenericBehavior extends \SmartStructure\Hubconfigurationvu
                     }
                 } else {
                     if (!file_exists(PUBLIC_DIR . "/" . $assetPath)) {
-                        throw new Exception("HUB0001", PUBLIC_DIR . "/" . $assetPath);
+                        throw new Exception("HUB0002", PUBLIC_DIR . "/" . $assetPath);
                     }
                     return $assetPath;
                 }
