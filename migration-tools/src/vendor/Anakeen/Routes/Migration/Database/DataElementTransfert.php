@@ -2,6 +2,7 @@
 
 namespace Anakeen\Routes\Migration\Database;
 
+use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure;
@@ -22,11 +23,21 @@ class DataElementTransfert
      * @var SmartStructure
      */
     protected $structure;
+    protected static $vendorName;
+    /**
+     * @var string
+     */
+    protected static $subDirName;
 
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
+        self::$vendorName = ContextManager::getParameterValue("Migration", "VENDOR");
+        self::$subDirName = ContextManager::getParameterValue("Migration", "MODULE");
+
         $this->initParameters($args);
         $data = $this->doRequest();
+
+
         return ApiV2Response::withData($response, $data);
     }
 
