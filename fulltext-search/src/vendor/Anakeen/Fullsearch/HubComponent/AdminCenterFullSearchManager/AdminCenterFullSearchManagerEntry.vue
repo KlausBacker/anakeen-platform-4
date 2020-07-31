@@ -23,6 +23,10 @@ export default {
 </script>
 <style>
 .hub-fullsearch-manager {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
   height: 100%;
 }
 </style>
