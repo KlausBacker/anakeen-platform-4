@@ -1,0 +1,48 @@
+/* RenderDescriptionEdit */
+
+.dcpDocument[data-structure="RENDERDESCRIPTION"] {
+  .rd-custom-fields {
+    .rd-field-description {
+      border: solid 1px #157efb;
+      padding: 0.25rem;
+      border-radius: 0.25rem;
+    }
+    .rd-descriptions {
+      display: flex;
+      flex-wrap: wrap;
+
+      > .rd-description {
+        flex: 1;
+        min-width: 40rem;
+      }
+
+
+    }
+    .rd-description-header {
+      display: flex;
+      flex-wrap: wrap;
+
+      > .rd-description {
+        flex: 1;
+        //min-width: 40rem;
+      }
+      .rd-description-label {
+        flex: 2;
+        font-weight: bold;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        color: #157efb;
+        font-size: 1.2rem;
+      }
+
+      .rd-description-main {
+        .dcpAttribute__value {
+          //height: 12rem;
+        }
+      }
+
+    }
+  }
+}

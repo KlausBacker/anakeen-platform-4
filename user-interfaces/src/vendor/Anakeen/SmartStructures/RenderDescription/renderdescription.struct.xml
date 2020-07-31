@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:enumerates>
+        <smart:enum-configuration name="RENDERDESCRIPTION-placement">
+            <smart:enum name="top" label="Top"/>
+            <smart:enum name="left" label="Left"/>
+            <smart:enum name="right" label="Right"/>
+            <smart:enum name="bottom" label="Bottom"/>
+            <smart:enum name="topLabel" label="Up to label"/>
+            <smart:enum name="topValue" label="Up to value"/>
+            <smart:enum name="bottomLabel" label="Down to label"/>
+            <smart:enum name="bottomValue" label="Down to value"/>
+            <smart:enum name="click" label="Click button"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="RENDERDESCRIPTION-lang">
+            <smart:enum name="fr" label="French"/>
+            <smart:enum name="en" label="English"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="RENDERDESCRIPTION-mode">
+            <smart:enum name="view" label="Consultation"/>
+            <smart:enum name="edit" label="Modification"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="RENDERDESCRIPTION-collapse">
+            <smart:enum name="false" label="Expanded"/>
+            <smart:enum name="true" label="Collapsed"/>
+        </smart:enum-configuration>
+    </smart:enumerates>
+    <smart:structure-configuration name="RENDERDESCRIPTION" label="Description de formulaire">
+        <smart:icon file="se-renderdescription.png"/>
+        <smart:class>Anakeen\SmartStructures\RenderDescription\RenderDescriptionHooks</smart:class>
+        <smart:revisable>false</smart:revisable>
+        <smart:usefor>S</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
+        <smart:fields reset="true">
+            <smart:field-set name="rd_fr_info" type="frame" label="Information" access="ReadWrite">
+                <smart:field-text name="rd_title" label="Title" access="ReadWrite" needed="true" is-title="true" />
+                <smart:field-docid name="rd_famid" label="Structure" access="ReadWrite" needed="true" relation="-1"/>
+                <smart:field-enum name="rd_mode" label="Use by default in mode" relation="RENDERDESCRIPTION-mode" access="ReadWrite" multiple="true"/>
+                <smart:field-enum name="rd_langs" label="Restrict to languages" relation="RENDERDESCRIPTION-lang" access="ReadWrite"  multiple="true"/>
+            </smart:field-set>
+            <smart:field-set name="rd_fr_descritions" type="frame" label="Descriptions" access="ReadWrite">
+                <smart:field-set name="rd_t_fields" type="array" label="Fields" access="ReadWrite">
+                    <smart:field-text name="rd_fieldlabel" label="Label" access="ReadWrite"/>
+                    <smart:field-text name="rd_field" label="Field" needed="true" access="ReadWrite"/>
+                    <smart:field-htmltext name="rd_description"  needed="true" label="Main description" access="ReadWrite"/>
+                    <smart:field-htmltext name="rd_subdescription" label="Secondary description" access="ReadWrite"/>
+                    <smart:field-enum name="rd_collapsable" label="Collapse"  relation="RENDERDESCRIPTION-collapse" access="ReadWrite"/>
+                    <smart:field-enum name="rd_placement" label="Placement" relation="RENDERDESCRIPTION-placement" access="ReadWrite"/>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:fields>
+        <smart:autocompletion>
+        <smart:field-autocomplete field="rd_field">
+            <smart:field-callable function="Anakeen\SmartStructures\RenderDescription\Render\FieldsAutocomplete::getFields"/>
+            <smart:field-argument name="structure" type="field">rd_famid</smart:field-argument>
+            <smart:field-returns>
+                <smart:field-return field="rd_field"/>
+                <smart:field-return field="rd_fieldlabel"/>
+            </smart:field-returns>
+        </smart:field-autocomplete>
+        </smart:autocompletion>
+        <smart:defaults>
+            <smart:default field="rd_placement">top</smart:default>
+        </smart:defaults>
+    </smart:structure-configuration>
+</smart:config>
