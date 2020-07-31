@@ -67,6 +67,12 @@
             <smart:element-access-configuration ref="PRF_ADMIN_ACCESS"/>
         </smart:accesses>
     </smart:structure-configuration>
+    <smart:structure-configuration name="RENDERDESCRIPTION">
+        <smart:accesses>
+            <smart:structure-access-configuration ref="PRF_ADMIN_CREATION"/>
+            <smart:element-access-configuration ref="PRF_ADMIN_ACCESS"/>
+        </smart:accesses>
+    </smart:structure-configuration>
     <smart:structure-configuration name="CVDOC">
         <smart:accesses>
             <smart:structure-access-configuration ref="PRF_ADMIN_CREATION"/>
@@ -83,6 +89,13 @@
         <smart:accesses>
             <smart:structure-access-configuration ref="PRF_ADMIN_CREATION"/>
             <smart:element-access-configuration ref="PRF_TASK_ACCESS"/>
+        </smart:accesses>
+    </smart:structure-configuration>
+
+    <smart:structure-configuration name="RENDERDESCRIPTION">
+        <smart:accesses>
+            <smart:structure-access-configuration ref="PRF_ADMIN_CREATION"/>
+            <smart:element-access-configuration ref="PRF_RENDERDESCRIPTION_ACCESS"/>
         </smart:accesses>
     </smart:structure-configuration>
     <smart:structure-configuration name="DIR">
