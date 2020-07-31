@@ -13,33 +13,8 @@ msgstr ""
 
 #: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
 msgctxt "RENDERDESCRIPTION-placement"
-msgid "top"
-msgstr "Au dessus du champ"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-msgctxt "RENDERDESCRIPTION-placement"
-msgid "left"
-msgstr "À gauche"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-msgctxt "RENDERDESCRIPTION-placement"
-msgid "right"
-msgstr "À droite"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-msgctxt "RENDERDESCRIPTION-placement"
 msgid "bottom"
 msgstr "En dessous du champ"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-msgctxt "RENDERDESCRIPTION-placement"
-msgid "topLabel"
-msgstr "Au dessus du libellé"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-msgctxt "RENDERDESCRIPTION-placement"
-msgid "topValue"
-msgstr "Au dessus de la valeur"
 
 #: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
 msgctxt "RENDERDESCRIPTION-placement"
@@ -55,3 +30,28 @@ msgstr "Sous la valeur"
 msgctxt "RENDERDESCRIPTION-placement"
 msgid "click"
 msgstr "Bouton à cliquer"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION-placement"
+msgid "left"
+msgstr "À gauche"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION-placement"
+msgid "right"
+msgstr "À droite"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION-placement"
+msgid "top"
+msgstr "Au dessus du champ"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION-placement"
+msgid "topLabel"
+msgstr "Au dessus du libellé"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION-placement"
+msgid "topValue"
+msgstr "Au dessus de la valeur"

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: smart RENDERDESCRIPTION \n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2020-07-31 14:04+0200\n"
+"PO-Revision-Date: 2020-07-31 14:50+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -13,53 +13,8 @@ msgstr ""
 
 #: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
 msgctxt "RENDERDESCRIPTION"
-msgid "undefined"
-msgstr ""
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-msgctxt "RENDERDESCRIPTION"
-msgid "rd_fr_info"
-msgstr "Information"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-msgctxt "RENDERDESCRIPTION"
-msgid "rd_title"
-msgstr "Titre"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-msgctxt "RENDERDESCRIPTION"
-msgid "rd_famid"
-msgstr "Structure"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-msgctxt "RENDERDESCRIPTION"
-msgid "rd_mode"
-msgstr "Utilisé par défaut dans le mode"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-msgctxt "RENDERDESCRIPTION"
-msgid "rd_langs"
-msgstr "Restriction aux langages"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-msgctxt "RENDERDESCRIPTION"
-msgid "rd_fr_descritions"
-msgstr "Descriptions"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-msgctxt "RENDERDESCRIPTION"
-msgid "rd_t_fields"
-msgstr "Champs"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-msgctxt "RENDERDESCRIPTION"
-msgid "rd_fieldlabel"
-msgstr "Libellé"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-msgctxt "RENDERDESCRIPTION"
-msgid "rd_field"
-msgstr "Champ"
+msgid "rd_collapsable"
+msgstr "Affichage description secondaire"
 
 #: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
 msgctxt "RENDERDESCRIPTION"
@@ -68,10 +23,65 @@ msgstr "Description"
 
 #: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
 msgctxt "RENDERDESCRIPTION"
+msgid "rd_famid"
+msgstr "Structure"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION"
+msgid "rd_field"
+msgstr "Champ"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION"
+msgid "rd_fieldlabel"
+msgstr "Libellé"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION"
+msgid "rd_fr_descritions"
+msgstr "Descriptions"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION"
+msgid "rd_fr_info"
+msgstr "Information"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION"
+msgid "rd_langs"
+msgstr "Restriction aux langages"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION"
+msgid "rd_mode"
+msgstr "Utilisé par défaut dans le mode"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION"
 msgid "rd_placement"
 msgstr "Position"
 
 #: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
 msgctxt "RENDERDESCRIPTION"
+msgid "rd_subdescription"
+msgstr "Description secondaire"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION"
+msgid "rd_t_fields"
+msgstr "Champs"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION"
+msgid "rd_title"
+msgstr "Titre"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION"
 msgid "title"
 msgstr "Titre"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION"
+msgid "undefined"
+msgstr ""

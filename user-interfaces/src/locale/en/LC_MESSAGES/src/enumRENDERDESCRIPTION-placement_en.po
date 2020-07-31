@@ -14,38 +14,8 @@ msgstr ""
 #: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
 #, fuzzy
 msgctxt "RENDERDESCRIPTION-placement"
-msgid "top"
-msgstr "Top"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-#, fuzzy
-msgctxt "RENDERDESCRIPTION-placement"
-msgid "left"
-msgstr "Left"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-#, fuzzy
-msgctxt "RENDERDESCRIPTION-placement"
-msgid "right"
-msgstr "Right"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-#, fuzzy
-msgctxt "RENDERDESCRIPTION-placement"
 msgid "bottom"
 msgstr "Bottom"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-#, fuzzy
-msgctxt "RENDERDESCRIPTION-placement"
-msgid "topLabel"
-msgstr "Up to label"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-#, fuzzy
-msgctxt "RENDERDESCRIPTION-placement"
-msgid "topValue"
-msgstr "Up to value"
 
 #: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
 #, fuzzy
@@ -64,3 +34,33 @@ msgstr "Down to value"
 msgctxt "RENDERDESCRIPTION-placement"
 msgid "click"
 msgstr "Click button"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+#, fuzzy
+msgctxt "RENDERDESCRIPTION-placement"
+msgid "left"
+msgstr "Left"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+#, fuzzy
+msgctxt "RENDERDESCRIPTION-placement"
+msgid "right"
+msgstr "Right"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+#, fuzzy
+msgctxt "RENDERDESCRIPTION-placement"
+msgid "top"
+msgstr "Top"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+#, fuzzy
+msgctxt "RENDERDESCRIPTION-placement"
+msgid "topLabel"
+msgstr "Up to label"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+#, fuzzy
+msgctxt "RENDERDESCRIPTION-placement"
+msgid "topValue"
+msgstr "Up to value"

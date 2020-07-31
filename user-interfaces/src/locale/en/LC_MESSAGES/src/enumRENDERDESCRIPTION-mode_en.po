@@ -13,10 +13,10 @@ msgstr ""
 
 #: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
 msgctxt "RENDERDESCRIPTION-mode"
-msgid "view"
-msgstr "Consultation"
+msgid "edit"
+msgstr "Modification"
 
 #: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
 msgctxt "RENDERDESCRIPTION-mode"
-msgid "edit"
-msgstr "Modification"
+msgid "view"
+msgstr "Consultation"

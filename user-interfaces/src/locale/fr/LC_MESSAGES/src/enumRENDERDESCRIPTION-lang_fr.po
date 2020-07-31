@@ -13,10 +13,10 @@ msgstr ""
 
 #: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
 msgctxt "RENDERDESCRIPTION-lang"
-msgid "fr"
-msgstr "Français"
+msgid "en"
+msgstr "Anglais"
 
 #: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
 msgctxt "RENDERDESCRIPTION-lang"
-msgid "en"
-msgstr "Anglais"
+msgid "fr"
+msgstr "Français"

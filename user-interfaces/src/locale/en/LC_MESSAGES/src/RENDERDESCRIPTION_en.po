@@ -14,62 +14,8 @@ msgstr ""
 #: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
 #, fuzzy
 msgctxt "RENDERDESCRIPTION"
-msgid "undefined"
-msgstr "undefined"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-#, fuzzy
-msgctxt "RENDERDESCRIPTION"
-msgid "rd_fr_info"
-msgstr "Information"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-#, fuzzy
-msgctxt "RENDERDESCRIPTION"
-msgid "rd_title"
-msgstr "Title"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-#, fuzzy
-msgctxt "RENDERDESCRIPTION"
-msgid "rd_famid"
-msgstr "Structure"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-#, fuzzy
-msgctxt "RENDERDESCRIPTION"
-msgid "rd_mode"
-msgstr "Use by default in mode"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-#, fuzzy
-msgctxt "RENDERDESCRIPTION"
-msgid "rd_langs"
-msgstr "Restrict to languages"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-#, fuzzy
-msgctxt "RENDERDESCRIPTION"
-msgid "rd_fr_descritions"
-msgstr "Descriptions"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-#, fuzzy
-msgctxt "RENDERDESCRIPTION"
-msgid "rd_t_fields"
-msgstr "Fields"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-#, fuzzy
-msgctxt "RENDERDESCRIPTION"
-msgid "rd_fieldlabel"
-msgstr "Label"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-#, fuzzy
-msgctxt "RENDERDESCRIPTION"
-msgid "rd_field"
-msgstr "Field"
+msgid "rd_collapsable"
+msgstr "Collapse"
 
 #: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
 #, fuzzy
@@ -80,11 +26,77 @@ msgstr "Description"
 #: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
 #, fuzzy
 msgctxt "RENDERDESCRIPTION"
+msgid "rd_famid"
+msgstr "Structure"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+#, fuzzy
+msgctxt "RENDERDESCRIPTION"
+msgid "rd_field"
+msgstr "Field"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+#, fuzzy
+msgctxt "RENDERDESCRIPTION"
+msgid "rd_fieldlabel"
+msgstr "Label"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+#, fuzzy
+msgctxt "RENDERDESCRIPTION"
+msgid "rd_fr_descritions"
+msgstr "Descriptions"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+#, fuzzy
+msgctxt "RENDERDESCRIPTION"
+msgid "rd_fr_info"
+msgstr "Information"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+#, fuzzy
+msgctxt "RENDERDESCRIPTION"
+msgid "rd_langs"
+msgstr "Restrict to languages"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+#, fuzzy
+msgctxt "RENDERDESCRIPTION"
+msgid "rd_mode"
+msgstr "Use by default in mode"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+#, fuzzy
+msgctxt "RENDERDESCRIPTION"
 msgid "rd_placement"
 msgstr "Placement"
 
 #: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
 #, fuzzy
 msgctxt "RENDERDESCRIPTION"
+msgid "rd_subdescription"
+msgstr "Description"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+#, fuzzy
+msgctxt "RENDERDESCRIPTION"
+msgid "rd_t_fields"
+msgstr "Fields"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+#, fuzzy
+msgctxt "RENDERDESCRIPTION"
+msgid "rd_title"
+msgstr "Title"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+#, fuzzy
+msgctxt "RENDERDESCRIPTION"
 msgid "title"
 msgstr "title"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+#, fuzzy
+msgctxt "RENDERDESCRIPTION"
+msgid "undefined"
+msgstr "undefined"

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: enum RENDERDESCRIPTION-lang \n"
+"Project-Id-Version: enum RENDERDESCRIPTION-collapse \n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2020-07-31 14:02+0200\n"
+"PO-Revision-Date: 2020-07-31T12:28:27.115Z\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en\n"
@@ -12,11 +12,13 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-msgctxt "RENDERDESCRIPTION-lang"
-msgid "en"
-msgstr "English"
+#, fuzzy
+msgctxt "RENDERDESCRIPTION-collapse"
+msgid "false"
+msgstr "Expanded"
 
 #: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-msgctxt "RENDERDESCRIPTION-lang"
-msgid "fr"
-msgstr "French"
+#, fuzzy
+msgctxt "RENDERDESCRIPTION-collapse"
+msgid "true"
+msgstr "Collapsed"
