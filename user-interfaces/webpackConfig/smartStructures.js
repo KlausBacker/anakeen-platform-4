@@ -27,9 +27,13 @@ module.exports = () => {
         path.resolve(__dirname,
           "../src/vendor/Anakeen/SmartStructures/Mask/Render/MaskEdit.js")
       ],
-      MailEdit: [
+      RenderDescriptionView: [
         path.resolve(__dirname,
-          "../src/vendor/Anakeen/SmartStructures/Mail/Render/MailEdit.js")
+          "../src/vendor/Anakeen/SmartStructures/RenderDescription/Render/RenderDescriptionView.js")
+      ],
+      RenderDescriptionEdit: [
+        path.resolve(__dirname,
+          "../src/vendor/Anakeen/SmartStructures/RenderDescription/Render/RenderDescriptionEdit.js")
       ],
       IuserGroup: [
         path.resolve(
