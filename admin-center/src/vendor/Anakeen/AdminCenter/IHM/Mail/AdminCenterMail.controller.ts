@@ -19,6 +19,11 @@ export default class AdminCenterMailController extends Mixins(AnkI18NMixin) {
     { field: "tmail_subject", title: `Subject`, withContext: false }
   ];
   public selectedMail = "";
+  public pageable = {
+    buttonCount: 0,
+    pageSize: 50,
+    pageSizes: [50, 100, 200]
+  };
 
   public mounted(): void {
     this.columns = [
