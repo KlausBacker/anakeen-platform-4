@@ -309,5 +309,7 @@
   "AdminCenterTimersDetails.tododate": "Date d'exécution : ",
   "AdminCenterTimersDetails.donestatus": "Statut :",
   "AdminCenterTimersDetails.formatAttachDate": "Date d'attachement : ",
-  "AdminCenterTimersDetails.Attached by": "Attaché par "
+  "AdminCenterTimersDetails.Attached by": "Attaché par ",
+  "AdminCenterRenderDescription.Title Render Description": "Description de formulaire",
+  "AdminCenterRenderDescription.Select render description": "Sélectionner une description"
 }

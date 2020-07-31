@@ -44,6 +44,10 @@
             <accounts:displayName>Mail Template Manager</accounts:displayName>
             <accounts:structure name="AC_MAILTEMPLATEMANAGER"/>
         </accounts:role>
+        <accounts:role name="renderdescription_manager_role">
+            <accounts:displayName>Render description form manager</accounts:displayName>
+            <accounts:structure name="AC_RENDERDESCRIPTIONMANAGER"/>
+        </accounts:role>
         <accounts:role name="trash_manager_role">
             <accounts:displayName>Trash Manager</accounts:displayName>
             <accounts:structure name="AC_TRASHMANAGER"/>

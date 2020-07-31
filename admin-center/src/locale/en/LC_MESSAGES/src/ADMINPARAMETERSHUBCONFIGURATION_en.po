@@ -22,6 +22,18 @@ msgid "admin_hub_configuration_global"
 msgstr "Global parameters"
 
 #: src/vendor/Anakeen/AdminCenter/SmartStructures/AdminParametersHubConfiguration/100-AdminParametersHubConfigurationStructure.xml
+#, fuzzy
+msgctxt "ADMINPARAMETERSHUBCONFIGURATION"
+msgid "admin_hub_configuration_icon"
+msgstr "Specific user"
+
+#: src/vendor/Anakeen/AdminCenter/SmartStructures/AdminParametersHubConfiguration/100-AdminParametersHubConfigurationStructure.xml
+#, fuzzy
+msgctxt "ADMINPARAMETERSHUBCONFIGURATION"
+msgid "admin_hub_configuration_label"
+msgstr "Global parameters"
+
+#: src/vendor/Anakeen/AdminCenter/SmartStructures/AdminParametersHubConfiguration/100-AdminParametersHubConfigurationStructure.xml
 msgctxt "ADMINPARAMETERSHUBCONFIGURATION"
 msgid "admin_hub_configuration_namespace"
 msgstr "Namespace"
