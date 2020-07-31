@@ -1,0 +1,57 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: enum RENDERDESCRIPTION-placement \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2020-07-31 14:06+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION-placement"
+msgid "top"
+msgstr "Au dessus du champ"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION-placement"
+msgid "left"
+msgstr "À gauche"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION-placement"
+msgid "right"
+msgstr "À droite"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION-placement"
+msgid "bottom"
+msgstr "En dessous du champ"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION-placement"
+msgid "topLabel"
+msgstr "Au dessus du libellé"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION-placement"
+msgid "topValue"
+msgstr "Au dessus de la valeur"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION-placement"
+msgid "bottomLabel"
+msgstr "Sous le libellé"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION-placement"
+msgid "bottomValue"
+msgstr "Sous la valeur"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION-placement"
+msgid "click"
+msgstr "Bouton à cliquer"
