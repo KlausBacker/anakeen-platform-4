@@ -12,6 +12,7 @@
             <file>../../Dcp/Pu/SuiteDcpSecurity.php</file>
             <file>../../Dcp/Pu/SuiteWorkflow.php</file>
             <file>../../Anakeen/Pu/SuiteUi.php</file>
+            <file>../Pu/FulltextSearch/SuiteFulltextSearchConfig.php</file>
         </testsuite>
     </testsuites>
 </phpunit>

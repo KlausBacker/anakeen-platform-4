@@ -67,6 +67,12 @@ SQL;
         DbManager::query($sql);
     }
 
+    /**
+     * Test if text extraction is done and up-to-date
+     * @param FileInfo $info
+     * @return bool return true is text extraction is up-to-date from file origin
+     * @throws \Anakeen\Database\Exception
+     */
     public static function isUptodate(FileInfo $info)
     {
         $sql = sprintf(
@@ -77,6 +83,24 @@ SQL;
         );
         DbManager::query($sql, $r, true, true);
         return $r !== false;
+    }
+
+
+    /**
+     * Get raw text from file text extraction
+     * @param FileInfo $info
+     * @return string|false return false if not found
+     * @throws \Anakeen\Database\Exception
+     */
+    public static function getContent(FileInfo $info)
+    {
+        $sql = sprintf(
+            "select textcontent from %s where fileid=%d ",
+            self::DBTABLE,
+            $info->id_file
+        );
+        DbManager::query($sql, $r, true, true);
+        return $r ;
     }
 
     /**

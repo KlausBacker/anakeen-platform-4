@@ -3239,7 +3239,7 @@ create unique index i_docir on doc(initid, revision);";
                 if (!empty($attrOut)) {
                     foreach ($attrOut as $k => $attrOutValue) {
                         if (is_numeric($attrOutValue)) {
-                            throw new Exception('CORE0109');
+                            return \ErrorCode::getError('CORE0109', $idAttr);
                         }
                     }
                     $this->_setValueNeedCompleteArray = $old_setValueCompleteArrayRow;
