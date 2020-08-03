@@ -8,15 +8,17 @@
     flex: 1;
     align-items: flex-start;
     justify-content: stretch;
-    height: 100%;
-    display: flex;
     flex-direction: column;
 
   }
 
-  .rd-form-wrapper {
+
+  .rd-panel {
     display: flex;
     height: 100%;
+  }
+
+
 
     .rd-empty {
       display: flex;
@@ -33,7 +35,7 @@
         font-size: 5rem;
       }
     }
-  }
+
 
   .rd-splitter {
     height: 100%;

@@ -28,9 +28,9 @@ class FieldsAutocomplete
                 continue;
             }
             if (($name == "") || (preg_match("/$pattern/i", $attr->getLabel())) || (preg_match(
-                "/$pattern/i",
-                $attr->id
-            ))) {
+                    "/$pattern/i",
+                    $attr->id
+                ))) {
                 $html = sprintf(
                     "<b><i>%s</i></b><br/><span>&nbsp;&nbsp;%s</span>",
                     \Anakeen\Core\Utils\Strings::xmlEncode(self::getParentLabel($attr)),
@@ -41,7 +41,8 @@ class FieldsAutocomplete
                     $html,
                     [
                         $attr->id,
-                        sprintf("%s %s", self::getParentLabel($attr), $attr->getLabel()),
+                        $attr->getLabel(),
+                        self::getParentLabel($attr),
                     ]
                 );
             }

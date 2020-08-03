@@ -311,5 +311,6 @@
   "AdminCenterTimersDetails.formatAttachDate": "Date of attachment : ",
   "AdminCenterTimersDetails.Attached by": "Attached by ",
   "AdminCenterRenderDescription.Title Render Description": "Form descriptions",
-  "AdminCenterRenderDescription.Select render description": "Select a description form"
+  "AdminCenterRenderDescription.Select render description": "Select a description form",
+  "AdminRenderDescriptiont.Create new description": "Create new description"
 }

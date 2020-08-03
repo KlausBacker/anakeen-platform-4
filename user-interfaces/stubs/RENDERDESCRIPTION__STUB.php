@@ -41,6 +41,14 @@ namespace SmartStructure\Fields {
         */ 
         const rd_famid='rd_famid';
         /**
+        * Example
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> docid </li>
+        * </ul>
+        */ 
+        const rd_example='rd_example';
+        /**
         * Use by default in mode
         * <ul>
         * <li> <i>relation</i> RENDERDESCRIPTION-mode </li>
@@ -51,15 +59,14 @@ namespace SmartStructure\Fields {
         */ 
         const rd_mode='rd_mode';
         /**
-        * Restrict to languages
+        * Restrict to language
         * <ul>
         * <li> <i>relation</i> RENDERDESCRIPTION-lang </li>
         * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>multiple</i> true </li>
         * <li> <i>type</i> enum </li>
         * </ul>
         */ 
-        const rd_langs='rd_langs';
+        const rd_lang='rd_lang';
         /**
         * Descriptions
         * <ul>
@@ -76,6 +83,14 @@ namespace SmartStructure\Fields {
         * </ul>
         */ 
         const rd_t_fields='rd_t_fields';
+        /**
+        * Label
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> text </li>
+        * </ul>
+        */ 
+        const rd_fieldparentlabel='rd_fieldparentlabel';
         /**
         * Label
         * <ul>

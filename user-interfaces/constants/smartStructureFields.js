@@ -17,15 +17,20 @@ export class RENDERDESCRIPTION {
    */
   static rd_famid = "rd_famid";
   /**
+   * Example
+   * @smartType docid
+   */
+  static rd_example = "rd_example";
+  /**
    * Use by default in mode
    * @smartType enum RENDERDESCRIPTION-mode
    */
   static rd_mode = "rd_mode";
   /**
-   * Restrict to languages
+   * Restrict to language
    * @smartType enum RENDERDESCRIPTION-lang
    */
-  static rd_langs = "rd_langs";
+  static rd_lang = "rd_lang";
   /**
    * Descriptions
    * @smartType frame
@@ -36,6 +41,11 @@ export class RENDERDESCRIPTION {
    * @smartType array
    */
   static rd_t_fields = "rd_t_fields";
+  /**
+   * Label
+   * @smartType text
+   */
+  static rd_fieldparentlabel = "rd_fieldparentlabel";
   /**
    * Label
    * @smartType text

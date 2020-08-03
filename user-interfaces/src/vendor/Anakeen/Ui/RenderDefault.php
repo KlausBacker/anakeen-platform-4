@@ -331,11 +331,11 @@ class RenderDefault implements IRenderConfig
 
         $lang = ContextManager::getLanguage();
         // print_r($lang);
-        // $s->addFilter(new \Anakeen\Search\Filters\IsEmpty(DescriptionFields::rd_langs));
-        // $s->addFilter(new \Anakeen\Search\Filters\OneEquals(DescriptionFields::rd_langs, substr($lang, 0, 2)));
+        // $s->addFilter(new \Anakeen\Search\Filters\IsEmpty(DescriptionFields::rd_lang));
+        // $s->addFilter(new \Anakeen\Search\Filters\OneEquals(DescriptionFields::rd_lang, substr($lang, 0, 2)));
         $s->addFilter(new \Anakeen\Search\Filters\OrOperator(
-            new \Anakeen\Search\Filters\OneEquals(DescriptionFields::rd_langs, substr($lang, 0, 2)),
-            new \Anakeen\Search\Filters\IsEmpty(DescriptionFields::rd_langs)
+            new \Anakeen\Search\Filters\IsEqual(DescriptionFields::rd_lang, substr($lang, 0, 2)),
+            new \Anakeen\Search\Filters\IsEmpty(DescriptionFields::rd_lang)
         ));
         $s->addFilter(new \Anakeen\Search\Filters\OneEquals(DescriptionFields::rd_mode, $this->getType()));
         $s->search();

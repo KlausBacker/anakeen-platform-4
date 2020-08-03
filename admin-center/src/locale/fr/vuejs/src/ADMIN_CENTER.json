@@ -311,5 +311,6 @@
   "AdminCenterTimersDetails.formatAttachDate": "Date d'attachement : ",
   "AdminCenterTimersDetails.Attached by": "Attaché par ",
   "AdminCenterRenderDescription.Title Render Description": "Description de formulaire",
-  "AdminCenterRenderDescription.Select render description": "Sélectionner une description"
+  "AdminCenterRenderDescription.Select render description": "Sélectionner une description",
+  "AdminRenderDescriptiont.Create new description": "Créer une nouvelle description"
 }

@@ -26,6 +26,12 @@ msgstr "Description"
 #: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
 #, fuzzy
 msgctxt "RENDERDESCRIPTION"
+msgid "rd_example"
+msgstr "Example"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+#, fuzzy
+msgctxt "RENDERDESCRIPTION"
 msgid "rd_famid"
 msgstr "Structure"
 
@@ -44,6 +50,12 @@ msgstr "Label"
 #: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
 #, fuzzy
 msgctxt "RENDERDESCRIPTION"
+msgid "rd_fieldparentlabel"
+msgstr "Label"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+#, fuzzy
+msgctxt "RENDERDESCRIPTION"
 msgid "rd_fr_descritions"
 msgstr "Descriptions"
 
@@ -56,7 +68,7 @@ msgstr "Information"
 #: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
 #, fuzzy
 msgctxt "RENDERDESCRIPTION"
-msgid "rd_langs"
+msgid "rd_lang"
 msgstr "Restrict to languages"
 
 #: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml

@@ -6,14 +6,12 @@
 
 namespace Anakeen\SmartStructures\RenderDescription\Render;
 
-use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Ui\DefaultConfigEditRender;
 use Anakeen\Ui\EnumRenderOptions;
 use Anakeen\Ui\RenderAttributeVisibilities;
 use Anakeen\Ui\RenderOptions;
 use Anakeen\Ui\UIGetAssetPath;
 use SmartStructure\Fields\Renderdescription as DescriptionFields;
-use SmartStructure\RenderDescription;
 
 class RenderDescriptionEditRender extends DefaultConfigEditRender
 {
@@ -40,22 +38,27 @@ class RenderDescriptionEditRender extends DefaultConfigEditRender
       {{/attribute.toolsEnabled}}
       <td>
         <div class="rd-field-description">
-            <div class="rd-description-header">
-              <div class="rd-description rd-description-label">{{{content.rd_fieldlabel.htmlContent}}}</div>
-              <div class="rd-description rd-description-main"> {{content.rd_field.label}}:  {{{content.rd_field.htmlContent}}}</div>
-              <div class="rd-description"> {{content.rd_placement.label}}:  {{{content.rd_placement.htmlContent}}}</div>
-            
+            <div class="rd-vertical">
+                <div class="rd-description rd-field-label">Hello world</div>
             </div>
-           
-           
-            <div class="rd-descriptions">
-                <div class="rd-description">
-                    <b>{{content.rd_description.label}}</b>
-                    {{{content.rd_description.htmlContent}}}</div>
-                <div class="rd-description">
-                    <b>{{content.rd_subdescription.label}}</b>
-                    {{{content.rd_subdescription.htmlContent}}}
-                    {{{content.rd_collapsable.htmlContent}}}
+            <div class="rd-field-content">
+                <div class="rd-description-header">
+                   <div class="rd-description-labels">
+                      <div class="rd-description rd-description-parentlabel">{{{content.rd_fieldparentlabel.htmlContent}}}</div>
+                      <div class="rd-description rd-description-label">{{{content.rd_fieldlabel.htmlContent}}}</div>
+                  </div>
+                  <div class="rd-description"> {{content.rd_placement.label}}:  {{{content.rd_placement.htmlContent}}}</div>
+                </div>
+               
+                <div class="rd-descriptions">
+                    <div class="rd-description">
+                        <b>{{content.rd_description.label}}</b>
+                        {{{content.rd_description.htmlContent}}}</div>
+                    <div class="rd-description">
+                        <b>{{content.rd_subdescription.label}}</b>
+                        {{{content.rd_subdescription.htmlContent}}}
+                        {{{content.rd_collapsable.htmlContent}}}
+                    </div>
                 </div>
             </div>
         </div>
@@ -71,6 +74,16 @@ HTML;
         $options->enum(DescriptionFields::rd_collapsable)->setDisplay(EnumRenderOptions::boolDisplay);
         $options->htmltext(DescriptionFields::rd_description)->setHeight("8.6rem");
         $options->htmltext(DescriptionFields::rd_subdescription)->setHeight("6rem");
+        $options->text(DescriptionFields::rd_fieldlabel)->setPlaceHolder(___("Choose field to describe", "renderdescription"));
+
+        $buttonConfig = new \Anakeen\Ui\ButtonOptions();
+        $buttonConfig->url = "#action/document.load:{{value}}";
+        $buttonConfig->title = "Display example";
+        $buttonConfig->htmlContent = '<i class="fa fa-eye rd-example"/>';
+        $buttonConfig->target = "_blank";
+        $buttonConfig->class="rd-example";
+        $options->docid(DescriptionFields::rd_example)->addButton($buttonConfig);
+
         return $options;
     }
 
@@ -89,7 +102,11 @@ HTML;
     ): RenderAttributeVisibilities {
         $visibilities = parent::getVisibilities($document, $mask);
         $visibilities->setVisibility(
-            DescriptionFields::rd_fieldlabel,
+            DescriptionFields::rd_field,
+            RenderAttributeVisibilities::HiddenVisibility
+        );
+        $visibilities->setVisibility(
+            DescriptionFields::rd_fieldparentlabel,
             RenderAttributeVisibilities::StaticWriteVisibility
         );
         return $visibilities;
