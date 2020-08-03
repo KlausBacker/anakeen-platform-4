@@ -237,11 +237,14 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     type: String
   })
   public actionColumnTitle!: string;
-  @Prop({
+  /* Save columns options deactivated for enhancement issue #862
+
+    @Prop({
     default: "",
     type: String
-  })
-  public persistStateKey: string;
+    })
+    public persistStateKey: string;
+  */
   @Prop({
     default: true,
     type: Boolean
@@ -467,11 +470,12 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   protected async onsubHeaderChange(): Promise<void> {
     return await this.refreshGrid();
   }
-
-  @Watch("persistStateKey")
-  protected async onpersistStateKeyChange(newValue, oldValue): Promise<void> {
-    return await this.refreshGrid();
-  }
+  /* Save columns options deactivated for enhancement issue #862
+    @Watch("persistStateKey")
+    protected async onpersistStateKeyChange(newValue, oldValue): Promise<void> {
+      return await this.refreshGrid();
+    }
+  */
 
   @Watch("filterable")
   protected async onfilterableChange(newValue, oldValue): Promise<void> {
@@ -639,6 +643,8 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   }
 
   mounted(): void {
+    /* Save columns options deactivated for enhancement issue #862
+
     let saveColumnsOptions = null;
     if (this.persistStateKey) {
       if (window && window.localStorage) {
@@ -653,6 +659,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
         );
       }
     }
+     */
     this.$emit("gridReady");
   }
 
