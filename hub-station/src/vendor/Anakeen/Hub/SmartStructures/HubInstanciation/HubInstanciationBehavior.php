@@ -6,6 +6,7 @@ use Anakeen\Core\ContextManager;
 use Anakeen\Core\SmartStructure\Callables\InputArgument;
 use Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod;
 use Anakeen\Exception;
+use Anakeen\Hub\SmartStructures\HubConfigurationGeneric\AssetPath;
 use Anakeen\SmartHooks;
 use SmartStructure\Fields\Hubinstanciation as HubinstanciationFields;
 
@@ -116,9 +117,11 @@ class HubInstanciationBehavior extends \Anakeen\SmartElement
                     return null;
                 }
                 if ($assetType === "manifest") {
-                    $checkassetCall = $this->checkAssetCallable($assetType, $assetPath);
-                    if (!$checkassetCall) {
-                        throw new Exception($checkassetCall);
+                    $err = $this->checkAssetCallable($assetType, $assetPath);
+                    if (!empty($err)) {
+                        $exception = new Exception("HUB0005", $assetPath);
+                        $exception->setUserMessage($err);
+                        throw $exception;
                     }
                     $parseMethod = new ParseFamilyMethod();
                     $parsed = $parseMethod->parse($assetPath);

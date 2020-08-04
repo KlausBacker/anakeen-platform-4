@@ -19,6 +19,15 @@ class ErrorCodeHUB
      * @errorCode The render is not found
      */
     const HUB0004 = 'The asset file at url : %s does not exist';
+    /**
+     * @errorCode The render is not found
+     */
+    const HUB0005 = 'Hub instance asset : the given static function "%s" is invalid';
+
+    /**
+     * @errorCode The render is not found
+     */
+    const HUB0006 = 'Hub entry asset : the given static function "%s" is invalid';
 
     /**
      * for beautifier

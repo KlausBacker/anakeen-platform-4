@@ -65,9 +65,11 @@ class HubConfigurationGenericBehavior extends \SmartStructure\Hubconfigurationvu
                     return null;
                 }
                 if ($assetType === "MANIFEST") {
-                    $checkassetCall = $this->checkAssetCallable($assetType, $assetPath);
-                    if (!$checkassetCall) {
-                        throw new Exception($checkassetCall);
+                    $err = $this->checkAssetCallable($assetType, $assetPath);
+                    if (!empty($err)) {
+                        $exception = new Exception("HUB0006", $assetPath);
+                        $exception->setUserMessage($err);
+                        throw $exception;
                     }
                     $parseMethod = new ParseFamilyMethod();
                     $parsed = $parseMethod->parse($assetPath);
