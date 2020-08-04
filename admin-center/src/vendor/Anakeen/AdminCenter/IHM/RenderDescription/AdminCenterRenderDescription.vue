@@ -1,6 +1,6 @@
 <template>
   <div class="rd-parent">
-    <ank-split-panes ref="rdSplitter" watch-slots vertical class="rd-splitter">
+    <ank-split-panes ref="rdSplitter" watch-slots collapse-buttons vertical class="rd-splitter">
       <div class="rd-panel rd-grid" :splitpanes-size="panelSizes.grid">
         <kendo-button class="k-primary" @click="createNewDescription">
           {{ $t("AdminRenderDescriptiont.Create new description") }}

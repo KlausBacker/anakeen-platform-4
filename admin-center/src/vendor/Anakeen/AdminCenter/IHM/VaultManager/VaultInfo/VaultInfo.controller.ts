@@ -298,39 +298,45 @@ export default class VaultInfoController extends Mixins(AnkI18NMixin) {
   }
 
   public logicalTemplate() {
-    return `<b>${this.convertBytes(this.info.metrics.usedSize)}</b> ${this.$t("AdminCenterVaultManager.used out of")} <b>${this.convertBytes(
-      this.info.metrics.totalSize
-    )}</b> (<b>${Math.floor((this.info.metrics.usedSize / this.info.metrics.totalSize) * 100)}%</b>)`;
+    return `<b>${this.convertBytes(this.info.metrics.usedSize)}</b> ${this.$t(
+      "AdminCenterVaultManager.used out of"
+    )} <b>${this.convertBytes(this.info.metrics.totalSize)}</b> (<b>${Math.floor(
+      (this.info.metrics.usedSize / this.info.metrics.totalSize) * 100
+    )}%</b>)`;
   }
 
   public diskTemplate() {
-    return `<b>${this.convertBytes(this.info.disk.usedSize)}</b>  ${this.$t("AdminCenterVaultManager.used out of")} <b>${this.convertBytes(
-      this.info.disk.totalSize
-    )}</b> (<b>${Math.floor((this.info.disk.usedSize / this.info.disk.totalSize) * 100)}%</b>)`;
+    return `<b>${this.convertBytes(this.info.disk.usedSize)}</b>  ${this.$t(
+      "AdminCenterVaultManager.used out of"
+    )} <b>${this.convertBytes(this.info.disk.totalSize)}</b> (<b>${Math.floor(
+      (this.info.disk.usedSize / this.info.disk.totalSize) * 100
+    )}%</b>)`;
   }
 
   public redrawGauche() {
     let gauge = this.$refs.logicalGauge;
-    // @ts-ignore
-    let kGauge = gauge.kendoWidget();
-    if (kGauge) {
-      kGauge.setOptions({ transitions: false });
-      kGauge.redraw();
-    }
-    gauge = this.$refs.diskGauge;
-    // @ts-ignore
-    kGauge = gauge.kendoWidget();
-    if (kGauge) {
-      kGauge.setOptions({ transitions: false });
-      kGauge.redraw();
-    }
+    if (gauge) {
+      // @ts-ignore
+      let kGauge = gauge.kendoWidget();
+      if (kGauge) {
+        kGauge.setOptions({ transitions: false });
+        kGauge.redraw();
+      }
+      gauge = this.$refs.diskGauge;
+      // @ts-ignore
+      kGauge = gauge.kendoWidget();
+      if (kGauge) {
+        kGauge.setOptions({ transitions: false });
+        kGauge.redraw();
+      }
 
-    gauge = this.$refs.chart;
-    // @ts-ignore
-    kGauge = gauge.kendoWidget();
-    if (kGauge) {
-      kGauge.setOptions({ transitions: false });
-      kGauge.redraw();
+      gauge = this.$refs.chart;
+      // @ts-ignore
+      kGauge = gauge.kendoWidget();
+      if (kGauge) {
+        kGauge.setOptions({ transitions: false });
+        kGauge.redraw();
+      }
     }
   }
 

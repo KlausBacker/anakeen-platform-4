@@ -4,6 +4,7 @@
       ref="splitter"
       watch-slots
       vertical
+      collapse-buttons
       class="tasks-splitter"
       localStorageKey="admin-center-tasks-splitter"
     >

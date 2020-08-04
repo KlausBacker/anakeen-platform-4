@@ -2,7 +2,7 @@
   <div class="enum-wrapper">
     <ank-split-panes
       watch-slots
-      vertical
+      vertical collapse-buttons
       ref="splitter"
       class="enum-splitter"
       localStorageKey="admin-center-enum-splitter"

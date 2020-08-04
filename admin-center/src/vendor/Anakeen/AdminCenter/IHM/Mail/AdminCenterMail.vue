@@ -4,6 +4,7 @@
       ref="mailSplitter"
       watch-slots
       vertical
+      collapse-buttons
       class="mail-splitter"
       local-storage-key="admin-center-mail-splitter"
     >
