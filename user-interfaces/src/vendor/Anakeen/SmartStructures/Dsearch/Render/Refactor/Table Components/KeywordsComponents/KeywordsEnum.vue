@@ -48,11 +48,46 @@ export default {
     }
   },
   watch: {
+    field: {
+      immediate: true,
+      handler: function() {
+        this.$nextTick(this.updateDataSource);
+      }
+    },
     methods: function(newValue) {
       if (this.methodsComboBox) {
         this.methodsComboBox.setDataSource(newValue);
       }
     }
+  },
+  mounted() {
+    this.comboBox = $(this.$refs.keywordsEnumWrapper)
+      .kendoComboBox({
+        width: 200,
+        filter: "contains",
+        clearButton: false,
+        dataValueField: "value",
+        dataTextField: "displayValue",
+        change: this.onComboBoxChange
+      })
+      .data("kendoComboBox");
+    this.methodsComboBox = $(this.$refs.keywordsEnumFunctionWrapper)
+      .kendoComboBox({
+        width: 200,
+        filter: "contains",
+        clearButton: false,
+        minLength: 0,
+        dataValueField: "method",
+        dataTextField: "label",
+        template: "#: label #",
+        change: () => this.onFuncChange(),
+        dataSource: this.methods
+      })
+      .data("kendoComboBox");
+    this.funcButton = $(this.$refs.funcButton)
+      .kendoButton()
+      .data("kendoButton");
+    this.initData();
   },
   methods: {
     isValid() {
@@ -164,40 +199,6 @@ export default {
         }
       };
       this.comboBox.setDataSource(dataSource);
-    }
-  },
-  mounted() {
-    this.comboBox = $(this.$refs.keywordsEnumWrapper)
-      .kendoComboBox({
-        width: 200,
-        filter: "contains",
-        clearButton: false,
-        dataValueField: "value",
-        dataTextField: "displayValue",
-        change: this.onComboBoxChange
-      })
-      .data("kendoComboBox");
-    this.methodsComboBox = $(this.$refs.keywordsEnumFunctionWrapper)
-      .kendoComboBox({
-        width: 200,
-        filter: "contains",
-        clearButton: false,
-        minLength: 0,
-        dataValueField: "method",
-        dataTextField: "label",
-        template: "#: label #",
-        change: () => this.onFuncChange(),
-        dataSource: this.methods
-      })
-      .data("kendoComboBox");
-    this.funcButton = $(this.$refs.funcButton)
-      .kendoButton()
-      .data("kendoButton");
-    this.initData();
-  },
-  watch: {
-    field: function() {
-      this.$nextTick(this.updateDataSource);
     }
   }
 };

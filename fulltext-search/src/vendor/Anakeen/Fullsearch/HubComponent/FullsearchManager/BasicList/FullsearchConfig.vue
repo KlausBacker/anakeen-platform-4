@@ -1,6 +1,5 @@
 <template>
   <div class="fullsearch-list">
-
     <kendo-grid
       ref="grid"
       :detail="detailTemplate"

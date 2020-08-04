@@ -121,7 +121,7 @@ class ShellManager
                         exit(1);
                 }
             } catch (Exception $e) {
-                $err = $e->getDcpMessage();
+                $err = $e->getUserMessage() ?: $e->getDcpMessage();
                 System::setStatusMessage($err, "error");
                 if (!self::isInteractiveCLI()) {
                     self::writeError($err);
@@ -176,13 +176,23 @@ class ShellManager
      */
     public static function exceptionHandler($e, $callStack = true)
     {
+        $userMessage = "";
+        if (is_a($e, \Anakeen\Exception::class)) {
+            $userMessage = $e->getUserMessage();
+        }
         if ($callStack === true && !is_a($e, \Anakeen\Exception::class)) {
             $errMsg = \Anakeen\Core\LogException::formatErrorLogException($e);
+            if ($userMessage) {
+                $errMsg .= "\n" . $userMessage;
+            }
         } else {
             $errMsg = $e->getMessage();
+            if ($userMessage) {
+                $errMsg = $userMessage;
+            }
         }
 
-        System::setStatusMessage($e->getMessage(), "error");
+        System::setStatusMessage($userMessage ?:$e->getMessage(), "error");
         if (!self::isInteractiveCLI()) {
             $expand = array(
                 'm' => preg_replace('/^([^\n]*).*/s', '\1', $e->getMessage())

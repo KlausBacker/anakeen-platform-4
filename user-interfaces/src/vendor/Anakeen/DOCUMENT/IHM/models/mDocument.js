@@ -1415,7 +1415,7 @@ export default Backbone.Model.extend({
     const beforeClosePromise = EventPromiseUtils.getBeforeEventPromise(
       beforeCloseReturn,
       () => {
-        if (options.force === true) {
+        if (options.force === true || options.withCloseConfirmation === false) {
           changeDocument();
         } else {
           this.trigger("displayCloseDocument", changeDocument, function mDocumentFetchUserCancel(error) {

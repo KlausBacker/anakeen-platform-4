@@ -44,9 +44,7 @@ Vue.$_globalI18n.recordCatalog().then(() => {
     .catch(error => {
       // Display an error message
       enableLoader(false);
-      window.setTimeout(() => {
-        window.alert(error);
-      }, 100);
+      document.write(error.message);
       throw error;
     });
 });

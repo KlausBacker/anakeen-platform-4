@@ -14,11 +14,6 @@ use Anakeen\Router\Exception;
 class ConfigStructureTransfert extends DataElementTransfert
 {
     const SMART_STRUCTURES = "SmartStructures";
-    protected static $vendorName;
-    /**
-     * @var string
-     */
-    protected static $subDirName;
 
     protected function initParameters($args)
     {
@@ -33,8 +28,6 @@ class ConfigStructureTransfert extends DataElementTransfert
     {
         $data = [];
 
-        self::$vendorName = ContextManager::getParameterValue("Migration", "VENDOR");
-        self::$subDirName = ContextManager::getParameterValue("Migration", "MODULE");
         if (!self::$vendorName) {
             throw new Exception("Migration VENDOR parameter is not set");
         }
@@ -499,7 +492,7 @@ SQL;
 
     protected static function setRelativeOrder(array $refAttr, $relativeOrder, $structureName)
     {
-        printf("%-40s | %-50s | %s\n", $structureName, $refAttr["id"], $relativeOrder);
+        //printf("%-40s | %-50s | %s\n", $structureName, $refAttr["id"], $relativeOrder);
 
         $refAttr["options"] = preg_replace("/relativeOrder=[^|]*/", "", $refAttr["options"] ?? "");
         if (empty($refAttr["options"])) {

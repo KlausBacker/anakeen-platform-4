@@ -45,7 +45,7 @@ class SmartGridContentBuilder implements SmartGridBuilder
      * Page size
      * @var int
      */
-    protected $pageSize = 10;
+    protected $pageSize = "ALL";
 
     /**
      * Collection element
@@ -403,7 +403,7 @@ class SmartGridContentBuilder implements SmartGridBuilder
                 "page" => $this->page,
                 "skip" => $this->pageSize !== "ALL" ? ($this->page * $this->pageSize) - $this->pageSize : 0,
                 "take" => $this->pageSize,
-                "pageSize" => $this->pageSize === "ALL" ? "ALL" : $this->pageSize,
+                "pageSize" => $this->pageSize,
                 "total" => $this->searchElements->onlyCount()
             ]
         ];

@@ -101,7 +101,7 @@ begin
    notgood:=subgroup(NEW.iduser,NEW.idgroup,0);
 
    if notgood then
-      raise exception ''group loop'';
+      raise exception ''GROUPLOOP0001 iduser = %, idgroup = %'', NEW.iduser, NEW.idgroup;
    end if;
 
 return NEW;

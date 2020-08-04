@@ -26,6 +26,7 @@ export default class TeUnitTransformation extends Mixins(AnkI18NMixin) {
   private kProgress: any = null;
   private testRunning = false;
   private testStepNumber = 0;
+  public fileToDownload = "";
   public tid;
   get smartFormData() {
     return {
@@ -101,6 +102,7 @@ export default class TeUnitTransformation extends Mixins(AnkI18NMixin) {
     // @ts-ignore
     this.$refs.teUnitTransformationFileForm.$on("actionClick", (event, data, options) => {
       if (options.eventId === "teunittransformation.send") {
+        this.fileToDownload = "";
         this.progressMessages = [];
         this.checkedTask = "";
         // @ts-ignore
@@ -149,6 +151,9 @@ export default class TeUnitTransformation extends Mixins(AnkI18NMixin) {
         if (info.stepNumber && info.stepNumber > info.maxStep) {
           // @ts-ignore
           this.checkedTask = this.tid;
+          if (info.status === "D") {
+            this.fileToDownload = `/api/admin/transformationengine/check/unit-transformation/file/${this.tid.tid}`;
+          }
         }
         if (info.tid) {
           this.tid = { tid: info.tid };

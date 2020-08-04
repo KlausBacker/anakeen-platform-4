@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="user-interfaces" version="3.0.2-RC.2020.1.36" vendor="Anakeen" license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0">
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="user-interfaces" version="3.0.2-RC.2020.1.37" vendor="Anakeen" license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0">
 
     <description>Anakeen Platform : User interfaces</description>
     <requires>
-        <module name="smart-data-engine" version="^2.1.2-RC.2020.1.36"/>
+        <module name="smart-data-engine" version="^2.1.2-RC.2020.1.37"/>
     </requires>
     <replaces>
         <module name="anakeen-theme"/>
@@ -14,6 +14,9 @@
         </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml">
             <label>CVDOC Structure</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml">
+            <label>RENDERDESCRIPTION Structure</label>
         </process>
         <process command="./ank.php --system --reloadConfig"/>
         <process command="programs/ui_setHtmlAuthentMode"/>
@@ -34,6 +37,9 @@
         </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.views.xml">
             <label>MAILTEMPLATE Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.views.xml">
+            <label>RENDERDESCRIPTION View</label>
         </process>
 
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mask/mask.views.xml">
@@ -83,6 +89,9 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mask/mask.struct.xml">
             <label>MASK Structure</label>
         </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml">
+            <label>RENDERDESCRIPTION Structure</label>
+        </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml">
             <label>CVDOC Structure</label>
         </process>
@@ -105,6 +114,9 @@
 
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mask/mask.views.xml">
             <label>MASK Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.views.xml">
+            <label>RENDERDESCRIPTION View</label>
         </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mail/mail.views.xml">
             <label>MAIL Structure view</label>

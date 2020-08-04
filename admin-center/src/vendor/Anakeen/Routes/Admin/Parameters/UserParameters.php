@@ -5,6 +5,7 @@ namespace Anakeen\Routes\Admin\Parameters;
 use Anakeen\Core\AccountManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Router\ApiV2Response;
+use Anakeen\Core\Exception;
 
 /**
  * Class UserParameters
@@ -39,6 +40,7 @@ class UserParameters
      * Init parameters from request
      *
      * @param $args
+     * @throws Exception
      */
     private function initParameters($args)
     {
@@ -49,6 +51,8 @@ class UserParameters
                 "login" => $this->user->login,
                 "displayValue" => $this->user->getAccountName()
             ];
+        } else {
+            throw new Exception('USERPARAMETERS0001', $args["user"]);
         }
     }
 
@@ -60,6 +64,7 @@ class UserParameters
      */
     private function doRequest()
     {
+        $rawFilteredParameters = [];
         $this->getDataFromDb();
         $rawFilteredParameters = $this->filterParameters();
         $treeListParameters["gridData"] = $this->formatParameters($rawFilteredParameters);

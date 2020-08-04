@@ -26,29 +26,6 @@ class Platform
 
     /**
      * @return array
-     * @throws \Anakeen\Database\Exception
-     */
-    public static function getUserStats()
-    {
-        $stats=[];
-
-        try {
-            self::initPlatformContext();
-        } catch (Exception $e) {
-            //Smart Data Engine is too old, so return []
-            return $stats;
-        }
-
-        DbManager::query("select count(*) from users where accounttype='U' and (status is null or status = 'A')", $stats["activeUserCount"], true, true);
-        DbManager::query("select count(*) from users where accounttype='U' and status = 'D'", $stats["inactiveUserCount"], true, true);
-        $stats["activeUserCount"]=intval($stats["activeUserCount"]);
-        $stats["inactiveUserCount"]=intval($stats["inactiveUserCount"]);
-        return $stats;
-    }
-
-
-    /**
-     * @return array
      */
     public static function getStatusInfo()
     {

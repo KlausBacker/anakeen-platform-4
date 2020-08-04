@@ -59,7 +59,7 @@
   "gridExportButton.Retry": "Réessayer",
   "gridExportButton.ExportAll": "Télécharger tous les résultats",
   "gridExportButton.ExportSelected": "Télécharger les lignes sélectionnées",
-  "gridExpandButton.Tooltip": "Développer les colonnes",
+  "gridExpandButton.Tooltip": "Développer les lignes",
   "gridFilter.And": "Et",
   "gridFilter.Filter": "Filtrer",
   "gridFilter.Clear": "Effacer",
@@ -73,5 +73,6 @@
   "gridPager.items per page": "résultats par page",
   "gridPager.of {0}": "sur {0}",
   "SmartFormConfigurationBuilder.And": "et",
-  "smartCriteria.Search": "Rechercher"
+  "smartCriteria.Search": "Rechercher",
+  "gridReloadButton.Tooltip": "Actualiser les données"
 }

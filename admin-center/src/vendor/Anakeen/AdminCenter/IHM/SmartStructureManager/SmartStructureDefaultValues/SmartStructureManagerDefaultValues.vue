@@ -80,7 +80,7 @@
             <smart-form
               ref="ssmForm"
               :config="smartForm"
-              :options="{ force: true }"
+              :options="{ withCloseConfirmation: false }"
               @actionClick="formClickMenu"
               @ready="ssmFormReady"
               @smartFieldChange="ssmFormChange"

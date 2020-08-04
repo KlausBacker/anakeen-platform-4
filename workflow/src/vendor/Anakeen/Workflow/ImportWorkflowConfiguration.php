@@ -143,6 +143,10 @@ class ImportWorkflowConfiguration extends ImportRenderConfiguration
                 $destType = "E";
                 $destValue = $element->nodeValue;
                 break;
+            case "structure-account-parameter":
+                $destType = "DE";
+                $destValue = $element->nodeValue;
+                break;
             case "workflow-field-value":
                 $destType = "WA";
                 $destValue = $element->nodeValue;

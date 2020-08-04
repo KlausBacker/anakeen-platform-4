@@ -3,7 +3,7 @@
   <hub-element-layout>
     <nav>
       <i class="material-icons hub-icon">schedule</i>
-      <span v-if="!isDockCollapsed">Scheduler</span>
+      <span v-if="!isDockCollapsed">{{ $t("AdminCenterScheduler.Title Scheduler") }}</span>
     </nav>
     <template v-slot:hubContent>
       <div class="scheduler-manager">

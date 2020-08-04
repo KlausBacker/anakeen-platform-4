@@ -3,9 +3,11 @@
     :collection="searchId"
     :pageable="{ pageSizes: [50, 100, 200], pageSize: 50 }"
     defaultExpandable
+    refresh
     controller="REPORT_GRID_CONTROLLER"
     class="dsearch-result-grid"
     ref="gridPreview"
+    @rowActionClick="onRowClick"
   >
     <template v-slot:gridHeader="{ gridComponent }">
       <ank-se-grid-export-button
@@ -43,6 +45,13 @@ export default {
     },
     export() {
       this.$refs.exportButton.export();
+    },
+    /*
+     * Emit the row action click to prevent the default action (Open new browser tab).
+     * With this method, we display the SE in new AnkSeTab
+     */
+    onRowClick(gridEvent) {
+      this.$emit("searchRowActionClick", gridEvent);
     }
   }
 };

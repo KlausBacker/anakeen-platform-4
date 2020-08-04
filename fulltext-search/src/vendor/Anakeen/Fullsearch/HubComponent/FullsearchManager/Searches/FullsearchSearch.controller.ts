@@ -21,12 +21,26 @@ export default class FullsearchSearchController extends Vue {
   public searchPattern = "";
   public selectedElement = "";
   public elementList = null;
-
+  public configs = false;
   public selectElement(elementId): void {
     this.selectedElement = elementId;
   }
-
+  public mounted() {
+    kendo.ui.progress($(".fullsearch-search", this.$el), true);
+    this.$http
+      .get("/api/admin/fullsearch/domains/")
+      .then(response => {
+        kendo.ui.progress($(".fullsearch-search", this.$el), false);
+        const configsTab = response.data.data.config;
+        this.configs = configsTab.length > 0;
+      })
+      .catch(reponse => {
+        kendo.ui.progress($(".fullsearch-search", this.$el), false);
+        console.error(reponse);
+      });
+  }
   public search(): void {
+    kendo.ui.progress($(".fullsearch-results", this.$el), true);
     this.$http
       .get(`/api/v2/fullsearch/domains/${this.domain}/smart-elements/`, {
         params: {
@@ -34,8 +48,13 @@ export default class FullsearchSearchController extends Vue {
         }
       })
       .then(response => {
+        kendo.ui.progress($(".fullsearch-results", this.$el), false);
         this.searchPattern = this.pattern;
         this.elementList = response.data.data.documents;
+      })
+      .catch(response => {
+        kendo.ui.progress($(".fullsearch-results", this.$el), false);
+        console.error(response);
       });
   }
 }

@@ -8,8 +8,8 @@
     controller="REPORT_GRID_CONTROLLER"
     defaultExpandable
     @gridError="onGridError"
-  >
-  </ank-se-grid>
+    @rowActionClick="onRowClick"
+  ></ank-se-grid>
 </template>
 <script>
 import AnkSEGrid from "../../../../../../components/lib/AnkSmartElementGrid.esm";
@@ -23,6 +23,13 @@ export default {
   methods: {
     onGridError(...args) {
       this.$emit("searchGridError", args);
+    },
+    /*
+     * Emit the row action click to prevent the default action (Open new browser tab).
+     * With this method, we display the SE in new AnkSeTab
+     */
+    onRowClick(gridEvent) {
+      this.$emit("searchRowActionClick", gridEvent);
     }
   }
 };

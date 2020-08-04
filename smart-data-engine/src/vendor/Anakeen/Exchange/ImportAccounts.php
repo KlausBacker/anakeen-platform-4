@@ -10,6 +10,7 @@ use Anakeen\Core\Account;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\Utils\Xml;
+use Anakeen\Database\Exception as DatabaseException;
 use Anakeen\Exception;
 
 class ImportAccounts
@@ -73,9 +74,25 @@ class ImportAccounts
                 // Use a master lock because can be numerous accounts to import
                 DbManager::setMasterLock(true);
             }
-            $this->importRoles();
-            $this->importGroups();
-            $this->importUsers();
+            try {
+                $this->importRoles();
+                $this->importGroups();
+                $this->importUsers();
+            } catch (DatabaseException $e) {
+                DbManager::rollbackPoint("AccountsExport");
+                if (strpos($e->getMessage(), "GROUPLOOP0001") !== false) {
+                    preg_match_all("/id(?:user|group) = (\d+)/", $e->getMessage(), $matches);
+                    $user = new Account("", $matches[1][0]);
+                    $group = new Account("", $matches[1][1]);
+
+                    $e->setUserMessage(sprintf(
+                        "Cannot insert group \"%s\" and \"%s\", they are each the son of the other",
+                        $group->lastname,
+                        $user->lastname
+                    ));
+                }
+                throw $e;
+            }
 
             if ($this->transactionMode && !$this->hasErrors() && !$this->analyzeOnly) {
                 DbManager::commitPoint("AccountsExport");

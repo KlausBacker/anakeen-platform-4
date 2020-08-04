@@ -1,0 +1,70 @@
+.rd-parent {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+
+  .rd-grid {
+    flex: 1;
+    align-items: flex-start;
+    justify-content: stretch;
+    flex-direction: column;
+
+  }
+
+
+  .rd-panel {
+    display: flex;
+    height: 100%;
+  }
+
+
+
+    .rd-empty {
+      display: flex;
+      height: 100%;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      background-color: #dedede;
+      font-size: 1.5rem;
+      color: #a4a4a4;
+
+      > span {
+        font-size: 5rem;
+      }
+    }
+
+
+  .rd-splitter {
+    height: 100%;
+    width: 100%;
+  }
+
+  .splitter-wrapper-right-content {
+    overflow: hidden !important;
+  }
+
+  .rd-smart-element {
+    height: 100%;
+  }
+
+  /deep/ {
+    .k-grid, .grid-widget-wrapper {
+      height: 100%;
+    }
+
+    .k-dropdown-operator {
+      display: none;
+    }
+
+    .splitter-wrapper-right-content {
+      overflow: hidden !important;
+    }
+
+    .k-pager-sizes {
+      display: flex !important;
+    }
+  }
+}

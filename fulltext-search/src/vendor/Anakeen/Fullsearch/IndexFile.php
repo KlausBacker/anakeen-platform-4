@@ -6,26 +6,39 @@ namespace Anakeen\Fullsearch;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\Internal\QueryDb;
 use Anakeen\Core\Internal\SmartElement;
+use Anakeen\Core\SmartStructure\NormalAttribute;
 use Anakeen\Exception;
+use Anakeen\Fullsearch\Route\RecordFileTextContent;
 use Anakeen\TransformationEngine\Client;
 use Anakeen\TransformationEngine\Manager;
 use Anakeen\Vault\FileInfo;
 
 class IndexFile
 {
+    /**
+     * Send request to transformation engine
+     * @param SmartElement $se
+     * @param string $domainName
+     * @param NormalAttribute $fileField
+     * @param int $index
+     * @return bool
+     * @throws Exception
+     * @throws \Anakeen\Router\Exception
+     * @see RecordFileTextContent
+     */
     public static function sendIndexRequest(
         SmartElement $se,
         string $domainName,
-        SearchFileConfig $fieldInfo,
+        NormalAttribute $fileField,
         $index = -1
     ) {
         $te = new Client();
 
         if ($index >= 0) {
-            $fileValues = $se->getMultipleRawValues($fieldInfo->field);
+            $fileValues = $se->getMultipleRawValues($fileField->id);
             $fileValue = $fileValues[$index];
         } else {
-            $fileValue = $se->getRawValue($fieldInfo->field);
+            $fileValue = $se->getRawValue($fileField->id);
         }
 
         if ($fileValue) {
@@ -71,7 +84,7 @@ class IndexFile
                         sprintf("file \"%s\ (#%s) not referenced in vault", $reg["name"], $reg["vid"])
                     );
                 } else {
-                    throw new Exception("FSEA0011", $fileValue, $fieldInfo->field, $se->id);
+                    throw new Exception("FSEA0011", $fileValue, $fileField->id, $se->id);
                 }
             }
         }

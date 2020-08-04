@@ -167,6 +167,6 @@ namespace {
         * @errorCode The attribute is not part of array (bad format array)
         * @see \Anakeen\Core\Internal::addArrayRow
         */
-        const CORE0109 = "Index must reference Smart Field identifier";
+        const CORE0109 = "Index must reference Smart Field identifier in array \"%s\"";
     }
 }

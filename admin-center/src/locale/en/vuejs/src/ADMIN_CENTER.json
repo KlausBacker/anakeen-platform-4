@@ -263,7 +263,7 @@
   "AdminCenterAllParameter.Restore parameter": "Parameter redtored to his default value",
   "AdminCenterAllParameter.Invalid name parameter": "Invalid name parameter",
   "AdminCenterAllParameter.Element modified": "Element modified",
-  "AdminCenterAllParameter.Invalid user id": "Invalid user id",
+  "AdminCenterAllParameter.Invalid user id": "Invalid user login",
   "AdminCenterAllParameter.Parameter from": "Parameter from",
   "AdminCenterAllParameter.Title Parameters": "Parameters",
   "AdminCenterTimers.Detail": "Detail",
@@ -309,5 +309,10 @@
   "AdminCenterIncomingTranslation.Planned actions": "Planned actions",
   "AdminCenterTimersDetails.donestatus": "Status",
   "AdminCenterTimersDetails.formatAttachDate": "Date of attachment : ",
-  "AdminCenterTimersDetails.Attached by": "Attached by "
+  "AdminCenterTimersDetails.Attached by": "Attached by ",
+  "AdminCenterRenderDescription.Title Render Description": "Form descriptions",
+  "AdminCenterRenderDescription.Select render description": "Select a description form",
+  "AdminRenderDescriptiont.Create new description": "Create new description",
+  "AdminCenterRenderDescription.Click to example link": "Click to example link inside description",
+  "AdminCenterScheduler.Title Scheduler": "Timers and tasks"
 }

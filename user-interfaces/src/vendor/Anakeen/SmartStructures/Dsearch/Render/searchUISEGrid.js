@@ -16,7 +16,8 @@ export default function searchUISEGridProcess(controller) {
         },
         el: ".search-ui-se-grid",
         data: { searchId: null },
-        template: "<search-grid :searchId='searchId' @searchGridError='onSearchGridError'></search-grid>",
+        template:
+          "<search-grid :searchId='searchId' @searchGridError='onSearchGridError' @searchRowActionClick='onSearchGridRowActionClick'></search-grid>",
         methods: {
           onSearchGridError(event) {
             event.forEach(err => {
@@ -25,6 +26,30 @@ export default function searchUISEGridProcess(controller) {
                 message: err.data.message
               });
             });
+          },
+          /*
+           * Propagate actionClick event on the searchRowActionClick event for exemple to display SE in new AnkSeTab in BusinessApp
+           */
+          onSearchGridRowActionClick(gridEvent) {
+            controller
+              .triggerEvent("actionClick", controller.getProperties(), {
+                target: gridEvent.target,
+                originalEvent: gridEvent,
+                eventId: "document.load",
+                /*
+                 * Hack for businessApp: tabId is computed from the first option identifier
+                 * So we pass the id of the smart element to display every smart element in different tab (initid is the same between every SE revision)
+                 */
+                options: [
+                  gridEvent.data.row.properties.id,
+                  "!defaultConsultation",
+                  gridEvent.data.row.properties.revision
+                ]
+              })
+              .catch(() => {
+                // event prevented
+                gridEvent.preventDefault();
+              });
           }
         }
       });

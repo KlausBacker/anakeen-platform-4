@@ -6,7 +6,7 @@
         @smartFieldChange="onSmartFieldChange"
         @ready="onReady"
         class="smart-element-grid-filter-form"
-        :options="{ force: true }"
+        :options="{ withCloseConfirmation: false }"
         :config="config"
       ></ank-smart-form>
     </div>

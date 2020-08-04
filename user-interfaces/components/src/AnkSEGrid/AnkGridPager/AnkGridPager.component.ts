@@ -78,7 +78,7 @@ export default class GridPager extends Mixins(I18nMixin) {
   protected onPageSizesChange(newValue): void {
     this.initPageSizesDropdownList();
   }
-  public pageSize: number = Array.isArray(this.pageSizes) && this.pageSizes.length ? this.pageSizes[0] : 10;
+  public pageSize: "ALL" | number = Array.isArray(this.pageSizes) && this.pageSizes.length ? this.pageSizes[0] : 10;
 
   public get total(): number {
     if (this.gridComponent) {
@@ -89,7 +89,7 @@ export default class GridPager extends Mixins(I18nMixin) {
 
   public get totalPage(): number {
     if (this.gridComponent) {
-      return Math.ceil(this.gridComponent.currentPage.total / this.pageSize);
+      return this.pageSize !== "ALL" ? Math.ceil(this.gridComponent.currentPage.total / this.pageSize) : 1;
     }
     return 0;
   }
@@ -102,8 +102,13 @@ export default class GridPager extends Mixins(I18nMixin) {
   }
 
   public get endPage(): number {
+    let endPage;
     if (this.gridComponent) {
-      const endPage = this.gridComponent.currentPage.skip + this.pageSize;
+      if (this.pageSize !== "ALL") {
+        endPage = this.gridComponent.currentPage.skip + this.pageSize;
+      } else {
+        return this.gridComponent.currentPage.total;
+      }
       if (endPage > this.gridComponent.currentPage.total) {
         return this.gridComponent.currentPage.total;
       }
@@ -114,30 +119,34 @@ export default class GridPager extends Mixins(I18nMixin) {
 
   public get hasPrevious(): boolean {
     if (this.gridComponent) {
-      return this.gridComponent.currentPage.skip >= this.pageSize;
+      return this.pageSize !== "ALL" ? this.gridComponent.currentPage.skip >= this.pageSize : false;
     }
     return false;
   }
 
   public get hasNext(): boolean {
     if (this.gridComponent) {
-      return this.gridComponent.currentPage.skip < this.gridComponent.currentPage.total - this.pageSize;
+      return this.pageSize !== "ALL"
+        ? this.gridComponent.currentPage.skip < this.gridComponent.currentPage.total - this.pageSize
+        : false;
     }
     return false;
   }
 
   public get hasPreviousNumbersList(): boolean {
     if (this.gridComponent && this.buttonCount) {
-      let result = Math.floor(this.gridComponent.currentPage.total / this.pageSize);
-      if (this.gridComponent.currentPage.total > result * this.pageSize) {
-        result = result + 1;
-      }
-      if (this.buttonCount >= result) {
-        return false;
-      } else {
-        const currentPage = Math.floor(this.gridComponent.currentPage.skip / this.pageSize);
-        const coeff = Math.floor(currentPage / this.buttonCount);
-        return !!coeff;
+      if (this.pageSize !== "ALL") {
+        let result = Math.floor(this.gridComponent.currentPage.total / this.pageSize);
+        if (this.gridComponent.currentPage.total > result * this.pageSize) {
+          result = result + 1;
+        }
+        if (this.buttonCount >= result) {
+          return false;
+        } else {
+          const currentPage = Math.floor(this.gridComponent.currentPage.skip / this.pageSize);
+          const coeff = Math.floor(currentPage / this.buttonCount);
+          return !!coeff;
+        }
       }
     }
     return false;
@@ -145,16 +154,18 @@ export default class GridPager extends Mixins(I18nMixin) {
 
   public get hasNextNumbersList(): boolean {
     if (this.gridComponent && this.buttonCount) {
-      let result = Math.floor(this.gridComponent.currentPage.total / this.pageSize);
-      if (this.gridComponent.currentPage.total > result * this.pageSize) {
-        result = result + 1;
-      }
-      if (this.buttonCount >= result) {
-        return false;
-      } else {
-        const currentPage = Math.floor(this.gridComponent.currentPage.skip / this.pageSize);
-        const coeff = Math.floor(currentPage / this.buttonCount);
-        return coeff < this.buttonCount;
+      if (this.pageSize !== "ALL") {
+        let result = Math.floor(this.gridComponent.currentPage.total / this.pageSize);
+        if (this.gridComponent.currentPage.total > result * this.pageSize) {
+          result = result + 1;
+        }
+        if (this.buttonCount >= result) {
+          return false;
+        } else {
+          const currentPage = Math.floor(this.gridComponent.currentPage.skip / this.pageSize);
+          const coeff = Math.floor(currentPage / this.buttonCount);
+          return coeff < this.buttonCount;
+        }
       }
     }
     return false;
@@ -162,20 +173,22 @@ export default class GridPager extends Mixins(I18nMixin) {
 
   public get maxButtonsPages(): number | number[] {
     if (this.gridComponent && this.buttonCount) {
-      let result = Math.floor(this.gridComponent.currentPage.total / this.pageSize);
-      if (this.gridComponent.currentPage.total > result * this.pageSize) {
-        result = result + 1;
-      }
-      if (this.buttonCount >= result) {
-        return result;
-      } else {
-        const pages = [];
-        const currentPage = Math.floor(this.gridComponent.currentPage.skip / this.pageSize);
-        const coeff = Math.floor(currentPage / this.buttonCount);
-        for (let i = 1; i <= this.buttonCount; i++) {
-          pages.push(this.buttonCount * coeff + i);
+      if (this.pageSize !== "ALL") {
+        let result = Math.floor(this.gridComponent.currentPage.total / this.pageSize);
+        if (this.gridComponent.currentPage.total > result * this.pageSize) {
+          result = result + 1;
         }
-        return pages;
+        if (this.buttonCount >= result) {
+          return result;
+        } else {
+          const pages = [];
+          const currentPage = Math.floor(this.gridComponent.currentPage.skip / this.pageSize);
+          const coeff = Math.floor(currentPage / this.buttonCount);
+          for (let i = 1; i <= this.buttonCount; i++) {
+            pages.push(this.buttonCount * coeff + i);
+          }
+          return pages;
+        }
       }
     }
     return 0;
@@ -188,14 +201,14 @@ export default class GridPager extends Mixins(I18nMixin) {
       const gridEvent = new GridEvent(
         {
           page: {
-            skip: (pageNumber - 1) * this.pageSize,
+            skip: this.pageSize !== "ALL" ? (pageNumber - 1) * this.pageSize : 0,
             take: this.pageSize,
             total: this.gridComponent.currentPage.total
           },
           pages: {
             page: pageNumber,
             size: this.pageSize,
-            total: Math.ceil(this.gridComponent.currentPage.total / this.pageSize)
+            total: this.pageSize !== "ALL" ? Math.ceil(this.gridComponent.currentPage.total / this.pageSize) : 1
           }
         },
         null,
@@ -212,9 +225,15 @@ export default class GridPager extends Mixins(I18nMixin) {
       total: 0
     };
     if (this.gridComponent) {
-      result.page = Math.floor(this.gridComponent.currentPage.skip / this.pageSize) + 1;
-      result.pageSize = this.pageSize;
-      result.total = this.gridComponent.currentPage.total;
+      if (this.pageSize !== "ALL") {
+        result.page = Math.floor(this.gridComponent.currentPage.skip / this.pageSize) + 1;
+        result.pageSize = this.pageSize;
+        result.total = this.gridComponent.currentPage.total;
+      } else {
+        result.page = 1;
+        result.pageSize = this.gridComponent.currentPage.total;
+        result.total = this.gridComponent.currentPage.total;
+      }
     }
     return result;
   }
@@ -231,7 +250,7 @@ export default class GridPager extends Mixins(I18nMixin) {
           pages: {
             page: 1,
             size: this.pageSize,
-            total: Math.ceil(this.gridComponent.currentPage.total / this.pageSize)
+            total: this.pageSize !== "ALL" ? Math.ceil(this.gridComponent.currentPage.total / this.pageSize) : 1
           }
         },
         null,
@@ -246,14 +265,17 @@ export default class GridPager extends Mixins(I18nMixin) {
       const gridEvent = new GridEvent(
         {
           page: {
-            skip: this.gridComponent.currentPage.skip - this.pageSize,
+            skip: this.pageSize !== "ALL" ? this.gridComponent.currentPage.skip - this.pageSize : 0,
             take: this.pageSize,
             total: this.gridComponent.currentPage.total
           },
           pages: {
-            page: Math.floor((this.gridComponent.currentPage.skip - this.pageSize) / this.pageSize) + 1,
+            page:
+              this.pageSize !== "ALL"
+                ? Math.floor((this.gridComponent.currentPage.skip - this.pageSize) / this.pageSize) + 1
+                : 1,
             size: this.pageSize,
-            total: Math.ceil(this.gridComponent.currentPage.total / this.pageSize)
+            total: this.pageSize !== "ALL" ? Math.ceil(this.gridComponent.currentPage.total / this.pageSize) : 1
           }
         },
         null,
@@ -268,14 +290,17 @@ export default class GridPager extends Mixins(I18nMixin) {
       const gridEvent = new GridEvent(
         {
           page: {
-            skip: this.gridComponent.currentPage.skip + this.pageSize,
+            skip: this.pageSize !== "ALL" ? this.gridComponent.currentPage.skip + this.pageSize : 0,
             take: this.pageSize,
             total: this.gridComponent.currentPage.total
           },
           pages: {
-            page: Math.floor((this.gridComponent.currentPage.skip + this.pageSize) / this.pageSize) + 1,
+            page:
+              this.pageSize !== "ALL"
+                ? Math.floor((this.gridComponent.currentPage.skip + this.pageSize) / this.pageSize) + 1
+                : 1,
             size: this.pageSize,
-            total: Math.ceil(this.gridComponent.currentPage.total / this.pageSize)
+            total: this.pageSize !== "ALL" ? Math.ceil(this.gridComponent.currentPage.total / this.pageSize) : 1
           }
         },
         null,
@@ -287,7 +312,8 @@ export default class GridPager extends Mixins(I18nMixin) {
 
   public lastPage(): void {
     if (this.gridComponent && this.hasNext) {
-      const skipLast = Math.floor(this.gridComponent.currentPage.total / this.pageSize) * this.pageSize;
+      const skipLast =
+        this.pageSize !== "ALL" ? Math.floor(this.gridComponent.currentPage.total / this.pageSize) * this.pageSize : 0;
       const gridEvent = new GridEvent(
         {
           page: {
@@ -296,9 +322,9 @@ export default class GridPager extends Mixins(I18nMixin) {
             total: this.gridComponent.currentPage.total
           },
           pages: {
-            page: Math.ceil(this.gridComponent.currentPage.total / this.pageSize),
+            page: this.pageSize !== "ALL" ? Math.ceil(this.gridComponent.currentPage.total / this.pageSize) : 1,
             size: this.pageSize,
-            total: Math.ceil(this.gridComponent.currentPage.total / this.pageSize)
+            total: this.pageSize !== "ALL" ? Math.ceil(this.gridComponent.currentPage.total / this.pageSize) : 1
           }
         },
         null,
@@ -310,7 +336,9 @@ export default class GridPager extends Mixins(I18nMixin) {
 
   protected isCurrentPage(pageNumber): boolean {
     if (this.gridComponent) {
-      return pageNumber === Math.floor(this.gridComponent.currentPage.skip / this.gridComponent.currentPage.take) + 1;
+      return this.pageSize !== "ALL"
+        ? pageNumber === Math.floor(this.gridComponent.currentPage.skip / this.pageSize) + 1
+        : true;
     }
     return false;
   }

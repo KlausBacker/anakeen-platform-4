@@ -31,6 +31,14 @@
         <smart:element-access access="edit" account="scheduling_manager_role"/>
     </smart:access-configuration>
 
+    <smart:access-configuration name="PRF_RENDERDESCRIPTION_ACCESS">
+        <smart:element-access access="view" account="system_administrator"/>
+        <smart:element-access access="edit" account="system_administrator"/>
+        <smart:element-access access="delete" account="system_administrator"/>
+        <smart:element-access access="view" account="renderdescription_manager_role"/>
+        <smart:element-access access="edit" account="renderdescription_manager_role"/>
+    </smart:access-configuration>
+
     <smart:access-configuration name="PRF_IUSER_OWNER" label="User itself" access-structure="IUSER">
         <smart:description>User can modify its own information</smart:description>
         <smart:element-access access="view" account="accounts_manager_role"/>

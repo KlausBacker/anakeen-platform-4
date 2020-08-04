@@ -59,7 +59,7 @@
   "gridExportButton.Retry": "Retry",
   "gridExportButton.ExportAll": "Download all results",
   "gridExportButton.ExportSelected": "Download selected items",
-  "gridExpandButton.Tooltip": "Expand columns",
+  "gridExpandButton.Tooltip": "Expand rows",
   "gridFilter.And": "And",
   "gridFilter.Filter": "Filter",
   "gridFilter.Clear": "Clear",
@@ -73,5 +73,6 @@
   "gridPager.items per page": "items per page",
   "gridPager.of {0}": "of {0}",
   "SmartFormConfigurationBuilder.And": "and",
-  "smartCriteria.Search": "Search"
+  "smartCriteria.Search": "Search",
+  "gridReloadButton.Tooltip": "Reload data"
 }

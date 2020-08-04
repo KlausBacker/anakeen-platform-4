@@ -3,6 +3,7 @@ import AnkActionMenu from "./AnkActionMenu/AnkActionMenu.vue";
 import AnkGridCell from "./AnkGridCell/AnkGridCell.vue";
 import AnkExportButton from "./AnkExportButton/AnkExportButton.vue";
 import AnkGridExpandButton from "./AnkGridExpandButton/AnkGridExpandButton.vue";
+import AnkGridReloadButton from "./AnkGridReloadButton/AnkGridReloadButton.vue";
 import AnkGridColumnsButton from "./AnkGridColumnsButton/AnkGridColumnsButton.vue";
 
 import AnkGridPager from "./AnkGridPager/AnkGridPager.vue";
@@ -107,7 +108,7 @@ export interface SmartGridPageable {
   buttonCount: number;
   info: boolean;
   showCurrentPage: boolean;
-  pageSize: number;
+  pageSize: "ALL" | number;
   pageSizes: number[];
 }
 
@@ -185,7 +186,13 @@ const DEFAULT_SORT = {
 };
 
 function computeSkipFromPage(page, pageSize): number {
-  return (page - 1) * pageSize;
+  return pageSize !== "ALL" ? (page - 1) * pageSize : 0;
+}
+
+function computePage(currentPage, pageable): number {
+  return pageable.pageSize && pageable.pageSize !== "ALL"
+    ? (currentPage.skip + currentPage.take) / currentPage.take
+    : 1;
 }
 
 @Component({
@@ -195,6 +202,7 @@ function computeSkipFromPage(page, pageSize): number {
     "ank-action-menu": AnkActionMenu,
     "ank-export-button": AnkExportButton,
     "ank-expand-button": AnkGridExpandButton,
+    "ank-reload-button": AnkGridReloadButton,
     "ank-grid-pager": AnkGridPager,
     "ank-columns-button": AnkGridColumnsButton
   },
@@ -237,11 +245,14 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     type: String
   })
   public actionColumnTitle!: string;
-  @Prop({
+  /* Save columns options deactivated for enhancement issue #862
+
+    @Prop({
     default: "",
     type: String
-  })
-  public persistStateKey: string;
+    })
+    public persistStateKey: string;
+  */
   @Prop({
     default: true,
     type: Boolean
@@ -467,11 +478,12 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   protected async onsubHeaderChange(): Promise<void> {
     return await this.refreshGrid();
   }
-
-  @Watch("persistStateKey")
-  protected async onpersistStateKeyChange(newValue, oldValue): Promise<void> {
-    return await this.refreshGrid();
-  }
+  /* Save columns options deactivated for enhancement issue #862
+    @Watch("persistStateKey")
+    protected async onpersistStateKeyChange(newValue, oldValue): Promise<void> {
+      return await this.refreshGrid();
+    }
+  */
 
   @Watch("filterable")
   protected async onfilterableChange(newValue, oldValue): Promise<void> {
@@ -586,7 +598,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   public isLoading = false;
   public currentSort: kendo.data.DataSourceSortItem[] = this.sort;
   public currentFilter: SmartGridFilter = this.filter;
-  public currentPage: { total: number; skip: number; take: number } = {
+  public currentPage: { total: number; skip: number; take: "ALL" | number } = {
     total: null,
     skip: computeSkipFromPage(
       this.page,
@@ -596,7 +608,9 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     ),
     take:
       this.pageable && this.pageable !== true
-        ? this.pageable.pageSize || DEFAULT_PAGER.pageSize
+        ? this.pageable.pageSize === "ALL"
+          ? 0
+          : this.pageable.pageSize
         : DEFAULT_PAGER.pageSize
   };
   public pager = this.pageable === true ? DEFAULT_PAGER : this.pageable;
@@ -609,7 +623,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
       controller: this.controller,
       collection: this.collection,
       pageable: this.pager,
-      page: (this.currentPage.skip + this.currentPage.take) / this.currentPage.take,
+      page: computePage(this.currentPage, this.pager),
       sortable: this.sorter,
       sort: this.currentSort,
       filterable: this.filterable,
@@ -639,6 +653,8 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   }
 
   mounted(): void {
+    /* Save columns options deactivated for enhancement issue #862
+
     let saveColumnsOptions = null;
     if (this.persistStateKey) {
       if (window && window.localStorage) {
@@ -653,6 +669,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
         );
       }
     }
+     */
     this.$emit("gridReady");
   }
 

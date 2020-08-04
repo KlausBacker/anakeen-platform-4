@@ -3,7 +3,7 @@
     <ank-split-panes
       ref="splitter"
       watch-slots
-      vertical
+      vertical collapse-buttons
       class="previous-timers-splitter"
       localStorageKey="admin-center-timers-splitter"
     >

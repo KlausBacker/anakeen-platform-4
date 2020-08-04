@@ -81,8 +81,8 @@ class PuFileSearch extends FulltextSearchConfig
         $waitings = IndexFile::getWaitingRequest();
         $ot = new \Anakeen\TransformationEngine\Client();
 
-        $elaspedTime=0;
-        $dbDomain=new SearchDomainDatabase($domain);
+        $elaspedTime = 0;
+        $dbDomain = new SearchDomainDatabase($domain);
         foreach ($waitings as $waiting) {
             $info = [];
             do {
@@ -92,7 +92,7 @@ class PuFileSearch extends FulltextSearchConfig
                     throw new Exception($err);
                 }
                 $elaspedTime++;
-            } while ($info["status"] !== Client::TASK_STATE_ERROR && $info["status"] !== Client::TASK_STATE_SUCCESS || $elaspedTime> 60);
+            } while ($info["status"] !== Client::TASK_STATE_ERROR && $info["status"] !== Client::TASK_STATE_SUCCESS || $elaspedTime > 60);
 
             if ($elaspedTime > 60) {
                 throw new Exception("TE not respond in 60 seconds");
@@ -101,7 +101,7 @@ class PuFileSearch extends FulltextSearchConfig
                 throw new Exception($info["comment"]);
             }
             IndexFile::recordTeFileresult($info["tid"]);
-            $elemnts=$dbDomain->getElementIdsReferenceFile($waiting->fileid);
+            $elemnts = $dbDomain->getElementIdsReferenceFile($waiting->fileid);
 
             DbManager::query(sprintf("select * from %s", $dbDomain->getTableName()), $r);
 
@@ -125,12 +125,17 @@ class PuFileSearch extends FulltextSearchConfig
     public function testContains($domain, $searchPatten, $expectedResults)
     {
         try {
-            new \Anakeen\TransformationEngine\Client();
+            $te = new \Anakeen\TransformationEngine\Client();
+            $err = $te->retrieveServerInfo($info);
+            if ($err) {
+                $this->markTestSkipped("TE unreachable: " . $err);
+                return;
+            }
         } catch (ClientException $e) {
             $this->markTestSkipped("NO TE configured: " . $e->getMessage());
             return;
         }
-     
+
         $s = new SearchElements();
 
         $filter = new FilterMatch($domain, $searchPatten);

@@ -115,7 +115,9 @@ if (count($configFiles) === 1) {
             print(json_encode($data, JSON_PRETTY_PRINT));
             print "\n";
         }
-        throw new \Anakeen\Script\Exception($exception->getMessage());
+        $scriptException = new \Anakeen\Script\Exception($exception->getMessage());
+        $scriptException->setUserMessage($exception->getUserMessage());
+        throw $scriptException;
     }
 
     if ($verbose) {

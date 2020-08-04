@@ -3103,6 +3103,25 @@ create unique index i_docir on doc(initid, revision);";
         return sprintf(_("%s is not an array attribute"), $idAttr);
     }
 
+
+    /**
+     * alter the values ​​of an array column
+     *
+     * the Smart Field parent must be of array type
+     *
+     * @param string $idAttr identifier of array Smart Field
+     * @param array $values new value for the Smart Field
+     * @return string
+     */
+    public function setColumnValue($idAttr, array $values)
+    {
+        $this->_setValueNeedCompleteArray=false;
+        $err=$this->setValue($idAttr, $values);
+
+        $this->_setValueNeedCompleteArray=true;
+        return $err;
+    }
+
     /**
      * in case of array where each column are not the same length
      *
@@ -3220,7 +3239,7 @@ create unique index i_docir on doc(initid, revision);";
                 if (!empty($attrOut)) {
                     foreach ($attrOut as $k => $attrOutValue) {
                         if (is_numeric($attrOutValue)) {
-                            throw new Exception('CORE0109');
+                            return \ErrorCode::getError('CORE0109', $idAttr);
                         }
                     }
                     $this->_setValueNeedCompleteArray = $old_setValueCompleteArrayRow;
