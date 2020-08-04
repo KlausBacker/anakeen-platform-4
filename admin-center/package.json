@@ -8,7 +8,8 @@
     "beautify": "eslint ./src --fix",
     "buildJS:dev": "dev=DEV npx webpack --config webpack/config.js",
     "buildJS:prod": "npx webpack --config webpack/config.js",
-    "buildJS": "yarn run buildJS:dev && yarn run buildJS:prod"
+    "buildJS": "yarn run buildJS:dev && yarn run buildJS:prod",
+    "buildCss": " npx webpack --config ./webpack/buildCss.js"
   },
   "files": [
     "src/**/*.scss",

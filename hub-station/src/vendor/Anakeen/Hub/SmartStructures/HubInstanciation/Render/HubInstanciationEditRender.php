@@ -46,12 +46,4 @@ class HubInstanciationEditRender extends \Anakeen\Ui\DefaultConfigEditRender
         $visibilities->setVisibility(HubInstanciationFields::hub_instance_language, RenderAttributeVisibilities::StaticWriteVisibility);
         return $visibilities;
     }
-
-    public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
-    {
-        $parent = parent::getJsReferences();
-        $path = UIGetAssetPath::getElementAssets("hubRender", UIGetAssetPath::isInDebug() ? "dev" : "prod");
-        $parent["hubInstanciationRender"] = $path["hubInstanciationRender"]["js"];
-        return $parent;
-    }
 }

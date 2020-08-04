@@ -53,7 +53,7 @@ class HubEntriesUtil {
     }
     const content = await response.json();
     if (!content.success) {
-      throw content.message || content.exceptionMessage || "An error has occurred";
+      throw new Error(content.message || content.exceptionMessage || "An error has occurred");
     }
     const configuration: IHubConfiguration = content.data;
     return configuration;
