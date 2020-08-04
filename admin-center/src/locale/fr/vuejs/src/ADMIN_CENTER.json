@@ -313,5 +313,6 @@
   "AdminCenterRenderDescription.Title Render Description": "Description de formulaire",
   "AdminCenterRenderDescription.Select render description": "Sélectionner une description",
   "AdminRenderDescriptiont.Create new description": "Créer une nouvelle description",
-  "AdminCenterRenderDescription.Click to example link": "Cliquer sur le lien de l'exemple dans la description"
+  "AdminCenterRenderDescription.Click to example link": "Cliquer sur le lien de l'exemple dans la description",
+  "AdminCenterScheduler.Title Scheduler": "Minuteurs et tâches"
 }

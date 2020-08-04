@@ -313,5 +313,6 @@
   "AdminCenterRenderDescription.Title Render Description": "Form descriptions",
   "AdminCenterRenderDescription.Select render description": "Select a description form",
   "AdminRenderDescriptiont.Create new description": "Create new description",
-  "AdminCenterRenderDescription.Click to example link": "Click to example link inside description"
+  "AdminCenterRenderDescription.Click to example link": "Click to example link inside description",
+  "AdminCenterScheduler.Title Scheduler": "Timers and tasks"
 }
