@@ -12,6 +12,12 @@ export interface SmartGridFulltextInfo extends SmartGridInfo {
   fulltextSearch: SmartGridFulltextSearch;
 }
 
+function computePage(currentPage, pageable): number {
+  return pageable.pageSize && pageable.pageSize !== "ALL"
+    ? (currentPage.skip + currentPage.take) / currentPage.take
+    : 1;
+}
+
 @Component({
   name: "ank-fulltext-smart-element-grid",
   extends: AnkSmartElementGridVueComponent
@@ -41,7 +47,7 @@ export default class AnkSmartElementFulltextGrid extends AnkSmartElementGrid {
       controller: this.controller,
       collection: this.collection,
       pageable: this.pager,
-      page: (this.currentPage.skip + this.currentPage.take) / this.currentPage.take,
+      page: computePage(this.currentPage, this.pager),
       sortable: this.sorter,
       sort: this.currentSort,
       filterable: this.filterable,
