@@ -42,24 +42,21 @@ class RenderDescriptionHooks extends \Anakeen\SmartElement
         }
         $modes=$this->rawValueToArray($mode);
 
-       if ($lang) {
-           $s->addFilter(new \Anakeen\Search\Filters\OrOperator(
-               new \Anakeen\Search\Filters\IsEqual(DescriptionFields::rd_lang, substr($lang, 0, 2)),
-               new \Anakeen\Search\Filters\IsEmpty(DescriptionFields::rd_lang)
-           ));
-       }
+        if ($lang) {
+            $s->addFilter(new \Anakeen\Search\Filters\OrOperator(
+                new \Anakeen\Search\Filters\IsEqual(DescriptionFields::rd_lang, substr($lang, 0, 2)),
+                new \Anakeen\Search\Filters\IsEmpty(DescriptionFields::rd_lang)
+            ));
+        }
 
-        $s->addFilter(new OneEqualsMulti(DescriptionFields::rd_mode,$modes ));
+        $s->addFilter(new OneEqualsMulti(DescriptionFields::rd_mode, $modes));
         $s->search();
 
        // var_dump($s->getSearchInfo());
 
         if ($s->count() > 0) {
-
             $conflict = $s->getNextElement();
-            return sprintf(___("Already defaut mode set by another description \"%s\"", "renderdescription"),$conflict->getTitle() );
+            return sprintf(___("Already defaut mode set by another description \"%s\"", "renderdescription"), $conflict->getTitle());
         }
-
-
     }
 }

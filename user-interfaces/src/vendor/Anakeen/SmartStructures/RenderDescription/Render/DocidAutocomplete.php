@@ -22,6 +22,4 @@ class DocidAutocomplete
 
         return $response;
     }
-
-
 }
