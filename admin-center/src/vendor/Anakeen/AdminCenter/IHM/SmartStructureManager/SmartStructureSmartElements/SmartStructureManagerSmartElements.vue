@@ -3,6 +3,7 @@
     <ank-split-panes
       watch-slots
       vertical
+      collapse-buttons
       ref="splitter"
       class="ssm-smart-element-splitter"
       localStorageKey="admin-center-ssm-smart-element-splitter"
@@ -16,7 +17,7 @@
         :columns="gridColumns"
         :resizable="false"
         filterable
-        collapse-buttons
+        refresh
         defaultExpandable
         @rowActionClick="actionClick"
       >
