@@ -56,7 +56,7 @@ class RenderDescriptionHooks extends \Anakeen\SmartElement
 
         if ($s->count() > 0) {
             $conflict = $s->getNextElement();
-            return sprintf(___("Already defaut mode set by another description \"%s\"", "renderdescription"), $conflict->getTitle());
+            return sprintf(___("Already default mode set by another description \"%s\"", "renderdescription"), $conflict->getTitle());
         }
     }
 }
