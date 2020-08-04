@@ -185,7 +185,13 @@ const DEFAULT_SORT = {
 };
 
 function computeSkipFromPage(page, pageSize): number {
-  return (page - 1) * pageSize;
+  return pageSize !== "ALL" ? (page - 1) * pageSize : 0;
+}
+
+function computePage(currentPage, pageable): number {
+  return pageable.pageSize && pageable.pageSize !== "ALL"
+    ? (currentPage.skip + currentPage.take) / currentPage.take
+    : 1;
 }
 
 @Component({
@@ -590,7 +596,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   public isLoading = false;
   public currentSort: kendo.data.DataSourceSortItem[] = this.sort;
   public currentFilter: SmartGridFilter = this.filter;
-  public currentPage: { total: number; skip: number; take: number } = {
+  public currentPage: { total: number; skip: number; take: "ALL" | number } = {
     total: null,
     skip: computeSkipFromPage(
       this.page,
@@ -600,7 +606,9 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     ),
     take:
       this.pageable && this.pageable !== true
-        ? this.pageable.pageSize || DEFAULT_PAGER.pageSize
+        ? this.pageable.pageSize === "ALL"
+          ? 0
+          : this.pageable.pageSize
         : DEFAULT_PAGER.pageSize
   };
   public pager = this.pageable === true ? DEFAULT_PAGER : this.pageable;
@@ -613,7 +621,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
       controller: this.controller,
       collection: this.collection,
       pageable: this.pager,
-      page: (this.currentPage.skip + this.currentPage.take) / this.currentPage.take,
+      page: computePage(this.currentPage, this.pager),
       sortable: this.sorter,
       sort: this.currentSort,
       filterable: this.filterable,
