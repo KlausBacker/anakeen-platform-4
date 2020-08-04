@@ -45,7 +45,7 @@ class SmartGridContentBuilder implements SmartGridBuilder
      * Page size
      * @var int
      */
-    protected $pageSize = 10;
+    protected $pageSize = "ALL";
 
     /**
      * Collection element
