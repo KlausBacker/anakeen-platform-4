@@ -44,7 +44,7 @@ export default class GridPager extends Mixins(I18nMixin) {
   })
   public showCurrentPage!: boolean | string;
 
-  @Watch("gridComponent.currentPage. ")
+  @Watch("gridComponent.currentPage.take")
   protected onGridTakeChange(newValue): void {
     if (newValue !== this.pageSize) {
       this.pageSize = newValue;
