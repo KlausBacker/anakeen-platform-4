@@ -12,12 +12,10 @@ export default AnkInitGlobalController.then(globalController => {
         }
       },
       function(event, smartElement, smartField, $el, index) {
-        console.log(smartField.getLabel());
         $el
           .closest(".rd-field-description")
           .find(".rd-field-label")
           .text(smartField.getValue()[index].value);
-        console.log($el);
       }
     );
 
@@ -25,22 +23,14 @@ export default AnkInitGlobalController.then(globalController => {
       "smartFieldChange",
       {
         smartFieldCheck: function isTitle(smartField) {
-          console.log(smartField.id);
           return smartField.id === "rd_fieldlabel";
         }
       },
       function(event, smartElement, smartField, value, index) {
-
-        const $fields=$(event.target.find('.rd-field-label')[index]);
+        const $fields = $(event.target.find(".rd-field-label")[index]);
 
         $fields.text(value.current[index].value);
-        //data-attrid="rd_t_fields" data-line="0
-        console.log($fields);
-
-
-
       }
     );
-
   });
 });
