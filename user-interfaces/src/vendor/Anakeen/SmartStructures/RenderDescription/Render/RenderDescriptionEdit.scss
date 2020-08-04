@@ -15,6 +15,7 @@
       display:flex;
       flex-direction: row;
       align-items: center;
+      min-width: 1.2rem;
       .rd-description {
         writing-mode: vertical-rl;
         transform: rotate(180deg);
