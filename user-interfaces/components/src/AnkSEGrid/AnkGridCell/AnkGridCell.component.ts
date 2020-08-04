@@ -54,15 +54,15 @@ export default class GridFilterCell extends Mixins(AnkGridCellMixin) {
       const cellValue = this.cellValue as SmartGridCellFieldValue[];
       return !cellValue.length;
     } else if (this.columnConfig.property) {
-      return !this.cellValue;
+      return this.cellValue === null || this.cellValue === undefined;
     } else {
       const cellValue = this.cellValue as SmartGridCellFieldValue;
-      return !(cellValue.displayValue || cellValue.value);
+      return cellValue.value !== 0 && !(cellValue.displayValue || cellValue.value);
     }
   }
 
   protected get isInexistent(): boolean {
-    return !this.cellValue;
+    return this.cellValue === null;
   }
 
   public get componentName(): "IconText" | "Color" | "HtmlText" | "SimpleText" {
