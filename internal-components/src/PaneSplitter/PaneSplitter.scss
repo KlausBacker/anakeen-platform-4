@@ -1,10 +1,55 @@
-.splitter-anakeen-theme {
+.default-theme.splitter-anakeen-theme {
   .splitpanes__splitter {
     background-color: #555;
     border-color: #666;
+    display: flex;
+    flex-direction: column;
+
     &:after,
     &:before {
       background-color: white;
     }
+
+    &:hover {
+      .collapse-left,
+      .expand-right {
+        opacity: 1;
+        transition: opacity 0.5s ease;
+      }
+    }
   }
+
+  .collapse-left,
+  .expand-right {
+    opacity: 0;
+    height: 2rem;
+    position: relative;
+    color: white;
+
+    &:hover {
+      color: #157efb;
+    }
+
+    &:before {
+      font-size: 1.5rem;
+      position: absolute;
+      padding-top: 0.3rem;
+    }
+  }
+
+
+  .expand-right {
+    cursor: e-resize;
+    &:before {
+      content: "\025B8";
+    }
+  }
+
+  .collapse-left {
+    cursor: w-resize;
+    &:before {
+      content: "\025C2";
+    }
+  }
+
 }
