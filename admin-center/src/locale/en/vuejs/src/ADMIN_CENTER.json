@@ -312,5 +312,6 @@
   "AdminCenterTimersDetails.Attached by": "Attached by ",
   "AdminCenterRenderDescription.Title Render Description": "Form descriptions",
   "AdminCenterRenderDescription.Select render description": "Select a description form",
-  "AdminRenderDescriptiont.Create new description": "Create new description"
+  "AdminRenderDescriptiont.Create new description": "Create new description",
+  "AdminCenterRenderDescription.Click to example link": "Click to example link inside description"
 }
