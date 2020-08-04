@@ -107,7 +107,7 @@ export interface SmartGridPageable {
   buttonCount: number;
   info: boolean;
   showCurrentPage: boolean;
-  pageSize: number;
+  pageSize: "ALL" | number;
   pageSizes: number[];
 }
 
