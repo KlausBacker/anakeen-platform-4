@@ -5,6 +5,7 @@
       ref="trashSplitter"
       watch-slots
       vertical
+      collapse-buttons
       class="trash-splitter"
       local-storage-key="admin-center-trash-splitter"
     >

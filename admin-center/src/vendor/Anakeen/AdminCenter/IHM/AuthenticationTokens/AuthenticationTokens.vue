@@ -1,6 +1,6 @@
 <template>
   <div class="authentication-tokens">
-    <ank-split-panes watch-slots vertical  ref="splitter" class="ank-token-splitter" localStorageKey="token-manager-splitter">
+    <ank-split-panes watch-slots vertical collapse-buttons ref="splitter" class="ank-token-splitter" localStorageKey="token-manager-splitter">
       <div class="token-main">
         <header>
           <kendo-button class="button-filtering k-outline k-primary" @click="flipFiltering">

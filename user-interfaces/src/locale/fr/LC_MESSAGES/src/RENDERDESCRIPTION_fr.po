@@ -1,0 +1,97 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: smart RENDERDESCRIPTION \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2020-08-03 11:34+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION"
+msgid "rd_collapsable"
+msgstr "Affichage description étendue"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION"
+msgid "rd_description"
+msgstr "Description"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION"
+msgid "rd_example"
+msgstr "Exemple"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION"
+msgid "rd_famid"
+msgstr "Structure"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION"
+msgid "rd_field"
+msgstr "Champ"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION"
+msgid "rd_fieldlabel"
+msgstr "Libellé"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION"
+msgid "rd_fieldparentlabel"
+msgstr "Libellé du champ encadrant"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION"
+msgid "rd_fr_descritions"
+msgstr "Descriptions"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION"
+msgid "rd_fr_info"
+msgstr "Information"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION"
+msgid "rd_lang"
+msgstr "Restriction à la langue"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION"
+msgid "rd_mode"
+msgstr "Utilisé par défaut dans le mode"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION"
+msgid "rd_placement"
+msgstr "Position"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION"
+msgid "rd_subdescription"
+msgstr "Description étendue"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION"
+msgid "rd_t_fields"
+msgstr "Champs"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION"
+msgid "rd_title"
+msgstr "Titre"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION"
+msgid "title"
+msgstr "Titre"
+
+#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
+msgctxt "RENDERDESCRIPTION"
+msgid "undefined"
+msgstr ""

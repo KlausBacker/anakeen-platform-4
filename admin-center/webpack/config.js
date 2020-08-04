@@ -30,6 +30,9 @@ const conf = {
     AdminMailManager: [
       path.resolve(BASE_DIR, "src/vendor/Anakeen/AdminCenter/IHM/HubComponent/AdminCenterMail/index.js")
     ],
+    AdminRenderDescriptionManager: [
+      path.resolve(BASE_DIR, "src/vendor/Anakeen/AdminCenter/IHM/HubComponent/AdminCenterRenderDescription/index.js")
+    ],
     AdminParameterManager: [
       path.resolve(BASE_DIR, "src/vendor/Anakeen/AdminCenter/IHM/HubComponent/AdminCenterParameters/index.js")
     ],

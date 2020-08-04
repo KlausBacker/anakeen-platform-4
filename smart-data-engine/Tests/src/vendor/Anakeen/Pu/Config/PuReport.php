@@ -3,7 +3,6 @@
 namespace Anakeen\Pu\Config;
 
 use Anakeen\Core\SEManager;
-use phpDocumentor\Reflection\Types\Boolean;
 use SmartStructure\Fields\Devbill;
 use SmartStructure\Fields\Iuser;
 use SmartStructure\Fields\Report;
@@ -141,7 +140,8 @@ class PuReport extends TestCaseConfig
                 }
             }
         }
-        $report->store();
+        $err=$report->store();
+        $this->assertEmpty($err, "Search Error: $err");
 
         if ($debug) {
             $query = $report->getAttributeValue(Report::se_sqlselect);
@@ -149,7 +149,8 @@ class PuReport extends TestCaseConfig
         }
 
         $results = [];
-        foreach ($report->getContent() as $foundSE) {
+        $content=$report->getContent();
+        foreach ($content as $foundSE) {
             $results[] = $foundSE["title"];
         }
 

@@ -1,5 +1,82 @@
 /* Smart Fields Constants */
 import * as SdeFields from "@anakeen/smart-data-engine/constants/smartStructureFields.js";
+export class RENDERDESCRIPTION {
+  /**
+   * Information
+   * @smartType frame
+   */
+  static rd_fr_info = "rd_fr_info";
+  /**
+   * Title
+   * @smartType text
+   */
+  static rd_title = "rd_title";
+  /**
+   * Structure
+   * @smartType docid -1
+   */
+  static rd_famid = "rd_famid";
+  /**
+   * Example
+   * @smartType docid
+   */
+  static rd_example = "rd_example";
+  /**
+   * Use by default in mode
+   * @smartType enum RENDERDESCRIPTION-mode
+   */
+  static rd_mode = "rd_mode";
+  /**
+   * Restrict to language
+   * @smartType enum RENDERDESCRIPTION-lang
+   */
+  static rd_lang = "rd_lang";
+  /**
+   * Descriptions
+   * @smartType frame
+   */
+  static rd_fr_descritions = "rd_fr_descritions";
+  /**
+   * Fields
+   * @smartType array
+   */
+  static rd_t_fields = "rd_t_fields";
+  /**
+   * Label
+   * @smartType text
+   */
+  static rd_fieldparentlabel = "rd_fieldparentlabel";
+  /**
+   * Label
+   * @smartType text
+   */
+  static rd_fieldlabel = "rd_fieldlabel";
+  /**
+   * Field
+   * @smartType text
+   */
+  static rd_field = "rd_field";
+  /**
+   * Main description
+   * @smartType htmltext
+   */
+  static rd_description = "rd_description";
+  /**
+   * Secondary description
+   * @smartType htmltext
+   */
+  static rd_subdescription = "rd_subdescription";
+  /**
+   * Collapse
+   * @smartType enum RENDERDESCRIPTION-collapse
+   */
+  static rd_collapsable = "rd_collapsable";
+  /**
+   * Placement
+   * @smartType enum RENDERDESCRIPTION-placement
+   */
+  static rd_placement = "rd_placement";
+}
 export class CVDOC extends SdeFields.BASE {
   /**
    * Description

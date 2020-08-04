@@ -16,6 +16,7 @@
         :columns="gridColumns"
         :resizable="false"
         filterable
+        collapse-buttons
         defaultExpandable
         @rowActionClick="actionClick"
       >

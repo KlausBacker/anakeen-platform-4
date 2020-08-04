@@ -7,6 +7,9 @@
 namespace Anakeen\Ui;
 
 use Anakeen\Core\ContextManager;
+use Anakeen\Search\SearchElements;
+use SmartStructure\Fields\Renderdescription as DescriptionFields;
+use SmartStructure\Renderdescription;
 
 class RenderDefault implements IRenderConfig
 {
@@ -314,8 +317,50 @@ class RenderDefault implements IRenderConfig
         if ($selectedTab) {
             $opt->document()->setOpenFirstTab($selectedTab->comment);
         }
+        $this->setDefaultDescriptions($document, $opt);
 
         return $opt;
+    }
+
+    protected function setDefaultDescriptions(\Anakeen\Core\Internal\SmartElement $smartElement, RenderOptions $options)
+    {
+        $s = new SearchElements(\SmartStructure\Renderdescription::familyName);
+
+        $s->addFilter("%s = '%d'", DescriptionFields::rd_famid, $smartElement->fromid);
+
+
+        $lang = ContextManager::getLanguage();
+        // print_r($lang);
+        // $s->addFilter(new \Anakeen\Search\Filters\IsEmpty(DescriptionFields::rd_lang));
+        // $s->addFilter(new \Anakeen\Search\Filters\OneEquals(DescriptionFields::rd_lang, substr($lang, 0, 2)));
+        $s->addFilter(new \Anakeen\Search\Filters\OrOperator(
+            new \Anakeen\Search\Filters\IsEqual(DescriptionFields::rd_lang, substr($lang, 0, 2)),
+            new \Anakeen\Search\Filters\IsEmpty(DescriptionFields::rd_lang)
+        ));
+        $s->addFilter(new \Anakeen\Search\Filters\OneEquals(DescriptionFields::rd_mode, $this->getType()));
+        $s->search();
+
+
+        if ($s->count() > 0) {
+            /** @var Renderdescription $descriptions */
+            $descriptions = $s->getNextElement();
+            self::applyRenderDescription($descriptions, $options);
+        }
+    }
+
+    public static function applyRenderDescription(Renderdescription $renderDescription, RenderOptions $options)
+    {
+        $info = $renderDescription->getAttributeValue(DescriptionFields::rd_t_fields);
+        foreach ($info as $fieldDescription) {
+            if (!empty($fieldDescription[DescriptionFields::rd_field]) && !empty($fieldDescription[DescriptionFields::rd_description])) {
+                $options->commonOption($fieldDescription[DescriptionFields::rd_field])->setDescription(
+                    $fieldDescription[DescriptionFields::rd_description],
+                    $fieldDescription[DescriptionFields::rd_placement],
+                    $fieldDescription[DescriptionFields::rd_subdescription]?:"",
+                    $fieldDescription[DescriptionFields::rd_collapsable] !== "false"
+                );
+            }
+        }
     }
 
     protected function setLinkOption(\Anakeen\Core\Internal\SmartElement $document, RenderOptions &$opt)

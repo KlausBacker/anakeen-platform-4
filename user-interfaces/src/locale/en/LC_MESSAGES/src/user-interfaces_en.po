@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ANAKEEN-UI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-08 12:08+0200\n"
+"POT-Creation-Date: 2020-08-04 14:44+0200\n"
 "PO-Revision-Date: 2018-06-01 08:42+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -172,6 +172,11 @@ msgctxt "grid-component"
 msgid "All text contains"
 msgstr ""
 
+#, php-format
+msgctxt "renderdescription"
+msgid "Already defaut mode set by another description \"%s\""
+msgstr ""
+
 msgctxt "ddui-htmltext"
 msgid "Alternate text"
 msgstr ""
@@ -301,6 +306,10 @@ msgstr ""
 
 msgctxt "ddui-enum"
 msgid "Choose another choice"
+msgstr ""
+
+msgctxt "renderdescription"
+msgid "Choose field to describe"
 msgstr ""
 
 msgctxt "ddui-file"
@@ -1239,6 +1248,10 @@ msgstr ""
 
 msgctxt "UiMenu"
 msgid "View transition graph"
+msgstr ""
+
+msgctxt "maskUi"
+msgid "Voir visibilités altérées"
 msgstr ""
 
 msgctxt "ddui-htmltext"

@@ -309,7 +309,9 @@ export default {
       };
       templateInfo.content[attributeId].label = attributeLabel;
       templateInfo.content[attributeId].htmlContent =
-        '<div class="dcpCustomTemplate--row dcpArray__content__cell dcpAttribute__content" data-displaylabel="false" data-attrid="' +
+        '<div class="dcpCustomTemplate--row dcpArray__content__cell dcpAttribute__content dcpAttribute__content--' +
+        currentAttribute.get("type") +
+        '" data-displaylabel="false" data-attrid="' +
         attributeId +
         '"/>';
     });
@@ -457,7 +459,9 @@ export default {
           label: attributeLabel,
           attributeValue: singleValue,
           htmlContent:
-            '<div class="dcpCustomTemplate--row dcpArray__content__cell dcpAttribute__content"  data-attrid="' +
+            '<div class="dcpCustomTemplate--row dcpArray__content__cell dcpAttribute__content dcpAttribute__content--' +
+            currentAttribute.get("type") +
+            '"  data-attrid="' +
             currentAttribute.id +
             '"/>'
         };
