@@ -29,7 +29,9 @@ export default class GridError {
     const event = new GridEvent(
       {
         code,
-        message: errorMessage
+        message: errorMessage,
+        // @ts-ignore
+        error: error.response ? error.response : error
       },
       null,
       false,
