@@ -1,4 +1,4 @@
-import { Component, Mixins } from "vue-property-decorator";
+import { Component, Mixins, Prop } from "vue-property-decorator";
 
 import splitpanes from "splitpanes";
 import "splitpanes/dist/splitpanes.css";
@@ -8,8 +8,9 @@ import "splitpanes/dist/splitpanes.css";
   name: "ank-pane-splitter"
 })
 export default class SplitterComponent extends Mixins(splitpanes) {
-  private panes: any;
-  private horizontal = false;
+  @Prop({ default: false, type: Boolean }) public collapseButtons!: boolean;
+
+  panes: { width: number; savedWidth: number; index: number; max: number; min: number }[] = [];
   private previousWidths: number[] = [];
   public updated(): void {
     this.keepClassTheme();
@@ -20,7 +21,7 @@ export default class SplitterComponent extends Mixins(splitpanes) {
     });
   }
   public mounted(): void {
-    if (!this.horizontal) {
+    if (this.collapseButtons) {
       this.addCollapseExpand();
     }
     this.keepClassTheme();
@@ -31,12 +32,11 @@ export default class SplitterComponent extends Mixins(splitpanes) {
     });
   }
 
-  protected addCollapseExpand() {
+  protected addCollapseExpand(): void {
     const childs = this.$el.children; // querySelectorAll("> .splitpanes__splitter");
     let index = 0;
     [].forEach.call(childs, (splitDom: HTMLElement) => {
       if (splitDom.classList.contains("splitpanes__splitter")) {
-        console.log(splitDom, index);
         const collapseLeft = document.createElement("div");
         const expandeRight = document.createElement("div");
         collapseLeft.className = "collapse-left";
@@ -61,7 +61,6 @@ export default class SplitterComponent extends Mixins(splitpanes) {
 
             window.dispatchEvent(new Event("resize"));
           }
-          console.log(this.previousWidths);
         });
         expandeRight.dataset.index = index.toString(10);
         expandeRight.addEventListener("click", () => {
@@ -84,7 +83,6 @@ export default class SplitterComponent extends Mixins(splitpanes) {
 
               window.dispatchEvent(new Event("resize"));
             }
-            console.log(this.previousWidths);
           }
         });
         index++;
@@ -92,7 +90,7 @@ export default class SplitterComponent extends Mixins(splitpanes) {
     });
   }
 
-  protected keepClassTheme() {
+  protected keepClassTheme(): void {
     this.$el.classList.add("default-theme");
     this.$el.classList.add("splitter-anakeen-theme");
   }

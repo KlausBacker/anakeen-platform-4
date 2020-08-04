@@ -22,7 +22,7 @@
   .collapse-left,
   .expand-right {
     opacity: 0;
-    height: 2rem;
+    height: 3rem;
     position: relative;
     color: white;
 
@@ -31,7 +31,6 @@
     }
 
     &:before {
-      font-size: 1.5rem;
       position: absolute;
       padding-top: 0.3rem;
     }
@@ -40,15 +39,39 @@
 
   .expand-right {
     cursor: e-resize;
+
     &:before {
-      content: "\025B8";
+
+      position: absolute;
+      top: 0;
+      left: 0;
+      border-bottom: 0.8rem solid transparent;
+      border-right: none;
+      border-top: 0.8rem solid transparent;
+      border-left: 7px solid transparent;
+      border-left-color: white;
+      content: " ";
+
+    }
+
+    &:hover {
+      border-left-color: #157efb;
     }
   }
 
   .collapse-left {
     cursor: w-resize;
+
     &:before {
-      content: "\025C2";
+      position: absolute;
+      top: 0;
+      left: 0;
+      border-bottom: 0.8rem solid transparent;
+      border-right: 7px solid transparent;
+      border-top: 0.8rem solid transparent;
+      border-left: none;
+      border-right-color: white;
+      content: " ";
     }
   }
 
