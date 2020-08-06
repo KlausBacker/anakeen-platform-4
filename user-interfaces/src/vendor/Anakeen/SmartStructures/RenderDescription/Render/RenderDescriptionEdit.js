@@ -30,7 +30,6 @@ export default AnkInitGlobalController.then(globalController => {
         if (index >= 0) {
           const $fields = $(event.target.find(".rd-field-label")[index]);
 
-
           $fields.text(value.current[index].value);
         }
       }
