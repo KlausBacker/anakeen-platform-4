@@ -2,8 +2,6 @@
 
 namespace Anakeen\SmartStructures\RenderDescription\Render;
 
-use Anakeen\Core\SEManager;
-use Anakeen\Core\SmartStructure;
 use Anakeen\SmartAutocompleteRequest;
 use Anakeen\SmartAutocompleteResponse;
 
@@ -14,11 +12,13 @@ class DocidAutocomplete
         SmartAutocompleteResponse $response,
         array $args
     ): SmartAutocompleteResponse {
-        $famid = $args["structure"];
-
-        $args["smartstructure"] =  $args["structure"];
-        $response = \Anakeen\Core\SmartStructure\Autocomplete\SmartElementList::getSmartElements($request, $response, $args);
-
+        $args["only"] = true;
+        $args["smartstructure"] = $args["structure"];
+        $response = \Anakeen\Core\SmartStructure\Autocomplete\SmartElementList::getSmartElements(
+            $request,
+            $response,
+            $args
+        );
 
         return $response;
     }

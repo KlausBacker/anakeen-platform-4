@@ -53,6 +53,15 @@
       height: 100%;
     }
 
+    .k-grid .k-master-row.k-state-selected {
+      background-color: #157EFB;
+      td {
+        color: white;
+        font-weight: normal;
+      }
+    }
+
+
     .k-dropdown-operator {
       display: none;
     }

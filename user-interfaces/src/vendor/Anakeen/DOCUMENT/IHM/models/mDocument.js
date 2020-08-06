@@ -1410,6 +1410,7 @@ export default Backbone.Model.extend({
       initid: this.get("initid")
     });
 
+    this.set("creationFamid", false);
     //Trigger (synchronous) before close event
     this.trigger("beforeClose", beforeCloseReturn, values, this._customClientData);
     const beforeClosePromise = EventPromiseUtils.getBeforeEventPromise(

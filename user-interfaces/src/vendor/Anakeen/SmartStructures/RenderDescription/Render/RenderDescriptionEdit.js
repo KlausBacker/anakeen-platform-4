@@ -27,9 +27,11 @@ export default AnkInitGlobalController.then(globalController => {
         }
       },
       function(event, smartElement, smartField, value, index) {
-        const $fields = $(event.target.find(".rd-field-label")[index]);
+        if (index >= 0) {
+          const $fields = $(event.target.find(".rd-field-label")[index]);
 
-        $fields.text(value.current[index].value);
+          $fields.text(value.current[index].value);
+        }
       }
     );
   });

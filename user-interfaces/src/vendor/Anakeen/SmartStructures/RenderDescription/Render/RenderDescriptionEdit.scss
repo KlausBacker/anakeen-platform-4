@@ -6,16 +6,17 @@
       border: solid 1px #157efb;
       padding: 0.25rem;
       border-radius: 0.25rem;
-      display:flex;
+      display: flex;
       flex-direction: row;
     }
 
     .rd-vertical {
       border-right: solid 1px #157efb;
-      display:flex;
+      display: flex;
       flex-direction: row;
       align-items: center;
       min-width: 1.6rem;
+
       .rd-description {
         writing-mode: vertical-rl;
         transform: rotate(180deg);
@@ -23,6 +24,7 @@
         font-weight: bold;
       }
     }
+
     .rd-descriptions {
       display: flex;
       flex-wrap: wrap;
@@ -34,8 +36,9 @@
 
 
     }
-    .rd-field-content{
-      flex:1;
+
+    .rd-field-content {
+      flex: 1;
     }
 
     .rd-description-labels {
@@ -54,8 +57,9 @@
         flex: 1;
         //min-width: 40rem;
       }
+
       .rd-description-label {
-        flex: 2;
+        width: 100%;
         font-weight: bold;
         display: flex;
         flex-direction: row;
@@ -64,8 +68,13 @@
         color: #157efb;
         font-size: 1.2rem;
 
+        > .dcpAttribute__content {
+          width: 100%;
+          margin: 0 0.25rem;
+        }
 
       }
+
       .rd-description-parentlabel {
         flex: 2;
         font-weight: bold;
