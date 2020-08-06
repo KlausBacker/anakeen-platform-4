@@ -769,14 +769,13 @@ class DocumentView
             }
             if ($renderEtag !== "") {
                 return $renderEtag;
+            } else {
+                // if empty string returned => means default etag
+                return static::getDefaultETag($this->document);
             }
         }
 
-        $etag = $this->getDefaultETag($this->document);
-
-        $etag .= $refreshMsg;
-
-        return $etag;
+        return null;
     }
 
     public static function getDefaultETag(\Anakeen\Core\Internal\SmartElement $document)
@@ -820,7 +819,6 @@ class DocumentView
         // Necessary only when use family.structure
         $result[] = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_LANG");
         $result[] = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
-
 
         return join(" ", $result);
     }
