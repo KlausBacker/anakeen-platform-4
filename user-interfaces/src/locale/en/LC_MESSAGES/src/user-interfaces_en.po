@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ANAKEEN-UI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-04 15:39+0200\n"
+"POT-Creation-Date: 2020-08-06 15:13+0200\n"
 "PO-Revision-Date: 2018-06-01 08:42+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -550,6 +550,11 @@ msgstr ""
 
 msgctxt "ddui"
 msgid "Family View"
+msgstr ""
+
+#, php-format
+msgctxt "renderdescription"
+msgid "Field \"%s\" not exists in structure \"%s\""
 msgstr ""
 
 msgctxt "smart-grid"

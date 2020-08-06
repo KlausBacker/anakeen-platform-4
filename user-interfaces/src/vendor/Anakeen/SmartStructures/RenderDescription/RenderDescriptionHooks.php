@@ -3,6 +3,7 @@
 
 namespace Anakeen\SmartStructures\RenderDescription;
 
+use Anakeen\Core\SEManager;
 use Anakeen\Search\Filters\IsEqual;
 use Anakeen\Search\Filters\OneEqualsMulti;
 use Anakeen\Search\SearchElements;
@@ -58,6 +59,24 @@ class RenderDescriptionHooks extends \Anakeen\SmartElement
                 ___("Already default mode set by another description \"%s\"", "renderdescription"),
                 $conflict->getTitle()
             );
+        }
+        return "";
+    }
+
+    /**
+     * Constraint for check default unicity
+     * @param string $structureName
+     * @param string $field
+     * @return string
+     */
+    protected function checkFieldExists($structureName, $field)
+    {
+        $structure = SEManager::getFamily($structureName);
+        if ($structure) {
+            $oa=$structure->getAttribute($field);
+            if (!$oa) {
+                return sprintf(___("Field \"%s\" not exists in structure \"%s\"", "renderdescription"), $field, $structure->getTitle());
+            }
         }
         return "";
     }
