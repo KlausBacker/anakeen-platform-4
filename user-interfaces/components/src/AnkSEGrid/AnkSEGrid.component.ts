@@ -737,7 +737,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
 
   protected get rowsData(): SmartGridRowData[] {
     return this.dataItems.map(item => {
-      if (this.selectable || this.checkable) {
+      if (this.selectedRows.length > 0) {
         return {
           ...item,
           [this.selectedField]: this.selectedRows.indexOf(item.properties.id.toString()) !== -1
