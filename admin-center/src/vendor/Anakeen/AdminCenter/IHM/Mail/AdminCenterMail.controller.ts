@@ -6,12 +6,16 @@ import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.e
 
 @Component({
   components: {
-    "ank-smart-element": () => SmartElement,
+    "ank-smart-element": (): Promise<unknown> => SmartElement,
     "ank-split-panes": AnkPaneSplitter,
     "ank-se-vue-grid": AnkSEVueGrid
   }
 })
 export default class AdminCenterMailController extends Mixins(AnkI18NMixin) {
+  public $refs!: {
+    mailSmartElement: SmartElement;
+    grid: AnkSEVueGrid;
+  };
   public actions: object[] = [{ action: "consultMailTemplate", title: "Display" }];
   public columns: object[] = [
     { field: "id", property: true, hidden: true, title: "Identification", withContext: false },
@@ -37,8 +41,9 @@ export default class AdminCenterMailController extends Mixins(AnkI18NMixin) {
     switch (e.data.type) {
       case "consultMailTemplate":
         this.selectedMail = e.data.row.properties.id.toString();
+
+        this.$refs.grid.selectedRows = [this.selectedMail];
         this.$nextTick(() => {
-          // @ts-ignore
           this.$refs.mailSmartElement.fetchSmartElement({
             initid: this.selectedMail
           });
