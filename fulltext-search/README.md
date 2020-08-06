@@ -13,4 +13,3 @@ La licence s'applique à l'ensemble des codes source du module.
 
 Elle prévaut sur toutes licences qui pourraient être mentionnées dans certains
 fichiers.
-
