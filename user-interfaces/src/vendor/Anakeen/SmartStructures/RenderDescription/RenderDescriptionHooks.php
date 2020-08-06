@@ -4,7 +4,6 @@
 namespace Anakeen\SmartStructures\RenderDescription;
 
 use Anakeen\Search\Filters\IsEqual;
-use Anakeen\Search\Filters\OneContains;
 use Anakeen\Search\Filters\OneEqualsMulti;
 use Anakeen\Search\SearchElements;
 use Anakeen\SmartHooks;
@@ -36,11 +35,12 @@ class RenderDescriptionHooks extends \Anakeen\SmartElement
         }
         $s = new SearchElements($this->fromid);
         $s->overrideAccessControl();
-        $s->addFilter("initid != %d", $this->initid);
         if ($this->initid) {
-            $s->addFilter(new IsEqual(DescriptionFields::rd_famid, $structureName));
+            $s->addFilter("initid != %d", $this->initid);
         }
-        $modes=$this->rawValueToArray($mode);
+        $s->addFilter(new IsEqual(DescriptionFields::rd_famid, $structureName));
+
+        $modes = $this->rawValueToArray($mode);
 
         if ($lang) {
             $s->addFilter(new \Anakeen\Search\Filters\OrOperator(
@@ -52,11 +52,13 @@ class RenderDescriptionHooks extends \Anakeen\SmartElement
         $s->addFilter(new OneEqualsMulti(DescriptionFields::rd_mode, $modes));
         $s->search();
 
-       // var_dump($s->getSearchInfo());
-
         if ($s->count() > 0) {
             $conflict = $s->getNextElement();
-            return sprintf(___("Already default mode set by another description \"%s\"", "renderdescription"), $conflict->getTitle());
+            return sprintf(
+                ___("Already default mode set by another description \"%s\"", "renderdescription"),
+                $conflict->getTitle()
+            );
         }
+        return "";
     }
 }
