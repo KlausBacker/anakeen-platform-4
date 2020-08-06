@@ -19,6 +19,7 @@
             <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>
                 <sde:access ns="AdminCenter">AdminEnum</sde:access>
+                <sde:access ns="AdminCenter">AdminStructure</sde:access>
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="AdminEnum:EnumerateUpdate">
