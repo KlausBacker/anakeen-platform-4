@@ -1561,19 +1561,18 @@ create unique index i_docir on doc(initid, revision);";
     }
 
     /**
-     * return family parameter
-     *
+     * return Smart Structure parameter
+     * If parameter is defined as a callable function, it return the result of callable
      * @param string $idp parameter identifier
      * @param string $def default value if parameter not found or if it is null
      *
-     * @note The value of parameter can come from inherited family if its own value is empty.
-     * The value of parameter comes from default configuration value if no one value are set in its family
+     * @note The value of parameter can come from inherited structure if its own value is empty.
+     * The value of parameter comes from default configuration value if no one value are set in its structure
      * or in a parent family.
-     * the default configuration value comes from inherited family if no default configuration.
+     * the default configuration value comes from inherited structure if no default configuration.
      * In last case, if no values and no configurated default values, the $def argument is returned
-     * @return string parameter value
-     * @api  return family parameter value
-     *
+     * @return string parameter value (return encoded postgresql string for arrays aka {hello, world})
+     * @api  return structure parameter value
      */
     public function getFamilyParameterValue($idp, $def = "")
     {
@@ -1647,6 +1646,13 @@ create unique index i_docir on doc(initid, revision);";
         return $r;
     }
 
+    /**
+     * Return decoded value but callable are not applyed
+     * @param string $idp
+     * @param string $def
+     * @return bool|string|string[] parameter value (return json decoded value)
+     * @throws \Anakeen\Database\Exception
+     */
     protected function getParameterFamilyRawValue($idp, $def)
     {
         if (!$this->fromid) {
