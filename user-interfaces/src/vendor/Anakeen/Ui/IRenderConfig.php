@@ -43,26 +43,33 @@ interface IRenderConfig
      * @param \Anakeen\Core\Internal\SmartElement $document Document object instance
      * @return RenderOptions default render configuration options
      */
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document) : RenderOptions;
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document): RenderOptions;
 
     /**
      * @param \Anakeen\Core\Internal\SmartElement $document Document object instance
-     * @param \SmartStructure\Mask|null           $mask mask to apply
+     * @param \SmartStructure\Mask|null $mask mask to apply
      * @return RenderAttributeVisibilities new attribute visibilities
      */
-    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null): RenderAttributeVisibilities;
+    public function getVisibilities(
+        \Anakeen\Core\Internal\SmartElement $document,
+        \SmartStructure\Mask $mask = null
+    ): RenderAttributeVisibilities;
 
     /**
      * @param \Anakeen\Core\Internal\SmartElement $document Document object instance
+     * @param \SmartStructure\Mask|null $mask
      * @return RenderAttributeNeeded new mandatory attribute
      */
-    public function getNeeded(\Anakeen\Core\Internal\SmartElement $document): RenderAttributeNeeded;
+    public function getNeeded(
+        \Anakeen\Core\Internal\SmartElement $document,
+        \SmartStructure\Mask $mask = null
+    ): RenderAttributeNeeded;
 
     /**
      * @param \Anakeen\Core\Internal\SmartElement $document Document instance
      * @return DocumentTemplateContext get template controller
      */
-    public function getContextController(\Anakeen\Core\Internal\SmartElement $document) : DocumentTemplateContext;
+    public function getContextController(\Anakeen\Core\Internal\SmartElement $document): DocumentTemplateContext;
 
     /**
      * return "view" or "edit"
@@ -74,7 +81,7 @@ interface IRenderConfig
      * @param \Anakeen\Core\Internal\SmartElement $document Document object instance
      * @return BarMenu Menu configuration
      */
-    public function getMenu(\Anakeen\Core\Internal\SmartElement $document) : BarMenu;
+    public function getMenu(\Anakeen\Core\Internal\SmartElement $document): BarMenu;
 
     /**
      * Get custom data to transmit to client document controller
@@ -86,7 +93,7 @@ interface IRenderConfig
     /**
      * Retrieve some custom data
      * @param \Anakeen\Core\Internal\SmartElement $document Document object instance
-     * @param mixed                               $data     data provided by client
+     * @param mixed $data data provided by client
      *
      * @return mixed
      */

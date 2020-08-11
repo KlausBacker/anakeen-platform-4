@@ -336,8 +336,17 @@ class DocumentView
                     }
 
                     $viewInfo[self::fieldRenderOptions] = $configOptions->jsonSerialize();
-                    $viewInfo[self::fieldRenderOptions]["visibilities"] = $config->getVisibilities($this->document, $this->getMask($viewId))->jsonSerialize();
-                    $viewInfo[self::fieldRenderOptions]["needed"] = $config->getNeeded($this->document)->jsonSerialize();
+                    $mid = \Anakeen\Ui\MaskManager::getDefaultMask($this->document, $viewId);
+                    /** @var \SmartStructure\Mask $mask */
+                    $mask = SEManager::getDocument($mid);
+                    $viewInfo[self::fieldRenderOptions]["visibilities"] = $config->getVisibilities(
+                        $this->document,
+                        $mask
+                    )->jsonSerialize();
+                    $viewInfo[self::fieldRenderOptions]["needed"] = $config->getNeeded(
+                        $this->document,
+                        $mask
+                    )->jsonSerialize();
 
                     break;
 
@@ -381,37 +390,6 @@ class DocumentView
 
         $messages = $this->getMessages($config, $this->document);
         return $viewInfo;
-    }
-
-    /**
-     * @param $viewId
-     *
-     * @return \SmartStructure\Mask
-     * @throws \Anakeen\Core\DocManager\Exception
-     * @throws \Anakeen\Exception
-     */
-    protected function getMask($viewId)
-    {
-        if (!$viewId || $viewId[0] === "!" || !$this->document->cvid) {
-            return null;
-        }
-        /**
-         * @var \SmartStructure\Cvdoc $cvDoc
-         */
-        $cvDoc = SEManager::getDocument($this->document->cvid);
-        $vInfo = $cvDoc->getView($viewId);
-
-        if (!empty($vInfo[\SmartStructure\Fields\Cvdoc::cv_mskid])) {
-            $mskId = $vInfo[\SmartStructure\Fields\Cvdoc::cv_mskid];
-            /** @var \SmartStructure\Mask $msk */
-            $msk = SEManager::getDocument($mskId);
-            if (!$msk) {
-                throw new \Anakeen\Exception("UI0014", $mskId, $cvDoc);
-            }
-            SEManager::cache()->addDocument($msk);
-            return $msk;
-        }
-        return null;
     }
 
     /**

@@ -437,8 +437,11 @@ class RenderDefault implements IRenderConfig
      *
      * @return RenderAttributeNeeded new mandatory attributes
      */
-    public function getNeeded(\Anakeen\Core\Internal\SmartElement $document): RenderAttributeNeeded
-    {
+    public function getNeeded(
+        \Anakeen\Core\Internal\SmartElement $document,
+        \SmartStructure\Mask $mask = null
+    ): RenderAttributeNeeded {
+        //FIXME
         return new RenderAttributeNeeded($document);
     }
 
@@ -554,7 +557,7 @@ class RenderDefault implements IRenderConfig
     public function getEtag(\Anakeen\Core\Internal\SmartElement $document)
     {
         $etags = DocumentView::getDefaultETag($document);
-        $descriptions=$this->getDefaultDescriptions($document);
+        $descriptions = $this->getDefaultDescriptions($document);
         if ($descriptions) {
             $etags .= " " . $descriptions->mdate . " " . $descriptions->id;
         }
