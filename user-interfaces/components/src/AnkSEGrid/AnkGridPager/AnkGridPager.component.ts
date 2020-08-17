@@ -95,7 +95,7 @@ export default class GridPager extends Mixins(I18nMixin) {
   }
 
   public get beginPage(): number {
-    if (this.gridComponent) {
+    if (this.gridComponent && this.gridComponent.currentPage.total && this.gridComponent.currentPage.total > 0) {
       return this.gridComponent.currentPage.skip + 1;
     }
     return 0;
