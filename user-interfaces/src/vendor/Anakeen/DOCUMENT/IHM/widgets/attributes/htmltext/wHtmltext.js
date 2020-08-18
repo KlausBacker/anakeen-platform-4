@@ -207,6 +207,10 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
     if (this.options.renderOptions.toolbar && !this.options.renderOptions.kendoEditorConfiguration.tools) {
       if (buttons[this.options.renderOptions.toolbar]) {
         this.options.renderOptions.kendoEditorConfiguration.tools = buttons[this.options.renderOptions.toolbar];
+      } else {
+        throw new Error(
+          `Attribute '${this.options.id}' : toolbar mode '${this.options.renderOptions.toolbar}' does not exist`
+        );
       }
     }
     if (this.options.renderOptions.translatedLabels) {
