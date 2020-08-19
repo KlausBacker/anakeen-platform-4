@@ -7,6 +7,7 @@ import "../window/wDialog";
 export default $.widget("dcp.dcpDocumentProperties", $.dcp.dcpDialog, {
   options: {
     documentId: 0,
+    revision: -1,
     window: {
       modal: true,
       title: "Document properties"
@@ -99,12 +100,15 @@ export default $.widget("dcp.dcpDocumentProperties", $.dcp.dcpDialog, {
 
   _displayProperties: function wPropertiesGetProperties() {
     var scope = this;
-    $.getJSON(
-      "/api/v2/smart-elements/" + this.options.documentId + ".json?fields=document.properties.all&useTrash=true"
-    )
+    let url = "/api/v2/smart-elements/" + this.options.documentId;
+    url +=
+      this.options.revision >= 0
+        ? "/revisions/" + this.options.revision + ".json?fields=document.properties.all&useTrash=true"
+        : ".json?fields=document.properties.all&useTrash=true";
+    $.getJSON(url)
       .done(function wProperties_done(data) {
         var info;
-        scope.documentProperties = data.data.document.properties;
+        scope.documentProperties = data.data.revision ? data.data.revision.properties : data.data.document.properties;
         info = _.extend(scope.documentProperties, {
           labels: scope.options.labels
         });
@@ -117,7 +121,9 @@ export default $.widget("dcp.dcpDocumentProperties", $.dcp.dcpDialog, {
         //scope.dialogWindow.center();
 
         scope.dialogWindow.setOptions({
-          title: Mustache.render(scope.options.labels.propertiesTitle, data.data.document.properties)
+          title: data.data.revision
+            ? Mustache.render(scope.options.labels.propertiesTitle, data.data.revision.properties)
+            : Mustache.render(scope.options.labels.propertiesTitle, data.data.document.properties)
         });
       })
       .fail(function wProperties_fail(xhr) {

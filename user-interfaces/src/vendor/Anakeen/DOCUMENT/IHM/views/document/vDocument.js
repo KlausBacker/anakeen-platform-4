@@ -662,10 +662,10 @@ export default Backbone.View.extend({
   showProperties: function vDocumentShowProperties(docid) {
     var scope = this;
     var $target = $('<div class="document-properties"/>');
-
     this.propertiesWidget = $target
       .dcpDocumentProperties({
         documentId: docid || this.model.get("properties").get("initid"),
+        revision: this.model.get("properties").get("revision"),
         window: {
           width: "500px",
           height: "80%",
