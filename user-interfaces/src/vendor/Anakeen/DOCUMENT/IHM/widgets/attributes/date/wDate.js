@@ -117,6 +117,14 @@ $.widget("dcp.dcpDate", $.dcp.dcpText, {
           value: isoDate,
           displayValue: inputValue.val()
         });
+      } else if (inputValue.val() === "") {
+        // only empty date are setted
+        var isoDate = currentWidget.convertDateToPseudoIsoString(inputValue.val());
+        // Need to set by widget to use raw date
+        currentWidget.setValue({
+          value: isoDate,
+          displayValue: inputValue.val()
+        });
       }
     };
 
