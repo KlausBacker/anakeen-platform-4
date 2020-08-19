@@ -58,7 +58,7 @@ class RouteCommand
                 $patternArgs[$k] = $arg;
             }
         }
-        if (preg_match_all("/\{([^\}:]*)[\}:]/", $uri, $regs)) {
+        if (preg_match_all("/[^\[]\{([^\}:]*)[\}:][^\]]?/", $uri, $regs)) {
             $needArgs = $regs[1];
         } else {
             $needArgs = [];
