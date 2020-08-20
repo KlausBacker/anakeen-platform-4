@@ -128,6 +128,13 @@ const createBuildXML = ({ moduleName, vendorName }, isSmartStructure) => {
               target: "constants/workflows/"
             }
           }
+        },
+        "acli:check-config": {
+          "acli:config-xml": {
+            $: {
+              source: path.join("src/vendor", vendorNamePascalCase, moduleNamePascalCase, "/**/*xml")
+            }
+          }
         }
       }
     };
