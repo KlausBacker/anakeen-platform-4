@@ -125,6 +125,9 @@ export default class AnkGridColumnsButtonController extends Mixins(I18nMixin) {
   public resetConfiguration() {
     if (this.gridComponent.persistStateKey) {
       this.gridComponent.resetConfiguration();
+      if (this.kendoWindow) {
+        this.kendoWindow.close();
+      }
     }
   }
   private getButtonOptions(): { [key: string]: string | boolean } {

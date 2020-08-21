@@ -42,7 +42,7 @@
         <button class="k-button k-button-icontext k-primary" @click="acceptChanges">
           <i class="material-icons">check</i> {{ translations.applyChanges }}
         </button>
-        <button class="k-button k-button-icontext k-primary" @click="resetConfiguration">
+        <button v-if="gridComponent.persistStateKey" class="k-button k-button-icontext k-primary" @click="resetConfiguration">
           <i class="material-icons">settings_backup_restore</i> {{ translations.resetConfiguration }}
         </button>
         <button class="k-button ank-se-grid-window-cancel-button" @click="close">
