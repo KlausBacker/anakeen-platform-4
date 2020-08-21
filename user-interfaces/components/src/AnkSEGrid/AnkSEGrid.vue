@@ -39,6 +39,7 @@
       @sortChange="onSortChange"
       @filterChange="onFilterChange"
       @columnreorder="onColumnReorder"
+      @columnresize="onColumnResize"
       @rowclick="onRowClick"
     >
       <kendo-grid-norecords>

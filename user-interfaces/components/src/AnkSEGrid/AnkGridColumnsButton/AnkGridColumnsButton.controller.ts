@@ -44,6 +44,7 @@ export default class AnkGridColumnsButtonController extends Mixins(I18nMixin) {
   }
   public get translations(): { [key: string]: VueI18n.TranslateResult } {
     return {
+      resetConfiguration: this.$t("gridColumnsButton.Reset configuration"),
       applyChanges: this.$t("gridColumnsButton.Apply changes"),
       cancel: this.$t("gridColumnsButton.Cancel"),
       columnSearch: this.$t("gridColumnsButton.Search a column..."),
@@ -121,7 +122,11 @@ export default class AnkGridColumnsButtonController extends Mixins(I18nMixin) {
       this.changes[colConfig.field] = { display: false };
     }
   }
-
+  public resetConfiguration() {
+    if (this.gridComponent.persistStateKey) {
+      this.gridComponent.resetConfiguration();
+    }
+  }
   private getButtonOptions(): { [key: string]: string | boolean } {
     const options = {
       enable: true,

@@ -245,14 +245,13 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     type: String
   })
   public actionColumnTitle!: string;
-  /* Save columns options deactivated for enhancement issue #862
 
-    @Prop({
+  @Prop({
     default: "",
     type: String
-    })
-    public persistStateKey: string;
-  */
+  })
+  public persistStateKey: string;
+
   @Prop({
     default: true,
     type: Boolean
@@ -478,12 +477,10 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   protected async onsubHeaderChange(): Promise<void> {
     return await this.refreshGrid();
   }
-  /* Save columns options deactivated for enhancement issue #862
-    @Watch("persistStateKey")
-    protected async onpersistStateKeyChange(newValue, oldValue): Promise<void> {
-      return await this.refreshGrid();
-    }
-  */
+  @Watch("persistStateKey")
+  protected async onpersistStateKeyChange(newValue, oldValue): Promise<void> {
+    return await this.refreshGrid();
+  }
 
   @Watch("filterable")
   protected async onfilterableChange(newValue, oldValue): Promise<void> {
@@ -589,7 +586,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     downloadAgain: "Retry",
     downloadCancel: "Cancel"
   };
-
+  public persistStateGrid = false;
   public onlySelection = false;
   public columnsList: SmartGridColumn[] = this.columns;
   public actionsList: SmartGridAction[] = this.actions;
@@ -653,26 +650,27 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   }
 
   mounted(): void {
-    /* Save columns options deactivated for enhancement issue #862
-
-    let saveColumnsOptions = null;
-    if (this.persistStateKey) {
-      if (window && window.localStorage) {
-        saveColumnsOptions = localStorage.getItem(this.persistStateKey);
-        if (saveColumnsOptions) {
-          saveColumnsOptions = JSON.parse(saveColumnsOptions);
-        }
-      } else {
-        this.gridError.error(
-          "Persistent grid state is disabled, local storage is not supported by the current environment",
-          GridErrorCodes.LOCAL_STORAGE
-        );
-      }
-    }
-     */
     this.$emit("gridReady");
   }
+  public restoreConfiguration(e) {
+    if (e.data.config) {
+      this.columnsList = e.data.config;
+    }
+  }
 
+  public saveConfiguration(e) {
+    if (e.data.config) {
+      window.localStorage.setItem(this.persistStateKey, JSON.stringify(e.data.config));
+    }
+  }
+
+  public resetConfiguration() {
+    if (this.persistStateKey) {
+      window.localStorage.removeItem(this.persistStateKey);
+      this.columnsList = [];
+      this.refreshGrid();
+    }
+  }
   public updateOnlineStatus(): Promise<void> {
     const condition = navigator.onLine;
     if (condition !== this.networkOnline && condition) {
@@ -732,6 +730,17 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
           this.$set(column, "hidden", !changes[colId].display);
         }
       });
+      const event = new GridEvent(
+        {
+          config: this.columnsList
+        },
+        null,
+        true // Cancelable
+      );
+      this.$emit("beforeSaveConfiguration", event);
+      if (!event.isDefaultPrevented()) {
+        this.saveConfiguration(event);
+      }
     }
   }
 
@@ -810,6 +819,19 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
         .then(response => {
           this.collectionProperties = response.data.data.collection || {};
           this.columnsList = response.data.data.columns;
+          if (this.persistStateKey) {
+            const event = new GridEvent(
+              {
+                config: JSON.parse(window.localStorage.getItem(this.persistStateKey))
+              },
+              null,
+              true // Cancelable
+            );
+            this.$emit("beforeRestoreConfiguration", event);
+            if (!event.isDefaultPrevented()) {
+              this.restoreConfiguration(event);
+            }
+          }
           if (response.data.data.pageable === true) {
             this.pager = DEFAULT_PAGER;
           } else if (response.data.data.pageable === false) {
@@ -1098,11 +1120,46 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   protected onColumnReorder(reorderEvt): void {
     this.columnsList = this.columnsList.map(c => {
       const columnReorder = reorderEvt.columns.find(col => col.field === c.field);
-      c.orderIndex = columnReorder.orderIndex;
+      if (columnReorder) {
+        c.orderIndex = columnReorder.orderIndex;
+      }
       return c;
     });
+    if (this.persistStateKey) {
+      const event = new GridEvent(
+        {
+          config: this.columnsList
+        },
+        null,
+        true // Cancelable
+      );
+      this.$emit("beforeSaveConfiguration", event);
+      if (!event.isDefaultPrevented()) {
+        this.saveConfiguration(event);
+      }
+    }
   }
-
+  protected onColumnResize(resizeEvt): void {
+    this.columnsList = this.columnsList.map(c => {
+      if (c.orderIndex === resizeEvt.index && resizeEvt.end) {
+        c.width = resizeEvt.newWidth;
+      }
+      return c;
+    });
+    if (this.persistStateKey) {
+      const event = new GridEvent(
+        {
+          config: this.columnsList
+        },
+        null,
+        true // Cancelable
+      );
+      this.$emit("beforeSaveConfiguration", event);
+      if (!event.isDefaultPrevented()) {
+        this.saveConfiguration(event);
+      }
+    }
+  }
   protected export(
     exportAll = true,
     directDownload = true,
