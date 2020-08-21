@@ -43,6 +43,17 @@ class FamilyDocumentList extends DocumentList
     }
 
     /**
+     * Extract orderBy
+     *
+     * @return string
+     */
+    protected function extractOrderBy()
+    {
+        $createTmpDoc = SEManager::createTemporaryDocument($this->_family->name);
+        return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($this->orderBy, $createTmpDoc);
+    }
+
+    /**
      * Prepare the searchDoc
      * You can inherit of this function to make specialized collection (trash, search, etc...)
      */
