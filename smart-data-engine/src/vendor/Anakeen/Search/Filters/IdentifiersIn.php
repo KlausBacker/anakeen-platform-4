@@ -34,6 +34,9 @@ class IdentifiersIn extends StandardAttributeFilter implements ElementSearchFilt
                 $value
             );
         }
+        if (empty($value)) {
+            throw new Exception("FLT0022", ($this->INITID) ? 'initid' : 'id');
+        }
         $this->value = $value;
         if (isset($options)) {
             $this->INITID = ($options & self::INITID);
