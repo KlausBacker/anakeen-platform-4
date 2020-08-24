@@ -654,14 +654,30 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   }
   public restoreConfiguration(e) {
     if (e.data.config) {
-      this.columnsList = e.data.config;
+      this.columnsList = e.data.config.config;
     }
+    const event = new GridEvent(
+      {
+        config: e.data.config
+      },
+      null,
+      true // Cancelable
+    );
+    this.$emit("afterRestoreConfiguration", event);
   }
 
   public saveConfiguration(e) {
     if (e.data.config) {
-      window.localStorage.setItem(this.persistStateKey, JSON.stringify(e.data.config));
+      window.localStorage.setItem(this.persistStateKey, JSON.stringify({ config: e.data.config }));
     }
+    const event = new GridEvent(
+      {
+        config: e.data.config
+      },
+      null,
+      true // Cancelable
+    );
+    this.$emit("afterSaveConfiguration", event);
   }
 
   public resetConfiguration() {
@@ -722,26 +738,40 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     $(this.$refs.smartGridWidget.$el).toggleClass("grid-row-collapsed");
   }
 
-  public onSettingsChange(changes): void {
-    if (changes) {
-      Object.keys(changes).forEach(colId => {
-        const column = this.columnsList.find(c => c.field === colId);
-        if (column) {
-          this.$set(column, "hidden", !changes[colId].display);
+  public onSettingsChange(changes): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (changes) {
+        Object.keys(changes).forEach(colId => {
+          const column = this.columnsList.find(c => c.field === colId);
+          if (column) {
+            this.$set(column, "hidden", !changes[colId].display);
+          }
+        });
+        const event = new GridEvent(
+          {
+            config: this.columnsList,
+            promise: Promise.resolve()
+          },
+          null,
+          true // Cancelable
+        );
+        this.$emit("beforeSaveConfiguration", event);
+        if (!event.isDefaultPrevented()) {
+          this.saveConfiguration(event);
+          resolve();
+        } else {
+          if (event.data && event.data.promise && event.data.promise instanceof Promise) {
+            event.data.promise
+              .then(() => {
+                resolve();
+              })
+              .catch(error => {
+                reject(error);
+              });
+          }
         }
-      });
-      const event = new GridEvent(
-        {
-          config: this.columnsList
-        },
-        null,
-        true // Cancelable
-      );
-      this.$emit("beforeSaveConfiguration", event);
-      if (!event.isDefaultPrevented()) {
-        this.saveConfiguration(event);
       }
-    }
+    });
   }
 
   protected get rowsData(): SmartGridRowData[] {
@@ -812,26 +842,13 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     );
     this.$emit("beforeConfig", event);
     if (!event.isDefaultPrevented()) {
-      this.$http
+      return this.$http
         .get(event.data.url, {
           params: event.data.queryParams
         })
         .then(response => {
           this.collectionProperties = response.data.data.collection || {};
           this.columnsList = response.data.data.columns;
-          if (this.persistStateKey) {
-            const event = new GridEvent(
-              {
-                config: JSON.parse(window.localStorage.getItem(this.persistStateKey))
-              },
-              null,
-              true // Cancelable
-            );
-            this.$emit("beforeRestoreConfiguration", event);
-            if (!event.isDefaultPrevented()) {
-              this.restoreConfiguration(event);
-            }
-          }
           if (response.data.data.pageable === true) {
             this.pager = DEFAULT_PAGER;
           } else if (response.data.data.pageable === false) {
@@ -852,6 +869,22 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
           );
           this.$emit("afterConfig", responseEvent);
           this.isLoading = false;
+          if (this.persistStateKey) {
+            const event = new GridEvent(
+              {
+                config: JSON.parse(window.localStorage.getItem(this.persistStateKey)),
+                promise: Promise.resolve()
+              },
+              null,
+              true // Cancelable
+            );
+            this.$emit("beforeRestoreConfiguration", event);
+            if (!event.isDefaultPrevented()) {
+              this.restoreConfiguration(event);
+            } else if (event.data && event.data.promise && event.data.promise instanceof Promise) {
+              return event.data.promise;
+            }
+          }
         })
         .catch(error => {
           if (error && error.response && error.response.status === 404) {
@@ -879,7 +912,7 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     );
     this.$emit("beforeContent", event);
     if (!event.isDefaultPrevented()) {
-      this.$http
+      return this.$http
         .get(event.data.url, {
           params: event.data.queryParams
         })
@@ -1117,48 +1150,76 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     return await this._loadGridContent();
   }
 
-  protected onColumnReorder(reorderEvt): void {
-    this.columnsList = this.columnsList.map(c => {
-      const columnReorder = reorderEvt.columns.find(col => col.field === c.field);
-      if (columnReorder) {
-        c.orderIndex = columnReorder.orderIndex;
+  protected onColumnReorder(reorderEvt): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.columnsList = this.columnsList.map(c => {
+        const columnReorder = reorderEvt.columns.find(col => col.field === c.field);
+        if (columnReorder) {
+          c.orderIndex = columnReorder.orderIndex;
+        }
+        return c;
+      });
+      if (this.persistStateKey) {
+        const event = new GridEvent(
+          {
+            config: this.columnsList,
+            promise: Promise.resolve()
+          },
+          null,
+          true // Cancelable
+        );
+        this.$emit("beforeSaveConfiguration", event);
+        if (!event.isDefaultPrevented()) {
+          this.saveConfiguration(event);
+          resolve();
+        } else {
+          if (event.data && event.data.promise && event.data.promise instanceof Promise) {
+            event.data.promise
+              .then(() => {
+                resolve();
+              })
+              .catch(error => {
+                reject(error);
+              });
+          }
+        }
       }
-      return c;
     });
-    if (this.persistStateKey) {
-      const event = new GridEvent(
-        {
-          config: this.columnsList
-        },
-        null,
-        true // Cancelable
-      );
-      this.$emit("beforeSaveConfiguration", event);
-      if (!event.isDefaultPrevented()) {
-        this.saveConfiguration(event);
-      }
-    }
   }
-  protected onColumnResize(resizeEvt): void {
-    this.columnsList = this.columnsList.map(c => {
-      if (c.orderIndex === resizeEvt.index && resizeEvt.end) {
-        c.width = resizeEvt.newWidth;
+  protected onColumnResize(resizeEvt): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.columnsList = this.columnsList.map(c => {
+        if (c.orderIndex === resizeEvt.index && resizeEvt.end) {
+          c.width = resizeEvt.newWidth;
+        }
+        return c;
+      });
+      if (this.persistStateKey) {
+        const event = new GridEvent(
+          {
+            config: this.columnsList,
+            promise: Promise.resolve()
+          },
+          null,
+          true // Cancelable
+        );
+        this.$emit("beforeSaveConfiguration", event);
+        if (!event.isDefaultPrevented()) {
+          this.saveConfiguration(event);
+          resolve();
+        } else {
+          if (event.data && event.data.promise && event.data.promise instanceof Promise) {
+            event.data.promise
+              .then(() => {
+                resolve();
+              })
+              .catch(error => {
+                reject(error);
+              });
+          }
+        }
       }
-      return c;
     });
-    if (this.persistStateKey) {
-      const event = new GridEvent(
-        {
-          config: this.columnsList
-        },
-        null,
-        true // Cancelable
-      );
-      this.$emit("beforeSaveConfiguration", event);
-      if (!event.isDefaultPrevented()) {
-        this.saveConfiguration(event);
-      }
-    }
   }
   protected export(
     exportAll = true,

@@ -112,8 +112,9 @@ export default class AnkGridColumnsButtonController extends Mixins(I18nMixin) {
     }
   }
   public acceptChanges(): void {
-    this.gridComponent.onSettingsChange(this.changes);
-    this.close();
+    this.gridComponent.onSettingsChange(this.changes).then(() => {
+      this.close();
+    });
   }
   public onDisplayColumn(e, colConfig): void {
     if (e.target.checked) {
