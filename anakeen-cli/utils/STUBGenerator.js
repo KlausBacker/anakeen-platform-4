@@ -108,7 +108,7 @@ exports.parseStub = ({ globFile, info, targetPath, log, verbose }) => {
     // Init js config parameters
     const configs = info.buildInfo.build.config["stub-config"];
     let jsConfig = {
-      target: "./stubs/fields.js",
+      target: path.join(srcPath, "/stubs/fields.js"),
       imports: []
     };
     let jsImports = null;
@@ -116,7 +116,7 @@ exports.parseStub = ({ globFile, info, targetPath, log, verbose }) => {
       const config = configs[0]["stub-struct-js-config"];
       if (config) {
         jsConfig = {
-          target: config[0].$.target,
+          target: path.join(srcPath, config[0].$.target),
           imports: []
         };
         jsImports = config[0]["stub-js-import"];
@@ -430,7 +430,7 @@ exports.parseWorkflowContants = ({ globFile, info, log, verbose }) => {
     // Init js config parameters
     const configs = info.buildInfo.build.config["stub-config"];
     let jsConfig = {
-      target: "./constants/workflows/",
+      target: path.join(srcPath, "/constants/workflows/"),
       imports: []
     };
     let jsImports = null;
@@ -438,7 +438,7 @@ exports.parseWorkflowContants = ({ globFile, info, log, verbose }) => {
       const config = configs[0]["stub-wfl-js-config"];
       if (config) {
         jsConfig = {
-          target: config[0].$.target,
+          target: path.join(srcPath, config[0].$.target),
           imports: []
         };
         jsImports = config[0]["stub-js-import"];
@@ -665,7 +665,7 @@ exports.parseEnumContants = ({ globFile, info, log, verbose }) => {
     // Init js config parameters
     const configs = info.buildInfo.build.config["stub-config"];
     let jsConfig = {
-      target: "./constants/enumerates/",
+      target: path.join(srcPath, "/constants/enumerates/"),
       imports: []
     };
     let jsImports = null;
@@ -673,7 +673,7 @@ exports.parseEnumContants = ({ globFile, info, log, verbose }) => {
       const config = configs[0]["stub-enum-js-config"];
       if (config) {
         jsConfig = {
-          target: config[0].$.target,
+          target: path.join(srcPath, config[0].$.target),
           imports: []
         };
         jsImports = config[0]["stub-js-import"];
