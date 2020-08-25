@@ -210,8 +210,12 @@ class ImportSmartConfiguration
 
     protected function setEltValue(SmartElement $elt, $value, $fieldName)
     {
+        $err = "";
         if ($value) {
-            $elt->setValue($fieldName, $value);
+            $err = $elt->setValue($fieldName, $value);
+        }
+        if ($err) {
+            throw new Exception(sprintf('Unable to import %s for %s (value : %s)', $elt->getTitle(), $err, $value));
         }
     }
 
