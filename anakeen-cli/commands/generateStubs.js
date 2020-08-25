@@ -18,7 +18,7 @@ exports.builder = {
   targetPath: {
     description: "target path of stubs",
     alias: "t",
-    default: "./stubs",
+    default: "stubs",
     type: "string"
   },
   verbose: {
