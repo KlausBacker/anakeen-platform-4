@@ -99,6 +99,8 @@ class MailPassword
                 urlencode($tokenKey),
                 urlencode($user->login)
             );
+            $currentTime = new \DateTime();
+            $key["EXPIRE_DATE"] =  $currentTime->add(new \DateInterval("PT24H"))->format('Y-m-d H:i');
             $err = $mailTemplate->sendDocument($userDocument, $key);
             if ($err) {
                 throw new Exception('AUTH0012', $err);
