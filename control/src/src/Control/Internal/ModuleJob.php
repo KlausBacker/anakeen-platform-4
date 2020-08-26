@@ -49,8 +49,8 @@ class ModuleJob
     {
         $status = ["status" => "Activated"];
 
-        $isInitialized = Context::isInitialized();
-        if (!$isInitialized) {
+        $contextIsInitialized = Context::isContextInitialized();
+        if (!$contextIsInitialized) {
             $status["status"] = ModuleJob::NOTINITIALIZED_STATUS;
             $status["message"] = "Context not initialized";
         } else {
@@ -290,7 +290,7 @@ class ModuleJob
 
     public static function isReady()
     {
-        if (!Context::isInitialized()) {
+        if (!Context::isContextInitialized()) {
             return false;
         }
         $context = Context::getContext();

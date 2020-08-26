@@ -17,6 +17,8 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 
+\Control\Internal\Context::initConfig();
+
 $application = new Application();
 $application->setVersion(\Control\Internal\Context::getVersion());
 $application->setName("Anakeen Control");
