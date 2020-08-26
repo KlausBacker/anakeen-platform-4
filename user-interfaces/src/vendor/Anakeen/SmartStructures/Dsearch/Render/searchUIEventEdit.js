@@ -8,7 +8,10 @@ export default function searchUIEventEditProcess(controller) {
     {
       name: "addDsearchResultEditEvent",
       check: function isDsearch(document) {
-        return document.renderMode === "edit" && document.type === "search";
+        const serverData = document.controller.getCustomServerData();
+        if (serverData["SEName"]) {
+          return document.renderMode === "edit" && serverData["SEName"].indexOf("DSEARCH") >= 0;
+        }
       }
     },
     function prepareResultEditEvents(event) {
@@ -38,7 +41,10 @@ export default function searchUIEventEditProcess(controller) {
     {
       name: "removeDsearchResultEditEvent",
       check: function(document) {
-        return document.type === "search";
+        const serverData = document.controller.getCustomServerData();
+        if (serverData["SEName"]) {
+          return serverData["SEName"].indexOf("DSEARCH") >= 0;
+        }
       }
     },
     function() {
