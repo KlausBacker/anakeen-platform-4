@@ -13,30 +13,42 @@ class Context
 
     protected static function getContextConfFilePath()
     {
-        return sprintf("%s/%s", getenv("WIFF_ROOT"), \WIFF::contexts_filepath);
+        $wiff = \Wiff::getInstance();
+        return $wiff->contexts_filepath;
     }
 
-    public static function isInitialized()
+    protected static function getParamFilePath()
     {
-        return file_exists(self::getContextConfFilePath());
+        $wiff = \Wiff::getInstance();
+        return $wiff->params_filepath;
+    }
+
+    public static function isConfigInitialized()
+    {
+        return file_exists(self::getContextConfFilePath()) && file_exists(self::getParamFilePath());
+    }
+
+    public static function isContextInitialized()
+    {
+        try {
+            self::getContext(false);
+        } catch (\Exception $e) {
+            return false;
+        }
+        return true;
     }
 
     public static function getContext($verifyContextAccess = true)
     {
-        if (!self::isInitialized()) {
-            throw new \Exception(
-                sprintf(
-                    "Context not initialized yet : file \"%s\" not found.",
-                    self::getContextConfFilePath()
-                )
-            );
-        }
         if (!self::$context) {
             $wiff = \WIFF::getInstance();
 
             $contextList = $wiff->getContextList($verifyContextAccess);
             if ($contextList === false) {
                 throw new \Exception(sprintf("Error getting contexts list: %s\n", $wiff->errorMessage));
+            }
+            if (count($contextList) <= 0) {
+                throw new \Exception(sprintf("No context found (use 'anakeen-control init' to create a context first?)"));
             }
             self::$contextName = $contextList[0]->name;
             self::$context = $wiff->getContext(self::$contextName, $verifyContextAccess);
@@ -107,9 +119,9 @@ class Context
         return $wiff->getWiffRoot();
     }
 
-    public static function init()
+    public static function initConfig()
     {
-        if (!Context::isInitialized()) {
+        if (!Context::isConfigInitialized()) {
             require(__DIR__ . '/../../../include/lib/Lib.checkInitServer.php');
             $errors = [];
             if (checkInitServer($errors) === false) {
@@ -120,7 +132,7 @@ class Context
 
     public static function reset()
     {
-        if (Context::isInitialized()) {
+        if (Context::isContextInitialized()) {
             $wiff = \WIFF::getInstance();
             $confFile = $wiff->contexts_filepath;
             if (is_file($confFile)) {
@@ -187,6 +199,8 @@ class Context
 
     public static function addRepository($name, $url)
     {
+        $context = self::getContext();
+
         $wiff = \WIFF::getInstance();
         if (is_dir($url)) {
             $url = "file://" . realpath($url);
@@ -209,7 +223,6 @@ class Context
             throw new RuntimeException($wiff->errorMessage);
         }
 
-        $context = self::getContext();
         if (!$context->activateRepo($name)) {
             throw new RuntimeException($context->errorMessage);
         }

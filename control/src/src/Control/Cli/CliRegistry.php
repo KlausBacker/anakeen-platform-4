@@ -49,8 +49,6 @@ class CliRegistry extends CliJsonCommand
         }
         parent::execute($input, $output);
 
-        Context::init();
-
         switch ($action) {
             case "add":
                 if (!$name) {

@@ -65,8 +65,6 @@ function checkInitServer(&$errors = array())
     $confDir = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'conf';
     $templateDir = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'template';
 
-    error_log($confDir);
-
     if (!is_dir($confDir)) {
         mkdir($confDir);
     }
