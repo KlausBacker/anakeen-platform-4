@@ -350,23 +350,29 @@ export default class AnkSmartElement extends Vue implements AnakeenController.Sm
 
   protected _initController(viewData, options = {}) {
     const initViewData = { ...viewData, ...{ initid: false } };
-    this.controllerScopeId = AnakeenGlobalController.addSmartElement(
+    return AnakeenGlobalController.addSmartElement(
       // @ts-ignore
       this.$refs.ankSEWrapper,
       initViewData,
       options
-    );
-    this.smartElementWidget = AnakeenGlobalController.getScopedController(
-      this.controllerScopeId
-    ) as SmartElementController;
-    AnakeenGlobalController.setAutoUnload(this.autoUnload, this.controllerScopeId);
-    this.listenEvents();
-    this.isLoading = true;
-    const loadedPromise = this.smartElementWidget.fetchSmartElement(viewData, options);
-    loadedPromise.then(() => {
-      this.$emit("smartElementLoaded");
-    });
-    return loadedPromise;
+    )
+      .then(value => {
+        this.controllerScopeId = value;
+        this.smartElementWidget = AnakeenGlobalController.getScopedController(
+          this.controllerScopeId
+        ) as SmartElementController;
+        AnakeenGlobalController.setAutoUnload(this.autoUnload, this.controllerScopeId);
+        this.listenEvents();
+        this.isLoading = true;
+        const loadedPromise = this.smartElementWidget.fetchSmartElement(viewData, options);
+        loadedPromise.then(() => {
+          this.$emit("smartElementLoaded");
+        });
+        return loadedPromise;
+      })
+      .catch(err => {
+        throw new Error(err);
+      });
   }
 
   protected listenEvents() {
