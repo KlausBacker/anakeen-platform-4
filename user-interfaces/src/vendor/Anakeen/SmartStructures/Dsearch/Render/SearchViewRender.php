@@ -240,4 +240,26 @@ class SearchViewRender extends DefaultView
         $controller->offsetSet("myValues", $tabConditions);
         return $controller;
     }
+
+    public function getCustomServerData(\Anakeen\Core\Internal\SmartElement $document)
+    {
+        $data = parent::getCustomServerData($document);
+        $data["SEName"] =  $this->getFamName($document);
+        return $data;
+    }
+
+    /**
+     * Get logical name of the parent of the current doc
+     *
+     * @param \Anakeen\Core\Internal\SmartElement $document
+     * @return mixed
+     * @throws \Anakeen\Database\Exception
+     */
+    protected function getFamName(\Anakeen\Core\Internal\SmartElement $document)
+    {
+        $fromId = $document->getFromDoc();
+        $fromId = join(" , ", $fromId);
+        \Anakeen\Core\DbManager::query("select name from docname where id in ($fromId)", $results, true);
+        return $results;
+    }
 }

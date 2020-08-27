@@ -10,7 +10,10 @@ export default function searchUIEventViewProcess(controller) {
     {
       name: "previewConsult.viewEvent",
       check: function isDSearch(document) {
-        return document.type === "search" && document.renderMode === "view";
+        const serverData = document.controller.getCustomServerData();
+        if (serverData["SEName"]) {
+          return document.renderMode === "view" && serverData["SEName"].indexOf("DSEARCH") >= 0;
+        }
       }
     },
     function eventButtonView(event, document, data) {
