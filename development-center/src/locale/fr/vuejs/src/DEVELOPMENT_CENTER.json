@@ -1,3 +1,4 @@
 {
-  "DevelopmentCenter.There are no data for this SmartStructure": "Pas de route pour ce filtre"
+  "DevelopmentCenter.There are no parameter value for this Smart Structure": "Il n'y a pas de paramètre pour cette Smart Structure",
+  "DevelopmentCenter.There are no parameter result with this filter": "Il n'y a pas de résultat paramètre pour ce filtre"
 }
