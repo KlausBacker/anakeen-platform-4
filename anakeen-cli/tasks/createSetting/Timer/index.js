@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const fsUtils = require("../../plugins/files");
 
-exports.writeTemplate = (installPath, argv) => {
+exports.writeTemplate = (installPath, argv, options) => {
   return new Promise((resolve, reject) => {
     if (!fs.existsSync(installPath)) {
       reject(`The path ${installPath} does not exist`);
@@ -16,7 +16,8 @@ exports.writeTemplate = (installPath, argv) => {
             NAME: argv.name.toUpperCase(),
             SS: argv.associatedSmartStructure ? argv.associatedSmartStructure.toUpperCase() : "",
             WFL: argv.associatedWorkflow ? argv.associatedWorkflow.toUpperCase() : ""
-          })
+          }),
+          options
         )
         .then(result => {
           resolve(result);

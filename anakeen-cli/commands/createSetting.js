@@ -231,6 +231,12 @@ const builder = {
   settingFileName: {
     description: "name of the setting file",
     type: "string"
+  },
+  force: {
+    description: "force createSetting to delete file if exists",
+    type: "boolean",
+    default: false,
+    alias: "f"
   }
 };
 

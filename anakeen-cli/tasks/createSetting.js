@@ -6,6 +6,7 @@ const path = require("path");
 const { generateSetting } = require("./createSetting/index.js");
 const camelCase = require("camelcase");
 
+
 exports.createSetting = ({
   sourcePath,
   name,
@@ -16,7 +17,8 @@ exports.createSetting = ({
   associatedWorkflow,
   type,
   settingFileName,
-  insertIntoInfo = true
+  insertIntoInfo = true,
+  force
 }) => {
   return gulp.task("createSetting", async () => {
     //Get module info
@@ -91,7 +93,8 @@ exports.createSetting = ({
           associatedWorkflow,
           type,
           settingFileName,
-          insertIntoInfo
+          insertIntoInfo,
+          force
         });
       })
       .then(() => {
