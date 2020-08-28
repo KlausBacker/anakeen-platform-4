@@ -6,7 +6,6 @@ const path = require("path");
 const { generateSetting } = require("./createSetting/index.js");
 const camelCase = require("camelcase");
 
-
 exports.createSetting = ({
   sourcePath,
   name,
