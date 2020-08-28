@@ -16,7 +16,8 @@ exports.createSetting = ({
   associatedWorkflow,
   type,
   settingFileName,
-  insertIntoInfo = true
+  insertIntoInfo = true,
+  force
 }) => {
   return gulp.task("createSetting", async () => {
     //Get module info
@@ -91,7 +92,8 @@ exports.createSetting = ({
           associatedWorkflow,
           type,
           settingFileName,
-          insertIntoInfo
+          insertIntoInfo,
+          force
         });
       })
       .then(() => {

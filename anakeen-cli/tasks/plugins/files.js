@@ -101,12 +101,14 @@ exports.writeFiles = (...files) => {
 /**
  * Write template
  */
-const writeTemplate = (destinationPath, templateFile, templateData = {}) => {
+const writeTemplate = (destinationPath, templateFile, templateData = {}, options = { force: true }) => {
   return new Promise((resolve, reject) => {
     if (!fs.existsSync(path.dirname(destinationPath))) {
       reject(`The destination path "${destinationPath}" does not exist`);
     } else if (!fs.existsSync(templateFile)) {
       reject(`The template file "${templateFile}" does not exist`);
+    } else if (fs.existsSync(destinationPath) && !options.force) {
+      reject(`The file ${destinationPath} already exists`);
     } else {
       fs.readFile(templateFile, "utf8", (err, content) => {
         if (err) {
