@@ -170,21 +170,32 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
     dom: DOMReference,
     viewData?: AnakeenController.Types.IViewData,
     options?: ControllerOptions
-  ): ControllerUID {
+  ): Promise<ControllerUID> {
     viewData = viewData || {
       initid: 0,
       revision: -1,
       viewId: "!defaultConsultation"
     };
-    try {
-      const controller = this._dispatcher.initController(dom, viewData, options);
-      this._logVerbose(`Add smart element "${viewData.initid}"`, controller.uid);
-      this.emit("controllerSmartElementAdded", controller);
-      return controller.uid;
-    } catch (error) {
-      this.emit("controllerError", null, error);
-      throw error;
-    }
+    return new Promise((resolve, reject) => {
+      try {
+        const controller = this._dispatcher.initController(dom, viewData, options);
+        controller
+          .then((value: SmartElementController) => {
+            this._logVerbose(`Add smart element "${viewData.initid}"`, value.uid);
+            this.emit("controllerSmartElementAdded", controller);
+            resolve(value.uid);
+          })
+          .catch(err => {
+            if (err) {
+              this.emit("controllerError", null, err);
+              reject(err);
+            }
+          });
+      } catch (error) {
+        this.emit("controllerError", null, error);
+        reject(error);
+      }
+    });
   }
   public removeSmartElement(controllerUID) {
     try {

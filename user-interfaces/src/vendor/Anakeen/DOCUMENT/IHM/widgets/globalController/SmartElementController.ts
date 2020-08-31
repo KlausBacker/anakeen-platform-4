@@ -126,7 +126,13 @@ export default class SmartElementController extends AnakeenController.BusEvents.
   protected $notification: JQuery & { dcpNotification(...args): JQuery };
   protected _globalEventHandler: (...args: any[]) => any;
 
-  constructor(dom: DOMReference, viewData: ViewData, options?: IControllerOptions, globalEventHandler?) {
+  constructor(
+    dom: DOMReference,
+    viewData: ViewData,
+    options?: IControllerOptions,
+    globalEventHandler?,
+    callback?: { resolve: (SmartElementController) => void; reject: (string) => void }
+  ) {
     super();
     this._options = _.defaults(options, DEFAULT_OPTIONS);
     this._generateUID(this._options);
@@ -152,11 +158,22 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       view: false
     };
     if (!this._internalViewData.initid || this._internalViewData.initid === 0) {
+      if (callback && typeof callback.resolve === "function") {
+        callback.resolve(this);
+      }
       return;
     }
     // noinspection JSIgnoredPromiseFromCall
     if (this._options.autoInitialize) {
-      this._initializeSmartElement({}, this._options);
+      this._initializeSmartElement({}, this._options)
+        .then(() => {
+          callback.resolve(this);
+        })
+        .catch(err => {
+          callback.reject(err);
+        });
+    } else {
+      callback.resolve(this);
     }
   }
 

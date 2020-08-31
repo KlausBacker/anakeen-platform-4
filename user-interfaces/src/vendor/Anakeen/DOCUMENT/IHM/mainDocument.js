@@ -23,24 +23,30 @@ globalController.then(() => {
 
       if (window.dcp.viewData !== false && window.dcp.viewData.initid) {
         /* @var controller GlobalController */
-        const controllerUid = controller.addSmartElement($document, window.dcp.viewData, {
+        const controllerUidTmp = controller.addSmartElement($document, window.dcp.viewData, {
           router: true,
           autoInitialize: false
         });
-        currentController = controller.getScopedController(controllerUid);
-        currentController.initializeSmartElement().then(() => {
-          currentController.addEventListener("ready", (event, properties) => {
-            window.document.title = properties.title;
-            $("link[rel='shortcut icon']").attr("href", properties.icon);
+        const promise = Promise.resolve(controllerUidTmp);
+        promise.then(value => {
+          currentController = controller.getScopedController(value);
+          currentController.initializeSmartElement().then(() => {
+            currentController.addEventListener("ready", (event, properties) => {
+              window.document.title = properties.title;
+              $("link[rel='shortcut icon']").attr("href", properties.icon);
+            });
           });
         });
       } else {
-        const controllerUid = controller.addSmartElement($document, null, { autoInitialize: false });
-        currentController = controller.getScopedController(controllerUid);
-        currentController.initializeSmartElement().then(() => {
-          currentController.addEventListener("ready", (event, properties) => {
-            window.document.title = properties.title;
-            $("link[rel='shortcut icon']").attr("href", properties.icon);
+        const controllerUidTmp = controller.addSmartElement($document, null, { autoInitialize: false });
+        const promise = Promise.resolve(controllerUidTmp);
+        return promise.then(value => {
+          currentController = controller.getScopedController(value);
+          currentController.initializeSmartElement().then(() => {
+            currentController.addEventListener("ready", (event, properties) => {
+              window.document.title = properties.title;
+              $("link[rel='shortcut icon']").attr("href", properties.icon);
+            });
           });
         });
       }

@@ -39,22 +39,30 @@ export default class ControllerDispatcher extends AnakeenController.BusEvents.Li
    * @param options
    * @throws ControllerUIDError if the controller name given is already used
    */
-  public initController(dom: DOMReference, viewData: ViewData, options?: ControllerOptions) {
-    const _dispatcher = this;
-    const globalEventHandler = function(eventType, ...args) {
-      // @ts-ignore
-      _dispatcher.emit(eventType, this, ...args);
-      if (options && typeof options.globalHandler === "function") {
+  public initController(dom: DOMReference, viewData: ViewData, options?: ControllerOptions): Promise<SmartElementController> {
+    return new Promise((resolve, reject) => {
+      const _dispatcher = this;
+      const globalEventHandler = function(eventType, ...args) {
         // @ts-ignore
-        options.globalHandler.call(this, eventType, ...args);
+        _dispatcher.emit(eventType, this, ...args);
+        if (options && typeof options.globalHandler === "function") {
+          // @ts-ignore
+          options.globalHandler.call(this, eventType, ...args);
+        }
+      };
+      if (options && options.controllerName) {
+        this._checkExistControllerName(options.controllerName);
       }
-    };
-    if (options && options.controllerName) {
-      this._checkExistControllerName(options.controllerName);
-    }
-    const controller = new SmartElementController(dom, viewData, options, globalEventHandler);
-    this._controllers[controller.uid] = controller;
-    return controller;
+      new SmartElementController(dom, viewData, options, globalEventHandler, {
+        resolve: controller => {
+          this._controllers[controller.uid] = controller;
+          resolve(controller);
+        },
+        reject: err => {
+          reject(err);
+        }
+      });
+    });
   }
 
   public removeController(controllerUID: ControllerUniqueID) {
