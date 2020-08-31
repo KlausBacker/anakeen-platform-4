@@ -13,7 +13,7 @@
       :column-hide="onColumnHide"
       :column-show="onColumnShow"
       :column-menu="{ columns: true, filterable: false }"
-      :messages="{ noRows: messages }"
+      :messages="{ noRows: getmsgNoParam() }"
     >
       <kendo-treelist-column
         v-for="item in items"
