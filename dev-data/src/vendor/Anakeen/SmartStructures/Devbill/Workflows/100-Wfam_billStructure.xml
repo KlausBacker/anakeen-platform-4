@@ -6,6 +6,7 @@
         <smart:class>Anakeen\SmartStructures\Devbill\Workflows\WFamDevBillBehavior</smart:class>
         <smart:fields/>
         <smart:hooks/>
+        <smart:autocompletion/>
         <smart:defaults/>
     </smart:structure-configuration>
 </smart:config>
