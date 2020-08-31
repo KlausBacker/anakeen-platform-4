@@ -13,71 +13,71 @@
       {
         "type": "local",
         "name": "Docker Volumes",
-        "dir": ".devtool/docker/Volumes/_private/php/var/www/html/anakeen/platform",
+        "dir": ".devtool/docker/Volumes/_private/php/var/www/html/anakeen/",
         "mappings": [
           {
             "source": "admin-center/src",
-            "target": "/"
+            "target": "/platform/"
           },
           {
             "source": "business-app/src",
-            "target": "/"
+            "target": "/platform/"
           },
           {
             "source": "control/src",
-            "target": "/"
+            "target": "/control/"
           },
           {
             "source": "dev-data/src",
-            "target": "/"
+            "target": "/platform/"
           },
           {
             "source": "development-center/src",
-            "target": "/"
+            "target": "/platform/"
           },
           {
             "source": "hub-station/src",
-            "target": "/"
+            "target": "/platform/"
           },
           {
             "source": "internal-components/src",
-            "target": "/"
+            "target": "/platform/"
           },
           {
             "source": "migration-tools/src",
-            "target": "/"
+            "target": "/platform/"
           },
           {
             "source": "security/src",
-            "target": "/"
+            "target": "/platform/"
           },
           {
             "source": "smart-data-engine/src",
-            "target": "/"
+            "target": "/platform/"
           },
           {
             "source": "smart-data-engine/Tests/src",
-            "target": "/"
+            "target": "/platform/"
           },
           {
             "source": "test-tools/src",
-            "target": "/"
+            "target": "/platform/"
           },
           {
             "source": "transformation/src",
-            "target": "/"
+            "target": "/platform/"
           },
           {
             "source": "user-interfaces/src",
-            "target": "/"
+            "target": "/platform/"
           },
           {
             "source": "user-interfaces/Tests/src",
-            "target": "/"
+            "target": "/platform/"
           },
           {
             "source": "workflow/src",
-            "target": "/"
+            "target": "/platform/"
           }
         ]
       }

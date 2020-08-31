@@ -652,6 +652,11 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
   mounted(): void {
     this.$emit("gridReady");
   }
+
+  public selectSmartElements(smartElementIds: number[]): void {
+    this.selectedRows = smartElementIds.map(String);
+  }
+
   public restoreConfiguration(e) {
     if (e.data.config) {
       this.columnsList = e.data.config.config;
