@@ -96,7 +96,7 @@ class MaskManager
         $oas = $this->smartElement->getAttributes();
         if (is_array($oas)) {
             $this->smartElement->attributes->orderAttributes();
-            $oas=$this->smartElement->attributes->attr;
+            $oas = $this->smartElement->attributes->attr;
             foreach ($oas as $k => $v) {
                 if ($oas[$k]) {
                     $this->mVisibilities[$v->id] = self::propagateVisibility(
@@ -112,7 +112,7 @@ class MaskManager
     /**
      * apply visibility mask
      *
-     * @param int  $mid   mask ident, if not set it is found from possible workflow
+     * @param int $mid mask ident, if not set it is found from possible workflow
      * @param bool $force set to true to force reapply mask even it is already applied
      *
      * @return void
@@ -135,47 +135,6 @@ class MaskManager
                 throw new Exception($err);
             } else {
                 $mid = $imid;
-            }
-        }
-
-        $cvdoc = null;
-        if ($mid == \Anakeen\Core\Internal\SmartElement::USEMASKCVVIEW || $mid == \Anakeen\Core\Internal\SmartElement::USEMASKCVEDIT) {
-            if ($this->smartElement->cvid) {
-                /**
-                 * @var \SmartStructure\CVDoc $cvdoc
-                 */
-                $cvdoc = SEManager::getDocument($this->smartElement->cvid);
-                SEManager::cache()->addDocument($cvdoc);
-                if ($cvdoc && $cvdoc->isAlive()) {
-                    $cvdoc = clone $cvdoc;
-                    $cvdoc->Set($this->smartElement);
-                    $vid = self::getDefaultView($this->smartElement, ($mid == \Anakeen\Core\Internal\SmartElement::USEMASKCVEDIT), "id");
-                    if ($vid != '') {
-                        $tview = $cvdoc->getView($vid);
-                        $mid = ($tview !== false) ? $tview["CV_MSKID"] : 0;
-                    }
-                }
-            } else {
-                $mid = 0;
-            }
-        }
-        if ($mid == 0) {
-            if (($this->smartElement->wid > 0) && ($this->smartElement->wid != $this->smartElement->id)) {
-                // search mask from workflow
-
-                /**
-                 * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
-                 */
-                $wdoc = SEManager::getDocument($this->smartElement->wid);
-                if ($wdoc && $wdoc->isAlive()) {
-                    if ($this->smartElement->id == 0) {
-                        $wdoc->set($this->smartElement);
-                    }
-                    $mid = $wdoc->getStateMask($this->smartElement->state);
-                    if ((!is_numeric($mid)) && ($mid != "")) {
-                        $mid = SEManager::getIdFromName($mid);
-                    }
-                }
             }
         }
 
@@ -253,7 +212,7 @@ class MaskManager
                     foreach ($tdiff as $k) {
                         $v = $oas[$k];
                         if (!$v) {
-                            throw new \Anakeen\Exception("DOC1005", ($mdoc->name?:$mdoc->initid), $k);
+                            throw new \Anakeen\Exception("DOC1005", ($mdoc->name ?: $mdoc->initid), $k);
                         }
                         if ($v->type !== "frame") {
                             $fid = $oas[$k]->id;
@@ -270,15 +229,22 @@ class MaskManager
                     foreach ($tneed as $k => $v) {
                         if (isset($oas[$k])) {
                             if ($v === "Y") {
+                                /** @noinspection PhpPossiblePolymorphicInvocationInspection */
                                 $oas[$k]->needed = true;
                             } elseif ($v === "N") {
+                                /** @noinspection PhpPossiblePolymorphicInvocationInspection */
                                 $oas[$k]->needed = false;
                             }
                         }
                     }
                 }
             } else {
-                $err = \ErrorCode::getError('DOC1001', $mdoc->name ?? $mdoc->id, $mdoc->fromname, $this->smartElement->getTitle());
+                $err = \ErrorCode::getError(
+                    'DOC1001',
+                    $mdoc->name ?? $mdoc->id,
+                    $mdoc->fromname,
+                    $this->smartElement->getTitle()
+                );
             }
         } else {
             $err = \ErrorCode::getError('DOC1000', $mid, $this->smartElement->getTitle());
@@ -368,9 +334,9 @@ class MaskManager
     /**
      * retrieve first compatible view from default view control of a smart element
      *
-     * @param SmartElement $doc     smart element
-     * @param bool         $edition if true edition view else consultation view
-     * @param string       $extract [id|mask|all]
+     * @param SmartElement $doc smart element
+     * @param bool $edition if true edition view else consultation view
+     * @param string $extract [id|mask|all]
      *
      * @return array|int view definition "cv_idview", "cv_mskid"
      * @throws \Anakeen\Core\DocManager\Exception
@@ -425,5 +391,64 @@ class MaskManager
             return "S";
         }
         return $visibility;
+    }
+
+    public static function getDefaultMask(SmartElement $doc, $viewId)
+    {
+        $mid = 0;
+        if ($viewId === \Anakeen\Routes\Ui\DocumentView::coreViewConsultationId
+            || $viewId === \Anakeen\Routes\Ui\DocumentView::coreViewEditionId
+            || $viewId === \Anakeen\Routes\Ui\DocumentView::coreViewCreationId) {
+            return null;
+        }
+
+        if ($viewId === \Anakeen\Routes\Ui\DocumentView::defaultViewConsultationId) {
+            $mid = self::getDefaultView($doc, false, "mask");
+        }
+        if ($viewId === \Anakeen\Routes\Ui\DocumentView::defaultViewEditionId) {
+            $mid = self::getDefaultView($doc, true, "mask");
+        }
+        if ($mid !== 0) {
+            return $mid;
+        }
+
+        if ($doc->cvid) {
+            /**
+             * @var \SmartStructure\CVDoc $cvdoc
+             */
+            $cvdoc = SEManager::getDocument($doc->cvid);
+            SEManager::cache()->addDocument($cvdoc);
+            if ($cvdoc && $cvdoc->isAlive()) {
+                $cvdoc = clone $cvdoc;
+                $cvdoc->Set($doc);
+                $vInfo = $cvdoc->getView($viewId);
+                if (!empty($vInfo[\SmartStructure\Fields\Cvdoc::cv_mskid])) {
+                    $mid = $vInfo[\SmartStructure\Fields\Cvdoc::cv_mskid];
+                }
+            }
+        }
+
+        if ($mid === 0) {
+            if (($doc->wid > 0) && ($doc->wid != $doc->id)) {
+                // search mask from workflow
+
+                /**
+                 * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
+                 */
+                $wdoc = SEManager::getDocument($doc->wid);
+                if ($wdoc && $wdoc->isAlive()) {
+                    if ($doc->id == 0) {
+                        $wdoc->set($doc);
+                    }
+                    $mid = $wdoc->getStateMask($doc->state);
+                }
+            }
+        }
+
+        if ((!is_numeric($mid)) && ($mid != "")) {
+            $mid = SEManager::getIdFromName($mid);
+        }
+
+        return $mid;
     }
 }

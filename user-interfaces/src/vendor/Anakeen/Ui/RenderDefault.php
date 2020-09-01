@@ -380,10 +380,9 @@ class RenderDefault implements IRenderConfig
         }
     }
 
-    protected function setLinkOption(\Anakeen\Core\Internal\SmartElement $document, RenderOptions &$opt)
+    protected function setLinkOption(\Anakeen\Core\Internal\SmartElement $document, RenderOptions $opt)
     {
         $linkOption = new htmlLinkOptions();
-        //$linkOption->title = ___("View {{{displayValue}}}", "ddui");
         $linkOption->target = "_render";
         $linkOption->url = "/api/v2/smart-elements/{{value}}{{#isRevision}}/revisions/{{revisionTarget}}{{/isRevision}}.html";
         $opt->docid()->setLink($linkOption);
@@ -433,12 +432,18 @@ class RenderDefault implements IRenderConfig
     }
 
     /**
-     * @param \Anakeen\Core\Internal\SmartElement $document
+     * Return needed fields.
+     * Computed from current mask
      *
+     * @param \Anakeen\Core\Internal\SmartElement $document
+     * @param \SmartStructure\Mask|null $mask The mask used in current view
      * @return RenderAttributeNeeded new mandatory attributes
      */
-    public function getNeeded(\Anakeen\Core\Internal\SmartElement $document): RenderAttributeNeeded
-    {
+    public function getNeeded(
+        \Anakeen\Core\Internal\SmartElement $document,
+        \SmartStructure\Mask $mask = null
+    ): RenderAttributeNeeded {
+        // No apply mask here because it is already set used by getVisibilities
         return new RenderAttributeNeeded($document);
     }
 
@@ -554,7 +559,7 @@ class RenderDefault implements IRenderConfig
     public function getEtag(\Anakeen\Core\Internal\SmartElement $document)
     {
         $etags = DocumentView::getDefaultETag($document);
-        $descriptions=$this->getDefaultDescriptions($document);
+        $descriptions = $this->getDefaultDescriptions($document);
         if ($descriptions) {
             $etags .= " " . $descriptions->mdate . " " . $descriptions->id;
         }
