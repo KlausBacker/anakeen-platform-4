@@ -229,8 +229,10 @@ class MaskManager
                     foreach ($tneed as $k => $v) {
                         if (isset($oas[$k])) {
                             if ($v === "Y") {
+                                /** @noinspection PhpPossiblePolymorphicInvocationInspection */
                                 $oas[$k]->needed = true;
                             } elseif ($v === "N") {
+                                /** @noinspection PhpPossiblePolymorphicInvocationInspection */
                                 $oas[$k]->needed = false;
                             }
                         }

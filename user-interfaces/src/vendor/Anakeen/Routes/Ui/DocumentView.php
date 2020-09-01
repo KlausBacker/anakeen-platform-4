@@ -81,14 +81,14 @@ class DocumentView
     /**
      * Read a resource
      *
-     * @param \Slim\Http\request  $request
-     * @param \Slim\Http\response $response
+     * @param \Slim\Http\Request  $request
+     * @param \Slim\Http\Response $response
      * @param                     $args
      *
      * @return mixed
      * @throws Exception
      */
-    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
+    public function __invoke(\Slim\Http\Request $request, \Slim\Http\Response $response, $args)
     {
         $this->initParameters($request, $args);
 
@@ -126,7 +126,7 @@ class DocumentView
         return ApiV2Response::withData($response, $info, $messages);
     }
 
-    protected function initParameters(\Slim\Http\request $request, $args)
+    protected function initParameters(\Slim\Http\Request $request, $args)
     {
         $this->documentId = $args["docid"];
         $this->viewIdentifier = $args["view"];
