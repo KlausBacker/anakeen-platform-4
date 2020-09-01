@@ -35,7 +35,7 @@ class {{ssName}}Autocompletion
         $search->addFilter(new IsEqual("id", $elementId));
         if ("" !== $userInput) {
             // Search element with the title contains $userInput
-            $search->addFilter(new TitleContains($userInput));
+            $search->addFilter(new TitleContains($userInput, TitleContains::NOCASE));
         }
         // You can have some results
         foreach ($search->getResults() as $result) {
