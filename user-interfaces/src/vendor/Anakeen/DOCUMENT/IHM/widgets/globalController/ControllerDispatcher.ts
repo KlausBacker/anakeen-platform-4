@@ -39,7 +39,11 @@ export default class ControllerDispatcher extends AnakeenController.BusEvents.Li
    * @param options
    * @throws ControllerUIDError if the controller name given is already used
    */
-  public initController(dom: DOMReference, viewData: ViewData, options?: ControllerOptions): Promise<SmartElementController> {
+  public initController(
+    dom: DOMReference,
+    viewData: ViewData,
+    options?: ControllerOptions
+  ): Promise<SmartElementController> {
     return new Promise((resolve, reject) => {
       const _dispatcher = this;
       const globalEventHandler = function(eventType, ...args) {
@@ -53,15 +57,15 @@ export default class ControllerDispatcher extends AnakeenController.BusEvents.Li
       if (options && options.controllerName) {
         this._checkExistControllerName(options.controllerName);
       }
-      new SmartElementController(dom, viewData, options, globalEventHandler, {
+      const smartController = new SmartElementController(dom, viewData, options, globalEventHandler, {
         resolve: controller => {
-          this._controllers[controller.uid] = controller;
           resolve(controller);
         },
         reject: err => {
           reject(err);
         }
       });
+      this._controllers[smartController.uid] = smartController;
     });
   }
 

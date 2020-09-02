@@ -176,9 +176,9 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
       revision: -1,
       viewId: "!defaultConsultation"
     };
+    const controller = this._dispatcher.initController(dom, viewData, options);
     return new Promise((resolve, reject) => {
       try {
-        const controller = this._dispatcher.initController(dom, viewData, options);
         controller
           .then((value: SmartElementController) => {
             this._logVerbose(`Add smart element "${viewData.initid}"`, value.uid);
