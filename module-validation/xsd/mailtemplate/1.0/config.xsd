@@ -48,7 +48,7 @@
     </xs:complexType>
     <xs:complexType name="recipientType">
         <xs:sequence>
-            <xs:element type="xs:string" name="address" minOccurs="0"/>
+            <xs:element type="xs:string" name="address" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element type="ns:config-parameterType" name="config-parameter" minOccurs="0"/>
             <xs:element type="ns:element-account-fieldType" name="structure-account-parameter" minOccurs="0"/>
             <xs:element type="ns:element-relation-fieldType" name="element-field-value" minOccurs="0"/>
