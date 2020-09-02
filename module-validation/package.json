@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/anakeen-module-validation",
-  "version": "2.1.0-RC.2020.1.37",
+  "version": "2.1.0-RC.2020.1.38",
   "description": "Xsd and validation code",
   "main": "index.js",
   "scripts": {

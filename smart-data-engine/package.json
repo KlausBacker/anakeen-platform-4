@@ -1,11 +1,11 @@
 {
   "name": "@anakeen/smart-data-engine",
-  "version": "2.1.2-RC.2020.1.37",
+  "version": "2.1.2-RC.2020.1.38",
   "description": "Anakeen Platform Engine",
   "author": "anakeen",
   "license": "SEE LICENSE IN LICENSE",
   "devDependencies": {
-    "@anakeen/anakeen-cli": "1.2.2-RC.2020.1.37"
+    "@anakeen/anakeen-cli": "1.2.2-RC.2020.1.38"
   },
   "files": [
     "/constants/*.js"
