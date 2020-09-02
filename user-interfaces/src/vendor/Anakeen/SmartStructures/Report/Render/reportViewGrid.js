@@ -7,7 +7,10 @@ export default function reportViewGridProcess(controller) {
     {
       name: "report:view:grid",
       check: document => {
-        return document.family.name === "REPORT" && document.renderMode === "view" && document.type === "search";
+        const serverData = document.controller.getCustomServerData();
+        if (serverData["SEName"]) {
+          return document.renderMode === "view" && serverData["SEName"].indexOf("REPORT") >= 0;
+        }
       }
     },
     () => {

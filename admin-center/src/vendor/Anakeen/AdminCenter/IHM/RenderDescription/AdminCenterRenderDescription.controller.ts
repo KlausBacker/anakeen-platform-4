@@ -47,9 +47,11 @@ export default class AdminCenterRenderDescriptionController extends Mixins(AnkI1
       case "consultRenderDescription":
         this.selectedRenderDescription = e.data.row.properties.id.toString();
         this.selectedExample = "";
+        this.$refs.grid.selectedRows = [this.selectedRenderDescription];
         this.$nextTick(() => {
           this.$refs.rdSmartElement.fetchSmartElement({
-            initid: this.selectedRenderDescription
+            initid: this.selectedRenderDescription,
+            viewId: "!defaultConsultation"
           });
         });
         break;
@@ -65,6 +67,7 @@ export default class AdminCenterRenderDescriptionController extends Mixins(AnkI1
 
   public createNewDescription(): void {
     this.selectedRenderDescription = "-";
+    this.$refs.grid.selectedRows = [];
     this.$refs.rdSmartElement.fetchSmartElement({ initid: "RENDERDESCRIPTION", viewId: "!defaultCreation" });
   }
 

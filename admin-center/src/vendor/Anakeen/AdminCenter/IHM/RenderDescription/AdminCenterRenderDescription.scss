@@ -10,6 +10,8 @@
     justify-content: stretch;
     flex-direction: column;
 
+
+
   }
 
 
@@ -19,22 +21,21 @@
   }
 
 
+  .rd-empty {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #dedede;
+    font-size: 1.5rem;
+    color: #a4a4a4;
 
-    .rd-empty {
-      display: flex;
-      height: 100%;
-      width: 100%;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      background-color: #dedede;
-      font-size: 1.5rem;
-      color: #a4a4a4;
-
-      > span {
-        font-size: 5rem;
-      }
+    > span {
+      font-size: 5rem;
     }
+  }
 
 
   .rd-splitter {
@@ -53,6 +54,13 @@
   /deep/ {
     .k-grid, .grid-widget-wrapper {
       height: 100%;
+    }
+    .k-grid .k-master-row.k-state-selected {
+      background-color: #157EFB;
+      td {
+        color: white;
+        font-weight: normal;
+      }
     }
 
     .k-dropdown-operator {

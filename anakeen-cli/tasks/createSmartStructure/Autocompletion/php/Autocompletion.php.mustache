@@ -2,6 +2,11 @@
 
 namespace {{namespace}};
 
+use Anakeen\Search\Exception as SearchException;
+use Anakeen\Search\Filters\TitleContains;
+use Anakeen\Search\SearchElements;
+use Anakeen\SmartAutocompleteRequest;
+use Anakeen\SmartAutocompleteResponse;
 use SmartStructure\Fields\{{ssName}} as {{ssName}}Fields;
 
 class {{ssName}}Autocompletion
@@ -12,34 +17,33 @@ class {{ssName}}Autocompletion
      * @param SmartAutocompleteResponse $response
      * @param array $args
      * @return SmartAutocompleteResponse
-     * @throws \Dcp\SearchDoc\Exception
+     * @throws SearchException
      */
     public static function getSuggestionsFromElementId(
         SmartAutocompleteRequest $request,
         SmartAutocompleteResponse $response,
+        // args write in the autocomplete balise (smart:field-argument)
         array $args
     ): SmartAutocompleteResponse {
+        // Input from the user
         $userInput = $request->getFilterValue();
         $elementId = $args["elementId"];
+        // Initialise search in the smartStructure name
         $search = new SearchElements("{{SSNAME}}");
-        $search->addFilter(
-            "%s ='%s'",
-            "id",
-            $elementId
-        );
+
+        // Search element with the id = $elementId
+        $search->addFilter(new IsEqual("id", $elementId));
         if ("" !== $userInput) {
-            $search->addFilter(
-                "title ILIKE '%%%s%%'",
-                $userInput
-            );
+            // Search element with the title contains $userInput
+            $search->addFilter(new TitleContains($userInput, TitleContains::NOCASE));
         }
+        // You can have some results
         foreach ($search->getResults() as $result) {
             $title = $result->getTitle();
-            $response->appendEntry(xml_entity_encode($title), [
+            $response->appendEntry(\Anakeen\Core\Utils\Strings::xmlEncode($title), [
                 ["value" => $result->initid, "displayValue" => $title],
             ]);
         }
-
         return $response;
     }
 }

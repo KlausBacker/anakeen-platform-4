@@ -21,6 +21,9 @@ set_exception_handler(function (\Exception $e) {
     ]));
 
 });
+
+\Control\Internal\Context::initConfig();
+
 $app = new \Slim\App([
     "errorHandler" => function () {
         return new \Control\Api\ErrorHandler();

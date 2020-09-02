@@ -25,7 +25,7 @@ exports.generateSetting = (settingPath, argv) => {
     if (!exportObject[argv.type] || !exportObject[argv.type].writeTemplate) {
       return Promise.reject(`The type ${argv.type} is unknown or must be implemented`);
     }
-    return exportObject[argv.type].writeTemplate(settingPath, argv);
+    return exportObject[argv.type].writeTemplate(settingPath, argv, { force: !!argv.force });
   } else {
     return Promise.reject("A setting type must be provided");
   }

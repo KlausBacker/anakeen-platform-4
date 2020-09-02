@@ -106,6 +106,10 @@ install-all: | env-start ## install all modules
 run-dev-server: ## Run webpack development server
 	NO_CACHE=true $(NVM_EXEC_CMD) $(DEVTOOLS_DIR)/devserver/index.js
 
+.PHONY: run-tests
+run-tests:
+	$(_CONTROL_SHELL_CMD) "cd vendor/Anakeen/TestUnits/; php ./lib/vendor/phpunit/phpunit/phpunit"
+
 $(CONTROL_ARCHIVE):
 	make APP_OUTPUT_PATH=$(MK_DIR)/$(BUILD_DIR)/control -C control app
 	$(NVM_EXEC_CMD) $(DEVTOOLS_DIR)/script/generateLocalRepo.js

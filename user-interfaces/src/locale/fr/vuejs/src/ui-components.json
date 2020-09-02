@@ -47,6 +47,7 @@
   "identity.Confirm password modification": "Valider la modification du mot de passe",
   "Logout.Logout": "Déconnexion",
   "gridColumnsButton.Apply changes": "Appliquer les modifications",
+  "gridColumnsButton.Reset configuration": "Réinitialiser la configuration",
   "gridColumnsButton.Cancel": "Annuler",
   "gridColumnsButton.Search a column...": "Rechercher une colonne...",
   "gridColumnsButton.Columns management": "Gestion des colonnes",

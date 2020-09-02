@@ -6,9 +6,6 @@ const camelCase = require("camelcase");
 exports.writeTemplate = (installPath, argv) => {
   return new Promise((resolve, reject) => {
     const Name = camelCase(argv.name, { pascalCase: true });
-
-    // a suppr
-    // const Name = argv.name.charAt(0).toUpperCase() + argv.name.slice(1).toLowerCase();
     const NAME = argv.name.toUpperCase();
     const name = argv.name.toLowerCase();
     const Parentname = argv.parentName

@@ -93,7 +93,7 @@ export default {
           return dataItem[colId];
         };
       },
-      messages: "There are no parameters for this Smart Structure..."
+      messages: this.$t("DevelopmentCenter.There are no parameter value for this Smart Structure")
     };
   },
   mounted() {

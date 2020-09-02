@@ -6,7 +6,10 @@ export default function searchUISEGridProcess(controller) {
     {
       name: "seGrid:ready",
       check: function isDsearch(document) {
-        return document.renderMode === "edit" && document.type === "search";
+        const serverData = document.controller.getCustomServerData();
+        if (serverData["SEName"]) {
+          return document.renderMode === "edit" && serverData["SEName"].indexOf("DSEARCH") >= 0;
+        }
       }
     },
     () => {
@@ -58,7 +61,10 @@ export default function searchUISEGridProcess(controller) {
         {
           name: "getTmpSearchId",
           check: function isDsearch(document) {
-            return document.type === "search";
+            const serverData = document.controller.getCustomServerData();
+            if (serverData["SEName"]) {
+              return serverData["SEName"].indexOf("DSEARCH") >= 0;
+            }
           }
         },
         function prepareResultEditEvents(event, data) {
@@ -70,7 +76,10 @@ export default function searchUISEGridProcess(controller) {
         {
           name: "getTmpViewId",
           check: function isReport(document) {
-            return document.type === "search";
+            const serverData = document.controller.getCustomServerData();
+            if (serverData["SEName"]) {
+              return serverData["SEName"].indexOf("DSEARCH") >= 0;
+            }
           }
         },
         function prepareResultViewEvents(event, data) {

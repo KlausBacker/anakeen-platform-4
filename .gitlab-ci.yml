@@ -151,7 +151,9 @@ internal-components-buildJS:
       - business-app/**/*
       - development-center/**/*
       - transformation/**/*
+#endregion buildJS
 
+#region buildHub
 hub-station-buildJS:
   <<: *pull-cache
   stage: buildHub
@@ -174,7 +176,9 @@ hub-station-buildJS:
       - business-app/**/*
       - development-center/**/*
       - transformation/**/*
+# endregion buildHub
 
+#region buildFulltext
 fulltext-search-buildJS:
   <<: *pull-cache
   stage: buildFulltext
@@ -191,10 +195,10 @@ fulltext-search-buildJS:
       - master@Anakeen/Platform-4/anakeen-platform-4
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
     changes:
+      - fulltext-search/**/*
   dependencies:
     - user-interfaces-buildJS
-
-#endregion buildJS
+#endregion buildFulltext
 
 #region build
 .build-package:

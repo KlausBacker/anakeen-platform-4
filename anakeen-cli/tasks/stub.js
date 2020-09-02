@@ -5,7 +5,8 @@ const { Signale } = require("signale");
 const { analyzeXML } = require("../utils/globAnalyze");
 const path = require("path");
 
-exports.stub = ({ sourcePath, targetPath = "./stubs", verbose }) => {
+exports.stub = ({ sourcePath, targetPath = "stubs", verbose }) => {
+  targetPath = path.join(sourcePath, targetPath);
   gulp.task("stubFields", async () => {
     if (sourcePath === undefined) {
       throw new Error("No source path specified.");

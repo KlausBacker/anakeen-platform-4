@@ -40,7 +40,7 @@ class DateAttributeValue extends StandardAttributeValue
                 $this->displayValue = Date::stringDateToLocaleDate($v);
             }
         }
-        if ($oa->type === "timestamp") {
+        if ($oa->type === "timestamp" && is_string($this->value)) {
             $this->value[10]='T';
         }
     }

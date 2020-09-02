@@ -81,14 +81,14 @@ class DocumentView
     /**
      * Read a resource
      *
-     * @param \Slim\Http\request  $request
-     * @param \Slim\Http\response $response
+     * @param \Slim\Http\Request  $request
+     * @param \Slim\Http\Response $response
      * @param                     $args
      *
      * @return mixed
      * @throws Exception
      */
-    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
+    public function __invoke(\Slim\Http\Request $request, \Slim\Http\Response $response, $args)
     {
         $this->initParameters($request, $args);
 
@@ -126,7 +126,7 @@ class DocumentView
         return ApiV2Response::withData($response, $info, $messages);
     }
 
-    protected function initParameters(\Slim\Http\request $request, $args)
+    protected function initParameters(\Slim\Http\Request $request, $args)
     {
         $this->documentId = $args["docid"];
         $this->viewIdentifier = $args["view"];
@@ -336,8 +336,17 @@ class DocumentView
                     }
 
                     $viewInfo[self::fieldRenderOptions] = $configOptions->jsonSerialize();
-                    $viewInfo[self::fieldRenderOptions]["visibilities"] = $config->getVisibilities($this->document, $this->getMask($viewId))->jsonSerialize();
-                    $viewInfo[self::fieldRenderOptions]["needed"] = $config->getNeeded($this->document)->jsonSerialize();
+                    $mid = \Anakeen\Ui\MaskManager::getDefaultMask($this->document, $viewId);
+                    /** @var \SmartStructure\Mask $mask */
+                    $mask = SEManager::getDocument($mid);
+                    $viewInfo[self::fieldRenderOptions]["visibilities"] = $config->getVisibilities(
+                        $this->document,
+                        $mask
+                    )->jsonSerialize();
+                    $viewInfo[self::fieldRenderOptions]["needed"] = $config->getNeeded(
+                        $this->document,
+                        $mask
+                    )->jsonSerialize();
 
                     break;
 
@@ -381,37 +390,6 @@ class DocumentView
 
         $messages = $this->getMessages($config, $this->document);
         return $viewInfo;
-    }
-
-    /**
-     * @param $viewId
-     *
-     * @return \SmartStructure\Mask
-     * @throws \Anakeen\Core\DocManager\Exception
-     * @throws \Anakeen\Exception
-     */
-    protected function getMask($viewId)
-    {
-        if (!$viewId || $viewId[0] === "!" || !$this->document->cvid) {
-            return null;
-        }
-        /**
-         * @var \SmartStructure\Cvdoc $cvDoc
-         */
-        $cvDoc = SEManager::getDocument($this->document->cvid);
-        $vInfo = $cvDoc->getView($viewId);
-
-        if (!empty($vInfo[\SmartStructure\Fields\Cvdoc::cv_mskid])) {
-            $mskId = $vInfo[\SmartStructure\Fields\Cvdoc::cv_mskid];
-            /** @var \SmartStructure\Mask $msk */
-            $msk = SEManager::getDocument($mskId);
-            if (!$msk) {
-                throw new \Anakeen\Exception("UI0014", $mskId, $cvDoc);
-            }
-            SEManager::cache()->addDocument($msk);
-            return $msk;
-        }
-        return null;
     }
 
     /**
@@ -769,14 +747,13 @@ class DocumentView
             }
             if ($renderEtag !== "") {
                 return $renderEtag;
+            } else {
+                // if empty string returned => means default etag
+                return static::getDefaultETag($this->document);
             }
         }
 
-        $etag = $this->getDefaultETag($this->document);
-
-        $etag .= $refreshMsg;
-
-        return $etag;
+        return null;
     }
 
     public static function getDefaultETag(\Anakeen\Core\Internal\SmartElement $document)
@@ -820,7 +797,6 @@ class DocumentView
         // Necessary only when use family.structure
         $result[] = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_LANG");
         $result[] = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
-
 
         return join(" ", $result);
     }

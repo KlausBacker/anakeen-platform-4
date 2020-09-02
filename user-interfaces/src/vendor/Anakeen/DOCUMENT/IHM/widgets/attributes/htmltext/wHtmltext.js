@@ -44,6 +44,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
     };
     try {
       this.popupWindows = {};
+      this.analyzedImages = [];
 
       if (this.getMode() === "write") {
         bindSuper();
@@ -206,6 +207,10 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
     if (this.options.renderOptions.toolbar && !this.options.renderOptions.kendoEditorConfiguration.tools) {
       if (buttons[this.options.renderOptions.toolbar]) {
         this.options.renderOptions.kendoEditorConfiguration.tools = buttons[this.options.renderOptions.toolbar];
+      } else {
+        throw new Error(
+          `Attribute '${this.options.id}' : toolbar mode '${this.options.renderOptions.toolbar}' does not exist`
+        );
       }
     }
     if (this.options.renderOptions.translatedLabels) {
@@ -260,19 +265,85 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
     };
     if (!this.options.renderOptions.kendoEditorConfiguration.pasteCleanup.custom) {
       this.options.renderOptions.kendoEditorConfiguration.pasteCleanup.custom = html => {
+        const $html = $(`<div>${html}</div>`);
+        const fileImage = $html.find('img[src*="file://"');
+        if (fileImage.length === this.analyzedImages.length) {
+          fileImage.each((i, currentElement) => {
+            const $currentElement = $(currentElement);
+            $currentElement.attr("src", `data:${this.analyzedImages[i].type};base64,${this.analyzedImages[i].data}`);
+            this.transfertImage($currentElement);
+          });
+        }
         if (html.substring(0, 5) === "<img ") {
           try {
-            const $html = $(html);
             if ($html.prop("tagName") === "IMG") {
-              return this.transfertImage(html);
+              return this.transfertImage($html).html();
             }
           } catch (e) {
             // do nothing , it is not html continue paste
           }
         }
-        return html;
+        return $html.html();
       };
     }
+    this.analyzedImages = [];
+    this.getContentElements().on("paste." + this.eventNamespace, event => {
+      //When we copy a txt with image from word or libreoffice, the picture are not inline in the HTML part
+      //but they are inline in the rtf, so we extract it and make the substitution
+      const rtfData = event.originalEvent.clipboardData.getData("text/rtf");
+      const analyzeRTF = (regexPictureHeader, imgRegexp, rtfData) => {
+        const images = rtfData.match(imgRegexp);
+        if (images) {
+          const analyzedImages = images.map(currentImage => {
+            let imageType = false;
+
+            if (currentImage.includes("\\pngblip")) {
+              imageType = "image/png";
+            } else if (currentImage.includes("\\jpegblip")) {
+              imageType = "image/jpeg";
+            }
+
+            if (imageType) {
+              return {
+                data: this._convertHexToBase64(
+                  currentImage.replace(regexPictureHeader, "").replace(/[^\da-fA-F]/g, "")
+                ),
+                type: imageType
+              };
+            }
+          });
+          //Suppress useless images
+          return analyzedImages.filter(currentImage => {
+            return currentImage;
+          });
+        }
+        return [];
+      };
+
+      //find the image in the rtf
+      //Test for word
+      const wordRegexPictureHeader = /{\\pict[\s\S]+?\\bliptag-?\d+(\\blipupi-?\d+)?({\\\*\\blipuid\s?[\da-fA-F]+)?[\s}]*?/;
+      let wordRegExp = new RegExp("(?:(" + wordRegexPictureHeader.source + "))([\\da-fA-F\\s]+)\\}", "g");
+      const wordImages = analyzeRTF(wordRegexPictureHeader, wordRegExp, rtfData);
+      if (wordImages.length > 0) {
+        this.analyzedImages = wordImages;
+        return;
+      }
+      const libreOfficeHeaderRegexp = /{\\pict[\w\\]+(jpegblip|pngblip).*\s/g;
+      const libreOfficeRegexp = /{\\pict[\w\\]+(jpegblip|pngblip).*\s([\da-fA-F\s]*)}/g;
+      this.analyzedImages = analyzeRTF(libreOfficeHeaderRegexp, libreOfficeRegexp, rtfData);
+    });
+  },
+
+  _convertHexToBase64: function htmlTextConvertHexToBase64(hexString) {
+    return btoa(
+      hexString
+        .match(/\w{2}/g)
+        .map(char => {
+          return String.fromCharCode(parseInt(char, 16));
+        })
+        .join("")
+    );
   },
 
   /**
@@ -576,8 +647,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
     return new File([u8arr], filename + "." + ext, { type: mime });
   },
 
-  transfertImage: function(html) {
-    const $img = $(html);
+  transfertImage: function($img) {
     const localid = ++this._imgTransfertId;
     const event = { prevent: false, target: $img };
     const imgFile = this.dataURLtoFile($img.attr("src"), "paste");
@@ -605,7 +675,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
       file: imgFile
     });
     if (!isNotPrevented) {
-      return html;
+      return $img;
     }
 
     formData.append("dcpFile", imgFile);
@@ -703,7 +773,7 @@ $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
         $img.remove();
       });
 
-    return $img[0].outerHTML;
+    return $img;
   },
 
   /**

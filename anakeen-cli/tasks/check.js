@@ -65,8 +65,8 @@ exports.checkConfigFile = ({ sourcePath, verbose, glob, sourceDir }) => {
               result = checkResult.ok ? "✓" : checkResult.ignore ? "ignored" : checkResult.error;
               log(`Analyze : ${sourcePath} : ${result}`);
             }
-            if (result.error) {
-              return reject(result.error);
+            if (checkResult.error) {
+              return reject(checkResult.error);
             }
             resolve(result);
           } else if (glob) {

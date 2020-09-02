@@ -13,33 +13,31 @@
         <mail:use-html-anchor>true</mail:use-html-anchor>
         <mail:body content-type="html"><![CDATA[
 
-	<p>English version below</p>
+<p>English version below</p>
 
 <hr />
-<p>Bonjour &#x5B;V_US_FNAME] &#x5B;V_US_LNAME],</p>
+<p>Bonjour [V_US_FNAME] [V_US_LNAME],</p>
 
 <p>Vous avez demandé la réinitialisation de votre mot de passe. Si ce n'est pas le cas, veuillez détruire ce message.</p>
 
-<p>Pour poursuivre la réinitialisation de votre mot de passe, veuillez suivre <a href=""&#x5B;LINK_CHANGE_PASSWORD]"">ce lien</a>.</p>
+<p>Pour poursuivre la réinitialisation de votre mot de passe, veuillez suivre <a href="[LINK_CHANGE_PASSWORD]">ce lien</a>.</p>
 
-<p>Veuillez noter que ce expirera dans 24h.</p>
+<p>Veuillez noter que ce lien expirera dans 24h ( [EXPIRE_DATE] ).</p>
 
 <p>Vous pouvez également copier l'adresse suivante dans votre navigateur :</p>
 
-<p>&#x5B;LINK_CHANGE_PASSWORD]</p>
+<p>[LINK_CHANGE_PASSWORD]</p>
 
 <hr />
-<p>Hello &#x5B;V_US_FNAME] &#x5B;V_US_LNAME],</p>
+<p>Hello [V_US_FNAME] [V_US_LNAME],</p>
 
-<p>You asked a password reinitialisation. If you did not ask this, destroy this message.</p>
+<p>You have requested a password reset. If you didn't issue a password reset you can safely ignore this email..</p>
 
-<p>To reinitialise your pasword, use <a href=""&#x5B;LINK_CHANGE_PASSWORD]"">this link</a>.</p>
+<p>Please use this <a href="[LINK_CHANGE_PASSWORD]">this link</a> to change your password, it will expire in 24h ( [EXPIRE_DATE] ).</p>
 
-<p>Please note that this link will expire in 24h.</p>
+<p>You can also copy the following link in your browser:</p>
 
-<p>You can also paste the following string in your browser:</p>
-
-<p>&#x5B;LINK_CHANGE_PASSWORD]</p>
+<p>[LINK_CHANGE_PASSWORD]</p>
 
 ]]></mail:body>
     </mail:mailtemplate>

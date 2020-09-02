@@ -3,17 +3,13 @@ const path = require("path");
 const xml2js = require("xml2js");
 const camelCase = require("camelcase");
 
-const createEnumeratesXML = namespace => {
+const createEnumeratesXML = () => {
   return {
     "smart:config": {
       $: {
         "xmlns:smart": "https://platform.anakeen.com/4/schemas/smart/1.0"
       },
-      "smart:enumerates": {
-        $: {
-          namespace: namespace
-        }
-      }
+      "smart:enumerates": {}
     }
   };
 };

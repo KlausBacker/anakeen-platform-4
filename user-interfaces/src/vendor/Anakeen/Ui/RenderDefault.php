@@ -7,6 +7,7 @@
 namespace Anakeen\Ui;
 
 use Anakeen\Core\ContextManager;
+use Anakeen\Routes\Ui\DocumentView;
 use Anakeen\Search\SearchElements;
 use SmartStructure\Fields\Renderdescription as DescriptionFields;
 use SmartStructure\Renderdescription;
@@ -19,6 +20,8 @@ class RenderDefault implements IRenderConfig
     protected $displayDefaultMenuTooltip = false;
 
     protected $customClientData = null;
+
+    protected $defaultDescription = null;
 
     public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)
     {
@@ -324,28 +327,42 @@ class RenderDefault implements IRenderConfig
 
     protected function setDefaultDescriptions(\Anakeen\Core\Internal\SmartElement $smartElement, RenderOptions $options)
     {
-        $s = new SearchElements(\SmartStructure\Renderdescription::familyName);
-
-        $s->addFilter("%s = '%d'", DescriptionFields::rd_famid, $smartElement->fromid);
-
-
-        $lang = ContextManager::getLanguage();
-        // print_r($lang);
-        // $s->addFilter(new \Anakeen\Search\Filters\IsEmpty(DescriptionFields::rd_lang));
-        // $s->addFilter(new \Anakeen\Search\Filters\OneEquals(DescriptionFields::rd_lang, substr($lang, 0, 2)));
-        $s->addFilter(new \Anakeen\Search\Filters\OrOperator(
-            new \Anakeen\Search\Filters\IsEqual(DescriptionFields::rd_lang, substr($lang, 0, 2)),
-            new \Anakeen\Search\Filters\IsEmpty(DescriptionFields::rd_lang)
-        ));
-        $s->addFilter(new \Anakeen\Search\Filters\OneEquals(DescriptionFields::rd_mode, $this->getType()));
-        $s->search();
-
-
-        if ($s->count() > 0) {
+        $descriptions = $this->getDefaultDescriptions($smartElement);
+        if ($descriptions) {
             /** @var Renderdescription $descriptions */
-            $descriptions = $s->getNextElement();
             self::applyRenderDescription($descriptions, $options);
         }
+    }
+
+    protected function getDefaultDescriptions(\Anakeen\Core\Internal\SmartElement $smartElement)
+    {
+        if ($this->defaultDescription === null) {
+            $s = new SearchElements(\SmartStructure\Renderdescription::familyName);
+
+            $s->overrideAccessControl();
+            $s->addFilter("%s = '%d'", DescriptionFields::rd_famid, $smartElement->fromid);
+
+
+            $lang = ContextManager::getLanguage();
+            // print_r($lang);
+            // $s->addFilter(new \Anakeen\Search\Filters\IsEmpty(DescriptionFields::rd_lang));
+            // $s->addFilter(new \Anakeen\Search\Filters\OneEquals(DescriptionFields::rd_lang, substr($lang, 0, 2)));
+            $s->addFilter(new \Anakeen\Search\Filters\OrOperator(
+                new \Anakeen\Search\Filters\IsEqual(DescriptionFields::rd_lang, substr($lang, 0, 2)),
+                new \Anakeen\Search\Filters\IsEmpty(DescriptionFields::rd_lang)
+            ));
+            $s->addFilter(new \Anakeen\Search\Filters\OneEquals(DescriptionFields::rd_mode, $this->getType()));
+            $s->search();
+
+            if ($s->count() > 0) {
+                /** @var Renderdescription $descriptions */
+                $descriptions = $s->getNextElement();
+                $this->defaultDescription = $descriptions;
+            } else {
+                $this->defaultDescription = false;
+            }
+        }
+        return $this->defaultDescription;
     }
 
     public static function applyRenderDescription(Renderdescription $renderDescription, RenderOptions $options)
@@ -356,17 +373,16 @@ class RenderDefault implements IRenderConfig
                 $options->commonOption($fieldDescription[DescriptionFields::rd_field])->setDescription(
                     $fieldDescription[DescriptionFields::rd_description],
                     $fieldDescription[DescriptionFields::rd_placement],
-                    $fieldDescription[DescriptionFields::rd_subdescription]?:"",
+                    $fieldDescription[DescriptionFields::rd_subdescription] ?: "",
                     $fieldDescription[DescriptionFields::rd_collapsable] !== "false"
                 );
             }
         }
     }
 
-    protected function setLinkOption(\Anakeen\Core\Internal\SmartElement $document, RenderOptions &$opt)
+    protected function setLinkOption(\Anakeen\Core\Internal\SmartElement $document, RenderOptions $opt)
     {
         $linkOption = new htmlLinkOptions();
-        //$linkOption->title = ___("View {{{displayValue}}}", "ddui");
         $linkOption->target = "_render";
         $linkOption->url = "/api/v2/smart-elements/{{value}}{{#isRevision}}/revisions/{{revisionTarget}}{{/isRevision}}.html";
         $opt->docid()->setLink($linkOption);
@@ -416,12 +432,18 @@ class RenderDefault implements IRenderConfig
     }
 
     /**
-     * @param \Anakeen\Core\Internal\SmartElement $document
+     * Return needed fields.
+     * Computed from current mask
      *
+     * @param \Anakeen\Core\Internal\SmartElement $document
+     * @param \SmartStructure\Mask|null $mask The mask used in current view
      * @return RenderAttributeNeeded new mandatory attributes
      */
-    public function getNeeded(\Anakeen\Core\Internal\SmartElement $document): RenderAttributeNeeded
-    {
+    public function getNeeded(
+        \Anakeen\Core\Internal\SmartElement $document,
+        \SmartStructure\Mask $mask = null
+    ): RenderAttributeNeeded {
+        // No apply mask here because it is already set used by getVisibilities
         return new RenderAttributeNeeded($document);
     }
 
@@ -536,6 +558,11 @@ class RenderDefault implements IRenderConfig
 
     public function getEtag(\Anakeen\Core\Internal\SmartElement $document)
     {
-        return '';
+        $etags = DocumentView::getDefaultETag($document);
+        $descriptions = $this->getDefaultDescriptions($document);
+        if ($descriptions) {
+            $etags .= " " . $descriptions->mdate . " " . $descriptions->id;
+        }
+        return $etags;
     }
 }

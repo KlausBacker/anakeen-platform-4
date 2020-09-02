@@ -54,10 +54,6 @@ class CliInit extends CliCommand
         }
         parent::execute($input, $output);
 
-        if (Context::isInitialized()) {
-            throw new RuntimeException(sprintf("Context already initialized"));
-        }
-
         $wiff = \WIFF::getInstance();
 
         $rootContextPath = sprintf(realpath($wiff->getWiffRoot() . "../"));
@@ -77,12 +73,10 @@ class CliInit extends CliCommand
             "core_admin_passwd" => $input->getOption("password")
         ]);
 
-        Context::init();
         $wiff->createPasswordFile("admin", $input->getOption("password"));
 
         $ret = $context = $wiff->createContext(self::CONTEXT_NAME, $contextPath, "Anakeen Platform Context", "");
         if ($ret === false) {
-            Context::reset();
             throw new RuntimeException($wiff->errorMessage);
         }
 

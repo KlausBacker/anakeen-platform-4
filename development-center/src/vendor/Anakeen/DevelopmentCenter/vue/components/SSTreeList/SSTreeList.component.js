@@ -92,8 +92,19 @@ export default {
         : [],
       filters: "",
       operatorconfig: "contains",
-      operatorvalue: "contains"
+      operatorvalue: "contains",
+      tmpMsgNoParam: this.messages
     };
+  },
+  computed: {
+    msgNoParam: {
+      get: function() {
+        return this.tmpMsgNoParam;
+      },
+      set: function(newValue) {
+        this.tmpMsgNoParam = newValue;
+      }
+    }
   },
   devCenterRefreshData() {
     if (this.remoteDataSource) {
@@ -101,7 +112,6 @@ export default {
     }
   },
   mounted() {
-    this.messages = this.$t("DevelopmentCenter.There are no data for this SmartStructure");
     this.remoteDataSource = new kendo.data.TreeListDataSource({
       transport: {
         read: options => {
@@ -149,6 +159,9 @@ export default {
     }
   },
   methods: {
+    getmsgNoParam() {
+      return this.msgNoParam;
+    },
     onColumnResize(e) {
       e.preventDefault();
       let found = undefined;
@@ -385,6 +398,11 @@ export default {
           let computedFilter = { filters: [], logic: "and" };
           let oldFilter = this.$refs.ssTreelist.kendoWidget().dataSource.filter() || {};
           let value = this.getFilterValue(event.currentTarget.value);
+          if (value === "") {
+            this.msgNoParam = this.messages;
+          } else {
+            this.msgNoParam = this.$t("There are no parameter value with this filter");
+          }
           value = value.replace(" ", "");
           const colId = event.target.className.split(" ")[2].split("-")[0];
           if (value) {

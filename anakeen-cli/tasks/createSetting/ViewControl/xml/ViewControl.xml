@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0">
     <ui:view-control xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0" name="{{NAME}}" label="{{nameLabel}}" {{#associatedSmartStructure}}structure="{{SS}}"{{/associatedSmartStructure}}>
+        <!--
+        <ui:primary-mask ref="MASK_NAME_REF"/>
+        -->
         <!--region View control configuration ======-->
         <ui:view-list>
             <!--
@@ -14,4 +17,13 @@
         </ui:view-list>
         <!--endregion View control configuration ===-->
     </ui:view-control>
+    <!--region Cvdoc views : Accesses ==========-->
+    <smart:access-configuration name="{{NAME}}" label="Profil {{nameLabel}}" profil-type="CVDOC"
+                                access-structure="{{SS}}" policy="SET">
+        <!--
+        <smart:element-access access="CONSULT_DEF" account="role_consult_def"/>
+        <smart:element-access access="EDIT_DEF" account="role_edit_def"/>
+        -->
+    </smart:access-configuration>
+    <!-- endregion Cvdoc views : Accesses ==========-->
 </smart:config>

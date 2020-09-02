@@ -21,7 +21,10 @@ window.ank.smartElement.globalController.registerFunction("dSearch", controller 
       {
         name: "report:edit:condition",
         check: document => {
-          return document.renderMode === "edit" && document.type === "search";
+          const serverData = document.controller.getCustomServerData();
+          if (serverData["SEName"]) {
+            return document.renderMode === "edit" && serverData["SEName"].indexOf("DSEARCH") >= 0;
+          }
         }
       },
       event => {

@@ -539,7 +539,17 @@ class MailTemplateHooks extends \Anakeen\SmartElement
             "&#x5B;",
             "[",
             $tpl
-        ); // replace [ convverted in \Anakeen\Core\Internal\SmartElement::setValue()
+        ); // replace [ converted in \Anakeen\Core\Internal\SmartElement::setValue()
+        $tpl = str_replace(
+            "%5D",
+            "]",
+            $tpl
+        );
+        $tpl = str_replace(
+            "%5B",
+            "[",
+            $tpl
+        );
         $doc->lay = new \Anakeen\Layout\TextLayout("", $tpl);
 
         $ulink = ($this->getRawValue("tmail_ulink") == "yes");
