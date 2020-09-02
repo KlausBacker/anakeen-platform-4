@@ -6,10 +6,12 @@ ankSmartController.registerFunction("structureTestRender", scopedController => {
   scopedController.addEventListener("ready", event => {
     const docid = scopedController.getValue("tst_docname").value;
     const viewId = scopedController.getValue("tst_docviewid").value || "!defaultConsultation";
-    insideControllerid = ankSmartController.addSmartElement(event.target.find(".test-document"), {
+    ankSmartController.addSmartElement(event.target.find(".test-document"), {
       initid: docid,
       viewId,
       revision: -1
+    }).then((value) => {
+      insideControllerid = value;
     });
   });
 
