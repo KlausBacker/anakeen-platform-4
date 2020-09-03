@@ -254,7 +254,7 @@ class SmartGridContentBuilder implements SmartGridBuilder
         $return["requestParameters"] = $this->getRequestParameters();
         $this->prepareFormatter();
         $return["content"] = $this->formatter->format();
-        if (ContextManager::getParameterValue("Ui", "MODE_DEBUG", false)) {
+        if (ContextManager::getParameterValue("Ui", "MODE_DEBUG", false) === "TRUE") {
             $return["debug"] = $this->searchElements->getSearchInfo();
         }
         return $return;
