@@ -22,6 +22,7 @@ class ImportSmartConfiguration
     protected $profilElements = [];
     protected $smartPrefix = "smart";
     protected $taskPrefix = "task";
+    protected $smartNs=ExportConfiguration::NSURL;
 
     protected $attrToOptions = [
         "match" => "match",
@@ -61,7 +62,7 @@ class ImportSmartConfiguration
         $this->dom = new \DOMDocument();
         $this->dom->load($xmlFile);
 
-        if (!Xml::getPrefix($this->dom, ExportConfiguration::NSURL)) {
+        if (!Xml::getPrefix($this->dom, $this->smartNs)) {
             throw new Exception(sprintf('Xml Configuration file "%s" is not a smart configuration file', $xmlFile));
         }
 
@@ -232,7 +233,7 @@ class ImportSmartConfiguration
 
     protected function importConfigurations()
     {
-        $this->smartPrefix = Xml::getPrefix($this->dom, ExportConfiguration::NSURL);
+        $this->smartPrefix = Xml::getPrefix($this->dom, $this->smartNs);
         $configs = $this->getNodes($this->dom->documentElement, "structure-configuration");
         $data = [];
         $this->profilElements = [];
@@ -1050,7 +1051,7 @@ class ImportSmartConfiguration
      */
     protected function getNodes(\DOMElement $e, $name)
     {
-        return $e->getElementsByTagNameNS(ExportConfiguration::NSURL, $name);
+        return $e->getElementsByTagNameNS($this->smartNs, $name);
     }
 
     /**

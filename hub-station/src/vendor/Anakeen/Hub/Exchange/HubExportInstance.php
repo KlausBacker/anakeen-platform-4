@@ -15,13 +15,10 @@ class HubExportInstance extends HubExport
 {
     public function getXml()
     {
-        $domConfig = $this->initDom();
-        $domConfig->setAttribute("xmlns:" . self::NSHUB, self::NSHUBURL);
-        $domConfig->appendChild($this->getInstance());
+       // $domConfig->setAttribute("xmlns:" . self::NSHUB, self::NSHUBURL);
+        $this->domConfig->appendChild($this->getInstance());
 
-        $domConfig->appendChild($this->exportHubComponents());
 
-        //  $domConfig->appendChild($this->getAccessProfile($name));
 
         // Need to reload to indent all xml structure
         $dom = new \DOMDocument();
@@ -32,13 +29,50 @@ class HubExportInstance extends HubExport
         return $dom->saveXML();
     }
 
+    public function getZip($outZipPath)
+    {
+
+        $domConfig = $this->initDom();
+        // $domConfig->setAttribute("xmlns:" . self::NSHUB, self::NSHUBURL);
+        $domConfig->appendChild($this->getInstance());
+
+        $zip= new \ZipArchive();
+        $zip->open($outZipPath, \ZipArchive::CREATE);
+        $zip->addFromString(sprintf("100-hub-%s.xml", $this->smartElement->name), $this->dom->saveXML());
+
+        $xmlData=$this->exportHubComponents($extraData);
+       // print_r($extraData);print_r($xmlData);exit;
+
+
+        $k=200;
+        foreach ($extraData as $name => $xmlComponent) {
+            $zip->addFromString(sprintf("extra/%3d-%s.xml", $k++, $name), $xmlComponent);
+        }
+
+        $k=300;
+        foreach ($xmlData as $name => $xmlComponent) {
+            $zip->addFromString(sprintf("components/%3d-%s.xml", $k++, $name), $xmlComponent);
+        }
+
+        $zip->close();
+
+/*
+
+        // Need to reload to indent all xml structure
+        $dom = new \DOMDocument();
+        $dom->formatOutput = true;
+        $dom->preserveWhiteSpace = false;
+        $dom->loadXML($this->dom->saveXML());
+
+        return $dom->saveXML();*/
+    }
+
 
     protected function getInstance()
     {
         $instance = $this->cel("instance");
 
         $instance->setAttribute("name", ExportConfiguration::getLogicalName($this->smartElement->id));
-        $instance->setAttribute("title", $this->smartElement->getTitle());
         $instance->appendChild($this->getDescription());
         $instance->appendChild($this->getSetting());
         $instance->appendChild($this->getSecurity());
@@ -46,10 +80,9 @@ class HubExportInstance extends HubExport
     }
 
 
-    protected function exportHubComponents()
+    protected function exportHubComponents(&$extraData)
     {
-        $components = $this->cel("components");
-
+        $extraData=[];
         $search = new SearchSmartData("", "HUBCONFIGURATION");
         $search->overrideViewControl();
         $search->addFilter("%s = '%s'", Fields::hub_station_id, $this->smartElement->initid);
@@ -59,6 +92,8 @@ class HubExportInstance extends HubExport
 
 
         $dl = $search->getDocumentList();
+
+        $xmlData=[];
         foreach ($dl as $element) {
             /** @var \SmartStructure\Hubconfiguration $element */
             if (!$element->name) {
@@ -71,37 +106,39 @@ class HubExportInstance extends HubExport
             switch ($element->fromname) {
                 case "HUBCONFIGURATIONGENERIC":
                     $configComponent = new HubExportGenericComponent($element);
-                    $configComponent->appendTo($components);
+                    $xmlData[$element->name]=$configComponent->getXml();
+
                     break;
 
                 case "HUBCONFIGURATIONIDENTITY":
                     $configComponent = new HubExportIdentityComponent($element);
-                    $configComponent->appendTo($components);
+                    $xmlData[$element->name]=$configComponent->getXml();
                     break;
                 case "HUBCONFIGURATIONLOGOUT":
                     $configComponent = new HubExportLogoutComponent($element);
-                    $configComponent->appendTo($components);
+                    $xmlData[$element->name]=$configComponent->getXml();
                     break;
                 case "HUBCONFIGURATIONLABEL":
                     $configComponent = new HubExportLabelComponent($element);
-                    $configComponent->appendTo($components);
+                    $xmlData[$element->name]=$configComponent->getXml();
                     break;
                 case "ADMINPARAMETERSHUBCONFIGURATION":
                     $configComponent = new HubExportAdminParameterComponent($element);
-                    $configComponent->appendTo($components);
+                    $xmlData[$element->name]=$configComponent->getXml();
                     break;
                 case "HUBBUSINESSAPP":
                     $configComponent = new HubExportBusinessAppComponent($element);
-                    $configComponent->appendTo($components);
+                    $xmlData[$element->name]=$configComponent->getXml();
+                    $extraData=$configComponent->getExtraXml();
+
                     break;
                 default:
                     $configComponent = new HubExportComponent($element);
-                    $configComponent->appendTo($components);
+                    $xmlData[$element->name]=$configComponent->getXml();
             }
         }
 
-
-        return $components;
+        return $xmlData;
     }
 
 
@@ -127,7 +164,7 @@ class HubExportInstance extends HubExport
     {
 
 
-        $setting = $this->cel("setting");
+        $setting = $this->cel("settings");
 
 
         $this->addField(HubFields::hub_instanciation_router_entry, "router-entry", $setting);
@@ -149,11 +186,23 @@ class HubExportInstance extends HubExport
         );
 
 
-        $display = $this->cel("display", null, $setting);
-        $this->addField(HubFields::hub_instanciation_dock_left, "dock-left", $display);
-        $this->addField(HubFields::hub_instanciation_dock_top, "dock-top", $display);
-        $this->addField(HubFields::hub_instanciation_dock_right, "dock-right", $display);
-        $this->addField(HubFields::hub_instanciation_dock_bottom, "dock-bottom", $display);
+        $docks = $this->cel("docks", null, $setting);
+        $dock = $this->cel("dock-left");
+        if ($this->addField(HubFields::hub_instanciation_dock_left, "collapse", $dock)) {
+            $docks->appendChild($dock);
+        }
+        $dock = $this->cel("dock-top");
+        if ($this->addField(HubFields::hub_instanciation_dock_top, "collapse", $dock)) {
+            $docks->appendChild($dock);
+        }
+        $dock = $this->cel("dock-right");
+        if ($this->addField(HubFields::hub_instanciation_dock_right, "collapse", $dock)) {
+            $docks->appendChild($dock);
+        }
+        $dock = $this->cel("dock-bottom");
+        if ($this->addField(HubFields::hub_instanciation_dock_bottom, "collapse", $dock)) {
+            $docks->appendChild($dock);
+        }
 
 
         return $setting;
@@ -164,8 +213,12 @@ class HubExportInstance extends HubExport
 
         $security = $this->cel("security");
 
+        $accessRoles = $this->cel("access-roles");
+        $accessRoles->setAttribute("logical-operator", "or");
 
-        $this->addField(HubFields::hub_access_roles, "access-role", $security);
+        if ($this->addField(HubFields::hub_access_roles, "access-role", $accessRoles)) {
+            $security->appendChild($accessRoles);
+        }
         $this->addField(HubFields::hub_super_role, "super-role", $security);
 
 

@@ -3,26 +3,53 @@
 
 namespace Anakeen\Hub\Exchange;
 
+use Anakeen\AdminCenter\Exchange\HubExportAdminParameterComponent;
+use Anakeen\Core\SmartStructure\ExportConfiguration;
 use SmartStructure\Fields\Hubconfiguration as ComponentFields;
 
 class HubExportComponent extends HubExport
 {
-    protected $mainTag="component";
-    public function appendTo(\DOMElement $parent)
-    {
-        $this->dom = $parent->ownerDocument;
-        $nodeComponent = $this->cel($this->mainTag);
+    public static $NSHUBURLCOMPONENT = ExportConfiguration::NSBASEURL . "hub-component/1.0";
+    protected $NSHUBCOMPONENT = "hub-component";
+    protected $mainTag = "config";
 
-        $nodeComponent->setAttribute(
+
+    public function getXml()
+    {
+
+        $config = $this->setXmlConfig();
+
+        $parameters = $this->getParameters();
+        if ($parameters) {
+            $config->appendChild($parameters);
+        }
+        return $this->dom->saveXML();
+    }
+
+    public function setXmlConfig()
+    {
+
+        $this->domConfig= $this->cel("component");
+        $originalUrl= static::$nsUrl;
+        $originalPrefix= $this->nsPrefix;
+        static::$nsUrl = self::$NSHUBURLCOMPONENT;
+        $this->nsPrefix = $this->NSHUBCOMPONENT;
+        $nodeComponent = $this->cel("parameters");
+
+
+        $this->dom->documentElement->appendChild($this->domConfig);
+
+        $this->domConfig->setAttribute(
             "instance-ref",
             $this->getLogicalName($this->smartElement->getRawValue(ComponentFields::hub_station_id))
         );
-        $nodeComponent->setAttribute("name", $this->smartElement->name);
-        $nodeComponent->setAttribute("order", $this->smartElement->getRawValue(ComponentFields::hub_order));
+        $this->domConfig->setAttribute("name", $this->smartElement->name);
 
+        $display = $this->cel("display", null, $nodeComponent);
         $position = explode("_", $this->smartElement->getRawValue(ComponentFields::hub_docker_position));
-        $nodeComponent->setAttribute("position", strtolower($position[0]));
-        $nodeComponent->setAttribute("placement", strtolower($position[1]));
+        $display->setAttribute("position", strtolower($position[0]));
+        $display->setAttribute("placement", strtolower($position[1]));
+        $display->setAttribute("order", $this->smartElement->getRawValue(ComponentFields::hub_order));
 
 
         $this->addField(ComponentFields::hub_title, "title", $nodeComponent);
@@ -31,8 +58,18 @@ class HubExportComponent extends HubExport
         $nodeComponent->appendChild($this->getSettings());
         $nodeComponent->appendChild($this->getSecurity());
 
-        $parent->appendChild($nodeComponent);
-        return $nodeComponent;
+        $this->domConfig->appendChild($nodeComponent);
+
+
+        static::$nsUrl = $originalUrl;
+        $this->nsPrefix = $originalPrefix;
+        return $this->domConfig;
+    }
+
+
+    protected function getParameters()
+    {
+        return null;
     }
 
     protected function getSecurity()
@@ -41,16 +78,22 @@ class HubExportComponent extends HubExport
         $security = $this->cel("security");
 
 
-        $this->addField(ComponentFields::hub_visibility_roles, "visibility-role", $security);
-        $this->addField(ComponentFields::hub_execution_roles, "execution-role", $security);
+        $visibilityRoles = $this->cel("visibility-roles");
+        $visibilityRoles->setAttribute("logical-operator", "or");
+        if ($this->addField(ComponentFields::hub_visibility_roles, "visibility-role", $visibilityRoles)) {
+            $security->appendChild($visibilityRoles);
+        }
 
+        $execRoles = $this->cel("execution-roles");
+        $execRoles->setAttribute("logical-operator", "and");
+        $this->addField(ComponentFields::hub_execution_roles, "execution-role", $execRoles);
+        $security->appendChild($execRoles);
 
         return $security;
     }
 
     protected function getSettings()
     {
-
         $setting = $this->cel("settings");
 
         $setting->setAttribute(
@@ -73,4 +116,6 @@ class HubExportComponent extends HubExport
 
         return $setting;
     }
+
+
 }

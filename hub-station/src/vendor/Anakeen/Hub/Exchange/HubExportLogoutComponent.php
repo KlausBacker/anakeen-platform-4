@@ -3,18 +3,14 @@
 
 namespace Anakeen\Hub\Exchange;
 
+use Anakeen\Core\SmartStructure\ExportConfiguration;
 use SmartStructure\Fields\Hubconfigurationlogout as ComponentLogoutFields;
 
 class HubExportLogoutComponent extends HubExportComponent
 {
-    protected $mainTag="component-logout";
-    public function appendTo(\DOMElement $parent)
-    {
-        $node=parent::appendTo($parent);
+    public static $nsUrl= ExportConfiguration::NSBASEURL . "hub-component-logout/1.0";
+    protected $nsPrefix = "hubc-logout";
 
-        $node->appendChild($this->getParameters());
-        return $node;
-    }
 
 
     protected function getParameters()

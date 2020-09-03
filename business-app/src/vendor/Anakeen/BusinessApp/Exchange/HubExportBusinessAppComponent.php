@@ -3,30 +3,30 @@
 
 namespace Anakeen\BusinessApp\Exchange;
 
+use Anakeen\Core\SmartStructure\ExportConfiguration;
 use Anakeen\Exchange\ExportSearch;
 use Anakeen\Hub\Exchange\HubExportComponent;
+use Anakeen\Hub\Exchange\HubExportVueComponent;
 use Anakeen\Search\SearchElements;
 use SmartStructure\Fields\Hubbusinessapp as ComponentBa;
 use SmartStructure\Search;
 
-class HubExportBusinessAppComponent extends HubExportComponent
+class HubExportBusinessAppComponent extends HubExportVueComponent
 {
-    protected $mainTag = "component-business-app";
+    public static $nsUrl= ExportConfiguration::NSBASEURL . "hub-component-business-app/1.0";
+    protected $nsPrefix = "hubc-business-app";
 
-    public function appendTo(\DOMElement $parent)
+
+    public function getExtraXml()
     {
-        $node = parent::appendTo($parent);
-
-        $node->appendChild($this->getParameters());
-        $node->appendChild($this->addCollections());
-        return $node;
+        $xmlData=$this->addCollections();
+        return $xmlData;
     }
-
 
     protected function getParameters()
     {
 
-        $parameters = $this->cel("parameters");
+        $parameters = parent::getParameters();
 
 
         $this->addField(ComponentBa::hba_icon_image, "icon", $parameters);
@@ -60,27 +60,28 @@ class HubExportBusinessAppComponent extends HubExportComponent
         return $parameters;
     }
 
-    protected function addCollections() {
+    protected function addCollections()
+    {
 
-        $collections = $this->cel("collections-configuration");
+        $data=[];
         $cids=$this->smartElement->getMultipleRawValues(ComponentBa::hba_collection);
 
-        $cids=array_merge($cids,$this->smartElement->getMultipleRawValues(ComponentBa::hba_grid_collection));
+        $cids=array_merge($cids, $this->smartElement->getMultipleRawValues(ComponentBa::hba_grid_collection));
+
+        if ($cids) {
+            $s = new SearchElements("SEARCH");
+            $s->addFilter(sprintf("id in (%s)", implode(",", $cids)));
+            $dl = $s->getResults();
 
 
-        $s=new SearchElements("SEARCH");
-        $s->addFilter(sprintf("id in (%s)", implode(",", $cids)));
-        $dl=$s->getResults();
+            foreach ($dl as $search) {
+                /** @var Search $search */
+                $es = new ExportSearch($search);
 
-
-        foreach ($dl as $search) {
-            /** @var Search $search */
-            $es=new ExportSearch($search);
-
-            $collections->appendChild($es->getXmlNode($this->dom));
+                $data[($search->name?:$search->id)."_".$search->fromname]=$es->toXml();
+            }
         }
 
-        return $collections;
-
+        return $data;
     }
 }

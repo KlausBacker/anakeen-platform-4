@@ -67,7 +67,7 @@ class WorkflowConfig
                 $e->extractWorkflow(EWC::X_MAILTEMPLATEDATA|EWC::X_TIMERDATA);
                 break;
             case "accesses":
-                $e->extractWorkflow(EWC::X_CONFIGACCESS|EWC::X_WFLACCESS|X_TIMERACCESS|X_MAILTEMPLATEACCESS);
+                $e->extractWorkflow(EWC::X_CONFIGACCESS|EWC::X_WFLACCESS|EWC::X_TIMERACCESS|EWC::X_MAILTEMPLATEACCESS);
                 break;
             case "config":
                 $e->extractWorkflow(EWC::X_CONFIG);

@@ -3,18 +3,14 @@
 
 namespace Anakeen\Hub\Exchange;
 
+use Anakeen\Core\SmartStructure\ExportConfiguration;
 use SmartStructure\Fields\Hubconfigurationidentity as ComponentIdentityFields;
 
 class HubExportIdentityComponent extends HubExportComponent
 {
-    protected $mainTag="component-identity";
-    public function appendTo(\DOMElement $parent)
-    {
-        $node=parent::appendTo($parent);
+    public static $nsUrl= ExportConfiguration::NSBASEURL . "hub-component-identity/1.0";
+    protected $nsPrefix = "hubc-identity";
 
-        $node->appendChild($this->getParameters());
-        return $node;
-    }
 
 
     protected function getParameters()

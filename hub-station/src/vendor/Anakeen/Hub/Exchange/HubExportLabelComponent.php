@@ -3,18 +3,14 @@
 
 namespace Anakeen\Hub\Exchange;
 
+use Anakeen\Core\SmartStructure\ExportConfiguration;
 use SmartStructure\Fields\Hubconfigurationlabel as ComponentLabelFields;
 
 class HubExportLabelComponent extends HubExportComponent
 {
-    protected $mainTag="component-label";
-    public function appendTo(\DOMElement $parent)
-    {
-        $node=parent::appendTo($parent);
+    public static $nsUrl= ExportConfiguration::NSBASEURL . "hub-component-label/1.0";
+    protected $nsPrefix = "hubc-label";
 
-        $node->appendChild($this->getParameters());
-        return $node;
-    }
 
 
     protected function getParameters()

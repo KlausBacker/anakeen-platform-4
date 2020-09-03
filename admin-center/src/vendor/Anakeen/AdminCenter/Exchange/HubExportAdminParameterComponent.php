@@ -3,25 +3,23 @@
 
 namespace Anakeen\AdminCenter\Exchange;
 
+use Anakeen\Core\SmartStructure\ExportConfiguration;
 use Anakeen\Hub\Exchange\HubExportComponent;
+use Anakeen\Hub\Exchange\HubExportGenericComponent;
+use Anakeen\Hub\Exchange\HubExportVueComponent;
 use SmartStructure\Fields\Adminparametershubconfiguration as ComponentParametersFields;
 
-class HubExportAdminParameterComponent extends HubExportComponent
+class HubExportAdminParameterComponent extends HubExportGenericComponent
 {
-    protected $mainTag = "component-admin-parameters";
+    public static $nsUrl= ExportConfiguration::NSBASEURL . "hub-component-admin-parameters/1.0";
+    protected $nsPrefix = "hubc-admin-parameters";
 
-    public function appendTo(\DOMElement $parent)
-    {
-        $node = parent::appendTo($parent);
 
-        $node->appendChild($this->getParameters());
-        return $node;
-    }
 
 
     protected function getParameters()
     {
-        $parameters = $this->cel("parameters");
+        $parameters = parent::getParameters();
 
         $this->addField(
             ComponentParametersFields::admin_hub_configuration_global,

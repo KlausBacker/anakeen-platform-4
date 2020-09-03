@@ -7,11 +7,13 @@ use Anakeen\Core\Exception;
 use Anakeen\Core\SmartStructure\ExportConfiguration;
 use Anakeen\Core\Utils\Xml;
 use Anakeen\Exchange\ExportAccounts;
+use Anakeen\Hub\Exchange\ImportHubConfiguration;
 
 class ImportAnyConfiguration
 {
     const SMARTCONFIG = "SmartConfig";
     const ACCOUNTCONFIG = "AccountConfig";
+    const HUBCONFIG = "HubConfig";
     const SMARTELEMENTCONFIG = "SmartElementConfig";
     protected $verbose = false;
     protected $dryRun = false;
@@ -49,13 +51,21 @@ class ImportAnyConfiguration
     }
 
 
+
     public function getImportType()
     {
-        if (Xml::getPrefix($this->dom, ExportConfiguration::NSURL)) {
+        return self::getImportDomType($this->dom);
+    }
+
+    public static function getImportDomType(\DOMDocument $dom)
+    {
+        if (Xml::getPrefix($dom, ExportConfiguration::NSURL)) {
             return self::SMARTCONFIG;
-        } elseif (Xml::getPrefix($this->dom, ExportAccounts::NSURI)) {
+        } elseif (Xml::getPrefix($dom, ExportAccounts::NSURI)) {
             return self::ACCOUNTCONFIG;
-        } elseif ($this->dom->documentElement->tagName === "documents") {
+        } elseif (Xml::getPrefix($dom, \Anakeen\Hub\Exchange\HubExport::NSHUBURL)) {
+            return self::HUBCONFIG;
+        } elseif ($dom->documentElement->tagName === "documents") {
             return self::SMARTELEMENTCONFIG;
         }
 
@@ -87,6 +97,12 @@ class ImportAnyConfiguration
                  * ============================================================= */
                 $this->importAsSmartElementDataConfiguration($this->filepath);
                 break;
+            case self::HUBCONFIG:
+                /** ============================================================
+                 * IMPORT Hub configuration
+                 * ============================================================= */
+                $this->importHubConfiguration($this->filepath);
+                break;
         }
     }
 
@@ -98,12 +114,7 @@ class ImportAnyConfiguration
             return sprintf('Configuration file "%s" is not an xml file', $xmlFile);
         }
 
-        if (!Xml::getPrefix($dom, ExportConfiguration::NSURL) &&
-            !Xml::getPrefix(
-                $dom,
-                ExportAccounts::NSURI
-            ) &&
-            ($dom->documentElement->tagName !== "documents")) {
+        if (self::getImportDomType($dom) === false) {
             return sprintf('File "%s" is not detected has a configuration file', $xmlFile);
         }
         return "";
@@ -139,7 +150,22 @@ class ImportAnyConfiguration
     {
         $oImport = $this->getImportSmartObject();
         $oImport->clearVerboseMessages();
+        $oImport->setVerbose($this->verbose);
         $oImport->importAll($configFile);
+
+        if ($oImport->getErrorMessage()) {
+            throw new Exception($oImport->getErrorMessage());
+        }
+
+        $this->debugData = $oImport->getDebugData();
+        $this->verboseMessages = $oImport->getVerboseMessages();
+    }
+    protected function importHubConfiguration($configFile)
+    {
+        $oImport = new ImportHubConfiguration();
+        $oImport->clearVerboseMessages();
+        $oImport->setVerbose($this->verbose);
+        $oImport->import($configFile);
 
         if ($oImport->getErrorMessage()) {
             throw new Exception($oImport->getErrorMessage());

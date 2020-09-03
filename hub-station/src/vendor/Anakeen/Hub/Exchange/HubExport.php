@@ -14,9 +14,10 @@ use Anakeen\Vault\FileInfo;
 
 class HubExport
 {
-
-    const NSHUBURL = ExportConfiguration::NSBASEURL . "hub/1.0";
-    const NSHUB = "hub";
+    const NSHUBURL=ExportConfiguration::NSBASEURL . "hub/1.0";
+    const NSHUB="hub";
+    public static $nsUrl= ExportConfiguration::NSBASEURL . "hub/1.0";
+    protected $nsPrefix = "hub";
 
     /**
      * @var \DOMDocument
@@ -34,6 +35,7 @@ class HubExport
     public function __construct(\Anakeen\Core\Internal\SmartElement $smartElement)
     {
         $this->smartElement = $smartElement;
+        $this->initDom();
     }
 
     protected function initDom()
@@ -41,9 +43,15 @@ class HubExport
         $this->dom = new \DOMDocument("1.0", "UTF-8");
         $this->dom->formatOutput = true;
         $this->dom->preserveWhiteSpace = false;
-        $this->domConfig = $this->cel("config");
-        $this->domConfig->setAttribute("xmlns:" . self::NSHUB, self::NSHUBURL);
+        $this->domConfig = $this->dom->createElementNS(
+            static::NSHUBURL,
+            static::NSHUB . ":" . "config"
+        );
+
+
+      //  $this->domConfig->setAttribute("xmlns:" . static::NSHUB, static::NSHUBURL);
         $this->dom->appendChild($this->domConfig);
+
 
         return $this->domConfig;
     }
@@ -57,9 +65,10 @@ class HubExport
     protected function cel($name, $value = null, $parent = null)
     {
         $node = $this->dom->createElementNS(
-            self::NSHUBURL,
-            self::NSHUB . ":" . $name
+            static::$nsUrl,
+            $this->nsPrefix . ":" . $name
         );
+
 
         if ($value !== null) {
             $node->nodeValue = $value;
@@ -68,6 +77,7 @@ class HubExport
         if ($parent !== null) {
             $parent->appendChild($node);
         }
+
 
         return $node;
     }
@@ -100,6 +110,12 @@ class HubExport
         return $name;
     }
 
+    /**
+     * @param $fieldId
+     * @param $tagName
+     * @param $parent
+     * @return \DOMElement|\DOMElement[]|null
+     */
     protected function addField($fieldId, $tagName, $parent)
     {
         $oa = $this->smartElement->getAttribute($fieldId);
@@ -109,18 +125,21 @@ class HubExport
                 $this->comment($oa->fieldSet->getLabel() . " / " . $oa->getLabel(), $parent);
                 if ($oa->isMultiple()) {
                     $values = $this->smartElement->getMultipleRawValues($oa->id);
+                    $nodeReturns=[];
                     foreach ($values as $value) {
                         if ($value !== "") {
-                            $this->setXmlValue($this->cel($tagName, null, $parent), $oa, $value);
+                            $nodeReturns[]=$this->setXmlValue($this->cel($tagName, null, $parent), $oa, $value);
                         }
                     }
+                    return $nodeReturns;
                 } else {
                     if ($value !== "") {
-                        $this->setXmlValue($this->cel($tagName, null, $parent), $oa, $value);
+                        return $this->setXmlValue($this->cel($tagName, null, $parent), $oa, $value);
                     }
                 }
             }
         }
+        return null;
     }
 
     protected function addCallable(\DOMElement $node)
@@ -160,6 +179,11 @@ class HubExport
                 $node->nodeValue = base64_encode(file_get_contents($fileInfo->path));
                 $node->setAttribute("title", $fileInfo->name);
                 $node->setAttribute("mime", $fileInfo->mime_s);
+                break;
+            case "longtext":
+            case "htmltext":
+                $cdata=$node->ownerDocument->createCDATASection($rawvalue);
+                $node->appendChild($cdata);
                 break;
             default:
                 $node->nodeValue = $rawvalue;

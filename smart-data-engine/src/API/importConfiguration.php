@@ -102,6 +102,9 @@ if (count($configFiles) === 1) {
             case ImportAnyConfiguration::SMARTELEMENTCONFIG:
                 printf("\tImporting Smart Elements data from \"%s\".\n", $configFile);
                 break;
+            case ImportAnyConfiguration::HUBCONFIG:
+                printf("\tImporting Hub configuration from \"%s\".\n", $configFile);
+                break;
         }
     }
 
