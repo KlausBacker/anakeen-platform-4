@@ -10,6 +10,7 @@ const URLS = {
     structure: "/api/v2/devel/config/smart/structures/<identifier>.xml",
     element: "/api/v2/smart-elements/<identifier>.xml",
     workflow: `/api/v2/devel/config/smart/workflows/<identifier>.xml`,
+    search: `/api/v2/devel/config/smart/searches/<identifier>.xml`,
     default: "/api/v2/smart-elements/<identifier>.xml"
   }
 };
