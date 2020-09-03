@@ -6,6 +6,7 @@ use Anakeen\Core\ContextManager;
 use Anakeen\Core\ExportCollection;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Exception;
+use Anakeen\Hub\Exchange\HubExportInstance;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Search\Internal\SearchSmartData;
 use Anakeen\SmartElementManager;
@@ -18,7 +19,7 @@ use SmartStructure\Fields\Hubconfiguration as Fields;
 class ExportConfiguration
 {
     const PREIMPORT = "preImport";
-    protected $structureName = "";
+    protected $hubName = "";
     /**
      * @var $hubInstance \SmartStructure\Hubinstanciation
      */
@@ -40,21 +41,23 @@ class ExportConfiguration
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        $this->structureName = $args["hubId"];
+        $this->hubName = $args["hubId"];
 
-        $this->hubInstance = SmartElementManager::getDocument($this->structureName);
+        $this->hubInstance = SmartElementManager::getDocument($this->hubName);
 
-        $hubFile = $this->exportHubElement();
+        $hubFile = $this->exportHubComponents();
         $outputFile = $this->exportMain();
         if ($this->extraIds) {
-            $this->appendXmlFile($outputFile, $this->exportExtraElement());
+          //  $this->appendXmlFile($outputFile, $this->exportExtraElement());
         }
 
-        $this->appendXmlFile($outputFile, $hubFile);
+       // $this->appendXmlFile($outputFile, $hubFile);
 
 
-        $this->prettyXml($outputFile, $this->hubInstance->getTitle());
-        $response = ApiV2Response::withFile($response, $outputFile, sprintf("%s.xml", $this->hubInstance->getTitle()), false);
+
+
+       // $this->prettyXml($outputFile, $this->hubInstance->getTitle());
+        $response = ApiV2Response::withFile($response, $outputFile, sprintf("%s.xml", $this->hubInstance->getTitle()), true);
         unlink($outputFile);
         return $response;
     }
@@ -88,17 +91,10 @@ class ExportConfiguration
     {
         $outFile = $this->getTmpDir() . "hubConfig";
 
-        $dl = new \DocumentList();
-        $dl->addDocumentIdentifiers([$this->hubInstance->initid]);
 
-        $ec = new ExportCollection();
+        $hubExport = new HubExportInstance($this->hubInstance);
 
-        $ec->setOutputFormat(ExportCollection::xmlFileOutputFormat);
-        $ec->setDocumentlist($dl);
-        $ec->setExportFiles(true);
-
-        $ec->setOutputFilePath($outFile);
-        $ec->export();
+        file_put_contents($outFile, $hubExport->getXml());
 
         return $outFile;
     }
@@ -145,7 +141,7 @@ class ExportConfiguration
         return $outFile;
     }
 
-    protected function exportHubElement()
+    protected function exportHubComponents()
     {
         $outFile = $this->getTmpDir() . "hubElements";
 
