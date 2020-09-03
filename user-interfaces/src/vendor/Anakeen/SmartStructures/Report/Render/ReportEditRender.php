@@ -38,7 +38,7 @@ class ReportEditRender extends SearchEditRender
         return $templates;
     }
 
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document): RenderOptions
     {
         $options = parent::getOptions($document);
 
@@ -61,11 +61,20 @@ class ReportEditRender extends SearchEditRender
         return $options;
     }
 
-    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null): RenderAttributeVisibilities
-    {
-        $vis= parent::getVisibilities($document, $mask);
+    public function getVisibilities(
+        \Anakeen\Core\Internal\SmartElement $document,
+        \SmartStructure\Mask $mask = null
+    ): RenderAttributeVisibilities {
+        $vis = parent::getVisibilities($document, $mask);
         $vis->setVisibility(myAttr::rep_displayoption, RenderAttributeVisibilities::HiddenVisibility);
         $vis->setVisibility(myAttr::rep_colors, RenderAttributeVisibilities::HiddenVisibility);
         return $vis;
+    }
+
+    public function getCustomServerData(\Anakeen\Core\Internal\SmartElement $document)
+    {
+        $data = parent::getCustomServerData($document);
+        $data["SEName"] = \Anakeen\SmartStructures\Dsearch\Render\SearchViewRender::getFamName($document);
+        return $data;
     }
 }

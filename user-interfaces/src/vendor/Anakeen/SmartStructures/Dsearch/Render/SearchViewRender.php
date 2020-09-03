@@ -244,7 +244,7 @@ class SearchViewRender extends DefaultView
     public function getCustomServerData(\Anakeen\Core\Internal\SmartElement $document)
     {
         $data = parent::getCustomServerData($document);
-        $data["SEName"] =  $this->getFamName($document);
+        $data["SEName"] =  self::getFamName($document);
         return $data;
     }
 
@@ -255,7 +255,7 @@ class SearchViewRender extends DefaultView
      * @return mixed
      * @throws \Anakeen\Database\Exception
      */
-    protected function getFamName(\Anakeen\Core\Internal\SmartElement $document)
+    public static function getFamName(\Anakeen\Core\Internal\SmartElement $document)
     {
         $fromId = $document->getFromDoc();
         $fromId = join(" , ", $fromId);
