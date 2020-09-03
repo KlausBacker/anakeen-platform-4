@@ -177,5 +177,11 @@
             <sde:value>NONE</sde:value>
             <sde:access>readonly</sde:access>
         </sde:parameter>
+        <sde:parameter name="CORE_AUTOCOMPLETE_SLICE">
+            <sde:description>limite values of result of autocomplete</sde:description>
+            <sde:value>100</sde:value>
+            <sde:type>integer</sde:type>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
     </sde:parameters>
 </sde:config>

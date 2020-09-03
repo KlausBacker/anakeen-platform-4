@@ -2,6 +2,7 @@
 
 namespace Anakeen\Core\SmartStructure\Autocomplete;
 
+use Anakeen\Core\ContextManager;
 use Anakeen\SmartAutocompleteRequest;
 use Anakeen\SmartAutocompleteResponse;
 
@@ -54,7 +55,9 @@ class SmartElementList
             }
             $s->addFilter("title ~* '%s'", $name);
         }
-        $s->setSlice(100);
+        // Get the parameter value to know how many values to return
+        $slice = ContextManager::getParameterValue("Core", "CORE_AUTOCOMPLETE_SLICE", 100);
+        $s->setSlice($slice);
 
         $s->returnsOnly(array(
             "title",
