@@ -1388,6 +1388,11 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     this._model.listenTo(this._model, "invalid", (model, error) => {
       const result = this._triggerControllerEvent("displayError", null, this.getProperties(), error);
       result.then(() => {
+        // Array.from(this.$notification[0].children).forEach(item => {
+        //   if ($(item).hasClass("has-error")) {
+        //     $(item).hide();
+        //   }
+        // });
         this.$notification.dcpNotification("showError", error);
       });
     });

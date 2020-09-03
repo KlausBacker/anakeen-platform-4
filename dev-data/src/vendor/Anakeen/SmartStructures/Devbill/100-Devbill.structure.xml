@@ -6,7 +6,7 @@
         <smart:fields>
             <smart:field-set name="bill_fr_ident" type="frame" access="ReadWrite" label="Identification">
                 <smart:field-text name="bill_title" is-title="true" access="ReadWrite" label="Title"/>
-                <smart:field-longtext name="bill_content" access="ReadWrite" label="Description"/>
+                <smart:field-longtext name="bill_content" access="ReadWrite" label="Description" needed="true"/>
                 <smart:field-docid name="bill_author" relation="DEVPERSON" access="ReadWrite" label="Author"/>
                 <smart:field-text name="bill_author_display" is-title="true" access="Read"/>
                 <smart:field-date name="bill_billdate" access="ReadWrite" label="Bill date"/>
@@ -14,7 +14,7 @@
 
                 <smart:field-docid name="bill_clients" relation="DEVCLIENT" access="ReadWrite" multiple="true" label="Clients"/>
                 <smart:field-set name="bill_otherclients" type="array" access="ReadWrite" label="Other clients">
-                    <smart:field-text name="bill_clientname" access="ReadWrite" label="Client name"/>
+                    <smart:field-text name="bill_clientname" access="ReadWrite" label="Client name" needed="true"/>
                     <smart:field-text name="bill_society" access="ReadWrite" label="Enterprise"/>
                 </smart:field-set>
 
