@@ -1,7 +1,7 @@
 import ankSmartController from "@anakeen/user-interfaces/components/lib/AnkController.esm";
 import AnkSmartForm from "@anakeen/user-interfaces/components/lib/AnkSmartForm.esm";
 import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
-import { Grid, GridInstaller } from "@progress/kendo-grid-vue-wrapper";
+import { GridInstaller } from "@progress/kendo-grid-vue-wrapper";
 import "@progress/kendo-ui/js/kendo.filtercell.js";
 import "@progress/kendo-ui/js/kendo.grid.js";
 import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
@@ -179,7 +179,7 @@ export default class SmartStructureManagerDefaultValuesController extends Mixins
           label: this.$t("AdminCenterSmartStructure.Close"),
           target: "_self",
           type: "itemMenu",
-          url: "#action/document.delete",
+          url: "#action/ssmanager.close",
           visibility: "visible"
         },
         {
@@ -380,9 +380,19 @@ export default class SmartStructureManagerDefaultValuesController extends Mixins
   }
   public formClickMenu(e, se, params) {
     const smartForm = this.$refs.ssmForm;
+    const smartFormOptions = this.$refs.ssmForm.options;
     switch (params.eventId) {
-      case "document.delete":
-        this.showModal = false;
+      case "ssmanager.close":
+        if (smartFormOptions.withCloseConfirmation === true && smartForm.isModified()) {
+          kendo
+            .confirm(this.$t("AdminCenterSmartStructure.Confirmation") as string)
+            .done(() => {
+              this.showModal = false;
+            })
+            .fail(() => {
+              this.showModal = true;
+            });
+        }
         break;
       case "ssmanager.erase":
         this.finalData.valueType = "no_value";
