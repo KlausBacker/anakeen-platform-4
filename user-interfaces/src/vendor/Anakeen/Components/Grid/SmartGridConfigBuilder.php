@@ -417,6 +417,9 @@ class SmartGridConfigBuilder implements SmartGridBuilder
         $properties = \Anakeen\Core\Internal\SmartElement::$infofields;
         array_walk($properties, function (&$value, $key) {
             $value["field"] = $key;
+            if ($value["type"] === "integer") {
+                $value["type"] = "int";
+            }
             $value["smartType"] = $value['type'];
             $value["title"] = Strings::mbUcfirst(_($value['label']));
             $value["property"] = true;
