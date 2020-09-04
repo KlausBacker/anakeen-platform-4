@@ -28,7 +28,7 @@
                     <smart:field-int name="rep_limit" label="Nombre de résultats par page" access="ReadWrite"/>
                     <smart:field-set name="rep_tcols" type="array" label="Colonnes" access="ReadWrite">
                         <smart:field-text name="rep_lcols" label="Label" access="ReadWrite"/>
-                        <smart:field-text name="rep_idcols" label="Id colonnes" access="Read"/>
+                        <smart:field-text name="rep_idcols" label="Id colonnes" access="ReadWrite"/>
                         <smart:field-text name="rep_displayoption" label="Option de présentation" access="ReadWrite"/>
                         <smart:field-color name="rep_colors" label="Couleur" access="ReadWrite"/>
                         <smart:field-enum name="rep_foots" label="Pied de tableau" access="ReadWrite" relation="report-rep_foots"/>
