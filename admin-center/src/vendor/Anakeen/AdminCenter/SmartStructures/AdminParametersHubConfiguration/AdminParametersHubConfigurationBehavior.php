@@ -2,6 +2,7 @@
 
 namespace Anakeen\AdminCenter\SmartStructures\AdminParametersHubConfiguration;
 
+use Anakeen\SmartElementManager;
 use SmartStructure\Fields\Adminparametershubconfiguration as AdminParametersHubConfigFields;
 use Anakeen\EnumItem;
 
@@ -9,11 +10,17 @@ class AdminParametersHubConfigurationBehavior extends \SmartStructure\Hubconfigu
 {
     protected function getComponentConfiguration()
     {
+        $login = null;
         $config = parent::getComponentConfiguration();
+        $docId = $this->getAttributeValue(AdminParametersHubConfigFields::admin_hub_configuration_account);
+        $doc = SmartElementManager::getDocument($docId);
+        if ($doc) {
+            $login = $doc->getAttributeValue("us_login");
+        }
         $config["props"] = [
             "hasGlobal" => $this->getAttributeValue(AdminParametersHubConfigFields::admin_hub_configuration_global) === "TRUE",
             "hasUsers" => $this->getAttributeValue(AdminParametersHubConfigFields::admin_hub_configuration_user) === "TRUE",
-            "specificUser" => $this->getAttributeValue(AdminParametersHubConfigFields::admin_hub_configuration_account),
+            "specificUser" => $login,
             "namespace" => $this->getAttributeValue(AdminParametersHubConfigFields::admin_hub_configuration_namespace),
             "icon" => $this->getAttributeValue(AdminParametersHubConfigFields::admin_hub_configuration_icon),
             "label" => $this->getAttributeValue(AdminParametersHubConfigFields::admin_hub_configuration_label)
