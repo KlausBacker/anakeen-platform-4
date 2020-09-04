@@ -164,6 +164,7 @@ export interface SmartGridSortable {
 export interface SmartGridFilterable {
   [columnId: string]: {
     autocomplete?: { url?: string; outputs?: object; inputs?: object };
+    defaultSelectedOperator?: string;
     activeOperators?: string[];
     singleFilter?: boolean;
   };
