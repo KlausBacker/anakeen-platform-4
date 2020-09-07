@@ -1183,7 +1183,6 @@ class CronSchedule
                 $this->_lang['ordinal: 58'] = '58ème';
                 $this->_lang['ordinal: 59'] = '59ème';
                 break;
-
         }
     }
 
