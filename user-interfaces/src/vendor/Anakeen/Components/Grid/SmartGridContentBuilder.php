@@ -105,6 +105,7 @@ class SmartGridContentBuilder implements SmartGridBuilder
                     if ($error) {
                         $exception = new Exception("GRID0015", $this->smartCollectionId);
                         $exception->setHttpStatus("403", "Insufficient privileges");
+                        $exception->setUserMessage($error);
                         throw $exception;
                     }
                     $fromId = $this->smartCollection->getRawValue(Search::se_famid, 0);
