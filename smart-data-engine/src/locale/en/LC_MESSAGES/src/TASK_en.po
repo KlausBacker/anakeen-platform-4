@@ -160,3 +160,23 @@ msgstr "Title"
 msgctxt "TASK"
 msgid "title"
 msgstr "title"
+
+msgctxt "TASK"
+msgid "minutes"
+msgstr "minutes"
+
+msgctxt "TASK"
+msgid "hours"
+msgstr "hours"
+
+msgctxt "TASK"
+msgid "days"
+msgstr "day of month"
+
+msgctxt "TASK"
+msgid "months"
+msgstr "months"
+
+msgctxt "TASK"
+msgid "weekdays"
+msgstr "day of week"

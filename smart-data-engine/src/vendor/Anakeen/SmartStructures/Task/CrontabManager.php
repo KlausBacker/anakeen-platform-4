@@ -15,7 +15,8 @@ class CrontabManager
     public static function getHumanSchedule($crontabExpression)
     {
         if ($crontabExpression) {
-            $schedule = CronSchedule::fromCronString($crontabExpression);
+            $language = ContextManager::getLanguage() === "fr_FR" ? "fr" : "en";
+            $schedule = CronSchedule::fromCronString($crontabExpression, $language);
 
             return $schedule->asNaturalLanguage();
         }
@@ -54,6 +55,11 @@ class CrontabManager
         $dc["days"] = $d[2];
         $dc["months"] = $d[3];
         $dc["weekDays"] = $d[4];
+        $dc["minutesTranslation"] = ___("minutes", "TASK");
+        $dc["hoursTranslation"] = ___("hours", "TASK");
+        $dc["daysTranslation"] = ___("days", "TASK");
+        $dc["monthsTranslation"] = ___("months", "TASK");
+        $dc["weekDaysTranslation"] = ___("weekdays", "TASK");
         return $dc;
     }
 }

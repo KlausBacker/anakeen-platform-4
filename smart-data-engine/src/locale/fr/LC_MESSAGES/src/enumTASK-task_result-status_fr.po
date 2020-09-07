@@ -12,19 +12,16 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
 msgctxt "TASK-task_result-status"
 msgid "fail"
-msgstr "Failed"
+msgstr "Echoué"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
 msgctxt "TASK-task_result-status"
 msgid "inprogress"
-msgstr "Processing"
+msgstr "En cours de traitement"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
 msgctxt "TASK-task_result-status"
 msgid "success"
-msgstr "Succeed"
+msgstr "Succès"
