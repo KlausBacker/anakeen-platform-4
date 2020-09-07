@@ -12,13 +12,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
 msgctxt "TASK-task_status"
 msgid "active"
-msgstr "Active"
+msgstr "Actif"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
 msgctxt "TASK-task_status"
 msgid "disabled"
-msgstr "Disabled"
+msgstr "Desactivé"

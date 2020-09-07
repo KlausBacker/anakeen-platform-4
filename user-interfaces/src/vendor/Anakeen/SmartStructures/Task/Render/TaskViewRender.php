@@ -25,27 +25,27 @@ class TaskViewRender extends DefaultConfigViewRender
   
    <div class="task-crontab-box">
        <span class="task-crontab-value">{{minutes}}</span>
-       <span class="task-legend">Minutes</span>
+       <span class="task-legend">{{minutesTranslation}}</span>
     </div>
     
    <div class="task-crontab-box">
        <span class="task-crontab-value">{{hours}}</span>
-       <span class="task-legend">Hours</span>
+       <span class="task-legend">{{hoursTranslation}}</span>
     </div>
     
    <div class="task-crontab-box">
        <span class="task-crontab-value">{{days}}</span>
-       <span class="task-legend">Day of month</span>
+       <span class="task-legend">{{daysTranslation}}</span>
     </div>
     
    <div class="task-crontab-box">
        <span class="task-crontab-value">{{months}}</span>
-       <span class="task-legend">Month</span>
+       <span class="task-legend">{{monthsTranslation}}</span>
     </div>
     
    <div class="task-crontab-box">
        <span class="task-crontab-value">{{weekDays}}</span>
-       <span class="task-legend">Day of week</span>
+       <span class="task-legend">{{weekDaysTranslation}}</span>
     </div>
     
 
@@ -63,11 +63,10 @@ HTML;
         $options->text(TaskFields::task_humancrontab)->setLabelPosition(TextRenderOptions::nonePosition);
         $options->text(TaskFields::task_status)->setLabelPosition(TextRenderOptions::leftPosition);
 
-
         $tplHuman = <<<HTML
     <div class="task-next-dates">
         {{{attribute.htmlDefaultContent}}}
-        <p>Following execution dates :</p>
+        <p>{{{followingDates}}} : </p>
         <ol>
             {{#followDates}}
             <li>{{.}}</li>
@@ -76,6 +75,7 @@ HTML;
     </div>
 HTML;
         $follow["followDates"]=CrontabManager::getNextDates($crontab, 6, "l, F d Y, H:i");
+        $follow["followingDates"] = ___("Following execution dates", "TASK");
         $options->text(TaskFields::task_humancrontab)->setTemplate($tplHuman, $follow);
         if ($document->isFixed()) {
             $options->frame(TaskFields::task_fr_route)->setCollapse(true);

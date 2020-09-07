@@ -94,7 +94,6 @@ class CronSchedule
 
     final public static function fromCronString($cronSpec = '* * * * * *', $language = 'en')
     {
-
         // Split input liberal. Single or multiple Spaces, Tabs and Newlines are all allowed as separators.
         if (count($elements = preg_split('/\s+/', $cronSpec)) < 5) {
             throw new Exception('Invalid specification.');
@@ -1066,6 +1065,125 @@ class CronSchedule
                 $this->_lang['ordinal: 58'] = '58e';
                 $this->_lang['ordinal: 59'] = '59e';
                 break;
+            case 'fr':
+                $this->_lang['elemMin: at_the_hour'] = "à l'heure";
+                $this->_lang['elemMin: after_the_hour_every_X_minute'] = 'toutes les minutes';
+                $this->_lang['elemMin: after_the_hour_every_X_minute_plural'] = 'toutes les @1 minutes';
+                $this->_lang['elemMin: every_consecutive_minute'] = 'toutes les minutes consécutives';
+                $this->_lang['elemMin: every_consecutive_minute_plural'] = 'toutes les @1 minutes consécutives';
+                $this->_lang['elemMin: every_minute'] = 'toutes les minutes';
+                $this->_lang['elemMin: between_X_and_Y'] = 'du @1 au @2';
+                $this->_lang['elemMin: at_X:Y'] = 'à @1:@2';
+                $this->_lang['elemHour: past_X:00'] = 'après @1:00';
+                $this->_lang['elemHour: between_X:00_and_Y:59'] = 'entre @1:00 et @2:59';
+                $this->_lang['elemHour: in_the_60_minutes_past_'] = 'dans les 60 minutes toutes les heures consécutives';
+                $this->_lang['elemHour: in_the_60_minutes_past__plural'] = 'dans les 60 minutes toutes les @1 heures consécutives';
+                $this->_lang['elemHour: past_every_consecutive_'] = 'après chaque heure consécutive';
+                $this->_lang['elemHour: past_every_consecutive__plural'] = 'après chaque @1 heure consécutive';
+                $this->_lang['elemHour: past_every_hour'] = 'passé chaque heure';
+                $this->_lang['elemDOM: the_X'] = 'le @1';
+                $this->_lang['elemDOM: every_consecutive_day'] = 'chaque jour consécutif';
+                $this->_lang['elemDOM: every_consecutive_day_plural'] = 'tous les @1 jours consécutifs';
+                $this->_lang['elemDOM: on_every_day'] = 'tous les jours';
+                $this->_lang['elemDOM: between_the_Xth_and_Yth'] = 'entre le @1 et le @2';
+                $this->_lang['elemDOM: on_the_X'] = 'le @1';
+                $this->_lang['elemDOM: on_X'] = 'le @1';
+                $this->_lang['elemMonth: every_X'] = 'tous les @1';
+                $this->_lang['elemMonth: every_consecutive_month'] = 'chaque mois consécutifs';
+                $this->_lang['elemMonth: every_consecutive_month_plural'] = 'tous les @1 mois consécutifs';
+                $this->_lang['elemMonth: between_X_and_Y'] = 'de @1 à @2';
+                $this->_lang['elemMonth: of_every_month'] = 'de chaque mois';
+                $this->_lang['elemMonth: during_every_X'] = 'pendant chaque @1';
+                $this->_lang['elemMonth: during_X'] = 'pendant @1';
+                $this->_lang['elemYear: in_X'] = 'en @1';
+                $this->_lang['elemYear: every_consecutive_year'] = 'chaque année consécutive';
+                $this->_lang['elemYear: every_consecutive_year_plural'] = 'tous les @1 ans consécutifs';
+                $this->_lang['elemYear: from_X_through_Y'] = 'de @1 à @2';
+                $this->_lang['elemDOW: on_every_day'] = 'tous les jours';
+                $this->_lang['elemDOW: on_X'] = 'le @1';
+                $this->_lang['elemDOW: but_only_on_X'] = "mais seulement si l'événement a lieu le @1";
+                $this->_lang['separator_and'] = 'et';
+                $this->_lang['separator_or'] = 'ou';
+                $this->_lang['day: 0_plural'] = 'Dimanches';
+                $this->_lang['day: 1_plural'] = 'Lundis';
+                $this->_lang['day: 2_plural'] = 'Mardis';
+                $this->_lang['day: 3_plural'] = 'Mercredis';
+                $this->_lang['day: 4_plural'] = 'Jeudis';
+                $this->_lang['day: 5_plural'] = 'Vendredis';
+                $this->_lang['day: 6_plural'] = 'Samedis';
+                $this->_lang['month: 1'] = 'Janvier';
+                $this->_lang['month: 2'] = 'Février';
+                $this->_lang['month: 3'] = 'Mars';
+                $this->_lang['month: 4'] = 'Avril';
+                $this->_lang['month: 5'] = 'Mai';
+                $this->_lang['month: 6'] = 'Juin';
+                $this->_lang['month: 7'] = 'Juillet';
+                $this->_lang['month: 8'] = 'Août';
+                $this->_lang['month: 9'] = 'Septembre';
+                $this->_lang['month: 10'] = 'Octobre';
+                $this->_lang['month: 11'] = 'Novembre';
+                $this->_lang['month: 12'] = 'Decembre';
+                $this->_lang['ordinal: 1'] = '1er';
+                $this->_lang['ordinal: 2'] = '2nd';
+                $this->_lang['ordinal: 3'] = '3ème';
+                $this->_lang['ordinal: 4'] = '4ème';
+                $this->_lang['ordinal: 5'] = '5ème';
+                $this->_lang['ordinal: 6'] = '6ème';
+                $this->_lang['ordinal: 7'] = '7ème';
+                $this->_lang['ordinal: 8'] = '8ème';
+                $this->_lang['ordinal: 9'] = '9ème';
+                $this->_lang['ordinal: 10'] = '10ème';
+                $this->_lang['ordinal: 11'] = '11ème';
+                $this->_lang['ordinal: 12'] = '12ème';
+                $this->_lang['ordinal: 13'] = '13ème';
+                $this->_lang['ordinal: 14'] = '14ème';
+                $this->_lang['ordinal: 15'] = '15ème';
+                $this->_lang['ordinal: 16'] = '16ème';
+                $this->_lang['ordinal: 17'] = '17ème';
+                $this->_lang['ordinal: 18'] = '18ème';
+                $this->_lang['ordinal: 19'] = '19ème';
+                $this->_lang['ordinal: 20'] = '20ème';
+                $this->_lang['ordinal: 21'] = '21ème';
+                $this->_lang['ordinal: 22'] = '22ème';
+                $this->_lang['ordinal: 23'] = '23ème';
+                $this->_lang['ordinal: 24'] = '24ème';
+                $this->_lang['ordinal: 25'] = '25ème';
+                $this->_lang['ordinal: 26'] = '26ème';
+                $this->_lang['ordinal: 27'] = '27ème';
+                $this->_lang['ordinal: 28'] = '28ème';
+                $this->_lang['ordinal: 29'] = '29ème';
+                $this->_lang['ordinal: 30'] = '30ème';
+                $this->_lang['ordinal: 31'] = '31ème';
+                $this->_lang['ordinal: 32'] = '32ème';
+                $this->_lang['ordinal: 33'] = '33ème';
+                $this->_lang['ordinal: 34'] = '34ème';
+                $this->_lang['ordinal: 35'] = '35ème';
+                $this->_lang['ordinal: 36'] = '36ème';
+                $this->_lang['ordinal: 37'] = '37ème';
+                $this->_lang['ordinal: 38'] = '38ème';
+                $this->_lang['ordinal: 39'] = '39ème';
+                $this->_lang['ordinal: 40'] = '40ème';
+                $this->_lang['ordinal: 41'] = '41ème';
+                $this->_lang['ordinal: 42'] = '42ème';
+                $this->_lang['ordinal: 43'] = '43ème';
+                $this->_lang['ordinal: 44'] = '44ème';
+                $this->_lang['ordinal: 45'] = '45ème';
+                $this->_lang['ordinal: 46'] = '46ème';
+                $this->_lang['ordinal: 47'] = '47ème';
+                $this->_lang['ordinal: 48'] = '48ème';
+                $this->_lang['ordinal: 49'] = '49ème';
+                $this->_lang['ordinal: 50'] = '50ème';
+                $this->_lang['ordinal: 51'] = '51ème';
+                $this->_lang['ordinal: 52'] = '52ème';
+                $this->_lang['ordinal: 53'] = '53ème';
+                $this->_lang['ordinal: 54'] = '54ème';
+                $this->_lang['ordinal: 55'] = '55ème';
+                $this->_lang['ordinal: 56'] = '56ème';
+                $this->_lang['ordinal: 57'] = '57ème';
+                $this->_lang['ordinal: 58'] = '58ème';
+                $this->_lang['ordinal: 59'] = '59ème';
+                break;
+
         }
     }
 
