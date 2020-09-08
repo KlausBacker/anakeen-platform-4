@@ -57,7 +57,7 @@ export default function searchUIEventEditProcess(controller) {
     $dataJSON.document.attributes = controller._model.getValues(false);
     $.ajax({
       method: "POST",
-      url: "/api/v2/smartstructures/dsearch/temporaryDoc/" + controller.getProperties().family.name + "/",
+      url: "/api/v2/smartstructures/dsearch/temporarySearch/" + controller.getProperties().family.name + "/",
       data: JSON.stringify($dataJSON),
       dataType: "json",
       contentType: "application/json; charset=utf-8"

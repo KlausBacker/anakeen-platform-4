@@ -91,4 +91,9 @@ class ErrorCodeAPIDM
      * @see       \Anakeen\SmartElementManager::getRawDocument
      */
     const APIDM0204 = 'Cannot access to document';
+    /**
+     * @errorCode Document is not a search
+     * @see       \Anakeen\Core\SEManager::createDocument
+     */
+    const APIDM0205 = 'The document "%s" is not a search';
 }
