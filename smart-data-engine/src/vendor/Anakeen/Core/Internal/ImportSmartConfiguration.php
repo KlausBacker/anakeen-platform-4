@@ -8,9 +8,13 @@ use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure\ExportConfiguration;
 use Anakeen\Core\Utils\Xml;
 use Anakeen\Exception;
+use Anakeen\Exchange\ExportSearch;
+use SmartStructure\Dsearch;
 use SmartStructure\Fields\Fieldaccesslayer as FalFields;
 use SmartStructure\Fields\Fieldaccesslayerlist as FallFields;
 use SmartStructure\Fields\Task as TaskFields;
+use SmartStructure\Fields\Report as ReportFields;
+use SmartStructure\Report;
 
 class ImportSmartConfiguration
 {
@@ -22,7 +26,7 @@ class ImportSmartConfiguration
     protected $profilElements = [];
     protected $smartPrefix = "smart";
     protected $taskPrefix = "task";
-    protected $smartNs=ExportConfiguration::NSURL;
+    protected $smartNs = ExportConfiguration::NSURL;
 
     protected $attrToOptions = [
         "match" => "match",
@@ -37,6 +41,10 @@ class ImportSmartConfiguration
      * @var array
      */
     protected $debugData = [];
+    /**
+     * @var string
+     */
+    protected $searchPrefix;
 
 
     /**
@@ -76,6 +84,8 @@ class ImportSmartConfiguration
         $this->import($xmlFile);
         $data = $this->importTasks();
         $this->recordSmartData($data);
+        $data = $this->importSearches();
+        $this->recordSmartData($data);
     }
 
     protected function importTasks()
@@ -85,6 +95,17 @@ class ImportSmartConfiguration
         $data = [];
         foreach ($configs as $config) {
             $data = array_merge($data, $this->importTask($config));
+        }
+        return $data;
+    }
+
+    protected function importSearches()
+    {
+        $this->searchPrefix = Xml::getPrefix($this->dom, ExportSearch::NSSURL);
+        $configs = $this->getSearchNodes($this->dom->documentElement, "search");
+        $data = [];
+        foreach ($configs as $config) {
+            $data = array_merge($data, $this->importSearch($config));
         }
         return $data;
     }
@@ -100,84 +121,322 @@ class ImportSmartConfiguration
         return $e->getElementsByTagNameNS(ExportConfiguration::NSTASKURL, $name);
     }
 
+    /**
+     * @param string $name
+     * @param \DOMElement $e
+     *
+     * @return \DOMNodeList
+     */
+    protected function getSearchNodes(\DOMElement $e, $name)
+    {
+        return $e->getElementsByTagNameNS(ExportSearch::NSSURL, $name);
+    }
+
+    protected function importSearch(\DOMElement $searchNode)
+    {
+        $type = $searchNode->getAttribute("structure-type");
+        if (!$type) {
+            throw new Exception("Cannot import search without structure-type");
+        }
+        
+        $name = $searchNode->getAttribute("name");
+        if (!$name) {
+            throw new Exception("Cannot import search without name");
+        }
+        $search = SEManager::getDocument($name);
+        if (!$search) {
+            $search = SEManager::createDocument($type, false);
+            $search->name = $name;
+        }
+        $search->name = $name;
+        $SP = $this->searchPrefix;
+
+        $this->setEltValue($search, $searchNode->getAttribute("title"), ReportFields::ba_title);
+
+
+        $userLogin = $this->evaluate($searchNode, "string($SP:author/@login)");
+        if ($userLogin) {
+            $user = AccountManager::getAccount($userLogin);
+            if (!$user) {
+                throw new Exception(sprintf("Search author:login \"%s\" not exists", $userLogin));
+            }
+            $search->setValue(ReportFields::se_author, $user->fid);
+        }
+
+        $this->setEltValue(
+            $search,
+            $this->evaluate($searchNode, "string($SP:criteria/$SP:keyword)"),
+            ReportFields::se_key
+        );
+        $revision = $this->evaluate($searchNode, "string($SP:criteria/$SP:revision)");
+        switch ($revision) {
+            case "all":
+                $search->setValue(ReportFields::se_latest, "no");
+                break;
+            case "latest-fixed":
+                $search->setValue(ReportFields::se_latest, "fixed");
+                break;
+            case "fixed":
+                $search->setValue(ReportFields::se_latest, "allfixed");
+                break;
+            case "distinct-fixed":
+                $search->setValue(ReportFields::se_latest, "lastfixed");
+                break;
+            case "latest":
+            default:
+                $search->setValue(ReportFields::se_latest, "yes");
+        }
+
+
+        $this->setEltValue(
+            $search,
+            $this->evaluate($searchNode, "string($SP:criteria/$SP:keyword/@case-sensitive)") === "true" ? "yes" : "no",
+            ReportFields::se_case
+        );
+
+        $this->setEltValue(
+            $search,
+            $this->evaluate($searchNode, "string($SP:criteria/$SP:structure/@ref)"),
+            ReportFields::se_famid
+        );
+        $this->setEltValue(
+            $search,
+            $this->evaluate($searchNode, "string($SP:criteria/$SP:order-by)"),
+            ReportFields::se_orderby
+        );
+
+        $this->setEltValue(
+            $search,
+            $this->evaluate($searchNode, "string($SP:criteria/$SP:structure/@only)") === "true" ? "yes" : "no",
+            ReportFields::se_famonly
+        );
+
+        $this->setEltValue(
+            $search,
+            $this->evaluate($searchNode, "string($SP:criteria/$SP:search-deleted)"),
+            ReportFields::se_trash
+        );
+
+        $sqlSelect = $this->evaluate($searchNode, "string($SP:criteria/$SP:sql-query)");
+        if ($sqlSelect) {
+            $search->setValue(ReportFields::se_static, "1");
+            $search->setValue(ReportFields::se_sqlselect, $sqlSelect);
+        }
+
+        $ol = $this->evaluate($searchNode, "string($SP:criteria/$SP:query-filters/@logical-operator)");
+        $search->setValue(ReportFields::se_ol, $ol ?: "perso");
+
+        $permFilterNodes = $this->evaluate($searchNode, "$SP:criteria/$SP:permission-filter");
+        $permFilter = [];
+        foreach ($permFilterNodes as $permFilterNode) {
+            $permFilter[] = $permFilterNode->nodeValue;
+        }
+        if ($permFilter) {
+            $search->setValue(ReportFields::se_acl, $permFilter);
+        }
+
+        if (is_a($search, Dsearch::class)) {
+            // -----------------------
+            // --- DSEARCH Part -------
+            /** @var \DOMNodeList $filterNodes */
+            $filterNodes = $this->evaluate($searchNode, "$SP:criteria/$SP:query-filters");
+            if ($filterNodes->length > 0) {
+                $search->clearArrayValues(ReportFields::se_t_detail);
+                /** @var \DOMElement $filterNode */
+                $filterNode = $filterNodes[0];
+
+                $emptyFilter = [
+                    ReportFields::se_leftp => "no",
+                    ReportFields::se_attrids => "",
+                    ReportFields::se_ols => "",
+                    ReportFields::se_funcs => "",
+                    ReportFields::se_keys => "",
+                    ReportFields::se_rightp => "no",
+                ];
+                $currentFilter = $emptyFilter;
+                foreach ($filterNode->childNodes as $filterPartNode) {
+                    if (is_a($filterPartNode, \DOMElement::class)) {
+                        $tag = $filterPartNode->tagName;
+                        if ($ol) {
+                            if ($tag === "$SP:filter") {
+                                $search->addArrayRow(
+                                    ReportFields::se_t_detail,
+                                    [
+                                        ReportFields::se_ols => "",
+                                        ReportFields::se_leftp => "",
+                                        ReportFields::se_attrids => $filterPartNode->getAttribute("field"),
+                                        ReportFields::se_funcs => $filterPartNode->getAttribute("operator"),
+                                        ReportFields::se_keys => $filterPartNode->getAttribute("value"),
+                                        ReportFields::se_rightp => "",
+                                    ]
+                                );
+                            }
+                        } else {
+                            switch ($tag) {
+                                case "$SP:start-parenthesis":
+                                    $currentFilter[ReportFields::se_leftp] = "yes";
+                                    break;
+                                case "$SP:end-parenthesis":
+                                    $currentFilter[ReportFields::se_rightp] = "yes";
+                                    break;
+                                case "$SP:logication-operator":
+                                    $search->addArrayRow(ReportFields::se_t_detail, $currentFilter);
+                                    $currentFilter = $emptyFilter;
+                                    $currentFilter[ReportFields::se_ols] = $filterPartNode->nodeValue;
+                                    break;
+                                case "$SP:filter":
+                                    if (!empty($currentFilter[ReportFields::se_attrids])) {
+                                        throw new Exception("Cannot import serach : Error in filter - missing logication-operator");
+                                    }
+                                    $currentFilter[ReportFields::se_attrids] = $filterPartNode->getAttribute("field");
+                                    $currentFilter[ReportFields::se_funcs] = $filterPartNode->getAttribute("operator");
+                                    $currentFilter[ReportFields::se_keys] = $filterPartNode->getAttribute("value");
+                                    break;
+                            }
+                        }
+                    }
+                }
+                if (!$ol) {
+                    $search->addArrayRow(ReportFields::se_t_detail, $currentFilter);
+                }
+            }
+        }
+        if (is_a($search, Report::class)) {
+            // -----------------------
+            // --- REPORT Part -------
+            $this->setEltValue(
+                $search,
+                $this->evaluate($searchNode, "string($SP:report-configuration/$SP:caption)"),
+                ReportFields::rep_caption
+            );
+            $this->setEltValue(
+                $search,
+                $this->evaluate($searchNode, "string($SP:report-configuration/$SP:sort/@order-by)"),
+                ReportFields::rep_idsort
+            );
+            $this->setEltValue(
+                $search,
+                $this->evaluate($searchNode, "string($SP:report-configuration/$SP:sort/@direction)"),
+                ReportFields::rep_ordersort
+            );
+            $this->setEltValue(
+                $search,
+                $this->evaluate($searchNode, "string($SP:report-configuration/$SP:result-limit)"),
+                ReportFields::rep_limit
+            );
+
+            $columnNodes = $this->evaluate($searchNode, "$SP:report-configuration/$SP:columns/$SP:column");
+
+            $search->clearArrayValues(ReportFields::rep_tcols);
+            foreach ($columnNodes as $columnNode) {
+                /** @var \DOMElement $columnNode */
+                $search->addArrayRow(
+                    ReportFields::rep_tcols,
+                    [
+                        ReportFields::rep_idcols => $columnNode->getAttribute("field"),
+                        ReportFields::rep_displayoption => $columnNode->getAttribute("display-option"),
+                        ReportFields::rep_foots => strtoupper($columnNode->getAttribute("footer")),
+                    ]
+                );
+            }
+        }
+        /*
+        $args = $this->evaluate($searchNode, "({$this->taskPrefix}:route/{$this->taskPrefix}:argument)");
+
+        foreach ($args as $arg) {
+            $search->addArrayRow(
+                TaskFields::task_t_args,
+                [
+                    TaskFields::task_arg_name => $arg->getAttribute("name"),
+                    TaskFields::task_arg_value => $arg->nodeValue
+                ]
+            );
+        }*/
+
+
+        return $this->getElementdata($search);
+    }
+
     protected function importTask(\DOMElement $taskNode)
     {
-        $task = SEManager::createDocument("TASK");
-
         $name = $taskNode->getAttribute("name");
-        if ($name) {
-            $task->name = $name;
-
-            $this->setEltValue($task, $taskNode->getAttribute("label"), TaskFields::task_title);
-            $this->setEltValue(
-                $task,
-                $this->evaluate($taskNode, "string({$this->taskPrefix}:description)"),
-                TaskFields::task_desc
-            );
-            $this->setEltValue(
-                $task,
-                $this->evaluate($taskNode, "string({$this->taskPrefix}:crontab)"),
-                TaskFields::task_crontab
-            );
-            $this->setEltValue(
-                $task,
-                $this->evaluate($taskNode, "string({$this->taskPrefix}:status)"),
-                TaskFields::task_status
-            );
-
-
-            $this->setEltValue(
-                $task,
-                $this->evaluate($taskNode, "string({$this->taskPrefix}:route/@ns)"),
-                TaskFields::task_route_ns
-            );
-            $this->setEltValue(
-                $task,
-                $this->evaluate($taskNode, "string({$this->taskPrefix}:route/@ref)"),
-                TaskFields::task_route_name
-            );
-            $this->setEltValue(
-                $task,
-                $this->evaluate($taskNode, "string({$this->taskPrefix}:route/@method)"),
-                TaskFields::task_route_method
-            );
-
-            $args = $this->evaluate($taskNode, "({$this->taskPrefix}:route/{$this->taskPrefix}:argument)");
-            /** @var \DOMElement $arg */
-            foreach ($args as $arg) {
-                $task->addArrayRow(
-                    TaskFields::task_t_args,
-                    [
-                        TaskFields::task_arg_name => $arg->getAttribute("name"),
-                        TaskFields::task_arg_value => $arg->nodeValue
-                    ]
-                );
-            }
-
-            $args = $this->evaluate($taskNode, "({$this->taskPrefix}:route/{$this->taskPrefix}:query-field)");
-            /** @var \DOMElement $arg */
-            foreach ($args as $arg) {
-                $task->addArrayRow(
-                    TaskFields::task_t_queryfield,
-                    [
-                        TaskFields::task_queryfield_name => $arg->getAttribute("name"),
-                        TaskFields::task_queryfield_value => $arg->nodeValue
-                    ]
-                );
-            }
-
-            $userLogin = $this->evaluate($taskNode, "string({$this->taskPrefix}:user/@login)");
-            if ($userLogin) {
-                $user = AccountManager::getAccount($userLogin);
-                if (!$user) {
-                    throw new Exception(sprintf("Task user:login \"%s\" not exists", $userLogin));
-                }
-                $task->setValue(TaskFields::task_iduser, $user->fid);
-            }
-
-            return $this->getElementdata($task);
+        if (!$name) {
+            throw new Exception("Cannot import task without name");
         }
-        return [];
+        $task = SEManager::getDocument($name);
+        if (!$task) {
+            $task = SEManager::createDocument("TASK", false);
+            $task->name = $name;
+        }
+
+        $this->setEltValue($task, $taskNode->getAttribute("label"), TaskFields::task_title);
+        $this->setEltValue(
+            $task,
+            $this->evaluate($taskNode, "string({$this->taskPrefix}:description)"),
+            TaskFields::task_desc
+        );
+        $this->setEltValue(
+            $task,
+            $this->evaluate($taskNode, "string({$this->taskPrefix}:crontab)"),
+            TaskFields::task_crontab
+        );
+        $this->setEltValue(
+            $task,
+            $this->evaluate($taskNode, "string({$this->taskPrefix}:status)"),
+            TaskFields::task_status
+        );
+
+
+        $this->setEltValue(
+            $task,
+            $this->evaluate($taskNode, "string({$this->taskPrefix}:route/@ns)"),
+            TaskFields::task_route_ns
+        );
+        $this->setEltValue(
+            $task,
+            $this->evaluate($taskNode, "string({$this->taskPrefix}:route/@ref)"),
+            TaskFields::task_route_name
+        );
+        $this->setEltValue(
+            $task,
+            $this->evaluate($taskNode, "string({$this->taskPrefix}:route/@method)"),
+            TaskFields::task_route_method
+        );
+
+        $args = $this->evaluate($taskNode, "({$this->taskPrefix}:route/{$this->taskPrefix}:argument)");
+        /** @var \DOMElement $arg */
+        foreach ($args as $arg) {
+            $task->addArrayRow(
+                TaskFields::task_t_args,
+                [
+                    TaskFields::task_arg_name => $arg->getAttribute("name"),
+                    TaskFields::task_arg_value => $arg->nodeValue
+                ]
+            );
+        }
+
+        $args = $this->evaluate($taskNode, "({$this->taskPrefix}:route/{$this->taskPrefix}:query-field)");
+        /** @var \DOMElement $arg */
+        foreach ($args as $arg) {
+            $task->addArrayRow(
+                TaskFields::task_t_queryfield,
+                [
+                    TaskFields::task_queryfield_name => $arg->getAttribute("name"),
+                    TaskFields::task_queryfield_value => $arg->nodeValue
+                ]
+            );
+        }
+
+        $userLogin = $this->evaluate($taskNode, "string({$this->taskPrefix}:user/@login)");
+        if ($userLogin) {
+            $user = AccountManager::getAccount($userLogin);
+            if (!$user) {
+                throw new Exception(sprintf("Task user:login \"%s\" not exists", $userLogin));
+            }
+            $task->setValue(TaskFields::task_iduser, $user->fid);
+        }
+
+        return $this->getElementdata($task);
     }
 
     /**
@@ -219,6 +478,7 @@ class ImportSmartConfiguration
             throw new Exception(sprintf('Unable to import %s for %s (value : %s)', $elt->getTitle(), $err, $value));
         }
     }
+
 
     /**
      * @param bool $verbose
@@ -933,7 +1193,6 @@ class ImportSmartConfiguration
 
     protected function extractAttrOptions(\DOMElement $attrNode)
     {
-        $optData = [];
         /**
          * @TODO to delete no need use flat notation
          */
@@ -955,7 +1214,6 @@ class ImportSmartConfiguration
             if (!is_a($optNode, \DOMElement::class) || $optNode->tagName !== "{$this->smartPrefix}:field-option") {
                 continue;
             }
-            $optData[$optNode->getAttribute("name")] = $optNode->getAttribute("name");
 
             $optRaw[] = sprintf("%s=%s", $optNode->getAttribute("name"), $optNode->nodeValue);
         }
@@ -1110,7 +1368,7 @@ class ImportSmartConfiguration
 
     /**
      * @param \DOMElement $hook node
-     * @param  string[] $allowedProperties if not empty, restreint properties possibilities
+     * @param string[] $allowedProperties if not empty, restreint properties possibilities
      *
      * @return string
      */
@@ -1132,7 +1390,7 @@ class ImportSmartConfiguration
             $arg = $argNode->nodeValue;
 
             if ($allowedProperties && $type === "property") {
-                if (array_search($arg, $allowedProperties)===false) {
+                if (array_search($arg, $allowedProperties) === false) {
                     throw new Exception("ATTR1103", $arg, implode(", ", $allowedProperties));
                 }
             }
@@ -1141,7 +1399,7 @@ class ImportSmartConfiguration
                 // Escape quote
                 $arg = '"' . str_replace('"', '\\"', $arg) . '"';
             } else {
-                $arg .= '::'.$type;
+                $arg .= '::' . $type;
             }
             if ($name) {
                 $arg = sprintf("{%s}%s", $name, $arg);

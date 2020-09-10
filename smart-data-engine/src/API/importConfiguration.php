@@ -33,7 +33,7 @@ if (!$filename && !$glob) {
 if ($filename && $glob) {
     throw new \Anakeen\Script\Exception("use filename OR glob");
 }
-
+$configFiles=[];
 if ($glob) {
     $configFiles = \Anakeen\Core\Utils\Glob::glob($glob, 0, true);
     if (count($configFiles) === 0) {
@@ -132,6 +132,26 @@ if (count($configFiles) === 1) {
     }
     if ($debug) {
         $data = $importObject->getDebugData();
+
+
+        if (is_array($data)) {
+            foreach ($data as $k => $datum) {
+                if (empty($datum)) {
+                    unset($data[$k]);
+                }
+            }
+            if (count($data) === 1) {
+                // Simplify debug data if only one smart element
+                $cData = current($data);
+                if (is_array($cData) && count($cData) === 2 && $cData[0][0] === "ORDER" && $cData[1][0] === "DOC") {
+                    $simpleData = [];
+                    foreach ($cData[0] as $k => $datum) {
+                        $simpleData[$datum?:$k] = $cData[1][$k];
+                    }
+                    $data = $simpleData;
+                }
+            }
+        }
         print(json_encode($data, JSON_PRETTY_PRINT));
         print "\n";
     }
