@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified"
+           targetNamespace="https://platform.anakeen.com/4/schemas/hub-component-identity/1.0"
+           xmlns:hubci="https://platform.anakeen.com/4/schemas/hub-component-identity/1.0"
+           xmlns:hubc="https://platform.anakeen.com/4/schemas/hub-component/1.0"
+           xmlns:hubcommon="https://platform.anakeen.com/4/schemas/common-types/1.0"
+
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+
+    <xs:import namespace="https://platform.anakeen.com/4/schemas/hub-component/1.0"
+               schemaLocation="./component.xsd"/>
+    <xs:import namespace="https://platform.anakeen.com/4/schemas/common-types/1.0"
+               schemaLocation="./common-types.xsd"/>
+
+    <xs:element name="component" type="hubci:componentType"/>
+
+    <xs:complexType name="componentType">
+        <xs:sequence>
+            <xs:element ref="hubc:parameters" minOccurs="0"/>
+            <xs:element type="hubci:parameterType" name="parameters" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="hubcommon:logicalNameType" name="instance-ref"/>
+        <xs:attribute type="hubcommon:logicalNameType" name="name"/>
+    </xs:complexType>
+
+
+    <xs:complexType name="parameterType">
+        <xs:sequence>
+            <xs:element type="xs:boolean" name="alterable-email" minOccurs="0"/>
+            <xs:element type="xs:boolean" name="alterable-password" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hub:config xmlns:hub="https://platform.anakeen.com/4/schemas/hub/1.0">
+  <hubc-logout:component xmlns:hubc-logout="https://platform.anakeen.com/4/schemas/hub-component-logout/1.0" instance-ref="ADMINCENTER" name="HUBA_LOGOUT">
+    <hub-component:parameters xmlns:hub-component="https://platform.anakeen.com/4/schemas/hub-component/1.0">
+      <hub-component:display position="top" placement="right" order="300"/>
+      <!--Identification / Name-->
+      <hub-component:title>Logout</hub-component:title>
+      <hub-component:settings activated="false" selectable="true" expandable="false"/>
+      <hub-component:security>
+        <hub-component:execution-roles logical-operator="and"/>
+      </hub-component:security>
+    </hub-component:parameters>
+    <hubc-logout:parameters/>
+  </hubc-logout:component>
+</hub:config>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified"
+           targetNamespace="https://platform.anakeen.com/4/schemas/common-types/1.0"
+           xmlns:hubcommon="https://platform.anakeen.com/4/schemas/common-types/1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+
+
+    <xs:complexType name="iconType">
+        <xs:simpleContent>
+            <xs:extension base="xs:base64Binary">
+                <xs:attribute type="xs:token" name="mime" use="required"/>
+                <xs:attribute type="xs:string" name="title"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+
+    <xs:complexType name="relationType">
+        <xs:attribute type="hubcommon:logicalNameType" name="ref"/>
+    </xs:complexType>
+
+    <xs:simpleType name="logicalNameType">
+        <xs:restriction base="xs:token">
+            <xs:pattern value="[A-Za-z][A-Za-z 0-9_-]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="loginType">
+        <xs:attribute type="hubcommon:loginRefType" name="login" use="required"/>
+    </xs:complexType>
+    <xs:simpleType name="loginRefType">
+        <xs:annotation>
+            <xs:documentation>
+                Unique reference for an account
+                <b>Uppercase letters are not allowed</b>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:normalizedString">
+            <xs:minLength value="1"/>
+            <xs:pattern value="[\p{Ll} \p{P}\p{N}\p{S}]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

@@ -29,7 +29,7 @@
         <kendo-button class="k-primary k-outline" @click="exportConfiguration"
           >Export hub instance configuration
         </kendo-button>
-        <kendo-button class="k-primary k-outline" @click="openElement">View current hub instance </kendo-button>
+        <kendo-button class="k-primary k-outline" @click="openConfigInfo">View current hub instance </kendo-button>
         <kendo-button class="k-primary k-outline" @click="openInterface">Display hub instance </kendo-button>
       </div>
     </header>

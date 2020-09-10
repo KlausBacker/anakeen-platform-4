@@ -30,8 +30,10 @@ class ImportHubConfiguration extends ImportSmartConfiguration
             $data = array_merge($data, $this->importHubInstance($config));
         }
 
-        $componentsParameter = $this->dom->documentElement->getElementsByTagNameNS(\Anakeen\Hub\Exchange\HubExportComponent::$NSHUBURLCOMPONENT,
-            "parameters");
+        $componentsParameter = $this->dom->documentElement->getElementsByTagNameNS(
+            \Anakeen\Hub\Exchange\HubExportComponent::$NSHUBURLCOMPONENT,
+            "parameters"
+        );
 
 
         $hubComponentImport = new ImportHubComponent();
@@ -40,7 +42,6 @@ class ImportHubConfiguration extends ImportSmartConfiguration
             $component = $componentParameter->parentNode;
             /** @var \DOMElement $component */
             $data = array_merge($data, $hubComponentImport->importHubComponent($component));
-
         }
 
 
@@ -81,6 +82,7 @@ class ImportHubConfiguration extends ImportSmartConfiguration
                 }
             ],
             "settings/js/@type" => HubFields::hub_instance_jsasset_type,
+            "settings/router-entry" => HubFields::hub_instanciation_router_entry,
             "settings/docks/dock-left/collapse" => HubFields::hub_instanciation_dock_left,
             "settings/docks/dock-right/collapse" => HubFields::hub_instanciation_dock_right,
             "settings/docks/dock-top/collapse" => HubFields::hub_instanciation_dock_top,

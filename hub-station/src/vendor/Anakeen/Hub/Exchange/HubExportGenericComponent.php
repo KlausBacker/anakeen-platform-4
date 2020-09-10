@@ -17,6 +17,7 @@ class HubExportGenericComponent extends HubExportVueComponent
     protected function getParameters()
     {
 
+
         $parameters = parent::getParameters();
 
        // $this->dom->documentElement->setAttribute("xmlns:" . static::NSHUB, static::NSHUBURL);

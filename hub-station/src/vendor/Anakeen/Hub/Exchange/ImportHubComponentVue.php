@@ -7,7 +7,8 @@ use SmartStructure\Fields\Hubconfigurationvue as VueFields;
 
 class ImportHubComponentVue extends ImportHubComponent
 {
-    protected function getCustomMapping() {
+    protected function getCustomMapping()
+    {
         $customMapping=parent::getCustomMapping();
 
         $mapping = [
@@ -19,5 +20,4 @@ class ImportHubComponentVue extends ImportHubComponent
 
         return array_merge($customMapping, $mapping);
     }
-
 }

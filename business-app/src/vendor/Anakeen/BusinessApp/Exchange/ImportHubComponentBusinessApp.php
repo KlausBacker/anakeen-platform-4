@@ -42,7 +42,6 @@ class ImportHubComponentBusinessApp extends ImportHubComponentVue
         ];
 
         return array_merge($customMapping, $mapping);
-
     }
 
     protected function getXPath($prefix)

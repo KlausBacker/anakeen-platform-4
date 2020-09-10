@@ -4,17 +4,13 @@
 namespace Anakeen\AdminCenter\Exchange;
 
 use Anakeen\Core\SmartStructure\ExportConfiguration;
-use Anakeen\Hub\Exchange\HubExportComponent;
 use Anakeen\Hub\Exchange\HubExportGenericComponent;
-use Anakeen\Hub\Exchange\HubExportVueComponent;
 use SmartStructure\Fields\Adminparametershubconfiguration as ComponentParametersFields;
 
 class HubExportAdminParameterComponent extends HubExportGenericComponent
 {
     public static $nsUrl= ExportConfiguration::NSBASEURL . "hub-component-admin-parameters/1.0";
     protected $nsPrefix = "hubc-admin-parameters";
-
-
 
 
     protected function getParameters()

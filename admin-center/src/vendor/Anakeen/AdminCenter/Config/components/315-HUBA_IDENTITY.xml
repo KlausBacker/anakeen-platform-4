@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hub:config xmlns:hub="https://platform.anakeen.com/4/schemas/hub/1.0">
+  <hubc-identity:component xmlns:hubc-identity="https://platform.anakeen.com/4/schemas/hub-component-identity/1.0" instance-ref="ADMINCENTER" name="HUBA_IDENTITY">
+    <hub-component:parameters xmlns:hub-component="https://platform.anakeen.com/4/schemas/hub-component/1.0">
+      <hub-component:display position="top" placement="right" order="200"/>
+      <!--Identification / Name-->
+      <hub-component:title>Me</hub-component:title>
+      <hub-component:settings activated="false" selectable="false" expandable="false"/>
+      <hub-component:security>
+        <hub-component:execution-roles logical-operator="and"/>
+      </hub-component:security>
+    </hub-component:parameters>
+    <hubc-identity:parameters>
+      <!--Parameters / Email alterable-->
+      <hubc-identity:alterable-email>false</hubc-identity:alterable-email>
+      <!--Parameters / Password alterable-->
+      <hubc-identity:alterable-password>false</hubc-identity:alterable-password>
+    </hubc-identity:parameters>
+  </hubc-identity:component>
+</hub:config>

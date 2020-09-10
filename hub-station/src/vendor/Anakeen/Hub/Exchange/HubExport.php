@@ -134,6 +134,11 @@ class HubExport
                     return $nodeReturns;
                 } else {
                     if ($value !== "") {
+                        if ($value === "FALSE") {
+                            $value="false";
+                        } elseif ($value === "TRUE") {
+                            $value="true";
+                        }
                         return $this->setXmlValue($this->cel($tagName, null, $parent), $oa, $value);
                     }
                 }
@@ -202,6 +207,10 @@ class HubExport
                     if ($v) {
                         $node = $this->setXmlValue($this->cel($tagName, null, $parent), $oa, $v);
 
+
+                        if ($attrName === "lang") {
+                            $attrValues[$k]=substr($attrValues[$k], 0, 2);
+                        }
                         $node->setAttribute($attrName, strtolower($attrValues[$k]));
 
                         if ($tagName === "css" || $tagName === "js") {

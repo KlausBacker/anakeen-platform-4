@@ -13,27 +13,10 @@ use SmartStructure\Fields\Hubinstanciation as HubFields;
 
 class HubExportInstance extends HubExport
 {
-    public function getXml()
-    {
-       // $domConfig->setAttribute("xmlns:" . self::NSHUB, self::NSHUBURL);
-        $this->domConfig->appendChild($this->getInstance());
-
-
-
-        // Need to reload to indent all xml structure
-        $dom = new \DOMDocument();
-        $dom->formatOutput = true;
-        $dom->preserveWhiteSpace = false;
-        $dom->loadXML($this->dom->saveXML());
-
-        return $dom->saveXML();
-    }
-
     public function getZip($outZipPath)
     {
 
         $domConfig = $this->initDom();
-        // $domConfig->setAttribute("xmlns:" . self::NSHUB, self::NSHUBURL);
         $domConfig->appendChild($this->getInstance());
 
         $zip= new \ZipArchive();
@@ -55,16 +38,6 @@ class HubExportInstance extends HubExport
         }
 
         $zip->close();
-
-/*
-
-        // Need to reload to indent all xml structure
-        $dom = new \DOMDocument();
-        $dom->formatOutput = true;
-        $dom->preserveWhiteSpace = false;
-        $dom->loadXML($this->dom->saveXML());
-
-        return $dom->saveXML();*/
     }
 
 
@@ -162,13 +135,9 @@ class HubExportInstance extends HubExport
 
     protected function getSetting()
     {
-
-
         $setting = $this->cel("settings");
 
-
         $this->addField(HubFields::hub_instanciation_router_entry, "router-entry", $setting);
-
 
         $this->addFieldArrayTwoColumns(
             HubFields::hub_instance_jsasset,

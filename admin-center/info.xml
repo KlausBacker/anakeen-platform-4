@@ -12,7 +12,7 @@
         <!-- import admin parameters hub configuration structure -->
         <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/AdminCenter/SmartStructures/AdminParametersHubConfiguration/**/*.xml"/>
         <!-- import default configuration of admin center -->
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/AdminCenter/Config/hubConfiguration.xml"/>
+        <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/AdminCenter/Config/**/*xml"/>
         <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Admin/Trash/trash-grid-controller.xml"/>
     </post-install>
     <post-upgrade>
@@ -24,7 +24,7 @@
         <!-- import admin parameters hub configuration structure -->
         <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/AdminCenter/SmartStructures/AdminParametersHubConfiguration/**/*.xml"/>
 
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/AdminCenter/Config/hubConfiguration.xml"/>
+        <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/AdminCenter/Config/**/*xml"/>
         <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Admin/Trash/trash-grid-controller.xml"/>
     </post-upgrade>
 </module>

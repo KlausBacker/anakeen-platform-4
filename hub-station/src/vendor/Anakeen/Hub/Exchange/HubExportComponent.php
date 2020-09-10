@@ -3,7 +3,6 @@
 
 namespace Anakeen\Hub\Exchange;
 
-use Anakeen\AdminCenter\Exchange\HubExportAdminParameterComponent;
 use Anakeen\Core\SmartStructure\ExportConfiguration;
 use SmartStructure\Fields\Hubconfiguration as ComponentFields;
 
@@ -16,22 +15,27 @@ class HubExportComponent extends HubExport
 
     public function getXml()
     {
-
         $config = $this->setXmlConfig();
 
         $parameters = $this->getParameters();
         if ($parameters) {
             $config->appendChild($parameters);
         }
-        return $this->dom->saveXML();
+
+        $dom = new \DOMDocument("1.0", "UTF-8");
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput = true;
+        // Need to releal to have goot indentation format
+        $dom->loadXML($this->dom->saveXML());
+        return $dom->saveXML();
     }
 
     public function setXmlConfig()
     {
 
-        $this->domConfig= $this->cel("component");
-        $originalUrl= static::$nsUrl;
-        $originalPrefix= $this->nsPrefix;
+        $this->domConfig = $this->cel("component");
+        $originalUrl = static::$nsUrl;
+        $originalPrefix = $this->nsPrefix;
         static::$nsUrl = self::$NSHUBURLCOMPONENT;
         $this->nsPrefix = $this->NSHUBCOMPONENT;
         $nodeComponent = $this->cel("parameters");
@@ -49,7 +53,10 @@ class HubExportComponent extends HubExport
         $position = explode("_", $this->smartElement->getRawValue(ComponentFields::hub_docker_position));
         $display->setAttribute("position", strtolower($position[0]));
         $display->setAttribute("placement", strtolower($position[1]));
-        $display->setAttribute("order", $this->smartElement->getRawValue(ComponentFields::hub_order));
+        $hubOrder = $this->smartElement->getRawValue(ComponentFields::hub_order);
+        if ($hubOrder !== "") {
+            $display->setAttribute("order", $hubOrder);
+        }
 
 
         $this->addField(ComponentFields::hub_title, "title", $nodeComponent);
@@ -116,6 +123,4 @@ class HubExportComponent extends HubExport
 
         return $setting;
     }
-
-
 }

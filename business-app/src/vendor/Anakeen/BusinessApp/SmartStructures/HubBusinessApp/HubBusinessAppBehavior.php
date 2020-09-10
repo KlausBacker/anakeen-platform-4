@@ -4,7 +4,6 @@ namespace Anakeen\BusinessApp\SmartStructures\HubBusinessApp;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\SEManager;
-use Anakeen\SmartHooks;
 use Anakeen\Ui\UIGetAssetPath;
 use SmartStructure\Hubconfigurationvue;
 use SmartStructure\Fields\Hubbusinessapp as HubBusinessAppFields;
@@ -15,7 +14,7 @@ class HubBusinessAppBehavior extends Hubconfigurationvue
     public function registerHooks()
     {
         parent::registerHooks();
-        $this->getHooks()->addListener(\Anakeen\Hub\Routes\ExportConfiguration::PREIMPORT, function (&$dataIds) {
+        $this->getHooks()->addListener(\Anakeen\SmartHooks::PREIMPORT, function (&$dataIds) {
             $hbaCollections = array_merge(
                 $this->getAttributeValue(HubBusinessAppFields::hba_collection),
                 $this->getAttributeValue(HubBusinessAppFields::hba_grid_collection)
@@ -175,6 +174,7 @@ class HubBusinessAppBehavior extends Hubconfigurationvue
                 return "<img src='" . $src . "' width='32' height='32'/>";
             }
         }
+        /** @noinspection HtmlUnknownTarget */
         return "<img width='32' height='32' src='/CORE/Images/core-noimage.png'/>";
     }
 

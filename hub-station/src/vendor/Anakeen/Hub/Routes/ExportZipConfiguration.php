@@ -3,20 +3,15 @@
 namespace Anakeen\Hub\Routes;
 
 use Anakeen\Core\ContextManager;
-use Anakeen\Core\ExportCollection;
-use Anakeen\Core\Internal\SmartElement;
-use Anakeen\Exception;
 use Anakeen\Hub\Exchange\HubExportInstance;
 use Anakeen\Router\ApiV2Response;
-use Anakeen\Search\Internal\SearchSmartData;
 use Anakeen\SmartElementManager;
-use SmartStructure\Fields\Hubconfiguration as Fields;
 
 /**
  *
  * @note used by route /hub/config/{hubId}.zip
  */
-class ExportZipConfiguration extends ExportConfiguration
+class ExportZipConfiguration
 {
     const PREIMPORT = "preImport";
     protected $hubName = "";

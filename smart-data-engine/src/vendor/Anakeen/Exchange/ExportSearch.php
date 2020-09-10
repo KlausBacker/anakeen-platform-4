@@ -202,6 +202,9 @@ class ExportSearch extends ExportConfiguration
             if ($k === 0) {
                 $filter[SearchFields::se_ols] = null;
             }
+            if (!$filter[SearchFields::se_funcs]) {
+                continue;
+            }
             $filtersNode->appendChild($this->getFilterComment($filter));
             if ($filter[SearchFields::se_ols]) {
                 $this->celSearch("logication-operator", $filter[SearchFields::se_ols], $filtersNode);
@@ -211,17 +214,17 @@ class ExportSearch extends ExportConfiguration
             }
 
 
-            $nodeFilter = $this->celSearch("filter", null, $filtersNode);
-            $nodeFilter->setAttribute("field", $filter[SearchFields::se_attrids]);
-            $nodeFilter->setAttribute("operator", $filter[SearchFields::se_funcs]);
-            $nodeFilter->setAttribute(
-                "value",
-                $this->getRelationName(
-                    $filter[SearchFields::se_attrids],
-                    $filter[SearchFields::se_funcs],
-                    $filter[SearchFields::se_keys]
-                )
-            );
+                $nodeFilter = $this->celSearch("filter", null, $filtersNode);
+                $nodeFilter->setAttribute("field", $filter[SearchFields::se_attrids]);
+                $nodeFilter->setAttribute("operator", $filter[SearchFields::se_funcs]);
+                $nodeFilter->setAttribute(
+                    "value",
+                    $this->getRelationName(
+                        $filter[SearchFields::se_attrids],
+                        $filter[SearchFields::se_funcs],
+                        $filter[SearchFields::se_keys]
+                    )
+                );
             if ($filter[SearchFields::se_rightp]=== "yes") {
                 $this->celSearch("end-parenthesis", null, $filtersNode);
             }

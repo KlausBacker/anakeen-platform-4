@@ -5,7 +5,6 @@ namespace Anakeen\BusinessApp\Exchange;
 
 use Anakeen\Core\SmartStructure\ExportConfiguration;
 use Anakeen\Exchange\ExportSearch;
-use Anakeen\Hub\Exchange\HubExportComponent;
 use Anakeen\Hub\Exchange\HubExportVueComponent;
 use Anakeen\Search\SearchElements;
 use SmartStructure\Fields\Hubbusinessapp as ComponentBa;
