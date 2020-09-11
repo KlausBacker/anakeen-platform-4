@@ -2005,8 +2005,10 @@
                 <smart:field-set name="test_ddui_all__fr_rels" type="frame" label="Relations" access="ReadWrite">
                     <smart:field-account name="test_ddui_all__account" label="Un compte" access="ReadWrite"/>
                     <smart:field-account name="test_ddui_all__account_multiple" label="Des comptes" access="ReadWrite" multiple="true"/>
-                    <smart:field-docid name="test_ddui_all__docid" label="Un document" access="ReadWrite" relation="TST_REPORT_ALLTYPE"/>
-                    <smart:field-docid name="test_ddui_all__docid_multiple" label="Des documents" access="ReadWrite" relation="TST_REPORT_ALLTYPE" multiple="true"/>
+                    <smart:field-docid name="test_ddui_all__docid" label="Un document" access="ReadWrite" relation="DEVBILL"/>
+                    <smart:field-docid name="test_ddui_all__docid_multiple" label="Des documents" access="ReadWrite" relation="DEVBILL" multiple="true">
+                        <smart:field-option name="doctitle"/>
+                    </smart:field-docid>
                 </smart:field-set>
                 <smart:field-set name="test_ddui_all__fr_date" type="frame" label="Le temps" access="ReadWrite">
                     <smart:field-date name="test_ddui_all__date" label="Une date" access="ReadWrite"/>
@@ -2122,8 +2124,8 @@
             <smart:field-set name="test_ddui_all__t_tab_relations" type="tab" label="Les relations" access="ReadWrite">
                 <smart:field-set name="test_ddui_all__frame_relation" type="frame" label="Relations à entretenir" access="ReadWrite">
                     <smart:field-set name="test_ddui_all__array_docid" type="array" label="Les documents" access="ReadWrite">
-                        <smart:field-docid name="test_ddui_all__docid_array" label="Des documents" access="ReadWrite" relation="TST_REPORT_ALLTYPE"/>
-                        <smart:field-docid name="test_ddui_all__docid_multiple_array" label="Encore plus de documents" access="ReadWrite" relation="TST_REPORT_ALLTYPE" multiple="true"/>
+                        <smart:field-docid name="test_ddui_all__docid_array" label="Des documents" access="ReadWrite" relation="DEVBILL"/>
+                        <smart:field-docid name="test_ddui_all__docid_multiple_array" label="Encore plus de documents" access="ReadWrite" relation="DEVBILL" multiple="true"/>
                     </smart:field-set>
                     <smart:field-set name="test_ddui_all__array_account" type="array" label="Les comptes" access="ReadWrite">
                         <smart:field-account name="test_ddui_all__account_array" label="Des comptes" access="ReadWrite"/>

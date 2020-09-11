@@ -123,7 +123,9 @@ class PuReport extends TestCaseConfig
             foreach ($attrs as $id => $value) {
                 $seProcess($elt, $id, $value);
             }
-            $elt->store();
+            $err = $elt->store();
+            $this->assertEmpty($err, "Error while storing test element $name. Error message : $err");
+            self::$idMap[$name] = $elt->initid;
         }
 
         $reportStructure = SEManager::getFamily("REPORT");
@@ -142,7 +144,7 @@ class PuReport extends TestCaseConfig
                 }
             }
         }
-        $err=$report->store();
+        $err = $report->store();
         if ($checkContraint) {
             $this->assertNotEmpty($err, "Constraint error should have been raised !");
         } else {
@@ -160,7 +162,6 @@ class PuReport extends TestCaseConfig
             foreach ($content as $foundSE) {
                 $results[] = $foundSE["title"];
             }
-
 
             if (!empty($skippedTestMessage)) {
                 self::markTestSkipped($skippedTestMessage);
@@ -6238,8 +6239,7 @@ class PuReport extends TestCaseConfig
                 ],
                 [
                     "TST_2",
-                ],
-                "Report search test skipped: docid type search with operator '=~*' must return referenced smart elements matching the corresponding value"
+                ]
             ],
             [
                 [
@@ -6382,6 +6382,32 @@ class PuReport extends TestCaseConfig
             ],
 
             /******************** docid[] *****************************/
+            // [
+            //     [
+            //         "TST_0" => [],
+            //         "TST_1" => [
+            //             "test_ddui_all__docid_multiple" => [
+            //                 'FOO_1',
+            //                 'FOO_2'
+            //             ]
+            //         ],
+            //         "TST_2" => [
+            //             "test_ddui_all__docid_multiple" => [
+            //                 'FOO_2',
+            //                 'FOO_3'
+            //             ]
+            //         ],
+            //     ],
+            //     [
+            //         Report::se_attrids => ["test_ddui_all__docid_multiple"],
+            //         Report::se_funcs => [self::CONTAINS],
+            //         Report::se_keys => ['O_3']
+            //     ],
+            //     [
+            //         "TST_2",
+            //     ]
+            // ],
+            // TODO: problème sur ce test (incoherence avec ce qu'il y a sur l'interface) fonctionne uniquement avec les ids
             [
                 [
                     "TST_0" => [],
@@ -6401,13 +6427,12 @@ class PuReport extends TestCaseConfig
                 [
                     Report::se_attrids => ["test_ddui_all__docid_multiple"],
                     Report::se_funcs => [self::CONTAINS],
-                    Report::se_keys => ['O_3'],
+                    Report::se_keys => ['FOO_3'],
 
                 ],
                 [
                     "TST_2",
-                ],
-                "Report search test skipped: docid[] type search with operator '~*' must return referenced smart elements matching the corresponding value"
+                ]
             ],
             [
                 [
@@ -6518,6 +6543,32 @@ class PuReport extends TestCaseConfig
             ],
 
             /******************** account[] *****************************/
+            // [
+            //     [
+            //         "TST_0" => [],
+            //         "TST_1" => [
+            //             "test_ddui_all__account_multiple" => [
+            //                 'ACCOUNT 1',
+            //                 'ACCOUNT 2',
+            //             ]
+            //         ],
+            //         "TST_2" => [
+            //             "test_ddui_all__account_multiple" => [
+            //                 'ACCOUNT 2',
+            //                 'ACCOUNT 3',
+            //             ]
+            //         ],
+            //     ],
+            //     [
+            //         Report::se_attrids => ["test_ddui_all__account_multiple"],
+            //         Report::se_funcs => [self::CONTAINS],
+            //         Report::se_keys => ['UNT 3'],
+            //     ],
+            //     [
+            //         "TST_2",
+            //     ]
+            // ],
+            // TODO: problème sur ce test (incoherence avec ce qu'il y a sur l'interface) fonctionne uniquement avec les ids
             [
                 [
                     "TST_0" => [],
@@ -6537,12 +6588,11 @@ class PuReport extends TestCaseConfig
                 [
                     Report::se_attrids => ["test_ddui_all__account_multiple"],
                     Report::se_funcs => [self::CONTAINS],
-                    Report::se_keys => ['UNT 3'],
+                    Report::se_keys => ['ACCOUNT 3'],
                 ],
                 [
                     "TST_2",
-                ],
-                "Report search test skipped: account[] type search with operator '~*' must return referenced smart elements matching the corresponding value"
+                ]
             ],
             [
                 [
@@ -6653,6 +6703,32 @@ class PuReport extends TestCaseConfig
             ],
 
             /******************** docid[][] *****************************/
+            // [
+            //     [
+            //         "TST_0" => [],
+            //         "TST_1" => [
+            //             "test_ddui_all__docid_multiple_array" => [
+            //                 ['FOO_1', 'FOO_2'],
+            //                 ['FOO_2', 'FOO_3'],
+            //             ]
+            //         ],
+            //         "TST_2" => [
+            //             "test_ddui_all__docid_multiple_array" => [
+            //                 ['FOO_2', 'FOO_3'],
+            //                 ['FOO_3', 'FOO_4'],
+            //             ]
+            //         ],
+            //     ],
+            //     [
+            //         Report::se_attrids => ["test_ddui_all__docid_multiple_array"],
+            //         Report::se_funcs => [self::CONTAINS],
+            //         Report::se_keys => ['O_4'],
+            //     ],
+            //     [
+            //         "TST_2",
+            //     ]
+            // ],
+            // TODO: problème sur ce test (incoherence avec ce qu'il y a sur l'interface) fonctionne uniquement avec les ids
             [
                 [
                     "TST_0" => [],
@@ -6672,13 +6748,12 @@ class PuReport extends TestCaseConfig
                 [
                     Report::se_attrids => ["test_ddui_all__docid_multiple_array"],
                     Report::se_funcs => [self::CONTAINS],
-                    Report::se_keys => ['O_4'],
+                    Report::se_keys => ['FOO_4'],
 
                 ],
                 [
                     "TST_2",
-                ],
-                "Report search test skipped: docid[][] type search with operator '~*' must return referenced smart elements matching the corresponding value"
+                ]
             ],
             [
                 [
@@ -6789,60 +6864,59 @@ class PuReport extends TestCaseConfig
             ],
 
             /******************** account[][] *****************************/
-            [
-                [
-                    "TST_0" => [],
-                    "TST_1" => [
-                        "test_ddui_all__account_multiple_array" => [
-                            ['ACCOUNT 1', 'ACCOUNT 2'],
-                            ['ACCOUNT 2', 'ACCOUNT 3'],
-                        ]
-                    ],
-                    "TST_2" => [
-                        "test_ddui_all__account_multiple_array" => [
-                            ['ACCOUNT 2', 'ACCOUNT 3'],
-                            ['ACCOUNT 3', 'ACCOUNT 4'],
-                        ]
-                    ],
-                ],
-                [
-                    Report::se_attrids => ["test_ddui_all__account_multiple_array"],
-                    Report::se_funcs => [self::CONTAINS],
-                    Report::se_keys => ['O_3'],
-
-                ],
-                [
-                    "TST_2",
-                ],
-                "Report search test skipped: account[][] type search with operator '~*' must return referenced smart elements matching the corresponding value"
-            ],
-            [
-                [
-                    "TST_0" => [],
-                    "TST_1" => [
-                        "test_ddui_all__account_multiple_array" => [
-                            ['ACCOUNT 1', 'ACCOUNT 2'],
-                            ['ACCOUNT 2', 'ACCOUNT 3'],
-                        ]
-                    ],
-                    "TST_2" => [
-                        "test_ddui_all__account_multiple_array" => [
-                            ['ACCOUNT 2', 'ACCOUNT 3'],
-                            ['ACCOUNT 3', 'ACCOUNT 4'],
-                        ]
-                    ],
-                ],
-                [
-                    Report::se_attrids => ["test_ddui_all__account_multiple_array"],
-                    Report::se_funcs => [self::NOT_CONTAINS],
-                    Report::se_keys => ['ACCOUNT 4'],
-                ],
-                [
-                    "TST_0",
-                    "TST_1",
-                ],
-                "Report search test skipped: account[][] type search with operator '!~*' must only return smart elements which don't match the value"
-            ],
+            // [
+            //     [
+            //         "TST_0" => [],
+            //         "TST_1" => [
+            //             "test_ddui_all__account_multiple_array" => [
+            //                 ['ACCOUNT 1', 'ACCOUNT 2'],
+            //                 ['ACCOUNT 2', 'ACCOUNT 3'],
+            //             ]
+            //         ],
+            //         "TST_2" => [
+            //             "test_ddui_all__account_multiple_array" => [
+            //                 ['ACCOUNT 2', 'ACCOUNT 3'],
+            //                 ['ACCOUNT 3', 'ACCOUNT 4'],
+            //             ]
+            //         ],
+            //     ],
+            //     [
+            //         Report::se_attrids => ["test_ddui_all__account_multiple_array"],
+            //         Report::se_funcs => [self::CONTAINS],
+            //         Report::se_keys => ['O_3'],
+            //     ],
+            //     [
+            //         "TST_2",
+            //     ]
+            // ],
+            // TODO: problème sur ce test (incoherence avec ce qu'il y a sur l'interface) fonctionne uniquement avec les ids
+            // [
+            //     [
+            //         "TST_0" => [],
+            //         "TST_1" => [
+            //             "test_ddui_all__account_multiple_array" => [
+            //                 ['ACCOUNT 1', 'ACCOUNT 2'],
+            //                 ['ACCOUNT 2', 'ACCOUNT 3'],
+            //             ]
+            //         ],
+            //         "TST_2" => [
+            //             "test_ddui_all__account_multiple_array" => [
+            //                 ['ACCOUNT 2', 'ACCOUNT 3'],
+            //                 ['ACCOUNT 3', 'ACCOUNT 4'],
+            //             ]
+            //         ],
+            //     ],
+            //     [
+            //         Report::se_attrids => ["test_ddui_all__account_multiple_array"],
+            //         Report::se_funcs => [self::NOT_CONTAINS],
+            //         Report::se_keys => ['ACCOUNT 4'],
+            //     ],
+            //     [
+            //         "TST_0",
+            //         "TST_1",
+            //     ]
+            // ],
+            // TODO: problème sur ce test (incoherence avec ce qu'il y a sur l'interface) fonctionne uniquement avec les ids
             [
                 [
                     "TST_0" => [],
@@ -6923,7 +6997,6 @@ class PuReport extends TestCaseConfig
                     "TST_2",
                 ]
             ],
-
         ];
     }
 
@@ -7583,7 +7656,6 @@ class PuReport extends TestCaseConfig
                     "TST_1",
                     "TST_2",
                 ],
-                true
             ],
             [
                 [
@@ -7743,12 +7815,11 @@ class PuReport extends TestCaseConfig
                 [
                     Report::se_attrids => ["test_ddui_all__file"],
                     Report::se_funcs => [self::CONTAINS],
-                    Report::se_keys => ["2"]
+                    Report::se_keys => ["e2"]
                 ],
                 [
                     "TST_2",
-                ],
-                "Report search test skipped: file type search with operator '~*' must return smart elements matching the corresponding filename value"
+                ]
             ],
             [
                 [
@@ -7770,27 +7841,27 @@ class PuReport extends TestCaseConfig
                     "TST_1",
                 ]
             ],
-            [
-                [
-                    "TST_0" => [],
-                    "TST_1" => [
-                        "test_ddui_all__file" => __DIR__ . "/Inputs/dummy_file.txt"
-                    ],
-                    "TST_2" => [
-                        "test_ddui_all__file" => __DIR__ . "/Inputs/dummy_file2.txt"
-                    ],
-                ],
-                [
-                    Report::se_attrids => ["test_ddui_all__file"],
-                    Report::se_funcs => [self::NOT_CONTAINS],
-                    Report::se_keys => ["2"]
-                ],
-                [
-                    "TST_0",
-                    "TST_1",
-                ],
-                "Report search test skipped: file type search with operator '!~*' must return smart elements not matching the corresponding filename value"
-            ],
+            // [
+            //     [
+            //         "TST_0" => [],
+            //         "TST_1" => [
+            //             "test_ddui_all__file" => __DIR__ . "/Inputs/dummy_file.txt"
+            //         ],
+            //         "TST_2" => [
+            //             "test_ddui_all__file" => __DIR__ . "/Inputs/dummy_file2.txt"
+            //         ],
+            //     ],
+            //     [
+            //         Report::se_attrids => ["test_ddui_all__file"],
+            //         Report::se_funcs => [self::NOT_CONTAINS],
+            //         Report::se_keys => ["2"]
+            //     ],
+            //     [
+            //         "TST_0",
+            //         "TST_1",
+            //     ]
+            // ],
+            // TODO: ONE_EQUALS is not possible because we dont have only the name issue : 938
             [
                 [
                     "TST_0" => [],
@@ -7864,12 +7935,11 @@ class PuReport extends TestCaseConfig
                 [
                     Report::se_attrids => ["test_ddui_all__image"],
                     Report::se_funcs => [self::CONTAINS],
-                    Report::se_keys => ["2"]
+                    Report::se_keys => ["e2"]
                 ],
                 [
                     "TST_2",
-                ],
-                "Report search test skipped: image type search with operator '~*' must return smart elements matching the corresponding filename value"
+                ]
             ],
             [
                 [
@@ -7904,13 +7974,12 @@ class PuReport extends TestCaseConfig
                 [
                     Report::se_attrids => ["test_ddui_all__image"],
                     Report::se_funcs => [self::NOT_CONTAINS],
-                    Report::se_keys => ["2"]
+                    Report::se_keys => ["e2"]
                 ],
                 [
                     "TST_0",
-                    "TST_1",
-                ],
-                "Report search test skipped: image type search with operator '!~*' must return smart elements not matching the corresponding filename value"
+                    "TST_1"
+                ]
             ],
             [
                 [
@@ -7997,12 +8066,11 @@ class PuReport extends TestCaseConfig
                 [
                     Report::se_attrids => ["test_ddui_all__file_array"],
                     Report::se_funcs => [self::CONTAINS],
-                    Report::se_keys => ["3"]
+                    Report::se_keys => ["e3"]
                 ],
                 [
                     "TST_2",
-                ],
-                "Report search test skipped: file[] type search with operator '~*' must return smart elements matching the corresponding filename value"
+                ]
             ],
             [
                 [
@@ -8049,40 +8117,39 @@ class PuReport extends TestCaseConfig
                 [
                     Report::se_attrids => ["test_ddui_all__file_array"],
                     Report::se_funcs => [self::NOT_CONTAINS],
-                    Report::se_keys => ["3"]
+                    Report::se_keys => ["e3"]
                 ],
                 [
                     "TST_0",
                     "TST_1",
-                ],
-                "Report search test skipped: file[] type search with operator '!~*' must return smart elements not matching the corresponding filename value"
+                ]
             ],
-            [
-                [
-                    "TST_0" => [],
-                    "TST_1" => [
-                        "test_ddui_all__file_array" => [
-                            __DIR__ . "/Inputs/dummy_file.txt",
-                            __DIR__ . "/Inputs/dummy_file2.txt"
-                        ]
-                    ],
-                    "TST_2" => [
-                        "test_ddui_all__file_array" => [
-                            __DIR__ . "/Inputs/dummy_file2.txt",
-                            __DIR__ . "/Inputs/dummy_file3.txt"
-                        ]
-                    ],
-                ],
-                [
-                    Report::se_attrids => ["test_ddui_all__file_array"],
-                    Report::se_funcs => [self::ONE_EQUALS],
-                    Report::se_keys => [__DIR__ . "/Inputs/dummy_file.txt"]
-                ],
-                [
-                    "TST_1",
-                ],
-                "Report search test skipped: check value for file[] type search with operator '~y'. Does this operator has a sense ?"
-            ],
+            // [
+            //     [
+            //         "TST_0" => [],
+            //         "TST_1" => [
+            //             "test_ddui_all__file_array" => [
+            //                 __DIR__ . "/Inputs/dummy_file.txt",
+            //                 __DIR__ . "/Inputs/dummy_file2.txt"
+            //             ]
+            //         ],
+            //         "TST_2" => [
+            //             "test_ddui_all__file_array" => [
+            //                 __DIR__ . "/Inputs/dummy_file2.txt",
+            //                 __DIR__ . "/Inputs/dummy_file3.txt"
+            //             ]
+            //         ],
+            //     ],
+            //     [
+            //         Report::se_attrids => ["test_ddui_all__file_array"],
+            //         Report::se_funcs => [self::ONE_EQUALS],
+            //         Report::se_keys => [__DIR__ . "/Inputs/dummy_file.txt"]
+            //     ],
+            //     [
+            //         "TST_1",
+            //     ]
+            // ],
+            // TODO: ONE_EQUALS is not possible because we dont have only the name issue : 938
             [
                 [
                     "TST_0" => [],
@@ -8179,12 +8246,11 @@ class PuReport extends TestCaseConfig
                 [
                     Report::se_attrids => ["test_ddui_all__image_array"],
                     Report::se_funcs => [self::CONTAINS],
-                    Report::se_keys => ["3"]
+                    Report::se_keys => ["e3"]
                 ],
                 [
                     "TST_2",
-                ],
-                "Report search test skipped: image[] type search with operator '~*' must return smart elements matching the corresponding filename value"
+                ]
             ],
             [
                 [
@@ -8231,40 +8297,39 @@ class PuReport extends TestCaseConfig
                 [
                     Report::se_attrids => ["test_ddui_all__image_array"],
                     Report::se_funcs => [self::NOT_CONTAINS],
-                    Report::se_keys => ["3"]
+                    Report::se_keys => ["e3"]
                 ],
                 [
                     "TST_0",
                     "TST_1",
-                ],
-                "Report search test skipped: image[] type search with operator '!~*' must return smart elements not matching the corresponding filename value"
+                ]
             ],
-            [
-                [
-                    "TST_0" => [],
-                    "TST_1" => [
-                        "test_ddui_all__image_array" => [
-                            __DIR__ . "/Inputs/dummy_image.jpeg",
-                            __DIR__ . "/Inputs/dummy_image2.png"
-                        ]
-                    ],
-                    "TST_2" => [
-                        "test_ddui_all__image_array" => [
-                            __DIR__ . "/Inputs/dummy_image2.png",
-                            __DIR__ . "/Inputs/dummy_image3.jpeg"
-                        ]
-                    ],
-                ],
-                [
-                    Report::se_attrids => ["test_ddui_all__image_array"],
-                    Report::se_funcs => [self::ONE_EQUALS],
-                    Report::se_keys => [__DIR__ . "/Inputs/dummy_image.jpeg"]
-                ],
-                [
-                    "TST_1",
-                ],
-                "Report search test skipped: check value for image[] type search with operator '~y'. Does this operator has a sense ?"
-            ],
+            // [
+            //     [
+            //         "TST_0" => [],
+            //         "TST_1" => [
+            //             "test_ddui_all__image_array" => [
+            //                 __DIR__ . "/Inputs/dummy_image.jpeg",
+            //                 __DIR__ . "/Inputs/dummy_image2.png"
+            //             ]
+            //         ],
+            //         "TST_2" => [
+            //             "test_ddui_all__image_array" => [
+            //                 __DIR__ . "/Inputs/dummy_image2.png",
+            //                 __DIR__ . "/Inputs/dummy_image3.jpeg"
+            //             ]
+            //         ],
+            //     ],
+            //     [
+            //         Report::se_attrids => ["test_ddui_all__image_array"],
+            //         Report::se_funcs => [self::ONE_EQUALS],
+            //         Report::se_keys => [__DIR__ . "/Inputs/dummy_image.jpeg"]
+            //     ],
+            //     [
+            //         "TST_1",
+            //     ]
+            // ],
+            // TODO: ONE_EQUALS is not possible because we dont have only the name issue : 938
             [
                 [
                     "TST_0" => [],
