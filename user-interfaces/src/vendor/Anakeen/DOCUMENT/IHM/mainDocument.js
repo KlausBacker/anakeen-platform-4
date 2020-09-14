@@ -12,7 +12,6 @@ globalController.then(() => {
   ).then(AnakeenController => {
     AnakeenController.default.on("controllerReady", controller => {
       //Trigger an event when translation loaded
-
       let $document = $(".smart-element"),
         /* @var currentController SmartElementController */
         currentController;
@@ -31,7 +30,7 @@ globalController.then(() => {
         promise.then(value => {
           currentController = controller.getScopedController(value);
           currentController.initializeSmartElement().then(() => {
-            currentController.addEventListener("ready", (event, properties) => {
+            currentController.addEventListener("ready", { persistent: true }, (event, properties) => {
               window.document.title = properties.title;
               $("link[rel='shortcut icon']").attr("href", properties.icon);
             });
@@ -43,7 +42,7 @@ globalController.then(() => {
         return promise.then(value => {
           currentController = controller.getScopedController(value);
           currentController.initializeSmartElement().then(() => {
-            currentController.addEventListener("ready", (event, properties) => {
+            currentController.addEventListener("ready", { persistent: true }, (event, properties) => {
               window.document.title = properties.title;
               $("link[rel='shortcut icon']").attr("href", properties.icon);
             });
