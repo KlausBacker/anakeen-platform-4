@@ -344,11 +344,22 @@ export default Backbone.View.extend({
               );
             }
           } else {
-            let newValue = Object.assign({}, attributeValue, {
+            const newValue = Object.assign({}, attributeValue, {
               value: attributeValue.value,
               displayValue: attributeValue.displayValue
             });
-
+            //check if the value is modified
+            const currentValue = attrModel.getValue();
+            if (
+              currentValue[valueIndex] &&
+              currentValue[valueIndex].value &&
+              currentValue[valueIndex].displayValue &&
+              currentValue[valueIndex].value === newValue.value &&
+              currentValue[valueIndex].displayValue === newValue.displayValue
+            ) {
+              //The value is identical so we do nothing
+              return;
+            }
             attrModel.setValue(newValue, valueIndex);
           }
         } else {
