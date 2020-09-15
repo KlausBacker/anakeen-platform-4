@@ -61,6 +61,23 @@ class TestExtendProfil extends TestCaseDcpCommonFamily
         
         $this->exitSudo();
     }
+    /**
+     * @dataProvider dataWorkflowExtendProfilNonExistent
+     */
+    public function testDynamicWorkflowExtendProfilNotFound($wfName, $docName, $aclName, $login)
+    {
+        $this->sudo($login);
+
+        $d = new_doc(self::$dbaccess, $docName);
+        /**
+         * @var \WDoc $w
+         */
+        $w = new_doc(self::$dbaccess, $wfName);
+        $w->set($d);
+        $err = $w->control($aclName);
+        $this->assertNotEmpty($err, "acl $aclName granted for $login. It must not");
+        $this->exitSudo();
+    }
     public function dataDynamicWorkflowExtendProfil()
     {
         return array(
@@ -193,10 +210,21 @@ class TestExtendProfil extends TestCaseDcpCommonFamily
                 false
             ) ,
             //TST_EXTPRF1
-            
+
             //TST_EXTPRF2
-            
-            
+
+
+        );
+    }
+    public function dataWorkflowExtendProfilNonExistent()
+    {
+        return array(
+            array(
+                'WTST_WEXTPROFDYN',
+                'TST_EXTPRF2',
+                'IDONOTEXIST',
+                'sublue'
+            )
         );
     }
 }

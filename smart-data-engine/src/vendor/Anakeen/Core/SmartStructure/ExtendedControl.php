@@ -72,7 +72,15 @@ trait ExtendedControl
         $this->doc = $doc;
     }
 
-    protected function extendedControl($extAclName)
+    /**
+     * Check extAclName parameter
+     *
+     * @param string $extAclName
+     * @return string|null
+     * @throws \Anakeen\Database\Exception
+     * @throws \Anakeen\Exception
+     */
+    protected function extendedControl(string $extAclName)
     {
         if ($this->computedAcl === null) {
             $sql = sprintf(
@@ -115,7 +123,7 @@ trait ExtendedControl
                 return sprintf(___("No privilege \"%s\" for %d", "sde"), $extAclName, $this->id);
             }
         }
-        return null;
+        return sprintf(___("No privilege \"%s\" for %d ( \"%s\" doesn't exist in the profil )", "sde"), $extAclName, $this->id, $extAclName);
     }
 
     /**
