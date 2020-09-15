@@ -12,145 +12,121 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-
 msgctxt "TASK"
 msgid "task_arg_name"
 msgstr "Nom"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-
 msgctxt "TASK"
 msgid "task_arg_value"
 msgstr "Valeur"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-
 msgctxt "TASK"
 msgid "task_crontab"
 msgstr "Périodicité de crontab"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-
 msgctxt "TASK"
 msgid "task_desc"
 msgstr "Description"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-
 msgctxt "TASK"
 msgid "task_exec_date"
 msgstr "Date d'exécution"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-
 msgctxt "TASK"
 msgid "task_exec_duration"
 msgstr "Durée d'exécution"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-
 msgctxt "TASK"
 msgid "task_exec_output"
 msgstr "Output"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-
 msgctxt "TASK"
 msgid "task_exec_state_result"
 msgstr "Statut d'exécution"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-
 msgctxt "TASK"
 msgid "task_fr_ident"
 msgstr "Identification"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-
 msgctxt "TASK"
 msgid "task_fr_result"
 msgstr "Résultat de la tâche"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-
 msgctxt "TASK"
 msgid "task_fr_route"
 msgstr "Route à exécuter"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-
 msgctxt "TASK"
 msgid "task_fr_schedule"
 msgstr "Planning"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-
 msgctxt "TASK"
 msgid "task_humancrontab"
 msgstr "Périodicité (complète)"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-
 msgctxt "TASK"
 msgid "task_iduser"
 msgstr "Exécuté par"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-
 msgctxt "TASK"
 msgid "task_nextdate"
 msgstr "Prochaine date d'exécution"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-
 msgctxt "TASK"
 msgid "task_queryfield_name"
 msgstr "Nom"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-
 msgctxt "TASK"
 msgid "task_queryfield_value"
 msgstr "Valeur"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-
 msgctxt "TASK"
 msgid "task_route_method"
 msgstr "Méthode"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-
 msgctxt "TASK"
 msgid "task_route_name"
 msgstr "Nom"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-
 msgctxt "TASK"
 msgid "task_route_ns"
 msgstr "Section"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-
 msgctxt "TASK"
 msgid "task_status"
 msgstr "Statut"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-
 msgctxt "TASK"
 msgid "task_t_args"
 msgstr "Arguments"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-
 msgctxt "TASK"
 msgid "task_t_queryfield"
 msgstr "Champ de requête"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-
 msgctxt "TASK"
 msgid "task_title"
 msgstr "Titre"
