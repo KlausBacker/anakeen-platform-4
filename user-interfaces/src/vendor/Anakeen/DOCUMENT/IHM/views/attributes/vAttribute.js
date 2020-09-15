@@ -133,9 +133,6 @@ export default Backbone.View.extend({
             }
 
             currentView.$el.append($(Mustache.render(currentView.templateWrapper || "", data)));
-
-            attributeTemplate.insertDescription(currentView);
-
             //analyze the display label and add display class
             if (currentView.displayLabel === false) {
               currentView.$el.find(".dcpAttribute__label").remove();
@@ -197,7 +194,7 @@ export default Backbone.View.extend({
             if (currentView.customView) {
               currentView.widgetReady = true;
             }
-
+            attributeTemplate.insertDescription(currentView);
             currentView.triggerRenderDone();
           },
           () => {

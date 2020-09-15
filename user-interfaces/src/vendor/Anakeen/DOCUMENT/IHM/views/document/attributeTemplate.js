@@ -714,16 +714,28 @@ export default {
           }
           break;
         case "topLabel":
-          $viewElement.prepend($descriptionElement);
-          $descriptionElement.addClass("dcpAttribute__left");
+          if (isLeft) {
+            $viewElement.prepend($descriptionElement);
+            $descriptionElement.addClass("dcpAttribute__left");
+          } else {
+            $viewElement.find(".dcpAttribute__label").prepend($descriptionElement);
+          }
           break;
         case "bottomValue":
-          $viewElement.append($descriptionElement);
-          $descriptionElement.addClass("dcpAttribute__right");
+          if (isLeft) {
+            $viewElement.append($descriptionElement);
+            $descriptionElement.addClass("dcpAttribute__right");
+          } else {
+            $viewElement.find(".dcpAttribute__content").append($descriptionElement);
+          }
           break;
         case "bottomLabel":
-          $viewElement.append($descriptionElement);
-          $descriptionElement.addClass("dcpAttribute__left");
+          if (isLeft) {
+            $viewElement.append($descriptionElement);
+            $descriptionElement.addClass("dcpAttribute__left");
+          } else {
+            $viewElement.find(".dcpAttribute__label").append($descriptionElement);
+          }
           break;
         case "click":
           $viewElement.append($descriptionElement);
