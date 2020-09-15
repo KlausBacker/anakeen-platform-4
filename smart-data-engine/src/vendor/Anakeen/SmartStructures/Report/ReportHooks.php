@@ -12,24 +12,53 @@ namespace Anakeen\SmartStructures\Report;
 
 use Anakeen\Core\Internal\Format\DateAttributeValue;
 use Anakeen\Core\SEManager;
+use Anakeen\SmartHooks;
 use \SmartStructure\Fields\Report as MyAttributes;
 
 class ReportHooks extends \SmartStructure\Dsearch
 {
-    public $defaultedit = "FREEDOM:EDITREPORT";
-    public $defaultview = "FREEDOM:VIEWREPORT";
-
-    public $cviews
-        = array(
-            "FREEDOM:VIEWREPORT",
-            "FREEDOM:VIEWMINIREPORT:T"
-        );
-    public $eviews
-        = array(
-            "FREEDOM:EDITREPORT"
-        );
+    public function registerHooks()
+    {
+        parent::registerHooks();
+        $this->getHooks()->addListener(SmartHooks::POSTIMPORT, function () {
+            return $this->updateColumnLabel();
+        });
+    }
 
     protected $attributeGrants = array();
+
+    /**
+     * Recompute missing column labels
+     * @throws \Anakeen\Exception
+     */
+    protected function updateColumnLabel()
+    {
+        $columnsLabel = $this->getMultipleRawValues(MyAttributes::rep_lcols);
+        $columnsId = $this->getMultipleRawValues(MyAttributes::rep_idcols);
+
+        $struct = SEManager::getFamily($this->getRawValue(MyAttributes::se_famid));
+
+        foreach ($columnsLabel as $k => $columnLabel) {
+            if (empty($columnLabel)) {
+                if ($struct) {
+                    $oa = $struct->getAttribute($columnsId[$k]);
+                    if ($oa) {
+                        $columnsLabel[$k] = $oa->getLabel();
+                    }
+                }
+                if (empty($columnsLabel[$k])) {
+                    $label = \Anakeen\Core\Internal\SmartElement::$infofields[$columnsId[$k]]['label'];
+                    if ($label != '') {
+                        $label = _($label);
+                    }
+
+                    $columnsLabel[$k] = $label ?: $columnsId[$k];
+                }
+            }
+        }
+        $this->setValue(MyAttributes::rep_lcols, $columnsLabel);
+        $this->modify(false, [MyAttributes::rep_lcols], false);
+    }
 
     /**
      * public because use in RSS
@@ -49,15 +78,15 @@ class ReportHooks extends \SmartStructure\Dsearch
 
 
     /**
-     * Generate data struct to csv export of a report
+     * Generate data struct tocsv export of a report
      *
      * @param boolean $isPivotExport if is pivot true
-     * @param string  $pivotId
-     * @param string  $separator
-     * @param string  $dateFormat
-     * @param boolean $refresh       true to refresh the doc before export
-     * @param bool    $stripHtmlTags
-     * @param string  $renderNumber
+     * @param string $pivotId
+     * @param string $separator
+     * @param string $dateFormat
+     * @param boolean $refresh true to refresh the doc before export
+     * @param bool $stripHtmlTags
+     * @param string $renderNumber
      * @return array
      * @throws \Anakeen\Core\DocManager\Exception
      * @throws \Anakeen\Database\Exception
@@ -94,10 +123,30 @@ class ReportHooks extends \SmartStructure\Dsearch
         if ($isPivotExport) {
             $search->search();
             $this->setStatus(_("Doing render"));
-            return $this->generatePivotCSV($search, $tcols, $famDoc, $pivotId, $refresh, $separator, $dateFormat, $stripHtmlTags, $renderNumber);
+            return $this->generatePivotCSV(
+                $search,
+                $tcols,
+                $famDoc,
+                $pivotId,
+                $refresh,
+                $separator,
+                $dateFormat,
+                $stripHtmlTags,
+                $renderNumber
+            );
         } else {
             $this->setStatus(_("Doing render"));
-            return $this->generateBasicCSV($search, $tcols, $tcolsOption, $famDoc, $refresh, $separator, $dateFormat, $stripHtmlTags, $renderNumber);
+            return $this->generateBasicCSV(
+                $search,
+                $tcols,
+                $tcolsOption,
+                $famDoc,
+                $refresh,
+                $separator,
+                $dateFormat,
+                $stripHtmlTags,
+                $renderNumber
+            );
         }
     }
 
@@ -178,11 +227,19 @@ class ReportHooks extends \SmartStructure\Dsearch
                 $currentDoc->refresh();
             }
             $pivotAttribute = $famDoc->getAttribute($pivotId);
-            $pivotValue = $pivotAttribute ? $this->getCellValue($currentDoc, $pivotAttribute, $convertFormat) : $this->convertInternalElement($pivotId, $currentDoc);
+            $pivotValue = $pivotAttribute ? $this->getCellValue(
+                $currentDoc,
+                $pivotAttribute,
+                $convertFormat
+            ) : $this->convertInternalElement($pivotId, $currentDoc);
             $resultSingleArray[$pivotColumnName][] = $pivotValue;
             foreach ($singleAttributes as $currentColumnID) {
                 $currentAttribute = $famDoc->getAttribute($currentColumnID);
-                $resultSingleArray[$currentColumnID][] = $currentAttribute ? $this->getCellValue($currentDoc, $currentAttribute, $convertFormat)
+                $resultSingleArray[$currentColumnID][] = $currentAttribute ? $this->getCellValue(
+                    $currentDoc,
+                    $currentAttribute,
+                    $convertFormat
+                )
                     : $this->convertInternalElement($currentColumnID, $currentDoc);
             }
             $nbElement = 0;
@@ -191,7 +248,12 @@ class ReportHooks extends \SmartStructure\Dsearch
                     $currentAttribute = $famDoc->getAttribute($currentColumnID);
                     $nbElement = count($currentDoc->getMultipleRawValues($currentColumnID));
                     for ($i = 0; $i < $nbElement; $i++) {
-                        $resultMultipleArray[$currentKey][$currentColumnID][] = $this->getCellValue($currentDoc, $currentAttribute, $convertFormat, $i);
+                        $resultMultipleArray[$currentKey][$currentColumnID][] = $this->getCellValue(
+                            $currentDoc,
+                            $currentAttribute,
+                            $convertFormat,
+                            $i
+                        );
                     }
                 }
                 for ($i = 0; $i < $nbElement; $i++) {
@@ -234,24 +296,28 @@ class ReportHooks extends \SmartStructure\Dsearch
         return $twoDimStruct->getArray();
     }
 
-    protected function getCellValue(\Anakeen\Core\Internal\SmartElement $doc, \Anakeen\Core\SmartStructure\BasicAttribute $oa, $format, $index = -1)
-    {
+    protected function getCellValue(
+        \Anakeen\Core\Internal\SmartElement $doc,
+        \Anakeen\Core\SmartStructure\BasicAttribute $oa,
+        $format,
+        $index = -1
+    ) {
         return $oa->getTextualValue($doc, $index, $format);
     }
 
     /**
      * Generate a basic CSV export
      *
-     * @param \Anakeen\Search\Internal\SearchSmartData                      $search  the result of the report
-     * @param array                               $columns an array of id
-     * @param array                               $displayOptions
-     * @param \Anakeen\Core\Internal\SmartElement $famDoc  the associated family doc
+     * @param \Anakeen\Search\Internal\SearchSmartData $search the result of the report
+     * @param array $columns an array of id
+     * @param array $displayOptions
+     * @param \Anakeen\Core\Internal\SmartElement $famDoc the associated family doc
      *
      * @param                                     $refresh
      * @param                                     $separator
      * @param                                     $dateFormat
-     * @param bool                                $stripHtmlFormat
-     * @param string                              $renderNumber
+     * @param bool $stripHtmlFormat
+     * @param string $renderNumber
      *
      * @return array
      */
@@ -332,10 +398,15 @@ class ReportHooks extends \SmartStructure\Dsearch
                 $cellValue = '';
                 if (isset($render["attributes"][$col])) {
                     $oa = $famDoc->getAttribute($col);
-                    $cellValue = \Anakeen\Core\Internal\FormatCollection::getDisplayValue($render["attributes"][$col], $oa, -1, array(
-                        'displayDocId' => ($displayOptions[$kc] == "docid"),
-                        'stripHtmlTags' => $stripHtmlFormat
-                    ));
+                    $cellValue = \Anakeen\Core\Internal\FormatCollection::getDisplayValue(
+                        $render["attributes"][$col],
+                        $oa,
+                        -1,
+                        array(
+                            'displayDocId' => ($displayOptions[$kc] == "docid"),
+                            'stripHtmlTags' => $stripHtmlFormat
+                        )
+                    );
                     if ($renderNumber === "raw"
                         && in_array($oa->type, array(
                             "int",

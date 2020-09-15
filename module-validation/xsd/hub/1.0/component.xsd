@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified"
+           targetNamespace="https://platform.anakeen.com/4/schemas/hub-component/1.0"
+           xmlns:hubc="https://platform.anakeen.com/4/schemas/hub-component/1.0"
+           xmlns:hubcommon="https://platform.anakeen.com/4/schemas/common-types/1.0"
+
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:import namespace="https://platform.anakeen.com/4/schemas/common-types/1.0"
+               schemaLocation="./common-types.xsd"/>
+
+    <xs:element name="parameters" type="hubc:parameterType"/>
+
+    <xs:complexType name="parameterType">
+        <xs:sequence>
+            <xs:element type="hubc:displayType" name="display"/>
+            <xs:element type="xs:token" name="title"/>
+            <xs:element type="hubc:settingsType" name="settings"/>
+            <xs:element type="hubc:securityType" name="security"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="securityType">
+        <xs:sequence>
+            <xs:element type="hubc:visibilityRolesType" name="visibility-roles" minOccurs="0"/>
+            <xs:element type="hubc:executionRolesType" name="execution-roles" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="visibilityRolesType">
+        <xs:sequence>
+            <xs:element type="hubcommon:loginType" name="visibility-role" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute type="hubc:orType" name="logical-operator" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="executionRolesType">
+        <xs:sequence>
+            <xs:element type="hubcommon:loginType" name="execution-role" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute type="hubc:andType" name="logical-operator" use="required"/>
+    </xs:complexType>
+
+    <xs:simpleType name="orType">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="or"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="andType">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="and"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:complexType name="settingsType">
+        <xs:attribute type="xs:boolean" name="activated" use="required"/>
+        <xs:attribute type="xs:integer" name="activated-order"/>
+        <xs:attribute type="xs:boolean" name="selectable" use="required"/>
+        <xs:attribute type="xs:boolean" name="expandable" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="displayType">
+
+        <xs:attribute type="hubc:positionType" name="position" use="required"/>
+        <xs:attribute type="hubc:placementType" name="placement" use="required"/>
+        <xs:attribute type="xs:integer" name="order"/>
+    </xs:complexType>
+
+    <xs:simpleType name="positionType">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="left"/>
+            <xs:enumeration value="top"/>
+            <xs:enumeration value="right"/>
+            <xs:enumeration value="bottom"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="placementType">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="top"/>
+            <xs:enumeration value="center"/>
+            <xs:enumeration value="right"/>
+            <xs:enumeration value="left"/>
+            <xs:enumeration value="bottom"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

@@ -2,7 +2,6 @@
 
 namespace Dcp\Pu;
 
-
 use Anakeen\Search\Filters\SearchCriteria;
 
 class TestDcpDocumentFilterSearchCriteria extends TestDcpDocumentFiltercommon

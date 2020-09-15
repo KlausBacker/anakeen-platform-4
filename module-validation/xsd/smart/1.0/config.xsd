@@ -4,6 +4,7 @@
            xmlns:xs="http://www.w3.org/2001/XMLSchema"
            xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0"
            xmlns:wfl="https://platform.anakeen.com/4/schemas/workflow/1.0"
+           xmlns:search="https://platform.anakeen.com/4/schemas/search/1.0"
            xmlns:mail="https://platform.anakeen.com/4/schemas/mailtemplate/1.0"
            xmlns:task="https://platform.anakeen.com/4/schemas/task/1.0"
            xmlns:timer="https://platform.anakeen.com/4/schemas/timer/1.0"
@@ -14,6 +15,7 @@
     <xs:import namespace="https://platform.anakeen.com/4/schemas/mailtemplate/1.0"
                schemaLocation="../../mailtemplate/1.0/config.xsd"/>
     <xs:import namespace="https://platform.anakeen.com/4/schemas/task/1.0" schemaLocation="../../task/1.0/config.xsd"/>
+    <xs:import namespace="https://platform.anakeen.com/4/schemas/search/1.0" schemaLocation="../../search/1.0/config.xsd"/>
     <xs:import namespace="https://platform.anakeen.com/4/schemas/timer/1.0"
                schemaLocation="../../timer/1.0/config.xsd"/>
     <xs:element name="config" type="v1:configType">
@@ -39,6 +41,7 @@
             <xs:element ref="mail:mailtemplate" minOccurs="0"/>
             <xs:element ref="timer:timer" minOccurs="0"/>
             <xs:element ref="task:task" minOccurs="0"/>
+            <xs:element ref="search:search" minOccurs="0"/>
             <xs:element ref="wfl:graph" minOccurs="0"/>
             <xs:element ref="wfl:config" minOccurs="0"/>
             <xs:element type="v1:fieldAccessLayerType" name="field-access-layer" minOccurs="0"/>

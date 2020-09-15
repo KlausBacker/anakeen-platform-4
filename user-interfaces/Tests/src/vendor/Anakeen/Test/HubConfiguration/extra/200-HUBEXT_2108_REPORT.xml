@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:search="https://platform.anakeen.com/4/schemas/search/1.0">
+  <search:search xmlns:search="https://platform.anakeen.com/4/schemas/search/1.0" name="HUBEXT_2108" title="Tests de rendu de Smart Element" structure-type="REPORT">
+    <!--Basique / Auteur-->
+    <search:author login="admin"/>
+    <search:criteria>
+      <!--Critères / Structure d'appartenance-->
+      <search:structure ref="TST_RENDER"/>
+      <search:revision>latest</search:revision>
+      <search:query-filters logical-operator="and">
+      </search:query-filters>
+    </search:criteria>
+    <search:report-configuration>
+      <search:columns/>
+    </search:report-configuration>
+  </search:search>
+</smart:config>

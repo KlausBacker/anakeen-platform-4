@@ -98,6 +98,16 @@
                 <sde:access ns="DevCenter">DevelAccess</sde:access>
             </sde:requiredAccess>
         </sde:route>
+
+        <sde:route name="GetSearchConfig">
+            <sde:callable>Anakeen\Routes\Devel\Config\SearchConfig</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/config/smart/searches/{search}.xml</sde:pattern>
+            <sde:description>Get search configuration</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
         <sde:route name="GetElementConfig">
             <sde:callable>Anakeen\Routes\Devel\Config\ElementConfig</sde:callable>
             <sde:method>GET</sde:method>

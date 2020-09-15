@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified"
+           targetNamespace="https://platform.anakeen.com/4/schemas/hub/1.0"
+           xmlns:hub="https://platform.anakeen.com/4/schemas/hub/1.0"
+           xmlns:hubcg="https://platform.anakeen.com/4/schemas/hub-component-generic/1.0"
+           xmlns:hubclabel="https://platform.anakeen.com/4/schemas/hub-component-label/1.0"
+           xmlns:hubclogout="https://platform.anakeen.com/4/schemas/hub-component-logout/1.0"
+           xmlns:hubcidentity="https://platform.anakeen.com/4/schemas/hub-component-identity/1.0"
+           xmlns:hubcadminparameters="https://platform.anakeen.com/4/schemas/hub-component-admin-parameters/1.0"
+           xmlns:hubcbusinesapp="https://platform.anakeen.com/4/schemas/hub-component-business-app/1.0"
+           xmlns:hubcommon="https://platform.anakeen.com/4/schemas/common-types/1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:import namespace="https://platform.anakeen.com/4/schemas/hub-component-generic/1.0"
+               schemaLocation="./component-generic.xsd"/>
+    <xs:import namespace="https://platform.anakeen.com/4/schemas/hub-component-label/1.0"
+               schemaLocation="./component-label.xsd"/>
+    <xs:import namespace="https://platform.anakeen.com/4/schemas/hub-component-logout/1.0"
+               schemaLocation="./component-logout.xsd"/>
+    <xs:import namespace="https://platform.anakeen.com/4/schemas/hub-component-identity/1.0"
+               schemaLocation="./component-identity.xsd"/>
+    <xs:import namespace="https://platform.anakeen.com/4/schemas/hub-component-admin-parameters/1.0"
+               schemaLocation="./component-admin-parameters.xsd"/>
+    <xs:import namespace="https://platform.anakeen.com/4/schemas/hub-component-business-app/1.0"
+               schemaLocation="./component-business-app.xsd"/>
+    <xs:import namespace="https://platform.anakeen.com/4/schemas/common-types/1.0"
+               schemaLocation="./common-types.xsd"/>
+
+    <xs:element name="config" type="hub:configType">
+        <xs:annotation>
+            <xs:documentation>
+                <h1>Hub Configuration</h1>
+                <p>To configure Hub interface</p>
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
+
+    <xs:complexType name="configType">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element type="hub:instanceType" name="instance" minOccurs="0"/>
+            <xs:element ref="hubcg:component" minOccurs="0"/>
+            <xs:element ref="hubclabel:component" minOccurs="0"/>
+            <xs:element ref="hubclogout:component" minOccurs="0"/>
+            <xs:element ref="hubcidentity:component" minOccurs="0"/>
+            <xs:element ref="hubcadminparameters:component" minOccurs="0"/>
+            <xs:element ref="hubcbusinesapp:component" minOccurs="0"/>
+        </xs:choice>
+    </xs:complexType>
+
+
+    <xs:complexType name="instanceType">
+        <xs:sequence>
+            <xs:element type="hub:descriptionType" name="description" minOccurs="0"/>
+            <xs:element type="hub:settingsType" name="settings" minOccurs="0"/>
+            <xs:element type="hub:securityType" name="security" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="hubcommon:logicalNameType" name="name"/>
+    </xs:complexType>
+
+
+    <xs:complexType name="securityType">
+        <xs:sequence>
+            <xs:element type="hub:accessRolesType" name="access-roles" minOccurs="0"/>
+            <xs:element type="hubcommon:loginType" name="super-role" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="accessRolesType">
+        <xs:sequence>
+            <xs:element type="hubcommon:loginType" name="access-role" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute type="hub:orType" name="logical-operator" use="required"/>
+    </xs:complexType>
+
+
+
+    <xs:complexType name="settingsType">
+        <xs:sequence>
+            <xs:element type="xs:token" name="router-entry" minOccurs="0"/>
+            <xs:element type="hub:assetType" name="js" minOccurs="0"/>
+            <xs:element type="hub:assetType" name="css" minOccurs="0"/>
+            <xs:element type="hub:docksType" name="docks" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="assetType" mixed="true">
+        <xs:sequence>
+            <xs:element type="hub:assetCallableType" name="asset-callable" minOccurs="0"/>
+            <xs:element type="xs:token" name="asset-argument" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute type="hub:assetTypeType" name="type" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="assetCallableType">
+        <xs:attribute type="hub:functionNameType" name="function" use="required"/>
+    </xs:complexType>
+    <xs:simpleType name="functionNameType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[A-Za-z:][a-zA-Z0-9_:\\]{2,}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="assetTypeType">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="path"/>
+            <xs:enumeration value="manifest"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="docksType">
+        <xs:sequence>
+            <xs:element type="hub:dockType" name="dock-left" minOccurs="0"/>
+            <xs:element type="hub:dockType" name="dock-top" minOccurs="0"/>
+            <xs:element type="hub:dockType" name="dock-right" minOccurs="0"/>
+            <xs:element type="hub:dockType" name="dock-bottom" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+
+    <xs:complexType name="dockType">
+        <xs:sequence>
+            <xs:element type="hub:collapseType" name="collapse" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="collapseType">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="DEFAULTNONCOLLAPSED"/>
+            <xs:enumeration value="NEVERCOLLAPSED"/>
+            <xs:enumeration value="ALWAYSCOLLAPSED"/>
+            <xs:enumeration value="DEFAULTCOLLAPSED"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="orType">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="or"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="descriptionType">
+        <xs:sequence>
+            <xs:element type="hubcommon:iconType" name="icon" minOccurs="0"/>
+            <xs:element type="hub:titleType" name="title" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="titleType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="hub:langType" name="lang" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:simpleType name="langType">
+        <xs:annotation>
+            <xs:documentation>
+                <h1>Language (english ou french)</h1>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="en"/>
+            <xs:enumeration value="fr"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+
+
+</xs:schema>

@@ -92,6 +92,7 @@ class MainConfiguration
             return true;
         }
         $uMembers = $user->getMemberOf();
+        // Verify that all perform roles are required to exec hub component
         if (!array_diff($performRoleRef, $uMembers)) {
             if (!$displayRoles) {
                 return true;

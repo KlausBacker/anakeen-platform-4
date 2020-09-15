@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hub:config xmlns:hub="https://platform.anakeen.com/4/schemas/hub/1.0">
+  <hubc-label:component xmlns:hubc-label="https://platform.anakeen.com/4/schemas/hub-component-label/1.0" instance-ref="ADMINCENTER" name="HUBA_LABEL">
+    <hub-component:parameters xmlns:hub-component="https://platform.anakeen.com/4/schemas/hub-component/1.0">
+      <hub-component:display position="top" placement="left" order="100"/>
+      <!--Identification / Name-->
+      <hub-component:title>Admin Center</hub-component:title>
+      <hub-component:settings activated="false" selectable="false" expandable="false"/>
+      <hub-component:security>
+        <hub-component:execution-roles logical-operator="and"/>
+      </hub-component:security>
+    </hub-component:parameters>
+    <hubc-label:parameters>
+      <!--Parameters / Html label-->
+      <hubc-label:label><![CDATA[<i class="material-icons hub-icon">assignment</i>]]></hubc-label:label>
+    </hubc-label:parameters>
+  </hubc-label:component>
+</hub:config>
