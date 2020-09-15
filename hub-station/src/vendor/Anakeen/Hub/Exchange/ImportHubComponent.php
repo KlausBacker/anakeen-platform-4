@@ -24,15 +24,11 @@ class ImportHubComponent extends ImportHubConfiguration
         }
 
         $ns = $component->lookupNamespaceUri($prefix);
-
+        $componentStructure = null;
         switch ($ns) {
             case HubExportGenericComponent::$nsUrl:
                 $componentStructure = SEManager::getFamily(\SmartStructure\Hubconfigurationgeneric::familyName);
                 $importObject = new ImportHubComponentGeneric();
-                break;
-            case HubExportBusinessAppComponent::$nsUrl:
-                $componentStructure = SEManager::getFamily(\SmartStructure\Hubbusinessapp::familyName);
-                $importObject = new ImportHubComponentBusinessApp();
                 break;
             case HubExportIdentityComponent::$nsUrl:
                 $componentStructure = SEManager::getFamily(\SmartStructure\Hubconfigurationidentity::familyName);
@@ -51,7 +47,15 @@ class ImportHubComponent extends ImportHubConfiguration
                 $importObject = new ImportHubComponentAdminParameters();
                 break;
             default:
-                throw new Exception(sprintf("Unexpected component tag \"%s\"", $component->tagName));
+                if (class_exists(HubExportBusinessAppComponent::class)) {
+                    if ($ns === HubExportBusinessAppComponent::$nsUrl) {
+                        $componentStructure = SEManager::getFamily(\SmartStructure\Hubbusinessapp::familyName);
+                        $importObject = new ImportHubComponentBusinessApp();
+                    }
+                }
+        }
+        if (!$componentStructure) {
+            throw new Exception(sprintf("Unexpected component tag \"%s\"", $component->tagName));
         }
         $data = $importObject->getHubComponentData($component, $componentStructure);
         $otherData = $importObject->getCustomParameters($component, $componentStructure);
