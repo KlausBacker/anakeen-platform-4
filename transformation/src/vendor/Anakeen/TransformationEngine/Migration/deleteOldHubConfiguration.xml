@@ -1,0 +1,22 @@
+<migration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="../../../../../../smart-data-engine/src/vendor/Anakeen/Database/migrationRules.xsd">
+
+    <action id="hubTeSearchConfig" label="Remove old te config">
+        <condition>
+            <sql-assert-not-empty label="verify uname hub config exists">
+                select * from family.hubconfiguration where name is null and title = 'ADMINTE';
+            </sql-assert-not-empty>
+        </condition>
+        <process>
+            <sql-query label="Remove te hub config">
+                delete from family.hubconfiguration where name is null and title = 'ADMINTE' ;
+            </sql-query>
+
+        </process>
+        <check>
+            <sql-assert-empty label="verify old config are removed">
+                select * from family.hubconfiguration where name is null and title = 'ADMINTE';
+            </sql-assert-empty>
+        </check>
+    </action>
+</migration>

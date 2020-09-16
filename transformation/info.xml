@@ -8,12 +8,16 @@
   </replaces>
   <post-install>
     <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/TransformationEngine/HubComponent/TERoles.xml"/>
-    <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/TransformationEngine/HubComponent/hubConfiguration.xml"/>
+    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/TransformationEngine/HubComponent/hubConfiguration.xml"/>
   </post-install>
   <post-upgrade>
+
+    <process command="./programs/runMigrationScript.php --file=./vendor/Anakeen/TransformationEngine/Migration/deleteOldHubConfiguration.xml">
+       <label>Delete TE old hub config</label>
+    </process>
     <process command="./ank.php --script=cleanOldStructures"/>
     <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/TransformationEngine/HubComponent/TERoles.xml"/>
-    <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/TransformationEngine/HubComponent/hubConfiguration.xml"/>
+    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/TransformationEngine/HubComponent/hubConfiguration.xml"/>
   </post-upgrade>
 
   <post-upgrade>

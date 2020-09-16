@@ -17,14 +17,18 @@
         <process command="./ank.php --script=../vendor/Anakeen/Fullsearch/Config/unaccentPgParser"/>
 
         <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/Fullsearch/Config/FullsearchRoles.xml"/>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Fullsearch/Config/hubConfiguration.xml"/>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/Fullsearch/Config/hubConfiguration.xml"/>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/Fullsearch/Config/tasks.xml"/>
         <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Fullsearch/Config/gridFulltextController.xml"/>
     </post-install>
 
     <post-upgrade>
+
+        <process command="./programs/runMigrationScript.php --file=./vendor/Anakeen/Fullsearch/Migration/deleteOldHubConfiguration.xml">
+            <label>Delete old hub config</label>
+        </process>
         <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Fullsearch/Config/gridFulltextController.xml"/>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Fullsearch/Config/hubConfiguration.xml"/>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/Fullsearch/Config/hubConfiguration.xml"/>
     </post-upgrade>
 
     <reconfigure>
