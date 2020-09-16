@@ -806,6 +806,7 @@ export default {
           .find(".dcpAttribute__description__title__expand")
           .toggleClass("fa-caret-right fa-caret-down");
         $contentElement.slideToggle(200);
+        return false;
       });
       if (data.renderOptions.description.collapsed === true) {
         $viewElement.find(".dcpAttribute__description__title__expand").toggleClass("fa-caret-right fa-caret-down");
