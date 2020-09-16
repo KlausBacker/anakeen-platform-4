@@ -68,15 +68,10 @@ SQL;
         $err = "";
 
         if (($this->iduser > 0) && ($uid > 0)) {
-            $err = $this->query("delete from groups where idgroup=" . $this->iduser . " and iduser=$uid");
-            $err .= $this->query("delete from sessions where userid=$uid");
-
-            $dbf = $this->dbaccess;
-            $g = new Group($dbf);
-            $err .= $g->query("delete from groups where idgroup=" . $this->iduser . " and iduser=$uid");
+            $err = $this->query(sprintf("delete from groups where idgroup=%d and iduser=%d", $this->iduser, $uid));
 
             if (!$nopost) {
-                $this->PostDelete($uid);
+                $this->postDelete($uid);
             }
         }
         return $err;
@@ -154,7 +149,7 @@ SQL;
 
     public function postInsert()
     {
-        $err = $this->query(sprintf("delete from sessions where userid=%d", $this->iduser));
+        $err = "";
         $u = new \Anakeen\Core\Account("", $this->iduser);
 
         $u->updateMemberOf();
@@ -235,7 +230,6 @@ SQL;
     public function resetAccountMemberOf()
     {
         if ($this->syncAccount) {
-            $this->query(sprintf("delete from sessions where userid=%d", $this->iduser));
             $this->query("delete from permission where computed");
 
             \Anakeen\Core\DbManager::query("select * from users order by id", $tusers);
