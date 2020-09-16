@@ -1,41 +1,55 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<documents>
-    <hubconfigurationgeneric>
-        <hub_station_id name="ADMINCENTER">Admin Center</hub_station_id>
-        <hub_title>ADMINFULLSEARCH</hub_title>
-        <hub_order>1600</hub_order>
-        <hub_docker_position>LEFT_TOP</hub_docker_position>
-        <hub_vue_router_entry>fullsearch</hub_vue_router_entry>
-        <hub_activated>FALSE</hub_activated>
-        <hub_selectable>TRUE</hub_selectable>
-        <hub_expandable>TRUE</hub_expandable>
-        <hge_jsassets>
-            <hge_jsasset_type>MANIFEST</hge_jsasset_type>
-            <hge_jsasset>
-                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("adminFullsearch", "AdminFullsearchManager")
-            </hge_jsasset>
-        </hge_jsassets>
-        <hge_component_libname>AdminFullsearchManager</hge_component_libname>
-        <hge_component_tag>ank-hub-fullsearch-manager</hge_component_tag>
-        <hub_execution_roles name="AC_FUNCADMIN,AC_FULLSEARCHMANAGER"/>
-    </hubconfigurationgeneric>
-    <hubconfigurationgeneric>
-        <hub_station_id name="DEVELCENTER">Devel Center</hub_station_id>
-        <hub_title>DEVELFULLSEARCH</hub_title>
-        <hub_order>6</hub_order>
-        <hub_docker_position>LEFT_TOP</hub_docker_position>
-        <hub_vue_router_entry>fullsearch</hub_vue_router_entry>
-        <hub_activated>FALSE</hub_activated>
-        <hub_selectable>TRUE</hub_selectable>
-        <hub_expandable>TRUE</hub_expandable>
-        <hge_jsassets>
-            <hge_jsasset_type>MANIFEST</hge_jsasset_type>
-            <hge_jsasset>
-                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("adminFullsearch", "DevelFullsearchManager")
-            </hge_jsasset>
-        </hge_jsassets>
-        <hge_component_libname>AdminFullsearchManager</hge_component_libname>
-        <hge_component_tag>ank-hub-fullsearch-manager</hge_component_tag>
-        <hub_execution_roles name="AC_FUNCADMIN,AC_FULLSEARCHMANAGER"/>
-    </hubconfigurationgeneric>
-</documents>
+<?xml version="1.0" encoding="UTF-8"?>
+<hub:config xmlns:hub="https://platform.anakeen.com/4/schemas/hub/1.0">
+    <hubc-generic:component xmlns:hubc-generic="https://platform.anakeen.com/4/schemas/hub-component-generic/1.0" instance-ref="ADMINCENTER" name="ADMINFULLSEARCH">
+        <hub-component:parameters xmlns:hub-component="https://platform.anakeen.com/4/schemas/hub-component/1.0">
+            <hub-component:display position="left" placement="top" order="1600"/>
+            <!--Identification / Name-->
+            <hub-component:title>ADMINFULLSEARCH</hub-component:title>
+            <hub-component:settings activated="false" selectable="true" expandable="true"/>
+            <hub-component:security>
+                <hub-component:execution-roles logical-operator="and">
+                    <!--Security Roles / Roles to access hub element API-->
+                    <hub-component:execution-role login="functional_administrator"/>
+                    <hub-component:execution-role login="fullsearch_administrator"/>
+                </hub-component:execution-roles>
+            </hub-component:security>
+        </hub-component:parameters>
+        <hubc-generic:parameters>
+            <!--Dock / Router entry-->
+            <hubc-generic:router-entry>fullsearch</hubc-generic:router-entry>
+            <hubc-generic:js type="manifest">
+                <hubc-generic:asset-callable function="Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath"/>
+                <hubc-generic:asset-argument>adminFullsearch</hubc-generic:asset-argument>
+                <hubc-generic:asset-argument>AdminFullsearchManager</hubc-generic:asset-argument>
+            </hubc-generic:js>
+            <!--Identification / Component tag-->
+            <hubc-generic:component-tag>ank-hub-fullsearch-manager</hubc-generic:component-tag>
+        </hubc-generic:parameters>
+    </hubc-generic:component>
+    <hubc-generic:component xmlns:hubc-generic="https://platform.anakeen.com/4/schemas/hub-component-generic/1.0" instance-ref="DEVELCENTER" name="DEVELFULLSEARCH">
+        <hub-component:parameters xmlns:hub-component="https://platform.anakeen.com/4/schemas/hub-component/1.0">
+            <hub-component:display position="left" placement="top" order="6"/>
+            <!--Identification / Name-->
+            <hub-component:title>DEVELFULLSEARCH</hub-component:title>
+            <hub-component:settings activated="false" selectable="true" expandable="true"/>
+            <hub-component:security>
+                <hub-component:execution-roles logical-operator="and">
+                    <!--Security Roles / Roles to access hub element API-->
+                    <hub-component:execution-role login="functional_administrator"/>
+                    <hub-component:execution-role login="fullsearch_administrator"/>
+                </hub-component:execution-roles>
+            </hub-component:security>
+        </hub-component:parameters>
+        <hubc-generic:parameters>
+            <!--Dock / Router entry-->
+            <hubc-generic:router-entry>fullsearch</hubc-generic:router-entry>
+            <hubc-generic:js type="manifest">
+                <hubc-generic:asset-callable function="Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath"/>
+                <hubc-generic:asset-argument>adminFullsearch</hubc-generic:asset-argument>
+                <hubc-generic:asset-argument>DevelFullsearchManager</hubc-generic:asset-argument>
+            </hubc-generic:js>
+            <!--Identification / Component tag-->
+            <hubc-generic:component-tag>ank-hub-fullsearch-manager</hubc-generic:component-tag>
+        </hubc-generic:parameters>
+    </hubc-generic:component>
+</hub:config>
