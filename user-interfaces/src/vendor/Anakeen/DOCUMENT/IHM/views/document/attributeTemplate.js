@@ -715,8 +715,8 @@ export default {
           break;
         case "topLabel":
           if (isLeft) {
-            $viewElement.prepend($descriptionElement);
             $descriptionElement.addClass("dcpAttribute__left");
+            $viewElement.prepend($descriptionElement);
           } else {
             $viewElement.find(".dcpAttribute__label").prepend($descriptionElement);
           }

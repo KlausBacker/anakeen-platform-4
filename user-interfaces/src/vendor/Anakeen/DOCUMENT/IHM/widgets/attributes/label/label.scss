@@ -5,8 +5,8 @@
   margin-bottom: 0;
 }
 
-.dcpArray__label.dcpAttribute__left.dcpAttribute__labelPosition--left,
-.dcpArray__label.dcpAttribute__left.dcpAttribute__labelPosition--auto,
+.dcpArray__label.dcpAttribute__left.dcpAttribute__labelPosition--left label,
+.dcpArray__label.dcpAttribute__left.dcpAttribute__labelPosition--auto label,
 .dcpAttribute__label {
   &:after {
     content: ":";

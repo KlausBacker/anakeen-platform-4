@@ -16,6 +16,11 @@
   clear: both;
 }
 
+.dcpTab__content  > .dcpAttribute__description--top,
+.dcpArray > .dcpAttribute__description--top {
+  margin-top: 1rem;
+}
+
 .dcpAttribute__description.dcpAttribute__description--topValue.dcpAttribute__right,
 .dcpAttribute__description.dcpAttribute__description--bottomValue.dcpAttribute__right {
   clear: both;
@@ -176,6 +181,7 @@
   &.dcpAttribute__description--bottom,
   &.dcpAttribute__description--bottomValue,
   &.dcpAttribute__description--bottomLabel {
+    top:0;
     &::before, &::after {
       display: none;
     }
@@ -245,6 +251,12 @@
   }
 }
 
+
+.dcpArray__label > .dcpAttribute__description {
+  font-weight: normal;
+  line-height: normal;
+  font-size: 1rem;
+}
 
 .dcpArray {
   .dcpArray__head__cell  {
@@ -450,8 +462,11 @@
 }
 
 .dcpAttribute__label_description {
-  padding-right: 0.5em;
   cursor: pointer;
   vertical-align: top;
   display: inline-block;
+}
+
+.dcpAttribute__label .dcpAttribute__label_description .fa {
+  margin-left:0.2rem;
 }

@@ -37,12 +37,14 @@
 }
 
 .row.dcpAttribute {
-  flex-wrap: wrap;
+  /** do not use wrap because it change height between fields*/
+  flex-wrap: initial;
 }
 .row.dcpAttribute.dcpAttribute__labelPosition--auto,
 .row.dcpArray--left,
 .row.dcpAttribute.dcpAttribute__labelPosition--left {
   flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
   .dcpAttribute__left {
     flex-grow:0;
@@ -53,12 +55,22 @@
     @media (max-width: ($grid-float-breakpoint + 1)) {
        flex-basis: 10rem;
     }
+    &.dcpAttribute__description {
+      margin-right: calc(100% - 20rem);
+    }
   }
   .dcpAttribute__right {
     flex-grow:1;
-    flex-basis: 0;
     padding-bottom: 0.2rem;
+    &.dcpAttribute__description {
+      margin-left: 20rem;
+    }
   }
+}
+
+
+.row.dcpArray--left {
+  flex-wrap: initial;
 }
 
 .row.dcpArray--left {
