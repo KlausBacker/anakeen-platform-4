@@ -3,8 +3,6 @@
     <smart:enumerates>
         <smart:enum-configuration name="RENDERDESCRIPTION-placement">
             <smart:enum name="top" label="Top"/>
-            <smart:enum name="left" label="Left"/>
-            <smart:enum name="right" label="Right"/>
             <smart:enum name="bottom" label="Bottom"/>
             <smart:enum name="topLabel" label="Up to label"/>
             <smart:enum name="topValue" label="Up to value"/>

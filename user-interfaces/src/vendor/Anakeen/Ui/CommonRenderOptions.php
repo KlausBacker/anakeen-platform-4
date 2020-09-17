@@ -151,8 +151,6 @@ class CommonRenderOptions extends BaseRenderOptions
         $allow = array(
             self::topPosition,
             self::bottomPosition,
-            self::leftPosition,
-            self::rightPosition,
             self::topLabelPosition,
             self::topValuePosition,
             self::bottomLabelPosition,
@@ -160,7 +158,7 @@ class CommonRenderOptions extends BaseRenderOptions
             self::clickPosition
         );
         if (!in_array($position, $allow)) {
-            throw new Exception("UI0205", $position, implode(', ', $allow));
+            throw new Exception("UI0205", $position, $this->getScope(), implode(', ', $allow));
         }
         if (!is_string($htmlContent)) {
             throw new Exception("UI0206", gettype($htmlContent));
