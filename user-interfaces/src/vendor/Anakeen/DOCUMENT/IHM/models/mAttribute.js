@@ -277,7 +277,7 @@ export default Backbone.Model.extend({
         .get("attributes")
         .get(parentId);
       if (parentModel) {
-        parentModel.setErrorMessage(true);
+        parentModel.setErrorMessage(!!message);
       }
     }
   },
