@@ -180,10 +180,10 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
     return new Promise((resolve, reject) => {
       try {
         controller
-          .then((value: SmartElementController) => {
-            this._logVerbose(`Add smart element "${viewData.initid}"`, value.uid);
-            this.emit("controllerSmartElementAdded", controller);
-            resolve(value.uid);
+          .then((currentController: SmartElementController) => {
+            this._logVerbose(`Add smart element "${viewData.initid}"`, currentController.uid);
+            this.emit("controllerSmartElementAdded", currentController);
+            resolve(currentController.uid);
           })
           .catch(err => {
             if (err) {
