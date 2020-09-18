@@ -13,7 +13,7 @@ class Session extends DbObj
     const SESSION_CT_CLOSE = 2;
     const SESSION_CT_ARGS = 3;
     const SESSION_MIN_BYTE_LENGTH = 16; /* 16 bytes = 128 bits */
-    const SESSION_SUBDIR='var/session';
+    const SESSION_SUBDIR = 'var/session';
     public $fields = array(
         "id",
         "userid",
@@ -164,9 +164,7 @@ class Session extends DbObj
             return false;
         }
 
-        $webRoot = substr($scriptName, 0, $webRootLen);
-
-        return $webRoot;
+        return substr($scriptName, 0, $webRootLen);
     }
 
     public function setCookieSession($id, $ttl = 0)
@@ -205,7 +203,11 @@ class Session extends DbObj
         if ($uid === null) {
             $this->query(sprintf("delete from sessions where name = '%s';", pg_escape_string(self::getName())));
         } else {
-            $this->query(sprintf("delete from sessions where name = '%s' and userid=%d;", pg_escape_string(self::getName()), $uid));
+            $this->query(sprintf(
+                "delete from sessions where name = '%s' and userid=%d;",
+                pg_escape_string(self::getName()),
+                $uid
+            ));
         }
         $this->status = self::SESSION_CT_CLOSE;
         return $this->status;
@@ -331,7 +333,10 @@ class Session extends DbObj
     // ------------------------------------------------------------------------
     public function newId()
     {
-        $byteLength = (int)\Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 'CORE_SESSION_BYTE_LENGTH');
+        $byteLength = (int)\Anakeen\Core\ContextManager::getParameterValue(
+            \Anakeen\Core\Settings::NsSde,
+            'CORE_SESSION_BYTE_LENGTH'
+        );
         if ($byteLength < self::SESSION_MIN_BYTE_LENGTH) {
             $byteLength = self::SESSION_MIN_BYTE_LENGTH;
         }
@@ -402,19 +407,26 @@ class Session extends DbObj
                 $ttlParamName = 'CORE_SESSIONTTL';
             }
         }
-        return intval(\Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, $ttlParamName, $default));
+        return intval(\Anakeen\Core\ContextManager::getParameterValue(
+            \Anakeen\Core\Settings::NsSde,
+            $ttlParamName,
+            $default
+        ));
     }
 
     public function getSessionGcProbability($default = "0.01")
     {
-        return \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_SESSIONGCPROBABILITY", $default);
+        return \Anakeen\Core\ContextManager::getParameterValue(
+            \Anakeen\Core\Settings::NsSde,
+            "CORE_SESSIONGCPROBABILITY",
+            $default
+        );
     }
 
     public function touch()
     {
         $this->last_seen = strftime('%Y-%m-%d %H:%M:%S', time());
-        $err = $this->modify();
-        return $err;
+        return $this->modify();
     }
 
     public function deleteUserExpiredSessions()
@@ -445,9 +457,16 @@ class Session extends DbObj
 
     public function deleteMaxAgedSessions()
     {
-        $maxage = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 'CORE_SESSIONMAXAGE', '');
+        $maxage = \Anakeen\Core\ContextManager::getParameterValue(
+            \Anakeen\Core\Settings::NsSde,
+            'CORE_SESSIONMAXAGE',
+            ''
+        );
         if ($maxage != '') {
-            return $this->query(sprintf("DELETE FROM sessions WHERE last_seen < timestamp 'now()' - interval '%s'", pg_escape_string($maxage)));
+            return $this->query(sprintf(
+                "DELETE FROM sessions WHERE last_seen < timestamp 'now()' - interval '%s'",
+                pg_escape_string($maxage)
+            ));
         }
         return '';
     }
@@ -550,7 +569,7 @@ class Session extends DbObj
     /**
      * Delete all user's sessions except the current session.
      *
-     * @param string $userId          The user id (default is $this->userid)
+     * @param string $userId The user id (default is $this->userid)
      * @param string $exceptSessionId The session id to keep (default is $this->id)
      * @return string empty string on success, or the SQL error message
      */
@@ -562,11 +581,22 @@ class Session extends DbObj
         if ($exceptSessionId == '') {
             $exceptSessionId = $this->id;
         }
-        return $this->query(sprintf("DELETE FROM sessions WHERE userid = %d AND id != '%s'", $userId, pg_escape_string($exceptSessionId)));
+        return $this->query(sprintf(
+            "DELETE FROM sessions WHERE userid = %d AND id != '%s'",
+            $userId,
+            pg_escape_string($exceptSessionId)
+        ));
     }
 
-    private function setcookie($name, $value = null, $expire = null, $path = null, $domain = null, $secure = null, $httponly = null)
-    {
+    private function setcookie(
+        $name,
+        $value = null,
+        $expire = null,
+        $path = null,
+        $domain = null,
+        $secure = null,
+        $httponly = null
+    ) {
         if ($this->sendCookie) {
             if ($path === null) {
                 $webRootPath = self::getWebRootPath();
@@ -574,35 +604,39 @@ class Session extends DbObj
                     $path = preg_replace(':/+:', '/', $webRootPath);
                 }
             }
-            $cookie=new Cookies([]);
+            $cookie = new Cookies([]);
 
-            $config=[
-                "value" =>$value,
-                "expires"=>$expire==0?null:$expire,
-                "path"=>$path,
-                "domain"=>$domain,
-                "secure"=>$secure,
-                "httponly"=>$httponly,
-                "samesite"=>"strict"
+            $config = [
+                "value" => $value,
+                "expires" => $expire == 0 ? null : $expire,
+                "path" => $path,
+                "domain" => $domain,
+                "secure" => $secure,
+                "httponly" => $httponly,
+                "samesite" => "strict"
             ];
 
-            $opts=ContextManager::getParameterValue(Settings::NsSde, "CORE_SESSION_COOKIE");
+            $opts = ContextManager::getParameterValue(Settings::NsSde, "CORE_SESSION_COOKIE");
             if ($opts) {
-                $cookieOptions=json_decode($opts, true);
-                if (! is_array($cookieOptions)) {
+                $cookieOptions = json_decode($opts, true);
+                if (!is_array($cookieOptions)) {
                     LogManager::error(sprintf("CORE_SESSION_COOKIE is not a json array : \"%s\"", $opts));
                 }
-                $allowedOptions=["path","expires", "secure", "hostonly", "httponly", "samesite"];
+                $allowedOptions = ["path", "expires", "secure", "hostonly", "httponly", "samesite"];
                 foreach ($cookieOptions as $k => $v) {
-                    if (in_array($k, $allowedOptions)===false) {
-                        LogManager::error(sprintf("CORE_SESSION_COOKIE key \"%s\" not supported. Allowed keys are %s", $k, implode(", ", $allowedOptions)));
+                    if (in_array($k, $allowedOptions) === false) {
+                        LogManager::error(sprintf(
+                            "CORE_SESSION_COOKIE key \"%s\" not supported. Allowed keys are %s",
+                            $k,
+                            implode(", ", $allowedOptions)
+                        ));
                     }
-                    $config[$k]=$v;
+                    $config[$k] = $v;
                 }
             }
 
             $cookie->set($name, $config);
-            $headers=$cookie->toHeaders();
+            $headers = $cookie->toHeaders();
             foreach ($headers as $header) {
                 header(sprintf("set-cookie: %s", $header));
             }
