@@ -62,6 +62,12 @@
                 <smart:field-argument type="field">rd_mode</smart:field-argument>
                 <smart:field-argument type="field">rd_lang</smart:field-argument>
             </smart:field-hook>
+            <smart:field-hook type="constraint" event="onPreStore" field="rd_placement">
+                <smart:field-callable function="::checkPlacement"/>
+                <smart:field-argument type="field">rd_famid</smart:field-argument>
+                <smart:field-argument type="field">rd_field</smart:field-argument>
+                <smart:field-argument type="field">rd_placement</smart:field-argument>
+            </smart:field-hook>
             <smart:field-hook type="constraint" event="onPreStore" field="rd_fieldlabel">
                 <smart:field-callable function="::checkFieldExists"/>
                 <smart:field-argument type="field">rd_famid</smart:field-argument>
