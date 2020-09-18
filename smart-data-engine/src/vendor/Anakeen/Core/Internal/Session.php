@@ -2,7 +2,11 @@
 
 namespace Anakeen\Core\Internal;
 
+use Anakeen\Core\ContextManager;
+use Anakeen\Core\Settings;
 use Anakeen\Core\Utils\Date;
+use Anakeen\LogManager;
+use Slim\Http\Cookies;
 
 class Session extends DbObj
 {
@@ -192,7 +196,7 @@ class Session extends DbObj
     /**
      * Closes all session
      *
-     * @param int $uid if set close specific user session
+     * @param int|null $uid if set close specific user session
      *
      * @return int
      */
@@ -570,7 +574,39 @@ class Session extends DbObj
                     $path = preg_replace(':/+:', '/', $webRootPath);
                 }
             }
-            return setcookie($name, $value, $expire, $path, $domain, $secure, $httponly);
+            $cookie=new Cookies([]);
+
+            $config=[
+                "value" =>$value,
+                "expires"=>$expire==0?null:$expire,
+                "path"=>$path,
+                "domain"=>$domain,
+                "secure"=>$secure,
+                "httponly"=>$httponly,
+                "samesite"=>"strict"
+            ];
+
+            $opts=ContextManager::getParameterValue(Settings::NsSde, "CORE_SESSION_COOKIE");
+            if ($opts) {
+                $cookieOptions=json_decode($opts, true);
+                if (! is_array($cookieOptions)) {
+                    LogManager::error(sprintf("CORE_SESSION_COOKIE is not a json array : \"%s\"", $opts));
+                }
+                $allowedOptions=["path","expires", "secure", "hostonly", "httponly", "samesite"];
+                foreach ($cookieOptions as $k => $v) {
+                    if (in_array($k, $allowedOptions)===false) {
+                        LogManager::error(sprintf("CORE_SESSION_COOKIE key \"%s\" not supported. Allowed keys are %s", $k, implode(", ", $allowedOptions)));
+                    }
+                    $config[$k]=$v;
+                }
+            }
+
+            $cookie->set($name, $config);
+            $headers=$cookie->toHeaders();
+            foreach ($headers as $header) {
+                header(sprintf("set-cookie: %s", $header));
+            }
+            return true;
         }
         return false;
     }
