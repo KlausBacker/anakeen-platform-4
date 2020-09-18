@@ -723,6 +723,7 @@ export default {
           break;
         case "bottomValue":
           if (isLeft) {
+            //$viewElement.append($('<div class="dcpAttribute__description_margin_left">MARGE</div>'));
             $viewElement.append($descriptionElement);
             $descriptionElement.addClass("dcpAttribute__right");
           } else {

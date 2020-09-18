@@ -61,7 +61,6 @@ class CommonRenderOptions extends BaseRenderOptions
     public function setLabelPosition($position)
     {
         $allow = array(
-            self::autoPosition,
             self::leftPosition,
             self::upPosition,
             self::nonePosition

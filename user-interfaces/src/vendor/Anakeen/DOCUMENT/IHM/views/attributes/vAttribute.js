@@ -161,11 +161,7 @@ export default Backbone.View.extend({
                   .not(".dcpAttribute__description")
                   .addClass("dcpAttribute__labelPosition--up");
               }
-              if (currentView.model.getOption("labelPosition") === "auto") {
-                currentView.$el.addClass("dcpAttribute__labelPosition--auto");
-                currentView.$el.find(".dcpAttribute__right").addClass("dcpAttribute__labelPosition--auto");
-                currentView.$el.find(".dcpAttribute__left").addClass("dcpAttribute__labelPosition--auto");
-              }
+
               currentView.$el.find(".dcpAttribute__label").dcpLabel(data);
             }
 
@@ -266,7 +262,6 @@ export default Backbone.View.extend({
 
   /**
    * Display error message around the widget if needed
-   * @param event
    */
   refreshError: function vAttributeRefreshError() {
     this.$el.find(".dcpAttribute__label").dcpLabel("setError", this.model.get("errorMessage"));

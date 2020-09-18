@@ -1,13 +1,12 @@
 .dcpAttribute__label label {
   font-weight: normal;
- // overflow: hidden;
- // text-overflow: ellipsis;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
   margin-bottom: 0;
 }
 
 .dcpArray__label.dcpAttribute__left.dcpAttribute__labelPosition--left label,
-.dcpArray__label.dcpAttribute__left.dcpAttribute__labelPosition--auto label,
-.dcpAttribute__label {
+.dcpAttribute__label label {
   &:after {
     content: ":";
     padding-left: 0.3em;
@@ -38,5 +37,5 @@
 }
 
 .dcpLabel__help__link--selected {
-  color:$success;
+  color: $success;
 }
