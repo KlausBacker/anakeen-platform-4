@@ -80,7 +80,7 @@ export default {
       //noinspection JSUnusedGlobalSymbols
       this.selectedComponent = this.$refs.hubGrid.dataItems[e.currentTarget.innerText - 1].properties.id;
     });
-    this.openElement();
+    this.openConfigInfo();
   },
   methods: {
     initHub(id) {
