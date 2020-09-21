@@ -71,8 +71,13 @@ class TaskBehavior extends \Anakeen\SmartElement
         DbManager::commitPoint("_taskExec");
 
         $d1 = new \DateTime();
-        $cmd = $this->getAnkCmd();
-        exec($cmd . " 2>&1", $output, $return);
+        try {
+            $cmd = $this->getAnkCmd();
+            exec($cmd . " 2>&1", $output, $return);
+        } catch (Exception $e) {
+            $return = -1;
+            $output = [$e->getMessage()];
+        }
 
 
         DbManager::savePoint("_taskExec");
