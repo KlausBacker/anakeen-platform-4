@@ -47,10 +47,8 @@ class PastTimers extends ScheduledTimers
         foreach ($timers as $timer) {
             $data["results"][] = $this->getTimerData($timer);
         }
-        // @TODO total , slice take
 
-        $timers = TimerManager::getPastTasks(0, 0, $this->filters);
-        $data["total"] = count($timers);
+        $data["total"] = TimerManager::getCountPastTasks($this->filters);
         return $data;
     }
 
