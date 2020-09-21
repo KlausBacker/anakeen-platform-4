@@ -41,7 +41,7 @@ $.widget("dcp.dcpCreateDocument", {
       this.$dialog = $('<div class="dcpDocid-create-window"/>');
       $("body").append(this.$dialog);
       var renderTitle = Mustache.render(config.windowTitle || "", currentValue);
-      var dw = this.$dialog
+      var dialogWindow = this.$dialog
         .dcpWindow({
           title: renderTitle,
           width: config.windowWidth,
@@ -51,127 +51,135 @@ $.widget("dcp.dcpCreateDocument", {
           }
         })
         .data("dcpWindow");
-      dw.kendoWindow().center();
-      dw.open();
+      dialogWindow.kendoWindow().center();
+      dialogWindow.open();
 
-      $createDocument = dw.currentWidget;
-      $createDocument.on("documentcreate", function wAttributeCreateDocumentCreation() {
-        dw.currentWidget.find("> iframe").addClass("k-content-frame");
-      });
+      $createDocument = dialogWindow.currentWidget;
 
       //Use global controller to add the new Smart Element
 
+      let controllerPromise;
+
       if (currentValue.value) {
-        window.ank.smartElement.globalController.addSmartElement($createDocument, {
+        controllerPromise = window.ank.smartElement.globalController.addSmartElement($createDocument, {
           initid: currentValue.value,
           viewId: "!defaultEdition"
         });
       } else {
-        window.ank.smartElement.globalController.addSmartElement($createDocument, {
+        controllerPromise = window.ank.smartElement.globalController.addSmartElement($createDocument, {
           initid: config.familyName || attributeModel.get("typeFormat"),
           viewId: "!defaultCreation"
         });
       }
 
-      const scopedController = window.ank.smartElement.globalController.getScopedController($createDocument);
+      controllerPromise.then(scopedControllerId => {
+        const scopedController = window.ank.smartElement.globalController.getScopedController(scopedControllerId);
+        this.scopedController = scopedController;
+        this.scopedControllerId = scopedControllerId;
+        scopedController.addEventListener(
+          "ready",
+          { name: "ddui:create:ready", persistent: true },
+          (event, smartElementInfo) => {
+            const isReadyPrevented = wWidget.proxyTrigger(event, "ready", {});
+            if (!isReadyPrevented) {
+              if (smartElementInfo.viewId === "!defaultCreation") {
+                // Set form values
+                const isBeforePrevented = wWidget.proxyTrigger(event, "beforeSetFormValues", {
+                  getFormValues: function wcdCustomGetFormValues() {
+                    return config.formValues;
+                  },
+                  setFormValues: function wcdCustomSetFormValues(customFormValues) {
+                    wWidget.setFormValue(customFormValues, scopedController);
+                  }
+                });
 
-      this.scopedController = scopedController;
-
-      scopedController.addEventListener("ready", { name: "ddui:create:ready" }, (event, smartElementInfo) => {
-        const isReadyPrevented = wWidget.proxyTrigger(event, "ready", {});
-        if (!isReadyPrevented) {
-          if (smartElementInfo.viewId === "!defaultCreation") {
-            // Set form values
-            const isBeforePrevented = wWidget.proxyTrigger(event, "beforeSetFormValues", {
-              getFormValues: function wcdCustomGetFormValues() {
-                return config.formValues;
-              },
-              setFormValues: function wcdCustomSetFormValues(customFormValues) {
-                wWidget.setFormValue(customFormValues, scopedController);
+                if (!isBeforePrevented) {
+                  wWidget.setFormValue(config.formValues, scopedController);
+                }
               }
+              const menuCreateAndClose = scopedController.getMenu("createAndClose");
+              if (menuCreateAndClose) {
+                menuCreateAndClose.hide();
+              }
+              const menuSaveAndClose = scopedController.getMenu("saveAndClose");
+              if (menuSaveAndClose) {
+                menuSaveAndClose.hide();
+              }
+              const menuCreate = scopedController.getMenu("create");
+              if (menuCreate) {
+                menuCreate.setLabel(Mustache.render(config.createLabel, attributeModel.attributes));
+              }
+              const menuSave = scopedController.getMenu("save");
+              if (menuSave) {
+                menuSave.setLabel(Mustache.render(config.updateLabel, attributeModel.attributes));
+              }
+            }
+          }
+        );
+
+        scopedController.addEventListener(
+          "actionClick",
+          {
+            name: "ddui:create:close",
+            persistent: true
+          },
+          function wAttributeCreateDocumentbeforeClose(event, documentObject, options) {
+            if (options.eventId === "document.close") {
+              event.preventDefault();
+              wWidget.closeDialog(event, true);
+            }
+          }
+        );
+
+        scopedController.addEventListener(
+          "afterSave",
+          {
+            name: "ddui:create:record",
+            persistent: true
+          },
+          function wAttributeCreateDocumentRecord(event, currentDocumentObject) {
+            var newOneValue = {
+              value: currentDocumentObject.initid,
+              displayValue: currentDocumentObject.title,
+              familyRelation: currentDocumentObject.family.name,
+              icon: currentDocumentObject.icon
+            };
+            var newValue;
+            var isPrevented;
+            isPrevented = wWidget.proxyTrigger(event, "beforeSetTargetValue", {
+              attributeValue: newOneValue
             });
-
-            if (!isBeforePrevented) {
-              wWidget.setFormValue(config.formValues, scopedController);
+            if (isPrevented) {
+              return;
             }
-          }
-          const menuCreateAndClose = scopedController.getMenu("createAndClose");
-          if (menuCreateAndClose) {
-            menuCreateAndClose.hide();
-          }
-          const menuSaveAndClose = scopedController.getMenu("saveAndClose");
-          if (menuSaveAndClose) {
-            menuSaveAndClose.hide();
-          }
-          const menuCreate = scopedController.getMenu("create");
-          if (menuCreate) {
-            menuCreate.setLabel(Mustache.render(config.createLabel, attributeModel.attributes));
-          }
-          const menuSave = scopedController.getMenu("save");
-          if (menuSave) {
-            menuSave.setLabel(Mustache.render(config.updateLabel, attributeModel.attributes));
-          }
-        }
-      });
 
-      scopedController.addEventListener(
-        "actionClick",
-        {
-          name: "ddui:create:close"
-        },
-        function wAttributeCreateDocumentbeforeClose(event, documentObject, options) {
-          if (options.eventId === "document.close") {
-            event.preventDefault();
-            wWidget.closeDialog(event, true);
-          }
-        }
-      );
-
-      scopedController.addEventListener(
-        "afterSave",
-        {
-          name: "ddui:create:record"
-        },
-        function wAttributeCreateDocumentRecord(event, currentDocumentObject) {
-          var newOneValue = {
-            value: currentDocumentObject.initid,
-            displayValue: currentDocumentObject.title,
-            familyRelation: currentDocumentObject.family.name,
-            icon: currentDocumentObject.icon
-          };
-          var newValue;
-          var isPrevented;
-          isPrevented = wWidget.proxyTrigger(event, "beforeSetTargetValue", {
-            attributeValue: newOneValue
-          });
-          if (isPrevented) {
-            return;
-          }
-
-          if (attributeModel.hasMultipleOption()) {
-            newValue = attributeModel.getValue();
-            if (index >= 0) {
-              newValue = newValue[index];
-            }
-            if (_.isArray(newValue)) {
-              newValue = _.clone(newValue); // need to clone to trigger backbone change
-              newValue.push(newOneValue);
+            if (attributeModel.hasMultipleOption()) {
+              newValue = attributeModel.getValue();
+              if (index >= 0) {
+                newValue = newValue[index];
+              }
+              if (_.isArray(newValue)) {
+                newValue = _.clone(newValue); // need to clone to trigger backbone change
+                newValue.push(newOneValue);
+              } else {
+                newValue = [newOneValue];
+              }
             } else {
-              newValue = [newOneValue];
+              newValue = newOneValue;
             }
-          } else {
-            newValue = newOneValue;
-          }
-          attributeModel.setValue(newValue, index);
+            attributeModel.setValue(newValue, index);
 
-          isPrevented = wWidget.proxyTrigger(event, "beforeClose", {
-            attributeValue: newValue
-          });
-          if (!isPrevented) {
-            dw.close();
+            isPrevented = wWidget.proxyTrigger(event, "beforeClose", {
+              attributeValue: newValue
+            });
+            if (!isPrevented) {
+              _.defer(() => {
+                dialogWindow.close();
+              });
+            }
           }
-        }
-      );
+        );
+      });
     }
   },
   /**
@@ -273,7 +281,9 @@ $.widget("dcp.dcpCreateDocument", {
     if (!isPrevented) {
       isPrevented = wWidget.proxyTrigger(event, "beforeDestroy", {});
       if (!isPrevented) {
-        kDialog.destroy();
+        if (this.scopedController) {
+          kDialog.destroy();
+        }
       }
     } else {
       event.preventDefault();

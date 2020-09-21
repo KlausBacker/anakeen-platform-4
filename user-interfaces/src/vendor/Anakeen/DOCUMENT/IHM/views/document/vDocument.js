@@ -783,11 +783,17 @@ export default Backbone.View.extend({
     //Use promise and display success when done
     if (saveDocument && saveDocument.then) {
       saveDocument.then(function vDocumentSaveDisplaySuccess() {
-        currentView.trigger("showSuccess", {
-          htmlMessage: Mustache.render(i18n.___("<b>{{title}}</b> is recorded", "ddui"), {
-            title: currentView.model.get("properties").get("title")
-          })
-        });
+        try {
+          currentView.trigger("showSuccess", {
+            htmlMessage: Mustache.render(i18n.___("<b>{{title}}</b> is recorded", "ddui"), {
+              title: currentView.model.get("properties").get("title")
+            })
+          });
+        } catch (e) {
+          //no consequence if this fail
+          //This is possible in some case - destruction of the controller next after
+          //the save
+        }
       });
     }
   },
