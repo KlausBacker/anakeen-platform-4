@@ -26,6 +26,7 @@
     <smart:access-configuration name="PRF_MAIL" label="Profil mail" profil-type="PFAM">
         <smart:element-access access="view" account="all"/>
         <smart:element-access access="create" account="all"/>
+        <smart:element-access access="icreate" account="all"/>
         <smart:element-access access="edit" account="gadmin"/>
     </smart:access-configuration>
     <smart:access-configuration name="PRF_DOC_MAIL" label="Profil document mail">

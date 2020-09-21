@@ -4,6 +4,7 @@
         <smart:description>Everybody can do everything</smart:description>
         <smart:element-access access="view" account="all"/>
         <smart:element-access access="edit" account="all"/>
+        <smart:element-access access="send" account="all"/>
         <smart:element-access access="delete" account="all"/>
     </smart:access-configuration>
     <smart:structure-configuration name="TST_DDUI_ALLTYPE">
