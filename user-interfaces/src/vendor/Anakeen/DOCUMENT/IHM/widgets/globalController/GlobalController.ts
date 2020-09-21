@@ -296,18 +296,27 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
     mutationList.forEach(mutation => {
       // filter only in dom removal mutations
       if (mutation.type === "childList" && mutation.removedNodes.length) {
-        // tslint:disable-next-line:prefer-for-of
-        for (let i = 0; i < mutation.removedNodes.length; i++) {
-          const node = $(mutation.removedNodes[i]);
-          // Check if dom removal concerns scoped controller
-          const controllerIDs = node.find("[data-controller]").map((index, e) => $(e).attr("data-controller"));
-          if (controllerIDs && controllerIDs.length) {
-            for (let j = controllerIDs.length - 1; j >= 0; j--) {
-              const controllerUID = controllerIDs[j];
+        //Keep only the node we dataController element
+        Array.from(mutation.removedNodes)
+          .filter(currentNode => {
+            const currentElement = currentNode as Element;
+            if (currentElement.hasAttribute) {
+              return currentElement.hasAttribute("data-controller");
+            }
+          })
+          .forEach(currentNode => {
+            const currentElement = currentNode as Element;
+            //Check is the node is in detached state
+            if (document.contains(currentNode)) {
+              //The node is just moved form one part of the dom to another, so we skip
+              return;
+            }
+            if (currentElement.hasAttribute) {
+              const controllerUID = currentElement.getAttribute("data-controller");
               try {
                 const controller = this.getScopedController(controllerUID) as SmartElementController;
                 // Prepare clean up callback
-                const onDestroy = () => {
+                const onDestroy = (): void => {
                   this._logVerbose(
                     `remove scoped controller (${controllerUID}) for smart element "${
                       controller.getProperties().initid
@@ -337,8 +346,7 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
                 }
               }
             }
-          }
-        }
+          });
       }
     });
   }
@@ -528,7 +536,16 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
     // Set inject promise
     event.injectPromise = injectPromise.then(() => {
       // Execute script function with scoped controller
-      const scopedController = this.getScopedController(event.controller.uid) as SmartElementController;
+
+      let scopedController;
+      try {
+        scopedController = this.getScopedController(event.controller.uid) as SmartElementController;
+      } catch (e) {
+        //Unable to find the scoped controller
+        this._logVerbose(`Unable to find the scoped controller maybe deleted ${e}`);
+        return;
+      }
+
       const callback = Object.values(methodsToExecute).map(callBack => {
         return (): any => {
           let result;

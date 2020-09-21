@@ -650,12 +650,6 @@ $.widget("dcp.dcpDocid", $.dcp.dcpAttribute, {
     if (this.kendoWidget && this.kendoWidgetObject) {
       this.kendoWidgetObject.destroy();
     }
-    $(".dcpDocid-create-window").each(function wDocid_destroyWindow() {
-      var kWindow = $(this).data("dcpWindow");
-      if (kWindow) {
-        kWindow.destroy();
-      }
-    });
     this._super();
   }
 });
