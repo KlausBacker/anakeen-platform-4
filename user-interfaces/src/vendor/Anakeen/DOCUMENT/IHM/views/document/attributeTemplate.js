@@ -580,7 +580,7 @@ export default {
             html: true,
             container: $viewElement,
             title: $descriptionElement,
-            placement: "auto",
+            placement: "top",
             trigger: "manual"
           });
 
@@ -620,7 +620,7 @@ export default {
               html: true,
               container: ".dcpDocument",
               title: $descriptionElement,
-              placement: "auto",
+              placement: "top",
               trigger: "manual"
             });
 
@@ -658,7 +658,7 @@ export default {
             html: true,
             container: $viewElement,
             title: $descriptionElement,
-            placement: "auto",
+            placement: "top",
             trigger: "manual"
           });
 
@@ -666,8 +666,7 @@ export default {
 
           break;
 
-        case "left":
-        case "right":
+        default:
           console.error(
             'Cannot use "' +
               data.renderOptions.description.position +
@@ -734,12 +733,20 @@ export default {
           $tip = $viewElement.find(".dcpAttribute__label_description").tooltip({
             html: true,
             container: $viewElement,
-            placement: "auto",
+            placement: "top",
             title: $descriptionElement,
             trigger: "manual"
           });
 
           this.renderClickDesc($tip, nsOn);
+          break;
+        default:
+          console.error(
+            'Cannot use "' +
+              data.renderOptions.description.position +
+              '" description position in normal smart field : ' +
+              data.id
+          );
       }
     }
 
@@ -776,8 +783,9 @@ export default {
 
             $tip = $viewElement.find(".dcpAttribute__label_description").tooltip({
               html: true,
-              container: $viewElement.closest(".dcpFrame"),
+              container: $viewElement,
               placement: "top",
+              boundary: "viewport",
               title: $viewElement.find("> .dcpAttribute__description"),
               trigger: "manual"
             });
