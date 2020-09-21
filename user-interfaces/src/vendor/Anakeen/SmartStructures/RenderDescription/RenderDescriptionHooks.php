@@ -4,10 +4,15 @@
 namespace Anakeen\SmartStructures\RenderDescription;
 
 use Anakeen\Core\SEManager;
+use Anakeen\Exception;
 use Anakeen\Search\Filters\IsEqual;
 use Anakeen\Search\Filters\OneEqualsMulti;
 use Anakeen\Search\SearchElements;
 use Anakeen\SmartHooks;
+use Anakeen\Ui\ArrayRenderOptions;
+use Anakeen\Ui\CommonRenderOptions;
+use Anakeen\Ui\FrameRenderOptions;
+use Anakeen\Ui\TabRenderOptions;
 use SmartStructure\Fields\Renderdescription as DescriptionFields;
 
 class RenderDescriptionHooks extends \Anakeen\SmartElement
@@ -21,8 +26,47 @@ class RenderDescriptionHooks extends \Anakeen\SmartElement
         });
     }
 
+
     /**
-     * Constraint for check default unicity
+     * Constraint to check placement can be used with field type
+     * @param string $structureName
+     * @param string $field
+     * @param string $placement
+     * @return string
+     */
+    protected function checkPlacement($structureName, $field, $placement)
+    {
+
+        $structure = SEManager::getFamily($structureName);
+        $err = "";
+        if ($structure) {
+            $oa = $structure->getAttribute($field);
+            if ($oa) {
+                try {
+                    switch ($oa->type) {
+                        case "tab":
+                            $tabRender = new TabRenderOptions();
+                            break;
+                        case "frame":
+                            $tabRender = new FrameRenderOptions();
+                            break;
+                        case "array":
+                            $tabRender = new ArrayRenderOptions();
+                            break;
+                        default:
+                            $tabRender = new CommonRenderOptions();
+                    }
+                    $tabRender->setDescription("ho", $placement);
+                } catch (Exception $e) {
+                    $err = $e->getMessage();
+                }
+            }
+        }
+        return $err;
+    }
+
+    /**
+     * Constraint to check default unicity
      * @param string $structureName
      * @param string $mode
      * @param string $lang
@@ -64,7 +108,7 @@ class RenderDescriptionHooks extends \Anakeen\SmartElement
     }
 
     /**
-     * Constraint for check default unicity
+     * Constraint to check if field exists in structure
      * @param string $structureName
      * @param string $field
      * @return string
@@ -73,9 +117,13 @@ class RenderDescriptionHooks extends \Anakeen\SmartElement
     {
         $structure = SEManager::getFamily($structureName);
         if ($structure) {
-            $oa=$structure->getAttribute($field);
+            $oa = $structure->getAttribute($field);
             if (!$oa) {
-                return sprintf(___("Field \"%s\" not exists in structure \"%s\"", "renderdescription"), $field, $structure->getTitle());
+                return sprintf(
+                    ___("Field \"%s\" not exists in structure \"%s\"", "renderdescription"),
+                    $field,
+                    $structure->getTitle()
+                );
             }
         }
         return "";

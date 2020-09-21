@@ -245,8 +245,10 @@ table.dcpArray__table.transpose {
     font-weight: 700;
     padding: 0;
     line-height: 2.5em;
-    border-bottom: 1px solid #DDD;
     margin-bottom: 15px;
+  }
+  .dcpArray.dcpAttribute__labelPosition--up > .dcpArray__label {
+    border-bottom: 1px solid #DDD;
   }
 
   .table-bordered > thead > tr > th,

@@ -6,6 +6,7 @@
   margin-bottom: 0.2rem;
   padding: 0.2rem;
   background: $dcpAttributeDescriptionBackgroundColor;
+  width: 100%;
 
 
 }
@@ -13,6 +14,11 @@
 .dcpAttribute__description--top {
   text-align: center;
   clear: both;
+}
+
+.dcpTab__content > .dcpAttribute__description--top,
+.dcpArray > .dcpAttribute__description--top {
+  margin-top: 1rem;
 }
 
 .dcpAttribute__description.dcpAttribute__description--topValue.dcpAttribute__right,
@@ -25,14 +31,14 @@
 .dcpAttribute__description.dcpAttribute__description--top,
 .dcpAttribute__description.dcpAttribute__description--topLabel,
 .dcpAttribute__description.dcpAttribute__description--topValue {
-  margin-bottom:$dcp-attribute-padding-base-vertical;
+  margin-bottom: $dcp-attribute-padding-base-vertical;
 }
 
 
 .dcpAttribute__description.dcpAttribute__description--bottom,
 .dcpAttribute__description.dcpAttribute__description--bottomLabel,
 .dcpAttribute__description.dcpAttribute__description--bottomValue {
-  margin-bottom:$dcp-attribute-padding-base-vertical;
+  margin-bottom: $dcp-attribute-padding-base-vertical;
 }
 
 .dcpAttribute__description.dcpAttribute__description--topLabel.dcpAttribute__left {
@@ -70,41 +76,6 @@
   margin-left: -3px;
 }
 
-.dcpAttribute__description--left {
-  display: inline-block;
-  width: 50%;
-  float: left;
-  margin-right: 1em;
-}
-
-.dcpAttribute__description--left {
-  position: relative;
-}
-
-.dcpAttribute__description--left::after, .dcpAttribute__description--left::before {
-  left: 100%;
-  top: 1.5em;
-  border: solid transparent;
-  content: " ";
-  height: 0;
-  width: 0;
-  position: absolute;
-  pointer-events: none;
-}
-
-.dcpAttribute__description--left::after {
-  border-color: rgba(255, 255, 255, 0);
-  border-left-color: $dcpAttributeDescriptionBackgroundColor;
-  border-width: $dcpAttributeDescriptionArrowSize;
-  margin-top: (0 - $dcpAttributeDescriptionArrowSize);
-}
-
-.dcpAttribute__description--left::before {
-  border-color: rgba(191, 191, 191, 0);
-  border-left-color: $ank-ui-doc-edit-attribute-hover-color;
-  border-width: ($dcpAttributeDescriptionArrowSize + 1);
-  margin-top: (-1 - $dcpAttributeDescriptionArrowSize);
-}
 
 .dcpAttribute__description--top, .dcpAttribute__description--topLabel, .dcpAttribute__description--topValue {
   position: relative;
@@ -175,6 +146,8 @@
   &.dcpAttribute__description--bottom,
   &.dcpAttribute__description--bottomValue,
   &.dcpAttribute__description--bottomLabel {
+    top: 0;
+
     &::before, &::after {
       display: none;
     }
@@ -183,7 +156,7 @@
   &.dcpAttribute__description--top,
   &.dcpAttribute__description--bottomLabel,
   &.dcpAttribute__description--topValue {
-    margin-bottom:0.5em;
+    margin-bottom: 0.5em;
   }
 }
 
@@ -196,9 +169,7 @@
   &.dcpAttribute__description--topValue,
   &.dcpAttribute__description--bottom,
   &.dcpAttribute__description--bottomValue,
-  &.dcpAttribute__description--bottomLabel,
-  &.dcpAttribute__description--left,
-  &.dcpAttribute__description--right {
+  &.dcpAttribute__description--bottomLabel {
     &::before, &::after {
       display: none;
     }
@@ -206,15 +177,9 @@
 
 
   &.dcpAttribute__description--bottomLabel {
-    top:0;
+    top: 0;
   }
 
-  &.dcpAttribute__description--left, &.dcpAttribute__description--right {
-    display: inline-block;
-    width: 10em;
-    vertical-align: top;
-    margin: 1em;
-  }
 }
 
 .dcpArray > .dcpAttribute__description {
@@ -229,15 +194,14 @@
       left: 50%;
     }
   }
+
   &.dcpAttribute__description--topLabel,
   &.dcpAttribute__description--top {
     margin-bottom: $dcpAttributeDescriptionArrowSize;
   }
 
   &.dcpAttribute__description--bottom,
-  &.dcpAttribute__description--bottomLabel,
-  &.dcpAttribute__description--left,
-  &.dcpAttribute__description--right {
+  &.dcpAttribute__description--bottomLabel {
     &::before, &::after {
       display: none;
     }
@@ -245,15 +209,23 @@
 }
 
 
+.dcpArray__label > .dcpAttribute__description {
+  font-weight: normal;
+  line-height: normal;
+  font-size: 1rem;
+}
+
 .dcpArray {
-  .dcpArray__head__cell  {
-    .dcpAttribute__description--bottom{
-      margin-bottom:1em;
+  .dcpArray__head__cell {
+    .dcpAttribute__description--bottom {
+      margin-bottom: 1em;
     }
   }
+
   .dcpAttribute__description--bottomLabel {
-    margin-bottom:1em;
+    margin-bottom: 1em;
   }
+
   .dcpArray__label {
     .dcpAttribute__description--bottomLabel,
     .dcpAttribute__description--topLabel {
@@ -268,21 +240,6 @@
   display: inline-block;
   width: calc(100% - 12em);
 }
-
-@media (min-width: $screen-md-min) {
-  .dcpFrame > .dcpAttribute__description {
-    &.dcpAttribute__description--right,
-    &.dcpAttribute__description--left {
-      width: 15em;
-    }
-  }
-
-  .dcpFrame__content.dcpFrame__content--left-description,
-  .dcpFrame__content.dcpFrame__content--right-description  {
-    width: calc(100% - 17em);
-  }
-}
-
 
 .dcpArray__content > .dcpAttribute__description,
 .dcpFrame__content > .dcpAttribute__description {
@@ -305,28 +262,29 @@
   }
 }
 
-@media (min-width: ($grid-float-breakpoint + 1)) {
-  .dcpAttribute > .dcpAttribute__description--bottomLabel::after,
-  .dcpAttribute > .dcpAttribute__description--bottomLabel::before,
-  .dcpAttribute > .dcpAttribute__description--topLabel::after, .dcpAttribute > .dcpAttribute__description--topLabel::before {
-    left: calc(100% - 2em);
-  }
-
-  .dcpAttribute > .dcpAttribute__description--bottomValue::after,
-  .dcpAttribute > .dcpAttribute__description--bottomValue::before,
-  .dcpAttribute > .dcpAttribute__description--topValue::after,
-  .dcpAttribute > .dcpAttribute__description--topValue::before {
-    left: 2em;
-  }
+.dcpAttribute > .dcpAttribute__description--bottomLabel::after,
+.dcpAttribute > .dcpAttribute__description--bottomLabel::before,
+.dcpAttribute > .dcpAttribute__description--topLabel::after,
+.dcpAttribute > .dcpAttribute__description--topLabel::before {
+  left: calc(100% - 2em);
 }
+
+.dcpAttribute > .dcpAttribute__description--bottomValue::after,
+.dcpAttribute > .dcpAttribute__description--bottomValue::before,
+.dcpAttribute > .dcpAttribute__description--topValue::after,
+.dcpAttribute > .dcpAttribute__description--topValue::before {
+  left: 2em;
+}
+
 
 .dcpArray__head__cell > .dcpAttribute__description {
   white-space: normal;
   font-weight: normal;
 
   &.dcpAttribute__description--bottomLabel {
-    margin-bottom:1em;
+    margin-bottom: 1em;
   }
+
   &::before, &::after {
     display: none;
   }
@@ -341,13 +299,14 @@
 }
 
 .dcpArray__table + .dcpAttribute__description--bottomValue {
-  margin-bottom:1em;
+  margin-bottom: 1em;
 }
+
 .dcpArray__cell > .dcpAttribute__description {
   white-space: normal;
 
   &.dcpAttribute__description--bottomValue {
-    margin-bottom:$dcpAttributeDescriptionArrowSize;
+    margin-bottom: $dcpAttributeDescriptionArrowSize;
   }
 }
 
@@ -366,42 +325,11 @@
   border-color: rgba(191, 191, 191, 0);
   border-bottom-color: $ank-ui-doc-edit-attribute-hover-color;
   border-width: ($dcpAttributeDescriptionArrowSize + 1);
-  margin-left: (-1- $dcpAttributeDescriptionArrowSize );
+  margin-left: (-1- $dcpAttributeDescriptionArrowSize);
 }
 
-.dcpAttribute__description--right {
-  position: relative;
-  width: 40%;
-  float: right;
-}
-
-.dcpAttribute__description.dcpAttribute__description--right + .input-group {
-  width: calc(60% - #{$dcpAttributeDescriptionArrowSize});
-}
-
-.dcpAttribute__description--right::after, .dcpAttribute__description--right::before {
-  right: 100%;
-  top: 1.5em;
-  border: solid transparent;
-  content: " ";
-  height: 0;
-  width: 0;
-  position: absolute;
-  pointer-events: none;
-}
-
-.dcpAttribute__description--right::after {
-  border-color: rgba(255, 255, 255, 0);
-  border-right-color: $dcpAttributeDescriptionBackgroundColor;
-  border-width: $dcpAttributeDescriptionArrowSize;
-  margin-top: (0 - $dcpAttributeDescriptionArrowSize);
-}
-
-.dcpAttribute__description--right::before {
-  border-color: rgba(191, 191, 191, 0);
-  border-right-color: $ank-ui-doc-edit-attribute-hover-color;
-  border-width: ($dcpAttributeDescriptionArrowSize + 1);
-  margin-top: (-1 - $dcpAttributeDescriptionArrowSize);
+.dcpAttribute__description_margin_left {
+  width:20rem;
 }
 
 .dcpAttribute__description-info.in {
@@ -412,7 +340,7 @@
   z-index: 2;
 }
 .dcpAttribute__description-info .tooltip-inner {
-  position:relative;
+  position: relative;
   background-color: $dcpAttributeDescriptionBackgroundColor;
   color: black;
   max-width: 400px;
@@ -438,19 +366,25 @@
 .dcpAttribute__description-info.tooltip[x-placement=top] .arrow::before {
   border-top-color: $ank-ui-doc-edit-attribute-hover-color;
 }
+
 .dcpAttribute__description-info.tooltip[x-placement=bottom] .arrow::before {
   border-bottom-color: $ank-ui-doc-edit-attribute-hover-color;
 }
+
 .dcpAttribute__description-info.tooltip[x-placement=left] .arrow::before {
   border-left-color: $ank-ui-doc-edit-attribute-hover-color;
 }
+
 .dcpAttribute__description-info.tooltip[x-placement=right] .arrow::before {
   border-right-color: $ank-ui-doc-edit-attribute-hover-color;
 }
 
 .dcpAttribute__label_description {
-  padding-right: 0.5em;
   cursor: pointer;
   vertical-align: top;
   display: inline-block;
+}
+
+.dcpAttribute__label .dcpAttribute__label_description .fa {
+  margin-left: 0.2rem;
 }

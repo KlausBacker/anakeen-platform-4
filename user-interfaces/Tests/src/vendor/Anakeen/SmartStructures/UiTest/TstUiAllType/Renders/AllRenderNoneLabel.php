@@ -14,7 +14,7 @@ class AllRenderNoneLabel extends AllRenderConfigEdit
 
         $options->commonOption()->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::nonePosition);
         $options->arrayAttribute()->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::nonePosition);
-        $options->tab()->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::autoPosition);
+        $options->tab()->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::leftPosition);
 
         return $options;
     }

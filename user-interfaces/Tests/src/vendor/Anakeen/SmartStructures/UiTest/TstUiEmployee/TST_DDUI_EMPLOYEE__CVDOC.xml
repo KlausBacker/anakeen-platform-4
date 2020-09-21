@@ -37,6 +37,14 @@
                 <cv_displayed>no</cv_displayed>
             </cv_t_views>
             <cv_t_views>
+                <cv_idview>LEFT</cv_idview>
+                <cv_lview>Left label</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview xsi:nil="true"/>
+                <cv_renderconfigclass>Anakeen\SmartStructures\UiTest\TstUiEmployee\Renders\EmployeeLeftRender</cv_renderconfigclass>
+                <cv_displayed>no</cv_displayed>
+            </cv_t_views>
+            <cv_t_views>
                 <cv_idview>FRAMEVIEWTBCOLUMN</cv_idview>
                 <cv_lview>Responsive View</cv_lview>
                 <cv_kview>VCONS</cv_kview>
