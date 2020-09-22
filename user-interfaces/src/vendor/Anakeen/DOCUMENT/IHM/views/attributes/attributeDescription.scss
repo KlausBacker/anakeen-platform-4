@@ -11,6 +11,7 @@
 
 }
 
+.dcpAttribute__description--bottom,
 .dcpAttribute__description--top {
   text-align: center;
   clear: both;
@@ -38,9 +39,25 @@
 .dcpAttribute__description.dcpAttribute__description--bottom,
 .dcpAttribute__description.dcpAttribute__description--bottomLabel,
 .dcpAttribute__description.dcpAttribute__description--bottomValue {
-  margin-bottom: $dcp-attribute-padding-base-vertical;
+  margin-bottom: $dcp-attribute-padding-base-vertical * 2;
 }
 
+.dcpAttribute__description--click {
+  .dcpAttribute__description__title {
+    span:first-child,
+    div:first-child,
+    p:first-child {
+      text-indent: 2rem;
+      direction: rtl;
+    }
+  }
+}
+
+.dcpFrame > .dcpAttribute__description.dcpAttribute__description--bottom {
+  margin-bottom: 1.5rem;
+}
+
+.dcpAttribute__description.dcpAttribute__description--bottom.card,
 .dcpAttribute__description.dcpAttribute__description--topLabel.dcpAttribute__left {
   float: none;
 }
@@ -70,6 +87,7 @@
   float: left;
   width: 1em;
   cursor: pointer;
+  text-align: center;
 }
 
 .dcpAttribute__description__title__expand.fa-caret-down::before {
@@ -329,16 +347,14 @@
 }
 
 .dcpAttribute__description_margin_left {
-  width:20rem;
+  width: 20rem;
 }
 
 .dcpAttribute__description-info.in {
   opacity: 1;
 }
 
-.dcpAttribute__description-info {
-  z-index: 2;
-}
+
 .dcpAttribute__description-info .tooltip-inner {
   position: relative;
   background-color: $dcpAttributeDescriptionBackgroundColor;
@@ -359,8 +375,17 @@
   padding: 0.2rem;
   position: absolute;
   cursor: pointer;
-  right: -1.7rem;
-  top: -2px;
+  right: 0;
+  background: transparent;
+  border:none;
+  color: #333;
+  width: 2rem;
+  z-index: 1;
+  top: 0;
+  &:hover {
+    background-color:$ank-ui-doc-edit-attribute-hover-color ;
+    color: $dcpAttributeDescriptionBackgroundColor;
+  }
 }
 
 .dcpAttribute__description-info.tooltip[x-placement=top] .arrow::before {
@@ -387,4 +412,24 @@
 
 .dcpAttribute__label .dcpAttribute__label_description .fa {
   margin-left: 0.2rem;
+  padding-top: 0.2rem;
+}
+
+.dcpAttribute__label >  .dcpAttribute__label_description {
+  margin-top: -0.1rem;
+}
+
+.dcpFrame__label >  .dcpAttribute__label_description ,
+.dcpArray__label >  .dcpAttribute__label_description ,
+.dcpArray__head__cell > .dcpAttribute__label_description {
+  vertical-align: middle;
+}
+
+.dcpAttribute__label_description .fa {
+  margin-right: 0.2rem;
+  font-size: 1.2rem;
+
+  &:hover {
+    color: $ank-ui-doc-edit-attribute-hover-color;
+  }
 }

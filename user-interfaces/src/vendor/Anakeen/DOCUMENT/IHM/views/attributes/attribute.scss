@@ -62,15 +62,13 @@
     min-width: 20rem;
     &.dcpAttribute__description {
       margin-left: 20rem;
-      width: auto;
+      width: 100%;
     }
   }
 }
 
 
-.row.dcpArray--left {
-  flex-wrap: initial;
-}
+
 
 .row.dcpArray--left {
   align-items: start;

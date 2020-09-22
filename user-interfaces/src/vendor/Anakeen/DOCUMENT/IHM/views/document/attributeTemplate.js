@@ -562,15 +562,6 @@ export default {
         case "topLabel":
           $viewElement.prepend($descriptionElement);
           break;
-        case "left":
-          $viewElement.find(".dcpFrame__content").addClass("dcpFrame__content--left-description");
-          $descriptionElement.insertAfter($viewElement.find(".dcpFrame__label"));
-          break;
-        case "right":
-          // Need to add class because no have css selector
-          $viewElement.append($descriptionElement);
-          $viewElement.find(".dcpFrame__content").addClass("dcpFrame__content--right-description");
-          break;
         case "bottomLabel":
           $descriptionElement.insertAfter($viewElement.find(".dcpFrame__label"));
           break;
@@ -589,11 +580,19 @@ export default {
             html: true,
             container: $viewElement,
             title: $descriptionElement,
-            placement: "auto",
+            placement: "top",
             trigger: "manual"
           });
 
           this.renderClickDesc($tip, nsOn);
+          break;
+        default:
+          console.error(
+            'Cannot use "' +
+              data.renderOptions.description.position +
+              '" description position in frame attribute : ' +
+              data.id
+          );
       }
     }
     if (isTabContent || isTabLabel) {
@@ -621,7 +620,7 @@ export default {
               html: true,
               container: ".dcpDocument",
               title: $descriptionElement,
-              placement: "auto",
+              placement: "top",
               trigger: "manual"
             });
 
@@ -629,10 +628,7 @@ export default {
           }
           break;
 
-        case "bottomLabel":
-        case "topLabel":
-        case "left":
-        case "right":
+        default:
           console.error(
             'Cannot use "' +
               data.renderOptions.description.position +
@@ -646,17 +642,8 @@ export default {
         case "top":
           $viewElement.prepend($descriptionElement);
           break;
-        case "topLabel":
-          $viewElement.find(".dcpArray__label").prepend($descriptionElement);
-          break;
         case "bottomLabel":
-          $viewElement.find(".dcpArray__label").append($descriptionElement);
-          break;
-        case "topValue":
-          $viewElement.find(".dcpArray__content").prepend($descriptionElement);
-          break;
-        case "bottomValue":
-          $descriptionElement.insertAfter($viewElement.find(".dcpArray__table"));
+          $descriptionElement.insertAfter($viewElement.find(".dcpArray__label"));
           break;
         case "bottom":
           $viewElement.append($descriptionElement);
@@ -671,7 +658,7 @@ export default {
             html: true,
             container: $viewElement,
             title: $descriptionElement,
-            placement: "auto",
+            placement: "top",
             trigger: "manual"
           });
 
@@ -679,8 +666,7 @@ export default {
 
           break;
 
-        case "left":
-        case "right":
+        default:
           console.error(
             'Cannot use "' +
               data.renderOptions.description.position +
@@ -690,6 +676,7 @@ export default {
           break;
       }
     }
+
     if (isAttribute) {
       const isLeft = attributeView.model.getOption("labelPosition") === "left";
       switch (data.renderOptions.description.position) {
@@ -723,7 +710,6 @@ export default {
           break;
         case "bottomValue":
           if (isLeft) {
-            //$viewElement.append($('<div class="dcpAttribute__description_margin_left">MARGE</div>'));
             $viewElement.append($descriptionElement);
             $descriptionElement.addClass("dcpAttribute__right");
           } else {
@@ -747,12 +733,20 @@ export default {
           $tip = $viewElement.find(".dcpAttribute__label_description").tooltip({
             html: true,
             container: $viewElement,
-            placement: "auto",
+            placement: "top",
             title: $descriptionElement,
             trigger: "manual"
           });
 
           this.renderClickDesc($tip, nsOn);
+          break;
+        default:
+          console.error(
+            'Cannot use "' +
+              data.renderOptions.description.position +
+              '" description position in normal smart field : ' +
+              data.id
+          );
       }
     }
 
@@ -790,7 +784,8 @@ export default {
             $tip = $viewElement.find(".dcpAttribute__label_description").tooltip({
               html: true,
               container: $viewElement,
-              placement: "auto",
+              placement: "top",
+              boundary: "viewport",
               title: $viewElement.find("> .dcpAttribute__description"),
               trigger: "manual"
             });
@@ -798,16 +793,14 @@ export default {
             this.renderClickDesc($tip, nsOn);
           }
           break;
-        case "left":
-        case "right":
-          // No use in column context
+
+        default:
           console.error(
             'Cannot use "' +
               data.renderOptions.description.position +
-              '" description position in column attribute : ' +
+              '" description position in array column attribute : ' +
               data.id
           );
-          break;
       }
     }
     if (data.renderOptions.description.htmlContent) {

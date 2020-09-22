@@ -728,6 +728,8 @@ export default Backbone.View.extend({
     if (options.text) {
       text = options.text;
     }
+    // hide tooltips
+    this.$el.find(".tooltip").hide();
     this.trigger("cleanNotification");
     this.trigger("loaderShow", text, avance);
   },
