@@ -22,6 +22,7 @@ const bumpDepsInfoXML = async ({ moduleName, version }) => {
     return acc.then(async () => {
       const infoPath = path.resolve(currentPath, info);
       const xmlFile = await readFile(infoPath, { encoding: "utf8" });
+      console.log(`analyze ${currentPath}`);
       const document = libxml.parseXmlString(xmlFile);
       const requires = document
         .root()
