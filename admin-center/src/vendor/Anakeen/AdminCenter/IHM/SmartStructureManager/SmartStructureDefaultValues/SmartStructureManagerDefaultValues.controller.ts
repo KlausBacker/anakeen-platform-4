@@ -392,6 +392,8 @@ export default class SmartStructureManagerDefaultValuesController extends Mixins
             .fail(() => {
               this.showModal = true;
             });
+        } else {
+          this.showModal = false;
         }
         break;
       case "ssmanager.erase":

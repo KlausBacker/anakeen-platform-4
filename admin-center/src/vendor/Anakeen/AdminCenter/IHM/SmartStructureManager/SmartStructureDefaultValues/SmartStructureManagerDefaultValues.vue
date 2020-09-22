@@ -17,13 +17,13 @@
       :filterable-extra="false"
       :no-records="{
         template: `<div class='empty-ssm-grid'>
-                                                <div class='empty-ssm-grid-icon'>
-                                                   <i class='material-icons'>grid_off</i>
-                                                </div>
-                                                <div class='empty-ssm-grid-text'>
-                                                    <span> No default values to display for this Smart Structure</span>
-                                                </div>
-                                            </div>`
+                      <div class='empty-ssm-grid-icon'>
+                        <i class='material-icons'>grid_off</i>
+                      </div>
+                      <div class='empty-ssm-grid-text'>
+                          <span> No default values to display for this Smart Structure</span>
+                      </div>
+                    </div>`
       }"
     >
       <kendo-grid-column
@@ -57,20 +57,16 @@
         :filterable-cell-template="autoFilterCol"
         :template="displayData('displayValue')"
       />
+      <kendo-grid-column :hidden="true" :title="'<b>Type</b>'" :field="'type'" />
+      <kendo-grid-column :hidden="true" :title="'<b>Field ID</b>'" :field="'fieldId'" />
+      <kendo-grid-column :hidden="true" :title="'<b>Parent Field ID</b>'" :field="'parentFieldId'" />
       <kendo-grid-column
-:hidden="true" :title="'<b>Type</b>'" :field="'type'" />
-      <kendo-grid-column
-:hidden="true" :title="'<b>Field ID</b>'" :field="'fieldId'" />
-      <kendo-grid-column
-:hidden="true" :title="'<b>Parent Field ID</b>'" :field="'parentFieldId'" />
-      <kendo-grid-column
-:hidden="true" :title="'<b>Is Advanced Value</b>'" :field="'isAdvancedValue'" />
-      <kendo-grid-column
-:hidden="true" :title="'<b>Is Multiple</b>'" :field="'isMultiple'" />
-      <kendo-grid-column
-:title="''" width="6.5rem"
-:command="{ click: onEditClick, text: translations.Display }"
-/>
+        :hidden="true"
+        :title="'<b>Is Advanced Value</b>'"
+        :field="'isAdvancedValue'"
+      />
+      <kendo-grid-column :hidden="true" :title="'<b>Is Multiple</b>'" :field="'isMultiple'" />
+      <kendo-grid-column :title="''" width="8rem" :command="{ click: onEditClick, text: translations.Display }" />
     </kendo-grid>
 
     <transition name="modal">
@@ -80,7 +76,7 @@
             <smart-form
               ref="ssmForm"
               :config="smartForm"
-              :options="{ withCloseConfirmation: false }"
+              :options="{ withCloseConfirmation: true }"
               @actionClick="formClickMenu"
               @ready="ssmFormReady"
               @smartFieldChange="ssmFormChange"
