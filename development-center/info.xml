@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="development-center" version="2.2.2-RC.2020.1.38" vendor="Anakeen" license="https://ap4.anakeen.com/license4.html">
-
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="development-center" version="2.2.3" vendor="Anakeen" license="https://ap4.anakeen.com/licence4.html">
     <description>Developement Center</description>
 
     <requires>
-        <module name="user-interfaces" version="^3.0.2-RC.2020.1.38"/>
-        <module name="security" version="^2.0.3-RC.2020.1.38"/>
-        <module name="workflow" version="^2.0.2-RC.2020.1.38"/>
-        <module name="anakeen-hub" version="^1.0.4-RC.2020.1.38"/>
+        <module name="user-interfaces" version="^3.1.0"/>
+        <module name="security" version="^2.0.4"/>
+        <module name="workflow" version="^2.0.3"/>
+        <module name="anakeen-hub" version="^2.0.0"/>
     </requires>
 
     <parameters>
@@ -15,7 +14,7 @@
 
     <post-install>
         <!-- import default configuration of admin center -->
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/DevelopmentCenter/Config/develConfiguration.xml"/>
+        <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/DevelopmentCenter/Config/**/*.xml"/>
         <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/elements-grid-controller.xml"/>
         <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/masks-grid-controller.xml"/>
         <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/control-grid-controller.xml"/>
@@ -26,7 +25,7 @@
 
     <post-upgrade>
         <!-- import default configuration of admin center -->
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/DevelopmentCenter/Config/develConfiguration.xml"/>
+        <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/DevelopmentCenter/Config/**/*.xml"/>
 
         <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/elements-grid-controller.xml"/>
         <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Devel/UI/masks-grid-controller.xml"/>

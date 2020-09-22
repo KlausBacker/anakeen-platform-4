@@ -37,6 +37,7 @@ class DocumentViewDelete extends DocumentView
 
     protected function getEtagInfo($docid)
     {
+        $this->getDocument($docid);
         return null;
     }
 }

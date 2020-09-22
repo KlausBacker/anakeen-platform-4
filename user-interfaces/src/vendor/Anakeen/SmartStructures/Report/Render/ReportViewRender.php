@@ -58,4 +58,10 @@ class ReportViewRender extends DefaultView
         $css["ankcomponent"]= \Anakeen\Ui\UIGetAssetPath::getCssSmartWebComponents();
         return $css;
     }
+    public function getCustomServerData(\Anakeen\Core\Internal\SmartElement $document)
+    {
+        $data = parent::getCustomServerData($document);
+        $data["SEName"] =  \Anakeen\SmartStructures\Dsearch\Render\SearchViewRender::getFamName($document);
+        return $data;
+    }
 }

@@ -1,49 +1,50 @@
 <?php
-
-namespace {{namespace}};
-
-use Anakeen\Search\Exception as SearchException;
-use Anakeen\Search\Filters\TitleContains;
-use Anakeen\Search\SearchElements;
-use Anakeen\SmartAutocompleteRequest;
-use Anakeen\SmartAutocompleteResponse;
-use SmartStructure\Fields\{{ssName}} as {{ssName}}Fields;
-
-class {{ssName}}Autocompletion
-{
-
-    /**
-     * @param SmartAutocompleteRequest $request
-     * @param SmartAutocompleteResponse $response
-     * @param array $args
-     * @return SmartAutocompleteResponse
-     * @throws SearchException
-     */
-    public static function getSuggestionsFromElementId(
-        SmartAutocompleteRequest $request,
-        SmartAutocompleteResponse $response,
-        // args write in the autocomplete balise (smart:field-argument)
-        array $args
-    ): SmartAutocompleteResponse {
-        // Input from the user
-        $userInput = $request->getFilterValue();
-        $elementId = $args["elementId"];
-        // Initialise search in the smartStructure name
-        $search = new SearchElements("{{SSNAME}}");
-
-        // Search element with the id = $elementId
-        $search->addFilter(new IsEqual("id", $elementId));
-        if ("" !== $userInput) {
-            // Search element with the title contains $userInput
-            $search->addFilter(new TitleContains($userInput, TitleContains::NOCASE));
-        }
-        // You can have some results
-        foreach ($search->getResults() as $result) {
-            $title = $result->getTitle();
-            $response->appendEntry(\Anakeen\Core\Utils\Strings::xmlEncode($title), [
-                ["value" => $result->initid, "displayValue" => $title],
-            ]);
-        }
-        return $response;
-    }
-}
+//
+//namespace {{namespace}};
+//
+//use Anakeen\Search\Exception as SearchException;
+//use Anakeen\Search\Filters\IsEqual;
+//use Anakeen\Search\Filters\TitleContains;
+//use Anakeen\Search\SearchElements;
+//use Anakeen\SmartAutocompleteRequest;
+//use Anakeen\SmartAutocompleteResponse;
+//use SmartStructure\Fields\{{ssName}} as {{ssName}}Fields;
+//
+//class {{ssName}}Autocompletion
+//{
+//    /**
+//     * @param SmartAutocompleteRequest $request
+//     * @param SmartAutocompleteResponse $response
+//     * @param array $args
+//     * @return SmartAutocompleteResponse
+//     * @throws SearchException
+//     */
+//    public static function getSuggestionsFromElementId(
+//        SmartAutocompleteRequest $request,
+//        SmartAutocompleteResponse $response,
+//        // args write in the autocomplete balise (smart:field-argument)
+//        array $args
+//    ): SmartAutocompleteResponse {
+//        // Input from the user
+//        $userInput = $request->getFilterValue();
+//        $elementId = $args["elementId"];
+//        // Initialise search in the smartStructure name
+//        $search = new SearchElements("{{SSNAME}}");
+//
+//        // Search element with the id = $elementId
+//        $search->addFilter(new IsEqual("id", $elementId));
+//        if ("" !== $userInput) {
+//            // Search element with the title contains $userInput
+//            $search->addFilter(new TitleContains($userInput, TitleContains::NOCASE));
+//        }
+//        $search->setSlice(ContextManager::getParameterValue("Core", "CORE_AUTOCOMPLETE_SLICE", 100));
+//        // You can have some results
+//        foreach ($search->getResults() as $result) {
+//            $title = $result->getTitle();
+//            $response->appendEntry(\Anakeen\Core\Utils\Strings::xmlEncode($title), [
+//                ["value" => $result->initid, "displayValue" => $title],
+//           ]);
+//       }
+//       return $response;
+//   }
+//}

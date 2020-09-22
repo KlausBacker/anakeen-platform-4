@@ -12,7 +12,7 @@ class EmployeeCustomRender extends \Anakeen\Ui\DefaultEdit
         $options = parent::getOptions($document);
 
 
-        $options->commonOption()->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::autoPosition);
+        $options->commonOption()->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::leftPosition);
         $tplIdent
             = <<< 'HTML'
         <div class="Bof" style="outline:dashed 1px red; margin: 1rem">

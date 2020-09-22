@@ -80,7 +80,7 @@ export default {
       //noinspection JSUnusedGlobalSymbols
       this.selectedComponent = this.$refs.hubGrid.dataItems[e.currentTarget.innerText - 1].properties.id;
     });
-    this.openElement();
+    this.openConfigInfo();
   },
   methods: {
     initHub(id) {
@@ -88,15 +88,18 @@ export default {
         this.hubElement = response.data.data.document;
       });
     },
-    openElement() {
+
+    openConfigInfo() {
       this.openDetailConfig(this.hubId);
+    },
+    openElement() {
       this.selectedComponent = this.hubComponentSelected;
       if (this.selectedComponent) {
         this.openDetailConfig(this.selectedComponent);
       }
     },
     exportConfiguration() {
-      window.open(`/hub/config/${this.hubId}.xml`);
+      window.open(`/hub/config/${this.hubId}.zip`, "_self");
     },
     openInterface() {
       let routeEntry = `/hub/station/${this.hubId}/`;

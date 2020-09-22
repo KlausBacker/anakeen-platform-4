@@ -13,6 +13,10 @@
         </smart:accesses>
     </smart:structure-configuration>
 
+    <smart:access-configuration name="PRF_MAIL"  profil-type="PFAM">
+        <smart:element-access access="icreate" account="all"/>
+    </smart:access-configuration>
+
     <smart:access-configuration name="PRF_RENDERDESCRIPTION_ACCESS" label="Administration des descriptions de formulaire">
         <smart:description>Messages pour décrire les champs dans les formulaires.</smart:description>
         <smart:element-access access="view" account="gadmin"/>

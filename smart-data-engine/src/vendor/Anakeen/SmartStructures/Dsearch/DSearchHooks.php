@@ -797,7 +797,6 @@ class DSearchHooks extends \SmartStructure\Search
         } elseif ($stateCol == "fixstate") {
             $cond = sprintf("(%s and locked = -1)", $cond);
         }
-        //print("\n$op\n".$cond);
         return $cond;
     }
 

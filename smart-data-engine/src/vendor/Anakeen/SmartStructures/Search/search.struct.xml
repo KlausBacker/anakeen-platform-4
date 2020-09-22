@@ -28,7 +28,6 @@
         <smart:enum-configuration name="SEARCH-se_case">
             <smart:enum name="no" label="expression sans casse"/>
             <smart:enum name="yes" label="expression avec casse"/>
-            <smart:enum name="full" label="mot complet"/>
         </smart:enum-configuration>
     </smart:enumerates>
     <smart:structure-configuration name="SEARCH" id="5" label="Recherche">

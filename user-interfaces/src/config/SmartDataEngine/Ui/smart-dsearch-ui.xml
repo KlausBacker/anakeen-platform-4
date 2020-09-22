@@ -33,6 +33,14 @@
       <sde:description>Temporary Doc</sde:description>
       <sde:requiredAccess/>
     </sde:route>
+    <sde:route name="Ui:Smart:Search:TemporarySearch">
+      <sde:priority>1</sde:priority>
+      <sde:callable>Anakeen\SmartStructures\Dsearch\Routes\TemporarySearch</sde:callable>
+      <sde:method>POST</sde:method>
+      <sde:pattern>/api/v2/smartstructures/dsearch/temporarySearch/{family}/</sde:pattern>
+      <sde:description>Temporary Search</sde:description>
+      <sde:requiredAccess/>
+    </sde:route>
     <sde:route name="Ui:Smart:Search:GridAttributes">
       <sde:priority>1</sde:priority>
       <sde:callable>Anakeen\SmartStructures\Dsearch\Routes\SearchGridAttributes</sde:callable>

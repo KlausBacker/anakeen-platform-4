@@ -133,9 +133,6 @@ export default Backbone.View.extend({
             }
 
             currentView.$el.append($(Mustache.render(currentView.templateWrapper || "", data)));
-
-            attributeTemplate.insertDescription(currentView);
-
             //analyze the display label and add display class
             if (currentView.displayLabel === false) {
               currentView.$el.find(".dcpAttribute__label").remove();
@@ -164,11 +161,7 @@ export default Backbone.View.extend({
                   .not(".dcpAttribute__description")
                   .addClass("dcpAttribute__labelPosition--up");
               }
-              if (currentView.model.getOption("labelPosition") === "auto") {
-                currentView.$el.addClass("dcpAttribute__labelPosition--auto");
-                currentView.$el.find(".dcpAttribute__right").addClass("dcpAttribute__labelPosition--auto");
-                currentView.$el.find(".dcpAttribute__left").addClass("dcpAttribute__labelPosition--auto");
-              }
+
               currentView.$el.find(".dcpAttribute__label").dcpLabel(data);
             }
 
@@ -197,7 +190,7 @@ export default Backbone.View.extend({
             if (currentView.customView) {
               currentView.widgetReady = true;
             }
-
+            attributeTemplate.insertDescription(currentView);
             currentView.triggerRenderDone();
           },
           () => {
@@ -269,7 +262,6 @@ export default Backbone.View.extend({
 
   /**
    * Display error message around the widget if needed
-   * @param event
    */
   refreshError: function vAttributeRefreshError() {
     this.$el.find(".dcpAttribute__label").dcpLabel("setError", this.model.get("errorMessage"));
@@ -344,11 +336,22 @@ export default Backbone.View.extend({
               );
             }
           } else {
-            let newValue = Object.assign({}, attributeValue, {
+            const newValue = Object.assign({}, attributeValue, {
               value: attributeValue.value,
               displayValue: attributeValue.displayValue
             });
-
+            //check if the value is modified
+            const currentValue = attrModel.getValue();
+            if (
+              currentValue[valueIndex] &&
+              currentValue[valueIndex].value &&
+              currentValue[valueIndex].displayValue &&
+              currentValue[valueIndex].value === newValue.value &&
+              currentValue[valueIndex].displayValue === newValue.displayValue
+            ) {
+              //The value is identical so we do nothing
+              return;
+            }
             attrModel.setValue(newValue, valueIndex);
           }
         } else {

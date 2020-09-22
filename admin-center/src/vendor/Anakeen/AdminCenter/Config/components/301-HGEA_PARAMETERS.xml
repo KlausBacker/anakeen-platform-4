@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hub:config xmlns:hub="https://platform.anakeen.com/4/schemas/hub/1.0">
+  <hubc-admin-parameters:component xmlns:hubc-admin-parameters="https://platform.anakeen.com/4/schemas/hub-component-admin-parameters/1.0" instance-ref="ADMINCENTER" name="HGEA_PARAMETERS">
+    <hub-component:parameters xmlns:hub-component="https://platform.anakeen.com/4/schemas/hub-component/1.0">
+      <hub-component:display position="left" placement="top" order="500"/>
+      <!--Identification / Name-->
+      <hub-component:title>ADMINPARAMETERS</hub-component:title>
+      <hub-component:settings activated="false" selectable="true" expandable="true"/>
+      <hub-component:security>
+        <hub-component:execution-roles logical-operator="and">
+          <!--Security Roles / Roles to access hub element API-->
+          <hub-component:execution-role login="functional_administrator"/>
+          <hub-component:execution-role login="parameters_manager_role"/>
+        </hub-component:execution-roles>
+      </hub-component:security>
+    </hub-component:parameters>
+    <hubc-admin-parameters:parameters>
+      <!--Dock / Router entry-->
+      <hubc-admin-parameters:router-entry>parameters</hubc-admin-parameters:router-entry>
+      <hubc-admin-parameters:js type="manifest">
+        <hubc-admin-parameters:asset-callable function="Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath"/>
+        <hubc-admin-parameters:asset-argument>admin</hubc-admin-parameters:asset-argument>
+        <hubc-admin-parameters:asset-argument>AdminParameterManager</hubc-admin-parameters:asset-argument>
+      </hubc-admin-parameters:js>
+      <!--Identification / Component tag-->
+      <hubc-admin-parameters:component-tag>ank-admin-parameter</hubc-admin-parameters:component-tag>
+      <!--Options / Paramètres globaux-->
+      <hubc-admin-parameters:display-global-parameters>true</hubc-admin-parameters:display-global-parameters>
+      <!--Options / Paramètres utilisateur-->
+      <hubc-admin-parameters:display-users-parameters>true</hubc-admin-parameters:display-users-parameters>
+    </hubc-admin-parameters:parameters>
+  </hubc-admin-parameters:component>
+</hub:config>

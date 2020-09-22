@@ -25,7 +25,32 @@ class TabRenderOptions extends CommonRenderOptions
         $this->setOption(self::tabTooltipLabel, $label);
         return $this->setOption(self::tabTooltipHtml, (bool)$html);
     }
+    /**
+     * Add an html text near the tab
+     *
+     * @param string $htmlTitle   Html text short description
+     * @param string $position    position : top, bottom, click
+     *
+     * @param string $htmlContent Html text long description
+     * @param bool   $collapsed   if true the long description is collapsed (need click to see it)
+     *
+     * @return $this
+     * @throws Exception
+     */
+    public function setDescription($htmlTitle, $position = "top", $htmlContent = "", $collapsed = false)
+    {
+        $allow = array(
+            self::topPosition,
+            self::bottomPosition,
+            self::clickPosition
+        );
+        if (!in_array($position, $allow)) {
+            throw new Exception("UI0217", $position, implode(', ', $allow));
+        }
 
+        parent::setDescription($htmlTitle, $position, $htmlContent, $collapsed);
+        return $this;
+    }
 
     /**
      * Set interval length condition to divide tab frame's in column

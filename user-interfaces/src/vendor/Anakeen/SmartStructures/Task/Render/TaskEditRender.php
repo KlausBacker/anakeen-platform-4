@@ -28,27 +28,27 @@ class TaskEditRender extends DefaultConfigEditRender
     <div class="task-crontab">
        <div class="task-crontab-box">
            <span class="task-crontab-value">{{attribute.attributeValue.crontab.minutes}}</span>
-           <span class="task-legend">Minutes</span>
+           <span class="task-legend">{{attribute.attributeValue.crontab.minutesTranslation}}</span>
         </div>
         
        <div class="task-crontab-box">
            <span class="task-crontab-value">{{attribute.attributeValue.crontab.hours}}</span>
-           <span class="task-legend">Hours</span>
+           <span class="task-legend">{{attribute.attributeValue.crontab.hoursTranslation}}</span>
         </div>
         
        <div class="task-crontab-box">
            <span class="task-crontab-value">{{attribute.attributeValue.crontab.days}}</span>
-           <span class="task-legend">Day of month</span>
+           <span class="task-legend">{{attribute.attributeValue.crontab.daysTranslation}}</span>
         </div>
         
        <div class="task-crontab-box">
            <span class="task-crontab-value">{{attribute.attributeValue.crontab.months}}</span>
-           <span class="task-legend">Month</span>
+           <span class="task-legend">{{attribute.attributeValue.crontab.monthsTranslation}}</span>
         </div>
         
        <div class="task-crontab-box">
            <span class="task-crontab-value">{{attribute.attributeValue.crontab.weekDays}}</span>
-           <span class="task-legend">Day of week</span>
+           <span class="task-legend">{{attribute.attributeValue.crontab.weekDaysTranslation}}</span>
         </div>
     </div>
     <div class="task-next-dates">

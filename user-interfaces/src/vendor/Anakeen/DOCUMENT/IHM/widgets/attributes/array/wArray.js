@@ -754,13 +754,14 @@ $.widget("dcp.dcpArray", {
   setError: function dcpArray_SetError(message) {
     var scope = this;
     var $target = this.element.find(".dcpArray__content table.table");
-    if (message) {
+    if (message && _.isString(message)) {
       $target
         .tooltip({
           placement: "top",
           trigger: "manual",
           animation: false,
           html: true,
+          container: scope.element.parent().get(0), //".dcpDocument",// no use scope.element because when item is in the bottom of the page a scrollbar can appear
           title: function dcpArray_computeTitleError() {
             var rawMessage = $("<div/>")
               .text(message)

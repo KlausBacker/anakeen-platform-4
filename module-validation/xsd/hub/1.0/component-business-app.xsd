@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified"
+           targetNamespace="https://platform.anakeen.com/4/schemas/hub-component-business-app/1.0"
+           xmlns:hubci="https://platform.anakeen.com/4/schemas/hub-component-business-app/1.0"
+           xmlns:hubc="https://platform.anakeen.com/4/schemas/hub-component/1.0"
+           xmlns:hubcommon="https://platform.anakeen.com/4/schemas/common-types/1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+
+    <xs:import namespace="https://platform.anakeen.com/4/schemas/hub-component/1.0"
+               schemaLocation="./component.xsd"/>
+    <xs:import namespace="https://platform.anakeen.com/4/schemas/common-types/1.0"
+               schemaLocation="./common-types.xsd"/>
+
+    <xs:element name="component" type="hubci:componentType"/>
+
+    <xs:complexType name="componentType">
+        <xs:sequence>
+            <xs:element ref="hubc:parameters" minOccurs="0"/>
+            <xs:element type="hubci:parameterType" name="parameters" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="hubcommon:logicalNameType" name="instance-ref"/>
+        <xs:attribute type="hubcommon:logicalNameType" name="name"/>
+    </xs:complexType>
+
+
+    <xs:complexType name="parameterType">
+        <xs:sequence>
+            <xs:element type="xs:token" name="router-entry"/>
+            <xs:element type="hubcommon:iconType" name="icon" minOccurs="0"/>
+            <xs:element type="hubci:titleType" name="title" maxOccurs="unbounded"/>
+            <xs:element type="hubci:collectionsType" name="collections" minOccurs="0"/>
+            <xs:element type="hubci:welcomeType" name="welcome" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="welcomeType">
+        <xs:sequence>
+            <xs:element type="xs:string" name="title" minOccurs="0"/>
+            <xs:element type="hubci:structuresCreationType" name="structures-creation" minOccurs="0"/>
+            <xs:element type="hubci:gridsType" name="grids" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:boolean" name="activated" default="false"/>
+    </xs:complexType>
+
+
+    <xs:complexType name="collectionsType">
+        <xs:sequence>
+            <xs:element type="hubcommon:relationType" name="collection" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="gridsType">
+        <xs:sequence>
+            <xs:element type="hubcommon:relationType" name="collection" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="structuresCreationType">
+        <xs:sequence>
+            <xs:element type="hubcommon:relationType" name="structure" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="titleType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="hubci:langType" name="lang" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:simpleType name="langType">
+        <xs:annotation>
+            <xs:documentation>
+                <h1>Language (english ou french)</h1>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="en"/>
+            <xs:enumeration value="fr"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

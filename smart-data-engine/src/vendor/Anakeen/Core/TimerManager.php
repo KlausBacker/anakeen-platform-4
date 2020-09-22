@@ -58,6 +58,31 @@ class TimerManager
      */
     public static function getNextTaskToExecute(int $start = 0, int $slice = 0, array $filters = [])
     {
+        $q=self::getQueryNextTaskToExecute($filters);
+        $l = $q->Query($start, $slice, "TABLE");
+        if ($q->nb > 0) {
+            $tasks = [];
+            foreach ($l as $result) {
+                $tasks[] = new TimerTask($result);
+            }
+            return $tasks;
+        }
+        return array();
+    }
+
+
+    public static function getCountNextTaskToExecute(array $filters = [])
+    {
+        $q=self::getQueryNextTaskToExecute($filters);
+        return intval($q->count(0, 0));
+    }
+
+    /**
+     * @param array $filters
+     * @return Internal\QueryDb
+     */
+    protected static function getQueryNextTaskToExecute(array $filters = [])
+    {
         $q = new \Anakeen\Core\Internal\QueryDb("", \DocTimer::class);
         $q->addQuery("donedate is null");
         $timerhourlimit = \Anakeen\Core\ContextManager::getParameterValue(
@@ -77,15 +102,7 @@ class TimerManager
             }
         }
         $q->order_by = "tododate asc, id";
-        $l = $q->Query($start, $slice, "TABLE");
-        if ($q->nb > 0) {
-            $tasks = [];
-            foreach ($l as $result) {
-                $tasks[] = new TimerTask($result);
-            }
-            return $tasks;
-        }
-        return array();
+        return $q;
     }
 
     /**
@@ -115,7 +132,8 @@ class TimerManager
                     break;
             }
         }
-        $q->order_by = "tododate asc, id";
+        $q->order_by = "tododate desc, id";
+        $q=self::getQueryPastTasks($filters);
         $l = $q->Query($start, $slice, "TABLE");
         if ($q->nb > 0) {
             $tasks = [];
@@ -127,6 +145,34 @@ class TimerManager
         return array();
     }
 
+    public static function getCountPastTasks(array $filters = [])
+    {
+        $q=self::getQueryPastTasks($filters);
+        return intval($q->count(0, 0));
+    }
+    protected static function getQueryPastTasks(array $filters = [])
+    {
+        $q = new \Anakeen\Core\Internal\QueryDb("", \DocTimer::class);
+
+        $timerhourlimit = \Anakeen\Core\ContextManager::getParameterValue(
+            \Anakeen\Core\Settings::NsSde,
+            "CORE_TIMERHOURLIMIT",
+            2
+        );
+        if ((int) $timerhourlimit <= 0) {
+            $timerhourlimit = 2;
+        }
+        $q->addQuery(sprintf("donedate is not null or tododate < now() - interval '%d hour'", $timerhourlimit));
+        foreach ($filters as $column => $value) {
+            switch ($column) {
+                case "title":
+                    $q->addQuery(sprintf("title ~* '%s'", pg_escape_string($value)));
+                    break;
+            }
+        }
+        $q->order_by = "tododate desc, id";
+        return $q;
+    }
     /**
      * Change status
      * @return array

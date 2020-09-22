@@ -150,8 +150,7 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
                 $this->getRawValue("se_latest"),
                 $this->getRawValue("se_case") == "yes",
                 $this->getRawValue("se_idfld"),
-                $this->getRawValue("se_sublevel") === "",
-                $this->getRawValue("se_case") == "full"
+                $this->getRawValue("se_sublevel") === ""
             );
             // print "<HR>getQuery1:[$query]";
         } else {

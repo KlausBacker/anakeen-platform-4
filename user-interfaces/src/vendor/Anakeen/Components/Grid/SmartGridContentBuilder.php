@@ -105,6 +105,7 @@ class SmartGridContentBuilder implements SmartGridBuilder
                     if ($error) {
                         $exception = new Exception("GRID0015", $this->smartCollectionId);
                         $exception->setHttpStatus("403", "Insufficient privileges");
+                        $exception->setUserMessage($error);
                         throw $exception;
                     }
                     $fromId = $this->smartCollection->getRawValue(Search::se_famid, 0);
@@ -254,7 +255,7 @@ class SmartGridContentBuilder implements SmartGridBuilder
         $return["requestParameters"] = $this->getRequestParameters();
         $this->prepareFormatter();
         $return["content"] = $this->formatter->format();
-        if (ContextManager::getParameterValue("Ui", "MODE_DEBUG", false)) {
+        if (ContextManager::getParameterValue("Ui", "MODE_DEBUG", false) === "TRUE") {
             $return["debug"] = $this->searchElements->getSearchInfo();
         }
         return $return;

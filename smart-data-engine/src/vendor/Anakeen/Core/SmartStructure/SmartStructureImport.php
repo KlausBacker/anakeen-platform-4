@@ -184,22 +184,7 @@ class SmartStructureImport
                         $doctitle = strtolower($doctitle);
 
                         if (!isset($table1[strtolower($doctitle)])) {
-                            $table1[$doctitle] = clone($v);
-                            $table1[$doctitle]->id = $doctitle;
-                            $table1[$doctitle]->type = "text";
-                            $table1[$doctitle]->accessibility = FieldAccessManager::getTextAccess(BasicAttribute::READ_ACCESS);
-                            $table1[$doctitle]->phpfile = "";
-                            $table1[$doctitle]->phpfunc = "";
-                            $table1[$doctitle]->options = "autotitle=yes|relativeOrder=" . $v->id;
-                            $table1[$doctitle]->title = "N";
-                            $table1[$doctitle]->abstract = "N";
-                            $table1[$doctitle]->needed = "N";
-                            $table1[$doctitle]->usefor = "A";
-                            $table1[$doctitle]->link = "";
-                            $table1[$doctitle]->props = "";
-                            $table1[$doctitle]->phpconstraint = "";
-                            $table1[$doctitle]->labeltext = $v->labeltext . ' ' . _("(title)");
-                            $table1[$doctitle]->ordered = $v->ordered + 1;
+                             $table1[$doctitle] = self::getDoctitleAttr($v, $doctitle);
                         }
                         if (empty($table1[$doctitle]->phpfunc)) {
                             if (!preg_match("/docrev=(fixed|state)/", $v->options)) {
@@ -571,6 +556,26 @@ class SmartStructureImport
         }
     }
 
+    protected static function getDoctitleAttr(DocAttr $attr, $idDocTitle)
+    {
+        $doctitleAttr = clone($attr);
+        $doctitleAttr->id = $idDocTitle;
+        $doctitleAttr->type = "text";
+        $doctitleAttr->accessibility = FieldAccessManager::getTextAccess(BasicAttribute::READ_ACCESS);
+        $doctitleAttr->phpfile = "";
+        $doctitleAttr->phpfunc = "";
+        $doctitleAttr->options = "autotitle=yes|relativeOrder=" . $attr->id;
+        $doctitleAttr->title = "N";
+        $doctitleAttr->abstract = "N";
+        $doctitleAttr->needed = "N";
+        $doctitleAttr->usefor = "A";
+        $doctitleAttr->link = "";
+        $doctitleAttr->props = "";
+        $doctitleAttr->phpconstraint = "";
+        $doctitleAttr->labeltext = $attr->labeltext . ' ' . _("(title)");
+        $doctitleAttr->ordered = $attr->ordered + 1;
+        return $doctitleAttr;
+    }
     protected static function attrIdToPhp($dbaccess, $tdoc)
     {
         $phpAdoc = new \Anakeen\Layout\TextLayout("vendor/Anakeen/Core/Layout/Class.Attrid.layout");
@@ -678,9 +683,7 @@ class SmartStructureImport
                             $doctitle = $attr->id . "_title";
                         }
                         $doctitle = strtolower($doctitle);
-                        $tattr[$doctitle] = $attr;
-                        $tattr[$doctitle]->id = $doctitle;
-                        $tattr[$doctitle]->type = "text";
+                        $tattr[$doctitle] = self::getDoctitleAttr($attr, $doctitle);
                     }
                 }
             }

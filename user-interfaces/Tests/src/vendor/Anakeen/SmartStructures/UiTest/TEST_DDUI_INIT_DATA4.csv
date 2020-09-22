@@ -41,6 +41,8 @@ DOC;TST_RENDER;TST_RENDER_0303;;303;Frame::addResponsiveColumns (view);"<p>Tous 
 	<li>6 =&gt; entre <strong>1900px</strong> et <strong>2200px</strong></li>
 	<li>12 =&gt; plus de  <strong>2200px</strong></li>
 </ul>";TST_EMPLOYE_DOE;FRAMEVIEWCOLUMN;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_0221;;221;Common::setDescription (left);"<p>Prise en compte de l'option Description? Voir le cadre ""Information Administrative""</p>
+<p>Les libellé des champs sont positionné à gauche</p>";TST_EMPLOYE_DOE;LEFT;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DOC;TST_RENDER;TST_RENDER_0304;;304;Frame::addResponsiveColumns (edit);"<p>Tous les cadres sont en 2 colonnes si la largeur du cadre est &gt; 70rem (840px). S'il n'y a qu'un cadre, le cadre est sur une seule colonne</p>
 
 <p><strong>Les attributs sont ordonnées du haut vers le bas.</strong></p>

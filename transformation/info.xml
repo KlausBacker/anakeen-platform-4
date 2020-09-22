@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="transformation" version="2.0.3-RC.2020.1.38" vendor="Anakeen" license="https://ap4.anakeen.com/license4.html">
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="transformation" version="2.0.4" vendor="Anakeen" license="https://ap4.anakeen.com/licence4.html">
     <description>Transformation Engine Client Library</description>
   <requires>
-    <module name="admin-center" version="^2.1.2-RC.2020.1.38"/>
+    <module name="admin-center" version="^2.2.0"/>
   </requires>
   <replaces>
   </replaces>
   <post-install>
     <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/TransformationEngine/HubComponent/TERoles.xml"/>
-    <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/TransformationEngine/HubComponent/hubConfiguration.xml"/>
+    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/TransformationEngine/HubComponent/hubConfiguration.xml"/>
   </post-install>
   <post-upgrade>
+
+    <process command="./programs/runMigrationScript.php --file=./vendor/Anakeen/TransformationEngine/Migration/deleteOldHubConfiguration.xml">
+       <label>Delete TE old hub config</label>
+    </process>
     <process command="./ank.php --script=cleanOldStructures"/>
     <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/TransformationEngine/HubComponent/TERoles.xml"/>
-    <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/TransformationEngine/HubComponent/hubConfiguration.xml"/>
+    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/TransformationEngine/HubComponent/hubConfiguration.xml"/>
   </post-upgrade>
 
   <post-upgrade>

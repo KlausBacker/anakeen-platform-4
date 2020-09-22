@@ -5,4 +5,7 @@
         <acli:stub-struct source="src/**/*struct.xml"/>
         <acli:stub-struct source="src/**/*structure.xml"/>
     </acli:stub-config>
+    <acli:check-config>
+        <acli:config-xml source="src/vendor/Anakeen/Test/HubConfiguration/**/*.xml"/>
+    </acli:check-config>
 </acli:config>

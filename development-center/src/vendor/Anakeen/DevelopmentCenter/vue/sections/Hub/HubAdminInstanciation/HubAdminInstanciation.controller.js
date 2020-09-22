@@ -71,7 +71,7 @@ export default {
       if (this.$refs.ankHubAdmin) {
         const hAdmin = this.$refs.ankHubAdmin;
         if (hAdmin.$refs.smartConfig) {
-          hAdmin.openElement();
+          hAdmin.openConfigInfo();
           const element = this.$refs.ankHubAdmin.$refs.smartConfig;
           if (element.isLoaded()) {
             element.addEventListener("afterSave", () => {

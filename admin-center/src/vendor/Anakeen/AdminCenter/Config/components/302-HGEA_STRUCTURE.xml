@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hub:config xmlns:hub="https://platform.anakeen.com/4/schemas/hub/1.0">
+  <hubc-generic:component xmlns:hubc-generic="https://platform.anakeen.com/4/schemas/hub-component-generic/1.0" instance-ref="ADMINCENTER" name="HGEA_STRUCTURE">
+    <hub-component:parameters xmlns:hub-component="https://platform.anakeen.com/4/schemas/hub-component/1.0">
+      <hub-component:display position="left" placement="top" order="600"/>
+      <!--Identification / Name-->
+      <hub-component:title>ADMINSTRUCTURE</hub-component:title>
+      <hub-component:settings activated="false" selectable="true" expandable="true"/>
+      <hub-component:security>
+        <hub-component:execution-roles logical-operator="and">
+          <!--Security Roles / Roles to access hub element API-->
+          <hub-component:execution-role login="functional_administrator"/>
+          <hub-component:execution-role login="structure_manager_role"/>
+        </hub-component:execution-roles>
+      </hub-component:security>
+    </hub-component:parameters>
+    <hubc-generic:parameters>
+      <!--Dock / Router entry-->
+      <hubc-generic:router-entry>structure</hubc-generic:router-entry>
+      <hubc-generic:js type="manifest">
+        <hubc-generic:asset-callable function="Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath"/>
+        <hubc-generic:asset-argument>admin</hubc-generic:asset-argument>
+        <hubc-generic:asset-argument>AdminStructureManager</hubc-generic:asset-argument>
+      </hubc-generic:js>
+      <!--Identification / Component tag-->
+      <hubc-generic:component-tag>ank-admin-structure</hubc-generic:component-tag>
+    </hubc-generic:parameters>
+  </hubc-generic:component>
+</hub:config>

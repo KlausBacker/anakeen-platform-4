@@ -34,9 +34,11 @@ export default AttributeModel.extend({
         }
       }
       currentValue[index] = value;
+      this.set("previousValue", this.get("attributeValue"));
       this.set("attributeValue", currentValue);
     } else {
-      this.set("attributeValue", value);
+      this.set("previousValue", this.get("attributeValue"));
+      this.set("attributeValue", _.clone(value));
     }
   },
 
@@ -54,9 +56,11 @@ export default AttributeModel.extend({
         currentValue[index] = [];
       }
       currentValue[index].push(value);
+      this.set("previousValue", this.get("attributeValue"));
       this.set("attributeValue", currentValue, options);
     } else {
       currentValue.push(value);
+      this.set("previousValue", this.get("attributeValue"));
       this.set("attributeValue", _.clone(currentValue), options);
     }
   },
@@ -81,6 +85,7 @@ export default AttributeModel.extend({
     currentValue = _.filter(currentValue, function removeUndefined(currentValue) {
       return !_.isUndefined(currentValue);
     });
+    this.set("previousValue", this.get("attributeValue"));
     this.set("attributeValue", currentValue, { notUpdateArray: true });
   },
 
@@ -115,6 +120,7 @@ export default AttributeModel.extend({
     } else {
       currentValue.splice(index, 0, newValue);
     }
+    this.set("previousValue", this.get("attributeValue"));
     this.set("attributeValue", currentValue, {
       notUpdateArray: !updateArray
     });
@@ -139,6 +145,7 @@ export default AttributeModel.extend({
     } else {
       currentValue.splice(index, 0, newValue);
     }
+    this.set("previousValue", this.get("attributeValue"));
     this.set("attributeValue", currentValue);
   },
 
@@ -158,6 +165,7 @@ export default AttributeModel.extend({
     currentValue.splice(fromIndex, 1);
     currentValue.splice(toIndex, 0, fromValue);
 
+    this.set("previousValue", this.get("attributeValue"));
     this.set("attributeValue", currentValue);
     this.trigger("moved", { from: fromIndex, to: toIndex });
   },

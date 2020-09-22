@@ -132,6 +132,13 @@
             <sde:type>integer</sde:type>
             <sde:access>admin</sde:access>
         </sde:parameter>
+        <sde:parameter name="CORE_SESSION_COOKIE">
+            <sde:category>Authent</sde:category>
+            <sde:description>Options for session cookie, like "samesite", "httponly".</sde:description>
+            <sde:value>{"samesite":"strict","httponly":true}</sde:value>
+            <sde:type>json</sde:type>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
         <sde:parameter name="AUTHENT_FAILURECOUNT">
             <sde:category>Authent</sde:category>
             <sde:description>Number of consecutive connection attemps failure (0 means infinite)</sde:description>
@@ -176,6 +183,12 @@
             <sde:description>Ui style</sde:description>
             <sde:value>NONE</sde:value>
             <sde:access>readonly</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_AUTOCOMPLETE_SLICE">
+            <sde:description>limite values of result of autocomplete</sde:description>
+            <sde:value>100</sde:value>
+            <sde:type>integer</sde:type>
+            <sde:access>admin</sde:access>
         </sde:parameter>
     </sde:parameters>
 </sde:config>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hub:config xmlns:hub="https://platform.anakeen.com/4/schemas/hub/1.0">
+  <hubc-business-app:component xmlns:hubc-business-app="https://platform.anakeen.com/4/schemas/hub-component-business-app/1.0" instance-ref="UI_TEST" name="HUBELT_2109">
+    <hub-component:parameters xmlns:hub-component="https://platform.anakeen.com/4/schemas/hub-component/1.0">
+      <hub-component:display position="left" placement="top"/>
+      <!--Identification / Name-->
+      <hub-component:title>Liste des Smart Elements de test</hub-component:title>
+      <hub-component:settings activated="true" activated-order="1" selectable="true" expandable="true"/>
+      <hub-component:security>
+        <hub-component:execution-roles logical-operator="and"/>
+      </hub-component:security>
+    </hub-component:parameters>
+    <hubc-business-app:parameters>
+      <!--Dock / Router entry-->
+      <hubc-business-app:router-entry>test</hubc-business-app:router-entry>
+      <hubc-business-app:title lang="en">Smart Elements to test</hubc-business-app:title>
+      <hubc-business-app:title lang="fr">Smart Elements de test</hubc-business-app:title>
+      <hubc-business-app:collections>
+        <!--Business App collections / Collection-->
+        <hubc-business-app:collection ref="HUBEXT_2108"/>
+      </hubc-business-app:collections>
+      <hubc-business-app:welcome activated="false">
+        <!--Welcome Tab options / Title HTML template-->
+        <hubc-business-app:title><![CDATA[Welcome]]></hubc-business-app:title>
+        <hubc-business-app:structures-creation/>
+        <hubc-business-app:grids/>
+      </hubc-business-app:welcome>
+    </hubc-business-app:parameters>
+  </hubc-business-app:component>
+</hub:config>

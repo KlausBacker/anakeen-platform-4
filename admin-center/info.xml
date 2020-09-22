@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" vendor="Anakeen" license="https://ap4.anakeen.com/license4.html" name="admin-center" version="2.1.2-RC.2020.1.38">
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" vendor="Anakeen" license="https://ap4.anakeen.com/licence4.html" name="admin-center" version="2.2.0">
     <description>Admin Center</description>
 
     <requires>
-        <module name="user-interfaces" version="^3.0.2-RC.2020.1.38"/>
-        <module name="anakeen-hub" version="^1.0.4-RC.2020.1.38"/>
+        <module name="user-interfaces" version="^3.1.0"/>
+        <module name="anakeen-hub" version="^2.0.0"/>
     </requires>
     <post-install>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/AdminCenter/Accounts/110-AdminCenterRoles.xml"/>
@@ -12,7 +12,7 @@
         <!-- import admin parameters hub configuration structure -->
         <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/AdminCenter/SmartStructures/AdminParametersHubConfiguration/**/*.xml"/>
         <!-- import default configuration of admin center -->
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/AdminCenter/Config/hubConfiguration.xml"/>
+        <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/AdminCenter/Config/**/*xml"/>
         <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Admin/Trash/trash-grid-controller.xml"/>
     </post-install>
     <post-upgrade>
@@ -24,7 +24,7 @@
         <!-- import admin parameters hub configuration structure -->
         <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/AdminCenter/SmartStructures/AdminParametersHubConfiguration/**/*.xml"/>
 
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/AdminCenter/Config/hubConfiguration.xml"/>
+        <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/AdminCenter/Config/**/*xml"/>
         <process command="./ank.php --script=manageGridControllers --cmd=register --file=./vendor/Anakeen/Routes/Admin/Trash/trash-grid-controller.xml"/>
     </post-upgrade>
 </module>

@@ -138,4 +138,31 @@ class ArrayRenderOptions extends CommonRenderOptions
     {
         return $this->setOption(self::transpositionWidthOption, $transpositionWidth);
     }
+    /**
+     * Add an html text near the frame
+     *
+     * @param string $htmlTitle   Html text short description
+     * @param string $position    position : top, bottom, bottomLabel, click
+     *
+     * @param string $htmlContent Html text long description
+     * @param bool   $collapsed   if true the long description is collapsed (need click to see it)
+     *
+     * @return $this
+     * @throws Exception
+     */
+    public function setDescription($htmlTitle, $position = "top", $htmlContent = "", $collapsed = false)
+    {
+        $allow = array(
+            self::topPosition,
+            self::bottomPosition,
+            self::bottomLabelPosition,
+            self::clickPosition
+        );
+        if (!in_array($position, $allow)) {
+            throw new Exception("UI0218", $position, implode(', ', $allow));
+        }
+
+        parent::setDescription($htmlTitle, $position, $htmlContent, $collapsed);
+        return $this;
+    }
 }

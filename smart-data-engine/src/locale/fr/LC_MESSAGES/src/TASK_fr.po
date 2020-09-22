@@ -12,150 +12,150 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
 msgctxt "TASK"
 msgid "task_arg_name"
 msgstr "Nom"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
 msgctxt "TASK"
 msgid "task_arg_value"
 msgstr "Valeur"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
 msgctxt "TASK"
 msgid "task_crontab"
-msgstr "Crontab periodicity"
+msgstr "Périodicité de crontab"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
 msgctxt "TASK"
 msgid "task_desc"
 msgstr "Description"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
 msgctxt "TASK"
 msgid "task_exec_date"
-msgstr "Execution date"
+msgstr "Date d'exécution"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
 msgctxt "TASK"
 msgid "task_exec_duration"
-msgstr "Execution duration"
+msgstr "Durée d'exécution"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
 msgctxt "TASK"
 msgid "task_exec_output"
 msgstr "Output"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
 msgctxt "TASK"
 msgid "task_exec_state_result"
-msgstr "Execution status"
+msgstr "Statut d'exécution"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
 msgctxt "TASK"
 msgid "task_fr_ident"
 msgstr "Identification"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
 msgctxt "TASK"
 msgid "task_fr_result"
-msgstr "Task results"
+msgstr "Résultat de la tâche"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
 msgctxt "TASK"
 msgid "task_fr_route"
-msgstr "Route to execute"
+msgstr "Route à exécuter"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
 msgctxt "TASK"
 msgid "task_fr_schedule"
-msgstr "Schedule"
+msgstr "Planning"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
 msgctxt "TASK"
 msgid "task_humancrontab"
-msgstr "Periodicity (comprehensive)"
+msgstr "Périodicité (complète)"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
 msgctxt "TASK"
 msgid "task_iduser"
-msgstr "Executed by"
+msgstr "Exécuté par"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
 msgctxt "TASK"
 msgid "task_nextdate"
-msgstr "Next execution date"
+msgstr "Prochaine date d'exécution"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
 msgctxt "TASK"
 msgid "task_queryfield_name"
 msgstr "Nom"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
 msgctxt "TASK"
 msgid "task_queryfield_value"
 msgstr "Valeur"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
 msgctxt "TASK"
 msgid "task_route_method"
-msgstr "Method"
+msgstr "Méthode"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
 msgctxt "TASK"
 msgid "task_route_name"
-msgstr "Name"
+msgstr "Nom"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
 msgctxt "TASK"
 msgid "task_route_ns"
-msgstr "Namespace"
+msgstr "Section"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
 msgctxt "TASK"
 msgid "task_status"
-msgstr "Status"
+msgstr "Statut"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
 msgctxt "TASK"
 msgid "task_t_args"
 msgstr "Arguments"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
 msgctxt "TASK"
 msgid "task_t_queryfield"
-msgstr "Query fields"
+msgstr "Champ de requête"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
-#, fuzzy
 msgctxt "TASK"
 msgid "task_title"
-msgstr "Title"
+msgstr "Titre"
 
 #: src/vendor/Anakeen/SmartStructures/Task/task.struct.xml
 msgctxt "TASK"
 msgid "title"
 msgstr "Titre"
+
+msgctxt "TASK"
+msgid "Following execution dates"
+msgstr "Prochaines dates d'exécution"
+
+msgctxt "TASK"
+msgid "minutes"
+msgstr "minutes"
+
+msgctxt "TASK"
+msgid "hours"
+msgstr "heures"
+
+msgctxt "TASK"
+msgid "days"
+msgstr "jour dans le mois"
+
+msgctxt "TASK"
+msgid "months"
+msgstr "mois"
+
+msgctxt "TASK"
+msgid "weekdays"
+msgstr "jour de la semaine"

@@ -94,26 +94,20 @@ class AlterParameter
         DbManager::query($sqlRequest, $output);
 
 
-        $paramType = $output[0]['kind'];
+        $paramType = strtolower($output[0]['kind']);
         switch ($paramType) {
             case "password":
                 return is_string($newValue);
                 break;
             case "text":
                 return is_string($newValue);
-                break;
+            case "double":
             case "number":
                 return is_numeric($newValue);
-                break;
             case "integer":
                 return ctype_digit($newValue);
-                break;
-            case "double":
-                return is_numeric($newValue);
-                break;
-            case "JSON":
-                return is_string($newValue) && is_array(json_decode($newValue, true)) && (json_last_error() == JSON_ERROR_NONE) ? true : false;
-                break;
+            case "json":
+                return is_string($newValue) && is_array(json_decode($newValue, true)) && (json_last_error() === JSON_ERROR_NONE);
             default:
                 if (stripos($paramType, 'enum') === 0) {
                     $values = substr($paramType, 5);

@@ -7,7 +7,6 @@ use Anakeen\Core\TimerManager;
 use Anakeen\Core\TimerTask;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Search\SearchElementData;
-use Anakeen\Search\SearchElements;
 use Anakeen\Ui\DataSource;
 use SmartStructure\Task;
 use SmartStructure\Fields\Task as TaskFields;
@@ -90,9 +89,7 @@ class ScheduledTimers
         foreach ($timers as $timer) {
             $data["results"][] = $this->getTimerData($timer);
         }
-        // @TODO total , slice take
-        $timers = TimerManager::getNextTaskToExecute(0, 0, $this->filters);
-        $data["total"] = count($timers);
+        $data["total"] = TimerManager::getCountNextTaskToExecute($this->filters);
 
         return $data;
     }
@@ -106,8 +103,8 @@ class ScheduledTimers
             "attachDate" => $timerTask->attachdate,
             "referenceDate" => $timerTask->referencedate,
             "todoDate" => $timerTask->tododate,
-            "attachTo" => $this->smartInfo[$timerTask->docid],
-            "timer" => $this->smartInfo[$timerTask->timerid],
+            "attachTo" => $this->smartInfo[$timerTask->docid] ?? null,
+            "timer" => $this->smartInfo[$timerTask->timerid] ?? null,
             "attachBy" => $this->smartInfo[$timerTask->originid] ?? null,
         ];
         $data["mails"] = [];
@@ -187,16 +184,21 @@ class ScheduledTimers
                 }
             }
         }
-        $s = new SearchElementData();
-        //$s->setLatest(false);
-        $s->returnsOnly(["title", "initid", "id", "name", "wid", "state"]);
-        $s->addFilter(\Anakeen\Search\Internal\SearchSmartData::sqlcond(array_keys($seIds), "initid", true));
 
-        $s->search();
+        if ($seIds) {
+            $s = new SearchElementData();
+            $s->useTrash("also");
+            $s->setDistinct(true);
+            //$s->setLatest(false);
+            $s->returnsOnly(["title", "initid", "id", "name", "wid", "state"]);
+            $s->addFilter(\Anakeen\Search\Internal\SearchSmartData::sqlcond(array_keys($seIds), "initid", true));
 
-        $results = $s->getResults();
-        foreach ($results as $result) {
-            $this->smartInfo[$result["initid"]] = $result;
+            $s->search();
+
+            $results = $s->getResults();
+            foreach ($results as $result) {
+                $this->smartInfo[$result["initid"]] = $result;
+            }
         }
     }
 

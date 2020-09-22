@@ -2,6 +2,7 @@
 
 namespace Anakeen\Core\SmartStructure\Autocomplete;
 
+use Anakeen\Core\ContextManager;
 use Anakeen\SmartAutocompleteRequest;
 use Anakeen\SmartAutocompleteResponse;
 
@@ -23,7 +24,9 @@ class AccountList
         $sort = 'lastname';
         $searchinmail = false;
         $s = new \Anakeen\Accounts\SearchAccounts();
-        $s->setSlice(self::$limit);
+        // Get the parameter value to know how many values to return
+        $slice = ContextManager::getParameterValue("Core", "CORE_AUTOCOMPLETE_SLICE", 100);
+        $s->setSlice($slice);
         if (!empty($args["usemailfilter"])) {
             $searchinmail = ($args["usemailfilter"] === "yes");
         }

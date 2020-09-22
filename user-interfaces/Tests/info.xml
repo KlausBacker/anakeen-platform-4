@@ -3,10 +3,10 @@
     <description>Tests for Anakeen Uis</description>
 
     <requires>
-        <module name="user-interfaces" version="^3.0.2-RC.2020.1.38"/>
-        <module name="workflow" version="^2.0.2-RC.2020.1.38"/>
+        <module name="user-interfaces" version="^3.1.0"/>
+        <module name="workflow" version="^2.0.3"/>
         <module name="smart-data-engine-test" version="2.0.x"/>
-        <module name="anakeen-hub-business-app" version="^1.0.4-RC.2020.1.38"/>
+        <module name="anakeen-hub-business-app" version="^2.0.0"/>
         <module name="anakeen-dev-data" version="2.0.x"/>
     </requires>
 
@@ -39,7 +39,7 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEmployee/tst_ddui_employee.views.xml"/>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiColor/tst_ddui_color.views.xml"/>
         <!-- init hub -->
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Test/HubConfiguration/hubConfiguration.xml"/>
+        <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Test/HubConfiguration/**/[1-9]*xml"/>
 
     </post-install>
     <post-upgrade>
@@ -66,6 +66,6 @@
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TEST_DDUI_USERS_INIT_DATA.csv"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TEST_DDUI_INIT_DATA.csv"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TEST_DDUI_INIT_DATA4.csv"/>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Test/HubConfiguration/hubConfiguration.xml"/>
+        <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Test/HubConfiguration/**/[1-9]*xml"/>
     </post-upgrade>
 </module>

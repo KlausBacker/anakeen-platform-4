@@ -39,6 +39,7 @@ class RenderDescriptionEditRender extends DefaultConfigEditRender
       <td>
         <div class="rd-field-description">
             <div class="rd-vertical">
+            <button type="button" class="btn btn-default"><i class="fa fa-angle-double-up"/></button>
                 <div class="rd-description rd-field-label">Hello world</div>
             </div>
             <div class="rd-field-content">
@@ -71,6 +72,8 @@ class RenderDescriptionEditRender extends DefaultConfigEditRender
 
 HTML;
         $options->arrayAttribute(DescriptionFields::rd_t_fields)->setTemplate($template);
+
+
         $options->enum(DescriptionFields::rd_collapsable)->setDisplay(EnumRenderOptions::boolDisplay);
         $options->htmltext(DescriptionFields::rd_description)->setHeight("8.6rem");
         $options->htmltext(DescriptionFields::rd_subdescription)->setHeight("6rem");

@@ -39,6 +39,9 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
     public function importAll($xmlFile)
     {
         $this->importData($xmlFile);
+        if ($this->getErrorMessage()) {
+            return ;
+        }
         parent::importAll($xmlFile);
         $this->importRender($xmlFile);
     }

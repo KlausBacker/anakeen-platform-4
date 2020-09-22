@@ -128,7 +128,7 @@ class ErrorCodeUI
      * @errorCode Description Position must be in defined set
      * @see       CommonRenderOptions::setDescription
      */
-    const UI0205 = 'Value "%s" for position option "setDescription" is invalid : allowed are : %s';
+    const UI0205 = 'Value "%s" for position option "setDescription" is invalid (scope "%s"): allowed are : %s';
     /**
      * @errorCode Description Html text is a string
      * @see       CommonRenderOptions::setDescription
@@ -170,6 +170,21 @@ class ErrorCodeUI
      * @errorCode Only preset toolbar are allowed
      */
     const UI0215 = 'Value "%s" for html toolbar config  is invalid : allowed are : %s';
+    /**
+     * @errorCode Description Position must be in defined set
+     * @see       \Anakeen\Ui\FrameRenderOptions::setDescription
+     */
+    const UI0216 = 'Value "%s" for position for a frame option "setDescription" is invalid : allowed are : %s';
+    /**
+     * @errorCode Description Position must be in defined set
+     * @see       \Anakeen\Ui\TabRenderOptions::setDescription
+     */
+    const UI0217 = 'Value "%s" for position for a tab option "setDescription" is invalid : allowed are : %s';
+    /**
+     * @errorCode Description Position must be in defined set
+     * @see       \Anakeen\Ui\ArrayRenderOptions::setDescription
+     */
+    const UI0218 = 'Value "%s" for position for a array option "setDescription" is invalid : allowed are : %s';
     /**
      * @errorCode Only view,edit, create are allowed
      */

@@ -92,7 +92,7 @@ AttributPrototype.prototype.getValue = function AttributeInterfaceGetValue(type)
     return this._attributeModel.get("attributeValue");
   }
   if (type === "previous") {
-    return this._attributeModel.previous("attributeValue");
+    return this._attributeModel.get("previousValue");
   }
   if (type === "initial") {
     return this._attributeModel._initialAttributeValue;
@@ -100,7 +100,7 @@ AttributPrototype.prototype.getValue = function AttributeInterfaceGetValue(type)
   if (type === "all") {
     return {
       current: this._attributeModel.get("attributeValue"),
-      previous: this._attributeModel.previous("attributeValue"),
+      previous: this._attributeModel.get("previousValue"),
       initial: this._attributeModel._initialAttributeValue
     };
   }

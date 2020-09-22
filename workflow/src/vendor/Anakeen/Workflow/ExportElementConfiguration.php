@@ -250,9 +250,11 @@ class ExportElementConfiguration
         if ($dom !== null) {
             self::$dom = $dom;
         }
-
-        $mail = SEManager::getDocument($name);
         $mailNode = self::celmail("mailtemplate");
+        if (!$name) {
+            return $mailNode;
+        }
+        $mail = SEManager::getDocument($name);
 
         $mailNode->setAttribute("name", ExportWorkflowConfiguration::getLogicalName($name));
         $mailNode->setAttribute("label", $mail->getRawValue(MailFields::tmail_title));

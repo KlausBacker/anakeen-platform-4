@@ -189,7 +189,6 @@ DOC;TST_RENDER;TST_RENDER_1034;;1034;Common:Notification;"<p>Affichage des diff�
 </ul>";TST_ALL_COMPLET;NOTIFS;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DOC;TST_RENDER;TST_RENDER_0213;;213;Common::addButton;;TST_ALL_COMPLET;BUTTONS;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DOC;TST_RENDER;TST_RENDER_0202;;202;Common::setLabelPosition(left);;TST_ALL_COMPLET;LABELLEFT;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-DOC;TST_RENDER;TST_RENDER_0201;;201;Common::setLabelPosition(auto);;TST_ALL_COMPLET;LABELAUTO;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DOC;TST_RENDER;TST_RENDER_0010;;10;Common::getCssRef;<p>Test</p>;TST_ALL_COMPLET;CSSCOLOR;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DOC;TST_RENDER;TST_RENDER_0001;;1;Consultation par défaut;;TST_ALL_COMPLET;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DOC;TST_RENDER;TST_RENDER_0203;;203;Common::setLabelPosition(up);<p>Tous les labels doivent être au dessus des valeurs</p>;TST_ALL_COMPLET;LABELUP;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

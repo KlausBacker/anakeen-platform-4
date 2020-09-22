@@ -9,38 +9,74 @@ export default class WidgetLoadingWrapper extends DefaultLoading {
   }
 
   addItem(number = 1): void {
-    this.loadingWidget.dcpLoading("addItem", number);
+    try {
+      this.loadingWidget.dcpLoading("addItem", number);
+    } catch (e) {
+      //unable to display the loading, that can be normal
+    }
   }
 
   hide(force?: boolean): void {
-    this.loadingWidget.dcpLoading("hide", !!force);
+    try {
+      this.loadingWidget.dcpLoading("hide", !!force);
+    } catch (e) {
+      //unable to display the loading, that can be normal
+    }
   }
 
   isDisplayed(): boolean {
-    return !!this.loadingWidget.dcpLoading("isDisplayed");
+    try {
+      return !!this.loadingWidget.dcpLoading("isDisplayed");
+    } catch (e) {
+      //unable to display the loading, that can be normal
+    }
   }
 
   reset(): void {
-    this.loadingWidget.dcpLoading("reset");
+    try {
+      this.loadingWidget.dcpLoading("reset");
+    } catch (e) {
+      //unable to display the loading, that can be normal
+    }
   }
 
   setLabel(label?: string): void {
-    this.loadingWidget.dcpLoading("setLabel", label);
+    try {
+      this.loadingWidget.dcpLoading("setLabel", label);
+    } catch (e) {
+      //unable to display the loading, that can be normal
+    }
   }
 
   setNbItem(restItem): void {
-    this.loadingWidget.dcpLoading("setNbItem", restItem);
+    try {
+      this.loadingWidget.dcpLoading("setNbItem", restItem);
+    } catch (e) {
+      //unable to display the loading, that can be normal
+    }
   }
 
   setPercent(pc: number): void {
-    this.loadingWidget.dcpLoading("setPercent", pc);
+    try {
+      this.loadingWidget.dcpLoading("setPercent", pc);
+    } catch (e) {
+      //unable to display the loading, that can be normal
+    }
   }
 
   setTitle(title: string): void {
-    this.loadingWidget.dcpLoading("setTitle", title);
+    try {
+      this.loadingWidget.dcpLoading("setTitle", title);
+    } catch (e) {
+      //unable to display the loading, that can be normal
+    }
   }
 
   show(label?: string, percent?: number): void {
-    this.loadingWidget.dcpLoading("show", label, percent);
+    try {
+      this.loadingWidget.dcpLoading("show", label, percent);
+    } catch (e) {
+      //unable to display the loading, that can be normal
+    }
   }
 }

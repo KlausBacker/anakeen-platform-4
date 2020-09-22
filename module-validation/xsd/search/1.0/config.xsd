@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified"
+           targetNamespace="https://platform.anakeen.com/4/schemas/search/1.0"
+           xmlns:ns="https://platform.anakeen.com/4/schemas/search/1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- Search DSearch data part -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <xs:element name="search" type="ns:searchType"/>
+
+    <xs:complexType name="searchType">
+        <xs:sequence>
+            <xs:element type="ns:loginType" name="author" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        <p>
+                            Author login for this search.
+                            The author has permission to modify configuration by default.
+                        </p>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="ns:searchCriteriaType" name="criteria" minOccurs="0"/>
+            <xs:element type="ns:reportConfigType" name="report-configuration" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="ns:elementName" name="name" use="required">
+            <xs:annotation>
+                <xs:documentation>
+                    <p>
+                        <b>Logical name for this search configuration</b>
+                    </p>
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="ns:elementName" name="structure-type" use="required">
+            <xs:annotation>
+                <xs:documentation>
+                    <p>
+                        <b>Structure to use when create search (SEARCH, DSEARCH or REPORT)</b>
+                    </p>
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" name="title">
+            <xs:annotation>
+                <xs:documentation>
+                    <p>
+                        <b>Title for this search</b>
+                    </p>
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+
+    <xs:complexType name="searchCriteriaType">
+        <xs:sequence>
+            <xs:element type="ns:searchStructureType" name="structure" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        <p>
+                            <b>Restrict search to smart elements of this referenced structure</b>
+                        </p>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:boolean" name="search-system-structures" minOccurs="0" default="true"/>
+            <xs:element type="ns:revisionType" name="revision" minOccurs="0" default="latest">
+                <xs:annotation>
+                    <xs:documentation>
+                        <p>
+                            <b>Filter or not in revised smart elements</b>
+                            <ul>
+                                <li><b>latest</b>: no search in revision (always in current version)
+                                </li>
+                                <li><b>all</b>: search in all revisions (past and current)
+                                </li>
+                                <li><b>latest-fixed</b>: search in latest revised version (before the current)
+                                </li>
+                                <li><b>fixed</b>: excluded current version, only past revision (several revisions of
+                                    same smart element can be returns)
+                                </li>
+                                <li><b>distinct-fixed</b>: search in past revision only (the more recent of revision
+                                    match is return is several revisions match)
+                                </li>
+                            </ul>
+                        </p>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="ns:keywordType" name="keyword" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        <p>
+                            <b>Keyword search (only for SEARCH structure-type)</b>
+                            <p>Search in title contains the keyword</p>
+                        </p>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="ns:trashType" name="search-deleted" minOccurs="0" default="no"/>
+            <xs:element type="ns:permissionType" name="permission-filter" minOccurs="0" maxOccurs="2"/>
+            <xs:element type="ns:queryFilterType" name="query-filters" minOccurs="0"/>
+            <xs:element type="xs:token" name="order-by" minOccurs="0" default="title, id"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="queryFilterType">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element type="ns:filterType" name="filter" minOccurs="0"/>
+            <xs:element name="start-parenthesis" minOccurs="0"/>
+            <xs:element name="end-parenthesis" minOccurs="0"/>
+            <xs:element type="ns:olType" name="logication-operator" minOccurs="0"/>
+        </xs:choice>
+        <xs:attribute type="ns:olType" name="logical-operator"/>
+    </xs:complexType>
+
+
+    <xs:complexType name="filterType">
+        <xs:attribute type="ns:fieldRelation" name="field" use="required"/>
+        <xs:attribute type="ns:operatorType" name="operator" use="required"/>
+        <xs:attribute type="xs:string" name="value"/>
+    </xs:complexType>
+
+    <xs:simpleType name="olType">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="or"/>
+            <xs:enumeration value="and"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="permissionType">
+        <xs:restriction base="xs:string">
+
+            <xs:enumeration value="no"/>
+            <xs:enumeration value="edit"/>
+            <xs:enumeration value="delete"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="trashType">
+        <xs:restriction base="xs:string">
+            <!-- lower case string -->
+            <xs:enumeration value="no"/>
+            <xs:enumeration value="only"/>
+            <xs:enumeration value="also"/>
+            <xs:enumeration value="latest-fixed"/>
+            <xs:enumeration value="fixed"/>
+            <xs:enumeration value="distinct-fixed"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="keywordType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:boolean" name="case-sensitive" default="false"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+
+    <xs:simpleType name="operatorType">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="~"/>
+            <xs:enumeration value="~*"/>
+            <xs:enumeration value="=~*"/>
+            <xs:enumeration value="="/>
+            <xs:enumeration value="~^"/>
+            <xs:enumeration value="!="/>
+            <xs:enumeration value="!~*"/>
+            <xs:enumeration value=">"/>
+            <xs:enumeration value="&lt;"/>
+            <xs:enumeration value=">="/>
+            <xs:enumeration value="&lt;="/>
+            <xs:enumeration value="is null"/>
+            <xs:enumeration value="is not null"/>
+            <xs:enumeration value="~y"/>
+
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="revisionType">
+        <xs:restriction base="xs:string">
+            <!-- lower case string -->
+            <xs:enumeration value="latest"/>
+            <xs:enumeration value="all"/>
+            <xs:enumeration value="latest-fixed"/>
+            <xs:enumeration value="fixed"/>
+            <xs:enumeration value="distinct-fixed"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="loginType">
+        <xs:attribute type="ns:loginRefType" name="login" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="docidType">
+        <xs:attribute type="ns:elementName" name="ref" use="required">
+            <xs:annotation>
+                <xs:documentation>
+                    <p>
+                        Logical name reference
+                    </p>
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+
+    <xs:complexType name="searchStructureType">
+        <xs:complexContent>
+            <xs:extension base="ns:docidType">
+                <xs:attribute type="xs:boolean" name="only" default="false">
+                    <xs:annotation>
+                        <xs:documentation>
+                            <p>
+                                If <code>true</code>, no search into sub-structures
+                            </p>
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- Report data part -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+    <xs:complexType name="reportConfigType">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element type="xs:string" name="caption" minOccurs="0"/>
+            <xs:element type="xs:positiveInteger" name="result-limit" minOccurs="0"/>
+            <xs:element type="ns:sortType" name="sort" minOccurs="0"/>
+            <xs:element type="ns:columnsType" name="columns" minOccurs="0"/>
+        </xs:choice>
+    </xs:complexType>
+
+
+    <xs:complexType name="columnsType">
+        <xs:choice>
+            <xs:element type="ns:columnType" name="column" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="columnType">
+        <xs:attribute type="ns:fieldRelation" name="field"/>
+        <xs:attribute type="ns:footerType" name="footer"/>
+        <xs:attribute type="ns:displayOptionType" name="display-option"/>
+    </xs:complexType>
+
+    <xs:simpleType name="displayOptionType">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="title"/>
+            <xs:enumeration value="docid"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="footerType">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="card"/>
+            <xs:enumeration value="sum"/>
+            <xs:enumeration value="moy"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="sortType">
+        <xs:attribute type="ns:sortDirectionType" name="direction" default="asc"/>
+        <xs:attribute type="xs:string" name="order-by"/>
+    </xs:complexType>
+
+
+    <xs:simpleType name="sortDirectionType">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="asc"/>
+            <xs:enumeration value="desc"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- ~~~~~~~~~~~~~~~~~ -->
+    <!--    Basic type     -->
+    <!-- ~~~~~~~~~~~~~~~~~ -->
+
+ 
+
+    <xs:simpleType name="loginRefType">
+        <xs:annotation>
+            <xs:documentation>
+                Unique reference for an account
+                <b>Uppercase letters are not allowed</b>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:normalizedString">
+            <xs:minLength value="1"/>
+            <xs:pattern value="[\p{Ll} \p{P}\p{N}\p{S}]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="fieldName">
+        <xs:restriction base="xs:token">
+            <xs:pattern value="[a-z][a-z0-9_]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="fieldRelation">
+        <xs:restriction base="xs:token">
+            <xs:pattern value="[a-z][a-z0-9_:]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="elementName">
+        <xs:restriction base="xs:token">
+            <xs:pattern value="[a-zA-Z][A-Za-z0-9_-]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

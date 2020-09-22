@@ -124,7 +124,7 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
                 "label" => "prop_version"
             ), # N_("prop_version"),
             "initid" => array(
-                "type" => "docid",
+                "type" => "integer",
                 "displayable" => true,
                 "sortable" => true,
                 "filterable" => true,

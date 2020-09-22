@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified"
+           targetNamespace="https://platform.anakeen.com/4/schemas/hub-component-generic/1.0"
+           xmlns:hubcg="https://platform.anakeen.com/4/schemas/hub-component-generic/1.0"
+           xmlns:hubc="https://platform.anakeen.com/4/schemas/hub-component/1.0"
+           xmlns:hubcommon="https://platform.anakeen.com/4/schemas/common-types/1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+
+    <xs:import namespace="https://platform.anakeen.com/4/schemas/hub-component/1.0"
+               schemaLocation="./component.xsd"/>
+    <xs:import namespace="https://platform.anakeen.com/4/schemas/common-types/1.0"
+               schemaLocation="./common-types.xsd"/>
+
+    <xs:element name="component" type="hubcg:componentType"/>
+
+
+    <xs:complexType name="componentType">
+        <xs:sequence>
+            <xs:element ref="hubc:parameters" minOccurs="0"/>
+            <xs:element type="hubcg:parameterType" name="parameters" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="hubcommon:logicalNameType" name="instance-ref"/>
+        <xs:attribute type="hubcommon:logicalNameType" name="name"/>
+    </xs:complexType>
+
+
+    <xs:complexType name="parameterType">
+        <xs:sequence>
+            <xs:element type="xs:token" name="router-entry"/>
+            <xs:element type="hubcg:assetType" name="js" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element type="hubcg:assetType" name="css" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element type="xs:token" name="component-tag" minOccurs="0"/>
+            <xs:element type="xs:token" name="component-props" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="assetType" mixed="true">
+        <xs:sequence>
+            <xs:element type="hubcg:assetCallableType" name="asset-callable" minOccurs="0"/>
+            <xs:element type="xs:token" name="asset-argument" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute type="hubcg:assetTypeType" name="type" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="assetCallableType">
+        <xs:attribute type="hubcg:functionNameType" name="function" use="required"/>
+    </xs:complexType>
+    <xs:simpleType name="functionNameType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[A-Za-z:][a-zA-Z0-9_:\\]{2,}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="assetTypeType">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="path"/>
+            <xs:enumeration value="manifest"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>
