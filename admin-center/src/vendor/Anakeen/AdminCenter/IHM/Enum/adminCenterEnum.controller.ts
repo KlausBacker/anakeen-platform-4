@@ -382,7 +382,7 @@ export default class AdminCenterEnumController extends Mixins(AnkI18NMixin) {
         filterMenuInit(e) {
           $(e.container)
             .find(".k-primary")
-            .click(function(event) {
+            .on("click", event => {
               const val = $(e.container)
                 .find('[title="Value"]')
                 .val();

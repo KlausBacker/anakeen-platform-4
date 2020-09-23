@@ -8,7 +8,6 @@ use Anakeen\Router\ApiV2Response;
 
 class Enumerates
 {
-
     private $take = 20;
     private $skip = 0;
     private $filterLogic = 'AND';
@@ -32,16 +31,16 @@ class Enumerates
             for ($i = 0; $i < count($this->filters); $i++) {
                 switch ($this->filters[$i]["field"]) {
                     case 'enumerate':
-                        $this->finalFilter = pg_escape_string($this->filterLogic) . " docenum.NAME LIKE('%" . pg_escape_string($this->filters[$i]["value"]) . "%') ";
+                        $this->finalFilter = pg_escape_string($this->filterLogic) . " DOCENUM.NAME LIKE('%" . pg_escape_string($this->filters[$i]["value"]) . "%') ";
                         break;
                     case 'label':
-                        $this->finalFilter = pg_escape_string($this->filterLogic) . " LABEL LIKE ('%" . pg_escape_string($this->filters[$i]["value"]) . "%') ";
+                        $this->finalFilter = pg_escape_string($this->filterLogic) . " DOCENUM.LABEL LIKE ('%" . pg_escape_string($this->filters[$i]["value"]) . "%') ";
                         break;
                     case 'structures':
-                        $this->finalFilter = pg_escape_string($this->filterLogic) . " LABELTEXT LIKE ('%" . pg_escape_string($this->filters[$i]["value"]) . "%') ";
+                        $this->finalFilter = pg_escape_string($this->filterLogic) . " DOCATTR.LABELTEXT LIKE ('%" . pg_escape_string($this->filters[$i]["value"]) . "%') ";
                         break;
                     case 'fields':
-                        $this->finalFilter = pg_escape_string($this->filterLogic) . " TITLE LIKE ('%" . pg_escape_string($this->filters[$i]["value"]) . "%') ";
+                        $this->finalFilter = pg_escape_string($this->filterLogic) . " DOCFAM.TITLE LIKE ('%" . pg_escape_string($this->filters[$i]["value"]) . "%') ";
                         break;
                 }
             }
@@ -57,10 +56,10 @@ class Enumerates
                     $this->finalSorting = "ORDER BY docenum.label " . pg_escape_string($this->sortingDirection);
                     break;
                 case 'structures':
-                    $this->finalSorting = "ORDER BY labeltext " . pg_escape_string($this->sortingDirection);
+                    $this->finalSorting = "ORDER BY docattr.labeltext " . pg_escape_string($this->sortingDirection);
                     break;
                 case 'fields':
-                    $this->finalSorting = "ORDER BY title " . pg_escape_string($this->sortingDirection);
+                    $this->finalSorting = "ORDER BY docfam.title " . pg_escape_string($this->sortingDirection);
                     break;
             }
         }
@@ -71,23 +70,32 @@ SQL;
 
         $sql = sprintf($sqlPattern, $this->finalFilter, $this->finalSorting, pg_escape_string($this->take), pg_escape_string($this->skip));
 
+
         $extendableEnums = $this->getExtendableEnums();
 
         DbManager::query($sql, $enums);
         $data = array();
         foreach ($enums as $enum) {
-            $entry["enumerate"] = $enum["name"];
-            $entry["label"] = $enum["label"];
-            $isModifiable = false;
-            if (in_array($enum["name"], $extendableEnums)) {
-                $isModifiable = true;
-            }
-            $entry["modifiable"] = $isModifiable;
-            $entry["structures"] = $enum["labeltext"];
-            $entry["fields"] = $enum["title"];
-            array_push($data, $entry);
-        }
+            if ($enum["key"] != ".extendable") {
+                $registeredEnum = array_search($enum["name"], array_column($data, "enumerate"));
+                $registeredEntry = array_search($enum["label"], array_column($data, "label"));
 
+                if ($registeredEnum !== false && $registeredEntry !== false && $data[$registeredEntry]["enumerate"] === $enum["name"]) {
+                    $data[$registeredEntry]["structures"] .= " / " . $enum["labeltext"];
+                } else {
+                    $entry["enumerate"] = $enum["name"];
+                    $entry["label"] = $enum["label"];
+                    $isModifiable = false;
+                    if (in_array($enum["name"], $extendableEnums)) {
+                        $isModifiable = true;
+                    }
+                    $entry["modifiable"] = $isModifiable;
+                    $entry["structures"] = $enum["labeltext"];
+                    $entry["fields"] = $enum["title"];
+                    array_push($data, $entry);
+                }
+            }
+        }
 
         $result["data"] = $data;
         $result["debug"] = $sql;
@@ -139,10 +147,16 @@ SQL;
      */
     private function getTotal()
     {
-        $sqlTotalQuery = <<<'SQL'
-select count(docenum.name) from docattr, docenum, docfam
-where docattr.type='enum("'||docenum.name||'")' and docattr.docid = docfam.id %s
+        if ($this->finalFilter != "") {
+            $sqlTotalQuery = <<<'SQL'
+        select count(DISTINCT docenum.key) from docattr, docenum, docfam
+        where docattr.type='enum("'||docenum.name||'")' and docattr.docid = docfam.id and key != '.extendable' %s
+        SQL;
+        } else {
+            $sqlTotalQuery = <<<'SQL'
+select count(docenum.key) from docenum where key != '.extendable' %s
 SQL;
+        }
 
         $sql = sprintf($sqlTotalQuery, $this->finalFilter);
         DbManager::query($sql, $total);
