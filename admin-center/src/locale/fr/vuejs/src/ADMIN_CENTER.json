@@ -316,4 +316,6 @@
   "AdminRenderDescriptiont.Create new description": "Créer une nouvelle description",
   "AdminCenterRenderDescription.Click to example link": "Cliquer sur le lien de l'exemple dans la description",
   "AdminCenterScheduler.Title Scheduler": "Minuteurs et tâches",
+  "AdminCenterStatistics.Title Statistics Manager": "Statistiques",
+  "AdminCenterStatistics.Active users": "Utilisateurs actifs"
 }

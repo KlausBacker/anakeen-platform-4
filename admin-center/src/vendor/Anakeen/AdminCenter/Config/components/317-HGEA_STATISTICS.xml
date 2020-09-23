@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hub:config xmlns:hub="https://platform.anakeen.com/4/schemas/hub/1.0">
+    <hubc-generic:component xmlns:hubc-generic="https://platform.anakeen.com/4/schemas/hub-component-generic/1.0" instance-ref="ADMINCENTER" name="HGEA_STATISTICS">
+        <hub-component:parameters xmlns:hub-component="https://platform.anakeen.com/4/schemas/hub-component/1.0">
+            <hub-component:display position="left" placement="top" order="1500"/>
+            <!--Identification / Name-->
+            <hub-component:title>ADMINSTATISTICS</hub-component:title>
+            <hub-component:settings activated="true" selectable="true" expandable="true"/>
+            <hub-component:security>
+                <hub-component:execution-roles logical-operator="and">
+                    <!--Security Roles / Roles to access hub element API-->
+                    <hub-component:execution-role login="functional_administrator"/>
+                    <hub-component:execution-role login="statistics_manager_role"/>
+                </hub-component:execution-roles>
+            </hub-component:security>
+        </hub-component:parameters>
+        <hubc-generic:parameters>
+            <!--Dock / Router entry-->
+            <hubc-generic:router-entry>statistics</hubc-generic:router-entry>
+            <hubc-generic:js type="manifest">
+                <hubc-generic:asset-callable function="Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath"/>
+                <hubc-generic:asset-argument>admin</hubc-generic:asset-argument>
+                <hubc-generic:asset-argument>AdminStatistics</hubc-generic:asset-argument>
+            </hubc-generic:js>
+            <!--Identification / Component tag-->
+            <hubc-generic:component-tag>ank-admin-statistics</hubc-generic:component-tag>
+        </hubc-generic:parameters>
+    </hubc-generic:component>
+</hub:config>
