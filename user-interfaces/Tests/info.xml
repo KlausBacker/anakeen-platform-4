@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="user-interfaces-test" version="2.0.2" vendor="Anakeen" license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3">
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="user-interfaces-test" version="3.1.0" vendor="Anakeen" license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3">
     <description>Tests for Anakeen Uis</description>
 
     <requires>
         <module name="user-interfaces" version="^3.1.0"/>
         <module name="workflow" version="^2.0.3"/>
-        <module name="smart-data-engine-test" version="2.0.x"/>
+        <module name="smart-data-engine-test" version="3.0.x"/>
         <module name="anakeen-hub-business-app" version="^2.0.0"/>
         <module name="anakeen-dev-data" version="2.0.x"/>
     </requires>
