@@ -4,6 +4,7 @@ namespace Anakeen\Core;
 
 use Anakeen\Core\Internal\ContextParameterManager;
 use Anakeen\Core\Internal\GlobalParametersManager;
+use Anakeen\Core\Internal\LogMonthConnection;
 use Anakeen\Core\Utils\Gettext;
 use Anakeen\Router\AuthenticatorManager;
 
@@ -93,6 +94,8 @@ class ContextManager
 
         self::$coreUser =& $account;
         GlobalParametersManager::initialize();
+
+        LogMonthConnection::addLog($account->login);
 
         self::setLanguage(self::getParameterValue(Settings::NsSde, "CORE_LANG", "fr_FR"));
     }

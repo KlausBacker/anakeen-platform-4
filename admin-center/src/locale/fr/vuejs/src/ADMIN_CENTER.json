@@ -219,8 +219,8 @@
   "AdminCenterAuthentication token.Token Deleted": "Jeton d'accès supprimé",
   "globalParameter.Parameter modified": "Paramètre modifié",
   "AdminCenterSmartStructure.Close": "Fermer",
-  "AdminCenterSmartStructure.Erase default value": "Ecraser la valeur par défaut",
-  "AdminCenterSmartStructure.Update default value": "Actualiser la valeur par defaut",
+  "AdminCenterSmartStructure.Erase default value": "Effacer la valeur par défaut",
+  "AdminCenterSmartStructure.Update default value": "Modifier la valeur par defaut",
   "AdminCenterSmartStructure.Array": "Tableau",
   "AdminCenterSmartStructure.Default value": "Valeur par defaut",
   "AdminCenterKendoGridTranslation.No data": "Pas de donnée",
@@ -314,5 +314,6 @@
   "AdminCenterRenderDescription.Select render description": "Sélectionner une description",
   "AdminRenderDescriptiont.Create new description": "Créer une nouvelle description",
   "AdminCenterRenderDescription.Click to example link": "Cliquer sur le lien de l'exemple dans la description",
-  "AdminCenterScheduler.Title Scheduler": "Minuteurs et tâches"
+  "AdminCenterScheduler.Title Scheduler": "Minuteurs et tâches",
+  "AdminCenterSmartStructure.Confirmation": null
 }

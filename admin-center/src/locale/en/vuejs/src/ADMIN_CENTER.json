@@ -314,5 +314,6 @@
   "AdminCenterRenderDescription.Select render description": "Select a description form",
   "AdminRenderDescriptiont.Create new description": "Create new description",
   "AdminCenterRenderDescription.Click to example link": "Click to example link inside description",
-  "AdminCenterScheduler.Title Scheduler": "Timers and tasks"
+  "AdminCenterScheduler.Title Scheduler": "Timers and tasks",
+  "AdminCenterSmartStructure.Confirmation": null
 }
