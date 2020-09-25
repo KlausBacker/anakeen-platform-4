@@ -34,7 +34,7 @@ class AlterParameter
             $return = $this->alterValue($this->nameSpace, $this->parameterName, $this->newValue);
             return ApiV2Response::withData($response, $return);
         } else {
-            $response->withStatus(400, 'Wrong value');
+            $response = $response->withStatus(400, 'Wrong value');
             return ApiV2Response::withMessages($response, ['Wrong value']);
         }
     }
@@ -98,7 +98,6 @@ class AlterParameter
         switch ($paramType) {
             case "password":
                 return is_string($newValue);
-                break;
             case "text":
                 return is_string($newValue);
             case "double":
@@ -110,7 +109,7 @@ class AlterParameter
                 return is_string($newValue) && is_array(json_decode($newValue, true)) && (json_last_error() === JSON_ERROR_NONE);
             default:
                 if (stripos($paramType, 'enum') === 0) {
-                    $values = substr($paramType, 5);
+                    $values = substr($output[0]['kind'], 5);
                     $values = substr($values, 0, -1);
                     $values = explode('|', $values);
                     return in_array($newValue, $values);
