@@ -6,9 +6,11 @@
 
 namespace Anakeen\Exchange;
 
+use Anakeen\Core\AccountManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Exception;
+use SmartStructure\Fields\Iuser as IuserFields;
 
 class ExportAccounts
 {
@@ -677,10 +679,18 @@ class ExportAccounts
         $node->appendChild($nodeInfo);
 
         if ($user->substitute) {
-            DbManager::query(sprintf("select login from users where id = %d", $user->substitute), $substituteLogin, true, true);
+            $substituteLogin=AccountManager::getLoginFromId($user->substitute);
             if ($substituteLogin) {
                 $nodeInfo = $this->xml->createElement("substitute");
                 $nodeInfo->setAttribute("reference", $substituteLogin);
+
+                $data=SEManager::getRawData($user->fid, [IuserFields::us_substitute_startdate, IuserFields::us_substitute_enddate]);
+                if ($data[IuserFields::us_substitute_startdate]) {
+                    $nodeInfo->setAttribute("startdate", $data[IuserFields::us_substitute_startdate]);
+                }
+                if ($data[IuserFields::us_substitute_enddate]) {
+                    $nodeInfo->setAttribute("enddate", $data[IuserFields::us_substitute_enddate]);
+                }
                 $node->appendChild($nodeInfo);
             }
         }

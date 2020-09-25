@@ -33,6 +33,13 @@
       <sde:description>Clean temporary data in database</sde:description>
       <sde:requiredAccess/>
     </sde:route>
+    <sde:route name="UpdateSubstitutes">
+      <sde:callable>Anakeen\Routes\Core\UpdateSubstitutes</sde:callable>
+      <sde:method>PATCH</sde:method>
+      <sde:pattern/>
+      <sde:description>Activate or desactivate substitutes when a period is given</sde:description>
+      <sde:requiredAccess/>
+    </sde:route>
   </sde:routes>
   <sde:accesses namespace="Core">
     <sde:access name="Admin">
