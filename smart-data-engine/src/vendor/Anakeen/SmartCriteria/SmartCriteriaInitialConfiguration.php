@@ -377,7 +377,7 @@ class SmartCriteriaInitialConfiguration
                                 \Anakeen\Search\Filters\Numerical\OneEmpty::NOT => ___("One date is not empty", "SearchCriteriaUtils.Numerical multi"),
                                 \Anakeen\Search\Filters\Numerical\OneEmpty::ALL => ___("All dates are empty", "SearchCriteriaUtils.Numerical multi"),
                                 \Anakeen\Search\Filters\Numerical\OneEmpty::ALL + \Anakeen\Search\Filters\Numerical\OneEmpty::NOT =>
-                                    ___("No date is empty", "SearchCriteriaUtils.Numerical multi"),
+                                    ___("No values are empty", "SearchCriteriaUtils.Numerical multi"),
                             ],
                         ],
                         "oneEquals" => [
@@ -505,6 +505,19 @@ class SmartCriteriaInitialConfiguration
                                 \Anakeen\Search\Filters\Relation\IsEmpty::NOT => ___("Is not empty", "SearchCriteriaUtils.Relations multi"),
                             ],
                         ],
+                        "oneEquals" => [
+                            "class" => \Anakeen\Search\Filters\Relation\OneEquals::class,
+                            "operands" => [SmartCriteriaConfig::FIELD, SmartCriteriaConfig::VALUE, 0],
+                            "availableOptions" => [],
+                            "dynamicLabel" => true,
+                            "labels" => [
+                                0 => ___("One of the '%s' is equal to", "SearchCriteriaUtils.Relations multi"),
+                                \Anakeen\Search\Filters\Relation\OneEquals::NOT => ___("One of the '%s' is different from", "SearchCriteriaUtils.Relations multi"),
+                                \Anakeen\Search\Filters\Relation\OneEquals::ALL => ___("All '%s' are equal to", "SearchCriteriaUtils.Relations multi"),
+                                \Anakeen\Search\Filters\Relation\OneEquals::ALL + \Anakeen\Search\Filters\Relation\OneEquals::NOT =>
+                                    ___("All '%s' are different from", "SearchCriteriaUtils.Relations multi"),
+                            ],
+                        ]
                     ],
                     SmartCriteriaConfig::MULTIPLE_FILTER => [
                         "oneEqualsMulti" => [
