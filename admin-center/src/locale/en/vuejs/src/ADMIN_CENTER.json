@@ -219,6 +219,7 @@
   "AdminCenterAuthentication token.Token Deleted": "Token Deleted",
   "globalParameter.Parameter modified": "Parameter modified",
   "AdminCenterSmartStructure.Close": "Close",
+  "AdminCenterSmartStructure.Confirmation": "Would you like to close the form without saving changes ?",
   "AdminCenterSmartStructure.Erase default value": "Erase default value",
   "AdminCenterSmartStructure.Update default value": "Update default value",
   "AdminCenterSmartStructure.Array": "Array",
