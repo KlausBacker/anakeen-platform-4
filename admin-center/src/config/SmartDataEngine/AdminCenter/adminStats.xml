@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+  <sde:routes namespace="AdminCenter">
+    <sde:route name="MonthConnexionLogins">
+      <sde:callable>Anakeen\Routes\Admin\Stats\MonthUserConnexionLogin</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/api/v2/stats/connexions/login/months/{from:[1-9][0-9][0-9][0-9]-[0-1][0-9]}/{to:[1-9][0-9][0-9][0-9]-[0-1][0-9]}</sde:pattern>
+      <sde:pattern>/api/v2/stats/connexions/login/months/{from:[1-9][0-9][0-9][0-9]-[0-1][0-9]}/</sde:pattern>
+      <sde:pattern>/api/v2/stats/connexions/login/months//{to:[1-9][0-9][0-9][0-9]-[0-1][0-9]}</sde:pattern>
+      <sde:pattern>/api/v2/stats/connexions/login/months/</sde:pattern>
+      <sde:description>List of user login logged by month</sde:description>
+      <sde:requiredAccess operator="or">
+        <sde:access ns="AdminCenter">Admin</sde:access>
+        <sde:access ns="AdminCenter">AdminStats</sde:access>
+      </sde:requiredAccess>
+    </sde:route>
+
+    <sde:route name="MonthConnexionLoginsXlsx">
+      <sde:callable>Anakeen\Routes\Admin\Stats\MonthUserConnexionLoginXlsx</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/api/v2/stats/connexions/login/months/{from:[1-9][0-9][0-9][0-9]-[0-1][0-9]}/{to:[1-9][0-9][0-9][0-9]-[0-1][0-9]}.xlsx</sde:pattern>
+      <sde:pattern>/api/v2/stats/connexions/login/months/{from:[1-9][0-9][0-9][0-9]-[0-1][0-9]}.xlsx</sde:pattern>
+      <sde:pattern>/api/v2/stats/connexions/login/months//{to:[1-9][0-9][0-9][0-9]-[0-1][0-9]}.xlsx</sde:pattern>
+      <sde:pattern>/api/v2/stats/connexions/login/months.xlsx</sde:pattern>
+      <sde:description>List of user login logged by month</sde:description>
+      <sde:requiredAccess operator="or">
+        <sde:access ns="AdminCenter">Admin</sde:access>
+        <sde:access ns="AdminCenter">AdminStats</sde:access>
+      </sde:requiredAccess>
+    </sde:route>
+
+    <sde:route name="MonthConnexionCount">
+      <sde:callable>Anakeen\Routes\Admin\Stats\MonthUserConnexionCount</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/api/v2/stats/connexions/login/count/{from:[1-9][0-9][0-9][0-9]-[0-1][0-9]}/{to:[1-9][0-9][0-9][0-9]-[0-1][0-9]}</sde:pattern>
+      <sde:pattern>/api/v2/stats/connexions/login/count/{from:[1-9][0-9][0-9][0-9]-[0-1][0-9]}/</sde:pattern>
+      <sde:pattern>/api/v2/stats/connexions/login/count//{to:[1-9][0-9][0-9][0-9]-[0-1][0-9]}</sde:pattern>
+      <sde:pattern>/api/v2/stats/connexions/login/count/</sde:pattern>
+      <sde:description>Number of user login in period</sde:description>
+      <sde:requiredAccess operator="or">
+        <sde:access ns="AdminCenter">Admin</sde:access>
+        <sde:access ns="AdminCenter">AdminStats</sde:access>
+      </sde:requiredAccess>
+    </sde:route>
+
+  </sde:routes>
+  <sde:accesses namespace="AdminCenter">
+    <sde:access name="AdminStats">
+      <sde:description>Stats administrator access</sde:description>
+    </sde:access>
+    <sde:route-access ref="AdminStats" account="accounts_manager_role" />
+  </sde:accesses>
+</sde:config>

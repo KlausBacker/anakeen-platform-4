@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anakeen-platform 4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-04 14:35+0200\n"
-"PO-Revision-Date: 2020-04-17 09:22+0200\n"
+"POT-Creation-Date: 2020-09-24 12:19+0200\n"
+"PO-Revision-Date: 2020-09-24 12:20+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -22,9 +22,23 @@ msgctxt "timer"
 msgid "\"%s\" will change state to \"%s\""
 msgstr ""
 
+#, php-format
+msgctxt "adminstats"
+msgid "%d active users : period from %s to %s"
+msgstr "%d utilisateurs actifs : période de %s à %s"
+
 msgctxt "timer"
 msgid "Aborted:"
 msgstr ""
+
+msgctxt "adminstats"
+msgid "Active users"
+msgstr "Utilisateurs actifs"
+
+#, php-format
+msgctxt "adminstats"
+msgid "Active users : %s to %s"
+msgstr "Utilisateurs actifs : %s à %s"
 
 #, php-format
 msgctxt "timer"
@@ -176,9 +190,12 @@ msgstr "Le coffre \"#%d\" n'existe pas"
 
 msgctxt "AdminCenterParameters.user btn specific user"
 msgid "You need to turn on the button user parameters"
-msgstr ""
-"Le boutton d'activation de l'onglet user doit être à \"true\" lorsqu'il y a "
-"un utilisateur specifique selectionné"
+msgstr "Le bouton d'activation de l'onglet user doit être à \"true\" lorsqu'il y a un utilisateur specifique selectionné"
+
+#, php-format
+msgctxt "adminstats"
+msgid "active users %s %s"
+msgstr "Utilisateurs actifs %s %s"
 
 #~ msgctxt "AdminCenterTrash.title"
 #~ msgid "title"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anakeen-platform 4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-04 14:35+0200\n"
+"POT-Creation-Date: 2020-09-24 12:19+0200\n"
 "PO-Revision-Date: 2020-04-17 09:22+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -22,8 +22,22 @@ msgctxt "timer"
 msgid "\"%s\" will change state to \"%s\""
 msgstr ""
 
+#, php-format
+msgctxt "adminstats"
+msgid "%d active users : period from %s to %s"
+msgstr ""
+
 msgctxt "timer"
 msgid "Aborted:"
+msgstr ""
+
+msgctxt "adminstats"
+msgid "Active users"
+msgstr ""
+
+#, php-format
+msgctxt "adminstats"
+msgid "Active users : %s to %s"
 msgstr ""
 
 #, php-format
@@ -173,6 +187,11 @@ msgstr "Vault \"#%d\" not exists"
 
 msgctxt "AdminCenterParameters.user btn specific user"
 msgid "You need to turn on the button user parameters"
+msgstr ""
+
+#, php-format
+msgctxt "adminstats"
+msgid "active users %s %s"
 msgstr ""
 
 #, fuzzy
