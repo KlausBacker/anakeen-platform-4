@@ -20,7 +20,7 @@ class EnumerateData
     protected function doRequest()
     {
         $sqlPattern = <<<'SQL'
-select docenum.key, docenum.label, docenum.disabled, docenum.eorder from docenum where name = '%s' ORDER BY docenum.eorder
+select docenum.key, docenum.label, docenum.disabled, docenum.eorder from docenum where name = '%s' and key != '.extendable' ORDER BY docenum.eorder
 SQL;
 
         $sql = sprintf($sqlPattern, pg_escape_string($this->id));
