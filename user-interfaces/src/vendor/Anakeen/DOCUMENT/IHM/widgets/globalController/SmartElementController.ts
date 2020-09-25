@@ -1520,7 +1520,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
         } else {
           const changesIndex = [];
           _.each(values.current, (currentValue: any) => {
-            let previous = values.previous[index];
+            let previous = _.isArray(values.previous) ? values.previous[index] : null;
             if (!previous) {
               changesIndex.push(index);
             } else {
