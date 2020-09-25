@@ -58,9 +58,6 @@
             <ui:view name="LABELUP" label="Label up" display-mode="edition" menu-displayed="false">
                 <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\AllRenderUpLabel"/>
             </ui:view>
-            <ui:view name="LABELAUTO" label="Label auto" display-mode="edition" menu-displayed="false">
-                <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\AllRenderAutoLabel"/>
-            </ui:view>
             <ui:view name="LABELNONE" label="Label none" display-mode="edition" menu-displayed="false">
                 <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiAllType\Renders\AllRenderNoneLabel"/>
             </ui:view>
