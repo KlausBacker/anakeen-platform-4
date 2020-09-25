@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-15 12:23+0200\n"
-"PO-Revision-Date: 2020-06-15 12:25+0200\n"
+"POT-Creation-Date: 2020-09-25 14:58+0200\n"
+"PO-Revision-Date: 2020-09-25 15:02+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.3.1\n"
+"X-Generator: Poedit 2.4.1\n"
 
 #, php-format
 msgctxt "mail"
@@ -226,115 +226,113 @@ msgstr "Affectation pour %s"
 msgid "Affected to %s %s"
 msgstr "Affectation à %s %s"
 
+#, php-format
+msgctxt "SearchCriteriaUtils.Relations multi"
+msgid "All '%s' are different from"
+msgstr "Tous les '%s’ sont différents de"
+
+#, php-format
+msgctxt "SearchCriteriaUtils.Relations multi"
+msgid "All '%s' are equal to"
+msgstr "Tous les '%s'  sont égaux à"
+
 msgctxt "SearchCriteriaUtilsTextual multi"
 msgid "All contain"
-msgstr ""
+msgstr "Toutes les valeurs contiennent"
 
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "All dates are after"
-msgstr ""
+msgstr "Toutes les dates sont postérieures à"
 
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "All dates are before"
-msgstr ""
+msgstr "Toutes les dates sont antérieures à"
 
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "All dates are between"
-msgstr ""
+msgstr "Toutes les dates sont entre"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "All dates are different from"
-msgstr "Un des '%s' n'est pas parmi"
+msgstr "Toutes les dates sont différentes de"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "All dates are empty"
-msgstr "[%s] doit être supérieur à %s"
+msgstr "Toutes les dates sont vides"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "All dates are empty"
-msgstr "[%s] doit être supérieur à %s"
+msgstr "Toutes les dates sont vides"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "All dates are equal to"
-msgstr "[%s] doit être supérieur à %s"
+msgstr "Toutes les dates sont égales à"
 
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "All dates are strictly after"
-msgstr ""
+msgstr "Toutes les dates sont strictement postérieures à"
 
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "All dates are strictly before"
-msgstr ""
+msgstr "Toutes les dates sont strictement antérieures à"
 
 #, php-format
 msgctxt "SearchCriteriaUtils.Enum multi"
 msgid "All of the '%s' are among"
-msgstr ""
+msgstr "Tous les '%s' sont parmi"
 
 #, php-format
 msgctxt "SearchCriteriaUtils.Relations multi"
 msgid "All of the '%s' are among"
-msgstr ""
+msgstr "Tous les '%s' sont parmi"
 
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "All values are between"
-msgstr ""
+msgstr "Toutes les valeurs sont entre"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Enum multi"
 msgid "All values are different from"
-msgstr "Un des '%s' n'est pas parmi"
+msgstr "Toutes les valeurs sont différentes de"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "All values are different from"
-msgstr "Un des '%s' n'est pas parmi"
+msgstr "Toutes les valeurs sont différentes de"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Textual multi"
 msgid "All values are different from"
-msgstr "Un des '%s' n'est pas parmi"
+msgstr "Toutes les valeurs sont différentes de"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Textual multi"
 msgid "All values are empty"
-msgstr "[%s] doit être supérieur à %s"
+msgstr "Toutes les valeurs sont vides"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Enum multi"
 msgid "All values are equal to"
-msgstr "[%s] doit être supérieur à %s"
+msgstr "Toutes les valeurs sont égales à"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "All values are equal to"
-msgstr "[%s] doit être supérieur à %s"
+msgstr "Toutes les valeurs sont égales à"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Textual multi"
 msgid "All values are equal to"
-msgstr "[%s] doit être supérieur à %s"
+msgstr "Toutes les valeurs sont égales à"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "All values are greater than"
-msgstr "[%s] doit être supérieur à %s"
+msgstr "Toutes les valeurs sont supérieures à"
 
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "All values are lesser than"
-msgstr ""
+msgstr "Toutes les valeurs sont inférieures à"
 
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "All values are strictly greater than"
-msgstr ""
+msgstr "Toutes les valeurs sont strictement supérieures à"
 
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "All values are strictly lesser than"
-msgstr ""
+msgstr "Toutes les valeurs sont strictement inférieures à"
 
 msgctxt "wdoc"
 msgid "Ask for"
@@ -423,11 +421,11 @@ msgstr "Fichier de configuration %s: nom de l'attribut %s inconnu"
 
 msgctxt "SearchCriteriaUtils.Textual simple"
 msgid "Contains"
-msgstr ""
+msgstr "Contient"
 
 msgctxt "SearchCriteriaUtils.Title simple"
 msgid "Contains"
-msgstr ""
+msgstr "Contient"
 
 msgctxt "smart iuser"
 msgid "Control characters are not allowed"
@@ -571,19 +569,19 @@ msgstr "La mise à jour de l'élement a échoué"
 
 msgctxt "SearchCriteriaUtils.Textual simple"
 msgid "Does not contain"
-msgstr ""
+msgstr "Ne contient pas"
 
 msgctxt "SearchCriteriaUtils.Title simple"
 msgid "Does not contain"
-msgstr ""
+msgstr "Ne contient pas"
 
 msgctxt "SearchCriteriaUtils.Textual simple"
 msgid "Does not start with"
-msgstr ""
+msgstr "Ne commence pas par"
 
 msgctxt "SearchCriteriaUtils.Title simple"
 msgid "Does not start with"
-msgstr ""
+msgstr "Ne commence pas par"
 
 msgid "Doing csv render"
 msgstr "Composition du csv"
@@ -796,245 +794,211 @@ msgstr "Répertoire non valide '%s'."
 
 msgctxt "SearchCriteriaUtils.Temporal simple"
 msgid "Is after"
-msgstr ""
+msgstr "Est postérieur à"
 
 msgctxt "SearchCriteriaUtils.Enum simple"
 msgid "Is among"
-msgstr ""
+msgstr "Est parmi"
 
 msgctxt "SearchCriteriaUtils.Relations simple"
 msgid "Is among"
-msgstr ""
+msgstr "Est parmi"
 
 msgctxt "SearchCriteriaUtils.State simple"
 msgid "Is among"
 msgstr "Est parmi"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Temporal simple"
 msgid "Is before"
-msgstr "entre"
+msgstr "Est antérieur à"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Numerical simple"
 msgid "Is between"
-msgstr "entre"
+msgstr "Est entre"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Temporal simple"
 msgid "Is between"
-msgstr "entre"
+msgstr "Est entre"
 
 msgctxt "SearchCriteriaUtils.Enum simple"
 msgid "Is different from"
-msgstr ""
+msgstr "Est différent de"
 
 msgctxt "SearchCriteriaUtils.Numerical simple"
 msgid "Is different from"
-msgstr ""
+msgstr "Est différent de"
 
 msgctxt "SearchCriteriaUtils.Relations simple"
 msgid "Is different from"
-msgstr ""
+msgstr "Est différent de"
 
 msgctxt "SearchCriteriaUtils.State simple"
 msgid "Is different from"
-msgstr ""
+msgstr "Est différent de"
 
 msgctxt "SearchCriteriaUtils.Temporal simple"
 msgid "Is different from"
-msgstr ""
+msgstr "Est différent de"
 
 msgctxt "SearchCriteriaUtils.Textual simple"
 msgid "Is different from"
-msgstr ""
+msgstr "Est différent de"
 
 msgctxt "SearchCriteriaUtils.Title simple"
 msgid "Is different from"
-msgstr ""
+msgstr "Est différent de"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Enum multi"
 msgid "Is empty"
-msgstr "est vide"
+msgstr "Est vide"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Enum simple"
 msgid "Is empty"
-msgstr "est vide"
+msgstr "Est vide"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "Is empty"
-msgstr "est vide"
+msgstr "Est vide"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Numerical simple"
 msgid "Is empty"
-msgstr "est vide"
+msgstr "Est vide"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Relations multi"
 msgid "Is empty"
-msgstr "est vide"
+msgstr "Est vide"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Relations simple"
 msgid "Is empty"
-msgstr "est vide"
+msgstr "Est vide"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "Is empty"
-msgstr "est vide"
+msgstr "Est vide"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Temporal simple"
 msgid "Is empty"
-msgstr "est vide"
+msgstr "Est vide"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Textual simple"
 msgid "Is empty"
-msgstr "est vide"
+msgstr "Est vide"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Title simple"
 msgid "Is empty"
-msgstr "est vide"
+msgstr "Est vide"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtilsTextual multi"
 msgid "Is empty"
-msgstr "est vide"
+msgstr "Est vide"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Enum simple"
 msgid "Is equal to"
-msgstr "égal"
+msgstr "Est égal à"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Numerical simple"
 msgid "Is equal to"
-msgstr "égal"
+msgstr "Est égal à"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Relations simple"
 msgid "Is equal to"
-msgstr "égal"
+msgstr "Est égal à"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.State simple"
 msgid "Is equal to"
-msgstr "égal"
+msgstr "Est égal à"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Temporal simple"
 msgid "Is equal to"
-msgstr "égal"
+msgstr "Est égal à"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Textual simple"
 msgid "Is equal to"
-msgstr "égal"
+msgstr "Est égal à"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Title simple"
 msgid "Is equal to"
-msgstr "égal"
+msgstr "Est égal à"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Numerical simple"
 msgid "Is greater than"
-msgstr "[%s] doit être supérieur à %s"
+msgstr "Est supérieur à"
 
 msgctxt "SearchCriteriaUtils.Numerical simple"
 msgid "Is lesser than"
-msgstr ""
+msgstr "Est inférieur à"
 
 msgctxt "SearchCriteriaUtils.Enum simple"
 msgid "Is not among"
-msgstr ""
+msgstr "N'est pas parmi"
 
 msgctxt "SearchCriteriaUtils.Relations simple"
 msgid "Is not among"
-msgstr ""
+msgstr "N'est pas parmi"
 
 msgctxt "SearchCriteriaUtils.State simple"
 msgid "Is not among"
 msgstr "N'est pas parmi"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Enum multi"
 msgid "Is not empty"
-msgstr "n'est pas vide"
+msgstr "N'est pas vide"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Enum simple"
 msgid "Is not empty"
-msgstr "n'est pas vide"
+msgstr "N'est pas vide"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "Is not empty"
-msgstr "n'est pas vide"
+msgstr "N'est pas vide"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Numerical simple"
 msgid "Is not empty"
-msgstr "n'est pas vide"
+msgstr "N'est pas vide"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Relations multi"
 msgid "Is not empty"
-msgstr "n'est pas vide"
+msgstr "N'est pas vide"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Relations simple"
 msgid "Is not empty"
-msgstr "n'est pas vide"
+msgstr "N'est pas vide"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "Is not empty"
-msgstr "n'est pas vide"
+msgstr "N'est pas vide"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Temporal simple"
 msgid "Is not empty"
-msgstr "n'est pas vide"
+msgstr "N'est pas vide"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Textual simple"
 msgid "Is not empty"
-msgstr "n'est pas vide"
+msgstr "N'est pas vide"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Title simple"
 msgid "Is not empty"
-msgstr "n'est pas vide"
+msgstr "N'est pas vide"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtilsTextual multi"
 msgid "Is not empty"
-msgstr "n'est pas vide"
+msgstr "N'est pas vide"
 
 msgctxt "SearchCriteriaUtils.Temporal simple"
 msgid "Is strictly after"
-msgstr ""
+msgstr "Est strictement postérieur à"
 
 msgctxt "SearchCriteriaUtils.Temporal simple"
 msgid "Is strictly before"
-msgstr ""
+msgstr "Est strictement antérieur à"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Numerical simple"
 msgid "Is strictly greater than"
-msgstr "[%s] doit être supérieur à %s"
+msgstr "Est strictement supérieur à"
 
 msgctxt "SearchCriteriaUtils.Numerical simple"
 msgid "Is strictly lesser than"
-msgstr ""
+msgstr "Est strictement inférieur à"
 
 #, php-format
 msgctxt "smart iuser"
@@ -1081,27 +1045,27 @@ msgstr "la méthode [%s] n'existe pas"
 
 msgctxt "SearchCriteriaUtils.Enum multi"
 msgid "NA"
-msgstr ""
+msgstr "Ignorer"
 
 msgctxt "SearchCriteriaUtils.Enum simple"
 msgid "NA"
-msgstr ""
+msgstr "Ignorer"
 
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "NA"
-msgstr ""
+msgstr "Ignorer"
 
 msgctxt "SearchCriteriaUtils.Numerical simple"
 msgid "NA"
-msgstr ""
+msgstr "Ignorer"
 
 msgctxt "SearchCriteriaUtils.Relations multi"
 msgid "NA"
-msgstr ""
+msgstr "Ignorer"
 
 msgctxt "SearchCriteriaUtils.Relations simple"
 msgid "NA"
-msgstr ""
+msgstr "Ignorer"
 
 msgctxt "SearchCriteriaUtils.State simple"
 msgid "NA"
@@ -1109,41 +1073,35 @@ msgstr "Ignorer"
 
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "NA"
-msgstr ""
+msgstr "Ignorer"
 
 msgctxt "SearchCriteriaUtils.Temporal simple"
 msgid "NA"
-msgstr ""
+msgstr "Ignorer"
 
 msgctxt "SearchCriteriaUtils.Textual multi"
 msgid "NA"
-msgstr ""
+msgstr "Ignorer"
 
 msgctxt "SearchCriteriaUtils.Textual simple"
 msgid "NA"
-msgstr ""
+msgstr "Ignorer"
 
 msgctxt "SearchCriteriaUtils.Title simple"
 msgid "NA"
-msgstr ""
+msgstr "Ignorer"
 
 msgctxt "fusersimport"
 msgid "New password"
 msgstr "Nouveau mot de passe"
 
-#, fuzzy
-msgctxt "SearchCriteriaUtils.Numerical multi"
-msgid "No date is empty"
-msgstr "est vide"
-
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "No date is empty"
-msgstr "est vide"
+msgstr "Aucune date n'est vide"
 
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "No dates are between"
-msgstr ""
+msgstr "Aucune date n'est entre"
 
 #, php-format
 msgid "No identifier found for relation '%s' %s in %s file"
@@ -1160,28 +1118,38 @@ msgctxt "sde"
 msgid "No privilege \"%s\" for %d"
 msgstr "Pas de privilège \"%s\" pour l'élement \"%d\""
 
-#, fuzzy
+#, php-format
+msgctxt "sde"
+msgid "No privilege \"%s\" for %d ( \"%s\" doesn't exist in the profil )"
+msgstr ""
+"Pas de privilège \"%s\" pour l'élement %d (\"%s\" n'existe pas dans le "
+"profil)"
+
 msgctxt "SearchCriteriaUtils.Textual multi"
 msgid "No value is empty"
-msgstr "Une des valeurs est entre"
+msgstr "Aucune valeur n'est vide"
 
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "No values are between"
-msgstr ""
+msgstr "Aucune valeur n'est entre"
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "No values are empty"
+msgstr "Aucune valeur n’est vide"
 
 msgctxt "SearchCriteriaUtilsTextual multi"
 msgid "None contain"
-msgstr ""
+msgstr "Aucune valeur ne contient"
 
 #, php-format
 msgctxt "SearchCriteriaUtils.Enum multi"
 msgid "None of the '%s' are among"
-msgstr ""
+msgstr "Aucun des '%s' n'est parmi"
 
 #, php-format
 msgctxt "SearchCriteriaUtils.Relations multi"
 msgid "None of the '%s' are among"
-msgstr ""
+msgstr "Aucun des '%s' n'est parmi"
 
 #, php-format
 msgid "Not a family [%s]"
@@ -1211,63 +1179,53 @@ msgctxt "SearchCriteriaUtilsTextual multi"
 msgid "One contains"
 msgstr "Une des valeurs contient"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "One date is after"
-msgstr "Une des dates est entre"
+msgstr "Une des dates est postérieure à"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "One date is before"
-msgstr "Une des dates est entre"
+msgstr "Une des dates est antérieure à"
 
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "One date is between"
 msgstr "Une des dates est entre"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "One date is different from"
-msgstr "Un des '%s' n'est pas parmi"
+msgstr "Une des dates est différente de"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "One date is empty"
-msgstr "Une des dates est entre"
+msgstr "Une des dates est vide"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "One date is empty"
-msgstr "Une des dates est entre"
+msgstr "Une des dates est vide"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "One date is equal to"
-msgstr "Une valeur est différente de"
+msgstr "Une des dates est égale de"
 
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "One date is not between"
 msgstr "Une des dates n'est pas entre"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "One date is not empty"
-msgstr "Une des dates n'est pas entre"
+msgstr "Une des dates n'est pas vide"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "One date is not empty"
-msgstr "Une des dates n'est pas entre"
+msgstr "Une des dates n'est pas vide"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "One date is strictly after"
-msgstr "Une des dates n'est pas entre"
+msgstr "Une des dates est strictement postérieure à"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "One date is strictly before"
-msgstr "Une des dates n'est pas entre"
+msgstr "Une des dates est strictement antérieure à"
 
 msgctxt "SearchCriteriaUtilsTextual multi"
 msgid "One does not contain"
@@ -1284,6 +1242,16 @@ msgid "One of the '%s' is among"
 msgstr "Un des '%s' est parmi"
 
 #, php-format
+msgctxt "SearchCriteriaUtils.Relations multi"
+msgid "One of the '%s' is different from"
+msgstr "Un des '%s' est différent de"
+
+#, php-format
+msgctxt "SearchCriteriaUtils.Relations multi"
+msgid "One of the '%s' is equal to"
+msgstr "Un des '%s' est égal à"
+
+#, php-format
 msgctxt "SearchCriteriaUtils.Enum multi"
 msgid "One of the '%s' is not among"
 msgstr "Un des '%s' n'est pas parmi"
@@ -1297,69 +1265,57 @@ msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "One value is between"
 msgstr "Une des valeurs est entre"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Enum multi"
 msgid "One value is different from"
-msgstr "Un des '%s' n'est pas parmi"
+msgstr "Une valeur est différente de"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "One value is different from"
-msgstr "Un des '%s' n'est pas parmi"
+msgstr "Une valeur est différente de"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Textual multi"
 msgid "One value is different from"
-msgstr "Un des '%s' n'est pas parmi"
+msgstr "Une valeur est différente de"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Textual multi"
 msgid "One value is empty"
-msgstr "Une des valeurs est entre"
+msgstr "Une valeur est vide"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Enum multi"
 msgid "One value is equal to"
-msgstr "Un des '%s' est parmi"
+msgstr "Une valeur est égale à"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "One value is equal to"
-msgstr "Un des '%s' est parmi"
+msgstr "Une valeur est égale à"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Textual multi"
 msgid "One value is equal to"
-msgstr "Un des '%s' est parmi"
+msgstr "Une valeur est égale à"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "One value is greater than"
-msgstr "Une des valeurs est entre"
+msgstr "Une des valeurs est supérieure à"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "One value is lesser than"
-msgstr "Une des valeurs est entre"
+msgstr "Une des valeurs est inférieure à"
 
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "One value is not between"
 msgstr "Une des valeurs n'est pas entre"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Textual multi"
 msgid "One value is not empty"
-msgstr "Une des valeurs n'est pas entre"
+msgstr "Une des valeurs n'est pas vide"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "One value is strictly greater than"
-msgstr "Une des dates n'est pas entre"
+msgstr "Une des valeurs est strictement supérieure à"
 
-#, fuzzy
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "One value is strictly lesser than"
-msgstr "Une des dates n'est pas entre"
+msgstr "Une des valeurs est strictement inférieure à"
 
 #, php-format
 msgid "Output file '%s' already exists."
@@ -1485,11 +1441,11 @@ msgstr ""
 
 msgctxt "SearchCriteriaUtils.Textual simple"
 msgid "Starts with"
-msgstr ""
+msgstr "Commence par"
 
 msgctxt "SearchCriteriaUtils.Title simple"
 msgid "Starts with"
-msgstr ""
+msgstr "Commence par"
 
 msgctxt "fusersimport"
 msgid "Stopped on first error"
@@ -1694,10 +1650,6 @@ msgstr "Attachement minuteur %s [%d]"
 msgid "attachTimer : the timer parameter is not a document of TIMER family"
 msgstr ""
 "attachTimer : le paramètre minuteur n'est pas un document de la famille TIMER"
-
-#, php-format
-msgid "attribute \"%s\" is not a part of array \"%s\""
-msgstr "l'attribut \"%s\" ne fait pas partie du array \"%s\""
 
 #, php-format
 msgid "attribute %s : %s type is not allowed with %s operator"
@@ -1908,6 +1860,10 @@ msgstr "création : cycle de vie %s n'existe pas"
 msgid "csv file <%s> wroted"
 msgstr "fichier csv <%s> écrit"
 
+msgctxt "TASK"
+msgid "days"
+msgstr ""
+
 msgid "default folder"
 msgstr "dossier par défaut"
 
@@ -2021,6 +1977,10 @@ msgstr "le groupe n°%d n'existe pas"
 msgid "group cannot be revived"
 msgstr "Un groupe ne peut être restauré"
 
+msgctxt "TASK"
+msgid "hours"
+msgstr ""
+
 msgctxt "smartOperator"
 msgid "identificator equal"
 msgstr "identificateur égal"
@@ -2107,9 +2067,17 @@ msgstr "Date de modification"
 msgid "method %s not found"
 msgstr "méthode %s non trouvée"
 
+msgctxt "TASK"
+msgid "minutes"
+msgstr ""
+
 #, php-format
 msgid "modify file %s"
 msgstr "modification du fichier %s"
+
+msgctxt "TASK"
+msgid "months"
+msgstr ""
 
 msgid "multiple document"
 msgstr "document multiple"
@@ -2598,7 +2566,7 @@ msgstr "la valeur [%s] n'est pas une heure valide"
 msgid "value [%s] is not a valid timestamp"
 msgstr "la valeur [%s] n'est pas une date avec heure valide"
 
-#, fuzzy, php-format
+#, php-format
 msgid "value [%s] is not an integer"
 msgstr "la valeur [%s] n'est pas un entier"
 
@@ -2626,6 +2594,10 @@ msgstr "viewDoc n'a pas retourné de fichier valide"
 
 msgid "waiting conversion file"
 msgstr "en attente de conversion"
+
+msgctxt "TASK"
+msgid "weekdays"
+msgstr ""
 
 msgctxt "smart iuser"
 msgid "with these conditions"
@@ -2726,6 +2698,14 @@ msgctxt "smartOperator"
 msgid "{left} title include {right}"
 msgstr "le titre de {left} inclus {right}"
 
+#~ msgctxt "SearchCriteriaUtils.Relations multi"
+#~ msgid "All values are different from"
+#~ msgstr "Toutes les valeurs sont différentes de"
+
+#~ msgctxt "SearchCriteriaUtils.Relations multi"
+#~ msgid "All values are equal to"
+#~ msgstr "Toutes les valeurs sont égales à"
+
 #, fuzzy
 #~ msgctxt "SearchCriteriaUtils.Numerical simple"
 #~ msgid "Is not equal to"
@@ -2741,6 +2721,21 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Is not equal to"
 #~ msgstr "pas égal"
 
+#~ msgctxt "SearchCriteriaUtils.Numerical multi"
+#~ msgid "No date is empty"
+#~ msgstr "Aucune date n'est vide"
+
 #~ msgctxt "SearchCriteriaUtils.Textual multi"
 #~ msgid "One Equals"
 #~ msgstr "Une des valeurs est égale à"
+
+#~ msgctxt "SearchCriteriaUtils.Relations multi"
+#~ msgid "One value is different from"
+#~ msgstr "Une valeur est différente de"
+
+#~ msgctxt "SearchCriteriaUtils.Relations multi"
+#~ msgid "One value is equal to"
+#~ msgstr "Une valeur est égale à"
+
+#~ msgid "attribute \"%s\" is not a part of array \"%s\""
+#~ msgstr "l'attribut \"%s\" ne fait pas partie du array \"%s\""

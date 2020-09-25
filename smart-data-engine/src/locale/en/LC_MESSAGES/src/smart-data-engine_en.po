@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-15 12:23+0200\n"
+"POT-Creation-Date: 2020-09-25 14:58+0200\n"
 "PO-Revision-Date: 2016-11-18 15:26+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
@@ -220,6 +220,16 @@ msgstr ""
 
 #, php-format
 msgid "Affected to %s %s"
+msgstr ""
+
+#, php-format
+msgctxt "SearchCriteriaUtils.Relations multi"
+msgid "All '%s' are different from"
+msgstr ""
+
+#, php-format
+msgctxt "SearchCriteriaUtils.Relations multi"
+msgid "All '%s' are equal to"
 msgstr ""
 
 msgctxt "SearchCriteriaUtilsTextual multi"
@@ -1057,10 +1067,6 @@ msgctxt "fusersimport"
 msgid "New password"
 msgstr ""
 
-msgctxt "SearchCriteriaUtils.Numerical multi"
-msgid "No date is empty"
-msgstr ""
-
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "No date is empty"
 msgstr ""
@@ -1082,12 +1088,21 @@ msgctxt "sde"
 msgid "No privilege \"%s\" for %d"
 msgstr ""
 
+#, php-format
+msgctxt "sde"
+msgid "No privilege \"%s\" for %d ( \"%s\" doesn't exist in the profil )"
+msgstr ""
+
 msgctxt "SearchCriteriaUtils.Textual multi"
 msgid "No value is empty"
 msgstr ""
 
 msgctxt "SearchCriteriaUtils.Numerical multi"
 msgid "No values are between"
+msgstr ""
+
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "No values are empty"
 msgstr ""
 
 #, fuzzy
@@ -1193,6 +1208,16 @@ msgstr ""
 #, php-format
 msgctxt "SearchCriteriaUtils.Relations multi"
 msgid "One of the '%s' is among"
+msgstr ""
+
+#, php-format
+msgctxt "SearchCriteriaUtils.Relations multi"
+msgid "One of the '%s' is different from"
+msgstr ""
+
+#, php-format
+msgctxt "SearchCriteriaUtils.Relations multi"
+msgid "One of the '%s' is equal to"
 msgstr ""
 
 #, php-format
@@ -1582,10 +1607,6 @@ msgid "attachTimer : the timer parameter is not a document of TIMER family"
 msgstr ""
 
 #, php-format
-msgid "attribute \"%s\" is not a part of array \"%s\""
-msgstr ""
-
-#, php-format
 msgid "attribute %s : %s type is not allowed with %s operator"
 msgstr ""
 
@@ -1787,6 +1808,10 @@ msgstr ""
 msgid "csv file <%s> wroted"
 msgstr ""
 
+msgctxt "TASK"
+msgid "days"
+msgstr ""
+
 msgid "default folder"
 msgstr ""
 
@@ -1900,6 +1925,10 @@ msgstr ""
 msgid "group cannot be revived"
 msgstr ""
 
+msgctxt "TASK"
+msgid "hours"
+msgstr ""
+
 msgctxt "smartOperator"
 msgid "identificator equal"
 msgstr ""
@@ -1987,8 +2016,16 @@ msgstr "Revision creation date"
 msgid "method %s not found"
 msgstr ""
 
+msgctxt "TASK"
+msgid "minutes"
+msgstr ""
+
 #, php-format
 msgid "modify file %s"
+msgstr ""
+
+msgctxt "TASK"
+msgid "months"
 msgstr ""
 
 msgid "multiple document"
@@ -2495,6 +2532,10 @@ msgid "viewDoc did not returned a valid file"
 msgstr ""
 
 msgid "waiting conversion file"
+msgstr ""
+
+msgctxt "TASK"
+msgid "weekdays"
 msgstr ""
 
 msgctxt "smart iuser"
