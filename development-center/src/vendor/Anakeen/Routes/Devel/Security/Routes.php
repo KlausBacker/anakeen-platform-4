@@ -79,7 +79,6 @@ class Routes extends GridFiltering
                             }
                         }
                     }
-
                 }
             } else {
                 if (stripos($value, $filter["value"]) !== false) {
