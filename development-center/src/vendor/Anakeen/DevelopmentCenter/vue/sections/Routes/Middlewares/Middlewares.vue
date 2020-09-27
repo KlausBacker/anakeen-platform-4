@@ -3,17 +3,18 @@
     ref="middlewaresList"
     :items="items"
     :url="url"
-    :getValues="getValues"
-    :columnTemplate="columnTemplate"
-    :ssName="''"
+    :get-values="getValues"
+    :column-template="columnTemplate"
+    :ss-name="''"
     :sort="sort"
-    :inlineFilters="true"
+    :inline-filters="true"
     @filter="onGridDataBound"
   ></ss-treelist>
 </template>
 <script>
 import { Vue } from "vue-property-decorator";
 import SsTreelist from "../../../components/SSTreeList/SSTreeList.vue";
+import { interceptDOMLinks } from "../../../setup";
 
 Vue.use(SsTreelist.name, SsTreelist);
 
@@ -54,7 +55,10 @@ export default {
         { name: "priority", label: "Priority", hidden: false, width: "7rem" },
         { name: "rowLevel", label: "rowLevel", hidden: true }
       ],
-      sort: [{ field: "rowLevel", dir: "asc" }, { field: "name", dir: "asc" }],
+      sort: [
+        { field: "rowLevel", dir: "asc" },
+        { field: "name", dir: "asc" }
+      ],
       url: `/api/v2/devel/routes/middlewares/`,
       getValues(response) {
         return response;
@@ -68,15 +72,12 @@ export default {
             case "pattern":
               const data = dataItem[colId].split(",");
               let str = "";
-              const name = `${dataItem["parentName"]}::${dataItem["name"]}`;
               if (data.length > 1) {
                 data.forEach(d => {
-                  str += `<li><a data-role="develRouterLink" href="/devel/routes/routes/?pattern=${d}&name=${name}">${d}</a></li>`;
+                  str += `<li><a data-role="develRouterLink" href="/devel/routes/routes/?pattern=${d}">${d}</a></li>`;
                 });
               } else {
-                str = `<a data-role="develRouterLink" href="/devel/routes/routes/?pattern=${
-                  dataItem[colId]
-                }&name=${name}">${dataItem[colId]}</a>`;
+                str = `<a data-role="develRouterLink" href="/devel/routes/routes/?pattern=${dataItem[colId]}">${dataItem[colId]}</a>`;
               }
               return str;
             default:
@@ -85,6 +86,17 @@ export default {
         };
       }
     };
+  },
+  created() {
+    interceptDOMLinks("body", path => {
+      const baseUrl = path.split("?")[0];
+      const params = path.split("?")[1];
+      if (baseUrl === "/devel/routes/middlewares/") {
+        if (params) {
+          this.initFilters(params);
+        }
+      }
+    });
   },
   methods: {
     initFilters(searchUrl) {
@@ -106,8 +118,8 @@ export default {
         if (filters.length) {
           this.$refs.middlewaresList.filter({ filters, logic: "and" });
           filters.forEach(f => {
-            if (f.field === "name") {
-              this.url = `/api/v2/devel/routes/middlewares/${f.value}`;
+            if (f.field === "pattern") {
+              this.url = `/api/v2/devel/routes/middlewares/?pattern=${f.value}`;
               this.$nextTick(() => {
                 this.$refs.middlewaresList.$refs.ssTreelist.$(
                   ".pattern-filter",
@@ -123,12 +135,9 @@ export default {
       if (this.$refs.middlewaresList.$refs.ssTreelist) {
         computeFilters();
       } else {
-        this.$refs.middlewaresList.$refs.ssTreelist.$once(
-          "hook:mounted",
-          () => {
-            computeFilters();
-          }
-        );
+        this.$refs.middlewaresList.$refs.ssTreelist.$once("hook:mounted", () => {
+          computeFilters();
+        });
       }
     },
     onGridDataBound() {
@@ -137,10 +146,7 @@ export default {
       });
     },
     getFilter() {
-      if (
-        this.$refs.middlewaresList &&
-        this.$refs.middlewaresList.remoteDataSource
-      ) {
+      if (this.$refs.middlewaresList && this.$refs.middlewaresList.remoteDataSource) {
         const currentFilter = this.$refs.middlewaresList.remoteDataSource.filter();
         if (currentFilter) {
           const filters = currentFilter.filters;

@@ -66,10 +66,20 @@ class Routes extends GridFiltering
             }
             if (is_array(json_decode(json_encode($value), true))) {
                 foreach ($value as $item) {
-                    $item = explode("::", $item[0])[1];
-                    if (stripos($item, $filter["value"]) !== false) {
-                        $filtered[] = $r;
+                    if (!is_array(json_decode(json_encode($item), true))) {
+                        $item = explode("::", $item[0])[1];
+                        if (stripos($item, $filter["value"]) !== false) {
+                            $filtered[] = $r;
+                        }
+                    } else {
+                        foreach ($item as $leaf) {
+                            $leaf = explode("::", $leaf)[1];
+                            if (stripos($leaf, $filter["value"]) !== false) {
+                                $filtered[] = $r;
+                            }
+                        }
                     }
+
                 }
             } else {
                 if (stripos($value, $filter["value"]) !== false) {
