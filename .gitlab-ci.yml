@@ -176,6 +176,7 @@ hub-station-buildJS:
       - business-app/**/*
       - development-center/**/*
       - transformation/**/*
+      - fulltext-search/**/*
 # endregion buildHub
 
 #region buildFulltext
