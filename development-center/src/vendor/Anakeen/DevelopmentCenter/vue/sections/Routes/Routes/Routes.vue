@@ -3,17 +3,18 @@
     ref="routesList"
     :items="items"
     :url="url"
-    :getValues="getValues"
-    :columnTemplate="columnTemplate"
-    :ssName="''"
+    :get-values="getValues"
+    :column-template="columnTemplate"
+    :ss-name="''"
     :sort="sort"
-    :inlineFilters="true"
+    :inline-filters="true"
     @filter="onGridDataBound"
   ></ss-treelist>
 </template>
 <script>
 import { Vue } from "vue-property-decorator";
 import SsTreelist from "../../../components/SSTreeList/SSTreeList.vue";
+import { interceptDOMLinks } from "../../../setup";
 
 Vue.use(SsTreelist.name, SsTreelist);
 
@@ -55,7 +56,10 @@ export default {
         { name: "override", label: "Overrided", hidden: false, width: "8rem" },
         { name: "rowLevel", label: "rowLevel", hidden: true }
       ],
-      sort: [{ field: "rowLevel", dir: "asc" }, { field: "name", dir: "asc" }],
+      sort: [
+        { field: "rowLevel", dir: "asc" },
+        { field: "name", dir: "asc" }
+      ],
       url: `/api/v2/devel/routes/all/`,
       getValues(response) {
         return response;
@@ -69,26 +73,21 @@ export default {
             case "pattern":
               const data = dataItem[colId].split(",");
               let str = "";
-              const name = `${dataItem["parentName"]}::${dataItem["name"]}`;
               if (dataItem["rowLevel"] === 2) {
                 if (data.length > 1) {
                   data.forEach(d => {
-                    str += `<li><a data-role="develRouterLink" href="/devel/routes/middlewares/?pattern=${d}&name=${name}">${d}</a></li>`;
+                    str += `<li><a data-role="develRouterLink" href="/devel/routes/middlewares/?pattern=${d}">${d}</a></li>`;
                   });
                 } else {
-                  str = `<a data-role="develRouterLink" href="/devel/routes/middlewares/?pattern=${
-                    dataItem[colId]
-                  }&name=${name}">${dataItem[colId]}</a>`;
+                  str = `<a data-role="develRouterLink" href="/devel/routes/middlewares/?pattern=${dataItem[colId]}">${dataItem[colId]}</a>`;
                 }
               } else {
                 if (data.length > 1) {
                   data.forEach(d => {
-                    str += `<li><a data-role="develRouterLink" href="/devel/routes/middlewares/?pattern=${d}&name=${name}">${d}</a></li>`;
+                    str += `<li><a data-role="develRouterLink" href="/devel/routes/middlewares/?pattern=${d}">${d}</a></li>`;
                   });
                 } else {
-                  str = `<a data-role="develRouterLink" href="/devel/routes/middlewares/?pattern=${
-                    dataItem[colId]
-                  }&name=${name}">${dataItem[colId]}</a>`;
+                  str = `<a data-role="develRouterLink" href="/devel/routes/middlewares/?pattern=${dataItem[colId]}">${dataItem[colId]}</a>`;
                 }
               }
               return str;
@@ -98,6 +97,17 @@ export default {
         };
       }
     };
+  },
+  created() {
+    interceptDOMLinks("body", path => {
+      const baseUrl = path.split("?")[0];
+      const params = path.split("?")[1];
+      if (baseUrl === "/devel/routes/routes/") {
+        if (params) {
+          this.initFilters(params);
+        }
+      }
+    });
   },
   mounted() {
     this.initFilters(window.location.search);

@@ -3,6 +3,7 @@ import "@progress/kendo-ui/js/kendo.grid.js";
 import "@progress/kendo-ui/js/kendo.filtercell.js";
 import { Grid, GridInstaller } from "@progress/kendo-grid-vue-wrapper";
 import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
+import { interceptDOMLinks } from "../../../../setup";
 
 Vue.use(GridInstaller);
 Vue.use(DataSourceInstaller);
@@ -15,6 +16,11 @@ export default {
     return {
       tabMultiple: []
     };
+  },
+  created() {
+    interceptDOMLinks("body", () => {
+      this.initFilters(window.location.search);
+    });
   },
   mounted() {
     $(window).resize(() => {
@@ -114,7 +120,7 @@ export default {
           elt.map(e => {
             let accessName = e.split("::")[1];
             this.tabMultiple.push(
-              `<a data-role="develRouterLink" href="/devel/security/routes/access/permissions/?accessName=${accessName}">${accessName}</a>`
+              `<a data-role="develRouterLink" href="/devel/security/routes/permissions/?accessName=${accessName}">${accessName}</a>`
             );
           });
         });
