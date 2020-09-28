@@ -317,5 +317,10 @@
   "AdminCenterRenderDescription.Click to example link": "Cliquer sur le lien de l'exemple dans la description",
   "AdminCenterScheduler.Title Scheduler": "Minuteurs et tâches",
   "AdminCenterStatistics.Title Statistics Manager": "Statistiques",
-  "AdminCenterStatistics.Active users": "Utilisateurs actifs"
+  "AdminCenterStatistics.Connections by month": "Connexions par mois",
+  "AdminCenterStatistics.From": "De",
+  "AdminCenterStatistics.To": "À",
+  "AdminCenterStatistics.Total": "Total",
+  "AdminCenterStatistics.Export": "Exporter (XLSX)",
+  "AdminCenterStatistics.Active users over the period": "Utilisateurs actifs sur la période"
 }

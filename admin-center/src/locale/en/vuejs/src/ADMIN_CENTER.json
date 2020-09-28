@@ -318,5 +318,10 @@
   "AdminCenterScheduler.Title Scheduler": "Timers and tasks",
   "AdminCenterSmartStructure.Confirmation": null,
   "AdminCenterStatistics.Title Statistics Manager": "Statistics",
-  "AdminCenterStatistics.Active users": "Active users"
+  "AdminCenterStatistics.Connections by month": "Connections by month",
+  "AdminCenterStatistics.From": "From",
+  "AdminCenterStatistics.To": "To",
+  "AdminCenterStatistics.Total": "Total",
+  "AdminCenterStatistics.Export": "Export (XLSX)",
+  "AdminCenterStatistics.Active users over the period": "Active users over the period"
 }

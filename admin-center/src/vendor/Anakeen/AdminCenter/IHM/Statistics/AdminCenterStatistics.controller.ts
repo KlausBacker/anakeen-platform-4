@@ -1,19 +1,18 @@
-import "@progress/kendo-ui/js/kendo.button";
-import "@progress/kendo-ui/js/kendo.filtercell";
-import "@progress/kendo-ui/js/kendo.grid.js";
 import AnkI18NMixin from "@anakeen/user-interfaces/components/lib/AnkI18NMixin.esm";
 import AnkTabs from "@anakeen/user-interfaces/components/lib/AnkTabs.esm";
 import AnkTab from "@anakeen/user-interfaces/components/lib/AnkTab.esm";
 import { Component, Mixins, Prop, Watch } from "vue-property-decorator";
+import ActiveUsers from "./ActiveUsers/ActiveUsers.vue";
 
 @Component({
   components: {
     AnkTabs,
-    AnkTab
+    AnkTab,
+    ActiveUsers
   }
 })
 export default class AdminCenterStatisticsController extends Mixins(AnkI18NMixin) {
-  @Prop({ type: String, default: "" })
+  @Prop({ type: String, default: "activeUsers" })
   public selectedTab!: string;
 
   @Watch("selectedTab")
@@ -24,16 +23,12 @@ export default class AdminCenterStatisticsController extends Mixins(AnkI18NMixin
   }
   public mySelectedTab = this.selectedTab;
 
-  protected onNavigate(route): void {
-    this.$emit("navigate", route);
-  }
-
   protected handleNotification(typeNotification, message): void {
     this.$emit("notify", typeNotification, message);
   }
   public get translations() {
     return {
-      activeUsers: this.$t("AdminCenterStatistics.Active users")
+      activeUsers: this.$t("AdminCenterStatistics.Connections by month")
     };
   }
 }

@@ -1,7 +1,9 @@
 <template>
-  <div>
+  <div class="statistics-plugin">
     <ank-tabs ref="smartTab" v-model="mySelectedTab">
-      <ank-tab tab-id="activeUsers" :label="translations.activeUsers"/>
+      <ank-tab tab-id="activeUsers" :label="translations.activeUsers">
+        <active-users></active-users>
+      </ank-tab>
     </ank-tabs>
   </div>
 </template>

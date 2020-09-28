@@ -1,0 +1,26 @@
+.statistics-total {
+  font-weight: bold;
+}
+
+.statistics {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--white);
+  .statistics-title {
+    width: 100%;
+    text-align: center;
+    margin: 1rem 0 1rem;
+  }
+  .statistics-period {
+    text-align: center;
+    width: 100%;
+  }
+}
+
+.statistics > span {
+  min-height: 0;
+  margin: 0 20px 0;
+  display: inline-flex;
+  align-items: center;
+}
