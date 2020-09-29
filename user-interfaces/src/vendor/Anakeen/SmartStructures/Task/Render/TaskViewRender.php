@@ -66,7 +66,7 @@ HTML;
         $tplHuman = <<<HTML
     <div class="task-next-dates">
         {{{attribute.htmlDefaultContent}}}
-        <p>{{{followingDates}}} : </p>
+        <p>{{followingDates}} : </p>
         <ol>
             {{#followDates}}
             <li>{{.}}</li>
@@ -74,7 +74,7 @@ HTML;
         </ol>
     </div>
 HTML;
-        $follow["followDates"]=CrontabManager::getNextDates($crontab, 6, "l, F d Y, H:i");
+        $follow["followDates"]=CrontabManager::getNextDates($crontab, 6, "%A %d %B %Y, %H:%M");
         $follow["followingDates"] = ___("Following execution dates", "TASK");
         $options->text(TaskFields::task_humancrontab)->setTemplate($tplHuman, $follow);
         if ($document->isFixed()) {
