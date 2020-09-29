@@ -91,6 +91,13 @@
                 <smart:field-return/>
             </smart:field-hook>
 
+            <smart:field-hook type="constraint" event="onPreStore" field="us_substitute_enddate">
+                <smart:field-callable function="::dateSubstituteConstraint"/>
+                <smart:field-argument type="field">us_substitute_startdate</smart:field-argument>
+                <smart:field-argument type="field">us_substitute_enddate</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
+
             <smart:field-hook type="constraint" event="onPreStore" field="us_login">
                 <smart:field-callable function="::constraintLogin"/>
                 <smart:field-argument type="field">us_login</smart:field-argument>

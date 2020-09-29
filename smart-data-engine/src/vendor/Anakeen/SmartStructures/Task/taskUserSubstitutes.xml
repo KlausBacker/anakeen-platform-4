@@ -3,10 +3,11 @@
     <task:task name="CORE_TASKUSERSUBSTITUTE" label="Activate substitute users">
         <task:user login="admin"/>
 
-        <task:description>Verify if period for set for user sustitute must active or deactive susbtitute function.</task:description>
+        <task:description>Substitutes activation period validation.
+            If period is active, set subsitute.
+            If period is inactive, unset the substitute.</task:description>
 
-        <task:route ns="Core" ref="UpdateSubstitutes" method="PATCH">
-        </task:route>
+        <task:route ns="Core" ref="UpdateSubstitutes" method="PATCH"/>
 
         <task:crontab>0 0 * * *</task:crontab>
         <task:status>active</task:status>

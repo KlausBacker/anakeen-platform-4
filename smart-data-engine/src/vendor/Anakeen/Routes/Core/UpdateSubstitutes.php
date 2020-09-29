@@ -11,7 +11,7 @@ use Anakeen\Search\SearchElements;
 use SmartStructure\Fields\Iuser;
 
 /*
- * @note    No use by any route
+ * @note    Not used by any route
  */
 
 class UpdateSubstitutes
@@ -51,9 +51,9 @@ class UpdateSubstitutes
         $error = "";
 
 
-        $todo = $this->getActionTodo($user);
+        $todo = self::getActionTodo($user);
         $substituteId = $todo[1];
-        $actionKey=$todo[0];
+        $actionKey = $todo[0];
         switch ($actionKey) {
             case "KEEP":
                 $message = sprintf(
@@ -100,19 +100,19 @@ class UpdateSubstitutes
 
         $startDate = $user->getRawValue(Iuser::us_substitute_startdate);
         $endDate = $user->getRawValue(Iuser::us_substitute_enddate);
-        $periodMsg = sprintf("%s to %s", $startDate, $endDate ?: "infinity");
+        $periodMsg = sprintf("from %s to %s", $startDate, $endDate ?: "infinity");
 
         if ($message) {
-            $message=sprintf("[%s]: %s: period %s", $actionKey, $message, $periodMsg);
+            $message = sprintf("[%s]: %s: period %s", $actionKey, $message, $periodMsg);
         }
-        
+
         return $error;
     }
 
 
-    protected function getActionTodo(\SmartStructure\Iuser $user)
+    protected static function getActionTodo(\SmartStructure\Iuser $user)
     {
-        $activateSubstitute = $this->isActivePeriod($user);
+        $activateSubstitute = \Anakeen\SmartStructures\Iuser\SubstituteManager::isActivePeriod($user);
 
         $account = $user->getAccount();
         if ($account) {
@@ -134,44 +134,9 @@ class UpdateSubstitutes
                 }
             }
         }
+        return "";
     }
 
-    /**
-     * @param \SmartStructure\Iuser $user
-     * @return bool true if period is activated
-     */
-    protected function isActivePeriod(\SmartStructure\Iuser $user): bool
-    {
-        if (! $user->getRawValue(Iuser::us_substitute)) {
-            return false;
-        }
-        $startDate = $user->getRawValue(Iuser::us_substitute_startdate);
-        $endDate = $user->getRawValue(Iuser::us_substitute_enddate);
-        $now = date("Y-m-d");
-
-        if ($startDate && $endDate) {
-            if ($startDate <= $now && $now <= $endDate) {
-                $activateSubstitute = true;
-            } else {
-                $activateSubstitute = false;
-            }
-        } elseif ($startDate && !$endDate) {
-            if ($startDate <= $now) {
-                $activateSubstitute = true;
-            } else {
-                $activateSubstitute = false;
-            }
-        } elseif (!$startDate && $endDate) {
-            if ($now <= $endDate) {
-                $activateSubstitute = true;
-            } else {
-                $activateSubstitute = false;
-            }
-        } else {
-            $activateSubstitute = true;
-        }
-        return $activateSubstitute;
-    }
 
     protected function updateAccount(int $id)
     {

@@ -10,6 +10,7 @@ use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Router\Exception;
 use Anakeen\Routes\Core\Lib\ApiMessage;
 use Anakeen\Routes\Ui\CallMenuResponse;
+use Anakeen\Ui\CommonRenderOptions;
 use Anakeen\Ui\DefaultConfigViewRender;
 use Anakeen\Ui\ArrayRenderOptions;
 use Anakeen\Ui\BarMenu;
@@ -58,6 +59,15 @@ class IuserViewRender extends DefaultConfigViewRender
         $options->arrayAttribute(myAttributes::us_groups)
             ->setCollapse(ArrayRenderOptions::collapseNone)
             ->showEmptyContent(\Anakeen\Core\Utils\Strings::xmlEncode(___("No groups", "smart iuser")));
+
+        $substituteMessage = $this->getSubstituteMessages($document);
+        if ($substituteMessage) {
+            $options->frame(myAttributes::us_fr_substitute)->setDescription(
+                $substituteMessage,
+                CommonRenderOptions::bottomPosition
+            );
+        }
+
 
         return $options;
     }

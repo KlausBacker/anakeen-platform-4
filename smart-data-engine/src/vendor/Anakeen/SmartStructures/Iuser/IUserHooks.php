@@ -151,7 +151,7 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
     }
 
     /**
-     * Refresh folder parent containt
+     * Refresh folder parent contain
      */
     public function refreshParentGroup()
     {
@@ -187,11 +187,15 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
                 $this->SetValue(MyAttributes::us_passdelay, $wuser->passdelay);
                 $this->SetValue(MyAttributes::us_expires, $wuser->expires);
                 $this->SetValue(MyAttributes::us_daydelay, $wuser->passdelay / 3600 / 24);
+              
                 if ($wuser->substitute > 0) {
                     $this->setValue(MyAttributes::us_substitute, $wuser->getFidFromUid($wuser->substitute));
                 } else {
-                    $this->clearValue(MyAttributes::us_substitute);
+                    if (!$this->getRawValue(MyAttributes::us_substitute_startdate) && !$this->getRawValue(MyAttributes::us_substitute_enddate)) {
+                        $this->clearValue(MyAttributes::us_substitute);
+                    }
                 }
+
 
                 $rolesIds = $wuser->getRoles(false);
                 $this->clearArrayValues("us_t_roles");
@@ -279,7 +283,7 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
 
 
     /**
-     * Modify system account from document IUSER
+     * Modify system account from Smart Element IUSER
      */
     public function synchronizeSystemUser()
     {
@@ -332,11 +336,15 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
             }
             $roleIds = $this->getSystemIds($roles);
             // perform update system User table
+            $substituteAccountId="";
             if ($substitute) {
-                $substitute = $this->getDocValue($substitute, "us_whatid");
+                /** @noinspection PhpParamsInspection */
+                if (SubstituteManager::isActivePeriod($this)) {
+                    $substituteAccountId = $this->getDocValue($substitute, "us_whatid");
+                }
             }
             SEManager::cache()->addDocument($this);
-            $err .= $user->updateUser($fid, $lname, $fname, $expires, $passdelay, $login, $status, $pwd1, $pwd2, $extmail, $roleIds, $substitute);
+            $err .= $user->updateUser($fid, $lname, $fname, $expires, $passdelay, $login, $status, $pwd1, $pwd2, $extmail, $roleIds, $substituteAccountId);
             if ($err == "") {
                 if ($user) {
                     $this->setValue(MyAttributes::us_whatid, $user->id);
@@ -466,6 +474,17 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
     {
         if ($pwd1 !== "") {
             return $this->testForcePassword($pwd1);
+        }
+        return "";
+    }
+
+
+    public function dateSubstituteConstraint($start, $end)
+    {
+        if ($start  && $end) {
+            if ($end < $start) {
+                return sprintf(___("The substitute end date must be after the start date \"%s\"", "smart iuser"), $start);
+            }
         }
         return "";
     }

@@ -1,0 +1,4 @@
+.dcp-column.dcp-column--2.dcpFrame .row.dcpAttribute[data-attrid="us_substitute"] {
+    /* deactivate 2 columns */
+    flex-basis: 100%;
+}
