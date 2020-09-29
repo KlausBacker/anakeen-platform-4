@@ -1067,6 +1067,10 @@ msgctxt "fusersimport"
 msgid "New password"
 msgstr ""
 
+msgctxt "SearchCriteriaUtils.Numerical multi"
+msgid "No date is empty"
+msgstr ""
+
 msgctxt "SearchCriteriaUtils.Temporal multi"
 msgid "No date is empty"
 msgstr ""
@@ -1431,6 +1435,11 @@ msgctxt "smart iuser"
 msgid "The email address is not valid"
 msgstr ""
 
+#, php-format
+msgctxt "smart iuser"
+msgid "The substitute end date must be after the start date \"%s\""
+msgstr ""
+
 msgid "Unallocate aborded"
 msgstr ""
 
@@ -1604,6 +1613,10 @@ msgstr ""
 
 #, php-format
 msgid "attachTimer : the timer parameter is not a document of TIMER family"
+msgstr ""
+
+#, php-format
+msgid "attribute \"%s\" is not a part of array \"%s\""
 msgstr ""
 
 #, php-format

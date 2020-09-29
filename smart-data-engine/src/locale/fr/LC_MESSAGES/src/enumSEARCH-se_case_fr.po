@@ -14,12 +14,6 @@ msgstr ""
 #: src/vendor/Anakeen/SmartStructures/Search/search.struct.xml
 #, fuzzy
 msgctxt "SEARCH-se_case"
-msgid "full"
-msgstr "mot complet"
-
-#: src/vendor/Anakeen/SmartStructures/Search/search.struct.xml
-#, fuzzy
-msgctxt "SEARCH-se_case"
 msgid "no"
 msgstr "expression sans casse"
 
@@ -28,3 +22,8 @@ msgstr "expression sans casse"
 msgctxt "SEARCH-se_case"
 msgid "yes"
 msgstr "expression avec casse"
+
+#, fuzzy
+#~ msgctxt "SEARCH-se_case"
+#~ msgid "full"
+#~ msgstr "mot complet"

@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-03-20T11:54:53+01:00\n"
-"PO-Revision-Date: 2016-11-09 11:01+0100\n"
+"PO-Revision-Date: 2020-09-28 16:48+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -82,10 +82,9 @@ msgid "us_fr_substitute"
 msgstr "Suppléants"
 
 #: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
-#, fuzzy
 msgctxt "IUSER"
 msgid "us_fr_sysident"
-msgstr "État civil"
+msgstr "Identifiant"
 
 #: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
@@ -179,14 +178,23 @@ msgstr "Suppléant"
 
 #: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
+msgid "us_substitute_enddate"
+msgstr "Date de fin d'activation"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_substitute_startdate"
+msgstr "Date d'activation"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
 msgid "us_t_roles"
 msgstr "Rôles"
 
 #: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
-#, fuzzy
 msgctxt "IUSER"
 msgid "us_tab_sysinfo"
-msgstr "Système"
+msgstr "Identification"
 
 #: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"

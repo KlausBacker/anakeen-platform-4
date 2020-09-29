@@ -38,18 +38,6 @@ msgstr "Click button"
 #: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
 #, fuzzy
 msgctxt "RENDERDESCRIPTION-placement"
-msgid "left"
-msgstr "Left"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-#, fuzzy
-msgctxt "RENDERDESCRIPTION-placement"
-msgid "right"
-msgstr "Right"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-#, fuzzy
-msgctxt "RENDERDESCRIPTION-placement"
 msgid "top"
 msgstr "Top"
 
@@ -64,3 +52,13 @@ msgstr "Up to label"
 msgctxt "RENDERDESCRIPTION-placement"
 msgid "topValue"
 msgstr "Up to value"
+
+#, fuzzy
+#~ msgctxt "RENDERDESCRIPTION-placement"
+#~ msgid "left"
+#~ msgstr "Left"
+
+#, fuzzy
+#~ msgctxt "RENDERDESCRIPTION-placement"
+#~ msgid "right"
+#~ msgstr "Right"
