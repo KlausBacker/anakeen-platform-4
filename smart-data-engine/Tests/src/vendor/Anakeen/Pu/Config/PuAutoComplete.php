@@ -1,8 +1,8 @@
 <?php
 
-namespace Anakeen\Pu\SmartStructures;
+namespace Anakeen\Pu\Config;
 
-class TestAutoComplete extends \Dcp\Pu\TestCaseDcpCommonFamily
+class PuAutoComplete extends \Dcp\Pu\TestCaseDcpCommonFamily
 {
     // $expectedAutoComplete
 
@@ -45,10 +45,10 @@ class TestAutoComplete extends \Dcp\Pu\TestCaseDcpCommonFamily
     {
         return [
             [
-                __DIR__ . "/Inputs/GoodTest/Test0001AutoCompleteGood.xml"
+                __DIR__ . "/Inputs/Autocomplete/GoodTest/Test0001AutoCompleteGood.xml"
             ],
             [
-                __DIR__ . "/Inputs/GoodTest/Test0002AutoCompleteGood.xml"
+                __DIR__ . "/Inputs/Autocomplete/GoodTest/Test0002AutoCompleteGood.xml"
             ],
         ];
     }
@@ -57,13 +57,13 @@ class TestAutoComplete extends \Dcp\Pu\TestCaseDcpCommonFamily
     {
         return [
             [
-                __DIR__ . "/Inputs/ErrorTest/Test0001AutoCompleteError.xml", "ATTR1802"
+                __DIR__ . "/Inputs/Autocomplete/ErrorTest/Test0001AutoCompleteError.xml", "ATTR1802"
             ],
             [
-                __DIR__ . "/Inputs/ErrorTest/Test0002AutoCompleteError.xml", "UI0402"
+                __DIR__ . "/Inputs/Autocomplete/ErrorTest/Test0002AutoCompleteError.xml", "UI0402"
             ],
             [
-                __DIR__ . "/Inputs/ErrorTest/Test0003AutoCompleteError.xml", "ATTR1801"
+                __DIR__ . "/Inputs/Autocomplete/ErrorTest/Test0003AutoCompleteError.xml", "ATTR1801"
             ],
         ];
     }
