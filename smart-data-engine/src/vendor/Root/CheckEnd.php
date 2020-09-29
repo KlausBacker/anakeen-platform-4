@@ -49,6 +49,7 @@ class CheckEnd extends CheckData
         $this->checkParameters();
         $this->checkLinks();
         $this->checkAutoComplete();
+        $this->checkModAttr();
         return $this;
     }
 
@@ -77,6 +78,27 @@ class CheckEnd extends CheckData
         $c = $this->getColumnCount();
         if ($c > self::maxSqlColumn) {
             $this->addError(ErrorCode::getError('ATTR1701', $c, self::maxSqlColumn));
+        }
+    }
+
+    public function checkModAttr()
+    {
+        $sql = sprintf(
+            "select substring(id,2) from docattr where docid =  %d and id ~ '^:'",
+            $this->doc->id
+        );
+        \Anakeen\Core\DbManager::query($sql, $modAttrIds, true);
+
+        $sql = sprintf(
+            "select id from docattr where docid =  %d and id !~ '^:'",
+            $this->doc->id
+        );
+        \Anakeen\Core\DbManager::query($sql, $attrIds, true);
+
+        $results = array_intersect($modAttrIds, $attrIds);
+
+        foreach ($results as $key => $value) {
+            $this->addError(ErrorCode::getError('ATTR0215', $value));
         }
     }
 
