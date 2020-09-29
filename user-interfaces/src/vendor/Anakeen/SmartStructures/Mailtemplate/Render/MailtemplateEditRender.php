@@ -59,8 +59,11 @@ the mail template.</p>",
         );
         $options->arrayAttribute(myAttributes::tmail_body)->setDescription(
             "<p>Inner content of the mail</p>
-<p>Make sure to <b>preserve parameters formatting</b> (e.g. [PARAM])</p>",
-            \Anakeen\Ui\CommonRenderOptions::topValuePosition
+<p>Make sure to <b>preserve parameters formatting</b></p>",
+            \Anakeen\Ui\CommonRenderOptions::topPosition,
+            "<ul><li>Parameters should be between two brackets (e.g. [parameter])</li>
+                        <li>Parameters should be exempt of any html formatting (e.g. no 'p', 'h1', 'b', ... tags)</li>",
+            true
         );
         $options->arrayAttribute(myAttributes::tmail_savecopy)->setDescription(
             "<p>Check option if you want to save a copy of the mail</p>
