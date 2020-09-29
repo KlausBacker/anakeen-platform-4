@@ -97,10 +97,14 @@ trait IuserMessage
                     $interval = $now->diff($target);
 
                     $msg .= "\n" . $this->formatHtmlMsg(
-                            n___("Disabling substitute tomorrow", "Disabling substitute in %d days",
-                                ($interval->days + 1), "smart iuser"),
-                            $interval->days + 1
-                        );
+                        n___(
+                            "Disabling substitute tomorrow",
+                            "Disabling substitute in %d days",
+                            ($interval->days + 1),
+                            "smart iuser"
+                        ),
+                        $interval->days + 1
+                    );
                 }
             } else {
                 $substitute = $smartElement->getRawValue(IuserFields::us_substitute);
@@ -118,25 +122,27 @@ trait IuserMessage
 
                         if (!$interval->invert) {
                             $msg .= "\n" . $this->formatHtmlMsg(
-                                    n___("Activation expected tomorrow", "Activation expected in %d days",
-                                        $interval->days, "smart iuser"),
-                                    $interval->days
-                                );
-                        } else {
+                                n___(
+                                    "Activation expected tomorrow",
+                                    "Activation expected in %d days",
+                                    $interval->days,
+                                    "smart iuser"
+                                ),
+                                $interval->days
+                            );
+                        }
+                    }
+                    $endDate = $smartElement->getRawValue(IuserFields::us_substitute_enddate);
+                    if ($endDate) {
+                        $now = new \DateTime(date("Y-m-d"));
+                        $target = new \DateTime($endDate);
+                        $interval = $now->diff($target);
 
-                            $endDate = $smartElement->getRawValue(IuserFields::us_substitute_enddate);
-                            if ($endDate) {
-                                $now = new \DateTime(date("Y-m-d"));
-                                $target = new \DateTime($endDate);
-                                $interval = $now->diff($target);
-
-                                if ($interval->invert) {
-                                    $msg .= "\n" . $this->formatHtmlMsg(
-                                            ___("Deactivation date has expired",  "smart iuser"),
-                                            $interval->days
-                                        );
-                                }
-                            }
+                        if ($interval->invert) {
+                            $msg .= "\n" . $this->formatHtmlMsg(
+                                ___("Deactivation date has expired", "smart iuser"),
+                                $interval->days
+                            );
                         }
                     }
                 }

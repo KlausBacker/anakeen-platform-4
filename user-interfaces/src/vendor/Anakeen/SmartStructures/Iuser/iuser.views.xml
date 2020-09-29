@@ -31,7 +31,7 @@
                 <ui:render-config class="\Anakeen\SmartStructures\Iuser\Render\IuserChangeGroup"/>
             </ui:view>
             <ui:view name="ESUBSTITUTE" label="Modifier le suppléant" display-mode="edition" menu-displayed="true">
-                <ui:mask ref="MSK_IUSERSUBSTITUTE"/>
+                <ui:render-config class="\Anakeen\SmartStructures\Iuser\Render\IuserSubstituteRender"/>
             </ui:view>
         </ui:view-list>
     </ui:view-control>

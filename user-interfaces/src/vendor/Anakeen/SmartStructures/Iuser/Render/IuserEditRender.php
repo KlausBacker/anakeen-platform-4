@@ -58,6 +58,7 @@ class IuserEditRender extends DefaultConfigEditRender
 
     /**
      * @param SmartElement $smartElement
+     * @param \SmartStructure\Mask|null $mask
      * @return \Anakeen\Ui\RenderAttributeVisibilities
      * @throws \Anakeen\Ui\Exception
      */
