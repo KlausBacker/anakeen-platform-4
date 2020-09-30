@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:structure-configuration name="tst_overrride_error_A" label="tst_overrride_error_A">
+        <smart:icon file="mastructure.png" />
+        <smart:fields>
+            <smart:field-set name="frame_a" type="frame" access="ReadWrite">
+                <smart:field-text access="ReadWrite" name="text_a_1"></smart:field-text>
+                <smart:field-text access="ReadWrite" name="text_a_2"></smart:field-text>
+            </smart:field-set>
+        </smart:fields>
+        <smart:hooks />
+        <smart:autocompletion />
+        <smart:defaults />
+    </smart:structure-configuration>
+    <smart:structure-configuration name="tst_overrride_error_B" label="tst_overrride_error_B">
+        <smart:extends ref="tst_overrride_error_A"></smart:extends>
+        <smart:fields>
+            <smart:field-set name="frame_b" type="frame" access="ReadWrite">
+                <smart:field-text access="ReadWrite" name="text_b_1"></smart:field-text>
+                <smart:field-text access="ReadWrite" name="text_b_2"></smart:field-text>
+            </smart:field-set>
+        </smart:fields>
+        <smart:field-override field="text_a_1" insert-after="text_a_2"></smart:field-override>
+        <smart:field-override field="text_b_1"></smart:field-override>
+        <smart:hooks />
+        <smart:autocompletion />
+        <smart:defaults />
+    </smart:structure-configuration>
+</smart:config>

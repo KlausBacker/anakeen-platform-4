@@ -1,8 +1,8 @@
 <?php
 
-namespace Anakeen\Pu\SmartStructures;
+namespace Anakeen\Pu\Config;
 
-class TestAutoComplete extends \Dcp\Pu\TestCaseDcpCommonFamily
+class PuModAttr extends \Dcp\Pu\TestCaseDcpCommonFamily
 {
     // $expectedAutoComplete
 
@@ -30,12 +30,6 @@ class TestAutoComplete extends \Dcp\Pu\TestCaseDcpCommonFamily
         try {
             self::importConfiguration($filePath);
             $this->assertEmpty("This test have an error, but not passed throw any error");
-        } catch (\Anakeen\Exception $error) {
-            if (strpos($error->getMessage(), $expectedErrorCode)) {
-                $this->assertNotEmpty($error->getMessage(), "This test is good, we have an error");
-            } else {
-                $this->assertNotEmpty($error->getMessage(), "We found an error with invalid error Code");
-            }
         } catch (\Exception $error) {
             $this->assertNotEmpty($error->getMessage(), "In this test we don't get an Anakeen Exception");
         }
@@ -45,10 +39,7 @@ class TestAutoComplete extends \Dcp\Pu\TestCaseDcpCommonFamily
     {
         return [
             [
-                __DIR__ . "/Inputs/GoodTest/Test0001AutoCompleteGood.xml"
-            ],
-            [
-                __DIR__ . "/Inputs/GoodTest/Test0002AutoCompleteGood.xml"
+                __DIR__ . "/Inputs/tst_overrride_good.xml"
             ],
         ];
     }
@@ -57,14 +48,8 @@ class TestAutoComplete extends \Dcp\Pu\TestCaseDcpCommonFamily
     {
         return [
             [
-                __DIR__ . "/Inputs/ErrorTest/Test0001AutoCompleteError.xml", "ATTR1802"
-            ],
-            [
-                __DIR__ . "/Inputs/ErrorTest/Test0002AutoCompleteError.xml", "UI0402"
-            ],
-            [
-                __DIR__ . "/Inputs/ErrorTest/Test0003AutoCompleteError.xml", "ATTR1801"
-            ],
+                __DIR__ . "/Inputs/tst_overrride_error.xml", "ATTR0215"
+            ]
         ];
     }
 }

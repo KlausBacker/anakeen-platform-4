@@ -96,11 +96,14 @@ class ErrorCodeATTR
      */
     const ATTR0213 = 'The Smart Field "%s" has incorrect insert-after "%s" directive. 
     The fieldset of "%s" is "%s" and the fieldset of the insert-after is "%s", the two fieldsets must be equals.';
-
     /**
      * @errorCode A parent id reference a child id
      */
     const ATTR0214 = 'the Smart Field "%s" has a loop reference for parent ';
+    /**
+     * @errorCode A smart field override is referencing a smart field defined in the same smart structure
+     */
+    const ATTR0215 = 'Cannot override the smart field "%s" because the smart field definition is in the same structure';
     /**
      * @errorCode  Smart Field isTitle is Y or N
      */
