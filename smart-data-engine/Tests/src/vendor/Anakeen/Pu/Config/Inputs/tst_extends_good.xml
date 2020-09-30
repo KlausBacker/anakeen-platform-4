@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+
+    <smart:structure-configuration name="aaa" label="aaa">
+        <smart:fields reset="true">
+            <smart:field-set name="frame_aa" access="ReadWrite" label="label_frame_aa" type="frame">
+                <smart:field-text access="ReadWrite" name="text_aa" label="label_text_aa"></smart:field-text>
+            </smart:field-set>
+            <smart:field-set name="tab_aa" access="ReadWrite" label="label_tab_aa" type="tab">
+            </smart:field-set>
+        </smart:fields>
+    </smart:structure-configuration>
+
+    <smart:structure-configuration name="bbb" label="bbb">
+    <smart:extends ref="aaa"></smart:extends>
+        <smart:fields reset="true">
+            <smart:field-set name="tab_aa" extended="true">
+                <smart:field-set name="frame_bb" type="frame" label="label_frame_bb" access="ReadWrite" >
+                    <smart:field-color access="ReadWrite" name="color_bb"></smart:field-color>
+                    <smart:field-text access="ReadWrite" name="text_bb"></smart:field-text>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tab_bb" access="ReadWrite" label="label_tab_bb" type="tab">
+            </smart:field-set>
+        </smart:fields>
+    </smart:structure-configuration>
+
+    <smart:structure-configuration name="ccc" label="ccc">
+    <smart:extends ref="bbb"></smart:extends>
+        <smart:fields reset="true">
+            <smart:field-set name="tab_aa" extended="true">
+                <smart:field-set name="frame_cc_one" type="frame" label="label_frame_cc_one" access="ReadWrite" >
+                    <smart:field-date access="ReadWrite" name="date_cc" label="label_date_cc"></smart:field-date>
+                    <smart:field-text access="ReadWrite" name="text_cc" label="label_text_cc"></smart:field-text>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tab_bb" extended="true">
+                <smart:field-set name="frame_cc_two" type="frame" label="label_frame_cc_two" access="ReadWrite" >
+                    <smart:field-time access="ReadWrite" name="time_cc" label="label_time_cc"></smart:field-time>
+                    <smart:field-double access="ReadWrite" name="double_cc" label="label_double_cc"></smart:field-double>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:fields>
+    </smart:structure-configuration>
+
+</smart:config>

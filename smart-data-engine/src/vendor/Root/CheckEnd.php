@@ -4,6 +4,7 @@
  * @package FDL
 */
 
+use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod;
 
 class CheckEnd extends CheckData
@@ -50,6 +51,8 @@ class CheckEnd extends CheckData
         $this->checkLinks();
         $this->checkAutoComplete();
         $this->checkModAttr();
+        $this->checkExtends();
+
         return $this;
     }
 
@@ -124,6 +127,16 @@ class CheckEnd extends CheckData
                         $this->addError(ErrorCode::getError('ATTR1801', $attributeObject->docname, $output));
                     }
                 }
+            }
+        }
+    }
+    
+    public function checkExtends()
+    {
+        $fieldsList = $this->doc->getAttributes();
+        foreach ($fieldsList as $fieldName => $fieldValue) {
+            if ($fieldValue == null) {
+                $this->addError(ErrorCode::getError('ATTR0105', $fieldName));
             }
         }
     }

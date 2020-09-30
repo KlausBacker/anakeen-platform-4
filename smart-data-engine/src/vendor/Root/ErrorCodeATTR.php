@@ -34,6 +34,10 @@ class ErrorCodeATTR
      */
     const ATTR0104 = 'Cannot update unknow Smart Field identifier "%s" ';
     /**
+     * @errorCode  Smart Field being extended doesn't exist
+     */
+    const ATTR0105 = 'Cannot extend a non existant Smart Field "%s"';
+    /**
      * @errorCode  Smart Field identicator is limit to 63 alphanum characters
      */
     const ATTR0200 = 'syntax error for structure "%s" Smart Field "%s"';

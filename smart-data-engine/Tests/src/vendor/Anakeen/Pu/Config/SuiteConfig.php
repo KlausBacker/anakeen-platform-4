@@ -22,6 +22,7 @@ class SuiteConfig
         $suite->addTestSuite(\Anakeen\Pu\Config\PuDisableAccess::class);
         $suite->addTestSuite(\Anakeen\Pu\Config\PuReport::class);
         $suite->addTestSuite(\Anakeen\Pu\Config\PuModAttr::class);
+        $suite->addTestSuite(\Anakeen\Pu\Config\PuExtends::class);
         $suite->addTestSuite(\Anakeen\Pu\Config\PuAutoComplete::class);
         $suite->addTestSuite(\Anakeen\Pu\Lib\PuSeemMethod::class);
 
