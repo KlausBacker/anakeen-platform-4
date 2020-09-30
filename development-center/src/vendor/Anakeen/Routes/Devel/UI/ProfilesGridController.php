@@ -7,6 +7,7 @@ use Anakeen\Components\Grid\SmartGridConfigBuilder;
 use Anakeen\Components\Grid\SmartGridContentBuilder;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
+use Anakeen\Search\Filters\EqualsOne;
 
 class ProfilesGridController extends DefaultGridController
 {
@@ -45,19 +46,61 @@ class ProfilesGridController extends DefaultGridController
         }
         if (isset($clientConfig["filter"])) {
             foreach ($clientConfig["filter"]["filters"] as $filter) {
-                if (strcmp($filter["field"], "fromid") !== 0) {
-                    $contentBuilder->addFilter($filter);
-                } else {
-                    if (isset($filter["filters"]) && !empty($filter["filters"])) {
-                        foreach ($filter["filters"] as $fromIdFilter) {
-                            if (strcmp($fromIdFilter["operator"], "titleContains") !== 0) {
-                                $contentBuilder->addFilter($fromIdFilter);
-                            } else {
+                switch ($filter["field"]) {
+                    case "fromid":
+                        if (isset($filter["filters"]) && !empty($filter["filters"])) {
+                            foreach ($filter["filters"] as $fromIdFilter) {
+                                if (strcmp($fromIdFilter["operator"], "titleContains") !== 0) {
+                                    $contentBuilder->addFilter($fromIdFilter);
+                                } else {
+                                    $sqlQuery = "SELECT id FROM docfam WHERE name ~* '%s'";
+                                    if (isset($fromIdFilter["value"]) && !empty($fromIdFilter["value"])) {
+                                        $result = [];
+                                        DbManager::query(
+                                            sprintf($sqlQuery, pg_escape_string($fromIdFilter["value"])),
+                                            $result,
+                                            true
+                                        );
+                                        if (empty($result)) {
+                                            // Ensure that no filter result implies there is no grid data content (fromid = -2)
+                                            $result = [-2];
+                                        }
+                                        $contentBuilder->getSearch()->addFilter(
+                                            "fromid in (%s)",
+                                            implode(",", $result)
+                                        );
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    case "dpdoc_famid":
+                        if (isset($filter["filters"]) && !empty($filter["filters"])) {
+                            foreach ($filter["filters"] as $f) {
+                                if (strcmp($f["operator"], "titleContains") === 0) {
+                                    $sqlQuery = "SELECT id FROM docfam WHERE name ~* '%s'";
+                                    if (isset($f["value"]) && !empty($f["value"])) {
+                                        $result = [];
+                                        DbManager::query(
+                                            sprintf($sqlQuery, pg_escape_string($f["value"])),
+                                            $result,
+                                            true
+                                        );
+                                        if (empty($result)) {
+                                            // Ensure that no filter result implies there is no grid data content (fromid = -2)
+                                            $result = [-2];
+                                        }
+                                        $contentBuilder->getSearch()->addFilter(new EqualsOne("dpdoc_famid", $result));
+                                    }
+                                }
+                            }
+                        } else {
+                            if (strcmp($filter["operator"], "contains") === 0) {
                                 $sqlQuery = "SELECT id FROM docfam WHERE name ~* '%s'";
-                                if (isset($fromIdFilter["value"]) && !empty($fromIdFilter["value"])) {
+                                if (isset($filter["value"]) && !empty($filter["value"])) {
                                     $result = [];
                                     DbManager::query(
-                                        sprintf($sqlQuery, pg_escape_string($fromIdFilter["value"])),
+                                        sprintf($sqlQuery, pg_escape_string($filter["value"])),
                                         $result,
                                         true
                                     );
@@ -65,11 +108,14 @@ class ProfilesGridController extends DefaultGridController
                                         // Ensure that no filter result implies there is no grid data content (fromid = -2)
                                         $result = [-2];
                                     }
-                                    $contentBuilder->getSearch()->addFilter("fromid in (%s)", implode(",", $result));
+                                    $contentBuilder->getSearch()->addFilter(new EqualsOne("dpdoc_famid", $result));
                                 }
                             }
                         }
-                    }
+                        break;
+                    default:
+                        $contentBuilder->addFilter($filter);
+                        break;
                 }
             }
         }
