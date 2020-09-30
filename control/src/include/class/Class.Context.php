@@ -973,14 +973,14 @@ class Context extends ContextProperties
      * Get module dependencies from repositories indexes
      *
      * @param array $namelist the module name list
-     * @param bool  $local
-     * @param bool  $installed
+     * @param bool $local
+     * @param bool $installed
      *
+     * @param array $dependenceNames extra modules to update to install a new module
      * @return array|false containing a list of Module objects ordered by their
      *         install order, or false in case of error
-     *
      */
-    public function getModuleDependencies(array $namelist, $local = false, $installed = false)
+    public function getModuleDependencies(array $namelist, $local = false, $installed = false, array $dependenceNames = [])
     {
         $depsList = array();
         foreach ($namelist as $name) {
@@ -1005,15 +1005,24 @@ class Context extends ContextProperties
                     }
                 }
             }
-            array_push($depsList, $module);
+            $depsList[]=$module;
         }
 
-        $i = 0;
-        while ($i < count($depsList)) {
+        foreach ($dependenceNames as $name) {
+            $module = $this->getModuleAvail($name);
+            if ($module === false) {
+                $this->errorMessage = sprintf("Local module '%s' not found in contexts.xml.", $name);
+                return false;
+            }
+
+            $module->needphase = 'upgrade';
+            $depsList[]=$module;
+        }
+
+        foreach ($depsList as $mod) {
             /**
              * @var Module $mod
              */
-            $mod = $depsList[$i];
 
             if (!$this->installerMeetsModuleRequiredVersion($mod)) {
                 $this->errorMessage = sprintf("Module '%s' (%s) requires installer %s", $mod->name, $mod->version, $this->errorMessage);
@@ -1025,8 +1034,8 @@ class Context extends ContextProperties
             foreach ($reqList as $req) {
                 $reqModName = $req['name'];
                 $reqModVersion = $req['version'];
-
                 $reqMod = $this->getModuleInstalled($reqModName);
+
                 if ($reqMod !== false) {
                     // Found an installed module
                     if ($this->moduleMeetsRequiredVersion($reqMod, $reqModVersion)) {
@@ -1109,19 +1118,18 @@ class Context extends ContextProperties
                     array_push($depsList, $reqMod);
                 }
             }
-            $i++;
         }
-
         $orderList = array();
 
         $ret = $this->recursiveOrdering($depsList, $orderList);
+
 
         if ($ret === false) {
             return false;
         }
         // Put toolbox always at the beginning of the list
         foreach ($orderList as $key => $value) {
-            if ($value->name == 'smart-data-engine') {
+            if ($value->name === 'smart-data-engine') {
                 unset($orderList[$key]);
                 array_unshift($orderList, $value);
             }
@@ -1177,7 +1185,12 @@ class Context extends ContextProperties
         }
         unset($mod);
 
-        if (($err = $this->checkBrokenDepsInInstalledModules($orderList)) !== '') {
+        $retryModules=[];
+        if (($err = $this->checkBrokenDepsInInstalledModules($orderList, $retryModules)) !== '') {
+            if ($retryModules) {
+                $retryModules=array_merge($dependenceNames, $retryModules);
+                return $this->getModuleDependencies($namelist, $local, $installed, $retryModules);
+            }
             $this->errorMessage = $err;
             return false;
         }
@@ -1192,11 +1205,12 @@ class Context extends ContextProperties
      *
      * Note:
      *
-     * @param $newSet
+     * @param Module[] $newSet
      *
+     * @param array $retryModule
      * @return string
      */
-    public function checkBrokenDepsInInstalledModules($newSet)
+    public function checkBrokenDepsInInstalledModules($newSet, array &$retryModule)
     {
         $installedList = $this->getInstalledModuleList();
         $brokenDeps = array();
@@ -1209,7 +1223,7 @@ class Context extends ContextProperties
             */
             $skipModule = false;
             foreach ($newSet as $newModule) {
-                if ($newModule->name == $module->name) {
+                if ($newModule->name === $module->name) {
                     $skipModule = true;
                 }
             }
@@ -1225,6 +1239,11 @@ class Context extends ContextProperties
                 foreach ($newSet as $newModule) {
                     if ($req['name'] == $newModule->name) {
                         if (!$this->moduleMeetsRequiredVersion($newModule, $req['version'])) {
+                            // Try to update with latest version of broken module
+                            $satisfyingMod = $this->getModuleAvailSatisfying($module->name, "*");
+                            if ($satisfyingMod) {
+                                $retryModule[]=$module->name;
+                            }
                             $brokenDeps[] = array(
                                 'brokenModule' => $module,
                                 'brokenBy' => $newModule,
@@ -2802,12 +2821,10 @@ class Context extends ContextProperties
             $err .= sprintf("Error dropping schema public.\n");
         }
 
-        foreach (
-            array(
+        foreach (array(
                 "family",
                 "dav"
-            ) as $schema
-        ) {
+            ) as $schema) {
             $res = pg_query($conn, sprintf("DROP SCHEMA IF EXISTS %s CASCADE", pg_escape_string($schema)));
             if ($res === false) {
                 $this->errorMessage .= sprintf("Error dropping schema %s.", $schema);
@@ -2945,14 +2962,12 @@ class Context extends ContextProperties
         }
         if (!isset($conf['end'])) {
             $conf['end'] = $conf['begin'];
-            foreach (
-                array(
+            foreach (array(
                     '{}',
                     '()',
                     '[]',
                     '<>'
-                ) as $t
-            ) {
+                ) as $t) {
                 if ($conf['begin'] == $t[0]) {
                     $conf['end'] = $t[1];
                     break;
