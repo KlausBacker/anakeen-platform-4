@@ -1,6 +1,7 @@
 import Splitter from "@anakeen/internal-components/lib/Splitter.js";
 import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementGrid.esm";
 import ProfileView from "./ProfileVisualizer/ProfileVisualizerContent.vue";
+import { interceptDOMLinks } from "../../../setup";
 
 export default {
   components: {
@@ -15,6 +16,17 @@ export default {
       this.initFilters(window.location.search);
       this.selectedProfile = newValue;
     }
+  },
+  created() {
+    interceptDOMLinks("body", path => {
+      const baseUrl = path.split("?")[0];
+      const params = path.split("?")[1];
+      if (baseUrl === "/devel/security/profiles") {
+        if (params) {
+          this.initFilters(params);
+        }
+      }
+    });
   },
   data() {
     return {
@@ -51,26 +63,18 @@ export default {
       const computeFilters = () => {
         const re = /(name|title|fromid|dpdoc_famid)=([^&]+)/g;
         let match;
-        const filters = [];
         while ((match = re.exec(searchUrl))) {
           if (match && match.length >= 3) {
             const field = match[1];
             const value = decodeURIComponent(match[2]);
-            filters.push({
-              field,
-              operator: "contains",
-              value
-            });
+            this.$refs.profilesGrid.addFilter({ field, operator: "contains", value });
           }
         }
-        if (filters.length) {
-          this.$refs.profilesGrid.dataSource.filter(filters);
-        }
       };
-      if (this.$refs.profilesGrid.kendoGrid) {
+      if (this.$refs.profilesGrid) {
         computeFilters();
       } else {
-        this.$refs.profilesGrid.$once("grid-ready", () => {
+        this.$refs.profilesGrid.$once("gridReady", () => {
           computeFilters();
         });
       }
