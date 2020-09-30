@@ -64,6 +64,11 @@
             <accounts:displayName>Tasks and timers Manager</accounts:displayName>
             <accounts:structure name="AC_SCHEDULINGMANAGER"/>
         </accounts:role>
+
+        <accounts:role name="statistics_manager_role">
+            <accounts:displayName>Statistics Manager</accounts:displayName>
+            <accounts:structure name="AC_STATISTICSMANAGER"/>
+        </accounts:role>
     </accounts:roles>
     <accounts:groups>
 

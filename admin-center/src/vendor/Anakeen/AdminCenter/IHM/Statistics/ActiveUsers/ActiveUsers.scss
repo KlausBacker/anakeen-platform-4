@@ -1,0 +1,37 @@
+.statistics {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--white);
+  .statistics-title {
+    width: 100%;
+    text-align: center;
+    margin: 1rem 0 1rem;
+  }
+  .statistics-period {
+    text-align: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .statistics-export {
+    text-align: center;
+    width: 10rem;
+    margin: 0 auto 0;
+  }
+  .statistics-date {
+    margin: 0.5rem 0 0.5rem;
+  }
+  .statistics-total {
+    font-weight: bold;
+    font-size: large;
+    margin: 0.5rem 0 0.5rem;
+  }
+}
+
+.statistics > span {
+  min-height: 0;
+  margin: 0 20px 0;
+  display: inline-flex;
+  align-items: center;
+}

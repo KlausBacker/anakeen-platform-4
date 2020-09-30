@@ -316,5 +316,12 @@
   "AdminRenderDescriptiont.Create new description": "Create new description",
   "AdminCenterRenderDescription.Click to example link": "Click to example link inside description",
   "AdminCenterScheduler.Title Scheduler": "Timers and tasks",
-  "AdminCenterSmartStructure.Confirmation": null
+  "AdminCenterSmartStructure.Confirmation": null,
+  "AdminCenterStatistics.Title Statistics Manager": "Statistics",
+  "AdminCenterStatistics.Connections by month": "Connections by month",
+  "AdminCenterStatistics.From": "From",
+  "AdminCenterStatistics.To": "To",
+  "AdminCenterStatistics.Total": "Total",
+  "AdminCenterStatistics.Export": "Export (XLSX)",
+  "AdminCenterStatistics.Active users over the period": "Active users over the period"
 }
