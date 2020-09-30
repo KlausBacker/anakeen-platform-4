@@ -8,6 +8,7 @@ namespace Anakeen\SmartStructures\Iuser\Render;
 
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\SmartElementManager;
+use Anakeen\Ui\CommonRenderOptions;
 use Anakeen\Ui\DefaultConfigEditRender;
 use Anakeen\Ui\RenderAttributeVisibilities;
 use Anakeen\Ui\RenderOptions;
@@ -20,13 +21,16 @@ class IuserEditRender extends DefaultConfigEditRender
 
     protected $defaultGroup;
 
-    public function getOptions(SmartElement $document):RenderOptions
+    public function getOptions(SmartElement $document): RenderOptions
     {
         $options = parent::getOptions($document);
 
         if (!$document->getRawValue(myAttributes::us_login)) {
             $options->text(myAttributes::us_login)->setInputTooltip(
-                sprintf(___("<p>Set to \"<b>-</b>\" (<i>minus</i>) to explicit create user without login</p>", " smart iuser"))
+                sprintf(___(
+                    "<p>Set to \"<b>-</b>\" (<i>minus</i>) to explicit create user without login</p>",
+                    " smart iuser"
+                ))
             );
         }
         if ($document->getRawValue(myAttributes::us_daydelay)) {
@@ -34,26 +38,53 @@ class IuserEditRender extends DefaultConfigEditRender
                 sprintf(___("<p>Set to \"<b>-1</b>\"  to cancel expiration</p>", " smart iuser"))
             );
         }
+
+        $options->frame(myAttributes::us_fr_substitute)->setResponsiveColumns(
+            [
+                ["number" => 2, "minWidth" => "45rem"]
+            ]
+        );
+
+        $substituteMessage = $this->getSubstituteMessages($document);
+        if ($substituteMessage) {
+            $options->frame(myAttributes::us_fr_substitute)->setDescription(
+                $substituteMessage,
+                CommonRenderOptions::bottomPosition
+            );
+        }
+
         return $options;
     }
 
     /**
      * @param SmartElement $smartElement
+     * @param \SmartStructure\Mask|null $mask
      * @return \Anakeen\Ui\RenderAttributeVisibilities
      * @throws \Anakeen\Ui\Exception
      */
-    public function getVisibilities(SmartElement $smartElement, \SmartStructure\Mask $mask = null) : RenderAttributeVisibilities
-    {
+    public function getVisibilities(
+        SmartElement $smartElement,
+        \SmartStructure\Mask $mask = null
+    ): RenderAttributeVisibilities {
         $visibilities = parent::getVisibilities($smartElement, $mask);
 
         if ($smartElement->getRawValue("us_whatid") == \Anakeen\Core\Account::ANONYMOUS_ID) {
             // Anonymous has no password
-            $visibilities->setVisibility(myAttributes::us_passwd1, \Anakeen\Ui\RenderAttributeVisibilities::HiddenVisibility);
-            $visibilities->setVisibility(myAttributes::us_passwd2, \Anakeen\Ui\RenderAttributeVisibilities::HiddenVisibility);
+            $visibilities->setVisibility(
+                myAttributes::us_passwd1,
+                \Anakeen\Ui\RenderAttributeVisibilities::HiddenVisibility
+            );
+            $visibilities->setVisibility(
+                myAttributes::us_passwd2,
+                \Anakeen\Ui\RenderAttributeVisibilities::HiddenVisibility
+            );
         }
 
         if (!$smartElement->getRawValue(myAttributes::us_fr_security)) {
-            $visibilities->setVisibility(myAttributes::us_fr_security, \Anakeen\Ui\RenderAttributeVisibilities::ReadWriteVisibility);
+            $visibilities->setVisibility(
+                myAttributes::us_fr_security,
+                \Anakeen\Ui\RenderAttributeVisibilities::ReadWriteVisibility
+            );
         }
         return $visibilities;
     }

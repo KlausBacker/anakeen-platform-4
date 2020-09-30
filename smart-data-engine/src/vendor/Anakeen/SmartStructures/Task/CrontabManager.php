@@ -34,14 +34,14 @@ class CrontabManager
         return "";
     }
 
-    public static function getNextDates($crontabExpression, $number = 5, $format = "Y-m-d H:i:s")
+    public static function getNextDates($crontabExpression, $number = 5, $format = "%Y-%m-%d, %H:%M")
     {
         $expression = \Cron\CronExpression::factory($crontabExpression);
         $dates = $expression->getMultipleRunDates($number);
         $data = [];
         /** @var \DateTime $date */
         foreach ($dates as $date) {
-            $data[] = $date->format($format);
+            $data[] = strftime($format, $date->getTimestamp());
         }
         return $data;
     }

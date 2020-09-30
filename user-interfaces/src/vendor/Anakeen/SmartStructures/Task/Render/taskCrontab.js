@@ -38,6 +38,7 @@ window.ank.smartElement.globalController.registerFunction("taskRenderEdit", cont
         );
 
         let tpl = sField.getOption("template");
+        let tplKeys = sField.getOption("templateKeys") || {};
         if (cValue) {
           $.getJSON("/api/v2/admin/task/crontab/" + cValue)
             .done(function(response) {
@@ -46,13 +47,9 @@ window.ank.smartElement.globalController.registerFunction("taskRenderEdit", cont
                 crontab: response.data.parts,
                 dates: response.data.dates
               };
-              let $tplR = $(
-                Mustache.render(tpl, {
-                  attribute: {
-                    attributeValue: dataValue
-                  }
-                })
-              );
+              tplKeys.attribute = {};
+              tplKeys.attribute.attributeValue = dataValue;
+              let $tplR = $(Mustache.render(tpl, tplKeys));
               $tplR.insertBefore($crontab);
               $crontab.remove();
               $human.text(response.data.human);

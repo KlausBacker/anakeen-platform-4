@@ -20,7 +20,6 @@ class TaskEditRender extends DefaultConfigEditRender
 
         $this->addCommonOptions($options, $document);
         $tpl = <<<HTML
-        
 <div>
   {{{attribute.htmlDefaultContent}}}
   
@@ -52,8 +51,8 @@ class TaskEditRender extends DefaultConfigEditRender
         </div>
     </div>
     <div class="task-next-dates">
-        <p>Next execution dates :</p>
-        <ol >
+        <p>{{followingDates}} : </p>
+        <ol>
             {{#attribute.attributeValue.dates}}
             <li>{{.}}</li>
             {{/attribute.attributeValue.dates}}
@@ -63,15 +62,17 @@ class TaskEditRender extends DefaultConfigEditRender
 </div>
 HTML;
 
-        $options->text(TaskFields::task_crontab)->setTemplate($tpl);
+        $follow["followingDates"] = ___("Following execution dates", "TASK");
+        $options->text(TaskFields::task_crontab)->setTemplate($tpl, $follow);
 
         $tplHuman = <<<HTML
   {{{attribute.htmlDefaultContent}}}
 <div class="task-dates"></div>
 HTML;
+
         $options->text(TaskFields::task_humancrontab)->setTemplate($tplHuman);
         $options->text(TaskFields::task_crontab)->setPlaceHolder("5 * * * *")->setDescription(
-            "<p>Schedule is defined by a cron tab expression. Set the five parts separed by space.</p>"
+            "<p>Schedule is defined by a cron tab expression. Set the five parts separated by single space.</p>"
         )->setLabelPosition(TextRenderOptions::nonePosition);
         return $options;
     }

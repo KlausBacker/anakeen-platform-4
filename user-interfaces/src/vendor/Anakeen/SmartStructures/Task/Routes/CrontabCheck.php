@@ -24,7 +24,7 @@ class CrontabCheck
 
         $data["human"] = CrontabManager::getHumanSchedule($crontab);
         $data["parts"] = CrontabManager::getCrontabParts($crontab);
-        $data["dates"] = CrontabManager::getNextDates($crontab, 4, 'l, F d Y, H:i');
+        $data["dates"] = CrontabManager::getNextDates($crontab, 4, '%A %d %B %Y, %H:%M');
 
         return ApiV2Response::withData($response, $data);
     }

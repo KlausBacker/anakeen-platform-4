@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:task="https://platform.anakeen.com/4/schemas/task/1.0">
+    <task:task name="CORE_TASKUSERSUBSTITUTE" label="Activate substitute users">
+        <task:user login="admin"/>
+
+        <task:description>Substitutes activation period validation.
+            If period is active, set subsitute.
+            If period is inactive, unset the substitute.</task:description>
+
+        <task:route ns="Core" ref="UpdateSubstitutes" method="PATCH"/>
+
+        <task:crontab>0 0 * * *</task:crontab>
+        <task:status>active</task:status>
+    </task:task>
+</smart:config>

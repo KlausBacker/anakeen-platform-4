@@ -62,6 +62,8 @@
                 </smart:field-set>
                 <smart:field-set name="us_fr_substitute" type="frame" label="Suppléants" access="Read">
                     <smart:field-account name="us_substitute" label="Suppléant" access="ReadWrite"/>
+                    <smart:field-date name="us_substitute_startdate" label="Date d'activation" access="ReadWrite"/>
+                    <smart:field-date name="us_substitute_enddate" label="Date de fin d'activation" access="ReadWrite"/>
                     <smart:field-account name="us_incumbents" label="Titulaires" access="Read" multiple="true"/>
                 </smart:field-set>
 
@@ -86,6 +88,13 @@
             <smart:field-hook type="constraint" event="onPreStore" field="us_extmail">
                 <smart:field-callable function="::parseMail"/>
                 <smart:field-argument type="field">us_extmail</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
+
+            <smart:field-hook type="constraint" event="onPreStore" field="us_substitute_enddate">
+                <smart:field-callable function="::dateSubstituteConstraint"/>
+                <smart:field-argument type="field">us_substitute_startdate</smart:field-argument>
+                <smart:field-argument type="field">us_substitute_enddate</smart:field-argument>
                 <smart:field-return/>
             </smart:field-hook>
 

@@ -203,6 +203,16 @@ export class IUSER {
    */
   static us_incumbents = "us_incumbents";
   /**
+   * Date d&#39;activation
+   * @smartType date
+   */
+  static us_substitute_startdate = "us_substitute_startdate";
+  /**
+   * Date de fin d&#39;activation
+   * @smartType date
+   */
+  static us_substitute_enddate = "us_substitute_enddate";
+  /**
    * Sécurité
    * @smartType frame
    */

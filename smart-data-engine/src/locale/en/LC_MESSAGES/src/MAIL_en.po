@@ -12,9 +12,10 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#, fuzzy
 msgctxt "MAIL"
-msgid "mail_cm"
-msgstr "Comment"
+msgid "mail_body"
+msgstr "Recipients"
 
 #: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 #, fuzzy
@@ -40,6 +41,12 @@ msgstr "Address"
 #: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 msgctxt "MAIL"
 msgid "mail_fr_cm"
+msgstr "Comment"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#, fuzzy
+msgctxt "MAIL"
+msgid "mail_fr_parameters"
 msgstr "Comment"
 
 #: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
@@ -73,9 +80,30 @@ msgid "mail_subject"
 msgstr "Subject"
 
 #: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#, fuzzy
+msgctxt "MAIL"
+msgid "mail_template"
+msgstr "Format"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#, fuzzy
+msgctxt "MAIL"
+msgid "mail_tpl_default"
+msgstr "Recipients"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 msgctxt "MAIL"
 msgid "title"
 msgstr "Mail"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+msgctxt "MAIL"
+msgid "undefined"
+msgstr ""
+
+#~ msgctxt "MAIL"
+#~ msgid "mail_cm"
+#~ msgstr "Comment"
 
 #~ msgctxt "MAIL"
 #~ msgid "mail_copymode#bcc"

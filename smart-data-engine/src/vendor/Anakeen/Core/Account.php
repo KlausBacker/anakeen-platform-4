@@ -638,7 +638,7 @@ create sequence seq_id_users start 10;";
                 $this->modify(true, array(
                     'fid'
                 ), true);
-                $err = $iuser->RefreshDocUser();
+                $err = $iuser->refreshDocUser();
             }
         }
         return $err;

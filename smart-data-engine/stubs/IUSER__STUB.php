@@ -263,6 +263,22 @@ namespace SmartStructure\Fields {
         */ 
         const us_incumbents='us_incumbents';
         /**
+        * Date d'activation
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> date </li>
+        * </ul>
+        */ 
+        const us_substitute_startdate='us_substitute_startdate';
+        /**
+        * Date de fin d'activation
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> date </li>
+        * </ul>
+        */ 
+        const us_substitute_enddate='us_substitute_enddate';
+        /**
         * Sécurité
         * <ul>
         * <li> <i>type</i> frame </li>

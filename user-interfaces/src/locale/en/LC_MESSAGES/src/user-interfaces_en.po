@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ANAKEEN-UI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-06 15:13+0200\n"
-"PO-Revision-Date: 2018-06-01 08:42+0200\n"
+"POT-Creation-Date: 2020-09-29 15:13+0200\n"
+"PO-Revision-Date: 2020-09-29 08:23+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #, php-format
 msgctxt "ddui"
@@ -87,6 +87,13 @@ msgstr ""
 msgctxt "smart iuser"
 msgid "Activate account"
 msgstr ""
+
+#, php-format
+msgctxt "smart iuser"
+msgid "Activation expected tomorrow"
+msgid_plural "Activation expected in %d days"
+msgstr[0] ""
+msgstr[1] ""
 
 msgctxt "ddui"
 msgid "Add a note to the history"
@@ -452,6 +459,10 @@ msgctxt "smart iuser"
 msgid "Deactivate account"
 msgstr ""
 
+msgctxt "smart iuser"
+msgid "Deactivation date has expired"
+msgstr ""
+
 msgctxt "ddui-numerical"
 msgid "Decrease value"
 msgstr ""
@@ -475,6 +486,13 @@ msgstr ""
 msgctxt "ddui-htmltext"
 msgid "Delete row"
 msgstr ""
+
+#, php-format
+msgctxt "smart iuser"
+msgid "Disabling substitute tomorrow"
+msgid_plural "Disabling substitute in %d days"
+msgstr[0] ""
+msgstr[1] ""
 
 msgctxt "smart-grid"
 msgid "Display"
@@ -559,6 +577,10 @@ msgstr ""
 
 msgctxt "smart-grid"
 msgid "Filter"
+msgstr ""
+
+msgctxt "TASK"
+msgid "Following execution dates"
 msgstr ""
 
 msgctxt "ddui"
@@ -1089,6 +1111,16 @@ msgstr ""
 
 msgctxt "ddui-htmltext"
 msgid "Subscript"
+msgstr ""
+
+#, php-format
+msgctxt "smart iuser"
+msgid "Substitute \"%s\" is NOT activated"
+msgstr ""
+
+#, php-format
+msgctxt "smart iuser"
+msgid "Substitute \"%s\" is activated"
 msgstr ""
 
 msgctxt "ddui-htmltext"

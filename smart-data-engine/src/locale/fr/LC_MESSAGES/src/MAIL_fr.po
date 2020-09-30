@@ -14,8 +14,8 @@ msgstr ""
 #: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 #, fuzzy
 msgctxt "MAIL"
-msgid "mail_cm"
-msgstr "Commentaire"
+msgid "mail_body"
+msgstr "Destinataires"
 
 #: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 #, fuzzy
@@ -45,6 +45,12 @@ msgstr "Adresses"
 #, fuzzy
 msgctxt "MAIL"
 msgid "mail_fr_cm"
+msgstr "Commentaire"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#, fuzzy
+msgctxt "MAIL"
+msgid "mail_fr_parameters"
 msgstr "Commentaire"
 
 #: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
@@ -86,8 +92,30 @@ msgstr "Sujet"
 #: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 #, fuzzy
 msgctxt "MAIL"
+msgid "mail_template"
+msgstr "Format"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#, fuzzy
+msgctxt "MAIL"
+msgid "mail_tpl_default"
+msgstr "Destinataires"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#, fuzzy
+msgctxt "MAIL"
 msgid "title"
 msgstr "Mail"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+msgctxt "MAIL"
+msgid "undefined"
+msgstr ""
+
+#, fuzzy
+#~ msgctxt "MAIL"
+#~ msgid "mail_cm"
+#~ msgstr "Commentaire"
 
 #, fuzzy
 #~ msgctxt "MAIL"

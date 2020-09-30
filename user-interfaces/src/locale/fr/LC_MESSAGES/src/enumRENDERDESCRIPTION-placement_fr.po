@@ -33,16 +33,6 @@ msgstr "Bouton à cliquer"
 
 #: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
 msgctxt "RENDERDESCRIPTION-placement"
-msgid "left"
-msgstr "À gauche"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-msgctxt "RENDERDESCRIPTION-placement"
-msgid "right"
-msgstr "À droite"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-msgctxt "RENDERDESCRIPTION-placement"
 msgid "top"
 msgstr "Au dessus du champ"
 
@@ -55,3 +45,11 @@ msgstr "Au dessus du libellé"
 msgctxt "RENDERDESCRIPTION-placement"
 msgid "topValue"
 msgstr "Au dessus de la valeur"
+
+#~ msgctxt "RENDERDESCRIPTION-placement"
+#~ msgid "left"
+#~ msgstr "À gauche"
+
+#~ msgctxt "RENDERDESCRIPTION-placement"
+#~ msgid "right"
+#~ msgstr "À droite"

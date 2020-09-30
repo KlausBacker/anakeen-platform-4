@@ -89,7 +89,7 @@ namespace SmartStructure\Fields {
         /**
         * Id colonnes
         * <ul>
-        * <li> <i>access</i> Read </li>
+        * <li> <i>access</i> ReadWrite </li>
         * <li> <i>type</i> text </li>
         * </ul>
         */ 

@@ -1471,6 +1471,11 @@ msgctxt "smart iuser"
 msgid "The email address is not valid"
 msgstr "L'adresse de courriel est invalide"
 
+#, php-format
+msgctxt "smart iuser"
+msgid "The substitute end date must be after the start date \"%s\""
+msgstr "La date de fin d'activation doit être après la date de début d'activation \"%s\""
+
 msgid "Unallocate aborded"
 msgstr "Suppression de l'affectation abandonnée"
 
@@ -1862,7 +1867,7 @@ msgstr "fichier csv <%s> écrit"
 
 msgctxt "TASK"
 msgid "days"
-msgstr ""
+msgstr "jour dans le mois"
 
 msgid "default folder"
 msgstr "dossier par défaut"
@@ -1979,7 +1984,7 @@ msgstr "Un groupe ne peut être restauré"
 
 msgctxt "TASK"
 msgid "hours"
-msgstr ""
+msgstr "heures"
 
 msgctxt "smartOperator"
 msgid "identificator equal"
@@ -2069,7 +2074,7 @@ msgstr "méthode %s non trouvée"
 
 msgctxt "TASK"
 msgid "minutes"
-msgstr ""
+msgstr "minutes"
 
 #, php-format
 msgid "modify file %s"
@@ -2077,7 +2082,7 @@ msgstr "modification du fichier %s"
 
 msgctxt "TASK"
 msgid "months"
-msgstr ""
+msgstr "mois"
 
 msgid "multiple document"
 msgstr "document multiple"
@@ -2597,7 +2602,7 @@ msgstr "en attente de conversion"
 
 msgctxt "TASK"
 msgid "weekdays"
-msgstr ""
+msgstr "jour de la semaine"
 
 msgctxt "smart iuser"
 msgid "with these conditions"

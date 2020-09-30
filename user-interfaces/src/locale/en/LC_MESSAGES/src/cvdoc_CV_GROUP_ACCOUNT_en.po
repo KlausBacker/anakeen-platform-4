@@ -12,13 +12,28 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/vendor/Anakeen/SmartStructures/Igroup/igroup.views.xml
-msgid "CV_GROUP_ACCOUNT#label#changeGroup"
-msgstr "Change group"
+#, fuzzy
+msgctxt "CV_GROUP_ACCOUNT"
+msgid "changeGroup"
+msgstr "Changer de groupe"
 
 #: src/vendor/Anakeen/SmartStructures/Igroup/igroup.views.xml
-msgid "CV_GROUP_ACCOUNT#label#default_edit"
-msgstr "Modify"
+#, fuzzy
+msgctxt "CV_GROUP_ACCOUNT"
+msgid "default_edit"
+msgstr "Modifier"
 
 #: src/vendor/Anakeen/SmartStructures/Igroup/igroup.views.xml
-msgid "CV_GROUP_ACCOUNT#label#default_consult"
-msgstr "Consult"
+#, fuzzy
+msgctxt "CV_GROUP_ACCOUNT"
+msgid "default_view"
+msgstr "Consulter"
+
+#~ msgid "CV_GROUP_ACCOUNT#label#changeGroup"
+#~ msgstr "Change group"
+
+#~ msgid "CV_GROUP_ACCOUNT#label#default_consult"
+#~ msgstr "Consult"
+
+#~ msgid "CV_GROUP_ACCOUNT#label#default_edit"
+#~ msgstr "Modify"

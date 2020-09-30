@@ -18,6 +18,23 @@ class AccountManager
 
 
     /**
+     * Return login from system id
+     * @param int $systemId the system account id
+     * @return string the login of the account
+     * @throws \Anakeen\Database\Exception
+     */
+    public static function getLoginFromId(int $systemId): string
+    {
+        $sql = sprintf("select login from users where id=%d", $systemId);
+        DbManager::query($sql, $login, true, true);
+        if (!$login) {
+            $login = 0;
+        }
+        return $login;
+    }
+
+
+    /**
      * Return system account from login, null if login not found
      * @param string $login
      * @return Account|null

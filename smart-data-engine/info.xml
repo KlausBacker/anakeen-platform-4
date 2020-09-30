@@ -213,6 +213,9 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Task/taskCleanContext.xml">
             <label>Add Task Clean Context</label>
         </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Task/taskUserSubstitutes.xml">
+            <label>Add Task User Substitute</label>
+        </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Search/search.struct.xml">
             <label>Add Search Structure</label>
         </process>
