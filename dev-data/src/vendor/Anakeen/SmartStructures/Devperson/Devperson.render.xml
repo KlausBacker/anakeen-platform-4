@@ -6,7 +6,7 @@
         </ui:visibility-list>
     </ui:mask>
 
-    <ui:view-control name="VC_DEVPERSON" label="Person View Control">
+    <ui:view-control name="VC_DEVPERSON" label="Person View Control" structure="DEVPERSON">
         <ui:description>No display link to </ui:description>
         <ui:primary-mask ref="MSK_DEVPERSON"/>
     </ui:view-control>
