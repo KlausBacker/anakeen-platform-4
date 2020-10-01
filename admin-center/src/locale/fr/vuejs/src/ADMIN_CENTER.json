@@ -317,7 +317,7 @@
   "AdminCenterRenderDescription.Click to example link": "Cliquer sur le lien de l'exemple dans la description",
   "AdminCenterScheduler.Title Scheduler": "Minuteurs et tâches",
   "AdminCenterStatistics.Title Statistics Manager": "Statistiques",
-  "AdminCenterStatistics.Connections by month": "Connexions par mois",
+  "AdminCenterStatistics.Active users": "Nombres d'utilisateurs actifs",
   "AdminCenterStatistics.From": "De",
   "AdminCenterStatistics.To": "À",
   "AdminCenterStatistics.Total": "Total",
