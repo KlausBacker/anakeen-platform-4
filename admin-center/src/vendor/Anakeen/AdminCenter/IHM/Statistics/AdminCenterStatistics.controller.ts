@@ -28,7 +28,7 @@ export default class AdminCenterStatisticsController extends Mixins(AnkI18NMixin
   }
   public get translations() {
     return {
-      activeUsers: this.$t("AdminCenterStatistics.Connections by month")
+      activeUsers: this.$t("AdminCenterStatistics.Active users")
     };
   }
 }
