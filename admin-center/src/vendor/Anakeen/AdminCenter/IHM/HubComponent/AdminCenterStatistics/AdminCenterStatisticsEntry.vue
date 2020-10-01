@@ -1,7 +1,7 @@
 <template>
   <hub-element-layout>
     <nav>
-      <i class="material-icons hub-icon">code</i>
+      <i class="fa fa-bar-chart stats-icon" aria-hidden="true"></i>
       <span
         v-if="!isDockCollapsed"
       >{{ $t("AdminCenterStatistics.Title Statistics Manager")}}</span>
@@ -37,5 +37,10 @@ export default {
 .statistics-parent {
   height: 100%;
   width: 100%;
+}
+
+.stats-icon {
+  font-size: 24px;
+  margin-right: 0.5rem;
 }
 </style>
