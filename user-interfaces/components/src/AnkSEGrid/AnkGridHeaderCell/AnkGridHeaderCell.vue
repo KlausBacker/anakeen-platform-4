@@ -1,12 +1,12 @@
 <template>
   <div ref="headerWrapper" :class="{ 'smart-element-grid-header': true }">
     <div class="smart-element-grid-header-content">
-      <div v-show="hasSubtitle" class="smart-element-grid-header--subtitle">
+      <div v-show="hasSubtitle" class="smart-element-grid-header--subtitle" :title="subtitle">
         {{ subtitle }}
       </div>
       <div class="smart-element-grid-header--title">
         <div class="smart-element-grid-header-title-wrapper">
-          <span class="smart-element-grid-header--text">{{ title || field }}</span>
+          <span class="smart-element-grid-header--text" :title="title">{{ title || field }}</span>
           <div
             v-if="!!sortable"
             class="smart-element-grid-header-sort-button-wrapper"
