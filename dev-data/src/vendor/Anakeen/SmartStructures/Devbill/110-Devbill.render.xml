@@ -6,7 +6,7 @@
         </ui:visibility-list>
     </ui:mask>
 
-    <ui:view-control name="VC_DEVBILL" label="Bill View Control">
+    <ui:view-control name="VC_DEVBILL" label="Bill View Control" structure="DEVBILL">
         <ui:description>No display computed title</ui:description>
         <ui:primary-mask ref="MSK_DEVBILL"/>
     </ui:view-control>
