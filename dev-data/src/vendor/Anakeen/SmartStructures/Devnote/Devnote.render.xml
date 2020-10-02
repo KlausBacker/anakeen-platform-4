@@ -7,7 +7,7 @@
         </ui:visibility-list>
     </ui:mask>
 
-    <ui:view-control name="VC_DEVNOTE" label="Note View Control">
+    <ui:view-control name="VC_DEVNOTE" label="Note View Control" structure="DEVNOTE">
         <ui:description>No display computed title</ui:description>
         <ui:primary-mask ref="MSK_DEVNOTE"/>
     </ui:view-control>

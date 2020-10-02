@@ -3,10 +3,12 @@
 namespace Anakeen\Routes\Devel\UI;
 
 use Anakeen\Components\Grid\DefaultGridController;
+use Anakeen\Components\Grid\GridDataFormatter;
 use Anakeen\Components\Grid\SmartGridConfigBuilder;
 use Anakeen\Components\Grid\SmartGridContentBuilder;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
+use Anakeen\Search\SearchElements;
 use SmartStructure\Fields\Cvdoc as CvFields;
 
 class ControlGridController extends DefaultGridController
@@ -54,10 +56,20 @@ class ControlGridController extends DefaultGridController
         }
         $contentBuilder->addProperty("name");
         $contentBuilder->addProperty("title");
-
         $structure = SEManager::getFamily($collectionId);
         // search in all parent structure
         $contentBuilder->getSearch()->addFilter(DbManager::getSqlOrCond($structure->attributes->fromids, CvFields::cv_famid));
-        return $contentBuilder->getContent();
+        $result = $contentBuilder->getContent();
+
+        // adding all cvdoc with no associated structure
+        $docs = new SearchElements("CVDOC");
+        $docs->addFilter("cv_famid is NULL");
+        $searchOthers = $docs->search();
+        $others = new GridDataFormatter($searchOthers);
+        $others = $others->format();
+        foreach ($others as $other) {
+            array_push($result["content"], $other);
+        }
+        return $result;
     }
 }

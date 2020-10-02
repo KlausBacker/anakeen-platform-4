@@ -6,7 +6,7 @@
     </ui:visibility-list>
   </ui:mask>
 
-  <ui:view-control name="VC_DEVCLIENT" label="Client View Control">
+  <ui:view-control name="VC_DEVCLIENT" label="Client View Control" structure="DEVCLIENT">
     <ui:description>No display computed title</ui:description>
     <ui:primary-mask ref="MSK_DEVCLIENT"/>
   </ui:view-control>
