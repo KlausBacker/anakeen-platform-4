@@ -11,7 +11,7 @@
       <router-tabs
         :ref="listItem.name"
         v-for="(listItem, index) in listContent"
-        :key="index"
+        :key="`${listItem.name}-${index}`"
         @hook:mounted="onTabsMounted(listItem.name)"
         @tab-selected="onTabSelected"
         v-show="listItem && listItem.name === selectedStructure"
@@ -127,7 +127,6 @@ export default {
     },
     onItemClicked(tab) {
       this.selectedStructure = tab.name;
-
       this.$nextTick(() => {
         this.onChildNavigate();
       });
