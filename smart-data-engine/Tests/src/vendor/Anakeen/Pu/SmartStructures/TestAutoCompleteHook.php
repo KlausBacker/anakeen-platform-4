@@ -1,6 +1,6 @@
 <?php
 
-namespace Anakeen\Pu\Config;
+namespace Anakeen\Pu\SmartStructures;
 
 class TestAutoCompleteHook
 {
