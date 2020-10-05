@@ -90,8 +90,8 @@ LOCAL_REPO_NAME = anakeen-platform-4
 ## default values
 ###############################################################################
 
-PROJECT_POSTGRES_VERSION = 11.6
-PROJECT_PHP_VERSION = 7.3
+PROJECT_POSTGRES_VERSION = 11.6-1
+PROJECT_PHP_VERSION = 7.3-1
 PROJECT_PSQL_PORT = 54321
 PROJECT_HTTP_PORT = 8080
 PROJECT_DEVSERVER_PORT = 8001

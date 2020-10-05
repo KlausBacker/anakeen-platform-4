@@ -7,7 +7,7 @@ services:
       args:
         ANK_RUN_UID: ${COMPOSE_UID}
         ANK_RUN_GID: ${COMPOSE_GID}
-        PROJECT_PHP_VERSION: ${PROJECT_PHP_VERSION-7.3}
+        PROJECT_PHP_VERSION: ${PROJECT_PHP_VERSION-7.3-1}
     sysctls:
       # Allows mapping of port 80 form unprivileged user COMPOSE_UID
       net.ipv4.ip_unprivileged_port_start: 0
@@ -31,7 +31,7 @@ services:
     build:
       context: ./Images/postgres/
       args:
-        PROJECT_POSTGRES_VERSION: ${PROJECT_POSTGRES_VERSION-11.6}
+        PROJECT_POSTGRES_VERSION: ${PROJECT_POSTGRES_VERSION-11.6-1}
     volumes:
       - './Volumes/_private/postgres/var/lib/postgresql/data:/var/lib/postgresql/data'
       - './Volumes/_private/postgres/tmp/share/:/tmp/share/'
