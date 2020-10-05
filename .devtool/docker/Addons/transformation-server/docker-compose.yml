@@ -12,9 +12,9 @@ services:
       # Allows mapping of port 80 from unprivileged user COMPOSE_UID
       net.ipv4.ip_unprivileged_port_start: 0
     volumes:
-      - './Volumes/_private/webroot/var/www/html/anakeen/certs/:/usr/local/share/ca-certificates/anakeen-certs/'
+      - './Volumes/webroot/var/www/html/anakeen/certs/:/usr/local/share/ca-certificates/anakeen-certs/'
       - '../../transformation-server/:/opt/transformation-server/'
-      - './Volumes/_private/transformation-server/opt/transformation-server/etc/te.conf:/opt/transformation-server/etc/te.conf'
+      - './Volumes/transformation-server/opt/transformation-server/etc/te.conf:/opt/transformation-server/etc/te.conf'
       - '../../build/:/build'
     environment:
       RESET_ON_START: 'no'
@@ -38,7 +38,7 @@ services:
   # Add custom initdb script in postgres container
   postgres:
     volumes:
-      - './Volumes/_private/postgres/docker-entrypoint-initdb.d/20-initdb-te.sh:/docker-entrypoint-initdb.d/20-initdb-te.sh'
+      - './Volumes/postgres/docker-entrypoint-initdb.d/20-initdb-te.sh:/docker-entrypoint-initdb.d/20-initdb-te.sh'
 
 networks:
   internal: {}
