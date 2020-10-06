@@ -114,6 +114,9 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
       this.initVisibilities();
       this.loading = false;
     }
+    if (!this.innerConfig.title) {
+      $("header[class*='dcpDocument__header']", this.$el).remove();
+    }
   }
 
   initVisibilities(): void {
