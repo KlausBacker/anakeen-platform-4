@@ -2742,5 +2742,5 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "One value is equal to"
 #~ msgstr "Une valeur est égale à"
 
-#~ msgid "attribute \"%s\" is not a part of array \"%s\""
-#~ msgstr "l'attribut \"%s\" ne fait pas partie du array \"%s\""
+msgid "attribute \"%s\" is not a part of array \"%s\""
+msgstr "l'attribut \"%s\" ne fait pas partie du tableau \"%s\""
