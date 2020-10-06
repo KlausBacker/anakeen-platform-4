@@ -135,8 +135,8 @@ class HubStation extends Mixins(AnkI18NMixin) {
   @Prop({ default: false, type: Boolean }) public injectTag!: boolean;
   // endregion props
 
-  public activeRoute: string = "/";
-
+  public activeRoute = "/";
+  public routesEntriesTab = 0;
   public panes: IHubStationPropConfig[] = [];
 
   protected defaultRoute: { priority: number | null; route: string } = {
@@ -187,6 +187,14 @@ class HubStation extends Mixins(AnkI18NMixin) {
     const style = getComputedStyle(stationContent[0]);
     const stationMargin = parseInt(style.marginTop.replace("px", "")) + parseInt(style.marginBottom.replace("px", ""));
     stationContent.css("height", "calc(100% - " + stationMargin + "px)");
+    window.addEventListener("popstate", () => {
+      if (this.routesEntriesTab <= 0) {
+        this.routesEntriesTab = 0;
+        // go from section through root to welcome page
+        window.history.go(-2);
+      }
+      this.routesEntriesTab--;
+    });
   }
 
   public render(createElement) {
@@ -405,6 +413,7 @@ class HubStation extends Mixins(AnkI18NMixin) {
       const routePath = urlJoin("/", event.entryOptions.route) + "/";
       this.$ankHubRouter.internal.navigate(routePath);
       this.$ankHubRouter.internal.resolve();
+      this.routesEntriesTab++;
     }
     this.$emit("hubElementSelected", event);
   }
