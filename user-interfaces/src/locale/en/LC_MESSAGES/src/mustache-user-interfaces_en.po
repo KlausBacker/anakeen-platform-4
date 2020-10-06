@@ -89,6 +89,3 @@ msgctxt "iuser"
 msgid "Search"
 msgstr "Search..."
 
-#~ msgctxt "smart-grid"
-#~ msgid "{0} - {1} of {2} results"
-#~ msgstr "{0} - {1} of {2} results"
