@@ -8,14 +8,14 @@ services:
         ANK_RUN_UID: ${COMPOSE_UID}
         ANK_RUN_GID: ${COMPOSE_GID}
         PROJECT_NGINX_VERSION: ${PROJECT_NGINX_VERSION}
-    environment:
-      SSL_SERVER_NAMES: "localhost 127.0.0.1 ::1 web"
     sysctls:
       # Allows mapping of port 80 from unprivileged user COMPOSE_UID
       net.ipv4.ip_unprivileged_port_start: 0
     volumes:
       - './Volumes/_private/webroot/var/www/html/anakeen:/var/www/html/anakeen'
       - './Volumes/_private/webroot/tmp/share/:/tmp/share/'
+      - './Volumes/_private/webroot/var/www/html/anakeen/certs/servers/server-crt.pem:/etc/nginx/server-crt.pem'
+      - './Volumes/_private/webroot/var/www/html/anakeen/certs/servers/server-key.pem:/etc/nginx/server-key.pem'
     depends_on:
       - php-fpm
     ports:

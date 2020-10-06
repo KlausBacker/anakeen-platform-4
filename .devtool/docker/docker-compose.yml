@@ -42,6 +42,12 @@ services:
         aliases:
           - db
 
+  mkcert:
+    image: registry.ap4.anakeen.com/ank-mkcert:1.0.0-1
+    user: ${COMPOSE_UID}:${COMPOSE_GID}
+    volumes:
+      - './Volumes/_private/webroot/var/www/html/anakeen/certs:/caroot'
+
   wait-for-it:
     build:
       context: ./Images/wait-for-it/

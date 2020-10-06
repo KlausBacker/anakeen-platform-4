@@ -12,7 +12,7 @@ services:
       # Allows mapping of port 80 from unprivileged user COMPOSE_UID
       net.ipv4.ip_unprivileged_port_start: 0
     volumes:
-      - './Volumes/webroot/var/www/html/anakeen/certs/:/usr/local/share/ca-certificates/anakeen-certs/'
+      - './Volumes/_private/webroot/var/www/html/anakeen/certs/:/usr/local/share/ca-certificates/anakeen-certs/'
       - '../../transformation-server/:/opt/transformation-server/'
       - './Volumes/transformation-server/opt/transformation-server/etc/te.conf:/opt/transformation-server/etc/te.conf'
       - '../../build/:/build'

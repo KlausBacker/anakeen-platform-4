@@ -69,6 +69,11 @@ $(VOLUMES_WEBROOT_CONTROL_CONF)/contexts.xml: | _env-start
 
 .PHONY: _env-start
 _env-start: | $(VOLUMES_PRIVATE) $(BUILD_DIR)
+	if [ -n '$$(SSL_SERVER_NAMES)' ]; then \
+	  echo "[+] Creating certificates..."; \
+	  $(MAKE) certs-create; \
+	  echo "[+] Done."; \
+	fi
 	@$(PRINT_COLOR) "$(COLOR_DEBUG)[D][$@] Start containers$(COLOR_RESET)\n"
 	$(DOCKER_COMPOSE_CMD) up -d $(DOCKER_COMPOSE_UP_OPTIONS) $(DOCKER_COMPOSE_SERVICES)
 	@$(PRINT_COLOR) "$(COLOR_DEBUG)[D][$@] Wait for services to start$(COLOR_RESET)\n"
@@ -177,6 +182,18 @@ env-list-ports: ## list exposed ports
 _CONTROL_CMD = $(DOCKER_COMPOSE_CMD) exec $(CONTAINER_PHP) $(DOCKER_INTERNAL_WEBROOT_CONTROL_DIR_PATH)/anakeen-control
 _CONTROL_SHELL_CMD = $(_CONTROL_CMD) run
 _CONTROL_ANK_CMD = $(_CONTROL_SHELL_CMD) ./ank.ph
+
+certs-create: $(VOLUMES_WEBROOT_CERTS)/rootCA.pem $(VOLUMES_WEBROOT_CERTS)/servers/server-crt.pem  ## Create CA and server certificates
+
+certs-show: ## Show CA and server certificates details
+	$(DOCKER_COMPOSE_CMD) run --rm mkcert show-ca
+	$(DOCKER_COMPOSE_CMD) run --rm mkcert show-server-cert
+
+$(VOLUMES_WEBROOT_CERTS)/rootCA.pem: $(VOLUMES_WEBROOT_CERTS)
+	$(DOCKER_COMPOSE_CMD) run --rm mkcert create-ca
+
+$(VOLUMES_WEBROOT_CERTS)/servers/server-crt.pem: $(VOLUMES_WEBROOT_CERTS)
+	$(DOCKER_COMPOSE_CMD) run --rm mkcert create-server-cert --if-not-exists server $(SSL_SERVER_NAMES)
 
 ###############################################################################
 ##
