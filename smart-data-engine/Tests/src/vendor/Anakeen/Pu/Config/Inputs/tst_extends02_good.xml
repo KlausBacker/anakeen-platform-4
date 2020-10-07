@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+
+    <smart:structure-configuration name="extends02_a_good" label="extends02_a_good">
+        <smart:fields>
+            <smart:field-set name="a_tab_one" type="tab" label="Tab_A1" access="ReadWrite">
+                <smart:field-set name="a_frame_one" label="Frame_A1" access="ReadWrite" type="frame">
+                    <smart:field-text access="ReadWrite" name="a_text_one" label="Text_A1"></smart:field-text>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:fields>
+    </smart:structure-configuration>
+
+    <smart:structure-configuration name="extends02_b_good" label="extends02_b_good">
+        <smart:extends ref="extends02_a_good"></smart:extends>
+        <smart:fields>
+            <smart:field-set name="a_tab_one" extended="true">
+                <smart:field-set name="b_frame_one" access="ReadWrite" type="frame">
+                    <smart:field-color access="ReadWrite" name="b_color_one" label="Color_B1"></smart:field-color>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:fields>
+    </smart:structure-configuration>
+</smart:config>

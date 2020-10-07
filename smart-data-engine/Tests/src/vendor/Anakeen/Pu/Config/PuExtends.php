@@ -47,6 +47,9 @@ class PuExtends extends \Dcp\Pu\TestCaseDcpCommonFamily
             [
                 __DIR__ . "/Inputs/tst_extends01_good.xml"
             ],
+            [
+                __DIR__ . "/Inputs/tst_extends02_good.xml"
+            ]
         ];
     }
 
@@ -55,6 +58,9 @@ class PuExtends extends \Dcp\Pu\TestCaseDcpCommonFamily
         return [
             [
                 __DIR__ . "/Inputs/tst_extends01_error.xml", "ATTR0105"
+            ],
+            [
+                __DIR__ . "/Inputs/tst_extends02_error.xml", "ATTR0106"
             ]
         ];
     }
