@@ -30,8 +30,14 @@ class PuExtends extends \Dcp\Pu\TestCaseDcpCommonFamily
         try {
             self::importConfiguration($filePath);
             $this->assertEmpty("This test have an error, but not passed throw any error");
+        } catch (\Anakeen\Exception $error) {
+            if (strpos($error->getMessage(), $expectedErrorCode)) {
+                $this->assertNotEmpty($error->getMessage(), "OK, we have the desired error");
+            } else {
+                $this->assertNotEmpty($error->getMessage(), "We found an error with invalid error Code");
+            }
         } catch (\Exception $error) {
-            $this->assertNotEmpty($error->getMessage(), "In this test we don't get an Anakeen Exception");
+                $this->assertNotEmpty($error->getMessage(), "In this test we don't get an Anakeen Exception");
         }
     }
 
@@ -39,7 +45,7 @@ class PuExtends extends \Dcp\Pu\TestCaseDcpCommonFamily
     {
         return [
             [
-                __DIR__ . "/Inputs/tst_extends_good.xml"
+                __DIR__ . "/Inputs/tst_extends01_good.xml"
             ],
         ];
     }
@@ -48,7 +54,7 @@ class PuExtends extends \Dcp\Pu\TestCaseDcpCommonFamily
     {
         return [
             [
-                __DIR__ . "/Inputs/tst_extends_error.xml", "ATTR0105"
+                __DIR__ . "/Inputs/tst_extends01_error.xml", "ATTR0105"
             ]
         ];
     }
