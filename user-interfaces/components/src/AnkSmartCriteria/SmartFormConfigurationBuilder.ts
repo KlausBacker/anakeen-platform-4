@@ -120,8 +120,13 @@ export default class SmartFormConfigurationBuilder {
             );
           }
         } else {
-          this.smartFormConfiguration.values[SmartFormConfigurationBuilder.getValueName(index)] =
-            criteria.default.value;
+          if (criteria.multipleFilter) {
+            this.smartFormConfiguration.values[SmartFormConfigurationBuilder.getValueMultipleName(index)] =
+              criteria.default.value;
+          } else {
+            this.smartFormConfiguration.values[SmartFormConfigurationBuilder.getValueName(index)] =
+              criteria.default.value;
+          }
         }
       }
     }
