@@ -5,6 +5,7 @@ import ElementView from "./ElementView/ElementView.vue";
 import RawElementView from "./RawElementView/RawElementView.vue";
 import ProfileGrid from "../../components/profile/profile.vue";
 import LogicalNameForm from "../../components/LogicalName/LogicalName.vue";
+import { interceptDOMLinks } from "../../setup";
 
 const docTypeString = doctype => {
   switch (doctype) {
@@ -81,6 +82,38 @@ export default {
     if (this.$refs.grid) {
       this.$refs.grid.refreshGrid(true);
     }
+  },
+  created() {
+    interceptDOMLinks("body", path => {
+      const baseUrl = path.split("?")[0];
+      const params = path.split("?")[1];
+      if (baseUrl.includes("/devel/smartElements/")) {
+        if (params) {
+          this.initFilters(params);
+          const re = /(name)=([^&]+)/g;
+          let match;
+          while ((match = re.exec(params))) {
+            if (match && match.length >= 3) {
+              const field = match[1];
+              const value = decodeURIComponent(match[2]);
+              if (field === "name") {
+                this.$refs.splitter.disableEmptyContent();
+                this.selectedElement = {
+                  url: `${value}/view`,
+                  component: "element-view",
+                  props: {
+                    initid: value,
+                    viewId: "!defaultConsultation"
+                  },
+                  name: value,
+                  label: value
+                };
+              }
+            }
+          }
+        }
+      }
+    });
   },
   mounted() {
     if (this.selectedElement) {
