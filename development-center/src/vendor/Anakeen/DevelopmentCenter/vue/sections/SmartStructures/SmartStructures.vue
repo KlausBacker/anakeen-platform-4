@@ -47,8 +47,11 @@
   padding: 2rem;
   background: white;
   min-height: 0;
+  width: 100%;
 
   .smart-structure-content {
+    min-width: 0;
+    width: 100%;
     border-radius: 0.25rem;
     flex: 1;
     display: flex;
