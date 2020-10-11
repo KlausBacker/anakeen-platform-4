@@ -18,6 +18,7 @@ export default ViewAttribute.extend({
     this._mergeEvent(events, "downloadfile", "downloadFileSelect");
     this._mergeEvent(events, "uploadfile", "uploadFileSelect");
     this._mergeEvent(events, "uploadfiledone", "uploadFileDone");
+    this._mergeEvent(events, "uploadfileerror", "uploadFileError");
     this._mergeEvent(events, "anchorclick", "anchorClick");
     this._mergeEvent(events, "displaynetworkerror", "displayNetworkError");
     this.listenTo(this.model, "change:label", this.changeLabel);
