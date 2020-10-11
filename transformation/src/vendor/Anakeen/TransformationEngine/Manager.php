@@ -384,7 +384,7 @@ class Manager
 
         $err = $te->getInfo($info["tid"], $status);
         if ($err) {
-            throw new Exception("Conversion faliled: " . $err);
+            throw new Exception("Conversion failed: " . $err);
         }
 
         if (!file_exists($resultFile)) {
