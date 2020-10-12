@@ -153,3 +153,9 @@ msgstr "malade"
 #. _COMMENT Sharp Label
 msgid "transfered"
 msgstr "transféré"
+
+msgid "TST_ENUMFAM1#tst_enum2#0"
+msgstr ""
+
+msgid "TST_ENUMFAM1#tst_enuma#a"
+msgstr ""

@@ -151,3 +151,11 @@ msgstr ""
 #. _COMMENT Sharp Label
 msgid "transfered"
 msgstr ""
+
+msgctxt "ENUM"
+msgid "TST_012PLUS:0"
+msgstr "Zéfiro"
+
+msgctxt "ENUM"
+msgid "TST_ENUMFAM1-tst_enuma:a"
+msgstr "Letter A"
