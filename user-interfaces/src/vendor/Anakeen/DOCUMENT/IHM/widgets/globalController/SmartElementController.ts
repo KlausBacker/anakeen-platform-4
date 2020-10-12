@@ -650,8 +650,14 @@ export default class SmartElementController extends AnakeenController.BusEvents.
         index = value.length - 1;
       }
       currentValueLength = attributeInterface.getValue().length;
-      attributeInterface.setValue(value);
-
+      if (attributeModel.get("type") === "account" || attributeModel.get("type") === "docid") {
+        if (value.value) {
+          value.value = value.value.toString();
+        }
+        attributeInterface.setValue(value);
+      } else {
+        attributeInterface.setValue(value);
+      }
       _.defer(() => {
         // Pad values of complete array with default values
         const arrayModel = attributeModel.getParent();
@@ -678,6 +684,22 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       });
 
       return;
+    }
+    if (attributeModel.get("options").multiple) {
+      if (attributeModel.get("type") === "account" || attributeModel.get("type") === "docid") {
+        value.forEach(val => {
+          if (val.value) {
+            val.value = val.value.toString();
+          }
+        });
+      }
+      return attributeInterface.setValue(value);
+    }
+    if (attributeModel.get("type") === "account" || attributeModel.get("type") === "docid") {
+      if (value.value) {
+        value.value = value.value.toString();
+      }
+      return attributeInterface.setValue(value);
     }
     return attributeInterface.setValue(value);
   }
