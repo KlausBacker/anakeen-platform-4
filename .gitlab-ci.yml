@@ -784,7 +784,7 @@ module-validation-web-deploy:
     - ./web-build.sh
     - ./web-deploy.sh
   rules:
-    - if: '$CI_PROJECT_PATH == "Anakeen/Platform-4/anakeen-platform-4" && $CI_COMMIT_REF_NAME =~ /^\d+\.\d+-stable$/'
+    - if: '$CI_PROJECT_PATH == "Anakeen/Platform-4/anakeen-platform-4" && $CI_COMMIT_BRANCH =~ /^\d+\.\d+-stable$/'
       changes:
         - module-validation/**/*
 
