@@ -510,21 +510,21 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     let attribute;
     this.checkInitialisedModel();
     const attributeModel = this._getAttributeModel(smartFieldId);
-    if (attributeModel.get("type") === "array") {
-      const tab = [];
-      attributeModel.attributes.content.models.forEach(item => {
-        attribute = new AttributeInterface(item);
-        tab[item.id] = _.clone(attribute.getValue(type));
-      });
-      return tab;
-    }
     if (!attributeModel) {
       return null;
     }
     attribute = new AttributeInterface(attributeModel);
-    return _.clone(attribute.getValue(type));
+    const result = attribute.getValue(type);
+    if (result instanceof Array) {
+      const tab = [];
+      let key;
+      for (key in result) {
+        tab[key] = _.clone(result[key]);
+      }
+      return tab;
+    }
+    return _.clone(result);
   }
-
   /**
    * Get all the values
    *
