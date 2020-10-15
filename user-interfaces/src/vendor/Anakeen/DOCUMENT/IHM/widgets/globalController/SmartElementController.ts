@@ -641,6 +641,27 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     let index;
     let currentValueLength;
     let i;
+    if (attributeModel.get("type") === "array") {
+      if (_.isArray(value)) {
+        // setting multiple columns at once
+        value.forEach(item => {
+          if (item.id) {
+            if (!_.isArray(item.value)) {
+              // setting single value for the column item.id
+              this.setValue(item.id, item.value);
+            } else {
+              // setting multiple value for the column item.id
+              item.value.forEach(it => {
+                this.setValue(item.id, it);
+              });
+            }
+          }
+        });
+      } else {
+        // setting value for a single column
+        this.setValue(value.id, value.value);
+      }
+    }
 
     if (attributeModel.getParent().get("type") === "array") {
       attributeInterface.setValue(value, true); // Just verify value conditions
