@@ -361,7 +361,7 @@ export default class AdminCenterAccountController extends Mixins(AnkI18NMixin) {
         this.gridGroupContent.read();
       });
       openDoc.addEventListener("afterDelete", () => {
-        this.updateGridData();
+        this.gridUserContent.read();
         this.gridGroupContent.read();
       });
       this.smartTriggerActivated = true;
