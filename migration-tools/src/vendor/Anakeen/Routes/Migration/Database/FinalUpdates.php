@@ -63,6 +63,8 @@ class FinalUpdates
         $this->nameElements("MAILTEMPLATE", "tmail_family");
         $this->nameElements("WDOC", "wf_famid");
         $this->nameElements("PDOC", "dpdoc_famid");
+
+        $this->updateMailTimers();
         return $data;
     }
 
@@ -77,5 +79,24 @@ class FinalUpdates
             $relName
         );
         DbManager::query($sql);
+    }
+
+    /**
+     * Convert tmail index to array in doctimer table
+     */
+    protected function updateMailTimers()
+    {
+        $q = new \Anakeen\Core\Internal\QueryDb("", \DocTimer::class);
+        $doctimers = $q->query(0, 0, "ITER");
+
+        foreach ($doctimers as $doctimer) {
+            /** @var \DocTimer $doctimer */
+            $timerAction = unserialize($doctimer->actions);
+            if (!is_array($timerAction["tmail"])) {
+                $timerAction["tmail"] = explode("\n", $timerAction["tmail"]);
+                $doctimer->actions = serialize($timerAction);
+                $doctimer->modify(true, ["actions"], true);
+            }
+        }
     }
 }
