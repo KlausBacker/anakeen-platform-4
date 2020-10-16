@@ -425,6 +425,9 @@
         <process command="./programs/runMigrationScript.php --file=./vendor/Anakeen/Database/HelppageDelete.xml">
             <label>Resync fallid if needed</label>
         </process>
+        <process command="./programs/runMigrationScript.php --file=./vendor/Anakeen/Database/CleanMailGroup.xml">
+            <label>Clean mail group</label>
+        </process>
         <process command="programs/app_post CORE U"/>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Base/base.struct.xml">
             <label>Import BASE Structure</label>

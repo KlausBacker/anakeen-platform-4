@@ -32,7 +32,7 @@ class PuMailGroups extends TestCaseConfig
     {
         $g = AccountManager::getAccount($login);
 
-        $this->assertEquals($expectedMail, $g->mail, "Not the good email for $login");
+        $this->assertEquals($expectedMail, $g->getMail(), "Not the good email for $login");
     }
 
 
@@ -65,7 +65,7 @@ class PuMailGroups extends TestCaseConfig
             );
             $this->assertEquals(
                 $this->getRawMail($expectedMail),
-                $g->mail,
+                $g->getMail(),
                 "Not the good raw system email for $login"
             );
         }
@@ -102,7 +102,7 @@ class PuMailGroups extends TestCaseConfig
             );
             $this->assertEquals(
                 $this->getRawMail($expectedMail),
-                $g->mail,
+                $g->getMail(),
                 "Not the good raw system email for $gLogin"
             );
         }
@@ -125,10 +125,10 @@ class PuMailGroups extends TestCaseConfig
         $su = SEManager::getDocument($u->fid);
 
         $insertTo = AccountManager::getAccount($insertToLogin);
-        /** @var Igroup $g */
-        $g = SEManager::getDocument($insertTo->fid);
+        /** @var Igroup $sg */
+        $sg = SEManager::getDocument($insertTo->fid);
 
-        $err = $g->insertDocument($su->id);
+        $err = $sg->insertDocument($su->id);
         $this->assertEmpty($err, "Error when add user $login to $insertToLogin ");
 
         foreach ($expectedMails as $gLogin => $expectedMail) {
@@ -142,7 +142,7 @@ class PuMailGroups extends TestCaseConfig
             );
             $this->assertEquals(
                 $this->getRawMail($expectedMail),
-                $g->mail,
+                $g->getMail(),
                 "Not the good raw system email for $gLogin"
             );
         }
@@ -165,10 +165,10 @@ class PuMailGroups extends TestCaseConfig
         $su = SEManager::getDocument($u->fid);
 
         $insertTo = AccountManager::getAccount($deleteToLogin);
-        /** @var Igroup $g */
-        $g = SEManager::getDocument($insertTo->fid);
+        /** @var Igroup $sg */
+        $sg = SEManager::getDocument($insertTo->fid);
 
-        $err = $g->removeDocument($su->id);
+        $err = $sg->removeDocument($su->id);
         $this->assertEmpty($err, "Error when remove user $login from $deleteToLogin ");
 
         foreach ($expectedMails as $gLogin => $expectedMail) {
@@ -182,7 +182,7 @@ class PuMailGroups extends TestCaseConfig
             );
             $this->assertEquals(
                 $this->getRawMail($expectedMail),
-                $g->mail,
+                $g->getMail(),
                 "Not the good raw system email for $gLogin"
             );
         }
@@ -225,7 +225,7 @@ class PuMailGroups extends TestCaseConfig
             ],
             ["gtst_102", "han.solo@example.net, leia.skywaker@example.net, obiwan.kenobi@example.net"],
             ["gtst_222", "leia.skywaker@example.net"],
-            ["gtst_000", ""] // must be empty because "grp_hasmail" is set to "no"
+            ["gtst_000", "han.solo@example.net, leia.skywaker@example.net, obiwan.kenobi@example.net"]
         ];
     }
 

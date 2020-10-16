@@ -173,18 +173,8 @@ class IGroupHooks extends \SmartStructure\Group
         }
         if (!$nomail) {
             $this->setValue("grp_mail", $this->getMail(false)?:" ");
-            $sysAccount=$this->getAccount();
-            if ($sysAccount) {
-                $sysAccount->mail=$sysAccount->getMail(true);
-                $sysAccount->modify(false, ["mail"], false);
-            }
         } else {
             $this->clearValue('grp_mail');
-            $sysAccount=$this->getAccount();
-            if ($sysAccount && $sysAccount->mail!="") {
-                $sysAccount->mail="";
-                $sysAccount->modify(false, ["mail"], false);
-            }
         }
     }
 

@@ -471,8 +471,6 @@ create sequence seq_id_users start 10;";
 
         if ($extmail != "") {
             $this->mail = trim($extmail);
-        } else {
-            $this->mail = $this->getMail();
         }
         if ($expires > 0) {
             $this->expires = $expires;
@@ -532,7 +530,6 @@ create sequence seq_id_users start 10;";
         }
         $isNewUser = !$this->isAffected();
 
-        $this->mail = $this->getMail();
         $this->fid = $fid;
 
         if (!$err) {
@@ -705,7 +702,7 @@ create sequence seq_id_users start 10;";
      */
     public function getMail($rawmail = true)
     {
-        if ($this->accounttype == 'U') {
+        if ($this->accounttype === 'U') {
             if (!$this->mail) {
                 return '';
             }
