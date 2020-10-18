@@ -348,10 +348,17 @@ $.widget("dcp.dcpFile", $.dcp.dcpText, {
           index: currentWidget._getIndex(),
           file: null
         });
-        currentWidget._trigger("uploadfileerror", event, {
-          index: currentWidget._getIndex(),
-          message: i18n.___("Your navigator seems offline, try later", "ddui")
-        });
+        if (data.responseText) {
+          currentWidget._trigger("uploadfileerror", event, {
+            index: currentWidget._getIndex(),
+            message: data.responseText
+          });
+        } else {
+          currentWidget._trigger("uploadfileerror", event, {
+            index: currentWidget._getIndex(),
+            message: i18n.___("Your navigator seems offline, try later", "ddui")
+          });
+        }
         currentWidget.setValue({
           displayValue: "",
           value: ""
