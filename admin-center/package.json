@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/admin-center",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Web interfaces to admin applications and configure smart elements",
   "author": "Anakeen",
   "license": "SEE LICENSE IN LICENSE",
@@ -26,9 +26,9 @@
     "typescript": "^3.7.4"
   },
   "dependencies": {
-    "@anakeen/hub-components": "2.0.0",
+    "@anakeen/hub-components": "2.0.1",
     "@anakeen/internal-components": "1.0.4",
-    "@anakeen/user-interfaces": "3.1.0",
+    "@anakeen/user-interfaces": "3.1.1",
     "@progress/kendo-buttons-vue-wrapper": "^2019.3.1023",
     "@progress/kendo-charts-vue-wrapper": "^2019.3.1023",
     "@progress/kendo-datasource-vue-wrapper": "^2019.3.1023",

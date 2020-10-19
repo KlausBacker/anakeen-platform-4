@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/business-app",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Anakeen Hub Business App",
   "main": "src/vendor/Anakeen/BusinessApp/IHM/index.js",
   "author": "Anakeen",
@@ -15,9 +15,9 @@
     "buildJsRender": "yarn run buildJsRender:prod && yarn run buildJsRender:dev"
   },
   "dependencies": {
-    "@anakeen/hub-components": "2.0.0",
+    "@anakeen/hub-components": "2.0.1",
     "@anakeen/theme-variables": "1.0.1",
-    "@anakeen/user-interfaces": "3.1.0",
+    "@anakeen/user-interfaces": "3.1.1",
     "@progress/kendo-theme-bootstrap": "4.8.0",
     "@progress/kendo-ui": "2019.3.1113",
     "jquery": "3.4.1",
@@ -27,8 +27,8 @@
     "vuex": "3.1.2"
   },
   "peerDependencies": {
-    "@anakeen/hub-components": "2.0.0",
-    "@anakeen/user-interfaces": "3.1.0"
+    "@anakeen/hub-components": "2.0.1",
+    "@anakeen/user-interfaces": "3.1.1"
   },
   "devDependencies": {
     "@anakeen/anakeen-cli": "1.2.3",

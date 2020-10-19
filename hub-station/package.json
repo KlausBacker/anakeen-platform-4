@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/hub-components",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Anakeen Hub Components",
   "main": "components/lib/hub-components.common.min.js",
   "scripts": {
@@ -28,7 +28,7 @@
   "author": "Anakeen",
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
-    "@anakeen/user-interfaces": "3.1.0",
+    "@anakeen/user-interfaces": "3.1.1",
     "@progress/kendo-buttons-vue-wrapper": "^2019.3.1023",
     "@progress/kendo-datasource-vue-wrapper": "^2019.3.1023",
     "@progress/kendo-dropdowns-vue-wrapper": "^2019.3.1023",
@@ -67,7 +67,7 @@
     "rollup-plugin-vue": "^5.1.6"
   },
   "peerDependencies": {
-    "@anakeen/user-interfaces": "3.1.0",
+    "@anakeen/user-interfaces": "3.1.1",
     "axios": "0.19.0",
     "jquery": "3.4.1",
     "vue": "2.6.10",

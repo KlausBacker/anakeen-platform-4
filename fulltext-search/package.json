@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/fulltext-search",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "autorelease": true,
   "description": "Anakeen Platform Fulltext Search",
   "main": "index.js",
@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "@anakeen/anakeen-cli": "1.2.3",
-    "@anakeen/hub-components": "2.0.0",
+    "@anakeen/hub-components": "2.0.1",
     "@anakeen/internal-components": "1.0.4",
     "@anakeen/webpack-conf": "1.2.1",
     "@progress/kendo-buttons-vue-wrapper": "^2019.3.1023",
