@@ -40,7 +40,7 @@ class Users
         if ($filter) {
             foreach ($filter["filters"] as $currentFilter) {
                 if ($currentFilter["field"] === "group") {
-                    $searchAccount->addGroupFilter($currentFilter["value"]);
+                    $searchAccount->addGroupFilter($currentFilter["value"]??"");
                 } else {
                     $searchAccount->addFilter($currentFilter["field"]." ~* '%s'", preg_quote($currentFilter["value"]));
                 }
