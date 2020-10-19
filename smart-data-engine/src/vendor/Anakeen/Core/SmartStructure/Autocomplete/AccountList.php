@@ -109,6 +109,7 @@ class AccountList
         $s->overrideViewControl(false);
         $al = $s->search();
         foreach ($al as $account) {
+            // No use here mail group
             $mail = $account->mail ? (' (' . mb_substr($account->mail, 0, 40) . ')') : '';
 
             $response->appendEntry(

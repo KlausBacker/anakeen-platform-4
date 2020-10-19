@@ -117,6 +117,7 @@ class IgroupLib
                 $groupId
             );
         }
+
         DbManager::query($sql, $mailGroup, true, true);
         return $mailGroup;
     }
@@ -128,10 +129,6 @@ class IgroupLib
      */
     public static function refreshMailGroup(int $groupId)
     {
-        $mailGroup = self::getMailGroup($groupId, true);
-
-        // Update system account
-        DbManager::query(sprintf("update users set mail='%s' where id=%d", pg_escape_string($mailGroup), $groupId));
         // Update Smart Igroup
         $mailGroup = self::getMailGroup($groupId);
         DbManager::query(sprintf(
