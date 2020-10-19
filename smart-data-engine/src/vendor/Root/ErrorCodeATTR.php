@@ -380,6 +380,10 @@ class ErrorCodeATTR
      */
     const ATTR1273 = 'Enum callable "%s" not found';
     /**
+     * @errorCode  the enum doesn't exist
+     */
+    const ATTR1274 = 'Enumerate "%s" does not exist';
+    /**
      * @errorCode  declaration of call constraint is not correct
      * @note       example : ::isInteger(MY_ATTR)  or myClass::isSpecial(MY_ATTR)
      */

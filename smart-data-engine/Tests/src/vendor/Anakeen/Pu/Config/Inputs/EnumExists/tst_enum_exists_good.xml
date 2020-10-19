@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:enumerates>
+        <smart:enum-configuration name="tst_exists_enum">
+            <smart:enum name="A" label="A" />
+            <smart:enum name="B" label="B" />
+        </smart:enum-configuration>
+        <smart:enum-configuration name="tst_exists_extendable_enum" extendable="true">
+            <smart:enum name="A" label="A" />
+            <smart:enum name="B" label="B" />
+        </smart:enum-configuration>
+        <smart:enum-configuration name="tst_exists_extendable_empty_enum" extendable="true">
+        </smart:enum-configuration>
+        <smart:enum-configuration name="test_enum_function">
+            <smart:enum-callable function="Anakeen\Pu\Config\Inputs\EnumExists\EnumExistsGood"/>
+        </smart:enum-configuration>
+    </smart:enumerates>
+    <smart:structure-configuration name="structure_902_good" label="structure_902_good">
+        <smart:fields>
+            <smart:field-set name="frame_one" label="Frame_A1" access="ReadWrite" type="frame">
+                <smart:field-enum relation="tst_exists_enum" access="ReadWrite" name="enum_1"></smart:field-enum>
+                <smart:field-enum relation="tst_exists_extendable_enum" access="ReadWrite" name="enum_2"></smart:field-enum>
+                <smart:field-enum relation="tst_exists_extendable_empty_enum" access="ReadWrite" name="enum_3"></smart:field-enum>
+                <smart:field-enum relation="test_enum_function" access="ReadWrite" name="enum_4"></smart:field-enum>
+            </smart:field-set>
+        </smart:fields>
+    </smart:structure-configuration>
+</smart:config>

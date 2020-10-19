@@ -35,7 +35,7 @@
         </smart:fields>
         <smart:parameters>
             <smart:field-set name="emsg_fr_parameters" type="frame" label="Paramètres" access="ReadWrite">
-                <smart:field-enum name="emsg_editcontrol" label="Force la lecture seule" access="ReadWrite" relation="SENTMESSAGE-emsg_editcontrol"/>
+                <!-- <smart:field-enum name="emsg_editcontrol" label="Force la lecture seule" access="ReadWrite" relation="SENTMESSAGE-emsg_editcontrol"/> -->
             </smart:field-set>
         </smart:parameters>
         <smart:autocompletion/>

@@ -84,6 +84,15 @@ class EnumManager
         return $enums;
     }
 
+    public static function existsEnums($name)
+    {
+        $sql = sprintf("select key from docenum where name='%s' limit 1", pg_escape_string($name));
+
+        DbManager::query($sql, $key, true, true);
+        
+        return $key!==false;
+    }
+
     public static function isExtendable(string $enumName)
     {
         $sql = sprintf("select name from docenum where name='%s' and key = '%s' ", pg_escape_string($enumName), pg_escape_string(self::EXTENDABLEKEY));
@@ -256,7 +265,6 @@ class EnumManager
 
         return $err;
     }
-
 
     /**
      * reset Enum cache

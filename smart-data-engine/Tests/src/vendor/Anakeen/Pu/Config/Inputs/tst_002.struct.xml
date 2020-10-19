@@ -1,5 +1,137 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:enumerates>
+        <smart:enum-configuration name="TEST_GEP_SOUTIEN_CIRLONG-csl_notification_statut">
+            <smart:enum name="red" label="Rouge"/>
+            <smart:enum name="blue" label="Bleu"/>
+        </smart:enum-configuration>
+
+        <smart:enum-configuration name="TEST_GEP_SOUTIEN_CIRLONG-csl_statut_valide_rs_2">
+            <smart:enum name="red" label="Rouge"/>
+            <smart:enum name="blue" label="Bleu"/>
+        </smart:enum-configuration>
+
+        <smart:enum-configuration name="TEST_GEP_SOUTIEN_CIRLONG-csl_type_soutien">
+            <smart:enum name="red" label="Rouge"/>
+            <smart:enum name="blue" label="Bleu"/>
+        </smart:enum-configuration>
+
+        <smart:enum-configuration name="TEST_GEP_SOUTIEN_CIRLONG-csl_territorialite_don">
+            <smart:enum name="red" label="Rouge"/>
+            <smart:enum name="blue" label="Bleu"/>
+        </smart:enum-configuration>
+
+        <smart:enum-configuration name="TEST_GEP_SOUTIEN_CIRLONG-csl_reprise">
+            <smart:enum name="red" label="Rouge"/>
+            <smart:enum name="blue" label="Bleu"/>
+        </smart:enum-configuration>
+
+        <smart:enum-configuration name="TEST_GEP_SOUTIEN_CIRLONG-csl_action_cofinancee">
+            <smart:enum name="red" label="Rouge"/>
+            <smart:enum name="blue" label="Bleu"/>
+        </smart:enum-configuration>
+
+        <smart:enum-configuration name="TEST_GEP_SOUTIEN_CIRLONG-csl_region_pador">
+            <smart:enum name="red" label="Rouge"/>
+            <smart:enum name="blue" label="Bleu"/>
+        </smart:enum-configuration>
+
+        <smart:enum-configuration name="TEST_GEP_SOUTIEN_CIRLONG-csl_secteur_cidse">
+            <smart:enum name="red" label="Rouge"/>
+            <smart:enum name="blue" label="Bleu"/>
+        </smart:enum-configuration>
+
+        <smart:enum-configuration name="TEST_GEP_SOUTIEN_CIRLONG-csl_secteur_pador">
+            <smart:enum name="red" label="Rouge"/>
+            <smart:enum name="blue" label="Bleu"/>
+        </smart:enum-configuration>
+
+        <smart:enum-configuration name="TEST_GEP_SOUTIEN_CIRLONG-csl_langue">
+            <smart:enum name="red" label="Rouge"/>
+            <smart:enum name="blue" label="Bleu"/>
+        </smart:enum-configuration>
+
+        <smart:enum-configuration name="TEST_GEP_SOUTIEN_CIRLONG-csl_confidentiel">
+            <smart:enum name="red" label="Rouge"/>
+            <smart:enum name="blue" label="Bleu"/>
+        </smart:enum-configuration>
+
+        <smart:enum-configuration name="TEST_GEP_SOUTIEN_CIRLONG-csl_groupe_cible">
+            <smart:enum name="red" label="Rouge"/>
+            <smart:enum name="blue" label="Bleu"/>
+        </smart:enum-configuration>
+
+        <smart:enum-configuration name="TEST_GEP_SOUTIEN_CIRLONG-csl_vulnerables">
+            <smart:enum name="red" label="Rouge"/>
+            <smart:enum name="blue" label="Bleu"/>
+        </smart:enum-configuration>
+
+        <smart:enum-configuration name="TEST_GEP_SOUTIEN_CIRLONG-csl_position_episcopat">
+            <smart:enum name="red" label="Rouge"/>
+            <smart:enum name="blue" label="Bleu"/>
+        </smart:enum-configuration>
+
+        <smart:enum-configuration name="TEST_GEP_SOUTIEN_CIRLONG-csl_relation_eglise">
+            <smart:enum name="red" label="Rouge"/>
+            <smart:enum name="blue" label="Bleu"/>
+        </smart:enum-configuration>
+
+        <smart:enum-configuration name="TEST_GEP_SOUTIEN_CIRLONG-csl_typologie_action">
+            <smart:enum name="red" label="Rouge"/>
+            <smart:enum name="blue" label="Bleu"/>
+        </smart:enum-configuration>
+
+        <smart:enum-configuration name="TEST_GEP_SOUTIEN_CIRLONG-csl_init_nouvelle">
+            <smart:enum name="red" label="Rouge"/>
+            <smart:enum name="blue" label="Bleu"/>
+        </smart:enum-configuration>
+
+        <smart:enum-configuration name="TEST_GEP_SOUTIEN_CIRLONG-csl_init_pluriannu">
+            <smart:enum name="red" label="Rouge"/>
+            <smart:enum name="blue" label="Bleu"/>
+        </smart:enum-configuration>
+
+        <smart:enum-configuration name="TEST_GEP_SOUTIEN_CIRLONG-csl_amplitude_action">
+            <smart:enum name="red" label="Rouge"/>
+            <smart:enum name="blue" label="Bleu"/>
+        </smart:enum-configuration>
+
+        <smart:enum-configuration name="TEST_GEP_SOUTIEN_CIRLONG-csl_statut_valide_rs">
+            <smart:enum name="red" label="Rouge"/>
+            <smart:enum name="blue" label="Bleu"/>
+        </smart:enum-configuration>
+
+        <smart:enum-configuration name="TEST_GEP_SOUTIEN_CIRLONG-csl_statut_bon_a_payer">
+            <smart:enum name="red" label="Rouge"/>
+            <smart:enum name="blue" label="Bleu"/>
+        </smart:enum-configuration>
+
+        <smart:enum-configuration name="TEST_GEP_SOUTIEN_CIRLONG-csl_statut_valide_directeur">
+            <smart:enum name="red" label="Rouge"/>
+            <smart:enum name="blue" label="Bleu"/>
+        </smart:enum-configuration>
+
+        <smart:enum-configuration name="TEST_GEP_SOUTIEN_CIRLONG-csl_statut_decision_cmp">
+            <smart:enum name="red" label="Rouge"/>
+            <smart:enum name="blue" label="Bleu"/>
+        </smart:enum-configuration>
+
+        <smart:enum-configuration name="TEST_GEP_SOUTIEN_CIRLONG-csl_statut_type_reglement">
+            <smart:enum name="red" label="Rouge"/>
+            <smart:enum name="blue" label="Bleu"/>
+        </smart:enum-configuration>
+
+        <smart:enum-configuration name="TEST_GEP_SOUTIEN_CIRLONG-csl_statut_avis_cpf">
+            <smart:enum name="red" label="Rouge"/>
+            <smart:enum name="blue" label="Bleu"/>
+        </smart:enum-configuration>
+
+        <smart:enum-configuration name="TEST_GEP_SOUTIEN_CIRLONG-csl_statut_decision_ca">
+            <smart:enum name="red" label="Rouge"/>
+            <smart:enum name="blue" label="Bleu"/>
+        </smart:enum-configuration>
+    </smart:enumerates>
+
     <smart:structure-configuration name="TST_002" label="Test n°2">
         <!--region Structure Properties ============-->
         <smart:icon file="TEST.png"/>
