@@ -3,8 +3,6 @@
 import { AnakeenController } from "./types/ControllerTypes";
 import DOMReference = AnakeenController.Types.DOMReference;
 import ControllerUID = AnakeenController.Types.ControllerUID;
-import ListenableEventCallable = AnakeenController.BusEvents.ListenableEventCallable;
-import ListenableEvent = AnakeenController.BusEvents.ListenableEvent;
 import EVENTS_LIST = AnakeenController.SmartElement.EVENTS_LIST;
 import ControllerOptions = AnakeenController.Types.IControllerOptions;
 import ControllerNotFoundError from "./ControllerNotFoundError";
@@ -17,6 +15,10 @@ import ControllerDispatcher from "./ControllerDispatcher";
 import SmartElementController from "./SmartElementController";
 import load from "./utils/ScriptLoader.js";
 import * as util from "util";
+
+// @ts-ignore
+//You need to update version at each modification
+const globalWorker = new SharedWorker("/SharedWorker/globalControllerWorker.js?version=1");
 
 interface IAsset {
   key: string;
@@ -107,6 +109,17 @@ export default class GlobalController extends AnakeenController.BusEvents.Listen
           });
           this._dispatcher.on("renderCss", (controller, event, properties, css) => {
             this._onRenderCss(css);
+          });
+          this._dispatcher.on("unlockSmartElement", (controller, event, properties, initid) => {
+            if (globalWorker) {
+              globalWorker.port.postMessage({ type: "unlock", initid });
+            } else {
+              $.ajax({
+                url: `/api/v2/smart-elements/${initid}/locks/temporary`,
+                type: "DELETE",
+                async: false
+              });
+            }
           });
           this.setVerbose(this._verbose);
           this.emit("controllerReady", this);

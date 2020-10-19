@@ -1921,6 +1921,9 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     this._view.on("renderCss", css => {
       this._triggerControllerEvent("renderCss", null, this.getProperties(), css);
     });
+    this._model.on("unlockSmartElement", initid => {
+      this._triggerControllerEvent("unlockSmartElement", null, this.getProperties(), initid);
+    });
   }
 
   /**

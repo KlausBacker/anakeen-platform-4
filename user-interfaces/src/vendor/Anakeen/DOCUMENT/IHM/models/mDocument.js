@@ -159,8 +159,7 @@ export default Backbone.Model.extend({
       if (options && options.force) {
         return;
       }
-      var security = theModel.get("properties") ? theModel.get("properties").get("security") : null,
-        event = { prevent: false };
+      var event = { prevent: false };
       if (theModel.hasAttributesChanged()) {
         return i18n.___("The form has been modified and is is not saved", "ddui");
       }
@@ -169,16 +168,6 @@ export default Backbone.Model.extend({
 
       if (event.prevent) {
         return i18n.___("Unable to close the document", "ddui");
-      }
-
-      if (theModel.get("renderMode") === "edit" && security && security.lock && security.lock.temporary) {
-        // No use model destroy : page is destroyed before request is some case
-        $.ajax({
-          url: "/api/v2/smart-elements/" + theModel.get("initid") + "/locks/temporary",
-          type: "DELETE",
-          async: false
-        });
-        theModel.set("unlocking", true);
       }
     });
 
@@ -189,11 +178,7 @@ export default Backbone.Model.extend({
       theModel.trigger("close", event, theModel.getServerProperties(), this._customClientData);
 
       if (!unlocking && theModel.get("renderMode") === "edit" && security && security.lock && security.lock.temporary) {
-        $.ajax({
-          url: "/api/v2/smart-elements/" + theModel.get("initid") + "/locks/temporary",
-          type: "DELETE",
-          async: false
-        });
+        theModel.trigger("unlockSmartElement", theModel.get("initid"));
       }
     });
   },
