@@ -1,6 +1,6 @@
 {
   "name": "transformation",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "main": "index.js",
   "author": "Anakeen",
   "license": "SEE LICENSE IN LICENSE",
@@ -12,7 +12,7 @@
   },
   "devDependencies": {
     "@anakeen/anakeen-cli": "1.2.3",
-    "@anakeen/hub-components": "2.0.0",
+    "@anakeen/hub-components": "2.0.1",
     "@anakeen/internal-components": "1.0.4",
     "@anakeen/webpack-conf": "1.2.1",
     "core-js": "3.6.1",

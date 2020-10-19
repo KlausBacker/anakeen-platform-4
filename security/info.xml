@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" license="https://ap4.anakeen.com/licence4.html" name="security" version="2.0.4" vendor="Anakeen">
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" license="https://ap4.anakeen.com/licence4.html" name="security" version="2.0.5" vendor="Anakeen">
     <description>Security Package</description>
     <requires>
-        <module name="user-interfaces" version="^3.1.0"/>
-        <module name="smart-data-engine" version="^3.0.0"/>
+        <module name="user-interfaces" version="^3.1.1"/>
+        <module name="smart-data-engine" version="^4.0.0"/>
     </requires>
 
     <post-install>

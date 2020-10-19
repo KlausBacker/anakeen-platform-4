@@ -3,7 +3,7 @@
     <description>Test case for Smart Data Engine.</description>
 
     <requires>
-        <module name="smart-data-engine" version="^3.0.0"/>
+        <module name="smart-data-engine" version="^4.0.0"/>
     </requires>
     
     <pre-install>

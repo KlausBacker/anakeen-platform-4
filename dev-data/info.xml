@@ -7,9 +7,9 @@
     <param name="COUNT_ACCOUNTS" label="Number of accounts to create" default="0" type="text" needed="N"/>
   </parameters>
   <requires>
-    <module name="smart-data-engine" version="^3.0.0"/>
-    <module name="security" version="^2.0.4"/>
-    <module name="workflow" version="^2.0.3"/>
+    <module name="smart-data-engine" version="^4.0.0"/>
+    <module name="security" version="^2.0.5"/>
+    <module name="workflow" version="^2.0.4"/>
   </requires>
 
   <post-install>
