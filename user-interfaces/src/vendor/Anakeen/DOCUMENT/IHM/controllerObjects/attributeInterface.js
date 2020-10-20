@@ -89,6 +89,13 @@ AttributPrototype.prototype.setOption = function AttributeInterfaceSetOption(nam
 
 AttributPrototype.prototype.getValue = function AttributeInterfaceGetValue(type) {
   if (_.isUndefined(type) || type === "current") {
+    if (this._attributeModel.get("type") === "array") {
+      const tab = [];
+      this._attributeModel.attributes.content.models.forEach(item => {
+        tab[item.id] = item.get("attributeValue");
+      });
+      return tab;
+    }
     return this._attributeModel.get("attributeValue");
   }
   if (type === "previous") {
