@@ -1387,7 +1387,7 @@ class ImportSmartConfiguration
         foreach ($argNodes as $argNode) {
             $type = $argNode->getAttribute("type");
             $name = $argNode->getAttribute("name");
-            $arg = $argNode->nodeValue;
+            $arg = trim($argNode->nodeValue);
 
             if ($allowedProperties && $type === "property") {
                 if (array_search($arg, $allowedProperties) === false) {
