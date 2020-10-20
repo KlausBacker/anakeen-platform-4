@@ -38,6 +38,10 @@ class ErrorCodeATTR
      */
     const ATTR0105 = 'Cannot extend a non existant Smart Field "%s"';
     /**
+     * @errorCode  Extended Smart Field only need identifier
+     */
+    const ATTR0106 = 'Extended Smart Field "%s" only need identifier and no other attribute';
+    /**
      * @errorCode  Smart Field identicator is limit to 63 alphanum characters
      */
     const ATTR0200 = 'syntax error for structure "%s" Smart Field "%s"';

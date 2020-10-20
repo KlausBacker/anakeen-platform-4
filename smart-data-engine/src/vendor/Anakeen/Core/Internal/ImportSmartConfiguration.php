@@ -138,7 +138,6 @@ class ImportSmartConfiguration
         if (!$type) {
             throw new Exception("Cannot import search without structure-type");
         }
-        
         $name = $searchNode->getAttribute("name");
         if (!$name) {
             throw new Exception("Cannot import search without name");
@@ -1076,6 +1075,12 @@ class ImportSmartConfiguration
         if ($attrNode->tagName === "{$this->smartPrefix}:field-set") {
             if ($attrNode->getAttribute("extended") !== "true") {
                 $data[] = $this->extractSingleAttr($attrNode, $key, $fieldName);
+            } else {
+                if ($attrNode->getAttribute("label") != "" ||
+                    $attrNode->getAttribute("type") != "" ||
+                    $attrNode->getAttribute("access") != "" || $attrNode->getAttribute("insert-after") != "") {
+                    throw new \Anakeen\Exception("ATTR0106", $attrNode->getAttribute("name"));
+                }
             }
             $fieldName = $attrNode->getAttribute("name");
             foreach ($attrNode->childNodes as $childNode) {
