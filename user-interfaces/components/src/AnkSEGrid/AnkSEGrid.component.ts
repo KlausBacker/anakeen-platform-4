@@ -642,7 +642,9 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     window.addEventListener("offline", this.updateOnlineStatus);
     this.gridError = new GridError(this);
     this.$on("pageChange", this.onPageChange);
-
+    if (this.sort) {
+      this.currentSort = this.sort.map(item => ({ ...item, isDefault: true }));
+    }
     return await this.refreshGrid();
   }
 
