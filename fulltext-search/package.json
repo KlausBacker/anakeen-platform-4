@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/fulltext-search",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "autorelease": true,
   "description": "Anakeen Platform Fulltext Search",
   "main": "index.js",
