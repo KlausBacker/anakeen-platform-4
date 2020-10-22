@@ -237,7 +237,7 @@ class DocumentData
         // Necessary only when use family.structure
         $result[] = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_LANG");
         $result[] = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
-        return join(" ", $result);
+        return hash("md4", join(" ", $result));
     }
 
     /**
