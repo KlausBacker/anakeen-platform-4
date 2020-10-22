@@ -1,7 +1,7 @@
 const gulp = require("gulp");
 const { getModuleInfo } = require("../utils/moduleInfo");
 const { checkGlobElements } = require("../utils/check");
-const { analyzeXML } = require("../utils/globAnalyze");
+const { analyzeXML, analyzeJson } = require("../utils/globAnalyze");
 const { checkFile } = require("@anakeen/anakeen-module-validation");
 const { Signale } = require("signale");
 const globFunction = require("glob");
@@ -24,6 +24,7 @@ exports.check = ({ sourcePath, verbose }) => {
       if (stub) {
         globXML = stub[0]["config-xml"];
       }
+      analyzeJson(`${info.buildInfo.buildPath[0]}/locale/**/*.json`);
 
       const globFile = analyzeXML(globXML);
 

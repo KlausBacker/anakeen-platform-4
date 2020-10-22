@@ -1,5 +1,7 @@
 const glob = require("glob");
 const path = require("path");
+const signale = require("signale");
+const fs = require("fs");
 
 exports.analyzeXML = xmlElementList => {
   return xmlElementList.reduce(
@@ -16,6 +18,21 @@ exports.analyzeXML = xmlElementList => {
       ignoreGlob: []
     }
   );
+};
+
+exports.analyzeJson = jsonElementGlob => {
+  glob(jsonElementGlob, {}, (err, files) => {
+    if (files.length > 0) {
+      files.forEach(file => {
+        try {
+          JSON.parse(fs.readFileSync(file));
+        } catch (e) {
+          signale.error("in file", file);
+          throw new Error(e);
+        }
+      });
+    }
+  });
 };
 
 exports.parseAndConcatGlob = ({ globFile, srcPath }) => {
