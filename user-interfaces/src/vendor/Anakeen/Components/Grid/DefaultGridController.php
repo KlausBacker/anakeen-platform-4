@@ -128,7 +128,11 @@ class DefaultGridController implements SmartGridController
     {
         if (isset($clientConfig["sort"])) {
             foreach ($clientConfig["sort"] as $sort) {
-                $contentBuilder->addSort($sort["field"], $sort["dir"]);
+                if (isset($sort["isDefault"])) {
+                    $contentBuilder->addSort($sort["field"], $sort["dir"], $sort["isDefault"]);
+                } else {
+                    $contentBuilder->addSort($sort["field"], $sort["dir"]);
+                }
             }
         }
     }

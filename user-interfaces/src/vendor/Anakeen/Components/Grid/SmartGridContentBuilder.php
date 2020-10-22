@@ -32,6 +32,7 @@ class SmartGridContentBuilder implements SmartGridBuilder
         ]
     ];
     protected $sort = [];
+    protected $defaultSort = [];
 
     protected $smartCollectionId = null;
 
@@ -125,13 +126,24 @@ class SmartGridContentBuilder implements SmartGridBuilder
      * @param $direction
      * @return $this
      */
-    public function addSort($colId, $direction)
+    public function addSort($colId, $direction, $isDefault = false)
     {
-        $this->sort[] = ["field" => $colId, "dir" => $direction];
+        if (!$isDefault) {
+            if (isset($direction)) {
+                // add every sort which did not come with grid config , i.e. after a click on the sort button
+                $this->sort[] = ["field" => $colId, "dir" => $direction];
+            }
+        } else {
+            // add every sort which come with grid config
+            $this->defaultSort[] = ["field" => $colId, "dir" => $direction];
+        }
+        $sort = array_merge($this->sort, $this->defaultSort);
         $order = implode(",", array_map(function ($sort) {
             return $sort["field"] . " " . $sort["dir"];
-        }, $this->sort));
-        $order .= ",id ASC";
+        }, $sort));
+        if (isset($order)) {
+            $order .= ",id ASC";
+        }
         $this->searchElements->setOrder($order);
         return $this;
     }
