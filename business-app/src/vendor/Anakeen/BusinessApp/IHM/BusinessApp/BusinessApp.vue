@@ -47,6 +47,7 @@
           @smartElementTabActionClick="onActionClick"
           @smartElementTabDisplayError="onDisplayError"
           @smartElementTabDisplayMessage="onDisplayMessage"
+          @smartElementTabClose="onTabClose"
         >
         </ank-se-tab>
       </ank-tabs>

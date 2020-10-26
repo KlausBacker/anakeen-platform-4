@@ -226,7 +226,9 @@ export default class BusinessApp extends Vue {
     event.preventDefault();
     this.$emit("displayMessage", message);
   }
-
+  protected onTabClose(event) {
+    this.$refs.businessAppList.refreshList();
+  }
   protected onDisplayError(event, doc, message) {
     event.preventDefault();
     this.$emit("displayError", message);
