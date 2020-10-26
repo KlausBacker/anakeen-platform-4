@@ -4,23 +4,28 @@
   // text-overflow: ellipsis;
   margin-bottom: 0;
 }
-
-.dcpArray__label.dcpAttribute__left.dcpAttribute__labelPosition--left label,
-.dcpAttribute__label label {
-  &:after {
-    content: ":";
-    padding-left: 0.3em;
-    padding-right: 0.6em;
-    vertical-align: top;
+.dcpDocument--view {
+  .dcpArray__label.dcpAttribute__left.dcpAttribute__labelPosition--left label,
+  .dcpAttribute__label label {
+    &:after {
+      content: ":";
+      padding-left: 0.3em;
+      padding-right: 0.6em;
+      vertical-align: top;
+    }
   }
 }
-
 .dcpDocument--edit {
   .dcpAttribute--needed .dcpAttribute__label label,
   .dcpAttribute--needed .dcpAttribute__label {
     font-weight: bold;
   }
-
+  .dcpAttribute__label:not(.dcpAttribute--needed):after {
+    content: ":";
+    padding-left: 0.3em;
+    padding-right: 0.6em;
+    vertical-align: top;
+  }
   .dcpAttribute--needed .dcpAttribute__label:after {
     content: "*\0000a0:";
     padding-left: 0.1em;
