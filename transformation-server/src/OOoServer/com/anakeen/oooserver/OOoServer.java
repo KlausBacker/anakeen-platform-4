@@ -48,6 +48,7 @@ public class OOoServer implements XEventListener {
 
 	public String host = "";
 	public String port = "";
+	public String pipe = "";
 	public boolean connected = false;
 	public boolean inDisconnect = false;
 
@@ -58,14 +59,16 @@ public class OOoServer implements XEventListener {
 	private XComponent bridgeComponent;
 	public XBridge bridge;
 
-	OOoServer(String ooo_host, String ooo_port) {
+	OOoServer(String ooo_host, String ooo_port, String ooo_pipe) {
 		this.host = ooo_host;
 		this.port = ooo_port;
+		this.pipe = ooo_pipe;
 	}
 
 	public synchronized void connect() throws Exception {
 		if (this.debug) {
-			System.err.print("Connecting to " + this.host + ":" + this.port
+			System.err.print("Connecting to "
+					+ ((this.pipe.length() <= 0) ? (this.host + ":" + this.port) : (this.pipe))
 					+ "\n");
 		}
 
@@ -85,9 +88,15 @@ public class OOoServer implements XEventListener {
 								"com.sun.star.connection.Connector",
 								localContext));
 
-		/* Connect to OOo over TCP/IP */
-		XConnection connection = connector.connect("socket,host=" + this.host
-				+ ",port=" + this.port + ",tcpNoDelay=1");
+		XConnection connection;
+		if (this.pipe.length() <= 0) {
+			/* Connect to OOo over TCP/IP */
+			connection = connector.connect("socket,host=" + this.host
+					+ ",port=" + this.port + ",tcpNoDelay=1");
+		} else {
+			/* Connect to OOo over pipe */
+			connection = connector.connect("pipe,name=" + this.pipe);
+		}
 
 		/* Get a bridge */
 		XBridgeFactory bridgeFactory = (XBridgeFactory) UnoRuntime

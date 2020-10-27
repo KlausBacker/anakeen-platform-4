@@ -14,22 +14,21 @@
 
 	<path id="OOoServer.classpath">
 		<pathelement location="." />
-		<pathelement location="${OOO_BASE_DIR}/basis-link/program/classes/unoil.jar" />
-		<pathelement location="${OOO_BASE_DIR}/basis-link/ure-link/share/java/juh.jar" />
-		<pathelement location="${OOO_BASE_DIR}/basis-link/ure-link/share/java/jurt.jar" />
-		<pathelement location="${OOO_BASE_DIR}/basis-link/ure-link/share/java/ridl.jar" />
+		<pathelement location="${OOO_BASE_DIR}/program/classes/unoil.jar" />
+		<pathelement location="${OOO_BASE_DIR}/program/classes/juh.jar" />
+		<pathelement location="${OOO_BASE_DIR}/program/classes/jurt.jar" />
+		<pathelement location="${OOO_BASE_DIR}/program/classes/ridl.jar" />
 	</path>
 
 	<target name="help">
 		<echo>
-Set OOO_BASE_DIR environment variable to the path of your OOo 3.2.1 installation
+Set OOO_BASE_DIR environment variable to the path of your LibreOffice 6.x/7.x installation
 then run `ant all' to build the jar archive:
-	
-	$ export OOO_BASE_DIR=/opt/openoffice.org3
+
+	$ export OOO_BASE_DIR=/opt/libreoffice6.3
 	$ ant all
 
-The OOO_BASE_DIR should point to the path containing the `basis-link/program/classes/unoil.jar'
-and `basis-link/ure-link/share/java/{juh,jurt,ridl}.jar' subdir/files.
+The `${OOO_BASE_DIR}/program/classes` should contains the `{unoil,juh,jurt,ridl}.jar' files.
 		</echo>
 	</target>
 
@@ -84,28 +83,43 @@ and `basis-link/ure-link/share/java/{juh,jurt,ridl}.jar' subdir/files.
 		<jar destfile="OOoServer.jar" basedir="." includes="com/anakeen/oooserver/**">
 			<manifest>
 				<attribute name="Main-Class" value="com.anakeen.oooserver.OOoServerCli" />
-				<attribute name="X-COMMENT" value="Class-Path: lib/juh.jar lib/jurt.jar lib/ridl.jar" />
+				<attribute name="X-COMMENT" value="Class-Path: lib/unoil.jar lib/juh.jar lib/jurt.jar lib/ridl.jar" />
 			</manifest>
 		</jar>
 	</target>
 
 	<target depends="jar" name="all" />
 
-	<target name="test">
+	<!-- Test connection through TCP socket -->
+	<target name="test-socket">
 		<exec executable="java">
+			<arg value="-Djava.library.path=${OOO_BASE_DIR}/program" />
 			<arg value="-classpath" />
-			<arg value="${OOO_BASE_DIR}/basis-link/program/classes/unoil.jar:${OOO_BASE_DIR}/basis-link/ure-link/share/java/juh.jar:${OOO_BASE_DIR}/basis-link/ure-link/share/java/jurt.jar:${OOO_BASE_DIR}/basis-link/ure-link/share/java/ridl.jar:OOoServer.jar" />
+			<arg value="${OOO_BASE_DIR}/program/classes/unoil.jar:${OOO_BASE_DIR}/program/classes/juh.jar:${OOO_BASE_DIR}/program/classes/jurt.jar:${OOO_BASE_DIR}/program/classes/ridl.jar:OOoServer.jar" />
 			<arg value="com.anakeen.oooserver.OOoServerCli" />
-			<arg value="merge" />
-			<arg value="-h" /> <arg value="127.0.0.1" />
-			<arg value="-p" /> <arg value="8123" />
+			<arg value="convert" />
 			<arg value="-i" /> <arg value="/tmp/test.odt" />
 			<arg value="-o" /> <arg value="/tmp/out.pdf" />
+			<arg value="-h" /> <arg value="localhost" />
+			<arg value="-p" /> <arg value="8123" />
 			<arg value="-t" /> <arg value="pdfa" />
 			<arg value="-d" />
-			<arg value="-b" />
-			<arg value="/tmp/test.odt" />
-			<arg value="/tmp/test.odt" />
+		</exec>
+	</target>
+
+	<!-- Test connection through Java pipe -->
+	<target name="test-pipe">
+		<exec executable="java">
+			<arg value="-Djava.library.path=${OOO_BASE_DIR}/program" />
+			<arg value="-classpath" />
+			<arg value="${OOO_BASE_DIR}/program/classes/unoil.jar:${OOO_BASE_DIR}/program/classes/juh.jar:${OOO_BASE_DIR}/program/classes/jurt.jar:${OOO_BASE_DIR}/program/classes/ridl.jar:OOoServer.jar" />
+			<arg value="com.anakeen.oooserver.OOoServerCli" />
+			<arg value="convert" />
+			<arg value="-i" /> <arg value="/tmp/test.odt" />
+			<arg value="-o" /> <arg value="/tmp/out.pdf" />
+			<arg value="--pipe" /> <arg value="te-ooo-server" />
+			<arg value="-t" /> <arg value="pdfa" />
+			<arg value="-d" />
 		</exec>
 	</target>
 
