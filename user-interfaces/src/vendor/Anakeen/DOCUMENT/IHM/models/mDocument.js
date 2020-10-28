@@ -428,15 +428,26 @@ export default Backbone.Model.extend({
         xhr = { status: 500, statusText: "Internal - No HTTP response" };
       } else {
         if (!xhr.message) {
-          try {
-            result = JSON.parse(xhr.responseText);
-            if (result.message) {
-              messages.push(result);
-            } else if (result.messages) {
-              messages = result.messages;
+          if (xhr && xhr.status === 0) {
+            currentModel.trigger("showError", {
+              errorCode: "offline",
+              title: i18n.___("Your navigator seems offline, try later", "ddui")
+            });
+          } else {
+            try {
+              result = JSON.parse(xhr.responseText);
+              if (result.message) {
+                messages.push(result);
+              } else if (result.messages) {
+                messages = result.messages;
+              }
+            } catch (e) {
+              currentModel.trigger("showError", {
+                errorCode: "unableToParseJson",
+                title: i18n.___("Server return unreadable", "ddui")
+              });
+              messages.push({ type: "error", contentText: xhr.responseText });
             }
-          } catch (e) {
-            messages.push({ type: "error", contentText: xhr.responseText });
           }
         }
       }
