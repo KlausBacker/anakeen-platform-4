@@ -1090,24 +1090,38 @@ class Context extends ContextProperties
                 }
 
                 if ($reqMod === false) {
+                    $repoModuleList = $this->getModuleList();
+                    $repoModuleVersion = "";
+
+                    foreach ($repoModuleList as $module) {
+                        if($module->name == $reqModName) {
+                            $repoModuleVersion = $module->version;
+                            break;
+                        }
+                    }
+
                     if ($installed) {
                         /*
                          * Do not warn/err if an installed module has a broken
                          * dependency when archiving or restoring a context.
                         */
                         $this->log(LOG_INFO, sprintf(
-                            "Module '%s' (%s) required by '%s' could not be found in repositories.",
+                            "Module '%s' (%s) required by '%s' (%s) could not be found in repositories. The latter only provides version %s.",
                             $reqModName,
                             $reqModVersion,
-                            $mod->name
+                            $mod->name,
+                            $mod->version,
+                            $repoModuleVersion
                         ));
                         continue;
                     }
                     $this->errorMessage = sprintf(
-                        "Module '%s' (%s) required by '%s' could not be found in repositories.",
+                        "Module '%s' (%s) required by '%s' (%s) could not be found in repositories. The latter only provides version %s.",
                         $reqModName,
                         $reqModVersion,
-                        $mod->name
+                        $mod->name,
+                        $mod->version,
+                        $repoModuleVersion
                     );
                     return false;
                 }
