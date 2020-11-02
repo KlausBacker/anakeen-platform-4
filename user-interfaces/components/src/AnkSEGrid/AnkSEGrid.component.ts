@@ -656,8 +656,66 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     this.$emit("gridReady");
   }
 
-  public selectSmartElements(smartElementIds: number[]): void {
-    this.selectedRows = smartElementIds.map(String);
+  public selectSmartElements(smartElementIds: number[] | string = "ALL", reverse = false): void {
+    if (typeof smartElementIds === "string" && smartElementIds === "ALL") {
+      if (reverse) {
+        this.selectedRows = [];
+      } else {
+        const url = this._getOperationUrl("content");
+        const event = new GridEvent(
+          {
+            url: url,
+            queryParams: {
+              columns: { field: "id", property: true },
+              controller: this.controller,
+              collection: this.collection,
+              contentUrl: this._getOperationUrl("content")
+            }
+          },
+          null,
+          true // Cancelable
+        );
+        this.$http
+          .get(event.data.url, {
+            params: event.data.queryParams
+          })
+          .then(response => {
+            this.selectedRows = response.data.data.content.map(item => item.properties.id.toString());
+          });
+      }
+    } else if (typeof smartElementIds !== "string") {
+      if (reverse) {
+        const url = this._getOperationUrl("content");
+        const event = new GridEvent(
+          {
+            url: url,
+            queryParams: {
+              columns: { field: "id", property: true },
+              controller: this.controller,
+              collection: this.collection,
+              contentUrl: this._getOperationUrl("content")
+            }
+          },
+          null,
+          true // Cancelable
+        );
+        this.$http
+          .get(event.data.url, {
+            params: event.data.queryParams
+          })
+          .then(response => {
+            const data = response.data.data.content.map(item => item.properties.id.toString());
+            smartElementIds.forEach(item => {
+              if (data.indexOf(item) >= 0) {
+                data.splice(data.indexOf(item), 1);
+              }
+            });
+            this.selectedRows = data;
+          });
+      } else {
+        this.selectedRows = smartElementIds.map(String);
+      }
+    }
   }
 
   public restoreConfiguration(e) {
