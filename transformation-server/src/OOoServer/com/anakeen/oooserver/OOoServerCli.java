@@ -10,7 +10,7 @@ public class OOoServerCli {
 	public static void usage() {
 		System.err.print("Usage:\n");
 		System.err
-				.print("  convert -i <input_file> -o <output_file> [-h <ooo_host>] [-p <ooo_port>] [-t <pdf|pdfa|html|doc>]\n");
+				.print("  convert -i <input_file> -o <output_file> [-h <ooo_host>] [-p <ooo_port>] [--pipe <ooo_pipe>] [-t <pdf|pdfa|html|doc>]\n");
 		System.err
 				.print("  merge -o <output_file> [-h <ooo_host>] [-p <ooo_port] -i <main_input_file> [<input files>]\n");
 		return;
@@ -49,6 +49,7 @@ public class OOoServerCli {
 		opts.put("output_file", "");
 		opts.put("ooo_host", "127.0.0.1");
 		opts.put("ooo_port", "8123");
+		opts.put("ooo_pipe", "");
 		opts.put("output_type", "pdf");
 		opts.put("debug", new Boolean(false));
 
@@ -65,6 +66,8 @@ public class OOoServerCli {
 					opts.put("ooo_host", (String) argList.remove(0));
 				} else if (opt.equals("-p")) {
 					opts.put("ooo_port", (String) argList.remove(0));
+				} else if (opt.equals("--pipe")) {
+					opts.put("ooo_pipe", (String) argList.remove(0));
 				} else if (opt.equals("-t")) {
 					opts.put("output_type", (String) argList.remove(0));
 				} else {
@@ -85,7 +88,8 @@ public class OOoServerCli {
 			System.err.print("output_file = '" + opts.get("output_file")
 					+ "'\n");
 			System.err.print("ooo_host    = '" + opts.get("ooo_host") + "'\n");
-			System.err.print("ooo_prot    = '" + opts.get("ooo_port") + "'\n");
+			System.err.print("ooo_port    = '" + opts.get("ooo_port") + "'\n");
+			System.err.print("ooo_pipe    = '" + opts.get("ooo_pipe") + "'\n");
 			System.err.print("output_type = '" + opts.get("output_type")
 					+ "'\n");
 		}
@@ -104,16 +108,20 @@ public class OOoServerCli {
 			System.exit(1);
 		}
 
-		OOoServer OOO = new OOoServer((String) opts.get("ooo_host"),
-				(String) opts.get("ooo_port"));
+		OOoServer OOO = new OOoServer(
+				(String) opts.get("ooo_host"),
+				(String) opts.get("ooo_port"),
+				(String) opts.get("ooo_pipe")
+		);
 		OOO.debug = ((Boolean) opts.get("debug")).booleanValue();
 
 		try {
 			OOO.connect();
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.err.print("Error connecting to '" + opts.get("ooo_host")
-					+ ":" + opts.get("ooo_port") + "': " + e.getMessage()
+			System.err.print("Error connecting to '"
+					+ ((((String) opts.get("ooo_pipe")).length() > 0) ? opts.get("ooo_pipe") : (opts.get("ooo_host") + ":" + opts.get("ooo_port")))
+					+ "': " + e.getMessage()
 					+ "\n");
 			System.exit(2);
 		}
@@ -140,6 +148,7 @@ public class OOoServerCli {
 		opts.put("output_file", "");
 		opts.put("ooo_host", "127.0.0.1");
 		opts.put("ooo_port", "8123");
+		opts.put("ooo_pipe", "");
 		opts.put("output_type", "pdf");
 		opts.put("debug", new Boolean(false));
 		opts.put("insert_page_break", new Boolean(false));
@@ -158,6 +167,8 @@ public class OOoServerCli {
 					opts.put("ooo_host", (String) argList.remove(0));
 				} else if (opt.equals("-p")) {
 					opts.put("ooo_port", (String) argList.remove(0));
+				} else if (opt.equals("--pipe")) {
+					opts.put("ooo_pipe", (String) argList.remove(0));
 				} else if (opt.equals("-t")) {
 					opts.put("output_type", (String) argList.remove(0));
 				} else if (opt.equals("-b")) {
@@ -185,6 +196,8 @@ public class OOoServerCli {
 					+ "'\n");
 			System.err.print("ooo_prot          = '" + opts.get("ooo_port")
 					+ "'\n");
+			System.err.print("ooo_pipe          = '" + opts.get("ooo_pipe")
+					+ "'\n");
 			System.err.print("output_type       = '" + opts.get("output_type")
 					+ "'\n");
 			System.err.print("insert_page_break = '"
@@ -211,8 +224,11 @@ public class OOoServerCli {
 			System.exit(1);
 		}
 
-		OOoServer OOO = new OOoServer((String) opts.get("ooo_host"),
-				(String) opts.get("ooo_port"));
+		OOoServer OOO = new OOoServer(
+				(String) opts.get("ooo_host"),
+				(String) opts.get("ooo_port"),
+				(String) opts.get("ooo_pipe")
+		);
 		OOO.debug = ((Boolean) opts.get("debug")).booleanValue();
 
 		try {
