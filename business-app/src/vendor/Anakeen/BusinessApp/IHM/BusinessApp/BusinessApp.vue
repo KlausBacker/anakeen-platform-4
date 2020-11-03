@@ -1,6 +1,6 @@
 <template>
   <div class="ank-business-app">
-    <div class="ank-business-app-list">
+    <div class="ank-business-app-list" v-if="collections.length > 0">
       <ank-se-list
         ref="businessAppList"
         class="ank-business-app-list-widget"
