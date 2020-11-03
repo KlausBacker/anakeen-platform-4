@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0">
     <ui:view-control xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0" name="{{NAME}}" label="{{nameLabel}}" {{#associatedSmartStructure}}structure="{{SS}}"{{/associatedSmartStructure}}>
+        <!-- Les contrôles de vue permettent de spécifier des représentations alternatives pour un Smart Element. -->
+        <!-- Lien vers le manuel de référence : https://documentation.ap4.anakeen.com/anakeen-platform/ui/cvdoc/#controle-de-vue -->
+
         <!--
         <ui:primary-mask ref="MASK_NAME_REF"/>
         -->

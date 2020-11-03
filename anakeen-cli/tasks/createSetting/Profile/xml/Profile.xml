@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
-    <smart:access-configuration name="{{NAME}}" label="{{nameLabel}}">
-        <!--
-        <smart:element-access access="view" account="account1"/>
-        <smart:element-access access="view" account="account2"/>
-        -->
-    </smart:access-configuration>
+    <!-- Un profil de Smart Element permet de déterminer les droits acquis pour les rôles, les groupes et les utilisateurs pour un Smart Element donné. -->
+    <!-- Lien vers le guide How To : https://documentation.ap4.anakeen.com/anakeen-platform-howto/guide/WorkflowSmartElementProfil/ -->
+    <!-- Lien vers le manuel de référence : https://documentation.ap4.anakeen.com/anakeen-platform/security/smart/#le-profil-de-smart-element -->
+
+    <!-- profil de Smart Structure (droit de créer des Smart Elements ou de voir la Smart Structure) -->
+    <!--
+            <smart:access-configuration name="PFAM_{{STRUCTURE_NAME}}" label="{{nameLabel}}" profil-type="PFAM">
+                <smart:element-access access="create" account="<role_name>"/>
+                <smart:element-access access="icreate" account="<role_name>"/>
+            </smart:access-configuration>
+    -->
+
+    <!-- profil d'une étape d'un Smart Element (droit de voir, modifier ou supprimer des Smart Elements) -->
+    <!--
+            <smart:access-configuration name="PDOC_{{STRUCTURE_NAME}}_E1" label="<label>" access-structure="{{STRUCTURE_NAME}}">
+                <smart:description><description></smart:description>
+                <smart:element-access access="view" field="<field_name_of_field_account>"/>
+                <smart:element-access access="edit" field="<field_name_of_field_account>"/>
+            </smart:access-configuration>
+    -->
 </smart:config>
