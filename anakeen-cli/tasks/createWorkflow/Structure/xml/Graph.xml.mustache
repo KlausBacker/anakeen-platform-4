@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:workflow="https://platform.anakeen.com/4/schemas/workflow/1.0">
+    <!-- Ce fichier permet de spécifier les transitions d'un cycle de vie -->
+    <!-- Lien vers le guide How To : https://documentation.ap4.anakeen.com/anakeen-platform-howto/guide/CreateWorkflow/#generation-des-fichiers-de-configuration -->
+    <!-- Lien vers le manuel de référence : https://documentation.ap4.anakeen.com/anakeen-platform/workflow/#workflow-cycle-de-vie -->
+
     <workflow:graph ns="GDC" name="{{WFLNAME}}" label="Graphe {{wflname}}">
         <workflow:steps>
             <workflow:step name="{{wflname}}_e1" state-label="Initial" initial="true"/>
