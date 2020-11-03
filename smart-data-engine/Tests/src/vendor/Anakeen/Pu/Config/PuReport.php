@@ -27,7 +27,7 @@ class PuReport extends TestCaseConfig
     const LOWER_THAN = "<";
     const LOWER_THAN_EQ = "<=";
     const TITLE_CONTAINS = "=~*";
-    const RELATIONS_NAME = ["FOO_1", "FOO_2", "FOO_3", "FOO_4", "ACCOUNT 1", "ACCOUNT 2", "ACCOUNT 3", "ACCOUNT_4"];
+    const RELATIONS_NAME = ["FOO_1", "FOO_2", "FOO_3", "FOO_4", "ACCOUNT 1", "ACCOUNT 2", "ACCOUNT 3", "ACCOUNT 4"];
     private static $idMap;
 
     public static function setUpBeforeClass()
@@ -6380,7 +6380,6 @@ class PuReport extends TestCaseConfig
                     "TST_2",
                 ]
             ],
-
             /******************** docid[] *****************************/
             // [
             //     [
@@ -6883,39 +6882,39 @@ class PuReport extends TestCaseConfig
             //     [
             //         Report::se_attrids => ["test_ddui_all__account_multiple_array"],
             //         Report::se_funcs => [self::CONTAINS],
-            //         Report::se_keys => ['O_3'],
+            //         Report::se_keys => ['UNT 4'],
             //     ],
             //     [
             //         "TST_2",
             //     ]
             // ],
             // TODO: problème sur ce test (incoherence avec ce qu'il y a sur l'interface) fonctionne uniquement avec les ids
-            // [
-            //     [
-            //         "TST_0" => [],
-            //         "TST_1" => [
-            //             "test_ddui_all__account_multiple_array" => [
-            //                 ['ACCOUNT 1', 'ACCOUNT 2'],
-            //                 ['ACCOUNT 2', 'ACCOUNT 3'],
-            //             ]
-            //         ],
-            //         "TST_2" => [
-            //             "test_ddui_all__account_multiple_array" => [
-            //                 ['ACCOUNT 2', 'ACCOUNT 3'],
-            //                 ['ACCOUNT 3', 'ACCOUNT 4'],
-            //             ]
-            //         ],
-            //     ],
-            //     [
-            //         Report::se_attrids => ["test_ddui_all__account_multiple_array"],
-            //         Report::se_funcs => [self::NOT_CONTAINS],
-            //         Report::se_keys => ['ACCOUNT 4'],
-            //     ],
-            //     [
-            //         "TST_0",
-            //         "TST_1",
-            //     ]
-            // ],
+            [
+                [
+                    "TST_0" => [],
+                    "TST_1" => [
+                        "test_ddui_all__account_multiple_array" => [
+                            ['ACCOUNT 1', 'ACCOUNT 2'],
+                            ['ACCOUNT 2', 'ACCOUNT 3'],
+                        ]
+                    ],
+                    "TST_2" => [
+                        "test_ddui_all__account_multiple_array" => [
+                            ['ACCOUNT 2', 'ACCOUNT 3'],
+                            ['ACCOUNT 3', 'ACCOUNT 4'],
+                        ]
+                    ],
+                ],
+                [
+                    Report::se_attrids => ["test_ddui_all__account_multiple_array"],
+                    Report::se_funcs => [self::NOT_CONTAINS],
+                    Report::se_keys => ['ACCOUNT 4'],
+                ],
+                [
+                    "TST_0",
+                    "TST_1"
+                ]
+            ],
             // TODO: problème sur ce test (incoherence avec ce qu'il y a sur l'interface) fonctionne uniquement avec les ids
             [
                 [
