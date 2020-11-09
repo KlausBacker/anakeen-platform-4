@@ -42,7 +42,7 @@ class HubConfigurationVueBehavior extends \SmartStructure\Hubconfiguration
     public function checkRouterEntry($routerEntry, $hubInstanceId)
     {
         if (!empty($routerEntry)) {
-            if (!preg_match("/^[A-Za-z]+[A-Za-z\d]*/", $routerEntry)) {
+            if (!preg_match("/^[A-Za-z]+[A-Za-z\d]*$/", $routerEntry)) {
                 return ___(
                     sprintf("the router entry '%s' has not a valid url format", $routerEntry),
                     "HubConfigurationVueBehavior"
