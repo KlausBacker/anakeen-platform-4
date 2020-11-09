@@ -42,6 +42,15 @@ class HubConfigurationVueBehavior extends \SmartStructure\Hubconfiguration
     public function checkRouterEntry($routerEntry, $hubInstanceId)
     {
         if (!empty($routerEntry)) {
+            if (!preg_match("/^[A-Za-z]+[A-Za-z\d]*$/", $routerEntry)) {
+                return ___(
+                    sprintf("the router entry '%s' has not a valid url format", $routerEntry),
+                    "HubConfigurationVueBehavior"
+                );
+            }
+        }
+
+        if (!empty($routerEntry)) {
             $fixtureUrlBase = "http://www.example-anakeen.com";
             if ($routerEntry[0] !== "/") {
                 $fixtureUrlBase .= "/";
@@ -53,7 +62,7 @@ class HubConfigurationVueBehavior extends \SmartStructure\Hubconfiguration
                 );
             }
         }
-        if (!empty($hubInstanceId)) {
+        if (!empty($hubInstanceId) && !empty($routerEntry)) {
             $search = new SearchElements($this->fromname);
             $search->addFilter("%s = '%d'", HubConfigurationVueFields::hub_station_id, $hubInstanceId);
             $search->addFilter("id <> '%d'", $this->initid);

@@ -157,11 +157,10 @@
     <xs:complexType name="field-optionType">
         <xs:simpleContent>
             <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="name"/>
+                <xs:attribute type="v1:fieldOptionNameType" name="name"/>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
-
 
     <xs:complexType name="enum-callableType">
         <xs:attribute type="v1:functionNameType" name="function"/>
@@ -248,6 +247,11 @@
         </xs:restriction>
     </xs:simpleType>
 
+    <xs:simpleType name="fieldOptionNameType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[a-z_-]{1,63}"/>
+        </xs:restriction>
+    </xs:simpleType>
 
     <xs:simpleType name="fieldOrderType">
         <xs:restriction base="xs:string">

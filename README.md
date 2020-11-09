@@ -23,8 +23,8 @@ Ensuite quelques commandes :
 1.  En cas de première initialisation des conteneurs Docker :
     1. - connectez vous à la registry docker d'Anakeen : `docker login registry.ap4.anakeen.com`
     1. `make install-all`
-1.  Démarrer le contexte `make start-env`
-1.  Fermer le contexte `make stop-env`
+1.  Démarrer le contexte `make env-start`
+1.  Fermer le contexte `make env-stop`
 
 Je cherche une commande pour faire quelque chose :
 
