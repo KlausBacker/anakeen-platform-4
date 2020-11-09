@@ -250,7 +250,6 @@
     <xs:simpleType name="fieldOptionNameType">
         <xs:restriction base="xs:string">
             <xs:pattern value="[a-z_-]{1,63}"/>
-<!--            <xs:pattern value="[A-Za-z0-9]+"/>-->
         </xs:restriction>
     </xs:simpleType>
 
