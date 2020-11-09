@@ -19,20 +19,20 @@ class HubExportInstance extends HubExport
         $domConfig = $this->initDom();
         $domConfig->appendChild($this->getInstance());
 
-        $zip= new \ZipArchive();
+        $zip = new \ZipArchive();
         $zip->open($outZipPath, \ZipArchive::CREATE);
         $zip->addFromString(sprintf("100-hub-%s.xml", $this->smartElement->name), $this->dom->saveXML());
 
-        $xmlData=$this->exportHubComponents($extraData);
-       // print_r($extraData);print_r($xmlData);exit;
+        $xmlData = $this->exportHubComponents($extraData);
+        // print_r($extraData);print_r($xmlData);exit;
 
 
-        $k=200;
+        $k = 200;
         foreach ($extraData as $name => $xmlComponent) {
             $zip->addFromString(sprintf("extra/%3d-%s.xml", $k++, $name), $xmlComponent);
         }
 
-        $k=300;
+        $k = 300;
         foreach ($xmlData as $name => $xmlComponent) {
             $zip->addFromString(sprintf("components/%3d-%s.xml", $k++, $name), $xmlComponent);
         }
@@ -55,7 +55,7 @@ class HubExportInstance extends HubExport
 
     protected function exportHubComponents(&$extraData)
     {
-        $extraData=[];
+        $extraData = [];
         $search = new SearchSmartData("", "HUBCONFIGURATION");
         $search->overrideViewControl();
         $search->addFilter("%s = '%s'", Fields::hub_station_id, $this->smartElement->initid);
@@ -66,7 +66,7 @@ class HubExportInstance extends HubExport
 
         $dl = $search->getDocumentList();
 
-        $xmlData=[];
+        $xmlData = [];
         foreach ($dl as $element) {
             /** @var \SmartStructure\Hubconfiguration $element */
             if (!$element->name) {
@@ -79,35 +79,32 @@ class HubExportInstance extends HubExport
             switch ($element->fromname) {
                 case "HUBCONFIGURATIONGENERIC":
                     $configComponent = new HubExportGenericComponent($element);
-                    $xmlData[$element->name]=$configComponent->getXml();
-
+                    $xmlData[$element->name] = $configComponent->getXml();
                     break;
-
                 case "HUBCONFIGURATIONIDENTITY":
                     $configComponent = new HubExportIdentityComponent($element);
-                    $xmlData[$element->name]=$configComponent->getXml();
+                    $xmlData[$element->name] = $configComponent->getXml();
                     break;
                 case "HUBCONFIGURATIONLOGOUT":
                     $configComponent = new HubExportLogoutComponent($element);
-                    $xmlData[$element->name]=$configComponent->getXml();
+                    $xmlData[$element->name] = $configComponent->getXml();
                     break;
                 case "HUBCONFIGURATIONLABEL":
                     $configComponent = new HubExportLabelComponent($element);
-                    $xmlData[$element->name]=$configComponent->getXml();
+                    $xmlData[$element->name] = $configComponent->getXml();
                     break;
                 case "ADMINPARAMETERSHUBCONFIGURATION":
                     $configComponent = new HubExportAdminParameterComponent($element);
-                    $xmlData[$element->name]=$configComponent->getXml();
+                    $xmlData[$element->name] = $configComponent->getXml();
                     break;
                 case "HUBBUSINESSAPP":
                     $configComponent = new HubExportBusinessAppComponent($element);
-                    $xmlData[$element->name]=$configComponent->getXml();
-                    $extraData=$configComponent->getExtraXml();
-
+                    $xmlData[$element->name] = $configComponent->getXml();
+                    $extraData = array_merge($extraData, $configComponent->getExtraXml());
                     break;
                 default:
                     $configComponent = new HubExportComponent($element);
-                    $xmlData[$element->name]=$configComponent->getXml();
+                    $xmlData[$element->name] = $configComponent->getXml();
             }
         }
 
