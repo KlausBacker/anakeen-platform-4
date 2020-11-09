@@ -84,15 +84,29 @@ class EnumManager
         return $enums;
     }
 
+    /**
+     * Return a boolean indicating whether the enumerate exists or not
+     *
+     * @param string $name enum set reference
+     *
+     * @return boolean
+     */
     public static function existsEnums($name)
     {
         $sql = sprintf("select key from docenum where name='%s' limit 1", pg_escape_string($name));
 
         DbManager::query($sql, $key, true, true);
-        
-        return $key!==false;
+
+        return $key !== false;
     }
 
+    /**
+     * Return a boolean indicating whether the enumerate is extendable or not
+     *
+     * @param string $name enum set reference
+     *
+     * @return boolean
+     */
     public static function isExtendable(string $enumName)
     {
         $sql = sprintf("select name from docenum where name='%s' and key = '%s' ", pg_escape_string($enumName), pg_escape_string(self::EXTENDABLEKEY));
@@ -160,7 +174,7 @@ class EnumManager
         return $items;
     }
 
-    private static function getCompleteEnumKey($key, array & $enums)
+    private static function getCompleteEnumKey($key, array &$enums)
     {
         foreach ($enums as $item) {
             if ($item["key"] === $key) {
@@ -174,7 +188,7 @@ class EnumManager
         return '';
     }
 
-    private static function getCompleteEnumLabel($key, array & $enums, $enumName)
+    private static function getCompleteEnumLabel($key, array &$enums, $enumName)
     {
         foreach ($enums as $item) {
             if ($item["key"] === $key) {
