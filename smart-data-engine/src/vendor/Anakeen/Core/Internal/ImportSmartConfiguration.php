@@ -496,11 +496,11 @@ class ImportSmartConfiguration
         $configs = $this->getNodes($this->dom->documentElement, "structure-configuration");
         $data = [];
         $this->profilElements = [];
+        $data = array_merge($data, $this->extractEnumConfig($this->dom->documentElement));
         foreach ($configs as $config) {
             $data = array_merge($data, $this->importSmartStructureConfig($config));
         }
 
-        $data = array_merge($data, $this->extractEnumConfig($this->dom->documentElement));
         $accessConfigs = $this->getNodes($this->dom->documentElement, "access-configuration");
 
         foreach ($accessConfigs as $config) {

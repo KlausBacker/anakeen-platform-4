@@ -183,6 +183,7 @@ class CheckAttr extends CheckData
             $this->checkPhpFunctionOrMethod();
             $this->checkEnum();
         }
+        $this->checkEnumExists();
         $this->checkPhpConstraint();
         $this->checkOptions();
         return $this;
@@ -504,6 +505,17 @@ SQL;
                 } elseif ($enumLabel === null) {
                     $this->addError(ErrorCode::getError('ATTR1270', $opt, $this->attrid));
                 }
+            }
+        }
+    }
+
+    private function checkEnumExists()
+    {
+        if ($this->getType() === "enum" && empty($this->structAttr->phpfunc)) {
+            $enumExists = Anakeen\Core\EnumManager::existsEnums($this->structAttr->format);
+            
+            if ($enumExists === false) {
+                $this->addError(ErrorCode::getError('ATTR1274', $this->structAttr->format));
             }
         }
     }
