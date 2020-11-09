@@ -136,16 +136,6 @@ namespace SmartStructure\Fields {
         * </ul>
         */ 
         const emsg_fr_parameters='emsg_fr_parameters';
-        /**
-        * Force la lecture seule
-        * <ul>
-        * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>relation</i> SENTMESSAGE-emsg_editcontrol </li>
-        * <li> <i>type</i> enum </li>
-        * <li> <i>kind</i> Parameter </li>
-        * </ul>
-        */ 
-        const emsg_editcontrol='emsg_editcontrol';
 
     }
 }

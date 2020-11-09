@@ -12,7 +12,7 @@ class SentMessageHooks extends \Anakeen\SmartElement
      */
     public function control($aclname, $strict = false)
     {
-        if (($this->id > 0) && ($this->doctype !== 'C') && ($aclname === "edit") && ($this->getFamilyParameterValue("emsg_editcontrol") != "freeedit")) {
+        if (($this->id > 0) && ($this->doctype !== 'C') && ($aclname === "edit")) {
             return _("electronic messages cannot be modified");
         } else {
             return parent::control($aclname, $strict);

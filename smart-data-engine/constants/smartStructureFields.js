@@ -542,11 +542,6 @@ export class SENTMESSAGE {
    * @smartType frame
    */
   static emsg_fr_parameters = "emsg_fr_parameters";
-  /**
-   * Force la lecture seule
-   * @smartType enum SENTMESSAGE-emsg_editcontrol
-   */
-  static emsg_editcontrol = "emsg_editcontrol";
 }
 export class TASK {
   /**
