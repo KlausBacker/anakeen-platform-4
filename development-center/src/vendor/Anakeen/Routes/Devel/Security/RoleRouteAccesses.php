@@ -20,7 +20,7 @@ class RoleRouteAccesses extends GridFiltering
         $data = parent::doRequest();
 
         $sql = <<< SQL
-select acl.name as accessname, users.login, users.accounttype from permission, acl, users where computed is null and acl.id = permission.id_acl and users.id = permission.id_user
+select acl.name as accessname, users.login, users.accounttype from permission, acl, users where acl.id = permission.id_acl and users.id = permission.id_user
 SQL;
 
         $this->sWhere = $this->getSqlWhere();
@@ -76,7 +76,7 @@ SQL;
     protected function getRequestParameters()
     {
         $requestData = parent::getRequestParameters();
-        DbManager::query("select count(*) from permission where computed is null", $c, true, true);
+        DbManager::query("select count(*) from permission", $c, true, true);
         $requestData["total"] = intval($c);
         return $requestData;
     }

@@ -59,4 +59,23 @@
         </check>
     </action>
 
+    <action id="computedPermissions" label="Delete computed permission">
+        <condition>
+            <sql-assert-not-empty label="verify default paramaters values exists">
+                select * from information_schema.columns where table_schema = 'public' and table_name = 'permission' and column_name='computed';
+            </sql-assert-not-empty>
+        </condition>
+        <process>
+            <sql-query label="Delete computed">
+                delete from permission where computed;
+                alter table permission drop column computed;
+            </sql-query>
+        </process>
+        <check>
+            <sql-assert-empty label="verify no computed permission exists">
+                select * from information_schema.columns where table_schema = 'public' and table_name = 'permission' and column_name='computed';
+            </sql-assert-empty>
+        </check>
+    </action>
+
 </migration>

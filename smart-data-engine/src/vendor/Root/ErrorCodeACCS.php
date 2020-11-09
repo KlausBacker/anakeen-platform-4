@@ -48,4 +48,9 @@ class ErrorCodeACCS
      * user/group name is required
      */
     const ACCS0007 = 'user not set, cannot apply access';
+    /**
+     * @errorCode  The user must be set before get privileges
+     * @see \Permission::getUserPermission
+     */
+    const ACCS0008 = 'User not set to get route permission';
 }
