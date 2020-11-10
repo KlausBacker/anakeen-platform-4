@@ -1,6 +1,9 @@
 <phpunit bootstrap="BootStrapTests.php"
          colors="true"
-         backupGlobals="true">
+         backupGlobals="false">
+    <php>
+        <ini name="memory_limit" value="200M"/>
+    </php>
     <testsuites>
         <testsuite name="Core">
             <file>../Pu/Config/SuiteConfig.php</file>
