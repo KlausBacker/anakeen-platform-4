@@ -2,7 +2,7 @@
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:mail="https://platform.anakeen.com/4/schemas/mailtemplate/1.0">
     <mail:mailtemplate xmlns:mail="https://platform.anakeen.com/4/schemas/mailtemplate/1.0" name="{{NAME}}" label="{{nameLabel}}" {{#associatedSmartStructure}}structure="{{SS}}"{{/associatedSmartStructure}}{{^associatedSmartStructure}}structure="BASE"{{/associatedSmartStructure}}>
     <!-- La configuration d'un mail se fait dans ce fichier -->
-    <!-- Lien vers le guide How To : https://documentation.ap4.anakeen.com/anakeen-platform-howto/guide/SendMail/#comment-proceder -->
+    <!-- Lien vers le guide How To : https://documentation.ap4.anakeen.com/anakeen-platform-howto/SendMail/#howToProceed -->
     <!-- Lien vers le manuel de référence : https://documentation.ap4.anakeen.com/anakeen-platform/workflow/mailtemplates/#modele-de-mail -->
 
         <mail:from>

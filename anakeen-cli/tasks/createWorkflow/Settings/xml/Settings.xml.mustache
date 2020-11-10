@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:workflow="https://platform.anakeen.com/4/schemas/workflow/1.0">
-    <!-- Ce fichier permet de configuré chaque étape du cycle de vie (envoie de mail, timer, "mask", visuels, etc) -->
-    <!-- Lien vers le guide How To : https://documentation.ap4.anakeen.com/anakeen-platform-howto/guide/ManageViews/#comment-proceder -->
+    <!-- Lien vers le guide How To : https://documentation.ap4.anakeen.com/anakeen-platform-howto/ManageViews/#howToProceed -->
     <!-- Lien vers le manuel de référence : https://documentation.ap4.anakeen.com/anakeen-platform/ui/mask/#maskxml -->
 
     <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
     <!--Timer and Mail templates workflow references-->
     <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
     <workflow:config xmlns:workflow="https://platform.anakeen.com/4/schemas/workflow/1.0" name="{{WFLNAME}}" structure="{{SSNAME}}" model="{{MODELNAME}}">
+        <!-- Permet de configurer les mails et les timers pendant le cycle de vie -->
         <workflow:steps/>
-        <workflow:transitions/>
+        <!-- Exemple d'envoi d'un mail pendant la transition de l'étape un à deux-->
+        <!--
+            <workflow:transitions>
+                <workflow:transition ref="t_wfam_{{ssName}}_e1_e2">
+                    <workflow:mailtemplate ref="<REF_TO_MAIL_TEMPLATE>" />
+                </workflow:transition>
+            </workflow:transitions>
+        -->
     </workflow:config>
     <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
     <!--Elements (color, cvdoc, masks) user interface referenced in workflow-->
     <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
     <workflow:config xmlns:workflow="https://platform.anakeen.com/4/schemas/workflow/1.0" name="{{WFLNAME}}" structure="{{SSNAME}}" model="{{MODELNAME}}">
+        <!-- Permet de changer l'interface utilisateur (couleur, masks, cvdoc) pendant le cycle de vie -->
+<!--
         <workflow:steps>
             <workflow:step ref="{{MODELNAME}}_E1">
                 <workflow:color>#00CE01</workflow:color>
@@ -23,11 +32,13 @@
                 <workflow:color>#FF4249</workflow:color>
             </workflow:step>
         </workflow:steps>
+-->
     </workflow:config>
-    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
     <!--Default workflow for the structure-->
-    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
     <smart:structure-configuration name="{{SSNAME}}">
+        <!-- Permet de lier un smart element au cycle de vie -->
         <smart:default-workflow ref="{{WFLNAME}}"/>
     </smart:structure-configuration>
 </smart:config>

@@ -3,7 +3,7 @@
     <smart:field-access-layer-list name="{{NAME}}" label="{{nameLabel}}"
     {{#associatedSmartStructure}}structure="{{SS}}"{{/associatedSmartStructure}}>
     <!-- Les accès des utilisateurs sur les Smart Fields sont définis dans ce fichier  -->
-    <!-- Lien vers le guide How To : https://documentation.ap4.anakeen.com/anakeen-platform-howto/guide/FieldAccessLayer/#comment-proceder -->
+    <!-- Lien vers le guide How To : https://documentation.ap4.anakeen.com/anakeen-platform-howto/FieldAccessLayer/#howToProceed -->
     <!-- Lien vers le manuel de référence : https://documentation.ap4.anakeen.com/anakeen-platform/security/fields/#droits-des-smart-fields-field-access-layer -->
 
 

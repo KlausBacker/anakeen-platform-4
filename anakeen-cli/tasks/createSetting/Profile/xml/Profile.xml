@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
     <!-- Un profil de Smart Element permet de déterminer les droits acquis pour les rôles, les groupes et les utilisateurs pour un Smart Element donné. -->
-    <!-- Lien vers le guide How To : https://documentation.ap4.anakeen.com/anakeen-platform-howto/guide/WorkflowSmartElementProfil/ -->
+    <!-- Lien vers le guide How To : https://documentation.ap4.anakeen.com/anakeen-platform-howto/CreateSmartStructure/#creation-d-un-ou-plusieurs-profils -->
     <!-- Lien vers le manuel de référence : https://documentation.ap4.anakeen.com/anakeen-platform/security/smart/#le-profil-de-smart-element -->
 
     <!-- profil de Smart Structure (droit de créer des Smart Elements ou de voir la Smart Structure) -->

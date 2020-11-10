@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0">
-    <!-- Ce fichier permet de lier votre Smart Structure avec vos "profile", "Field access layer", "mask" -->
+    <!-- Ce fichier permet de lier votre Smart Structure avec vos "profil", "Field access layer", "mask" -->
     <!-- Lien vers le guide How To : Voir les guides sur les "profile", "Field access layer", "mask" pour voir comment configurer ce fichier -->
     <!-- Lien vers le manuel de référence : Pareil que les guides -->
 
