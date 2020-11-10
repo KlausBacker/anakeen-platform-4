@@ -8,8 +8,8 @@ use Anakeen\Routes\Ui\DocumentView;
 
 class TestMaskPrimary extends TestCaseUi
 {
-    public static function setUpBeforeClass()
-    {
+    public static function setUpBeforeClass(): void
+ {
         parent::setUpBeforeClass();
         self::importConfigurationFile(__DIR__ . "/Inputs/testmask.xml");
         self::importConfigurationFile(__DIR__ . "/Inputs/testmaskUi.xml");

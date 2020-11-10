@@ -19,18 +19,18 @@ class TestLink extends TestCaseDcpDocument
 {
     protected static $outputDir;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->logTest();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         // nothing
     }
 
-    public static function setUpBeforeClass()
-    {
+    public static function setUpBeforeClass(): void
+ {
         parent::setUpBeforeClass();
 
         self::connectUser();
@@ -41,7 +41,7 @@ class TestLink extends TestCaseDcpDocument
         self::importDocument("PU_data_dcp_documentslink.xml");
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         self::rollbackTransaction();
     }

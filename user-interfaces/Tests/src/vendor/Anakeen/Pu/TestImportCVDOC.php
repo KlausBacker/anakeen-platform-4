@@ -24,7 +24,7 @@ class TestImportCVDOC extends \Dcp\Pu\TestCaseDcpCommonFamily
         }
 
         foreach ($expectedErrors as $expectedError) {
-            $this->assertContains($expectedError, $err, sprintf("not the correct error reporting : %s", $err));
+            $this->assertStringContainsString($expectedError, $err, sprintf("not the correct error reporting : %s", $err));
         }
     }
 

@@ -9,8 +9,8 @@ use Anakeen\Core\SmartStructure\FieldAccessManager;
 class PuStructWorkflow extends TestCaseConfig
 {
 
-    public static function setUpBeforeClass()
-    {
+    public static function setUpBeforeClass(): void
+ {
         parent::setUpBeforeClass();
         self::importConfigurationFile(__DIR__ . "/Inputs/tst_I001.struct.xml");
         self::importConfigurationFile(__DIR__ . "/Inputs/tst_W001.struct.xml");

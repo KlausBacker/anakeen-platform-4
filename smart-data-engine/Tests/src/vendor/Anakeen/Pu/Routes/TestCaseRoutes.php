@@ -21,8 +21,8 @@ class TestCaseRoutes extends \Dcp\Pu\TestCaseDcpCommonFamily
     protected static $routerApp;
     protected $jsonResultFile;
 
-    public static function setUpBeforeClass()
-    {
+    public static function setUpBeforeClass(): void
+ {
         parent::setUpBeforeClass();
 
         $routeConfig = \Anakeen\Router\RouterLib::getRouterConfig();
@@ -179,7 +179,7 @@ class TestCaseRoutes extends \Dcp\Pu\TestCaseDcpCommonFamily
                             . " ] // [expected an iso date YYYY-MM-DDTHH:MM:SS ]"
                         );
                     } elseif (preg_match('{^%regexp%(?P<regexp>.*)$}', $expectedValue, $m) === 1) {
-                        $this->assertRegExp(
+                        $this->assertMatchesRegularExpression(
                             $m['regexp'],
                             $data[$currentKey],
                             sprintf(

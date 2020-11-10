@@ -7,12 +7,12 @@ use Anakeen\Core\DbManager;
 class TestCaseDcpCommonFamily extends TestCaseDcp
 {
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         DbManager::rollbackPoint('testunit');
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->logTest();
         DbManager::savePoint('testunit');
@@ -34,8 +34,8 @@ class TestCaseDcpCommonFamily extends TestCaseDcp
         return '';
     }
 
-    public static function setUpBeforeClass()
-    {
+    public static function setUpBeforeClass(): void
+ {
         parent::setUpBeforeClass();
 
         self::connectUser();
@@ -94,7 +94,7 @@ class TestCaseDcpCommonFamily extends TestCaseDcp
         }
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         self::rollbackTransaction();
     }

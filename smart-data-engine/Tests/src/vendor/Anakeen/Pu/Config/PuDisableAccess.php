@@ -12,8 +12,8 @@ class PuDisableAccess extends TestCaseConfig
 
     protected $testNumber = 0;
 
-    public static function setUpBeforeClass()
-    {
+    public static function setUpBeforeClass(): void
+ {
         parent::setUpBeforeClass();
         self::importAccountFile(__DIR__ . "/Inputs/tst_006.users.xml");
         self::importConfigurationFile(__DIR__ . "/Inputs/tst_006.struct.xml");
@@ -55,7 +55,7 @@ class PuDisableAccess extends TestCaseConfig
 
         ContextManager::exitSudo();
         if ($expectedError) {
-            $this->assertContains($expectedError, $err);
+            $this->assertStringContainsString($expectedError, $err);
         } else {
             $this->assertEmpty($err);
         }

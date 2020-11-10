@@ -413,7 +413,7 @@ class TestSearch extends TestCaseDcpCommonFamily
         } catch (\Anakeen\Database\Exception $e) {
         }
         $err = $s->getError();
-        $this->assertContains($error, $err, sprintf("No good error %s", print_r($s->getSearchInfo(), true)));
+        $this->assertStringContainsString($error, $err, sprintf("No good error %s", print_r($s->getSearchInfo(), true)));
         $count = -1;
         $this->assertEquals($count, $s->count(), sprintf("Count must be %d (found %d) error %s %s", $count, $s->count(), $criteria, $arg));
         $this->assertEquals($count, $c, sprintf("Return count must be %d (found %d) error %s %s", $count, $s->count(), $criteria, $arg));
@@ -446,7 +446,7 @@ class TestSearch extends TestCaseDcpCommonFamily
             $err = $e->getMessage();
             $c = -1;
         }
-        $this->assertContains($error, $err, sprintf("No good error %s", print_r($s->getSearchInfo(), true)));
+        $this->assertStringContainsString($error, $err, sprintf("No good error %s", print_r($s->getSearchInfo(), true)));
         $count = -1;
         $this->assertEquals($count, $s->count(), sprintf("Count must be %d (found %d) error %s %s", $count, $s->count(), $criteria, $arg));
         $this->assertEquals($count, $c, sprintf("Return count must be %d (found %d) error %s %s", $count, $s->count(), $criteria, $arg));
@@ -479,8 +479,8 @@ class TestSearch extends TestCaseDcpCommonFamily
             $exceptionError = $e->getMessage();
         }
         $getError = $s->getError();
-        $this->assertContains($error, $exceptionError, sprintf("Exception error '%s' does not contains '%s' (%s)", $exceptionError, $getError, print_r($s->getSearchInfo(), true)));
-        $this->assertContains($error, $getError, sprintf("getError() '%s' does not contains '%s' (%s)", $getError, $getError, print_r($s->getSearchInfo(), true)));
+        $this->assertStringContainsString($error, $exceptionError, sprintf("Exception error '%s' does not contains '%s' (%s)", $exceptionError, $getError, print_r($s->getSearchInfo(), true)));
+        $this->assertStringContainsString($error, $getError, sprintf("getError() '%s' does not contains '%s' (%s)", $getError, $getError, print_r($s->getSearchInfo(), true)));
         $count = -1;
         $this->assertEquals($count, $s->count(), sprintf("count() must be %d (found %d) error %s %s", $count, $s->count(), $criteria, $arg));
     }
@@ -511,7 +511,7 @@ class TestSearch extends TestCaseDcpCommonFamily
             $exceptionError = $e->getMessage();
         }
 
-        $this->assertContains($error, $exceptionError, sprintf("Exception error '%s' does not contains '%s' (%s)", $exceptionError, $error, print_r($s->getSearchInfo(), true)));
+        $this->assertStringContainsString($error, $exceptionError, sprintf("Exception error '%s' does not contains '%s' (%s)", $exceptionError, $error, print_r($s->getSearchInfo(), true)));
 
         $count = -1;
         $this->assertEquals($count, $s->count(), sprintf("count() must be %d (found %d) error %s %s", $count, $s->count(), $criteria, $arg));
@@ -805,7 +805,7 @@ class TestSearch extends TestCaseDcpCommonFamily
         }
         $this->assertFalse($err == "", sprintf("Need detect Search error %s %s", $data['criteria'], $data['arg']));
         foreach ($data['expectErrors'] as $error) {
-            $this->assertContains($error, $err, sprintf("no good error code"));
+            $this->assertStringContainsString($error, $err, sprintf("no good error code"));
         }
     }
 
@@ -831,7 +831,7 @@ class TestSearch extends TestCaseDcpCommonFamily
         }
         $this->assertFalse($err == "", sprintf("Need detect Search error %s %s", $data['criteria'], $data['arg']));
         foreach ($data['expectErrors'] as $error) {
-            $this->assertContains($error, $err, sprintf("no good error code"));
+            $this->assertStringContainsString($error, $err, sprintf("no good error code"));
         }
     }
 

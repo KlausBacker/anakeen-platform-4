@@ -55,7 +55,7 @@ class TestWorflowTransition extends TestCaseDcpCommonFamily
         if ($passExpectedError == '') {
             $this->assertEmpty($err, sprintf("transition %s -> %s is not passed : %s", $start, $end, $err));
         } else {
-            $this->assertContains($passExpectedError, $err, sprintf("transition %s -> %s is passed and must not", $start, $end));
+            $this->assertStringContainsString($passExpectedError, $err, sprintf("transition %s -> %s is passed and must not", $start, $end));
         }
         if (isset(self::$user)) {
             $this->exitSudo();
@@ -87,7 +87,7 @@ class TestWorflowTransition extends TestCaseDcpCommonFamily
         if ($passExpectedMsg == '') {
             $this->assertEmpty($err, sprintf("transition %s -> %s is not passed : %s", $start, $end, $err));
         } else {
-            $this->assertContains($passExpectedMsg, $msg, sprintf("transition %s -> %s is passed and must not", $start, $end));
+            $this->assertStringContainsString($passExpectedMsg, $msg, sprintf("transition %s -> %s is passed and must not", $start, $end));
         }
     }
 

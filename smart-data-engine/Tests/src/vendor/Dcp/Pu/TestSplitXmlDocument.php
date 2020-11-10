@@ -14,13 +14,13 @@ class TestSplitXmlDocument extends TestCaseDcp
     private static $workDir = false;
     public $errmsg = '';
 
-    public static function setUpBeforeClass()
-    {
+    public static function setUpBeforeClass(): void
+ {
         parent::setUpBeforeClass();
         self::createWorkDir();
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         parent::tearDownAfterClass();
         $stat = stat(self::$workDir);

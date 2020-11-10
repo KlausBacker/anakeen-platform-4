@@ -8,8 +8,8 @@ use SmartStructure\Fields\Task as TaskFields;
 class PuTask extends TestCaseConfig
 {
 
-    public static function setUpBeforeClass()
-    {
+    public static function setUpBeforeClass(): void
+ {
         parent::setUpBeforeClass();
         self::importConfigurationFile(__DIR__ . "/Inputs/tst_001.task.xml");
     }

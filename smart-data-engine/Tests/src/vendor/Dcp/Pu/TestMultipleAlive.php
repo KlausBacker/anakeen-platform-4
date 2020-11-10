@@ -37,7 +37,7 @@ class TestMultipleAlive extends TestCaseDcp
         $nd0 = new_doc(self::$dbaccess, $id0);
         $nd0->setValue("ba_title", "a");
         $err = $nd0->store(); // cannot modify fixed document
-        $this->assertContains("DOC0118", $err, sprintf("modify rev.1 error : $err"));
+        $this->assertStringContainsString("DOC0118", $err, sprintf("modify rev.1 error : $err"));
         
         $nd1 = new_doc(self::$dbaccess, $id1);
         $nd1->setValue("ba_title", "a");
@@ -50,7 +50,7 @@ class TestMultipleAlive extends TestCaseDcp
         
         $nd1->setValue("ba_title", "b");
         $err = $nd1->store(); // cannot modify fixed document
-        $this->assertContains("DOC0118", $err, sprintf("modify rev.1 error : $err"));
+        $this->assertStringContainsString("DOC0118", $err, sprintf("modify rev.1 error : $err"));
         
         error_log($err);
         // corrupt integraty => $nd1 becomes alives
@@ -68,7 +68,7 @@ class TestMultipleAlive extends TestCaseDcp
         $nd1->setValue("ba_title", "c");
         $err = $nd1->store(); // cannot modify fixed document
         error_log($err);
-        $this->assertContains("DOC0119", $err, sprintf("modify rev.1 error : $err"));
+        $this->assertStringContainsString("DOC0119", $err, sprintf("modify rev.1 error : $err"));
         
         $nd2 = new_doc(self::$dbaccess, $id2);
         $nd2->setValue("ba_title", "d");

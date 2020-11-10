@@ -30,8 +30,8 @@ class PuReport extends TestCaseConfig
     const RELATIONS_NAME = ["FOO_1", "FOO_2", "FOO_3", "FOO_4", "ACCOUNT 1", "ACCOUNT 2", "ACCOUNT 3", "ACCOUNT 4"];
     private static $idMap;
 
-    public static function setUpBeforeClass()
-    {
+    public static function setUpBeforeClass(): void
+ {
         parent::setUpBeforeClass();
         self::importConfigurationFile(__DIR__ . "/Inputs/tst_report_all_types.struct.xml");
 

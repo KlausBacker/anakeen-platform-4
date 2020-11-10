@@ -7,8 +7,8 @@ use Anakeen\Search\SearchElements;
 
 class PuDocidSearch extends FulltextSearchConfig
 {
-    public static function setUpBeforeClass()
-    {
+    public static function setUpBeforeClass(): void
+ {
         parent::setUpBeforeClass();
         self::importConfiguration(__DIR__ . "/Config/tst_docid002.struct.xml");
         self::importConfiguration(__DIR__ . "/Config/tst_docid001.struct.xml");

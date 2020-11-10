@@ -30,7 +30,7 @@ class TestImportFamilyProperty extends TestCaseDcpDocument
         }
 
         foreach ($expectedErrors as $expectedError) {
-            $this->assertContains($expectedError, $err, sprintf("not the correct error reporting : %s", $err));
+            $this->assertStringContainsString($expectedError, $err, sprintf("not the correct error reporting : %s", $err));
         }
     }
 

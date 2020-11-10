@@ -32,7 +32,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
     protected static $importCsvEnclosure = "auto";
     protected static $importCsvSeparator = "auto";
 
-    protected function setUp()
+    protected function setUp(): void
     {
 
         $this->logTest();
@@ -44,15 +44,15 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
 
     protected function logTest()
     {
-        self::log(sprintf("========== %s::%s ========", get_class($this), $this->getName()));
+        self::log(sprintf("========== %s::%s %dkb========", get_class($this), $this->getName(), memory_get_usage(true) / 1000));
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->rollbackTransaction();
     }
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         self::clearSetHttpVar();
     }

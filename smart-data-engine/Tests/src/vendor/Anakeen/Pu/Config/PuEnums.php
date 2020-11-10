@@ -7,8 +7,8 @@ use Anakeen\Core\EnumManager;
 class PuEnums extends TestCaseConfig
 {
 
-    public static function setUpBeforeClass()
-    {
+    public static function setUpBeforeClass(): void
+ {
         parent::setUpBeforeClass();
         self::importConfigurationFile(__DIR__ . "/Inputs/tst_005.enum.xml");
         self::importConfigurationFile(__DIR__ . "/Inputs/tst_005bis.enum.xml");
