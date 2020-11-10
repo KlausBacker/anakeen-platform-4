@@ -69,6 +69,7 @@ class ImportSmartConfiguration
     {
         $this->dom = new \DOMDocument();
         $this->dom->load($xmlFile);
+        $this->trimXmlWhiteSpaces($this->dom);
 
         if (!Xml::getPrefix($this->dom, $this->smartNs)) {
             throw new Exception(sprintf('Xml Configuration file "%s" is not a smart configuration file', $xmlFile));
@@ -728,7 +729,6 @@ class ImportSmartConfiguration
         if ($this->getError()) {
             throw new Exception($this->getError());
         }
-
         return $data;
     }
 
@@ -975,7 +975,7 @@ class ImportSmartConfiguration
     {
         $data = [$key];
 
-        $nodeValue = trim($attrNode->nodeValue);
+        $nodeValue = $attrNode->nodeValue;
         $data[1] = $attrNode->getAttribute("field");
         $callsNodes = $this->getNodes($attrNode, "field-callable");
 
@@ -1392,7 +1392,7 @@ class ImportSmartConfiguration
         foreach ($argNodes as $argNode) {
             $type = $argNode->getAttribute("type");
             $name = $argNode->getAttribute("name");
-            $arg = trim($argNode->nodeValue);
+            $arg = $argNode->nodeValue;
 
             if ($allowedProperties && $type === "property") {
                 if (array_search($arg, $allowedProperties) === false) {
@@ -1439,6 +1439,17 @@ class ImportSmartConfiguration
         return $method;
     }
 
+    protected function trimXmlWhiteSpaces(\DOMDocument $dom)
+    {
+        $xpath = new \DOMXPath($dom);
+        $nodes = $xpath->query('//node()');
+  
+        foreach ($nodes as $node) {
+            if (get_class($node) === \DOMText::class) {
+                $node->nodeValue=trim($node->nodeValue);
+            }
+        }
+    }
 
     public function clearVerboseMessages()
     {
