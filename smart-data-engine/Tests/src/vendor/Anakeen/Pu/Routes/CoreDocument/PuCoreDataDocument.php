@@ -27,8 +27,8 @@ class PuCoreDataDocument extends \Anakeen\Pu\Routes\TestCaseRoutes
     }
 
 
-    public static function setUpBeforeClass()
-    {
+    public static function setUpBeforeClass(): void
+ {
         parent::setUpBeforeClass();
 
 

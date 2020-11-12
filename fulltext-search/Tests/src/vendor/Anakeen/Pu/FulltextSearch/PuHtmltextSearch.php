@@ -9,8 +9,8 @@ use Anakeen\Search\SearchElements;
 class PuHtmltextSearch extends FulltextSearchConfig
 {
 
-    public static function setUpBeforeClass()
-    {
+    public static function setUpBeforeClass(): void
+ {
         parent::setUpBeforeClass();
         self::importConfiguration(__DIR__ . "/Config/tst_htmltext001.struct.xml");
         self::importDocument(__DIR__ . "/Config/tst_htmltext001.data.xml");

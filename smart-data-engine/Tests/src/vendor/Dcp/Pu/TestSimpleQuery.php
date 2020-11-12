@@ -73,7 +73,7 @@ class TestSimpleQuery extends TestCaseDcpDocument
         }
         $this->assertNotEmpty($err, sprintf("No error found in simple query %s", $sql));
         foreach ($expectedErrors as $errors) {
-            $this->assertContains($errors, $err, sprintf("Not correct error for %s", $sql));
+            $this->assertStringContainsString($errors, $err, sprintf("Not correct error for %s", $sql));
         }
     }
 
@@ -110,7 +110,7 @@ class TestSimpleQuery extends TestCaseDcpDocument
         $err = simpleQuery(self::$dbaccess, $sql, $result, false, false, $useStrict = false);
         $this->assertNotEmpty($err, sprintf("No error found in simple query %s", $sql));
         foreach ($expectedErrors as $errors) {
-            $this->assertContains($errors, $err, sprintf("Not correct error for %s", $sql));
+            $this->assertStringContainsString($errors, $err, sprintf("Not correct error for %s", $sql));
         }
     }
 

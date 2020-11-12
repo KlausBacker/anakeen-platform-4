@@ -11,8 +11,8 @@ use SmartStructure\Fields\Igroup as IGroupFields;
 
 class PuMailGroups extends TestCaseConfig
 {
-    public static function setUpBeforeClass()
-    {
+    public static function setUpBeforeClass(): void
+ {
         parent::setUpBeforeClass();
         self::importAccountFile(__DIR__ . "/Inputs/accountsMailGroupData.xml");
         self::importDocument(__DIR__ . "/Inputs/accountsMailGroupConfig.xml");

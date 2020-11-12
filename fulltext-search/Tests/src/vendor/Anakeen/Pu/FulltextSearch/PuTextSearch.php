@@ -8,8 +8,8 @@ use Anakeen\Search\SearchElements;
 
 class PuTextSearch extends FulltextSearchConfig
 {
-    public static function setUpBeforeClass()
-    {
+    public static function setUpBeforeClass(): void
+ {
         parent::setUpBeforeClass();
         self::importConfiguration(__DIR__ . "/Config/tst_text001.struct.xml");
         self::importDocument(__DIR__ . "/Config/tst_text001.data.xml");
@@ -80,7 +80,7 @@ class PuTextSearch extends FulltextSearchConfig
         foreach ($expectedResults as $seName => $result) {
             $smartElement = SEManager::getDocument($seName);
             $light = $h->highlight($smartElement->id, $searchPatten);
-            $this->assertContains($result, $light);
+            $this->assertStringContainsString($result, $light);
         }
     }
 

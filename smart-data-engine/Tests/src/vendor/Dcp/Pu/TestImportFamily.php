@@ -37,7 +37,7 @@ class TestImportFamily extends TestCaseDcpDocument
         }
 
         foreach ($expectedErrors as $expectedError) {
-            $this->assertContains($expectedError, $err, sprintf("not the correct error reporting : %s", $err));
+            $this->assertStringContainsString($expectedError, $err, sprintf("not the correct error reporting : %s", $err));
         }
     }
 
@@ -79,7 +79,7 @@ class TestImportFamily extends TestCaseDcpDocument
             $err = $e->getMessage();
         }
         $this->assertNotEmpty($err, "no update error detected");
-        $this->assertContains($expectedError, $err, sprintf("not the correct error reporting : %s", $err));
+        $this->assertStringContainsString($expectedError, $err, sprintf("not the correct error reporting : %s", $err));
     }
 
     public function dataBadUpdateFamilyFiles()

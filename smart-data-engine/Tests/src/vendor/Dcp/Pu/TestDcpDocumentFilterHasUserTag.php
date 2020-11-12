@@ -15,14 +15,14 @@ class TestDcpDocumentFilterHasUserTag extends TestDcpDocumentFiltercommon
         );
     }
     /*
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->localSetup();
     }
     */
-    public static function setUpBeforeClass()
-    {
+    public static function setUpBeforeClass(): void
+ {
         parent::setUpBeforeClass();
         self::localSetup();
     }

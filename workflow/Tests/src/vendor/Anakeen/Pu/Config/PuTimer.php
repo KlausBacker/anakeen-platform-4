@@ -11,8 +11,8 @@ use SmartStructure\Timer;
 class PuTimer extends TestCaseWorkflowConfig
 {
 
-    public static function setUpBeforeClass()
-    {
+    public static function setUpBeforeClass(): void
+ {
         parent::setUpBeforeClass();
         self::importWorkflowConfiguration(__DIR__ . "/Inputs/tst_I002.struct.xml");
         self::importWorkflowConfiguration(__DIR__ . "/Inputs/tst_W002.struct.xml");

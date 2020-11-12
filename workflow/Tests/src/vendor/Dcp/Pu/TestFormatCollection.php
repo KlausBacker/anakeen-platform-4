@@ -32,8 +32,8 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
         );
     }
 
-    public static function setUpBeforeClass()
-    {
+    public static function setUpBeforeClass(): void
+ {
         parent::setUpBeforeClass();
 
         $d1 = SEManager::getDocument("TST_FMTCOL1");
@@ -181,7 +181,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
         $this->assertEquals($s->count(), count($r), "render must have same entry count has collection");
 
         $propertyValue = $this->getRenderProp($r, $docName, $propertyName);
-        $this->assertRegExp($expectedFormat, $propertyValue, sprintf("incorrect property (%s) display value : %s", $propertyName, print_r($propertyValue, true)));
+        $this->assertMatchesRegularExpression($expectedFormat, $propertyValue, sprintf("incorrect property (%s) display value : %s", $propertyName, print_r($propertyValue, true)));
     }
 
     /**
@@ -204,7 +204,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
         if (is_array($expectedValue)) {
             foreach ($expectedValue as $infoKey => $expectInfo) {
                 if (is_string($expectInfo) && $expectInfo[0] === "/") {
-                    $this->assertRegExp(
+                    $this->assertMatchesRegularExpression(
                         $expectInfo,
                         (string)$propertyValue[$infoKey],
                         sprintf("incorrect property (%s) display value : %s", $propertyName, print_r($propertyValue, true))
@@ -214,7 +214,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
                 }
             }
         } elseif (is_string($expectedValue) && $expectedValue[0] === "/") {
-            $this->assertRegExp($expectedValue, $propertyValue, sprintf("incorrect property (%s) display value : %s", $propertyName, print_r($propertyValue, true)));
+            $this->assertMatchesRegularExpression($expectedValue, $propertyValue, sprintf("incorrect property (%s) display value : %s", $propertyName, print_r($propertyValue, true)));
         } else {
             $this->assertEquals($expectedValue, $propertyValue, sprintf("incorrect property (%s) display value : %s", $propertyName, print_r($propertyValue, true)));
         }

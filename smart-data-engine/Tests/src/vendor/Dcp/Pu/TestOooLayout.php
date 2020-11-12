@@ -19,17 +19,17 @@ class TestOooLayout extends TestCaseDcpDocument
 {
     protected static $outputDir;
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->logTest();
     }
 
-    public static function setUpBeforeClass()
-    {
+    public static function setUpBeforeClass(): void
+ {
         parent::setUpBeforeClass();
         // self::$outputDir = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/oootest-");
         self::$outputDir = (\Anakeen\Core\ContextManager::getTmpDir() . "/oootest");
@@ -42,7 +42,7 @@ class TestOooLayout extends TestCaseDcpDocument
         self::importDocument("PU_data_dcp_oooLayout.ods");
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         self::rollbackTransaction();
         CoreTests::addMessage(sprintf("Results for %s in file://%s", __CLASS__, self::$outputDir));

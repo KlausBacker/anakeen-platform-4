@@ -46,7 +46,7 @@ class TestImportDocuments extends TestCaseDcpCommonFamily
             $this->assertArrayHasKey('id', $t, sprintf("cannot find %s document", $name));
             foreach ($docNames["expectValue"] as $aid => $expVal) {
                 if ($expVal[0] === "*") {
-                    $this->assertContains(substr($expVal, 1), $t[$aid]);
+                    $this->assertStringContainsString(substr($expVal, 1), $t[$aid]);
                 } else {
                     $this->assertEquals($expVal, $t[$aid]);
                 }
@@ -75,7 +75,7 @@ class TestImportDocuments extends TestCaseDcpCommonFamily
         }
         
         foreach ($expectedErrors as $expectedError) {
-            $this->assertContains($expectedError, $err, sprintf("not the correct error reporting : %s", $err));
+            $this->assertStringContainsString($expectedError, $err, sprintf("not the correct error reporting : %s", $err));
         }
     }
     /**

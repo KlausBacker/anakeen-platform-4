@@ -30,7 +30,7 @@ class TestImportProfil extends TestCaseDcpDocument
         }
         
         foreach ($expectedErrors as $expectedError) {
-            $this->assertContains($expectedError, $err, sprintf("not the correct error reporting"));
+            $this->assertStringContainsString($expectedError, $err, sprintf("not the correct error reporting"));
         }
     }
     /**

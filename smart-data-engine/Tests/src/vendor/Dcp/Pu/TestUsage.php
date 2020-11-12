@@ -20,7 +20,7 @@ class TestUsage extends TestCaseDcp
 {
 
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         ShellManager::recordArgs([]);
@@ -36,7 +36,7 @@ class TestUsage extends TestCaseDcp
         $u = new \Anakeen\Script\ApiUsage();
         $u->setDefinitionText($text);
 
-        $this->assertContains($text, $u->getUsage());
+        $this->assertStringContainsString($text, $u->getUsage());
     }
 
     /**
@@ -56,8 +56,8 @@ class TestUsage extends TestCaseDcp
         } catch (\Exception $e) {
             $usage = $e->getMessage();
         }
-        $this->assertContains($argNeeded, $usage);
-        $this->assertContains($def, $usage);
+        $this->assertStringContainsString($argNeeded, $usage);
+        $this->assertStringContainsString($def, $usage);
     }
 
     /**
@@ -79,10 +79,10 @@ class TestUsage extends TestCaseDcp
             $error = $e->getMessage();
             $usage = $e->getUsage();
         }
-        $this->assertContains($argNeeded, $error);
-        $this->assertNotContains($def, $error);
-        $this->assertContains($argNeeded, $usage);
-        $this->assertContains($def, $usage);
+        $this->assertStringContainsString($argNeeded, $error);
+        $this->assertStringNotContainsString($def, $error);
+        $this->assertStringContainsString($argNeeded, $usage);
+        $this->assertStringContainsString($def, $usage);
     }
 
     public static function usageCallback($values, $argName, $apiUsage)
@@ -134,8 +134,8 @@ class TestUsage extends TestCaseDcp
         } catch (\Exception $e) {
             $error = $e->getMessage();
         }
-        $this->assertContains("usageCallback", $error);
-        $this->assertContains($myvar, $error);
+        $this->assertStringContainsString("usageCallback", $error);
+        $this->assertStringContainsString($myvar, $error);
     }
 
     /**
@@ -155,8 +155,8 @@ class TestUsage extends TestCaseDcp
         } catch (\Exception $e) {
             $error = $e->getMessage();
         }
-        $this->assertContains("usageCallback", $error);
-        $this->assertContains($myvar, $error);
+        $this->assertStringContainsString("usageCallback", $error);
+        $this->assertStringContainsString($myvar, $error);
     }
 
     /**
@@ -177,8 +177,8 @@ class TestUsage extends TestCaseDcp
         } catch (\Exception $e) {
             $usage = $e->getMessage();
         }
-        $this->assertContains("CORE0003", $usage, sprintf("usage found is %s", $usage));
-        $this->assertNotContains("CORE0002", $usage, sprintf("usage found is %s", $usage));
+        $this->assertStringContainsString("CORE0003", $usage, sprintf("usage found is %s", $usage));
+        $this->assertStringNotContainsString("CORE0002", $usage, sprintf("usage found is %s", $usage));
     }
 
     public function dataCallbackUsage()

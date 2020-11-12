@@ -27,8 +27,8 @@ class TestNewDoc extends TestCaseDcpCommonFamily
         return "PU_data_dcp_newdoc.ods";
     }
 
-    public static function setUpBeforeClass()
-    {
+    public static function setUpBeforeClass(): void
+ {
         parent::setUpBeforeClass();
         $d = SEManager::createDocument(\SmartStructure\Base::familyName);
         $d->setAttributeValue(\SmartStructure\Fields\Base::ba_title, "x1-" . $d->revision);

@@ -63,7 +63,7 @@ class TestMask extends TestCaseDcpCommonFamily
             }
             $this->assertNotEmpty($err, sprintf("mask apply need error"));
             foreach ($expectedErrors as $error) {
-                $this->assertContains($error, $err, sprintf("mask apply not correct error %s", $err));
+                $this->assertStringContainsString($error, $err, sprintf("mask apply not correct error %s", $err));
             }
         } else {
             $this->markTestIncomplete(sprintf(_('Document %d not alive.'), $docid));
@@ -82,7 +82,7 @@ class TestMask extends TestCaseDcpCommonFamily
             $this->assertTrue(false, "Mask import errors must not be empty");
         } catch (\Anakeen\Exception $e) {
             foreach ($expectedErrors as $error) {
-                $this->assertContains($error, $e->getMessage(), sprintf("mask apply not correct error %s", $e->getMessage()));
+                $this->assertStringContainsString($error, $e->getMessage(), sprintf("mask apply not correct error %s", $e->getMessage()));
             }
         }
     }

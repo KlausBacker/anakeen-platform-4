@@ -10,8 +10,8 @@ use Anakeen\Search\SearchElements;
 class PuEnumSearch extends FulltextSearchConfig
 {
 
-    public static function setUpBeforeClass()
-    {
+    public static function setUpBeforeClass(): void
+ {
         parent::setUpBeforeClass();
         self::importConfiguration(__DIR__ . "/Config/tst_enum001.struct.xml");
         self::importDocument(__DIR__ . "/Config/tst_enum001.data.xml");

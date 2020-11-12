@@ -32,7 +32,7 @@ class TestDocEnum extends TestCaseDcpCommonFamily
         return ["PU_data_dcp_docenum_family.xml"];
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         $e = new EnumCustomLocale("TST_DOCENUM-0123");
         $e->deletePoFile("fr");

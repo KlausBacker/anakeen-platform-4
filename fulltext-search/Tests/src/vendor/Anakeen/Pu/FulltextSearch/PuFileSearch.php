@@ -14,8 +14,8 @@ use Anakeen\TransformationEngine\ClientException;
 
 class PuFileSearch extends FulltextSearchConfig
 {
-    public static function setUpBeforeClass()
-    {
+    public static function setUpBeforeClass(): void
+ {
         parent::setUpBeforeClass();
 
         try {

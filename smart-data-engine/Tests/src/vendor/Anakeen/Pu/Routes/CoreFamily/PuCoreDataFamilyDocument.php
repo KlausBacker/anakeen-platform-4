@@ -26,8 +26,8 @@ class PuCoreDataFamilyDocument extends \Anakeen\Pu\Routes\TestCaseRoutes
         return $import;
     }
 
-    public static function setUpBeforeClass()
-    {
+    public static function setUpBeforeClass(): void
+ {
         parent::setUpBeforeClass();
 
 

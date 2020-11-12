@@ -11,19 +11,19 @@ class TestTag extends TestCaseDcpDocument
 {
     protected static $outputDir;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->logTest();
         simpleQuery(self::$dbaccess, "savepoint z", $r);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         simpleQuery(self::$dbaccess, "rollback to savepoint z", $r);
     }
 
-    public static function setUpBeforeClass()
-    {
+    public static function setUpBeforeClass(): void
+ {
         parent::setUpBeforeClass();
 
         self::connectUser();
@@ -32,7 +32,7 @@ class TestTag extends TestCaseDcpDocument
         self::importDocument("testTag.ods");
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         self::rollbackTransaction();
     }
@@ -252,7 +252,7 @@ class TestTag extends TestCaseDcpDocument
         $this->assertTrue($df->isAlive(), "document $docName is not alive");
 
         $err = $df->addATag($tag);
-        $this->assertContains($error, $err, sprintf("atag error"));
+        $this->assertStringContainsString($error, $err, sprintf("atag error"));
     }
 
     /**

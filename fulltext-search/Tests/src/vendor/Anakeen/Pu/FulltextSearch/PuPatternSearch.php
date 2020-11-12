@@ -8,8 +8,8 @@ use Anakeen\Search\SearchElements;
 class PuPatternSearch extends FulltextSearchConfig
 {
 
-    public static function setUpBeforeClass()
-    {
+    public static function setUpBeforeClass(): void
+ {
         parent::setUpBeforeClass();
         self::importConfiguration(__DIR__ . "/Config/tst_simple001.struct.xml");
         self::importDocument(__DIR__ . "/Config/tst_simple001.data.xml");

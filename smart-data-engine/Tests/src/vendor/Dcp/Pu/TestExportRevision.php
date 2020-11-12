@@ -19,8 +19,8 @@ class TestExportRevision extends TestCaseDcpCommonFamily
 
     protected $famName = "tst_export_revision";
 
-    public static function setUpBeforeClass()
-    {
+    public static function setUpBeforeClass(): void
+ {
         parent::setUpBeforeClass();
 
         $d4 = new_doc(self::$dbaccess, "TST_EREV4");

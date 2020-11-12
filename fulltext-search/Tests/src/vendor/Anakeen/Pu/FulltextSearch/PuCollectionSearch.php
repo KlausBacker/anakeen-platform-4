@@ -8,8 +8,8 @@ use Anakeen\Search\SearchElements;
 class PuCollectionSearch extends FulltextSearchConfig
 {
 
-    public static function setUpBeforeClass()
-    {
+    public static function setUpBeforeClass(): void
+ {
         parent::setUpBeforeClass();
         self::importConfiguration(__DIR__ . "/Config/tst_simple003.struct.xml");
         self::importDocument(__DIR__ . "/Config/tst_simple003.data.xml");

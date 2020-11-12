@@ -18,7 +18,7 @@ class TestDcpDocumentFilterHasApplicationTag extends TestDcpDocumentFiltercommon
             "PU_data_dcp_documentFilter_HasApplicationTag.ods"
         );
     }
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->localSetup();

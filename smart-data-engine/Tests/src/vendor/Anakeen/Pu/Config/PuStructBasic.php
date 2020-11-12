@@ -10,8 +10,8 @@ use Anakeen\Core\Utils\Date;
 class PuStructBasic extends TestCaseConfig
 {
 
-    public static function setUpBeforeClass()
-    {
+    public static function setUpBeforeClass(): void
+ {
         parent::setUpBeforeClass();
         self::importConfigurationFile(__DIR__ . "/Inputs/tst_001.struct.xml");
         self::importConfigurationFile(__DIR__ . "/Inputs/tst_002.struct.xml");
