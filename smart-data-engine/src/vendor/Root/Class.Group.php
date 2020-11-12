@@ -134,11 +134,7 @@ SQL;
             $g = new Group($dbf);
             $g->iduser = $this->iduser;
             $g->idgroup = $this->idgroup;
-            $err = $g->query("delete from groups where idgroup=" . $this->iduser . " and iduser=" . $u->id);
-            if ($err == "") {
-                $p = new Permission($this->dbaccess);
-                $p->deletePermission($g->iduser, null);
-            }
+            $g->query("delete from groups where idgroup=" . $this->iduser . " and iduser=" . $u->id);
 
             \Anakeen\SmartStructures\Igroup\IgroupLib::refreshMailGroupsOfUser($this->iduser);
         }
@@ -160,10 +156,9 @@ SQL;
             $g->iduser = $this->iduser;
             $g->idgroup = $this->idgroup;
             $err = $g->add(true);
-            if ($err == "" || $err == "OK") {
-                $p = new Permission($this->dbaccess);
-                $p->deletePermission($g->iduser, null);
-                $err = "";
+
+            if ($err === "OK") {
+                $err="";
             }
 
             \Anakeen\SmartStructures\Igroup\IgroupLib::refreshMailGroupsOfUser($this->iduser);
