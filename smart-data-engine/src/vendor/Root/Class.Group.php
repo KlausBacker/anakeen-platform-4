@@ -136,11 +136,8 @@ SQL;
             $g->idgroup = $this->idgroup;
             $err = $g->query("delete from groups where idgroup=" . $this->iduser . " and iduser=" . $u->id);
             if ($err == "") {
-                // if it is a user (not a group)
-                $g->query("delete from permission where computed");
-
                 $p = new Permission($this->dbaccess);
-                $p->deletePermission($g->iduser, null, true);
+                $p->deletePermission($g->iduser, null);
             }
 
             \Anakeen\SmartStructures\Igroup\IgroupLib::refreshMailGroupsOfUser($this->iduser);
@@ -164,11 +161,8 @@ SQL;
             $g->idgroup = $this->idgroup;
             $err = $g->add(true);
             if ($err == "" || $err == "OK") {
-                // if it is a user (not a group)
-                $g->query("delete from permission where computed");
-
                 $p = new Permission($this->dbaccess);
-                $p->deletePermission($g->iduser, null, true);
+                $p->deletePermission($g->iduser, null);
                 $err = "";
             }
 
@@ -230,8 +224,6 @@ SQL;
     public function resetAccountMemberOf()
     {
         if ($this->syncAccount) {
-            $this->query("delete from permission where computed");
-
             \Anakeen\Core\DbManager::query("select * from users order by id", $tusers);
             $u = new \Anakeen\Core\Account($this->dbaccess);
             foreach ($tusers as $tu) {

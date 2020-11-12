@@ -1457,10 +1457,6 @@ union
             $this->id
         );
         DbManager::query($sql);
-
-        DbManager::query("delete from permission where computed");
-
-
         return "";
     }
 
