@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:structure-configuration name="TST_DOCUMENT_VIEW" label="testDocumentView">
+        <smart:class>Anakeen\Pu\TestDocumentView\SmartStructureTest\TstStructDocumentViewBehavior</smart:class>
+        <smart:fields/>
+        <smart:hooks/>
+        <smart:defaults/>
+    </smart:structure-configuration>
+</smart:config> 

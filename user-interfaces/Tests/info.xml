@@ -67,5 +67,6 @@
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TEST_DDUI_INIT_DATA.csv"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TEST_DDUI_INIT_DATA4.csv"/>
         <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Test/HubConfiguration/**/[1-9]*xml"/>
+
     </post-upgrade>
 </module>
