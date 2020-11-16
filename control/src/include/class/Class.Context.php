@@ -1634,6 +1634,7 @@ class Context extends ContextProperties
         if ($wstart_args != '') {
             $cmd = $cmd . " " . join(' ', $wstart_args);
         }
+        $cmd = sprintf("(%s) 2>&1", $cmd);
         $this->log(LOG_INFO, sprintf("Running '%s' in context '%s'.", $cmd, $this->name));
         exec($cmd, $output, $ret);
         if ($ret !== 0) {
