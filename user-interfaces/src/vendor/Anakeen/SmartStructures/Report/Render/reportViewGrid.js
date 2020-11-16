@@ -1,5 +1,6 @@
 import Vue from "vue";
 import SearchViewGrid from "../../Dsearch/Render/searchViewGrid.vue";
+import $ from "jquery";
 
 export default function reportViewGridProcess(controller) {
   controller.addEventListener(
@@ -13,10 +14,10 @@ export default function reportViewGridProcess(controller) {
         }
       }
     },
-    () => {
+    evt => {
       const SearchViewGridComponent = Vue.extend(SearchViewGrid);
       const searchGrid = new SearchViewGridComponent({
-        el: ".search-ui-view"
+        el: $(evt.target).find(".search-ui-view")[0]
       });
       /*
        * Propagate actionClick event on the searchRowActionClick event for exemple to display SE in new AnkSeTab in BusinessApp

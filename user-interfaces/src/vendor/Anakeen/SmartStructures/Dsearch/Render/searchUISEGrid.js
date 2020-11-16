@@ -1,5 +1,7 @@
 import Vue from "vue";
 import SearchUISEGrid from "./searchUISEGrid.vue";
+import $ from "jquery";
+
 export default function searchUISEGridProcess(controller) {
   controller.addEventListener(
     "ready",
@@ -12,12 +14,12 @@ export default function searchUISEGridProcess(controller) {
         }
       }
     },
-    () => {
+    evt => {
       const searchVueGrid = new Vue({
         components: {
           "search-grid": SearchUISEGrid
         },
-        el: ".search-ui-se-grid",
+        el: $(evt.target).find(".search-ui-se-grid")[0],
         data: { searchId: null },
         template:
           "<search-grid :searchId='searchId' @searchGridError='onSearchGridError' @searchRowActionClick='onSearchGridRowActionClick'></search-grid>",
