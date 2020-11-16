@@ -1,5 +1,7 @@
 import Vue from "vue";
 import SearchUISEGrid from "./searchUISEGrid.vue";
+import $ from "jquery";
+
 export default function searchUISEGridProcess(controller) {
   controller.addEventListener(
     "ready",

@@ -1,5 +1,6 @@
 import Vue from "vue";
 import SearchViewGrid from "../../Dsearch/Render/searchViewGrid.vue";
+import $ from "jquery";
 
 export default function reportViewGridProcess(controller) {
   controller.addEventListener(
