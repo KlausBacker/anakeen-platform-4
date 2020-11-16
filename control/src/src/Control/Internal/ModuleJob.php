@@ -844,9 +844,10 @@ class ModuleJob
             /**
              * wstart
              */
-            $ret = $context->wstart();
+            $ret = $context->wstart($output);
             if ($ret !== 0) {
-                JobLog::setError($module->name, "", "Error restarting Anakeen Platform");
+                JobLog::setError($module->name, "", "Error restarting Anakeen Platform : ". implode(",", $output));
+                return false;
             }
 
             array_push($downloaded, $module);
