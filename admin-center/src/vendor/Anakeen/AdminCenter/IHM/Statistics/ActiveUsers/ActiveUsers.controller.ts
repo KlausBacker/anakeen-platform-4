@@ -34,6 +34,7 @@ export default class ActiveUsersController extends Mixins(AnkI18NMixin) {
         const year = d.getFullYear();
         this.monthFrom = `${year}-${month}`;
         this.checkRange();
+        this.totalActiveUsers();
       }
     });
     $(this.$refs.monthPickerTo).kendoDatePicker({
@@ -49,6 +50,7 @@ export default class ActiveUsersController extends Mixins(AnkI18NMixin) {
         const year = d.getFullYear();
         this.monthTo = `${year}-${month}`;
         this.checkRange();
+        this.totalActiveUsers();
       }
     });
   }
