@@ -80,7 +80,8 @@ class RepoContentXML extends XMLLoader {
     return this;
   }
 
-  async addModuleFile(file) {
+  async addModuleFile(file, prodOrDevDataManager) {
+    let doAddModule = true;
     const appModuleFile = new AppModuleFile(file);
     const xmlStr = await appModuleFile.getInfoXMLText();
 
@@ -88,17 +89,29 @@ class RepoContentXML extends XMLLoader {
     await xmlLoader.loadFromString(xmlStr);
 
     const rootNode = xmlLoader.data.module;
-    /* Add src attribute... */
-    rootNode.$.src = path.relative(path.dirname(this.filename), file);
-    /* Remove xmlns declaration and unused child nodes */
-    delete rootNode.$.xmlns;
-    for (let prop of Object.keys(rootNode)) {
-      if (!["$", "description", "requires", "replaces", "changelog", "parameters"].includes(prop)) {
-        delete rootNode[prop];
+
+    // Manage generateInstaller packages(dev/prod) addition
+    if (prodOrDevDataManager) {
+      const installDev = prodOrDevDataManager.installDevDependencies;
+      const moduleToInstall = prodOrDevDataManager.moduleList.find(module => module.$.name === rootNode.$.name);
+      const typeInstall = moduleToInstall ? moduleToInstall.$.type : "";
+
+      if (typeInstall && installDev == false && typeInstall === "dev") {
+        doAddModule = false;
       }
     }
 
-    this.data.repo.modules[0].module.push(rootNode);
+    if (doAddModule) {
+      rootNode.$.src = path.relative(path.dirname(this.filename), file);
+      delete rootNode.$.xmlns;
+      for (let prop of Object.keys(rootNode)) {
+        if (!["$", "description", "requires", "replaces", "changelog", "parameters"].includes(prop)) {
+          delete rootNode[prop];
+        }
+      }
+
+      this.data.repo.modules[0].module.push(rootNode);
+    }
 
     return this;
   }

@@ -458,7 +458,7 @@ class Compose {
     });
   }
 
-  async genRepoContentXML(repoDir) {
+  async genRepoContentXML(repoDir, prodOrDevDataManager) {
     const repoContentXML = new RepoContentXML(path.join(repoDir, "content.xml"));
     repoContentXML.reset();
 
@@ -468,7 +468,7 @@ class Compose {
     });
     for (let i = 0; i < moduleFileList.length; i++) {
       const moduleFile = moduleFileList[i];
-      await repoContentXML.addModuleFile(path.join(repoDir, moduleFile));
+      await repoContentXML.addModuleFile(path.join(repoDir, moduleFile), prodOrDevDataManager);
     }
 
     await repoContentXML.save();
@@ -499,7 +499,9 @@ class Compose {
       }
       signale.note(`Add local app from ${addLocalApp}`);
     }
-    await this.install({ customLocalPath: addLocalApp });
+    // Pass data
+    const prodOrDevDataManager = { installDevDependencies, moduleList: this.repoXML.getModuleList() };
+    await this.install({ customLocalPath: addLocalApp, prodOrDevDataManager });
     const localRepo = this._convertPathToAbsolute(this.repoXML.getConfigLocalRepo());
     const controlLock = this.repoLockXML.getModuleByName("anakeen-control");
     if (controlLock === undefined) {
@@ -526,7 +528,7 @@ class Compose {
     let appFileList = await glob(path.join(localRepo, "/**/*.app"), { absolute: true });
 
     if (installDevDependencies === false) {
-      this.debug("==> Installing non dev packages");
+      this.debug("==> Installing non dev packages only");
       moduleList.forEach(moduleObject => {
         const module = moduleObject.$;
         appFileList.forEach((appFile, appIdx) => {
@@ -579,7 +581,15 @@ class Compose {
    *
    * @returns {Promise<void>}
    */
-  async install({ moduleName, type, withoutLockFile = false, latest = false, customLocalPath = "", dev = false }) {
+  async install({
+    moduleName,
+    type,
+    withoutLockFile = false,
+    latest = false,
+    customLocalPath = "",
+    dev = false,
+    prodOrDevDataManager
+  }) {
     let moduleLockList = [];
     //region prepare data
     await this.loadContext();
@@ -817,9 +827,8 @@ class Compose {
     );
     //Copy app
     //endregion handle localApp
-
     signale.note(`Generating 'content.xml' in '${localRepo}'...`);
-    const appList = await this.genRepoContentXML(localRepo);
+    const appList = await this.genRepoContentXML(localRepo, prodOrDevDataManager);
     this.debug({ appList: appList }, { depth: 20 });
 
     //endregion generate repo.xml
