@@ -714,7 +714,8 @@ export default class SmartElementController extends AnakeenController.BusEvents.
 
       return;
     }
-    if (attributeModel.get("options").multiple) {
+
+    if (attributeModel.get("options") && attributeModel.get("options").multiple) {
       if (attributeModel.get("type") === "account" || attributeModel.get("type") === "docid") {
         value.forEach(val => {
           if (val.value) {
