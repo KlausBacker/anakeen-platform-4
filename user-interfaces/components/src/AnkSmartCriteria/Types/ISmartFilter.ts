@@ -6,6 +6,7 @@ export default interface ISmartFilter extends IFilter {
   kind: SmartCriteriaKind;
   logic: SmartFilterLogic;
   disabled?: boolean;
+  isBetween?: boolean;
   customData?: any;
   filters: Array<ISmartFilter>;
 }

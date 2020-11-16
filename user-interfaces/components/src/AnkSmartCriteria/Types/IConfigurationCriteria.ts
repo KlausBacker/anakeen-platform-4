@@ -12,6 +12,7 @@ export default interface IConfigurationCriteria {
     value?: any;
   };
   field?: string;
+  id: string;
   structure?: string | number;
   type:
     | "frame"

@@ -1,4 +1,5 @@
 import * as exampleTitle from "./SmartCriteriaExampleTitle.json";
+import * as exampleCustomTitle from "./SmartCriteriaExampleCustomTitle.json";
 import * as exampleAutocomplete from "./SmartCriteriaExampleAutocomplete.json";
 import * as exampleAuthorAutocomplete from "./SmartCriteriaExampleAuthorAutocomplete.json";
 import * as exampleComplexAutocomplete from "./SmartCriteriaExampleComplexAutocomplete.json";
@@ -15,6 +16,10 @@ import { Component, Vue } from "vue-property-decorator";
 @Component({})
 export default class TestExamplesSmartCriteriaController extends Vue {
   public examples: any[] = [
+    {
+      config: exampleDemo,
+      label: exampleDemo.title || "Example Demo"
+    },
     {
       config: exampleCorrectStandalone,
       label: exampleCorrectStandalone.title || "Example correct standalone"
@@ -49,12 +54,12 @@ export default class TestExamplesSmartCriteriaController extends Vue {
       ]
     },
     {
-      config: exampleDemo,
-      label: exampleDemo.title || "Example Demo"
-    },
-    {
       config: exampleTitle,
       label: exampleTitle.title || "Example Title"
+    },
+    {
+      config: exampleCustomTitle,
+      label: exampleCustomTitle.title || "Example Custom Title"
     },
     {
       config: exampleTitleCustomOperators,

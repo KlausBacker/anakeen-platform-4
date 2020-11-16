@@ -1,6 +1,8 @@
 import IConfigurationCriteria, { ICriteriaConfigurationOperator } from "./Types/IConfigurationCriteria";
 import { CriteriaOperator } from "./Types/ICriteriaOperator";
 import { SmartCriteriaKind } from "./Types/SmartCriteriaKind";
+import ISmartFilter from "./Types/ISmartFilter";
+import AnkSmartCriteria from "./AnkSmartCriteria.component";
 
 export default class {
   public static areOpatorEquals(
@@ -79,5 +81,44 @@ export default class {
    */
   public static isStandardKind(kind): boolean {
     return Object.values(SmartCriteriaKind).includes(kind);
+  }
+
+  public static flattenFilterValues(filterValues: ISmartFilter): Array<ISmartFilter> {
+    const filters = new Array<ISmartFilter>();
+    filterValues.filters.forEach(filter => {
+      filters.push(filter);
+    });
+    const copyFilterValues = filterValues;
+    delete copyFilterValues.filters;
+    filters.unshift(copyFilterValues);
+    return filters;
+  }
+
+  public static getPositionIdMap(idMap, index): number {
+    return idMap.indexOf(index);
+  }
+
+  public static getOperatorName(index: number): string {
+    return `sc_operator_${index}`;
+  }
+
+  public static getOperatorLabelName(index: number): string {
+    return `sc_label_operator_${index}`;
+  }
+
+  public static getValueName(index: number): string {
+    return `sc_value_${index}`;
+  }
+
+  public static getValueBetweenName(index: number): string {
+    return `sc_value_between_${index}`;
+  }
+
+  public static getValueBetweenLabelName(index: number): string {
+    return `sc_label_value_between_${index}`;
+  }
+
+  public static getValueMultipleName(index: number): string {
+    return `sc_value_multiple_${index}`;
   }
 }

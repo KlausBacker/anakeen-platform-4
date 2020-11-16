@@ -1,0 +1,15 @@
+{
+  "title": "Test custom title",
+  "defaultStructure": "DEVBILL",
+  "criterias": [
+    {
+      "kind": "property",
+      "field": "title"
+    },
+    {
+      "kind": "property",
+      "id": "title_0",
+      "field": "title"
+    }
+  ]
+}
