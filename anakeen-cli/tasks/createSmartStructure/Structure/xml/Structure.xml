@@ -16,13 +16,12 @@
         <!-- Voici un exemple basique d'une structure qui comporte 2 Smart Fields (text et account) dans un Smart field (cadre)-->
         <!--
                 <smart:fields>
-                    <smart:field-set name="{{SSNAME}}_frame" type="frame" access="ReadWrite" label="label">
+                    <smart:field-set name="set_frame" type="frame" access="ReadWrite" label="label">
                         <smart:field-account access="Read" name="creator" label="Créateur"/>
                         <smart:field-text name="title" access="ReadWrite" label="Nom du smart element" is-title="true"/>
                     </smart:field-set>
                 </smart:fields>
         -->
-
 
         <smart:hooks/>
         <smart:autocompletion/>

@@ -9,7 +9,7 @@
         <!-- Voici un exemple d'utilisation des paramètres, il crée un field-text préfixe que l'admin pourra changer dans le centre d'administration -->
         <!--
             <smart:parameters>
-                <smart:field-set name="prefixe" type="frame" access="ReadWrite" label="Préfixe">
+                <smart:field-set name="prefixe_set" type="frame" access="ReadWrite" label="Préfixe">
                     <smart:field-text name="prefixe" access="ReadWrite" label="Préfixe"/>
                 </smart:field-set>
             </smart:parameters>
