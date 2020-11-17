@@ -84,9 +84,6 @@ class I18nTemplateContext implements \ArrayAccess
     public function &offsetGet($offset)
     {
         $x = &$this->keys[$offset];
-        if (is_callable($x)) {
-            return call_user_func($x);
-        }
         return $x;
     }
 
