@@ -52,13 +52,7 @@ module.exports = () => {
         )
       ],
       TaskEdit: path.resolve(__dirname, "../src/vendor/Anakeen/SmartStructures/Task/Render/taskCrontab.js"),
-      TaskCommon: path.resolve(__dirname, "../src/vendor/Anakeen/SmartStructures/Task/Render/taskExecute.js"),
-      "search-view-grid-render": [
-        path.resolve(
-          __dirname,
-          "../src/vendor/Anakeen/SmartStructures/Dsearch/Render/searchViewGrid.js"
-        )
-      ]
+      TaskCommon: path.resolve(__dirname, "../src/vendor/Anakeen/SmartStructures/Task/Render/taskExecute.js")
     },
     buildPath: PUBLIC_PATH,
     excludeBabel: [/node_modules\/style-loader/],

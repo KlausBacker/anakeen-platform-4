@@ -1,4 +1,6 @@
 import $ from "jquery";
+import SearchViewGrid from "./searchViewGrid.vue";
+import Vue from "vue";
 
 /*
 Research result in consult mode
@@ -29,10 +31,12 @@ export default function searchUIEventViewProcess(controller) {
           var $window = $("<div />");
           $("body").append($window);
           $window.kendoWindow({
+            appendTo: $(event.target),
             title: controller.getProperties().title,
             content: {
-              url: `/api/v2/smartstructures/dsearch/preview/${controller.getProperties().id.toString()}`
+              template: `<div class="search-ui-view"></div>`
             },
+            visible: true,
             iframe: true,
             position: {
               top: 0,
@@ -40,6 +44,12 @@ export default function searchUIEventViewProcess(controller) {
             },
             open: function openWindow(event) {
               event.sender.wrapper.addClass("dsearch-result-window");
+            },
+            activate: function windowActivated(arg) {
+              const searchViewGrid = Vue.extend(SearchViewGrid);
+              const searchViewGridVue = new searchViewGrid({
+                el: arg.sender.element[0]
+              });
             },
             pinned: false,
             width: "90%",
