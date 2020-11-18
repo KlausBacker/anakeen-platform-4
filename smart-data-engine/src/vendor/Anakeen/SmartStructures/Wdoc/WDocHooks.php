@@ -12,7 +12,6 @@ namespace Anakeen\SmartStructures\Wdoc;
 use Anakeen\Core\Account;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\SEManager;
-use Anakeen\Core\SmartStructure\BasicAttribute;
 use Anakeen\Core\SmartStructure\DocAttr;
 use Anakeen\LogManager;
 use Anakeen\SmartHooks;
@@ -1136,7 +1135,6 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         $err = '';
         $tmtid = $this->getMultipleRawValues($this->_aid("_TRANS_MTID", $tname));
 
-        $tr = ($tname) ? $this->transitions[$tname] : null;
         if ($tmtid && (count($tmtid) > 0)) {
             foreach ($tmtid as $mtid) {
                 /**
@@ -1293,20 +1291,25 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     public function workflowAttachTimer($state, $tname = "")
     {
         $err = '';
-        $mtid = $this->getRawValue($this->_aid("_TRANS_TMID", $tname));
 
+        // Unattech workflow origin timers
         $this->doc->unattachAllTimers($this);
 
-        if ($mtid) {
-            /**
-             * @var TimerHooks $mt
-             */
-            $mt = SEManager::getDocument($mtid);
-            if ($mt && $mt->isAlive()) {
-                $err = $this->doc->attachTimer($mt, $this);
+        // attach volatile timers
+        $tmtid = $this->getMultipleRawValues($this->_aid("_trans_tmid", $tname));
+        if ($tmtid && (count($tmtid) > 0)) {
+            foreach ($tmtid as $mtid) {
+                /**
+                 * @var TimerHooks $mt
+                 */
+                $mt = SEManager::getDocument($mtid);
+                if ($mt && $mt->isAlive()) {
+                    $err .= $this->doc->attachTimer($mt, $this);
+                }
             }
         }
-        // unattach persistent
+
+        // unattach persistent timers
         $tmtid = $this->getMultipleRawValues($this->_aid("_trans_pu_tmid", $tname));
         if ($tmtid && (count($tmtid) > 0)) {
             foreach ($tmtid as $mtid) {
@@ -1317,6 +1320,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             }
         }
 
+        // attach state single timer
         $mtid = $this->getRawValue($this->_aid("_tmid", $state));
         if ($mtid) {
             $mt = SEManager::getDocument($mtid);
@@ -1324,7 +1328,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                 $err .= $this->doc->attachTimer($mt, $this);
             }
         }
-        // attach persistent
+        // attach persistent timers
         $tmtid = $this->getMultipleRawValues($this->_aid("_trans_pa_tmid", $tname));
         if ($tmtid && (count($tmtid) > 0)) {
             foreach ($tmtid as $mtid) {
