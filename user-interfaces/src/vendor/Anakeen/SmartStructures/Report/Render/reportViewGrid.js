@@ -19,6 +19,7 @@ export default function reportViewGridProcess(controller) {
       const searchGrid = new SearchViewGridComponent({
         el: $(evt.target).find(".search-ui-view")[0]
       });
+      searchGrid.searchId = controller.getProperties().id.toString();
       /*
        * Propagate actionClick event on the searchRowActionClick event for exemple to display SE in new AnkSeTab in BusinessApp
        */

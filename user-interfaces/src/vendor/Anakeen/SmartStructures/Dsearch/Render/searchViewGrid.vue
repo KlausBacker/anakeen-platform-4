@@ -32,7 +32,7 @@ export default {
   },
   data() {
     return {
-      searchId: window.ankGridSearchId.toString(),
+      searchId: "",
       showProgress: false
     };
   },
