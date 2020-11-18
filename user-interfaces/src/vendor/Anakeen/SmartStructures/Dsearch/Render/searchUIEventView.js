@@ -50,6 +50,7 @@ export default function searchUIEventViewProcess(controller) {
               const searchViewGridVue = new searchViewGrid({
                 el: arg.sender.element[0]
               });
+              searchViewGridVue.searchId = controller.getProperties().id.toString();
             },
             pinned: false,
             width: "90%",
