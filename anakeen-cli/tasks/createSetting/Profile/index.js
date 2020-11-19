@@ -14,6 +14,7 @@ exports.writeTemplate = (installPath, argv, options) => {
           Object.assign({}, argv, {
             nameLabel: argv.name.replace(/([A-Z])/g, "$1").trim(),
             NAME: argv.name.toUpperCase(),
+            STRUCTURE_NAME: argv.associatedSmartStructure ? argv.associatedSmartStructure.toUpperCase() : "",
             SS: argv.associatedSmartStructure ? argv.associatedSmartStructure.toUpperCase() : ""
           }),
           options

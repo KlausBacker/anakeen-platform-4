@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:workflow="https://platform.anakeen.com/4/schemas/workflow/1.0">
+    <!-- Ce fichier permet de définir les permissions des utilisateurs pour chaque étapes du cycle de vie (lier les profils dynamiques/ fields access layer) -->
+    <!-- Lien vers le guide How To : https://documentation.ap4.anakeen.com/anakeen-platform-howto/CreateSmartStructure/#definir-les-profils-de-chaques-etapes -->
+    <!-- Lien vers le manuel de référence : https://documentation.ap4.anakeen.com/anakeen-platform/workflow/workflowSecurity/#profil-des-smart-elements -->
+
     <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
     <!--Step Element Accesses of workflow: profile and field accesses reference-->
     <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
     <workflow:config xmlns:workflow="https://platform.anakeen.com/4/schemas/workflow/1.0" name="{{WFLNAME}}" structure="{{SSNAME}}" model="{{MODELNAME}}">
-        <workflow:steps/>
+
+        <!-- Exemple de permission d'accès sur une étape -->
+    <!--
+        <workflow:steps>
+            <workflow:step ref="wfam_{{ssname}}_e1">
+                <workflow:element-access-configuration ref="PDOC_{{SSNAME}}_E1"/>
+            </workflow:step>
+        </workflow:steps>
+    -->
     </workflow:config>
 </smart:config>

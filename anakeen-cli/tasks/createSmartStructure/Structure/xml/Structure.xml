@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <!-- Ce fichier permet de définir les Smart field de la Smart structure "{{ssname}}" -->
+    <!-- Lien vers le guide How To : https://documentation.ap4.anakeen.com/anakeen-platform-howto/CreateSmartParameter/#howToProceed -->
+    <!-- Lien vers le manuel de référence : https://documentation.ap4.anakeen.com/anakeen-platform/smartData/properties/#smart-structure -->
+
     <smart:structure-configuration name="{{SSNAME}}">
         {{#parentName}}
         <smart:extends ref="{{PARENTNAME}}"></smart:extends>
@@ -8,7 +12,17 @@
         {{#withBehavior}}
         <smart:class>{{namespace}}\{{ssName}}Behavior</smart:class>
         {{/withBehavior}}
-        <smart:fields/>
+
+        <!-- Voici un exemple basique d'une structure qui comporte 2 Smart Fields (text et account) dans un Smart field (cadre)-->
+        <!--
+                <smart:fields>
+                    <smart:field-set name="set_frame" type="frame" access="ReadWrite" label="label">
+                        <smart:field-account access="Read" name="creator" label="Créateur"/>
+                        <smart:field-text name="title" access="ReadWrite" label="Nom du smart element" is-title="true"/>
+                    </smart:field-set>
+                </smart:fields>
+        -->
+
         <smart:hooks/>
         <smart:autocompletion/>
         <smart:defaults/>

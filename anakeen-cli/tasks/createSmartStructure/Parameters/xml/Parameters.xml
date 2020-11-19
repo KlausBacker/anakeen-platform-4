@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <!-- Ce fichier permet de définir les paramètres de la Smart Structure  -->
+    <!-- Lien vers le guide How To : https://documentation.ap4.anakeen.com/anakeen-platform-howto/CreateSmartParameter/#howToProceed -->
+    <!-- Lien vers le manuel de référence : https://documentation.ap4.anakeen.com/anakeen-platform/smartData/ParameterConfiguration/ -->
+
     <smart:structure-configuration name="{{SSNAME}}">
-        <smart:parameters/>
+
+        <!-- Voici un exemple d'utilisation des paramètres, il crée un field-text préfixe que l'admin pourra changer dans le centre d'administration -->
+        <!--
+            <smart:parameters>
+                <smart:field-set name="prefixe_set" type="frame" access="ReadWrite" label="Préfixe">
+                    <smart:field-text name="prefixe" access="ReadWrite" label="Préfixe"/>
+                </smart:field-set>
+            </smart:parameters>
+        -->
+
         <smart:defaults/>
     </smart:structure-configuration>
 </smart:config>

@@ -20,6 +20,7 @@ exports.writeTemplate = (installPath, argv) => {
             wflName: Name,
             wflname: name,
             SSNAME: argv.associatedSmartStructure.toUpperCase(),
+            ssname: argv.associatedSmartStructure.toLowerCase(),
             MODELNAME: argv.modelName.toUpperCase()
           })
         )

@@ -1,12 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
-    <smart:field-access-layer-list name="{{NAME}}" label="{{nameLabel}}" {{#associatedSmartStructure}}structure="{{SS}}"{{/associatedSmartStructure}}>
-       <!--
-        <smart:field-access-layer name="{{NAME}}_LAYER" label="Layer example" access-name="Example">
-            <smart:field-access field="field_1" access="ReadWrite"/>
-            <smart:field-access field="field_2" access="ReadWrite"/>
-            <smart:field-access field="field_3" access="Read"/>
+    <smart:field-access-layer-list name="{{NAME}}" label="{{nameLabel}}"
+    {{#associatedSmartStructure}}structure="{{SS}}"{{/associatedSmartStructure}}>
+    <!-- Les accès des utilisateurs sur les Smart Fields sont définis dans ce fichier  -->
+    <!-- Lien vers le guide How To : https://documentation.ap4.anakeen.com/anakeen-platform-howto/FieldAccessLayer/#howToProceed -->
+    <!-- Lien vers le manuel de référence : https://documentation.ap4.anakeen.com/anakeen-platform/security/fields/#droits-des-smart-fields-field-access-layer -->
+
+
+    <!-- Permet de configurer un calque (field access layer), vous pouvez créer autant de calques que vous le souhaitez -->
+    <!--
+        <smart:field-access-layer name="FAL<name_field_access_layer>" label="<description>" structure="{{STRUCTURE_NAME}}">
+            <smart:description>Description of the field-access-layer</smart:description>
+            <smart:field-access field="<field_1>" access="Read"/>
+            <smart:field-access field="<field_2>" access="Write"/>
         </smart:field-access-layer>
-        -->
+    -->
+
+    <!-- Liste tous les calques que vous avez créés au-dessus -->
+    <!--
+        <smart:field-access-layer-list name="FALL_{{STRUCTURE_NAME}}_LAYER" label="<description>" structure="{{STRUCTURE_NAME}}">
+            <smart:field-access-layer ref="FAL<name_field_access_layer>" access-name="<name_of_your_element>"/>
+        </smart:field-access-layer-list>
+    -->
+
+    <!-- Lie vos calques avec des comptes (role/ user/ group) -->
+    <!--
+        <smart:access-configuration name="FALL_{{STRUCTURE_NAME}}_LAYER" profil-type="FIELDACCESSLAYERLIST" access-structure="{{STRUCTURE_NAME}}">
+            <smart:element-access access="<name_of_the_element_set_above>" account="<role/group/user_name>"/>
+        </smart:access-configuration>
+    -->
+
     </smart:field-access-layer-list>
 </smart:config>
