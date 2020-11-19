@@ -150,8 +150,10 @@ class MailEditRender extends DefaultConfigEditRender
         $mailTemplate = SmartElementManager::getDocument($mailTemplateId);
         if ($mailTemplate) {
             // Use copy to rewrite image url
+            $mailTemplate->disableAccessControl();
             $copy = $mailTemplate->duplicate(true);
             $copy->store();
+            $mailTemplate->restoreAccessControl();
             $keys["state"] = htmlspecialchars($target->getStepLabel());
 
             $mailForm->setValue(MyAttr::mail_template, $mailTemplate->id);
