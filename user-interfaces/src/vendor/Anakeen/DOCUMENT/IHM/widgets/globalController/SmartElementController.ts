@@ -742,7 +742,6 @@ export default class SmartElementController extends AnakeenController.BusEvents.
   public appendArrayRow(smartFieldId, values) {
     this.checkInitialisedModel();
     const attribute = this._getAttributeModel(smartFieldId);
-
     if (!attribute) {
       throw new Error("Unable to find attribute " + smartFieldId);
     }
@@ -756,22 +755,30 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       );
     }
     attribute.get("content").each(currentAttribute => {
-      let newValue = values[currentAttribute.id];
-      const currentValue = currentAttribute.getValue();
-      if (_.isUndefined(newValue)) {
-        // Set default value if no value defined
-        currentAttribute.createIndexedValue(currentValue.length, false, _.isEmpty(values));
-      } else {
-        newValue = _.defaults(newValue, {
-          displayValue: newValue.value,
-          value: ""
-        });
-        let indexRow = 0;
-        if (currentValue.length > 0) {
-          indexRow = currentValue.length - 1;
+      _.defer(() => {
+        let newValue = values[currentAttribute.id];
+        const currentValue = currentAttribute.getValue();
+        if (_.isUndefined(newValue)) {
+          // Set default value if no value defined
+          currentAttribute.createIndexedValue(currentValue.length, false, _.isEmpty(values));
+        } else {
+          newValue = _.defaults(newValue, {
+            displayValue: newValue.value,
+            value: ""
+          });
+          let indexRow = 0;
+          if (currentValue.length > 0) {
+            indexRow = currentValue.length;
+          }
+          if (!_.isArray(newValue.value)) {
+            currentAttribute.addValue(newValue, indexRow);
+          } else {
+            newValue.value.forEach(item => {
+              currentAttribute.addValue(item, indexRow);
+            });
+          }
         }
-        currentAttribute.addValue(newValue, indexRow);
-      }
+      });
     });
   }
 
