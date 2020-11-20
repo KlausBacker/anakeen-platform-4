@@ -22,6 +22,7 @@
         "test-tools",
         "fulltext-search",
         "about",
+        "storybook",
         ".devtool/devserver"
     ],
     "dependencies": {

@@ -109,6 +109,13 @@ run-dev-server: ## Run webpack development server
 run-tests:
 	$(_CONTROL_SHELL_CMD) "cd vendor/Anakeen/TestUnits/; php ./lib/vendor/phpunit/phpunit/phpunit"
 
+
+.PHONY: storybook
+storybook:
+	cd storybook; \
+	platformUrl=http://localhost:$(PROJECT_HTTP_PORT)/ \
+	yarn run storybook
+
 $(CONTROL_ARCHIVE):
 	make APP_OUTPUT_PATH=$(MK_DIR)/$(BUILD_DIR)/control -C control app
 	$(NVM_EXEC_CMD) $(DEVTOOLS_DIR)/script/generateLocalRepo.js

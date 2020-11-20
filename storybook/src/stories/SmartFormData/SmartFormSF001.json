@@ -1,0 +1,29 @@
+{
+  "title": "SF001 : Formulaire texte",
+  "structure": [
+    {
+      "label": "Textes",
+      "name": "my_fr_ident",
+      "type": "frame",
+      "content": [
+        {
+          "label": "Texte simple",
+          "name": "my_title",
+          "type": "text"
+        },
+        {
+          "label": "Plusieurs textes simples",
+          "name": "my_t_texts",
+          "type": "array",
+          "content": [
+            {
+              "label": "Colonne de textes",
+              "name": "my_col_text",
+              "type": "text"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

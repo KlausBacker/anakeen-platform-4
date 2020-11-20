@@ -1,0 +1,29 @@
+{
+  "title": "SF002 : Formulaire texte multi-lignes",
+  "structure": [
+    {
+      "label": "Textes multi-lignes",
+      "name": "my_fr_ident",
+      "type": "frame",
+      "content": [
+        {
+          "label": "Texte long",
+          "name": "my_longtext",
+          "type": "longtext"
+        },
+        {
+          "label": "Plusieurs textes longs",
+          "name": "my_t_longtexts",
+          "type": "array",
+          "content": [
+            {
+              "label": "Colonne de textes longs",
+              "name": "my_col_longtext",
+              "type": "longtext"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
