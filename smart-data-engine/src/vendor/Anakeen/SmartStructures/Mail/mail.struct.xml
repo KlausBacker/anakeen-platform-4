@@ -40,7 +40,7 @@
                 <smart:field-enum name="mail_savecopy" label="Enregistrer une copie" access="ReadWrite"
                                   relation="MAIL-mail_savecopy"/>
 
-                <smart:field-docid name="mail_template" label="Modèle de mail" access="ReadWrite"
+                <smart:field-docid name="mail_template" label="Modèle de mail" access="Read"
                                   relation="MAILTEMPLATE"/>
             </smart:field-set>
             <smart:field-set name="mail_fr_cm" type="frame" label="Commentaire" access="ReadWrite">
