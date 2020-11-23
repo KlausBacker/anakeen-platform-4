@@ -30,7 +30,6 @@ class Logout
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        ContextManager::getSession()->close();
         \Anakeen\Router\AuthenticatorManager::closeAccess();
         $data = [];
         foreach (headers_list() as $header) {
