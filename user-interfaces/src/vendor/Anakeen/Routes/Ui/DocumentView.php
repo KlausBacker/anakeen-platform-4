@@ -567,6 +567,29 @@ class DocumentView
     }
 
     /**
+     */
+    protected function parseTemplates(array &$templates, $mustacheEngine, $docController, $name = "")
+    {
+        if (!$templates) {
+            return;
+        }
+        $delimiterStartTag = '[[';
+        $delimiterEndTag = ']]';
+        $delimiter = sprintf('{{=%s %s=}}', $delimiterStartTag, $delimiterEndTag);
+
+        if ((!empty($templates["content"]) && is_string($templates["content"])) || (!empty($templates["file"]) && is_string($templates["file"]))) {
+            $templates = $mustacheEngine->render($delimiter . "[[>templates:" . $name . "]]", $docController);
+        } else {
+            foreach ($templates as $index => &$template) {
+                if ($name) {
+                    $index = $name . "." . $index;
+                }
+                $this->parseTemplates($template, $mustacheEngine, $docController, $index);
+            }
+        }
+    }
+
+    /**
      * @param \Anakeen\Ui\IRenderConfig           $config
      * @param \Anakeen\Core\Internal\SmartElement $document
      *
@@ -592,11 +615,11 @@ class DocumentView
         $uiMustacheLoader = new \Anakeen\Ui\MustacheLoaderSection($templates, $delimiterStartTag, $delimiterEndTag);
         $uiMustacheLoader->setDocument($document);
         $mustacheEngine->setPartialsLoader($uiMustacheLoader);
-        $delimiter = sprintf('{{=%s %s=}}', $delimiterStartTag, $delimiterEndTag);
         $docController = $config->getContextController($document);
 
-        $mainTemplate = "[[>templates]]";
-        return json_decode($mustacheEngine->render($delimiter . $mainTemplate, $docController));
+        // Call this function to render every part of the template
+        $this->parseTemplates($templates, $mustacheEngine, $docController);
+        return $templates;
     }
 
     protected function getUri(\Anakeen\Core\Internal\SmartElement $document, $vid)

@@ -55,7 +55,7 @@ $(VOLUMES_PHP_CONTROL_CONF)/contexts.xml: | _env-start
 	@$(PRINT_COLOR) "$(COLOR_INFO)[I]context initialized$(COLOR_RESET)\n"
 
 .PHONY: _env-start
-_env-start: | $(VOLUMES_PRIVATE)
+_env-start: | $(VOLUMES_PRIVATE) $(BUILD_DIR)
 	@$(PRINT_COLOR) "$(COLOR_DEBUG)[D][$@] Start containers$(COLOR_RESET)\n"
 	$(DOCKER_COMPOSE_CMD) up -d $(DOCKER_COMPOSE_UP_OPTIONS) $(DOCKER_COMPOSE_SERVICES)
 	@$(PRINT_COLOR) "$(COLOR_DEBUG)[D][$@] Wait for services to start$(COLOR_RESET)\n"
