@@ -95,8 +95,7 @@ export default class SmartFormConfigurationBuilder {
         if (fetchedOperator != null) {
           criteria.default.operator = fetchedOperator;
           isDefaultBetween = criteria.default.operator.isBetween;
-          this.smartFormConfiguration.values[SmartFormConfigurationBuilder.getOperatorName(index)] =
-            criteria.default.operator.key;
+          this.smartFormConfiguration.values[SmartCriteriaUtils.getOperatorName(index)] = criteria.default.operator.key;
         } else {
           this.stackError(
             `Error: Default operator value '${criteria.default.operator.key}' cannot be found and will be ignored`,
@@ -108,9 +107,8 @@ export default class SmartFormConfigurationBuilder {
         if (isDefaultBetween) {
           if (Array.isArray(criteria.default.value)) {
             if (criteria.default.value.length >= 2) {
-              this.smartFormConfiguration.values[SmartFormConfigurationBuilder.getValueName(index)] =
-                criteria.default.value[0];
-              this.smartFormConfiguration.values[SmartFormConfigurationBuilder.getValueBetweenName(index)] =
+              this.smartFormConfiguration.values[SmartCriteriaUtils.getValueName(index)] = criteria.default.value[0];
+              this.smartFormConfiguration.values[SmartCriteriaUtils.getValueBetweenName(index)] =
                 criteria.default.value[1];
             }
           } else {
@@ -121,10 +119,10 @@ export default class SmartFormConfigurationBuilder {
           }
         } else {
           if (criteria.multipleFilter) {
-            this.smartFormConfiguration.values[SmartFormConfigurationBuilder.getValueMultipleName(index)] =
+            this.smartFormConfiguration.values[SmartCriteriaUtils.getValueMultipleName(index)] =
               criteria.default.value;
           } else {
-            this.smartFormConfiguration.values[SmartFormConfigurationBuilder.getValueName(index)] =
+            this.smartFormConfiguration.values[SmartCriteriaUtils.getValueName(index)] =
               criteria.default.value;
           }
         }
@@ -139,10 +137,10 @@ export default class SmartFormConfigurationBuilder {
     between = false
   ): ISmartFormFieldSet | ISmartFormFieldItem | ISmartFormFieldEnumItem {
     const name = between
-      ? SmartFormConfigurationBuilder.getValueBetweenName(index)
+      ? SmartCriteriaUtils.getValueBetweenName(index)
       : multipleFilter
-      ? SmartFormConfigurationBuilder.getValueMultipleName(index)
-      : SmartFormConfigurationBuilder.getValueName(index);
+      ? SmartCriteriaUtils.getValueMultipleName(index)
+      : SmartCriteriaUtils.getValueName(index);
     const label = criteria.label;
     const formValue: ISmartFormCriteriaConfiguration = {
       name,
@@ -177,30 +175,6 @@ export default class SmartFormConfigurationBuilder {
 
   public getErrorStack(): Array<any> {
     return [...this.errorStack];
-  }
-
-  public static getOperatorName(index: number): string {
-    return `sc_operator_${index}`;
-  }
-
-  public static getOperatorLabelName(index: number): string {
-    return `sc_label_operator_${index}`;
-  }
-
-  public static getValueName(index: number): string {
-    return `sc_value_${index}`;
-  }
-
-  public static getValueBetweenName(index: number): string {
-    return `sc_value_between_${index}`;
-  }
-
-  public static getValueBetweenLabelName(index: number): string {
-    return `sc_label_value_between_${index}`;
-  }
-
-  public static getValueMultipleName(index: number): string {
-    return `sc_value_multiple_${index}`;
   }
 
   private static buildSmartFormOperators(
@@ -238,13 +212,13 @@ export default class SmartFormConfigurationBuilder {
     const formTemplate: ISmartFormFieldSet = {
       content: [
         {
-          name: SmartFormConfigurationBuilder.getOperatorLabelName(index),
+          name: SmartCriteriaUtils.getOperatorLabelName(index),
           type: "text",
           display: "read"
         },
         {
           label: criteria.label,
-          name: SmartFormConfigurationBuilder.getOperatorName(index),
+          name: SmartCriteriaUtils.getOperatorName(index),
           type: "enum",
           enumItems: operators
         },
@@ -254,40 +228,40 @@ export default class SmartFormConfigurationBuilder {
       type: "frame",
       name: `sc_criteria_${index}`
     };
-    this.smartFormConfiguration.values[SmartFormConfigurationBuilder.getOperatorLabelName(index)] = criteria.label;
+    this.smartFormConfiguration.values[SmartCriteriaUtils.getOperatorLabelName(index)] = criteria.label;
     if (hasBetween) {
       formTemplate.content.push({
-        name: SmartFormConfigurationBuilder.getValueBetweenLabelName(index),
+        name: SmartCriteriaUtils.getValueBetweenLabelName(index),
         type: "text",
         display: "read"
       });
       formTemplate.content.push(SmartFormConfigurationBuilder.getCriteriaSmartFormValue(criteria, index, false, true));
       this.smartFormConfiguration.values[
-        SmartFormConfigurationBuilder.getValueBetweenLabelName(index)
+        SmartCriteriaUtils.getValueBetweenLabelName(index)
       ] = this.translations.and;
     }
 
     // Render Options
-    this.smartFormConfiguration.renderOptions["fields"][SmartFormConfigurationBuilder.getOperatorLabelName(index)] = {
+    this.smartFormConfiguration.renderOptions["fields"][SmartCriteriaUtils.getOperatorLabelName(index)] = {
       labelPosition: "none"
     };
-    this.smartFormConfiguration.renderOptions["fields"][SmartFormConfigurationBuilder.getOperatorName(index)] = {
+    this.smartFormConfiguration.renderOptions["fields"][SmartCriteriaUtils.getOperatorName(index)] = {
       displayDeleteButton: false,
       labelPosition: "none"
     };
-    this.smartFormConfiguration.renderOptions["fields"][SmartFormConfigurationBuilder.getValueName(index)] = {
+    this.smartFormConfiguration.renderOptions["fields"][SmartCriteriaUtils.getValueName(index)] = {
       labelPosition: "none"
     };
-    this.smartFormConfiguration.renderOptions["fields"][SmartFormConfigurationBuilder.getValueMultipleName(index)] = {
+    this.smartFormConfiguration.renderOptions["fields"][SmartCriteriaUtils.getValueMultipleName(index)] = {
       labelPosition: "none"
     };
     if (hasBetween) {
       this.smartFormConfiguration.renderOptions["fields"][
-        SmartFormConfigurationBuilder.getValueBetweenLabelName(index)
+        SmartCriteriaUtils.getValueBetweenLabelName(index)
       ] = {
         labelPosition: "none"
       };
-      this.smartFormConfiguration.renderOptions["fields"][SmartFormConfigurationBuilder.getValueBetweenName(index)] = {
+      this.smartFormConfiguration.renderOptions["fields"][SmartCriteriaUtils.getValueBetweenName(index)] = {
         labelPosition: "none"
       };
     }

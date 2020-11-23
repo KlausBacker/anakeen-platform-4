@@ -33,6 +33,16 @@ class SmartCriteriaConfigurationLoader
      */
     protected $errors = [];
 
+    /**
+     * @var array Occurence fields
+     */
+    protected $counterFields = array();
+
+    /**
+     * @var array of id
+     */
+    protected $idMap = array();
+
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $this->config = $request->getParams();
@@ -46,6 +56,7 @@ class SmartCriteriaConfigurationLoader
 
         $data = [
             "configuration" => $this->config,
+            "idMap" => $this->idMap,
             "errors" => $this->errors
         ];
 
@@ -97,6 +108,17 @@ class SmartCriteriaConfigurationLoader
         if (empty($kind)) {
             $kind = SmartCriteriaConfig::KIND_FIELD;
         }
+        if (!isset($criteria["id"])) {
+            $criteria["id"] = $this->getCriteriaId($criteria);
+        }
+
+        if (array_search($criteria["id"], $this->idMap) !== false) {
+            array_push($this->errors, [
+                "type" => "warning",
+                "message" => "Error: The title \"" . $criteria["id"] . "\" already exist"
+            ]);
+        }
+        array_push($this->idMap, $criteria["id"]);
 
         switch ($kind) {
             case SmartCriteriaConfig::KIND_FIELD:
@@ -112,6 +134,15 @@ class SmartCriteriaConfigurationLoader
                 $this->completeCustomCriteria($criteria);
                 break;
         }
+    }
+
+    protected function getCriteriaId($criteria)
+    {
+        if (array_key_exists($criteria["field"], $this->counterFields) === true) {
+            return \sprintf("%s_%s", $criteria["field"], $this->counterFields[$criteria["field"]]++);
+        }
+        $this->counterFields[$criteria["field"]] = 0;
+        return \sprintf("%s_%s", $criteria["field"], $this->counterFields[$criteria["field"]]++);
     }
 
     protected function completeFieldCriteria(&$criteria)

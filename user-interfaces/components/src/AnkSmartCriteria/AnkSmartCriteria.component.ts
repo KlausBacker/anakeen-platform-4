@@ -52,6 +52,7 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
   private mountedDone = false;
   private standalone = false;
   private innerConfig: ISmartCriteriaConfiguration = { title: "", defaultStructure: -1, criterias: [] };
+  private idMap: Array<string> = [];
   private operatorFieldRegex = /^sc_operator_(\d+)$/;
   private errorStack = [];
   public smartFormConfig: ISmartFormConfiguration = {};
@@ -59,6 +60,7 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
   public filterValue: ISmartFilter = {
     kind: SmartCriteriaKind.FIELD,
     field: "",
+    id: "",
     operator: {
       key: CriteriaOperator.NONE,
       options: [],
@@ -66,6 +68,7 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
       additionalOptions: []
     },
     value: null,
+    displayValue: null,
     logic: SmartFilterLogic.AND,
     filters: []
   };
@@ -172,6 +175,7 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
       })
         .done(response => {
           this.innerConfig = response.data.configuration;
+          this.idMap = response.data.idMap;
           this.errorStack = this.errorStack.concat(response.data.errors);
           this.checkConfig();
           this.buildSmartFormConfig();
@@ -241,11 +245,11 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
       }
     }
 
-    this.setSmartFieldVisibility(SmartFormConfigurationBuilder.getOperatorName(index), operatorVisible);
-    this.setSmartFieldVisibility(SmartFormConfigurationBuilder.getValueName(index), valueVisible);
-    this.setSmartFieldVisibility(SmartFormConfigurationBuilder.getValueBetweenLabelName(index), betweenVisible);
-    this.setSmartFieldVisibility(SmartFormConfigurationBuilder.getValueBetweenName(index), betweenVisible);
-    this.setSmartFieldVisibility(SmartFormConfigurationBuilder.getValueMultipleName(index), multipleVisible);
+    this.setSmartFieldVisibility(SmartCriteriaUtils.getOperatorName(index), operatorVisible);
+    this.setSmartFieldVisibility(SmartCriteriaUtils.getValueName(index), valueVisible);
+    this.setSmartFieldVisibility(SmartCriteriaUtils.getValueBetweenLabelName(index), betweenVisible);
+    this.setSmartFieldVisibility(SmartCriteriaUtils.getValueBetweenName(index), betweenVisible);
+    this.setSmartFieldVisibility(SmartCriteriaUtils.getValueMultipleName(index), multipleVisible);
   }
 
   static getOperator(operatorKey: string, operators: Array<ISmartFormFieldEnumConfig>): ISmartFormFieldEnumConfig {
@@ -269,6 +273,38 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
     this.showError(message, type);
   }
 
+  public loadValues(filterValues: ISmartFilter) {
+    const filters = SmartCriteriaUtils.flattenFilterValues(filterValues);
+
+    filters.forEach(filter => {
+      const position = SmartCriteriaUtils.getPositionIdMap(this.idMap, filter.id);
+
+      this.$refs.smartForm.setValue(SmartCriteriaUtils.getOperatorName(position), {
+        value: filter.operator.key
+      });
+      if (filter.operator.filterMultiple && Array.isArray(filter.value)) {
+        this.$refs.smartForm.setValue(
+          SmartCriteriaUtils.getValueMultipleName(position),
+          filter.value.map((filterValue, index) => {
+            return { value: filterValue, displayValue: filter.displayValue[index] };
+          })
+        );
+      } else if (filter.isBetween && Array.isArray(filter.value)) {
+        this.$refs.smartForm.setValue(SmartCriteriaUtils.getValueName(position), {
+          value: filter.value[0]
+        });
+        this.$refs.smartForm.setValue(SmartCriteriaUtils.getValueBetweenName(position), {
+          value: filter.value[1]
+        });
+      } else if (typeof filter.value != "undefined") {
+        this.$refs.smartForm.setValue(SmartCriteriaUtils.getValueName(position), {
+          value: filter.value,
+          displayValue: filter.displayValue
+        });
+      }
+    });
+  }
+
   public getFilters(): ISmartFilter {
     let filter: ISmartFilter;
     let initFilter = false;
@@ -278,13 +314,15 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
       disabled: true,
       kind: undefined,
       logic: undefined,
+      id: undefined,
       operator: {
         key: CriteriaOperator.NONE,
         options: [],
         filterMultiple: false,
         additionalOptions: []
       },
-      value: undefined
+      value: undefined,
+      displayValue: undefined
     };
     for (let i = 0; i < this.innerConfig.criterias.length; i++) {
       const criteria = this.innerConfig.criterias[i];
@@ -308,16 +346,19 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
       kind: criteria.kind,
       disabled: false,
       logic: SmartFilterLogic.AND,
+      id: undefined,
+      isBetween: false,
       operator: {
         key: CriteriaOperator.NONE,
         options: [],
         filterMultiple: false,
         additionalOptions: []
       },
-      value: ""
+      value: "",
+      displayValue: ""
     };
 
-    const smartFormOperatorValue = this.$refs.smartForm.getValue(SmartFormConfigurationBuilder.getOperatorName(index));
+    const smartFormOperatorValue = this.$refs.smartForm.getValue(SmartCriteriaUtils.getOperatorName(index));
     const operatorString = smartFormOperatorValue ? smartFormOperatorValue.value : "";
     const operatorData: ICriteriaConfigurationOperator = SmartCriteriaUtils.getOperatorData(operatorString, criteria);
     const operator: ICriteriaOperator = {
@@ -331,23 +372,27 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
     const isFilterMultiple = operatorData.filterMultiple;
     const smartFormValue = isBetween
       ? [
-          this.$refs.smartForm.getValue(SmartFormConfigurationBuilder.getValueName(index)),
+          this.$refs.smartForm.getValue(SmartCriteriaUtils.getValueName(index)),
 
-          this.$refs.smartForm.getValue(SmartFormConfigurationBuilder.getValueBetweenName(index))
+          this.$refs.smartForm.getValue(SmartCriteriaUtils.getValueBetweenName(index))
         ]
       : isFilterMultiple
-      ? this.$refs.smartForm.getValue(SmartFormConfigurationBuilder.getValueMultipleName(index))
-      : this.$refs.smartForm.getValue(SmartFormConfigurationBuilder.getValueName(index));
+      ? this.$refs.smartForm.getValue(SmartCriteriaUtils.getValueMultipleName(index))
+      : this.$refs.smartForm.getValue(SmartCriteriaUtils.getValueName(index));
     let value;
+    let displayValue;
 
     if (isBetween || isFilterMultiple) {
       value = smartFormValue.map(valObject => (valObject ? valObject.value : null));
+      displayValue = smartFormValue.map(valObject => (valObject ? valObject.displayValue : null));
     } else {
       value = smartFormValue ? smartFormValue.value : null;
+      displayValue = smartFormValue ? smartFormValue.displayValue : null;
     }
-
+    smartFilter.isBetween = isBetween;
     smartFilter.operator = operator;
     smartFilter.value = value;
+    smartFilter.displayValue = displayValue;
 
     if (operatorData.acceptValues === true && value === null) {
       smartFilter.disabled = true;
@@ -363,7 +408,7 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
         this.customFilterValueAdditionalProcessing(smartFilter, criteria);
         break;
     }
-
+    smartFilter.id = criteria.id;
     return smartFilter;
   }
 
@@ -444,9 +489,7 @@ export default class AnkSmartCriteria extends Mixins(EventUtilsMixin, ReadyMixin
       const inputsResult = {};
       Object.keys(autocomplete.inputs).forEach(key => {
         const referencedIndex = parseInt(key.substr(-1, 1));
-        const sfOperatorValue = this.$refs.smartForm.getValue(
-          SmartFormConfigurationBuilder.getOperatorName(referencedIndex)
-        );
+        const sfOperatorValue = this.$refs.smartForm.getValue(SmartCriteriaUtils.getOperatorName(referencedIndex));
         const referencedCriteria = this.innerConfig.criterias[referencedIndex];
         const operatorString = sfOperatorValue ? sfOperatorValue.value : "";
         const referencedOperatorData: ICriteriaConfigurationOperator = SmartCriteriaUtils.getOperatorData(
