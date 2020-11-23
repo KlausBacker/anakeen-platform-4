@@ -75,5 +75,7 @@
   "gridPager.of {0}": "of {0}",
   "SmartFormConfigurationBuilder.And": "and",
   "smartCriteria.Search": "Search",
-  "gridReloadButton.Tooltip": "Reload data"
+  "gridReloadButton.Tooltip": "Reload data",
+  "Logout.Confirm": "Are you sure to logout?",
+  "Logout.modifications": "has modification not saved"
 }
