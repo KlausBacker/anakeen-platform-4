@@ -742,7 +742,6 @@ export default class SmartElementController extends AnakeenController.BusEvents.
   public appendArrayRow(smartFieldId, values) {
     this.checkInitialisedModel();
     const attribute = this._getAttributeModel(smartFieldId);
-
     if (!attribute) {
       throw new Error("Unable to find attribute " + smartFieldId);
     }
@@ -768,9 +767,15 @@ export default class SmartElementController extends AnakeenController.BusEvents.
         });
         let indexRow = 0;
         if (currentValue.length > 0) {
-          indexRow = currentValue.length - 1;
+          indexRow = currentValue.length;
         }
-        currentAttribute.addValue(newValue, indexRow);
+        if (!_.isArray(newValue.value)) {
+          currentAttribute.addValue(newValue, indexRow);
+        } else {
+          newValue.value.forEach(item => {
+            currentAttribute.addValue(item, indexRow);
+          });
+        }
       }
     });
   }
