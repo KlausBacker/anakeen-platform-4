@@ -44,6 +44,9 @@ class FinalUpdates
         // Update revdate to mdate in searches
         DbManager::query("update family.dsearch set se_attrids=array_replace(se_attrids, 'revdate', 'mdate') where 'revdate' = any(se_attrids);");
         DbManager::query("update family.report set rep_idcols=array_replace(rep_idcols, 'revdate', 'mdate') where 'revdate' = any(rep_idcols);");
+        // Update activity to state in searches
+        DbManager::query("update family.dsearch set se_attrids=array_replace(se_attrids, 'activity', 'state') where 'activity' = any(se_attrids);");
+        DbManager::query("update family.report set rep_idcols=array_replace(rep_idcols, 'activity', 'state') where 'activity' = any(rep_idcols);");
         // update fieldvalues column for workflows
         DbManager::query("update family.wdoc set id=id;");
 
