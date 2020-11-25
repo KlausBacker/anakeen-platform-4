@@ -1473,7 +1473,6 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       this._internalViewData.viewId = this._model.get("viewId");
       this._internalViewData.revision = this._model.get("revision");
       this._element.data("document", this._getModelValue());
-      this._initListeners({ launchReady: false });
     });
     this._model.listenTo(this._model, "beforeRender", event => {
       event.promise = this._triggerControllerEvent(
@@ -1499,6 +1498,9 @@ export default class SmartElementController extends AnakeenController.BusEvents.
         this._triggerControllerEvent("close", null, this.getProperties(), oldProperties);
       }
       this._initialized.view = false;
+    });
+    this._model.listenTo(this._model, "reinitLocalController", oldProperties => {
+      this._initListeners({ launchReady: false });
     });
     this._model.listenTo(this._model, "getCustomClientData", () => {
       try {

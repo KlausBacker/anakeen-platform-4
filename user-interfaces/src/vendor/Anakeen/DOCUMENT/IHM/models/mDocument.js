@@ -176,6 +176,7 @@ export default Backbone.Model.extend({
       var unlocking = theModel.get("unlocking");
 
       theModel.trigger("close", event, theModel.getServerProperties(), this._customClientData);
+      theModel.trigger("reinitLocalController", event, theModel.getServerProperties(), this._customClientData);
 
       if (!unlocking && theModel.get("renderMode") === "edit" && security && security.lock && security.lock.temporary) {
         theModel.trigger("unlockSmartElement", theModel.get("initid"));
@@ -1333,6 +1334,7 @@ export default Backbone.Model.extend({
     documentCallback.promise
       .then(currentModelProperties => {
         currentModel.trigger("close", serverProperties);
+        currentModel.trigger("reinitLocalController", serverProperties);
         currentModel
           ._loadDocument(currentModel)
           .then(values => {
@@ -1453,6 +1455,7 @@ export default Backbone.Model.extend({
           function mDocument_saveDone() {
             currentModel.trigger("afterSave", serverProperties);
             currentModel.trigger("close", serverProperties);
+            currentModel.trigger("reinitLocalController", serverProperties);
             currentModel._loadDocument(currentModel).then(
               function mDocument_loadDocumentDone() {
                 globalCallback.success();
@@ -1559,6 +1562,7 @@ export default Backbone.Model.extend({
       function onDeleteSuccess(values) {
         currentModel.trigger("afterDelete", serverProperties);
         currentModel.trigger("close", serverProperties);
+        currentModel.trigger("reinitLocalController", serverProperties);
         if (_.isFunction(options.success)) {
           options.success();
         }
@@ -1635,6 +1639,7 @@ export default Backbone.Model.extend({
       function mDocument_restoreDocument_onSuccess(values) {
         currentModel.trigger("afterRestore", serverProperties);
         currentModel.trigger("close", serverProperties);
+        currentModel.trigger("reinitLocalController", serverProperties);
         if (_.isFunction(options.success)) {
           options.success();
         }
