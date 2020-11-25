@@ -106,6 +106,30 @@ class DocumentHistory
          * @var \Anakeen\Core\Internal\SmartElement $revision
          */
         foreach ($documentList as $revision) {
+            $wdoc = null;
+            $state = array(
+                "reference" => "",
+                "stateLabel" => "",
+                "activity" => "",
+                "color" => ""
+            );
+            // If the Smart Structure has a workflow it will fill the state array
+            if ($revision->wid) {
+                /**
+                 * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
+                 */
+                $wdoc = SEManager::getDocument($revision->wid);
+                if ($wdoc && $revision->state) {
+                    SEManager::cache()->addDocument($wdoc);
+                    $stateLabel = $wdoc->getStateLabel($revision->state) ?: $revision->state;
+                    $state = array(
+                        "reference" => $revision->getState(),
+                        "stateLabel" => $stateLabel,
+                        "activity" => $wdoc->getActivity($revision->state, $stateLabel),
+                        "color" => $revision->getStateColor()
+                    );
+                }
+            }
             $history = $revision->getHisto(false);
             foreach ($history as $k => $msg) {
                 unset($history[$k]["id"]);
@@ -153,13 +177,7 @@ class DocumentHistory
                         "id" => $revision->owner,
                         "title" => \Anakeen\Core\Account::getDisplayName($revision->owner)
                     ),
-                    "state" => array(
-                        "reference" => $revision->getState(),
-                        "stateLabel" => ($revision->state) ? _($revision->state) : '',
-                        "activity" => ($revision->getStateActivity() ? _($revision->getStateActivity())
-                            : ($revision->state ? _($revision->state) : '')),
-                        "color" => ($revision->state) ? $revision->getStateColor() : ''
-                    ),
+                    "state" => $state,
 
                     "version" => $revision->version,
                     "revisionDate" => Date::rawToIsoDate($revision->mdate)
