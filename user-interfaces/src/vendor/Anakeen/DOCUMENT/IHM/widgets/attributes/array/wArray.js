@@ -31,7 +31,7 @@ $.widget("dcp.dcpArray", {
    * @returns {*}
    */
   getSelectedLineElement: function dcpArraygetSelectedLineElement() {
-    return this.element.find(".dcpArray__content__line--selected.active");
+    return this.element.find(".dcpArray__content__line--selected.active").filter(this.isCurrentArray);
   },
   /**
    * get Selected line index (0 : first, null : no selected line)
@@ -49,6 +49,9 @@ $.widget("dcp.dcpArray", {
    * @private
    */
   _create: function dcpArray_create() {
+    const currentWidget = this;
+    this.isCurrentArray = this._isCurrentArray(this.options.viewCid);
+    this.element.attr("data-viewid", this.options.viewCid);
     this.options.tools = this.options.mode === "write" && this.options.visibility !== "U";
     if (
       this.options.renderOptions.rowAddDisable === true &&
@@ -72,13 +75,14 @@ $.widget("dcp.dcpArray", {
       this._bindEvents();
       this._isEventBinded(true);
     }
-    this.element.on(
-      "click" + this.eventNamespace,
-      ".dcpArray--collapsable",
-      _.bind(function toogleTable() {
-        this.toggleCollapse.apply(this);
-      }, this)
-    );
+    const collpaseEvent = _.bind(function toogleTable() {
+      this.toggleCollapse.apply(this);
+    }, this);
+    this.element.on("click" + this.eventNamespace, ".dcpArray--collapsable", function wArray_collapse() {
+      if ($(this).filter(currentWidget.isCurrentArray).length > 0) {
+        collpaseEvent();
+      }
+    });
 
     if (this.options.renderOptions.collapse === "collapse") {
       this.toggleCollapse(null, true);
@@ -88,14 +92,14 @@ $.widget("dcp.dcpArray", {
   },
 
   _isInitialized: function dcpArray_isInitialized(value) {
-    var $tbody = this.element.find(".dcpArray__body");
+    var $tbody = this.element.find(".dcpArray__body").filter(this.isCurrentArray);
     if (value !== undefined) {
       $tbody.data("bodyGenerated", value);
     }
     return $tbody.data("bodyGenerated");
   },
   _isEventBinded: function dcpArray_isEventBinded(value) {
-    var $tbody = this.element.find(".dcpArray__body");
+    var $tbody = this.element.find(".dcpArray__body").filter(this.isCurrentArray);
     if (value !== undefined) {
       $tbody.data("eventsBinded", value);
     }
@@ -103,6 +107,7 @@ $.widget("dcp.dcpArray", {
   },
 
   _initDom: function dcpArray_initDom() {
+    const currentWidget = this;
     return new Promise(
       _.bind(function dcpArray_initDom_initDom(resolve, reject) {
         var scope = this,
@@ -114,7 +119,10 @@ $.widget("dcp.dcpArray", {
             if (this.options.displayLabel !== false) {
               this.element.append(Mustache.render(this._getTemplate("label") || "", this.options));
               if (this.options.renderOptions.labelPosition === "left") {
-                this.element.find(".dcpLabel").addClass("dcpArray__label--left");
+                this.element
+                  .find(".dcpLabel")
+                  .filter(this.isCurrentArray)
+                  .addClass("dcpArray__label--left");
               }
             }
 
@@ -141,10 +149,17 @@ $.widget("dcp.dcpArray", {
             this.element.append(this.options.customTemplate);
             this.element
               .find(".dcpCustomTemplate table.dcpArray__table > tbody > tr")
+              .filter(this.isCurrentArray)
               .addClass("dcpArray__content__line");
             this._indexLine();
-            this.element.find(".dcpArray__content__line").attr("data-attrid", this.options.id);
-            this.element.find(".dcpCustomTemplate").addClass("dcpArray__content dcpArray__content--open");
+            this.element
+              .find(".dcpArray__content__line")
+              .filter(this.isCurrentArray)
+              .attr("data-attrid", this.options.id);
+            this.element
+              .find(".dcpCustomTemplate")
+              .filter(this.isCurrentArray)
+              .addClass("dcpArray__content dcpArray__content--open");
           } else {
             _.each(this.options.content, function wArrayCopyRenderContent(anOption) {
               // Need duplicate because Mustache is confused when 2 attributes has same name
@@ -153,10 +168,12 @@ $.widget("dcp.dcpArray", {
             this.element.append(Mustache.render(this._getTemplate("content") || "", this.options));
 
             if (this.options.mode === "write") {
-              this.element.find(".dcpArray__content").addClass("dcpArray--tooltips");
+              this.element
+                .find(".dcpArray__content")
+                .filter(this.isCurrentArray)
+                .addClass("dcpArray--tooltips");
               this.element.tooltip({
-                selector:
-                  ".dcpArray--tooltips .dcpArray__content__toolCell span, .dcpArray--tooltips .dcpArray__tools .dcpArray__button",
+                selector: `.dcpArray--tooltips[data-viewid="${this.options.viewCid}"]>.dcpArray__table>.dcpArray__body>.dcpArray__content__line>.dcpArray__toolCell>.dcpArray__content__toolCell span, .dcpArray--tooltips[data-viewid="${this.options.viewCid}"]>.dcpArray__tools>.dcpArray__button`,
                 placement: function(tooltipDom, targetDom) {
                   // Auto hide after 3s
                   _.delay(function() {
@@ -167,8 +184,6 @@ $.widget("dcp.dcpArray", {
                   }
                   return "top";
                 },
-                container: ".dcpDocument",
-
                 delay: {
                   hide: 0,
                   show: 500
@@ -179,29 +194,46 @@ $.widget("dcp.dcpArray", {
           if (this.options.displayLabel !== false) {
             var labelPosition = this.options.renderOptions.labelPosition;
             if (labelPosition === "auto" || labelPosition === "left") {
-              this.element.find(".dcpArray__label").addClass("dcpAttribute__left");
-              this.element.find(".dcpArray__content").addClass("dcpAttribute__right");
+              this.element
+                .find(".dcpArray__label")
+                .filter(this.isCurrentArray)
+                .addClass("dcpAttribute__left");
+              this.element
+                .find(".dcpArray__content")
+                .filter(this.isCurrentArray)
+                .addClass("dcpAttribute__right");
               this.element.addClass("dcpArray--left");
             }
 
-            this.element.find(".dcpAttribute__right").addClass("dcpAttribute__labelPosition--" + labelPosition);
-            this.element.find(".dcpAttribute__left").addClass("dcpAttribute__labelPosition--" + labelPosition);
+            this.element
+              .find(".dcpAttribute__right")
+              .filter(this.isCurrentArray)
+              .addClass("dcpAttribute__labelPosition--" + labelPosition);
+            this.element
+              .find(".dcpAttribute__left")
+              .filter(this.isCurrentArray)
+              .addClass("dcpAttribute__labelPosition--" + labelPosition);
             this.element.addClass("dcpAttribute__labelPosition--" + labelPosition);
           }
 
           if (this.options.renderOptions.rowAddDisable === true) {
-            this.element.find(".dcpArray__button--add, .dcpArray__button--copy").hide();
+            this.element
+              .find(".dcpArray__button--add, .dcpArray__button--copy")
+              .filter(this.isCurrentArray)
+              .hide();
           }
 
           // Set system css classes
-          $table = this.element.find(".dcpArray__table");
+          $table = this.element.find(".dcpArray__table").filter(this.isCurrentArray);
           $table.addClass("table table-condensed table-hover table-bordered");
           $table
             .find("> tbody")
+            .filter(this.isCurrentArray)
             .addClass("dcpArray__body")
             .attr("data-attrid", this.options.id);
           $table
             .find("> thead")
+            .filter(this.isCurrentArray)
             .attr("data-attrid", this.options.id)
             .find("tr")
             .addClass("dcpArray__head")
@@ -209,70 +241,84 @@ $.widget("dcp.dcpArray", {
 
           if (this.options.mode === "write" && this.options.renderOptions.rowMoveDisable !== true) {
             //Initiate drag drop events
-            this.element.find("tbody").kendoDraggable({
-              axis: "y",
-              container: scope.element.find("tbody"),
-              filter: ".dcpArray__content__toolCell__dragDrop",
-              hint: function dcpArrayhint(element) {
-                var dragLine = element.closest("tr");
-                var lineWidth = dragLine.width();
-                var classTable = element.closest("table").attr("class");
+            this.element
+              .find("tbody")
+              .filter(this.isCurrentArray)
+              .kendoDraggable({
+                group: currentWidget.options.viewCid,
+                axis: "y",
+                container: scope.element.find("tbody").filter(this.isCurrentArray),
+                filter: `.dcpArray__content__toolCell__dragDrop--${currentWidget.options.viewCid}`,
+                hint: function dcpArrayhint(element) {
+                  var dragLine = element.closest("tr");
+                  var lineWidth = dragLine.width();
+                  var classTable = element.closest("table").attr("class");
 
-                scope._hideTooltips();
-                scope._disableTooltips();
+                  scope._hideTooltips();
+                  scope._disableTooltips();
 
-                var $table = $("<table/>")
-                  .addClass("dcpArray__dragLine " + classTable)
-                  .css("width", lineWidth)
-                  .css("margin-left", "-" + (element.offset().left - dragLine.offset().left) + "px");
+                  var $table = $("<table/>")
+                    .addClass("dcpArray__dragLine " + classTable)
+                    .css("width", lineWidth)
+                    .css("margin-left", "-" + (element.offset().left - dragLine.offset().left) + "px");
 
-                return $table.append($("<tbody/>").append(dragLine.clone()));
-              },
-              dragstart: function dcpArraydragstart(event) {
-                if (event.currentTarget) {
-                  var dragLine = $(event.currentTarget).closest("tr");
-                  dragLine.css("opacity", "0");
-                  dragLine.data("fromLine", dragLine.data("line"));
-                }
-              },
-              dragend: function dcpArraydragend(event) {
-                if (event.currentTarget) {
-                  var dragLine = $(event.currentTarget).closest("tr");
-                  dragLine.css("opacity", "");
-                  scope._trigger(
-                    "lineMoved",
-                    {},
-                    {
-                      fromLine: dragLine.data("fromLine"),
-                      toLine: dragLine.data("line")
-                    }
-                  );
-                }
-
-                scope._enableTooltips();
-              }
-            });
-
-            this.element.find("tbody").kendoDropTargetArea({
-              filter: '.dcpArray__content__line[data-attrid="' + this.options.id + '"]',
-              dragenter: function dragenter(event) {
-                if (event.currentTarget) {
-                  var drap = event.draggable.currentTarget.closest("tr");
-                  var drop = event.dropTarget;
-                  var drapLine = drap.data("line");
-                  var dropLine = drop.data("line");
-                  if (drapLine > dropLine) {
-                    drap.insertBefore(drop);
-                  } else {
-                    drap.insertAfter(drop);
+                  return $table.append($("<tbody/>").append(dragLine.clone()));
+                },
+                dragstart: function dcpArraydragstart(event) {
+                  if (event.currentTarget) {
+                    var dragLine = $(event.currentTarget).closest("tr");
+                    dragLine.css("opacity", "0");
+                    dragLine.data("fromLine", dragLine.data("line"));
                   }
-                  scope._indexLine();
+                },
+                dragend: function dcpArraydragend(event) {
+                  if (event.currentTarget) {
+                    var dragLine = $(event.currentTarget).closest("tr");
+                    dragLine.css("opacity", "");
+                    scope._trigger(
+                      "lineMoved",
+                      {},
+                      {
+                        fromLine: dragLine.data("fromLine"),
+                        toLine: dragLine.data("line")
+                      }
+                    );
+                  }
+
+                  scope._enableTooltips();
                 }
-              }
-            });
+              });
+
+            this.element
+              .find("tbody")
+              .filter(this.isCurrentArray)
+              .kendoDropTargetArea({
+                group: currentWidget.options.viewCid,
+                filter: `.dcpArray__content__line--${currentWidget.options.viewCid}`,
+                dragenter: function dragenter(event) {
+                  if (event.currentTarget) {
+                    var drap = event.draggable.currentTarget.closest("tr");
+                    var drop = event.dropTarget;
+                    var drapLine = drap.data("line");
+                    var dropLine = drop.data("line");
+                    if (drapLine > dropLine) {
+                      drap.insertBefore(drop);
+                    } else {
+                      drap.insertAfter(drop);
+                    }
+                    scope._indexLine();
+                  }
+                }
+              });
           }
           this.element.on("click" + this.eventNamespace, ".button-close-error", function destroyTable(/*event*/) {
-            scope.element.find(".dcpArray__content table.table").tooltip("destroy");
+            if (!currentWidget.isCurrentArray(0, this)) {
+              return;
+            }
+            scope.element
+              .find(".dcpArray__content table.table")
+              .filter(scope.isCurrentArray)
+              .tooltip("destroy");
           });
         }
 
@@ -283,7 +329,7 @@ $.widget("dcp.dcpArray", {
           this._isInitialized(true);
         }
 
-        $.each($(".dcpArray__add, .dcpArray__copy", this.element), (index, target) => {
+        $.each($(".dcpArray__add, .dcpArray__copy", this.element).filter(this.isCurrentArray), (index, target) => {
           $(target).addClass(this.eventNamespace.split(".")[1]);
         });
       }, this)
@@ -305,6 +351,10 @@ $.widget("dcp.dcpArray", {
           action,
           options,
           eventOptions;
+
+        if (!scopeWidget.isCurrentArray(0, this)) {
+          return;
+        }
 
         event.preventDefault();
         if (event.stopPropagation) {
@@ -347,17 +397,22 @@ $.widget("dcp.dcpArray", {
 
   _hideTooltips: function wArray__hideTooltips() {
     var $element = this.element;
-    $element.find("[aria-describedby^=tooltip]").tooltip("hide");
-    _.delay(function _hideTooltipsOneAgain() {
-      // Need redo cause animation delay of 500ms
-      $element.find("[aria-describedby^=tooltip]").tooltip("hide");
-    }, 500);
+    $element
+      .find("[aria-describedby^=tooltip]")
+      .filter(this.isCurrentArray)
+      .tooltip("hide");
   },
   _disableTooltips: function wArray__disableTooltips() {
-    this.element.find(".dcpArray__content").removeClass("dcpArray--tooltips");
+    this.element
+      .find(".dcpArray__content")
+      .filter(this.isCurrentArray)
+      .removeClass("dcpArray--tooltips");
   },
   _enableTooltips: function wArray__enableTooltips() {
-    this.element.find(".dcpArray__content").addClass("dcpArray--tooltips");
+    this.element
+      .find(".dcpArray__content")
+      .filter(this.isCurrentArray)
+      .addClass("dcpArray--tooltips");
   },
 
   _bindEvents: function dcpArray_bindEvents() {
@@ -368,9 +423,12 @@ $.widget("dcp.dcpArray", {
       function selectLineEvent() {
         var $this = $(this);
         var isAlreadyChecked = $this.closest(".dcpArray__content__line").hasClass("dcpArray__content__line--selected");
+        if (!currentWidget.isCurrentArray(0, this)) {
+          return;
+        }
         currentWidget._hideTooltips();
         currentWidget._unSelectLines();
-        const $Button = $(currentWidget.element.find(".dcpArray__copy"));
+        const $Button = $(currentWidget.element.find(".dcpArray__copy").filter(currentWidget.isCurrentArray));
         const kButton = $Button.data("kendoButton");
         if (isAlreadyChecked) {
           if (kButton) kButton.enable(false);
@@ -388,7 +446,7 @@ $.widget("dcp.dcpArray", {
         }
       }
     );
-    const addButtonTab = $(".dcpArray__add" + this.eventNamespace, this.element);
+    const addButtonTab = $(".dcpArray__add" + this.eventNamespace, this.element).filter(this.isCurrentArray);
     addButtonTab.kendoButton({
       click: function addLineEvent() {
         var selectedLine = currentWidget.getSelectedLineIndex();
@@ -413,7 +471,7 @@ $.widget("dcp.dcpArray", {
         }
       }
     });
-    const copyButtonTab = $(".dcpArray__copy" + this.eventNamespace, this.element);
+    const copyButtonTab = $(".dcpArray__copy" + this.eventNamespace, this.element).filter(this.isCurrentArray);
     copyButtonTab.kendoButton({
       click: function copyLineEvent() {
         var selectedLine = currentWidget.getSelectedLineIndex();
@@ -435,21 +493,30 @@ $.widget("dcp.dcpArray", {
       "click" + this.eventNamespace,
       ".dcpArray__content__toolCell__delete button",
       function deleteLineEvent() {
+        if (!currentWidget.isCurrentArray(0, this)) {
+          return;
+        }
         currentWidget._hideTooltips();
         currentWidget.removeLine(
           $(this)
             .closest(".dcpArray__content__line")
             .data("line")
         );
-        currentWidget.element.find(".dcpArray__copy").prop("disabled", true);
+        currentWidget.element
+          .find(".dcpArray__copy")
+          .filter(currentWidget.isCurrentArray)
+          .prop("disabled", true);
       }
     );
   },
 
   toggleCollapse: function toggleCollapse(event, hideNow) {
     this._hideTooltips();
-    var $contentElement = this.element.find(".dcpArray__content");
-    this.element.find(".dcp__array__caret").toggleClass("fa-caret-right fa-caret-down");
+    var $contentElement = this.element.find(".dcpArray__content").filter(this.isCurrentArray);
+    this.element
+      .find(".dcp__array__caret")
+      .filter(this.isCurrentArray)
+      .toggleClass("fa-caret-right fa-caret-down");
     $contentElement.toggleClass("dcpArray__content--open dcpArray__content--close");
     if (hideNow) {
       $contentElement.hide();
@@ -462,18 +529,21 @@ $.widget("dcp.dcpArray", {
    * Redraw label with current count
    */
   redrawLabel: function wArrayRedrawLabel() {
-    this.element.find(".dcpArray__label").html(
-      $(
-        Mustache.render(
-          this._getTemplate("label") || "",
-          _.extend(this.options, {
-            displayCount:
-              this.options.renderOptions.rowCountThreshold >= 0 &&
-              this.options.nbLines >= this.options.renderOptions.rowCountThreshold
-          })
-        )
-      ).html()
-    );
+    this.element
+      .find(".dcpArray__label")
+      .filter(this.isCurrentArray)
+      .html(
+        $(
+          Mustache.render(
+            this._getTemplate("label") || "",
+            _.extend(this.options, {
+              displayCount:
+                this.options.renderOptions.rowCountThreshold >= 0 &&
+                this.options.nbLines >= this.options.renderOptions.rowCountThreshold
+            })
+          )
+        ).html()
+      );
   },
   setLines: function wArraySetLines(lineNumber, options) {
     return new Promise(
@@ -509,7 +579,7 @@ $.widget("dcp.dcpArray", {
     var i,
       min,
       allPromiseLines = [];
-    var $tbody = this.element.find(".dcpArray__body");
+    var $tbody = this.element.find(".dcpArray__body").filter(this.isCurrentArray);
     $tbody.empty();
 
     for (i = 0; i < lineNumber; i += 1) {
@@ -533,7 +603,7 @@ $.widget("dcp.dcpArray", {
   },
 
   _getLineContent: function dcpArray_getLineContent(index) {
-    var $content = "NULL LINE";
+    var $content = "";
 
     this.options.lineCid = _.uniqueId(this.options.id);
     if (this.options.customTemplate) {
@@ -550,14 +620,17 @@ $.widget("dcp.dcpArray", {
 
     if (this.options.customTemplate) {
       // add data-heading for responsive by code when custom
-      this.element.find(".dcpCustomTemplate table.dcpArray__table > thead > tr > th").each((index, thElt) => {
-        $content.find("> td:nth-child(" + (index + 1) + ")").attr(
-          "data-heading",
-          $(thElt)
-            .text()
-            .trim()
-        );
-      });
+      this.element
+        .find(".dcpCustomTemplate table.dcpArray__table > thead > tr > th")
+        .filter(this.isCurrentArray)
+        .each((index, thElt) => {
+          $content.find("> td:nth-child(" + (index + 1) + ")").attr(
+            "data-heading",
+            $(thElt)
+              .text()
+              .trim()
+          );
+        });
     }
 
     if (this.options.renderOptions.rowDelDisable === true) {
@@ -594,7 +667,10 @@ $.widget("dcp.dcpArray", {
     if (selectedLine.length === 1) {
       $content.insertBefore(selectedLine);
     } else {
-      this.element.find(".dcpArray__body").append($content);
+      this.element
+        .find(".dcpArray__body")
+        .filter(this.isCurrentArray)
+        .append($content);
     }
     this._indexLine();
     this.redrawLabel();
@@ -610,62 +686,86 @@ $.widget("dcp.dcpArray", {
     var currentWidget = this;
     if (this.options.renderOptions.rowMaxLimit >= 0) {
       if (this.options.nbLines >= this.options.renderOptions.rowMaxLimit) {
-        this.element.find(".dcpArray__add, .dcpArray__copy").prop("disabled", true);
-        this.element.find(".dcpArray__button--add, .dcpArray__button--copy").each(function dcpArray_initLine() {
-          var $this = $(this);
-          if (!$this.data("originalTitle")) {
-            $this.data("originalTitle", $this.attr("title"));
-          }
-          // reset tooltip
-          $this.tooltip("hide").data("bs.tooltip", null);
+        this.element
+          .find(".dcpArray__add, .dcpArray__copy")
+          .filter(this.isCurrentArray)
+          .prop("disabled", true);
+        this.element
+          .find(".dcpArray__button--add, .dcpArray__button--copy")
+          .filter(this.isCurrentArray)
+          .each(function dcpArray_initLine() {
+            var $this = $(this);
+            if (!$this.data("originalTitle")) {
+              $this.data("originalTitle", $this.attr("title"));
+            }
+            // reset tooltip
+            $this.tooltip("hide").data("bs.tooltip", null);
 
-          $this.attr(
-            "title",
-            Mustache.render(currentWidget.options.labels.limitMaxMessage || "", {
-              limit: currentWidget.options.renderOptions.rowMaxLimit
-            })
-          );
-        });
+            $this.attr(
+              "title",
+              Mustache.render(currentWidget.options.labels.limitMaxMessage || "", {
+                limit: currentWidget.options.renderOptions.rowMaxLimit
+              })
+            );
+          });
       } else {
-        this.element.find(".dcpArray__add, .dcpArray__copy").prop("disabled", false);
-        this.element.find(".dcpArray__button--add, .dcpArray__button--copy").each(function dcpArray_initLine() {
-          // reset tooltip
-          $(this)
-            .tooltip("hide")
-            .data("bs.tooltip", null);
-          $(this).attr("title", $(this).data("originalTitle"));
-        });
+        this.element
+          .find(".dcpArray__add, .dcpArray__copy")
+          .filter(this.isCurrentArray)
+          .prop("disabled", false);
+        this.element
+          .find(".dcpArray__button--add, .dcpArray__button--copy")
+          .filter(this.isCurrentArray)
+          .each(function dcpArray_initLine() {
+            // reset tooltip
+            $(this)
+              .tooltip("hide")
+              .data("bs.tooltip", null);
+            $(this).attr("title", $(this).data("originalTitle"));
+          });
       }
     }
 
     if (this.options.renderOptions.rowMinLimit >= 0) {
       if (this.options.nbLines <= this.options.renderOptions.rowMinLimit) {
-        this.element.find(".dcpArray__content__toolCell__delete button").prop("disabled", true);
-        this.element.find(".dcpArray__content__toolCell__delete").each(function dcpArray_initLine() {
-          if (!$(this).data("originalTitle")) {
-            $(this).data("originalTitle", $(this).attr("title"));
-          }
-          // reset tooltip
-          $(this)
-            .tooltip("hide")
-            .data("bs.tooltip", null);
+        this.element
+          .find(".dcpArray__content__toolCell__delete button")
+          .filter(this.isCurrentArray)
+          .prop("disabled", true);
+        this.element
+          .find(".dcpArray__content__toolCell__delete")
+          .filter(this.isCurrentArray)
+          .each(function dcpArray_initLine() {
+            if (!$(this).data("originalTitle")) {
+              $(this).data("originalTitle", $(this).attr("title"));
+            }
+            // reset tooltip
+            $(this)
+              .tooltip("hide")
+              .data("bs.tooltip", null);
 
-          $(this).attr(
-            "title",
-            Mustache.render(currentWidget.options.labels.limitMinMessage || "", {
-              limit: currentWidget.options.renderOptions.rowMinLimit
-            })
-          );
-        });
+            $(this).attr(
+              "title",
+              Mustache.render(currentWidget.options.labels.limitMinMessage || "", {
+                limit: currentWidget.options.renderOptions.rowMinLimit
+              })
+            );
+          });
       } else {
-        this.element.find(".dcpArray__content__toolCell__delete button").prop("disabled", false);
-        this.element.find(".dcpArray__content__toolCell__delete").each(function dcpArray_initLine() {
-          // reset tooltip
-          $(this)
-            .tooltip("hide")
-            .data("bs.tooltip", null);
-          $(this).attr("title", $(this).data("originalTitle"));
-        });
+        this.element
+          .find(".dcpArray__content__toolCell__delete button")
+          .filter(this.isCurrentArray)
+          .prop("disabled", false);
+        this.element
+          .find(".dcpArray__content__toolCell__delete")
+          .filter(this.isCurrentArray)
+          .each(function dcpArray_initLine() {
+            // reset tooltip
+            $(this)
+              .tooltip("hide")
+              .data("bs.tooltip", null);
+            $(this).attr("title", $(this).data("originalTitle"));
+          });
       }
     }
   },
@@ -710,7 +810,10 @@ $.widget("dcp.dcpArray", {
 
   removeLine: function dcpArrayremoveLine(line, options) {
     options = options || {};
-    this.element.find("[data-line=" + line + "]").remove();
+    this.element
+      .find("[data-line=" + line + "]")
+      .filter(this.isCurrentArray)
+      .remove();
     this._indexLine();
     if (options.silent !== true) {
       this._trigger("lineRemoved", {}, { line: line });
@@ -720,7 +823,7 @@ $.widget("dcp.dcpArray", {
   },
 
   _destroy: function dcpArray_destroy() {
-    var tbody = this.element.find("tbody");
+    var tbody = this.element.find("tbody").filter(this.isCurrentArray);
     if (tbody && tbody.data("kendoDropTargetArea")) {
       tbody.data("kendoDropTargetArea").destroy();
     }
@@ -733,18 +836,27 @@ $.widget("dcp.dcpArray", {
 
   _indexLine: function dcpArray_indexLine() {
     var i = 0;
-    this.element.find(".dcpArray__content__line").each(function numeroteLine() {
-      $(this)
-        .attr("data-line", i)
-        .data("line", i);
-      i += 1;
-    });
+    this.element
+      .find(".dcpArray__content__line")
+      .filter(this.isCurrentArray)
+      .each(function numeroteLine() {
+        $(this)
+          .attr("data-line", i)
+          .data("line", i);
+        i += 1;
+      });
     this.options.nbLines = i;
   },
 
   _unSelectLines: function dcpArray_unSelectLines() {
-    this.element.find(".dcpArray__content__toolCell__check .fa-check").hide();
-    this.element.find(".dcpArray__content__line--selected").removeClass("dcpArray__content__line--selected active");
+    this.element
+      .find(".dcpArray__content__toolCell__check .fa-check")
+      .filter(this.isCurrentArray)
+      .hide();
+    this.element
+      .find(".dcpArray__content__line--selected")
+      .filter(this.isCurrentArray)
+      .removeClass("dcpArray__content__line--selected active");
   },
   /**
    * Display tooltip an error message
@@ -753,7 +865,7 @@ $.widget("dcp.dcpArray", {
    */
   setError: function dcpArray_SetError(message) {
     var scope = this;
-    var $target = this.element.find(".dcpArray__content table.table");
+    var $target = this.element.find(".dcpArray__content table.table").filter(this.isCurrentArray);
     if (message && _.isString(message)) {
       $target
         .tooltip({
@@ -813,6 +925,14 @@ $.widget("dcp.dcpArray", {
       return window.dcp.templates.default[key];
     }
     throw new Error("Unknown template  " + key + "/" + this.options.type);
+  },
+
+  _isCurrentArray: function dcpArray_parametricCurrentArray(viewCid) {
+    return function dcpArray_isCurrentArray(index, element) {
+      return $(element)
+        .closest(".dcpArray")
+        .is(`[data-viewid="${viewCid}"]`);
+    };
   },
 
   getType: function dcpArray_getType() {

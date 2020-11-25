@@ -49,6 +49,8 @@ export default Backbone.View.extend({
             event = { prevent: false },
             promisesColumn = [];
 
+          data.viewCid = this.cid;
+
           //Trigger the beforeRender event, and cancel display if asked
           currentView.model.trigger("beforeRender", event, {
             model: currentView.model,
@@ -227,6 +229,10 @@ export default Backbone.View.extend({
   },
 
   updateValue: function vArray_UpdateValue(event, options) {
+    if (!this._checkEvent(event.target)) {
+      //this event is for another array
+      return;
+    }
     var attributeModel = this.model.get("content").get(options.id);
     if (!attributeModel) {
       throw new Error("Unknown attribute " + options.id);
@@ -286,6 +292,10 @@ export default Backbone.View.extend({
   },
 
   removeLine: function vArray_removeLine(event, options) {
+    if (!this._checkEvent(event.target)) {
+      //this event is for another array
+      return;
+    }
     this.model.get("content").each(function vArray_removeLine(currentContent) {
       currentContent.removeIndexValue(options.line);
     });
@@ -301,6 +311,10 @@ export default Backbone.View.extend({
   },
 
   addLine: function vArray_AddLine(event, options) {
+    if (!this._checkEvent(event.target)) {
+      //this event is for another array
+      return;
+    }
     var currentArrayView = this,
       customView = null;
     var allPromiseAttributes = [];
@@ -367,6 +381,10 @@ export default Backbone.View.extend({
   },
 
   moveLine: function vArray_moveLine(event, options) {
+    if (!this._checkEvent(event.target)) {
+      //this event is for another array
+      return;
+    }
     this.model.get("content").each(function vArray_getMoveLineContent(currentContent) {
       currentContent.moveIndexValue(options.fromLine, options.toLine);
     });
@@ -413,7 +431,6 @@ export default Backbone.View.extend({
    */
   remove: function vArray_remove() {
     $(window).off(".v" + this.model.cid);
-
     return Backbone.View.prototype.remove.call(this);
   },
   _identifyView: function vArray_identifyView(event) {
@@ -422,6 +439,10 @@ export default Backbone.View.extend({
     event.elements = event.elements.add(this.$el);
   },
   externalLinkSelected: function vArrayExternalLinkSelected(event, options) {
+    if (!this._checkEvent(event.target)) {
+      //this event is for another array
+      return;
+    }
     var documentModel = this.model.getDocumentModel();
     options.attrid = this.model.id;
     this.model.trigger("internalLinkSelected", event, options);
@@ -435,5 +456,11 @@ export default Backbone.View.extend({
         return this;
       }
     );
+  },
+
+  _checkEvent: function vArray_checkEvent(currentElement) {
+    return $(currentElement)
+      .closest(".dcpArray")
+      .is(`[data-viewid="${this.cid}"]`);
   }
 });

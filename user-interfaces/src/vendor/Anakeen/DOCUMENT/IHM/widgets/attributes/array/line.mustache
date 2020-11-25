@@ -1,8 +1,8 @@
-<tr class="dcpArray__content__line" data-attrid="{{id}}" data-line="{{lineNumber}}">
+<tr class="dcpArray__content__line dcpArray__content__line--{{viewCid}}" data-attrid="{{id}}" data-line="{{lineNumber}}" data-viewid="{{viewCid}}">
     {{#tools}}
     <td class="dcpArray__toolCell">
         <div class="dcpArray__content__toolCell">
-            <span title="{{renderOptions.translatedLabels.dragLine}}" class="dcpArray__content__toolCell__dragDrop">
+            <span title="{{renderOptions.translatedLabels.dragLine}}" class="dcpArray__content__toolCell__dragDrop--{{viewCid}}">
                 <button class="btn btn-default btn-xs" tabindex="-1"><span class="fa fa-sort"></span></button>
             </span>
             <span title="{{renderOptions.translatedLabels.selectLine}}" class="dcpArray__content__toolCell__check">
@@ -18,6 +18,6 @@
     </td>
     {{/tools}}
 {{#content}}
-    <td data-attrid="{{id}}" data-heading="{{label}}"><div class="dcpAttribute__content dcpAttribute__content--{{type}} dcpArray__content__cell dcpArray__content__cell--{{type}}" data-attrid="{{id}}" data-dcpattribute_content/></td>
+    <td data-attrid="{{id}}" data-heading="{{label}}" data-viewid="{{viewCid}}"><div class="dcpAttribute__content dcpAttribute__content--{{type}} dcpArray__content__cell dcpArray__content__cell--{{type}}" data-attrid="{{id}}" data-dcpattribute_content/></td>
 {{/content}}
 </tr>

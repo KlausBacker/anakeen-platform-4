@@ -1,4 +1,4 @@
-<div class="card-body dcpArray__content dcpArray__content--open" data-attrid="{{id}}">
+<div class="card-body dcpArray__content dcpArray__content--open" data-attrid="{{id}}" data-viewid="{{viewCid}}">
     <table class="dcpArray__table">
         <thead >
         <tr>
@@ -17,14 +17,16 @@
     <div class="dcpArray__tools">
         {{#tools}}
         <div class="dcpArray__button dcpArray__button--add" title="[[#i18n]]ddui::Add new line[[/i18n]]">
-        <button type="button" class="dcpArray__add" tabindex="-1">
-            <span class="fa fa-plus"></span>
-        </button></div>
+          <button type="button" class="dcpArray__add" tabindex="-1">
+              <span class="fa fa-plus"></span>
+          </button>
+        </div>
         <div class="dcpArray__button dcpArray__button--copy" title="[[#i18n]]ddui::Duplicate selected row[[/i18n]]">
-        <button disabled="disabled" type="button"
-                class="dcpArray__copy" tabindex="-1">
-            <span class="fa fa-files-o"></span>
-        </button></div>
+          <button disabled="disabled" type="button"
+                  class="dcpArray__copy" tabindex="-1">
+              <span class="fa fa-files-o"></span>
+          </button>
+        </div>
         {{/tools}}
     </div>
 </div>
