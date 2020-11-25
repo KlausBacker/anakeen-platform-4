@@ -3,6 +3,7 @@ import IConfigurationCriteria from "@anakeen/user-interfaces/components/src/AnkS
 import { ISmartFormFieldSet } from "@anakeen/user-interfaces/components/src/AnkSmartForm/ISmartForm";
 import { SmartCriteriaFulltextKind } from "./Types/SmartCriteriaFulltextKind";
 import ISmartCriteriaConfiguration from "@anakeen/user-interfaces/components/src/AnkSmartCriteria/Types/ISmartCriteriaConfiguration";
+import SmartCriteriaUtils from "@anakeen/user-interfaces/components/src/AnkSmartCriteria/SmartCriteriaUtils";
 
 export default class SmartFormFulltextConfigurationBuilder extends SmartFormConfigurationBuilder {
   constructor(
@@ -13,7 +14,6 @@ export default class SmartFormFulltextConfigurationBuilder extends SmartFormConf
     super(smartCriteriaConfiguration, translations, responsiveColumnns);
   }
 
-
   protected buildCustomCriteriaTemplate(criteria: IConfigurationCriteria, index: number): ISmartFormFieldSet {
     // @ts-ignore
     if (criteria.kind === SmartCriteriaFulltextKind.FULLTEXT) {
@@ -21,18 +21,18 @@ export default class SmartFormFulltextConfigurationBuilder extends SmartFormConf
         content: [
           {
             label: criteria.label,
-            name: SmartFormConfigurationBuilder.getValueName(index),
+            name: SmartCriteriaUtils.getValueName(index),
             type: "text"
           }
         ],
         type: "frame",
         name: `sc_criteria_${index}`
       };
-      this.smartFormConfiguration.renderOptions["fields"][SmartFormConfigurationBuilder.getValueName(index)] = {
+      this.smartFormConfiguration.renderOptions["fields"][SmartCriteriaUtils.getValueName(index)] = {
         displayDeleteButton: false
       };
       if (criteria.default) {
-        this.smartFormConfiguration.values[SmartFormConfigurationBuilder.getValueName(index)] = criteria.default.value;
+        this.smartFormConfiguration.values[SmartCriteriaUtils.getValueName(index)] = criteria.default.value;
       }
       return formTemplate;
     }
