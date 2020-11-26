@@ -20,6 +20,7 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
     {
         $this->dom = new \DOMDocument();
         $this->dom->load($xmlFile);
+        $this->trimXmlWhiteSpaces($this->dom);
 
         $data = $this->importDataElements();
         $this->recordSmartData($data);
@@ -30,6 +31,7 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
     {
         $this->dom = new \DOMDocument();
         $this->dom->load($xmlFile);
+        $this->trimXmlWhiteSpaces($this->dom);
 
         $data = $this->importStructureRender();
         $this->recordSmartData($data);
