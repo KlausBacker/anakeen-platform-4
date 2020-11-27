@@ -66,6 +66,7 @@ class ReportEditRender extends SearchEditRender
         \SmartStructure\Mask $mask = null
     ): RenderAttributeVisibilities {
         $vis = parent::getVisibilities($document, $mask);
+        $vis->setVisibility(myAttr::rep_idcols, RenderAttributeVisibilities::HiddenVisibility);
         $vis->setVisibility(myAttr::rep_displayoption, RenderAttributeVisibilities::HiddenVisibility);
         $vis->setVisibility(myAttr::rep_colors, RenderAttributeVisibilities::HiddenVisibility);
         return $vis;
