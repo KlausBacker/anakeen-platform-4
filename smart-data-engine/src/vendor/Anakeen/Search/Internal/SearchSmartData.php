@@ -1459,6 +1459,7 @@ class SearchSmartData
                 );
                 break;
 
+            case 'account':
             case 'docid':
                 /*
                  * No need to inject anything, just remap the docid attribute
