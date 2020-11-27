@@ -48,12 +48,10 @@ class FilterMatch implements ElementSearchFilter
     public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
         if (!empty($this->searchPattern)) {
-            //("id = dochisto(id)");
             $search->join(sprintf("id = %s(docid)", $this->dbDomain->getTableName()));
 
             $search->addFilter(sprintf(
-                "to_tsquery('%s', '%s') @@ %s.v",
-                "simple",
+                "'%s' @@ %s.v",
                 pg_escape_string($this->getPattern()),
                 $this->dbDomain->getTableName()
             ));
