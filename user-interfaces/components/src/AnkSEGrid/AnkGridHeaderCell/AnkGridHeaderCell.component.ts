@@ -3,6 +3,12 @@ import AnkGridFilter from "./AnkGridFilter/AnkGridFilter.vue";
 import AnkSmartElementGrid, { SmartGridFilter } from "../AnkSEGrid.component";
 import { Popup } from "@progress/kendo-vue-popup";
 import $ from "jquery";
+
+interface ISortableCompare {
+  compare: string;
+  initialDirection: string;
+}
+
 @Component({
   name: "ank-se-grid-header-cell",
   components: {
@@ -25,7 +31,7 @@ export default class GridHeaderCell extends Vue {
   @Prop({
     type: [Boolean, Object]
   })
-  public sortable!: boolean | object;
+  public sortable!: boolean | ISortableCompare;
 
   @Prop({
     type: Object,
@@ -107,6 +113,7 @@ export default class GridHeaderCell extends Vue {
 
   protected onSort(): void {
     let nextSortableDir: string;
+
     if (this.currentSort && this.currentSort.dir) {
       switch (this.currentSort.dir) {
         case "asc":
