@@ -1413,18 +1413,21 @@ export default class SmartElementController extends AnakeenController.BusEvents.
       if (this._options.loading) {
         partials.loading = LoadingTemplate;
       }
-      this._element.append(
-        Mustache.render(
-          domTemplate,
-          {
-            msg: {
-              clickAction: i18n.___("Click to reload the document", "ddui"),
-              loadError: i18n.___("Unable to load try again", "ddui")
-            }
-          },
-          partials
-        )
+      const templateToRender = Mustache.render(
+        domTemplate,
+        {
+          msg: {
+            clickAction: i18n.___("Click to reload the document", "ddui"),
+            loadError: i18n.___("Unable to load try again", "ddui")
+          }
+        },
+        partials
       );
+      if ($se.length === 0) {
+        this._element.append(templateToRender);
+      } else {
+        $se.closest(".smart-element-wrapper").replaceWith(templateToRender);
+      }
       // Bind reload action in case of static error
       this._element.find(".dcpStaticErrorMessage .staticErrorReloadButton").on("click", () => {
         this._model.fetchDocument(this._getModelValue());
