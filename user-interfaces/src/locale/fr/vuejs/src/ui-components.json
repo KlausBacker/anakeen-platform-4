@@ -75,5 +75,7 @@
   "gridPager.of {0}": "sur {0}",
   "SmartFormConfigurationBuilder.And": "et",
   "smartCriteria.Search": "Rechercher",
-  "gridReloadButton.Tooltip": "Actualiser les données"
+  "gridReloadButton.Tooltip": "Actualiser les données",
+  "Logout.Confirm": "Êtes-vous sûr de vouloir vous déconnecter ?",
+  "Logout.modifications": "a des modifications non sauvegardées"
 }
