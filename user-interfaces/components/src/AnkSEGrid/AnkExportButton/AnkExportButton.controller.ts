@@ -59,6 +59,12 @@ export default class GridExportButtonController extends Mixins(I18nMixin) {
         select: e => this.onExportActionMenuItemClick(e)
       })
       .data("kendoMenu");
+    this.setupMenus();
+    this.gridComponent.$on("dataBound", data => {
+      this.computeTotalExport(data);
+    });
+    this.gridComponent.$on("beforePollingGridExport", () => this.displayExportPendingStatus(false));
+    this.gridComponent.$on("exportError", this.displayExportErrorStatus);
   }
 
   public export(): void {
@@ -66,18 +72,6 @@ export default class GridExportButtonController extends Mixins(I18nMixin) {
   }
   public get exportTitle(): string {
     return this.title === "" ? (this.translations.title as string) : this.title;
-  }
-  @Watch("gridComponent")
-  public watchGridComponent(newValue): void {
-    this.gridComponent = newValue;
-    this.setupMenus();
-    this.$on("dataBound", data => {
-      this.computeTotalExport(data);
-    });
-    // this.gridComponent.kendoGrid.bind("dataBound", () => this.computeTotalExport());
-    // this.gridComponent.kendoGrid.bind("change", () => this.computeTotalExport());
-    this.gridComponent.$on("beforePollingGridExport", () => this.displayExportPendingStatus(false));
-    this.gridComponent.$on("exportError", this.displayExportErrorStatus);
   }
 
   public get translations(): { [key: string]: VueI18n.TranslateResult } {
@@ -231,7 +225,7 @@ export default class GridExportButtonController extends Mixins(I18nMixin) {
 
   private computeTotalExport(data): void {
     const grid = data;
-    const selectedRows = grid.selectedKeyNames();
+    const selectedRows = []; //grid.selectedKeyNames();
     const countTotals = grid.currentPage.total;
     let countRows = countTotals;
     if (!this.gridComponent.isFullSelectionState) {

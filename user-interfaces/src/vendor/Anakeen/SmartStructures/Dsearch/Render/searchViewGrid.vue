@@ -1,21 +1,21 @@
 <template>
   <ank-se-grid
+    ref="gridPreview"
     :collection="searchId"
     :pageable="{ pageSizes: [50, 100, 200], pageSize: 50 }"
-    defaultExpandable
+    default-expandable
     refresh
     controller="REPORT_GRID_CONTROLLER"
     class="dsearch-result-grid"
-    ref="gridPreview"
     @rowActionClick="onRowClick"
   >
     <template v-slot:gridHeader="{ gridComponent }">
       <ank-se-grid-export-button
-        :gridComponent="gridComponent"
         v-show="showProgress"
-        @exportDone="hideButton"
-        direction="left"
         ref="exportButton"
+        :grid-component="gridComponent"
+        direction="left"
+        @exportDone="hideButton"
       ></ank-se-grid-export-button>
     </template>
   </ank-se-grid>
@@ -25,14 +25,16 @@ import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSmartElementGr
 import AnkSEGridExportButton from "@anakeen/user-interfaces/components/lib/AnkSmartElementGridExportButton.esm";
 
 export default {
-  name: "search-ui-view",
+  name: "SearchUiView",
   components: {
     "ank-se-grid": AnkSEGrid,
     "ank-se-grid-export-button": AnkSEGridExportButton
   },
+  props: {
+    searchId: { type: String, default: "" }
+  },
   data() {
     return {
-      searchId: "",
       showProgress: false
     };
   },

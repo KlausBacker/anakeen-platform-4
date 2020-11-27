@@ -8,6 +8,11 @@ use Anakeen\Routes\Ui\Transaction\TransactionManager;
 class DefaultGridController implements SmartGridController
 {
     /**
+     * @var bool
+     */
+    public static $collectionInitialized=false;
+
+    /**
      * Get the Smart Element Grid configuration builder
      * @return SmartGridConfigBuilder
      */
@@ -177,9 +182,17 @@ class DefaultGridController implements SmartGridController
         $exportBuilder = new SmartGridExport();
         $gridConfig = static::getGridConfig($collectionId, $clientConfig);
         $columns = $gridConfig["columns"];
-        $contentBuilder = new SmartGridContentBuilder();
+        $contentBuilder = static::getContentBuilder();
+        if (isset($clientConfig["onlySelection"]) && $clientConfig["onlySelection"]) {
+            $exportBuilder->onlySelect = true;
+            $exportBuilder->selectedRows = isset($clientConfig["selectedRows"]) ? $clientConfig["selectedRows"] : [];
+        }
+
         if (isset($collectionId)) {
-            $contentBuilder->setCollection($collectionId);
+            if (!static::$collectionInitialized) {
+                $contentBuilder->setCollection($collectionId, $exportBuilder->selectedRows);
+                static::$collectionInitialized = true;
+            }
         }
         if (isset($clientConfig["pageable"]["pageSize"])) {
             $contentBuilder->setPageSize("ALL");
@@ -189,12 +202,8 @@ class DefaultGridController implements SmartGridController
                 $contentBuilder->addColumn($column);
             }
         }
-        $data = $contentBuilder->getContent();
         $exportBuilder->clientColumnsConfig = $columns;
-        if (isset($clientConfig["onlySelection"]) && $clientConfig["onlySelection"]) {
-            $exportBuilder->onlySelect = true;
-            $exportBuilder->selectedRows = isset($clientConfig["selectedRows"]) ? $clientConfig["selectedRows"] : [];
-        }
+
         $exportBuilder->unselectedRows = isset($clientConfig["unselectedRows"]) ? $clientConfig["unselectedRows"] : [];
         $transactionId = isset($clientConfig["transaction"]) ? $clientConfig["transaction"]["transactionId"] : null;
         if (isset($transactionId)) {
@@ -203,6 +212,7 @@ class DefaultGridController implements SmartGridController
                 $exception->setHttpStatus("400", "Transaction id missing");
                 throw $exception;
             }
+            $data = $contentBuilder->getContent();
             return TransactionManager::runTransaction(
                 $transactionId,
                 function ($tId) use ($response, $exportBuilder, $data) {

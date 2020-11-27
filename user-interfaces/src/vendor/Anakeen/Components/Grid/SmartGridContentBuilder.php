@@ -6,6 +6,7 @@ use Anakeen\Components\Grid\Exceptions\Exception;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
+use Anakeen\Search\Internal\SearchSmartData;
 use Anakeen\Search\SearchElements;
 use SmartStructure\Fields\Search;
 
@@ -72,13 +73,19 @@ class SmartGridContentBuilder implements SmartGridBuilder
      * @param mixed $collectionId - Identifier of the collection (structure name/id, folder or report id),
      * it could be 0 for searching in all Smart Elements, or -1 for searching in all Smart Structures
      *
+     * @param string[] $selectedIds
      * @return $this - the current instance
+     * @throws Exception
+     * @throws \Anakeen\Core\DocManager\Exception
+     * @throws \Anakeen\Database\Exception
+     * @throws \Anakeen\Search\Exception
      */
-    public function setCollection($collectionId)
+    public function setCollection($collectionId, $selectedIds = [])
     {
         if (is_numeric($collectionId)) {
             $collectionId = intval($collectionId);
         }
+
         if ($collectionId !== 0 && $collectionId !== -1) {
             $this->smartCollection = SEManager::getDocument($collectionId);
             if (!$this->smartCollection) {
@@ -111,7 +118,11 @@ class SmartGridContentBuilder implements SmartGridBuilder
                     }
                     $fromId = $this->smartCollection->getRawValue(Search::se_famid, 0);
                     $this->initSearch($fromId);
-                    $this->searchElements->useCollection($collectionId);
+                    if ($selectedIds) {
+                        $this->searchElements->addFilter(SearchSmartData::sqlcond($selectedIds, "id", true));
+                    } else {
+                        $this->searchElements->useCollection($collectionId);
+                    }
                     break;
             }
         } else {
@@ -144,7 +155,7 @@ class SmartGridContentBuilder implements SmartGridBuilder
         if (isset($order)) {
             $order .= ",id ASC";
         }
-        $this->searchElements->setOrder($order);
+        $this->searchElements->setOrder($order, $colId);
         return $this;
     }
 

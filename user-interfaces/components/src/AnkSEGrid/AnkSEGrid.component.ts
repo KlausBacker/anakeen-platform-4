@@ -1191,8 +1191,8 @@ export default class AnkSmartElementGrid extends Mixins(I18nMixin) {
     });
   }
 
-  protected async onSortChange(sortEvt): Promise<void> {
-    this.addSort(...sortEvt.sort);
+  protected onSortChange(sortEvt): Promise<void> {
+    return this.addSort(...sortEvt.sort);
   }
 
   protected async onPageChange(pagerEvt): Promise<void> {

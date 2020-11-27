@@ -47,10 +47,12 @@ export default function searchUIEventViewProcess(controller) {
             },
             activate: function windowActivated(arg) {
               const searchViewGrid = Vue.extend(SearchViewGrid);
-              const searchViewGridVue = new searchViewGrid({
-                el: arg.sender.element[0]
+              new searchViewGrid({
+                el: arg.sender.element[0],
+                propsData: {
+                  searchId: controller.getProperties().id.toString()
+                }
               });
-              searchViewGridVue.searchId = controller.getProperties().id.toString();
             },
             pinned: false,
             width: "90%",
