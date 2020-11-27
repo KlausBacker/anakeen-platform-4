@@ -21,8 +21,11 @@ export default {
         this.ssHasWorkflow = false;
       }
     },
-    ssName() {
+    ssName(newValue, oldValue) {
       this.selectedElement = null;
+      if (newValue !== oldValue && this.$refs.grid.currentFilter.filters) {
+        this.$refs.grid.currentFilter = { filters: [] };
+      }
     }
   },
   data() {
