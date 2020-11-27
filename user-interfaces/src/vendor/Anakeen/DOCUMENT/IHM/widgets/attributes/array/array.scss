@@ -26,9 +26,11 @@
     padding: 0.4rem 0.7rem;
   }
 }
+
 .dcpArray__head {
   background-color: $ank-ui-array-header-background;
 }
+
 .dcpArray__head__cell {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -63,7 +65,7 @@
   visibility: hidden;
 }
 
-.dcpArray__content__line--selected .dcpArray__content__toolCell__delete {
+.dcpArray__content__line--selected>.dcpArray__toolCell>.dcpArray__content__toolCell>.dcpArray__content__toolCell__delete {
   visibility: visible;
 }
 
@@ -116,7 +118,6 @@
 
 .dcpFrame__content .dcpArray__content {
   padding: 0;
-
   display: flex;
   flex-direction: column;
   overflow: auto;
