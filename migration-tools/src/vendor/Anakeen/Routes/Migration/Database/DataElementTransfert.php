@@ -167,6 +167,10 @@ class DataElementTransfert
             unset($propMapping["mail_template"]);
             unset($propMapping["mail_body"]);
         }
+        if ($structure->name === "IUSER") {
+            unset($propMapping["us_substitute_startdate"]);
+            unset($propMapping["us_substitute_enddate"]);
+        }
 
         if (strpos($structure->usefor, "W") !== false) {
             // Delete fall because not exists in 3.2
