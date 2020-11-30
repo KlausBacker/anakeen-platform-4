@@ -41,6 +41,23 @@ class Utils
         }
     }
 
+    public static function getForeignTableColumns($tableName)
+    {
+        $sql = sprintf("select ftrelid from pg_foreign_table where 'table_name=%s' = any(ftoptions)", "columns");
+        DbManager::query($sql, $succeed, true);
+
+        if (!$succeed) {
+            $sql = sprintf("IMPORT FOREIGN SCHEMA information_schema LIMIT TO (columns) FROM SERVER dynacase into dynacase;");
+            DbManager::query($sql);
+
+            print "$sql\n";
+        }
+
+        $sql=sprintf("select column_name from dynacase.columns where table_name = '%s' and table_schema='public'", pg_escape_string($tableName));
+        DbManager::query($sql, $columns, true);
+        return $columns;
+    }
+
     public static function wgetDynacase($url)
     {
         // create curl resource

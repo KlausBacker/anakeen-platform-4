@@ -98,12 +98,19 @@ class DataElementTransfert
         Utils::importForeignTable(sprintf("doc%d", $dynacaseId));
 
 
+        $dynacaseColumns=Utils::getForeignTableColumns("doc".$structure->id);
+
         $propMapping = static::getPropMapping();
         $fields = $structure->getNormalAttributes();
         foreach ($fields as $field) {
             if (in_array($field->type, ["action", "menu", "array"])) {
                 continue;
             }
+            if (!in_array($field->id, $dynacaseColumns)) {
+                print "ignore column {$field->id} \n";
+                continue;
+            }
+
             if (!$field->isMultiple()) {
                 $propMapping[$field->id] = $field->id;
             }
@@ -157,19 +164,6 @@ class DataElementTransfert
         }
         if ($structure->name === "CVDOC") {
             $propMapping["ba_desc"] = "cv_desc";
-            unset($propMapping["cv_primarymask"]);
-        }
-        if ($structure->name === "TIMER") {
-            unset($propMapping["tm_deltainterval"]);
-            unset($propMapping["tm_taskinterval"]);
-        }
-        if ($structure->name === "MAIL") {
-            unset($propMapping["mail_template"]);
-            unset($propMapping["mail_body"]);
-        }
-        if ($structure->name === "IUSER") {
-            unset($propMapping["us_substitute_startdate"]);
-            unset($propMapping["us_substitute_enddate"]);
         }
 
         if (strpos($structure->usefor, "W") !== false) {
