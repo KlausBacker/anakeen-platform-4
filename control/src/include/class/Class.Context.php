@@ -1019,10 +1019,15 @@ class Context extends ContextProperties
             $depsList[]=$module;
         }
 
-        foreach ($depsList as $mod) {
+        /*
+         * New elements will be added to $depsList in the loop, so we must use a `while`/`for` loop
+         * (instead of `foreach`) in order to iterate over the new elements that will be added.
+         */
+        for ($i = 0; $i < count($depsList); $i++) {
             /**
              * @var Module $mod
              */
+            $mod = $depsList[$i];
 
             if (!$this->installerMeetsModuleRequiredVersion($mod)) {
                 $this->errorMessage = sprintf("Module '%s' (%s) requires installer %s", $mod->name, $mod->version, $this->errorMessage);
