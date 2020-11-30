@@ -3,7 +3,6 @@ import { Component, Mixins, Prop } from "vue-property-decorator";
 import EventUtilsMixin from "../../mixins/AnkVueComponentMixin/EventUtilsMixin";
 import I18nMixin from "../../mixins/AnkVueComponentMixin/I18nMixin";
 import ReadyMixin from "../../mixins/AnkVueComponentMixin/ReadyMixin";
-import AnakeenGlobalController from "../AnkController";
 
 @Component({
   name: "ank-logout"
@@ -13,7 +12,7 @@ export default class LogoutComponent extends Mixins(EventUtilsMixin, ReadyMixin,
   @Prop({ type: Boolean, default: true }) public withCloseConfirmation;
   @Prop({ type: Boolean, default: true }) public autoDestroy;
 
-  public logout() {
+  public logout(): void {
     const event = this.$emitCancelableEvent("beforeLogout");
 
     if (event.isDefaultPrevented()) {
@@ -26,8 +25,9 @@ export default class LogoutComponent extends Mixins(EventUtilsMixin, ReadyMixin,
       kendo.ui.progress(kendo.jQuery("body"), true);
       //Unmount all the the Smart Element - to release the lock, before disconnection
       let defaultPromise = Promise.resolve();
-      if (this.autoDestroy) {
-        defaultPromise = AnakeenGlobalController.getControllers().reduce((acc, currentController) => {
+      //I do not use the npm controller here because, there is not necesseraly some SE in the page
+      if (window.ank && window.ank.smartElement && window.ank.smartElement.globalController && this.autoDestroy) {
+        defaultPromise = window.ank.smartElement.globalController.getControllers().reduce((acc, currentController) => {
           return acc.then(() => {
             return currentController.tryToDestroy({ testDirty: false }).catch(err => {
               console.error("Unable to destroy", err, currentController);
@@ -49,7 +49,7 @@ export default class LogoutComponent extends Mixins(EventUtilsMixin, ReadyMixin,
     }
   }
 
-  public logoutRequest() {
+  public logoutRequest(): Promise<void> {
     return this.$http
       .delete("/components/user/session")
       .then(response => {
@@ -68,9 +68,13 @@ export default class LogoutComponent extends Mixins(EventUtilsMixin, ReadyMixin,
       });
   }
 
-  public checkUnSaveElement() {
+  public checkUnSaveElement(): boolean | string {
     //Check the state of the current SE
-    const checkModified = AnakeenGlobalController.getControllers().reduce((acc, currentController) => {
+    //Check if the global controller is here, if not there is no SE so everything is good
+    if (!(window.ank && window.ank.smartElement && window.ank.smartElement.globalController)) {
+      return true;
+    }
+    const checkModified = window.ank.smartElement.globalController.getControllers().reduce((acc, currentController) => {
       if (currentController.getProperty("isModified")) {
         acc += `\n ${currentController.getProperty("title")} ${this.translations.modifications}`;
       }
@@ -84,15 +88,15 @@ export default class LogoutComponent extends Mixins(EventUtilsMixin, ReadyMixin,
     return true;
   }
 
-  public get translations() {
+  public get translations(): { title: string; logout: string; modifications: string } {
     return {
-      title: this.$t("Logout.Logout"),
-      logout: this.$t("Logout.Confirm"),
-      modifications: this.$t("Logout.modifications")
+      title: this.$t("Logout.Logout") as string,
+      logout: this.$t("Logout.Confirm") as string,
+      modifications: this.$t("Logout.modifications") as string
     };
   }
 
-  public mounted() {
+  public mounted(): void {
     this._enableReady();
   }
 }
