@@ -62,4 +62,12 @@
             </tst_desc>
         </tst_f_title>
     </tst_simple001>
+    <tst_simple001 name="TST_ESIMPLE_005">
+        <tst_f_title>
+            <tst_title>005 Test des mots-composés pour ne pas faire de sur-interprétation
+            </tst_title>
+            <tst_desc>Le sous-marin est jaune. Son code d'identification est s-ako.
+            </tst_desc>
+        </tst_f_title>
+    </tst_simple001>
 </documents>

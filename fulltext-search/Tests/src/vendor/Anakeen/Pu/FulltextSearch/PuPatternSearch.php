@@ -55,8 +55,14 @@ class PuPatternSearch extends FulltextSearchConfig
             ["testDomainSimple", 'rivière maroc', ["TST_ESIMPLE_004"]],
             ["testDomainSimple", '15 or 1993', ["TST_ESIMPLE_002", "TST_ESIMPLE_004"]],
             ["testDomainSimple", 'saumon -"espèces de poissons"', ["TST_ESIMPLE_001"]],
-            ["testDomainSimple", 'mar*', ["TST_ESIMPLE_001","TST_ESIMPLE_003", "TST_ESIMPLE_004"]],
-            ["testDomainSimple", 'mar* -truite -saumon', []],
+            ["testDomainSimple", 'mar*', ["TST_ESIMPLE_001","TST_ESIMPLE_003", "TST_ESIMPLE_004","TST_ESIMPLE_005"]],
+            ["testDomainSimple", 'mar* -truite -saumon', ["TST_ESIMPLE_005"]],
+            ["testDomainSimple", 'sous-marin', ["TST_ESIMPLE_005"]],
+            ["testDomainSimple", 's-ako', ["TST_ESIMPLE_005"]],
+            ["testDomainSimple", 'composé', ["TST_ESIMPLE_005"]],
+            ["testDomainSimple", '"mot composé pour"', ["TST_ESIMPLE_005"]],
+            ["testDomainSimple", '"mot composé pour" sur-interprétation', ["TST_ESIMPLE_005"]],
+            ["testDomainSimple", 'saumon -sur-interprétation', ["TST_ESIMPLE_001","TST_ESIMPLE_003"]],
         );
     }
 
