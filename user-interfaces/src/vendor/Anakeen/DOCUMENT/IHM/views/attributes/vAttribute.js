@@ -343,6 +343,8 @@ export default Backbone.View.extend({
             //check if the value is modified
             const currentValue = attrModel.getValue();
             if (
+              currentValue !== null &&
+              currentValue !== undefined &&
               currentValue[valueIndex] &&
               currentValue[valueIndex].value &&
               currentValue[valueIndex].displayValue &&
