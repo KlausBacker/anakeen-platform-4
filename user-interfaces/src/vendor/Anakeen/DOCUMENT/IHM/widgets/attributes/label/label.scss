@@ -1,7 +1,5 @@
 .dcpAttribute__label label {
   font-weight: normal;
-  // overflow: hidden;
-  // text-overflow: ellipsis;
   margin-bottom: 0;
 }
 .dcpDocument--view {
@@ -20,25 +18,17 @@
   .dcpAttribute--needed .dcpAttribute__label {
     font-weight: bold;
   }
-  .dcpAttribute__label:not(.dcpAttribute--needed):after {
-    content: ":";
+  .dcpAttribute--needed .dcpArray__label.dcpAttribute__left.dcpAttribute__labelPosition--left label,
+  .dcpAttribute--needed .dcpAttribute__label label:after {
+    content: "*\0000a0:";
     padding-left: 0.3em;
     padding-right: 0.6em;
     vertical-align: top;
-  }
-  .dcpAttribute--needed .dcpAttribute__label:after {
-    content: "*\0000a0:";
-    padding-left: 0.1em;
   }
 }
 
 .dcpAttribute__label.has-error {
   color: $error;
-}
-
-.dcpDocument--edit .dcpAttribute--visibility--W .dcpAttribute__label,
-.dcpDocument--edit .dcpAttribute--visibility--O .dcpAttribute__label {
-  //padding-top:($padding-base-vertical );
 }
 
 .dcpLabel__help__link--selected {
