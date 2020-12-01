@@ -6900,14 +6900,19 @@ create unique index i_docir on doc(initid, revision);";
         // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
         foreach ($listattr as $k => $v) {
             $value = chop($this->getRawValue($v->id));
+
+            $fieldKey=strtoupper($v->id);
             //------------------------------
             // Set the table value elements
-            $this->lay->Set("S_" . strtoupper($v->id), ($value != ""));
             // don't see  non abstract if not
             if (FieldAccessManager::hasReadAccess($this, $v) === false || (($abstract) && (!$v->isInAbstract))) {
-                $this->lay->Set("V_" . strtoupper($v->id), "");
-                $this->lay->Set("L_" . strtoupper($v->id), "");
+                $this->lay->set($fieldKey, "");
+                $this->lay->set("V_" . $fieldKey, "");
+                $this->lay->set("L_" . $fieldKey, "");
+                $this->lay->Set("S_" . $fieldKey, false);
             } else {
+                $this->lay->set($fieldKey, $value);
+                $this->lay->Set("S_" . $fieldKey, ($value != ""));
                 if ($target == "ooo") {
                     if ($v->type == "array") {
                         $tva = $this->getArrayRawValues($v->id);
@@ -6950,7 +6955,7 @@ create unique index i_docir on doc(initid, revision);";
                         if ($v->isMultiple()) {
                             $ovalue = str_replace("<text:tab/>", ', ', $ovalue);
                         }
-                        $this->lay->Set("V_" . strtoupper($v->id), $ovalue);
+                        $this->lay->Set("V_" . $fieldKey, $ovalue);
                         if ((!$v->inArray()) && ($v->getOption("multiple") == "yes")) {
                             $values = $this->getMultipleRawValues($v->id);
                             $ovalues = array();
@@ -6962,19 +6967,19 @@ create unique index i_docir on doc(initid, revision);";
                                 );
                             }
                             $v->setOption("multiple", "yes");
-                            $this->lay->setColumn("V_" . strtoupper($v->id), $ovalues);
+                            $this->lay->setColumn("V_" . $fieldKey, $ovalues);
                         }
                     }
                 } else {
-                    $this->lay->Set("V_" . strtoupper($v->id), $this->GetHtmlValue($v, $value, $target, $ulink));
+                    $this->lay->Set("V_" . $fieldKey, $this->GetHtmlValue($v, $value, $target, $ulink));
                 }
-                $this->lay->Set("L_" . strtoupper($v->id), $v->getLabel());
+                $this->lay->eSet("L_" . $fieldKey, $v->getLabel());
             }
         }
         $listattr = $this->GetFieldAttributes();
         // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
         foreach ($listattr as $k => $v) {
-            $this->lay->Set("L_" . strtoupper($v->id), $v->getLabel());
+            $this->lay->eSet("L_" . $fieldKey, $v->getLabel());
         }
     }
 
@@ -6993,7 +6998,28 @@ create unique index i_docir on doc(initid, revision);";
         /* @noinspection PhpUnusedParameterInspection */
         $abstract = false
     ) {
-        foreach ($this->fields as $k => $v) {
+        $layoutFields=  [
+            "id",
+            "owner",
+            "title",
+            "revision",
+            "version",
+            "initid",
+            "fromid",
+            "doctype",
+            "locked",
+            "allocated",
+            "icon",
+            "usefor",
+            "cdate",
+            "mdate",
+            "state",
+            "wid",
+            "postitid",
+            "name",
+            "atags"
+        ];
+        foreach ($layoutFields as $v) {
             if ($target == 'ooo') {
                 $this->lay->Set(strtoupper($v), ($this->$v === null)
                     ? false
