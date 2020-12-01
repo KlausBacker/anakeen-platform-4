@@ -22,6 +22,7 @@ class SuiteUi
         $suite->addTestSuite(\Anakeen\Pu\TestSearchFamilies::class);
         $suite->addTestSuite(\Anakeen\Pu\TestImportCVDOC::class);
         $suite->addTestSuite(\Anakeen\Pu\TestDocumentView\TestTemplateMustache::class);
+        $suite->addTestSuite(\Anakeen\Pu\TestMailTemplate\TestMailTemplateExtraKeys::class);
 
         return $suite;
     }
