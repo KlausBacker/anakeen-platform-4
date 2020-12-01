@@ -102,14 +102,22 @@ class MailTemplateHooks extends \Anakeen\SmartElement
     }
 
     /**
-     * @param \Anakeen\Core\Internal\SmartElement $doc Document to use for complete mail
+     * @param \Anakeen\Core\Internal\SmartElement $smartElement Smart Element to use for complete mail
      * @param array $keys extra keys to complete mail body or subject
      *
      * @return \Anakeen\Mail\Message (return null if no recipients)
      * @throws \Anakeen\Exception
      */
-    public function getMailMessage(\Anakeen\Core\Internal\SmartElement &$doc, $keys = array())
+    public function getMailMessage(\Anakeen\Core\Internal\SmartElement &$smartElement, $keys = array())
     {
+        if ($smartElement instanceof IMailTemplateAdditionalKeys) {
+            // get extra keys from implemented interface
+            /** @noinspection PhpParamsInspection */
+            $extraKeys = $smartElement->getMailTemplateAdditionalKeys($this);
+            foreach ($extraKeys as $k => $v) {
+                $keys[$k] = $v;
+            }
+        }
         $this->keys = $keys;
 
         $message = new \Anakeen\Mail\Message();
@@ -133,11 +141,11 @@ class MailTemplateHooks extends \Anakeen\SmartElement
             );
         }
         $wdoc = null;
-        if ($doc->wid) {
+        if ($smartElement->wid) {
             /**
              * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
              */
-            $wdoc = SEManager::getDocument($doc->wid);
+            $wdoc = SEManager::getDocument($smartElement->wid);
         }
         $udoc = null;
         foreach ($tdest as $k => $v) {
@@ -151,13 +159,13 @@ class MailTemplateHooks extends \Anakeen\SmartElement
 
                 case 'A': // text attribute
                     $aid = strtok($v["tmail_recip"], " ");
-                    $err = $this->checkAttributeExistsInRelation($aid, SEManager::getRawDocument($doc->initid));
+                    $err = $this->checkAttributeExistsInRelation($aid, SEManager::getRawDocument($smartElement->initid));
                     if ($err) {
                         LogManager::error($err);
-                        $doc->addHistoryEntry($err);
+                        $smartElement->addHistoryEntry($err);
                         throw new \Anakeen\Exception($err);
                     }
-                    $mail = $doc->getRValue($aid);
+                    $mail = $smartElement->getRValue($aid);
                     break;
 
                 case 'WA': // workflow text attribute
@@ -175,12 +183,12 @@ class MailTemplateHooks extends \Anakeen\SmartElement
 
                 case 'E': // text parameter
                     $aid = strtok($v["tmail_recip"], " ");
-                    if (!$doc->getAttribute($aid)) {
+                    if (!$smartElement->getAttribute($aid)) {
                         LogManager::error(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
-                        $doc->addHistoryEntry(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
+                        $smartElement->addHistoryEntry(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
                         throw new \Anakeen\Exception(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
                     }
-                    $mail = $doc->getFamilyParameterValue($aid);
+                    $mail = $smartElement->getFamilyParameterValue($aid);
                     break;
 
                 case 'WE': // workflow text parameter
@@ -202,7 +210,7 @@ class MailTemplateHooks extends \Anakeen\SmartElement
                 case 'D': // user relations
                 case 'WD': // user relations
                     if ($type == 'D' || $type == 'DE') {
-                        $udoc = $doc;
+                        $udoc = $smartElement;
                     } elseif ($wdoc) {
                         $udoc = $wdoc;
                     }
@@ -213,7 +221,7 @@ class MailTemplateHooks extends \Anakeen\SmartElement
                             $udoc->getParamAttributes()
                         )) {
                             LogManager::error(sprintf(_("Send mail error : Attribute %s not found"), $aid));
-                            $doc->addHistoryEntry(sprintf(_("Send mail error : Attribute %s not found"), $aid));
+                            $smartElement->addHistoryEntry(sprintf(_("Send mail error : Attribute %s not found"), $aid));
                             throw new \Anakeen\Exception(sprintf(_("Send mail error : Attribute %s not found"), $aid));
                         }
                         if ($type == 'DE') {
@@ -267,7 +275,7 @@ class MailTemplateHooks extends \Anakeen\SmartElement
                     $mail = \Anakeen\Core\ContextManager::getParameterValue($ns, $pvalue);
                     if (!$mail) {
                         LogManager::error(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
-                        $doc->addHistoryEntry(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
+                        $smartElement->addHistoryEntry(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
                         throw new \Anakeen\Exception(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
                     }
                     break;
@@ -287,7 +295,7 @@ class MailTemplateHooks extends \Anakeen\SmartElement
                     if (!is_object($recipientDoc) || !$recipientDoc->isAlive()) {
                         $err = sprintf(_("Send mail error: recipient document '%s' does not exists."), $recipDocId);
                         LogManager::error($err);
-                        $doc->addHistoryEntry($err);
+                        $smartElement->addHistoryEntry($err);
                         throw new \Anakeen\Exception($err);
                     }
                     if (!is_a($recipientDoc, IMailRecipient::class)) {
@@ -296,7 +304,7 @@ class MailTemplateHooks extends \Anakeen\SmartElement
                             $recipDocId
                         );
                         LogManager::error($err);
-                        $doc->addHistoryEntry($err);
+                        $smartElement->addHistoryEntry($err);
                         throw new \Anakeen\Exception($err);
                     }
                     $mail = $recipientDoc->getMail();
@@ -306,7 +314,7 @@ class MailTemplateHooks extends \Anakeen\SmartElement
                 $dest[$toccbcc][] = str_replace(array("\n", "\r"), array(",", ""), $mail);
             }
         }
-        $subject = $this->generateMailInstance($doc, $this->getRawValue("tmail_subject"));
+        $subject = $this->generateMailInstance($smartElement, $this->getRawValue("tmail_subject"));
         $subject = str_replace(array(
             "\n",
             "\r"
@@ -314,7 +322,7 @@ class MailTemplateHooks extends \Anakeen\SmartElement
             " ",
             " "
         ), html_entity_decode($subject, ENT_COMPAT, "UTF-8"));
-        $pfout = $this->generateMailInstance($doc, $this->getRawValue("tmail_body"), $this->getAttribute("tmail_body"));
+        $pfout = $this->generateMailInstance($smartElement, $this->getRawValue("tmail_body"), $this->getAttribute("tmail_body"));
         // delete empty address
         $ftMatch = function ($v) {
             return !preg_match("/^\s*$/", $v);
@@ -340,13 +348,13 @@ class MailTemplateHooks extends \Anakeen\SmartElement
         if ($from == "") {
             $err = sprintf("No from address for template \"%s\"", $this->getTitle());
             LogManager::error($err);
-            $doc->addHistoryEntry($err, \DocHisto::ERROR);
+            $smartElement->addHistoryEntry($err, \DocHisto::ERROR);
             $from = "-?-";
         }
 
         if (trim($to . $cc . $bcc) == "") {
             LogManager::info(sprintf(_("Send mail info : can't send mail %s: no sendee found"), $subject));
-            $doc->addHistoryEntry(
+            $smartElement->addHistoryEntry(
                 sprintf(_("Send mail info : can't send mail %s: no sendee found"), $subject),
                 \DocHisto::NOTICE
             );
@@ -382,14 +390,14 @@ class MailTemplateHooks extends \Anakeen\SmartElement
         //send attachment
         $ta = $this->getMultipleRawValues("tmail_attach");
         foreach ($ta as $k => $v) {
-            $err = $this->checkAttributeExistsInRelation(strtok($v, " "), SEManager::getRawDocument($doc->initid));
+            $err = $this->checkAttributeExistsInRelation(strtok($v, " "), SEManager::getRawDocument($smartElement->initid));
             if ($err) {
                 LogManager::error($err);
-                $doc->addHistoryEntry($err);
+                $smartElement->addHistoryEntry($err);
                 throw new \Anakeen\Exception($err);
             }
 
-            $vf = $doc->getRValue(strtok($v, " "));
+            $vf = $smartElement->getRValue(strtok($v, " "));
             if ($vf) {
                 $tvf = $this->rawValueToArray($vf, true);
 
@@ -558,7 +566,11 @@ class MailTemplateHooks extends \Anakeen\SmartElement
 
         $doc->lay->set("CORE_URLINDEX", ContextManager::getParameterValue(Settings::NsSde, "CORE_URLINDEX"));
         foreach ($this->keys as $k => $v) {
-            $doc->lay->set($k, $v);
+            if (is_array($v)) {
+                $doc->lay->setBlockdata($k, $v);
+            } else {
+                $doc->lay->set($k, $v);
+            }
         }
         $body = $doc->lay->gen();
         $body = preg_replace_callback(array(

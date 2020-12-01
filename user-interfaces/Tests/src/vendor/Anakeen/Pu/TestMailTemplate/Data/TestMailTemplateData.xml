@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documents>
+    <test_mail_template_document name="TST_MYKEY_01">
+        <tst_fr_ident>
+            <tst_title>Test 678-78</tst_title>
+            <tst_number1>678</tst_number1>
+            <tst_number2>-78</tst_number2>
+        </tst_fr_ident>
+    </test_mail_template_document>
+    <test_mail_template_document name="TST_MYKEY_02">
+        <tst_fr_ident>
+            <tst_title>Test 678-78</tst_title>
+            <tst_number1>-5</tst_number1>
+            <tst_number2>7</tst_number2>
+        </tst_fr_ident>
+    </test_mail_template_document>
+    <test_mail_template_document name="TST_MYKEY_03">
+        <tst_fr_ident>
+            <tst_title>Test 678-78</tst_title>
+            <tst_number1>-5</tst_number1>
+            <tst_number2>-71</tst_number2>
+        </tst_fr_ident>
+    </test_mail_template_document>
+</documents>

@@ -4,6 +4,7 @@ namespace Dcp\Pu;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
+use Anakeen\Core\Internal\ImportAnyConfiguration;
 use Anakeen\Core\Internal\ImportSmartConfiguration;
 use Anakeen\TestUnits\CoreTests;
 
@@ -214,12 +215,9 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
         if (!file_exists($realfile)) {
             throw new \Anakeen\Exception(sprintf("File '%s' not found in '%s'.", $file, $realfile));
         }
-        $oImport = new ImportSmartConfiguration();
-        $oImport->importAll($realfile);
-        $err = $oImport->getErrorMessage();
-        if ($err) {
-            throw new \Anakeen\Exception($err);
-        }
+        $oImport = new ImportAnyConfiguration();
+        $oImport->load($realfile);
+        $oImport->import();
     }
 
     /**
