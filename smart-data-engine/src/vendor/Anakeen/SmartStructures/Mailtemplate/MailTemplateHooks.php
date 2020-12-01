@@ -110,6 +110,17 @@ class MailTemplateHooks extends \Anakeen\SmartElement
      */
     public function getMailMessage(\Anakeen\Core\Internal\SmartElement &$doc, $keys = array())
     {
+        if ($doc instanceof IMailTemplateAdditionalKeys) {
+            // get extra keys from implemented interface
+            $extraKeys = $doc->getMailTemplateAdditionalKeys($this);
+            foreach ($extraKeys as $k => $v) {
+                // convert boolean value to string
+                $v = is_bool($v) ? json_encode($v): $v;
+                // combines elements of an array into a string
+                $v = is_array($v) ? implode(",", $v): $v;
+                $keys[$k] = $v;
+            }
+        }
         $this->keys = $keys;
 
         $message = new \Anakeen\Mail\Message();
