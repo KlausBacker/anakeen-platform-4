@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0">
+    <smart:structure-configuration name="TEST_MAIL_TEMPLATE_DOCUMENT" label="Test mail template document">
+        <smart:class>Anakeen\Pu\TestMailTemplate\Data\TestMailTemplateBehaviour</smart:class>
+        <smart:fields>
+            <smart:field-set name="tst_fr_ident" type="frame" access="ReadWrite" label="Identification">
+                <smart:field-text name="tst_title" is-title="true" access="ReadWrite" label="Title"/>
+                <smart:field-longtext name="tst_content" access="ReadWrite" label="Description" />
+                <smart:field-int name="tst_number1" access="ReadWrite"/>
+                <smart:field-int name="tst_number2" access="ReadWrite"/>
+            </smart:field-set>
+        </smart:fields>
+    </smart:structure-configuration>
+
+</smart:config>

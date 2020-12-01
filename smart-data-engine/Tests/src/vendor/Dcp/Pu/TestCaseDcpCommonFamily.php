@@ -17,6 +17,7 @@ class TestCaseDcpCommonFamily extends TestCaseDcp
         $this->logTest();
         DbManager::savePoint('testunit');
     }
+
     /**
      * return file to import before run test
      * could be an array if several files
@@ -35,12 +36,13 @@ class TestCaseDcpCommonFamily extends TestCaseDcp
     }
 
     public static function setUpBeforeClass(): void
- {
+    {
         parent::setUpBeforeClass();
 
         self::connectUser();
         self::beginTransaction();
         \Anakeen\Core\SEManager::cache()->clear();
+
 
         $cf = static::getCommonImportFile();
         if ($cf) {
@@ -54,11 +56,14 @@ class TestCaseDcpCommonFamily extends TestCaseDcp
                     self::importDocument($f);
                 } catch (\Anakeen\Exception $e) {
                     self::rollbackTransaction();
-                    throw new \Anakeen\Exception(sprintf("Exception while importing file '%s': %s", $f, $e->getMessage()));
+                    throw new \Anakeen\Exception(sprintf(
+                        "Exception while importing file '%s': %s",
+                        $f,
+                        $e->getMessage()
+                    ));
                 }
             }
         }
-
 
         $cf = static::getConfigFile();
         if ($cf) {

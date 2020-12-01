@@ -18,7 +18,6 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiShowEmpty/TstUiShowEmpty.structure.xml"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiShowEmpty/SeShowEmpty.xml"/>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiAllType/Templates/MyMessage.xml"/>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/TestUnits/Data/MyMessageExtraKey.xml"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEnum/TST_DDUI_ENUM__STRUCT.csv"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEnum/TST_DDUI_ENUM__CVDOC.xml"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEnum/TST_DDUI_ENUM__PARAM.csv"/>
@@ -50,7 +49,6 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiAllType/TstUiAllType.profil.xml"/>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiShowEmpty/TstUiShowEmpty.structure.xml"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiShowEmpty/SeShowEmpty.xml"/>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/TestUnits/Data/MyMessageExtraKey.xml"/>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiAllType/Templates/MyMessage.xml"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEnum/TST_DDUI_ENUM__STRUCT.csv"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEnum/TST_DDUI_ENUM__CVDOC.xml"/>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0"
+              xmlns:mail="https://platform.anakeen.com/4/schemas/mailtemplate/1.0">
+    <mail:mailtemplate name="MY_MESSAGE_EXTRA_KEY"
+                       label="Lien activé extra key" structure="TEST_MAIL_TEMPLATE_DOCUMENT">
+        <mail:recipients>
+            <mail:recipient dest="to">
+                <mail:address>bigboss@example.net</mail:address>
+            </mail:recipient>
+        </mail:recipients>
+        <mail:subject>Un sujet</mail:subject>
+        <mail:body content-type="html"><![CDATA[
+
+    <span name="number1">[V_TST_NUMBER1]</span>
+    <span name="number2">[V_TST_NUMBER2]</span>
+
+]]></mail:body>
+    </mail:mailtemplate>
+
+    <mail:mailtemplate name="MY_MESSAGE_EXTRA_KEY_IF1"
+                       label="Lien activé extra key" structure="TEST_MAIL_TEMPLATE_DOCUMENT">
+        <mail:recipients>
+            <mail:recipient dest="to">
+                <mail:address>bigboss@example.net</mail:address>
+            </mail:recipient>
+        </mail:recipients>
+        <mail:subject>Un sujet</mail:subject>
+        <mail:body content-type="html"><![CDATA[
+
+    [IF N1GT10] <span name="number1">[V_TST_NUMBER1]</span> [ENDIF N1GT10]
+    <span name="number2">[V_TST_NUMBER2]</span>
+
+]]></mail:body>
+    </mail:mailtemplate>
+
+    <mail:mailtemplate name="MY_MESSAGE_EXTRA_KEY_IF2"
+                       label="Lien activé extra key" structure="TEST_MAIL_TEMPLATE_DOCUMENT">
+        <mail:recipients>
+            <mail:recipient dest="to">
+                <mail:address>bigboss@example.net</mail:address>
+            </mail:recipient>
+        </mail:recipients>
+        <mail:subject>[Custom subject]</mail:subject>
+        <mail:body content-type="html"><![CDATA[
+
+    [IF N1GT10] <span name="number1">[V_TST_NUMBER1]</span> [ENDIF N1GT10]
+    [IF N2LT0] <span name="number2">[V_TST_NUMBER2]</span>[ENDIF N2LT0]
+
+]]></mail:body>
+    </mail:mailtemplate>
+
+    <mail:mailtemplate name="MY_MESSAGE_EXTRA_KEY_SUM"
+                       label="Lien activé extra key" structure="TEST_MAIL_TEMPLATE_DOCUMENT">
+        <mail:recipients>
+            <mail:recipient dest="to">
+                <mail:address>bigboss@example.net</mail:address>
+            </mail:recipient>
+        </mail:recipients>
+        <mail:subject>Un sujet [sumOf12]</mail:subject>
+        <mail:body content-type="html"><![CDATA[
+<div>
+    <span name="custom">[Custom words]</span>
+    <p>La somme <b>[sumOf12]</b>
+    </div>
+
+]]></mail:body>
+    </mail:mailtemplate>
+
+    <mail:mailtemplate name="MY_MESSAGE_EXTRA_KEY_BLOCK1"
+                       label="Lien activé extra key" structure="TEST_MAIL_TEMPLATE_DOCUMENT">
+        <mail:recipients>
+            <mail:recipient dest="to">
+                <mail:address>bigboss@example.net</mail:address>
+            </mail:recipient>
+        </mail:recipients>
+        <mail:subject>Un sujet</mail:subject>
+        <mail:body content-type="html">
+            <![CDATA[
+    <ul>[BLOCK TWOKEYS]<li>[keyone]</li>[ENDBLOCK TWOKEYS]</ul>
+]]>
+        </mail:body>
+    </mail:mailtemplate>
+
+</smart:config>
