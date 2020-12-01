@@ -3,7 +3,6 @@
 
 namespace Anakeen\SmartStructures\Mailtemplate;
 
-
 use SmartStructure\Mailtemplate;
 
 interface IMailTemplateAdditionalKeys

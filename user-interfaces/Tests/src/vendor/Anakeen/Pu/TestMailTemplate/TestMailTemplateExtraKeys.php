@@ -4,7 +4,6 @@
 namespace Anakeen\Pu\TestMailTemplate;
 
 use Anakeen\Core\SEManager;
-use Anakeen\SmartStructures\Mailtemplate\SentMessage;
 use Dcp\Pu\TestCaseDcpCommonFamily;
 
 class TestMailTemplateExtraKeys extends TestCaseDcpCommonFamily
