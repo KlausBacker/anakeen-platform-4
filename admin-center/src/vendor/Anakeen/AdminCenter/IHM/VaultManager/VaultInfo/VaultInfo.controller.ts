@@ -313,7 +313,7 @@ export default class VaultInfoController extends Mixins(AnkI18NMixin) {
     )}%</b>)`;
   }
 
-  public redrawGauche() {
+  public redrawGauge() {
     let gauge = this.$refs.logicalGauge;
     if (gauge) {
       // @ts-ignore
@@ -341,9 +341,9 @@ export default class VaultInfoController extends Mixins(AnkI18NMixin) {
   }
 
   public mounted() {
-    window.addEventListener("resize", this.redrawGauche);
+    window.addEventListener("resize", this.redrawGauge);
   }
   public beforeDestroy() {
-    window.removeEventListener("resize", this.redrawGauche);
+    window.removeEventListener("resize", this.redrawGauge);
   }
 }
