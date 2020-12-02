@@ -1,6 +1,6 @@
 {
   "name": "transformation-server",
-  "version": "1.4.3",
+  "version": "1.5.0",
   "main": "index.js",
   "author": "anakeen",
   "license": "SEE LICENSE IN LICENSE"

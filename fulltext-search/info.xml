@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="fulltext-search" version="1.0.4" vendor="Anakeen" license="https://ap4.anakeen.com/licence4.html">
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="fulltext-search" version="1.0.5" vendor="Anakeen" license="https://ap4.anakeen.com/licence4.html">
 
     <description>Fulltext search</description>
 
     <requires>
-        <module name="smart-data-engine" version="^4.0.0"/>
-        <module name="admin-center" version="^2.2.1"/>
-        <module name="user-interfaces" version="^3.1.1"/>
+        <module name="smart-data-engine" version="^5.0.0"/>
+        <module name="admin-center" version="^2.2.2"/>
+        <module name="user-interfaces" version="^3.2.0"/>
     </requires>
 
 
