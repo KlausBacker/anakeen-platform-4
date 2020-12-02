@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" vendor="Anakeen" license="https://ap4.anakeen.com/licence4.html" name="admin-center" version="2.2.1">
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" vendor="Anakeen" license="https://ap4.anakeen.com/licence4.html" name="admin-center" version="2.2.2">
     <description>Admin Center</description>
 
     <requires>
-        <module name="user-interfaces" version="^3.1.1"/>
-        <module name="anakeen-hub" version="^2.0.1"/>
+        <module name="user-interfaces" version="^3.2.0"/>
+        <module name="anakeen-hub" version="^2.0.2"/>
     </requires>
     <post-install>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/AdminCenter/Accounts/110-AdminCenterRoles.xml"/>

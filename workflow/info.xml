@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" license="https://ap4.anakeen.com/licence4.html" name="workflow" version="2.0.4" vendor="Anakeen">
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" license="https://ap4.anakeen.com/licence4.html" name="workflow" version="2.0.5" vendor="Anakeen">
     <description>Workflow Package</description>
 
     <requires>
-        <module name="security" version="^2.0.5"/>
-        <module name="user-interfaces" version="^3.1.1"/>
+        <module name="security" version="^2.0.6"/>
+        <module name="user-interfaces" version="^3.2.0"/>
     </requires>
 
     <post-install>
