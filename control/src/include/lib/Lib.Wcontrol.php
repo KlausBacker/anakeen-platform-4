@@ -527,8 +527,11 @@ function wcontrol_check_pgversion(Process & $process)
         pg_close($conn);
         return false;
     }
-    
-    $cmp = version_compare($row[0], $version);
+
+    $versions=explode(" ", $row[0]);
+    $serverVersion=$versions[0];
+
+    $cmp = version_compare($serverVersion, $version);
     
     $return = true;
     $op = "";
@@ -565,7 +568,7 @@ function wcontrol_check_pgversion(Process & $process)
     }
     
     if (!$return) {
-        $process->errorMessage = "Server version (currently " . $row[0] . ") must be " . $op . " " . $version . ".";
+        $process->errorMessage = sprintf("Postgresql server version is currently \"%s\" The Postgresql version must be %s \"%s\".", $serverVersion , $op, $version);
         pg_close($conn);
         return false;
     }
