@@ -271,7 +271,7 @@ SQL;
 
         if ($check) {
             $this->sqlRollbackPoint($point);
-            return ($report['new']['count'] == 0 && $report['missing']['count'] == 0);
+            return ($report['new']['count'] === 0 && $report['missing']['count'] === 0);
         } else {
             /* Reset content of docvaultindex with new content from tmp_docvaultindex */
             $this->verbose("[+] Committing docvaultindex...\n");

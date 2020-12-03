@@ -541,7 +541,7 @@ function wcontrol_check_pgversion(Process $process)
     switch ($predicate) {
         case 'eq':
             $op = "equal to";
-            $return = ($cmp == 0);
+            $return = ($cmp === 0);
             break;
 
         case 'ne':

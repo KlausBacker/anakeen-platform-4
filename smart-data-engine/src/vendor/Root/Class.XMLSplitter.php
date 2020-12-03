@@ -268,7 +268,7 @@ class XMLSplitter
      * @return void
      */
     /** @noinspection PhpUnusedPrivateMethodInspection */
-    private function characterData(&$parser, $data)
+    private function characterData($parser, $data)
     {
         if ($this->depth >= 1) {
             $this->printData($data);
@@ -284,7 +284,7 @@ class XMLSplitter
      * @return void
      */
     /** @noinspection PhpUnusedPrivateMethodInspection */
-    private function startElement(&$parser, $name, $attrs)
+    private function startElement($parser, $name, $attrs)
     {
         $node = array(
             'name' => $name,
@@ -308,7 +308,7 @@ class XMLSplitter
      * @return void
      */
     /** @noinspection PhpUnusedPrivateMethodInspection */
-    private function endElement(&$parser, $name)
+    private function endElement($parser, $name)
     {
         $node = array(
             'name' => $name

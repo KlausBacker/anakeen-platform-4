@@ -139,7 +139,7 @@ class CVDocHooks extends \SmartStructure\Base
     {
         $err = '';
         $sug = array();
-        if (strlen(trim($value)) == 0) {
+        if (strlen(trim($value)) === 0) {
             $err = _("Label must not be empty");
         }
         return array(

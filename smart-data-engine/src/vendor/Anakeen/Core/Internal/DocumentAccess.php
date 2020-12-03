@@ -413,7 +413,6 @@ class DocumentAccess
             $point = uniqid("dcp:docperm");
             DbManager::savePoint($point);
             if (!self::$globalDocPermLock) {
-                var_dump($this->document->initid);
                 DbManager::lockPoint($this->document->initid, "PERM");
             }
             // Need to lock to avoid constraint errors when concurrent docperm update

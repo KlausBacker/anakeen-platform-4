@@ -599,7 +599,7 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
     {
         $err = '';
         $sug = array();
-        if (($expiresd <> "") && (empty($daydelay)) {
+        if (($expiresd <> "") && empty($daydelay)) {
             $err = _("Expiration delay must not be 0 to keep expiration date");
         }
 

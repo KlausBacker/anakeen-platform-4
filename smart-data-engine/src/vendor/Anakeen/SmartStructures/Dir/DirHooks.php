@@ -519,7 +519,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
 
         $doc = SEManager::getDocument($docid);
         $docid = $doc->initid;
-        //if (count($qids) == 0) $err = sprintf(_("cannot delete link : link not found for doc %d in folder %d"),$docid, $this->initid);
+
         if ($err != "") {
             return $err;
         }

@@ -311,7 +311,7 @@ class ExportCollection
                      * @var \Anakeen\Core\SmartStructure $doc
                      */
                     $c++;
-                    if ($c % 20 == 0) {
+                    if ($c % 20 === 0) {
                         $this->recordStatus(sprintf(_("Record documents %d/%d"), $c, $rc));
                     }
                     $this->csvFamilyExport($doc);
@@ -323,7 +323,7 @@ class ExportCollection
         foreach ($dl as $doc) {
             if ($doc->doctype !== "C") {
                 $c++;
-                if ($c % 20 == 0) {
+                if ($c % 20 === 0) {
                     $this->recordStatus(sprintf(_("Record documents %d/%d"), $c, $rc));
                 }
                 $exportDoc->csvExport(
@@ -620,7 +620,7 @@ class ExportCollection
          */
         foreach ($dl as $doc) {
             $c++;
-            if ($c % 20 == 0) {
+            if ($c % 20 === 0) {
                 $this->recordStatus(sprintf(_("Record documents %d/%d"), $c, $rc));
             }
 

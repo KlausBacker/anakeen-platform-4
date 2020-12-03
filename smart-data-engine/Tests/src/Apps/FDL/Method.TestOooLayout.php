@@ -174,7 +174,7 @@ class __TST_OOOLAYOUT extends \Anakeen\Core\Internal\SmartElement
             $t[] = array(
                 "V_N1" => "Valeur $i",
                 "V_T1" => "Titre $i",
-                "ODD" => (($i % 2) == 0)
+                "ODD" => (($i % 2) === 0)
             );
         }
         

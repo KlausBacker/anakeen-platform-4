@@ -143,7 +143,7 @@ class IGroupHooks extends \SmartStructure\Group
                  */
                 $dfld = SEManager::getDocument($dfldid);
                 if ($dfld && $dfld->isAlive()) {
-                    if (count($tgid) == 0) {
+                    if (count($tgid) === 0) {
                         $dfld->insertDocument($this->initid);
                     } else {
                         $dfld->removeDocument($this->initid);
@@ -443,7 +443,7 @@ class IGroupHooks extends \SmartStructure\Group
             $u = $this->getAccount(true);
 
             $tu = $u->GetUsersGroupList($wid, true);
-            $tglogin = '';
+            $tglogin = [];
             if (count($tu) > 0) {
                 foreach ($tu as $uid => $tvu) {
                     if ($tvu["accounttype"] == \Anakeen\Core\Account::GROUP_TYPE) {
@@ -454,7 +454,7 @@ class IGroupHooks extends \SmartStructure\Group
                 }
             }
 
-            if (is_array($tglogin)) {
+            if (!empty($tglogin)) {
                 uasort($tglogin, "strcasecmp");
                 $this->setValue("GRP_IDGROUP", array_keys($tglogin));
             } else {

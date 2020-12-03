@@ -130,6 +130,7 @@ class DbObj
         if (self::$sqlStrict === null) {
             self::$sqlStrict = (\Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 'CORE_SQLSTRICT') != 'no');
         }
+
         // select with the id
         if (($id != '') || (is_array($id)) || (!isset($this->id_fields[0]))) {
             $ret = $this->select($id);

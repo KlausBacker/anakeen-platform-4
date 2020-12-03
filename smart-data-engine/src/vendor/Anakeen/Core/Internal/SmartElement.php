@@ -701,7 +701,8 @@ create unique index i_docir on doc(initid, revision);";
             }
             $this->attributes->attr = array();
         }
-        parent::__construct($dbaccess, $id, $res, $dbid);
+
+        parent::__construct($dbaccess, $id === 0 ? '' : $id, $res, $dbid);
     }
 
     /**
@@ -1397,8 +1398,8 @@ create unique index i_docir on doc(initid, revision);";
         if ($forceVerifyWithControl === false && !$this->isUnderControl()) {
             return "";
         } // no more test if disableAccessControl activated
-        if (($this->locked != 0) && (abs($this->locked) != ContextManager::getCurrentUser()->id)) {
-            $user = new \Anakeen\Core\Account("", abs($this->locked));
+        if (($this->locked != 0) && (abs(intval($this->locked)) != ContextManager::getCurrentUser()->id)) {
+            $user = new \Anakeen\Core\Account("", abs(intval($this->locked)));
             if ($this->locked < -1) {
                 $err = sprintf(
                     ___("Element %s is in edition by %s.", "sde"),
@@ -1504,7 +1505,7 @@ create unique index i_docir on doc(initid, revision);";
                 if ($this->locked == 1) {
                     return false;
                 }
-            } elseif (abs($this->locked) == ContextManager::getCurrentUser()->id) {
+            } elseif (abs(intval($this->locked)) == ContextManager::getCurrentUser()->id) {
                 return false;
             }
         }
@@ -1692,7 +1693,7 @@ create unique index i_docir on doc(initid, revision);";
         $dl = $s->getDocumentList();
         $t = array();
         foreach ($dl as $doc) {
-            $t[] = clone ($doc);
+            $t[] = clone($doc);
         }
         return ($t);
     }
@@ -1760,14 +1761,20 @@ create unique index i_docir on doc(initid, revision);";
      */
     final private function _destroy($nopost)
     {
-        $err = \Anakeen\Core\Internal\DbObj::delete($nopost);
-        if ($err == "") {
+        $err = "";
+        if (!empty($this->id)) {
+            $err = \Anakeen\Core\Internal\DbObj::delete($nopost);
+        }
+
+        if ($err === "") {
             $dvi = new \DocVaultIndex($this->dbaccess);
-            $err = $dvi->deleteDoc($this->id);
+            if ($this->id) {
+                $err = $dvi->deleteDoc($this->id);
+                $this->query(sprintf("delete from docfrom where id='%s'", pg_escape_string($this->id)));
+            }
             if ($this->name != '' && $this->locked != -1) {
                 $this->query(sprintf("delete from docname where name='%s'", pg_escape_string($this->name)));
             }
-            $this->query(sprintf("delete from docfrom where id='%s'", pg_escape_string($this->id)));
         }
         return $err;
     }
@@ -3121,10 +3128,10 @@ create unique index i_docir on doc(initid, revision);";
      */
     public function setColumnValue($idAttr, array $values)
     {
-        $this->_setValueNeedCompleteArray=false;
-        $err=$this->setValue($idAttr, $values);
+        $this->_setValueNeedCompleteArray = false;
+        $err = $this->setValue($idAttr, $values);
 
-        $this->_setValueNeedCompleteArray=true;
+        $this->_setValueNeedCompleteArray = true;
         return $err;
     }
 
@@ -3510,7 +3517,7 @@ create unique index i_docir on doc(initid, revision);";
                                                 return sprintf(_("value [%s] is not a number"), $tvalues[$kvalue]);
                                             } else {
                                                 $tvalues[$kvalue]
-                                                    = (string) ((float) $tvalues[$kvalue]); // delete non signifiant zeros
+                                                    = (string)((float)$tvalues[$kvalue]); // delete non signifiant zeros
                                             }
                                         }
 
@@ -3631,7 +3638,11 @@ create unique index i_docir on doc(initid, revision);";
                                         $html = \Anakeen\Core\Utils\HtmlClean::normalizeHTMLFragment(
                                             $tvalues[$kvalue],
                                             $error,
-                                            ["initid" => $this->initid, "revision" => $this->revision, "attrid" => $attrid]
+                                            [
+                                                "initid" => $this->initid,
+                                                "revision" => $this->revision,
+                                                "attrid" => $attrid
+                                            ]
                                         );
                                         if ($html === false) {
                                             $html = '';
@@ -5756,7 +5767,7 @@ create unique index i_docir on doc(initid, revision);";
             $this->disableAccessControl();
         } // disabled control just to refresh
         $msg = $this->getHooks()->trigger(SmartHooks::PREREFRESH);
-        // if ($this->id == 0) return; // no refresh for no created document
+        // if ($this->id === 0) return; // no refresh for no created document
         $msg .= $this->SpecRefreshGen();
         $msg .= $this->getHooks()->trigger(SmartHooks::POSTREFRESH);
         if ($this->hasChanged && $this->id > 0) {
@@ -6502,9 +6513,24 @@ create unique index i_docir on doc(initid, revision);";
                         substr($v["using"], 1)
                     );
                 }
-                $t[] = sprintf("CREATE %s INDEX if not exists \"%s%d\" on doc%d using %s(%s);\n", $unique, $k, $id, $id, $v["using"], $v["on"]);
+                $t[] = sprintf(
+                    "CREATE %s INDEX if not exists \"%s%d\" on doc%d using %s(%s);\n",
+                    $unique,
+                    $k,
+                    $id,
+                    $id,
+                    $v["using"],
+                    $v["on"]
+                );
             } else {
-                $t[] = sprintf("CREATE %s INDEX if not exists \"%s%d\" on doc%d(%s);\n", $unique, $k, $id, $id, $v["on"]);
+                $t[] = sprintf(
+                    "CREATE %s INDEX if not exists \"%s%d\" on doc%d(%s);\n",
+                    $unique,
+                    $k,
+                    $id,
+                    $id,
+                    $v["on"]
+                );
             }
         }
         return $t;
@@ -6901,7 +6927,7 @@ create unique index i_docir on doc(initid, revision);";
         foreach ($listattr as $k => $v) {
             $value = chop($this->getRawValue($v->id));
 
-            $fieldKey=strtoupper($v->id);
+            $fieldKey = strtoupper($v->id);
             //------------------------------
             // Set the table value elements
             // don't see  non abstract if not
@@ -6998,7 +7024,7 @@ create unique index i_docir on doc(initid, revision);";
         /* @noinspection PhpUnusedParameterInspection */
         $abstract = false
     ) {
-        $layoutFields=  [
+        $layoutFields = [
             "id",
             "owner",
             "title",
@@ -7084,7 +7110,13 @@ create unique index i_docir on doc(initid, revision);";
             $d = SEManager::getRawDocument($name);
 
             if ($d && $d["doctype"] != 'Z') {
-                return sprintf("Logical name \"%s\" already used in Smart Element \"%s\". Cannot be set for \"%s\" (#%d)", $name, $d["title"], $this->getTitle(), $this->id);
+                return sprintf(
+                    "Logical name \"%s\" already used in Smart Element \"%s\". Cannot be set for \"%s\" (#%d)",
+                    $name,
+                    $d["title"],
+                    $this->getTitle(),
+                    $this->id
+                );
             } elseif (!$verifyOnly) {
                 if ($this->name) {
                     DbManager::query(sprintf(
@@ -7427,6 +7459,7 @@ create unique index i_docir on doc(initid, revision);";
     {
         return ContextManager::getCurrentUser()->fid;
     }
+
     /**
      * return the today date with european format DD/MM/YYYY
      *
@@ -7488,7 +7521,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @return string DD/MM/YYYY HH:MM or YYYY-MM-DD HH:MM (depend of CORE_LCDATE parameter)
      */
-    public static function getTimeDate($hourdelta = 0, $second = false)
+    public static function getTimeDate(int $hourdelta = 0, $second = false)
     {
         $delta = abs(intval($hourdelta));
         if ($second) {

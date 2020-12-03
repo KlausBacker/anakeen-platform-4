@@ -22,7 +22,7 @@ class SampleAccumulator
         }
         unset($sample);
         foreach ($this->samples as & $sample) {
-            if ($totalWeight == 0) {
+            if ($totalWeight === 0) {
                 $sample->score = 0;
             } else {
                 $sample->score = $sample->weight / $totalWeight;

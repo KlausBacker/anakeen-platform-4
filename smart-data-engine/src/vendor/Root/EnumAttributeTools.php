@@ -37,7 +37,7 @@ class EnumAttributeTools
                 list($enumKey, $enumValue) = explode("|", $v, 2);
                 $treeKeys = explode(".", $enumKey);
                 $enumKey = trim($enumKey);
-                if (strlen($enumKey) == 0) {
+                if (strlen($enumKey) === 0) {
                     $enumKey = " ";
                 }
                 $enumValue = trim($enumValue);

@@ -437,7 +437,7 @@ class MaskManager
                  */
                 $wdoc = SEManager::getDocument($doc->wid);
                 if ($wdoc && $wdoc->isAlive()) {
-                    if ($doc->id == 0) {
+                    if (empty($doc->id)) {
                         $wdoc->set($doc);
                     }
                     $mid = $wdoc->getStateMask($doc->state);

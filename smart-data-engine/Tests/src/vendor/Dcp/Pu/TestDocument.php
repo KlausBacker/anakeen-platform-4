@@ -217,6 +217,9 @@ class TestDocument extends TestCaseDcpCommonFamily
         $err = $nd->delete(true);
         $this->assertEmpty($err, sprintf("error when delete document BASE : %s", $err));
 
+        $sid = $this->_DBGetValue(sprintf("select id from doc where id=%d", $nd->id));
+        $this->assertFalse($sid, sprintf("document %s not really deleted (doc)", $nd->id));
+
         $sid = $this->_DBGetValue(sprintf("select id from docread where id=%d", $nd->id));
         $this->assertFalse($sid, sprintf("document %s not really deleted (docread)", $nd->id));
         if ($name) {

@@ -155,7 +155,7 @@ if ($query->nb > 0) {
             }
         }
 
-        if (($v["fid"] == 0) && ($fid > 0)) {
+        if ((intval($v["fid"]) === 0) && ($fid > 0)) {
             $u = new \Anakeen\Core\Account("", $v["id"]);
             $u->fid = $fid;
             $u->modify();

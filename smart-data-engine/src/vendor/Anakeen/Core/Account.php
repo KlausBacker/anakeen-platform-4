@@ -566,11 +566,11 @@ create sequence seq_id_users start 10;";
     //Call in PreUpdate and PreInsert
     public function getExpires()
     {
-        if (intval($this->passdelay) == 0) {
+        if (intval($this->passdelay) === 0) {
             // neither expire
             $this->expires = "0";
             $this->passdelay = "0";
-        } elseif (intval($this->expires) == 0) {
+        } elseif (intval($this->expires) === 0) {
             $this->expires = time() + $this->passdelay;
         }
     }
@@ -612,7 +612,7 @@ create sequence seq_id_users start 10;";
                 "LIST",
                 $fam
             );
-            if (count($tdoc) == 0) {
+            if (count($tdoc) === 0) {
                 //Create a new doc IUSER
 
                 /**
@@ -1268,7 +1268,7 @@ union
                 $q->addQuery("context='" . pg_escape_string($scontext) . "'");
             }
             $tu = $q->Query(0, 0, "TABLE");
-            $create = ($q->nb == 0);
+            $create = ($q->nb === 0);
         } else {
             $create = true;
         }

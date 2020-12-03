@@ -186,8 +186,9 @@ class ImportSingleDocument
         $this->folderId = isset($data[3]) ? trim($data[3]) : '';
         $this->specId = 0;
         $this->specName = "";
+
         if (is_numeric($docRef)) {
-            $this->specId=intval($this->specId);
+            $this->specId=intval($docRef);
         } elseif ($docRef) {
             $this->specName = $docRef;
         }
@@ -197,7 +198,7 @@ class ImportSingleDocument
         } else {
             $fromid = \Anakeen\Core\SEManager::getFamilyIdFromName($this->famId);
         }
-        if ($fromid == 0) {
+        if ($fromid === 0) {
             // no need test here it is done by checkDoc class DOC0005 DOC0006
             $this->tcr["action"] = "ignored";
             $this->tcr["err"] = sprintf(_("Not a family [%s]"), $this->famId);

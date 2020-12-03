@@ -311,7 +311,7 @@ class Manager
             $tid = 0;
             if ($err == "") {
                 $tid = $info["tid"];
-                if ($tid == 0) {
+                if (empty($tid)) {
                     $err = ___("no task identificator", "tengine");
                 }
             }

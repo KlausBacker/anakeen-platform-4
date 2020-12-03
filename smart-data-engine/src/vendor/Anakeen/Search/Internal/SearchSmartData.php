@@ -471,7 +471,7 @@ class SearchSmartData
         } else {
             if ($fromid != 0) {
                 $table = "doc$fromid";
-            } elseif ($fromid == 0) {
+            } elseif ($fromid === 0) {
                 if (DirLib::isSimpleFilter($this->getFilters())) {
                     if (!$this->dirid) {
                         $table = "docread";
@@ -615,13 +615,13 @@ class SearchSmartData
                     if ($doctype != 'C') {
                         $fromid = 0;
                     } else {
-                        $fromid = $this->fromid;
+                        $fromid = intval($this->fromid);
                     }
                 } else {
-                    $fromid = $this->fromid;
+                    $fromid = intval($this->fromid);
                 }
             }
-            if ($fromid == 0) {
+            if ($fromid === 0) {
                 $error = sprintf(___("\"%s\" is not a structure", "search"), $this->fromid);
                 $this->debuginfo["error"] = $error;
                 error_log("ERROR SearchSmartData: " . $error);
@@ -1232,7 +1232,7 @@ class SearchSmartData
         }
 
         $qsql = '';
-        if ($dirid == 0) {
+        if (empty($dirid)) {
             //-------------------------------------------
             // search in all Db
             //-------------------------------------------
@@ -1366,7 +1366,7 @@ class SearchSmartData
                                     if ($fromid > 0) {
                                         $sqlM = str_replace("from doc ", "from $only $table ", $sqlM);
                                     }
-                                    $fldFromId = ($fromid == 0) ? $fld->getRawValue('se_famid', 0) : $fromid;
+                                    $fldFromId = (empty($fromid)) ? $fld->getRawValue('se_famid', 0) : $fromid;
                                     $sqlM = $this->injectFromClauseForOrderByLabel(
                                         $fldFromId,
                                         $this->orderbyLabel,

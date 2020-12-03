@@ -44,7 +44,7 @@ class DirLib
      *
      * @param string          $dbaccess     database specification
      * @param string[]|string $dirid        the array of id or single id of folder where search document (0 => in all DB)
-     * @param string          $fromid       for a specific familly (0 => all familly) (<0 strict familly)
+     * @param int             $fromid       for a specific familly (0 => all familly) (<0 strict familly)
      * @param array           $sqlfilters   array of sql filter
      * @param bool            $distinct     if want distinct without locked
      * @param bool            $latest       only latest document, set false if search in all revised doc
@@ -382,9 +382,9 @@ class DirLib
             $fromid = \Anakeen\Core\SEManager::getFamilyIdFromName($fromid);
         }
         if (empty($fromid)) {
-            $fromid = "";
+            $fromid = 0;
         }
-        if (($fromid == "") && ($dirid != 0) && ($qtype == "TABLE")) {
+        if (($fromid === 0) && ($dirid != 0) && ($qtype == "TABLE")) {
             /**
              * @var \Anakeen\Core\Internal\SmartCollection $fld
              */
@@ -407,7 +407,7 @@ class DirLib
                 }
             } else {
                 if ($fld->getRawValue("se_famid")) {
-                    $fromid = $fld->getRawValue("se_famid");
+                    $fromid = intval($fld->getRawValue("se_famid"));
                     $fdoc = SEManager::getFamily(abs($fromid), true);
                     if (!$fdoc || !$fdoc->isAlive()) {
                         throw new \Anakeen\Exception(sprintf(_('Family [%s] not found'), abs($fromid)));
@@ -418,7 +418,7 @@ class DirLib
         } elseif ($dirid != 0) {
             $fld = SEManager::getDocument($dirid);
             if (($fld->defDoctype == 'S') && ($fld->getRawValue("se_famid"))) {
-                $fromid = $fld->getRawValue("se_famid");
+                $fromid = intval($fld->getRawValue("se_famid"));
                 $fdoc = SEManager::getFamily(abs($fromid));
                 if (!$fdoc || !$fdoc->isAlive()) {
                     throw new \Anakeen\Exception(sprintf(_('Family [%s] not found'), abs($fromid)));

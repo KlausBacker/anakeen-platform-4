@@ -1985,7 +1985,7 @@ class ImportDocumentDescription
         }
 
         $this->colKeys[$orfromid] = Utils::getOrder($data);
-        if (($this->colKeys[$orfromid][0] == "") || (count($this->colKeys[$orfromid]) == 0)) {
+        if (($this->colKeys[$orfromid][0] == "") || (count($this->colKeys[$orfromid]) === 0)) {
             $this->tcr[$this->nLine]["err"] = sprintf(
                 "error in import keys : %s",
                 implode(" - ", $this->colKeys[$orfromid])

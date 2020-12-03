@@ -74,7 +74,7 @@ class SmartStructureImport
         $phpAdoc = new \Anakeen\Layout\TextLayout();
 
         if ($tdoc["classname"] == "") { // default classname
-            if (empty($tdoc["fromid"]) {
+            if (empty($tdoc["fromid"])) {
                 $tdoc["classname"] = '\\' . \Anakeen\SmartElement::class;
             } else {
                 $tdoc["classname"] = "Doc" . $tdoc["fromid"];

@@ -1237,7 +1237,7 @@ class CronSchedule
 
         $txt = "";
         for ($index = 0; $index < count($arrIntervals); $index++) {
-            $txt .= ($index == 0 ? '' : ($index == (count($arrIntervals) - 1) ? ' ' . $this->natlangApply('separator_and') . ' ' : ', ')) . $arrIntervals[$index];
+            $txt .= ($index === 0 ? '' : ($index == (count($arrIntervals) - 1) ? ' ' . $this->natlangApply('separator_and') . ' ' : ', ')) . $arrIntervals[$index];
         }
         return $txt;
     }
@@ -1252,7 +1252,7 @@ class CronSchedule
     final private function natlangElementMinute($elem)
     {
         if (!$elem['hasInterval']) {
-            if ($elem['number1'] == 0) {
+            if (empty($elem['number1'])) {
                 return $this->natlangApply('elemMin: at_the_hour');
             } else {
                 return $this->natlangApply('elemMin: after_the_hour_every_X_minute' . ($elem['number1'] == 1 ? '' : '_plural'), $elem['number1']);
@@ -1552,7 +1552,7 @@ class CronSchedule
             }
             $txtDays = '';
             for ($index = 0; $index < count($arrDays); $index++) {
-                $txtDays .= ($index == 0 ? '' : ($index == (count($arrDays) - 1) ? ' ' .
+                $txtDays .= ($index === 0 ? '' : ($index == (count($arrDays) - 1) ? ' ' .
                         $this->natlangApply($switchDaysOfWeekAreExcluding ? 'separator_or' : 'separator_and') . ' ' : ', ')) .
                     $this->natlangApply('day: ' . $arrDays[$index] . '_plural');
             }

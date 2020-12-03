@@ -167,7 +167,7 @@ class TemporaryFile
         };
         $max_upload = $normalize(ini_get('upload_max_filesize'));
 
-        $max_post = (ini_get('post_max_size') == 0) ? function () {
+        $max_post = (empty(ini_get('post_max_size'))) ? function () {
             throw new Exception('Check Your php.ini settings');
         }
             : $normalize(ini_get('post_max_size'));
