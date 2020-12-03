@@ -2,6 +2,8 @@
 
 namespace Anakeen\Core;
 
+use Anakeen\Core\Internal\Debug;
+
 class DbManager
 {
     protected static $inTransition = false;
@@ -144,6 +146,7 @@ class DbManager
     public static function lockPoint($exclusiveLock, $exclusiveLockPrefix = '')
     {
         if (($exclusiveLock_int32 = \Anakeen\Core\Utils\Types::toInt32($exclusiveLock)) === false) {
+            print_r(Debug::getDebugStackString());
             throw new \Anakeen\Database\Exception("DB0012", var_export($exclusiveLock, true));
         }
         $exclusiveLock = $exclusiveLock_int32;
@@ -193,7 +196,7 @@ class DbManager
         if ($lastPoint !== false) {
             static::$savepoint[$idbid] = array_slice(static::$savepoint[$idbid], 0, $lastPoint);
             static::query(sprintf('release savepoint "%s"', pg_escape_string($point)));
-            if (count(static::$savepoint[$idbid]) == 0) {
+            if (count(static::$savepoint[$idbid]) === 0) {
                 static::query("commit");
                 static::$inTransition = false;
             }
@@ -221,7 +224,7 @@ class DbManager
         if ($lastPoint !== false) {
             static::$savepoint[$idbid] = array_slice(static::$savepoint[$idbid], 0, $lastPoint);
             static::query(sprintf('rollback to savepoint "%s"', pg_escape_string($point)));
-            if (count(static::$savepoint[$idbid]) == 0) {
+            if (count(static::$savepoint[$idbid]) === 0) {
                 static::query("commit");
                 static::$inTransition = false;
             }

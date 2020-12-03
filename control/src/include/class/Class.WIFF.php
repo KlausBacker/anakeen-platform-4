@@ -510,7 +510,7 @@ EOF;
         $xPath = new DOMXPath($xml);
         // Get repository with this name from WIFF repositories
         $wiffRepoList = $xPath->query("/wiff/repositories/access[@name='" . $name . "']");
-        if ($wiffRepoList->length == 0) {
+        if ($wiffRepoList->length === 0) {
             // If there is already a repository with same name
             $this->errorMessage = "Repository does not exist.";
             return false;
@@ -816,7 +816,7 @@ EOF;
         $xPath = new DOMXPath($xml);
         // Get repository with this name from WIFF repositories
         $wiffRepoList = $xPath->query("/wiff/repositories/access[@name='" . $name . "']");
-        if ($wiffRepoList->length == 0) {
+        if ($wiffRepoList->length === 0) {
             // If there is already a repository with same name
             $this->errorMessage = "Repository does not exist.";
             return false;
@@ -867,7 +867,7 @@ EOF;
         $xPath = new DOMXPath($xml);
         // Get repository with this name from WIFF repositories
         $wiffRepoList = $xPath->query("/wiff/repositories/access[@name='" . $name . "']");
-        if ($wiffRepoList->length == 0) {
+        if ($wiffRepoList->length === 0) {
             // If there is not at least one repository with such name enlisted
             $this->errorMessage = "Repository not found.";
             return false;

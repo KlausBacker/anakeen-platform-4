@@ -167,7 +167,7 @@ class DocumentLock
 
         if ($this->_document->locked == -1) {
             $lock = null;
-        } elseif ($this->_document->locked == 0) {
+        } elseif (intval($this->_document->locked) === 0) {
             $lock = null;
         } else {
             $lock = array(

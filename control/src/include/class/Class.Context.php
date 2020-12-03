@@ -298,7 +298,7 @@ class Context extends ContextProperties
         }
         // Get repository with this name from WIFF repositories
         $wiffRepoList = $paramsXPath->query("/wiff/repositories/access[@name='" . $name . "']");
-        if ($wiffRepoList->length == 0) {
+        if ($wiffRepoList->length === 0) {
             $this->errorMessage = "No repository with name " . $name . ".";
             return false;
         } else {

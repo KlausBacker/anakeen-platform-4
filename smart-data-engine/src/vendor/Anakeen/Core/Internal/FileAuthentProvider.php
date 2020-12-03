@@ -61,7 +61,7 @@ class FileProvider extends AuthentProvider
             return false;
         }
         $ret = preg_match("/^(..)/", $pwdFile[$username], $salt);
-        if ($ret == 0) {
+        if ($ret === false) {
             $this->errno = 0;
             return false;
         }

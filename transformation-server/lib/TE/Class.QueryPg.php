@@ -177,7 +177,7 @@ class QueryPg
 
         $this->nb = $this->basic_elem->numrows();
 
-        if ($this->nb == 0) {
+        if ($this->nb === 0) {
             return false;
         }
         if ($res_type == "ITEM") {

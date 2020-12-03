@@ -74,7 +74,7 @@ class SmartStructureImport
         $phpAdoc = new \Anakeen\Layout\TextLayout();
 
         if ($tdoc["classname"] == "") { // default classname
-            if ($tdoc["fromid"] == 0) {
+            if (empty($tdoc["fromid"]) {
                 $tdoc["classname"] = '\\' . \Anakeen\SmartElement::class;
             } else {
                 $tdoc["classname"] = "Doc" . $tdoc["fromid"];
@@ -99,7 +99,7 @@ class SmartStructureImport
         $phpAdoc->Set("docid", $tdoc["id"]);
         $phpAdoc->Set("include", "");
         $phpAdoc->Set("GEN", "");
-        if ($tdoc["fromid"] == 0) {
+        if (empty($tdoc["fromid"])) {
             $phpAdoc->Set("DocParent", $tdoc["classname"]);
             $phpAdoc->Set("AParent", '\\' . \Anakeen\Core\SmartStructure\Attributes::class);
             $phpAdoc->Set("fromid", "");
@@ -111,7 +111,7 @@ class SmartStructureImport
                 Settings::DocumentGenDirectory,
                 $tdoc["fromid"]
             );
-            if ((!file_exists($parentFile)) || filesize($parentFile) == 0) {
+            if ((!file_exists($parentFile)) || filesize($parentFile) === 0) {
                 throw new \Anakeen\Exception("FAM0600", $parentFile, $tdoc["name"]);
             }
             $phpAdoc->Set("fromid", $tdoc["fromid"]);
@@ -584,7 +584,7 @@ class SmartStructureImport
     {
         $phpAdoc = new \Anakeen\Layout\TextLayout("vendor/Anakeen/Core/Layout/Class.Attrid.layout");
 
-        if ($tdoc["fromid"] == 0) {
+        if (empty($tdoc["fromid"])) {
             $phpAdoc->Set("extend", '');
         } else {
             $fromName = \Anakeen\Core\SEManager::getNameFromId($tdoc["fromid"]);
@@ -983,7 +983,7 @@ class SmartStructureImport
         $query->order_by = "docid";
         $tas = $query->Query(0, 0, "TABLE");
 
-        if ($query->nb == 0) {
+        if ($query->nb === 0) {
             error_log("MODATTR error for " . $ta->id);
             return $ta;
         } else {

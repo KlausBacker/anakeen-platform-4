@@ -15,7 +15,7 @@ if ($handlerName != "SessionHandler") {
     $ref = new ReflectionClass($handlerName);
     $filePath = $ref->getFileName();
 
-    if (strpos($filePath, DEFAULT_PUBDIR) == 0) {
+    if (strpos($filePath, DEFAULT_PUBDIR) === 0) {
         $basefilePath = substr($filePath, strlen(DEFAULT_PUBDIR) + 1);
         if (file_exists($basefilePath)) {
             $filePath = $basefilePath;

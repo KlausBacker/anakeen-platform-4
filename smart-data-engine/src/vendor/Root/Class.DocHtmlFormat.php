@@ -626,7 +626,7 @@ class DocHtmlFormat
     public function formatArray($kvalue, $avalue)
     {
         $htmlval = '';
-        if (count($this->doc->getArrayRawValues($this->oattr->id)) == 0 && $this->oattr->getOption('showempty')) {
+        if (count($this->doc->getArrayRawValues($this->oattr->id)) === 0 && $this->oattr->getOption('showempty')) {
             $htmlval = $this->oattr->getOption('showempty');
             return $htmlval;
         }

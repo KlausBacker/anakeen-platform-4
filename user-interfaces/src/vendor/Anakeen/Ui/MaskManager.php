@@ -124,7 +124,7 @@ class MaskManager
         $this->initVisibilities();
 
         $argMid = $mid;
-        if ((!$force) && (($this->smartElement->doctype == 'C') || (($this->smartElement->doctype == 'T') && ($mid == 0)))) {
+        if ((!$force) && (($this->smartElement->doctype == 'C') || (($this->smartElement->doctype == 'T') && (empty($mid))))) {
             return;
         }
         // modify visibilities if needed

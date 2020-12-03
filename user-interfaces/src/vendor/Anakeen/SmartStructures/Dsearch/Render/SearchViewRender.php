@@ -171,7 +171,7 @@ class SearchViewRender extends DefaultView
                     $rightfunc = explode("{left}", $func)[1];
                     $rightfunc = explode("{right}", $rightfunc)[0];
 
-                    if ($index == 0) {
+                    if ($index === 0) {
                         $operand = "";
                         $leftfunc = ucfirst($leftfunc);
                     }

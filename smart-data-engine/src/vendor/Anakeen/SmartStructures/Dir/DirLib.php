@@ -77,7 +77,8 @@ class DirLib
         if ($trash == "only") {
             $distinct = true;
         }
-        if ($fromid == -1) {
+        $fromid=intval($fromid);
+        if ($fromid === -1) {
             $table = "docfam";
         } elseif ($simplesearch) {
             $table = "docread";
@@ -86,9 +87,9 @@ class DirLib
             $fromid = -$fromid;
             $table = "doc$fromid";
         } else {
-            if ($fromid != 0) {
+            if ($fromid !== 0) {
                 $table = "doc$fromid";
-            } elseif ($fromid == 0) {
+            } elseif ($fromid === 0) {
                 if (self::isSimpleFilter($sqlfilters)) {
                     $table = "docread";
                 }
@@ -108,7 +109,7 @@ class DirLib
                 return false;
             }
         }
-        $maintabledot = ($maintable && $dirid == 0) ? $maintable . '.' : '';
+        $maintabledot = ($maintable && empty($dirid)) ? $maintable . '.' : '';
 
         if ($distinct) {
             $selectfields = "distinct on ($maintable.initid) $maintable.*";
@@ -123,7 +124,7 @@ class DirLib
             $sqlcond = " (" . implode(") and (", $sqlfilters) . ")";
         }
 
-        if ($dirid == 0) {
+        if (empty($dirid)) {
             //-------------------------------------------
             // search in all Db
             //-------------------------------------------
@@ -380,7 +381,7 @@ class DirLib
         if (($fromid != "") && (!is_numeric($fromid))) {
             $fromid = \Anakeen\Core\SEManager::getFamilyIdFromName($fromid);
         }
-        if ($fromid == 0) {
+        if (empty($fromid)) {
             $fromid = "";
         }
         if (($fromid == "") && ($dirid != 0) && ($qtype == "TABLE")) {
@@ -676,7 +677,7 @@ class DirLib
                 if ($t[$v["childid"]] == false) {
                     unset($t[$v["childid"]]);
                 } else {
-                    if ((\Anakeen\Core\ContextManager::getCurrentUser()->id != 1) && ($t[$v["childid"]]["uperm"] & (1 << \Anakeen\Core\Internal\DocumentAccess::POS_VIEW)) == 0) { // control view
+                    if ((\Anakeen\Core\ContextManager::getCurrentUser()->id != 1) && ($t[$v["childid"]]["uperm"] & (1 << \Anakeen\Core\Internal\DocumentAccess::POS_VIEW)) === 0) { // control view
                         unset($t[$v["childid"]]);
                     }
                 }

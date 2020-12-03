@@ -157,7 +157,7 @@ class WorkflowStateCollection
             $exception->setHttpStatus("403", "Forbidden");
             throw $exception;
         }
-        if ($this->_document->wid == 0) {
+        if (intval($this->_document->wid) == 0) {
             $exception = new Exception("CRUD0227", $resourceId);
             $exception->setHttpStatus("404", "No workflow detected");
             throw $exception;

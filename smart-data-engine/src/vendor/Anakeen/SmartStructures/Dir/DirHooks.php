@@ -43,7 +43,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
             $allbut = $this->getRawValue("FLD_ALLBUT");
             $tfamid = $this->getMultipleRawValues("FLD_FAMIDS");
 
-            if (($allbut === "0") && ((count($tfamid) == 0) || ((count($tfamid) == 1) && ($tfamid[0] == 0)))) {
+            if (($allbut === "0") && ((count($tfamid) === 0) || ((count($tfamid) === 1) && (empty($tfamid[0]))))) {
                 $this->clearValue("FLD_ALLBUT");
                 $this->modify();
             }
@@ -177,7 +177,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
                     )
                 ));
                 // add default folder privilege to the doc
-                if ($doc->profid == 0) { // only if no privilege yet
+                if (intval($doc->profid) === 0) { // only if no privilege yet
                     switch ($doc->defProfFamId) {
                         case FAM_ACCESSDOC:
                             $profid = $this->getRawValue("FLD_PDOCID", 0);
@@ -662,7 +662,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
             $tsubfam = $this->getMultipleRawValues("FLD_SUBFAM");
             $allbut = $this->getRawValue("FLD_ALLBUT");
 
-            if (($allbut != "1") && ((count($tfamid) == 0) || ((count($tfamid) == 1) && ($tfamid[0] == 0)))) {
+            if (($allbut != "1") && ((count($tfamid) === 0) || ((count($tfamid) == 1) && (empty($tfamid[0]))))) {
                 $this->norestrict = true;
                 return array();
             }

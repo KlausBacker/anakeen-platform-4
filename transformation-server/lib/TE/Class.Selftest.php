@@ -95,6 +95,6 @@ class Selftest
         $cmd = sprintf("%s 2>&1", escapeshellarg($selftest));
         exec($cmd, $output, $ret);
         $this->setTmpDir($TMPDIR);
-        return ($ret == 0);
+        return ($ret === 0);
     }
 }

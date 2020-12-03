@@ -651,7 +651,7 @@ SQL;
                 if (strlen($url) <= 0) {
                     continue;
                 }
-                if (strcmp(substr($src, 0, strlen($url)), $url) == 0) {
+                if (strcmp(substr($src, 0, strlen($url)), $url) === 0) {
                     // Chop the URL base part, and leave only the args/vars
                     $chopped_src = substr($src, strlen($url));
                     break;

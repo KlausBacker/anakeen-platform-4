@@ -62,7 +62,7 @@ class Repository
             $xpath = new DOMXPath($xml);
             // Get repository with this name from WIFF repositories
             $wiffRepoList = $xpath->query("/wiff/repositories/access[@name='" . $this->use . "']");
-            if ($wiffRepoList->length == 0) {
+            if ($wiffRepoList->length === 0) {
                 // If there is no repository with such name
                 $this->errorMessage = "Repository " . $this->use . " does not exist.";
                 $this->isValid = false;

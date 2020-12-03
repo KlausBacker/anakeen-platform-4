@@ -105,7 +105,7 @@ class CheckKeys extends CheckData
                 $c++;
             }
         }
-        if ($c == 0) {
+        if ($c === 0) {
             $this->addError(ErrorCode::getError('KEYS0101', $this->family->name));
         } elseif ($c > 2) {
             $this->addError(ErrorCode::getError('KEYS0102', implode(', ', $this->attrIds), $this->family->name));

@@ -151,7 +151,7 @@ class DocumentList implements Iterator, Countable
         }
         $ids = array_unique($ids);
         $sid = $useInitid ? "initid" : "id";
-        if (count($ids) == 0) {
+        if (count($ids) === 0) {
             $this->search->addFilter("false");
         } else {
             $this->search->addFilter($this->search->sqlCond($ids, $sid, true));

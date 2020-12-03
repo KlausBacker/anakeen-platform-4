@@ -83,7 +83,7 @@ class PgObj
         $this->dbaccess = $dbaccess;
         $this->initDbid();
 
-        if ($this->dbid == 0) {
+        if (empty($this->dbid)) {
             $this->dbid = -1;
         }
 
@@ -507,7 +507,7 @@ class PgObj
         return $this->dbid;
     }
 
-    public function execQuery($sql, $lvl = 0)
+    public function execQuery($sql, int $lvl = 0)
     {
         global $SQLDELAY, $SQLDEBUG;
 
@@ -528,7 +528,7 @@ class PgObj
         $this->msg_err = chop(preg_replace("/ERROR: {2}/", "", $pgmess));
         // Use Postgresql error codes instead of localized text messages
         $action_needed = "";
-        if ($lvl == 0) { // to avoid recursivity
+        if ($lvl === 0) { // to avoid recursivity
             if ($this->msg_err != "") {
                 if ((preg_match(
                     "/Relation ['\"]([a-zA-Z_]*)['\"] does not exist/i",

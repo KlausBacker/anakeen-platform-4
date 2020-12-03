@@ -109,7 +109,7 @@ class DbObj
         $this->dbaccess = $dbaccess;
         $this->initDbid();
 
-        if ($this->dbid == 0) {
+        if (empty($this->dbid)) {
             $this->dbid = -1;
         }
 
@@ -256,7 +256,7 @@ class DbObj
         if (!$this->isAffected()) {
             return false;
         }
-        if (count($fields) == 0) {
+        if (count($fields) === 0) {
             return true;
         }
         if ($this->dbtable == '') {
@@ -677,7 +677,7 @@ class DbObj
             $this->dbaccess = \Anakeen\Core\DbManager::getDbAccess();
         }
         $this->dbid = \Anakeen\Core\DbManager::getDbid();
-        if ($this->dbid == 0) {
+        if (empty($this->dbid)) {
             LogManager::error(__METHOD__ . "null dbid");
         }
         return $this->dbid;
@@ -822,7 +822,7 @@ class DbObj
             }
         }
 
-        if ($this->msg_err && ($lvl == 0)) {
+        if ($this->msg_err && ($lvl === 0)) {
             $orierr = $this->msg_err;
             try {
                 if ($this->tryCreate()) {

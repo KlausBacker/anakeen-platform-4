@@ -55,7 +55,7 @@ class CheckDb
             $msg = "";
         }
         $this->tout["unreferenced user in group"] = array(
-            "status" => (count($pout) == 0) ? self::OK : self::BOF,
+            "status" => (count($pout) === 0) ? self::OK : self::BOF,
             "msg" => $msg
         );
     }
@@ -112,7 +112,7 @@ class CheckDb
             $msg = "";
         }
         $this->tout["user as group"] = array(
-            "status" => (count($pout) == 0) ? self::OK : self::KO,
+            "status" => (count($pout) === 0) ? self::OK : self::KO,
             "msg" => $msg
         );
     }
@@ -130,7 +130,7 @@ class CheckDb
             $msg = "";
         }
         $this->tout["unreferenced actions"] = array(
-            "status" => (count($pout) == 0) ? self::OK : self::BOF,
+            "status" => (count($pout) === 0) ? self::OK : self::BOF,
             "msg" => $msg
         );
     }
@@ -152,7 +152,7 @@ class CheckDb
             $msg = "";
         }
         $this->tout["unreferenced parameters"] = array(
-            "status" => (count($pout) == 0) ? self::OK : self::BOF,
+            "status" => (count($pout) === 0) ? self::OK : self::BOF,
             "msg" => $msg
         );
     }
@@ -170,7 +170,7 @@ class CheckDb
             $msg = "";
         }
         $this->tout["unreferenced acl"] = array(
-            "status" => (count($pout) == 0) ? self::OK : self::BOF,
+            "status" => (count($pout) === 0) ? self::OK : self::BOF,
             "msg" => $msg
         );
     }
@@ -188,7 +188,7 @@ class CheckDb
             $msg = sprintf("%d unreferenced permissions", ($nb));
         }
         $this->tout["unreferenced permission"] = array(
-            "status" => ($nb == 0) ? self::OK : self::BOF,
+            "status" => ($nb === 0) ? self::OK : self::BOF,
             "msg" => $msg
         );
     }
@@ -206,7 +206,7 @@ class CheckDb
             $msg = "";
         }
         $this->tout["double doc id"] = array(
-            "status" => (count($pout) == 0) ? self::OK : self::KO,
+            "status" => (count($pout) === 0) ? self::OK : self::KO,
             "msg" => $msg
         );
     }
@@ -227,7 +227,7 @@ class CheckDb
             $msg = "";
         }
         $this->tout["double doc name"] = array(
-            "status" => (count($pout) == 0) ? self::OK : self::KO,
+            "status" => (count($pout) === 0) ? self::OK : self::KO,
             "msg" => $msg
         );
     }
@@ -252,7 +252,7 @@ SQL;
             $msg = "";
         }
         $this->tout["multiple alive"] = array(
-            "status" => (count($pout) == 0) ? self::OK : self::KO,
+            "status" => (count($pout) === 0) ? self::OK : self::KO,
             "msg" => $msg
         );
     }
@@ -263,7 +263,7 @@ SQL;
         $pout = array();
         while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
             $fromid = intval($row["fromid"]);
-            if ($fromid == 0) {
+            if ($fromid === 0) {
                 $fromid = "";
             }
             $fid = intval($row["id"]);
@@ -279,7 +279,7 @@ SQL;
             }
         }
         $this->tout["family inheritance"] = array(
-            "status" => (count($pout) == 0) ? self::OK : self::KO,
+            "status" => (count($pout) === 0) ? self::OK : self::KO,
             "msg" => implode("<br/>", $pout)
         );
     }
@@ -745,7 +745,7 @@ EOSQL;
             $msg = "";
         }
         $this->tout["missing documents in docread"] = array(
-            "status" => (count($pout) == 0) ? self::OK : self::BOF,
+            "status" => (count($pout) === 0) ? self::OK : self::BOF,
             "msg" => $msg
         );
     }
@@ -767,7 +767,7 @@ EOSQL;
             $msg = "";
         }
         $this->tout["spurious documents in docread"] = array(
-            "status" => (count($pout) == 0) ? self::OK : self::BOF,
+            "status" => (count($pout) === 0) ? self::OK : self::BOF,
             "msg" => $msg
         );
     }

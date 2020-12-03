@@ -52,7 +52,7 @@ if ($default) {
 }
 
 $list = $paramValue->Query(0, 2);
-if ($paramValue->nb == 0) {
+if ($paramValue->nb === 0) {
     //throw new \Anakeen\Script\Exception(sprintf("Parameter value \"%s\" not found", $parname));
     $paramValue = new \Anakeen\Core\Internal\Param($dbaccess);
     $paramValue->val = $parval;
