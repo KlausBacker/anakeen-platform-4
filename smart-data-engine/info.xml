@@ -14,11 +14,11 @@
     </parameters>
 
     <pre-install>
-        <check type="phpversion" predicate="ge" version="7.2.0">
-            <label>Minimum PHP version is 7.2</label>
+        <check type="phpversion" predicate="ge" version="7.4.0">
+            <label>Minimum PHP version is 7.4</label>
         </check>
-        <check type="phpversion" predicate="lt" version="7.5.0">
-            <label>Maximum PHP version is 7.4</label>
+        <check type="phpversion" predicate="lt" version="8.1">
+            <label>Maximum PHP version is 8.0</label>
         </check>
         <check type="pgversion" service="@core_db" predicate="ge" version="11.0">
             <label>Minimum database version is 11</label>
@@ -263,11 +263,11 @@
     </post-install>
 
     <pre-upgrade>
-        <check type="phpversion" predicate="ge" version="7.2.0">
-            <label>Minimum PHP version is 7.2</label>
+        <check type="phpversion" predicate="ge" version="7.4.0">
+            <label>Minimum PHP version is 7.4</label>
         </check>
-        <check type="phpversion" predicate="lt" version="7.5.0">
-            <label>Maximum PHP version is 7.4</label>
+        <check type="phpversion" predicate="lt" version="8.1">
+            <label>Maximum PHP version is 8.0</label>
         </check>
         <check type="pgversion" service="@core_db" predicate="ge" version="11.0">
             <label>Minimum database version is 11.0</label>
