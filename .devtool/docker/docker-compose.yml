@@ -32,6 +32,9 @@ services:
       context: ./Images/postgres/
       args:
         PROJECT_POSTGRES_VERSION: ${PROJECT_POSTGRES_VERSION-11.6-1}
+    environment:
+      POSTGRES_PASSWORD: "anakeen"
+      POSTGRES_HOST_AUTH_METHOD: "md5"
     volumes:
       - './Volumes/_private/postgres/var/lib/postgresql/data:/var/lib/postgresql/data'
       - './Volumes/_private/postgres/tmp/share/:/tmp/share/'
