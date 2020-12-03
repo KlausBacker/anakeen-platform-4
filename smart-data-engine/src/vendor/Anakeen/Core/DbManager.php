@@ -77,7 +77,7 @@ class DbManager
         $result = array();
         $r = @pg_query($dbid, $query);
         if ($r) {
-            if (pg_numrows($r) > 0) {
+            if (pg_num_rows($r) > 0) {
                 if ($singlecolumn) {
                     $result = pg_fetch_all_columns($r, 0);
                 } else {

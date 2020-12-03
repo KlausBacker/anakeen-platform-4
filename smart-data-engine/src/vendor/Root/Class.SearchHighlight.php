@@ -138,7 +138,7 @@ class SearchHighlight
                 pg_escape_string($this->endTag)
             );
             $result = pg_query($this->dbid, $q);
-            if (pg_numrows($result) > 0) {
+            if (pg_num_rows($result) > 0) {
                 $arr = pg_fetch_array($result, 0, PGSQL_ASSOC);
                 $headline = $arr["ts_headline"];
                 //print_r("\n\tL=$headline");
