@@ -7,7 +7,7 @@ services:
       args:
         ANK_RUN_UID: ${COMPOSE_UID}
         ANK_RUN_GID: ${COMPOSE_GID}
-        PROJECT_PHP_VERSION: ${PROJECT_PHP_VERSION}
+        PROJECT_TRANSFORMATION_SERVER_PHP_VERSION: ${PROJECT_TRANSFORMATION_SERVER_PHP_VERSION}
     sysctls:
       # Allows mapping of port 80 from unprivileged user COMPOSE_UID
       net.ipv4.ip_unprivileged_port_start: 0
