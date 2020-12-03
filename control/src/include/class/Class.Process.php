@@ -28,7 +28,7 @@ class Process extends WiffCommon
     
     public $errorMessage;
     
-    public function __construct($xmlStr = "", $phase)
+    public function __construct($xmlStr, $phase)
     {
         
         $this->xmlStr = $xmlStr;
