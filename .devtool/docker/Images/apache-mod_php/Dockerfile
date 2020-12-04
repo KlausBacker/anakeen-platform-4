@@ -1,5 +1,5 @@
-ARG PROJECT_PHP_VERSION
-FROM registry.ap4.anakeen.com/ank-php:$PROJECT_PHP_VERSION
+ARG PROJECT_APACHE_PHP_VERSION
+FROM registry.ap4.anakeen.com/ank-php:$PROJECT_APACHE_PHP_VERSION
 
 RUN apt-get -y update \
     && apt-get install -y --no-install-recommends \
