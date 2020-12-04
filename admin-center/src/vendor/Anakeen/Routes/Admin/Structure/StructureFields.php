@@ -81,10 +81,10 @@ class StructureFields
         }
 
         $ancestrors = array_reverse($ancestrors, true);
-        $sql = sprintf("select * from docattr where docid in (%s) and {$this->sqlFilter} and type != 'menu' and id !~ '^:' order by ordered", implode(',', $fromids));
+        $sql = sprintf("select * from docattr where docid in (%s) and {$this->sqlFilter} and type != 'menu' and id !~ '^:' order by ordered, id", implode(',', $fromids));
         $dbAttrs = [];
         DbManager::query($sql, $dbAttrs);
-        $sql = sprintf("select * from docattr where docid in (%s) and {$this->sqlFilter} and id ~ '^:' order by ordered", implode(',', $fromids));
+        $sql = sprintf("select * from docattr where docid in (%s) and {$this->sqlFilter} and id ~ '^:' order by ordered, id", implode(',', $fromids));
 
         DbManager::query($sql, $dbModAttr);
 

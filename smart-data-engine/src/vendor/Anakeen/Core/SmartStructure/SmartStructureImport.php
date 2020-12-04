@@ -184,7 +184,7 @@ class SmartStructureImport
                         $doctitle = strtolower($doctitle);
 
                         if (!isset($table1[strtolower($doctitle)])) {
-                             $table1[$doctitle] = self::getDoctitleAttr($v, $doctitle);
+                            $table1[$doctitle] = self::getDoctitleAttr($v, $doctitle);
                         }
                         if (empty($table1[$doctitle]->phpfunc)) {
                             if (!preg_match("/docrev=(fixed|state)/", $v->options)) {
@@ -208,7 +208,9 @@ class SmartStructureImport
                         "parent" => $parentAttr["frameid"],
                         "family" => $parentAttr["docid"],
                         "prev" => $previousOrder,
-                        "numOrder" => intval($parentAttr["ordered"])
+                        "numOrder" => intval($parentAttr["ordered"]),
+
+                        "forceOrder" => !empty($parentAttr["forceOrder"])
                     ];
                     if (!$previousOrder) {
                         // Need to copy child attribute when use absolute orders
@@ -242,7 +244,6 @@ class SmartStructureImport
                     }
                 }
             }
-
             foreach ($table1 as $k => $v) {
                 $validOrder = true;
                 if ($v->id[0] === ':') {
@@ -258,6 +259,7 @@ class SmartStructureImport
                                     $allAttributes[$ka]["parent"] = $v->frameid;
                                 }
                                 $allAttributes[$ka]["numOrder"] = $v->ordered;
+                                $allAttributes[$ka]["forceOrder"] = strpos($v->options, "autotitle=yes") !== false;
                             }
                         }
                     }
@@ -273,7 +275,8 @@ class SmartStructureImport
                         "parent" => $v->frameid,
                         "family" => $v->docid,
                         "prev" => $previous,
-                        "numOrder" => intval($v->ordered)
+                        "numOrder" => intval($v->ordered),
+                        "forceOrder" => strpos($v->options, "autotitle=yes") !== false
                     ];
                 }
 
@@ -576,6 +579,7 @@ class SmartStructureImport
         $doctitleAttr->ordered = $attr->ordered + 1;
         return $doctitleAttr;
     }
+
     protected static function attrIdToPhp($dbaccess, $tdoc)
     {
         $phpAdoc = new \Anakeen\Layout\TextLayout("vendor/Anakeen/Core/Layout/Class.Attrid.layout");
@@ -1044,6 +1048,7 @@ class SmartStructureImport
                             $vtitle["id"] = strtolower($m['attrid']);
                         }
                         $vtitle["type"] = "text";
+                        $vtitle["forceOrder"] = true;
                         $vtitle["options"] = "relativeOrder=" . $v["id"];
                         $paf[$vtitle["id"]] = $vtitle;
                     }

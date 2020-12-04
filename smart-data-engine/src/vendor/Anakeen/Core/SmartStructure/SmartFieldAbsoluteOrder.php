@@ -76,9 +76,43 @@ class SmartFieldAbsoluteOrder
                 $linear[] = $relativeOrder["parent"];
             }
         }
-        return $linear;
+        return self::reorderForceOrder($linear, $relativeOrders);
     }
 
+    protected static function reorderForceOrder($linear, $dataOrders)
+    {
+        $fieldsToReorder=[];
+        $previousPlacementReorder=[];
+        foreach ($dataOrders as $k => $data) {
+            if (!empty($data["forceOrder"])) {
+                $fieldsToReorder[$data["id"]]=true;
+                $previousPlacementReorder[$data["prev"]]=$data["id"];
+            }
+        }
+
+        if (count($fieldsToReorder)===0) {
+            return $linear;
+        }
+
+
+        // First : delete fields to reorder
+        foreach ($linear as $k => $fieldId) {
+            if (isset($fieldsToReorder[$fieldId])) {
+                unset($linear[$k]);
+            }
+        }
+        // Second: construct new array
+        $newOrderKeys=[];
+        foreach ($linear as $k => $fieldId) {
+            $newOrderKeys[]=$fieldId;
+            if (isset($previousPlacementReorder[$fieldId])) {
+                $newOrderKeys[]=$previousPlacementReorder[$fieldId];
+            }
+        }
+
+
+        return $newOrderKeys;
+    }
     /**
      * Complete information (prev) when absolute numeric order is done
      *
