@@ -185,10 +185,19 @@ class CVDocHooks extends \SmartStructure\Base
      */
     public function getLocaleViewLabel($vid)
     {
-        $key = $this->getPropertyValue("name") . "#label#" . $vid;
-        $lkey = _($key);
-        if ($lkey != $key) {
-            return $lkey;
+        if (!empty($this->getPropertyValue("name"))) {
+            // try new po syntax
+            $lkey = ___($vid, $this->getPropertyValue("name"));
+            if ($lkey !== $vid) {
+                return $lkey;
+            }
+
+            // try old po syntax
+            $key = $this->getPropertyValue("name") . "#label#" . $vid;
+            $lkey = _($key);
+            if ($lkey !== $key) {
+                return $lkey;
+            }
         }
         $view = $this->getView($vid);
         return isset($view["CV_LVIEW"]) ? $view["CV_LVIEW"] : sprintf(_("Unlabeled view (%s)"), $vid);
@@ -200,11 +209,21 @@ class CVDocHooks extends \SmartStructure\Base
      */
     public function getLocaleViewMenu($vid)
     {
-        $key = $this->getPropertyValue("name") . "#menu#" . $vid;
-        $lkey = _($key);
-        if ($lkey != $key) {
-            return $lkey;
+        if (!empty($this->getPropertyValue("name"))) {
+            // try new po syntax
+            $lkey = ___($vid, $this->getPropertyValue("name"));
+            if ($lkey !== $vid) {
+                return $lkey;
+            }
+
+            // try old po syntax
+            $key = $this->getPropertyValue("name") . "#menu#" . $vid;
+            $lkey = _($key);
+            if ($lkey !== $key) {
+                return $lkey;
+            }
         }
+
         $view = $this->getView($vid);
         return isset($view["CV_MENU"]) ? $view["CV_MENU"] : sprintf(_("Unlabeled menu (%s)"), $vid);
     }
