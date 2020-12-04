@@ -828,12 +828,12 @@ class ImportDocumentDescription
 
     protected function cleanDefaultAndParametersValues()
     {
-        $this->doc->defaultvalues=null;
-        $this->doc->param=null;
+        $this->doc->defaultvalues = null;
+        $this->doc->param = null;
 
         $this->tcr[$this->nLine]["msg"] .= "\nClear all default values .";
         $this->tcr[$this->nLine]["msg"] .= "\nClear all parameters values .";
-        
+
         $this->doc->modify(true, ["defaultvalues", "param"], true);
     }
 
@@ -2074,14 +2074,16 @@ class ImportDocumentDescription
 
     protected function getParentAttr($attrid)
     {
-        $fromids = $this->getFromids($this->doc->id);
-        foreach ($fromids as $fromid) {
-            $oattr = new DocAttr($this->dbaccess, array(
-                $fromid,
-                $attrid
-            ));
-            if ($oattr->isAffected()) {
-                return $oattr;
+        if ($this->doc->id) {
+            $fromids = $this->getFromids($this->doc->id);
+            foreach ($fromids as $fromid) {
+                $oattr = new DocAttr($this->dbaccess, array(
+                    $fromid,
+                    $attrid
+                ));
+                if ($oattr->isAffected()) {
+                    return $oattr;
+                }
             }
         }
         return null;
@@ -2146,7 +2148,7 @@ class ImportDocumentDescription
 
     protected function doModattr(array $data)
     {
-        if (! $this->doc) {
+        if (!$this->doc) {
             return;
         }
         $attrid = strtolower($data[1]);
@@ -2159,9 +2161,9 @@ class ImportDocumentDescription
         } else {
             // Need copy previous modattr
 
-            $currentModAttr=new DocAttr("", [$this->doc->id, ":".$attrid]);
+            $currentModAttr = new DocAttr("", [$this->doc->id, ":" . $attrid]);
 
-            $currentValues=$currentModAttr->getValues();
+            $currentValues = $currentModAttr->getValues();
             foreach ($currentValues as $k => $currentValue) {
                 if ($currentValue !== null && $currentValue !== "") {
                     $parentAttr->$k = $currentValue;
@@ -2190,12 +2192,12 @@ class ImportDocumentDescription
             //  $iAttr-> = $oattr->autocomplete;
 
             $iAttr->id = $attrid;
-            $parentData=$iAttr->getData("MODATTR");
+            $parentData = $iAttr->getData("MODATTR");
 
 
             foreach ($data as $k => $v) {
                 if (($v === null || $v === "") && !empty($parentData[$k])) {
-                    $data[$k]=$parentData[$k];
+                    $data[$k] = $parentData[$k];
                 }
             }
 
