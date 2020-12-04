@@ -60,7 +60,7 @@ class SampleAccumulator
     public function getCandidate($minConfidence = 0)
     {
         $samples = $this->getMergedSamples();
-        $samples = array_filter($samples, function (Sample & $sample) use ($minConfidence) {
+        $samples = array_filter($samples, function (Sample $sample) use ($minConfidence) {
             return ($sample->score >= $minConfidence);
         });
         if (count($samples) <= 0) {
