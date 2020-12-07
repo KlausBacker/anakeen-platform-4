@@ -1759,7 +1759,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @return string error message, if no error empty string
      */
-    final private function _destroy($nopost)
+    private function _destroy($nopost)
     {
         $err = "";
         if (!empty($this->id)) {
@@ -8073,7 +8073,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @return array|null list of array('name' => $tagName, 'value' => $tagValue)
      */
-    final private static function getDocCommentTags($docComment = '')
+    private static function getDocCommentTags($docComment = '')
     {
         if (!preg_match_all(
             '/^.*?@(?P<name>[a-zA-Z0-9_-]+)\s+(?P<value>.*?)\s*$/m',
