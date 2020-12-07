@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:11.0.3
+    environment:
+      KEYCLOAK_USER: "admin"
+      KEYCLOAK_PASSWORD: "anakeen"
+      DB_VENDOR: "postgres"
+      DB_ADDR: "postgres"
+      DB_USER: "keycloak"
+      DB_PASSWORD: "keycloak"
+    volumes:
+      - './Addons/keycloak/utils:/data/utils'
+      - './Volumes/_private/keycloak/data/export-import:/data/export-import'
+    ports:
+      - '${PROJECT_KEYCLOAK_PORT-8083}:8080'
+    depends_on:
+      - postgres
+    networks:
+      internal:
+        aliases:
+          - auth
+  # Add custom initdb script in postgres container
+  postgres:
+    volumes:
+      - './Addons/keycloak/docker-entrypoint-initdb.d/20-initdb-keycloak.sh:/docker-entrypoint-initdb.d/20-initdb-keycloak.sh'
+
+networks:
+  internal: {}

@@ -1,0 +1,2 @@
+ARG PROJECT_FPM_PHP_VERSION
+FROM registry.ap4.anakeen.com/ank-php-fpm:$PROJECT_FPM_PHP_VERSION

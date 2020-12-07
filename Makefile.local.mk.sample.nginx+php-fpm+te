@@ -1,0 +1,20 @@
+KEEP_VOLUMES += $(VOLUMES_WEBROOT_SNAPSHOT_DIR)
+KEEP_VOLUMES += $(VOLUMES_WEBROOT_CERTS)
+
+# Add "transformation-server" container (tcp/51968)
+include .devtool/docker/Addons/transformation-server/Makefile.params.mk
+
+# Add "php-fpm" container (tcp/9000)
+include .devtool/docker/Addons/php-fpm/Makefile.params.mk
+
+# Override default "web" container with Nginx one (still serves HTTP (tcp/80)
+# and add HTTPS (tcp/443) support)
+include .devtool/docker/Addons/nginx/Makefile.params.mk
+
+# Add "dbgp-proxy" container
+include .devtool/docker/Addons/dbgp-proxy/Makefile.params.mk
+PROJECT_DBGP_PROXY_DEBUG_PORT = 9000
+PROJECT_DBGP_PROXY_IDE_PORT   = 9001
+
+# Add "mailhog" container
+include .devtool/docker/Addons/mailhog/Makefile.params.mk

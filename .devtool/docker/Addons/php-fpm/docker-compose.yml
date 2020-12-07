@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  php-fpm:
+    build:
+      context: ./Addons/php-fpm
+      args:
+        ANK_RUN_UID: ${COMPOSE_UID}
+        ANK_RUN_GID: ${COMPOSE_GID}
+        PROJECT_FPM_PHP_VERSION: ${PROJECT_FPM_PHP_VERSION}
+        DEBUG_DOCKERFILE_ONBUILD: "no"
+    environment:
+      DEBUG_CRON: "no"
+      DEBUG_ENTRYPOINT: "no"
+    volumes:
+      - './Volumes/_private/webroot/var/www/html/anakeen:/var/www/html/anakeen'
+      - './Volumes/_private/webroot/var/spool/cron/crontabs/:/var/spool/cron/crontabs'
+      - './Volumes/_private/webroot/tmp/share/:/tmp/share/'
+
+      - "../../build/:/var/www/html/anakeen/repo"
+
+      - './Volumes/php/usr/local/etc/php/conf.d/10-base.ini:/usr/local/etc/php/conf.d/10-base.ini'
+      - './Volumes/php/usr/local/etc/php/conf.d/20-xdebug.ini:/usr/local/etc/php/conf.d/20-xdebug.ini'
+    depends_on:
+      - postgres
+    networks:
+      internal:
+        aliases:
+          - php-fpm
+          - php
+
+networks:
+  internal: {}

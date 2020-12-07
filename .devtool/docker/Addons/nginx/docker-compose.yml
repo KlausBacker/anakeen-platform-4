@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  web:
+    build:
+      context: ./Addons/nginx/
+      args:
+        ANK_RUN_UID: ${COMPOSE_UID}
+        ANK_RUN_GID: ${COMPOSE_GID}
+        PROJECT_NGINX_VERSION: ${PROJECT_NGINX_VERSION}
+    sysctls:
+      # Allows mapping of port 80 from unprivileged user COMPOSE_UID
+      net.ipv4.ip_unprivileged_port_start: 0
+    volumes:
+      - './Volumes/_private/webroot/var/www/html/anakeen:/var/www/html/anakeen'
+      - './Volumes/_private/webroot/tmp/share/:/tmp/share/'
+      - './Volumes/_private/webroot/var/www/html/anakeen/certs/servers/server-crt.pem:/etc/nginx/server-crt.pem'
+      - './Volumes/_private/webroot/var/www/html/anakeen/certs/servers/server-key.pem:/etc/nginx/server-key.pem'
+    depends_on:
+      - php-fpm
+    ports:
+      - '${PROJECT_HTTP_PORT-8080}:80'
+      - '${PROJECT_HTTPS_PORT-8443}:443'
+    networks:
+      internal:
+        aliases:
+          - web
+
+networks:
+  internal: {}

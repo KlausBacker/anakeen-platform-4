@@ -1,0 +1,2 @@
+ARG PROJECT_NGINX_VERSION
+FROM registry.ap4.anakeen.com/ank-nginx:$PROJECT_NGINX_VERSION

@@ -9,18 +9,17 @@ MAKEFLAGS += --warn-undefined-variables
 MAKEFLAGS += --no-builtin-rules
 
 PROJECT_NAME = monorepo
-PROJECT_POSTGRES_VERSION = 11.6
-PROJECT_PHP_VERSION = 7.3
+PROJECT_POSTGRES_VERSION = 11.6-1
+PROJECT_APACHE_PHP_VERSION = 7.3-3
 PROJECT_PSQL_PORT = 54321
 PROJECT_HTTP_PORT = 8080
 PROJECT_DEVSERVER_PORT = 8001
-PROJECT_MAIL_PORT = 8081
 
 TOPTARGETS := deploy deploy-test deploy-all lint po stub checkXML clean beautify
 
 BUILDTARGETS := app app-autorelease app-test app-test-autorelease app-all
 
-SUBDIRS := control smart-data-engine internal-components user-interfaces security workflow hub-station admin-center business-app development-center transformation migration-tools dev-data test-tools fulltext-search
+SUBDIRS := control smart-data-engine internal-components user-interfaces security workflow hub-station admin-center business-app development-center transformation transformation-server migration-tools dev-data test-tools fulltext-search
 
 CONTROL_ARCHIVE = $(BUILD_DIR)/control/anakeen-control-latest.zip
 
@@ -61,7 +60,7 @@ lint-po: ## Lint po
 	./$(DEVTOOLS_DIR)/ci/check/checkPo.sh
 
 .PHONY: env-start
-env-start: | $(VOLUMES_PHP_CONTROL_CONF)/contexts.xml $(VOLUMES_PRIVATE) ## Start docker environment
+env-start: | $(VOLUMES_WEBROOT_CONTROL_CONF)/contexts.xml $(VOLUMES_PRIVATE) ## Start docker environment
 	@$(PRINT_COLOR) "$(COLOR_SUCCESS)"
 	@$(MAKE) --no-print-directory env-list-ports
 	@$(PRINT_COLOR) "$(COLOR_RESET)"
@@ -73,8 +72,8 @@ env-stop: | _env-stop ## Stop docker environment
 .PHONY: env-clean
 env-clean: | env-stop ## Clean docker environment
 	@$(PRINT_COLOR) "$(COLOR_WARNING)Delete private volumes$(COLOR_RESET)\n"
-	#rm -rf $(filter-out $(KEEP_VOLUMES),$(VOLUMES_PRIVATE))
-	rm -rf $(VOLUMES_PRIVATE) $(BUILD_DIR)
+	rm -rf $(filter-out $(KEEP_VOLUMES),$(VOLUMES_PRIVATE))
+#	rm -rf $(VOLUMES_PRIVATE) $(BUILD_DIR)
 
 .PHONY: env-reboot
 env-reboot: ## Reboot docker environment (stop + start + set params)

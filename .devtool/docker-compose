@@ -1,0 +1,26 @@
+#!/bin/bash
+
+set -e
+
+function quote_args {
+  local QUOTED_ARGS=""
+  while [[ $# -gt 0 ]]; do
+    QUOTED_ARGS="${QUOTED_ARGS} $(printf "%q" "$1")"
+    shift
+  done
+  echo "${QUOTED_ARGS}"
+}
+
+function main {
+    local PROJECT_ROOT
+    PROJECT_ROOT=$(realpath "$(dirname "${BASH_SOURCE[0]}")/../")
+
+    eval "$(make -C "${PROJECT_ROOT}" -s docker-compose-env)"
+    if [[ -z "${DOCKER_COMPOSE_CMD}" ]]; then
+        echo "Error: undefined DOCKER_COMPOSE_CMD variable!" 1>&2
+        return 1
+    fi
+    eval "${DOCKER_COMPOSE_CMD}" "$(quote_args "$@")"
+}
+
+main "$@"
