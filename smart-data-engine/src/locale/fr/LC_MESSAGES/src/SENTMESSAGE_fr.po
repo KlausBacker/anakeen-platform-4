@@ -26,12 +26,6 @@ msgstr "Date"
 #: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 #, fuzzy
 msgctxt "SENTMESSAGE"
-msgid "emsg_editcontrol"
-msgstr "Force la lecture seule"
-
-#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
-#, fuzzy
-msgctxt "SENTMESSAGE"
 msgid "emsg_fr_bodies"
 msgstr "Corps de messages"
 
@@ -112,6 +106,11 @@ msgstr "Texte"
 msgctxt "SENTMESSAGE"
 msgid "title"
 msgstr "Message envoyé"
+
+#, fuzzy
+#~ msgctxt "SENTMESSAGE"
+#~ msgid "emsg_editcontrol"
+#~ msgstr "Force la lecture seule"
 
 #, fuzzy
 #~ msgctxt "SENTMESSAGE"

@@ -107,11 +107,6 @@ msgctxt "MAIL"
 msgid "title"
 msgstr "Mail"
 
-#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
-msgctxt "MAIL"
-msgid "undefined"
-msgstr ""
-
 #, fuzzy
 #~ msgctxt "MAIL"
 #~ msgid "mail_cm"

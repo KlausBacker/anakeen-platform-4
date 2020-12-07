@@ -90,8 +90,3 @@ msgstr "Titre"
 msgctxt "RENDERDESCRIPTION"
 msgid "title"
 msgstr "Titre"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-msgctxt "RENDERDESCRIPTION"
-msgid "undefined"
-msgstr ""
