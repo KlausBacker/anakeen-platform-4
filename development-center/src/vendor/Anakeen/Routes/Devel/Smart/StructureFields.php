@@ -145,7 +145,7 @@ class StructureFields
          * Add override part
          */
         $sql = sprintf(
-            "select * from docattr where docid = %d and {$this->sqlFilter} and id ~ '^:' order by ordered",
+            "select * from docattr where docid = %d and {$this->sqlFilter} and id ~ '^:' order by ordered, id",
             $family->id
         );
         DbManager::query($sql, $dbModAttr);

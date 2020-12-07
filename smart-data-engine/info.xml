@@ -20,11 +20,11 @@
         <check type="phpversion" predicate="lt" version="7.5.0">
             <label>Maximum PHP version is 7.4</label>
         </check>
-        <check type="pgversion" service="@core_db" predicate="ge" version="9.6.0">
-            <label>Minimum database version is 9.6</label>
+        <check type="pgversion" service="@core_db" predicate="ge" version="11.0">
+            <label>Minimum database version is 11</label>
         </check>
-        <check type="pgversion" service="@core_db" predicate="lt" version="12.0.0">
-            <label>Maximum database version is 11.0</label>
+        <check type="pgversion" service="@core_db" predicate="lt" version="14.0">
+            <label>Maximum database version is 13</label>
         </check>
         <check type="pgempty" service="@core_db" optional="Y">
             <label>Check database empty</label>
@@ -269,11 +269,11 @@
         <check type="phpversion" predicate="lt" version="7.5.0">
             <label>Maximum PHP version is 7.4</label>
         </check>
-        <check type="pgversion" service="@core_db" predicate="ge" version="9.6.0">
-            <label>Minimum database version is 9.6</label>
+        <check type="pgversion" service="@core_db" predicate="ge" version="11.0">
+            <label>Minimum database version is 11.0</label>
         </check>
-        <check type="pgversion" service="@core_db" predicate="lt" version="12.0.0">
-            <label>Maximum database version is 11.0</label>
+        <check type="pgversion" service="@core_db" predicate="lt" version="14.0">
+            <label>Maximum database version is 13</label>
         </check>
         <check type="syscommand" command="rm">
             <label>Check "rm". To delete some working files</label>

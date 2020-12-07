@@ -91,6 +91,7 @@ class PuCoreDataDocument extends \Anakeen\Pu\Routes\TestCaseRoutes
         $app = $this->setApiUriEnv($uri, $postContent);
         $response = $app->run(true);
         $rawBody = (string)$response->getBody();
+
         $this->isJSONMatch($rawBody, file_get_contents($expectedJsonFile));
     }
 
