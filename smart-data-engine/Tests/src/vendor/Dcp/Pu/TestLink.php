@@ -30,7 +30,7 @@ class TestLink extends TestCaseDcpDocument
     }
 
     public static function setUpBeforeClass(): void
- {
+    {
         parent::setUpBeforeClass();
 
         self::connectUser();

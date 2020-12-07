@@ -10,7 +10,7 @@ use Anakeen\Pu\Config\TestCaseConfig;
 class PuGroups extends TestCaseConfig
 {
     public static function setUpBeforeClass(): void
- {
+    {
         parent::setUpBeforeClass();
         self::importAccountFile(__DIR__ . "/Inputs/accountsData.xml");
     }

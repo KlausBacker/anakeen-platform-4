@@ -22,7 +22,7 @@ class TestCaseRoutes extends \Dcp\Pu\TestCaseDcpCommonFamily
     protected $jsonResultFile;
 
     public static function setUpBeforeClass(): void
- {
+    {
         parent::setUpBeforeClass();
 
         $routeConfig = \Anakeen\Router\RouterLib::getRouterConfig();

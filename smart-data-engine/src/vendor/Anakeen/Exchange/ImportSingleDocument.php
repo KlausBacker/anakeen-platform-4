@@ -222,11 +222,10 @@ class ImportSingleDocument
         } elseif ($this->specName != "") {
                 $tmpDoc->name = $this->specName; // logical name
                 $docid = \Anakeen\Core\SEManager::getIdFromName($tmpDoc->name);
-                if ($docid > 0) {
-                    $tmpDoc->id = $docid;
-                    $tmpDoc->initid = $docid;
-                }
-
+            if ($docid > 0) {
+                $tmpDoc->id = $docid;
+                $tmpDoc->initid = $docid;
+            }
         }
 
         if ($tmpDoc->id > 0) {
@@ -336,9 +335,10 @@ class ImportSingleDocument
                                     if (preg_match(PREGEXPFILE, $dv, $reg)) {
                                         $this->doc->setValue($attr->id, $dv);
                                         $this->tcr["values"][$attr->getLabel()] = $dv;
-                                    } /** @noinspection PhpStatementHasEmptyBodyInspection */
-                                    elseif (preg_match('/^http:/', $dv, $reg)) {
+                                    } elseif (preg_match('/^http:/', $dv, $reg)) {
                                         // nothing
+                                        /** @noinspection PhpUnusedLocalVariableInspection */
+                                        $doNothing=true;
                                     } elseif ($dv) {
                                         $absfile = "$this->importFilePath/$dv";
                                         $vfid = "";

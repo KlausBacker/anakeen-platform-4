@@ -22,7 +22,7 @@ class TestDcpDocumentFilterHasUserTag extends TestDcpDocumentFiltercommon
     }
     */
     public static function setUpBeforeClass(): void
- {
+    {
         parent::setUpBeforeClass();
         self::localSetup();
     }

@@ -31,7 +31,7 @@ class PuReport extends TestCaseConfig
     private static $idMap;
 
     public static function setUpBeforeClass(): void
- {
+    {
         parent::setUpBeforeClass();
         self::importConfigurationFile(__DIR__ . "/Inputs/tst_report_all_types.struct.xml");
 

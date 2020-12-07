@@ -15,7 +15,7 @@ class TestSplitXmlDocument extends TestCaseDcp
     public $errmsg = '';
 
     public static function setUpBeforeClass(): void
- {
+    {
         parent::setUpBeforeClass();
         self::createWorkDir();
     }

@@ -23,7 +23,7 @@ class TestTag extends TestCaseDcpDocument
     }
 
     public static function setUpBeforeClass(): void
- {
+    {
         parent::setUpBeforeClass();
 
         self::connectUser();

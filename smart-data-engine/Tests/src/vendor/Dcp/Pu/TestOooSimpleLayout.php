@@ -29,7 +29,7 @@ class TestOooSimpleLayout extends TestCaseDcpDocument
     }
 
     public static function setUpBeforeClass(): void
- {
+    {
         parent::setUpBeforeClass();
         // self::$outputDir = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/oootest-");
         self::$outputDir = (\Anakeen\Core\ContextManager::getTmpDir() . "/oootest");

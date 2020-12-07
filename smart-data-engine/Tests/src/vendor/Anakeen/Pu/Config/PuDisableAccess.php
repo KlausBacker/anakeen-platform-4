@@ -13,7 +13,7 @@ class PuDisableAccess extends TestCaseConfig
     protected $testNumber = 0;
 
     public static function setUpBeforeClass(): void
- {
+    {
         parent::setUpBeforeClass();
         self::importAccountFile(__DIR__ . "/Inputs/tst_006.users.xml");
         self::importConfigurationFile(__DIR__ . "/Inputs/tst_006.struct.xml");

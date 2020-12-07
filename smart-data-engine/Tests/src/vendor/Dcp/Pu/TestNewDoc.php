@@ -28,7 +28,7 @@ class TestNewDoc extends TestCaseDcpCommonFamily
     }
 
     public static function setUpBeforeClass(): void
- {
+    {
         parent::setUpBeforeClass();
         $d = SEManager::createDocument(\SmartStructure\Base::familyName);
         $d->setAttributeValue(\SmartStructure\Fields\Base::ba_title, "x1-" . $d->revision);
