@@ -209,8 +209,13 @@ exports.xmlStructure2Pot = ({ globFile, info, potPath, verbose, log }) => {
                 values = result.config.structureconfiguration.reduce((acc, currentConf) => {
                   const name = currentConf.$.name;
                   let elements = {};
-                  if (currentConf.fields && currentConf.fields.length && currentConf.fields.length > 0) {
-                    elements = currentConf.fields.reduce((acc, currentField) => {
+                  if (
+                    currentConf.fields &&
+                    currentConf.fields.length &&
+                    currentConf.fields.length > 0 &&
+                    currentConf.fields[0].fieldset
+                  ) {
+                    elements = currentConf.fields[0].fieldset.reduce((acc, currentField) => {
                       const fields = extractSmartField(currentField, path.relative(srcPath, currentFilePath));
                       return {
                         ...acc,
