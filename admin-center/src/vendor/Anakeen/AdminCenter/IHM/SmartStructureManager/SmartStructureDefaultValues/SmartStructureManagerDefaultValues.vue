@@ -70,7 +70,7 @@
     </kendo-grid>
 
     <transition name="modal">
-      <div v-show="showModal" class="modal-mask">
+      <div v-if="showModal" class="modal-mask">
         <div class="modal-wrapper" @click="showModal = false">
           <div class="modal-container" @click.stop>
             <smart-form
