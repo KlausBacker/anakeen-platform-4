@@ -1366,7 +1366,6 @@ export default Backbone.Model.extend({
           options.error(values);
         }
         if (values.promiseArguments && values.promiseArguments.length === 1) {
-          // @FIXME: Workaround because in some case : the args are into the first value of array
           if (values.promiseArguments[0].length === 3) {
             values.promiseArguments = values.promiseArguments[0];
           }
