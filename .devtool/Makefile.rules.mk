@@ -142,7 +142,7 @@ snapshots-revert-%: | $(VOLUMES_WEBROOT_CONTEXT) ## revert to snapshot %
 	$(MAKE) _env-start
 	$(_CONTROL_CMD) restore --pg-service=platform --force-clean --dry-run
 	$(_CONTROL_CMD) dojob -v
-	$(DOCKER_COMPOSE_CMD) exec $(CONTAINER_PHP) rm "$(DOCKER_INTERNAL_WEBROOT_BASE)/core_db.pg_dump"
+	$(DOCKER_COMPOSE_CMD_EXEC) $(CONTAINER_PHP) rm "$(DOCKER_INTERNAL_WEBROOT_BASE)/core_db.pg_dump"
 	@$(PRINT_COLOR) "$(COLOR_SUCCESS)"
 	@$(MAKE) --no-print-directory env-list-ports
 	@$(PRINT_COLOR) "$(COLOR_RESET)"
@@ -179,7 +179,7 @@ env-list-ports: ## list exposed ports
 ## Utils
 ###############################################################################
 
-_CONTROL_CMD = $(DOCKER_COMPOSE_CMD) exec $(CONTAINER_PHP) $(DOCKER_INTERNAL_WEBROOT_CONTROL_DIR_PATH)/anakeen-control
+_CONTROL_CMD = $(DOCKER_COMPOSE_CMD_EXEC) $(CONTAINER_PHP) $(DOCKER_INTERNAL_WEBROOT_CONTROL_DIR_PATH)/anakeen-control
 _CONTROL_SHELL_CMD = $(_CONTROL_CMD) run
 _CONTROL_ANK_CMD = $(_CONTROL_SHELL_CMD) ./ank.ph
 

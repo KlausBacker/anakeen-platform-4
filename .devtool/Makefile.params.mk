@@ -105,6 +105,20 @@ CORE_URLINDEX = http://localhost:$(PROJECT_HTTP_PORT)/
 
 SSL_SERVER_NAMES = localhost 127.0.0.1 ::1 web
 
+#
+# If the parent has no TTY, then define DOCKER_COMPOSE_CMD_EXEC with
+# `docker-compose exec -T` to disable allocation of a TTY (which otherwise would
+# result in a failure with a "the input device is not a TTY" error)(see issue
+# #1119).
+# If the parent has a TTY, then we can use the default `docker-compose exec`.
+#
+DOCKER_COMPOSE_HAS_TTY=$$(tty -s && echo "yes" || echo "no")
+ifeq ($(DOCKER_COMPOSE_HAS_TTY),yes)
+	DOCKER_COMPOSE_CMD_EXEC = $(DOCKER_COMPOSE_CMD) exec
+else
+	DOCKER_COMPOSE_CMD_EXEC = $(DOCKER_COMPOSE_CMD) exec -T
+endif
+
 ###############################################################################
 ## colors
 ###############################################################################
