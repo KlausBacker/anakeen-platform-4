@@ -1366,17 +1366,19 @@ export default Backbone.Model.extend({
           options.error(values);
         }
         if (values.promiseArguments && values.promiseArguments.length === 1) {
-          // @FIMXE: Workaround because in some case : the args are into the first value of array
           if (values.promiseArguments[0].length === 3) {
             values.promiseArguments = values.promiseArguments[0];
           }
         }
 
         if (values.promiseArguments && values.promiseArguments.length > 0) {
+          // failArguments will be given to propagateSynchroError
+          let failArguments = values.promiseArguments;
           if (values.promiseArguments[0].message) {
             currentModel.message = values.promiseArguments[0].message;
           } else if (values.promiseArguments.length > 1 && values.promiseArguments[1].responseJSON) {
-            const msg = values.promiseArguments[1].responseJSON;
+            failArguments = values.promiseArguments[1];
+            const msg = failArguments.responseJSON;
             if (msg.userMessage) {
               currentModel.message = msg.userMessage;
             } else if (msg.message) {
@@ -1385,10 +1387,7 @@ export default Backbone.Model.extend({
               currentModel.message = msg.exceptionMessage;
             }
           }
-          currentModel.trigger.apply(
-            currentModel,
-            _.union(["dduiDocumentFail", currentModel], values.promiseArguments)
-          );
+          currentModel.trigger.apply(currentModel, _.union(["dduiDocumentFail", currentModel], failArguments));
         } else if (
           !(values.promiseArguments && values.promiseArguments[0] && values.promiseArguments[0].eventPrevented === true)
         ) {
