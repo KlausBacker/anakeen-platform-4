@@ -106,9 +106,3 @@ msgstr "Title"
 msgctxt "RENDERDESCRIPTION"
 msgid "title"
 msgstr "title"
-
-#: src/vendor/Anakeen/SmartStructures/RenderDescription/renderdescription.struct.xml
-#, fuzzy
-msgctxt "RENDERDESCRIPTION"
-msgid "undefined"
-msgstr "undefined"

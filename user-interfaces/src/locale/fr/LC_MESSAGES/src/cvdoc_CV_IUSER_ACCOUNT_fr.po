@@ -1,0 +1,30 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: cvdoc CV_IUSER_ACCOUNT \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2020-12-07T08:51:57.927Z\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.views.xml
+#, fuzzy
+msgctxt "CV_IUSER_ACCOUNT"
+msgid "EGROUP"
+msgstr "Modification des groupes parents"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.views.xml
+#, fuzzy
+msgctxt "CV_IUSER_ACCOUNT"
+msgid "ESUBSTITUTE"
+msgstr "Modifier le suppléant"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.views.xml
+#, fuzzy
+msgctxt "CV_IUSER_ACCOUNT"
+msgid "EUSER"
+msgstr "Admin edit"

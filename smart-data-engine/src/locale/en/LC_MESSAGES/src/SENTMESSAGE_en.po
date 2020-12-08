@@ -23,11 +23,6 @@ msgstr "Date"
 
 #: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
-msgid "emsg_editcontrol"
-msgstr "Force read-only"
-
-#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
-msgctxt "SENTMESSAGE"
 msgid "emsg_fr_bodies"
 msgstr "Message body"
 
@@ -95,6 +90,10 @@ msgstr "Text"
 msgctxt "SENTMESSAGE"
 msgid "title"
 msgstr "Sent message"
+
+#~ msgctxt "SENTMESSAGE"
+#~ msgid "emsg_editcontrol"
+#~ msgstr "Force read-only"
 
 #~ msgctxt "SENTMESSAGE"
 #~ msgid "emsg_editcontrol#freeedit"
