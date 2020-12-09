@@ -31,6 +31,10 @@ module.exports = () => {
         path.resolve(__dirname,
           "../src/vendor/Anakeen/SmartStructures/Mail/Render/MailEdit.js")
       ],
+      MailTemplateRender: [
+        path.resolve(__dirname,
+          "../src/vendor/Anakeen/SmartStructures/Mailtemplate/Render/MailTemplateRender.js")
+      ],
       RenderDescriptionView: [
         path.resolve(__dirname,
           "../src/vendor/Anakeen/SmartStructures/RenderDescription/Render/RenderDescriptionView.js")

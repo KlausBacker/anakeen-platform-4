@@ -8,6 +8,16 @@ use SmartStructure\Fields\Mailtemplate as myAttributes;
 
 class MailtemplateViewRender extends DefaultConfigViewRender
 {
+    use TmailtemplateRender;
+
+    public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
+    {
+        $js = parent::getJsReferences();
+        $js = $this->getCommonJsReference($document, $js);
+
+        return $js;
+    }
+
     /**
      * @param \Anakeen\Core\Internal\SmartElement $document Document instance
      *

@@ -63,7 +63,7 @@ class ImportWorkflowConfiguration extends ImportRenderConfiguration
             $fromNodes = $this->evaluate($mailNode, "({$this->mtPrefix}:from/*)[1]");
             foreach ($fromNodes as $fromNode) {
                 $this->getRecipient($fromNode, $destType, $destValue);
-                if ($destType && $destValue) {
+                if (($destType && $destValue) || $destType === "CU") {
                     $mailtemplate->setValue(MailFields::tmail_fromtype, [$destType]);
                     $mailtemplate->setValue(MailFields::tmail_from, [$destValue]);
                 }
@@ -86,7 +86,7 @@ class ImportWorkflowConfiguration extends ImportRenderConfiguration
                     foreach ($destNodes as $destNode) {
                         $this->getRecipient($destNode, $destType, $destValue);
 
-                        if ($destType && $destValue) {
+                        if (($destType && $destValue) || $destType === "CU") {
                             $mailtemplate->addArrayRow(MailFields::tmail_dest, [
                                 MailFields::tmail_desttype => $destType,
                                 MailFields::tmail_recip => $destValue,
@@ -162,6 +162,11 @@ class ImportWorkflowConfiguration extends ImportRenderConfiguration
             case "element-name":
                 $destType = "RD";
                 $destValue = $element->nodeValue;
+                break;
+            // Only to have un current user (explicitly)
+            case "current-user-email":
+                $destType = "CU";
+                $destValue = "";
                 break;
         }
         $label = $element->getAttribute("label");

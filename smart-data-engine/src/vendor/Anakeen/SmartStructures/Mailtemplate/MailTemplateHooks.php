@@ -309,6 +309,13 @@ class MailTemplateHooks extends \Anakeen\SmartElement
                     }
                     $mail = $recipientDoc->getMail();
                     break;
+                case 'CU': // Current user email
+                    $user = ContextManager::getCurrentUser();
+                    $mail = $user->getMail(false);
+                    if (empty($mail) && $v["tmail_copymode"] === "from") {
+                        $mail = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 'SMTP_FROM');
+                    }
+                    break;
             }
             if ($mail) {
                 $dest[$toccbcc][] = str_replace(array("\n", "\r"), array(",", ""), $mail);
