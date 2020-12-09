@@ -24,7 +24,7 @@ class FatalHandler
                     header("HTTP/1.1 500 Anakeen Control Fatal Error");
                 }
 
-               print $error;
+               print_r($error);
 
                 // Fatal error are already logged by PHP
             }
