@@ -193,7 +193,7 @@ exports.parseStub = ({ globFile, info, targetPath, log, verbose }) => {
             fs.readFileSync(currentFilePath, {
               encoding: "utf8"
             }),
-            { tagNameProcessors: [stripPrefix, cleanDash] },
+            { tagNameProcessors: [stripPrefix, cleanDash], trim: true },
             (err, result) => {
               //Analyze all the enums and organize them
               if (err) {
