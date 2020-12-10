@@ -20,9 +20,8 @@
             <mapping deploy="platform" local="$PROJECT_DIR$/user-interfaces/Tests/src" web="/" />
             <mapping deploy="platform" local="$PROJECT_DIR$/workflow/Tests/src" web="/" />
             <mapping deploy="platform" local="$PROJECT_DIR$/test-tools/src" web="/" />
-            <mapping deploy="platform" local="$PROJECT_DIR$/fulltext-search/src" />
-            <mapping local="$PROJECT_DIR$/user-interfaces/Tests/src/public/Anakeen" />
-            <mapping local="$PROJECT_DIR$/control/node_modules" />
+            <mapping deploy="platform" local="$PROJECT_DIR$/fulltext-search/src" web="/" />
+            <mapping deploy="platform" local="$PROJECT_DIR$/migration-tools/src" web="/" />
           </mappings>
         </serverdata>
       </paths>
