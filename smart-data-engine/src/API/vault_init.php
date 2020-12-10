@@ -40,7 +40,7 @@ if ($err == "") {
     $q = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Vault\DiskFsStorage::class);
     $q->AddQuery("r_path='" . pg_escape_string(trim($dirname)) . "'");
     $l = $q->Query(0, 0, "TABLE");
-    if ($q->nb == 0) {
+    if ($q->nb === 0) {
         $err = $vf->storage->fs->createArch($size_in_bytes, $dirname, $fsname);
         if ($err != "") {
             $err = sprintf(_("cannot create %s: %s\n"), $dirname, $err);

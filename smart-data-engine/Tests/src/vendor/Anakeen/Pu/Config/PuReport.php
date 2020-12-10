@@ -31,7 +31,7 @@ class PuReport extends TestCaseConfig
     private static $idMap;
 
     public static function setUpBeforeClass(): void
- {
+    {
         parent::setUpBeforeClass();
         self::importConfigurationFile(__DIR__ . "/Inputs/tst_report_all_types.struct.xml");
 
@@ -6139,7 +6139,7 @@ class PuReport extends TestCaseConfig
     ) {
         $seProcess = function ($elt, $id, $value) {
             if (is_array($value)) {
-                $newValues = array_map(function (&$name) {
+                $newValues = array_map(function ($name) {
                     if (is_array($name)) {
                         return array_map(function ($subName) {
                             return self::$idMap[$subName];

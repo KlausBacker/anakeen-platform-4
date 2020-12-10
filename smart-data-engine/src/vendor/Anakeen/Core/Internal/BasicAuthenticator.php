@@ -49,7 +49,7 @@ class BasicAuthenticator extends Authenticator
             $this->provider,
             'validateCredential'
         ))) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: " . $this->parms{'type'} . $this->parms{'AuthentProvider'} . "Provider must implement validateCredential()");
+            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: " . $this->parms['type'] . $this->parms['AuthentProvider']. "Provider must implement validateCredential()");
             return Authenticator::AUTH_NOK;
         }
 

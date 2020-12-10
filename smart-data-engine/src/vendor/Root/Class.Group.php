@@ -316,8 +316,8 @@ SQL;
         //print_r2($this->levgid);
         $groupsid = array();
         asort($this->levgid);
-        foreach ($this->levgid as $k => $v) {
-            if ($v == 0) {
+        foreach ($this->levgid as $k => $level) {
+            if ($level === 0) {
                 $groupsid[$k] = $k;
             } else {
                 $uasid[$k] = $k;

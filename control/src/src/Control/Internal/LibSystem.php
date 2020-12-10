@@ -37,7 +37,7 @@ class LibSystem
         $ret = 0;
         $cmd = sprintf("which %s", escapeshellarg($cmdname));
         exec($cmd, $out, $ret);
-        if ($ret == 0) {
+        if ($ret === 0) {
             return $out[0];
         }
 

@@ -30,7 +30,7 @@ class MailAutoComplete
         $sf->addFilter("atags->>'MAILRECIPIENT' = 'true'");
         $dlf = $sf->search()->getDocumentList();
 
-        if ($dlf->count() == 0) {
+        if ($dlf->count() === 0) {
             return $response->setError(sprintf(___(
                 "none smart structure are described to be used as recipient",
                 "smart mail"

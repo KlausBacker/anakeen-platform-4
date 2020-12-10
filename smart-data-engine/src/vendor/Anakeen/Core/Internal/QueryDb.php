@@ -9,7 +9,7 @@ namespace Anakeen\Core\Internal;
 
 class QueryDb
 {
-    public $nb = 0;
+    public int $nb = 0;
     public $LastQuery = "";
 
     public $table;
@@ -141,7 +141,7 @@ class QueryDb
                 reset($where);
                 foreach ($where as $k => $v) {
                     if ($v != "") {
-                        if ($i == 0) {
+                        if ($i === 0) {
                             $query = $query . $v;
                         } else {
                             $query = $query . ' AND ' . $v;
@@ -209,7 +209,7 @@ class QueryDb
 
         $this->nb = $this->basic_elem->numrows();
 
-        if ($this->nb == 0) {
+        if ($this->nb === 0) {
             return false;
         }
         if ($res_type == "ITEM") {

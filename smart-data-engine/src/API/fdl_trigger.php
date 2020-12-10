@@ -18,8 +18,8 @@
 
 $usage = new \Anakeen\Script\ApiUsage();
 
-$usage->setDefinitionText("Return sql code to inject trigget in base");
-$docid = $usage->addOptionalParameter("docid", "special docid", null, 0);
+$usage->setDefinitionText("Return sql code to inject trigger in base");
+$docid = intval($usage->addOptionalParameter("docid", "special docid", null, 0));
 $trigger = $usage->addOptionalParameter("trigger", "trigger", null, "-");
 $trig = ($trigger != "-");
 $drop = ($trigger == "N");
@@ -27,7 +27,7 @@ $drop = ($trigger == "N");
 $usage->verify();
 
 
-if ($docid != -1) {
+if ($docid !== -1) {
     $query = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Core\Internal\SmartElement::class);
     $query->AddQuery("doctype='C'");
 
@@ -59,7 +59,7 @@ if ($docid != -1) {
     }
 }
 
-if (($docid == -1) || ($docid == 0)) {
+if (($docid === -1) || ($docid === 0)) {
     $doc = new \Anakeen\Core\SmartStructure();
 
     $doc->doctype = 'C';

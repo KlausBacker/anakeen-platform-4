@@ -492,7 +492,7 @@ class SEManager
     {
         $id = self::getIdentifier($documentIdentifier, $latest);
         if ($id > 0) {
-            if (count($returnProperties) == 0) {
+            if (count($returnProperties) === 0) {
                 $returnProperties = array_keys(\Anakeen\Core\Internal\SmartElement::$infofields);
             }
             $sqlSelect = array();
@@ -739,7 +739,7 @@ class SEManager
         }
         if (is_numeric($famName)) {
             if (in_array($famName, self::$familyNames)) {
-                return $famName;
+                return intval($famName);
             } else {
                 if (!$reset) {
                     return self::getFamilyIdFromName($famName, true);

@@ -190,15 +190,15 @@ create table doctimer ( id serial,
      * @param int $timerid timerc identifier to detach
      * @return string error - empty if no error -
      */
-    public function unattachDocument($docid, $timerid)
+    public function unattachDocument(int $docid, int $timerid)
     {
         $docid = intval($docid);
         $timerid = intval($timerid);
         $err = "";
-        if ($docid == 0) {
+        if ($docid === 0) {
             $err = _("cannot detach : document id is not set");
         }
-        if ($timerid == 0) {
+        if ($timerid === 0) {
             $err = _("cannot detach : timer id is not set");
         }
         if ($err == "") {

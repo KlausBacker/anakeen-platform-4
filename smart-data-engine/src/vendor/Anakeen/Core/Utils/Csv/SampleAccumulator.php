@@ -22,7 +22,7 @@ class SampleAccumulator
         }
         unset($sample);
         foreach ($this->samples as & $sample) {
-            if ($totalWeight == 0) {
+            if ($totalWeight === 0) {
                 $sample->score = 0;
             } else {
                 $sample->score = $sample->weight / $totalWeight;
@@ -60,7 +60,7 @@ class SampleAccumulator
     public function getCandidate($minConfidence = 0)
     {
         $samples = $this->getMergedSamples();
-        $samples = array_filter($samples, function (Sample & $sample) use ($minConfidence) {
+        $samples = array_filter($samples, function (Sample $sample) use ($minConfidence) {
             return ($sample->score >= $minConfidence);
         });
         if (count($samples) <= 0) {

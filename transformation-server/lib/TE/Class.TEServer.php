@@ -85,7 +85,7 @@ class TEServer
         while ($this->good) {
             $this->msgsock = @stream_socket_accept($this->sock, 3, $peername);
             if ($this->msgsock === false) {
-                if ($errno == 0) {
+                if (empty($errno)) {
                     echo "Accept : " . $this->cur_client . " childs in work\n";
                 } else {
                     echo "accept : $errstr ($errno)<br />\n";

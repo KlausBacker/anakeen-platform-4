@@ -84,7 +84,7 @@ class DocumentUserTags
         $q->addQuery(sprintf("initid = %d", $this->_document->initid));
         $q->order_by = "date desc";
         $userTags = $q->Query($this->offset, $this->slice, "TABLE");
-        if ($q->nb == 0) {
+        if ($q->nb === 0) {
             $userTags = array();
         }
 

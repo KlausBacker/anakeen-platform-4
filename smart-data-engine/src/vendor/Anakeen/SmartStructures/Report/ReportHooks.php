@@ -220,7 +220,7 @@ class ReportHooks extends \SmartStructure\Dsearch
         $k = 0;
         while ($currentDoc = $search->getNextDoc()) {
             $k++;
-            if ($k % 10 == 0) {
+            if ($k % 10 === 0) {
                 $this->setStatus(sprintf(_("Pivot rendering %d/%d"), $k, $nbDoc));
             }
             if ($refresh) {

@@ -255,7 +255,7 @@ class DSearchHooks extends \SmartStructure\Search
     public function simpleXml2StdClass(\SimpleXMLElement $xml)
     {
         $std = null;
-        if ($xml->count() == 0) {
+        if ($xml->count() === 0) {
             /** @var array $xml */
             return current($xml);
         } else {
@@ -624,7 +624,7 @@ class DSearchHooks extends \SmartStructure\Search
                                 pg_escape_string($val)
                             ), $ids, true);
 
-                            if (count($ids) == 0) {
+                            if (count($ids) === 0) {
                                 $cond = "false";
                             } elseif (count($ids) == 1) {
                                 $cond = " " . $col . " = " . intval($ids[0]) . " ";
@@ -660,7 +660,7 @@ class DSearchHooks extends \SmartStructure\Search
                                             pg_escape_string($val)
                                         ), $ids, true);
 
-                                        if (count($ids) == 0) {
+                                        if (count($ids) === 0) {
                                             $cond = "false";
                                         } elseif (count($ids) == 1) {
                                             $cond = " " . $col . " = '" . intval($ids[0]) . "' ";
@@ -685,7 +685,7 @@ class DSearchHooks extends \SmartStructure\Search
                                     pg_escape_string($val)
                                 ), $ids, true);
 
-                                if (count($ids) == 0) {
+                                if (count($ids) === 0) {
                                     $cond = "false";
                                 } elseif (count($ids) == 1) {
                                     $cond = " " . $col . " = " . intval($ids[0]) . " ";

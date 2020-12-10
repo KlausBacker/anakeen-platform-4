@@ -87,9 +87,15 @@ exports.postModule = ({ controlUrl, controlUsername, controlPassword, fileName, 
   })
     .then(response => {
       if (response.status !== 200) {
-        // throw new Error(response.json());
+        throw new Error(`${response.status} ${response.statusText}`);
       }
-      return response.json();
+      try {
+        return response.json();
+      } catch (e) {
+        response.text().then(error => {
+          throw new Error(error);
+        });
+      }
     })
     .then(result => {
       if (result.exceptionMessage) {

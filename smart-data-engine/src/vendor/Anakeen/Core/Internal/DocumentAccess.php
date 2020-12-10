@@ -222,7 +222,7 @@ class DocumentAccess
                 $this->document->dprofid = 0;
                 $this->setViewProfil();
             }
-            if ($pdoc && $pdoc->profid == 0) {
+            if ($pdoc && intval($pdoc->profid) === 0) {
                 $this->document->profid = -$profid;
             } // inhibition
         } elseif (($profid > 0) && ($profid == $this->document->id)) {
@@ -361,10 +361,10 @@ class DocumentAccess
     {
         $err = '';
         $pfamid = 0;
-        if ($this->document->id == 0) {
+        if (intval($this->document->id) === 0) {
             return '';
         }
-        if ($dprofid == 0) {
+        if (intval($dprofid) === 0) {
             $dprofid = $this->document->dprofid;
         }
         if ($dprofid <= 0) {
@@ -547,7 +547,7 @@ class DocumentAccess
     private function computeDProfilExt($dprofid, $fromdocidvalues = null)
     {
         $err = '';
-        if (count($this->document->extendedAcls) == 0) {
+        if (count($this->document->extendedAcls) === 0) {
             return '';
         }
 
@@ -840,7 +840,7 @@ class DocumentAccess
     }
 
 
-    public static function hasProfilControl($profid, $aclname)
+    public static function hasProfilControl(int $profid, $aclname)
     {
         static $_memberOf = [];
 
@@ -848,7 +848,7 @@ class DocumentAccess
         if ($uid == Account::ADMIN_ID) {
             return true;
         }
-        if ($profid == 0) {
+        if ($profid === 0) {
             return false;
         }
         if (empty($_memberOf[$uid])) {

@@ -124,7 +124,7 @@ class MailtemplateAutoComplete
         $sf->addFilter("atags ~* E'\\\\yMAILRECIPIENT\\\\y'");
         $dlf = $sf->search()->getDocumentList();
 
-        if ($dlf->count() == 0) {
+        if ($dlf->count() === 0) {
             return sprintf(_("none families are described to be used as recipient"));
         }
         foreach ($dlf as $fam) {

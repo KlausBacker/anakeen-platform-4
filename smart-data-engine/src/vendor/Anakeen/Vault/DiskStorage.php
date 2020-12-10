@@ -288,7 +288,7 @@ SQL;
         $q->AddQuery("teng_id_file=" . $this->id_file);
         $q->AddQuery("teng_lname='" . pg_escape_string($te_name) . "'");
         $tn = $q->Query();
-        if ($q->nb == 0) {
+        if ($q->nb === 0) {
             $ngf = new \Anakeen\Vault\DiskStorage($this->dbaccess);
             $ngf->teng_id_file = $this->id_file;
             $ngf->teng_lname = $te_name;

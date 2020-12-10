@@ -9,7 +9,7 @@
  */
 
 
-require_once 'class/Class.WIFF.php';
+require_once __DIR__.'/../class/Class.WIFF.php';
 /**
  * evaluate a Process object
  * @param Process $process
@@ -17,15 +17,14 @@ require_once 'class/Class.WIFF.php';
  */
 function wcontrol_eval_process(Process $process)
 {
-    $msg = "";
     switch ($process->getName()) {
         case "check":
-            if (function_exists("wcontrol_check_" . $process->getAttribute('type'))) {
-                $ret = false;
-                eval("\$ret = wcontrol_check_" . $process->getAttribute('type') . "(\$process);");
-                
-                if (function_exists("wcontrol_msg_" . $process->getAttribute('type'))) {
-                    eval("\$msg = wcontrol_msg_" . $process->getAttribute('type') . "(\$process);");
+            $checkFunction= "wcontrol_check_" . $process->getAttribute('type');
+            if (function_exists($checkFunction)) {
+                $ret =call_user_func($checkFunction, $process);
+                $msgFunction= "wcontrol_msg_" . $process->getAttribute('type');
+                if (function_exists($msgFunction)) {
+                    $msg =call_user_func($msgFunction, $process);
                 } else {
                     $msg = generic_msg($process);
                 }
@@ -142,7 +141,7 @@ function wcontrol_clean_unpack(Process $process)
     $context = $module->getContext();
 
     $wiff = WIFF::getInstance();
-    $wiff->activity("* Execute 'clean_unpack' (context = '%s', module = '%s')", $context->name, $module->name);
+    $wiff->activity(sprintf("* Execute 'clean_unpack' (context = '%s', module = '%s')", $context->name, $module->name));
 
     $ret = $context->deleteFilesFromModule($module->name);
     if ($ret === false) {
@@ -178,7 +177,7 @@ function wcontrol_process(Process $process)
                 'output' => 'WIFF_CONTEXT_ROOT env variable is not defined.'
             );
         }
-        $cmd = sprintf("%s/%s", escapeshellarg($ctx_root) , $cmd);
+        $cmd = sprintf("%s/%s", escapeshellarg($ctx_root), $cmd);
     }
     
     $cmd = $process->phase->module->getContext()->expandParamsValues($cmd);
@@ -234,15 +233,14 @@ function wcontrol_process(Process $process)
     unlink($tmpscript);
     
     return array(
-        'ret' => ($ret === 0) ? true : false,
+        'ret' => $ret === 0,
         'output' => $output
     );
 }
 
-function wcontrol_download(Process & $process)
+function wcontrol_download(Process $process)
 {
-    require_once ('class/Class.WIFF.php');
-    require_once ('class/Class.Process.php');
+    require_once(__DIR__.'/../class/Class.Process.php');
     
     $href = $process->getAttribute('href');
     $href = $process->phase->module->getContext()->expandParamsValues($href);
@@ -260,7 +258,7 @@ function wcontrol_download(Process & $process)
         );
     }
     
-    $actionProcess = new Process(sprintf("<process command=\"%s\" />", $action) , $process->phase);
+    $actionProcess = new Process(sprintf("<process command=\"%s\" />", $action), $process->phase);
     $actionProcess->attributes['command'] = sprintf("%s %s", $action, $localFile);
     $status = wcontrol_process($actionProcess);
     unlink($localFile);
@@ -279,22 +277,24 @@ function wcontrol_download(Process & $process)
         'output' => "Ok"
     );
 }
+
 /**
  * generic message
  * @param Process $process
  * @return string
  */
-function generic_msg($process)
+function generic_msg(Process $process)
 {
     return sprintf("Checking process with type '%s'", $process->getAttribute('type'));
 }
+
 /**
  * phpfunction check
  * @param Process $process
  * @return bool
  */
 
-function wcontrol_check_phpfunction($process)
+function wcontrol_check_phpfunction(Process $process)
 {
     $wiff = WIFF::getInstance();
     $wiff->activity(sprintf("* Execute 'check_phpfunction' (function = '%s')", $process->getAttribute('function')));
@@ -306,13 +306,14 @@ function wcontrol_msg_phpfunction(Process $process)
 {
     return sprintf("Checking if the PHP function '%s' exists", $process->getAttribute('function'));
 }
+
 /**
  * exec check
  * @param Process $process
  * @return bool
  */
 
-function wcontrol_check_exec($process)
+function wcontrol_check_exec(Process $process)
 {
 
     $cmd = $process->getAttribute('cmd');
@@ -322,20 +323,21 @@ function wcontrol_check_exec($process)
     $wiff->activity(sprintf("* Execute 'check_exec' (cmd = '%s' -> '%s')", $process->getAttribute('cmd'), $cmd));
 
     exec($cmd, $output, $ret);
-    return ($ret === 0) ? true : false;
+    return $ret === 0;
 }
 
 function wcontrol_msg_exec(Process $process)
 {
     return sprintf("Checking if the command '%s' returns a success exit code", $process->getAttribute('cmd'));
 }
+
 /**
  * file check
  * @param Process $process
  * @return bool
  */
 
-function wcontrol_check_file($process)
+function wcontrol_check_file(Process $process)
 {
     $wiff = WIFF::getInstance();
     $wiff->activity(sprintf("* Execute 'check_file' (file = '%s', predicate = '%s')", $process->getAttribute('file'), $process->getAttribute('predicate')));
@@ -347,43 +349,36 @@ function wcontrol_check_file($process)
         case 'a':
         case '-a':
             return file_exists($process->getAttribute('file'));
-            break;
 
         case 'is_dir':
         case 'd':
         case '-d':
             return is_dir($process->getAttribute('file'));
-            break;
 
         case 'is_file':
         case 'f':
         case '-f':
             return is_file($process->getAttribute('file'));
-            break;
 
         case 'is_link':
         case 'L':
         case '-L':
             return is_link($process->getAttribute('file'));
-            break;
 
         case 'is_readable':
         case 'r':
         case '-r':
             return is_readable($process->getAttribute('file'));
-            break;
 
         case 'is_writable':
         case 'w':
         case '-w':
             return is_writable($process->getAttribute('file'));
-            break;
 
         case 'is_executable':
         case 'x':
         case '-x':
             return is_executable($process->getAttribute('file'));
-            break;
 
         default:
             return false;
@@ -392,7 +387,7 @@ function wcontrol_check_file($process)
 
 function wcontrol_msg_file(Process $process)
 {
-    return sprintf("Checking if the file '%s' validate the predicate '%s'", $process->getAttribute('file') , $process->getAttribute('predicate'));
+    return sprintf("Checking if the file '%s' validate the predicate '%s'", $process->getAttribute('file'), $process->getAttribute('predicate'));
 }
 /**
  * syscommand check
@@ -434,12 +429,13 @@ function wcontrol_check_phpclass(Process $process)
 
     $include = $process->getAttribute('include');
     if ($include != "") {
-        $ret = @include_once ($include);
+        /** @noinspection PhpIncludeInspection */
+        $ret = @include_once($include);
         if ($ret == false) {
             return false;
         }
     }
-    if (!class_exists($process->getAttribute('class') , false)) {
+    if (!class_exists($process->getAttribute('class'), false)) {
         return false;
     }
     return true;
@@ -452,7 +448,7 @@ function wcontrol_msg_pearmodule(Process $process)
 
 function wcontrol_msg_phpclass(Process $process)
 {
-    return sprintf("Checking if the class '%s' is available in include file '%s'", $process->getAttribute('class') , $process->getAttribute('include'));
+    return sprintf("Checking if the class '%s' is available in include file '%s'", $process->getAttribute('class'), $process->getAttribute('include'));
 }
 /**
  * apachemodule check
@@ -469,7 +465,7 @@ function wcontrol_check_apachemodule(Process $process)
         return true;
     }
     $mods = apache_get_modules();
-    if (in_array($process->getAttribute('module') , $mods)) {
+    if (in_array($process->getAttribute('module'), $mods)) {
         return true;
     }
     return false;
@@ -485,17 +481,24 @@ function wcontrol_msg_apachemodule(Process $process)
  * @return bool
  */
 
-function wcontrol_check_pgversion(Process & $process)
+function wcontrol_check_pgversion(Process $process)
 {
     $wiff = WIFF::getInstance();
-    $wiff->activity(sprintf("* Execute 'check_pgversion' (service = '%s', predicated='%s', version='%s')", $process->getAttribute('service'), $process->getAttribute('predicate'), $process->getAttribute('version')));
+    $wiff->activity(
+        sprintf(
+            "* Execute 'check_pgversion' (service = '%s', predicated='%s', version='%s')",
+            $process->getAttribute('service'),
+            $process->getAttribute('predicate'),
+            $process->getAttribute('version')
+        )
+    );
 
     if (!function_exists('pg_connect')) {
-        $process->errorMessage = 'PHP function pg_connect() not available. You might need to install a php-pg package from your distribution in order to have Postgresql support in PHP.</help>';
+        $process->errorMessage = 'PHP function pg_connect() not available. '.
+            'You might need to install a php-pg package from your distribution in order to have Postgresql support in PHP.';
         return false;
     }
-    
-    require_once ('class/Class.WIFF.php');
+
     
     $service = $process->getAttribute('service');
     $predicate = $process->getAttribute('predicate');
@@ -538,7 +541,7 @@ function wcontrol_check_pgversion(Process & $process)
     switch ($predicate) {
         case 'eq':
             $op = "equal to";
-            $return = ($cmp == 0);
+            $return = ($cmp === 0);
             break;
 
         case 'ne':
@@ -568,14 +571,14 @@ function wcontrol_check_pgversion(Process & $process)
     }
     
     if (!$return) {
-        $process->errorMessage = sprintf("Postgresql server version is currently \"%s\" The Postgresql version must be %s \"%s\".", $serverVersion , $op, $version);
+        $process->errorMessage = sprintf("Postgresql server version is currently \"%s\" The Postgresql version must be %s \"%s\".", $serverVersion, $op, $version);
         pg_close($conn);
         return false;
     }
     
     $encoding = pg_client_encoding($conn);
     
-    if (!in_array(strtolower($encoding) , array(
+    if (!in_array(strtolower($encoding), array(
         'unicode',
         'utf8'
     ))) {
@@ -602,7 +605,7 @@ function wcontrol_msg_pgversion(Process $process)
  * @return bool
  */
 
-function wcontrol_check_phpversion(Process & $process)
+function wcontrol_check_phpversion(Process $process)
 {
     $wiff = WIFF::getInstance();
     $wiff->activity(sprintf("* Execute 'check_pgversion' (predicate = '%s', version='%s')", $process->getAttribute('predicate'), $process->getAttribute('version')));
@@ -615,32 +618,32 @@ function wcontrol_check_phpversion(Process & $process)
     switch ($predicate) {
         case 'eq':
             $op = "equal to";
-            $return = (version_compare(PHP_VERSION, $version) === 0) ? true : false;
+            $return = version_compare(PHP_VERSION, $version) === 0;
             break;
 
         case 'ne':
             $op = "not equal to";
-            $return = (version_compare(PHP_VERSION, $version) !== 0) ? true : false;
+            $return = version_compare(PHP_VERSION, $version) !== 0;
             break;
 
         case 'lt':
             $op = "less than";
-            $return = (version_compare(PHP_VERSION, $version) < 0) ? true : false;
+            $return = version_compare(PHP_VERSION, $version) < 0;
             break;
 
         case 'le':
             $op = "less than or equal to";
-            $return = (version_compare(PHP_VERSION, $version) <= 0) ? true : false;
+            $return = version_compare(PHP_VERSION, $version) <= 0;
             break;
 
         case 'gt':
             $op = "greater than";
-            $return = (version_compare(PHP_VERSION, $version) > 0) ? true : false;
+            $return = version_compare(PHP_VERSION, $version) > 0;
             break;
 
         case 'ge':
             $op = "greater or equal to";
-            $return = (version_compare(PHP_VERSION, $version) >= 0) ? true : false;
+            $return = version_compare(PHP_VERSION, $version) >= 0;
             break;
     }
     
@@ -666,17 +669,17 @@ function wcontrol_msg_phpversion(Process $process)
  * @return bool
  */
 
-function wcontrol_check_pgempty(Process & $process)
+function wcontrol_check_pgempty(Process $process)
 {
     $wiff = WIFF::getInstance();
     $wiff->activity(sprintf("* Execute 'check_pgempty' (service = '%s')", $process->getAttribute('service')));
 
     if (!function_exists('pg_connect')) {
-        $process->errorMessage = 'PHP function pg_connect() not available. You might need to install a php-pg package from your distribution in order to have Postgresql support in PHP.</help>';
+        $process->errorMessage = 'PHP function pg_connect() not available. '.
+            'You might need to install a php-pg package from your distribution in order to have Postgresql support in PHP.';
         return false;
     }
-    
-    require_once ('class/Class.WIFF.php');
+
     
     $service = $process->getAttribute('service');
     
@@ -722,7 +725,7 @@ function wcontrol_msg_pgempty(Process $process)
     }
 }
 
-function wcontrol_check_ncurses(Process & $process)
+function wcontrol_check_ncurses(Process $process)
 {
     $wiff = WIFF::getInstance();
     $wiff->activity(sprintf("* Execute 'check_ncurses'"));
@@ -751,7 +754,7 @@ function wcontrol_msg_ncurses(Process $process)
  * @param Process $process
  * @return bool
  */
-function wcontrol_check_phpbug45996(Process & $process)
+function wcontrol_check_phpbug45996(Process $process)
 {
     $wiff = WIFF::getInstance();
     $wiff->activity(sprintf("Execute 'check_phpbug45996'"));
@@ -776,7 +779,7 @@ EOXML;
     return true;
 }
 
-function wcontrol_msg_phpbug45996(Process & $process)
+function wcontrol_msg_phpbug45996(Process $process)
 {
     return sprintf("Checking for PHP bug #45996");
 }
@@ -785,13 +788,12 @@ function wcontrol_msg_phpbug45996(Process & $process)
  * @param Process $process
  * @return bool
  */
-function wcontrol_check_phpbug40926(Process & $process)
+function wcontrol_check_phpbug40926(Process $process)
 {
     $wiff = WIFF::getInstance();
     $wiff->activity(sprintf("* Execute 'check_phpbug40926'"));
 
 
-    require_once ('class/Class.WIFF.php');
     
     $wiff = WIFF::getInstance();
     $service = $process->getAttribute('service');
@@ -825,7 +827,7 @@ EOF;
     
     $out = array();
     $ret = 0;
-    $cmd = sprintf('%s %s', escapeshellarg($php) , escapeshellarg($tmpfile));
+    $cmd = sprintf('%s %s', escapeshellarg($php), escapeshellarg($tmpfile));
     exec($cmd, $out, $ret);
     if ($ret != 0) {
         unlink($tmpfile);
@@ -836,7 +838,7 @@ EOF;
     return true;
 }
 
-function wcontrol_msg_phpbug40926(Process & $process)
+function wcontrol_msg_phpbug40926(Process $process)
 {
     return sprintf("Checking for PHP bug #40926");
 }

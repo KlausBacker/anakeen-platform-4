@@ -84,7 +84,7 @@ create sequence SEQ_ID_ACL;
 
     public function init($app, $app_acl, $update = false)
     {
-        if (sizeof($app_acl) == 0) {
+        if (sizeof($app_acl) === 0) {
             LogManager::debug("No acl available");
             return ("");
         }

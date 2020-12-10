@@ -110,7 +110,7 @@ class TimerHooks extends \Anakeen\SmartElement
 
         $tasks = $this->getArrayRawValues(TimerField::tm_t_config);
 
-        if ((count($tasks) == 0)) {
+        if ((count($tasks) === 0)) {
             $err = sprintf(_("no processes specified in timer %s [%d]"), $this->title, $this->id);
         } else {
             foreach ($tasks as $task) {

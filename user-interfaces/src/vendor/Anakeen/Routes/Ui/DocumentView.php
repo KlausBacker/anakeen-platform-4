@@ -675,7 +675,7 @@ class DocumentView
                 $vid = '!none';
             }
 
-            if (($vid === "!none" || $this->document->cvid == 0) && $this->document->doctype !== "C") {
+            if (($vid === "!none" || intval($this->document->cvid) === 0) && $this->document->doctype !== "C") {
                 $config = \Anakeen\Ui\RenderConfigManager::getDefaultFamilyRenderConfig($renderMode, $this->document);
                 $vid = '';
             } else {

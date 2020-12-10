@@ -25,7 +25,7 @@ function dtic($text = "")
     
     $deb = gettimeofday();
     $tuc1 = $deb["sec"] + $deb["usec"] / 1000000;
-    if ($ptic == 0) {
+    if ($ptic === 0) {
         $ptic = $tuc1;
         $ptic0 = $tuc1;
     }

@@ -15,7 +15,7 @@ class TestSplitXmlDocument extends TestCaseDcp
     public $errmsg = '';
 
     public static function setUpBeforeClass(): void
- {
+    {
         parent::setUpBeforeClass();
         self::createWorkDir();
     }
@@ -111,7 +111,7 @@ class TestSplitXmlDocument extends TestCaseDcp
         $cmd = sprintf("xmllint --sax %s | grep -c '^SAX\\.error' > /dev/null 2>&1", escapeshellarg($file));
         $ret = 0;
         system($cmd, $ret);
-        if ($ret == 0) {
+        if ($ret === 0) {
             /* If grep exit code is 0, it means it found a "SAX.error" line,
              * which means there are errors in the XML file
             */

@@ -517,7 +517,7 @@ class FormatCollection
         $kdoc = 0;
         $countDoc = count($this->dl);
         foreach ($this->dl as $docid => $doc) {
-            if ($kdoc % 10 == 0) {
+            if ($kdoc % 10 === 0) {
                 $this->callHookStatus(sprintf(_("Doc Render %d/%d"), $kdoc, $countDoc));
             }
             $renderDoc = array();
@@ -596,7 +596,7 @@ class FormatCollection
             case self::propLastModificationDate:
                 return $this->getFormatDate($doc->mdate, $this->propDateStyle);
             case self::propCreationDate:
-                if ($doc->revision == 0) {
+                if (intval($doc->revision) === 0) {
                     return $this->getFormatDate($doc->cdate, $this->propDateStyle);
                 } else {
                     $sql = sprintf("select cdate from docread where initid=%d and revision = 0", $doc->initid);
@@ -635,7 +635,7 @@ class FormatCollection
 
     protected function getCreatedByData(\Anakeen\Core\Internal\SmartElement $doc)
     {
-        if ($doc->revision == 0) {
+        if (intval($doc->revision) === 0) {
             $ownerId = $doc->owner;
         } else {
             $sql = sprintf("select owner from docread where initid=%d and revision = 0", $doc->initid);
@@ -963,7 +963,7 @@ class FormatCollection
                                 $value
                             ));
                         }
-                        if (count($tvv) == 0) {
+                        if (count($tvv) === 0) {
                             $info[$k] = array();
                         } else {
                             foreach ($tvv as $avv) {

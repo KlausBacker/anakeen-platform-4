@@ -14,7 +14,7 @@ register_shutdown_function(function () {
     Control\Internal\FatalHandler::handleFatalShutdown();
 });
 
-set_exception_handler(function (\Exception $e) {
+set_exception_handler(function (\Throwable $e) {
     header("Content-Type: application/json");
     print (json_encode([
         "exception" => $e->getMessage()

@@ -47,7 +47,7 @@ class TestSearchFamilies extends \Dcp\Pu\TestCaseDcpCommonFamily
             if ($propValue === false) {
                 $propValue = $doc->getRawValue($propId);
             }
-            if (abs($propValue) > 0) {
+            if (abs(intval($propValue)) > 0) {
                 if (!is_numeric($expectedValue)) {
                     $propValueName = \Anakeen\Core\SEManager::getNameFromId(abs($propValue));
                     if ($propValueName != '') {

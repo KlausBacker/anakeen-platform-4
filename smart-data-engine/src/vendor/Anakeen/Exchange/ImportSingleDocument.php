@@ -12,6 +12,8 @@ class ImportSingleDocument
 {
     const CSVSECONDLEVELMULTIPLE = '<BR>';
     const CSVLONGTEXTMULTIPLE = '\\r';
+    /** @var string special logical name */
+    protected string $specName;
     private $currentAttrid = "";
     protected $dirid = 0;
     protected $analyze = false;
@@ -37,9 +39,9 @@ class ImportSingleDocument
      */
     public $famId;
     /**
-     * @var string special logical name
+     * @var int numeric system identifier
      */
-    public $specId;
+    protected int $specId;
     /**
      * @var string folder reference where insert document
      */
@@ -180,15 +182,23 @@ class ImportSingleDocument
         $err = "";
 
         $this->famId = isset($data[1]) ? trim($data[1]) : '';
-        $this->specId = isset($data[2]) ? trim($data[2]) : '';
+        $docRef = isset($data[2]) ? trim($data[2]) : '';
         $this->folderId = isset($data[3]) ? trim($data[3]) : '';
+        $this->specId = 0;
+        $this->specName = "";
+
+        if (is_numeric($docRef)) {
+            $this->specId=intval($docRef);
+        } elseif ($docRef) {
+            $this->specName = $docRef;
+        }
 
         if (is_numeric($this->famId)) {
-            $fromid = $this->famId;
+            $fromid = intval($this->famId);
         } else {
             $fromid = \Anakeen\Core\SEManager::getFamilyIdFromName($this->famId);
         }
-        if ($fromid == 0) {
+        if ($fromid === 0) {
             // no need test here it is done by checkDoc class DOC0005 DOC0006
             $this->tcr["action"] = "ignored";
             $this->tcr["err"] = sprintf(_("Not a family [%s]"), $this->famId);
@@ -209,14 +219,12 @@ class ImportSingleDocument
         if ($this->specId > 0) {
             $tmpDoc->id = $this->specId; // static id
             $tmpDoc->initid = $this->specId;
-        } elseif (trim($this->specId) != "") {
-            if (!is_numeric(trim($this->specId))) {
-                $tmpDoc->name = trim($this->specId); // logical name
+        } elseif ($this->specName != "") {
+                $tmpDoc->name = $this->specName; // logical name
                 $docid = \Anakeen\Core\SEManager::getIdFromName($tmpDoc->name);
-                if ($docid > 0) {
-                    $tmpDoc->id = $docid;
-                    $tmpDoc->initid = $docid;
-                }
+            if ($docid > 0) {
+                $tmpDoc->id = $docid;
+                $tmpDoc->initid = $docid;
             }
         }
 
@@ -229,7 +237,7 @@ class ImportSingleDocument
             $this->doc = $tmpDoc;
         }
 
-        if ((intval($this->doc->id) == 0) || (!$this->doc->isAffected())) {
+        if ((intval($this->doc->id) === 0) || (!$this->doc->isAffected())) {
             $this->tcr["action"] = "added";
         } else {
             if ($this->doc->fromid != $fromid) {
@@ -269,7 +277,7 @@ class ImportSingleDocument
             return $this;
         }
 
-        if (count($this->orders) == 0 && count($data) > 4) {
+        if (count($this->orders) === 0 && count($data) > 4) {
             $this->setError("DOC0011", $this->doc->fromname);
             return $this;
         } else {
@@ -329,6 +337,8 @@ class ImportSingleDocument
                                         $this->tcr["values"][$attr->getLabel()] = $dv;
                                     } elseif (preg_match('/^http:/', $dv, $reg)) {
                                         // nothing
+                                        /** @noinspection PhpUnusedLocalVariableInspection */
+                                        $doNothing=true;
                                     } elseif ($dv) {
                                         $absfile = "$this->importFilePath/$dv";
                                         $vfid = "";
@@ -463,7 +473,7 @@ class ImportSingleDocument
                     $this->doc->RefreshTitle();
                     $lsdoc = $this->doc->GetDocWithSameTitle($this->keys[0], $this->keys[1]);
                     // test if same doc in database
-                    if (count($lsdoc) == 0) {
+                    if (count($lsdoc) === 0) {
                         $this->tcr["action"] = "added";
                         if (!$this->analyze) {
                             if ($this->doc->id == "") {
@@ -524,8 +534,8 @@ class ImportSingleDocument
                         $this->doc = $doc;
                         $this->tcr["id"] = $this->doc->id;
                         if (!$this->analyze) {
-                            if (($this->specId != "") && (!is_numeric(trim($this->specId))) && ($this->doc->name == "")) {
-                                $this->doc->name = $this->specId;
+                            if (($this->specName != "") && ($this->doc->name == "")) {
+                                $this->doc->name = $this->specName;
                             }
                             $this->tcr["msg"] = sprintf(_("update %s [%d] "), $this->doc->title, $this->doc->id);
                         } else {
@@ -544,7 +554,7 @@ class ImportSingleDocument
                 case "keep":
                     $this->doc->RefreshTitle();
                     $lsdoc = $this->doc->GetDocWithSameTitle($this->keys[0], $this->keys[1]);
-                    if (count($lsdoc) == 0) {
+                    if (count($lsdoc) === 0) {
                         $this->tcr["action"] = "added";
                         if (!$this->analyze) {
                             if ($this->doc->id == "") {

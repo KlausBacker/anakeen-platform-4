@@ -608,7 +608,7 @@ class Session extends DbObj
 
             $config = [
                 "value" => $value,
-                "expires" => $expire == 0 ? null : $expire,
+                "expires" => empty($expire) ? null : $expire,
                 "path" => $path,
                 "domain" => $domain,
                 "secure" => $secure,

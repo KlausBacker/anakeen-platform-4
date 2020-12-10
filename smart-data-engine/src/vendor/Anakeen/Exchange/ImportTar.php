@@ -33,7 +33,7 @@ class ImportTar
      *
      * @return array
      */
-    public static function importDirectory(&$ldir, $dirid = 0, $famid = 7, $dfldid = 2, $onlycsv = false, $analyze = false)
+    public static function importDirectory(&$ldir, $dirid = 0, int $famid = 7, int $dfldid = 2, $onlycsv = false, $analyze = false)
     {
         // first see if fdl.csv file
         global $importedFiles;
@@ -50,6 +50,7 @@ class ImportTar
                         $tr = ImportTar::analyzeCsv($absfile, $dirid, $lfamid, $lfldid, $analyze);
                     }
                 }
+                $lfamid=intval($lfamid);
                 if ($lfamid > 0) {
                     $famid = $lfamid;
                 } // set local default family identifier
@@ -63,7 +64,7 @@ class ImportTar
                     \Anakeen\LogManager::warning(sprintf(_("you cannot create this kind [%s] of document"), $famid));
                 }
                 $fimgattr = null;
-                if (($lfamid == 0) && ($famid == 7)) {
+                if (($lfamid === 0) && ($famid === 7)) {
                     $defaultimg = SEManager::createDocument("IMAGE");
                     $fimgattr = $defaultimg->GetFirstFileAttributes();
                 }
@@ -115,7 +116,7 @@ class ImportTar
                                     $tr[$index]["err"] = $err;
                                 } else {
                                     $fattr = "";
-                                    if (($lfamid == 0) && ($famid == 7) && (substr($vfid, 0, 5) == "image")) {
+                                    if (($lfamid === 0) && ($famid === 7) && (substr($vfid, 0, 5) == "image")) {
                                         $ddoc = &$defaultimg;
                                         $fattr = $fimgattr->id;
                                     } else {
@@ -281,7 +282,7 @@ class ImportTar
                         }
 
                         $tkeys[$orfromid] = \Anakeen\Exchange\Utils::getOrder($data);
-                        if (($tkeys[$orfromid][0] == "") || (count($tkeys[$orfromid]) == 0)) {
+                        if (($tkeys[$orfromid][0] == "") || (count($tkeys[$orfromid]) === 0)) {
                             $tr[$index]["err"] = sprintf(_("error in import keys : %s"), implode(" - ", $tkeys[$orfromid]));
                             unset($tkeys[$orfromid]);
                             $tr[$index]["action"] = "ignored";

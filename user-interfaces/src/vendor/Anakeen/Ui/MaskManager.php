@@ -124,7 +124,7 @@ class MaskManager
         $this->initVisibilities();
 
         $argMid = $mid;
-        if ((!$force) && (($this->smartElement->doctype == 'C') || (($this->smartElement->doctype == 'T') && ($mid == 0)))) {
+        if ((!$force) && (($this->smartElement->doctype == 'C') || (($this->smartElement->doctype == 'T') && (empty($mid))))) {
             return;
         }
         // modify visibilities if needed
@@ -437,7 +437,7 @@ class MaskManager
                  */
                 $wdoc = SEManager::getDocument($doc->wid);
                 if ($wdoc && $wdoc->isAlive()) {
-                    if ($doc->id == 0) {
+                    if (empty($doc->id)) {
                         $wdoc->set($doc);
                     }
                     $mid = $wdoc->getStateMask($doc->state);

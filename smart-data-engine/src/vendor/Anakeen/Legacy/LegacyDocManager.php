@@ -28,9 +28,9 @@ use Anakeen\Core\DbManager;
  *
  * @return void
  */
-function clearCacheDoc($id = 0)
+function clearCacheDoc(int $id = 0)
 {
-    if ($id == 0) {
+    if ($id === 0) {
         SEManager::cache()->clear();
     } else {
         SEManager::cache()->removeDocumentById($id);
@@ -177,14 +177,14 @@ function getTDoc($dbaccess, $id, $sqlfilters = array(), $result = array())
             $table = "docfam";
         }
     }
-    if ($fromid == 0) {
+    if (empty($fromid)) {
         return false;
     } // no document can be found
     $sqlcond = "";
     if (count($sqlfilters) > 0) {
         $sqlcond = "and (" . implode(") and (", $sqlfilters) . ")";
     }
-    if (count($result) == 0) {
+    if (count($result) === 0) {
         $userMemberOf = DocPerm::getMemberOfVector();
         $sql = sprintf(
             "select *,getaperm('%s',profid) as uperm from only %s where id=%d %s",

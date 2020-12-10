@@ -298,7 +298,7 @@ class Context extends ContextProperties
         }
         // Get repository with this name from WIFF repositories
         $wiffRepoList = $paramsXPath->query("/wiff/repositories/access[@name='" . $name . "']");
-        if ($wiffRepoList->length == 0) {
+        if ($wiffRepoList->length === 0) {
             $this->errorMessage = "No repository with name " . $name . ".";
             return false;
         } else {
@@ -710,7 +710,7 @@ class Context extends ContextProperties
      * @return int < 0 if mod1 is less than mod2, > 0 if mod1 is greater than mod2,
      *
      */
-    public static function cmpModuleByVersionAsc(&$module1, &$module2)
+    public static function cmpModuleByVersionAsc($module1, $module2)
     {
         return Context::cmpVersionGt($module1->version, $module2->version);
     }
@@ -724,7 +724,7 @@ class Context extends ContextProperties
      * @return int > 0 if mod1 is less than mod2, < 0 if mod1 is greater than mod2,
      *
      */
-    public function cmpModuleByVersionDesc(&$module1, &$module2)
+    public function cmpModuleByVersionDesc($module1, $module2)
     {
         $ret = $this->cmpModuleByVersionAsc($module1, $module2);
         if ($ret > 0) {

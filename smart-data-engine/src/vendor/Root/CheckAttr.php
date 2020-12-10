@@ -272,8 +272,13 @@ class CheckAttr extends CheckData
                     'money',
                     'longtext'
                 ))) {
-                    $a = @sprintf($format, 123);
-                    if ($a === false) {
+                    try {
+                        // Need to use @ for php 7.4, not necessary for PHP 8.0
+                        $a = @sprintf($format, 123);
+                        if ($a === false) {
+                            $this->addError(ErrorCode::getError('ATTR0603', $format, $this->attrid));
+                        }
+                    } catch (ArgumentCountError $e) {
                         $this->addError(ErrorCode::getError('ATTR0603', $format, $this->attrid));
                     }
                 }

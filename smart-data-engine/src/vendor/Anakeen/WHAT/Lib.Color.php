@@ -105,12 +105,12 @@ function Magic($rm1, $rm2, $rh)
  * @return string
  */
 
-function HSL2RGB($h, $s, $l)
+function HSL2RGB(float $h, float $s, float $l)
 {
     $hue = $h;
     $saturation = $s;
     $luminance = $l;
-    if ($saturation == 0.0) {
+    if ($saturation === 0.0) {
         $red = $green = $blue = round($luminance * 255.0);
     } else {
         if ($luminance <= 0.5) {

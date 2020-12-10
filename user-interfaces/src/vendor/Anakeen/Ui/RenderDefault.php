@@ -477,7 +477,7 @@ class RenderDefault implements IRenderConfig
         $item = new SeparatorMenu("EmblemLock", "");
         $item->setHtmlAttribute(
             "class",
-            "menu--left emblem emblem--lock" . ((abs($document->locked) == ContextManager::getCurrentUser()->id) ? " emblem-lock--my" : "")
+            "menu--left emblem emblem--lock" . ((abs(intval($document->locked)) == ContextManager::getCurrentUser()->id) ? " emblem-lock--my" : "")
         );
         $labelClass = "dcpDocument__emblem__lock fa fa-lock";
         $labelClass .= " {{#document.properties.security.lock.temporary}} dcpDocument__emblem__lock--temporary {{/document.properties.security.lock.temporary}}";

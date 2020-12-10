@@ -122,9 +122,9 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);";
      *
      * @return void
      */
-    public function resetRelations($type = "", $sinitid = 0)
+    public function resetRelations($type = "", int $sinitid = 0)
     {
-        if ($sinitid == 0) {
+        if ($sinitid === 0) {
             $sinitid = $this->sinitid;
         }
         if ($sinitid > 0) {
