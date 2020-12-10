@@ -1,8 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Enum MAILTEMPLATE-tmail_fromtype \n"
+"Project-Id-Version: Enum MAILTEMPLATE-tmail_fromtype\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2018-10-03T13:31:40.903Z\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2020-12-10 14:34+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en\n"
@@ -10,57 +11,54 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.3\n"
 
 #: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
-#, fuzzy
 msgctxt "MAILTEMPLATE-tmail_fromtype"
 msgid "A"
-msgstr "Attribut texte"
+msgstr "Form field value"
 
 #: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
-#, fuzzy
+msgctxt "MAILTEMPLATE-tmail_fromtype"
+msgid "CU"
+msgstr "Connected user email"
+
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 msgctxt "MAILTEMPLATE-tmail_fromtype"
 msgid "D"
-msgstr "Attribut relation"
+msgstr "User email linked into the form"
 
 #: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
-#, fuzzy
 msgctxt "MAILTEMPLATE-tmail_fromtype"
 msgid "DE"
-msgstr "Paramètre de famille relation"
+msgstr "User email linked into structure parameter"
 
 #: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
-#, fuzzy
 msgctxt "MAILTEMPLATE-tmail_fromtype"
 msgid "E"
-msgstr "Paramètre de famille texte"
+msgstr "Structure parameter value"
 
 #: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
-#, fuzzy
 msgctxt "MAILTEMPLATE-tmail_fromtype"
 msgid "F"
-msgstr "Adresse fixe"
+msgstr "Email address"
 
 #: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
-#, fuzzy
 msgctxt "MAILTEMPLATE-tmail_fromtype"
 msgid "P"
-msgstr "Paramètres globaux"
+msgstr "Global parameter"
 
 #: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
-#, fuzzy
 msgctxt "MAILTEMPLATE-tmail_fromtype"
 msgid "WA"
-msgstr "Attribut cycle"
+msgstr "Workflow field value"
 
 #: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
-#, fuzzy
 msgctxt "MAILTEMPLATE-tmail_fromtype"
 msgid "WD"
-msgstr "Relation cycle"
+msgstr "User email linked into workflow field value"
 
 #: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
-#, fuzzy
 msgctxt "MAILTEMPLATE-tmail_fromtype"
 msgid "WE"
-msgstr "Paramètre cycle"
+msgstr "User email linked into workflow parameter value"

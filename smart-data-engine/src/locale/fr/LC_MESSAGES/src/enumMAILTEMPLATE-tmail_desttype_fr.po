@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Enum MAILTEMPLATE-tmail_desttype \n"
+"Project-Id-Version: Enum MAILTEMPLATE-tmail_desttype\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2018-10-03T13:31:40.903Z\n"
+"PO-Revision-Date: 2020-12-10 17:13+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -10,63 +10,60 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"POT-Creation-Date: \n"
+"X-Generator: Poedit 2.3\n"
 
 #: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
-#, fuzzy
 msgctxt "MAILTEMPLATE-tmail_desttype"
 msgid "A"
-msgstr "Attribut texte"
+msgstr "Valeur d'un champ du formulaire"
 
 #: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
-#, fuzzy
+msgctxt "MAILTEMPLATE-tmail_desttype"
+msgid "CU"
+msgstr "Adresse de l'utilisateur connecté"
+
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 msgctxt "MAILTEMPLATE-tmail_desttype"
 msgid "D"
-msgstr "Attribut relation"
+msgstr "Adresse d'un utilisateur cité dans le formulaire"
 
 #: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
-#, fuzzy
 msgctxt "MAILTEMPLATE-tmail_desttype"
 msgid "DE"
-msgstr "Paramètre de famille relation"
+msgstr "Adresse d'un utilisateur cité dans un paramètre de la structure"
 
 #: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
-#, fuzzy
 msgctxt "MAILTEMPLATE-tmail_desttype"
 msgid "E"
-msgstr "Paramètre de famille texte"
+msgstr "Valeur d'un paramètre de la structure"
 
 #: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
-#, fuzzy
 msgctxt "MAILTEMPLATE-tmail_desttype"
 msgid "F"
-msgstr "Adresse fixe"
+msgstr "Adresse à saisir"
 
 #: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
-#, fuzzy
 msgctxt "MAILTEMPLATE-tmail_desttype"
 msgid "P"
-msgstr "Paramètres globaux"
+msgstr "Paramètre"
 
 #: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
-#, fuzzy
 msgctxt "MAILTEMPLATE-tmail_desttype"
 msgid "RD"
-msgstr "Document destinataire"
+msgstr "Adresse d'un utilisateur"
 
 #: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
-#, fuzzy
 msgctxt "MAILTEMPLATE-tmail_desttype"
 msgid "WA"
-msgstr "Attribut cycle"
+msgstr "Valeur d'un champ du cycle de vie associé"
 
 #: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
-#, fuzzy
 msgctxt "MAILTEMPLATE-tmail_desttype"
 msgid "WD"
-msgstr "Relation cycle"
+msgstr "Adresse d'un utilisateur cité dans le cycle de vie associé"
 
 #: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
-#, fuzzy
 msgctxt "MAILTEMPLATE-tmail_desttype"
 msgid "WE"
-msgstr "Paramètre cycle"
+msgstr "Valeur d'un paramètre du cycle de vie associé"
