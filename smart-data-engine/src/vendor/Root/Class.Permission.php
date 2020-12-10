@@ -147,7 +147,8 @@ create index permission_idx3 on permission(id_acl);
         if (!isset($this->privileges[$this->id_user])) {
             \Anakeen\Core\DbManager::query(
                 sprintf(
-                    "select distinct(permission.id_acl) from permission,users where  users.memberof  @> ARRAY[permission.id_user] and users.id=%d",
+                    "select distinct(permission.id_acl) from permission,users where  (users.memberof  @> ARRAY[permission.id_user] or permission.id_user = %d)  and users.id=%d",
+                    $this->id_user,
                     $this->id_user
                 ),
                 $aclIds,
