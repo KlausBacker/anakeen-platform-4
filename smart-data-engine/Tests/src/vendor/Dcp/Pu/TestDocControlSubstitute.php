@@ -28,7 +28,7 @@ class TestDocControlSubstitute extends TestCaseDcpCommonFamily
         );
     }
     
-    private function getSearchName(\Anakeen\Search\Internal\SearchSmartData & $s)
+    private function getSearchName(\Anakeen\Search\Internal\SearchSmartData &$s)
     {
         $names = array();
         while ($doc = $s->getNextDoc()) {

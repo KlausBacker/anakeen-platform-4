@@ -61,10 +61,7 @@ class Utils
         $analyze = false,
         $ldir = '',
         $policy = "add",
-        $tkey
-        = array(
-            "title"
-        ),
+        $tkey = ["title"],
         $prevalues = array(),
         $torder = array()
     ) {

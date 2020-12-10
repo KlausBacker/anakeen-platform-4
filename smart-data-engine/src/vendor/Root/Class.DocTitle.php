@@ -32,7 +32,7 @@ class DocTitle
         $latest,
         \Anakeen\Core\Internal\SmartElement $doc,
         $docrevOption = "",
-        array & $info = array()
+        array &$info = array()
     ) {
         $uid = ContextManager::getCurrentUser()->id; // index by uid in case of sudo
         $isAdmin = ($uid == 1);
@@ -214,7 +214,7 @@ class DocTitle
      * @return bool|null
      * @throws \Anakeen\Database\Exception
      */
-    public static function getTitle($docid, $latest = true, $docrevOption = "", array & $info = array())
+    public static function getTitle($docid, $latest = true, $docrevOption = "", array &$info = array())
     {
         if ($latest || $docrevOption === "latest") {
             $sql = sprintf(

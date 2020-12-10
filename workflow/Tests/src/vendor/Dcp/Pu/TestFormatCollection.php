@@ -33,7 +33,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
     }
 
     public static function setUpBeforeClass(): void
- {
+    {
         parent::setUpBeforeClass();
 
         $d1 = SEManager::getDocument("TST_FMTCOL1");

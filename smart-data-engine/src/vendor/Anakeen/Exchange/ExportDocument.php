@@ -219,7 +219,7 @@ class ExportDocument
     }
 
 
-    public function csvExport(\Anakeen\Core\Internal\SmartElement & $doc, &$ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat)
+    public function csvExport(\Anakeen\Core\Internal\SmartElement &$doc, &$ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat)
     {
         if (!$doc->isAffected()) {
             return;

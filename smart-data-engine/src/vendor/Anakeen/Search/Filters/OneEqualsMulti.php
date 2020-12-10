@@ -100,7 +100,7 @@ class OneEqualsMulti extends StandardAttributeFilter implements ElementSearchFil
      * @param $value
      * @return string
      */
-    protected function _filter(NormalAttribute & $attr, $value)
+    protected function _filter(NormalAttribute &$attr, $value)
     {
         $pgArray = SmartElement::arrayToRawValue($value);
         $sql = sprintf(

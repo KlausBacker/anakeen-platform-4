@@ -751,8 +751,8 @@ class ImportSingleDocument
      * @return array List of unknown logical names referenced by the value
      */
     protected function getUnknownDocIdLogicalNames(
-        \Anakeen\Core\Internal\SmartElement & $doc,
-        \Anakeen\Core\SmartStructure\NormalAttribute & $oattr,
+        \Anakeen\Core\Internal\SmartElement &$doc,
+        \Anakeen\Core\SmartStructure\NormalAttribute &$oattr,
         $value
     ) {
         $res = array();

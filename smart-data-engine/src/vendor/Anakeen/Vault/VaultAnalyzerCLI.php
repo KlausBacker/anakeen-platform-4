@@ -209,7 +209,7 @@ class VaultAnalyzerCLI
         return;
     }
 
-    protected static function checkDocVaultIndex(VaultAnalyzer & $vaultAnalyzer)
+    protected static function checkDocVaultIndex(VaultAnalyzer &$vaultAnalyzer)
     {
         $report = array();
         if ($vaultAnalyzer->checkDocVaultIndex($report) === false) {

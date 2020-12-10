@@ -246,7 +246,7 @@ class ImportDocument
      *
      * @return void
      */
-    public function writeHtmlCr(\Anakeen\Layout\TextLayout & $lay)
+    public function writeHtmlCr(\Anakeen\Layout\TextLayout &$lay)
     {
         $hasError = false;
         $haswarning = false;

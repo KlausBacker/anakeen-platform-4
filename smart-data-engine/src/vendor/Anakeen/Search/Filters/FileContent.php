@@ -40,7 +40,7 @@ class FileContent extends StandardAttributeFilter implements ElementSearchFilter
      * @return NormalAttribute
      * @throws Exception
      */
-    public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData & $search)
+    public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData &$search)
     {
         $attr = parent::verifyCompatibility($search);
         if (!is_scalar($this->value)) {

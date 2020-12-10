@@ -250,7 +250,7 @@ class BasicAttribute
      *
      * @return string
      */
-    public function getXmlValue(\Anakeen\Core\Internal\SmartElement & $doc, $opt = false)
+    public function getXmlValue(\Anakeen\Core\Internal\SmartElement &$doc, $opt = false)
     {
         return sprintf("<!-- no value %s (%s)-->", $this->id, $this->type);
     }

@@ -53,7 +53,7 @@ class OneGreaterThan extends StandardAttributeFilter implements ElementSearchFil
         }
     }
 
-    public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData & $search)
+    public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData &$search)
     {
         $attr = parent::verifyCompatibility($search);
         if (!$attr->isMultiple()) {
@@ -82,7 +82,7 @@ class OneGreaterThan extends StandardAttributeFilter implements ElementSearchFil
         return $this;
     }
 
-    protected function _filter(NormalAttribute & $attr, $value)
+    protected function _filter(NormalAttribute &$attr, $value)
     {
         return sprintf(
             "%s IS NOT NULL AND %s <%s %s(%s)",

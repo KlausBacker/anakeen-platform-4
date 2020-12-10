@@ -24,7 +24,7 @@ class ElementList implements \Iterator, \Countable
     private $init = false;
     public $length = 0;
 
-    public function __construct(SearchElements & $s = null)
+    public function __construct(SearchElements &$s = null)
     {
         $this->search = &$s;
     }

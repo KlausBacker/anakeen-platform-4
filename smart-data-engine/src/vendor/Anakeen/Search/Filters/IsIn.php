@@ -74,7 +74,7 @@ class IsIn extends StandardAttributeFilter implements ElementSearchFilter
      * @param $value
      * @return string
      */
-    protected function _filter(NormalAttribute & $attr, $value)
+    protected function _filter(NormalAttribute &$attr, $value)
     {
         $pgArray = SmartElement::arrayToRawValue($value);
         $sql = sprintf("%s IS NOT NULL AND %s <@ '%s'", pg_escape_identifier($attr->id), pg_escape_identifier($attr->id), $pgArray);

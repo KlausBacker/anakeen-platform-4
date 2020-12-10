@@ -9,7 +9,7 @@ class ThesaurusAttributeValue extends DocidAttributeValue
     public static $thcDoc = null;
     public static $thcDocTitle = array();
 
-    public function __construct(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $v, \Anakeen\Core\Internal\SmartElement & $doc, $iconsize = 24, $relationNoAccessText = '')
+    public function __construct(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $v, \Anakeen\Core\Internal\SmartElement &$doc, $iconsize = 24, $relationNoAccessText = '')
     {
         parent::__construct($oa, $v, $doc, $iconsize, $relationNoAccessText);
         if ($this->visible) {

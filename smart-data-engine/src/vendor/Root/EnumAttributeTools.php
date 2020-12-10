@@ -13,7 +13,7 @@ class EnumAttributeTools
      *
      * @return array
      */
-    public static function flatEnumNotationToEnumArray($phpfunc, array & $theEnum, array & $theEnumlabel = array(), $locale = '')
+    public static function flatEnumNotationToEnumArray($phpfunc, array &$theEnum, array &$theEnumlabel = array(), $locale = '')
     {
         if (!$phpfunc) {
             return array();

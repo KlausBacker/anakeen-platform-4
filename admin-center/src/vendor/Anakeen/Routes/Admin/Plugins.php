@@ -62,7 +62,7 @@ class Plugins
         return self::sortPlugins($config);
     }
 
-    protected static function insertBefore(array & $result, $pluginName, $new)
+    protected static function insertBefore(array &$result, $pluginName, $new)
     {
         foreach ($result as $k => & $v) {
             if ($v["name"] === $pluginName) {
@@ -77,7 +77,7 @@ class Plugins
         return false;
     }
 
-    protected static function insertAfter(array & $result, $pluginName, $new)
+    protected static function insertAfter(array &$result, $pluginName, $new)
     {
         foreach ($result as $k => & $v) {
             if ($v["name"] == $pluginName) {
@@ -103,7 +103,7 @@ class Plugins
         }
     }
 
-    protected static function updatePluginsItem(array & $result, $pluginName, $orders)
+    protected static function updatePluginsItem(array &$result, $pluginName, $orders)
     {
 
         $alreadyAdded = self::getPluginByName($result, $pluginName);

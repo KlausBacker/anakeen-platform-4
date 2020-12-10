@@ -57,7 +57,7 @@ class ContainsValues extends StandardAttributeFilter implements ElementSearchFil
      * @return NormalAttribute
      * @throws Exception
      */
-    public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData & $search)
+    public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData &$search)
     {
         $attr = parent::verifyCompatibility($search);
         if (!$attr->isMultiple()) {
@@ -89,7 +89,7 @@ class ContainsValues extends StandardAttributeFilter implements ElementSearchFil
      * @param $value
      * @return string
      */
-    protected function _filter(NormalAttribute & $attr, $value)
+    protected function _filter(NormalAttribute &$attr, $value)
     {
         $pgArray = SmartElement::arrayToRawValue($value);
         $sql = sprintf("%s IS NOT NULL AND %s @> '%s'", pg_escape_identifier($attr->id), pg_escape_identifier($attr->id), $pgArray);

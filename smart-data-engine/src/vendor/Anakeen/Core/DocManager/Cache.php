@@ -25,7 +25,7 @@ class Cache
      * @api Record document to local cache
      * @return \Anakeen\Core\Internal\SmartElement |SmartStructure
      */
-    public static function &addDocument(\Anakeen\Core\Internal\SmartElement & $document)
+    public static function &addDocument(\Anakeen\Core\Internal\SmartElement &$document)
     {
         if (empty($document->id)) {
             throw new Exception("APIDM0200");
@@ -102,7 +102,7 @@ class Cache
      * @api Unset document object from local cache
      * @return \Anakeen\Core\Internal\SmartElement
      */
-    public static function &removeDocument(\Anakeen\Core\Internal\SmartElement & $document)
+    public static function &removeDocument(\Anakeen\Core\Internal\SmartElement &$document)
     {
         self::getLocalCache()->remove($document->id);
 
@@ -130,7 +130,7 @@ class Cache
      * @param \Anakeen\Core\Internal\SmartElement $document
      * @return bool
      */
-    public static function isInCache(\Anakeen\Core\Internal\SmartElement & $document)
+    public static function isInCache(\Anakeen\Core\Internal\SmartElement &$document)
     {
         return self::getLocalCache()->isInCache($document->id, $document);
     }

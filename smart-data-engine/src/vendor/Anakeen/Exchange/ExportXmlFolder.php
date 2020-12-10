@@ -90,7 +90,7 @@ class ExportXmlFolder
      *
      * @return void
      */
-    public function exportFromSearch(\Anakeen\Search\Internal\SearchSmartData & $search, $outputFile = '')
+    public function exportFromSearch(\Anakeen\Search\Internal\SearchSmartData &$search, $outputFile = '')
     {
         $this->setOutputFile($outputFile);
         \Anakeen\Exchange\ExportXml::exportxmlfld($folder = "0", $famid = "", $search, $this->outputFile, $this->format, $this->useIdentificator ? 'Y' : 'N');
