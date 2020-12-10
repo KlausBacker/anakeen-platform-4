@@ -79,6 +79,7 @@ if [ "$1" = "I" ] ; then
     fi
 
     "$wpub"/programs/core_initdb.php
+    "$wpub"/ank.php --script=updateclass --class='Anakeen\Core\Internal\LogMonthConnection'
     "$wpub"/ank.php --script=updateclass --class='Anakeen\Core\Internal\ParamDef'
     "$wpub"/ank.php --script=updateclass --class='Anakeen\Core\Internal\Param'
     "$wpub"/ank.php --script=updateclass --class='Anakeen\Core\Internal\Style'
