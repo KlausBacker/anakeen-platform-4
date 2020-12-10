@@ -165,18 +165,18 @@ class RenderDefault implements IRenderConfig
                 ),
                 "json" => array(
                     "write" => array(
-                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/htmltext/htmltextWrite.mustache"
+                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/longtext/longtextWrite.mustache"
                     ),
                     "read" => array(
-                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/htmltext/htmltextRead.mustache"
+                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/default/read.mustache"
                     )
                 ),
                 "xml" => array(
                     "write" => array(
-                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/htmltext/htmltextWrite.mustache"
+                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/longtext/longtextWrite.mustache"
                     ),
                     "read" => array(
-                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/htmltext/htmltextRead.mustache"
+                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/default/read.mustache"
                     )
                 ),
                 "docid" => array(
