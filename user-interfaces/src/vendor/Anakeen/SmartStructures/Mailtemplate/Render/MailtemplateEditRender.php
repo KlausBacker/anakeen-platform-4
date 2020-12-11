@@ -12,6 +12,16 @@ use SmartStructure\Fields\Mailtemplate as myAttributes;
 
 class MailtemplateEditRender extends DefaultConfigEditRender
 {
+    use TmailtemplateRender;
+
+    public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
+    {
+        $js = parent::getJsReferences();
+        $js = $this->getCommonJsReference($document, $js);
+
+        return $js;
+    }
+
     public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);

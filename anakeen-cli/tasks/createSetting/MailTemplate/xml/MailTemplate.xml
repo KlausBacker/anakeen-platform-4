@@ -7,6 +7,10 @@
 
         <mail:from>
             <!--
+            Si vous voulez utiliser le mail de l'utilisateur courant
+            <mail:current-user/>
+            -->
+            <!--
             <mail:config-parameter ns="NAMESPACE" label="Expéditeur">ACCOUNT_SENDER</mail:config-parameter>
             -->
         </mail:from>

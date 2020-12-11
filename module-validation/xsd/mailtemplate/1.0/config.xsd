@@ -13,6 +13,7 @@
     <xs:complexType name="fromType">
         <xs:choice>
             <xs:element type="xs:string" name="address" minOccurs="0"/>
+            <xs:element type="ns:current-user-emailType" name="current-user-email" minOccurs="0"/>
             <xs:element type="ns:config-parameterType" name="config-parameter" minOccurs="0"/>
             <xs:element type="ns:element-account-fieldType" name="structure-account-parameter" minOccurs="0"/>
             <xs:element type="ns:element-relation-fieldType" name="element-field-value" minOccurs="0"/>
@@ -22,6 +23,9 @@
             <xs:element type="ns:element-account-fieldType" name="workflow-parameter-value" minOccurs="0"/>
             <xs:element type="ns:element-relation-fieldType" name="workflow-account-field" minOccurs="0"/>
         </xs:choice>
+    </xs:complexType>
+
+    <xs:complexType name="current-user-emailType">
     </xs:complexType>
     <xs:complexType name="element-account-fieldType">
         <xs:simpleContent>
@@ -49,6 +53,7 @@
     <xs:complexType name="recipientType">
         <xs:sequence>
             <xs:element type="xs:string" name="address" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element type="ns:current-user-emailType" name="current-user-email" minOccurs="0"/>
             <xs:element type="ns:config-parameterType" name="config-parameter" minOccurs="0"/>
             <xs:element type="ns:element-account-fieldType" name="structure-account-parameter" minOccurs="0"/>
             <xs:element type="ns:element-relation-fieldType" name="element-field-value" minOccurs="0"/>
