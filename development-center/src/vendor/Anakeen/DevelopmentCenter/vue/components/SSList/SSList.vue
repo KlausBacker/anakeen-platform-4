@@ -1,7 +1,5 @@
 <template>
-  <div
-    :class="`smart-structure-list smart-structure-list-position--${position}`"
-  >
+  <div :class="`smart-structure-list smart-structure-list-position--${position}`">
     <kendo-datasource
       ref="remoteDataSource"
       :transport-read="readData"
@@ -9,17 +7,10 @@
       :schema-model="listModel"
     ></kendo-datasource>
     <div class="smart-structure-tabs">
-      <div class="smart-structure-tabs-list" ref="ssTabsList">
+      <div ref="ssTabsList" class="smart-structure-tabs-list">
         <div v-if="hasFilter" class="smart-structure-tabs-filter">
-          <input
-            class="form-control k-textbox"
-            type="search"
-            :placeholder="filterPlaceholder"
-            v-model="listFilter"
-          />
-          <span class="filter-list-clear" @click="clearFilter"
-            ><i class="material-icons">close</i></span
-          >
+          <input v-model="listFilter" class="form-control k-textbox" type="search" :placeholder="filterPlaceholder" />
+          <span class="filter-list-clear" @click="clearFilter"><i class="material-icons">close</i></span>
         </div>
         <div class="smart-structure-tabs-list-nav">
           <slot v-if="isEmpty" name="empty">

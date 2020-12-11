@@ -1,16 +1,16 @@
 <template>
   <div class="security-se-section">
     <ank-splitter
-      class="profile-splitter"
       ref="profileSplitter"
+      class="profile-splitter"
       :panes="panes"
-      localStorageKey="security-profiles-splitter"
+      local-storage-key="security-profiles-splitter"
     >
       <template slot="left">
         <ank-se-grid
           ref="profilesGrid"
           :pageable="{ pageSizes: [100, 200, 500], pageSize: 100 }"
-          :contextTitles="false"
+          :context-titles="false"
           controller="PROFILES_GRID_CONTROLLER"
           filterable
           @rowActionClick="actionClick"
@@ -41,7 +41,7 @@
       </template>
       <template slot="right">
         <!--                <router-multi-view :force-multi-views="false" style="display:flex; flex: 1" class="splitter-right"></router-multi-view>-->
-        <profile-view style="height: 100%" :seIdentifier="selectedProfile"></profile-view>
+        <profile-view style="height: 100%" :se-identifier="selectedProfile"></profile-view>
       </template>
     </ank-splitter>
   </div>

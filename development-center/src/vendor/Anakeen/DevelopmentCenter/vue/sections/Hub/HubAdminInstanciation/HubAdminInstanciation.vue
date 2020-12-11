@@ -4,11 +4,7 @@
       <div class="hub-instanciation-header"></div>
     </div>
     <div class="hub-instanciation-body">
-      <ank-splitter
-        ref="hubInstanciationSplitter"
-        class="hub-instanciation-splitter"
-        :panes="panes"
-      >
+      <ank-splitter ref="hubInstanciationSplitter" class="hub-instanciation-splitter" :panes="panes">
         <template slot="left">
           <div class="hub-instanciation-content">
             <div class="hub-instanciation-grid">
@@ -22,9 +18,7 @@
               >
                 <div slot="header"></div>
                 <div slot="search">
-                  <kendo-button
-                    class="k-primary k-outline"
-                    @click="createHubStation"
+                  <kendo-button class="k-primary k-outline" @click="createHubStation"
                     >Create new hub instance
                   </kendo-button>
                 </div>
@@ -34,18 +28,14 @@
         </template>
         <template slot="right">
           <ank-hub-admin
-            ref="ankHubAdmin"
-            :hubId="selectedHub"
-            class="hub-modal"
-            :hubComponentSelected="selectedComponent"
-            @hubComponentSelected="onHubComponentSelected"
             v-if="displayConfig && selectedHub"
-          ></ank-hub-admin>
-          <ank-smart-element
-            v-show="!displayConfig"
-            ref="instanceConfig"
+            ref="ankHubAdmin"
+            :hub-id="selectedHub"
             class="hub-modal"
-          ></ank-smart-element>
+            :hub-component-selected="selectedComponent"
+            @hubComponentSelected="onHubComponentSelected"
+          ></ank-hub-admin>
+          <ank-smart-element v-show="!displayConfig" ref="instanceConfig" class="hub-modal"></ank-smart-element>
         </template>
       </ank-splitter>
     </div>

@@ -86,7 +86,11 @@ export default {
             let cellDataOver = [];
             let overrides = dataItem["overrides"].toJSON();
             Object.keys(overrides).forEach(item => {
-              cellDataOver.push( `<span>${kendo.htmlEncode(item)}: (before : <i>${kendo.htmlEncode(overrides[item].before)}</i>) => (after: <i>${kendo.htmlEncode(overrides[item].after)})</i></span>`);
+              cellDataOver.push(
+                `<span>${kendo.htmlEncode(item)}: (before : <i>${kendo.htmlEncode(
+                  overrides[item].before
+                )}</i>) => (after: <i>${kendo.htmlEncode(overrides[item].after)})</i></span>`
+              );
 
               cellData = cellDataOver.join("<hr/>");
             });

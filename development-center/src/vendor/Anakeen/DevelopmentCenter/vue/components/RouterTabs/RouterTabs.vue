@@ -1,11 +1,11 @@
 <template>
   <ank-tabs v-model="selected" class="router-tabs">
     <ank-tab
-      class="router-tab"
       v-for="(tab, index) in tabs"
       :key="index"
+      class="router-tab"
       :label="tab.label"
-      :tabId="tab.name"
+      :tab-id="tab.name"
       :lazy="true"
     >
       <slot :tab="tab"></slot>
