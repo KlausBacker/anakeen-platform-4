@@ -1,7 +1,7 @@
 <template>
   <hub-element-layout>
     <nav>
-      <i class="fa fa-info-circle rd-icon" aria-hidden="true"></i>
+      <i class="fa fa-question-circle rd-icon" aria-hidden="true"></i>
       <span v-if="!isDockCollapsed">{{ $t("AdminCenterRenderDescription.Title Render Description") }}</span>
     </nav>
     <template v-slot:hubContent>

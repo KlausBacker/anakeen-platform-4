@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:routes namespace="About">
+        <sde:route name="Version">
+            <sde:callable>Anakeen\Routes\About\Version</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/about/version</sde:pattern>
+            <sde:description>Information about installed Anakeen Platform</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+    </sde:routes>
+</sde:config>

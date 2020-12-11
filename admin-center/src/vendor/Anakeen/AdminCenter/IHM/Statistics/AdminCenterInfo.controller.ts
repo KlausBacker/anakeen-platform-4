@@ -3,16 +3,18 @@ import AnkTabs from "@anakeen/user-interfaces/components/lib/AnkTabs.esm";
 import AnkTab from "@anakeen/user-interfaces/components/lib/AnkTab.esm";
 import { Component, Mixins, Prop, Watch } from "vue-property-decorator";
 import ActiveUsers from "./ActiveUsers/ActiveUsers.vue";
+import About from "./About/About.vue";
 
 @Component({
   components: {
     AnkTabs,
     AnkTab,
-    ActiveUsers
+    ActiveUsers,
+    About
   }
 })
-export default class AdminCenterStatisticsController extends Mixins(AnkI18NMixin) {
-  @Prop({ type: String, default: "activeUsers" })
+export default class AdminCenterInfoController extends Mixins(AnkI18NMixin) {
+  @Prop({ type: String, default: "about" })
   public selectedTab!: string;
 
   @Watch("selectedTab")
@@ -28,7 +30,8 @@ export default class AdminCenterStatisticsController extends Mixins(AnkI18NMixin
   }
   public get translations() {
     return {
-      activeUsers: this.$t("AdminCenterStatistics.Active users")
+      activeUsers: this.$t("AdminCenterInfos.Active users"),
+      about: this.$t("AdminCenterInfos.About")
     };
   }
 }
