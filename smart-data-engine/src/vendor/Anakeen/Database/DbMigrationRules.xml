@@ -78,4 +78,21 @@
         </check>
     </action>
 
+    <action id="logMonth" label="Create logmonthconnection table if not exists ">
+        <condition>
+            <sql-assert-empty label="verify table logmonthconnection not exists">
+                select * from information_schema.tables where table_name = 'logmonthconnection' and table_schema='public';
+            </sql-assert-empty>
+        </condition>
+        <process>
+            <php-code label="Create logmonthconnection" load-context="false">
+                (new \Anakeen\Core\Internal\LogMonthConnection())->create();
+            </php-code>
+        </process>
+        <check>
+            <sql-assert-not-empty label="verify table logmonthconnection has been created">
+                select * from information_schema.tables where table_name = 'logmonthconnection' and table_schema='public';
+            </sql-assert-not-empty>
+        </check>
+    </action>
 </migration>
