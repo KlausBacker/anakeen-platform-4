@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+  <sde:parameters namespace="About">
+    <sde:parameter name="VERSION">
+      <sde:description>Anakeen Platform version</sde:description>
+      <sde:value>2020.1.3</sde:value>
+      <sde:access>static</sde:access>
+    </sde:parameter>
+    <sde:parameter name="COMMIT_DATE">
+      <sde:description>Last commit date</sde:description>
+      <sde:value>2020-12-14 14:31:45 +0100</sde:value>
+      <sde:access>static</sde:access>
+    </sde:parameter>
+  </sde:parameters>
+</sde:config>

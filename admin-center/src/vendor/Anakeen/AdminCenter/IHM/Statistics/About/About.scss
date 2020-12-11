@@ -1,0 +1,52 @@
+.about-container {
+  display: flex;
+  justify-content: center;
+  background-color: var(--white);
+  height: 100%;
+
+  .about {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.2rem;
+    width: 50rem;
+
+    .about-logo {
+      height: 2rem;
+    }
+
+    .about-commitdate,
+    .about-version {
+      color: #888;
+
+      > span {
+        min-width: 12rem;
+        display: inline-block;
+        text-align: right;
+      }
+    }
+
+    .about-title {
+      display: flex;
+      align-items: center;
+      font-size: 1.5rem;
+      justify-content: space-between;
+    }
+
+    .about-infos {
+      border: solid 1px #eeeeee;
+      border-radius: 0.2rem;
+      box-shadow: rgba(60, 64, 67, 0.3) 0 1px 2px 0, rgba(60, 64, 67, 0.15) 0 1px 3px 1px;
+
+      > div {
+        padding: 1rem;
+        border-bottom: solid 1px #eee;
+      }
+
+      > div:last-child {
+        border-bottom: none;
+      }
+
+    }
+  }
+}

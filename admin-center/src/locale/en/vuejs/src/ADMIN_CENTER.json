@@ -316,11 +316,16 @@
   "AdminRenderDescriptiont.Create new description": "Create new description",
   "AdminCenterRenderDescription.Click to example link": "Click to example link inside description",
   "AdminCenterScheduler.Title Scheduler": "Timers and tasks",
-  "AdminCenterStatistics.Title Statistics Manager": "Statistics",
-  "AdminCenterStatistics.Active users": "Number of active users",
-  "AdminCenterStatistics.From": "From",
-  "AdminCenterStatistics.To": "To",
-  "AdminCenterStatistics.Total": "Total",
-  "AdminCenterStatistics.Export": "Export (XLSX)",
-  "AdminCenterStatistics.Active users over the period": "Active users over the period"
+  "AdminCenterAbout.Title About Manager": "About",
+  "AdminCenterInfos.About": "About",
+  "AdminCenterInfos.Active users": "Number of active users",
+  "AdminCenterInfos.From": "From",
+  "AdminCenterInfos.To": "To",
+  "AdminCenterInfos.Total": "Total",
+  "AdminCenterInfos.Export": "Export (XLSX)",
+  "AdminCenterInfos.Active users over the period": "Active users over the period",
+  "AdminCenterInfos.About Anakeen Platform 4": "About Anakeen Platform 4",
+  "AdminCenterInfos.Anakeen Platform 4": "Anakeen Platform 4",
+  "AdminCenterInfos.Version": "Version",
+  "AdminCenterInfos.CommitDate": "Version date"
 }

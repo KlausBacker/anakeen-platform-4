@@ -22,6 +22,7 @@
             <mapping deploy="platform" local="$PROJECT_DIR$/test-tools/src" web="/" />
             <mapping deploy="platform" local="$PROJECT_DIR$/fulltext-search/src" web="/" />
             <mapping deploy="platform" local="$PROJECT_DIR$/migration-tools/src" web="/" />
+            <mapping deploy="platform" local="$PROJECT_DIR$/about/src" web="/" />
           </mappings>
         </serverdata>
       </paths>
