@@ -13,7 +13,7 @@ class DocidAttributeValue extends StandardAttributeValue
     public $fromid;
     protected $visible = true;
 
-    public function __construct(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $v, \Anakeen\Core\Internal\SmartElement & $doc, $iconsize = 24, $relationNoAccessText = '')
+    public function __construct(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $v, \Anakeen\Core\Internal\SmartElement &$doc, $iconsize = 24, $relationNoAccessText = '')
     {
         $this->familyRelation = $oa->format;
         $this->value = ($v === '') ? null : $v;

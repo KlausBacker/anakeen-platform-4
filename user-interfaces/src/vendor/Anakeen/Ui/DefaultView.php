@@ -30,7 +30,7 @@ class DefaultView extends RenderDefault
      *
      * @return BarMenu
      */
-    protected function setMenuVisibility(BarMenu & $menu, \Anakeen\Core\Internal\SmartElement $document)
+    protected function setMenuVisibility(BarMenu &$menu, \Anakeen\Core\Internal\SmartElement $document)
     {
         // Trash document
         if ($document->doctype === "Z") {
@@ -140,7 +140,7 @@ class DefaultView extends RenderDefault
                     $document->getStateColor("transparent"),
                     htmlspecialchars($document->getStepLabel())
                 ));
-                $workflowMenu->setContent(function (ListMenu & $menu) use ($document) {
+                $workflowMenu->setContent(function (ListMenu &$menu) use ($document) {
                     $this->getWorkflowMenu($document, $menu);
                 });
                 $workflowMenu->setBeforeContent('<div class="fa fa-sitemap" />');
@@ -220,7 +220,7 @@ class DefaultView extends RenderDefault
      * @param \Anakeen\Core\Internal\SmartElement $doc
      * @param ListMenu                            $menu
      */
-    protected function getWorkflowMenu(\Anakeen\Core\Internal\SmartElement $doc, ListMenu & $menu)
+    protected function getWorkflowMenu(\Anakeen\Core\Internal\SmartElement $doc, ListMenu &$menu)
     {
 
         if ($doc->wid > 0 && $doc->locked != -1) {
@@ -303,7 +303,7 @@ class DefaultView extends RenderDefault
      *
      * @throws \Anakeen\Ui\Exception
      */
-    protected function addCvMenu(\Anakeen\Core\Internal\SmartElement $doc, BarMenu & $menu)
+    protected function addCvMenu(\Anakeen\Core\Internal\SmartElement $doc, BarMenu &$menu)
     {
         if ($doc->cvid > 0) {
             $cv = SEManager::getDocument($doc->cvid);

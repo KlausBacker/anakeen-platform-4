@@ -149,7 +149,7 @@ class CrontabManager
         $parser = new CrontabParser();
         $crontabDocument = $parser->parse($crontabData);
         /* Remove existing sections for this context/file */
-        $crontabDocument->childs = array_filter($crontabDocument->childs, function (CrontabElement & $element) use ($file) {
+        $crontabDocument->childs = array_filter($crontabDocument->childs, function (CrontabElement $element) use ($file) {
             if (is_a($element, CrontabSectionElement::class)) {
                 /**
                  * @var CrontabSectionElement $element
@@ -233,7 +233,7 @@ class CrontabManager
         $parser = new CrontabParser();
         $crontabDocument = $parser->parse($crontabData);
         /* Remove existing sections for this context */
-        $crontabDocument->childs = array_filter($crontabDocument->childs, function (CrontabElement & $element) {
+        $crontabDocument->childs = array_filter($crontabDocument->childs, function (CrontabElement $element) {
             if (is_a($element, CrontabSectionElement::class)) {
                 /**
                  * @var $element CrontabSectionElement

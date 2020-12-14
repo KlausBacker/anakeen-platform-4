@@ -335,7 +335,7 @@ class DirLib
         &$debug = null,
         $folderRecursiveLevel = 2,
         $join = '',
-        \Anakeen\Search\Internal\SearchSmartData & $searchDoc = null
+        \Anakeen\Search\Internal\SearchSmartData &$searchDoc = null
     ) {
         return self::_internalGetDocCollection(
             false,
@@ -375,7 +375,7 @@ class DirLib
         &$debug = null,
         $folderRecursiveLevel = 2,
         $join = '',
-        \Anakeen\Search\Internal\SearchSmartData & $searchDoc = null
+        \Anakeen\Search\Internal\SearchSmartData &$searchDoc = null
     ) {
         // query to find child documents
         if (($fromid != "") && (!is_numeric($fromid))) {
@@ -677,7 +677,8 @@ class DirLib
                 if ($t[$v["childid"]] == false) {
                     unset($t[$v["childid"]]);
                 } else {
-                    if ((\Anakeen\Core\ContextManager::getCurrentUser()->id != 1) && ($t[$v["childid"]]["uperm"] & (1 << \Anakeen\Core\Internal\DocumentAccess::POS_VIEW)) === 0) { // control view
+                    if ((\Anakeen\Core\ContextManager::getCurrentUser()->id != 1) &&
+                        ($t[$v["childid"]]["uperm"] & (1 << \Anakeen\Core\Internal\DocumentAccess::POS_VIEW)) === 0) { // control view
                         unset($t[$v["childid"]]);
                     }
                 }

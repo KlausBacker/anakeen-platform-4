@@ -38,7 +38,7 @@ class IsEqual extends StandardAttributeFilter implements ElementSearchFilter
         }
     }
 
-    public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData & $search)
+    public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData &$search)
     {
         $attr = parent::verifyCompatibility($search);
         if (is_array($this->value)) {

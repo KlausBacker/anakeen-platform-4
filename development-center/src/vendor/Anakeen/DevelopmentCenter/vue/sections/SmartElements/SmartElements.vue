@@ -8,7 +8,7 @@
           :pageable="pageableConfig"
           controller="ELEMENTS_GRID_CONTROLLER"
           filterable
-          defaultExpandable
+          default-expandable
           @dataBound="onGridDataBound"
           @rowActionClick="actionClick"
         >

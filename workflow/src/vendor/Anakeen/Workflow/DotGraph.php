@@ -180,7 +180,7 @@ class DotGraph
         return '';
     }
 
-    public function setWorkflow(WDocHooks & $doc)
+    public function setWorkflow(WDocHooks &$doc)
     {
         $this->wdoc = $doc;
     }

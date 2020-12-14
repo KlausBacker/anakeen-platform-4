@@ -3,7 +3,7 @@
     ref="controlSplitter"
     class="control-conf-splitter"
     :panes="panes"
-    localStorageKey="ui-control-splitter"
+    local-storage-key="ui-control-splitter"
   >
     <template slot="left">
       <ank-se-grid
@@ -11,7 +11,7 @@
         :collection="ssName"
         controller="CONTROL_GRID_CONTROLLER"
         filterable
-        defaultExpandable
+        default-expandable
         :pageable="{ pageSizes: [100, 200, 500], pageSize: 100 }"
         @rowActionClick="actionClick"
         @dataBound="onGridDataBound"
@@ -20,9 +20,9 @@
     </template>
     <template slot="right">
       <component
-        style="height: 100%"
-        v-if="selectedControl"
         :is="selectedControl.component"
+        v-if="selectedControl"
+        style="height: 100%"
         v-bind="selectedControl.props"
       ></component>
     </template>

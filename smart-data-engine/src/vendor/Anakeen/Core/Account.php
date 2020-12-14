@@ -452,10 +452,7 @@ create sequence seq_id_users start 10;";
         $pwd1,
         $pwd2,
         $extmail = '',
-        array $roles
-        = array(
-            -1
-        ),
+        array $roles = [-1],
         $substitute = -1
     ) {
         $this->lastname = $lname;
@@ -516,10 +513,7 @@ create sequence seq_id_users start 10;";
         $fid,
         $gname,
         $login,
-        array $roles
-        = array(
-            -1
-        )
+        array $roles = [-1]
     ) {
         $err = "";
         if ($gname != "") {
@@ -784,7 +778,7 @@ create sequence seq_id_users start 10;";
      *
      * @return string incumbent's name which has privilege
      */
-    public function getIncumbentPrivilege(\Anakeen\Core\Internal\SmartElement &$doc, $acl)
+    public function getIncumbentPrivilege(\Anakeen\Core\Internal\SmartElement $doc, $acl)
     {
         if ($this->id == 1) {
             return '';

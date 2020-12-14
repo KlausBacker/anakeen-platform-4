@@ -57,7 +57,7 @@ class XDOMDocument extends \DOMDocument
         return $libXMLErrorsFiltered;
     }
 
-    public function load($filename, $options = 0, \libXMLError & $error = null)
+    public function load($filename, $options = 0, \libXMLError &$error = null)
     {
         self::enableLibXMLErrors();
         /*

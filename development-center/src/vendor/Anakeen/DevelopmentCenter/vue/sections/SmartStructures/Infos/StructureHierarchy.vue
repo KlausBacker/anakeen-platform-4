@@ -17,7 +17,7 @@
       <structure-hierarchy
         v-if="item.children && item.children.length"
         :data="item.children"
-        :currentStructure="currentStructure"
+        :current-structure="currentStructure"
       ></structure-hierarchy>
     </li>
   </ul>
@@ -25,7 +25,7 @@
 
 <script>
 export default {
-  name: "structure-hierarchy",
+  name: "StructureHierarchy",
   props: ["data", "currentStructure"],
   data() {
     return {

@@ -271,7 +271,7 @@ class Message
      *
      * @param Body $body
      */
-    public function setBody(Body & $body)
+    public function setBody(Body &$body)
     {
         $this->body = $body;
     }
@@ -280,7 +280,7 @@ class Message
      *
      * @param RelatedAttachment $attachment
      */
-    public function addBodyRelatedAttachment(RelatedAttachment & $attachment)
+    public function addBodyRelatedAttachment(RelatedAttachment &$attachment)
     {
         $this->bodyRelated[] = $attachment;
     }
@@ -296,7 +296,7 @@ class Message
      *
      * @param Body $body
      */
-    public function setAltBody(Body & $body)
+    public function setAltBody(Body &$body)
     {
         $this->altBody = $body;
     }
@@ -305,7 +305,7 @@ class Message
      *
      * @param Attachment $attachment
      */
-    public function addAttachment(Attachment & $attachment)
+    public function addAttachment(Attachment &$attachment)
     {
         $this->attachments[] = $attachment;
     }

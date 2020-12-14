@@ -1,5 +1,5 @@
 <template>
-  <ank-splitter ref="masksSplitter" class="masks-splitter" :panes="panes" localStorageKey="ui-masks-splitter">
+  <ank-splitter ref="masksSplitter" class="masks-splitter" :panes="panes" local-storage-key="ui-masks-splitter">
     <template slot="left">
       <ank-se-grid
         ref="masksGrid"
@@ -14,7 +14,7 @@
     </template>
     <template slot="right">
       <!--            <router-multi-view :force-multi-views="false" style="display:flex; flex: 1" class="splitter-right"></router-multi-view>-->
-      <element-view style="height: 100%" :initid="selectedMask" viewId="!defaultConsultation"></element-view>
+      <element-view style="height: 100%" :initid="selectedMask" view-id="!defaultConsultation"></element-view>
     </template>
   </ank-splitter>
 </template>

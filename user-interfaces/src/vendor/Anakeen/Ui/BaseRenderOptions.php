@@ -19,7 +19,7 @@ class BaseRenderOptions
     protected $scope = null;
     const type = "base";
     
-    public function __construct(RenderOptions & $options = null)
+    public function __construct(RenderOptions &$options = null)
     {
         $this->optionObject = $options;
     }

@@ -28,7 +28,7 @@
           <div class="col-sm">
             <div class="switch-container">
               <label class="switch">
-                <input type="checkbox" id="extendedView" v-model="displayAllElements" @change="updateGrid" />
+                <input id="extendedView" v-model="displayAllElements" type="checkbox" @change="updateGrid" />
                 <span class="slider round"></span>
               </label>
               <label class="switch-label" for="extendedView">
@@ -37,7 +37,7 @@
             </div>
             <div class="show-all-switch switch-container" style="margin-left: 1rem">
               <label class="switch">
-                <input type="checkbox" v-model="showLabels" />
+                <input v-model="showLabels" type="checkbox" />
                 <span class="slider round"></span>
               </label>
               <label class="switch-label">
@@ -46,7 +46,7 @@
             </div>
             <div class="show-all-columns-switch switch-container" style="margin-left: 1rem">
               <label class="switch">
-                <input type="checkbox" v-model="showColumns" />
+                <input v-model="showColumns" type="checkbox" />
                 <span class="slider round"></span>
               </label>
               <label class="switch-label">

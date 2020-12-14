@@ -68,7 +68,7 @@ class OneEmpty extends StandardAttributeFilter implements ElementSearchFilter
      * @return NormalAttribute
      * @throws Exception
      */
-    public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData & $search)
+    public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData &$search)
     {
         $attr = parent::verifyCompatibility($search);
         if (!$attr->isMultiple()) {
@@ -95,7 +95,7 @@ class OneEmpty extends StandardAttributeFilter implements ElementSearchFilter
      * @param NormalAttribute $attr
      * @return string
      */
-    protected function _filter(NormalAttribute & $attr)
+    protected function _filter(NormalAttribute &$attr)
     {
         return sprintf(
             "%s IS %s NULL %s true = %s(select unnest(%s) IS %s NULL)",

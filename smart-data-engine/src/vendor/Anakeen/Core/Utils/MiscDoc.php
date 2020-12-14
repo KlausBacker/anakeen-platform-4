@@ -7,7 +7,7 @@ use Anakeen\Core\Internal\SmartElement;
 
 class MiscDoc
 {
-    public static function fixMultipleAliveDocument(\Anakeen\Core\Internal\SmartElement & $doc)
+    public static function fixMultipleAliveDocument(\Anakeen\Core\Internal\SmartElement &$doc)
     {
         if ($doc->id && $doc->fromid > 0) {
             DbManager::query(sprintf(
@@ -74,7 +74,7 @@ class MiscDoc
      * @return int|string The value with logical names replaced by their id
      */
     public static function resolveDocIdLogicalNames(
-        \Anakeen\Core\SmartStructure\NormalAttribute & $oattr,
+        \Anakeen\Core\SmartStructure\NormalAttribute &$oattr,
         $avalue,
         &$unknownLogicalNames = array(),
         &$knownLogicalNames = array()

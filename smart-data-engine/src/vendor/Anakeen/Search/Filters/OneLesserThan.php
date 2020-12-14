@@ -6,7 +6,7 @@ use Anakeen\Core\SmartStructure\NormalAttribute;
 
 class OneLesserThan extends OneGreaterThan implements ElementSearchFilter
 {
-    protected function _filter(NormalAttribute & $attr, $value)
+    protected function _filter(NormalAttribute &$attr, $value)
     {
         $sql = sprintf(
             "%s IS NOT NULL AND %s >%s %s(%s)",

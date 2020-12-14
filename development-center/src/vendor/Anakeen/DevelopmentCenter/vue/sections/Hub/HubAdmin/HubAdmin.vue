@@ -46,15 +46,15 @@
                 controller="HUB_STATION_ADMIN_GRID_CONTROLLER"
                 :pageable="false"
                 class="hub-admin"
+                :context-titles="false"
                 @afterContent="displayMockUp"
-                :contextTitles="false"
               >
               </ank-se-grid>
             </div>
           </div>
         </template>
         <template slot="right">
-          <smart-element @smartElementMounted="listenSmartElement" ref="smartConfig" class="hub-modal"></smart-element>
+          <smart-element ref="smartConfig" class="hub-modal" @smartElementMounted="listenSmartElement"></smart-element>
         </template>
       </ank-splitter>
     </section>

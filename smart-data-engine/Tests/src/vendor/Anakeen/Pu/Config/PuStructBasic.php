@@ -3550,7 +3550,7 @@ class PuStructBasic extends TestCaseConfig
                             'relativeOrder' => '::first',
                         ),
                 ),
-            'tst_three' =>
+                'tst_three' =>
                 array(
                     'type' => 'text',
                     'label' => 'Three',

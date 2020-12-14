@@ -503,7 +503,7 @@ class CronSchedule
     // Result:        FALSE if current did not overflow (reset back to the earliest possible value). TRUE if it did.
     //
 
-    private function advanceItem($arrItems, $rangeMin, $rangeMax, & $current)
+    private function advanceItem($arrItems, $rangeMin, $rangeMax, &$current)
     {
 
         // Advance pointer
@@ -686,7 +686,7 @@ class CronSchedule
     // Result:        FALSE if current did not overflow (reset back to the highest possible value). TRUE if it did.
     //
 
-    private function recedeItem($arrItems, $rangeMin, $rangeMax, & $current)
+    private function recedeItem($arrItems, $rangeMin, $rangeMax, &$current)
     {
 
         // Recede pointer

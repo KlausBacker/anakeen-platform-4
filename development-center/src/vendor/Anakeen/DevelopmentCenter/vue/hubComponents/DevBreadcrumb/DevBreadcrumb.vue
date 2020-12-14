@@ -9,10 +9,7 @@
       >
         {{ getRouteLabel(routeItem) }}
       </span>
-      <span
-        class="header-breadcrumb-separator"
-        v-if="index !== routes.length - 1"
-      >
+      <span v-if="index !== routes.length - 1" class="header-breadcrumb-separator">
         >
       </span>
     </span>
@@ -35,8 +32,17 @@
 import HubElement from "@anakeen/hub-components/components/lib/AnkHubElement.esm";
 import { interceptDOMLinks } from "../../setup.js";
 export default {
-  name: "ank-dev-breadcrumb",
+  name: "AnkDevBreadcrumb",
   extends: HubElement,
+  data() {
+    return {
+      routes: [
+        {
+          name: "Development Center"
+        }
+      ]
+    };
+  },
   computed: {
     routesSections() {
       return [
@@ -47,21 +53,13 @@ export default {
       ];
     }
   },
-  data() {
-    return {
-      routes: [
-        {
-          name: "Development Center"
-        }
-      ]
-    };
-  },
   created() {
     interceptDOMLinks("body", path => {
       this.$ankHubRouter.internal.navigate(path, true).resolve();
       this.getRouter().historyAPIUpdateMethod("replaceState");
       this.getRouter()
-              .navigate(path, true).resolve();
+        .navigate(path, true)
+        .resolve();
       this.getRouter().historyAPIUpdateMethod("pushState");
     });
   },

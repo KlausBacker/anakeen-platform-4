@@ -69,7 +69,7 @@ class StandardDocumentTitleFilter extends StandardAttributeFilter implements Ele
      * @param $value
      * @return string
      */
-    protected function _filter(NormalAttribute & $attr, $value)
+    protected function _filter(NormalAttribute &$attr, $value)
     {
         $leftOperand = 'docrel.ctitle';
         $rightOperand = $value;

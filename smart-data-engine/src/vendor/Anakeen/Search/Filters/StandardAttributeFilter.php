@@ -40,7 +40,7 @@ class StandardAttributeFilter
      *
      * @return NormalAttribute the attribute object
      */
-    public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData & $search)
+    public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData &$search)
     {
         $fam = $search->getFamily();
         if (!$fam) {
@@ -63,7 +63,7 @@ class StandardAttributeFilter
      * @param $attrId
      * @return BasicAttribute|NormalAttribute|bool
      */
-    protected function getPropAttribute(SmartStructure & $fam, $attrId)
+    protected function getPropAttribute(SmartStructure &$fam, $attrId)
     {
         if ($fam->getPropertyValue($attrId) === false) {
             $attr = $fam->getAttribute($this->attributeId);

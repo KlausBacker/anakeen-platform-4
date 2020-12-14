@@ -43,7 +43,7 @@
         :transport-read="privateMethods.readData"
         :schema-parse="privateMethods.parseData"
         :schema-model="listModel"
-        :pageSize="500"
+        :page-size="500"
       ></kendo-datasource>
     </kendo-grid>
   </div>

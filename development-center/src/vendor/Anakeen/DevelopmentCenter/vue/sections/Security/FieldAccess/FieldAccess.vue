@@ -1,14 +1,14 @@
 <template>
   <div class="security-fall-section">
-    <ank-splitter class="fall-splitter" ref="fallSplitter" :panes="panes" localStorageKey="security-fall-splitter">
+    <ank-splitter ref="fallSplitter" class="fall-splitter" :panes="panes" local-storage-key="security-fall-splitter">
       <template slot="left">
         <ank-se-grid
           ref="fallGrid"
           :pageable="{ pageSizes: [100, 200, 500], pageSize: 100 }"
-          :contextTitles="false"
+          :context-titles="false"
           controller="FIELD_ACCESS_GRID_CONTROLLER"
           filterable
-          defaultExpandable
+          default-expandable
           @rowActionClick="actionClick"
           @dataBound="onGridDataBound"
         >
@@ -45,9 +45,9 @@
       <template slot="right">
         <!--                <router-multi-view :force-multi-views="false" style="display:flex; flex: 1" class="splitter-right"></router-multi-view>-->
         <component
+          :is="selectedFieldAccess.component"
           v-if="selectedFieldAccess"
           style="height: 100%"
-          :is="selectedFieldAccess.component"
           v-bind="selectedFieldAccess.props"
         ></component>
       </template>

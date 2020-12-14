@@ -67,7 +67,7 @@ class OneContains extends StandardAttributeFilter implements ElementSearchFilter
      * @return NormalAttribute
      * @throws Exception
      */
-    public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData & $search)
+    public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData &$search)
     {
         $attr = parent::verifyCompatibility($search);
         if (!$attr->isMultiple()) {
@@ -92,7 +92,7 @@ class OneContains extends StandardAttributeFilter implements ElementSearchFilter
         return $this;
     }
 
-    protected function _filter(NormalAttribute & $attr, $value)
+    protected function _filter(NormalAttribute &$attr, $value)
     {
         /*
          * Prevent chars in $value to be interpreted as REGEX codes.

@@ -55,7 +55,7 @@ class MustacheLoaderSection implements \Mustache_Loader
      *
      * @throws Exception
      */
-    protected function getTemplatePart(array & $templatePart)
+    protected function getTemplatePart(array &$templatePart)
     {
         if (!empty($templatePart["content"]) && is_string($templatePart["content"])) {
             $templatePart = $templatePart["content"];

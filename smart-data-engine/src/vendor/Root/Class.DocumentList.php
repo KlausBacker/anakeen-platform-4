@@ -27,7 +27,7 @@ class DocumentList implements Iterator, Countable
     private $init = false;
     public $length = 0;
     
-    public function __construct(\Anakeen\Search\Internal\SearchSmartData & $s = null)
+    public function __construct(\Anakeen\Search\Internal\SearchSmartData &$s = null)
     {
         $this->search = & $s;
     }

@@ -6,7 +6,6 @@
 
 namespace Anakeen\Core\SmartStructure;
 
-use Anakeen\Core\Exception;
 use Anakeen\Core\Utils\Date;
 
 class SmartFieldValue
@@ -18,7 +17,7 @@ class SmartFieldValue
      * @throws SmartFieldValueException
      * @return array|float|int|null|string
      */
-    public static function getTypedValue(\Anakeen\Core\Internal\SmartElement & $doc, \Anakeen\Core\SmartStructure\NormalAttribute & $oAttr)
+    public static function getTypedValue(\Anakeen\Core\Internal\SmartElement &$doc, \Anakeen\Core\SmartStructure\NormalAttribute &$oAttr)
     {
         if (!isset($doc->attributes->attr[$oAttr->id])) {
             throw new SmartFieldValueException('VALUE0101', $oAttr->id, $doc->fromname, $doc->getTitle());
@@ -33,7 +32,7 @@ class SmartFieldValue
         return self::castValue($oAttr->type, $rawValue);
     }
 
-    private static function getMultipleValues(\Anakeen\Core\Internal\SmartElement & $doc, \Anakeen\Core\SmartStructure\NormalAttribute & $oAttr)
+    private static function getMultipleValues(\Anakeen\Core\Internal\SmartElement &$doc, \Anakeen\Core\SmartStructure\NormalAttribute &$oAttr)
     {
         if ($oAttr->isMultipleInArray()) {
             return self::getMultiple2Values($doc, $oAttr);
@@ -48,7 +47,7 @@ class SmartFieldValue
         return $typedValues;
     }
 
-    private static function getMultiple2Values(\Anakeen\Core\Internal\SmartElement & $doc, \Anakeen\Core\SmartStructure\NormalAttribute & $oAttr)
+    private static function getMultiple2Values(\Anakeen\Core\Internal\SmartElement &$doc, \Anakeen\Core\SmartStructure\NormalAttribute &$oAttr)
     {
         $rawValues = $doc->getMultipleRawValues($oAttr->id);
         $type = $oAttr->type;
@@ -193,7 +192,7 @@ class SmartFieldValue
         return $typedValue;
     }
 
-    private static function getArrayValues(\Anakeen\Core\Internal\SmartElement & $doc, \Anakeen\Core\SmartStructure\NormalAttribute & $oAttr)
+    private static function getArrayValues(\Anakeen\Core\Internal\SmartElement &$doc, \Anakeen\Core\SmartStructure\NormalAttribute &$oAttr)
     {
         if ($oAttr->type == "array") {
             $ta = $doc->attributes->getArrayElements($oAttr->id);
@@ -253,7 +252,7 @@ class SmartFieldValue
         }
         return $return;
     }
-    private static function setTypedArrayValue(\Anakeen\Core\Internal\SmartElement & $doc, \Anakeen\Core\SmartStructure\NormalAttribute & $oAttr, array $value)
+    private static function setTypedArrayValue(\Anakeen\Core\Internal\SmartElement &$doc, \Anakeen\Core\SmartStructure\NormalAttribute &$oAttr, array $value)
     {
         $doc->clearArrayValues($oAttr->id);
         $err = "";
@@ -285,7 +284,7 @@ class SmartFieldValue
      * @throws SmartFieldValueException in case of incompatible value
      * @throws SmartFieldAccessException
      */
-    public static function setTypedValue(\Anakeen\Core\Internal\SmartElement & $doc, \Anakeen\Core\SmartStructure\NormalAttribute & $oAttr, $value)
+    public static function setTypedValue(\Anakeen\Core\Internal\SmartElement &$doc, \Anakeen\Core\SmartStructure\NormalAttribute &$oAttr, $value)
     {
         if (!isset($doc->attributes->attr[$oAttr->id])) {
             throw new SmartFieldValueException('VALUE0004', $oAttr->id, $doc->fromname, $doc->getTitle());

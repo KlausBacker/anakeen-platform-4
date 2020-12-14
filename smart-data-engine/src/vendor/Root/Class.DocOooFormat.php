@@ -29,12 +29,12 @@ class DocOooFormat
      */
     private $cFormat = '';
 
-    public function __construct(\Anakeen\Core\Internal\SmartElement & $doc)
+    public function __construct(\Anakeen\Core\Internal\SmartElement &$doc)
     {
         $this->setDoc($doc);
     }
 
-    public function setDoc(\Anakeen\Core\Internal\SmartElement & $doc)
+    public function setDoc(\Anakeen\Core\Internal\SmartElement &$doc)
     {
         $this->doc = $doc;
     }

@@ -44,10 +44,10 @@
       <excludeFolder url="file://$MODULE_DIR$/user-interfaces/lib" />
       <excludeFolder url="file://$MODULE_DIR$/user-interfaces/src/public/Anakeen" />
       <excludeFolder url="file://$MODULE_DIR$/user-interfaces/src/public/uiAssets" />
+      <excludeFolder url="file://$MODULE_DIR$/fulltext-search/Tests/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/fulltext-search/Tests/src/public" />
+      <excludeFolder url="file://$MODULE_DIR$/fulltext-search/lib" />
     </content>
-    <content url="file://$MODULE_DIR$/control/node_modules" />
-    <content url="file://$MODULE_DIR$/node_modules" />
-    <content url="file://$MODULE_DIR$/user-interfaces/Tests/src/public/Anakeen" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>

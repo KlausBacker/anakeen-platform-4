@@ -52,7 +52,7 @@ class OooLayout extends TextLayout
      * @param string                              $caneva open document file of the template
      * @param \Anakeen\Core\Internal\SmartElement $doc    document
      */
-    public function __construct($caneva = "", \Anakeen\Core\Internal\SmartElement & $doc = null)
+    public function __construct($caneva = "", \Anakeen\Core\Internal\SmartElement &$doc = null)
     {
         $this->initialFile = $caneva;
         $this->doc = $doc;
@@ -88,7 +88,7 @@ class OooLayout extends TextLayout
      *
      * @return string
      */
-    protected function innerXML(\DOMnode & $node)
+    protected function innerXML(\DOMnode &$node)
     {
         if (!$node) {
             return false;
@@ -211,7 +211,7 @@ EOF;
      *
      * @return int
      */
-    private function getNodeDepth(\DOMNode & $node)
+    private function getNodeDepth(\DOMNode &$node)
     {
         $mynode = $node;
         $depth = 0;
@@ -763,7 +763,7 @@ EOF;
      *
      * @return string
      */
-    protected function setHtmlDraw(\DOMElement & $draw)
+    protected function setHtmlDraw(\DOMElement &$draw)
     {
         $imgs = $draw->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:drawing:1.0", "image");
         $err = "";
@@ -838,7 +838,7 @@ EOF;
      *
      * @return string
      */
-    protected function setDraw(\DOMElement & $draw, $name, $file)
+    protected function setDraw(\DOMElement &$draw, $name, $file)
     {
         if (strpos($file, '<text:tab') !== false) {
             return 'muliple values : fail';
@@ -924,7 +924,7 @@ EOF;
      *
      * @throws \Anakeen\Exception
      */
-    protected function replaceNodeText(\DOMNode & $objNode, $strOldContent, $strNewContent)
+    protected function replaceNodeText(\DOMNode &$objNode, $strOldContent, $strNewContent)
     {
         if ($strNewContent === null) {
             return;
@@ -1088,7 +1088,7 @@ EOF;
      *
      * @return string error
      */
-    protected function setInputField(\DomElement & $node, $name, $value)
+    protected function setInputField(\DomElement &$node, $name, $value)
     {
         if (strpos($value, '<text:tab') !== false) {
             return 'muliple values : fail';
@@ -1108,7 +1108,7 @@ EOF;
      *
      * @return string error message
      */
-    protected function setDropDownField(\DOMElement & $node, $name, $value)
+    protected function setDropDownField(\DOMElement &$node, $name, $value)
     {
         if (strpos($value, '<text:tab') !== false) {
             return 'muliple values : fail';
@@ -1140,7 +1140,7 @@ EOF;
      *
      * @param \DomNode $objNode
      */
-    protected function removeAllChilds(\DOMNode & $objNode)
+    protected function removeAllChilds(\DOMNode &$objNode)
     {
         $objNodeListNested = $objNode->childNodes;
         $objNode->nodeValue = '';
@@ -1274,7 +1274,7 @@ EOF;
      * @param \DOMNode $row
      * @param array    $levelPath
      */
-    protected function replaceRowIf(\DOMNode & $row, array $levelPath)
+    protected function replaceRowIf(\DOMNode &$row, array $levelPath)
     {
         $this->removeXmlId($row);
 
@@ -1347,7 +1347,7 @@ EOF;
      * @param \DOMElement $row
      * @param array       $levelPath
      */
-    protected function replaceRowNode(\DOMElement & $row, array $levelPath)
+    protected function replaceRowNode(\DOMElement &$row, array $levelPath)
     {
         // Inspect sub tables, rows
         $this->replaceRowSomething($row, $levelPath, "table", "table-row", true);
@@ -1367,7 +1367,7 @@ EOF;
      * @param string      $tag       tag for filter (like table-row or list-item)
      * @param boolean     $recursive recursive mode
      */
-    protected function replaceRowSomething(\DOMElement & $row, array $levelPath, $ns, $tag, $recursive)
+    protected function replaceRowSomething(\DOMElement &$row, array $levelPath, $ns, $tag, $recursive)
     {
         if (count($this->arrayKeys) == 0) {
             return;

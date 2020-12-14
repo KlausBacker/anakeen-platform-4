@@ -9,7 +9,7 @@ class CrontabElement
      * @param CrontabElement $element
      * @return $this
      */
-    public function appendChild(CrontabElement & $element)
+    public function appendChild(CrontabElement &$element)
     {
         $this->childs[] = $element;
         return $this;
