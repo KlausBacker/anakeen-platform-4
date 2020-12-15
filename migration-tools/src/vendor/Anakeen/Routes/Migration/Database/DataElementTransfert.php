@@ -98,7 +98,7 @@ class DataElementTransfert
         Utils::importForeignTable(sprintf("doc%d", $dynacaseId));
 
 
-        $dynacaseColumns=Utils::getForeignTableColumns("doc".$structure->id);
+        $dynacaseColumns=Utils::getForeignTableColumns("doc".$dynacaseId);
 
         $propMapping = static::getPropMapping();
         $fields = $structure->getNormalAttributes();
