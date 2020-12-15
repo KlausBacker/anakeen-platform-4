@@ -310,7 +310,7 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
                 }
             }
             SEManager::cache()->addDocument($this);
-            $err .= $user->updateUser($fid, $lname, $fname, "deprecated", "deprecated", $login, $status, $pwd1, $pwd2, $extmail, $roleIds, $substituteAccountId);
+            $err .= $user->updateUser($fid, $lname, $fname, $login, $status, $pwd1, $pwd2, $extmail, $roleIds, $substituteAccountId);
             if ($err == "") {
                 if ($user) {
                     $this->setValue(MyAttributes::us_whatid, $user->id);

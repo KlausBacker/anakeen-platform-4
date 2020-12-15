@@ -419,8 +419,6 @@ create sequence seq_id_users start 10;";
      * @param int $fid document id
      * @param string $lname last name
      * @param string $fname first name
-     * @param string $deprecatedExpires expiration date
-     * @param int $deprecatedPassdelay password delay
      * @param string $login login
      * @param string $status 'A' (Activate) , 'D' (Desactivated)
      * @param string $pwd1 password one
@@ -435,8 +433,6 @@ create sequence seq_id_users start 10;";
         $fid,
         $lname,
         $fname,
-        $deprecatedExpires,
-        $deprecatedPassdelay,
         $login,
         $status,
         $pwd1,
