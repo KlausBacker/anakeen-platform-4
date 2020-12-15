@@ -6,7 +6,7 @@ exports.versions = [
   },
   {
     package: "@anakeen/admin-center",
-    version: "2.2.2",
+    version: "2.2.3",
     modulePath: "admin-center",
     moduleName: "admin-center"
   },
@@ -86,7 +86,7 @@ exports.versions = [
   },
   {
     package: "@anakeen/smart-data-engine",
-    version: "5.0.0",
+    version: "5.0.1",
     modulePath: "smart-data-engine",
     moduleName: "smart-data-engine"
   },
