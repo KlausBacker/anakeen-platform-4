@@ -198,46 +198,6 @@ namespace SmartStructure\Fields {
         */ 
         const us_idgroup='us_idgroup';
         /**
-        * Délai d'expiration en jours
-        * <ul>
-        * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>type</i> int </li>
-        * </ul>
-        */ 
-        const us_daydelay='us_daydelay';
-        /**
-        * Date d'expiration epoch
-        * <ul>
-        * <li> <i>access</i> Read </li>
-        * <li> <i>type</i> int </li>
-        * </ul>
-        */ 
-        const us_expires='us_expires';
-        /**
-        * Délai d'expiration epoch
-        * <ul>
-        * <li> <i>access</i> Read </li>
-        * <li> <i>type</i> int </li>
-        * </ul>
-        */ 
-        const us_passdelay='us_passdelay';
-        /**
-        * Date d'expiration
-        * <ul>
-        * <li> <i>access</i> Read </li>
-        * <li> <i>type</i> date </li>
-        * </ul>
-        */ 
-        const us_expiresd='us_expiresd';
-        /**
-        * Heure d'expiration
-        * <ul>
-        * <li> <i>access</i> Read </li>
-        * <li> <i>type</i> time </li>
-        * </ul>
-        */ 
-        const us_expirest='us_expirest';
-        /**
         * Suppléants
         * <ul>
         * <li> <i>type</i> frame </li>

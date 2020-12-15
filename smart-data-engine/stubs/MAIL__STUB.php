@@ -94,7 +94,7 @@ namespace SmartStructure\Fields {
         /**
         * Modèle de mail
         * <ul>
-        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>access</i> Read </li>
         * <li> <i>relation</i> MAILTEMPLATE </li>
         * <li> <i>type</i> docid </li>
         * </ul>

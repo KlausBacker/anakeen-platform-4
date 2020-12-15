@@ -54,11 +54,6 @@
                             <smart:field-option name="match">group</smart:field-option>
                         </smart:field-account>
                     </smart:field-set>
-                    <smart:field-int name="us_daydelay" label="Délai d'expiration en jours" access="ReadWrite"/>
-                    <smart:field-int name="us_expires" label="Date d'expiration epoch" access="Read"/>
-                    <smart:field-date name="us_expiresd" label="Date d'expiration" access="Read"/>
-                    <smart:field-time name="us_expirest" label="Heure d'expiration" access="Read"/>
-                    <smart:field-int name="us_passdelay" label="Délai d'expiration epoch" access="Read"/>
                 </smart:field-set>
                 <smart:field-set name="us_fr_substitute" type="frame" label="Suppléants" access="Read">
                     <smart:field-account name="us_substitute" label="Suppléant" access="ReadWrite"/>
@@ -101,14 +96,6 @@
             <smart:field-hook type="constraint" event="onPreStore" field="us_login">
                 <smart:field-callable function="::constraintLogin"/>
                 <smart:field-argument type="field">us_login</smart:field-argument>
-                <smart:field-return/>
-            </smart:field-hook>
-
-            <smart:field-hook type="constraint" event="onPreStore" field="us_expiresd">
-                <smart:field-callable function="::constraintExpires"/>
-                <smart:field-argument type="field">us_expiresd</smart:field-argument>
-                <smart:field-argument type="field">us_expirest</smart:field-argument>
-                <smart:field-argument type="field">us_daydelay</smart:field-argument>
                 <smart:field-return/>
             </smart:field-hook>
 
