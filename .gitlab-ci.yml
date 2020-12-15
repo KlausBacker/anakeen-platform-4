@@ -171,6 +171,7 @@ hub-station-buildJS:
       - master@Anakeen/Platform-4/anakeen-platform-4
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
     changes:
+      - user-interfaces/**/*
       - hub-station/**/*
       - admin-center/**/*
       - business-app/**/*
@@ -196,9 +197,8 @@ fulltext-search-buildJS:
       - master@Anakeen/Platform-4/anakeen-platform-4
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
     changes:
+      - user-interfaces/**/*
       - fulltext-search/**/*
-  dependencies:
-    - user-interfaces-buildJS
 #endregion buildFulltext
 
 #region build
