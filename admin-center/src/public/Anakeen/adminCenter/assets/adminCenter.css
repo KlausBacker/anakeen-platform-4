@@ -5,6 +5,7 @@ html {
 /* align dock buttons */
 .hub-dock-entry-component nav  .hub-icon {
     margin-right: 0.5rem;
+    width: 2rem;
 }
 
 .hub-dock-entry-component nav {

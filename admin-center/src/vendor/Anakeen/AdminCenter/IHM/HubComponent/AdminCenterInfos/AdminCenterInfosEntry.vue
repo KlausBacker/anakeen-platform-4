@@ -1,7 +1,7 @@
 <template>
   <hub-element-layout>
     <nav>
-      <i class="fa fa-info-circle stats-icon" aria-hidden="true"></i>
+      <i class="fa fa-info-circle hub-icon stats-icon" aria-hidden="true"></i>
       <span
         v-if="!isDockCollapsed"
       >{{ $t("AdminCenterAbout.Title About Manager")}}</span>
@@ -41,6 +41,5 @@ export default {
 
 .stats-icon {
   font-size: 24px;
-  margin-right: 0.5rem;
 }
 </style>

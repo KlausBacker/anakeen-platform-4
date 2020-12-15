@@ -2,7 +2,7 @@
 <hub:config xmlns:hub="https://platform.anakeen.com/4/schemas/hub/1.0">
     <hubc-generic:component xmlns:hubc-generic="https://platform.anakeen.com/4/schemas/hub-component-generic/1.0" instance-ref="ADMINCENTER" name="HGEA_STATISTICS">
         <hub-component:parameters xmlns:hub-component="https://platform.anakeen.com/4/schemas/hub-component/1.0">
-            <hub-component:display position="left" placement="top" order="5000"/>
+            <hub-component:display position="left" placement="bottom" order="5000"/>
             <!--Identification / Name-->
             <hub-component:title>ADMINSTATISTICS</hub-component:title>
             <hub-component:settings activated="true" selectable="true" expandable="true"/>
