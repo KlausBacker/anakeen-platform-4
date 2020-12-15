@@ -5,6 +5,7 @@
     <requires>
         <module name="user-interfaces" version="^3.2.0"/>
         <module name="anakeen-hub" version="^2.0.2"/>
+        <module name="anakeen-about" version="^1.0.0"/>
     </requires>
     <post-install>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/AdminCenter/Accounts/110-AdminCenterRoles.xml"/>

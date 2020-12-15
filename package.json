@@ -21,6 +21,7 @@
         "dev-data",
         "test-tools",
         "fulltext-search",
+        "about",
         ".devtool/devserver"
     ],
     "dependencies": {

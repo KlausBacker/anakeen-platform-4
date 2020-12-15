@@ -1,10 +1,10 @@
 <template>
   <hub-element-layout>
     <nav>
-      <i class="fa fa-bar-chart stats-icon" aria-hidden="true"></i>
+      <i class="fa fa-info-circle hub-icon stats-icon" aria-hidden="true"></i>
       <span
         v-if="!isDockCollapsed"
-      >{{ $t("AdminCenterStatistics.Title Statistics Manager")}}</span>
+      >{{ $t("AdminCenterAbout.Title About Manager")}}</span>
     </nav>
     <template v-slot:hubContent>
       <div class="statistics-parent">
@@ -18,12 +18,12 @@
 import HubElement from "@anakeen/hub-components/components/lib/AnkHubElement.esm";
 
 export default {
-  name: "ank-admin-statistics",
+  name: "ank-admin-infos",
   extends: HubElement, // ou mixins: [ HubElementMixins ],
   components: {
     "admin-center-statistics": () =>
         new Promise(resolve => {
-          import("../../Statistics/AdminCenterStatistics.vue").then(Component => {
+          import("../../Statistics/AdminCenterInfo.vue").then(Component => {
             resolve(Component.default);
           });
         })
@@ -41,6 +41,5 @@ export default {
 
 .stats-icon {
   font-size: 24px;
-  margin-right: 0.5rem;
 }
 </style>

@@ -1,8 +1,8 @@
 <template>
   <hub-element-layout>
     <nav>
-      <i class="fa fa-globe i18n-globe" aria-hidden="true"></i>
-      <span v-if="!isDockCollapsed">&nbsp{{ $t("AdminCenterI18n.Title I18n")}}</span>
+      <i class="fa fa-globe hub-icon i18n-globe" aria-hidden="true"></i>
+      <span v-if="!isDockCollapsed">{{ $t("AdminCenterI18n.Title I18n")}}</span>
     </nav>
     <template v-slot:hubContent>
       <div class="i18n-station">
@@ -140,6 +140,5 @@ export default {
 
 .i18n-globe {
   font-size: 24px;
-  margin-right: 0.5rem;
 }
 </style>

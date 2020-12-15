@@ -19,7 +19,7 @@ TOPTARGETS := deploy deploy-test deploy-all lint po stub checkXML clean beautify
 
 BUILDTARGETS := app app-autorelease app-test app-test-autorelease app-all
 
-SUBDIRS := control smart-data-engine internal-components user-interfaces security workflow hub-station admin-center business-app development-center transformation transformation-server migration-tools dev-data test-tools fulltext-search
+SUBDIRS := control smart-data-engine internal-components user-interfaces security workflow hub-station admin-center about business-app development-center transformation transformation-server migration-tools dev-data test-tools fulltext-search
 
 CONTROL_ARCHIVE = $(BUILD_DIR)/control/anakeen-control-latest.zip
 

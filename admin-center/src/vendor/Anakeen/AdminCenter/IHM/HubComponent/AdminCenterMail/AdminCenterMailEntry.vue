@@ -1,7 +1,7 @@
 <template>
   <hub-element-layout>
     <nav>
-      <i class="fa fa-envelope mail-icon" aria-hidden="true"></i>
+      <i class="fa fa-envelope hub-icon mail-icon" aria-hidden="true"></i>
       <span v-if="!isDockCollapsed">{{ $t("AdminCenterMail.Title Mail Templates") }}</span>
     </nav>
     <template v-slot:hubContent>
@@ -33,6 +33,5 @@ export default {
 
 .mail-icon {
   font-size: 24px;
-  margin-right: 0.5rem;
 }
 </style>

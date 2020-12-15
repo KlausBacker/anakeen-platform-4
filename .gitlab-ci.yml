@@ -399,6 +399,38 @@ admin-center-integration-build:
    changes:
      - admin-center/**/*
 
+
+about-build:
+  extends: .build-package
+  stage: build
+  tags:
+    - a4ppm
+  variables:
+    PACKAGE_PATH: about
+    PACKAGE_NAME: anakeen-about
+    MODE: "app"
+  only:
+    refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - about/**/*
+
+
+about-integration-build:
+  extends: .build-package
+  stage: build
+  tags:
+    - a4ppm
+  variables:
+    PACKAGE_PATH: about
+    PACKAGE_NAME: anakeen-about
+    MODE: "app-autorelease"
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - about/**/*
+
 business-app-build:
  extends: .build-package
  stage: build
@@ -918,6 +950,34 @@ smart-data-engine-publish:
       - smart-data-engine/**/*
   dependencies:
     - smart-data-engine-build
+
+
+about-publish:
+  extends: .npm-publish-package
+  variables:
+    PACKAGE_PATH: about
+    ANK_CI_APP_NAME: anakeen-about
+  only:
+    refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - about/**/*
+  dependencies:
+    - about-build
+
+
+about-integration-publish:
+  extends: .npm-publish-package-integration-synchro
+  variables:
+    PACKAGE_PATH: about
+    ANK_CI_APP_NAME: anakeen-about
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - about/**/*
+  dependencies:
+    - about-integration-build
 
 security-integration-publish:
   extends: .npm-publish-package-integration-synchro

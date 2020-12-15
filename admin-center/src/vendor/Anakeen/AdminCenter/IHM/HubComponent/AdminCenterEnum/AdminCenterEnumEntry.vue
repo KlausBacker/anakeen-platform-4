@@ -1,7 +1,7 @@
 <template>
   <hub-element-layout>
     <nav>
-      <i class="fa fa-list-ol enum-icon" aria-hidden="true"></i>
+      <i class="fa fa-list-ol hub-icon enum-icon" aria-hidden="true"></i>
       <span v-if="!isDockCollapsed">{{ $t("AdminCenterEnum.Title Enumerates") }}</span>
     </nav>
     <template v-slot:hubContent>
@@ -39,6 +39,5 @@ export default {
 
 .enum-icon {
   font-size: 24px;
-  margin-right: 0.5rem;
 }
 </style>
