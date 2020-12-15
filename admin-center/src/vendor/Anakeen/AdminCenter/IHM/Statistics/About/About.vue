@@ -15,12 +15,6 @@
           </span>
           : <b>{{ currentVersion }}</b>
         </div>
-        <div class="about-commitdate">
-          <span>
-            {{ $t("AdminCenterInfos.CommitDate") }}
-          </span>
-          : <b>{{ localeCommitDate }}</b>
-        </div>
       </div>
     </div>
   </div>
