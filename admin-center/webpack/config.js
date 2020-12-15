@@ -54,8 +54,8 @@ const conf = {
     AdminStructureManager: [
       path.resolve(BASE_DIR, "src/vendor/Anakeen/AdminCenter/IHM/HubComponent/AdminCenterStructureManager/index.js")
     ],
-    AdminStatistics: [
-      path.resolve(BASE_DIR, "src/vendor/Anakeen/AdminCenter/IHM/HubComponent/AdminCenterStatistics/index.js")
+    AdminInfos: [
+      path.resolve(BASE_DIR, "src/vendor/Anakeen/AdminCenter/IHM/HubComponent/AdminCenterInfos/index.js")
     ]
   },
   buildPath: PUBLIC_PATH,
