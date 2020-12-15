@@ -21,6 +21,16 @@
   }
   .statistics-date {
     margin: 0.5rem 0 0.5rem;
+
+    > span {
+      display:inline-block;
+      min-width: 2rem;
+      text-align: right;
+      padding-right: 0.5rem;
+      &:after {
+        content:" :";
+      }
+    }
   }
   .statistics-total {
     font-weight: bold;
