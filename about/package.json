@@ -1,7 +1,7 @@
 {
   "name": "@anakeen/about-anakeen",
   "version": "1.0.0",
-  "ap4version": "2021.1.1-alpha",
+  "ap4version": "2021.1-alpha",
   "description": "Informations about Anakeen Platform",
   "main": "index.js",
   "scripts": {
