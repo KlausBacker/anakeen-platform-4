@@ -36,8 +36,6 @@ class Account extends Internal\DbObj
             "substitute",
             "accounttype",
             "memberof",
-            "expires",
-            "passdelay",
             "status",
             "mail",
             "fid"
@@ -52,8 +50,6 @@ class Account extends Internal\DbObj
     public $login;
     public $password;
 
-    public $expires;
-    public $passdelay;
     public $status;
     public $mail;
     public $fid;
@@ -103,8 +99,6 @@ create table users ( id      int not null,
                         substitute      int,
                         accounttype char,
                         memberof   int[],
-                        expires    int,
-                        passdelay  int,
                         status     char,
                         mail       text,
                         fid int);
@@ -301,8 +295,6 @@ create sequence seq_id_users start 10;";
         if (isset($this->password_new) && ($this->password_new != "")) {
             $this->computepass($this->password_new, $this->password);
         }
-        //expires and passdelay
-        $this->GetExpires();
         return $err;
     }
 
@@ -323,8 +315,6 @@ create sequence seq_id_users start 10;";
         }
 
         $this->login = mb_strtolower($this->login);
-        //expires and passdelay
-        $this->GetExpires();
     }
 
     public function postDelete()
@@ -429,8 +419,6 @@ create sequence seq_id_users start 10;";
      * @param int $fid document id
      * @param string $lname last name
      * @param string $fname first name
-     * @param string $expires expiration date
-     * @param int $passdelay password delay
      * @param string $login login
      * @param string $status 'A' (Activate) , 'D' (Desactivated)
      * @param string $pwd1 password one
@@ -445,8 +433,6 @@ create sequence seq_id_users start 10;";
         $fid,
         $lname,
         $fname,
-        $expires,
-        $passdelay,
         $login,
         $status,
         $pwd1,
@@ -468,15 +454,6 @@ create sequence seq_id_users start 10;";
 
         if ($extmail != "") {
             $this->mail = trim($extmail);
-        }
-        if ($expires > 0) {
-            $this->expires = $expires;
-        }
-        if ($passdelay > 0) {
-            $this->passdelay = $passdelay;
-        } elseif ($passdelay == -1) { // suppress expire date
-            $this->expires = 0;
-            $this->passdelay = 0;
         }
 
         $this->fid = $fid;
@@ -554,18 +531,6 @@ create sequence seq_id_users start 10;";
     {
         if ($this->isAffected()) {
             $this->select($this->id);
-        }
-    }
-    //Add and Update expires and passdelay for password
-    //Call in PreUpdate and PreInsert
-    public function getExpires()
-    {
-        if (intval($this->passdelay) === 0) {
-            // neither expire
-            $this->expires = "0";
-            $this->passdelay = "0";
-        } elseif (intval($this->expires) === 0) {
-            $this->expires = time() + $this->passdelay;
         }
     }
 

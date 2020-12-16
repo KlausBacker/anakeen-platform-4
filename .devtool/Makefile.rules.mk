@@ -22,7 +22,7 @@ docker-prompt-php: ## open bash prompt in php container
 
 .PHONY: docker-prompt-control
 docker-prompt-control: ## open anakeen-control prompt
-	$(_CONTROL_SHELL_CMD)
+	$(DOCKER_COMPOSE_CMD) exec $(CONTAINER_PHP) $(DOCKER_INTERNAL_WEBROOT_CONTROL_DIR_PATH)/anakeen-control run
 
 .PHONY: docker-prompt-postgresql
 docker-prompt-postgresql: ## open bash prompt in postgres container
@@ -181,7 +181,6 @@ env-list-ports: ## list exposed ports
 
 _CONTROL_CMD = $(DOCKER_COMPOSE_CMD_EXEC) $(CONTAINER_PHP) $(DOCKER_INTERNAL_WEBROOT_CONTROL_DIR_PATH)/anakeen-control
 _CONTROL_SHELL_CMD = $(_CONTROL_CMD) run
-_CONTROL_ANK_CMD = $(_CONTROL_SHELL_CMD) ./ank.ph
 
 certs-create: $(VOLUMES_WEBROOT_CERTS)/rootCA.pem $(VOLUMES_WEBROOT_CERTS)/servers/server-crt.pem  ## Create CA and server certificates
 

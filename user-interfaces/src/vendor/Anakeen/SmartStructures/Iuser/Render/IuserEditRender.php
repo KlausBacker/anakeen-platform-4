@@ -33,11 +33,6 @@ class IuserEditRender extends DefaultConfigEditRender
                 ))
             );
         }
-        if ($document->getRawValue(myAttributes::us_daydelay)) {
-            $options->text(myAttributes::us_daydelay)->setInputTooltip(
-                sprintf(___("<p>Set to \"<b>-1</b>\"  to cancel expiration</p>", " smart iuser"))
-            );
-        }
 
         $options->frame(myAttributes::us_fr_substitute)->setResponsiveColumns(
             [

@@ -1,8 +1,4 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 
 /**
  * User account document
@@ -13,7 +9,6 @@ namespace Anakeen\SmartStructures\Iuser;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
-use Anakeen\Core\Internal\Debug;
 use Anakeen\Core\SEManager;
 use Anakeen\Router\RouterAccess;
 use Anakeen\SmartHooks;
@@ -184,9 +179,6 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
                 $this->SetValue(MyAttributes::us_passwd2, " ");
                 $this->SetValue(MyAttributes::us_login, $wuser->login);
                 $this->SetValue(MyAttributes::us_status, $wuser->status);
-                $this->SetValue(MyAttributes::us_passdelay, $wuser->passdelay);
-                $this->SetValue(MyAttributes::us_expires, $wuser->expires);
-                $this->SetValue(MyAttributes::us_daydelay, $wuser->passdelay / 3600 / 24);
               
                 if ($wuser->substitute > 0) {
                     $this->setValue(MyAttributes::us_substitute, $wuser->getFidFromUid($wuser->substitute));
@@ -210,13 +202,6 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
                     $this->SetValue(MyAttributes::us_extmail, $mail);
                 }
 
-                if ($wuser->passdelay <> 0) {
-                    $this->SetValue(MyAttributes::us_expiresd, strftime("%Y-%m-%d", $wuser->expires));
-                    $this->SetValue(MyAttributes::us_expirest, strftime("%H:%M", $wuser->expires));
-                } else {
-                    $this->SetValue(MyAttributes::us_expiresd, " ");
-                    $this->SetValue(MyAttributes::us_expirest, " ");
-                }
                 // search group of the user
                 $g = new \Group("", $wid);
                 $tgid = array();
@@ -292,12 +277,7 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
         $fname = $this->getRawValue("us_fname");
         $pwd1 = $this->getRawValue("us_passwd1");
         $pwd2 = $this->getRawValue("us_passwd2");
-        $daydelay = $this->getRawValue("us_daydelay");
-        if ($daydelay == -1) {
-            $passdelay = $daydelay;
-        } else {
-            $passdelay = intval($daydelay) * 3600 * 24;
-        }
+
         $status = $this->getRawValue("us_status");
         $login = $this->getRawValue("us_login");
         $substitute = $this->getRawValue("us_substitute");
@@ -305,20 +285,6 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
         $extmail = $this->getRawValue("us_extmail", " ");
 
         if ($login != "-") {
-            // compute expire for epoch
-            $expiresd = $this->getRawValue("us_expiresd");
-            $expirest = $this->getRawValue("us_expirest", "00:00");
-            //convert date
-            $expdate = $expiresd . " " . $expirest . ":00";
-            $expires = 0;
-            if ($expdate != "") {
-                if (preg_match("|([0-9][0-9])/([0-9][0-9])/(2[0-9][0-9][0-9]) ([0-2][0-9]):([0-5][0-9]):([0-5][0-9])|", $expdate, $reg)) {
-                    $expires = mktime($reg[4], $reg[5], $reg[6], $reg[2], $reg[1], $reg[3]);
-                } elseif (preg_match("|(2[0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9]) ([0-2][0-9]):([0-5][0-9]):([0-5][0-9])|", $expdate, $reg)) {
-                    $expires = mktime($reg[4], $reg[5], $reg[6], $reg[2], $reg[3], $reg[1]);
-                }
-            }
-
             $fid = $this->id;
             $newuser = false;
             $user = $this->getAccount();
@@ -344,7 +310,7 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
                 }
             }
             SEManager::cache()->addDocument($this);
-            $err .= $user->updateUser($fid, $lname, $fname, $expires, $passdelay, $login, $status, $pwd1, $pwd2, $extmail, $roleIds, $substituteAccountId);
+            $err .= $user->updateUser($fid, $lname, $fname, $login, $status, $pwd1, $pwd2, $extmail, $roleIds, $substituteAccountId);
             if ($err == "") {
                 if ($user) {
                     $this->setValue(MyAttributes::us_whatid, $user->id);

@@ -163,31 +163,6 @@ export class IUSER {
    */
   static us_idgroup = "us_idgroup";
   /**
-   * Délai d&#39;expiration en jours
-   * @smartType int
-   */
-  static us_daydelay = "us_daydelay";
-  /**
-   * Date d&#39;expiration epoch
-   * @smartType int
-   */
-  static us_expires = "us_expires";
-  /**
-   * Délai d&#39;expiration epoch
-   * @smartType int
-   */
-  static us_passdelay = "us_passdelay";
-  /**
-   * Date d&#39;expiration
-   * @smartType date
-   */
-  static us_expiresd = "us_expiresd";
-  /**
-   * Heure d&#39;expiration
-   * @smartType time
-   */
-  static us_expirest = "us_expirest";
-  /**
    * Suppléants
    * @smartType frame
    */

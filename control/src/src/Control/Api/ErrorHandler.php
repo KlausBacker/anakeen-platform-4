@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Control\Api;
-
 
 class ErrorHandler
 {
@@ -14,14 +12,13 @@ class ErrorHandler
             /**
              * @var \Control\Exception\RuntimeException $exception
              */
-            $response = $response->withStatus(self::status, self::message);
+            $response = $response->withStatus(self::status, $exception->getMessage());
             return $response->withJson($exception);
         }
         /**
          * @var \Control\Exception\RuntimeException $exception
          */
-        $response = $response->withStatus(self::status, self::message);
+        $response = $response->withStatus(self::status, $exception->getMessage());
         return $response->write(print_r($exception, true));
-
     }
 }
