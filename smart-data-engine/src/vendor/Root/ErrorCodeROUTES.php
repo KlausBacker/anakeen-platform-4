@@ -122,6 +122,12 @@ class ErrorCodeRoutes
     const ROUTES0126 = 'Document "%s" not a search';
 
     /**
+     * @errorCode Smart fields of type ARRAY cannot be set
+     * @see       \Anakeen\Routes\Core\DocumentUpdateData::updateDocument
+     */
+    const ROUTES0127 = 'Smart field "%s" is an array : its values cannot be set';
+
+    /**
      * @errorCode Cannot defined same route twice
      */
     const ROUTES0128 = 'Config "%s" : route  "%s" already defined in config file "%s"';

@@ -65,6 +65,11 @@ class DocumentUpdateData extends DocumentData
         $newValues = $this->getAttributeValues($dataDocument);
         foreach ($newValues as $aid => $value) {
             try {
+                $attr = $this->_document->getAttribute($aid);
+                if ($attr && $attr->type === "array") { // Values of array fields must not be set
+                    throw new SmartFieldValueException('ROUTES0127', $aid);
+                }
+
                 if ($value === null or $value === '') {
                     $this->_document->setAttributeValue($aid, null);
                 } else {
