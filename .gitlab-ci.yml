@@ -952,33 +952,6 @@ smart-data-engine-publish:
     - smart-data-engine-build
 
 
-about-publish:
-  extends: .npm-publish-package
-  variables:
-    PACKAGE_PATH: about
-    ANK_CI_APP_NAME: anakeen-about
-  only:
-    refs:
-      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
-    changes:
-      - about/**/*
-  dependencies:
-    - about-build
-
-
-about-integration-publish:
-  extends: .npm-publish-package-integration-synchro
-  variables:
-    PACKAGE_PATH: about
-    ANK_CI_APP_NAME: anakeen-about
-  only:
-    refs:
-      - master@Anakeen/Platform-4/anakeen-platform-4
-    changes:
-      - about/**/*
-  dependencies:
-    - about-integration-build
-
 security-integration-publish:
   extends: .npm-publish-package-integration-synchro
   variables:
@@ -1110,6 +1083,32 @@ smart-data-engine-integration-register:
       - smart-data-engine/**/*
   dependencies:
     - smart-data-engine-integration-build
+
+about-register:
+  extends: .registry
+  variables:
+    ANK_CI_APP_NAME: "anakeen-about"
+    ANK_CI_APP_PATH: "about"
+  only:
+    refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - about/**/*
+  dependencies:
+    - about-build
+
+about-integration-register:
+  extends: .registry
+  variables:
+    ANK_CI_APP_NAME: "anakeen-about"
+    ANK_CI_APP_PATH: "about"
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - about/**/*
+  dependencies:
+    - about-build
 
 workflow-register:
   extends: .registry
