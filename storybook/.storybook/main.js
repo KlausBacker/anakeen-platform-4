@@ -8,6 +8,7 @@ module.exports = {
     "@storybook/addon-essentials",
     '@storybook/preset-scss',
     "@storybook/addon-storysource",
-    "storybook-readme"
+    "storybook-readme",
+    "@storybook/Ank-test"
   ]
 }

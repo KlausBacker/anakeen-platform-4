@@ -124,7 +124,21 @@ export const TestSF001 = Template.bind({});
 TestSF001.parameters = {
   readme: {
     sidebar: SF001Readme
-  }
+  },
+  AnkTests: [
+    {
+      title: "Test login",
+      jest: "testLogin"
+    },
+    {
+      title: "Test 2",
+      jest: "test2"
+    },
+    {
+      title: "Test 5",
+      jest: "test5"
+    },
+  ],
 };
 TestSF001.storyName = SF001Data.title;
 TestSF001.args = {
@@ -138,7 +152,29 @@ export const TestSF002 = Template.bind({});
 TestSF002.parameters = {
   readme: {
     sidebar: SF002Readme
-  }
+  },
+  AnkTests: [
+    {
+      title: "Test before render",
+      jest: "testBeforeRender"
+    },
+    {
+      title: "Test 2",
+      jest: "test2"
+    },
+    {
+      title: "Test 3",
+      jest: "test3"
+    },
+    {
+      title: "Test 4",
+      jest: "test4"
+    },
+    {
+      title: "Test 5",
+      jest: "test5"
+    },
+  ],
 };
 TestSF002.storyName = SF002Data.title;
 TestSF002.args = {

@@ -42,6 +42,7 @@
     "@vue/cli-service": "~4.5.0",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/test-utils": "^1.0.3",
+    "@storybook/Ank-test": "file:./.storybook/Addons",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.1",
     "css-loader": "^5.0.1",
