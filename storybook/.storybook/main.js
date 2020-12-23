@@ -9,6 +9,5 @@ module.exports = {
     '@storybook/preset-scss',
     "@storybook/addon-storysource",
     "storybook-readme",
-    "@storybook/Ank-test"
   ]
 }

@@ -14,6 +14,8 @@ import "@anakeen/user-interfaces/components/scss/AnkSmartElement.scss";
 
 Vue.use(setup);
 
+let controller = {  };
+
 export default {
   title: "Ui Component/Smart Form",
   component: AnkSmartFormVue,
@@ -54,14 +56,17 @@ const Template = (args, { argTypes }) => ({
       return AnkSmartForm;
     }
   },
-  template: '<ank-smart-form  :config="getConfig" :options="getOptions"  v-on="listeners"/>',
+  template: '<ank-smart-form ref="smartFormTest" @smartElementLoaded="onMounted"  :config="getConfig" :options="getOptions"  v-on="listeners"/>',
   methods: {
     // @FIXME: need to add this workaround to se event in action addOns
     // I don't know why but it test if Vue has toJSON method
     toJSON: function() {
       //JSON.stringify;
       return "boo";
-    }
+    },
+    onMounted() {
+      controller = this.$refs.smartFormTest.smartElementWidget;
+    },
   },
 
   computed: {
@@ -91,6 +96,17 @@ const Template = (args, { argTypes }) => ({
 });
 
 export const BasicForm = Template.bind({});
+BasicForm.parameters = {
+  AnkTests: [
+    {
+      title: "Test getValue",
+      jest: "testGetValue",
+      controller,
+      fieldId: "my_title",
+      expected: "toto"
+    }
+  ]
+};
 BasicForm.args = {
   closeConfirmation: false,
 
@@ -152,29 +168,7 @@ export const TestSF002 = Template.bind({});
 TestSF002.parameters = {
   readme: {
     sidebar: SF002Readme
-  },
-  AnkTests: [
-    {
-      title: "Test before render",
-      jest: "testBeforeRender"
-    },
-    {
-      title: "Test 2",
-      jest: "test2"
-    },
-    {
-      title: "Test 3",
-      jest: "test3"
-    },
-    {
-      title: "Test 4",
-      jest: "test4"
-    },
-    {
-      title: "Test 5",
-      jest: "test5"
-    },
-  ],
+  }
 };
 TestSF002.storyName = SF002Data.title;
 TestSF002.args = {
