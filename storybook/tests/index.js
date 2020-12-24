@@ -1,5 +1,5 @@
-import testGetValue from "./get-value.test";
+import testGetValue from "./testGetValue.spec";
 
 export default {
-  "testGetValue": testGetValue
-}
+  testGetValue
+};

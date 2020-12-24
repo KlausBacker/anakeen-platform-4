@@ -1,6 +1,7 @@
-import React, { Component, Fragment } from "react";
-import TestsFunctions from "../../tests";
-import Checkbox from "./Checkbox";
+// eslint-disable-next-line no-unused-vars
+import React, { Component } from "react";
+import TestsFunctions from "../../../tests";
+import Checkbox from "./Checkbox.react";
 import Loader from "react-loader-spinner";
 
 class StoryTests extends Component {
@@ -23,7 +24,6 @@ class StoryTests extends Component {
 
   handleCheckboxChange(changeEvent) {
     const { name, checked } = changeEvent.target;
-    console.log(name);
     this.setState(prevState => ({
       ...prevState,
       [name]: {
@@ -34,8 +34,18 @@ class StoryTests extends Component {
   }
 
   isTestRunning(option) {
-    console.log(this.state[option]);
     return !!this.state[option] && this.state[option].running;
+  }
+
+  getTestedController(testId) {
+    const iframeWindow = window.length ? window[0] : null;
+    if (iframeWindow) {
+      const controllers = iframeWindow.ank.smartElement.globalController.getControllers();
+      // TODO: find a way to correctly retrieve the good controller
+      const finded = controllers.filter(c => c._tested_ === testId);
+      return finded[finded.length - 1];
+    }
+    return null;
   }
 
   createCheckbox(option) {
@@ -82,8 +92,8 @@ class StoryTests extends Component {
         running: true
       }
     }));
-    console.log(testToExecute);
-    return TestsFunctions[testToExecute.jest](testToExecute)
+    const controller = this.getTestedController(testToExecute.jest);
+    return TestsFunctions[testToExecute.jest]({ ...testToExecute, controller })
       .then(() => {
         this.setState(prevState => ({
           ...prevState,
@@ -92,9 +102,17 @@ class StoryTests extends Component {
             running: false
           }
         }));
+        console.log("Test succeed !");
       })
       .catch(error => {
-        console.error(error.message);
+        this.setState(prevState => ({
+          ...prevState,
+          [testToExecute.title]: {
+            checked: true,
+            running: false
+          }
+        }));
+        console.error("Test failed: ", error.message);
       });
   }
 
@@ -105,7 +123,7 @@ class StoryTests extends Component {
     return Promise.all(promises);
   }
 
-  clickBtn(evt) {
+  clickBtn() {
     const testsToExecute = this.props.tests.filter(currentValue => {
       return this.isTestActive(currentValue.title);
     });
@@ -114,7 +132,7 @@ class StoryTests extends Component {
 
   render() {
     return (
-      <Fragment>
+      <div>
         {this.props.tests.length ? (
           <ol>
             <table>
@@ -142,7 +160,7 @@ class StoryTests extends Component {
             </table>
           </ol>
         ) : null}
-      </Fragment>
+      </div>
     );
   }
 }
