@@ -7,7 +7,7 @@ export default class Checkbox extends React.Component {
         <label>
           <input
             type="checkbox"
-            name={this.props.label}
+            name={this.props.name}
             checked={this.props.isSelected}
             onChange={this.props.onCheckboxChange}
             className="form-check-input"

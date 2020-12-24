@@ -1,5 +1,6 @@
-import testGetValue from "./testGetValue.spec";
+import {testGetValue, testGetValues} from "./testGetValue.spec";
 
 export default {
-  testGetValue
+  testGetValue,
+  testGetValues
 };

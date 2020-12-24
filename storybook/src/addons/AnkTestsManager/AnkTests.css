@@ -1,0 +1,26 @@
+.statusFail {
+    border: 2px solid;
+    border-color: red;
+    color: red;
+    border-radius: 40%;
+    padding: 4px;
+    font-weight: bold;
+}
+
+.statusSuccess {
+    border: 2px solid;
+    border-color: green;
+    color: green;
+    border-radius: 40%;
+    padding: 4px;
+    font-weight: bold;
+}
+
+.expected {
+    font-weight: bold;
+}
+
+.betweenTr
+ {
+ height: 2rem;
+}

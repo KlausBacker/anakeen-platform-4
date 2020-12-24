@@ -65,7 +65,7 @@ const Template = (args, { argTypes }) => ({
     },
     onLoaded() {
       const controller = this.$refs.smartFormTest.smartElementWidget;
-      controller._tested_ = args.testId;
+      controller._tested_ = true;
     }
   },
 
@@ -99,16 +99,21 @@ export const BasicForm = Template.bind({});
 BasicForm.parameters = {
   AnkTests: [
     {
-      title: "Test getValue",
-      jest: "testGetValue",
+      title: "Test getValue \"toto\"",
+      testId: "testGetValue",
       fieldId: "my_title",
       expected: "toto"
+    },
+    {
+      title: "Test getValue \"toto\"",
+      testId: "testGetValues",
+      fieldId: "my_title",
+      expected: "tata"
     }
   ]
 };
 BasicForm.args = {
   closeConfirmation: false,
-  testId: "testGetValue",
   configForm: JSON.stringify(
     {
       title: "Formulaire simple",
