@@ -7,8 +7,6 @@ import AnkSmartElementVue from "../../../user-interfaces/components/src/AnkSmart
 
 import "@anakeen/user-interfaces/components/scss/AnkSmartElement.scss";
 
-import { action } from "@storybook/addon-actions";
-
 //import SEReadme from "./SmartElement.md";
 import DocRacine from "./Racine.md";
 
@@ -35,7 +33,7 @@ export default {
   }
 };
 
-const Template = (args, { argTypes }) => ({
+const Template = (/*args, { argTypes }*/) => ({
   props: ["initid", "viewId", "revision"],
 
   components: {
@@ -44,30 +42,9 @@ const Template = (args, { argTypes }) => ({
     }
   },
 
-  template: '<ank-smart-element   v-on="listeners" v-bind="$props" />',
-  computed: {
-    listeners: function() {
-      const listenOn = {};
-
-      for (const [key, value] of Object.entries(argTypes)) {
-        if (value.table && value.table.category === "events") {
-          listenOn[key] = function(ev, ...o) {
-            action(key)(ev, ...o);
-          };
-        }
-      }
-
-      return listenOn;
-    }
-  },
-  methods: {
-    // @FIXME: need to add this workaround to se event in action addOns
-    // I don't know why but it test if Vue has toJSON method
-    toJSON: function() {
-      //JSON.stringify;
-      return "boo";
-    }
-  }
+  template: '<ank-smart-element v-bind="$props" />',
+  computed: {},
+  methods: {}
 });
 
 export const RacineElement = Template.bind({});

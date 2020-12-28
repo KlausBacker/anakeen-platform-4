@@ -1,0 +1,2647 @@
+{
+  "structure": {
+    "sftt__f_title": {
+      "name": "sftt__f_title",
+      "label": "Titre",
+      "type": "frame",
+      "options": {
+      },
+      "content": {
+        "sftt__title": {
+          "name": "sftt__title",
+          "label": "Le titre",
+          "type": "text",
+          "options": {
+          }
+        }
+      }
+    },
+    "sftt__t_tab": {
+      "name": "sftt__t_tab",
+      "label": "Basiques",
+      "type": "tab",
+      "options": {
+      },
+      "content": {
+        "sftt__fr_rels": {
+          "name": "sftt__fr_rels",
+          "label": "Relations",
+          "type": "frame",
+          "content": {
+            "sftt__account": {
+              "name": "sftt__account",
+              "label": "Un compte",
+              "type": "account"
+            },
+            "sftt__account_multiple": {
+              "name": "sftt__account_multiple",
+              "label": "Des comptes",
+              "type": "account",
+              "multiple": true,
+              "options": {
+                "multiple": "yes"
+              }
+            },
+            "sftt__docid": {
+              "name": "sftt__docid",
+              "label": "Un document",
+              "type": "docid",
+              "typeFormat": "TST_DDUI_ALLTYPE"
+            },
+            "sftt__docid_multiple": {
+              "name": "sftt__docid_multiple",
+              "label": "Des documents",
+              "type": "docid",
+              "multiple": true,
+              "options": {
+                "multiple": "yes"
+              },
+              "typeFormat": "TST_DDUI_ALLTYPE"
+            }
+          }
+        },
+        "sftt__fr_date": {
+          "name": "sftt__fr_date",
+          "label": "Le temps",
+          "type": "frame",
+          "content": {
+            "sftt__date": {
+              "name": "sftt__date",
+              "label": "Une date",
+              "type": "date"
+            },
+            "sftt__time": {
+              "name": "sftt__time",
+              "label": "Une heure",
+              "type": "time"
+            },
+            "sftt__timestamp": {
+              "name": "sftt__timestamp",
+              "label": "Une date avec  une heure",
+              "type": "timestamp"
+            }
+          }
+        },
+        "sftt__fr_number": {
+          "name": "sftt__fr_number",
+          "label": "Les nombres",
+          "type": "frame",
+          "content": {
+            "sftt__integer": {
+              "name": "sftt__integer",
+              "label": "Un entier",
+              "type": "int"
+            },
+            "sftt__double": {
+              "name": "sftt__double",
+              "label": "Un décimal",
+              "type": "double"
+            },
+            "sftt__money": {
+              "name": "sftt__money",
+              "label": "Un sous",
+              "type": "money"
+            }
+          }
+        },
+        "sftt__fr_misc": {
+          "name": "sftt__fr_misc",
+          "label": "Divers",
+          "type": "frame",
+          "content": {
+            "sftt__password": {
+              "name": "sftt__password",
+              "label": "Un mot de passe",
+              "type": "password"
+            },
+            "sftt__color": {
+              "name": "sftt__color",
+              "label": "Une couleur",
+              "type": "color"
+            }
+          }
+        },
+        "sftt__fr_file": {
+          "name": "sftt__fr_file",
+          "label": "Fichiers & images",
+          "type": "frame",
+          "content": {
+            "sftt__file": {
+              "name": "sftt__file",
+              "label": "Un fichier",
+              "type": "file"
+            },
+            "sftt__image": {
+              "name": "sftt__image",
+              "label": "Une image",
+              "type": "image"
+            }
+          }
+        },
+        "sftt__fr_text": {
+          "name": "sftt__fr_text",
+          "label": "Les textes",
+          "type": "frame",
+          "content": {
+            "sftt__htmltext": {
+              "name": "sftt__htmltext",
+              "label": "Un texte formaté",
+              "type": "htmltext"
+            },
+            "sftt__longtext": {
+              "name": "sftt__longtext",
+              "label": "Un texte multiligne",
+              "type": "longtext"
+            },
+            "sftt__text": {
+              "name": "sftt__text",
+              "label": "Un texte simple",
+              "type": "text"
+            }
+          }
+        },
+        "sftt__fr_enumsimple": {
+          "name": "sftt__fr_enumsimple",
+          "label": "Énumérés directs simple",
+          "type": "frame",
+          "content": {
+            "sftt__enumlist": {
+              "name": "sftt__enumlist",
+              "label": "Un pays",
+              "type": "enum",
+              "enumItems": [
+                {
+                  "key": "AD",
+                  "label": "Andorre"
+                },
+                {
+                  "key": "AE",
+                  "label": "Emirats Arabes unis"
+                },
+                {
+                  "key": "AF",
+                  "label": "Afghanistan"
+                },
+                {
+                  "key": "AG",
+                  "label": "Antigua et Barbade"
+                },
+                {
+                  "key": "AI",
+                  "label": "Anguilla"
+                },
+                {
+                  "key": "AL",
+                  "label": "Albanie"
+                },
+                {
+                  "key": "AM",
+                  "label": "Arménie"
+                },
+                {
+                  "key": "AN",
+                  "label": "Antilles néerlandaises"
+                },
+                {
+                  "key": "AO",
+                  "label": "Angola"
+                },
+                {
+                  "key": "AR",
+                  "label": "Argentine"
+                },
+                {
+                  "key": "AS",
+                  "label": "Samoa américain"
+                },
+                {
+                  "key": "AT",
+                  "label": "Autriche"
+                },
+                {
+                  "key": "AU",
+                  "label": "Australie"
+                },
+                {
+                  "key": "AW",
+                  "label": "Aruba"
+                },
+                {
+                  "key": "AZ",
+                  "label": "Azerbaïdjan"
+                },
+                {
+                  "key": "BB",
+                  "label": "Barbade"
+                },
+                {
+                  "key": "BD",
+                  "label": "Bangladesh"
+                },
+                {
+                  "key": "BE",
+                  "label": "Belgique"
+                },
+                {
+                  "key": "BF",
+                  "label": "Burkina Faso"
+                },
+                {
+                  "key": "BG",
+                  "label": "Bulgarie"
+                },
+                {
+                  "key": "BH",
+                  "label": "Bahrein"
+                },
+                {
+                  "key": "BI",
+                  "label": "Burundi"
+                },
+                {
+                  "key": "BJ",
+                  "label": "Bénin"
+                },
+                {
+                  "key": "BM",
+                  "label": "Bermudes"
+                },
+                {
+                  "key": "BN",
+                  "label": "Brunei Darussalam"
+                },
+                {
+                  "key": "BO",
+                  "label": "Bolivie"
+                },
+                {
+                  "key": "BR",
+                  "label": "Brésil"
+                },
+                {
+                  "key": "BS",
+                  "label": "Bahamas"
+                },
+                {
+                  "key": "BT",
+                  "label": "Bhoutan"
+                },
+                {
+                  "key": "BV",
+                  "label": "Iles Bouvet"
+                },
+                {
+                  "key": "BW",
+                  "label": "Botswana"
+                },
+                {
+                  "key": "BY",
+                  "label": "Biélorussie"
+                },
+                {
+                  "key": "BZ",
+                  "label": "Belize"
+                },
+                {
+                  "key": "CA",
+                  "label": "Canada"
+                },
+                {
+                  "key": "CC",
+                  "label": "Iles Cocos"
+                },
+                {
+                  "key": "CF",
+                  "label": "Centre-Afrique"
+                },
+                {
+                  "key": "CG",
+                  "label": "Congo"
+                },
+                {
+                  "key": "CH",
+                  "label": "Suisse"
+                },
+                {
+                  "key": "CI",
+                  "label": "Côte d'Ivoire"
+                },
+                {
+                  "key": "CK",
+                  "label": "Iles Cook"
+                },
+                {
+                  "key": "CL",
+                  "label": "Chili"
+                },
+                {
+                  "key": "CM",
+                  "label": "Cameroun"
+                },
+                {
+                  "key": "CN",
+                  "label": "Chine"
+                },
+                {
+                  "key": "CO",
+                  "label": "Colombie"
+                },
+                {
+                  "key": "CR",
+                  "label": "Costa Rica"
+                },
+                {
+                  "key": "CU",
+                  "label": "Cuba"
+                },
+                {
+                  "key": "CV",
+                  "label": "Cap Vert"
+                },
+                {
+                  "key": "CX",
+                  "label": "Ile Christmas"
+                },
+                {
+                  "key": "CY",
+                  "label": "Chypre"
+                },
+                {
+                  "key": "CZ",
+                  "label": "Tchéquie"
+                },
+                {
+                  "key": "DE",
+                  "label": "Allemagne"
+                },
+                {
+                  "key": "DJ",
+                  "label": "Djibouti"
+                },
+                {
+                  "key": "DK",
+                  "label": "Danemark"
+                },
+                {
+                  "key": "DM",
+                  "label": "Dominique"
+                },
+                {
+                  "key": "DO",
+                  "label": "République dominicaine"
+                },
+                {
+                  "key": "DZ",
+                  "label": "Algérie"
+                },
+                {
+                  "key": "EC",
+                  "label": "Equateur"
+                },
+                {
+                  "key": "EE",
+                  "label": "Estonie"
+                },
+                {
+                  "key": "EG",
+                  "label": "Egypte"
+                },
+                {
+                  "key": "EH",
+                  "label": "Sahara occidental"
+                },
+                {
+                  "key": "ER",
+                  "label": "Erythrée"
+                },
+                {
+                  "key": "ES",
+                  "label": "Espagne"
+                },
+                {
+                  "key": "ET",
+                  "label": "Ethiopie"
+                },
+                {
+                  "key": "EU",
+                  "label": "Union Européenne"
+                },
+                {
+                  "key": "FI",
+                  "label": "Finlande"
+                },
+                {
+                  "key": "FJ",
+                  "label": "Fidji"
+                },
+                {
+                  "key": "FK",
+                  "label": "Falkland"
+                },
+                {
+                  "key": "FM",
+                  "label": "Micronésie"
+                },
+                {
+                  "key": "FO",
+                  "label": "Féroé"
+                },
+                {
+                  "key": "FR",
+                  "label": "France"
+                },
+                {
+                  "key": "GA",
+                  "label": "Gabon"
+                },
+                {
+                  "key": "GD",
+                  "label": "Grenade"
+                },
+                {
+                  "key": "GE",
+                  "label": "Géorgie"
+                },
+                {
+                  "key": "GF",
+                  "label": "Guyane française"
+                },
+                {
+                  "key": "GH",
+                  "label": "Ghana"
+                },
+                {
+                  "key": "GI",
+                  "label": "Gibraltar"
+                },
+                {
+                  "key": "GL",
+                  "label": "Groenland"
+                },
+                {
+                  "key": "GM",
+                  "label": "Gambie"
+                },
+                {
+                  "key": "GN",
+                  "label": "Guinée"
+                },
+                {
+                  "key": "GP",
+                  "label": "Guadeloupe"
+                },
+                {
+                  "key": "GR",
+                  "label": "Grèce"
+                },
+                {
+                  "key": "GT",
+                  "label": "Guatemala"
+                },
+                {
+                  "key": "GU",
+                  "label": "Guam (USA)"
+                },
+                {
+                  "key": "GW",
+                  "label": "Guinée Bissau"
+                },
+                {
+                  "key": "GY",
+                  "label": "Guyane"
+                },
+                {
+                  "key": "HK",
+                  "label": "Hong Kong"
+                },
+                {
+                  "key": "HM",
+                  "label": "Iles Heard et Mac Donald"
+                },
+                {
+                  "key": "HN",
+                  "label": "Honduras"
+                },
+                {
+                  "key": "HR",
+                  "label": "Croatie"
+                },
+                {
+                  "key": "HT",
+                  "label": "Haïti"
+                },
+                {
+                  "key": "HU",
+                  "label": "Hongrie"
+                },
+                {
+                  "key": "ID",
+                  "label": "Indonésie"
+                },
+                {
+                  "key": "IE",
+                  "label": "Irlande"
+                },
+                {
+                  "key": "IL",
+                  "label": "Israël"
+                },
+                {
+                  "key": "IN",
+                  "label": "Inde"
+                },
+                {
+                  "key": "IO",
+                  "label": "Territoires britanniques de l'océan indien"
+                },
+                {
+                  "key": "IQ",
+                  "label": "Irak"
+                },
+                {
+                  "key": "IR",
+                  "label": "Iran"
+                },
+                {
+                  "key": "IS",
+                  "label": "Islande"
+                },
+                {
+                  "key": "IT",
+                  "label": "Italie"
+                },
+                {
+                  "key": "JM",
+                  "label": "Jamaïque"
+                },
+                {
+                  "key": "JO",
+                  "label": "Jordanie"
+                },
+                {
+                  "key": "JP",
+                  "label": "Japon"
+                },
+                {
+                  "key": "KE",
+                  "label": "Kenya"
+                },
+                {
+                  "key": "KG",
+                  "label": "Kirghizistan"
+                },
+                {
+                  "key": "KH",
+                  "label": "Cambodge"
+                },
+                {
+                  "key": "KI",
+                  "label": "Kiribati"
+                },
+                {
+                  "key": "KM",
+                  "label": "Comores"
+                },
+                {
+                  "key": "KN",
+                  "label": "Saint Kitts et Nevis"
+                },
+                {
+                  "key": "KP",
+                  "label": "Corée du Nord"
+                },
+                {
+                  "key": "KR",
+                  "label": "Corée du Sud"
+                },
+                {
+                  "key": "KW",
+                  "label": "Koweït"
+                },
+                {
+                  "key": "KY",
+                  "label": "Cayman"
+                },
+                {
+                  "key": "KZ",
+                  "label": "Kazakhstan"
+                },
+                {
+                  "key": "LA",
+                  "label": "Laos"
+                },
+                {
+                  "key": "LB",
+                  "label": "Liban"
+                },
+                {
+                  "key": "LC",
+                  "label": "Sainte Lucie"
+                },
+                {
+                  "key": "LI",
+                  "label": "Liechtenstein"
+                },
+                {
+                  "key": "LK",
+                  "label": "Sri Lanka"
+                },
+                {
+                  "key": "LR",
+                  "label": "Libéria"
+                },
+                {
+                  "key": "LS",
+                  "label": "Lesotho"
+                },
+                {
+                  "key": "LT",
+                  "label": "Lituanie"
+                },
+                {
+                  "key": "LU",
+                  "label": "Luxembourg"
+                },
+                {
+                  "key": "LV",
+                  "label": "Lettonie"
+                },
+                {
+                  "key": "LY",
+                  "label": "Libye"
+                },
+                {
+                  "key": "MA",
+                  "label": "Maroc"
+                },
+                {
+                  "key": "MC",
+                  "label": "Monaco"
+                },
+                {
+                  "key": "MD",
+                  "label": "Moldavie"
+                },
+                {
+                  "key": "MG",
+                  "label": "Madagascar"
+                },
+                {
+                  "key": "MK",
+                  "label": "République de Macédoine"
+                },
+                {
+                  "key": "MM",
+                  "label": "Birmanie"
+                },
+                {
+                  "key": "MN",
+                  "label": "Mongolie"
+                },
+                {
+                  "key": "MO",
+                  "label": "Macao"
+                },
+                {
+                  "key": "MQ",
+                  "label": "Martinique"
+                },
+                {
+                  "key": "MR",
+                  "label": "Mauritanie"
+                },
+                {
+                  "key": "MS",
+                  "label": "Montserrat"
+                },
+                {
+                  "key": "MT",
+                  "label": "Malte"
+                },
+                {
+                  "key": "MU",
+                  "label": "Ile Maurice"
+                },
+                {
+                  "key": "MV",
+                  "label": "Maldives"
+                },
+                {
+                  "key": "MW",
+                  "label": "Malawi"
+                },
+                {
+                  "key": "MX",
+                  "label": "Mexice"
+                },
+                {
+                  "key": "MY",
+                  "label": "Malaisie"
+                },
+                {
+                  "key": "MZ",
+                  "label": "Mozambique"
+                },
+                {
+                  "key": "NA",
+                  "label": "Namibie"
+                },
+                {
+                  "key": "NC",
+                  "label": "Nouvelle Calédonie"
+                },
+                {
+                  "key": "NE",
+                  "label": "Niger"
+                },
+                {
+                  "key": "NF",
+                  "label": "Norfolk"
+                },
+                {
+                  "key": "NG",
+                  "label": "Nigéria"
+                },
+                {
+                  "key": "NI",
+                  "label": "Nicaragua"
+                },
+                {
+                  "key": "NL",
+                  "label": "Pays-Bas"
+                },
+                {
+                  "key": "NO",
+                  "label": "Norvège"
+                },
+                {
+                  "key": "NP",
+                  "label": "Népal"
+                },
+                {
+                  "key": "NR",
+                  "label": "Nauru"
+                },
+                {
+                  "key": "NU",
+                  "label": "Niue"
+                },
+                {
+                  "key": "NZ",
+                  "label": "Nouvelle Zélande"
+                },
+                {
+                  "key": "OM",
+                  "label": "Oman"
+                },
+                {
+                  "key": "PA",
+                  "label": "Panama"
+                },
+                {
+                  "key": "PE",
+                  "label": "Pérou"
+                },
+                {
+                  "key": "PF",
+                  "label": "Polynésie française"
+                },
+                {
+                  "key": "PG",
+                  "label": "Papouasie Nouvelle Guinée"
+                },
+                {
+                  "key": "PH",
+                  "label": "Philippines"
+                },
+                {
+                  "key": "PK",
+                  "label": "Pakistan"
+                },
+                {
+                  "key": "PL",
+                  "label": "Plogne"
+                },
+                {
+                  "key": "PM",
+                  "label": "Saint Pierre et Miquelon"
+                },
+                {
+                  "key": "PN",
+                  "label": "Pitcairn"
+                },
+                {
+                  "key": "PR",
+                  "label": "Porto-Rico"
+                },
+                {
+                  "key": "PT",
+                  "label": "Portugal"
+                },
+                {
+                  "key": "PW",
+                  "label": "Palau"
+                },
+                {
+                  "key": "PY",
+                  "label": "Paraguay"
+                },
+                {
+                  "key": "QA",
+                  "label": "Qatar"
+                },
+                {
+                  "key": "RE",
+                  "label": "Réunion"
+                },
+                {
+                  "key": "RO",
+                  "label": "Roumanie"
+                },
+                {
+                  "key": "RU",
+                  "label": "Russie"
+                },
+                {
+                  "key": "RW",
+                  "label": "Rwanda"
+                },
+                {
+                  "key": "SA",
+                  "label": "Arabie Saoudite"
+                },
+                {
+                  "key": "SB",
+                  "label": "Iles Salomon"
+                },
+                {
+                  "key": "SC",
+                  "label": "Seychelles"
+                },
+                {
+                  "key": "SD",
+                  "label": "Soudan"
+                },
+                {
+                  "key": "SE",
+                  "label": "Suède"
+                },
+                {
+                  "key": "SG",
+                  "label": "Singapour"
+                },
+                {
+                  "key": "SH",
+                  "label": "Sainte Hélène"
+                },
+                {
+                  "key": "SI",
+                  "label": "Slovénie"
+                },
+                {
+                  "key": "SJ",
+                  "label": "Iles Svalbaard et Jan Mayen"
+                },
+                {
+                  "key": "SK",
+                  "label": "République Slovaque"
+                },
+                {
+                  "key": "SL",
+                  "label": "Sierra Leone"
+                },
+                {
+                  "key": "SM",
+                  "label": "San Marin"
+                },
+                {
+                  "key": "SN",
+                  "label": "Sénégal"
+                },
+                {
+                  "key": "SO",
+                  "label": "Somalie"
+                },
+                {
+                  "key": "SR",
+                  "label": "Surinam"
+                },
+                {
+                  "key": "ST",
+                  "label": "Saint Tomé et Principe"
+                },
+                {
+                  "key": "SV",
+                  "label": "El Salvador"
+                },
+                {
+                  "key": "SY",
+                  "label": "Syrie"
+                },
+                {
+                  "key": "SZ",
+                  "label": "Swaziland"
+                },
+                {
+                  "key": "TC",
+                  "label": "Iles Turques et Caïques"
+                },
+                {
+                  "key": "TD",
+                  "label": "Tchad"
+                },
+                {
+                  "key": "TF",
+                  "label": "Territoire austral français"
+                },
+                {
+                  "key": "TG",
+                  "label": "Togo"
+                },
+                {
+                  "key": "TH",
+                  "label": "Thaïlande"
+                },
+                {
+                  "key": "TJ",
+                  "label": "Tadjikistan"
+                },
+                {
+                  "key": "TK",
+                  "label": "Tokelau"
+                },
+                {
+                  "key": "TM",
+                  "label": "Turkménistan"
+                },
+                {
+                  "key": "TN",
+                  "label": "Tunisie"
+                },
+                {
+                  "key": "TO",
+                  "label": "Tonga"
+                },
+                {
+                  "key": "TP",
+                  "label": "Timor oriental"
+                },
+                {
+                  "key": "TR",
+                  "label": "Turquie"
+                },
+                {
+                  "key": "TT",
+                  "label": "Trinité et Tobago"
+                },
+                {
+                  "key": "TV",
+                  "label": "Tuvalu"
+                },
+                {
+                  "key": "TW",
+                  "label": "Taïwan"
+                },
+                {
+                  "key": "TZ",
+                  "label": "Tanzanie"
+                },
+                {
+                  "key": "UA",
+                  "label": "Ukraine"
+                },
+                {
+                  "key": "UK",
+                  "label": "Grande-Bretagne"
+                },
+                {
+                  "key": "UM",
+                  "label": "diverses îles des Etats-Unis"
+                },
+                {
+                  "key": "US",
+                  "label": "Etats-Unis"
+                },
+                {
+                  "key": "UY",
+                  "label": "Uruguay"
+                },
+                {
+                  "key": "UZ",
+                  "label": "Ouzbékistan"
+                },
+                {
+                  "key": "VA",
+                  "label": "Vatican"
+                },
+                {
+                  "key": "VC",
+                  "label": "Saint Vincent et Grenadines"
+                },
+                {
+                  "key": "VE",
+                  "label": "Vénézuela"
+                },
+                {
+                  "key": "VG",
+                  "label": "Iles Vierges britanniques"
+                },
+                {
+                  "key": "VI",
+                  "label": "Iles Vierges des Etats-Unis"
+                },
+                {
+                  "key": "VN",
+                  "label": "Vietnam"
+                },
+                {
+                  "key": "VU",
+                  "label": "Vanuatu"
+                },
+                {
+                  "key": "WF",
+                  "label": "Wallis et Futuna"
+                },
+                {
+                  "key": "WS",
+                  "label": "Samoa occidental"
+                },
+                {
+                  "key": "YE",
+                  "label": "Yemen"
+                },
+                {
+                  "key": "YT",
+                  "label": "Mayotte"
+                },
+                {
+                  "key": "YU",
+                  "label": "ex-Yougoslavie"
+                },
+                {
+                  "key": "ZA",
+                  "label": "Afrique du Sud"
+                },
+                {
+                  "key": "ZM",
+                  "label": "Zambie"
+                },
+                {
+                  "key": "ZR",
+                  "label": "Zaïre (République Démocratique du Congo)"
+                },
+                {
+                  "key": "ZW",
+                  "label": "Zimbabwe"
+                }
+              ]
+            },
+            "sftt__enumslist": {
+              "name": "sftt__enumslist",
+              "label": "Des pays",
+              "type": "enum",
+              "multiple": true,
+              "enumItems": [
+                {
+                  "key": "AD",
+                  "label": "Andorre"
+                },
+                {
+                  "key": "AE",
+                  "label": "Emirats Arabes unis"
+                },
+                {
+                  "key": "AF",
+                  "label": "Afghanistan"
+                },
+                {
+                  "key": "AG",
+                  "label": "Antigua et Barbade"
+                },
+                {
+                  "key": "AI",
+                  "label": "Anguilla"
+                },
+                {
+                  "key": "AL",
+                  "label": "Albanie"
+                },
+                {
+                  "key": "AM",
+                  "label": "Arménie"
+                },
+                {
+                  "key": "AN",
+                  "label": "Antilles néerlandaises"
+                },
+                {
+                  "key": "AO",
+                  "label": "Angola"
+                },
+                {
+                  "key": "AR",
+                  "label": "Argentine"
+                },
+                {
+                  "key": "AS",
+                  "label": "Samoa américain"
+                },
+                {
+                  "key": "AT",
+                  "label": "Autriche"
+                },
+                {
+                  "key": "AU",
+                  "label": "Australie"
+                },
+                {
+                  "key": "AW",
+                  "label": "Aruba"
+                },
+                {
+                  "key": "AZ",
+                  "label": "Azerbaïdjan"
+                },
+                {
+                  "key": "BB",
+                  "label": "Barbade"
+                },
+                {
+                  "key": "BD",
+                  "label": "Bangladesh"
+                },
+                {
+                  "key": "BE",
+                  "label": "Belgique"
+                },
+                {
+                  "key": "BF",
+                  "label": "Burkina Faso"
+                },
+                {
+                  "key": "BG",
+                  "label": "Bulgarie"
+                },
+                {
+                  "key": "BH",
+                  "label": "Bahrein"
+                },
+                {
+                  "key": "BI",
+                  "label": "Burundi"
+                },
+                {
+                  "key": "BJ",
+                  "label": "Bénin"
+                },
+                {
+                  "key": "BM",
+                  "label": "Bermudes"
+                },
+                {
+                  "key": "BN",
+                  "label": "Brunei Darussalam"
+                },
+                {
+                  "key": "BO",
+                  "label": "Bolivie"
+                },
+                {
+                  "key": "BR",
+                  "label": "Brésil"
+                },
+                {
+                  "key": "BS",
+                  "label": "Bahamas"
+                },
+                {
+                  "key": "BT",
+                  "label": "Bhoutan"
+                },
+                {
+                  "key": "BV",
+                  "label": "Iles Bouvet"
+                },
+                {
+                  "key": "BW",
+                  "label": "Botswana"
+                },
+                {
+                  "key": "BY",
+                  "label": "Biélorussie"
+                },
+                {
+                  "key": "BZ",
+                  "label": "Belize"
+                },
+                {
+                  "key": "CA",
+                  "label": "Canada"
+                },
+                {
+                  "key": "CC",
+                  "label": "Iles Cocos"
+                },
+                {
+                  "key": "CF",
+                  "label": "Centre-Afrique"
+                },
+                {
+                  "key": "CG",
+                  "label": "Congo"
+                },
+                {
+                  "key": "CH",
+                  "label": "Suisse"
+                },
+                {
+                  "key": "CI",
+                  "label": "Côte d'Ivoire"
+                },
+                {
+                  "key": "CK",
+                  "label": "Iles Cook"
+                },
+                {
+                  "key": "CL",
+                  "label": "Chili"
+                },
+                {
+                  "key": "CM",
+                  "label": "Cameroun"
+                },
+                {
+                  "key": "CN",
+                  "label": "Chine"
+                },
+                {
+                  "key": "CO",
+                  "label": "Colombie"
+                },
+                {
+                  "key": "CR",
+                  "label": "Costa Rica"
+                },
+                {
+                  "key": "CU",
+                  "label": "Cuba"
+                },
+                {
+                  "key": "CV",
+                  "label": "Cap Vert"
+                },
+                {
+                  "key": "CX",
+                  "label": "Ile Christmas"
+                },
+                {
+                  "key": "CY",
+                  "label": "Chypre"
+                },
+                {
+                  "key": "CZ",
+                  "label": "Tchéquie"
+                },
+                {
+                  "key": "DE",
+                  "label": "Allemagne"
+                },
+                {
+                  "key": "DJ",
+                  "label": "Djibouti"
+                },
+                {
+                  "key": "DK",
+                  "label": "Danemark"
+                },
+                {
+                  "key": "DM",
+                  "label": "Dominique"
+                },
+                {
+                  "key": "DO",
+                  "label": "République dominicaine"
+                },
+                {
+                  "key": "DZ",
+                  "label": "Algérie"
+                },
+                {
+                  "key": "EC",
+                  "label": "Equateur"
+                },
+                {
+                  "key": "EE",
+                  "label": "Estonie"
+                },
+                {
+                  "key": "EG",
+                  "label": "Egypte"
+                },
+                {
+                  "key": "EH",
+                  "label": "Sahara occidental"
+                },
+                {
+                  "key": "ER",
+                  "label": "Erythrée"
+                },
+                {
+                  "key": "ES",
+                  "label": "Espagne"
+                },
+                {
+                  "key": "ET",
+                  "label": "Ethiopie"
+                },
+                {
+                  "key": "EU",
+                  "label": "Union Européenne"
+                },
+                {
+                  "key": "FI",
+                  "label": "Finlande"
+                },
+                {
+                  "key": "FJ",
+                  "label": "Fidji"
+                },
+                {
+                  "key": "FK",
+                  "label": "Falkland"
+                },
+                {
+                  "key": "FM",
+                  "label": "Micronésie"
+                },
+                {
+                  "key": "FO",
+                  "label": "Féroé"
+                },
+                {
+                  "key": "FR",
+                  "label": "France"
+                },
+                {
+                  "key": "GA",
+                  "label": "Gabon"
+                },
+                {
+                  "key": "GD",
+                  "label": "Grenade"
+                },
+                {
+                  "key": "GE",
+                  "label": "Géorgie"
+                },
+                {
+                  "key": "GF",
+                  "label": "Guyane française"
+                },
+                {
+                  "key": "GH",
+                  "label": "Ghana"
+                },
+                {
+                  "key": "GI",
+                  "label": "Gibraltar"
+                },
+                {
+                  "key": "GL",
+                  "label": "Groenland"
+                },
+                {
+                  "key": "GM",
+                  "label": "Gambie"
+                },
+                {
+                  "key": "GN",
+                  "label": "Guinée"
+                },
+                {
+                  "key": "GP",
+                  "label": "Guadeloupe"
+                },
+                {
+                  "key": "GR",
+                  "label": "Grèce"
+                },
+                {
+                  "key": "GT",
+                  "label": "Guatemala"
+                },
+                {
+                  "key": "GU",
+                  "label": "Guam (USA)"
+                },
+                {
+                  "key": "GW",
+                  "label": "Guinée Bissau"
+                },
+                {
+                  "key": "GY",
+                  "label": "Guyane"
+                },
+                {
+                  "key": "HK",
+                  "label": "Hong Kong"
+                },
+                {
+                  "key": "HM",
+                  "label": "Iles Heard et Mac Donald"
+                },
+                {
+                  "key": "HN",
+                  "label": "Honduras"
+                },
+                {
+                  "key": "HR",
+                  "label": "Croatie"
+                },
+                {
+                  "key": "HT",
+                  "label": "Haïti"
+                },
+                {
+                  "key": "HU",
+                  "label": "Hongrie"
+                },
+                {
+                  "key": "ID",
+                  "label": "Indonésie"
+                },
+                {
+                  "key": "IE",
+                  "label": "Irlande"
+                },
+                {
+                  "key": "IL",
+                  "label": "Israël"
+                },
+                {
+                  "key": "IN",
+                  "label": "Inde"
+                },
+                {
+                  "key": "IO",
+                  "label": "Territoires britanniques de l'océan indien"
+                },
+                {
+                  "key": "IQ",
+                  "label": "Irak"
+                },
+                {
+                  "key": "IR",
+                  "label": "Iran"
+                },
+                {
+                  "key": "IS",
+                  "label": "Islande"
+                },
+                {
+                  "key": "IT",
+                  "label": "Italie"
+                },
+                {
+                  "key": "JM",
+                  "label": "Jamaïque"
+                },
+                {
+                  "key": "JO",
+                  "label": "Jordanie"
+                },
+                {
+                  "key": "JP",
+                  "label": "Japon"
+                },
+                {
+                  "key": "KE",
+                  "label": "Kenya"
+                },
+                {
+                  "key": "KG",
+                  "label": "Kirghizistan"
+                },
+                {
+                  "key": "KH",
+                  "label": "Cambodge"
+                },
+                {
+                  "key": "KI",
+                  "label": "Kiribati"
+                },
+                {
+                  "key": "KM",
+                  "label": "Comores"
+                },
+                {
+                  "key": "KN",
+                  "label": "Saint Kitts et Nevis"
+                },
+                {
+                  "key": "KP",
+                  "label": "Corée du Nord"
+                },
+                {
+                  "key": "KR",
+                  "label": "Corée du Sud"
+                },
+                {
+                  "key": "KW",
+                  "label": "Koweït"
+                },
+                {
+                  "key": "KY",
+                  "label": "Cayman"
+                },
+                {
+                  "key": "KZ",
+                  "label": "Kazakhstan"
+                },
+                {
+                  "key": "LA",
+                  "label": "Laos"
+                },
+                {
+                  "key": "LB",
+                  "label": "Liban"
+                },
+                {
+                  "key": "LC",
+                  "label": "Sainte Lucie"
+                },
+                {
+                  "key": "LI",
+                  "label": "Liechtenstein"
+                },
+                {
+                  "key": "LK",
+                  "label": "Sri Lanka"
+                },
+                {
+                  "key": "LR",
+                  "label": "Libéria"
+                },
+                {
+                  "key": "LS",
+                  "label": "Lesotho"
+                },
+                {
+                  "key": "LT",
+                  "label": "Lituanie"
+                },
+                {
+                  "key": "LU",
+                  "label": "Luxembourg"
+                },
+                {
+                  "key": "LV",
+                  "label": "Lettonie"
+                },
+                {
+                  "key": "LY",
+                  "label": "Libye"
+                },
+                {
+                  "key": "MA",
+                  "label": "Maroc"
+                },
+                {
+                  "key": "MC",
+                  "label": "Monaco"
+                },
+                {
+                  "key": "MD",
+                  "label": "Moldavie"
+                },
+                {
+                  "key": "MG",
+                  "label": "Madagascar"
+                },
+                {
+                  "key": "MK",
+                  "label": "République de Macédoine"
+                },
+                {
+                  "key": "MM",
+                  "label": "Birmanie"
+                },
+                {
+                  "key": "MN",
+                  "label": "Mongolie"
+                },
+                {
+                  "key": "MO",
+                  "label": "Macao"
+                },
+                {
+                  "key": "MQ",
+                  "label": "Martinique"
+                },
+                {
+                  "key": "MR",
+                  "label": "Mauritanie"
+                },
+                {
+                  "key": "MS",
+                  "label": "Montserrat"
+                },
+                {
+                  "key": "MT",
+                  "label": "Malte"
+                },
+                {
+                  "key": "MU",
+                  "label": "Ile Maurice"
+                },
+                {
+                  "key": "MV",
+                  "label": "Maldives"
+                },
+                {
+                  "key": "MW",
+                  "label": "Malawi"
+                },
+                {
+                  "key": "MX",
+                  "label": "Mexice"
+                },
+                {
+                  "key": "MY",
+                  "label": "Malaisie"
+                },
+                {
+                  "key": "MZ",
+                  "label": "Mozambique"
+                },
+                {
+                  "key": "NA",
+                  "label": "Namibie"
+                },
+                {
+                  "key": "NC",
+                  "label": "Nouvelle Calédonie"
+                },
+                {
+                  "key": "NE",
+                  "label": "Niger"
+                },
+                {
+                  "key": "NF",
+                  "label": "Norfolk"
+                },
+                {
+                  "key": "NG",
+                  "label": "Nigéria"
+                },
+                {
+                  "key": "NI",
+                  "label": "Nicaragua"
+                },
+                {
+                  "key": "NL",
+                  "label": "Pays-Bas"
+                },
+                {
+                  "key": "NO",
+                  "label": "Norvège"
+                },
+                {
+                  "key": "NP",
+                  "label": "Népal"
+                },
+                {
+                  "key": "NR",
+                  "label": "Nauru"
+                },
+                {
+                  "key": "NU",
+                  "label": "Niue"
+                },
+                {
+                  "key": "NZ",
+                  "label": "Nouvelle Zélande"
+                },
+                {
+                  "key": "OM",
+                  "label": "Oman"
+                },
+                {
+                  "key": "PA",
+                  "label": "Panama"
+                },
+                {
+                  "key": "PE",
+                  "label": "Pérou"
+                },
+                {
+                  "key": "PF",
+                  "label": "Polynésie française"
+                },
+                {
+                  "key": "PG",
+                  "label": "Papouasie Nouvelle Guinée"
+                },
+                {
+                  "key": "PH",
+                  "label": "Philippines"
+                },
+                {
+                  "key": "PK",
+                  "label": "Pakistan"
+                },
+                {
+                  "key": "PL",
+                  "label": "Plogne"
+                },
+                {
+                  "key": "PM",
+                  "label": "Saint Pierre et Miquelon"
+                },
+                {
+                  "key": "PN",
+                  "label": "Pitcairn"
+                },
+                {
+                  "key": "PR",
+                  "label": "Porto-Rico"
+                },
+                {
+                  "key": "PT",
+                  "label": "Portugal"
+                },
+                {
+                  "key": "PW",
+                  "label": "Palau"
+                },
+                {
+                  "key": "PY",
+                  "label": "Paraguay"
+                },
+                {
+                  "key": "QA",
+                  "label": "Qatar"
+                },
+                {
+                  "key": "RE",
+                  "label": "Réunion"
+                },
+                {
+                  "key": "RO",
+                  "label": "Roumanie"
+                },
+                {
+                  "key": "RU",
+                  "label": "Russie"
+                },
+                {
+                  "key": "RW",
+                  "label": "Rwanda"
+                },
+                {
+                  "key": "SA",
+                  "label": "Arabie Saoudite"
+                },
+                {
+                  "key": "SB",
+                  "label": "Iles Salomon"
+                },
+                {
+                  "key": "SC",
+                  "label": "Seychelles"
+                },
+                {
+                  "key": "SD",
+                  "label": "Soudan"
+                },
+                {
+                  "key": "SE",
+                  "label": "Suède"
+                },
+                {
+                  "key": "SG",
+                  "label": "Singapour"
+                },
+                {
+                  "key": "SH",
+                  "label": "Sainte Hélène"
+                },
+                {
+                  "key": "SI",
+                  "label": "Slovénie"
+                },
+                {
+                  "key": "SJ",
+                  "label": "Iles Svalbaard et Jan Mayen"
+                },
+                {
+                  "key": "SK",
+                  "label": "République Slovaque"
+                },
+                {
+                  "key": "SL",
+                  "label": "Sierra Leone"
+                },
+                {
+                  "key": "SM",
+                  "label": "San Marin"
+                },
+                {
+                  "key": "SN",
+                  "label": "Sénégal"
+                },
+                {
+                  "key": "SO",
+                  "label": "Somalie"
+                },
+                {
+                  "key": "SR",
+                  "label": "Surinam"
+                },
+                {
+                  "key": "ST",
+                  "label": "Saint Tomé et Principe"
+                },
+                {
+                  "key": "SV",
+                  "label": "El Salvador"
+                },
+                {
+                  "key": "SY",
+                  "label": "Syrie"
+                },
+                {
+                  "key": "SZ",
+                  "label": "Swaziland"
+                },
+                {
+                  "key": "TC",
+                  "label": "Iles Turques et Caïques"
+                },
+                {
+                  "key": "TD",
+                  "label": "Tchad"
+                },
+                {
+                  "key": "TF",
+                  "label": "Territoire austral français"
+                },
+                {
+                  "key": "TG",
+                  "label": "Togo"
+                },
+                {
+                  "key": "TH",
+                  "label": "Thaïlande"
+                },
+                {
+                  "key": "TJ",
+                  "label": "Tadjikistan"
+                },
+                {
+                  "key": "TK",
+                  "label": "Tokelau"
+                },
+                {
+                  "key": "TM",
+                  "label": "Turkménistan"
+                },
+                {
+                  "key": "TN",
+                  "label": "Tunisie"
+                },
+                {
+                  "key": "TO",
+                  "label": "Tonga"
+                },
+                {
+                  "key": "TP",
+                  "label": "Timor oriental"
+                },
+                {
+                  "key": "TR",
+                  "label": "Turquie"
+                },
+                {
+                  "key": "TT",
+                  "label": "Trinité et Tobago"
+                },
+                {
+                  "key": "TV",
+                  "label": "Tuvalu"
+                },
+                {
+                  "key": "TW",
+                  "label": "Taïwan"
+                },
+                {
+                  "key": "TZ",
+                  "label": "Tanzanie"
+                },
+                {
+                  "key": "UA",
+                  "label": "Ukraine"
+                },
+                {
+                  "key": "UK",
+                  "label": "Grande-Bretagne"
+                },
+                {
+                  "key": "UM",
+                  "label": "diverses îles des Etats-Unis"
+                },
+                {
+                  "key": "US",
+                  "label": "Etats-Unis"
+                },
+                {
+                  "key": "UY",
+                  "label": "Uruguay"
+                },
+                {
+                  "key": "UZ",
+                  "label": "Ouzbékistan"
+                },
+                {
+                  "key": "VA",
+                  "label": "Vatican"
+                },
+                {
+                  "key": "VC",
+                  "label": "Saint Vincent et Grenadines"
+                },
+                {
+                  "key": "VE",
+                  "label": "Vénézuela"
+                },
+                {
+                  "key": "VG",
+                  "label": "Iles Vierges britanniques"
+                },
+                {
+                  "key": "VI",
+                  "label": "Iles Vierges des Etats-Unis"
+                },
+                {
+                  "key": "VN",
+                  "label": "Vietnam"
+                },
+                {
+                  "key": "VU",
+                  "label": "Vanuatu"
+                },
+                {
+                  "key": "WF",
+                  "label": "Wallis et Futuna"
+                },
+                {
+                  "key": "WS",
+                  "label": "Samoa occidental"
+                },
+                {
+                  "key": "YE",
+                  "label": "Yemen"
+                },
+                {
+                  "key": "YT",
+                  "label": "Mayotte"
+                },
+                {
+                  "key": "YU",
+                  "label": "ex-Yougoslavie"
+                },
+                {
+                  "key": "ZA",
+                  "label": "Afrique du Sud"
+                },
+                {
+                  "key": "ZM",
+                  "label": "Zambie"
+                },
+                {
+                  "key": "ZR",
+                  "label": "Zaïre (République Démocratique du Congo)"
+                },
+                {
+                  "key": "ZW",
+                  "label": "Zimbabwe"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "sftt__t_tab_date": {
+      "name": "sftt__t_tab_date",
+      "label": "Les dates",
+      "type": "tab",
+      "options": {
+      },
+      "content": {
+        "sftt__frame_date": {
+          "name": "sftt__frame_date",
+          "label": "Date, heures & date avec l'heure",
+          "type": "frame",
+          "content": {
+            "sftt__array_dates": {
+              "name": "sftt__array_dates",
+              "label": "Le temps",
+              "type": "array",
+              "content": {
+                "sftt__date_array": {
+                  "name": "sftt__date_array",
+                  "label": "Des dates",
+                  "type": "date",
+                  "options": {
+                  }
+                },
+                "sftt__time_array": {
+                  "name": "sftt__time_array",
+                  "label": "Des heures",
+                  "type": "time",
+                  "options": {
+                  }
+                },
+                "sftt__timestamp_array": {
+                  "name": "sftt__timestamp_array",
+                  "label": "Des dates avec l'heure",
+                  "type": "timestamp",
+                  "options": {
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "sftt__t_tab_relations": {
+      "name": "sftt__t_tab_relations",
+      "label": "Les relations",
+      "type": "tab",
+      "options": {
+      },
+      "content": {
+        "sftt__frame_relation": {
+          "name": "sftt__frame_relation",
+          "label": "Relations à entretenir",
+          "type": "frame",
+          "content": {
+            "sftt__array_docid": {
+              "name": "sftt__array_docid",
+              "label": "Les documents",
+              "type": "array",
+              "content": {
+                "sftt__docid_array": {
+                  "name": "sftt__docid_array",
+                  "label": "Des documents",
+                  "type": "docid",
+                  "options": {
+                  },
+                  "typeFormat": "TST_DDUI_ALLTYPE"
+                },
+                "sftt__docid_multiple_array": {
+                  "name": "sftt__docid_multiple_array",
+                  "label": "Encore plus de documents",
+                  "type": "docid",
+                  "multiple": true,
+                  "options": {
+                    "multiple": "yes"
+                  },
+                  "typeFormat": "TST_DDUI_ALLTYPE"
+                }
+              }
+            },
+            "sftt__array_account": {
+              "name": "sftt__array_account",
+              "label": "Les comptes",
+              "type": "array",
+              "content": {
+                "sftt__account_array": {
+                  "name": "sftt__account_array",
+                  "label": "Des comptes",
+                  "type": "account",
+                  "options": {
+                  }
+                },
+                "sftt__account_multiple_array": {
+                  "name": "sftt__account_multiple_array",
+                  "label": "Encore plus de comptes",
+                  "type": "account",
+                  "multiple": true,
+                  "options": {
+                    "multiple": "yes"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "sftt__t_tab_numbers": {
+      "name": "sftt__t_tab_numbers",
+      "label": "Les nombres",
+      "type": "tab",
+      "options": {
+      },
+      "content": {
+        "sftt__frame_numbers": {
+          "name": "sftt__frame_numbers",
+          "label": "Entier, décimaux et monnaie",
+          "type": "frame",
+          "content": {
+            "sftt__array_numbers": {
+              "name": "sftt__array_numbers",
+              "label": "Quelques nombres",
+              "type": "array",
+              "content": {
+                "sftt__double_array": {
+                  "name": "sftt__double_array",
+                  "label": "Des décimaux",
+                  "type": "double",
+                  "options": {
+                  }
+                },
+                "sftt__integer_array": {
+                  "name": "sftt__integer_array",
+                  "label": "Des entiers",
+                  "type": "int",
+                  "options": {
+                  }
+                },
+                "sftt__money_array": {
+                  "name": "sftt__money_array",
+                  "label": "Des sous",
+                  "type": "money",
+                  "options": {
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "sftt__t_tab_misc": {
+      "name": "sftt__t_tab_misc",
+      "label": "Divers",
+      "type": "tab",
+      "options": {
+      },
+      "content": {
+        "sftt__frame_misc": {
+          "name": "sftt__frame_misc",
+          "label": "Énuméré, couleur et mot de passe",
+          "type": "frame",
+          "content": {
+            "sftt__array_misc": {
+              "name": "sftt__array_misc",
+              "label": "Quelques diverses données",
+              "type": "array",
+              "content": {
+                "sftt__color_array": {
+                  "name": "sftt__color_array",
+                  "label": "Des couleurs",
+                  "type": "color",
+                  "options": {
+                  }
+                },
+                "sftt__password_array": {
+                  "name": "sftt__password_array",
+                  "label": "Des mots de passe",
+                  "type": "password",
+                  "options": {
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "sftt__t_tab_files": {
+      "name": "sftt__t_tab_files",
+      "label": "Les fichiers",
+      "type": "tab",
+      "options": {
+      },
+      "content": {
+        "sftt__frame_files": {
+          "name": "sftt__frame_files",
+          "label": "Fichiers & images",
+          "type": "frame",
+          "content": {
+            "sftt__array_files": {
+              "name": "sftt__array_files",
+              "label": "Quelques fichiers",
+              "type": "array",
+              "content": {
+                "sftt__file_array": {
+                  "name": "sftt__file_array",
+                  "label": "Des fichiers",
+                  "type": "file",
+                  "options": {
+                  }
+                },
+                "sftt__image_array": {
+                  "name": "sftt__image_array",
+                  "label": "Des images",
+                  "type": "image",
+                  "options": {
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "sftt__t_tab_texts": {
+      "name": "sftt__t_tab_texts",
+      "label": "Les textes",
+      "type": "tab",
+      "options": {
+      },
+      "content": {
+        "sftt__frame_texts": {
+          "name": "sftt__frame_texts",
+          "label": "Les textes non formatés",
+          "type": "frame",
+          "content": {
+            "sftt__array_texts": {
+              "name": "sftt__array_texts",
+              "label": "Textes simples et multilignes",
+              "type": "array",
+              "content": {
+                "sftt__text_array": {
+                  "name": "sftt__text_array",
+                  "label": "Des textes",
+                  "type": "text",
+                  "options": {
+                  }
+                },
+                "sftt__longtext_array": {
+                  "name": "sftt__longtext_array",
+                  "label": "Des textes multiligne",
+                  "type": "longtext",
+                  "options": {
+                  }
+                }
+              }
+            },
+            "sftt__array_html": {
+              "name": "sftt__array_html",
+              "label": "Les textes HTML",
+              "type": "array",
+              "content": {
+                "sftt__htmltext_array": {
+                  "name": "sftt__htmltext_array",
+                  "label": "Des textes formatés",
+                  "type": "htmltext",
+                  "options": {
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "values": {
+    "sftt__title": {
+      "value": "Tout complet",
+      "displayValue": "Tout complet"
+    },
+    "sftt__account": {
+      "familyRelation": "",
+      "url": "/api/v2/smart-elements/2099.html",
+      "icon": "/api/v2/images/assets/sizes/14x14c/se-iuser.png",
+      "revision": -1,
+      "initid": 2099,
+      "fromid": 128,
+      "value": "2099",
+      "displayValue": "Grand Jean"
+    },
+    "sftt__account_multiple": [
+      {
+        "familyRelation": "",
+        "url": "/api/v2/smart-elements/2101.html",
+        "icon": "/api/v2/images/assets/sizes/14x14c/se-iuser.png",
+        "revision": -1,
+        "initid": 2101,
+        "fromid": 128,
+        "value": "2101",
+        "displayValue": "Granget Catherine"
+      },
+      {
+        "familyRelation": "",
+        "url": "/api/v2/smart-elements/2100.html",
+        "icon": "/api/v2/images/assets/sizes/14x14c/se-iuser.png",
+        "revision": -1,
+        "initid": 2100,
+        "fromid": 128,
+        "value": "2100",
+        "displayValue": "Dujardin Isabelle"
+      }
+    ],
+    "sftt__docid": {
+      "familyRelation": "TST_DDUI_ALLTYPE",
+      "url": "/api/v2/smart-elements/1156.html",
+      "icon": "/api/v2/images/assets/sizes/14x14c/devperson.png",
+      "revision": -1,
+      "initid": 1156,
+      "fromid": 1051,
+      "value": "1156",
+      "displayValue": "MARIE Diane"
+    },
+    "sftt__docid_multiple": [],
+    "sftt__date": {
+      "value": "2017-10-04",
+      "displayValue": "04/10/2017"
+    },
+    "sftt__time": {
+      "value": "02:00:00",
+      "displayValue": "02:00:00"
+    },
+    "sftt__timestamp": {
+      "value": "2017-11-06T09:30:00",
+      "displayValue": "06/11/2017 09:30"
+    },
+    "sftt__integer": {
+      "value": 9,
+      "displayValue": "9"
+    },
+    "sftt__double": {
+      "value": 12.34,
+      "displayValue": "12.34"
+    },
+    "sftt__money": {
+      "value": 124,
+      "displayValue": "124,00"
+    },
+    "sftt__password": {
+      "value": "secret",
+      "displayValue": "secret"
+    },
+    "sftt__color": {
+      "value": "#8FFFCB",
+      "displayValue": "#8FFFCB"
+    },
+    "sftt__file": {
+      "value": null,
+      "displayValue": null
+    },
+    "sftt__image": {
+      "value": null,
+      "displayValue": null
+    },
+    "sftt__htmltext": {
+      "value": "<p><a href=\"https://commons.wikimedia.org/wiki/File:Solar_prominence_from_STEREO_spacecraft_September_29,_2008.jpg?uselang=fr\"><img alt=\"Image illustrative de l'article Soleil\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Solar_prominence_from_STEREO_spacecraft_September_29%2C_2008.jpg/280px-Solar_prominence_from_STEREO_spacecraft_September_29%2C_2008.jpg\" style=\"float:right\"></a><br>Une <a href=\"https://fr.wikipedia.org/wiki/%C3%89ruption_solaire\">éruption solaire</a> vue en <a href=\"https://fr.wikipedia.org/wiki/Ultraviolet\">ultraviolet</a> avec de Le <strong>Soleil</strong> est l’<a href=\"https://fr.wikipedia.org/wiki/%C3%89toile\">étoile</a> du <a href=\"https://fr.wikipedia.org/wiki/Syst%C3%A8me_solaire\">Système solaire</a>. Dans la classification <a href=\"https://fr.wikipedia.org/wiki/Astronomie\">astronomique</a>, c’est une étoile de type <a href=\"https://fr.wikipedia.org/wiki/Naine_jaune\">naine jaune</a> d'une masse d'environ 1,9891 × 1030 kg, composée d’<a href=\"https://fr.wikipedia.org/wiki/Hydrog%C3%A8ne\">hydrogène</a>(75 % de la masse ou 92 % du volume) et d’<a href=\"https://fr.wikipedia.org/wiki/H%C3%A9lium\">hélium</a> (25 % de la masse ou 8 % du volume)<a href=\"https://fr.wikipedia.org/wiki/Soleil#cite_note-9\">9</a>. Le Soleil fait partie de la <a href=\"https://fr.wikipedia.org/wiki/Galaxie\">galaxie</a> appelée la <a href=\"https://fr.wikipedia.org/wiki/Voie_lact%C3%A9e\">Voie lactée</a> et se situe à environ 8 <a href=\"https://fr.wikipedia.org/wiki/Kiloparsec\">kpc</a> (∼26 100 <a href=\"https://fr.wikipedia.org/wiki/Ann%C3%A9e-lumi%C3%A8re\">a.l.</a>) du <a href=\"https://fr.wikipedia.org/wiki/Centre_galactique\">centre galactique</a>. Autour de lui gravitent la <a href=\"https://fr.wikipedia.org/wiki/Terre\">Terre</a> (à la vitesse de 30 km/s), sept autres <a href=\"https://fr.wikipedia.org/wiki/Plan%C3%A8te\">planètes</a>, au moins cinq <a href=\"https://fr.wikipedia.org/wiki/Plan%C3%A8te_naine\">planètes naines</a>, de très nombreux <a href=\"https://fr.wikipedia.org/wiki/Ast%C3%A9ro%C3%AFde\">astéroïdes</a> et <a href=\"https://fr.wikipedia.org/wiki/Com%C3%A8te\">comètes</a> et une bande de <a href=\"https://fr.wikipedia.org/wiki/Lumi%C3%A8re_zodiacale\">poussière</a>. Le Soleil représente à lui seul 99,86 % de la masse du Système solaire ainsi constitué, <a href=\"https://fr.wikipedia.org/wiki/Jupiter_(plan%C3%A8te)\">Jupiter</a> représentant plus des deux tiers du reste.</p>",
+      "displayValue": "<p><a href=\"https://commons.wikimedia.org/wiki/File:Solar_prominence_from_STEREO_spacecraft_September_29,_2008.jpg?uselang=fr\"><img alt=\"Image illustrative de l'article Soleil\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Solar_prominence_from_STEREO_spacecraft_September_29%2C_2008.jpg/280px-Solar_prominence_from_STEREO_spacecraft_September_29%2C_2008.jpg\" style=\"float:right\"></a><br>Une <a href=\"https://fr.wikipedia.org/wiki/%C3%89ruption_solaire\">éruption solaire</a> vue en <a href=\"https://fr.wikipedia.org/wiki/Ultraviolet\">ultraviolet</a> avec de Le <strong>Soleil</strong> est l’<a href=\"https://fr.wikipedia.org/wiki/%C3%89toile\">étoile</a> du <a href=\"https://fr.wikipedia.org/wiki/Syst%C3%A8me_solaire\">Système solaire</a>. Dans la classification <a href=\"https://fr.wikipedia.org/wiki/Astronomie\">astronomique</a>, c’est une étoile de type <a href=\"https://fr.wikipedia.org/wiki/Naine_jaune\">naine jaune</a> d'une masse d'environ 1,9891 × 1030 kg, composée d’<a href=\"https://fr.wikipedia.org/wiki/Hydrog%C3%A8ne\">hydrogène</a>(75 % de la masse ou 92 % du volume) et d’<a href=\"https://fr.wikipedia.org/wiki/H%C3%A9lium\">hélium</a> (25 % de la masse ou 8 % du volume)<a href=\"https://fr.wikipedia.org/wiki/Soleil#cite_note-9\">9</a>. Le Soleil fait partie de la <a href=\"https://fr.wikipedia.org/wiki/Galaxie\">galaxie</a> appelée la <a href=\"https://fr.wikipedia.org/wiki/Voie_lact%C3%A9e\">Voie lactée</a> et se situe à environ 8 <a href=\"https://fr.wikipedia.org/wiki/Kiloparsec\">kpc</a> (∼26 100 <a href=\"https://fr.wikipedia.org/wiki/Ann%C3%A9e-lumi%C3%A8re\">a.l.</a>) du <a href=\"https://fr.wikipedia.org/wiki/Centre_galactique\">centre galactique</a>. Autour de lui gravitent la <a href=\"https://fr.wikipedia.org/wiki/Terre\">Terre</a> (à la vitesse de 30 km/s), sept autres <a href=\"https://fr.wikipedia.org/wiki/Plan%C3%A8te\">planètes</a>, au moins cinq <a href=\"https://fr.wikipedia.org/wiki/Plan%C3%A8te_naine\">planètes naines</a>, de très nombreux <a href=\"https://fr.wikipedia.org/wiki/Ast%C3%A9ro%C3%AFde\">astéroïdes</a> et <a href=\"https://fr.wikipedia.org/wiki/Com%C3%A8te\">comètes</a> et une bande de <a href=\"https://fr.wikipedia.org/wiki/Lumi%C3%A8re_zodiacale\">poussière</a>. Le Soleil représente à lui seul 99,86 % de la masse du Système solaire ainsi constitué, <a href=\"https://fr.wikipedia.org/wiki/Jupiter_(plan%C3%A8te)\">Jupiter</a> représentant plus des deux tiers du reste.</p>"
+    },
+    "sftt__longtext": {
+      "value": "La Lune est l'unique satellite naturel de la Terre. Suivant la désignation systématique des satellites, la Lune est appelée Terre I2 ; cependant en pratique cette forme n'est pas utilisée. Elle est le cinquième plus grand satellite du Système solaire, avec un diamètre de 3 474 km. La distance moyenne séparant la Terre de la Lune est de 384 467 km3.\n\nLa Lune est le premier et le seul objet non terrestre visité par l'Homme. Le premier à y avoir marché est l'astronaute américain Neil Armstrong le 21 juillet 1969. Après lui, onze autres hommes ont foulé le sol de la Lune, tous membres du programme Apollo.",
+      "displayValue": "La Lune est l'unique satellite naturel de la Terre. Suivant la désignation systématique des satellites, la Lune est appelée Terre I2 ; cependant en pratique cette forme n'est pas utilisée. Elle est le cinquième plus grand satellite du Système solaire, avec un diamètre de 3 474 km. La distance moyenne séparant la Terre de la Lune est de 384 467 km3.\n\nLa Lune est le premier et le seul objet non terrestre visité par l'Homme. Le premier à y avoir marché est l'astronaute américain Neil Armstrong le 21 juillet 1969. Après lui, onze autres hommes ont foulé le sol de la Lune, tous membres du programme Apollo."
+    },
+    "sftt__text": {
+      "value": "Mars est originellement le nom du dieu de la guerre dans la mythologie romaine",
+      "displayValue": "Mars est originellement le nom du dieu de la guerre dans la mythologie romaine"
+    },
+    "sftt__enumlist": {
+      "exists": true,
+      "value": "AD",
+      "displayValue": "Andorre"
+    },
+    "sftt__enumslist": [
+      {
+        "exists": true,
+        "value": "DK",
+        "displayValue": "Danemark"
+      },
+      {
+        "exists": true,
+        "value": "DM",
+        "displayValue": "Dominique"
+      }
+    ],
+    "sftt__date_array": [
+      {
+        "value": "2017-10-12",
+        "displayValue": "12/10/2017"
+      },
+      {
+        "value": "2017-11-17",
+        "displayValue": "17/11/2017"
+      },
+      {
+        "value": "2017-07-05",
+        "displayValue": "05/07/2017"
+      }
+    ],
+    "sftt__time_array": [
+      {
+        "value": "09:00:00",
+        "displayValue": "09:00:00"
+      },
+      {
+        "value": "02:00:00",
+        "displayValue": "02:00:00"
+      },
+      {
+        "value": "13:30:00",
+        "displayValue": "13:30:00"
+      }
+    ],
+    "sftt__timestamp_array": [
+      {
+        "value": "2017-11-08T17:30:00",
+        "displayValue": "08/11/2017 17:30"
+      },
+      {
+        "value": "2017-06-14T11:00:00",
+        "displayValue": "14/06/2017 11:00"
+      },
+      {
+        "value": "2017-11-29T00:00:00",
+        "displayValue": "29/11/2017 00:00"
+      }
+    ],
+    "sftt__docid_array": [],
+    "sftt__docid_multiple_array": [],
+    "sftt__account_array": [
+      {
+        "familyRelation": "",
+        "url": "/api/v2/smart-elements/2101.html",
+        "icon": "/api/v2/images/assets/sizes/14x14c/se-iuser.png",
+        "revision": -1,
+        "initid": 2101,
+        "fromid": 128,
+        "value": "2101",
+        "displayValue": "Granget Catherine"
+      },
+      {
+        "familyRelation": "",
+        "url": "/api/v2/smart-elements/2102.html",
+        "icon": "/api/v2/images/assets/sizes/14x14c/se-iuser.png",
+        "revision": -1,
+        "initid": 2102,
+        "fromid": 128,
+        "value": "2102",
+        "displayValue": "Tordi Albert"
+      }
+    ],
+    "sftt__account_multiple_array": [
+      [
+        {
+          "familyRelation": "",
+          "url": "/api/v2/smart-elements/2100.html",
+          "icon": "/api/v2/images/assets/sizes/14x14c/se-iuser.png",
+          "revision": -1,
+          "initid": 2100,
+          "fromid": 128,
+          "value": "2100",
+          "displayValue": "Dujardin Isabelle"
+        },
+        {
+          "familyRelation": "",
+          "url": "/api/v2/smart-elements/2099.html",
+          "icon": "/api/v2/images/assets/sizes/14x14c/se-iuser.png",
+          "revision": -1,
+          "initid": 2099,
+          "fromid": 128,
+          "value": "2099",
+          "displayValue": "Grand Jean"
+        }
+      ],
+      [
+        {
+          "familyRelation": "",
+          "url": "/api/v2/smart-elements/2102.html",
+          "icon": "/api/v2/images/assets/sizes/14x14c/se-iuser.png",
+          "revision": -1,
+          "initid": 2102,
+          "fromid": 128,
+          "value": "2102",
+          "displayValue": "Tordi Albert"
+        },
+        {
+          "familyRelation": "",
+          "url": "/api/v2/smart-elements/2100.html",
+          "icon": "/api/v2/images/assets/sizes/14x14c/se-iuser.png",
+          "revision": -1,
+          "initid": 2100,
+          "fromid": 128,
+          "value": "2100",
+          "displayValue": "Dujardin Isabelle"
+        },
+        {
+          "familyRelation": "",
+          "url": "/api/v2/smart-elements/2099.html",
+          "icon": "/api/v2/images/assets/sizes/14x14c/se-iuser.png",
+          "revision": -1,
+          "initid": 2099,
+          "fromid": 128,
+          "value": "2099",
+          "displayValue": "Grand Jean"
+        }
+      ]
+    ],
+    "sftt__double_array": [
+      {
+        "value": 12.567,
+        "displayValue": "12.567"
+      },
+      {
+        "value": 31346.787632,
+        "displayValue": "31346.787632"
+      },
+      {
+        "value": 535.356756832,
+        "displayValue": "535.356756832"
+      }
+    ],
+    "sftt__integer_array": [
+      {
+        "value": 244,
+        "displayValue": "244"
+      },
+      {
+        "value": 68732,
+        "displayValue": "68732"
+      },
+      {
+        "value": -4563,
+        "displayValue": "-4563"
+      }
+    ],
+    "sftt__money_array": [
+      {
+        "value": 34.6,
+        "displayValue": "34,60"
+      },
+      {
+        "value": 36287,
+        "displayValue": "36 287,00"
+      },
+      {
+        "value": -43563.5,
+        "displayValue": "-43 563,50"
+      }
+    ],
+    "sftt__color_array": [
+      {
+        "value": "#FFBDBD",
+        "displayValue": "#FFBDBD"
+      },
+      {
+        "value": "#CCA6FF",
+        "displayValue": "#CCA6FF"
+      }
+    ],
+    "sftt__password_array": [
+      {
+        "value": "sec",
+        "displayValue": "sec"
+      },
+      {
+        "value": "vilet",
+        "displayValue": "vilet"
+      }
+    ],
+    "sftt__file_array": [],
+    "sftt__image_array": [],
+    "sftt__text_array": [
+      {
+        "value": "L'ours",
+        "displayValue": "L'ours"
+      },
+      {
+        "value": "Le lion",
+        "displayValue": "Le lion"
+      }
+    ],
+    "sftt__longtext_array": [
+      {
+        "value": "Les ours sont chassés depuis la préhistoire pour leur viande et leur fourrure. Ils ont joué un rôle de premier plan dans la culture (mythologie, légendes, etc.) et les arts. À l'époque moderne, les populations d'ours sont victimes de pressions (comme celles des éleveurs dans les Pyrénées), de l'empiètement de l'homme sur son habitat naturel, de l'artificialisation et de la fragmentation des forêts, ainsi que du commerce illicite, notamment le marché asiatique de la bile d'ours. L'UICN a classé six espèces d'ours comme vulnérables ou menacées d'extinction. L'ours brun pourrait disparaître dans certains pays européens. Le braconnage et le commerce international des populations les plus en danger sont interdits, mais se pratiquent toujours.",
+        "displayValue": "Les ours sont chassés depuis la préhistoire pour leur viande et leur fourrure. Ils ont joué un rôle de premier plan dans la culture (mythologie, légendes, etc.) et les arts. À l'époque moderne, les populations d'ours sont victimes de pressions (comme celles des éleveurs dans les Pyrénées), de l'empiètement de l'homme sur son habitat naturel, de l'artificialisation et de la fragmentation des forêts, ainsi que du commerce illicite, notamment le marché asiatique de la bile d'ours. L'UICN a classé six espèces d'ours comme vulnérables ou menacées d'extinction. L'ours brun pourrait disparaître dans certains pays européens. Le braconnage et le commerce international des populations les plus en danger sont interdits, mais se pratiquent toujours."
+      },
+      {
+        "value": "Le lion est le deuxième plus grand félidé, après le tigre, et ainsi le plus grand carnivore d'Afrique. Un mâle mesure de 172 à 250 centimètres de long2 du bout du museau à la base de la queue et possède une queue d’en moyenne 90 centimètres3. Les mâles atteignent une masse comprise entre 145 et 225 kilogrammes à l'âge adulte3. La lionne adulte mesure de 158 à 192 centimètres2 sans la queue et possède une queue mesurant environ 85 cm. Elles pèsent entre 83 et 168 kg3 et ont une corpulence en moyenne 20 à 50 % moins importante que celle d'un mâle4.",
+        "displayValue": "Le lion est le deuxième plus grand félidé, après le tigre, et ainsi le plus grand carnivore d'Afrique. Un mâle mesure de 172 à 250 centimètres de long2 du bout du museau à la base de la queue et possède une queue d’en moyenne 90 centimètres3. Les mâles atteignent une masse comprise entre 145 et 225 kilogrammes à l'âge adulte3. La lionne adulte mesure de 158 à 192 centimètres2 sans la queue et possède une queue mesurant environ 85 cm. Elles pèsent entre 83 et 168 kg3 et ont une corpulence en moyenne 20 à 50 % moins importante que celle d'un mâle4."
+      }
+    ],
+    "sftt__htmltext_array": [
+      {
+        "value": "<p><a href=\"https://commons.wikimedia.org/wiki/File:Ursus_arctos_Dessin_ours_brun_grand.jpg?uselang=fr\"><img alt=\"Description de cette image, également commentée ci-après\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Ursus_arctos_Dessin_ours_brun_grand.jpg/290px-Ursus_arctos_Dessin_ours_brun_grand.jpg\" style=\"float:right\"></a></p><p>Les <strong>ours</strong> forment la <a href=\"https://fr.wikipedia.org/wiki/Famille_(biologie)\">famille</a> de <a href=\"https://fr.wikipedia.org/wiki/Mammif%C3%A8res\">mammifères</a> des <strong>ursidés</strong> (<strong>Ursidae</strong>), de l'ordre des <a href=\"https://fr.wikipedia.org/wiki/Carnivora\">carnivores</a> (<a href=\"https://fr.wikipedia.org/wiki/Carnivora\">Carnivora</a>). Le <a href=\"https://fr.wikipedia.org/wiki/Grand_panda\">Grand panda</a>, dont la classification a longtemps prêté à débat, est aujourd'hui considéré comme un ours <a href=\"https://fr.wikipedia.org/wiki/Herbivore\">herbivore</a> au sein de cette famille<a href=\"https://fr.wikipedia.org/wiki/Ursidae#cite_note-1\">1</a>,<a href=\"https://fr.wikipedia.org/wiki/Ursidae#cite_note-2\">2</a>. Il n'existe que huit espèces d'ours vivantes réparties dans une grande variété d'<a href=\"https://fr.wikipedia.org/wiki/Habitat_(%C3%A9cologie)\">habitats</a>, à la fois dans l'hémisphère Nord et dans une partie de l'hémisphère Sud. Les ours vivent sur les continents d'<a href=\"https://fr.wikipedia.org/wiki/Europe\">Europe</a>, d'<a href=\"https://fr.wikipedia.org/wiki/Am%C3%A9rique_du_Nord\">Amérique du Nord</a>, d'<a href=\"https://fr.wikipedia.org/wiki/Am%C3%A9rique_du_Sud\">Amérique du Sud</a>, et en <a href=\"https://fr.wikipedia.org/wiki/Asie\">Asie</a>.</p><p>Les ours modernes ont comme caractéristiques un corps grand, trapu et massif, un long museau, un pelage dense, des pattes plantigrades à cinq griffes non rétractiles et une queue courte. L'ours blanc est principalement carnassier. Le <a href=\"https://fr.wikipedia.org/wiki/Panda_g%C3%A9ant\">panda géant</a> se nourrit presque exclusivement de <a href=\"https://fr.wikipedia.org/wiki/Bambou\">bambou</a>. Les six autres espèces sont <a href=\"https://fr.wikipedia.org/wiki/Omnivore\">omnivores</a>, leur alimentation variée comprend essentiellement des plantes et des animaux. Sauf en période de <a href=\"https://fr.wikipedia.org/wiki/Reproduction_(biologie)\">reproduction</a> et d'éducation des jeunes, les ours sont solitaires. Généralement <a href=\"https://fr.wikipedia.org/wiki/Diurne_(comportement_animal)\">diurnes</a>, ils sont aussi éventuellement actifs la nuit ou au crépuscule, en particulier autour des zones d'habitation humaine. On les dit parfois « <a href=\"https://fr.wikipedia.org/wiki/Nocturne_(comportement_animal)\">nocto</a>-<a href=\"https://fr.wikipedia.org/wiki/Diurne_(comportement_animal)\">diurnes</a> ». Aidé par un odorat développé, l'ours peut, malgré sa corpulence, courir rapidement, nager et escalader certaines parois ou des arbres. Cavernicole, il se réfugie volontiers dans des grottes, cavernes et tanières. La plupart des espèces y passent la saison froide à dormir (<a href=\"https://fr.wikipedia.org/wiki/Hivernation\">hivernation</a>).</p><p><a href=\"https://fr.wikipedia.org/wiki/Ours_brun\">Ours brun</a> (<em>Ursus arctos</em>)</p>",
+        "displayValue": "<p><a href=\"https://commons.wikimedia.org/wiki/File:Ursus_arctos_Dessin_ours_brun_grand.jpg?uselang=fr\"><img alt=\"Description de cette image, également commentée ci-après\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Ursus_arctos_Dessin_ours_brun_grand.jpg/290px-Ursus_arctos_Dessin_ours_brun_grand.jpg\" style=\"float:right\"></a></p><p>Les <strong>ours</strong> forment la <a href=\"https://fr.wikipedia.org/wiki/Famille_(biologie)\">famille</a> de <a href=\"https://fr.wikipedia.org/wiki/Mammif%C3%A8res\">mammifères</a> des <strong>ursidés</strong> (<strong>Ursidae</strong>), de l'ordre des <a href=\"https://fr.wikipedia.org/wiki/Carnivora\">carnivores</a> (<a href=\"https://fr.wikipedia.org/wiki/Carnivora\">Carnivora</a>). Le <a href=\"https://fr.wikipedia.org/wiki/Grand_panda\">Grand panda</a>, dont la classification a longtemps prêté à débat, est aujourd'hui considéré comme un ours <a href=\"https://fr.wikipedia.org/wiki/Herbivore\">herbivore</a> au sein de cette famille<a href=\"https://fr.wikipedia.org/wiki/Ursidae#cite_note-1\">1</a>,<a href=\"https://fr.wikipedia.org/wiki/Ursidae#cite_note-2\">2</a>. Il n'existe que huit espèces d'ours vivantes réparties dans une grande variété d'<a href=\"https://fr.wikipedia.org/wiki/Habitat_(%C3%A9cologie)\">habitats</a>, à la fois dans l'hémisphère Nord et dans une partie de l'hémisphère Sud. Les ours vivent sur les continents d'<a href=\"https://fr.wikipedia.org/wiki/Europe\">Europe</a>, d'<a href=\"https://fr.wikipedia.org/wiki/Am%C3%A9rique_du_Nord\">Amérique du Nord</a>, d'<a href=\"https://fr.wikipedia.org/wiki/Am%C3%A9rique_du_Sud\">Amérique du Sud</a>, et en <a href=\"https://fr.wikipedia.org/wiki/Asie\">Asie</a>.</p><p>Les ours modernes ont comme caractéristiques un corps grand, trapu et massif, un long museau, un pelage dense, des pattes plantigrades à cinq griffes non rétractiles et une queue courte. L'ours blanc est principalement carnassier. Le <a href=\"https://fr.wikipedia.org/wiki/Panda_g%C3%A9ant\">panda géant</a> se nourrit presque exclusivement de <a href=\"https://fr.wikipedia.org/wiki/Bambou\">bambou</a>. Les six autres espèces sont <a href=\"https://fr.wikipedia.org/wiki/Omnivore\">omnivores</a>, leur alimentation variée comprend essentiellement des plantes et des animaux. Sauf en période de <a href=\"https://fr.wikipedia.org/wiki/Reproduction_(biologie)\">reproduction</a> et d'éducation des jeunes, les ours sont solitaires. Généralement <a href=\"https://fr.wikipedia.org/wiki/Diurne_(comportement_animal)\">diurnes</a>, ils sont aussi éventuellement actifs la nuit ou au crépuscule, en particulier autour des zones d'habitation humaine. On les dit parfois « <a href=\"https://fr.wikipedia.org/wiki/Nocturne_(comportement_animal)\">nocto</a>-<a href=\"https://fr.wikipedia.org/wiki/Diurne_(comportement_animal)\">diurnes</a> ». Aidé par un odorat développé, l'ours peut, malgré sa corpulence, courir rapidement, nager et escalader certaines parois ou des arbres. Cavernicole, il se réfugie volontiers dans des grottes, cavernes et tanières. La plupart des espèces y passent la saison froide à dormir (<a href=\"https://fr.wikipedia.org/wiki/Hivernation\">hivernation</a>).</p><p><a href=\"https://fr.wikipedia.org/wiki/Ours_brun\">Ours brun</a> (<em>Ursus arctos</em>)</p>"
+      },
+      {
+        "value": "<p>Le <strong>lion</strong> (<em><strong>Panthera leo</strong></em>) est une <a href=\"https://fr.wikipedia.org/wiki/Esp%C3%A8ce\">espèce</a> de <a href=\"https://fr.wikipedia.org/wiki/Mammif%C3%A8re\">mammifères</a> <a href=\"https://fr.wikipedia.org/wiki/Carnivora\">carnivores</a> de la <a href=\"https://fr.wikipedia.org/wiki/Famille_(biologie)\">famille</a> des <a href=\"https://fr.wikipedia.org/wiki/Felidae\">félidés</a>. La femelle du lion est la <strong>lionne</strong>, son petit est le <strong>lionceau</strong>. Le mâle adulte, aisément reconnaissable à son importante <a href=\"https://fr.wikipedia.org/wiki/Crini%C3%A8re\">crinière</a>, accuse une masse moyenne qui peut être variable selon les zones géographiques où il se trouve, allant de 180 kg pour les lions de Kruger à 230 kg pour les lions de Transvaal. Certains spécimens très rares peuvent dépasser exceptionnellement 250 kg. Un mâle adulte se nourrit de 7 kg de viande chaque jour contre 5 kgchez la <a href=\"https://fr.wikipedia.org/wiki/Femelle\">femelle</a>. Le lion est un animal <a href=\"https://fr.wikipedia.org/wiki/Gr%C3%A9garisme\">grégaire</a>, c'est-à-dire qu'il vit en larges groupes familiaux, contrairement aux autres <a href=\"https://fr.wikipedia.org/wiki/F%C3%A9lin\">félins</a>. Son espérance de vie, à l'<a href=\"https://fr.wikipedia.org/wiki/Animal_sauvage\">état sauvage</a>, est comprise entre 7 et 12 ans pour le mâle et 14 à 20 ans pour la femelle, mais il dépasse fréquemment les 30 ans en captivité.</p><p>Le lion mâle ne chasse qu'occasionnellement, il est chargé de combattre les intrusions sur le territoire et les menaces contre la troupe. Le lion <a href=\"https://fr.wikipedia.org/wiki/Rugissement\">rugit</a>. Il n'existe plus à l'état sauvage que 16 500 à 30 000 individus dans la <a href=\"https://fr.wikipedia.org/wiki/Savane\">savane</a> <a href=\"https://fr.wikipedia.org/wiki/Afrique\">africaine</a>, répartis en une dizaine de sous-espèces et environ 300 au <a href=\"https://fr.wikipedia.org/wiki/Parc_national_de_Gir_Forest\">parc national de Gir Forest</a> dans le nord-ouest de l'<a href=\"https://fr.wikipedia.org/wiki/Inde\">Inde</a>. Il est surnommé « le <a href=\"https://fr.wikipedia.org/wiki/Roi_des_animaux\">roi des animaux</a> » car sa crinière lui donne un aspect semblable au <a href=\"https://fr.wikipedia.org/wiki/Soleil\">Soleil</a>, qui apparaît comme « le roi des astres ». Entre 1993 et 2017, leur population a baissé de 43 %<a href=\"https://fr.wikipedia.org/wiki/Lion#cite_note-1\">1</a>.</p><p><a href=\"https://commons.wikimedia.org/wiki/File:Lion_d%27Afrique.jpg?uselang=fr\"><img alt=\"Description de cette image, également commentée ci-après\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Lion_d%27Afrique.jpg/290px-Lion_d%27Afrique.jpg\" style=\"float:right\"></a></p><p>Un mâle adulte.</p><table>\t<caption><a href=\"https://fr.wikipedia.org/wiki/Mammal_Species_of_the_World\">Classification selon MSW</a></caption>\t<tbody>\t\t<tr>\t\t\t<th scope=\"row\"><a href=\"https://fr.wikipedia.org/wiki/R%C3%A8gne_(biologie)\">Règne</a></th>\t\t\t<td><a href=\"https://fr.wikipedia.org/wiki/Animal\">Animalia</a></td>\t\t</tr>\t\t<tr>\t\t\t<th scope=\"row\"><a href=\"https://fr.wikipedia.org/wiki/Embranchement_(biologie)\">Embranchement</a></th>\t\t\t<td><a href=\"https://fr.wikipedia.org/wiki/Chordata\">Chordata</a></td>\t\t</tr>\t\t<tr>\t\t\t<th scope=\"row\"><a href=\"https://fr.wikipedia.org/wiki/Sous-embranchement\">Sous-embr.</a></th>\t\t\t<td><a href=\"https://fr.wikipedia.org/wiki/Vertebrata\">Vertebrata</a></td>\t\t</tr>\t\t<tr>\t\t\t<th scope=\"row\"><a href=\"https://fr.wikipedia.org/wiki/Classe_(biologie)\">Classe</a></th>\t\t\t<td><a href=\"https://fr.wikipedia.org/wiki/Mammalia\">Mammalia</a></td>\t\t</tr>\t\t<tr>\t\t\t<th scope=\"row\"><a href=\"https://fr.wikipedia.org/wiki/Ordre_(biologie)\">Ordre</a></th>\t\t\t<td><a href=\"https://fr.wikipedia.org/wiki/Carnivora\">Carnivora</a></td>\t\t</tr>\t\t<tr>\t\t\t<th scope=\"row\"><a href=\"https://fr.wikipedia.org/wiki/Sous-ordre\">Sous-ordre</a></th>\t\t\t<td><a href=\"https://fr.wikipedia.org/wiki/Feliformia\">Feliformia</a></td>\t\t</tr>\t\t<tr>\t\t\t<th scope=\"row\"><a href=\"https://fr.wikipedia.org/wiki/Famille_(biologie)\">Famille</a></th>\t\t\t<td><a href=\"https://fr.wikipedia.org/wiki/Felidae\">Felidae</a></td>\t\t</tr>\t\t<tr>\t\t\t<th scope=\"row\"><a href=\"https://fr.wikipedia.org/wiki/Sous-famille_(biologie)\">Sous-famille</a></th>\t\t\t<td><a href=\"https://fr.wikipedia.org/wiki/Pantherinae\">Pantherinae</a></td>\t\t</tr>\t\t<tr>\t\t\t<th scope=\"row\"><a href=\"https://fr.wikipedia.org/wiki/Genre_(biologie)\">Genre</a></th>\t\t\t<td><a href=\"https://fr.wikipedia.org/wiki/Panthera\">Panthera</a></td>\t\t</tr>\t</tbody></table><p>Le <strong>lion</strong> (<em><strong>Panthera leo</strong></em>) est une <a href=\"https://fr.wikipedia.org/wiki/Esp%C3%A8ce\">espèce</a> de <a href=\"https://fr.wikipedia.org/wiki/Mammif%C3%A8re\">mammifères</a> <a href=\"https://fr.wikipedia.org/wiki/Carnivora\">carnivores</a> de la <a href=\"https://fr.wikipedia.org/wiki/Famille_(biologie)\">famille</a> des <a href=\"https://fr.wikipedia.org/wiki/Felidae\">félidés</a>. La femelle <img alt=\"( VU )\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Status_iucn3.1_VU-fr.svg/244px-Status_iucn3.1_VU-fr.svg.png\" style=\"float:right\">du lion est la <strong>lionne</strong>, son petit est le <strong>lionceau</strong>. Le mâle adulte, aisément reconnaissable à son importante <a href=\"https://fr.wikipedia.org/wiki/Crini%C3%A8re\">crinière</a>, accuse une masse moyenne qui peut être variable selon les zones géographiques où il se trouve, allant de 180 kg pour les lions de Kruger à 230 kg pour les lions de Transvaal. Certains spécimens très rares peuvent dépasser exceptionnellement 250 kg. Un mâle adulte se nourrit de 7 kg de viande chaque jour contre 5 kgchez la <a href=\"https://fr.wikipedia.org/wiki/Femelle\">femelle</a>. Le lion est un animal <a href=\"https://fr.wikipedia.org/wiki/Gr%C3%A9garisme\">grégaire</a>, c'est-à-dire qu'il vit en larges groupes familiaux, contrairement aux autres <a href=\"https://fr.wikipedia.org/wiki/F%C3%A9lin\">félins</a>. Son espérance de vie, à l'<a href=\"https://fr.wikipedia.org/wiki/Animal_sauvage\">état sauvage</a>, est comprise entre 7 et 12 ans pour le mâle et 14 à 20 ans pour la femelle, mais il dépasse fréquemment les 30 ans en captivité.</p>",
+        "displayValue": "<p>Le <strong>lion</strong> (<em><strong>Panthera leo</strong></em>) est une <a href=\"https://fr.wikipedia.org/wiki/Esp%C3%A8ce\">espèce</a> de <a href=\"https://fr.wikipedia.org/wiki/Mammif%C3%A8re\">mammifères</a> <a href=\"https://fr.wikipedia.org/wiki/Carnivora\">carnivores</a> de la <a href=\"https://fr.wikipedia.org/wiki/Famille_(biologie)\">famille</a> des <a href=\"https://fr.wikipedia.org/wiki/Felidae\">félidés</a>. La femelle du lion est la <strong>lionne</strong>, son petit est le <strong>lionceau</strong>. Le mâle adulte, aisément reconnaissable à son importante <a href=\"https://fr.wikipedia.org/wiki/Crini%C3%A8re\">crinière</a>, accuse une masse moyenne qui peut être variable selon les zones géographiques où il se trouve, allant de 180 kg pour les lions de Kruger à 230 kg pour les lions de Transvaal. Certains spécimens très rares peuvent dépasser exceptionnellement 250 kg. Un mâle adulte se nourrit de 7 kg de viande chaque jour contre 5 kgchez la <a href=\"https://fr.wikipedia.org/wiki/Femelle\">femelle</a>. Le lion est un animal <a href=\"https://fr.wikipedia.org/wiki/Gr%C3%A9garisme\">grégaire</a>, c'est-à-dire qu'il vit en larges groupes familiaux, contrairement aux autres <a href=\"https://fr.wikipedia.org/wiki/F%C3%A9lin\">félins</a>. Son espérance de vie, à l'<a href=\"https://fr.wikipedia.org/wiki/Animal_sauvage\">état sauvage</a>, est comprise entre 7 et 12 ans pour le mâle et 14 à 20 ans pour la femelle, mais il dépasse fréquemment les 30 ans en captivité.</p><p>Le lion mâle ne chasse qu'occasionnellement, il est chargé de combattre les intrusions sur le territoire et les menaces contre la troupe. Le lion <a href=\"https://fr.wikipedia.org/wiki/Rugissement\">rugit</a>. Il n'existe plus à l'état sauvage que 16 500 à 30 000 individus dans la <a href=\"https://fr.wikipedia.org/wiki/Savane\">savane</a> <a href=\"https://fr.wikipedia.org/wiki/Afrique\">africaine</a>, répartis en une dizaine de sous-espèces et environ 300 au <a href=\"https://fr.wikipedia.org/wiki/Parc_national_de_Gir_Forest\">parc national de Gir Forest</a> dans le nord-ouest de l'<a href=\"https://fr.wikipedia.org/wiki/Inde\">Inde</a>. Il est surnommé « le <a href=\"https://fr.wikipedia.org/wiki/Roi_des_animaux\">roi des animaux</a> » car sa crinière lui donne un aspect semblable au <a href=\"https://fr.wikipedia.org/wiki/Soleil\">Soleil</a>, qui apparaît comme « le roi des astres ». Entre 1993 et 2017, leur population a baissé de 43 %<a href=\"https://fr.wikipedia.org/wiki/Lion#cite_note-1\">1</a>.</p><p><a href=\"https://commons.wikimedia.org/wiki/File:Lion_d%27Afrique.jpg?uselang=fr\"><img alt=\"Description de cette image, également commentée ci-après\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Lion_d%27Afrique.jpg/290px-Lion_d%27Afrique.jpg\" style=\"float:right\"></a></p><p>Un mâle adulte.</p><table>\t<caption><a href=\"https://fr.wikipedia.org/wiki/Mammal_Species_of_the_World\">Classification selon MSW</a></caption>\t<tbody>\t\t<tr>\t\t\t<th scope=\"row\"><a href=\"https://fr.wikipedia.org/wiki/R%C3%A8gne_(biologie)\">Règne</a></th>\t\t\t<td><a href=\"https://fr.wikipedia.org/wiki/Animal\">Animalia</a></td>\t\t</tr>\t\t<tr>\t\t\t<th scope=\"row\"><a href=\"https://fr.wikipedia.org/wiki/Embranchement_(biologie)\">Embranchement</a></th>\t\t\t<td><a href=\"https://fr.wikipedia.org/wiki/Chordata\">Chordata</a></td>\t\t</tr>\t\t<tr>\t\t\t<th scope=\"row\"><a href=\"https://fr.wikipedia.org/wiki/Sous-embranchement\">Sous-embr.</a></th>\t\t\t<td><a href=\"https://fr.wikipedia.org/wiki/Vertebrata\">Vertebrata</a></td>\t\t</tr>\t\t<tr>\t\t\t<th scope=\"row\"><a href=\"https://fr.wikipedia.org/wiki/Classe_(biologie)\">Classe</a></th>\t\t\t<td><a href=\"https://fr.wikipedia.org/wiki/Mammalia\">Mammalia</a></td>\t\t</tr>\t\t<tr>\t\t\t<th scope=\"row\"><a href=\"https://fr.wikipedia.org/wiki/Ordre_(biologie)\">Ordre</a></th>\t\t\t<td><a href=\"https://fr.wikipedia.org/wiki/Carnivora\">Carnivora</a></td>\t\t</tr>\t\t<tr>\t\t\t<th scope=\"row\"><a href=\"https://fr.wikipedia.org/wiki/Sous-ordre\">Sous-ordre</a></th>\t\t\t<td><a href=\"https://fr.wikipedia.org/wiki/Feliformia\">Feliformia</a></td>\t\t</tr>\t\t<tr>\t\t\t<th scope=\"row\"><a href=\"https://fr.wikipedia.org/wiki/Famille_(biologie)\">Famille</a></th>\t\t\t<td><a href=\"https://fr.wikipedia.org/wiki/Felidae\">Felidae</a></td>\t\t</tr>\t\t<tr>\t\t\t<th scope=\"row\"><a href=\"https://fr.wikipedia.org/wiki/Sous-famille_(biologie)\">Sous-famille</a></th>\t\t\t<td><a href=\"https://fr.wikipedia.org/wiki/Pantherinae\">Pantherinae</a></td>\t\t</tr>\t\t<tr>\t\t\t<th scope=\"row\"><a href=\"https://fr.wikipedia.org/wiki/Genre_(biologie)\">Genre</a></th>\t\t\t<td><a href=\"https://fr.wikipedia.org/wiki/Panthera\">Panthera</a></td>\t\t</tr>\t</tbody></table><p>Le <strong>lion</strong> (<em><strong>Panthera leo</strong></em>) est une <a href=\"https://fr.wikipedia.org/wiki/Esp%C3%A8ce\">espèce</a> de <a href=\"https://fr.wikipedia.org/wiki/Mammif%C3%A8re\">mammifères</a> <a href=\"https://fr.wikipedia.org/wiki/Carnivora\">carnivores</a> de la <a href=\"https://fr.wikipedia.org/wiki/Famille_(biologie)\">famille</a> des <a href=\"https://fr.wikipedia.org/wiki/Felidae\">félidés</a>. La femelle <img alt=\"( VU )\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Status_iucn3.1_VU-fr.svg/244px-Status_iucn3.1_VU-fr.svg.png\" style=\"float:right\">du lion est la <strong>lionne</strong>, son petit est le <strong>lionceau</strong>. Le mâle adulte, aisément reconnaissable à son importante <a href=\"https://fr.wikipedia.org/wiki/Crini%C3%A8re\">crinière</a>, accuse une masse moyenne qui peut être variable selon les zones géographiques où il se trouve, allant de 180 kg pour les lions de Kruger à 230 kg pour les lions de Transvaal. Certains spécimens très rares peuvent dépasser exceptionnellement 250 kg. Un mâle adulte se nourrit de 7 kg de viande chaque jour contre 5 kgchez la <a href=\"https://fr.wikipedia.org/wiki/Femelle\">femelle</a>. Le lion est un animal <a href=\"https://fr.wikipedia.org/wiki/Gr%C3%A9garisme\">grégaire</a>, c'est-à-dire qu'il vit en larges groupes familiaux, contrairement aux autres <a href=\"https://fr.wikipedia.org/wiki/F%C3%A9lin\">félins</a>. Son espérance de vie, à l'<a href=\"https://fr.wikipedia.org/wiki/Animal_sauvage\">état sauvage</a>, est comprise entre 7 et 12 ans pour le mâle et 14 à 20 ans pour la femelle, mais il dépasse fréquemment les 30 ans en captivité.</p>"
+      }
+    ]
+  }
+}

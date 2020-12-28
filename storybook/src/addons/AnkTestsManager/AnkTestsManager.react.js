@@ -1,67 +1,40 @@
-// eslint-disable-next-line no-unused-vars
+/* eslint-disable react/prop-types */
 import React, { Component } from "react";
-import TestsFunctions from "../../../tests";
-import Checkbox from "./Checkbox.react";
 import Loader from "react-loader-spinner";
+import emoji from "emoji-dictionary";
+import uniqid from "uniqid";
+
+import ReactMarkdown from "react-markdown";
+import { listItem } from "react-markdown/lib/renderers";
+import gfm from "remark-gfm";
+
 import "./AnkTests.css";
+import UserRadioStatusReact from "./UserRadioStatus.react";
+
+import recordState from "./RecordState";
 
 class StoryTests extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+
+    this.props.channel.on("displayTestResults", () => {
+      recordState.displayOnSidebar();
+    });
   }
 
-  selectAllCheckboxes(isSelected) {
-    this.setState(
-      this.props.tests.reduce((nextState, currentValue) => {
-        nextState[currentValue.testId] = {
-          checked: isSelected,
-          running: false,
-          status: null,
-          errorMsg: null
-        };
-        return nextState;
-      }, {})
-    );
-  }
-
-  handleCheckboxChange(changeEvent) {
-    const { name, checked } = changeEvent.target;
+  handleUserRadioChange(changeEvent, name) {
     this.setState(prevState => ({
       ...prevState,
       [name]: {
-        checked,
-        running: false,
-        status: null,
-        errorMsg: null
+        status: changeEvent.status,
+        testMessage: changeEvent.comment
       }
     }));
   }
 
   isTestRunning(option) {
     return !!this.state[option] && this.state[option].running;
-  }
-
-  getTestedController() {
-    const iframeWindow = window.length ? window[0] : null;
-    if (iframeWindow) {
-      const controllers = iframeWindow.ank.smartElement.globalController.getControllers();
-      // TODO: find a way to correctly retrieve the good controller
-      const finded = controllers.filter(c => !!c._tested_);
-      return finded[finded.length - 1];
-    }
-    return null;
-  }
-
-  isTestFail(testsName) {
-    if (this.state && this.state[testsName] && this.state[testsName].status) {
-      if (this.state[testsName].status === "statusSuccess") {
-        return false;
-      } else {
-        return true;
-      }
-    }
-    return false;
   }
 
   isTest(testsName) {
@@ -74,74 +47,104 @@ class StoryTests extends Component {
   writeStatus(testsName) {
     if (this.state && this.state[testsName] && this.state[testsName].status) {
       if (this.state[testsName].status === "statusSuccess") {
-        return "Success";
+        return "Réussi";
       } else {
-        return "Fail";
+        return "Échec";
       }
     }
     return "";
   }
 
   returnResult(testsName) {
-    if (this.state && this.state[testsName] && this.state[testsName].errorMsg) {
-        return this.state[testsName].errorMsg;
+    if (this.state && this.state[testsName] && this.state[testsName].testMessage) {
+      return this.state[testsName].testMessage;
     }
     return "";
   }
 
-  createCheckbox(option) {
-    // let expectedTemplate = null;
-    let resultTemplate = null;
-    // if (this.isTestFail(option.testId)) {
-    //   expectedTemplate = (
-    //     <td>
-    //       <span className="expected">Expected: </span>
-    //       <span>"{option.expected}"</span>
-    //     </td>
-    //   );
-    // }
-    if (this.isTestFail(option.testId)) {
-      resultTemplate = <td>{this.returnResult(option.testId)}</td>;
-    }
+  createAutoTask(option) {
     return (
-      <tr key={option.testId} className="betweenTr">
-        <td>
-          <Checkbox
-            label={option.title}
-            name={option.testId}
-            isSelected={this.isTestActive(option.testId)}
-            onCheckboxChange={event => this.handleCheckboxChange(event)}
-            key={option.testId}
-          />
-        </td>
-        <td>
+      <tr key={option.testId} className="test-row">
+        {!option.humanTasks || option.humanTasks.length === 0 ? (
+          <td className="user-task-id">
+            <div>{option.testId}</div>
+          </td>
+        ) : null}
+        <td>{option.title}</td>
+        <td className="status">
           <Loader visible={this.isTestRunning(option.testId)} type="TailSpin" color="#00BFFF" height={20} width={20} />
-        </td>
-        <td>
           <span className={this.isTest(option.testId)}>{this.writeStatus(option.testId)}</span>
         </td>
-       {/* {expectedTemplate} */}
-        {resultTemplate}
+        <td className="status-message">{this.returnResult(option.testId)}</td>
       </tr>
     );
   }
 
-  createCheckboxes() {
-    const tests = this.props.tests;
-    return tests.map(currentValue => {
-      return this.createCheckbox(currentValue);
+  createAllTests() {
+    const tests = this.props.autoTests;
+    const reactRows = [];
+
+    tests.forEach(currentValue => {
+      reactRows.push(this.createHumanTasks(currentValue));
+      reactRows.push(this.createAutoTask(currentValue));
     });
+    return reactRows;
+  }
+
+  createHumanTasks(testData) {
+    const humanTasks = testData.humanTasks;
+    if (humanTasks && humanTasks.length > 0) {
+      const humanTaskElements = humanTasks.map((currentValue, index) => {
+        const idx = "I" + index.toString();
+        return (
+          <div key={idx} className="markdown human-task-description">
+            <ReactMarkdown plugins={[gfm]} source={currentValue} />
+          </div>
+        );
+      });
+
+      return (
+        <tr key={"HT" + testData.testId} className="human-task">
+          <td className="user-task-id" rowSpan="2">
+            <div>{testData.testId}</div>
+          </td>
+          <td className="human-task-description" colSpan="3">
+            {humanTaskElements}
+          </td>
+        </tr>
+      );
+    }
+    return null;
+  }
+
+  createUserVerifications(userTasks) {
+    if (userTasks && userTasks.length > 0) {
+      return userTasks.map((userTest, index) => {
+        const idx = "I" + index.toString();
+        return [
+          <tr key={"UT" + userTest.testId} className="user-task">
+            <td className="user-task-id" rowSpan="2">
+              <div>{userTest.testId}</div>
+            </td>
+            <td className="user-task-description">
+              <div key={idx} className="markdown user-task-description">
+                <ReactMarkdown plugins={[gfm]} source={userTest.description} />
+              </div>
+            </td>
+          </tr>,
+          <tr key={"UTR" + userTest.testId} className="user-task-results">
+            <td>
+              <UserRadioStatusReact onSelect={event => this.handleUserRadioChange(event, userTest.testId)} />
+            </td>
+          </tr>
+        ];
+      });
+    }
+    return null;
   }
 
   isTestActive(testsName) {
     return this.state[testsName] === undefined || this.state[testsName].checked === true;
-  }
-
-  checkCheckBox() {
-    return this.props.tests.reduce((isChecked, currentValue) => {
-      isChecked = isChecked && this.isTestActive(currentValue.testId);
-      return isChecked;
-    }, true);
   }
 
   callTest(testToExecute) {
@@ -151,35 +154,50 @@ class StoryTests extends Component {
         checked: true,
         running: true,
         status: null,
-        errorMsg: null
+        testMessage: null
       }
     }));
-    const controller = this.getTestedController(testToExecute.testId);
-    return TestsFunctions[testToExecute.testId]({ ...testToExecute, controller })
-      .then(() => {
-        this.setState(prevState => ({
-          ...prevState,
-          [testToExecute.testId]: {
-            checked: true,
-            running: false,
-            status: "statusSuccess",
-            errorMsg: null
+
+    if (testToExecute.testCallback) {
+      return new Promise((resolve, reject) => {
+        const eventId = uniqid("ev");
+        this.props.channel.emit("executeCallbackTest", testToExecute.testId, eventId);
+
+        this.props.channel.once(eventId, info => {
+          if (info.success) {
+            return resolve(info);
+          } else {
+            return reject(info);
           }
-        }));
-        console.log("Test succeed !");
+        });
       })
-      .catch(error => {
-        this.setState(prevState => ({
-          ...prevState,
-          [testToExecute.testId]: {
-            checked: true,
-            running: false,
-            status: "statusFail",
-            errorMsg: error.message
-          }
-        }));
-        console.error("Test failed: ", error.message);
-      });
+        .then(info => {
+          this.setState(prevState => ({
+            ...prevState,
+            [testToExecute.testId]: {
+              checked: true,
+              running: false,
+              status: "statusSuccess",
+              testMessage: info.message
+            }
+          }));
+          return { testId: testToExecute.testId, success: true, message: info.message };
+        })
+        .catch(error => {
+          this.setState(prevState => ({
+            ...prevState,
+            [testToExecute.testId]: {
+              checked: true,
+              running: false,
+              status: "statusFail",
+              testMessage: error.message
+            }
+          }));
+          return { testId: testToExecute.testId, success: false, message: error.message };
+        });
+    } else {
+      return Promise.resolve();
+    }
   }
 
   callTests(testsToExecute) {
@@ -189,43 +207,96 @@ class StoryTests extends Component {
     return Promise.all(promises);
   }
 
-  clickBtn() {
-    const testsToExecute = this.props.tests.filter(currentValue => {
+  executeTestsNow() {
+    const testsToExecute = this.props.autoTests.filter(currentValue => {
       return this.isTestActive(currentValue.testId);
     });
-    this.callTests(testsToExecute);
+    this.callTests(testsToExecute).then(hop => {
+      recordState.setKey(this.props.story.storyId, hop);
+      recordState.displayOnSidebar();
+    });
+  }
+  recordResults() {
+    window.alert("Pas encore fait. Désolé. 🙄");
   }
 
   render() {
+    const emojiSupport = text => text.value.replace(/:\w+:/gi, name => emoji.getUnicode(name));
+
+    recordState.displayOnSidebar();
+
+    const renderers = {
+      text: emojiSupport,
+      listItem: props => {
+        const liElement = listItem(props);
+        // add custom class to hide dot of ul html element
+        if (props.checked !== null && props.checked !== undefined) {
+          return React.cloneElement(liElement, {
+            className: "task-list-item"
+          });
+        }
+
+        return liElement;
+      }
+    };
+
     return (
-      <div>
-        {this.props.tests.length ? (
-          <ol>
-            <table>
-              <thead>
-                <tr>
-                  <th colSpan="2">Tout les tests de la storie</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="betweenTr">
-                  <td colSpan="2">
-                    <Checkbox
-                      label="Sélectionner tout les tests"
-                      name="SelectAllTests"
-                      isSelected={this.checkCheckBox()}
-                      onCheckboxChange={evt => this.selectAllCheckboxes(evt.target.checked)}
-                      key="SelectAllTests"
-                    />
-                  </td>
-                  <td colSpan="3">
-                    <button onClick={evt => this.clickBtn(evt)}>Lancer les tests</button>
-                  </td>
-                </tr>
-                {this.createCheckboxes()}
-              </tbody>
-            </table>
-          </ol>
+      <div className="ank-tests">
+        {!this.props.readme && this.props.userTests.length === 0 && this.props.autoTests.length === 0 ? (
+          <div className="markdown no-test">
+            {" "}
+            <ReactMarkdown
+              renderers={renderers}
+              plugins={[gfm]}
+              source="# Pas de tests pour cette histoire :confused:"
+            />
+          </div>
+        ) : null}
+
+        {this.props.readme ? (
+          <div className="markdown readme">
+            {" "}
+            <ReactMarkdown renderers={renderers} plugins={[gfm]} source={this.props.readme} />
+          </div>
+        ) : null}
+
+        {this.props.userTests.length ? (
+          <table className="user-tests">
+            <thead>
+              <tr>
+                <th colSpan="2">Tests manuels</th>
+              </tr>
+            </thead>
+            <tbody>{this.createUserVerifications(this.props.userTests)}</tbody>
+          </table>
+        ) : null}
+
+        {this.props.autoTests.length ? (
+          <table className="semiauto-tests">
+            <thead>
+              <tr>
+                <th colSpan="4">Tests semi-automatiques</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="test-row">
+                <td colSpan="4">
+                  <button className="primary" onClick={evt => this.executeTestsNow(evt)}>
+                    Lancer les {this.props.autoTests.length} tests
+                  </button>
+                </td>
+              </tr>
+              {this.createAllTests()}
+            </tbody>
+          </table>
+        ) : null}
+
+        {this.props.autoTests.length + this.props.userTests.length > 0 ? (
+          <div className="results-sending">
+            <button className="primary results-send-action" onClick={evt => this.recordResults(evt)}>
+              Exporter les résultats
+            </button>
+          </div>
         ) : null}
       </div>
     );

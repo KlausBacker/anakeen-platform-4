@@ -1,4 +1,8 @@
+/* eslint-disable react/prop-types */
 import React from "react";
+
+import ReactMarkdown from "react-markdown";
+import gfm from "remark-gfm";
 
 export default class Checkbox extends React.Component {
   render() {
@@ -12,7 +16,9 @@ export default class Checkbox extends React.Component {
             onChange={this.props.onCheckboxChange}
             className="form-check-input"
           />
-          {this.props.label}
+          <div className="form-check-label markdown">
+            <ReactMarkdown plugins={[gfm]} source={this.props.label} />
+          </div>
         </label>
       </div>
     );

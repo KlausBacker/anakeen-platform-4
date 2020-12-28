@@ -1,8 +1,9 @@
 import { createElement } from "react";
-import yourTheme from "./anakeenTheme";
+import darkAnakeenTheme from "./anakeenTheme";
 import { addons, types } from "@storybook/addons";
 import { AddonPanel } from "@storybook/components";
-import { useParameter } from "@storybook/api";
+import { useParameter, useStorybookState } from "@storybook/api";
+import { STORY_RENDERED } from "@storybook/core-events";
 import StoryTests from "../src/addons/AnkTestsManager/AnkTestsManager.react";
 
 addons.setConfig({
@@ -13,7 +14,7 @@ addons.setConfig({
   sidebarAnimations: true,
   enableShortcuts: true,
   isToolshown: true,
-  theme: yourTheme,
+  theme: darkAnakeenTheme,
   selectedPanel: "readme",
   initialActive: "sidebar",
   showRoots: false
@@ -26,13 +27,35 @@ const PANEL_ID = `${ADDON_ID}/panel`;
 addons.register(ADDON_ID, api => {
   addons.add(PANEL_ID, {
     type: types.PANEL,
-    title: "Anakeen Tests",
+    title: () => {
+      const results = useParameter("automaticTests", []);
+      const userTests = useParameter("userTests", []);
+      const testCount = results.length + userTests.length;
+      const suffix = testCount === 0 ? "" : " (".concat(testCount, ")");
+      return "Anakeen Tests".concat(suffix);
+    },
     render: ({ active, key }) => {
-      const results = useParameter("AnkTests", []); // story's parameter being retrieved here
+      const autoTests = useParameter("automaticTests", []);
+      const mdReadme = useParameter("anakeenReadme", "");
+      const userTests = useParameter("userTests", []);
+
+      const channel = api.getChannel();
+      const story = useStorybookState();
+
+      api.on(STORY_RENDERED, () => {
+        channel.emit("displayTestResults");
+      });
+
       return createElement(
         AddonPanel,
-        { id: "root", active, key },
-        createElement(StoryTests, { tests: results })
+        { id: "ank-tests-panel-addon", className: "ank-tests-panel", active, key },
+        createElement(StoryTests, {
+          autoTests: autoTests,
+          userTests: userTests,
+          readme: mdReadme,
+          channel: channel,
+          story: story
+        })
       );
     }
   });

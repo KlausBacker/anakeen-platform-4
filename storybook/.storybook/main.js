@@ -1,3 +1,4 @@
+const path = require('path');
 module.exports = {
   "stories": [
     "../src/**/*.stories.mdx",
@@ -9,5 +10,7 @@ module.exports = {
     '@storybook/preset-scss',
     "@storybook/addon-storysource",
     "storybook-readme"
-  ],
+  ]
 }
+// .storybook/main.js
+
