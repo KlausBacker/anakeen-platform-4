@@ -392,7 +392,12 @@ class HubStation extends Mixins(AnkI18NMixin) {
     });
     if (this.defaultRoute && this.defaultRoute.route) {
       this.$ankHubRouter.internal.on(() => {
+        // Stop the rooter to be able to change the URL with the default route
+        this.$ankHubRouter.internal.historyAPIUpdateMethod("replaceState");
+        // replace hub instance root url in history api entry by the default hub element route
         this.$ankHubRouter.internal.navigate(this.defaultRoute.route, true);
+        // Resume the router
+        this.$ankHubRouter.internal.historyAPIUpdateMethod("pushState");
         this.$ankHubRouter.internal.resolve();
       });
     }
