@@ -57,3 +57,7 @@ fulltext-search/components/rollup/
 fulltext-search/components/lib/
 fulltext-search/Tests/
 user-interfaces-dojo/webpackConfig/
+storybook/babel.config.js
+storybook/jest.config.js
+storybook/node_modules/
+storybook/public/
