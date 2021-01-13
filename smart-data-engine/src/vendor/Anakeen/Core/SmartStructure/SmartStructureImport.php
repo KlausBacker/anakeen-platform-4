@@ -401,39 +401,9 @@ class SmartStructureImport
                                 );
                             }
 
-                            switch ($atype) {
-                                case 'double':
-                                case 'float':
-                                case 'money':
-                                    $attrids[$v->id] = ($v->id) . " float8";
-                                    break;
+                            $dbType=self::fieldTypeToDbColumnType($atype);
+                            $attrids[$v->id] = ($v->id) . " $dbType";
 
-                                case 'int':
-                                case 'integer':
-                                    $attrids[$v->id] = ($v->id) . " int4";
-                                    break;
-
-                                case 'date':
-                                    $attrids[$v->id] = ($v->id) . " date";
-                                    break;
-
-                                case 'timestamp':
-                                    $attrids[$v->id] = ($v->id) . " timestamp without time zone";
-                                    break;
-
-                                case 'time':
-                                    $attrids[$v->id] = ($v->id) . " time";
-                                    break;
-                                case 'xml':
-                                    $attrids[$v->id] = ($v->id) . " xml";
-                                    break;
-                                case 'json':
-                                    $attrids[$v->id] = ($v->id) . " jsonb";
-                                    break;
-
-                                default:
-                                    $attrids[$v->id] = ($v->id) . " text";
-                            }
                             if ($repeat === "true") {
                                 $attrids[$v->id] .= '[]';
                             }
@@ -556,6 +526,44 @@ class SmartStructureImport
             if ($err != '') {
                 throw new \Anakeen\Exception("CORE0023", $dfile, $err);
             }
+        }
+    }
+
+    /**
+     * Mapping type from Smart Field type and database type
+     * @param string $smartFieldType Smart Field type
+     * @return string return database type
+     */
+    public static function fieldTypeToDbColumnType(string $smartFieldType)
+    {
+        switch ($smartFieldType) {
+            case 'double':
+            case 'float':
+            case 'money':
+                return "float8";
+
+            case 'int':
+            case 'integer':
+                return "int4";
+
+            case 'tsvector':
+                return "tsvector";
+
+            case 'date':
+                return "date";
+
+            case 'timestamp':
+                return "timestamp without time zone";
+
+            case 'time':
+                return "time";
+            case 'xml':
+                return "xml";
+            case 'json':
+                return "jsonb";
+
+            default:
+                return "text";
         }
     }
 
@@ -706,44 +714,8 @@ class SmartStructureImport
                         }
 
                         $rtype = strtok($attr->type, "(");
-                        switch ($rtype) {
-                            case 'double':
-                            case 'float':
-                            case 'money':
-                                $sqltype = " float8";
-                                break;
+                        $sqltype=" ".self::fieldTypeToDbColumnType($rtype);
 
-                            case 'int':
-                            case 'integer':
-                                $sqltype = " int4";
-                                break;
-
-                            case 'date':
-                                $sqltype = " date";
-                                break;
-
-                            case 'timestamp':
-                                $sqltype = " timestamp without time zone";
-                                break;
-
-                            case 'time':
-                                $sqltype = " time";
-                                break;
-
-                            case 'tsvector':
-                                $sqltype = " tsvector";
-                                break;
-
-                            case 'xml':
-                                $sqltype = "xml";
-                                break;
-
-                            case 'json':
-                                $sqltype = "jsonb";
-                                break;
-                            default:
-                                $sqltype = " text";
-                        }
                         if ($repeat) {
                             $sqltype .= '[]';
                         }

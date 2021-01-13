@@ -29,6 +29,7 @@ use Anakeen\Core\Settings;
 use Anakeen\Core\SmartStructure\Callables\InputArgument;
 use Anakeen\Core\SmartStructure\FieldAccessManager;
 use Anakeen\Core\SmartStructure\SmartFieldAccessException;
+use Anakeen\Core\SmartStructure\SmartStructureImport;
 use Anakeen\Core\Utils\Date;
 use Anakeen\Core\Utils\FileMime;
 use Anakeen\Core\Utils\MiscDoc;
@@ -6456,20 +6457,37 @@ create unique index i_docir on doc(initid, revision);";
             return $sql;
         } // only drop
         if ($code) {
-            $lay = new \Anakeen\Layout\TextLayout("vendor/Anakeen/Core/Layout/sqltrigger.sql");
+            $lay = new \Anakeen\Layout\TextLayout(__DIR__."/../Layout/sqltrigger.sql");
             $na = $this->GetNormalAttributes();
             $tvalues = array();
             foreach ($na as $k => $v) {
                 if (($v->type !== "array") && ($v->type !== "frame") && ($v->type !== "tab")) {
                     // values += any attribute
+                    $dbType=SmartStructureImport::fieldTypeToDbColumnType($v->type);
+                    // cast only if not text type
                     $tvalues[] = array(
                         "attrid" => $k,
-                        "casttype" => ($v->isMultiple() === true) ? "text[]" : "text"
+                        "casttype" => ($v->isMultiple() === true) ? "text[]" : ($dbType!=="text"?"text":"")
                     );
                 }
             }
 
-            $lay->setBlockData("ATTRFIELD", $tvalues);
+            // Need to chunk by 50 because jsonb_build_object postgresql function accept only 100 arguments.
+            $fithtyValues = array_chunk($tvalues, 50);
+            $fithtyBlock=[];
+
+            foreach ($fithtyValues as $k => $fithtyValue) {
+                $fithtyBlock[] = [
+                    "first"=>$k===0,
+                    "fields"=>implode(",", array_map(function ($item) {
+                        $cast=$item["casttype"]?("::".$item["casttype"]):'';
+                        return sprintf("'%s',NEW.%s%s", $item["attrid"], $item["attrid"], $cast);
+                    }, $fithtyValue))];
+            }
+
+
+            $lay->setBlockData("FITHTY", $fithtyBlock);
+            $lay->set("ISEMPTY", count($fithtyBlock)===0);
             $lay->set("docid", $this->fromid);
             $sql = $lay->gen();
         } else {
