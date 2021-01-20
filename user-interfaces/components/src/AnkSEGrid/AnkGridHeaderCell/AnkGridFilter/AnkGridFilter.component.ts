@@ -254,37 +254,48 @@ export default class GridFilterCell extends Mixins(I18nMixin) {
           };
         }
       }
-      let defaultOperatorValue = "";
-      if (
-        this.grid.filterable &&
-        this.grid.filterable[this.field] &&
-        this.grid.filterable[this.field].defaultSelectedOperator
-      ) {
-        defaultOperatorValue = this.grid.filterable[this.field].defaultSelectedOperator;
-      }
 
-      if (
-        this.grid.filterable &&
-        this.grid.filterable[this.field] &&
-        this.grid.filterable[this.field].activeOperators &&
-        this.grid.filterable[this.field].activeOperators.length
-      ) {
-        const activeOperators = this.grid.filterable[this.field].activeOperators;
-        if (!defaultOperatorValue) {
-          defaultOperatorValue = activeOperators[0];
-        } else if (activeOperators.indexOf(defaultOperatorValue) === -1) {
-          console.error('[Smart Element Grid] Operator : "%s" not exist', defaultOperatorValue);
-          defaultOperatorValue = activeOperators[0];
-        }
-      } else if (Object.keys(this.columnConfig.filterable.operators.string)[0]) {
-        defaultOperatorValue = Object.keys(this.columnConfig.filterable.operators.string)[0];
-      }
-
-      if (this.columnConfig.filterable.operators.string[defaultOperatorValue]) {
-        this.config.values.first_grid_filter_operator = defaultOperatorValue;
-        this.config.values.second_grid_filter_operator = defaultOperatorValue;
+      const columnActualFilters = this.grid.filter.filters.find(val => val.field === this.field);
+      if(columnActualFilters) {
+        this.config.values.first_grid_filter_operator = columnActualFilters.filters[0]
+          ? columnActualFilters.filters[0].operator
+          : Object.keys(this.columnConfig.filterable.operators.string)[0];
+        this.config.values.second_grid_filter_operator = columnActualFilters.filters[1]
+        ? columnActualFilters.filters[1].operator
+        : Object.keys(this.columnConfig.filterable.operators.string)[0];
       } else {
-        console.error('[Smart Element Grid] Operator : "%s" not exist', defaultOperatorValue);
+        let defaultOperatorValue = "";
+        if (
+          this.grid.filterable &&
+          this.grid.filterable[this.field] &&
+          this.grid.filterable[this.field].defaultSelectedOperator
+        ) {
+          defaultOperatorValue = this.grid.filterable[this.field].defaultSelectedOperator;
+        }
+
+        if (
+          this.grid.filterable &&
+          this.grid.filterable[this.field] &&
+          this.grid.filterable[this.field].activeOperators &&
+          this.grid.filterable[this.field].activeOperators.length
+        ) {
+          const activeOperators = this.grid.filterable[this.field].activeOperators;
+          if (!defaultOperatorValue) {
+          defaultOperatorValue = activeOperators[0];
+          } else if (activeOperators.indexOf(defaultOperatorValue) === -1) {
+          console.error('[Smart Element Grid] Operator : "%s" not exist', defaultOperatorValue);
+            defaultOperatorValue = activeOperators[0];
+          }
+        } else if (Object.keys(this.columnConfig.filterable.operators.string)[0]) {
+          defaultOperatorValue = Object.keys(this.columnConfig.filterable.operators.string)[0];
+        }
+
+        if (this.columnConfig.filterable.operators.string[defaultOperatorValue]) {
+          this.config.values.first_grid_filter_operator = defaultOperatorValue;
+          this.config.values.second_grid_filter_operator = defaultOperatorValue;
+        } else {
+          console.error('[Smart Element Grid] Operator : "%s" not exist', defaultOperatorValue);
+        }
       }
     }
     this.config.values.grid_filter_operator_concat = {
