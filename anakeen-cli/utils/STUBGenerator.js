@@ -33,7 +33,7 @@ const generateDescription = attr => {
   });
   desc += `        * </ul>\n`;
   desc += "        */ \n";
-  desc += `        const ${field.name}='${field.name}';\n`;
+  desc += `        const ${field.name} = '${field.name}';\n`;
   return desc;
 };
 
@@ -325,7 +325,8 @@ namespace SmartStructure\\Fields {
     {
 ${fieldsString}
     }
-}`;
+}
+`;
           if (!fs.existsSync(targetPath)) {
             fs.mkdirSync(targetPath);
           }
