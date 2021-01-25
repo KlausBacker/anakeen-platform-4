@@ -21,6 +21,43 @@
             </sql-assert-not-empty>
         </check>
     </action>
+
+    <action id="unaccent" label="Extension unaccent">
+        <condition>
+            <sql-assert-empty label="verify  unaccent extension exists">
+                select * from pg_extension  where extname= 'unaccent';
+            </sql-assert-empty>
+        </condition>
+        <process>
+            <sql-query label="Add data column">
+                create extension unaccent with schema pg_catalog;
+            </sql-query>
+        </process>
+        <check>
+            <sql-assert-not-empty label="verify  unaccent extension exists">
+                select * from pg_extension  where extname= 'unaccent';
+            </sql-assert-not-empty>
+        </check>
+    </action>
+
+    <action id="intarray" label="Extension intarray">
+        <condition>
+            <sql-assert-empty label="verify  intarray extension exists">
+                select * from pg_extension  where extname= 'intarray';
+            </sql-assert-empty>
+        </condition>
+        <process>
+            <sql-query label="Add data column">
+                create extension intarray;
+            </sql-query>
+        </process>
+        <check>
+            <sql-assert-not-empty label="verify  intarray extension exists">
+                select * from pg_extension  where extname= 'intarray';
+            </sql-assert-not-empty>
+        </check>
+    </action>
+
     <action id="docTimer" label="Add donestatus column on doctimer table">
         <condition>
             <sql-assert-empty label="verify column donestatus of table doclog not exists">

@@ -77,5 +77,13 @@
   "smartCriteria.Search": "Rechercher",
   "gridReloadButton.Tooltip": "Actualiser les données",
   "Logout.Confirm": "Êtes-vous sûr de vouloir vous déconnecter ?",
-  "Logout.modifications": "a des modifications non sauvegardées"
+  "Logout.modifications": "a des modifications non sauvegardées",
+  "AnkTree.Label": "Nom du groupe",
+  "AnkTree.itemCount": "Utilisateurs",
+  "AnkTree.childrenCount": "Sous-groupes",
+  "AnkTree.select": "Sélection",
+  "AnkTree.reopenNode": "Explorer",
+  "AnkTree.loading": "Chargement en cours",
+  "AnkTree.reload": "Réessayer",
+  "AnkTree.noItemToDisplay": "Aucun élément à afficher"
 }

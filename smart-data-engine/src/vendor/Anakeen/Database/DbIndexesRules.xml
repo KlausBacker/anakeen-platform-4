@@ -24,6 +24,25 @@
     </action>
 
 
+
+    <action id="user memberof index" label="Add user memberof indexes">
+        <condition>
+            <sql-assert-empty label="verify user index not exists">
+                select * from pg_indexes where indexname = 'users_idx5' and tablename='users';
+            </sql-assert-empty>
+        </condition>
+        <process>
+            <sql-query label="Add users indexes">
+                create index users_idx5 on users using gin(memberof gin__int_ops)
+            </sql-query>
+        </process>
+        <check>
+            <sql-assert-not-empty label="verify user index accounttype not exists">
+                select * from pg_indexes where indexname = 'users_idx5' and tablename='users';
+            </sql-assert-not-empty>
+        </check>
+    </action>
+
     <action id="group index" label="Add group indexes">
         <condition>
             <sql-assert-empty label="verify group index not exists">

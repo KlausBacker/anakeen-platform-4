@@ -62,6 +62,14 @@ if [ "$1" = "I" ] ; then
 	    exit $RET
     fi
 
+	log "Trying to active intarray extension on database service $pgservice_core..."
+	OUT=`PGSERVICE="$pgservice_core" psql -c 'CREATE EXTENSION IF NOT EXISTS intarray;' 2> /dev/null`
+	RET=$?
+	if [ $RET -ne 0 ]; then
+	    echo "An error occured while creating extension intarray : $RET"
+	    exit $RET
+    fi
+
     log "Executing '$wpub/vendor/Anakeen/WHAT/getprivilege.sql' in database service $pgservice_core..."
     PGSERVICE=$pgservice_core pgExecuteSqlFile "$wpub"/vendor/Anakeen/WHAT/getprivilege.sql
     RET=$?

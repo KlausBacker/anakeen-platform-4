@@ -11,7 +11,7 @@
     "noImplicitAny": false,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "types": ["node", "jquery", "kendo-ui", "backbone"],
+    "types": ["node", "jquery", "kendo-ui", "backbone", "resize-observer-browser"],
     "strictNullChecks": false,
     "sourceMap": true,
     "lib": ["dom", "esnext", "es6"]

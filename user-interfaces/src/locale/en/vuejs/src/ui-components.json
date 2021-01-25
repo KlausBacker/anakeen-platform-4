@@ -77,5 +77,13 @@
   "smartCriteria.Search": "Search",
   "gridReloadButton.Tooltip": "Reload data",
   "Logout.Confirm": "Are you sure to logout?",
-  "Logout.modifications": "has modification not saved"
+  "Logout.modifications": "has modification not saved",
+  "AnkTree.Label": "Group name",
+  "AnkTree.select": "Selection",
+  "AnkTree.reopenNode": "Explore",
+  "AnkTree.loading": "Loading",
+  "AnkTree.itemCount": "#users",
+  "AnkTree.childrenCount": "#groups",
+  "AnkTree.reload": "Reload",
+  "AnkTree.noItemToDisplay": "Nothing to display"
 }
