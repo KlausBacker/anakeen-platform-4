@@ -118,7 +118,7 @@ export default class SmartFormConfigurationBuilder {
             );
           }
         } else {
-          if (criteria.multipleFilter) {
+          if (criteria.default.operator.filterMultiple) {
             this.smartFormConfiguration.values[SmartCriteriaUtils.getValueMultipleName(index)] =
               criteria.default.value;
           } else {
