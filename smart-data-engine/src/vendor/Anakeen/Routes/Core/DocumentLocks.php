@@ -2,6 +2,7 @@
 
 namespace Anakeen\Routes\Core;
 
+use Anakeen\Router\Exception;
 use Anakeen\Router\URLUtils;
 use Anakeen\Core\Settings;
 
@@ -29,26 +30,36 @@ class DocumentLocks extends DocumentLock
     protected $offset = 0;
 
     protected $temporaryLock = false;
-    protected $lockType = "permanent";
-    protected $docid=0;
+    protected $lockType = "all";
+    protected $docid = 0;
 
     //region CRUD part
 
 
     protected function doRequest()
     {
-        $locks = array();
         if ($this->method === "DELETE") {
             $this->delete();
         }
 
+        $locksInfo = $this->getLockInfo();
+        $locksInfo["uri"] = URLUtils::generateURL(sprintf(
+            "%s%s/%s/locks/",
+            Settings::ApiV2,
+            $this->baseURL,
+            $this->_document->name ? $this->_document->name : $this->_document->initid
+        ));
+        return $locksInfo;
+    }
 
-        if ($this->_document->locked > 0 || $this->hasTemporaryLock()) {
-            $locks[] =  $this->get();
+    public function delete()
+    {
+        $err = $this->_document->unlock($this->temporaryLock);
+
+        if ($err) {
+            throw new Exception("CRUD0232", $err);
         }
-        return array(
-            "uri" => URLUtils::generateURL(sprintf("%s%s/%s/locks/", Settings::ApiV2, $this->baseURL, $this->_document->name ? $this->_document->name : $this->_document->initid)) ,
-            "locks" => $locks
-        );
+
+        return $this->getLockInfo();
     }
 }
