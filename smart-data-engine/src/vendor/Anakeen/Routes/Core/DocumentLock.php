@@ -136,7 +136,6 @@ class DocumentLock
      */
     public function delete()
     {
-
         if ($this->temporaryLock && $this->_document->locked > 0) {
             $exception = new Exception("CRUD0233", $this->_document->getTitle());
             throw $exception;
@@ -171,7 +170,6 @@ class DocumentLock
             $lock = null;
         } else {
             $lock = array(
-
                 "lockedBy" => array(
                     "id" => abs($this->_document->locked),
                     "title" => \Anakeen\Core\Account::getDisplayName(abs($this->_document->locked))
@@ -181,6 +179,7 @@ class DocumentLock
                 "fixed" => false
             );
         }
+        $info["readOnly"] = ($this->_document->canEdit(true) != "");
         $info["uri"] = URLUtils::generateURL(sprintf(
             "%sdocuments/%s/locks/%s",
             Settings::ApiV2,

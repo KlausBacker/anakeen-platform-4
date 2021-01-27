@@ -308,13 +308,16 @@ export default Backbone.Model.extend({
     });
     var security = this.get("properties").get("security");
     lockModel.destroy({
-      success: function mDocumentUnLockDocumentSuccess() {
+      success: function mDocumentUnLockDocumentSuccess(model, response) {
         var menu = docModel.get("menus");
         security.lock = {
           lockedBy: {
             id: 0
           }
         };
+        if (response && response.data) {
+          security.readOnly = response.data.readOnly;
+        }
         docModel.get("properties").set("security,", security);
 
         menu.setMenu("lock", "visibility", "visible");
