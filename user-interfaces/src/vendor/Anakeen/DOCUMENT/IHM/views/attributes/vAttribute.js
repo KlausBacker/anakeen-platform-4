@@ -607,151 +607,154 @@ export default Backbone.View.extend({
     options.data.attributes = documentModel.getValues();
     options.data.properties = documentModel.getModelProperties();
     this.model.trigger("helperSearch", event, this.model.id, externalOptions, index);
-    if (event.prevent) {
-      return this;
-    }
+    EventPromiseUtils.getBeforeEventPromise(
+      event,
+      () => {
+        if (this.model.get("autocomplete")) {
+          autocompleteUrl = this.model.get("autocomplete").url;
+          const fieldValues = this.model.getDocumentModel().getValues();
+          autocompleteUrl = autocompleteUrl.replace(/\{([a-z0-9_]+)\}/gu, (c, p1) => {
+            const fieldValue = fieldValues[p1];
+            if (p1 === this.model.id) {
+              // Get current input value
+              if (options.data.filter && options.data.filter.filters.length > 0) {
+                return options.data.filter.filters[0].value || "";
+              }
+            } else if (fieldValue) {
+              if (fieldValue.value !== null && fieldValue.value !== undefined) {
+                return fieldValue.value;
+              }
+            }
+            return "";
+          });
 
-    if (this.model.get("autocomplete")) {
-      autocompleteUrl = this.model.get("autocomplete").url;
-      const fieldValues = this.model.getDocumentModel().getValues();
-      autocompleteUrl = autocompleteUrl.replace(/\{([a-z0-9_]+)\}/gu, (c, p1) => {
-        const fieldValue = fieldValues[p1];
-        if (p1 === this.model.id) {
-          // Get current input value
-          if (options.data.filter && options.data.filter.filters.length > 0) {
-            return options.data.filter.filters[0].value || "";
-          }
-        } else if (fieldValue) {
-          if (fieldValue.value !== null && fieldValue.value !== undefined) {
-            return fieldValue.value;
-          }
-        }
-        return "";
-      });
-
-      const inputs = this.model.get("autocomplete").inputs;
-      if (inputs) {
-        let inputKeys = Object.keys(inputs);
-        options.data.inputs = {};
-        inputKeys.forEach(key => {
-          let values = this.model.getDocumentModel().getValues();
-          const inputField = this.model
-            .getDocumentModel()
-            .get("attributes")
-            .get(key);
-          if (!inputField) {
-            throw new Error(`Form autocomplete input field "${key}" not found.`);
-          }
-          if (values && values[key]) {
-            options.data.inputs[inputs[key]] = values[key];
-            if (index >= 0) {
-              const parentId = this.model.attributes.parent;
-              const parentInfo = this.model
+          const inputs = this.model.get("autocomplete").inputs;
+          if (inputs) {
+            let inputKeys = Object.keys(inputs);
+            options.data.inputs = {};
+            inputKeys.forEach(key => {
+              let values = this.model.getDocumentModel().getValues();
+              const inputField = this.model
                 .getDocumentModel()
                 .get("attributes")
-                .get(parentId);
-              const parentInputId = inputField.attributes.parent;
-
-              if (parentId === parentInputId && parentInfo.attributes.type === "array") {
-                options.data.inputs[inputs[key]] = values[key][index];
+                .get(key);
+              if (!inputField) {
+                throw new Error(`Form autocomplete input field "${key}" not found.`);
               }
-            }
-          }
-        });
-      }
+              if (values && values[key]) {
+                options.data.inputs[inputs[key]] = values[key];
+                if (index >= 0) {
+                  const parentId = this.model.attributes.parent;
+                  const parentInfo = this.model
+                    .getDocumentModel()
+                    .get("attributes")
+                    .get(parentId);
+                  const parentInputId = inputField.attributes.parent;
 
-      const outputs = this.model.get("autocomplete").outputs;
-      if (outputs) {
-        let outputKeys = Object.keys(outputs);
-        this.model.set("helpOutputs", outputKeys);
-        outputKeys.forEach(key => {
-          const outputField = this.model
-            .getDocumentModel()
-            .get("attributes")
-            .get(key);
-          if (!outputField) {
-            throw new Error(`Form autocomplete output field "${key}" not found.`);
-          }
-        });
-      }
-    }
-    if (!autocompleteUrl) {
-      autocompleteUrl = "/api/v2/smart-elements/" + (documentModel.id || "0") + "/autocomplete/" + this.model.id;
-    }
-    options.data.fromid = documentModel.get("properties").get("family").id;
-    options.data.fieldInfo = this.model.toData();
-    $.ajax({
-      headers: {
-        Accept: "application/json; charset=utf-8"
-      },
-      type: "POST",
-      url: autocompleteUrl,
-      data: JSON.stringify(options.data),
-      contentType: "application/json"
-
-      //dataType: "json" // No use json JQuery because is delete empty arrays
-    })
-      .pipe(
-        function vAttributeAutocompletehandleSuccessRequest(response) {
-          if (response.success) {
-            return response;
-          } else {
-            return $.Deferred().reject(response);
-          }
-        },
-        function vAttributeAutocompletehandleErrorRequest(response) {
-          if (response.status === 0) {
-            return {
-              success: false,
-              error: i18n.___("Your navigator seems offline, try later", "ddui")
-            };
-          }
-          if (response.responseJSON && response.responseJSON.exceptionMessage) {
-            return {
-              success: false,
-              error: response.responseJSON.exceptionMessage
-            };
-          }
-          console.error(response);
-          return {
-            success: false,
-            error: "Unexpected error: " + response.status + " " + response.responseText
-          };
-        }
-      )
-      .then(
-        function vAttributeAutocompleteSuccessResult(result) {
-          // notify the data source that the request succeeded
-          _.each(result.messages, function(message) {
-            message.contentText = message.contentText || "";
-            message.contentHtml = message.contentHtml || "";
-            result.data.unshift({
-              message: message,
-              title: ""
+                  if (parentId === parentInputId && parentInfo.attributes.type === "array") {
+                    options.data.inputs[inputs[key]] = values[key][index];
+                  }
+                }
+              }
             });
-          });
-          success(result.data);
-        },
-        function vAttributeAutocompleteErrorResult(result) {
-          // notify the data source that the request failed
-          if (_.isArray(result.error)) {
-            result.error = result.error.join(" ");
           }
-          //use the success callback because http error are handling by the pipe
-          success([
-            {
-              title: "",
-              message: {
-                type: "error",
-                contentHtml: "",
-                contentText: result.error
-              }
-            }
-          ]);
-        }
-      );
-  },
 
+          const outputs = this.model.get("autocomplete").outputs;
+          if (outputs) {
+            let outputKeys = Object.keys(outputs);
+            this.model.set("helpOutputs", outputKeys);
+            outputKeys.forEach(key => {
+              const outputField = this.model
+                .getDocumentModel()
+                .get("attributes")
+                .get(key);
+              if (!outputField) {
+                throw new Error(`Form autocomplete output field "${key}" not found.`);
+              }
+            });
+          }
+        }
+        if (!autocompleteUrl) {
+          autocompleteUrl = "/api/v2/smart-elements/" + (documentModel.id || "0") + "/autocomplete/" + this.model.id;
+        }
+        options.data.fromid = documentModel.get("properties").get("family").id;
+        options.data.fieldInfo = this.model.toData();
+        $.ajax({
+          headers: {
+            Accept: "application/json; charset=utf-8"
+          },
+          type: "POST",
+          url: autocompleteUrl,
+          data: JSON.stringify(options.data),
+          contentType: "application/json"
+
+          //dataType: "json" // No use json JQuery because is delete empty arrays
+        })
+          .pipe(
+            function vAttributeAutocompletehandleSuccessRequest(response) {
+              if (response.success) {
+                return response;
+              } else {
+                return $.Deferred().reject(response);
+              }
+            },
+            function vAttributeAutocompletehandleErrorRequest(response) {
+              if (response.status === 0) {
+                return {
+                  success: false,
+                  error: i18n.___("Your navigator seems offline, try later", "ddui")
+                };
+              }
+              if (response.responseJSON && response.responseJSON.exceptionMessage) {
+                return {
+                  success: false,
+                  error: response.responseJSON.exceptionMessage
+                };
+              }
+              console.error(response);
+              return {
+                success: false,
+                error: "Unexpected error: " + response.status + " " + response.responseText
+              };
+            }
+          )
+          .then(
+            function vAttributeAutocompleteSuccessResult(result) {
+              // notify the data source that the request succeeded
+              _.each(result.messages, function(message) {
+                message.contentText = message.contentText || "";
+                message.contentHtml = message.contentHtml || "";
+                result.data.unshift({
+                  message: message,
+                  title: ""
+                });
+              });
+              success(result.data);
+            },
+            function vAttributeAutocompleteErrorResult(result) {
+              // notify the data source that the request failed
+              if (_.isArray(result.error)) {
+                result.error = result.error.join(" ");
+              }
+              //use the success callback because http error are handling by the pipe
+              success([
+                {
+                  title: "",
+                  message: {
+                    type: "error",
+                    contentHtml: "",
+                    contentText: result.error
+                  }
+                }
+              ]);
+            }
+          );
+      },
+      () => {
+        return this;
+      }
+    );
+  },
   /**
    * Modify visibility access of an item menu
    * @param event event object
