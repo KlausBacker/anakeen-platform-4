@@ -4,6 +4,7 @@ namespace Anakeen\SmartStructures\Group\Render;
 
 use Anakeen\SmartElementManager;
 use Anakeen\Ui\DefaultConfigEditRender;
+use Anakeen\Ui\RenderAttributeVisibilities;
 use Anakeen\Ui\RenderOptions;
 use Anakeen\Ui\UIGetAssetPath;
 use \SmartStructure\Fields\Group as myAttributes;
@@ -11,6 +12,23 @@ use \SmartStructure\Fields\Group as myAttributes;
 class GroupEditRender extends DefaultConfigEditRender
 {
     protected $defaultGroup;
+
+    /**
+     * Hide the default values
+     *
+     * @param \Anakeen\Core\Internal\SmartElement $document
+     * @param \SmartStructure\Mask|null $mask
+     * @return RenderAttributeVisibilities
+     * @throws \Anakeen\Ui\Exception
+     */
+    public function getVisibilities(
+        \Anakeen\Core\Internal\SmartElement $document,
+        \SmartStructure\Mask $mask = null
+    ): RenderAttributeVisibilities {
+        $visibilities = parent::getVisibilities($document, $mask);
+        $visibilities->setVisibility(myAttributes::fld_fr_rest, RenderAttributeVisibilities::HiddenVisibility);
+        return $visibilities;
+    }
 
     /**
      * @param \Anakeen\Core\Internal\SmartElement $document
