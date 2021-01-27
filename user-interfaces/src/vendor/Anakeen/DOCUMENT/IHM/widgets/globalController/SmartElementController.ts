@@ -1402,7 +1402,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     const $se = this._element.find(".dcpDocument");
     if (!this._smartElement || $se.length === 0) {
       this._element.attr("data-controller", this.uid);
-      const domTemplate = `<div class="smart-element-wrapper">       
+      const domTemplate = `<div class="smart-element-wrapper">
             <div class="document">
                 <div class="dcpDocument"></div>
             </div>
@@ -1782,7 +1782,7 @@ export default class SmartElementController extends AnakeenController.BusEvents.
     this._model.listenTo(this._model, "helperSearch", (event, attrid, options) => {
       try {
         const currentAttribute = this.getSmartField(attrid);
-        event.prevent = !this._triggerAttributeControllerEvent(
+        event.promise = this._triggerAttributeControllerEvent(
           "smartFieldHelperSearch",
           event,
           currentAttribute,
