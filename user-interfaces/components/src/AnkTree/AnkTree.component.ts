@@ -32,6 +32,7 @@ interface ITreeTranslationsType {
   selectItem?: string;
   reopenNode?: string;
   loading?: string;
+  searching?: string;
   reload?: string;
   noItemToDisplay?: string;
 }
@@ -44,11 +45,11 @@ export default class AnkTreeComponent extends Mixins(AnkI18NMixin) {
   };
 
   @Prop({ type: String, default: "" }) public treeUrl;
-  @Prop({ type: Boolean, default: false }) public expanded;
+  @Prop({ type: String, default: "" }) public treeOpenNodeUrl;
   @Prop({ type: Object }) public customTranslations: ITreeTranslationsType;
-  @Prop({ type: Boolean, default: true }) public displayItemCount;
-  @Prop({ type: Boolean, default: true }) public displayChildrenCount;
-  @Prop({ type: Boolean, default: true }) public displaySelectedParent;
+  @Prop({ type: Boolean, default: false }) public displayItemCount;
+  @Prop({ type: Boolean, default: false }) public displayChildrenCount;
+  @Prop({ type: Boolean, default: false }) public displaySelectedParent;
   @Prop({ type: Boolean, default: true }) public displayFilter;
   @Prop({ type: Number, default: 2 }) public itemHeight;
   @Prop({ type: Number, default: 2 }) public levelIndentationWidth;
@@ -65,7 +66,10 @@ export default class AnkTreeComponent extends Mixins(AnkI18NMixin) {
   public requestFilter = "";
   public visibleTreeData: ITreeItemType[] = [];
   public selectedNodes: { [index: string]: ITreeItemType } = {};
+  // Number of displayed branches (lines) : computed depends of height of visible tree div
   protected visibleItemSlice = 10;
+  // Number of displayed branches to add more
+  protected visibleItemDeltaSlice = 40;
   protected itemPxHeigth = 10;
   protected openedItemCount = 1;
   protected httpToken!: CancelTokenSource | null;
@@ -95,7 +99,7 @@ export default class AnkTreeComponent extends Mixins(AnkI18NMixin) {
     this.displaySelected();
   }
 
-  @Watch("expanded")
+  @Watch("displayItemCount")
   protected watchExpanded(): void {
     this.reloadTree();
   }
@@ -164,7 +168,7 @@ export default class AnkTreeComponent extends Mixins(AnkI18NMixin) {
     this.lastItemHeight = nBottom * this.itemHeight;
     this.openedItemCount = this.treeData.length;
 
-    // Need to next tick because tree div not in dom yet
+    // Need to next tick because tree div not in dom yet. It will be after v-if is set
     this.$nextTick(() => {
       if (this.$refs.tree) {
         this.resizeObserver.disconnect();
@@ -237,11 +241,8 @@ export default class AnkTreeComponent extends Mixins(AnkI18NMixin) {
    * @protected
    */
   protected reloadTree(): void {
-    let url = this.treeUrl;
+    const url = this.treeUrl;
 
-    if (this.expanded || this.filter) {
-      url += "all";
-    }
     this.treeData = [];
     this.nTop = 0;
     this.error = "";
@@ -263,20 +264,26 @@ export default class AnkTreeComponent extends Mixins(AnkI18NMixin) {
       .then(response => {
         this.httpToken = null;
         this.error = "";
-        this.message = response.data.data.message;
-        this.requestFilter = response.data.data.filter;
-        if (response.data.data.hasChilds) {
-          this.treeData = this.reindex(this.flatTree(response.data.data.treeData));
+        if (response.data.data) {
+          this.message = response.data.data.message;
+          this.requestFilter = response.data.data.filter;
+          if (response.data.data.hasChilds) {
+            this.treeData = this.reindex(this.flatTree(response.data.data.treeData));
+          } else {
+            this.treeData = this.reindex(response.data.data.treeData);
+          }
+          if (!this.message && this.treeData.length === 0) {
+            this.message = this.translations.noItemToDisplay;
+          }
         } else {
-          this.treeData = this.reindex(response.data.data.treeData);
-        }
-        if (!this.message && this.treeData.length === 0) {
-          this.message = this.translations.noItemToDisplay;
+          this.treeData = [];
+          this.message = response.data;
         }
       })
       .catch(error => {
         if (!axios.isCancel(error)) {
           this.httpToken = null;
+          this.treeData = [];
           this.displayError(error);
         }
       });
@@ -290,7 +297,7 @@ export default class AnkTreeComponent extends Mixins(AnkI18NMixin) {
     }
     if (error.response && error.response.data) {
       const data = error.response.data;
-      this.error = data.userMessage || data.message || data.exceptionMessage;
+      this.error = data.userMessage || data.message || data.exceptionMessage || data.error || "Unexpected error";
     } else {
       this.error = error.toString();
     }
@@ -321,6 +328,7 @@ export default class AnkTreeComponent extends Mixins(AnkI18NMixin) {
       selectItem: this.$t("AnkTree.select") as string,
       reopenNode: this.$t("AnkTree.reopenNode") as string,
       loading: this.$t("AnkTree.loading") as string,
+      searching: this.$t("AnkTree.searching") as string,
       reload: this.$t("AnkTree.reload") as string,
       noItemToDisplay: this.$t("AnkTree.noItemToDisplay") as string
     };
@@ -347,7 +355,7 @@ export default class AnkTreeComponent extends Mixins(AnkI18NMixin) {
         const remPx = parseFloat(getComputedStyle(document.documentElement).fontSize);
         const nbMin = Math.ceil(heigth / remPx);
 
-        this.visibleItemSlice = Math.round(nbMin / this.itemHeight) + 40;
+        this.visibleItemSlice = Math.round(nbMin / this.itemHeight) + this.visibleItemDeltaSlice;
       }
     });
   }
@@ -359,18 +367,19 @@ export default class AnkTreeComponent extends Mixins(AnkI18NMixin) {
    * @param filterMatchOnly
    */
   public openNode(event: Event, nodeInfo: ITreeItemType, filterMatchOnly: boolean): void {
-    event.preventDefault();
+    // Prevent select event
     event.stopPropagation();
     const positionIndex = nodeInfo.positionIndex;
     if (!nodeInfo.isOpened) {
       const level = nodeInfo.level || 0;
       const level1 = level + 1;
       nodeInfo.loading = true;
+      const url = this.treeOpenNodeUrl.replace("{nodeId}", nodeInfo.id);
 
       // Need to see loading effect
       this.visibleTreeData = { ...this.visibleTreeData };
       this.$http
-        .get(this.treeUrl + nodeInfo.id, {
+        .get(url, {
           params: {
             getCounts: { item: this.displayItemCount, children: this.displayChildrenCount },
             filter: this.filter,

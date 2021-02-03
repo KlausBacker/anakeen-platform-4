@@ -107,6 +107,7 @@ create index users_idx3 on users(accounttype);
 create index users_idx4 on users(substitute);
 CREATE UNIQUE INDEX users_login on users (login);
 create index users_idx5 on users using gin(memberof gin__int_ops);
+create index users_idx6 on users(fid);
 create sequence seq_id_users start 10;";
 
 

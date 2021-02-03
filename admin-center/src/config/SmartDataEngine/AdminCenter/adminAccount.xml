@@ -16,7 +16,21 @@
             <sde:priority>0</sde:priority>
             <sde:callable>Anakeen\Routes\Admin\Account\GroupTree</sde:callable>
             <sde:method>GET</sde:method>
-            <sde:pattern>/api/v2/admin/account/grouptree/[{groupid}]</sde:pattern>
+            <sde:pattern>/api/v2/admin/account/grouptree/[{groupid:[0-9]+}]</sde:pattern>
+            <sde:pattern>/api/v2/admin/account/grouptree/{all:all}</sde:pattern>
+            <sde:description>Get tree of groups</sde:description>
+            <sde:requiredAccess operator="or">
+                <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminAccounts</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="AdminAccount:GroupTreeWithoutCategory">
+            <sde:priority>0</sde:priority>
+            <sde:callable>Anakeen\Routes\Admin\Account\GroupTreeWithoutCategory</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/admin/account/grouptree/nocategory/</sde:pattern>
+            <sde:pattern>/api/v2/admin/account/grouptree/nocategory/{groupid:[0-9]+}</sde:pattern>
+            <sde:pattern>/api/v2/admin/account/grouptree/nocategory/{all:all}</sde:pattern>
             <sde:description>Get tree of groups</sde:description>
             <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>

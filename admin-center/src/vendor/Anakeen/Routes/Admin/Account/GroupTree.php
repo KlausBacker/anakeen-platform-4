@@ -6,6 +6,7 @@ use Anakeen\Core\DbManager;
 use Anakeen\Router\ApiV2Response;
 
 /**
+ * Get group data to be used by AnkTree widget
  * @note use by route GET /api/v2/admin/account/grouptree/
  * @note use by route GET /api/v2/admin/account/grouptree/groupid
  */
@@ -18,36 +19,27 @@ class GroupTree
     protected $parentId = 0;
     protected $filterValue = "";
     protected $expandAll = false;
-    protected $prefix;
+    protected $prefix = "";
     /**
      * @var array
      */
-    protected $uc = [];
-    protected $gc = [];
+    protected $userCounts = [];
+    protected $groupCounts = [];
     protected $needCounts = true;
-    protected $kk = 0;
-    protected $dgc;
+    protected $positionIndex = 0;
+    protected $directGroupCounts = [];
     protected $filterMatchOnly = false;
+
 
     /**
      * @param \Slim\Http\request $request
      * @param \Slim\Http\response $response
-     * @param $args
+     * @param string[] $args
      * @return \Slim\Http\Response
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        $this->filterValue = $request->getQueryParam("filter");
-        $this->filterMatchOnly = $request->getQueryParam("filterMatchOnly") === "true";
-        $this->needCounts = json_decode($request->getQueryParam("getCounts"), true);
-
-        $groupId = $args["groupid"] ?? 0;
-        if ($groupId === "all") {
-            $this->expandAll = true;
-        } else {
-            $this->parentId = $groupId;
-        }
-
+        $this->setParameters($request, $args);
 
         $etag = $this->getEtag();
         if ($etag) {
@@ -57,20 +49,50 @@ class GroupTree
             }
         }
 
+        $response = ApiV2Response::withData($response, $this->doProcess());
+        if (empty($data["error"]) && $etag) {
+            $response = ApiV2Response::withEtag($request, $response, $etag);
+        }
+        return $response;
+    }
 
+    protected function setParameters(\Slim\Http\request $request, $args)
+    {
+        $this->filterValue = $request->getQueryParam("filter");
+        $this->filterMatchOnly = $request->getQueryParam("filterMatchOnly") === "true";
+        $this->needCounts = json_decode($request->getQueryParam("getCounts"), true);
+
+        $groupId = $args["groupid"] ?? 0;
+        if (!empty($args["all"]) || ($this->filterValue && $groupId === 0)) {
+            $this->expandAll = true;
+        } else {
+            $this->parentId = $groupId;
+        }
+    }
+
+
+    protected function doProcess()
+    {
+        $this->addGroupSqlView();
         $this->prefix = uniqid("i");
 
         if ($this->expandAll === true) {
             $data = $this->getTreeAllData();
         } else {
-            $data = $this->getTreeData();
+            $data = $this->getBranchData();
         }
+        return $data;
+    }
 
-        $response = ApiV2Response::withData($response, $data);
-        if (empty($data["error"]) && $etag) {
-            $response = ApiV2Response::withEtag($request, $response, $etag);
-        }
-        return $response;
+    /**
+     * View used as reference for group data
+     * @throws \Anakeen\Database\Exception
+     */
+    protected function addGroupSqlView()
+    {
+        $view = "create temporary view tv_groups as select id, accounttype, fid, memberof, lastname, login from users where users.accounttype = 'G';";
+
+        DbManager::query($view);
     }
 
     /**
@@ -79,27 +101,32 @@ class GroupTree
      * @param array $values
      * @return array
      */
-    protected function childrenValue(array $values)
+    protected function completeChildrenValue(array $values)
     {
         $nv = [];
         foreach ($values as $k => $v) {
+            $v["directChildsCount"] = $this->directGroupCounts[$v["id"]] ?? 0;
+            $v["index"] = $this->prefix . ($this->positionIndex++);
             if (!empty($v["children"])) {
                 $v["loadedChildrenCount"] = count($v["children"]);
                 if ($this->expandAll === false) {
                     unset($v["children"]);
                 } else {
-                    $v["children"] = $this->childrenValue($v["children"]);
+                    $v["children"] = $this->completechildrenValue($v["children"]);
                 }
             } else {
-                $v["loadedChildrenCount"] = 0;
+                if ($this->expandAll === false) {
+                    //$v["children"]= $v["directChildsCount"];
+                    $v["loadedChildrenCount"] = $v["directChildsCount"];
+                } else {
+                    $v["loadedChildrenCount"] = 0;
+                }
             }
-            $v["directChildsCount"] = $this->dgc[$v["id"]] ?? null;
-            $v["index"] = $this->prefix . ($this->kk++);
             if ($this->needCounts["item"] === true) {
-                $v["itemCount"] = $this->uc[$v["id"]] ?? null;
+                $v["itemCount"] = $this->userCounts[$v["id"]] ?? 0;
             }
             if ($this->needCounts["children"] === true) {
-                $v["childrenCount"] = $this->gc[$v["id"]] ?? null;
+                $v["childrenCount"] = $this->groupCounts[$v["id"]] ?? 0;
             }
 
             $nv[] = $v;
@@ -108,31 +135,28 @@ class GroupTree
         return $nv;
     }
 
-    protected function getTreeData()
+    /**
+     * Get tree data for only single branch without including children
+     * @return array
+     * @throws \Anakeen\Database\Exception
+     */
+    protected function getBranchData()
     {
-
-        // Get top groups
-
-        $mi = microtime(true);
-
-
-        $m0 = microtime(true);
-
         $pointerTree = [];
-
 
         if ($this->parentId === 0) {
             DbManager::query(
-                "select id, login, fid as accountid, lastname as name " .
-                " from users where accounttype='G' and id not in " .
-                "(select iduser from users gu, users uu, groups where idgroup=gu.id and iduser=uu.id and uu.accounttype='G' and gu.accounttype='G') order by lastname, id;",
+                "
+select id, login, fid as accountid, lastname as name from tv_groups
+             where not exists (select iduser from groups, users where iduser = tv_groups.id and groups.idgroup = users.id and users.accounttype='G') order by lastname, id;
+                ",
                 $allGroupInfo
             );
         } else {
             DbManager::query(
                 sprintf(
-                    "select users.id, users.login, users.fid as accountid, users.lastname as name from users, groups" .
-                    " where idgroup = %d and groups.iduser = users.id and users.accounttype='G' order by lastname, id;",
+                    "select tv_groups.id, tv_groups.login, tv_groups.fid as accountid, tv_groups.lastname as name from tv_groups, groups" .
+                    " where idgroup = %d and groups.iduser = tv_groups.id order by lastname, id;",
                     $this->parentId
                 ),
                 $allGroupInfo
@@ -140,26 +164,7 @@ class GroupTree
         }
 
         if ($this->filterValue) {
-            $filtersWords = explode(" ", $this->filterValue);
-            $wheres = [];
-            foreach ($filtersWords as $filtersWord) {
-                $filtersWord = trim($filtersWord);
-                if ($filtersWord) {
-                    $wheres[] = sprintf("unaccent(lastname) ~* unaccent('%s')", pg_escape_string($filtersWord));
-                }
-            }
-            $matchesGroup = [];
-            if (count($wheres) > 0) {
-                DbManager::query(
-                    sprintf(
-                        "select users.id, users.login, users.fid as accountid, users.lastname as name from users where accounttype='G' and %s;",
-                        implode(" and ", $wheres)
-                    ),
-                    $matchesGroup
-                );
-            }
-
-
+            $matchesGroup = $this->getMatchedGroup();
             if (count($matchesGroup) > 0) {
                 $matchesGroupIds = [];
                 foreach ($matchesGroup as $match) {
@@ -175,9 +180,6 @@ class GroupTree
             }
         }
 
-
-        $m1 = microtime(true);
-
         foreach ($allGroupInfo as $groupInfo) {
             /* @var $currentAccount \Anakeen\Core\Account */
             $id = intval($groupInfo["id"]);
@@ -185,124 +187,55 @@ class GroupTree
             $pointerTree[$id] = &$result[$id];
         }
 
+        $this->insertCounts(array_keys($pointerTree));
 
-        $m2 = microtime(true);
+        $this->results = $this->completeChildrenValue($pointerTree);
 
-        // Get all group branches
-        DbManager::query(
-            "select groups.* from users gu, users uu, groups where idgroup=gu.id and iduser=uu.id and uu.accounttype='G' and gu.accounttype='G' order by uu.lastname, uu.login;",
-            $groupBranches
-        );
-
-
-        $m3 = microtime(true);
-        // Compose the tree from branches
-        foreach ($groupBranches as $branch) {
-            $parent = intval($branch["idgroup"]);
-            $child = intval($branch["iduser"]);
-
-            if (isset($pointerTree[$parent])) {
-                $pointerTree[$parent]["children"][$child] = true;
-            }
-        }
-
-
-        $m4 = microtime(true);
-
-
-        $ids = array_keys($pointerTree);
-
-        $this->dgc = $this->insertDirectGroupCountToNode($ids);
-        if ($this->needCounts["item"]) {
-            $this->uc = $this->insertUserCountToNode($ids);
-        }
-        if ($this->needCounts["children"]) {
-            $this->gc = $this->insertGroupCountToNode($ids);
-        }
-
-        $m5 = microtime(true);
-        $this->results = $this->childrenValue($pointerTree);
-
-
-        $m6 = microtime(true);
-
-        // Walk by depth before to the tree
-        //  $this->walkToTheTree($pointerTree);
-
-
-        //$pointerTree = array_slice($pointerTree, 0, 3000);
-        $m7 = microtime(true);
 
         return [
-            "debug" => [
-                "m0" => sprintf("%dms", ($m0 - $mi) * 1000),
-                "m1" => sprintf("%dms", ($m1 - $m0) * 1000),
-                "m2" => sprintf("%dms", ($m2 - $m1) * 1000),
-                "m3" => sprintf("%dms", ($m3 - $m2) * 1000),
-                "m4" => sprintf("%dms", ($m4 - $m3) * 1000),
-                "m5" => sprintf("%dms", ($m5 - $m4) * 1000),
-                "m6" => sprintf("%dms", ($m6 - $m5) * 1000),
-                "all" => sprintf("%.dms", ($m7 - $mi) * 1000)
-            ],
-            "treeData" => $this->results
+            "treeData" => $this->results,
+            "filter" => $this->filterValue
         ];
     }
 
 
+    /**
+     * Get all tree data including children
+     * @return array
+     * @throws \Anakeen\Database\Exception
+     */
     protected function getTreeAllData()
     {
 
         // Get top groups
 
-        $mi = microtime(true);
         DbManager::query(
-            "select id " .
-            " from users where accounttype='G' and id not in " .
-            "(select iduser from users gu, users uu, groups where idgroup=gu.id and iduser=uu.id and uu.accounttype='G' and gu.accounttype='G');",
+            "
+            select id 
+             from tv_groups where accounttype='G' and id not in 
+            (select iduser from users gu, users uu, groups where idgroup=gu.id and iduser=uu.id and uu.accounttype='G' and gu.accounttype='G');
+            ",
             $topGroupIds,
             true
         );
 
-
-        $m0 = microtime(true);
-
         $pointerTree = [];
 
-
         if ($this->filterValue) {
-            $filtersWords = explode(" ", $this->filterValue);
-            $wheres = [];
-            foreach ($filtersWords as $filtersWord) {
-                $filtersWord = trim($filtersWord);
-                if ($filtersWord) {
-                    $wheres[] = sprintf("unaccent(lastname) ~* unaccent('%s')", pg_escape_string($filtersWord));
-                }
-            }
-            $matchesGroup = [];
-            if (count($wheres) > 0) {
-                DbManager::query(
-                    sprintf(
-                        "select users.id, users.login, users.fid as accountid, users.lastname as name from users where accounttype='G' and %s;",
-                        implode(" and ", $wheres)
-                    ),
-                    $matchesGroup
-                );
-            }
-
+            $matchesGroup = $this->getMatchedGroup();
             if (count($matchesGroup) > 0) {
                 $matchesGroupIds = [];
                 foreach ($matchesGroup as &$match) {
                     $matchesGroupIds[$match["id"]] = $match["id"];
                     $match["match"] = true;
                 }
-
-
+                // get all ancestor of matched groups
                 $sql = sprintf(
                     "with recursive agroups(gid) as (
  select idgroup from groups,users where iduser in (%s) and users.id=groups.idgroup
 union
  select idgroup from groups,users, agroups where groups.iduser = agroups.gid and users.id=groups.idgroup
-) select users.id, users.login, users.fid as accountid, users.lastname as name from agroups, users where users.id=agroups.gid and users.accounttype='G' order by lastname",
+) select users.id, users.login, users.fid as accountid, users.lastname as name from agroups, users where users.id=agroups.gid and users.accounttype='G' order by lastname, id",
                     implode(",", $matchesGroupIds)
                 );
                 DbManager::query(
@@ -318,16 +251,14 @@ union
             }
         } else {
             DbManager::query(
-                "select id, login, fid as accountid, lastname as name from users where accounttype='G' order by lastname;",
+                "select tv_groups.id, tv_groups.login, tv_groups.fid as accountid, tv_groups.lastname as name " .
+                "from tv_groups order by lastname,id;",
                 $allGroupInfo
             );
         }
 
 
         if (count($allGroupInfo) > 0) {
-            $m1 = microtime(true);
-
-
             foreach ($allGroupInfo as $groupInfo) {
                 /* @var $currentAccount \Anakeen\Core\Account */
                 $id = intval($groupInfo["id"]);
@@ -335,8 +266,6 @@ union
                 $pointerTree[$id] = &$result[$id];
             }
 
-
-            $m2 = microtime(true);
 
             if ($this->filterValue) {
                 $groupIds = array_keys($pointerTree);
@@ -351,15 +280,9 @@ union
             } else {
                 // Get all group branches
                 $groupIds = [-1];
-                DbManager::query(
-                    "select groups.* from users gu, users uu, groups " .
-                    "where idgroup=gu.id and iduser=uu.id and uu.accounttype='G' and gu.accounttype='G' order by uu.lastname, uu.login;",
-                    $groupBranches
-                );
+                $groupBranches = $this->getAllGroupBranches();
             }
 
-
-            $m3 = microtime(true);
             // Compose the tree from branches
             foreach ($groupBranches as $branch) {
                 $parent = intval($branch["idgroup"]);
@@ -369,10 +292,6 @@ union
                     $pointerTree[$parent]["children"][$child] =  &$pointerTree[$child];
                 }
             }
-
-
-            $m4 = microtime(true);
-
 
             // Delete no top branches into the tree
             $topIdx = [];
@@ -386,45 +305,12 @@ union
                 }
             }
 
-            $m5 = microtime(true);
 
-            if ($this->needCounts["item"]) {
-                if ($this->filterValue) {
-                    $this->uc = $this->insertUserCountToNode($groupIds);
-                } else {
-                    $this->uc = $this->insertUserCountToNode([-1]);
-                }
-            }
-            if ($this->needCounts["children"]) {
-                if ($this->filterValue) {
-                    $this->gc = $this->insertGroupCountToNode($groupIds);
-                } else {
-                    $this->gc = $this->insertGroupCountToNode([-1]);
-                }
-            }
-            $this->dgc = $this->insertDirectGroupCountToNode([-1]);
-
-            $m6 = microtime(true);
-            $this->results = $this->childrenValue($pointerTree);
+            $this->insertCounts($groupIds);
+            $this->results = $this->completechildrenValue($pointerTree);
 
 
-            // Walk by depth before to the tree
-            //  $this->walkToTheTree($pointerTree);
-
-
-            //$pointerTree = array_slice($pointerTree, 0, 3000);
-            $m7 = microtime(true);
             return [
-                "debug" => [
-                    "m0" => sprintf("%dms", ($m0 - $mi) * 1000),
-                    "m1" => sprintf("%dms", ($m1 - $m0) * 1000),
-                    "m2" => sprintf("%dms", ($m2 - $m1) * 1000),
-                    "m3" => sprintf("%dms", ($m3 - $m2) * 1000),
-                    "m4" => sprintf("%dms", ($m4 - $m3) * 1000),
-                    "m5" => sprintf("%dms", ($m5 - $m4) * 1000),
-                    "m6" => sprintf("%dms", ($m6 - $m5) * 1000),
-                    "all" => sprintf("%.dms", ($m7 - $mi) * 1000)
-                ],
                 "treeData" => $this->results,
                 "filter" => $this->filterValue,
                 "hasChilds" => true
@@ -437,6 +323,52 @@ union
         }
     }
 
+    protected function getMatchedGroup()
+    {
+        $filtersWords = explode(" ", $this->filterValue);
+        $wheres = [];
+        foreach ($filtersWords as $filtersWord) {
+            $filtersWord = trim($filtersWord);
+            if ($filtersWord) {
+                $wheres[] = sprintf("unaccent(lastname) ~* unaccent('%s')", pg_escape_string($filtersWord));
+            }
+        }
+        $matchesGroup = [];
+        if (count($wheres) > 0) {
+            DbManager::query(
+                sprintf(
+                    "select tv_groups.id, tv_groups.login, tv_groups.fid as accountid, tv_groups.lastname as name " .
+                    "from tv_groups where  %s;",
+                    implode(" and ", $wheres)
+                ),
+                $matchesGroup
+            );
+        }
+        return $matchesGroup;
+    }
+
+    protected function getAllGroupBranches()
+    {
+        // Get all group branches
+        DbManager::query(
+            "select groups.* from users gu, tv_groups uu, groups " .
+            "where idgroup=gu.id and iduser=uu.id and uu.accounttype='G' and gu.accounttype='G' order by uu.lastname, uu.login;",
+            $groupBranches
+        );
+        return $groupBranches;
+    }
+
+    protected function insertCounts($ids)
+    {
+        $this->directGroupCounts = $this->insertDirectGroupCountToNode($ids);
+        if ($this->needCounts["item"]) {
+            $this->userCounts = $this->insertUserCountToNode($ids);
+        }
+        if ($this->needCounts["children"]) {
+            $this->groupCounts = $this->insertGroupCountToNode($ids);
+        }
+    }
+
     protected function insertUserCountToNode(array $ids)
     {
         if (count($ids) === 0) {
@@ -445,11 +377,18 @@ union
 
         if ($ids === [-1]) {
             $sql = sprintf(
-                "select id, (select count(*) from users where memberof @> ARRAY[uu.id] and accounttype='U') as c from users uu where uu.accounttype='G'"
+                "
+            select u1.id, count(u1.id) as c from users u1, users u2 
+            where u2.memberof @> ARRAY[u1.id] and u1.accounttype = 'G' and u2.accounttype='U' group by u1.id;
+"
             );
         } else {
             $sql = sprintf(
-                "select id, (select count(*) from users where memberof @> ARRAY[uu.id] and accounttype='U') as c from users uu where uu.accounttype='G' and id in (%s)",
+                "
+            select u1.id, count(u1.id) as c 
+            from users u1, users u2 where u2.memberof @> ARRAY[u1.id] and u1.accounttype = 'G' and u2.accounttype='U' and u1.id in (%s) 
+            group by u1.id
+",
                 implode(',', $ids)
             );
         }
@@ -460,10 +399,6 @@ union
         foreach ($accountCounts as $accountCount) {
             $uc[$accountCount["id"]] = intval($accountCount["c"]);
         }
-
-
-        // create extension if not exists intarray;
-        // create index uv_idx on users using gin(memberof gin__int_ops);
 
         return $uc;
     }
@@ -477,13 +412,19 @@ union
 
         if ($ids === [-1]) {
             $sql = sprintf(
-                "select id, (select count(*) from groups, users where  idgroup = uu.id and iduser=users.id and users.accounttype='G') as c from users uu where uu.accounttype='G'"
+                "
+select u1.id, count(u2.id) as c
+from groups, tv_groups u1, tv_groups u2
+where groups.idgroup = u1.id and groups.iduser = u2.id and u1.accounttype= 'G' and u2.accounttype='G'
+group by u1.id "
             );
         } else {
             $sql = sprintf(
-                "select id, " .
-                "(select count(*) from groups, users " .
-                "where  idgroup = uu.id and iduser=users.id and users.accounttype='G') as c from users uu where uu.accounttype='G' and id in (%s)",
+                "
+select u1.id, count(u2.id) as c
+from groups, tv_groups u1, tv_groups u2
+where groups.idgroup = u1.id and groups.iduser = u2.id and u1.accounttype= 'G' and u2.accounttype='G' and groups.idgroup in (%s)
+group by u1.id ",
                 implode(',', $ids)
             );
         }
@@ -494,10 +435,6 @@ union
         foreach ($accountCounts as $accountCount) {
             $uc[$accountCount["id"]] = intval($accountCount["c"]);
         }
-
-
-        // create extension if not exists intarray;
-        // create index uv_idx on users using gin(memberof gin__int_ops);
 
         return $uc;
     }
@@ -510,25 +447,20 @@ union
 
         if ($ids === [-1]) {
             $sql = sprintf(
-                "select id, (select count(*) from users where memberof @> ARRAY[uu.id] and accounttype='G') as c from users uu where uu.accounttype='G'"
+                "select g1.id, count(g1.id) as c from tv_groups g1, tv_groups g2 where g2.memberof @> ARRAY[g1.id] group by g1.id;"
             );
         } else {
             $sql = sprintf(
-                "select id, (select count(*) from users where memberof @> ARRAY[uu.id] and accounttype='G') as c from users uu where uu.accounttype='G' and id in (%s)",
+                "select g1.id, count(g1.id) as c from tv_groups g1, tv_groups g2 where g2.memberof @> ARRAY[g1.id] and g1.id in (%s) group by g1.id;",
                 implode(',', $ids)
             );
         }
         DbManager::query($sql, $accountCounts);
 
-
         $uc = [];
         foreach ($accountCounts as $accountCount) {
             $uc[$accountCount["id"]] = intval($accountCount["c"]);
         }
-
-
-        // create extension if not exists intarray;
-        // create index uv_idx on users using gin(memberof gin__int_ops);
 
         return $uc;
     }
@@ -546,13 +478,14 @@ union
         DbManager::query($sql, $stats);
         $tags = [
             \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION"),
-            $this->filterValue
+            $this->filterValue,
+            json_encode($this->needCounts),
         ];
         foreach ($stats as $stat) {
             foreach ($stat as $info) {
                 $tags[] = $info;
             }
         }
-        return implode("-", $tags);
+        return hash("md4", implode("-", $tags));
     }
 }

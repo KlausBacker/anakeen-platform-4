@@ -4,13 +4,14 @@
     <action id="user index" label="Add user indexes">
         <condition>
             <sql-assert-empty label="verify user index not exists">
-                select * from pg_indexes where indexname = 'users_idx3' and tablename='users';
+                select * from pg_indexes where indexname = 'users_idx6' and tablename='users';
             </sql-assert-empty>
         </condition>
         <process>
             <sql-query label="Add users indexes">
     create index if not exists users_idx3 on users(accounttype);
 	create index if not exists users_idx4 on users(substitute);
+    create index if not exists users_idx6 on users(fid);
             </sql-query>
         </process>
         <check>
@@ -19,6 +20,9 @@
             </sql-assert-not-empty>
             <sql-assert-not-empty label="verify user index substitute not exists">
                 select * from pg_indexes where indexname = 'users_idx4' and tablename='users';
+            </sql-assert-not-empty>
+            <sql-assert-not-empty label="verify user index fid not exists">
+                select * from pg_indexes where indexname = 'users_idx6' and tablename='users';
             </sql-assert-not-empty>
         </check>
     </action>

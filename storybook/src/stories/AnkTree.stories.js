@@ -2,6 +2,7 @@ import Vue from "vue";
 import setup from "@anakeen/user-interfaces/components/lib/setup.esm";
 
 import GroupTreeNgVue from "../../../user-interfaces/components/src/AnkTree/AnkTree.vue";
+import { action } from "@storybook/addon-actions";
 
 Vue.use(setup);
 
@@ -11,12 +12,11 @@ export default {
   argTypes: {
     treeUrl: {
       control: { type: "text" },
-      table: { disable: true },
       description: "Url Données de l'arbre"
     },
-    expanded: {
-      control: { type: "boolean" },
-      description: "Tout déplier"
+    treeOpenNodeUrl: {
+      control: { type: "text" },
+      description: "Url pour compléter les données d'une branche"
     },
     filter: {
       control: { type: "text" },
@@ -76,19 +76,55 @@ const Template = (args, { argTypes }) => ({
 
   methods: {
     storySelect(event, data) {
-      // eslint-disable-next-line no-console
-      console.log("SELECT on story ", data);
+      action("onSelectItem")(event, data);
     }
   }
 });
 
 export const IgroupTree = Template.bind({});
+IgroupTree.storyName = "Tous les groupes";
 IgroupTree.args = {
   treeUrl: "/api/v2/admin/account/grouptree/",
-  expanded: false,
+  treeOpenNodeUrl: "/api/v2/admin/account/grouptree/{nodeId}",
   displayItemCount: true,
   displayChildrenCount: true,
   displaySelectedParent: true,
   itemHeight: 2,
-  customTranslations: { headerLabel: "Test libellé", groupCount2: "Sous-groupes spéciaux" }
+  customTranslations: { headerLabel: "Test libellé", groupCount: "Sous-groupes spéciaux" }
+};
+
+export const IgroupExpandTree = Template.bind({});
+IgroupExpandTree.storyName = "Tous les groupes dépliés";
+IgroupExpandTree.args = {
+  treeUrl: "/api/v2/admin/account/grouptree/all",
+  treeOpenNodeUrl: "/api/v2/admin/account/grouptree/{nodeId}",
+  displayItemCount: true,
+  displayChildrenCount: true,
+  displaySelectedParent: true,
+  itemHeight: 2,
+  customTranslations: { headerLabel: "Test libellé", groupCount: "Sous-groupes spéciaux" }
+};
+
+export const IgroupNotAuto = Template.bind({});
+IgroupNotAuto.storyName = "Les groupes administrables";
+IgroupNotAuto.args = {
+  treeUrl: "/api/v2/admin/account/grouptree/nocategory/",
+  treeOpenNodeUrl: "/api/v2/admin/account/grouptree/nocategory/{nodeId}",
+  displayItemCount: true,
+  displayChildrenCount: true,
+  displaySelectedParent: true,
+  itemHeight: 2,
+  customTranslations: { headerLabel: "Groupes non catégorisés" }
+};
+
+export const IgroupExpandedNotAuto = Template.bind({});
+IgroupExpandedNotAuto.storyName = "Les groupes administrables dépliés";
+IgroupExpandedNotAuto.args = {
+  treeUrl: "/api/v2/admin/account/grouptree/nocategory/all",
+  treeOpenNodeUrl: "/api/v2/admin/account/grouptree/nocategory/{nodeId}",
+  displayItemCount: true,
+  displayChildrenCount: true,
+  displaySelectedParent: true,
+  itemHeight: 2,
+  customTranslations: { headerLabel: "Groupes non catégorisés" }
 };

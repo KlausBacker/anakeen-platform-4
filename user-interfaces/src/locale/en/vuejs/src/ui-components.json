@@ -85,5 +85,6 @@
   "AnkTree.itemCount": "#users",
   "AnkTree.childrenCount": "#groups",
   "AnkTree.reload": "Reload",
-  "AnkTree.noItemToDisplay": "Nothing to display"
+  "AnkTree.noItemToDisplay": "Nothing to display",
+  "AnkTree.searching": "Searching"
 }

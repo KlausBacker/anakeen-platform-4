@@ -85,5 +85,6 @@
   "AnkTree.reopenNode": "Explorer",
   "AnkTree.loading": "Chargement en cours",
   "AnkTree.reload": "Réessayer",
-  "AnkTree.noItemToDisplay": "Aucun élément à afficher"
+  "AnkTree.noItemToDisplay": "Aucun élément à afficher",
+  "AnkTree.searching": "Recherche de"
 }

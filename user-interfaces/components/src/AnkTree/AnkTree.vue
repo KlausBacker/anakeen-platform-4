@@ -1,7 +1,11 @@
 <template>
-  <div class="foldertree">
+  <div class="ank-tree">
     <div v-if="treeData.length === 0 && !error && !message" class="loading-tree">
       <p>{{ translations.loading }}</p>
+      <p v-if="filter">
+        {{ translations.searching }} : "<i>{{ filter }}</i
+        >"
+      </p>
       <progress />
     </div>
     <div v-if="error" class="tree-error">
@@ -11,7 +15,7 @@
     <div v-if="message" class="tree-message">
       <p>{{ message }}</p>
     </div>
-    <div v-if="treeData.length > 0" class="thetreeheader">
+    <div v-if="treeData.length > 0" class="ank-tree-header">
       <div class="tree-item tree-header" :style="{ 'padding-right': scrollBarWidth }">
         <span class="tree-foldername"
           >{{ translations.headerLabel }}
@@ -30,7 +34,7 @@
     <div
       v-if="treeData.length > 0"
       ref="tree"
-      class="thetree"
+      class="ank-tree-body"
       @scroll.passive="debounced(scrollDebounce, onScroll)($event)"
     >
       <div class="tree-first" :style="{ height: firstItemHeight + 'rem' }" />
