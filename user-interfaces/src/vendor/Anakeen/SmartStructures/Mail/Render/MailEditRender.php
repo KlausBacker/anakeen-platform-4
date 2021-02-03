@@ -30,7 +30,7 @@ class MailEditRender extends DefaultConfigEditRender
     {
         $options = parent::getOptions($document);
 
-        $targetId = $this->customClientData["targetDocument"] ?: null;
+        $targetId = $this->customClientData["targetDocument"] ?? null;
         if ($targetId) {
             $target = SEManager::getDocument($targetId);
             if ($target) {
