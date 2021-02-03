@@ -112,6 +112,16 @@
     .dcpArray__copy {
       display: none;
     }
+    // Temporary fix for #1194
+    .dcpArray__body[data-attrid=mail_dest] > tr[data-attrid=mail_dest] {
+      &:hover {
+        background-color: transparent;
+        color: transparent
+      }
+      &:last-child > td.dcpArray__cell[data-attrid=mail_recip] {
+        padding-bottom: 2rem;
+      }
+    }
   }
 
   textarea.form-control[name=mail_cm] {
