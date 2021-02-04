@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/about-anakeen",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "ap4version": "2020.3.2",
   "description": "Informations about Anakeen Platform",
   "main": "index.js",
@@ -10,7 +10,7 @@
   "author": "anakeen",
   "license": "SEE LICENSE IN LICENSE",
   "devDependencies": {
-    "@anakeen/anakeen-cli": "1.3.0",
+    "@anakeen/anakeen-cli": "1.3.1",
     "libxmljs": "^0.19.7",
     "xml-formatter": "^2.4.0"
   },
