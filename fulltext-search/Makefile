@@ -13,7 +13,7 @@ YARN_BIN=yarn
 ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
 CBF_BIN=php ./../.devtool/ci/check/checkPHP/vendor/bin/phpcbf
 CS_BIN=php ./../.devtool/ci/check/checkPHP/vendor/bin/phpcs
-COMPOSER_BIN=composer
+COMPOSER_BIN=composer --ignore-platform-reqs
 CHECK_VERSION=node ./../.devtool/ci/check/checkVersionNpmApp.js
 
 -include ../Makefile.local

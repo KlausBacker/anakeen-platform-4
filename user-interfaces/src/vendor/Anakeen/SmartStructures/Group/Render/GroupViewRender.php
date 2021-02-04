@@ -21,4 +21,21 @@ class GroupViewRender extends DefaultConfigViewRender
         );
         return $options;
     }
+
+    /**
+     * Hide the default values
+     *
+     * @param \Anakeen\Core\Internal\SmartElement $document
+     * @param \SmartStructure\Mask|null $mask
+     * @return RenderAttributeVisibilities
+     * @throws \Anakeen\Ui\Exception
+     */
+    public function getVisibilities(
+        \Anakeen\Core\Internal\SmartElement $document,
+        \SmartStructure\Mask $mask = null
+    ): RenderAttributeVisibilities {
+        $visibilities = parent::getVisibilities($document, $mask);
+        $visibilities->setVisibility(myAttributes::fld_fr_rest, RenderAttributeVisibilities::HiddenVisibility);
+        return $visibilities;
+    }
 }

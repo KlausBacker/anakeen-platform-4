@@ -308,13 +308,16 @@ export default Backbone.Model.extend({
     });
     var security = this.get("properties").get("security");
     lockModel.destroy({
-      success: function mDocumentUnLockDocumentSuccess() {
+      success: function mDocumentUnLockDocumentSuccess(model, response) {
         var menu = docModel.get("menus");
         security.lock = {
           lockedBy: {
             id: 0
           }
         };
+        if (response && response.data) {
+          security.readOnly = response.data.readOnly;
+        }
         docModel.get("properties").set("security,", security);
 
         menu.setMenu("lock", "visibility", "visible");
@@ -1365,8 +1368,11 @@ export default Backbone.Model.extend({
         if (_.isFunction(options.error)) {
           options.error(values);
         }
+        if (values.promiseArguments && values.promiseArguments[0] && values.promiseArguments[0].eventPrevented) {
+          //the event is prevented no error to display
+          return;
+        }
         if (values.promiseArguments && values.promiseArguments.length === 1) {
-          // @FIMXE: Workaround because in some case : the args are into the first value of array
           if (values.promiseArguments[0].length === 3) {
             values.promiseArguments = values.promiseArguments[0];
           }

@@ -11,6 +11,10 @@
             <smart:field-access field="grp_fr_ident" access="ReadWrite"/>
             <smart:field-access field="grp_name" access="ReadWrite"/>
             <smart:field-access field="grp_hasmail" access="ReadWrite"/>
+            <smart:field-access field="fld_fr_rest" access="ReadWrite" />
+            <smart:field-access field="fld_tfam" access="ReadWrite" />
+            <smart:field-access field="fld_fam" access="ReadWrite" />
+            <smart:field-access field="fld_famids" access="ReadWrite" />
         </smart:field-access-layer>
     </smart:field-access-layer-list>
     <smart:access-configuration name="FALL_IGROUP" profil-type="FIELDACCESSLAYERLIST">

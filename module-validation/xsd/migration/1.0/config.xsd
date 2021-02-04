@@ -1,39 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-           xmlns:ns="https://platform.anakeen.com/4/schemas/migration/1.0"
-           elementFormDefault="qualified"
-           targetNamespace="https://platform.anakeen.com/4/schemas/migration/1.0">
-    <xs:element name="config" type="ns:configType"/>
-
-    <xs:complexType name="configType">
-        <xs:sequence>
-            <xs:element type="ns:actionType" name="action" maxOccurs="unbounded" minOccurs="0"/>
-        </xs:sequence>
-    </xs:complexType>
-
+           elementFormDefault="qualified">
+    <xs:element name="migration" type="migrationType"/>
     <xs:complexType name="processType">
         <xs:choice maxOccurs="unbounded">
-            <xs:element type="ns:bashCodeType" name="bash-code" maxOccurs="unbounded" minOccurs="0"/>
-            <xs:element type="ns:sql-queryType" name="sql-query" maxOccurs="unbounded" minOccurs="0"/>
-            <xs:element type="ns:phpMethodType" name="php"/>
-            <xs:element type="ns:phpCodeType" name="php-code"/>
+            <xs:element type="bashCodeType" name="bash-code" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="sql-queryType" name="sql-query" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="phpMethodType" name="php"/>
+            <xs:element type="phpCodeType" name="php-code"/>
         </xs:choice>
         <xs:attribute type="xs:string" name="label"/>
     </xs:complexType>
+    <xs:complexType name="migrationType">
+        <xs:sequence>
+            <xs:element type="actionType" name="action" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
 
     <xs:complexType name="conditionType">
+
         <xs:choice maxOccurs="unbounded">
-            <xs:element type="ns:LabelStringType" name="sql-assert-false"/>
-            <xs:element type="ns:LabelStringType" name="sql-assert-true"/>
-            <xs:element type="ns:LabelStringType" name="sql-assert-not-empty"/>
-            <xs:element type="ns:LabelStringType" name="sql-assert-empty"/>
-            <xs:element type="ns:phpCodeType" name="php-assert-code-return-false"/>
-            <xs:element type="ns:phpCodeType" name="php-assert-code-return-true"/>
-            <xs:element type="ns:phpMethodType" name="php-assert-true"/>
-            <xs:element type="ns:phpMethodType" name="php-assert-false"/>
+            <xs:element type="LabelStringType" name="sql-assert-false"/>
+            <xs:element type="LabelStringType" name="sql-assert-true"/>
+            <xs:element type="LabelStringType" name="sql-assert-not-empty"/>
+            <xs:element type="LabelStringType" name="sql-assert-empty"/>
+            <xs:element type="phpCodeType" name="php-assert-code-return-false"/>
+            <xs:element type="phpCodeType" name="php-assert-code-return-true"/>
+            <xs:element type="phpMethodType" name="php-assert-true"/>
+            <xs:element type="phpMethodType" name="php-assert-false"/>
         </xs:choice>
 
-        <xs:attribute type="ns:andol" name="ol"/>
+        <xs:attribute type="andol" name="ol"/>
     </xs:complexType>
 
     <xs:simpleType name="andol">
@@ -78,14 +75,14 @@
 
     <xs:complexType name="actionType">
         <xs:sequence>
-            <xs:element type="ns:conditionType" name="condition">
+            <xs:element type="conditionType" name="condition">
                 <xs:annotation>
                     <xs:documentation xml:lang="en">
                         Define list of assertion to verify
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="ns:processType" name="process">
+            <xs:element type="processType" name="process">
                 <xs:annotation>
                     <xs:documentation xml:lang="en">
                         Define processes to execute
@@ -93,7 +90,7 @@
                 </xs:annotation>
 
             </xs:element>
-            <xs:element type="ns:conditionType" name="check">
+            <xs:element type="conditionType" name="check">
                 <xs:annotation>
                     <xs:documentation xml:lang="en">
                         Define assertions to verify that process has succeced
@@ -130,7 +127,7 @@
         </xs:annotation>
         <xs:attribute type="xs:string" name="label" use="required"/>
         <xs:attribute type="xs:boolean" name="stop-on-error" default="true"/>
-        <xs:attribute type="ns:callableType" name="callable" use="required">
+        <xs:attribute type="callableType" name="callable" use="required">
             <xs:annotation>
                 <xs:documentation xml:lang="en">
                     <p>Callable like
@@ -154,7 +151,7 @@
             </xs:documentation>
         </xs:annotation>
         <xs:simpleContent>
-            <xs:extension base="ns:LabelStringType">
+            <xs:extension base="LabelStringType">
                 <xs:attribute type="xs:boolean" name="stop-on-error" default="true"/>
                 <xs:attribute type="xs:boolean" name="load-context" default="true">
                     <xs:annotation>
