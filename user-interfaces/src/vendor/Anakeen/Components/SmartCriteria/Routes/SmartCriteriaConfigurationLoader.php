@@ -223,10 +223,9 @@ class SmartCriteriaConfigurationLoader
                 "operator" => $defaultOperator
             ];
         } else {
-            $default = $criteria["default"];
-            if (!array_key_exists("operator", $default)) {
+            if (!array_key_exists("operator", $criteria["default"])) {
                 $defaultOperator = SmartCriteriaConfigurationSingleton::getInstance()->getDefaultOperator($structField->type, $multipleField);
-                $default["operator"] = $defaultOperator;
+                $criteria["default"]["operator"] = $defaultOperator;
             }
         }
 
