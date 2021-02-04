@@ -1,18 +1,18 @@
 exports.versions = [
   {
     package: "@anakeen/anakeen-cli",
-    version: "1.3.0",
+    version: "1.3.1",
     npmOnly: true
   },
   {
     package: "@anakeen/admin-center",
-    version: "2.2.3",
+    version: "2.2.4",
     modulePath: "admin-center",
     moduleName: "admin-center"
   },
   {
     package: "@anakeen/business-app",
-    version: "2.0.2",
+    version: "2.0.3",
     modulePath: "business-app",
     moduleName: "anakeen-hub-business-app"
   },
@@ -28,13 +28,13 @@ exports.versions = [
   },
   {
     package: "development-center",
-    version: "2.2.5",
+    version: "2.2.6",
     modulePath: "development-center",
     moduleName: "development-center"
   },
   {
     package: "@anakeen/hub-components",
-    version: "2.0.2",
+    version: "2.0.3",
     modulePath: "hub-station",
     moduleName: "anakeen-hub"
   },
@@ -45,19 +45,19 @@ exports.versions = [
   },
   {
     package: "migration-tools",
-    version: "2.1.2",
+    version: "2.1.3",
     modulePath: "migration-tools",
     moduleName: "migration-tools"
   },
   {
     package: "@anakeen/test-tools",
-    version: "1.0.0",
+    version: "1.0.1",
     modulePath: "test-tools",
     moduleName: "test-tools"
   },
   {
     package: "@anakeen/security",
-    version: "2.0.6",
+    version: "2.0.7",
     modulePath: "security",
     moduleName: "security"
   },
@@ -68,54 +68,54 @@ exports.versions = [
   },
   {
     package: "transformation",
-    version: "2.0.6",
+    version: "2.0.7",
     modulePath: "transformation",
     moduleName: "transformation"
   },
   {
     package: "@anakeen/user-interfaces",
-    version: "3.2.0",
+    version: "3.2.1",
     modulePath: "user-interfaces",
     moduleName: "user-interfaces"
   },
   {
     package: "@anakeen/workflow",
-    version: "2.0.5",
+    version: "2.0.6",
     modulePath: "workflow",
     moduleName: "workflow"
   },
   {
     package: "@anakeen/smart-data-engine",
-    version: "5.0.1",
+    version: "5.0.2",
     modulePath: "smart-data-engine",
     moduleName: "smart-data-engine"
   },
   {
     package: "dev-data",
-    version: "2.0.3",
+    version: "2.0.4",
     modulePath: "dev-data",
     moduleName: "dev-data"
   },
   {
     package: "@anakeen/fulltext-search",
-    version: "1.0.5",
+    version: "1.0.6",
     modulePath: "fulltext-search",
     moduleName: "fulltext-search"
   },
   {
     package: "@anakeen/anakeen-module-validation",
-    version: "2.2.0",
+    version: "2.2.1",
     npmOnly: true
   },
   {
     package: "@anakeen/about-anakeen",
-    version: "1.0.0",
+    version: "1.0.1",
     modulePath: "about",
     moduleName: "anakeen-about"
   },
 ];
 exports.RC = "";
-exports.release = "2020.3.2";
+exports.release = "2020.3.3";
 exports.modulePath = [
   "admin-center",
   "business-app",

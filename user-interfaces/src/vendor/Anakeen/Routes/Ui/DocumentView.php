@@ -821,7 +821,7 @@ class DocumentView
         $result[] = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_LANG");
         $result[] = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
 
-        return join(" ", $result);
+        return hash("md4", join(" ", $result));
     }
 
     /**

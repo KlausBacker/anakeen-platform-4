@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="anakeen-hub" vendor="Anakeen" version="2.0.2" license="https://ap4.anakeen.com/licence4.html">
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="anakeen-hub" vendor="Anakeen" version="2.0.3" license="https://ap4.anakeen.com/licence4.html">
     <description>Build interface with the Hub</description>
 
     <requires>
-        <module name="smart-data-engine" version="^5.0.0"/>
-        <module name="user-interfaces" version="^3.2.0"/>
-        <module name="security" version="^2.0.6"/>
-        <module name="workflow" version="^2.0.5"/>
+        <module name="smart-data-engine" version="^5.0.2"/>
+        <module name="user-interfaces" version="^3.2.1"/>
+        <module name="security" version="^2.0.7"/>
+        <module name="workflow" version="^2.0.6"/>
     </requires>
     <post-install>
         <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/Hub/Accounts/110-HubRoles.xml"/>

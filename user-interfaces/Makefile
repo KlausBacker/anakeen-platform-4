@@ -28,7 +28,7 @@ APP_OUTPUT_PATH = ../$(BUILD_DIR)/
 ##bin
 CBF_BIN=php $(DEVTOOLS_DIR)/ci/check/checkPHP/vendor/bin/phpcbf
 CS_BIN=php $(DEVTOOLS_DIR)/ci/check/checkPHP/vendor/bin/phpcs
-COMPOSER_BIN=composer
+COMPOSER_BIN=composer --ignore-platform-reqs
 
 ########################################################################################################################
 ##

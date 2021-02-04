@@ -57,7 +57,7 @@ msgstr ""
 #, php-format
 msgctxt "ddui"
 msgid "Access not granted for document #%s"
-msgstr "Accès non autorisé pour créer #°%s"
+msgstr "Accès non autorisé pour #°%s"
 
 #, php-format
 msgctxt "ddui"

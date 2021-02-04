@@ -6,7 +6,7 @@ tmp:
 	cd ./tmp && ln -s ../src control && cd -
 
 install:
-	composer --working-dir=./src install
+	composer --ignore-platform-reqs --working-dir=./src install
 	yarn install --frozen-lockfile
 	# generate version.json also.
 	yarn run build
