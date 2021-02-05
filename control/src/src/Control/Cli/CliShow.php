@@ -39,6 +39,7 @@ class CliShow extends CliJsonCommand
             /** @var ConsoleOutput $output */
             $this->writeColor($output, $info);
         }
+        return 0;
     }
 
     protected function writeColor(ConsoleOutput $output, $info)

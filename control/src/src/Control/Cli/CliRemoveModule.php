@@ -59,12 +59,13 @@ class CliRemoveModule extends CliCommand
         $question = new ConfirmationQuestion('<question>Confirm remove module [Y/n]?</question>', true);
 
         if (!$helper->ask($input, $output, $question)) {
-            return;
+            return 42;
         }
         $module->recordJob();
         LibSystem::purgeTmpFiles();
         /** @var  ConsoleOutput $output */
         ModuleJob::waitRunning($output);
         $output->writeln("Deletion complete.");
+        return 0;
     }
 }

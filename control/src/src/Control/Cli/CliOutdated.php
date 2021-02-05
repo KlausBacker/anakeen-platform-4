@@ -44,6 +44,8 @@ class CliOutdated extends CliJsonCommand
                  $output->writeln("<info>All modules are up-to-date</info>");
             }
         }
+        return 0;
+
     }
 
     protected function writeColor(ConsoleOutput $output, $info)

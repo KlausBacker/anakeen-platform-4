@@ -9,10 +9,10 @@
     ],
     "require": {
         "vierbergenlars/php-semver": "^3.0",
-        "mustache/mustache": "^2.12",
+        "mustache/mustache": "^2.13",
         "slim/slim": "^3.12",
-        "symfony/console": "^4.3",
-        "symfony/event-dispatcher": "^4.3",
-        "stecman/symfony-console-completion": "^0.10.1"
+        "symfony/console": "^5.2",
+        "symfony/event-dispatcher": "^5.2",
+        "stecman/symfony-console-completion": "^0.11"
     }
 }

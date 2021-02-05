@@ -28,7 +28,7 @@ class CliJsonCommand extends CliCommand
 
             $this->jsonMode = $input->getOption("format") === "json";
         }
-
+        return 0;
     }
 
 }
