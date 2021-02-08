@@ -15,7 +15,7 @@
     "@progress/kendo-theme-bootstrap": "4.8.0",
     "bootstrap": "^4.3.1",
     "font-awesome": "^4.7.0",
-    "material-design-icons-iconfont": "^5.0.1",
+    "material-design-icons-iconfont": "^6.1.0",
     "roboto-fontface": "^0.10.0"
   }
 }

@@ -21,6 +21,8 @@
             <smart:enum name="0" label="tout sauf"/>
             <smart:enum name="1" label="seulement"/>
         </smart:enum-configuration>
+        <smart:enum-configuration name="igroup-category" extendable="true">
+        </smart:enum-configuration>
     </smart:enumerates>
     <smart:structure-configuration name="IGROUP" id="127" label="Groupe d'utilisateurs">
         <smart:extends ref="GROUP"/>
@@ -35,6 +37,7 @@
                 <smart:field-int name="us_whatid" label="Identifiant système" access="Read"/>
                 <smart:field-account name="us_meid" label="Groupe id" access="Read"/>
                 <smart:field-docid name="grp_roles" label="Rôles associés" access="None" relation="ROLE" multiple="true"/>
+                <smart:field-enum name="grp_category" label="Catégorie" relation="igroup-category" access="Read"/>
             </smart:field-set>
         </smart:fields>
         <smart:parameters/>

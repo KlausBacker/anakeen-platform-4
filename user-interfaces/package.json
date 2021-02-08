@@ -51,6 +51,7 @@
     "@types/backbone": "^1.4.0",
     "@types/jquery": "^3.3.30",
     "@types/kendo-ui": "^2019.3.1",
+    "@types/resize-observer-browser": "^0.1.5",
     "@yelo/rollup-node-external": "^1.0.1",
     "copy-webpack-plugin": "^5.1.1",
     "core-js": "3.6.1",
