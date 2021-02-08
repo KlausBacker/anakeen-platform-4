@@ -60,7 +60,7 @@ class CliUpdateModule extends CliCommand
             $question = new ConfirmationQuestion('<question>Continue the update [Y/n]?</question>', true);
 
             if (!$helper->ask($input, $output, $question)) {
-                return;
+                return 42;
             }
 
             /** @var  ConsoleOutput $output */
@@ -80,6 +80,7 @@ class CliUpdateModule extends CliCommand
                 }
             }
         }
+        return 0;
     }
 
     protected function askParameters(ModuleManager $module, InputInterface $input, OutputInterface $output)

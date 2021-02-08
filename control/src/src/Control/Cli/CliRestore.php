@@ -74,9 +74,7 @@ class CliRestore extends CliCommand
         } else {
             $output->writeln("<info>Restore job is recorded</info>");
         }
-
-
-
+        return 0;
     }
 
 }

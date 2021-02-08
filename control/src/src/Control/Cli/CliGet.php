@@ -74,6 +74,7 @@ class CliGet extends CliJsonCommand
                 $output->writeln($value);
             }
         }
+        return 0;
     }
 
     protected function writeAllParameters(ConsoleOutput $output, $parameters)

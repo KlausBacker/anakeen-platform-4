@@ -81,6 +81,7 @@ class CliRegistry extends CliJsonCommand
                 }
                 break;
         }
+        return 0;
     }
 
     protected function writeRepoTable(ConsoleOutput $output, $repositories)

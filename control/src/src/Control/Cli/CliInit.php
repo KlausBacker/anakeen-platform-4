@@ -81,6 +81,7 @@ class CliInit extends CliCommand
         }
 
         $output->writeln("<info>Anakeen Platform Context is initialized</info>");
+        return 0;
 
     }
 

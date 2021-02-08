@@ -82,5 +82,6 @@ class CliArchive extends CliCommand
                 $output->writeln("<comment>Vaults are not saved.</comment>");
             }
         }
+        return 0;
     }
 }

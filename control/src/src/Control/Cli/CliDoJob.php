@@ -33,6 +33,7 @@ class CliDoJob extends CliCommand
         posix_setsid();
 
         ModuleJob::runJob();
+        return 0;
     }
 
 }

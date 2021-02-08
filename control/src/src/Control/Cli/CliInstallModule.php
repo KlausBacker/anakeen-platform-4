@@ -100,5 +100,6 @@ class CliInstallModule extends CliCommand
                 }
             }
         }
+        return 0;
     }
 }

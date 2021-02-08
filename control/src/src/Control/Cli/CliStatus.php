@@ -86,6 +86,7 @@ class CliStatus extends CliJsonCommand
                 }
             }
         }
+        return 0;
     }
 
     public static function formatJobStatusOutput(ConsoleOutput $output)

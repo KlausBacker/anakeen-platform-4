@@ -43,6 +43,7 @@ class CliRun extends CliCommand
         } catch (\Exception $e) {
             throw new \Control\Exception\RuntimeException($e->getMessage(), 0, $e);
         }
+        return 0;
     }
 
 }

@@ -38,7 +38,6 @@ class CliSet extends CliCommand
         $value = $input->getArgument("value");
 
         if ($input->getOption("module")) {
-
             $controlParameters = Context::getParameters();
             if (!isset($controlParameters[$paramName])) {
                 throw new RuntimeException(sprintf("Module parameter \"%s\" not found", $paramName));
@@ -56,6 +55,7 @@ class CliSet extends CliCommand
             $results = Context::getControlParameters();
             $output->writeln(sprintf("<info>Internal parameter \"<comment>%s</comment>\" set to \"<comment>%s</comment>\".</info>", $paramName, $results[$paramName]));
         }
+        return 0;
     }
 
 }
