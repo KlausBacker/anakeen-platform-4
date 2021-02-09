@@ -6,7 +6,7 @@ exports.versions = [
   },
   {
     package: "@anakeen/admin-center",
-    version: "2.2.4",
+    version: "2.2.5",
     modulePath: "admin-center",
     moduleName: "admin-center"
   },
@@ -109,7 +109,7 @@ exports.versions = [
   },
   {
     package: "@anakeen/about-anakeen",
-    version: "1.0.1",
+    version: "1.0.2",
     modulePath: "about",
     moduleName: "anakeen-about"
   },
