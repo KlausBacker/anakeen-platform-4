@@ -585,6 +585,7 @@ $.widget("dcp.dcpAttribute", {
       selector: ".dcpAttribute__content__buttons button",
       placement: "top",
       trigger: "hover",
+      boundary: this.element.closest(".dcpFrame").get(0) || "viewport",
       html: true,
       title: function wAttributeGetButtonTitle() {
         var title = $(this).data("title");
